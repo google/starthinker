@@ -18,7 +18,6 @@
 
 import json
 import base64
-import pickle
 import jsonpickle
 import httplib2
 import datetime
@@ -36,7 +35,6 @@ from google.cloud import storage
 #from django.db import models
 from django.utils import encoding
 from setup import UI_SERVICE
-
 
 def get_service():
   credentials = ServiceAccountCredentials.from_json_keyfile_name(UI_SERVICE, ['https://www.googleapis.com/auth/devstorage.full_control'])

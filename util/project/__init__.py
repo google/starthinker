@@ -19,20 +19,36 @@
 import os
 import re
 import json
+import pytz
 import argparse
-from datetime import timedelta
+from datetime import datetime, timedelta
 import uuid
 
-from util.regexp import str_to_date
 
 RE_UUID = re.compile(r'(\s*)("setup"\s*:\s*{)')
 
+
 def get_project(filepath):
-  with open(filepath) as data_file:    
+  with open(filepath) as data_file:
     return json.load(data_file)
+
 
 def load_project(data):
   return json.load(data)
+
+
+def is_scheduled(project, task = None):
+  if not 'hour' in project['setup']:
+    return True
+
+  tz = pytz.timezone(project['setup'].get('timezone', 'America/Los_Angeles'))
+  tz_datetime = datetime.now(tz)
+  tz_day, tz_hour =  tz_datetime.strftime('%a'), tz_datetime.hour
+  if task:
+    return tz_day in project['setup'].get('day', project['setup'].get('week', [])) and tz_hour in task.get('hour', project['setup']['hour'])
+  else:
+    return tz_day in project['setup'].get('day', project['setup'].get('week', [])) and tz_hour in project['setup']['hour']
+
 
 class project:
   verbose = False
@@ -47,14 +63,28 @@ class project:
     parser.add_argument('--instance', '-i', help='the instance of the task to run ( if multiple tasks with same name ) default will be 1.', default=1, type=int)
     parser.add_argument('--verbose', '-v', help='print all the steps as they happen.', action='store_true')
     parser.add_argument('--date', '-d', help='YYYY-MM-DD format date for which these reports are to be run, default will be today.', default='TODAY')
+    parser.add_argument('--hour', '-t', help='0 - 23 hour for which tasks will be executed', default='NOW')
+    parser.add_argument('--force', '-force', help='no-op for compatibility with all.', action='store_true')
+
     args = parser.parse_args()
 
     cls.filepath = args.project
     cls.configuration = get_project(args.project)
     cls.verbose = args.verbose
-    cls.date = str_to_date(args.date)
     cls.id = cls.configuration['setup']['id']
     cls.uuid = cls.configuration['setup'].get('uuid')
+
+    # find date based on timezone
+    if args.date == 'TODAY':
+      tz = pytz.timezone(cls.configuration['setup'].get('timezone', 'America/Los_Angeles'))
+      tz_datetime = datetime.now(tz)
+      cls.date = tz_datetime.date()
+      cls.hour = tz_datetime.hour if args.hour == 'NOW' else int(args.hour)
+
+    # or if provided use local time
+    else:
+      cls.date = datetime.strptime(args.date.replace('/', '-').replace('_', '-'), '%Y-%m-%d').date()
+      cls.hour = datetime.now().hour if args.hour == 'NOW' else int(args.hour)
 
     # find task
     cls.task = None
@@ -67,7 +97,6 @@ class project:
           cls.task = task.values()[0]
           instance += 1
 
-
     # create service credentials ( needed as this always gets loaded )
     #try: os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = cls.configuration['setup']['auth']['service']
     #except: pass
@@ -75,20 +104,19 @@ class project:
     if cls.verbose:
       print 'TASK:', _task 
       print 'DATE:', cls.date 
+      print 'HOUR:', cls.hour 
 
 
   @classmethod
-  def authorize(cls, _credetials):
-    cls.configuration = {
-      "setup":{
-        "auth":{
-          "client":"/usr/local/google/home/kenjora/.credentials/%s_client.json" % _credetials,
-          "service":"/usr/local/google/home/kenjora/.credentials/%s_service.json" % _credetials,
-          "user":"/usr/local/google/home/kenjora/.credentials/%s_user.json" % _credetials,
-          "salesforce":"/usr/local/google/home/kenjora/.credentials/%s_salesforce.json" % _credetials,
-        }
-      }
-    }
+  def authorize(cls, project_path):
+    cls.filepath = project_path
+    cls.configuration = get_project(project_path)
+    cls.verbose = True
+    cls.date = 'TODAY'
+    cls.id = cls.configuration['setup']['id']
+    cls.uuid = cls.configuration['setup'].get('uuid')
+    cls.task = {'auth':'user'}
+
 
   @classmethod
   def get_uuid(cls):

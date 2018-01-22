@@ -20,7 +20,7 @@ from util.project import project
 from util.bigquery import datasets_create, datasets_access
 
 def dataset():
-  if project.verbose: print "DATASET", project.task['dataset']
+  if project.verbose: print "DATASET", project.id, project.task['dataset']
 
   # create dataset
   datasets_create(project.task['auth'], project.id, project.task['dataset'])

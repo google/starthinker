@@ -16,6 +16,7 @@
 #
 ###########################################################################
 
+import pytz
 import httplib2
 from datetime import datetime
 from io import BytesIO
@@ -48,7 +49,10 @@ def log_get(uid):
 
 def log_project(project, output=None, errors=None):
   if 'uuid' in project['setup']:
-    data = 'DATE:%s\n' % str(datetime.now())
+    # store time zone
+    data = 'TIMEZONE:%s\n' % project['setup'].get('timezone', 'America/Los_Angeles')
+    # store time without timezone suffix ( already stored above )
+    data += 'TIME:%s\n' % datetime.now(pytz.timezone(project['setup'].get('timezone', 'America/Los_Angeles'))).strftime('%Y-%m-%d %H:%M:%S.%f')
     if output is None and errors is None: data += 'STATUS:RUNNING\n'
     else:
       if errors: data += 'STATUS:ERROR\n' + (output or '')+ '\n' + (errors or '')
@@ -58,11 +62,27 @@ def log_project(project, output=None, errors=None):
 
 def log_status(uid):
   try:
-    log_datetime, log_status, log_data = log_get(uid).split('\n', 2)
-    log_datetime = log_datetime.split(':', 1)[1]
+    log_raw = log_get(uid)
+  except Exception, e:
+    log_raw = ''
+
+  try:
+    log_timezone, log_datetime, log_status, log_data = log_raw.split('\n', 3)
+    log_timezone = log_timezone.split(':', 1)[1]
+    log_datetime = datetime.strptime(log_datetime.split(':', 1)[1], '%Y-%m-%d %H:%M:%S.%f').replace(tzinfo=pytz.timezone(log_timezone))
     log_status = log_status.split(':', 1)[1]
-  except:
-    log_datetime = ''
+    log_since = ''
+    tz_datetime = datetime.now(pytz.timezone(log_timezone))
+    since = tz_datetime - log_datetime
+    if since.days: log_since += '%d Days ' % since.days
+    if since.seconds > 3600: log_since += '%d Hours ' % int(since.seconds / 3600)
+    if since.seconds > 60: log_since += '%d Minutes ' % int(since.seconds / 60)
+    if since.seconds % 60: log_since += '%d Seconds ' % (since.seconds % 60)
+  except Exception, e:
+    log_timezone = 'America/Los_Angeles'
+    log_datetime = datetime.now(pytz.timezone(log_timezone))
     log_status = 'UNKNOWN'
     log_data = ''
-  return { 'datetime':log_datetime, 'status':log_status, 'data':log_data }
+    log_since = ''
+
+  return { 'raw':log_raw, 'datetime':log_datetime, 'since':log_since, 'status':log_status, 'data':log_data }

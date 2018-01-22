@@ -19,29 +19,37 @@
 import argparse
 import json
 import os
+import uuid
 from subprocess import check_output, CalledProcessError, STDOUT
 from util.pubsub import send_message, receive_message
 
 def worker(project_id, execution_topic_name, execution_subscription_name, project_dir, results_topic_name):
+
+
   while True:
     jobs = receive_message(project_id, execution_topic_name, execution_subscription_name, wait=True, ack=True)
     for ack, message in jobs:
+      default_execution_id = str(uuid.uuid4().hex)
       job = json.loads(message.data)
 
-      project_file_name = os.path.join(project_dir, job['execution_id'] + '.json')
+      project_file_name = os.path.join(project_dir, job.get('execution_id', default_execution_id) + '.json')
       project_file = open(project_file_name, 'w')
       project_file.write(message.data)
       project_file.close()
 
-      print 'Executing job %s' % job['execution_id']
+      print 'Executing job %s' % job.get('execution_id', default_execution_id)
 
       result = {
-        'execution_id': job['execution_id'],
+        'execution_id': job.get('execution_id', default_execution_id),
         'status_code': 0
       }
 
       try:
-        result['stdout'] = check_output(['python', 'all/run.py', project_file_name, '--verbose'], stderr=STDOUT).split('\n')
+        command = ['python', 'all/run.py', project_file_name, '--verbose']
+        if not 'hour' in job['setup']:
+          command.append('--force')
+
+        result['stdout'] = check_output(command, stderr=STDOUT).split('\n')
       except CalledProcessError, ex:
         result['status_code'] = ex.returncode
         result['stdout'] = ex.output.split('\n')
@@ -50,7 +58,9 @@ def worker(project_id, execution_topic_name, execution_subscription_name, projec
 
       send_message(project_id, results_topic_name, json.dumps(result))
 
-      print 'Job %s is done' % job['execution_id']
+      print json.dumps(result, indent=2)
+
+      print 'Job %s is done' % job.get('execution_id', default_execution_id)
 
 def main():
   parser = argparse.ArgumentParser()

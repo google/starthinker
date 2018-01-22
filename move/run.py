@@ -22,10 +22,9 @@ import uuid
 import os
 
 from util.project import project
-from util.bigquery import datasets_create, datasets_access, query_to_table, query_to_view, query_to_local_file, storage_to_table, query
+from util.bigquery import query_to_table, query_to_view, query_to_local_file, storage_to_table, query
 from util.trix import trix_update
 from util.storage import object_put
-
 
 # loop all parameters and replace with values, for lists turn them into strings
 def query_parameters(query, parameters):
@@ -47,6 +46,7 @@ def move():
         project.task['to']['dataset'],
         project.task['to']['table'],
         query_parameters(project.task['from']['query'], project.task['from'].get('parameters')),
+        disposition = project.task['write_disposition'] if 'write_disposition' in project.task else 'WRITE_TRUNCATE',
         use_legacy_sql=project.task['from']['useLegacySql'] if 'useLegacySql' in project.task['from'] else True
       )
     elif 'storage' in project.task['to']:
@@ -87,7 +87,9 @@ def move():
       project.task['to']['table'],
       project.task['from']['bucket'] + ':' + project.task['from']['path'],
       project.task.get('schema', []),
-      project.task.get('headers', 1)
+      project.task.get('skip_rows', 1),
+      project.task.get('structure', 'CSV'),
+      project.task.get('disposition', 'WRITE_TRUNCATE')
     )
 
 if __name__ == "__main__":

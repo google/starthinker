@@ -19,11 +19,6 @@
 import re
 from datetime import date, datetime
 
-
-def str_to_date(value):
-  return date.today() if value == 'TODAY' else datetime.strptime(value.replace('/', '-').replace('_', '-'), '%Y-%m-%d').date()
-
-
 def date_to_str(value):
   return value.strftime('%Y-%m-%d')
 

@@ -117,7 +117,7 @@ class FileProcessor(object):
     field_names = []
 
     for field in field_list:
-      field_name = re.sub(r'[ \:\-\/\(\)\+\&]', '_', field.strip())
+      field_name = re.sub(r'[ \=\:\-\/\(\)\+\&\%]', '_', field.strip())
 
       suffix = ''
       ct = 0

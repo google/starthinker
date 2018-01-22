@@ -1,0 +1,146 @@
+{
+  "solution":{
+    "icon":"file_download",
+    "title":"Third Party MOAT Report",
+    "description":"Import MOAT and DBM data into a BigQuery table and connect to dashboard.",
+    "instructions":[
+      "The MOAT report must span 30 days back, and run daily.",
+      "Send the MOAT report to <b>{{EMAIL_TOKEN}}</b>.",
+      "The MOAT Display report must contain exactly the fields:<i>Date<br/>Campaign ID<br/>Campaign Label<br/>Placement ID<br/>Placement Label<br/>Human and Viewable Impressions<br/>Human and Viewable Rate<br/>Human and Fully On-Screen Measurable Impressions<br/>Human and AVOC Impressions<br/>Human, Audible & Fully On-Screen for Half of Duration (15 sec. cap) Impressions</i>",
+      "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->MOAT_Display</b> to be created or click Run Now.",
+      "Copy <a href='https://datastudio.google.com/open/1YkVkkePmlz2KiiU8PqAlwfERLFtbGk60' target='_blank'>Third Party MOAT Sample Data Source</a>.",
+      "Change data source to <b>BigQuery->StarThinker Data->{{DATASET}}->IAS_Dashboard</b>.",
+      "Copy <a href='https://datastudio.google.com/open/1PDm1WqVQ3aGVq1DOKb0-S-ziWu1ZdrcJ' target='_blank'>Third Party MOAT Sample Report</a>.",
+      "When prompted choose the new data source you just created.",
+      "Or give these intructions to the client."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "hour":[2, 10]
+  },
+  "tasks":[
+    { "iam":{
+      "hour":[2],
+      "auth":"service",
+      "role":"projects/google.com:starthinker-42/roles/StarThinkerUser",
+      "email":{ "constant":"email" }
+    }},
+    { "dataset":{
+      "hour":[2],
+      "auth":"service",
+      "dataset":{ "constant":"dataset" },
+      "emails":{"constant":"emails" },
+      "groups":{"constant":"groups" }
+    }},
+    { "moat":{
+      "hour":[10],
+      "auth":"user",
+      "in":{
+        "email":{
+          "from":"moat.reports@moat.com",
+          "to":{"constant":"email_token"},
+          "subject":"Moat .* Export \\d\\d\\d\\d-\\d\\d-\\d\\d",
+          "link":{"field":{ "name":"moat_link", "kind":"string", "order":3, "default":"" }},
+          "attachment":{"field":{ "name":"moat_attachment", "kind":"string", "order":4, "default":"" }}
+        }
+      },
+      "out":{ 
+        "bigquery":{ 
+          "dataset":{ "constant":"dataset" },
+          "table":"MOAT_Display",
+          "skip_rows":1,
+          "schema":[
+            { "name":"Report_Day", "type":"INTEGER" },
+            { "name":"Campaign_ID", "type":"INTEGER" },
+            { "name":"Campaign_Label", "type":"STRING" },
+            { "name":"Placement_ID", "type":"INTEGER" },
+            { "name":"Placement_Label", "type":"STRING" },
+            { "name":"Human_Viewable_Impressions", "type":"INTEGER" },
+            { "name":"Human_Viewable_Rate", "type":"FLOAT" },
+            { "name":"Human_FOS_Measurable_Impressions", "type":"INTEGER" },
+            { "name":"Human_AVOC_Impressions", "type":"INTEGER" },
+            { "name":"Human_Audible_FOS_Half_Duration_Impressions", "type":"INTEGER" }
+          ]
+        }
+      }
+    }},
+    { "dbm":{
+      "hour":[2],
+      "auth":"user",
+      "report":{
+        "name":{"constant":"report", "prefix":"MOAT_"},
+        "timezone":{"constant":"timezone" },
+        "accounts":{"constant":"dbm_accounts" },
+        "data_range": "LAST_7_DAYS",
+        "type":"TYPE_CROSS_PARTNER",
+        "dimensions":[
+          "FILTER_DATE",
+          "FILTER_ADVERTISER",
+          "FILTER_INSERTION_ORDER",
+          "FILTER_CREATIVE_ID",
+          "FILTER_ADVERTISER_CURRENCY"
+        ],
+        "metrics":[
+          "METRIC_IMPRESSIONS",
+          "METRIC_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS",
+          "METRIC_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS",
+          "METRIC_REVENUE_ADVERTISER"
+        ]
+      }
+    }},
+    { "dbm":{
+      "hour":[10],
+      "auth":"user",
+      "datastudio":true,
+      "report":{
+        "name":{"constant":"report", "prefix":"MOAT_"}
+      },
+      "out":{
+        "bigquery": {
+          "dataset":{ "constant":"dataset" },
+          "table":"MOAT_DBM_Report",
+          "schema":[
+            { "name":"Report_Day", "type":"INTEGER" },
+            { "name":"Advertiser", "type":"STRING" },
+            { "name":"Advertiser_ID", "type":"INTEGER" },
+            { "name":"Advertiser_Status", "type":"STRING" },
+            { "name":"Advertiser_Integration_Code", "type":"STRING" },
+            { "name":"Insertion_Order", "type":"STRING" },
+            { "name":"Insertion_Order_ID", "type":"INTEGER" },
+            { "name":"Insertion_Order_Status", "type":"STRING" },
+            { "name":"Insertion_Order_Integration_Code", "type":"STRING" },
+            { "name":"Creative", "type":"STRING" },
+            { "name":"Creative_ID", "type":"INTEGER" },
+            { "name":"DCM_Placement_ID", "type":"INTEGER" },
+            { "name":"Creative_Status", "type":"STRING" },
+            { "name":"Creative_Source", "type":"STRING" },
+            { "name":"Creative_Integration_Code", "type":"STRING" },
+            { "name":"Advertiser_Currency", "type":"STRING" },
+            { "name":"Impressions", "type":"INTEGER" },
+            { "name":"Viewable_Impressions", "type":"INTEGER" },
+            { "name":"Measurable_Impressions", "type":"INTEGER" },
+            { "name":"Revenue", "type":"FLOAT" }
+          ]
+        }
+      }
+    }},
+    {"move":{
+      "hour":[10],
+      "auth":"service",
+      "from":{
+        "query":"SELECT * FROM ( SELECT Report_Day, Advertiser, Advertiser_ID, Insertion_Order, Insertion_Order_ID, Creative, Creative_ID, DCM_Placement_ID AS Placement_ID, Impressions AS DBM_Impressions, Viewable_Impressions AS DBM_Viewable_Impressions, Measurable_Impressions AS DBM_Measurable_Impressions, 0 AS MOAT_Human_Viewable_Impressions , 0 AS MOAT_Human_FOS_Measurable_Impressions , 0 AS MOAT_Human_AVOC_Impressions , 0 AS MOAT_Human_Audible_FOS_Half_Duration_Impressions , Revenue, 'DBM' AS Source FROM [[PARAMETER].MOAT_DBM_Report] OMIT RECORD IF Creative_ID IS NULL), ( SELECT MOAT.Report_Day AS Report_Day, DBM.Advertiser AS Advertiser, DBM.Advertiser_ID AS Advertiser_ID, COALESCE(DBM.Insertion_Order, MOAT.Campaign_Label) AS Insertion_Order, COALESCE(DBM.Insertion_Order_ID, MOAT.Campaign_ID) AS Insertion_Order_ID, MOAT.Placement_Label AS Creative, MOAT.Placement_ID AS Creative_ID, 0 AS DBM_Impressions, 0 AS DBM_Measurable_Impressions, 0 AS DBM_Viewable_Impressions, MOAT.Human_Viewable_Impressions AS MOAT_Human_Viewable_Impressions, MOAT.Human_FOS_Measurable_Impressions AS MOAT_Human_FOS_Measurable_Impressions, MOAT.Human_AVOC_Impressions AS MOAT_Human_AVOC_Impressions, MOAT.Human_Audible_FOS_Half_Duration_Impressions AS MOAT_Human_Audible_FOS_Half_Duration_Impressions, 0.0 AS Revenue, 'MOAT' AS Source FROM [[PARAMETER].MOAT_Display] AS MOAT LEFT JOIN ( SELECT FIRST(Advertiser) AS Advertiser, FIRST(Advertiser_ID) AS Advertiser_ID, First(Insertion_Order) AS Insertion_Order, First(Insertion_Order_ID) AS Insertion_Order_ID, REGEXP_REPLACE(Creative, r'_MOAT$', '') AS Creative FROM [[PARAMETER].MOAT_DBM_Report] GROUP BY Creative) AS DBM ON MOAT.Placement_Label = DBM.Creative);",
+        "parameters":[
+          { "constant":"dataset" },
+          { "constant":"dataset" },
+          { "constant":"dataset" }
+        ]
+      },
+      "to":{
+        "dataset":{ "constant":"dataset" },
+        "view":"MOAT_Dashboard"
+      }
+    }}
+  ]
+}

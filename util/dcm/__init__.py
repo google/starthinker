@@ -16,205 +16,320 @@
 #
 ###########################################################################
 
+#https://developers.google.com/doubleclick-advertisers/v3.0/reports/get
+
 import pprint
-import urllib2
 import csv
 import re
 import json
 from StringIO import StringIO
-from io import BytesIO
-from copy import deepcopy
+from types import GeneratorType
+from time import sleep
+from datetime import date, timedelta
 
-from time import sleep, mktime
-from datetime import datetime, time, date, timedelta
 from googleapiclient.errors import HttpError
-from jinja2 import Environment, FileSystemLoader
 
-from setup import EXECUTE_PATH, TIMEZONE_OFFSET
 from util.project import project
 from util.auth import get_service
-from util.regexp import parse_yyyymmdd
-from util.bigquery import bigquery_date
-from util.dcm.metrics import dcm_report_to_api, dcm_dimensions_to_api, dcm_metrics_to_api, dcm_label_report_type
+from util.storage import media_download
 
-API_VERSION = 'internalv2.7'
+
+API_VERSION = 'internalv3.0'
+RE_HUMAN = re.compile('[^0-9a-zA-Z]+')
+
+# if id has a sub account in the form of [account_id:subaccount_id] then split them
+def parse_account(account_id):
+  a_id = account_id
+  s_id = None
+  try: a_id, s_id = account_id.split(':', 1)
+  except: pass
+  return a_id, s_id
+
+
+def _retry(job, retries=10, wait=5):
+  try:
+    data = job.execute()
+    #pprint.PrettyPrinter().pprint(data)
+    return data 
+  except HttpError, e:
+    if project.verbose: print str(e)
+    if e.resp.status in [403, 429, 500, 503]:
+      if retries > 0:
+        sleep(wait)
+        if project.verbose: print 'DCM RETRY', retries
+        return _retry(job, retries - 1, wait * 2)
+      elif json.loads(e.content)['error']['code'] == 409:
+        pass # already exists ( ignore )
+      else:
+        raise
+
+
+def get_body_floodlight(report, advertiser=None):
+  return {
+    "floodlightCriteria": {
+      "dateRange": {
+        "kind": "dfareporting#dateRange",
+        "relativeDateRange": report.get('relativeDateRange', 'LAST_7_DAYS'),
+      },
+      "dimensions": [
+        {
+          "kind": "dfareporting#sortedDimension",
+          "name": "dfa:" + d
+        }
+        for d in report.get('dimensions', [''])
+      ],
+      "metricNames": [
+        "dfa:" + m
+        for m in report.get('metrics', ['impressions', 'clicks'])
+      ],
+      "floodlightConfigId": {
+        "kind": "dfareporting#dimensionValue",
+        "dimensionName": "dfa:floodlightConfigId",
+        "matchType": "EXACT",
+        "value": report['floodlightConfigId']
+      },
+      "reportProperties": {
+        "includeUnattributedCookieConversions": report.get('UnattributedCookieConversions', False),
+        "includeUnattributedIPConversions": report.get('UnattributedIPConversions', False)
+      }
+    }
+  }
+
+def get_body_standard(report, advertiser=None):
+  return {
+    "criteria": {
+      "dateRange": {
+        "kind": "dfareporting#dateRange",
+        "relativeDateRange": report.get('relativeDateRange', 'LAST_7_DAYS'),
+      },
+      "dimensions": [
+        {
+          "kind": "dfareporting#sortedDimension",
+          "name": "dfa:" + d
+        }
+        for d in report.get('dimensions', [''])
+      ],
+      "metricNames": [
+        "dfa:" + m
+        for m in report.get('metrics', ['impressions', 'clicks'])
+      ]
+    }
+  }
+
 
 def get_profile_id(auth):
   service = get_service('dfareporting', API_VERSION, auth)
-  return ([profile['profileId'] for profile in service.userProfiles().list().execute()['items']] or [None])[0]
+  return ([profile['profileId'] for profile in _retry(service.userProfiles().list())['items']] or [None])[0]
 
 
-def get_template(auth, config):
-
-  def as_json(data):
-    return json.dumps(data)
-
-  def as_boolean(data):
-    return 'true' if data else 'false'
-
-  env = Environment(loader=FileSystemLoader(EXECUTE_PATH + 'dcm/templates'))
-  env.filters['as_json'] = as_json
-  env.filters['as_boolean'] = as_boolean
-
-  template = env.get_template(config['template'] + '.tmplt')
-
-  variables = deepcopy(config)
-  variables['profileId'] = get_profile_id(auth)
-  variables['scheduleStart'] = str(date.today())
-  variables['scheduleExpiration'] = str(date.today() + timedelta(days=365))
-
-  #print template.render({'report':variables})
-  return json.loads(template.render({'report':variables}))
-
-
-def report_delete(auth, name, account_id):
+def report_get(auth, account_id, report_id = None, name=None):
+  account_id, subaccount_id = parse_account(account_id)
   service = get_service('dfareporting', API_VERSION, auth)
   profile_id = get_profile_id(auth)
   report = None
 
-  # find existing report
-  next_page = None
-  while next_page != '' and report is None:
-    response = service.reports().list(accountId=account_id, profileId=profile_id, pageToken=next_page).execute()
-    next_page = response['nextPageToken']
-    #pprint.PrettyPrinter(depth=20).pprint(response['items'])
-    report = ([report for report in response['items'] if report['name'] == name] or [None])[0]
-  
-  if report is None:
-    print 'No report found'
+  if name:
+    next_page = None
+    while next_page != '' and report is None:
+      response = _retry(service.reports().list(accountId=account_id, profileId=profile_id, pageToken=next_page))
+      next_page = response['nextPageToken']
+      for r in response['items']:
+        if r['name'] == name: 
+          report = r
+          break
+  elif report_id:
+    response = _retry(service.reports().get(accountId=account_id, profileId=profile_id, reportId=report_id))
+    pprint.PrettyPrinter().pprint(response)
+    
+  return report
+
+
+def report_delete(auth, account_id, report_id = None, name=None):
+  account_id, subaccount_id = parse_account(account_id)
+  report = report_get(auth, account_id, report_id, name)
+  if report:
+    service = get_service('dfareporting', API_VERSION, auth)
+    profile_id = get_profile_id(auth)
+    _retry(service.reports().delete(accountId=account_id, profileId=profile_id, reportId=report['id']))
   else:
-    try:
-      report = service.reports().delete(accountId=account_id, profileId=profile_id, reportId=report['id']).execute()
-    except HttpError, e:
-      if e.resp.status in [403, 500, 503]: sleep(5)
-      elif json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
-      else: raise
+    if project.verbose: print 'DCM DELETE: No Report'
 
 
-def report_create(auth, config):
-  service = get_service('dfareporting', API_VERSION, auth)
-  profile_id = get_profile_id(auth)
-  report = None
-
-  # find existing report
-  next_page = None
-  while next_page != '' and report is None:
-    response = service.reports().list(accountId=config['accountId'], profileId=profile_id, pageToken=next_page).execute()
-    next_page = response['nextPageToken']
-    #pprint.PrettyPrinter(depth=20).pprint(response['items'])
-    report = ([report for report in response['items'] if report['name'] == config['name']] or [None])[0]
+def report_create(auth, account_id, name, config):
+  account_id, subaccount_id = parse_account(account_id)
+  report = report_get(auth, account_id, name=name)
 
   if report is None:
-    body = get_template(auth, config)
+    service = get_service('dfareporting', API_VERSION, auth)
+    profile_id = get_profile_id(auth)
 
-    print body
-    try:
-      report = service.reports().insert(accountId=config['accountId'], profileId=profile_id, body=body).execute()
-    except HttpError, e:
-      print 'Report Error:', e.content
-      if e.resp.status in [403, 500, 503]: sleep(5)
-      elif json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
-      else: raise
+    body = { 
+      'kind':'dfareporting#report',
+      'type':config.get('type', 'STANDARD').upper(),
+      'name':name,
+      'format':config.get('format', 'CSV'),
+      'accountId':account_id,
+      'delivery': {
+        'emailOwner':False,
+        'emailOwnerDeliveryType':'LINK'
+      },
+      'schedule': {
+        'active':True,
+        'repeats':'DAILY',
+        'every': 1,
+        'startDate':str(date.today()),
+        'expirationDate':str((date.today() + timedelta(days=365))),
+      }
+    } 
+
+    if body['type'] == 'STANDARD': body.update(get_body_standard(config))
+    elif body['type'] == 'FLOODLIGHT': body.update(get_body_floodlight(config))
+
+    if subaccount_id:
+       body['criteria']['dimensionFilters'] = body['criteria'].get('dimensionFilters', []) + [{
+         'kind':'dfareporting#dimensionValue',
+         'dimensionName':'dfa:advertiser',
+         'id':subaccount_id,
+         'matchType':'EXACT'
+       }]
+
+    #pprint.PrettyPrinter().pprint(body)
+
+    # create the report
+    report = _retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))
+
+    # run the report
+    _retry(service.reports().run(accountId=account_id, profileId=profile_id, reportId=report['id']))
 
   return report
 
 
-def report_file(auth, account_id, report_id, collate, file_regexp = None, day = date.today()):
-  if project.verbose: print 'DCM Report File', report_id
+# timeout is in minutes ( retries will happen at 5 minute interval, default total time is 60 minutes )
+def report_fetch(auth, account_id, report_id=None, name=None, timeout = 60):
+  account_id, subaccount_id = parse_account(account_id)
+  if project.verbose: print 'DCM Report File', report_id or name
+  profile_id = get_profile_id(auth)
+
+  if report_id is None:
+    report = report_get(auth, account_id, name=name)
+    #pprint.PrettyPrinter().pprint(report)
+    report_id = report['id']
 
   service = get_service('dfareporting', API_VERSION, auth)
-  profile_id =  get_profile_id(auth)
 
-  file_filter = re.compile(r'%s' % file_regexp) if file_regexp else None
-  day = str(day + timedelta(days=(-1 if collate == 'YESTERDAY' else 0)) + TIMEZONE_OFFSET)
+  while timeout >= 0: # allow zero to execute at least once
+    # advance timeout first ( if = 0 then exit condition met but already in loop, if > 0 then will run into sleep )
+    timeout -= 1
 
-  # find existing file
+    response = _retry(service.reports().files().list(accountId=account_id, profileId=profile_id, reportId=report_id, maxResults=1))
+    file = response['items'][0] if len(response['items']) > 0 else None
+    #pprint.PrettyPrinter().pprint(file)
+
+    if file:
+      # file exists ( return it success )
+      if file['status'] == 'REPORT_AVAILABLE':
+        if project.verbose: print 'Report Done'
+        return file
+
+      # report is running ( return only if timeout is exhausted )
+      else: 
+        if project.verbose: print 'Report Running'
+        if timeout < 0: return True
+
+    # no report ( break out of loop it will never finish )
+    else:
+      return False
+
+    # sleep a minute
+    sleep(60)
+
+# NOT A THING IN DCM - FIX
+#def report_bigquery(auth, account_id, report_id, name, dataset, table, schema=[], timeout=60):
+#  storage_path = report_fetch(auth, account_id, report_id, name, timeout)
+#  if storage_path not in (True, False):
+#    #print project.id, dataset, table, storage_path
+#    storage_to_table(auth, project.id, dataset, table, storage_path, schema, 1 if schema else 0)
+
+
+def report_file(auth, account_id, report_id=None, name=None, timeout=60, chunksize=None):
+  account_id, subaccount_id = parse_account(account_id)
+  file = report_fetch(auth, account_id, report_id, name, timeout)
+
+  if file == False:
+    return None, None
+  elif file == True:
+    return 'report_running.csv', None
+  else:
+    service = get_service('dfareporting', API_VERSION, auth)
+    filename = '%s_%s_%s.csv' % (file['reportId'] , file['id'], file['lastModifiedTime'])
+
+    # streaming
+    if chunksize:
+      return filename, media_download(service.files().get_media(reportId=file['reportId'], fileId=file['id']), chunksize)
+
+    # single object
+    else:
+      return filename, StringIO(_retry(service.files().get_media(reportId=file['reportId'], fileId=file['id'])))
+
+       
+def report_list(auth, account):
+  service = get_service('dfareporting', API_VERSION, auth)
+  profile = get_profile_id(auth)
   next_page = None
   while next_page != '':
-    response = service.reports().files().list(accountId=account_id, profileId=profile_id, reportId=report_id, pageToken=next_page).execute()
+    response = _retry(service.reports().list(accountId=args.account, profileId=profile, pageToken=next_page))
     next_page = response['nextPageToken']
-    #pprint.PrettyPrinter(depth=20).pprint(response['items'])
     for report in response['items']:
-      #pprint.PrettyPrinter(depth=20).pprint(report)
-      if file_filter is None or file_filter.match(report['fileName']):
-        #print 'DA', report['dateRange']['endDate'], day
-        if collate == 'LATEST' or report['dateRange']['endDate'] == day:
-          filename = '%s.csv' % report['fileName'] if collate == 'LATEST' else '%s_%s.csv' % (report['fileName'], day)
-          if report['status'] == 'REPORT_AVAILABLE':
-            # report is done and downloaded
-            if project.verbose: print 'Report Done'
-            return filename, BytesIO(service.files().get_media(reportId=report_id, fileId=report['id']).execute())
-            #return BytesIO(urllib2.urlopen(report['urls']['browserUrl']).read())
-          else: 
-            # report is scheduled but not done
-            if project.verbose: print 'Report Running'
-            return filename, True
-       
-  # no report matching this day
-  if project.verbose: print 'No Report'
-  return None, None
-
-
-def report_run(auth, account_id, report_id, collate):
-  filename, report = report_file(auth, account_id, report_id, collate)
-
-  # if no report scheduled, set one
-  if report is None:
-    service = get_service('dfareporting', API_VERSION, auth)
-    profile_id =  get_profile_id(auth)
-
-    #body = get_template(auth, config)
-    #service.reports().patch(accountId=account_id, profileId=profile_id, reportId=report_id, body=body).execute()
-
-    # then run it to get a file
-    #sleep(1)
-    service.reports().run(accountId=account_id, profileId=profile_id, reportId=report_id).execute()
-    report = True
-
-  # wait for report to finish
-  while report == True:
-    if project.verbose: print 'Wait For DCM Report'
-    sleep(30)
-    filename, report = report_file(auth, account_id, report_id, collate)
-
-  # report is a binary
-  return filename, report
-
-
-def report_get(auth, config):
-  report = report_create(auth, config)
-  return report_run(auth, config['accountId'], report['id'], config['collate'])
+      yield report
 
 
 def report_to_rows(report):
-  return list(csv.reader(report)) if report else []
+  # if reading from stream
+  if type(report) is GeneratorType:
+    leftovers = ''
+    for chunk in report:
+      data, extra = chunk.read().rsplit('\n', 1)
+      for row in csv.reader(StringIO(leftovers + data)):
+        yield row
+      leftovers = extra
+
+  # if reading from buffer
+  else:
+    for row in csv.reader(report) if report else []:
+      yield row
 
 
-def report_clean(rows, date, datastudio=False, human_column_name=True):
+def report_clean(rows, datastudio=False):
   if project.verbose: print 'DCM Report Clean'
 
-  # remove summary data at end of dbm report
-  delete_summary = True
-  while rows[0] == [] or rows[0][0] != 'Report Fields': rows.pop(0)
-  rows.pop(0)
-  rows.pop()
+  first = True
+  last = False
+  date = None
 
-  # change date to datastudio format
-  if datastudio:
-    rows[0][0] = 'Report_Day'
-    for i in range(1, len(rows)): rows[i][0] = rows[i][0].replace('-', '')
+  # find start of report
+  for row in rows:
+    if row and row[0] == 'Report Fields': break
 
-  if not human_column_name:
-    for i in range(0, len(rows[0])): rows[0][i] = re.sub('[^0-9a-zA-Z]+', '_', rows[0][i])
+  # process the report
+  for row in rows:
+    # quit if empty report
+    if 'No data returned by the reporting service.' in row: break
 
-  return rows
+    # stop parsing if end of data
+    if not row or row[0] == 'Grand Total:': break
 
+    # find 'Date' column if it exists
+    if first: 
+      try: date = row.index('Date')
+      except ValueError: pass
+      if datastudio: row = [RE_HUMAN.sub('_', column) for column in row]
+      
+    # check if data studio formatting is applied
+    if datastudio and date is not None:
+      row[date] = 'Report_Day' if first else row[date].replace('-', '')
 
-def report_to_csv(rows):
-  csv_string = StringIO()
-  writer = csv.writer(csv_string, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-  for row_number, row in enumerate(rows):
-    try: writer.writerow(row)
-    except Exception, e: print 'Error:', row_number, str(e), row
-  csv_string.seek(0) # important otherwise contents is zero
-  return csv_string
+    # return the row
+    yield row
+
+    # not first row anymore
+    first = False

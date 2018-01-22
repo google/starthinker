@@ -15,19 +15,3 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-from util.project import project 
-from util.bigquery import query_to_table
-
-
-def spendpro():
-  if project.verbose: print "CLIENT", project.task['dataset']
-
-  query = 'SELECT * FROM [plx.google:mr_deal.sales.latest] WHERE Partner_ID IN (%s)' % ','.join(map(lambda s:str(s), project.task['partners']))
-  if project.task['advertisers']: query += ' AND Advertiser_ID IN (%s)' % ','.join(map(lambda s:str(s), project.task['advertisers'])) 
-
-  query_to_table(project.task['auth'], project.id, project.task['dataset'], 'Spend_Pro', query)
-
-if __name__ == "__main__":
-  project.load('spendpro')
-  spendpro()

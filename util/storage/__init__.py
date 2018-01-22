@@ -28,18 +28,18 @@ import traceback
 import httplib2
 from urllib import quote
 from time import sleep
-#from io import BytesIO
+from io import BytesIO
 
 from google.cloud import storage
 
-from apiclient.http import MediaIoBaseUpload
+from apiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 from googleapiclient.errors import HttpError
 
 from util.project import project
 from util.auth import get_service, get_client
 
 
-CHUNKSIZE = 2 * 1024 * 1024
+CHUNKSIZE = 20 * 1024 * 1024
 RETRIES = 3
 
 
@@ -64,10 +64,76 @@ def parse_filename(path, url=False):
   return f
 
 
+def media_download(request, chunksize):
+  data = BytesIO()
+  media = MediaIoBaseDownload(data, request, chunksize=chunksize)
+
+  retries = 0
+  done = False
+  while not done:
+    error = None
+    try:
+      progress, done = media.next_chunk()
+      if progress: print 'Download %d%%' % int(progress.progress() * 100)
+      data.seek(0)
+      yield data
+      data.seek(0)
+      data.truncate(0)
+    except HttpError, err:
+      error = err
+      if err.resp.status < 500: raise
+    except (httplib2.HttpLib2Error, IOError), err:
+      error = err
+
+    if error:
+      retries += 1
+      if retries > RETRIES: raise error
+      else: sleep(5 * retries)
+    else:
+      retries = 0
+
+  print 'Download 100%'
+
+
 def object_get(auth, path):
   bucket, filename = path.split(':', 1)
   service = get_service('storage', 'v1', auth)
   return service.objects().get_media(bucket=bucket, object=filename).execute()
+
+
+def object_get_chunks(auth, path, chunksize=1024000):
+  bucket, filename = path.split(':', 1)
+  service = get_service('storage', 'v1', auth)
+
+  data = BytesIO()
+  request = service.objects().get_media(bucket=bucket, object=filename)
+  media = MediaIoBaseDownload(data, request, chunksize=chunksize)
+
+  retries = 0
+  done = False
+  while not done:
+    error = None
+    try:
+      progress, done = media.next_chunk()
+      if progress: print 'Download %d%%' % int(progress.progress() * 100)
+      data.seek(0)
+      yield data
+      data.seek(0)
+      data.truncate(0)
+    except HttpError, err:
+      error = err
+      if err.resp.status < 500: raise
+    except (httplib2.HttpLib2Error, IOError), err:
+      error = err
+
+    if error:
+      retries += 1
+      if retries > RETRIES: raise error
+      else: sleep(5 * retries)
+    else:
+      retries = 0
+
+  print 'Download 100%'
 
 
 def object_put(auth, path, data, mimetype='application/octet-stream'):

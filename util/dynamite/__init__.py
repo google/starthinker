@@ -20,7 +20,7 @@ import json
 import urllib2
 
 def dynamite_write(room, key, token, text):
-  url = 'https://dynamite.sandbox.googleapis.com/v1/rooms/%s/webhooks?key=%s&token=%s' % (room, key, token)
+  url = 'https://chat.googleapis.com/v1/spaces/%s/messages?key=%s&token=%s' % (room, key, token)
   data = json.dumps({
     'sender': {
       'displayName':'StarThinker',

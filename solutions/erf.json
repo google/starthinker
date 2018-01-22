@@ -1,0 +1,39 @@
+{
+  "solution":{
+    "icon":"storage",
+    "title":"Entity Read Files",
+    "description":"Import public and private <a href='https://developers.google.com/bid-manager/guides/entity-read/format-v2' target='_blank'>Entity Read Files</a> into a BigQuery dataset.<br/>CAUTION: PARTNER ONLY, ADVERTISER FILTER IS NOT APPLIED.",
+    "instructions":[
+      "Entity Read Files ONLY work at the partner level.",
+      "Advertiser filter is NOT APPLIED.",
+      "Specif one or more partners to be moved into the dataset."
+    ],
+    "authors":["kenjora@google.com", "mauriciod@google.com"]
+  },
+  "setup":{
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "hour":[5]
+  },
+  "tasks":[
+    { "iam":{
+      "auth":"service",
+      "role":"projects/google.com:starthinker-42/roles/StarThinkerUser",
+      "email":{ "constant":"email" }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{ "constant":"dataset" },
+      "emails":{"constant":"emails" },
+      "groups":{"constant":"groups" }
+    }},
+    { "entity":{
+      "auth":"user",
+      "entities":["Campaign", "LineItem", "Creative", "UserList", "Partner", "Advertiser", "InsertionOrder", "Pixel", "InventorySource", "CustomAffinity", "UniversalChannel", "UniversalSite", "SupportedExchange", "DataPartner", "GeoLocation", "Language", "DeviceCriteria", "Browser", "Isp"],
+      "accounts": {"constant":"dbm_accounts" },
+      "out":{
+        "auth":"service",
+        "dataset": { "constant":"dataset" }
+      }
+    }}
+  ]
+}

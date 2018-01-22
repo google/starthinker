@@ -193,7 +193,7 @@ def query_to_local_file(auth, sql, local_file_name, use_legacy_sql=True):
   out_file.close()
 
 
-def query_to_table(auth, project_id, dataset_id, table_id, query, write_disposition='WRITE_TRUNCATE', use_legacy_sql=True):
+def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='WRITE_TRUNCATE', use_legacy_sql=True):
   service = get_service('bigquery', 'v2', auth)
 
   body={
@@ -207,7 +207,7 @@ def query_to_table(auth, project_id, dataset_id, table_id, query, write_disposit
           'tableId':table_id
         },
         'createDisposition':'CREATE_IF_NEEDED',
-        'writeDisposition':write_disposition,
+        'writeDisposition':disposition,
         'allowLargeResults':True
       },
     }
@@ -254,7 +254,9 @@ def query_to_view(auth, project_id, dataset_id, view_id, query, legacy=True, rep
     else: raise
 
 
-def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], headers=1, structure='CSV'):
+#struture = CSV, NEWLINE_DELIMITED_JSON
+#disposition = WRITE_TRUNCATE, WRITE_APPEND, WRITE_EMPTY
+def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], skip_rows=1, structure='CSV', disposition='WRITE_TRUNCATE'):
 
   service = get_service('bigquery', 'v2', auth)
 
@@ -266,7 +268,8 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], he
           'datasetId': dataset_id,
           'tableId': table_id,
         }, 
-        'writeDisposition': 'WRITE_TRUNCATE', 
+        'sourceFormat': 'NEWLINE_DELIMITED_JSON',
+        'writeDisposition': disposition,
         'autodetect': True,
         'ignoreUnknownValues':True,
         'sourceUris': [
@@ -282,15 +285,14 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], he
     
   if structure == 'CSV':
     body['configuration']['load']['sourceFormat'] = 'CSV'
-    body['configuration']['load']['skipLeadingRows'] = headers
-  else: # assume JSON for now
-    body['configuration']['load']['sourceFormat'] = 'NEWLINE_DELIMITED_JSON'
+    body['configuration']['load']['skipLeadingRows'] = skip_rows
 
   job = service.jobs().insert(projectId=project_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
   job_wait(service, job)
 
-#CSV, NEWLINE_DELIMITED_JSON
-def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], headers=1, structure='CSV'):
+
+def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_rows=1, structure='CSV', disposition='WRITE_TRUNCATE'):
+  if project.verbose: print 'BIGQUERY: ', project_id, dataset_id, table_id
 
   service = get_service('bigquery', 'v2', auth)
 
@@ -302,9 +304,10 @@ def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], header
           'datasetId': dataset_id,
           'tableId': table_id,
         },
-        'writeDisposition': 'WRITE_TRUNCATE',
+        'sourceFormat': 'NEWLINE_DELIMITED_JSON',
+        'writeDisposition': disposition,
         'autodetect': True,
-        'ignoreUnknownValues':True,
+        'ignoreUnknownValues': True,
       }
     }
   }
@@ -315,15 +318,16 @@ def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], header
     
   if structure == 'CSV':
     body['configuration']['load']['sourceFormat'] = 'CSV'
-    body['configuration']['load']['skipLeadingRows'] = headers
-  else: # assume JSON for now
-    body['configuration']['load']['sourceFormat'] = 'NEWLINE_DELIMITED_JSON'
+    body['configuration']['load']['skipLeadingRows'] = skip_rows
 
-  media = MediaIoBaseUpload(data, mimetype='application/octet-stream', resumable=False)
-  job = service.jobs().insert(projectId=project_id, body=body, media_body=media).execute(num_retries=BIGQUERY_RETRIES)
-  job_wait(service, job)
-
+  media = MediaIoBaseUpload(data, mimetype='application/octet-stream', resumable=True, chunksize= 100 * 1024000) # 100MB
+  job = service.jobs().insert(projectId=project_id, body=body, media_body=media)
+  response = None
+  while response is None:
+    status, response = job.next_chunk()
+    if project.verbose and status: print "Uploaded %d%%." % int(status.progress() * 100)
   if project.verbose: print "Uploaded 100%."
+  job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
 
 
 def tables_get(auth, project_id, name):
@@ -349,12 +353,54 @@ def get_job(auth, project_id, job_id):
 
 
 def get_table(auth, dataset, table_name):
-  client = get_client('bigquery')
+  client = get_client('bigquery', auth=auth)
 
   dataset = client.dataset(dataset)
   table = dataset.table(table_name)
 
   return table
+
+# this all has to be done while streaming, so preserve the iterator, schema is returned by reference
+# DO NOT rebind schema, it will break the pass by reference
+# FIX: ADD HANDLERS FOR REPEAT AND RECORD FIELDS ( use pointers stack to track recursion depth )
+def get_schema(rows, schema, header=True):
+
+  # everything else defaults to STRING
+  type_to_bq = {int:'INTEGER', long:'INTEGER', bool:'BOOLEAN'} 
+
+  # first non null value determines type
+  non_null_column = set()
+
+  first = True
+  for row in rows:
+    # get header if exists
+    if first:
+      for index, value in enumerate(row): 
+        schema.append({ "name":value if header else 'Field_%d' % index, "type":"STRING" }) # DO NOT REBIND, USE APPEND
+
+    # then determine type of each column
+    if not first and header: 
+      for index, value in enumerate(row):
+        # if null, set only mode
+        if value == '': 
+          schema[index]['mode'] = 'NULLABLE'
+        else:
+          column_type = type_to_bq.get(type(value), 'STRING')
+          # if type is set, check to make sure its consistent
+          if index in non_null_column:
+            # change type only if its inconsistent
+            if column_type != schema[index]['type']: 
+              schema[index]['type'] = 'STRING'
+          # if first non null value, then just set type
+          else: 
+            schema[index]['type'] = column_type
+            non_null_column.add(index)
+
+    # return row so iteration can continue
+    yield row
+
+    # no longer first row
+    first = False
 
 
 def local_file_to_table(auth, dataset, table_name, schema, file_name, replace=False, file_type='NEWLINE_DELIMITED_JSON'):
@@ -375,9 +421,9 @@ def local_file_to_table(auth, dataset, table_name, schema, file_name, replace=Fa
     sleep(10)
     job.reload()
 
-
-def query(query, dataset_name=None, use_legacy_sql=True, into_table=None, replace_append='APPEND'):
-  client = get_client('bigquery')
+# TODO: Change variant to query_to_table(....)
+def query(query, dataset_name=None, use_legacy_sql=True, into_table=None, replace_append='APPEND', auth='user'):
+  client = get_client('bigquery', auth=auth)
   if dataset_name: dataset = client.dataset(dataset_name)
 
   if not into_table:

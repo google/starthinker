@@ -32,7 +32,6 @@ def archive():
     for file_name in object_list(project.task['auth'], project.task['storage']['bucket'] + ':' + project.task['storage']['path'], files_only=True):
       file_day = parse_yyyymmdd(file_name)
       if file_day and file_day <= day:
-        print project.task.get('delete', False) 
         if project.task.get('delete', False) == False:
           if project.verbose: print 'ARCHIVING FILE:', file_name
           object_move(project.task['auth'], file_name, file_name.replace(':', ':archive/'))

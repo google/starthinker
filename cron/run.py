@@ -23,36 +23,29 @@ from glob import glob
 from time import sleep, strftime
 from datetime import datetime
 
-from util.project import get_project
+from util.project import get_project, is_scheduled
 from util.storage import parse_filename
-from setup import EXECUTE_PATH, TIMEZONE_OFFSET, UTC_OFFSET
+from setup import EXECUTE_PATH
 
 ONE_HOUR_AND_ONE_SECOND = (60 * 60) + 1 # ensures no repeat in a single hour but never runs over in 24 hours
 
 if __name__ == "__main__":
 
   parser = argparse.ArgumentParser()
-  parser.add_argument('ldap', help='run projects for the specified project/[ldap]/*.json. or UI')
+  parser.add_argument('--path', help='run all json files in the specified path', action="store")
   parser.add_argument('--verbose', '-v', help='print all the steps as they happen.', action='store_true')
   parser.add_argument('--force', '-force', help='execute all scripts once then exit.', action='store_true')
   args = parser.parse_args()
   verbose = args.verbose
 
-  project_path = '/mnt/starthinker/' if args.ldap.lower() == 'ui' else '%sproject/%s/' % (EXECUTE_PATH, args.ldap)
-
   try:
     while True:
-      tz_time = datetime.now() + (UTC_OFFSET - TIMEZONE_OFFSET)
-      week, hour =  tz_time.strftime('%a'), tz_time.hour
-      print 'TIME:',  week, hour
-
-      for filepath in glob('%s*.json' % project_path):
-        #project_name = parse_filename(filepath).replace('.json', '')
+      for filepath in glob('%s*.json' % args.path):
         if verbose: print 'PROJECT:', filepath
 
         project = get_project(filepath)
 
-        if args.force or week in project['setup']['week'] and hour in project['setup']['hour']:
+        if args.force or is_scheduled(project):
 
           # run it locally
           if project['setup'].get('local', True):

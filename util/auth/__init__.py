@@ -47,9 +47,10 @@ SCOPES = [
   'https://www.googleapis.com/auth/devstorage.full_control',
   'https://www.googleapis.com/auth/bigquery',
   'https://www.googleapis.com/auth/dfareporting',
+  'https://www.googleapis.com/auth/dfatrafficking',
   'https://www.googleapis.com/auth/drive',
   'https://www.googleapis.com/auth/spreadsheets',
-  'https://www.googleapis.com/auth/doubleclicksearch',
+  'https://www.googleapis.com/auth/doubleclicksearch'
 ]
 SERVICE_CACHE = {}
 
@@ -84,28 +85,21 @@ def get_service_credentials(scopes=None):
 
   # if credentials are embeded as JSON ( used by ui )
   if project.configuration['setup']['auth'].get('source', 'local') == 'ui':
-    return ServiceAccountCredentials.from_json_keyfile_dict( 
+    return ServiceAccountCredentials.from_json_keyfile_dict(
       json.loads(project.configuration['setup']['auth']['service']),
-      scopes or [ 'https://www.googleapis.com/auth/bigquery',
-                  'https://www.googleapis.com/auth/devstorage.full_control',
-                  'https://www.googleapis.com/auth/doubleclickbidmanager'
-                ]
-    )
+      scopes or SCOPES)
 
   # if credentials are local path then check if they exist ( used by command line )
   else:
     return ServiceAccountCredentials.from_json_keyfile_name(
       project.configuration['setup']['auth']['service'],
-      scopes or [ 'https://www.googleapis.com/auth/bigquery',
-                  'https://www.googleapis.com/auth/devstorage.full_control',
-                  'https://www.googleapis.com/auth/doubleclickbidmanager'
-                ]
-    )
+      scopes or SCOPES)
 
 #auth = 'user' or 'service'
 def get_service(api='gmail', version='v1', auth='service', scopes=None):
   global SERVICE_CACHE # for some reason looking this up too frequently sometimes errors out
 
+  # FIX: does not work in threads, need to add pool specifier to key?
   key = api + version + auth
   if key not in SERVICE_CACHE:
     credentials = get_service_credentials(scopes) if auth == 'service' else get_credentials()
@@ -116,8 +110,8 @@ def get_service(api='gmail', version='v1', auth='service', scopes=None):
   return SERVICE_CACHE[key]
 
 
-def get_client(api='storage'):
-  credentials_service = get_credentials()
+def get_client(api='storage', auth='user'):
+  credentials_service = get_credentials() if auth == 'user' else get_service_credentials()
   credentials_service.get_access_token() # force acccess refresh check here ( custom client refresh isn't implemented )
                                          # not perect, single job can still time out, may need to write custom BucketClient
   credentials_client = Credentials(

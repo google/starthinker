@@ -1,51 +1,88 @@
-# New Project Template
+# StarThinker Workflow Framework From Google
 
-This repository contains a template you can use to see a repository for a
-new open source project.
+StarThinker is a Google built python framework for creating and sharing re-usable workflow components.
+This document has everything you need to use existing solutions and launch new ones.  Its a tutorial by example.
 
-See go/releasing (available externally at
-https://opensource.google.com/docs/releasing/) for more information about
-releasing a new Google open source project.
+## What is it?
 
-This template uses the Apache license, as is Google's default.  See the
-documentation for instructions on using alternate license.
+A collection of libraries, scripts, and json workflow definitions that allow you to define shareable workflows.
 
-## How to use this template
+*Directory structure:*
 
-1. Check it out from GitHub.
-    * There is no reason to fork it.
-1. Create a new local repository and copy the files from this repo into it.
-1. Develop your new project!
+util/ - holds all the python libraries used by the framework.
+projects/ - holds custom workflow json used to define and exectute tasks.
+solutions/ - holds workflow templates that can be re-used using solution/run.py.
+script_[name].json - holds the json that can be used with that script.
+
+## How do I use it?
+
+1. Check out a copy of the code.
 
 ``` shell
-git clone https://github.com/google/new-project
-mkdir my-new-thing
-cd my-new-thing
-git init
-cp ../new-project/* .
-git add *
-git commit -a -m 'Boilerplate for new Google open source project'
+git clone https://github.com/google/starthinker
 ```
 
-## Source Code Headers
+3. Install Dependencies
 
-Every file containing source code must include copyright and license
-information. This includes any JS/CSS files that you might be serving out to
-browsers. (This is to help well-intentioned people avoid accidental copying that
-doesn't comply with the license.)
+``` shell
+sudo apt-get install python-setuptools python-dev build-essential
+sudo easy_install pip
+sudo pip install --upgrade google-cloud
+sudo pip install --upgrade google-api-python-client
+```
 
-Apache header:
+4. Load Environment Variables
 
-    Copyright 2017 Google Inc.
+``` shell
+source setup.sh
+```
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+5. Run Hello World
 
-        https://www.apache.org/licenses/LICENSE-2.0
+``` shell
+python all/run.py project/sample/say_hello.json
+```
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+## Different Ways Of Running A Script
+
+Run all tasks sequentially.
+``` shell
+python all/run.py project/sample/say_hello.json --verbose --force
+```
+
+Run a specific task instance ( 2nd one ).
+``` shell
+python hello/run.py project/sample/say_hello.json --verbose -i 2 --force
+```
+
+Kick of a cron to to run projects by schedule in directory.
+``` shell
+python cron/run.py project/sample
+```
+
+## Using Solutions Templates
+
+1. First define a solution.
+
+``` shell
+cp project/sample/solution.json project/[your folder]/[project name].json
+vi project/[your folder]/[project name].json
+```
+
+2. Then use the solution to generate workflow scripts for each template.
+
+python solution/run.py project/[your folder]/[project name].json [folder to put scripts]
+
+3. Then run each solution workflow.
+
+python all/run.py [folder to put scripts]/[project name]_[solution].json --verbose --force
+
+## Where can I learn more?
+
+Run the sample code, it explains in detail the structure of worklows and how they map to code.
+
+``` shell
+python all/run.py project/sample/say_hello.json --verbose --force
+```
+
+For additional help email: starthinker-help@google.com

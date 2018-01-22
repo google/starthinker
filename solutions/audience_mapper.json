@@ -1,0 +1,120 @@
+{
+  "solution":{
+    "icon":"device_hub",
+    "title":"Audience Mapper",
+    "description":"Create custom audience mappings based on keywords.",
+    "instructions":[
+      "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->Audience_Mapper_Dashboard</b> to be created.",
+      "Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Audinece Mapper Sample Data</a>.",
+      "Change data source to <b>BigQuery->StarThinker Data->{{DATASET}}->Deal_Finder_Dashboard</b>.",
+      "Copy <a href='https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO' target='_blank'>Audience Mapper Sample Report</a>.",
+      "When prompted choose the new data source you just created.",
+      "Create new dimensions in the sheet.",
+      "Synch the DataStudio data source to pick up the new dimension.",
+      "Create a DataStudio filter for each new dimension.",
+      "Or give these intructions to the client."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "hour":[4, 6, 8, 10, 12, 14, 16, 18, 20, 22]
+  },
+  "tasks":[
+    { "iam":{
+      "hour":[4], 
+      "auth":"service",
+      "role":"projects/google.com:starthinker-42/roles/StarThinkerUser",
+      "email":{ "constant":"email" }
+    }},
+    { "dataset":{
+      "hour":[4], 
+      "auth":"service",
+      "dataset":{ "constant":"dataset" },
+      "emails":{"constant":"emails" },
+      "groups":{"constant":"groups" }
+    }},
+    { "dbm":{
+      "hour":[4], 
+      "auth":"user",
+      "report":{
+        "name":{ "constant":"report", "prefix":"Audience_Mapper_" },
+        "timezone":{"constant":"timezone" },
+        "type":"TYPE_CROSS_PARTNER",
+        "data_range":"LAST_30_DAYS",
+        "accounts":{"constant":"dbm_accounts" },
+        "dimensions":[
+          "FILTER_PARTNER",
+          "FILTER_ADVERTISER",
+          "FILTER_INSERTION_ORDER",
+          "FILTER_LINE_ITEM",
+          "FILTER_USER_LIST"
+        ],
+        "metrics":[
+          "METRIC_IMPRESSIONS",
+          "METRIC_CLICKS",
+          "METRIC_TOTAL_CONVERSIONS",
+          "METRIC_LAST_IMPRESSIONS",
+          "METRIC_LAST_CLICKS",
+          "METRIC_REVENUE_ADVERTISER",
+          "METRIC_MEDIA_COST_ADVERTISER",
+          "METRIC_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS",
+          "METRIC_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS",
+          "METRIC_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS"
+        ]
+      }
+    }},
+    { "dbm":{
+      "hour":[6], 
+      "auth":"user",
+      "report":{
+        "name":{ "constant":"report", "prefix":"Audience_Mapper_" },
+        "timeout":10
+      },
+      "out":{
+        "bigquery": {
+          "dataset":{ "constant":"dataset" },
+          "table":"Audience_Mapper_DBM_Report",
+          "schema":[
+            { "name":"Partner", "type":"STRING" },
+            { "name":"Partner_ID", "type":"INTEGER" },
+            { "name":"Partner_Status", "type":"STRING", "mode":"NULLABLE" },
+            { "name":"Advertiser", "type":"STRING" },
+            { "name":"Advertiser_ID", "type":"INTEGER" },
+            { "name":"Insertion_Order", "type":"STRING" },
+            { "name":"Insertion_order_ID", "type":"INTEGER" },
+            { "name":"Line_Item", "type":"STRING" },
+            { "name":"Line_Item_ID", "type":"INTEGER" },
+            { "name":"Audience_List", "type":"STRING", "mode":"NULLABLE" },
+            { "name":"Audience_List_ID", "type":"INTEGER", "mode":"NULLABLE" },
+            { "name":"Audience_List_Type", "type":"STRING", "mode":"NULLABLE" },
+            { "name":"Advertiser_Currency", "type":"STRING" },
+            { "name":"Audience_List_Cost", "type":"FLOAT" },
+            { "name":"Impressions", "type":"INTEGER" },
+            { "name":"Clicks", "type":"INTEGER" },
+            { "name":"Conversions", "type":"FLOAT" },
+            { "name":"Post_Click_Conversions", "type":"FLOAT" },
+            { "name":"Post_View_Conversions", "type":"FLOAT" },
+            { "name":"Cost", "type":"FLOAT" },
+            { "name":"Revenue", "type":"FLOAT" },
+            { "name":"Media_Cost", "type":"FLOAT" }
+          ]
+        }
+      }
+    }},
+    {"mapping":{
+      "hour":[6, 8, 10, 12, 14, 16, 18, 20, 22],
+      "auth":"user",
+      "sheet":{ "constant":"sheet" },
+      "tab":"Audience Mapper",
+      "in":{
+        "dataset": { "constant":"dataset" },
+        "table": "Audience_Mapper_DBM_Report"
+      },  
+      "out":{
+        "dataset": { "constant":"dataset" },
+        "view": "Audience_Mapper_Dashboard"
+      }
+    }}
+  ]
+}

@@ -17,36 +17,36 @@
 ###########################################################################
 
 # https://developers.google.com/bid-manager/v1/queries
-# https://github.com/googleads/googleads-bidmanager-examples/blob/master/python/get_latest_report.py
+# https://developers.google.com/drive/v3/web/manage-downloads
 
+import re
 import pprint
 import urllib2
 import csv
 import json
 import time
-from apiclient import http
 from StringIO import StringIO
-from io import BytesIO
+from types import GeneratorType
 
-#from datetime import datetime, time as localtime, date
 from googleapiclient.errors import HttpError
 
-from setup import TIMEZONE_OFFSET
 from util.project import project
 from util.auth import get_service
-from util.bigquery import bigquery_date, query
-from util.regexp import parse_yyyymmdd
+from util.bigquery import query, storage_to_table
+from util.storage import object_get_chunks
 
-#DAY_OFFSET = 24 * 60 * 60 * 1000
+
+RE_FILENAME = re.compile(r'.*/(.*)\?GoogleAccess')
+RE_HUMAN = re.compile('[^0-9a-zA-Z]+')
 
 
 def _retry(job, key=None, retries=10, wait=30):
   try:
     data = job.execute()
     #pprint.PrettyPrinter().pprint(data)
-    return data[key] if key else data
-  except http.HttpError, e:
-    if project.verbose: print str(e) 
+    return data if not key else data[key] if key in data else []
+  except HttpError, e:
+    if project.verbose: print str(e)
     if e.resp.status in [403, 429, 500, 503]:
       if retries > 0:
         time.sleep(wait)
@@ -57,7 +57,7 @@ def _retry(job, key=None, retries=10, wait=30):
         raise
 
 
-def _process_filters(partners, advertisers, filters):
+def _process_filters(partners, advertisers, filters, auth='user'):
   structures = []
 
   for p in (partners or []):
@@ -79,7 +79,7 @@ def _process_filters(partners, advertisers, filters):
       # inside that job consttruct the filters form the query, pass them into report_get already built
       # then get the resulting report data
       # thats how we avoid turning everything into spaghetti code ( its a way to keep things clean )
-      for item in query(f['value']):
+      for item in query(f['value'], auth=auth):
         structures.append({
           'type':f['type'],
           'value':item[0]
@@ -92,30 +92,49 @@ def _process_filters(partners, advertisers, filters):
 
   return structures
 
-#def report_time(day):
-#  return long((datetime.combine(day, localtime(0, 0, 0)) +
-#               TIMEZONE_OFFSET).strftime('%s000'))
 
-def report_get(auth, title):
+def accounts_split(accounts):
+  partners = []
+  advertisers = []
+  for account in accounts:
+    if isinstance(account, (int, long)):
+      partners.append(account)
+    else:
+      partner_advertiser = account.split(':', 1)
+      partners.append(int(partner_advertiser[0]))
+      if len (partner_advertiser) == 2:
+        advertisers.append(int(partner_advertiser[1]))
+  return partners, advertisers
+
+
+def report_get(auth, report_id=None, name=None):
   service = get_service('doubleclickbidmanager', 'v1', auth)
-  job = service.queries().listqueries()
-  result = _retry(job)
-  return ([query for query in result.get('queries', []) if query['metadata']['title'] == title ] or [None])[0]
+  if name:
+    job = service.queries().listqueries()
+    result = _retry(job)
+    return ([query for query in result.get('queries', []) if query['metadata']['title'] == name ] or [None])[0]
+  else:
+    job = service.queries().getquery(queryId=report_id)
+    return _retry(job)
 
 
-def report_create(auth, title, report_type, partners, advertisers, filters, dimensions, metrics, data_range):
-  service = get_service('doubleclickbidmanager', 'v1', auth)
-  report = report_get(auth, title)
+def report_create(auth, name, typed, partners, advertisers, filters, dimensions, metrics, data_range, timezone):
+  report = report_get(auth, name=name)
   #pprint.PrettyPrinter().pprint(report)
 
+  # transform filters into DBM structures
+  filters = _process_filters(partners, advertisers, filters, auth=auth)
+
   if report is None:
-    if project.verbose: print 'DBM Report Create:', title
+    if project.verbose: print 'DBM Report Create:', name
+
+    service = get_service('doubleclickbidmanager', 'v1', auth)
 
     body = {
       'kind': 'doubleclickbidmanager#query',
-      'timezoneCode': 'America/Los_Angeles',
+      'timezoneCode': timezone,
       'metadata': {
-        'title': title,
+        'title': name,
         'dataRange': data_range,
         'format': 'CSV',
         'sendNotification': False,
@@ -123,217 +142,168 @@ def report_create(auth, title, report_type, partners, advertisers, filters, dime
       'params': {
         'filters': _process_filters(partners, advertisers, filters),
         'groupBys': dimensions or [
-            'FILTER_DATE', 
-            'FILTER_ADVERTISER', 
+            'FILTER_DATE',
+            'FILTER_ADVERTISER',
             'FILTER_LINE_ITEM',
-            'FILTER_INSERTION_ORDER', 
+            'FILTER_INSERTION_ORDER',
             'FILTER_CREATIVE_ID',
-            'FILTER_ADVERTISER_CURRENCY', 
+            'FILTER_ADVERTISER_CURRENCY'
             'FILTER_MOBILE_DEVICE_TYPE'
           ],
         'includeInviteData': False,
         'metrics': metrics or ['METRIC_REVENUE_ADVERTISER'],
-        'type': report_type
+        'type': typed
       },
       'schedule': {
         'endTimeMs': long((time.time() + (365 * 24 * 60 * 60)) * 1000), # 1 year in future
         'frequency': 'DAILY',
-        'nextRunMinuteOfDay':15,
-        'nextRunTimezoneCode': 'America/Los_Angeles'
-      },
+        'nextRunMinuteOfDay': 4 * 60,
+        'nextRunTimezoneCode': timezone
+      }
     }
 
     #pprint.PrettyPrinter().pprint(body)
-    job = service.queries().createquery(body=body)
-    _retry(job)
 
-    report = report_get(auth, title)
+    # create the job
+    job = service.queries().createquery(body=body)
+    report = _retry(job)
+
+    #pprint.PrettyPrinter().pprint(report)
+
+    # run job ( first time )
+    body = {
+     "dataRange":report['metadata']['dataRange'],
+     "timezoneCode":report['schedule']['nextRunTimezoneCode']
+    }
+    run = service.queries().runquery(queryId=report['queryId'], body=body)
+    _retry(run)
+  else:
+    if project.verbose: print 'DBM Report Exists:', name
 
   return report
 
 
-def report_run(auth, report):
-  if project.verbose: print 'DBM Report Run:', report['metadata']['title']
+# timeout is in minutes ( retries will happen at 5 minute interval, default total time is 60 minutes )
+def report_fetch(auth, report_id=None, name=None, timeout = 60):
+  if project.verbose: print 'DBM Report Download ( timeout ):', report_id or name, timeout
 
-  service = get_service('doubleclickbidmanager', 'v1', auth)
-  body = {
-    "dataRange":report['metadata']['dataRange'],
-    "timezoneCode":report['schedule']['nextRunTimezoneCode']
-  }
-  job = service.queries().runquery(queryId=report['queryId'], body=body)
-  _retry(job)
-  return report_get(auth, report['metadata']['title'])
+  while timeout >= 0: # allow zero to execute at least once
+    # advance timeout first ( if = 0 then exit condition met but already in loop, if > 0 then will run into sleep )
+    timeout -= 1
 
+    report = report_get(auth, report_id, name)
+    #pprint.PrettyPrinter().pprint(report)
+    if report:
+      # report is running ( return only if timeout is exhausted )
+      if report['metadata']['googleCloudStoragePathForLatestReport'] == '':
+        if project.verbose: print 'DBM Still Running'
+        if timeout < 0: return True
+      # file exists ( return it success )
+      else:
+        return report['metadata']['googleCloudStoragePathForLatestReport']
+        
+    # no report ( break out of loop it will never finish )
+    else:
+      if project.verbose: print 'DBM No Report'
+      return False
 
-#def report_file(auth, query_id, day):
-#  if project.verbose:
-#    print 'DBM Report Get', query_id
-#
-#  service = get_service('doubleclickbidmanager', 'v1', auth)
-#
-#  #pprint.PrettyPrinter(depth=20).pprint(service.queries().getquery(queryId=query_id).execute())
-#  #exit()
-#
-#  # attempt to get already run report
-#  job = service.reports().listreports(queryId=query_id)
-#  for report in _retry(job, 'reports'):
-#    #print 'ON', day
-#    #print report['metadata']['reportDataStartTimeMs'], report['metadata']['reportDataEndTimeMs']
-#    #print day
-#    #print 'START', report_time(day),  report['metadata']['reportDataStartTimeMs'], (report_time(day) - long(report['metadata']['reportDataStartTimeMs'])) / 1000 / 60 / 60
-#    if report_time(day) == long(report['metadata']['reportDataEndTimeMs']):
-#      filename = 'DBM_Report_%s.csv' % str(day)
-#      if report['metadata']['status']['state'] == 'DONE':
-#        # report is done and downloaded
-#        if project.verbose:
-#          print 'Report Done'
-#        return filename, BytesIO( urllib2.urlopen(report['metadata']['googleCloudStoragePath']).read())
-#      else:
-#        # report is scheduled but not done
-#        if project.verbose:
-#          print 'Report Running'
-#        return filename, True
-#
-#  # no report matching this day
-#  if project.verbose: print 'No Report'
-#
-#  return None, None
+    # sleep a minute
+    time.sleep(60)
 
 
-#def report_run(auth, query_id, day, data_range='CUSTOM_DATES'):
-#  filename, report = report_file(auth, query_id, day)
-#
-#  # if no report scheduled, set one
-#  if report is None:
-#    service = get_service('doubleclickbidmanager', 'v1', auth)
-#    body = {
-#     'dataRange': data_range,
-#     'timezoneCode': 'America/Los_Angeles',
-#    }
-#
-#    if data_range == 'CUSTOM_DATES':
-#      body['reportDataStartTimeMs'] = report_time(day) + DAY_OFFSET
-#      body['reportDataEndTimeMs'] = report_time(day) + DAY_OFFSET
-# 
-#    job = service.queries().runquery(queryId=query_id, body=body)
-#    _retry(job)
-#    report = True
-#
-#  # wait for report to finish
-#  wait_interval = 32
-#  while report == True:
-#    if project.verbose: print 'Wait For DBM Report'
-#    time.sleep(wait_interval)
-#    filename, report = report_file(auth, query_id, day)
-#    wait_interval = wait_interval * 2
-#
-#  # report is a binary
-#  return filename, report
+def report_bigquery(auth, report_id, name, dataset, table, schema=[], timeout=60):
+  storage_path = report_fetch(auth, report_id, name, timeout)
+  if storage_path not in (True, False):
+    print project.id, dataset, table, storage_path
+    storage_to_table(auth, project.id, dataset, table, storage_path, schema, 1 if schema else 0)
 
 
-def report_download(auth, title, report_type, partners, advertisers, filters, dimensions, metrics, data_range):
-  if project.verbose: print 'DBM Report Download:', title
+def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = None):
+  storage_path = report_fetch(auth, report_id, name, timeout)
 
-  if report_type is None: report = report_get(auth, title)
-  else: report = report_create(auth, title, report_type, partners, advertisers, filters, dimensions, metrics, data_range)
-
-  # no report found
-  if report is None:
-    if project.verbose: print 'DBM Report Not Found:', title
+  if storage_path == False:
     return None, None
-
-  # report exists
+  elif storage_path == True:
+    return 'report_running.csv', None
   else:
-    # ensure report has at least one file created
-    if report['metadata']['googleCloudStoragePathForLatestReport'] == '':
-      report = report_run(auth, report)
-      # if report is in progress wait for it to finish
-      while report['metadata']['googleCloudStoragePathForLatestReport'] == '':
-        if project.verbose: print 'DBM Report Running:', title
-        time.sleep(30)
-        report = report_get(auth, title)
+    filename = RE_FILENAME.search(storage_path).groups(0)[0]
 
-    # download the latest report file
-    filename = '%s_%s.%s' % (title, parse_yyyymmdd(report['metadata']['googleCloudStoragePathForLatestReport']), report['metadata']['format'].lower())
-    return filename, BytesIO(urllib2.urlopen(report['metadata']['googleCloudStoragePathForLatestReport']).read())
+    # streaming
+    if chunksize: 
+      #print 'PATH PRE', storage_path
+      path = storage_path.split('?', 1)[0].replace('https://storage.googleapis.com/', '').replace('/', ':', 1)
+      #print 'PATH POST', path
+      return filename, object_get_chunks(auth, path, chunksize)
 
-
-#def report_get(auth,
-#               title,
-#               report_type='TYPE_CROSS_PARTNER',
-#               partners=[],
-#               advertisers=[],
-#               filters=[],
-#               dimensions=[],
-#               metrics=[],
-#               delete_report=False,
-#               data_range='CUSTOM_DATES',
-#               day=date.today()):
-#
-#  if project.verbose:
-#    print 'Getting report %s' % title
-#
-#  query = report_create(auth, title, report_type, partners, advertisers, filters, dimensions, metrics, data_range, day)
-#  result = report_run(auth, query['queryId'], day, data_range)
-#
-#  if delete_report:
-#    service = get_service('doubleclickbidmanager', 'v1', auth)
-#    job = service.queries().deletequery(queryId=query_id)
-#    _retry(job)
-#
-#  return result
-
-def report_to_rows(report):
-  return list(csv.reader(report)) if report else []
+    # single object
+    else: 
+      return filename, StringIO(urllib2.urlopen(storage_path).read())
 
 
-def report_clean(rows, day=None, datastudio=False, nulls=False):
-  if project.verbose: print 'DBM Report Clean'
-
-  # remove summary data at end of dbm report
-  delete_summary = True
-  while (delete_summary and rows):
-    line = rows.pop()
-    delete_summary = not (line[0:3] == ['', '', ''] or line[0:3] == [])
-
-  # remove last row of DBM report ( sum row )
-  rows.pop()
-
-  # change date to datastudio format
-  if datastudio:
-    rows[0][0] = 'Report_Day'
-    for i in range(1, len(rows)):
-      rows[i][0] = rows[i][0].replace('/', '')
-
-  # remove unknown columns ( which throw off schema on import types )
-  if nulls:
-    for i in range(len(rows)):
-      rows[i] = ['' if cell.strip() == 'Unknown' else cell for cell in rows[i]]
-
-  # add a date column to the csv
-  if rows and day:
-    rows[0].insert(0, 'Report_Day')
-    for line in rows[1:]:
-      line.insert(0, bigquery_date(day))
-
-  return rows
+def report_delete(auth, report_id=None, name=None):
+  if project.verbose: print "DBM DELETE:", report_id or name
+  report = report_get(auth, report_id, name)
+  if report:
+    service = get_service('doubleclickbidmanager', 'v1', auth)
+    job = service.queries().deletequery(queryId=report['queryId'])
+    _retry(job)
+  else:
+    if project.verbose: print 'DBM DELETE: No Report'
 
 
-def report_to_csv(rows):
-  csv_string = StringIO()
-  writer = csv.writer(csv_string, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-  for row_number, row in enumerate(rows):
-    try:
-      writer.writerow(row)
-    except Exception, e:
-      print 'Error:', row_number, str(e), row
-  csv_string.seek(0)  # important otherwise contents is zero
-  return csv_string
-
-
-def report_list(auth, title=None):
+def report_list(auth):
   service = get_service('doubleclickbidmanager', 'v1', auth)
   job = service.queries().listqueries()
   for query in _retry(job, 'queries'):
-    if not title or query['metadata']['title'] == title:
-      print(json.dumps(query, indent=2))
+    yield query
+
+
+
+def report_to_rows(report):
+
+  # if reading from stream
+  if type(report) is GeneratorType:
+    leftovers = ''
+    for chunk in report:
+      data, extra = chunk.read().rsplit('\n', 1)
+      for row in csv.reader(StringIO(leftovers + data)):
+        yield row
+      leftovers = extra
+
+  # if reading from buffer
+  else:
+    for row in csv.reader(report) if report else []:
+      yield row
+
+
+def report_clean(rows, datastudio=False, nulls=False):
+  if project.verbose: print 'DBM Report Clean'
+
+  first = True
+  last = False
+  date = None
+  for row in rows:
+    # stop if no data returned
+    if row == ['No data returned by the reporting service.']: break
+
+    # stop at blank row ( including sum row )
+    if not row or row[0] is None or row[0] == '': break  
+
+    # find 'Date' column if it exists
+    if first: 
+      try: date = row.index('Date')
+      except ValueError: pass
+      if datastudio: row = [RE_HUMAN.sub('_', column) for column in row]
+
+    # check if data studio formatting is applied
+    if datastudio and date is not None:
+      row[date] = 'Report_Day' if first else row[date].replace('/', '')
+
+    # remove unknown columns ( which throw off schema on import types )
+    if nulls: row = ['' if cell.strip() == 'Unknown' else cell for cell in row]
+
+    # return the row
+    yield row
+
+    # not first row anymore
+    first = False

@@ -16,37 +16,37 @@
 #
 ###########################################################################
 
-from datetime import timedelta
-
 from util.project import project 
-from util.regexp import date_to_str
 from util.data import get_emails, put_files
-from util.csv import csv_to_rows, rows_to_csv, rows_add_date
-from util.bigquery import storage_to_table
+from util.csv import csv_to_rows, rows_to_csv, rows_date_sanitize, rows_percent_sanitize, rows_print, rows_to_type
+
+
+def moat_filter(rows):
+  for row in rows:
+    row = row[:10]
+    if '${CAMPAIGN_ID}' in row: continue
+    yield row
+
 
 def moat():
 
-
   # find emails with reports
   for email in get_emails(project.task['auth'], project.task['in'], project.date):
-    # moat reports are always one day back
-    report_date = project.date - timedelta(days=1)
-    if date_to_str(report_date) in email['subject']:
-      if project.verbose: print 'PROCESSING:', email['subject']
-      if len(email['attachments']) == 0: continue
+    if project.verbose: print 'PROCESSING:', email['subject']
+    if len(email['attachments']) == 0: continue
 
-      # use only first attachment
-      attachment = email['attachments'][0]
-      rows = csv_to_rows(attachment[1])
-      rows_add_date(rows, report_date)
-      data = rows_to_csv(rows)
+    # use only first attachment
+    attachment = email['attachments'][0]
+    rows = csv_to_rows(attachment[1])
+    rows = rows_date_sanitize(rows)
+    rows = rows_percent_sanitize(rows)
+    rows = rows_to_type(rows)
+    rows = moat_filter(rows)
 
-      # split files into storage [ 'advertiser', 'display|video', 'moat', 'report.csv']
-      path = attachment[0].lower().replace('-openx', '').rsplit('-', 3)
-      path = '%s/%s-%s.csv' % (path[1], path[0], date_to_str(report_date))
+    rows = rows_print(rows, 0, 1)
 
-      print 'STORAGE:', path
-      put_files(project.task['auth'], project.task['out'], path, data)
+    print 'MOAT Filename:', attachment[0]
+    put_files(project.task['auth'], project.task['out'], attachment[0], rows_to_csv(rows))
 
 if __name__ == "__main__":
   project.load('moat')

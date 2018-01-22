@@ -1,0 +1,46 @@
+{
+  "solution":{
+    "icon":"record_voice_over",
+    "title":"Share Of Voice",
+    "description":"Give clients a comparison of their advertising footprint compared to an anonymous peer set.",
+    "image":"https://storage.googleapis.com/starthinker-ui/share_of_voice.png",
+    "sample":"https://datastudio.google.com/open/0B1dzmNeF4E-MZDNsR2Y2aGkxMk0",
+    "instructions":[
+      "You will need 6+ DCM accounts.",
+      "You will need acess to all DCM Accounts ( probably global user profile ).",
+      "The first will be the client, the others will be anonymized as peers.",
+      "LEGAL WARNING: DO NOT DISCLOSE how many peers are in the set to the client.",
+      "LEGAL WARNING: DO NOT DISCLOSE who the peers are to the client.",
+      "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->Share_Of_Voice</b> to be created or click Run Now.",
+      "Copy <a href='https://datastudio.google.com/open/0B1dzmNeF4E-MUWtYYlZDZVpIdU0' target='_blank'>Share Of Voice Sample Data ( Copy From This )</a>.",
+      "Change data source to <b>BigQuery->StarThinker Data->{{DATASET}}->Share_Of_Voice</b>.",
+      "Copy <a href='https://datastudio.google.com/open/0B1dzmNeF4E-MZDNsR2Y2aGkxMk0' target='_blank'>Share Of Voice Sample Report ( Copy From This )</a>.",
+      "When prompted choose the new data source you just created.",
+      "Or give the dashboard connect intructions to the client."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "hour":[5]
+  },
+  "tasks":[
+   { "iam":{
+      "auth":"service",
+      "role":"projects/google.com:starthinker-42/roles/StarThinkerUser",
+      "email":{ "constant":"email" }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{ "constant":"dataset" },
+      "emails":{ "constant":"emails" },
+      "groups":{ "constant":"groups" }
+    }},
+    { "sov":{
+      "auth":"user",
+      "dcm_accounts":{ "constant":"dcm_accounts" },
+      "dataset":{ "constant":"dataset" },
+      "table":"Share_Of_Voice"
+    }}
+  ]
+}

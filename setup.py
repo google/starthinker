@@ -17,12 +17,6 @@
 ###########################################################################
 
 import os
-import time
-from datetime import time as localtime, date, timedelta
-
-
-TIMEZONE_OFFSET = timedelta(hours=(-time.altzone if time.localtime(time.time()).tm_isdst and time.daylight else -time.timezone) / (60*60))
-UTC_OFFSET = timedelta(hours=-7)
 
 EXECUTE_PATH = os.environ.get('STARTHINKER_PATH', "/home/starthinker") + '/'
 
@@ -50,7 +44,7 @@ else:
   UI_BUCKET_AUTH = 'starthinker-auth'
   UI_BUCKET_UI = 'starthinker-ui'
   UI_BUCKET_LOG = 'starthinker-log'
-  UI_TOPIC = 'default_worker'
+  UI_TOPIC = 'prod_worker'
 
   # used to store client data
   CLOUD_PROJECT = 'google.com:starthinker-42'

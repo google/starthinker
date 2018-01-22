@@ -21,6 +21,8 @@ import urllib2
 import csv
 import re
 import json
+import sys
+
 from StringIO import StringIO
 from io import BytesIO
 
@@ -35,14 +37,11 @@ from util.regexp import parse_dbm_report_id
 from util.bigquery import bigquery_date
 
 
-DAY_OFFSET = 24 * 60 * 60 * 1000
-TIMEZONE_OFFSET = timedelta(hours=-7) 
-
-
 def report_request(auth, title, template_name, parameters, day=date.today()):
   service = get_service('doubleclicksearch', 'v2', auth)
   print '.',
-
+  sys.stdout.flush()
+  
   env = Environment(loader=FileSystemLoader('ds/templates'))
   template = env.get_template(template_name)
   variables = {
@@ -57,7 +56,7 @@ def report_request(auth, title, template_name, parameters, day=date.today()):
     return report
   except HttpError, e:
     print e
-    if e.resp.status in [403, 500, 503]: sleep(5)
+    if e.resp.status in [403, 500, 503]: sleep(10)
     elif json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
     else: raise
 
@@ -89,7 +88,8 @@ def report_read_data(auth, report_id, report_fragment):
 
 def report_fetch(auth, report_id):
   service = get_service('doubleclicksearch', 'v2', auth)
-
+  
+  if project.verbose: print 'Fetching Report', report_id
   files = report_ready(service, report_id)
   
   reports = []
@@ -104,16 +104,24 @@ def report_get(auth, title, template_name='standard.json', parameters={}, day=da
   reports = []
   if 'ids' in parameters:
     report_ids = []
-    for line in parameters['ids'].splitlines():
-      items = line.split(',')
-      parameters['agencyId'] = items[0]
-      parameters['advertiserId'] = items[1]
-      report_ids.append(report_request(auth, title, template_name, parameters, day))
+    if isinstance(parameters['ids'], basestring):
+      for line in parameters['ids'].splitlines():
+        items = line.split(',')
+        if len(items) == 2:
+          parameters['agencyId'] = items[0]
+          parameters['advertiserId'] = items[1]
+          report_ids.append(report_request(auth, title, template_name, parameters, day))
+    else:
+      for ids in parameters['ids']:
+        pair = ids.split(':')
+        parameters['agencyId'] = pair[0]
+        parameters['advertiserId'] = pair[1]
+        report_ids.append(report_request(auth, title, template_name, parameters, day))
     for report_id in report_ids:
       reports.append(report_fetch(auth, report_id['id']))
   else: 
     report = report_request(auth, title, template_name, parameters, day)
-    reports = report_fetch(auth, report['id'])
+    reports.append(report_fetch(auth, report['id']))
   return reports
 
 

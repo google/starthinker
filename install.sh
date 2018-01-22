@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ###########################################################################
 #
 #  Copyright 2017 Google Inc.
@@ -16,8 +18,58 @@
 #
 ###########################################################################
 
-sudo apt-get install python-setuptools python-dev build-essential
-sudo easy_install pip
-sudo pip install --upgrade google-cloud
-sudo pip install --upgrade google-api-python-client
-sudo pip install --upgrade requests
+if [ "$1" = "ubuntu" ]
+then
+  echo "Ubuntu Install"
+
+  sudo apt-get update
+  sudo apt-get install python-setuptools python-dev build-essential
+  sudo apt-get install python-pip
+
+  # https://cloud.google.com/sdk/downloads#apt-get
+  export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
+  echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+  sudo apt-get update 
+  sudo apt-get install google-cloud-sdk
+
+  sudo apt-get install git
+  git clone sso://team/cse-dclk/starthinker_opensource
+
+  sudo pip install google-api-python-client
+
+elif [ "$1" = "google_ubuntu" ]
+then
+  echo "Google Ubuntu Install"
+
+  sudo apt-get update
+  sudo apt-get install python-setuptools python-dev build-essential
+  sudo apt-get install python-pip
+
+  gcert
+  glogin
+
+  # https://g3doc.corp.google.com/cloud/sdk/g3doc/index.md?cl=head#installing-and-using-the-cloud-sdk
+  sudo goobuntu-add-repo -e cloud-sdk-trusty
+  sudo apt-get update
+  sudo apt-get install google-cloud-sdk
+
+  sudo apt-get install uwsgi uwsgi-plugin-python
+  git clone sso://team/cse-dclk/starthinker
+
+  sudo pip install google-api-python-client
+  sudo pip install google-cloud
+
+elif [ "$1" = "osx" ]
+then
+  echo "OSX Install"
+  # incomplete - please fill in
+
+  sudo easy_install pip
+  sudo pip install --upgrade google-cloud
+  sudo pip install --upgrade google-api-python-client
+  sudo pip install --upgrade requests
+
+else
+   echo "Unknown OS"
+fi

@@ -16,80 +16,52 @@
 #
 ###########################################################################
 
-import pprint
-from time import sleep
-
-from datetime import timedelta
-
 from util.project import project 
-from util.data import get_files, put_files
-from util.dcm import report_get, report_file, report_to_rows, report_clean, report_to_csv, get_profile_id, report_delete
-from util.auth import get_service
-from util.regexp import strip_yyymmdd
+from util.data import put_files
+from util.dcm import report_delete, report_create, report_file, report_to_rows, report_clean
+from util.csv import rows_to_csv
 
-
-def dcm_copy():
-  if project.verbose: print 'DCM COPY'
-
-  report = True
-  while report == True:
-    filename, report = report_file(
-      project.task['auth'],
-      project.task['report']['account_id'],
-      project.task['report']['report_id'],
-      project.task['report']['collate'],
-      project.task['report']['file'],
-      project.date
-    )
-    if report == True: sleep(30)
-
-  # report will be False or ByteIO
-  return filename, report
-
-
-def dcm_run():
-  if project.verbose: print 'DCM RUN'
-
-  return report_get(
-    project.task['auth'],
-    project.task['report']
-  )
-
-
-def dcm_delete():
-  if project.verbose: print 'DCM DELETE'
-
-  return report_delete(
-    project.task['auth'],
-    project.task['title'],
-    project.task['account_id']
-  )
-
+CHUNKSIZE = 200 * 1024 * 1024
 
 def dcm():
   if project.verbose: print 'DCM'
 
-  # check if delete flag is set
+  # check if report is to be deleted
   if project.task.get('delete', False):
-    dcm_delete()
+    report_delete(
+      project.task['auth'],
+      project.task['report']['account_id'],
+      project.task['report'].get('report_id', None),
+      project.task['report'].get('name', None)
+    )
 
-  if 'report' in project.task:
-    # retrieve the report data
-    filename, report = dcm_copy() if 'report_id' in project.task['report'] else dcm_run()
+  # check if report is to be created
+  if 'type' in project.task['report']:
+    report_create(
+      project.task['auth'],
+      project.task['report']['account_id'],
+      project.task['report']['name'],
+      project.task['report']
+    )
 
-    # if a report exists
+  # moving a report
+  if 'out' in project.task:
+    filename, report = report_file(
+      project.task['auth'],
+      project.task['report']['account_id'],
+      project.task['report'].get('report_id', None),
+      project.task['report'].get('name', None),
+      project.task['report'].get('timeout', 60),
+      CHUNKSIZE
+    )
+
     if report:
-
-      # collate using filename ( remove the date and bam, what you pull is the latest )
-      #if project.task['collate'] == 'LATEST':
-      #  filename = strip_yyymmdd(filename)
-
       if project.verbose: print 'DCM FILE', filename
 
       # clean up the report
       rows = report_to_rows(report)
-      rows = report_clean(rows, project.date, project.task.get('datastudio', False), project.task['report'].get('humanName', False))
-      data = report_to_csv(rows)
+      rows = report_clean(rows,  project.task.get('datastudio', False))
+      data = rows_to_csv(rows)
 
       # upload to cloud if data
       if rows: put_files(project.task['auth'], project.task['out'], filename, data)

@@ -107,7 +107,8 @@ def put_files(auth, target, filename, data):
     with open(file_out, 'wb') as save_file:
       save_file.write(data.read())
 
-  if 'storage' in target:
+  # make sure all storage parameters are present
+  if 'storage' in target and target['storage'].get('bucket') and target['storage'].get('path'):
     # create the bucket
     bucket_create(auth, project.id, target['storage']['bucket'])
 
@@ -116,9 +117,24 @@ def put_files(auth, target, filename, data):
     if project.verbose: print 'SAVING', file_out
     object_put(auth, file_out, data)
 
-  if 'bigquery' in target:
+  if 'bigquery' in target and target['bigquery'].get('dataset') and target['bigquery'].get('table'):
+
+    # allows different read vs write auth, DO WE WANT THIS?
+    if 'auth' in target['bigquery']:
+      auth = target['bigquery']['auth']
+
     if target['bigquery'].get('autodetect_schema', True):
-      csv_to_table(auth, project.id, target['bigquery']['dataset'], target['bigquery']['table'], data, schema=target['bigquery'].get('schema', []), headers=1, structure='CSV')
+      csv_to_table(
+        auth,
+        project.id,
+        target['bigquery']['dataset'],
+        target['bigquery']['table'],
+        data, 
+        schema=target['bigquery'].get('schema', []),
+        skip_rows=target['bigquery'].get('skip_rows', 1),
+        structure='CSV',
+        disposition=target['bigquery'].get('disposition', 'WRITE_TRUNCATE')
+      )
     else:
       reader = csv.reader(data)
       rows = [item for item in reader]
