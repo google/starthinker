@@ -21,9 +21,10 @@ import os
 EXECUTE_PATH = os.environ.get('STARTHINKER_PATH', "/home/starthinker") + '/'
 
 DEVELOPMENT_MODE = not os.path.isfile('/mnt/SERVER')
+
 if DEVELOPMENT_MODE:
  
-  # used to manage user credentials and UI data
+  # used to manage user credentials 
   UI_PROJECT = 'google.com:starthinker-test'
   UI_CLIENT = '/home/credentials/test/starthinker_client.json'
   UI_SERVICE = '/home/credentials/test/starthinker_service.json'

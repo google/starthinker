@@ -1,0 +1,29 @@
+{
+  "script":{
+    "icon":"exit_to_app",
+    "product":"DCM",
+    "title":"DCM To Storage",
+    "description":"Move Existing DCM reports into a storage bucket.",
+    "insructions":[
+      "Specify an account_id.",
+      "Specify either report name or report id to move a report.",
+      "The most recent file name will be moved to storage."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "dcm":{
+    "auth":"user",
+    "report":{
+      "account_id":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"" }},
+      "report_id":{"field":{ "name":"dcm_report_id", "kind":"integer", "order":3, "default":"" }},
+      "name":{"field":{ "name":"dcm_report_name", "kind":"string", "order":4, "default":"" }}
+    },
+    "out":{
+      "storage":{
+        "bucket":{"field":{ "name":"dcm_bucket", "kind":"string", "order":5, "default":"" }},
+        "path":{"field":{ "name":"dcm_path", "kind":"string", "order":6, "default":"DCM_Report" }}
+      }
+    },
+    "datastudio":{"field":{ "name":"dcm_datastudio", "kind":"boolean", "order":7, "default":true }}
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "script":{
+    "icon":"donut_small",
+    "product":"DCM",
+    "title":"DCM Report",
+    "description":"Create DCM reports in bulk.",
+    "insructions":[
+      "Specify an account_id or account_id:subaccount_id."
+    ],
+    "authors":["jfno@google.com", "kenjora@google.com"]
+  },
+  "dcm":{
+    "auth":"user",
+    "report":{
+      "template":{"field":{ "name":"dcm_template", "kind":"choice", "order":2, "choices":["standard", "path_to_conversion"], "default":"standard" }},
+      "account_id":{"field":{ "name":"dcm_account", "kind":"string", "order":3, "default":"" }},
+      "name":{"field":{ "name":"dcm_name", "kind":"string", "order":4, "default":"" }},
+      "format":"CSV",
+      "relativeDateRange":{"field":{ "name":"dcm_range", "kind":"string", "order":6, "default":"" }},
+      "dimensions":{
+        "field":{
+          "name":"dcm_dimensions",
+          "kind":"string_list",
+          "order":7,
+          "default":[
+            "date",
+            "platformType",
+            "creativeType",
+            "state",
+            "dmaRegion"
+          ]
+        }
+      },
+      "metrics":{
+        "field":{
+          "name":"dcm_metrics",
+          "kind":"string_list",
+          "order":8,
+          "default":["impressions"]
+        }
+      }
+    },
+    "delete":{"field":{ "name":"dcm_delete", "kind":"boolean", "order":11, "default":"" }},
+    "datastudio":{"field":{ "name":"dcm_datastudio", "kind":"boolean", "order":13, "default":true }}
+  }
+}

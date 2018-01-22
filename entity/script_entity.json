@@ -1,0 +1,25 @@
+{
+  "script":{
+    "icon":"file_download",
+    "product":"DBM",
+    "title":"Entity Read",
+    "description":"Imports the latest entity read files into BigQuery.",
+    "instructions":[
+      "Provide one or more DBM partners ( comma seperated ).",
+      "Entity read files are read using your user credentials.",
+      "Entity read files are written using the chosen service credentials.",
+      "All, even the public ones,  entity read file will be prefixed by <strong>Entity_</strong>.",
+      "CAUTION: ENTITY READ FILES ARE PARTNER LEVEL, NO ADVERTISER IDS."
+    ],
+    "authors":["mauriciod@google.com", "pkenjora@google.com"]
+  },
+  "entity":{
+    "auth":"user",
+    "dbm_accounts": {"field":{ "name":"partners", "kind":"integer_list", "order":1, "default": [] }},
+    "entities":["LineItem", "Creative", "UserList", "Partner", "Advertiser", "InsertionOrder", "Pixel", "InventorySource", "CustomAffinity", "UniversalChannel", "UniversalSite", "SupportedExchange", "DataPartner", "GeoLocation", "Language", "DeviceCriteria", "Browser", "Isp"],
+    "out":{
+      "auth":"service",
+      "dataset": {"field":{ "name":"entity_dataset", "kind":"string", "order":3, "default": "" }}
+    }
+  }
+}

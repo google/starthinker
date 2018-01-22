@@ -1,0 +1,27 @@
+{
+  "script":{
+    "icon":"donut_large",
+    "product":"DBM",
+    "title":"DBM To Storage",
+    "description":"Move Existing DBM reports into a storage bucket.",
+    "insructions":[
+      "Specify either report name or report id to move a report.",
+      "The most recent file name will be moved to storage."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "dbm":{
+    "auth":"user",
+    "report":{
+      "report_id":{"field":{ "name":"dbm_report_id", "kind":"integer", "order":1, "default":"" }},
+      "name":{"field":{ "name":"dbm_report_name", "kind":"string", "order":2, "default":"" }}
+    },
+    "out":{
+      "storage":{
+        "bucket":{"field":{ "name":"dbm_bucket", "kind":"string", "order":3, "default":"" }},
+        "path":{"field":{ "name":"dbm_path", "kind":"string", "order":4, "default":"DBM_Report" }}
+      }
+    },
+    "datastudio":{"field":{ "name":"dbm_datastudio", "kind":"boolean", "order":5, "default":true }}
+  }
+}

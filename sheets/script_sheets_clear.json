@@ -1,0 +1,20 @@
+{ 
+  "script":{
+    "icon":"view_column",
+    "product":"Sheets",
+    "title":"Sheet Clear",
+    "description":"Clear data from a sheet.",
+    "instructions":[
+      "For the sheet, provide the full edit URL."
+    ],
+    "authors":["mauriciod@google.com"],
+    "private":["kenjora@google.com"]
+  },
+  "sheets":{
+    "auth":"user",
+    "sheet":{"field":{ "name":"sheets_sheet", "kind":"string", "order":1, "default":"" }},
+    "tab":{"field":{ "name":"sheets_tab", "kind":"string", "order":2, "default":"" }},
+    "range":{"field":{ "name":"sheets_range", "kind":"string", "order":3, "default":"" }},
+    "clear":true
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "script":{
+    "icon":"exit_to_app",
+    "product":"DCM",
+    "title":"DCM To BigQuery",
+    "description":"Move existing DCM reports into a bigquery table.",
+    "insructions":[
+      "Specify an account_id.",
+      "Specify either report name or report id to move a report.",
+      "The most recent file will overwrite the table."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "dcm":{
+    "auth":"user",
+    "report":{
+      "account_id":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"" }},
+      "report_id":{"field":{ "name":"dcm_report_id", "kind":"integer", "order":3, "default":"" }},
+      "name":{"field":{ "name":"dcm_report_name", "kind":"string", "order":4, "default":"" }}
+    },
+    "out":{
+      "bigquery":{
+        "dataset":{"field":{ "name":"dcm_dataset", "kind":"string", "order":5, "default":"" }},
+        "table":{"field":{ "name":"dcm_table", "kind":"string", "order":6, "default":"" }}
+      }
+    },
+    "datastudio":{"field":{ "name":"dcm_datastudio", "kind":"boolean", "order":7, "default":true }}
+  }
+}

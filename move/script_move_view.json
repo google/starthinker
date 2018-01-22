@@ -1,0 +1,20 @@
+{
+  "script":{
+    "icon":"arrow_forward",
+    "product":"BigQuery",
+    "title":"Query To View",
+    "description":"Move data from a Query or PLX into a BigQuery view.",
+    "authors":["kenjora@google.com"]
+  },
+  "move":{
+    "auth":"user",
+    "from":{
+      "useLegacySql":{"field":{ "name":"move_useLegacySql", "kind":"boolean", "order":1, "default":true }},
+      "query":{"field":{ "name":"move_query", "kind":"text", "order":2, "default":"" }}
+    },
+    "to":{
+      "dataset":{"field":{ "name":"move_dataset", "kind":"string", "order":3, "default":"" }},
+      "view":{"field":{ "name":"move_view", "kind":"string", "order":4, "default":"" }}
+    }
+  }
+}

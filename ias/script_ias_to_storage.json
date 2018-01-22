@@ -1,0 +1,33 @@
+{ 
+  "script":{
+    "icon":"file_download",
+    "product":"3P Data",
+    "title":"IAS Storage",
+    "description":"Move an IAS report ot a storage bucket.",
+    "instructions":[
+      "Schedule an IAS report to be sent to <b>{{EMAIL_TOKEN}}</b>.",
+      "The report must be from <strong>reports&at;integralads.com</strong>.",
+      "Optionally, specify a regular expression for the file link or attachment.",
+      "It will be moved to the storage bucket you specify."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "ias":{
+    "auth":"user",
+    "in":{
+      "email":{
+        "days":3,
+        "from":"reports@integralads.com",
+        "to":{"constant":"email_token"},
+        "link":{"field":{ "name":"ias_link", "kind":"string", "order":3, "default":"" }},
+        "attachment":{"field":{ "name":"ias_attachment", "kind":"string", "order":4, "default":"" }}
+      }
+    },
+    "out":{
+      "storage":{
+        "bucket":{"field":{ "name":"ias_bucket", "kind":"string", "order":6, "default":"" }},
+        "path":{"field":{ "name":"ias_path", "kind":"string", "order":7, "default":"" }}
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "script":{
+    "icon":"donut_large",
+    "product":"DBM",
+    "title":"DBM To BigQuery",
+    "description":"Move Existing DBM reports into a bigquery table.",
+    "instructions":[
+      "Specify either report name or report id to move a report.",
+      "The most recent file name will be moved to storage."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "dbm":{
+    "auth":"user",
+    "report":{
+      "report_id":{"field":{ "name":"dbm_report_id", "kind":"integer", "order":1, "default":"" }},
+      "name":{"field":{ "name":"dbm_report_name", "kind":"string", "order":2, "default":"" }}
+    },
+    "out":{
+      "bigquery":{
+        "dataset":{"field":{ "name":"dbm_dataset", "kind":"string", "order":3, "default":"" }},
+        "table":{"field":{ "name":"dbm_table", "kind":"string", "order":4, "default":"" }}
+      }
+    },
+    "datastudio":{"field":{ "name":"dbm_datastudio", "kind":"boolean", "order":5, "default":true }}
+  }
+}

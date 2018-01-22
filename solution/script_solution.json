@@ -1,0 +1,31 @@
+{
+  "script":{
+    "icon":"touch_app",
+    "product":"gTech",
+    "title":"Solution Runner",
+    "description":"Run a solution as a recipe.",
+    "instructions":[
+      "Provide common parameters used by solutions.",
+      "Enter solutions to execute."
+    ],
+    "authors":["kenjora@google.com"],
+    "private":["kenjora@google.com"]
+  },
+  "solution":{
+    "constants":{
+      "name":{"field":{ "name":"token", "kind":"string", "order":2, "default":"" }},
+      "token":{"field":{ "name":"token", "kind":"string", "order":3, "default":"" }},
+      "timezone":{"field":{ "name":"timezone", "kind":"string", "order":4, "default":"Los Angeles/America" }},
+      "email":{"field":{ "name":"email", "kind":"string", "order":5, "default":"" }},
+      "bucket":{"field":{ "name":"bucket", "kind":"string", "order":6, "default":"" }},
+      "dataset":{"field":{ "name":"dataset", "kind":"string", "order":7, "default":"" }},
+      "dbm_accounts":{"field":{ "name":"dbm_accounts", "kind":"string_list", "order":8, "default":[] }},
+      "dcm_accounts":{"field":{ "name":"dcm_accounts", "kind":"string_list", "order":10, "default":[] }},
+      "ds_accounts":{"field":{ "name":"ds_accounts", "kind":"string_list", "order":12, "default":[] }},
+      "trix":{"field":{ "name":"trix", "kind":"string", "order":13, "default":"" }},
+      "emails":{"field":{ "name":"emails", "kind":"string_list", "order":14, "default":[] }},
+      "groups":{"field":{ "name":"groups", "kind":"string_list", "order":15, "default":[] }}
+    },
+    "templates":{"field":{ "name":"token", "kind":"string_list", "order":1, "default":[] }}
+  }
+}

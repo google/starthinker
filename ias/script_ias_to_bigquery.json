@@ -1,0 +1,33 @@
+{ 
+  "script":{
+    "icon":"file_download",
+    "product":"3P Data",
+    "title":"IAS BigQuery",
+    "description":"Move an IAS report to a BigQuery table.",
+    "instructions":[
+      "Schedule an IAS report to be sent to <b>{{EMAIL_TOKEN}}</b>.",
+      "The report must be from <strong>reports@integralads.com</strong>.",
+      "Optionally, specify a regular expression for the file link or attachment.",
+      "It will be moved to the bigquery table you specify."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "ias":{
+    "auth":"user",
+    "in":{
+      "email":{
+        "days":3,
+        "from":"reports@integralads.com",
+        "to":{"constant":"email_token"},
+        "link":{"field":{ "name":"ias_link", "kind":"string", "order":3, "default":"" }},
+        "attachment":{"field":{ "name":"ias_attachment", "kind":"string", "order":4, "default":"" }}
+      }
+    },
+    "out":{
+      "bigquery":{
+        "dataset":{"field":{ "name":"ias_dataset", "kind":"string", "order":6, "default":"" }},
+        "table":{"field":{ "name":"ias_table", "kind":"string", "order":7, "default":"" }}
+      }
+    }
+  }
+}

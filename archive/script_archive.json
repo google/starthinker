@@ -1,0 +1,22 @@
+{ 
+  "script":{
+    "icon":"archive",
+    "product":"Storage",
+    "title":"Archive",
+    "description":"Wipe old information from a storage bucket.",
+    "instructions":[
+      "Specify how many days back to retain data and which buckets and paths to purge.",
+      "Everything under a path will be moved to archive or deleted depending on your choice."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "archive":{
+    "auth":"service",
+    "days":{"field":{ "name":"archive_days", "kind":"integer", "order":1, "default":7 }},
+    "storage": {
+      "bucket":{"field":{ "name":"archive_bucket", "kind":"string", "order":2, "default":"" }},
+      "path":{"field":{ "name":"archive_path", "kind":"string", "order":3, "default":"" }}
+    },
+    "delete":{"field":{ "name":"archive_delete", "kind":"boolean", "order":4, "default":false }}
+  }
+}

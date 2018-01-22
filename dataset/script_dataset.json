@@ -1,0 +1,21 @@
+{ 
+  "script":{
+    "icon":"folder",
+    "product":"BigQuery",
+    "title":"Dataset",
+    "description":"Create a dataset on a project.",
+    "instructions":[
+      "Specify the name of the dataset and who will have view permissions.",
+      "Existing datasets are preserved.",
+      "Adding a permission to the list will update the permissions but removing them will not.",
+      "You have to manualy remove grants."
+    ],
+    "authors":["ceh@google.com", "kenjora@google.com"]
+  },
+  "dataset":{
+    "auth":"service",
+    "dataset":{"field":{ "name":"dataset_dataset", "kind":"string", "order":1, "default":"" }},
+    "emails":{"field":{ "name":"dataset_emails", "kind":"string_list", "order":2, "default":"" }},
+    "groups":{"field":{ "name":"dataset_groups", "kind":"string_list", "order":3, "default":"" }}
+  }
+}
