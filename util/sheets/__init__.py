@@ -23,7 +23,7 @@ from util.auth import get_service
 
 def sheets_id(url):
   # make this better with a regexp
-  #https://docs.google.com/spreadsheets/d/1uN9tnb-DZ9zZflZsoW4_3USMlhR68tIxrsuCLRGuIjE/edit#gid=471584353 
+  #https://docs.google.com/spreadsheets/d/1uN9tnb-2asdfsa33fa/edit#gid=47158
   return url.split('/')[5]
 
 

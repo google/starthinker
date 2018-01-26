@@ -2,7 +2,7 @@
   "solution":{
     "icon":"record_voice_over",
     "title":"Share Of Voice",
-    "description":"Give clients a comparison of their advertising footprint compared to an anonymous peer set.",
+    "description":"Provide market share comparison for a client and fize or more anaonymized peers.  The dashboard shows KPIs such as: platform, creative type, geographic area, and impressions over time.",
     "image":"https://storage.googleapis.com/starthinker-ui/share_of_voice.png",
     "sample":"https://datastudio.google.com/open/0B1dzmNeF4E-MZDNsR2Y2aGkxMk0",
     "instructions":[

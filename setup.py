@@ -20,33 +20,31 @@ import os
 
 EXECUTE_PATH = os.environ.get('STARTHINKER_PATH', "/home/starthinker") + '/'
 
+# In production simply create this file: touch /mnt/SERVER
 DEVELOPMENT_MODE = not os.path.isfile('/mnt/SERVER')
 
+# Used for local testing, 
 if DEVELOPMENT_MODE:
  
-  # used to manage user credentials 
-  UI_PROJECT = 'google.com:starthinker-test'
+  # credentials used to manage universal information such as logs, and project that does NOT store data
+  UI_PROJECT = 'cloud-project-id-test'
   UI_CLIENT = '/home/credentials/test/starthinker_client.json'
   UI_SERVICE = '/home/credentials/test/starthinker_service.json'
-  UI_BUCKET_AUTH = 'starthinker-test-auth'
-  UI_BUCKET_UI = 'starthinker-test-ui'
   UI_BUCKET_LOG = 'starthinker-test-log'
-  UI_TOPIC = 'default_test_worker'
+  UI_TOPIC = 'test_worker'
 
-  # used to store client data
-  CLOUD_PROJECT = 'google.com:starthinker-test'
-  CLOUD_SERVICE = '/home/credentials/test/starthinker_service.json'
+  # credentials used to store data ( for security reasons not same project as logs and credentials )
+  CLOUD_PROJECT = 'cloud-project-id-data-test'
+  CLOUD_SERVICE = '/home/credentials/test/starthinker_data_service.json'
 
 else:
-  # used to manage user credentials and UI data
-  UI_PROJECT = 'google.com:starthinker'
+  # credentials used to manage universal infomation such as logs, and project that does NOT store data
+  UI_PROJECT = 'cloud-project-id'
   UI_CLIENT = '/home/credentials/starthinker_client.json'
   UI_SERVICE = '/home/credentials/starthinker_service.json'
-  UI_BUCKET_AUTH = 'starthinker-auth'
-  UI_BUCKET_UI = 'starthinker-ui'
   UI_BUCKET_LOG = 'starthinker-log'
   UI_TOPIC = 'prod_worker'
 
-  # used to store client data
-  CLOUD_PROJECT = 'google.com:starthinker-42'
+  # credentials used to store data ( for security reasons not same project as logs and credentials )
+  CLOUD_PROJECT = 'cloud-project-id-data'
   CLOUD_SERVICE = '/home/credentials/starthinker_data_service.json'

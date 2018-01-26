@@ -2,7 +2,7 @@
   "solution":{
     "icon":"file_download",
     "title":"Third Party IAS Report",
-    "description":"Import IAS and DBM data into a BigQuery table and connect to dashboard.",
+    "description":"Compare IAS and DBM performance via a dashboard.  Loads a pre-defined IAS report from an email and DBM data to map and compare the two.  Creative Names must match in IAS and DBM, you may need to adjust the campaigns.",
     "image":"https://storage.googleapis.com/starthinker-ui/third_party_ias_report.png",
     "sample":"https://datastudio.google.com/open/1I9ZDuff-AAlIemYrY6KQxwmlUFOvwja4",
     "instructions":[

@@ -2,7 +2,7 @@
   "solution":{
     "icon":"directions_run",
     "title":"Pacing DBM",
-    "description":"Pace the spend of DBM campaigns to hit targets.",
+    "description":"Provide campaign spend and pacing information so that clients can tune rates and bids.",
     "instructions":[
       "Provide a TRIX URL, we'll add new sheets with instructions.",
       "Wait for the pacing tables to be createdin the <b>{{DATASET}}</b> dataset.",

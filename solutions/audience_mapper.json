@@ -2,7 +2,7 @@
   "solution":{
     "icon":"device_hub",
     "title":"Audience Mapper",
-    "description":"Create custom audience mappings based on keywords.",
+    "description":"Custom audience mappings in a dashboard based on keywords provided in a sheet.  Provide the column, keyword, category, and tag in the sheet, and it appears in the BigQuery table.  Provide a blank sheet URL and instructions will be added there.",
     "instructions":[
       "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->Audience_Mapper_Dashboard</b> to be created.",
       "Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Audinece Mapper Sample Data</a>.",

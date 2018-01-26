@@ -2,7 +2,7 @@
   "solution":{
     "icon":"whatshot",
     "title":"Deal Finder",
-    "description":"Find domains recommended for deals.",
+    "description":"Find domains recommended for deals. Shows a breakdown of CPM, CPC, and CPA for deal vs. open comparison per site for the last 30 days.  The goal is to quickly identify opportunities for better KPI through deals or evaluate existing deals against open bid performance.",
     "image":"https://storage.googleapis.com/starthinker-ui/deal_finder.png",
     "sample":"https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO",
     "instructions":[

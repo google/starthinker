@@ -2,7 +2,7 @@
   "solution":{
     "icon":"file_download",
     "title":"Third Party MOAT Report",
-    "description":"Import MOAT and DBM data into a BigQuery table and connect to dashboard.",
+    "description":"Compare MOAT and DBM performance via a dashboard.  Loads a pre-defined MOAT report from an email and DBM data to map and compare the two.  Creative Names must match in MOAT and DBM, you may need to adjust the campaigns.",
     "instructions":[
       "The MOAT report must span 30 days back, and run daily.",
       "Send the MOAT report to <b>{{EMAIL_TOKEN}}</b>.",
