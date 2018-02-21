@@ -36,6 +36,7 @@ from util.bigquery import query, storage_to_table
 from util.storage import object_get_chunks
 
 
+DBM_CHUNKSIZE = 200 * 1024 * 1024 # 200MB recommended by docs
 RE_FILENAME = re.compile(r'.*/(.*)\?GoogleAccess')
 RE_HUMAN = re.compile('[^0-9a-zA-Z]+')
 
@@ -184,8 +185,10 @@ def report_create(auth, name, typed, partners, advertisers, filters, dimensions,
 
 
 # timeout is in minutes ( retries will happen at 5 minute interval, default total time is 60 minutes )
-def report_fetch(auth, report_id=None, name=None, timeout = 60):
+def report_fetch(auth, report_id=None, name=None, timeout = 4):
   if project.verbose: print 'DBM Report Download ( timeout ):', report_id or name, timeout
+
+  wait = 256
 
   while timeout >= 0: # allow zero to execute at least once
     # advance timeout first ( if = 0 then exit condition met but already in loop, if > 0 then will run into sleep )
@@ -207,8 +210,8 @@ def report_fetch(auth, report_id=None, name=None, timeout = 60):
       if project.verbose: print 'DBM No Report'
       return False
 
-    # sleep a minute
-    time.sleep(60)
+    wait = wait * 2
+    time.sleep(wait)
 
 
 def report_bigquery(auth, report_id, name, dataset, table, schema=[], timeout=60):
@@ -229,7 +232,7 @@ def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = None)
     filename = RE_FILENAME.search(storage_path).groups(0)[0]
 
     # streaming
-    if chunksize: 
+    if 0: #if chunksize: BROKEN SO DEFAULTING TO STREAMING
       #print 'PATH PRE', storage_path
       path = storage_path.split('?', 1)[0].replace('https://storage.googleapis.com/', '').replace('/', ':', 1)
       #print 'PATH POST', path

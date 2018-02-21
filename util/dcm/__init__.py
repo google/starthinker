@@ -34,16 +34,9 @@ from util.auth import get_service
 from util.storage import media_download
 
 
-API_VERSION = 'internalv3.0'
+API_VERSION = 'v3.0'
+DCM_CHUNKSIZE = 200 * 1024 * 1024 # 200MB recommended by docs
 RE_HUMAN = re.compile('[^0-9a-zA-Z]+')
-
-# if id has a sub account in the form of [account_id:subaccount_id] then split them
-def parse_account(account_id):
-  a_id = account_id
-  s_id = None
-  try: a_id, s_id = account_id.split(':', 1)
-  except: pass
-  return a_id, s_id
 
 
 def _retry(job, retries=10, wait=5):
@@ -62,6 +55,31 @@ def _retry(job, retries=10, wait=5):
         pass # already exists ( ignore )
       else:
         raise
+
+
+def get_profile_id(auth, account_id):
+  service = get_service('dfareporting', API_VERSION, auth)
+  for p in _retry(service.userProfiles().list())['items']:
+    #print p
+    if p['accountId'] == account_id: return  p['profileId']
+  raise Exception('Add your user profile to DCM account %s.' % account_id)
+
+
+# if id has a sub account in the form of [account_id:subaccount_id@profile_id] then split them
+def parse_account(auth, account_id):
+  a_id = account_id
+  s_id = None
+  p_id = None
+
+  try: a_id, p_id = a_id.split('@', 1)
+  except: p_id = None
+
+  try: a_id, s_id = a_id.split(':', 1)
+  except: pass
+
+  if p_id is None: p_id = get_profile_id(auth, a_id)
+
+  return a_id, s_id, p_id
 
 
 def get_body_floodlight(report, advertiser=None):
@@ -117,51 +135,46 @@ def get_body_standard(report, advertiser=None):
   }
 
 
-def get_profile_id(auth):
-  service = get_service('dfareporting', API_VERSION, auth)
-  return ([profile['profileId'] for profile in _retry(service.userProfiles().list())['items']] or [None])[0]
-
-
 def report_get(auth, account_id, report_id = None, name=None):
-  account_id, subaccount_id = parse_account(account_id)
+  account_id, subaccount_id, profile_id = parse_account(auth, account_id)
   service = get_service('dfareporting', API_VERSION, auth)
-  profile_id = get_profile_id(auth)
   report = None
 
   if name:
     next_page = None
     while next_page != '' and report is None:
-      response = _retry(service.reports().list(accountId=account_id, profileId=profile_id, pageToken=next_page))
+      #response = _retry(service.reports().list(accountId=account_id, profileId=profile_id, pageToken=next_page))
+      response = _retry(service.reports().list(profileId=profile_id, pageToken=next_page))
       next_page = response['nextPageToken']
       for r in response['items']:
         if r['name'] == name: 
           report = r
           break
   elif report_id:
-    response = _retry(service.reports().get(accountId=account_id, profileId=profile_id, reportId=report_id))
+    #response = _retry(service.reports().get(accountId=account_id, profileId=profile_id, reportId=report_id))
+    response = _retry(service.reports().get(profileId=profile_id, reportId=report_id))
     pprint.PrettyPrinter().pprint(response)
     
   return report
 
 
 def report_delete(auth, account_id, report_id = None, name=None):
-  account_id, subaccount_id = parse_account(account_id)
+  account_id, subaccount_id, profile_id = parse_account(auth, account_id)
   report = report_get(auth, account_id, report_id, name)
   if report:
     service = get_service('dfareporting', API_VERSION, auth)
-    profile_id = get_profile_id(auth)
-    _retry(service.reports().delete(accountId=account_id, profileId=profile_id, reportId=report['id']))
+    #_retry(service.reports().delete(accountId=account_id, profileId=profile_id, reportId=report['id']))
+    _retry(service.reports().delete(profileId=profile_id, reportId=report['id']))
   else:
     if project.verbose: print 'DCM DELETE: No Report'
 
 
 def report_create(auth, account_id, name, config):
-  account_id, subaccount_id = parse_account(account_id)
+  account_id, subaccount_id, profile_id = parse_account(auth, account_id)
   report = report_get(auth, account_id, name=name)
 
   if report is None:
     service = get_service('dfareporting', API_VERSION, auth)
-    profile_id = get_profile_id(auth)
 
     body = { 
       'kind':'dfareporting#report',
@@ -196,19 +209,20 @@ def report_create(auth, account_id, name, config):
     #pprint.PrettyPrinter().pprint(body)
 
     # create the report
-    report = _retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))
+    #report = _retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))
+    report = _retry(service.reports().insert(profileId=profile_id, body=body))
 
     # run the report
-    _retry(service.reports().run(accountId=account_id, profileId=profile_id, reportId=report['id']))
+    #_retry(service.reports().run(accountId=account_id, profileId=profile_id, reportId=report['id']))
+    _retry(service.reports().run(profileId=profile_id, reportId=report['id']))
 
   return report
 
 
 # timeout is in minutes ( retries will happen at 5 minute interval, default total time is 60 minutes )
 def report_fetch(auth, account_id, report_id=None, name=None, timeout = 60):
-  account_id, subaccount_id = parse_account(account_id)
+  account_id, subaccount_id, profile_id = parse_account(auth, account_id)
   if project.verbose: print 'DCM Report File', report_id or name
-  profile_id = get_profile_id(auth)
 
   if report_id is None:
     report = report_get(auth, account_id, name=name)
@@ -221,7 +235,8 @@ def report_fetch(auth, account_id, report_id=None, name=None, timeout = 60):
     # advance timeout first ( if = 0 then exit condition met but already in loop, if > 0 then will run into sleep )
     timeout -= 1
 
-    response = _retry(service.reports().files().list(accountId=account_id, profileId=profile_id, reportId=report_id, maxResults=1))
+    #response = _retry(service.reports().files().list(accountId=account_id, profileId=profile_id, reportId=report_id, maxResults=1))
+    response = _retry(service.reports().files().list(profileId=profile_id, reportId=report_id, maxResults=1))
     file = response['items'][0] if len(response['items']) > 0 else None
     #pprint.PrettyPrinter().pprint(file)
 
@@ -238,6 +253,7 @@ def report_fetch(auth, account_id, report_id=None, name=None, timeout = 60):
 
     # no report ( break out of loop it will never finish )
     else:
+      if project.verbose: print 'No File Found'
       return False
 
     # sleep a minute
@@ -252,7 +268,7 @@ def report_fetch(auth, account_id, report_id=None, name=None, timeout = 60):
 
 
 def report_file(auth, account_id, report_id=None, name=None, timeout=60, chunksize=None):
-  account_id, subaccount_id = parse_account(account_id)
+  account_id, subaccount_id, profile_id = parse_account(auth, account_id)
   file = report_fetch(auth, account_id, report_id, name, timeout)
 
   if file == False:
@@ -273,11 +289,11 @@ def report_file(auth, account_id, report_id=None, name=None, timeout=60, chunksi
 
        
 def report_list(auth, account):
+  account_id, subaccount_id, profile_id = parse_account(auth, account_id)
   service = get_service('dfareporting', API_VERSION, auth)
-  profile = get_profile_id(auth)
   next_page = None
   while next_page != '':
-    response = _retry(service.reports().list(accountId=args.account, profileId=profile, pageToken=next_page))
+    response = _retry(service.reports().list(profileId=profile_id, pageToken=next_page))
     next_page = response['nextPageToken']
     for report in response['items']:
       yield report

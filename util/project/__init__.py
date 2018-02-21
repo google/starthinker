@@ -91,7 +91,8 @@ class project:
     instance = 0
     if _task:
       for task in cls.configuration['tasks']:
-        if 'script' in task: del task['script'] # remove script meta used by ui
+        if 'script' in task: del task['script'] # remove script meta if copied with task
+        if 'version' not in task.values()[0]: task.values()[0]['version'] = 0.1
         if instance == args.instance: break # stop when the instance of a task is found
         if task.keys()[0] == _task: 
           cls.task = task.values()[0]

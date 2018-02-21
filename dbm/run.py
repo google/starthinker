@@ -18,11 +18,9 @@
 
 from util.project import project
 from util.data import put_files
-from util.dbm import report_delete, report_create, report_file, report_bigquery, report_to_rows, report_clean, accounts_split
+from util.dbm import report_delete, report_create, report_file, report_bigquery, report_to_rows, report_clean, accounts_split, DBM_CHUNKSIZE
 from util.csv import rows_to_csv, rows_print
 
-
-CHUNKSIZE = 200 * 1024 * 1024
 
 def dbm():
   if project.verbose: print 'DBM'
@@ -69,7 +67,7 @@ def dbm():
       project.task['report'].get('report_id', None),
       project.task['report'].get('name', None),
       project.task['report'].get('timeout', 60),
-      #CHUNKSIZE # causes a forbidden error with new API ( need to update chunk download  )
+      DBM_CHUNKSIZE
     )
 
     # if a report exists

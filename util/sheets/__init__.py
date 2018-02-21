@@ -19,16 +19,18 @@
 # https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets#SheetProperties
 
 from util.auth import get_service
+from util.project import project
 
 
 def sheets_id(url):
   # make this better with a regexp
-  #https://docs.google.com/spreadsheets/d/1uN9tnb-2asdfsa33fa/edit#gid=47158
+  #https://docs.google.com/spreadsheets/d/1uN9tnb-DZ9zZflZsoW4_34sf34tw3ff/edit#gid=4715
   return url.split('/')[5]
 
 
 def sheets_tab_range(sheet_tab, sheet_range):
-  return '%s!%s' % (sheet_tab, sheet_range)
+  if sheet_range: return '%s!%s' % (sheet_tab, sheet_range)
+  else: return sheet_tab
 
 
 def sheets_get(auth, sheet_url):
@@ -46,24 +48,33 @@ def sheets_tab_id(auth, sheet_url, sheet_tab):
 
 
 def sheets_read(auth, sheet_url, sheet_tab, sheet_range):
+  if project.verbose: print 'SHEETS READ', sheet_url, sheet_tab, sheet_range
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
   return service.spreadsheets().values().get(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range)).execute().get('values', [])
 
 
+# TIP: Specify sheet_range as 'Tab!A1' coordinate, the API will figure out length and height based on data
 def sheets_write(auth, sheet_url, sheet_tab, sheet_range, data, valueInputOption='RAW'):
+  if project.verbose: print 'SHEETS WRITE', sheet_url, sheet_tab, sheet_range
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
-  service.spreadsheets().values().update(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range), body=data, valueInputOption=valueInputOption).execute()
+  range = sheets_tab_range(sheet_tab, sheet_range)
+  body = {
+    "values": data
+  }
+  service.spreadsheets().values().update(spreadsheetId=sheet_id, range=range, body=body, valueInputOption=valueInputOption).execute()
 
 
 def sheets_clear(auth, sheet_url, sheet_tab, sheet_range):
+  if project.verbose: print 'SHEETS CLEAR', sheet_url, sheet_tab, sheet_range
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
   service.spreadsheets().values().clear(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range), body={}).execute()
 
 
 def sheets_tab_copy(auth, from_sheet_url, from_sheet_tab, to_sheet_url, to_sheet_tab):
+  if project.verbose: print 'SHEETS COPY', from_sheet_url, from_sheet_tab, to_sheet_url, to_sheet_tab
   service = get_service('sheets', 'v4', auth)
 
   # convert human readable to ids
@@ -78,7 +89,7 @@ def sheets_tab_copy(auth, from_sheet_url, from_sheet_tab, to_sheet_url, to_sheet
     }).execute()
 
     # change the name back ( remove "Copy of " )
-    sheets_tab_rename(auth, to_sheet_url, 'Copy of %s' % to_sheet_tab, to_sheet_tab)
+    sheets_tab_rename(auth, to_sheet_url, 'Copy of %s' % from_sheet_tab, to_sheet_tab)
 
 
 def sheets_batch_update(auth, sheet_url, data):
@@ -102,6 +113,7 @@ def sheets_tab_create(auth, sheet_url, sheet_tab):
 
 
 def sheets_tab_delete(auth, sheet_url, sheet_tab):
+  if project.verbose: print 'SHEETS DELETE', sheet_url, sheet_tab
   sheet_id, tab_id = sheets_tab_id(auth, sheet_url, sheet_tab)
   if tab_id is not None:
     sheets_batch_update(auth, sheet_url, {

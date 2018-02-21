@@ -2,11 +2,36 @@
   "solution":{
     "icon":"storage",
     "title":"Entity Read Files",
+    "image":"https://storage.googleapis.com/starthinker-ui/entity_read_files.png",
     "description":"Import public and private <a href='https://developers.google.com/bid-manager/guides/entity-read/format-v2' target='_blank'>Entity Read Files</a> into a BigQuery dataset.<br/>CAUTION: PARTNER ONLY, ADVERTISER FILTER IS NOT APPLIED.",
+    "requirements":{
+      "dbm":true,
+      "dcm":false,
+      "ds":false,
+      "trix":false,
+      "datastudio":false,
+      "bigquery":true
+    },
+    "categories":["data transfer"],
+    "pitches":[
+      "Provide Entity Read Files to client.",
+      "Automatically updated every 24 hours.",
+      "Empower clients to run data mining.",
+      "Provide schema definitions.",
+      "Entity Read Files ONLY work at the partner level."
+    ],
+    "impacts":{
+      "spend optimization":50,
+      "spend growth":20,
+      "time savings":100,
+      "account health":100,
+      "csat improvement":80
+    },
     "instructions":[
       "Entity Read Files ONLY work at the partner level.",
       "Advertiser filter is NOT APPLIED.",
-      "Specif one or more partners to be moved into the dataset."
+      "Specify one or more partners to be moved into the dataset.",
+      "Add client group or email to share dataset with client."
     ],
     "authors":["kenjora@google.com", "mauriciod@google.com"]
   },
@@ -27,7 +52,9 @@
       "groups":{"constant":"groups" }
     }},
     { "entity":{
+      "version":0.2,
       "auth":"user",
+      "prefix":"Entity",
       "entities":["Campaign", "LineItem", "Creative", "UserList", "Partner", "Advertiser", "InsertionOrder", "Pixel", "InventorySource", "CustomAffinity", "UniversalChannel", "UniversalSite", "SupportedExchange", "DataPartner", "GeoLocation", "Language", "DeviceCriteria", "Browser", "Isp"],
       "accounts": {"constant":"dbm_accounts" },
       "out":{

@@ -2,16 +2,40 @@
   "solution":{
     "icon":"file_download",
     "title":"Third Party MOAT Report",
-    "description":"Compare MOAT and DBM performance via a dashboard.  Loads a pre-defined MOAT report from an email and DBM data to map and compare the two.  Creative Names must match in MOAT and DBM, you may need to adjust the campaigns.",
+    "image":"https://storage.googleapis.com/starthinker-ui/third_party_moat_report.png",
+    "sample":"https://datastudio.google.com/open/1TIs6QweUTg8QaL830no-SSwUZ5anYKxb",
+    "description":"Import MOAT and DBM data into a BigQuery table and connect to dashboard.",
+    "requirements":{
+      "dbm":true,
+      "dcm":false,
+      "ds":false,
+      "trix":false,
+      "datastudio":true,
+      "bigquery":true
+    },
+    "categories":["3P", "reporting", "data transfer"],
+    "pitches":[
+      "Compare DBM KPIs against MOAT KPIs.",
+      "Identify DBM / MOAT Configuration issues.",
+      "Justify reliability of DBM metrics.",
+      "Give client 3P integration."
+    ],
+    "impacts":{
+      "spend optimization":10,
+      "spend growth":20,
+      "time savings":100,
+      "account health":100,
+      "csat improvement":100,
+      "technical level":20
+    },
     "instructions":[
       "The MOAT report must span 30 days back, and run daily.",
       "Send the MOAT report to <b>{{EMAIL_TOKEN}}</b>.",
-      "The MOAT Display report must contain exactly the fields:<i>Date<br/>Campaign ID<br/>Campaign Label<br/>Placement ID<br/>Placement Label<br/>Human and Viewable Impressions<br/>Human and Viewable Rate<br/>Human and Fully On-Screen Measurable Impressions<br/>Human and AVOC Impressions<br/>Human, Audible & Fully On-Screen for Half of Duration (15 sec. cap) Impressions</i>",
-      "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->MOAT_Display</b> to be created or click Run Now.",
-      "Copy <a href='https://datastudio.google.com/open/1YkVkkePmlz2KiiU8PqAlwfERLFtbGk60' target='_blank'>Third Party MOAT Sample Data Source</a>.",
-      "Change data source to <b>BigQuery->StarThinker Data->{{DATASET}}->IAS_Dashboard</b>.",
-      "Copy <a href='https://datastudio.google.com/open/1PDm1WqVQ3aGVq1DOKb0-S-ziWu1ZdrcJ' target='_blank'>Third Party MOAT Sample Report</a>.",
-      "When prompted choose the new data source you just created.",
+      "The MOAT Display report must contain exactly the fields:<i><br/>Date<br/>Campaign ID<br/>Campaign Label<br/>Placement ID<br/>Placement Label<br/>Human and Viewable Impressions<br/>Human and Viewable Rate<br/>Human and Fully On-Screen Measurable Impressions<br/>Human and AVOC Impressions<br/>Human, Audible & Fully On-Screen for Half of Duration (15 sec. cap) Impressions</i>",
+      "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->MOAT_CSV_Report</b> to be created or click Run Now.",
+      "Copy <a href='https://datastudio.google.com/open/1HbMQSvyBkQu_J3hs83bHYgNGzDLJNwHk' target='_blank'>Third Party MOAT Sample Data Source</a>.",
+      "Click Edit Connection, change to <b>BigQuery->StarThinker Data->{{DATASET}}->IAS_Dashboard</b>.",
+      "Copy <a href='https://datastudio.google.com/open/1TIs6QweUTg8QaL830no-SSwUZ5anYKxb' target='_blank'>Third Party MOAT Sample Report</a> and choose the new data source you just created.",
       "Or give these intructions to the client."
     ],
     "authors":["kenjora@google.com"]
@@ -49,7 +73,7 @@
       "out":{ 
         "bigquery":{ 
           "dataset":{ "constant":"dataset" },
-          "table":"MOAT_Display",
+          "table":"MOAT_CSV_Report",
           "skip_rows":1,
           "schema":[
             { "name":"Report_Day", "type":"INTEGER" },
@@ -130,7 +154,7 @@
       "hour":[10],
       "auth":"service",
       "from":{
-        "query":"SELECT * FROM ( SELECT Report_Day, Advertiser, Advertiser_ID, Insertion_Order, Insertion_Order_ID, Creative, Creative_ID, DCM_Placement_ID AS Placement_ID, Impressions AS DBM_Impressions, Viewable_Impressions AS DBM_Viewable_Impressions, Measurable_Impressions AS DBM_Measurable_Impressions, 0 AS MOAT_Human_Viewable_Impressions , 0 AS MOAT_Human_FOS_Measurable_Impressions , 0 AS MOAT_Human_AVOC_Impressions , 0 AS MOAT_Human_Audible_FOS_Half_Duration_Impressions , Revenue, 'DBM' AS Source FROM [[PARAMETER].MOAT_DBM_Report] OMIT RECORD IF Creative_ID IS NULL), ( SELECT MOAT.Report_Day AS Report_Day, DBM.Advertiser AS Advertiser, DBM.Advertiser_ID AS Advertiser_ID, COALESCE(DBM.Insertion_Order, MOAT.Campaign_Label) AS Insertion_Order, COALESCE(DBM.Insertion_Order_ID, MOAT.Campaign_ID) AS Insertion_Order_ID, MOAT.Placement_Label AS Creative, MOAT.Placement_ID AS Creative_ID, 0 AS DBM_Impressions, 0 AS DBM_Measurable_Impressions, 0 AS DBM_Viewable_Impressions, MOAT.Human_Viewable_Impressions AS MOAT_Human_Viewable_Impressions, MOAT.Human_FOS_Measurable_Impressions AS MOAT_Human_FOS_Measurable_Impressions, MOAT.Human_AVOC_Impressions AS MOAT_Human_AVOC_Impressions, MOAT.Human_Audible_FOS_Half_Duration_Impressions AS MOAT_Human_Audible_FOS_Half_Duration_Impressions, 0.0 AS Revenue, 'MOAT' AS Source FROM [[PARAMETER].MOAT_Display] AS MOAT LEFT JOIN ( SELECT FIRST(Advertiser) AS Advertiser, FIRST(Advertiser_ID) AS Advertiser_ID, First(Insertion_Order) AS Insertion_Order, First(Insertion_Order_ID) AS Insertion_Order_ID, REGEXP_REPLACE(Creative, r'_MOAT$', '') AS Creative FROM [[PARAMETER].MOAT_DBM_Report] GROUP BY Creative) AS DBM ON MOAT.Placement_Label = DBM.Creative);",
+        "query":"SELECT * FROM ( SELECT Report_Day, Advertiser, Advertiser_ID, Insertion_Order, Insertion_Order_ID, Creative, Creative_ID, DCM_Placement_ID AS Placement_ID, Impressions AS DBM_Impressions, Viewable_Impressions AS DBM_Viewable_Impressions, Measurable_Impressions AS DBM_Measurable_Impressions, 0 AS MOAT_Human_Viewable_Impressions , 0 AS MOAT_Human_FOS_Measurable_Impressions , 0 AS MOAT_Human_AVOC_Impressions , 0 AS MOAT_Human_Audible_FOS_Half_Duration_Impressions , Revenue, 'DBM' AS Source FROM [[PARAMETER].MOAT_DBM_Report] OMIT RECORD IF Creative_ID IS NULL), ( SELECT MOAT.Report_Day AS Report_Day, DBM.Advertiser AS Advertiser, DBM.Advertiser_ID AS Advertiser_ID, COALESCE(DBM.Insertion_Order, MOAT.Campaign_Label) AS Insertion_Order, COALESCE(DBM.Insertion_Order_ID, MOAT.Campaign_ID) AS Insertion_Order_ID, MOAT.Placement_Label AS Creative, MOAT.Placement_ID AS Creative_ID, 0 AS DBM_Impressions, 0 AS DBM_Measurable_Impressions, 0 AS DBM_Viewable_Impressions, MOAT.Human_Viewable_Impressions AS MOAT_Human_Viewable_Impressions, MOAT.Human_FOS_Measurable_Impressions AS MOAT_Human_FOS_Measurable_Impressions, MOAT.Human_AVOC_Impressions AS MOAT_Human_AVOC_Impressions, MOAT.Human_Audible_FOS_Half_Duration_Impressions AS MOAT_Human_Audible_FOS_Half_Duration_Impressions, 0.0 AS Revenue, 'MOAT' AS Source FROM [[PARAMETER].MOAT_CSV_Report] AS MOAT LEFT JOIN ( SELECT FIRST(Advertiser) AS Advertiser, FIRST(Advertiser_ID) AS Advertiser_ID, First(Insertion_Order) AS Insertion_Order, First(Insertion_Order_ID) AS Insertion_Order_ID, REGEXP_REPLACE(Creative, r'_MOAT$', '') AS Creative FROM [[PARAMETER].MOAT_DBM_Report] GROUP BY Creative) AS DBM ON MOAT.Placement_Label = DBM.Creative);",
         "parameters":[
           { "constant":"dataset" },
           { "constant":"dataset" },

@@ -107,15 +107,16 @@ def report_get(auth, title, template_name='standard.json', parameters={}, day=da
     if isinstance(parameters['ids'], basestring):
       for line in parameters['ids'].splitlines():
         items = line.split(',')
+        parameters['agencyId'] = items[0]
         if len(items) == 2:
-          parameters['agencyId'] = items[0]
           parameters['advertiserId'] = items[1]
-          report_ids.append(report_request(auth, title, template_name, parameters, day))
+        report_ids.append(report_request(auth, title, template_name, parameters, day))
     else:
       for ids in parameters['ids']:
         pair = ids.split(':')
         parameters['agencyId'] = pair[0]
-        parameters['advertiserId'] = pair[1]
+        if len(items) == 2:
+          parameters['advertiserId'] = pair[1]
         report_ids.append(report_request(auth, title, template_name, parameters, day))
     for report_id in report_ids:
       reports.append(report_fetch(auth, report_id['id']))

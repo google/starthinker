@@ -2,7 +2,29 @@
   "solution":{
     "icon":"directions_run",
     "title":"Pacing DBM",
-    "description":"Provide campaign spend and pacing information so that clients can tune rates and bids.",
+    "description":"Pace the spend of DBM campaigns to hit targets.",
+    "requirements":{
+      "dbm":true,
+      "dcm":false,
+      "ds":false,
+      "trix":true,
+      "datastudio":true,
+      "bigquery":true
+    },
+    "categories":["pacing", "reporting", "prevention"],
+    "pitches":[
+      "Optimize spend to prevent under spend.",
+      "Optimize spend to prevent over spend.",
+      "Allow client traders to enter budgets.",
+      "Allow client traders to categorize spend."
+    ],
+    "impacts":{
+      "spend optimization":100,
+      "spend growth":80,
+      "time savings":60,
+      "account health":80,
+      "csat improvement":90
+    },
     "instructions":[
       "Provide a TRIX URL, we'll add new sheets with instructions.",
       "Wait for the pacing tables to be createdin the <b>{{DATASET}}</b> dataset.",

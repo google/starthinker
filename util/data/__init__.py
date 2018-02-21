@@ -34,6 +34,8 @@ from util.email import get_email_attachments, get_email_links, get_email_message
 from util.bigquery import local_file_to_table, datasets_create, csv_to_table
 from util.bigquery.file_processor import FileProcessor
 
+from util.sheets import sheets_write, sheets_clear
+
 #def date_range(day, source):
 #  if 'days' in source['email']: return day, day + timedelta(days=abs(source['email']['days']))
 #  else: return None, None
@@ -162,6 +164,9 @@ def put_files(auth, target, filename, data):
   if 'trix' in target:
     trix_update(auth, target['trix']['sheet_id'], target['trix']['sheet_range'], data, target['trix']['clear'])
 
+  if 'sheets' in target:
+    if target['sheets'].get('delete', False): sheets_clear(auth, target['sheets']['sheet'], target['sheets']['tab'], target['sheets']['range'])
+    sheets_write(auth, target['sheets']['sheet'], target['sheets']['tab'], target['sheets']['range'], [row for row in csv.reader(data)]) # optimize this in the future should really be passing rows to these functions
 
   if 'email' in target:
     pass

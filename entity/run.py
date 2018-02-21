@@ -26,13 +26,13 @@ from datetime import datetime, timedelta
 from io import BytesIO
 
 from util.project import project
-from util.storage import object_download, object_get_chunks
+from util.storage import object_get_chunks
 from util.bigquery import local_file_to_table, datasets_create, csv_to_table
 from entity.schema import Entity_Schema_Lookup
 
-
-CHUNK_SIZE = 1024000 * 200 # 200 MB
-PUBLIC_FILES = ('SupportedExchange', 'DataPartner', 'UniversalSite', 'GeoLocation', 'Language', 'DeviceCriteria', 'Browser', 'Isp')
+CHUNK_SIZE = 1024000 * 200  # 200 MB
+PUBLIC_FILES = ('SupportedExchange', 'DataPartner', 'UniversalSite',
+                'GeoLocation', 'Language', 'DeviceCriteria', 'Browser', 'Isp')
 
 
 def get_entity(path):
@@ -60,21 +60,20 @@ def get_entity(path):
 
 
 def move_entity(project, path, table, schema, disposition):
-  if 'prefix' in project.task: table = '%s_%s' % (project.task['prefix'], table)
+  if project.task['version'] >= 0.2 and 'prefix' in project.task: table = '%s_%s' % (project.task['prefix'], table)
 
   # read the entity file in parts
   for data in get_entity(path):
     # write each part
     csv_to_table(
-      project.task['out']['auth'],
-      project.id,
-      project.task['out']['dataset'],
-      table,
-      BytesIO(data),
-      schema=schema,
-      structure='NEWLINE_DELIMITED_JSON',
-      disposition=disposition
-    )
+        project.task.get('out', project.task)['auth'],
+        project.id,
+        project.task.get('out', project.task)['dataset'],
+        table,
+        BytesIO(data),
+        schema=schema,
+        structure='NEWLINE_DELIMITED_JSON',
+        disposition=disposition)
     disposition = 'WRITE_APPEND'
 
 
@@ -82,36 +81,34 @@ def entity():
   if project.verbose: print 'ENTITY'
 
   # legacy translations ( changed partners, advertisers to accounts with "partner_id:advertiser_id" )
-  if 'partner_id' in project.task: project.task['accounts'] = [project.task['partner_id']]
+  if 'partner_id' in project.task:
+    project.task['accounts'] = [project.task['partner_id']]
 
-  if 'accounts' in project.task: # compatible with UI solutions deployment
+  # create entities
+  for entity in project.task['entities']:
+    if project.verbose: print 'ENTITY:', entity
 
-    # create entities  
-    for entity in project.task['entities']:
-      if project.verbose: print 'ENTITY:', entity
+    # write public files only once
+    if entity in PUBLIC_FILES:
+      path = 'gdbm-public:entity/%s.0.%s.json' % (project.date.strftime('%Y%m%d'), entity)
+      schema = Entity_Schema_Lookup[entity]
+      move_entity(project, path, entity, schema, 'WRITE_TRUNCATE')
 
-      # write public files only once
-      if entity in PUBLIC_FILES:
-        path = 'gdbm-public:entity/%s.0.%s.json' % (project.date.strftime('%Y%m%d'), entity)
-        table = 'Entity_%s' % entity
+    # supports multiple partners, first one resets table, others append
+    else:
+      disposition = 'WRITE_TRUNCATE'
+      for account in project.task['accounts']:
+        # if advertiser given do not run it ( SAFETY )
+        if ':' in str(account):
+          print 'WARNING: Skipping advertiser: ', account
+          continue
+        if project.verbose: print 'PARTNER:', account
+        path = 'gdbm-%s:entity/%s.0.%s.json' % (account, project.date.strftime('%Y%m%d'), entity)
         schema = Entity_Schema_Lookup[entity]
-        move_entity(project, path, table, schema, 'WRITE_TRUNCATE')
+        move_entity(project, path, entity, schema, disposition)
+        disposition = 'WRITE_APPEND'
 
-      # supports multiple partners, first one resets table, others append
-      else:
-        disposition = 'WRITE_TRUNCATE'
-        for account in project.task['accounts']:
-          # if advertiser given do not run it ( SAFETY )
-          if ':' in account: 
-            print 'WARNING: Skipping advertiser: ', account
-            continue
-          if project.verbose: print 'PARTNER:', account
-          path = 'gdbm-%s:entity/%s.0.%s.json' % (account, project.date.strftime('%Y%m%d'), entity) 
-          table = 'Entity_%s' % entity
-          schema = Entity_Schema_Lookup[entity]
-          move_entity(project, path, table, schema, disposition)
-          disposition = 'WRITE_APPEND'
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   project.load('entity')
   entity()

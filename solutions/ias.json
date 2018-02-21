@@ -2,19 +2,40 @@
   "solution":{
     "icon":"file_download",
     "title":"Third Party IAS Report",
-    "description":"Compare IAS and DBM performance via a dashboard.  Loads a pre-defined IAS report from an email and DBM data to map and compare the two.  Creative Names must match in IAS and DBM, you may need to adjust the campaigns.",
+    "description":"Import IAS and DBM data into a BigQuery table and connect to dashboard.  Used to verify viewability data against third party.",
     "image":"https://storage.googleapis.com/starthinker-ui/third_party_ias_report.png",
     "sample":"https://datastudio.google.com/open/1I9ZDuff-AAlIemYrY6KQxwmlUFOvwja4",
+    "requirements":{
+      "dbm":true,
+      "dcm":false,
+      "ds":false,
+      "trix":false,
+      "datastudio":true,
+      "bigquery":true
+    },
+    "categories":["3P", "reporting", "data transfer"],
+    "pitches":[
+      "Compare DBM KPIs against IAS KPIs.",
+      "Identify DBM / IAS Configuration issues.",
+      "Justify reliability of DBM metrics.",
+      "Give client 3P integration."
+    ],
+    "impacts":{
+      "spend optimization":10,
+      "spend growth":20,
+      "time savings":100,
+      "account health":100,
+      "csat improvement":100,
+      "technical level":20
+    },
     "instructions":[
-      "In IAS set up automated daily <b>3MS Viewability</b> reports.",
-      "The IAS report must span 30 days back.",
+      "In IAS set up automated daily <b>3MS Viewability</b> reports, it must span 30 days back.",
       "Send the IAS report to <b>{{EMAIL_TOKEN}}</b>.",
       "The IAS report must contain exactly the fields:<i><br/>Date<br/>Campaign_Name<br/>Media_Partner_Name<br/>Placement_ID<br/>Placement_Name<br/>In_View_Impressions<br/>Out_of_View_Impressions<br/>Suspicious_Unblocked_Impressions<br/>Total_Out_of_View_Impressions<br/>Measured_Impressions<br/>Unmeasured_Impressions<br/>Viewable_Rate<br/>Measured_Rate<br/>In_View_IMP_Distribution<br/>Out_of_View_IMP_Distribution<br/>Unmeasured<br/>Total_Unblocked_Impressions<br/>Gross_Unblocked_Impressions<br/>Gross_Measured_Impressions<br/>Gross_Unblocked_Invalid_Impressions<br/>Net_Eligible_Impressions<br/>Net_Measured_Impressions<br/>Net_Viewable_Impressions<br/>Net_Non_Viewable_Impressions<br/>Net_Unmeasured_Impressions<br/>Net_Viewable_Rate<br/>Total_Net_Eligible_Impressions<br/>Total_Net_Measured_Impressions<br/>Total_Net_Unmeasured_Impressions<br/>Total_Net_Viewable_Rate<br/>Total_Net_Measured_Rate<br/>Total_Net_In_View<br/>Total_Net_Out_of_View<br/>Total_Net_Unmeasured</i>",
-      "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->IAS_Dashboard</b> to be created, 2 hours.",
+      "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->IAS_Dashboard</b> to be created.",
       "Copy <a href='https://datastudio.google.com/open/1sPP1SLzF5MVdSgFktYHm04c8U4PkRVqv' target='_blank'>Third Party IAS Sample Data Source</a>.",
-      "Change data source to <b>BigQuery->StarThinker Data->{{DATASET}}->IAS_Dashboard</b>.",
-      "Copy <a href='https://datastudio.google.com/open/1I9ZDuff-AAlIemYrY6KQxwmlUFOvwja4' target='_blank'>Third Party IAS Sample Report</a>.",
-      "When prompted choose the new data source you just created.",
+      "Click Edit Connection, change to <b>BigQuery->StarThinker Data->{{DATASET}}->IAS_Dashboard</b>.",
+      "Copy <a href='https://datastudio.google.com/open/1I9ZDuff-AAlIemYrY6KQxwmlUFOvwja4' target='_blank'>Third Party IAS Sample Report</a> and choose above data source.",
       "Or give these intructions to the client."
     ],
     "authors":["kenjora@google.com"]

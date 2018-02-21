@@ -2,13 +2,36 @@
   "solution":{
     "icon":"whatshot",
     "title":"Deal Finder",
-    "description":"Find domains recommended for deals. Shows a breakdown of CPM, CPC, and CPA for deal vs. open comparison per site for the last 30 days.  The goal is to quickly identify opportunities for better KPI through deals or evaluate existing deals against open bid performance.",
+    "description":"Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.",
     "image":"https://storage.googleapis.com/starthinker-ui/deal_finder.png",
     "sample":"https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO",
+    "requirements":{ 
+      "dbm":true, 
+      "dcm":false, 
+      "ds":false, 
+      "trix":false,
+      "datastudio":true,
+      "bigquery":true
+    },
+    "categories":["industry", "reporting"],
+    "pitches":[
+      "Move client towards more deals.",
+      "Help client decide which inventory to invest in.",
+      "Optimize client spend to improve CPM, CPC, or CPA performance.",
+      "Justify deal spend.",
+      "Identify poorly performing deals."
+    ],
+    "impacts":{
+      "spend optimization":100,
+      "spend growth":30,
+      "time savings":30,
+      "account health":60,
+      "csat improvement":60
+    },
     "instructions":[
       "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->Deal_Finder_Dashboard</b> to be created.",
       "Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Deal Finder Sample Data</a>.",
-      "Change data source to <b>BigQuery->StarThinker Data->{{DATASET}}->Deal_Finder_Dashboard</b>.",
+      "Click Edit Connection, and change to <b>BigQuery->StarThinker Data->{{DATASET}}->Deal_Finder_Dashboard</b>.",
       "Copy <a href='https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO' target='_blank'>Deal Finder Sample Report</a>.",
       "When prompted choose the new data source you just created.",
       "Or give these intructions to the client."

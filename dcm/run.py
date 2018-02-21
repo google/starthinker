@@ -18,10 +18,8 @@
 
 from util.project import project 
 from util.data import put_files
-from util.dcm import report_delete, report_create, report_file, report_to_rows, report_clean
+from util.dcm import report_delete, report_create, report_file, report_to_rows, report_clean, DCM_CHUNKSIZE
 from util.csv import rows_to_csv
-
-CHUNKSIZE = 200 * 1024 * 1024
 
 def dcm():
   if project.verbose: print 'DCM'
@@ -52,7 +50,7 @@ def dcm():
       project.task['report'].get('report_id', None),
       project.task['report'].get('name', None),
       project.task['report'].get('timeout', 60),
-      CHUNKSIZE
+      DCM_CHUNKSIZE
     )
 
     if report:

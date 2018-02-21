@@ -26,7 +26,7 @@ def date_to_str(value):
 RE_YYYYMMDD = re.compile(r'\d{4}[-/_]\d{2}[-/_]\d{2}')
 def parse_yyyymmdd(text):
   value = (RE_YYYYMMDD.findall(text) or [None])[0]
-  return str_to_date(value) if value else None
+  return value 
 
 
 RE__YYYYMMDD = re.compile(r'_?\d{4}[-/]\d{2}[-/]\d{2}')

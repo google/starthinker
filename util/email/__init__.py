@@ -21,9 +21,6 @@
 import re
 import base64
 import mimetypes
-from email.mime.audio import MIMEAudio
-from email.mime.base import MIMEBase
-from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from io import BytesIO
@@ -172,6 +169,7 @@ def get_email_messages(auth, email_from, email_to, date_min, date_max, subject_r
     if subject_filter is None or subject_filter.match(_get_subject(message)):
       emails.append(_email_message(service, message, link_regexp, attachment_regexp, download))
   return emails
+
 
 def send_email(auth, email_to, email_from, email_cc, subject, text, html):
   if project.verbose: print 'Send email'

@@ -17,7 +17,7 @@
 ###########################################################################
 
 from util.project import project
-from util.sheets import sheets_tab_create, sheets_read, sheets_tab_copy, sheets_clear
+from util.sheets import sheets_tab_create, sheets_read, sheets_tab_copy, sheets_clear, sheets_tab_delete
 from util.bigquery import get_schema, csv_to_table
 from util.csv import rows_to_type, rows_to_csv
 
@@ -27,6 +27,10 @@ def sheets():
   # clear if specified
   if project.task.get('clear', False):
     sheets_clear(project.task['auth'], project.task['sheet'], project.task['tab'], project.task['range'])
+
+  # delete if specified ( after clear to prevent errors in case both are given )
+  if project.task.get('delete', False):
+    sheets_tab_delete(project.task['auth'], project.task['sheet'], project.task['tab'])
 
   # create or copy if specified
   if 'template' in project.task:
@@ -39,19 +43,29 @@ def sheets():
     rows = sheets_read(project.task['auth'], project.task['sheet'], project.task['tab'], project.task['range'])
 
     if rows:
-      schema = []
+      schema = None
 
+      # cast rows to types
       rows = rows_to_type(rows)
-      #rows = get_schema(rows, schema, project.task.get('header', False))
-      data = rows_to_csv(rows) # schema ONLY becomes filled here ( iterator consumed )
+     
+      # RECOMMENDED: define schema in json
+      if project.task['out']['bigquery'].get('schema'):
+        schema = project.task['out']['bigquery']['schema']
+      # NOT RECOMMENDED: determine schema if missing 
+      else:
+        rows, schema = get_schema(rows, project.task.get('header', False))
 
+      # write to table ( not using put bcause no use cases for other destinations )
       csv_to_table(
-        project.task['auth'],
-        project.id,
-        project.task['out']['bigquery']['dataset'],
-        project.task['out']['bigquery']['table'],
-        data,
-        project.task['out']['bigquery']['schema'],
+        auth=project.task['auth'],
+        project_id=project.id,
+        dataset_id=project.task['out']['bigquery']['dataset'],
+        table_id=project.task['out']['bigquery']['table'],
+        data=rows_to_csv(rows),
+        schema=schema,
+        skip_rows=1 if project.task.get('header', False) else 0,
+        structure='CSV',
+        disposition=project.task['out']['bigquery'].get('disposition', 'WRITE_TRUNCATE')
       )
 
     else:

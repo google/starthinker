@@ -1,0 +1,74 @@
+{
+  "solution":{
+    "icon":"record_voice_over",
+    "title":"Share Of Voice DBM",
+    "description":"Compare a client to 5 or more peers using impressions by region, market area, platform, and creative type.", 
+    "image":"https://storage.googleapis.com/starthinker-ui/share_of_voice.png",
+    "sample":"https://datastudio.google.com/open/0B1dzmNeF4E-MZDNsR2Y2aGkxMk0",
+    "requirements":{
+      "dbm":true,
+      "dcm":false, 
+      "ds":false, 
+      "trix":true,
+      "datastudio":true,
+      "bigquery":true
+    },
+    "categories":["industry", "reporting"],
+    "pitches":[
+      "Evaluate impressions against peers.",
+      "Show industry trends to client.",
+      "Show evidence for market area, platform, or creative focus.",
+      "Show evidence for level of performance.",
+      "Includes checks to comply with data policy."
+    ],
+    "impacts":{
+      "spend optimization":10,
+      "spend growth":80,
+      "time savings":10,
+      "account health":60,
+      "csat improvement":100,
+      "technical level":50
+    },
+    "instructions":[
+      "A tab called <strong>SOV_DCM_Peers</strong> will be added to the trix, with instructions.",
+      "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->Share_Of_Voice_DBM</b> to be created or click Run Now.",
+      "Copy <a href='https://datastudio.google.com/open/0B1dzmNeF4E-MUWtYYlZDZVpIdU0' target='_blank'>Share Of Voice Sample Data ( Copy From This )</a>.",
+      "Click Edit Connection, and Change to <b>BigQuery->StarThinker Data->{{DATASET}}->Share_Of_Voice_DBM</b>.",
+      "Copy <a href='https://datastudio.google.com/open/0B1dzmNeF4E-MZDNsR2Y2aGkxMk0' target='_blank'>Share Of Voice Sample Report ( Copy From This )</a>.",
+      "When prompted choose the new data source you just created.",
+      "Or give the dashboard connect intructions to the client."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "hour":[5]
+  },
+  "tasks":[
+   { "iam":{
+      "auth":"service",
+      "role":"projects/google.com:starthinker-42/roles/StarThinkerUser",
+      "email":{ "constant":"email" }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{ "constant":"dataset" },
+      "emails":{ "constant":"emails" },
+      "groups":{ "constant":"groups" }
+    }},
+    { "sov_dbm":{
+      "auth":"user",
+      "dbm_accounts":{ "constant":"dbm_accounts" },
+      "sheet":{
+        "url":{ "constant":"sheet" },
+        "range":"A2:B",
+        "template":{
+          "url":"https://docs.google.com/spreadsheets/d/1ksi6d9aAlGBdMLzICUUxjG4JT8EDmJgzrDPf1M189do/edit?usp=sharing",
+          "tab":"SOV_DBM_Peers"
+        }
+      },
+      "dataset":{ "constant":"dataset" },
+      "table":"Share_Of_Voice_DBM"
+    }}
+  ]
+}

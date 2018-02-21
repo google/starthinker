@@ -2,7 +2,28 @@
   "solution":{
     "icon":"device_hub",
     "title":"Audience Mapper",
-    "description":"Custom audience mappings in a dashboard based on keywords provided in a sheet.  Provide the column, keyword, category, and tag in the sheet, and it appears in the BigQuery table.  Provide a blank sheet URL and instructions will be added there.",
+    "description":"Create custom audience mappings based on keywords.",
+    "requirements":{
+      "dbm":true,
+      "dcm":false,
+      "ds":false,
+      "trix":true,
+      "datastudio":true,
+      "bigquery":true
+    },
+    "categories":["reporting"],
+    "pitches":[
+      "Create custom creative groups.",
+      "Allow different view of KPIs.",
+      "Help clients with custom naming conventions."
+    ],
+    "impacts":{
+      "spend optimization":30,
+      "spend growth":10,
+      "time savings":100,
+      "account health":60,
+      "csat improvement":80
+    },
     "instructions":[
       "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->Audience_Mapper_Dashboard</b> to be created.",
       "Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Audinece Mapper Sample Data</a>.",
@@ -41,14 +62,14 @@
         "name":{ "constant":"report", "prefix":"Audience_Mapper_" },
         "timezone":{"constant":"timezone" },
         "type":"TYPE_CROSS_PARTNER",
-        "data_range":"LAST_30_DAYS",
+        "data_range":"LAST_7_DAYS",
         "accounts":{"constant":"dbm_accounts" },
         "dimensions":[
           "FILTER_PARTNER",
           "FILTER_ADVERTISER",
+          "FILTER_ADVERTISER_CURRENCY",
           "FILTER_INSERTION_ORDER",
-          "FILTER_LINE_ITEM",
-          "FILTER_USER_LIST"
+          "FILTER_LINE_ITEM"
         ],
         "metrics":[
           "METRIC_IMPRESSIONS",
@@ -57,10 +78,7 @@
           "METRIC_LAST_IMPRESSIONS",
           "METRIC_LAST_CLICKS",
           "METRIC_REVENUE_ADVERTISER",
-          "METRIC_MEDIA_COST_ADVERTISER",
-          "METRIC_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS",
-          "METRIC_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS",
-          "METRIC_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS"
+          "METRIC_MEDIA_COST_ADVERTISER"
         ]
       }
     }},
@@ -81,21 +99,26 @@
             { "name":"Partner_Status", "type":"STRING", "mode":"NULLABLE" },
             { "name":"Advertiser", "type":"STRING" },
             { "name":"Advertiser_ID", "type":"INTEGER" },
+            { "name":"Advertiser_Status", "type":"STRING", "mode":"NULLABLE" },
+            { "name":"Advertiser_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+            { "name":"Advertiser_Currency", "type":"STRING" },
             { "name":"Insertion_Order", "type":"STRING" },
-            { "name":"Insertion_order_ID", "type":"INTEGER" },
+            { "name":"Insertion_Order_ID", "type":"INTEGER" },
+            { "name":"Insertion_Order_Status", "type":"STRING", "mode":"NULLABLE" },
+            { "name":"Insertion_Order_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
             { "name":"Line_Item", "type":"STRING" },
             { "name":"Line_Item_ID", "type":"INTEGER" },
+            { "name":"Line_Item_Status", "type":"STRING", "mode":"NULLABLE" },
+            { "name":"Line_Item_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
             { "name":"Audience_List", "type":"STRING", "mode":"NULLABLE" },
             { "name":"Audience_List_ID", "type":"INTEGER", "mode":"NULLABLE" },
             { "name":"Audience_List_Type", "type":"STRING", "mode":"NULLABLE" },
-            { "name":"Advertiser_Currency", "type":"STRING" },
             { "name":"Audience_List_Cost", "type":"FLOAT" },
             { "name":"Impressions", "type":"INTEGER" },
             { "name":"Clicks", "type":"INTEGER" },
             { "name":"Conversions", "type":"FLOAT" },
             { "name":"Post_Click_Conversions", "type":"FLOAT" },
             { "name":"Post_View_Conversions", "type":"FLOAT" },
-            { "name":"Cost", "type":"FLOAT" },
             { "name":"Revenue", "type":"FLOAT" },
             { "name":"Media_Cost", "type":"FLOAT" }
           ]

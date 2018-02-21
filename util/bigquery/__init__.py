@@ -16,9 +16,11 @@
 #
 ###########################################################################
 
-#https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#resource
+# https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#resource
 # https://cloud.google.com/bigquery/docs/reference/v2/jobs#resource
+# https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list
 
+import re
 import sys
 import csv
 import pprint
@@ -26,8 +28,6 @@ import uuid
 import json
 import httplib2
 from time import sleep
-
-from util.bigquery.file_processor import FileProcessor
 
 from google.cloud import bigquery
 from google.cloud.bigquery.table import Table
@@ -40,7 +40,8 @@ from util.auth import get_service, get_client
 
 BIGQUERY_RETRIES = 3
 CHUNKSIZE = 2 * 1024 * 1024
-processor = FileProcessor()
+#RE_SCHEMA = re.compile(r'[ \=\:\-\/\(\)\+\&\%]')
+RE_SCHEMA = re.compile('[^0-9a-zA-Z]+')
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -48,6 +49,24 @@ sys.setdefaultencoding('utf-8')
 
 def bigquery_date(value):
   return value.strftime('%Y%m%d')
+
+
+def _retry(job, retries=10, wait=5):
+  try:
+    data = job.execute()
+    #pprint.PrettyPrinter().pprint(data)
+    return data
+  except HttpError, e:
+    if project.verbose: print str(e)
+    if e.resp.status in [403, 429, 500, 503]:
+      if retries > 0:
+        sleep(wait)
+        if project.verbose: print 'DCM RETRY', retries
+        return _retry(job, retries - 1, wait * 2)
+      elif json.loads(e.content)['error']['code'] == 409:
+        pass # already exists ( ignore )
+      else:
+        raise
 
 
 def job_wait(service, job):
@@ -60,7 +79,7 @@ def job_wait(service, job):
 
   while True:
     sleep(1)
-    print '.',
+    if project.verbose: print '.',
     sys.stdout.flush()
     result = request.execute(num_retries=BIGQUERY_RETRIES)
     if result['status']['state'] == 'DONE':
@@ -336,6 +355,24 @@ def tables_get(auth, project_id, name):
   return service.tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()
 
 
+def table_to_rows(auth, project_id, dataset_id, table_id, fields=None, row_start=0, row_max=None):
+  if project.verbose: print 'BIGQUERY ROWS:', project_id, dataset_id, table_id
+  service = get_service('bigquery', 'v2', auth)
+  next_page = None
+  while next_page != '':
+    response = _retry(service.tabledata().list(projectId=project_id, datasetId=dataset_id, tableId=table_id, selectedFields=fields, startIndex=row_start, maxResults=row_max, pageToken=next_page))
+    next_page = response.get('PageToken', '')
+    for row in response['rows']:
+      yield [r.values()[0] for r in row['f']] # may break if we attempt nested reads
+
+
+def table_to_schema(auth, project_id, dataset_id, table_id):
+  if project.verbose: print 'TABLE SCHEMA:', project_id, dataset_id, table_id
+  service = get_service('bigquery', 'v2', auth)
+  response = _retry(service.tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id))
+  return response['schema']
+
+
 def list_to_table(rows, dataset, table_name, schema, replace=False):
   print(rows)
 
@@ -360,23 +397,30 @@ def get_table(auth, dataset, table_name):
 
   return table
 
-# this all has to be done while streaming, so preserve the iterator, schema is returned by reference
-# DO NOT rebind schema, it will break the pass by reference
-# FIX: ADD HANDLERS FOR REPEAT AND RECORD FIELDS ( use pointers stack to track recursion depth )
-def get_schema(rows, schema, header=True):
+
+# CAUTION: Memory suck. This function sabotages iteration by iterating thorough the new object and returning a new iterator
+# RECOMMEND: Define the schema yourself, it will also ensure data integrity downstream.
+def get_schema(rows, header=True):
+
+  schema = []
+  row_buffer = []
 
   # everything else defaults to STRING
-  type_to_bq = {int:'INTEGER', long:'INTEGER', bool:'BOOLEAN'} 
+  type_to_bq = {int:'INTEGER', long:'INTEGER', bool:'BOOLEAN', float:'FLOAT'} 
 
   # first non null value determines type
   non_null_column = set()
 
   first = True
   for row in rows:
-    # get header if exists
+
+    # buffer the iterator to be returned with schema
+    row_buffer.append(row)
+
+    # define schema field names and set defaults ( if no header enumerate fields )
     if first:
       for index, value in enumerate(row): 
-        schema.append({ "name":value if header else 'Field_%d' % index, "type":"STRING" }) # DO NOT REBIND, USE APPEND
+        schema.append({ "name":RE_SCHEMA.sub('_', value).strip('_') if header else 'Field_%d' % index, "type":"STRING" }) 
 
     # then determine type of each column
     if not first and header: 
@@ -390,17 +434,21 @@ def get_schema(rows, schema, header=True):
           if index in non_null_column:
             # change type only if its inconsistent
             if column_type != schema[index]['type']: 
-              schema[index]['type'] = 'STRING'
+              # mixed integers and floats default to floats
+              if column_type in ('INTEGER', 'FLOAT') and schema[index]['type'] in ('INTEGER', 'FLOAT'):
+                schema[index]['type'] = 'FLOAT'
+              # any strings are always strings
+              else:       
+                schema[index]['type'] = 'STRING'
           # if first non null value, then just set type
           else: 
             schema[index]['type'] = column_type
             non_null_column.add(index)
 
-    # return row so iteration can continue
-    yield row
-
     # no longer first row
     first = False
+
+  return row_buffer, schema
 
 
 def local_file_to_table(auth, dataset, table_name, schema, file_name, replace=False, file_type='NEWLINE_DELIMITED_JSON'):

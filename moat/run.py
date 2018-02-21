@@ -43,7 +43,7 @@ def moat():
     rows = rows_to_type(rows)
     rows = moat_filter(rows)
 
-    rows = rows_print(rows, 0, 1)
+    rows = rows_print(rows, 0, 100)
 
     print 'MOAT Filename:', attachment[0]
     put_files(project.task['auth'], project.task['out'], attachment[0], rows_to_csv(rows))

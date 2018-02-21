@@ -22,7 +22,6 @@ from util.sheets import sheets_tab_create, sheets_read, sheets_tab_copy
 from util.bigquery import get_schema, query_to_view
 from util.csv import rows_to_type, rows_to_csv
 
-# read only template shared as a part of this solution
 TEMPLATE_SHEET = 'https://docs.google.com/spreadsheets/d/1_faknNlaPlltLwsleMyQH0Gis5ixJODLGJHLovY3Ycg/edit?usp=sharing'
 TEMPLATE_TAB = 'Mapping'
 RE_SQLINJECT = re.compile(r'[^a-z0-9_\-, ]+', re.UNICODE|re.IGNORECASE)
