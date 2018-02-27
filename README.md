@@ -9,10 +9,12 @@ A collection of libraries, scripts, and json workflow definitions that allow you
 
 *Directory structure:*
 
+``` shell
 util/ - holds all the python libraries used by the framework.
 projects/ - holds custom workflow json used to define and exectute tasks.
 solutions/ - holds workflow templates that can be re-used using solution/run.py.
 script_[name].json - holds the json that can be used with that script.
+```
 
 ## How do I use it?
 
@@ -75,13 +77,17 @@ cp project/sample/solution.json project/[your folder]/[project name].json
 vi project/[your folder]/[project name].json
 ```
 
-2. Then use the solution to generate workflow scripts for each template.
+2. After editing run the solution script to generate workflow scripts for each template.
 
+``` shell
 python solution/run.py project/[your folder]/[project name].json [folder to put scripts]
+```
 
-3. Then run each solution workflow.
+3. Then run each solution workflow like a project.
 
+``` shell
 python all/run.py [folder to put scripts]/[project name]_[solution].json --verbose --force
+```
 
 ## Where can I learn more?
 
