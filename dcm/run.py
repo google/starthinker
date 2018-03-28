@@ -49,7 +49,7 @@ def dcm():
       project.task['report']['account_id'],
       project.task['report'].get('report_id', None),
       project.task['report'].get('name', None),
-      project.task['report'].get('timeout', 60),
+      project.task['report'].get('timeout', 10),
       DCM_CHUNKSIZE
     )
 

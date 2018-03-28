@@ -53,7 +53,8 @@ def sheets():
         schema = project.task['out']['bigquery']['schema']
       # NOT RECOMMENDED: determine schema if missing 
       else:
-        rows, schema = get_schema(rows, project.task.get('header', False))
+        rows, schema = get_schema(rows, project.task.get('header', False), infer_type=project.task.get('infer_type', True))
+        print schema
 
       # write to table ( not using put bcause no use cases for other destinations )
       csv_to_table(

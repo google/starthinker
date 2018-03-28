@@ -1,0 +1,21 @@
+{
+  "constants":{
+    "name":"Test",
+    "token":"123testabc",
+    "timezone":"America/Los_Angeles",
+    "email":"kenjora@google.com",
+    "dbm_accounts":["849131"],
+    "dcm_accounts":["5778:4448053"],
+    "ds_accounts":[],
+    "sheet":"https://docs.google.com/spreadsheets/d/1h-Ic-DlCv-Ct8-k-VJnpo_BAkqsS70rNe0KKeXKJNx0/edit#gid=0",
+    "emails":"",
+    "groups":""
+  },
+  "templates":[
+    "solutions/audience_mapper.json",
+    "solutions/deal_finder.json",
+    "solutions/pacing.json",
+    "solutions/sov_dbm.json",
+    "solutions/sov_dcm.json"
+  ]
+}

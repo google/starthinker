@@ -29,12 +29,20 @@ from datetime import date, timedelta
 
 from googleapiclient.errors import HttpError
 
+from setup import INTERNAL_MODE, EXECUTE_PATH
 from util.project import project
 from util.auth import get_service
 from util.storage import media_download
 
 
-API_VERSION = 'v3.0'
+if INTERNAL_MODE:
+  # fetch discovery uri using: wget https://www.googleapis.com/discovery/v1/apis/dfareporting/internalv3.0/rest > util/dcm/internalv30_uri.json
+  API_VERSION = 'internalv3.0'
+  API_URI = '%sutil/dcm/internalv30_uri.json' % EXECUTE_PATH
+else:
+  API_VERSION = 'v3.0'
+  API_URI = None
+
 DCM_CHUNKSIZE = 200 * 1024 * 1024 # 200MB recommended by docs
 RE_HUMAN = re.compile('[^0-9a-zA-Z]+')
 
@@ -58,11 +66,19 @@ def _retry(job, retries=10, wait=5):
 
 
 def get_profile_id(auth, account_id):
-  service = get_service('dfareporting', API_VERSION, auth)
+  service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
   for p in _retry(service.userProfiles().list())['items']:
     #print p
-    if p['accountId'] == account_id: return  p['profileId']
+    if INTERNAL_MODE: return p['profileId']
+    elif int(p['accountId']) == account_id: return  p['profileId']
   raise Exception('Add your user profile to DCM account %s.' % account_id)
+
+
+def get_account_name(auth, account_id):
+  account_id, subaccount_id, profile_id = parse_account(auth, account_id)
+  service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
+  response = _retry(service.accounts().get(id=account_id, profileId=profile_id))
+  return response["name"]
 
 
 # if id has a sub account in the form of [account_id:subaccount_id@profile_id] then split them
@@ -77,7 +93,7 @@ def parse_account(auth, account_id):
   try: a_id, s_id = a_id.split(':', 1)
   except: pass
 
-  if p_id is None: p_id = get_profile_id(auth, a_id)
+  if p_id is None: p_id = get_profile_id(auth, int(a_id))
 
   return a_id, s_id, p_id
 
@@ -137,22 +153,22 @@ def get_body_standard(report, advertiser=None):
 
 def report_get(auth, account_id, report_id = None, name=None):
   account_id, subaccount_id, profile_id = parse_account(auth, account_id)
-  service = get_service('dfareporting', API_VERSION, auth)
+  service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
   report = None
 
   if name:
     next_page = None
     while next_page != '' and report is None:
-      #response = _retry(service.reports().list(accountId=account_id, profileId=profile_id, pageToken=next_page))
-      response = _retry(service.reports().list(profileId=profile_id, pageToken=next_page))
+      if INTERNAL_MODE: response = _retry(service.reports().list(accountId=account_id, profileId=profile_id, pageToken=next_page))
+      else: response = _retry(service.reports().list(profileId=profile_id, pageToken=next_page))
       next_page = response['nextPageToken']
       for r in response['items']:
         if r['name'] == name: 
           report = r
           break
   elif report_id:
-    #response = _retry(service.reports().get(accountId=account_id, profileId=profile_id, reportId=report_id))
-    response = _retry(service.reports().get(profileId=profile_id, reportId=report_id))
+    if INTERNAL_MODE: response = _retry(service.reports().get(accountId=account_id, profileId=profile_id, reportId=report_id))
+    else: response = _retry(service.reports().get(profileId=profile_id, reportId=report_id))
     pprint.PrettyPrinter().pprint(response)
     
   return report
@@ -162,9 +178,9 @@ def report_delete(auth, account_id, report_id = None, name=None):
   account_id, subaccount_id, profile_id = parse_account(auth, account_id)
   report = report_get(auth, account_id, report_id, name)
   if report:
-    service = get_service('dfareporting', API_VERSION, auth)
-    #_retry(service.reports().delete(accountId=account_id, profileId=profile_id, reportId=report['id']))
-    _retry(service.reports().delete(profileId=profile_id, reportId=report['id']))
+    service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
+    if INTERNAL_MODE: _retry(service.reports().delete(accountId=account_id, profileId=profile_id, reportId=report['id']))
+    else: _retry(service.reports().delete(profileId=profile_id, reportId=report['id']))
   else:
     if project.verbose: print 'DCM DELETE: No Report'
 
@@ -174,7 +190,7 @@ def report_create(auth, account_id, name, config):
   report = report_get(auth, account_id, name=name)
 
   if report is None:
-    service = get_service('dfareporting', API_VERSION, auth)
+    service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
 
     body = { 
       'kind':'dfareporting#report',
@@ -209,12 +225,12 @@ def report_create(auth, account_id, name, config):
     #pprint.PrettyPrinter().pprint(body)
 
     # create the report
-    #report = _retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))
-    report = _retry(service.reports().insert(profileId=profile_id, body=body))
+    if INTERNAL_MODE: report = _retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))
+    else: report = _retry(service.reports().insert(profileId=profile_id, body=body))
 
     # run the report
-    #_retry(service.reports().run(accountId=account_id, profileId=profile_id, reportId=report['id']))
-    _retry(service.reports().run(profileId=profile_id, reportId=report['id']))
+    if INTERNAL_MODE: _retry(service.reports().run(accountId=account_id, profileId=profile_id, reportId=report['id']))
+    else: _retry(service.reports().run(profileId=profile_id, reportId=report['id']))
 
   return report
 
@@ -229,14 +245,15 @@ def report_fetch(auth, account_id, report_id=None, name=None, timeout = 60):
     #pprint.PrettyPrinter().pprint(report)
     report_id = report['id']
 
-  service = get_service('dfareporting', API_VERSION, auth)
+  service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
 
   while timeout >= 0: # allow zero to execute at least once
     # advance timeout first ( if = 0 then exit condition met but already in loop, if > 0 then will run into sleep )
     timeout -= 1
 
-    #response = _retry(service.reports().files().list(accountId=account_id, profileId=profile_id, reportId=report_id, maxResults=1))
-    response = _retry(service.reports().files().list(profileId=profile_id, reportId=report_id, maxResults=1))
+    if INTERNAL_MODE: response = _retry(service.reports().files().list(accountId=account_id, profileId=profile_id, reportId=report_id, maxResults=1))
+    else: response = _retry(service.reports().files().list(profileId=profile_id, reportId=report_id, maxResults=1))
+
     file = response['items'][0] if len(response['items']) > 0 else None
     #pprint.PrettyPrinter().pprint(file)
 
@@ -276,7 +293,7 @@ def report_file(auth, account_id, report_id=None, name=None, timeout=60, chunksi
   elif file == True:
     return 'report_running.csv', None
   else:
-    service = get_service('dfareporting', API_VERSION, auth)
+    service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
     filename = '%s_%s_%s.csv' % (file['reportId'] , file['id'], file['lastModifiedTime'])
 
     # streaming
@@ -290,10 +307,21 @@ def report_file(auth, account_id, report_id=None, name=None, timeout=60, chunksi
        
 def report_list(auth, account):
   account_id, subaccount_id, profile_id = parse_account(auth, account_id)
-  service = get_service('dfareporting', API_VERSION, auth)
+  service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
   next_page = None
   while next_page != '':
     response = _retry(service.reports().list(profileId=profile_id, pageToken=next_page))
+    next_page = response['nextPageToken']
+    for report in response['items']:
+      yield report
+
+
+def report_files(auth, account, report):
+  service = get_service('dfareporting', 'internalv2.7', auth)
+  profile = get_profile_id(auth, account)
+  next_page = None
+  while next_page != '':
+    response = _retry(service.reports().files().list(accountId=account, profileId=profile, reportId=report, pageToken=next_page))
     next_page = response['nextPageToken']
     for report in response['items']:
       yield report
@@ -349,3 +377,27 @@ def report_clean(rows, datastudio=False):
 
     # not first row anymore
     first = False
+
+
+#filed: encryptedUserId, encryptedUserIdCandidates[], gclid, mobileDeviceId
+def conversions_upload(auth, account_id, floodlight_activity_id, conversion_type, conversion_rows, encryption_entity=None):
+  account_id, subaccount_id, profile_id = parse_account(auth, account_id)
+
+  service = get_service('dfareporting', 'internalv2.7', auth)
+  if INTERNAL_MODE: response = _retry(service.floodlightActivities().get(accountId=account_id, profileId=profile_id, id=floodlight_activity_id))
+  else: response = _retry(service.floodlightActivities().get(profileId=profile_id, id=floodlight_activity_id))
+  
+  body = {
+    'conversions': [{
+      'floodlightActivityId': floodlight_activity_id,
+      'floodlightConfigurationId': response['floodlightConfigurationId'],
+      'ordinal': row[0],
+      'timestampMicros': row[1],
+      conversion_type: row[2],
+    } for row in conversion_rows],
+  }
+
+  if encryption_entity: body['encryptionInfo'] = encryption_entity
+
+  if INTERNAL_MODE: _retry(service.conversions().batchinsert(accountId=account_id, profileId=profile_id, body=body))
+  else: _retry(service.conversions().batchinsert(profileId=profile_id, body=request_body))

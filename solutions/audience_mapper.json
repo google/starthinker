@@ -2,6 +2,7 @@
   "solution":{
     "icon":"device_hub",
     "title":"Audience Mapper",
+    "open_source":"https://github.com/google/starthinker/blob/master/solutions/audience_mapper.json",
     "description":"Create custom audience mappings based on keywords.",
     "requirements":{
       "dbm":true,

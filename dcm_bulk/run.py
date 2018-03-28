@@ -20,7 +20,7 @@ from time import sleep
 
 from util.project import project 
 from util.data import put_files
-from util.dcm import report_delete, report_create, report_file, report_to_rows, report_clean
+from util.dcm import report_delete, report_create, report_file, report_to_rows, report_clean, get_account_name
 from util.csv import rows_column_add, rows_to_csv
 
 CHUNKSIZE = 200 * 1024 * 1024
@@ -66,6 +66,7 @@ def dcm(account_id, disposition):
       rows = report_to_rows(report)
       rows = report_clean(rows,  project.task.get('datastudio', False))
       rows = rows_column_add(rows, 'Account_Id', account_id)
+      rows = rows_column_add(rows, 'Account_Name', get_account_name(project.task['auth'], account_id))
       data = rows_to_csv(rows)
 
       # if BigQuery set to append ( storage will automatically file namespace )

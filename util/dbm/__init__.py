@@ -32,7 +32,7 @@ from googleapiclient.errors import HttpError
 
 from util.project import project
 from util.auth import get_service
-from util.bigquery import query, storage_to_table
+from util.bigquery import query_to_rows, storage_to_table
 from util.storage import object_get_chunks
 
 
@@ -58,7 +58,7 @@ def _retry(job, key=None, retries=10, wait=30):
         raise
 
 
-def _process_filters(partners, advertisers, filters, auth='user'):
+def _process_filters(partners, advertisers, filters, project_id, dataset_id, auth='user'):
   structures = []
 
   for p in (partners or []):
@@ -75,16 +75,21 @@ def _process_filters(partners, advertisers, filters, auth='user'):
 
   for f in (filters or []):
     if isinstance(f['value'], basestring) and f['value'].startswith('SELECT '):
-      # TODO: THIS VIOLATES THE RULE OF NO PROJECT REFERENCES HERE
-      # this is a complex job and it should really be a job ( audiencepro/run.py )
-      # inside that job consttruct the filters form the query, pass them into report_get already built
-      # then get the resulting report data
-      # thats how we avoid turning everything into spaghetti code ( its a way to keep things clean )
-      for item in query(f['value'], auth=auth):
-        structures.append({
-          'type':f['type'],
-          'value':item[0]
-        })
+
+      items = query_to_rows(auth, project_id, dataset_id, f['value'])
+
+      filtered = False
+      for item in items:
+        if item and len(item) != 0:
+          filtered = True
+          structures.append({
+            'type':f['type'],
+            'value':item[0]
+          })
+        else: break
+
+      if not filtered:
+        raise Exception('Select filter did not return any values: %s' % f['value'])
     else:
       structures.append({
         'type':f['type'],
@@ -119,12 +124,12 @@ def report_get(auth, report_id=None, name=None):
     return _retry(job)
 
 
-def report_create(auth, name, typed, partners, advertisers, filters, dimensions, metrics, data_range, timezone):
+def report_create(auth, name, typed, partners, advertisers, filters, dimensions, metrics, data_range, timezone, project_id=None, dataset_id=None):
   report = report_get(auth, name=name)
   #pprint.PrettyPrinter().pprint(report)
 
   # transform filters into DBM structures
-  filters = _process_filters(partners, advertisers, filters, auth=auth)
+  filters = _process_filters(partners, advertisers, filters, project_id, dataset_id, auth=auth)
 
   if report is None:
     if project.verbose: print 'DBM Report Create:', name
@@ -141,7 +146,7 @@ def report_create(auth, name, typed, partners, advertisers, filters, dimensions,
         'sendNotification': False,
       },
       'params': {
-        'filters': _process_filters(partners, advertisers, filters),
+        'filters': filters,
         'groupBys': dimensions or [
             'FILTER_DATE',
             'FILTER_ADVERTISER',
@@ -204,7 +209,7 @@ def report_fetch(auth, report_id=None, name=None, timeout = 4):
       # file exists ( return it success )
       else:
         return report['metadata']['googleCloudStoragePathForLatestReport']
-        
+
     # no report ( break out of loop it will never finish )
     else:
       if project.verbose: print 'DBM No Report'
@@ -239,7 +244,7 @@ def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = None)
       return filename, object_get_chunks(auth, path, chunksize)
 
     # single object
-    else: 
+    else:
       return filename, StringIO(urllib2.urlopen(storage_path).read())
 
 
@@ -290,10 +295,10 @@ def report_clean(rows, datastudio=False, nulls=False):
     if row == ['No data returned by the reporting service.']: break
 
     # stop at blank row ( including sum row )
-    if not row or row[0] is None or row[0] == '': break  
+    if not row or row[0] is None or row[0] == '': break
 
     # find 'Date' column if it exists
-    if first: 
+    if first:
       try: date = row.index('Date')
       except ValueError: pass
       if datastudio: row = [RE_HUMAN.sub('_', column) for column in row]

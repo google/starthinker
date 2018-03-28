@@ -31,8 +31,7 @@ from util.storage import parse_filename, parse_path, makedirs_safe, object_get, 
 from util.regexp import parse_yyyymmdd, parse_dbm_report_id
 from util.email import get_email_attachments, get_email_links, get_email_messages
 
-from util.bigquery import local_file_to_table, datasets_create, csv_to_table
-from util.bigquery.file_processor import FileProcessor
+from util.bigquery import datasets_create, csv_to_table, field_list_to_schema
 
 from util.sheets import sheets_write, sheets_clear
 
@@ -140,14 +139,13 @@ def put_files(auth, target, filename, data):
     else:
       reader = csv.reader(data)
       rows = [item for item in reader]
-      processor = FileProcessor()
 
       dataset = target['bigquery']['dataset']
       datasets_create(auth, project.id, dataset)
 
       table_name = target['bigquery']['table']
       replace = target['bigquery']['replace']
-      schema = processor.field_list_to_schema(rows[0])
+      schema = field_list_to_schema(rows[0])
       temp_file_name = '/tmp/%s' % str(uuid.uuid1())
       f = open(temp_file_name, 'w')
       writer = csv.writer(f)
@@ -157,8 +155,10 @@ def put_files(auth, target, filename, data):
       for row in rows[1:]: writer.writerow(row)
 
       f.close()
+      f = open(temp_file_name, 'rb')
 
-      local_file_to_table(auth, dataset, table_name, schema, temp_file_name, replace=replace, file_type='CSV')
+      csv_to_table(auth, project.id, dataset, table_name, f, schema, skip_rows=0, structure='CSV', disposition='WRITE_TRUNCATE')
+
       os.remove(temp_file_name)
 
   if 'trix' in target:

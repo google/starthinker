@@ -30,6 +30,7 @@ from oauth2client.file import Storage
 from oauth2client.service_account import ServiceAccountCredentials
 from google.cloud import bigquery, storage
 from google.oauth2.credentials import Credentials
+from googleapiclient.discovery_cache.base import Cache
 
 from util.project import project
 from util.auth.google_bucket_auth import BucketCredentials
@@ -50,7 +51,8 @@ SCOPES = [
   'https://www.googleapis.com/auth/dfatrafficking',
   'https://www.googleapis.com/auth/drive',
   'https://www.googleapis.com/auth/spreadsheets',
-  'https://www.googleapis.com/auth/doubleclicksearch'
+  'https://www.googleapis.com/auth/doubleclicksearch',
+  'https://www.googleapis.com/auth/content'
 ]
 SERVICE_CACHE = {}
 
@@ -86,17 +88,20 @@ def get_service_credentials(scopes=None):
   # if credentials are embeded as JSON ( used by ui )
   if project.configuration['setup']['auth'].get('source', 'local') == 'ui':
     return ServiceAccountCredentials.from_json_keyfile_dict(
-      json.loads(project.configuration['setup']['auth']['service']),
-      scopes or SCOPES)
+      json.loads(
+        project.configuration['setup']['auth']['service']), 
+        scopes or SCOPES
+      )
 
   # if credentials are local path then check if they exist ( used by command line )
   else:
     return ServiceAccountCredentials.from_json_keyfile_name(
       project.configuration['setup']['auth']['service'],
-      scopes or SCOPES)
+      scopes or SCOPES
+    )
 
 #auth = 'user' or 'service'
-def get_service(api='gmail', version='v1', auth='service', scopes=None):
+def get_service(api='gmail', version='v1', auth='service', scopes=None, uri_file=None):
   global SERVICE_CACHE # for some reason looking this up too frequently sometimes errors out
 
   # FIX: does not work in threads, need to add pool specifier to key?
@@ -104,7 +109,27 @@ def get_service(api='gmail', version='v1', auth='service', scopes=None):
   if key not in SERVICE_CACHE:
     credentials = get_service_credentials(scopes) if auth == 'service' else get_credentials()
     http = credentials.authorize(httplib2.Http())
-    service = discovery.build(api, version, http=http)
+
+    # if using alterante version ( for example internal )
+    if uri_file:
+      
+      class FakeCache(Cache):
+        buffer = {}
+        def get(self, url): return self.buffer[url]
+        def set(self, url, content): self.buffer[url] = content
+
+      # load local file ( not supported, so faking url to read from cache )
+      with open(uri_file, 'r') as cache_file:
+        uri = 'http://localhost/dummy'
+        cache = FakeCache()
+        cache.set(uri, cache_file.read())
+        service = discovery.build(api, version, http=http, discoveryServiceUrl=uri, cache_discovery=True, cache=cache)
+        
+    # normal call to default service version
+    else:
+
+      service = discovery.build(api, version, http=http)
+
     SERVICE_CACHE[key] = service
 
   return SERVICE_CACHE[key]

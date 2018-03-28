@@ -65,7 +65,8 @@ def report_ready(service, report_id):
   report_running = True
 
   files = []
-  while report_running:
+  tries = 60 #try for 1 hour to check the report
+  while report_running and tries > 0:
     report = service.reports().get(reportId=report_id).execute()
 
     if report['isReportReady']:
@@ -73,9 +74,9 @@ def report_ready(service, report_id):
       report_running = False
       files = report['files']
     else:
-      #TODO watchdog
+      tries -= 1
       if project.verbose: print 'Wait For DS Report'
-      sleep(10)
+      sleep(60)
   
   return files 
 
@@ -115,7 +116,7 @@ def report_get(auth, title, template_name='standard.json', parameters={}, day=da
       for ids in parameters['ids']:
         pair = ids.split(':')
         parameters['agencyId'] = pair[0]
-        if len(items) == 2:
+        if len(pair) == 2:
           parameters['advertiserId'] = pair[1]
         report_ids.append(report_request(auth, title, template_name, parameters, day))
     for report_id in report_ids:

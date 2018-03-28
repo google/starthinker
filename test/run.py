@@ -18,7 +18,7 @@
 
 import pprint
 from util.project import project
-from util.bigquery import table_to_schema, table_to_rows
+from util.bigquery import table_to_schema, table_to_rows, query_to_rows
 from util.sheets import sheets_read
 from util.csv import rows_to_type
 
@@ -55,7 +55,7 @@ def sheets():
 # check if bigquery table has given values or has data
 def bigquery():
 
-  # check schema if given
+  # check schema if given ( check independent of values )
   if 'schema' in project.task['bigquery']:
     schema = table_to_schema(
       project.task['auth'],
@@ -65,8 +65,19 @@ def bigquery():
     )
     object_compare(schema, { 'fields':project.task['bigquery']['schema'] })
 
-  # check values if given
-  if 'values' in project.task['bigquery']:
+  # if query given check it
+  if 'query' in project.task['bigquery']:
+    rows = query_to_rows(
+      project.task['auth'],
+      project.id,
+      project.task['bigquery']['dataset'],
+      project.task['bigquery']['query']
+    )
+
+    object_compare(sorted(rows), sorted(project.task['bigquery']['values']))
+
+  # simple table check ( unless query given )
+  elif 'table' in project.task['bigquery']:
     rows = table_to_rows(
       project.task['auth'],
       project.id,
@@ -74,7 +85,6 @@ def bigquery():
       project.task['bigquery']['table']
     )
 
-    rows = rows_to_type(rows)
     object_compare(sorted(rows), sorted(project.task['bigquery']['values']))
 
 

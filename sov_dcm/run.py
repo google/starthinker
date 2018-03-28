@@ -49,7 +49,7 @@ def sov_report(dcm_accounts, label):
       name,
       {
         "type":"STANDARD",
-        "relativeDateRange":"LAST_90_DAYS",
+        "relativeDateRange":"LAST_365_DAYS",
         "dimensions":["date", "month", "platformType", "creativeType", "state", "dmaRegion"],
         "metrics":["impressions"]
       }
@@ -197,15 +197,31 @@ def sov_process_peer(names):
   # CHECK: Mix must be right, make sure we've got obfuscated data ( trigger if no impressions or if percent mix is too high )
   mix_total = sum(sov_mix.values())
   mix_ratio_high = 50 
+  mix_count = 0
+  warnings = []
+  errors = []
 
   for account, impressions in sov_mix.items():
     percent = (100 * impressions) / mix_total
-    if project.verbose: print 'EXPECTED MIX %d%%  ACTUAL MIX: %s %d%%' % (mix_ratio_high, account, percent)
+    if project.verbose: print 'EXPECTED MIX %d%% ACTUAL MIX: %s %d%%' % (mix_ratio_high, account, percent)
 
-    if impressions == 0:
-      raise Exception('Advertiser %s has no impressions, change it out!' % account)
-    elif percent > mix_ratio_high:
-      raise Exception('Advertiser %s has too much weight %d%%, expected under %d%%, add other big peers!' % (account, percent, mix_ratio_high))
+    # check impression minimums ( track number of valid peers for 5 required ), empty peers are warnings until required
+    if impressions > 0: 
+      mix_count += 1
+    else: 
+      warnings.append('Advertiser %s has no impressions, change it out!' % account)
+
+    # check for peer mix, any violation is immeditely an error
+    if percent > mix_ratio_high:
+      errors.append('Advertiser %s has too much weight %d%%, expected under %d%%, add other big peers!' % (account, percent, mix_ratio_high))
+
+  # check if enough peers ( ignore peers without impressions until it affects the required minimum )
+  if mix_count < 5:
+    errors.extend(warnings)
+    errors.append('Need at least 5 DCM accounts with impressions to ensure anonymity!')
+
+  # raise all errors at once so user can clean up multiple errors at once
+  if errors: raise Exception('\n'.join(errors))
 
   # return only row values, hash key no longer necessary
   return sov_rows.values()
@@ -231,5 +247,5 @@ def sov():
   )
 
 if __name__ == "__main__":
-  project.load('sov')
+  project.load('sov_dcm')
   sov()

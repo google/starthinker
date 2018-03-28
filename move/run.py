@@ -20,10 +20,13 @@
 
 import uuid
 import os
+import csv
 
 from util.project import project
-from util.bigquery import query_to_table, query_to_view, query_to_local_file, storage_to_table, query
-from util.trix import trix_update
+from util.bigquery import query_to_table, query_to_view, storage_to_table, query_to_rows
+from util.csv import rows_to_type
+from util.sheets import sheets_clear
+from util.sheets import sheets_write
 from util.storage import object_put
 
 # loop all parameters and replace with values, for lists turn them into strings
@@ -49,26 +52,32 @@ def move():
         disposition = project.task['write_disposition'] if 'write_disposition' in project.task else 'WRITE_TRUNCATE',
         use_legacy_sql=project.task['from']['useLegacySql'] if 'useLegacySql' in project.task['from'] else True
       )
+    # NOT USED SO RIPPING IT OUT
+    # Mauriciod: Yes, it is used, look at project/mauriciod/target_winrate.json
     elif 'storage' in project.task['to']:
-      temp_file_name = str(uuid.uuid1()) + '.csv'
       if project.verbose: print "QUERY TO STORAGE", project.task['to']['storage']
-      query_to_local_file(
-        project.task['auth'],
-        project.task['from']['query'],
-        temp_file_name,
-        use_legacy_sql=project.task['from']['useLegacySql'] if 'useLegacySql' in project.task['from'] else True
-      )
-      object_put(project.task['auth'], project.task['to']['storage'], open(temp_file_name))
-      os.remove(temp_file_name)
-    elif 'trix' in project.task['to']:
-      result = query(project.task['from']['query'])
+      local_file_name = '/tmp/%s' % str(uuid.uuid1())
+      rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'])
 
-      trix_update(
-        project.task['auth'],
-        project.task['to']['trix'],
-        project.task['to']['range'],
-        {'values': [line for line in [column for column in [row for row in result]]]},
-        clear=True)
+      f = open(local_file_name, 'wb')
+      writer = csv.writer(f)
+      writer.writerows(rows)
+      f.close()
+
+      f = open(local_file_name, 'rb')
+      object_put(project.task['auth'], project.task['to']['storage'], f)
+      f.close()
+
+      os.remove(local_file_name)
+    elif 'trix' in project.task['to']:
+      if project.verbose: print "QUERY TO SHEET", project.task['to']['trix']
+      rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'])
+
+      # makes sure types are correct in sheet
+      rows = rows_to_type(rows)
+
+      sheets_clear(project.task['auth'], project.task['to']['trix'], project.task['to']['range'].split('!')[0], project.task['to']['range'].split('!')[1])
+      sheets_write(project.task['auth'], project.task['to']['trix'], project.task['to']['range'].split('!')[0], project.task['to']['range'].split('!')[1], rows)
     else:
       if project.verbose: print "QUERY TO VIEW", project.task['to']['view']
       query_to_view(

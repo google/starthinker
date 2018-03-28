@@ -47,6 +47,31 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+def field_list_to_schema(field_list):
+  result = []
+  field_names = []
+
+  for field in field_list:
+    field_name = re.sub(r'[ \=\:\-\/\(\)\+\&\%]', '_', field.strip())
+
+    suffix = ''
+    ct = 0
+    while field_name + suffix in field_names:
+      ct += 1
+      suffix = '_' + str(ct)
+
+    field_name += suffix
+    field_names.append(field_name)
+
+    result.append({
+        'name': field_name,
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    })
+
+  return result
+
+
 def bigquery_date(value):
   return value.strftime('%Y%m%d')
 
@@ -129,7 +154,7 @@ def datasets_create(auth, project_id, dataset_id):
 
   body = {
     "description":dataset_id,
-    "datasetReference": { 
+    "datasetReference": {
       "projectId":project_id,
       "datasetId":dataset_id,
     },
@@ -201,15 +226,16 @@ def datasets_access(auth, project_id, dataset_id, role='READER', emails=[], grou
 #    sleep(1)
 
 
-def query_to_local_file(auth, sql, local_file_name, use_legacy_sql=True):
-  result = query(sql, use_legacy_sql)
-  out_file = open(local_file_name, 'w')
-  out = csv.writer(out_file)
-
-  for row in result:
-    out.writerow(row)
-
-  out_file.close()
+# NOT USED SO RIPPING IT OUT, use util.sheets.query_to_rows and util.storage.object_put instead
+#def query_to_local_file(auth, sql, local_file_name, use_legacy_sql=True):
+#  result = query(sql, use_legacy_sql)
+#  out_file = open(local_file_name, 'w')
+#  out = csv.writer(out_file)
+#
+#  for row in result:
+#    out.writerow(row)
+#
+#  out_file.close()
 
 
 def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='WRITE_TRUNCATE', use_legacy_sql=True):
@@ -245,13 +271,13 @@ def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='W
 
 def query_to_view(auth, project_id, dataset_id, view_id, query, legacy=True, replace=False):
   service = get_service('bigquery', 'v2', auth)
-  
+
   body={
     'tableReference': {
       'projectId':project_id,
       'datasetId':dataset_id,
       'tableId':view_id,
-    }, 
+    },
     'view': {
       'query':query,
       'useLegacySql':legacy
@@ -286,22 +312,22 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
           'projectId': project_id,
           'datasetId': dataset_id,
           'tableId': table_id,
-        }, 
+        },
         'sourceFormat': 'NEWLINE_DELIMITED_JSON',
         'writeDisposition': disposition,
         'autodetect': True,
         'ignoreUnknownValues':True,
         'sourceUris': [
           'gs://%s' % path.replace(':', '/'),
-        ], 
+        ],
       }
-    } 
+    }
   }
 
   if schema:
     body['configuration']['load']['schema'] = { 'fields':schema }
     body['configuration']['load']['autodetect'] = False
-    
+
   if structure == 'CSV':
     body['configuration']['load']['sourceFormat'] = 'CSV'
     body['configuration']['load']['skipLeadingRows'] = skip_rows
@@ -315,38 +341,65 @@ def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_r
 
   service = get_service('bigquery', 'v2', auth)
 
-  body = {
-    'configuration': {
-      'load': {
-        'destinationTable': {
-          'projectId': project_id,
-          'datasetId': dataset_id,
-          'tableId': table_id,
-        },
-        'sourceFormat': 'NEWLINE_DELIMITED_JSON',
-        'writeDisposition': disposition,
-        'autodetect': True,
-        'ignoreUnknownValues': True,
+  def getSize(fileObject):
+    fileObject.seek(0,2)
+    retVal = fileObject.tell()
+    return retVal
+
+  if(getSize(data) > 0):
+    media = MediaIoBaseUpload(data, mimetype='application/octet-stream', resumable=True, chunksize= 100 * 1024000) # 100MB
+
+
+    body = {
+      'configuration': {
+        'load': {
+          'destinationTable': {
+            'projectId': project_id,
+            'datasetId': dataset_id,
+            'tableId': table_id,
+          },
+          'sourceFormat': 'NEWLINE_DELIMITED_JSON',
+          'writeDisposition': disposition,
+          'autodetect': True,
+          'ignoreUnknownValues': True,
+        }
       }
     }
-  }
 
-  if schema:
-    body['configuration']['load']['schema'] = { 'fields':schema }
-    body['configuration']['load']['autodetect'] = False
-    
-  if structure == 'CSV':
-    body['configuration']['load']['sourceFormat'] = 'CSV'
-    body['configuration']['load']['skipLeadingRows'] = skip_rows
+    if schema:
+      body['configuration']['load']['schema'] = { 'fields':schema }
+      body['configuration']['load']['autodetect'] = False
 
-  media = MediaIoBaseUpload(data, mimetype='application/octet-stream', resumable=True, chunksize= 100 * 1024000) # 100MB
-  job = service.jobs().insert(projectId=project_id, body=body, media_body=media)
-  response = None
-  while response is None:
-    status, response = job.next_chunk()
-    if project.verbose and status: print "Uploaded %d%%." % int(status.progress() * 100)
-  if project.verbose: print "Uploaded 100%."
-  job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
+    if structure == 'CSV':
+      body['configuration']['load']['sourceFormat'] = 'CSV'
+      body['configuration']['load']['skipLeadingRows'] = skip_rows
+    #print 'BODY', body
+
+    job = service.jobs().insert(projectId=project_id, body=body, media_body=media)
+    response = None
+    while response is None:
+      status, response = job.next_chunk()
+      if project.verbose and status: print "Uploaded %d%%." % int(status.progress() * 100)
+    if project.verbose: print "Uploaded 100%."
+    job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
+
+  else:
+    try:
+      service.tables().delete(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute(num_retries=BIGQUERY_RETRIES)
+      print 'APR table exists. deleting current table...'
+    except:
+      print 'APR table does not exist. creating empty table...'
+    body = {
+      "tableReference": {
+        "projectId": project_id,
+        "datasetId": dataset_id,
+        "tableId": table_id
+      },
+      "schema": {
+        "fields": schema
+      }
+    }
+    service.tables().insert(projectId=project_id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
 
 
 def tables_get(auth, project_id, name):
@@ -360,10 +413,11 @@ def table_to_rows(auth, project_id, dataset_id, table_id, fields=None, row_start
   service = get_service('bigquery', 'v2', auth)
   next_page = None
   while next_page != '':
-    response = _retry(service.tabledata().list(projectId=project_id, datasetId=dataset_id, tableId=table_id, selectedFields=fields, startIndex=row_start, maxResults=row_max, pageToken=next_page))
+    response = service.tabledata().list(projectId=project_id, datasetId=dataset_id, tableId=table_id, selectedFields=fields, startIndex=row_start, maxResults=row_max, pageToken=next_page).execute()
     next_page = response.get('PageToken', '')
+    converters = _build_converter_array(table_to_schema(auth, project_id, dataset_id, table_id), fields, len(response['rows'][0].get('f')))
     for row in response['rows']:
-      yield [r.values()[0] for r in row['f']] # may break if we attempt nested reads
+      yield [converters[i](r.values()[0]) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
 
 
 def table_to_schema(auth, project_id, dataset_id, table_id):
@@ -371,6 +425,41 @@ def table_to_schema(auth, project_id, dataset_id, table_id):
   service = get_service('bigquery', 'v2', auth)
   response = _retry(service.tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id))
   return response['schema']
+
+
+def query_to_rows(auth, project_id, dataset_id, query, row_max=None, use_legacy_sql=True):
+  service = get_service('bigquery', 'v2', auth)
+
+  body = {
+    "kind": "bigquery#queryRequest",
+    "query": query,
+    "timeoutMs": 10000,
+    "dryRun": False,
+    "useQueryCache": True,
+    "useLegacySql": use_legacy_sql
+  }
+
+  if row_max: body['maxResults'] = row_max
+
+  if dataset_id:
+    body['defaultDataset'] = {
+      "projectId": project_id,
+      "datasetId": dataset_id
+    }
+
+  next_page = None
+  while next_page != '':
+    response = service.jobs().query(projectId=project_id, body=body).execute()
+    if 'rows' in response: #return empty array if there is no data
+      next_page = response.get('PageToken', '')
+      converters = _build_converter_array(response.get('schema', None), None, len(response['rows'][0].get('f')))
+      for row in response['rows']:
+        yield [converters[i](r.values()[0]) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
+
+    else:
+      yield None
+
+
 
 
 def list_to_table(rows, dataset, table_name, schema, replace=False):
@@ -400,48 +489,52 @@ def get_table(auth, dataset, table_name):
 
 # CAUTION: Memory suck. This function sabotages iteration by iterating thorough the new object and returning a new iterator
 # RECOMMEND: Define the schema yourself, it will also ensure data integrity downstream.
-def get_schema(rows, header=True):
+def get_schema(rows, header=True, infer_type=True):
 
   schema = []
   row_buffer = []
 
   # everything else defaults to STRING
-  type_to_bq = {int:'INTEGER', long:'INTEGER', bool:'BOOLEAN', float:'FLOAT'} 
+  type_to_bq = {int:'INTEGER', long:'INTEGER', bool:'BOOLEAN', float:'FLOAT'} if infer_type else {} # empty lookup defaults to STRING below
 
   # first non null value determines type
   non_null_column = set()
 
   first = True
+  ct_columns = 0
+
   for row in rows:
 
     # buffer the iterator to be returned with schema
+    row += [None] * (ct_columns - len(row))
     row_buffer.append(row)
 
     # define schema field names and set defaults ( if no header enumerate fields )
     if first:
-      for index, value in enumerate(row): 
-        schema.append({ "name":RE_SCHEMA.sub('_', value).strip('_') if header else 'Field_%d' % index, "type":"STRING" }) 
+      ct_columns = len(row)
+      for index, value in enumerate(row):
+        schema.append({ "name":RE_SCHEMA.sub('_', value).strip('_') if header else 'Field_%d' % index, "type":"STRING" })
 
     # then determine type of each column
-    if not first and header: 
+    if not first and header:
       for index, value in enumerate(row):
         # if null, set only mode
-        if value == '': 
+        if value == '':
           schema[index]['mode'] = 'NULLABLE'
         else:
           column_type = type_to_bq.get(type(value), 'STRING')
           # if type is set, check to make sure its consistent
           if index in non_null_column:
             # change type only if its inconsistent
-            if column_type != schema[index]['type']: 
+            if column_type != schema[index]['type']:
               # mixed integers and floats default to floats
               if column_type in ('INTEGER', 'FLOAT') and schema[index]['type'] in ('INTEGER', 'FLOAT'):
                 schema[index]['type'] = 'FLOAT'
               # any strings are always strings
-              else:       
+              else:
                 schema[index]['type'] = 'STRING'
           # if first non null value, then just set type
-          else: 
+          else:
             schema[index]['type'] = column_type
             non_null_column.add(index)
 
@@ -451,42 +544,69 @@ def get_schema(rows, header=True):
   return row_buffer, schema
 
 
-def local_file_to_table(auth, dataset, table_name, schema, file_name, replace=False, file_type='NEWLINE_DELIMITED_JSON'):
-  table = get_table(auth, dataset, table_name)
-
-  if replace and table.exists():
-    table.delete()
-
-  table.schema = schema
-
-  if not table.exists():
-    table.create()
-
-  job = table.upload_from_file(open(file_name, 'rb'), file_type)
-
-  while job.state != 'DONE':
-    if project.verbose: print 'BigQuery load job status %s' % job.state
-    sleep(10)
-    job.reload()
-
-# TODO: Change variant to query_to_table(....)
-def query(query, dataset_name=None, use_legacy_sql=True, into_table=None, replace_append='APPEND', auth='user'):
-  client = get_client('bigquery', auth=auth)
-  if dataset_name: dataset = client.dataset(dataset_name)
-
-  if not into_table:
-    query = client.run_sync_query(query)
-    query.use_legacy_sql = use_legacy_sql
-    query.run()
-    return query.fetch_data()
+def _int_from_json(value):
+  if value:
+    return int(value)
   else:
-    table = dataset.table(name=into_table)
-    job = client.run_async_query(str(uuid.uuid1()), query)
-    job.destination = table
-    if replace_append == 'APPEND':
-      job.write_disposition = 'WRITE_APPEND'
-    elif replace_append == 'REPLACE':
-      job.write_disposition = 'WRITE_TRUNCATE'
-    job.allow_large_results = True
-    job.begin()
-    return None
+    return value
+
+
+def _float_from_json(value):
+  if value:
+    return float(value)
+  else:
+    return value
+
+
+_JSON_CONVERTERS = {
+  'INTEGER':  _int_from_json,
+  'INT64':  _int_from_json,
+  'FLOAT':  _float_from_json,
+  'FLOAT64': _float_from_json,
+  'BOOLEAN': lambda v: v,
+  'BOOL': lambda v: v,
+  'STRING': lambda v: v, #no conversion needed, adapt others as needed
+  'BYTES': lambda v: v,
+  'TIMESTAMP': lambda v: v,
+  'DATETIME': lambda v: v,
+  'DATE': lambda v: v,
+  'TIME': lambda v: v,
+  'RECORD': lambda v: v,
+}
+
+
+def _build_converter_array(schema, fields, col_count):
+  converters = []
+  if schema:
+    for field in schema['fields']:
+      if fields is None or field in fields:
+        converters.append(_JSON_CONVERTERS[field['type']])
+  else: 
+    #No schema so simply return the string as string
+    converters = [lambda v: v] * col_count
+  #print converters
+  return converters
+
+
+
+# TODO: Deprecated, use query_to_rows or query_to_table
+#def query(query, dataset_name=None, use_legacy_sql=True, into_table=None, replace_append='APPEND', auth='user'):
+#  client = get_client('bigquery', auth=auth)
+#  if dataset_name: dataset = client.dataset(dataset_name)
+#
+#  if not into_table:
+#    query = client.run_sync_query(query)
+#    query.use_legacy_sql = use_legacy_sql
+#    query.run()
+#    return query.fetch_data()
+#  else:
+#    table = dataset.table(name=into_table)
+#    job = client.run_async_query(str(uuid.uuid1()), query)
+#    job.destination = table
+#    if replace_append == 'APPEND':
+#      job.write_disposition = 'WRITE_APPEND'
+#    elif replace_append == 'REPLACE':
+#      job.write_disposition = 'WRITE_TRUNCATE'
+#    job.allow_large_results = True
+#    job.begin()
+#    return None

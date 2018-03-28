@@ -50,6 +50,7 @@ def ias():
       # loop through IAS sheets...
       for sheet, rows in excel_to_rows(data):
         
+        print 'SHEET:', sheet
         # if sheet is flagged for move...
         for s in project.task['sheets']:
           if s['sheet'] == sheet:
@@ -70,6 +71,7 @@ def ias():
             sheet_filename = parse_filename(sheet)
             filename = '%s/%s_%s_%d.csv' % (sheet_filename, sheet_filename, str(report_date), counter)
             if counter > 1: s['out']['bigquery']['disposition'] = 'WRITE_APPEND' # if mutliple reports then make sure to append, ONLY WORKS FOR BQ
+            print 'PUTTING'
             put_files(project.task['auth'], s['out'], filename, data)
             counter += 1 # count the number of reports to keep them seperate
 

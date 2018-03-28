@@ -58,7 +58,7 @@ def sov_report(dbm_accounts, label):
     [],
     ['FILTER_ADVERTISER', 'FILTER_DATE', 'FILTER_MONTH', 'FILTER_MOBILE_DEVICE_TYPE', 'FILTER_CREATIVE_TYPE', 'FILTER_REGION', 'FILTER_CITY'],
     ['METRIC_IMPRESSIONS'],
-    'LAST_30_DAYS',
+    'LAST_365_DAYS',
     project.configuration['setup']['timezone']
   )
 
@@ -76,8 +76,8 @@ def sov_create_reports():
   rows = sheets_read(project.task['auth'], project.task['sheet']['url'], project.task['sheet']['template']['tab'], project.task['sheet']['range'])
 
   # CHECK: If minimum number of peers met ( prevents creation of reports )
-  if len(rows) < 6:
-    raise Exception('Need at least 6 DBM accounts in the sheet to ensure anonymity!')
+  if len(rows) < 5:
+    raise Exception('Peer sheet needs 5+ DBM entries to ensure anonymity, there are %d!' % len(rows))
   
   # create a report for the peers ( given in sheet ), make partner_id:advertiser_id
   peer_name = sov_report([('%s:%s' % (r[0], r[1])) if r[1] else r[0] for r in rows], 'Peer')
@@ -143,6 +143,9 @@ def sov_process_client(report_name):
 def sov_process_peer(report_name):
   sov_rows = {}
   sov_mix = {}
+  mix_ratio_high = 50
+  warnings = []
+  errors = []
 
   # Download DBM report: ['Advertiser', 'Advertiser ID', 'Advertiser Status', 'Advertiser Integration Code', 'Date', 'Month', 'Device Type', 'Creative Type', 'Region', 'Region ID', 'City', 'City ID', 'Impressions']
   #                        0             1                2                    3                              4       5        6              7                8         9            10      11         12
@@ -167,7 +170,7 @@ def sov_process_peer(report_name):
       key = ''.join(row[4:-1]) # Everything except impressions
 
       # track advertiser level mix
-      sov_mix[row[0]] = sov_mix.get(row[0], 0) + long(row[12])
+      sov_mix[row[1]] = sov_mix.get(row[1], 0) + long(row[12])
 
       # if peer is in sov, then just add the impressions
       if key in sov_rows:
@@ -189,20 +192,23 @@ def sov_process_peer(report_name):
 
     # CHECK: Mix must be right, make sure we've got obfuscated data, no peer has more than 50% 
     mix_total = sum(sov_mix.values())
-    mix_ratio_high = 50
-
-    if len(sov_mix.keys()) < 6:
-      raise Exception('Need at least 6 DBM accounts in the sheet to ensure anonymity!')
 
     for account, impressions in sov_mix.items():
       percent = (100 * impressions) / mix_total
-      if project.verbose: print 'EXPECTED MIX %d%%  ACTUAL MIX: %s %d%%' % (mix_ratio_high, account, percent)
+      if project.verbose: print 'EXPECTED MIX %d%% ACTUAL MIX: %s %d%%' % (mix_ratio_high, account, percent)
 
       if impressions == 0: 
-        raise Exception('Advertiser %s has no impressions, change it out!' % account)
+        warnings.append('Warning advertiser %s has no impressions.' % account)
       elif percent > mix_ratio_high:
-        raise Exception('Advertiser %s has too much weight %d%%, expected under %d%%, add other big peers!' % (account, percent, mix_ratio_high))
+        errors.append('Advertiser %s has too much weight %d%%, expected under %d%%, add other big peers!' % (account, percent, mix_ratio_high))
 
+    if len(sov_mix.keys()) < 5:
+      errors.extend(warnings)
+      errors.append('Need at least 5 DBM advertisers with impressions to ensure anonymity!')
+  
+    # raise all errors at once so user can clean up multiple errors at once
+    if errors: raise Exception('\n'.join(errors))
+  
   else:
     if project.verbose: print 'SOV REPORT NOT READY YET'
 

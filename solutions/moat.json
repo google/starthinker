@@ -4,6 +4,7 @@
     "title":"Third Party MOAT Report",
     "image":"https://storage.googleapis.com/starthinker-ui/third_party_moat_report.png",
     "sample":"https://datastudio.google.com/open/1TIs6QweUTg8QaL830no-SSwUZ5anYKxb",
+    "open_source":"https://github.com/google/starthinker/blob/master/solutions/moat.json",
     "description":"Import MOAT and DBM data into a BigQuery table and connect to dashboard.",
     "requirements":{
       "dbm":true,

@@ -17,15 +17,39 @@
 ###########################################################################
 
 # https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets#SheetProperties
+import re
+import time
 
 from util.auth import get_service
 from util.project import project
+from googleapiclient.errors import HttpError
+
+
+def _retry(job, key=None, retries=10, wait=30):
+  try:
+    data = job.execute()
+    #pprint.PrettyPrinter().pprint(data)
+    return data if not key else data.get(key, [])
+  except HttpError, e:
+    if project.verbose: print str(e)
+    if e.resp.status in [403, 409, 429, 500, 503]:
+      if retries > 0:
+        time.sleep(wait)
+        return _retry(job, key, retries - 1, wait * 2)
+      elif json.loads(e.content)['error']['code'] == 409:
+        pass  # already exists ( ignore )
+      else:
+        raise
 
 
 def sheets_id(url):
-  # make this better with a regexp
-  #https://docs.google.com/spreadsheets/d/1uN9tnb-DZ9zZflZsoW4_34sf34tw3ff/edit#gid=4715
-  return url.split('/')[5]
+  # url is url like 
+  # https://docs.google.com/spreadsheets/d/1uN9tnb-DZ9zZflZsoW4_34sf34tw3ff/edit#gid=4715
+  # or directly only id as 1uN9tnb-DZ9zZflZsoW4_34sf34tw3ff
+  m = re.search('^(?:https:\/\/docs.google.com\/spreadsheets\/d\/)?([a-zA-Z0-9-_]+)(?:\/.*)?$', url)
+  if m:
+    return m.group(1)
+  return ''
 
 
 def sheets_tab_range(sheet_tab, sheet_range):
@@ -36,7 +60,7 @@ def sheets_tab_range(sheet_tab, sheet_range):
 def sheets_get(auth, sheet_url):
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
-  return service.spreadsheets().get(spreadsheetId=sheet_id).execute()
+  return _retry(service.spreadsheets().get(spreadsheetId=sheet_id))
   
 
 def sheets_tab_id(auth, sheet_url, sheet_tab):
@@ -51,7 +75,7 @@ def sheets_read(auth, sheet_url, sheet_tab, sheet_range):
   if project.verbose: print 'SHEETS READ', sheet_url, sheet_tab, sheet_range
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
-  return service.spreadsheets().values().get(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range)).execute().get('values', [])
+  return _retry(service.spreadsheets().values().get(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range)), 'values')
 
 
 # TIP: Specify sheet_range as 'Tab!A1' coordinate, the API will figure out length and height based on data
@@ -61,16 +85,16 @@ def sheets_write(auth, sheet_url, sheet_tab, sheet_range, data, valueInputOption
   sheet_id = sheets_id(sheet_url)
   range = sheets_tab_range(sheet_tab, sheet_range)
   body = {
-    "values": data
+    "values": list(data)
   }
-  service.spreadsheets().values().update(spreadsheetId=sheet_id, range=range, body=body, valueInputOption=valueInputOption).execute()
+  _retry(service.spreadsheets().values().update(spreadsheetId=sheet_id, range=range, body=body, valueInputOption=valueInputOption))
 
 
 def sheets_clear(auth, sheet_url, sheet_tab, sheet_range):
   if project.verbose: print 'SHEETS CLEAR', sheet_url, sheet_tab, sheet_range
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
-  service.spreadsheets().values().clear(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range), body={}).execute()
+  _retry(service.spreadsheets().values().clear(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range), body={}))
 
 
 def sheets_tab_copy(auth, from_sheet_url, from_sheet_tab, to_sheet_url, to_sheet_tab):
@@ -84,9 +108,9 @@ def sheets_tab_copy(auth, from_sheet_url, from_sheet_tab, to_sheet_url, to_sheet
   # overwrite only if does not exist ( PROTECTION )
   if to_tab_id is None:
     # copy tab between sheets ( seriously, the name changes to be "Copy of [from_sheet_tab]" )
-    request = service.spreadsheets().sheets().copyTo(spreadsheetId=from_sheet_id, sheetId=from_tab_id, body={
+    request = _retry(service.spreadsheets().sheets().copyTo(spreadsheetId=from_sheet_id, sheetId=from_tab_id, body={
       "destinationSpreadsheetId": to_sheet_id,
-    }).execute()
+    }))
 
     # change the name back ( remove "Copy of " )
     sheets_tab_rename(auth, to_sheet_url, 'Copy of %s' % from_sheet_tab, to_sheet_tab)
@@ -95,7 +119,13 @@ def sheets_tab_copy(auth, from_sheet_url, from_sheet_tab, to_sheet_url, to_sheet
 def sheets_batch_update(auth, sheet_url, data):
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
-  service.spreadsheets().batchUpdate(spreadsheetId=sheet_id, body=data).execute()
+  _retry(service.spreadsheets().batchUpdate(spreadsheetId=sheet_id, body=data))
+
+
+def sheets_values_batch_update(auth, sheet_url, data):
+  service = get_service('sheets', 'v4', auth)
+  sheet_id = sheets_id(sheet_url)
+  _retry(service.spreadsheets().values().batchUpdate(spreadsheetId=sheet_id, body=data))
 
 
 def sheets_tab_create(auth, sheet_url, sheet_tab):

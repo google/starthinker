@@ -27,7 +27,7 @@ from io import BytesIO
 
 from util.project import project
 from util.storage import object_get_chunks
-from util.bigquery import local_file_to_table, datasets_create, csv_to_table
+from util.bigquery import datasets_create, csv_to_table
 from entity.schema import Entity_Schema_Lookup
 
 CHUNK_SIZE = 1024000 * 200  # 200 MB

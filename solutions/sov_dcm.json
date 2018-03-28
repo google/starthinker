@@ -5,7 +5,7 @@
     "description":"Compare a client to 5 or more peers using impressions by region, market area, platform, and creative type.",
     "image":"https://storage.googleapis.com/starthinker-ui/share_of_voice.png",
     "sample":"https://datastudio.google.com/open/0B1dzmNeF4E-MZDNsR2Y2aGkxMk0",
-    "open_source":"http:///www.github.com",
+    "open_source":"https://github.com/google/starthinker/blob/master/solutions/sov_dcm.json",
     "requirements":{
       "dbm":false,
       "dcm":true,
@@ -58,11 +58,11 @@
       "emails":{ "constant":"emails" },
       "groups":{ "constant":"groups" }
     }},
-    { "sov":{
+    { "sov_dcm":{
       "auth":"user",
       "dcm_accounts":{ "constant":"dcm_accounts" },
       "sheet":{
-        "url":{ "constant":"sheet" },
+        "url":{ "constant":"trix" },
         "range":"A2:C",
         "template":{
           "url":"https://docs.google.com/spreadsheets/d/1ksi6d9aAlGBdMLzICUUxjG4JT8EDmJgzrDPf1M189do/edit?usp=sharing",

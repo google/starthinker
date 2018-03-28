@@ -48,7 +48,7 @@ python all/run.py project/sample/say_hello.json
 6. Configure project variables.
 
 ``` shell
-vi setup.sh
+vi setup.py
 ```
 
 ## Different Ways Of Running A Script

@@ -26,6 +26,7 @@ from third_party.xlsx import Workbook
 
 
 RE_HUMAN = re.compile('[^0-9a-zA-Z]+')
+INT_LIMIT = 9223372036854775807 # defined by BigQuery 64 bit mostly ( not system )
 
 def excel_to_rows(excel_bytes):
   book = Workbook(excel_bytes)
@@ -84,6 +85,14 @@ def rows_header_sanitize(rows):
   try: rows[0] = [RE_HUMAN.sub('', cell.replace(' ', '_')).strip('_') for cell in rows[0]]
   except: pass
   return rows
+
+
+def row_header_sanitize(row):
+  return [RE_HUMAN.sub('', cell.replace(' ', '_')).strip('_') for cell in row]
+
+
+def column_header_sanitize(cell):
+  return RE_HUMAN.sub('', cell.replace(' ', '_')).strip('_')
 
 
 def rows_percent_sanitize(rows):
@@ -149,12 +158,21 @@ def rows_to_type(rows, column=None):
   for row in rows:
     for index, value in enumerate(row):
       if column is None or column == index:
-        if value.isdigit():
-          row[index] = int(value)
-        elif '.' in value:
-          w, d = value.split('.', 1)
-          if w.isdigit() and d.isdigit():
-            row[index] = float(value)
+        # empty values are NULL ( avoid converting zero to null )
+        if isinstance(value, basestring):
+          if value == '':
+            row[index] = None
+          # all digits less than 64 bytes are integers
+          elif value.isdigit():
+            v = int(value)
+            if abs(v) <= INT_LIMIT : row[index] = v
+          # float probably needs a byte check
+          elif '.' in value:
+            w, d = value.split('.', 1)
+            if w.isdigit() and d.isdigit():
+              row[index] = float(value)
+        else:
+          row[index] = value
     yield row
 
 

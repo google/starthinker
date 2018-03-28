@@ -20,6 +20,7 @@
 #https://raw.githubusercontent.com/GoogleCloudPlatform/storage-file-transfer-json-python/master/chunked_transfer.py
 #https://cloud.google.com/storage/docs/json_api/v1/buckets/insert#try-it
 #https://cloud.google.com/storage/docs/json_api/v1/buckets/setIamPolicy
+#https://developers.google.com/resources/api-libraries/documentation/storage/v1/python/latest/index.html
 
 import os
 import errno
@@ -41,6 +42,23 @@ from util.auth import get_service, get_client
 
 CHUNKSIZE = 20 * 1024 * 1024
 RETRIES = 3
+
+
+def _retry(job, retries=10, wait=5):
+  try:
+    data = job.execute()
+    #pprint.PrettyPrinter().pprint(data)
+    return data
+  except HttpError, e:
+    if project.verbose: print str(e)
+    if e.resp.status in [403, 429, 500, 503]:
+      if retries > 0:
+        sleep(wait)
+        if project.verbose: print 'RETRY', retries
+        return _retry(job, retries - 1, wait * 2)
+      elif json.loads(e.content)['error']['code'] == 409:
+        return # already exists ( ignore )
+    raise # raise all remaining exceptions
 
 
 def makedirs_safe(path):
@@ -233,28 +251,43 @@ def bucket_delete(auth, name):
   return service.buckets().delete(bucket=name).execute()
 
 
-# Creator, Viewer, Admin
-def bucket_access(auth, project, name,  role=['Creator', 'Viewer', 'Admin'], emails=[], groups=[], services=[], domains=[]):
+#role = OWNER, READER, WRITER
+def bucket_access(auth, project, name,  role, emails=[], groups=[], services=[], domains=[]):
   service = get_service('storage', 'v1', auth)
 
-  if emails or groups or services or groups:
-    access = service.buckets().getIamPolicy(bucket=name).execute(num_retries=RETRIES)
+  entities = map(lambda e: 'user-%s' % e, emails) + \
+    map(lambda e: 'group-%s' % e, groups) + \
+    map(lambda e: 'user-%s' % e, services) + \
+    map(lambda e: 'domain-%s' % e, domains)
 
-    access['bindings'] = []
-    for r in role:
-      access['bindings'].append({
-        "role":"roles/storage.object%s" % r,
-        "members": ['user:%s' % m for m in emails] + \
-                   ['group:%s' % m for m in groups] + \
-                   ['serviceAccount:%s' % m for m in services] + \
-                   ['domain:%s' % m for m in domains]
-      })
+  for entity in entities:
+    body = {
+      "kind": "storage#bucketAccessControl",
+      "bucket":name,
+      "entity":entity,
+      "role":role
+    }
+    _retry(service.bucketAccessControls().insert(bucket=name, body=body))
 
-    job = service.buckets().setIamPolicy(bucket=name, body=access).execute(num_retries=RETRIES)
-    sleep(1)
+# Alternative for managing permissions ( overkill? )
+#  if emails or groups or services or groups:
+#    access = service.buckets().getIamPolicy(bucket=name).execute(num_retries=RETRIES)
+#
+#    access['bindings'] = []
+#    for r in role:
+#      access['bindings'].append({
+#        "role":"roles/storage.object%s" % r,
+#        "members": ['user:%s' % m for m in emails] + \
+#                   ['group:%s' % m for m in groups] + \
+#                   ['serviceAccount:%s' % m for m in services] + \
+#                   ['domain:%s' % m for m in domains]
+#      })
+#
+#    job = service.buckets().setIamPolicy(bucket=name, body=access).execute(num_retries=RETRIES)
+#    sleep(1)
 
 
-# USE: get_object function above ( it will pull the download down in memory, no need for a file write )
+# USE: object_get function above ( it will pull the download down in memory, no need for a file write )
 def object_download(gc_project, bucket_name, object_name, local_path):
   client = get_client('storage')
 

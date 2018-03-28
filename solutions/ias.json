@@ -29,7 +29,7 @@
       "technical level":20
     },
     "instructions":[
-      "In IAS set up automated daily <b>3MS Viewability</b> reports, it must span 30 days back.",
+      "In IAS set up automated daily xlsx report with  a <b>3MS Viewability</b> sheet, it must span 30 days back.",
       "Send the IAS report to <b>{{EMAIL_TOKEN}}</b>.",
       "The IAS report must contain exactly the fields:<i><br/>Date<br/>Campaign_Name<br/>Media_Partner_Name<br/>Placement_ID<br/>Placement_Name<br/>In_View_Impressions<br/>Out_of_View_Impressions<br/>Suspicious_Unblocked_Impressions<br/>Total_Out_of_View_Impressions<br/>Measured_Impressions<br/>Unmeasured_Impressions<br/>Viewable_Rate<br/>Measured_Rate<br/>In_View_IMP_Distribution<br/>Out_of_View_IMP_Distribution<br/>Unmeasured<br/>Total_Unblocked_Impressions<br/>Gross_Unblocked_Impressions<br/>Gross_Measured_Impressions<br/>Gross_Unblocked_Invalid_Impressions<br/>Net_Eligible_Impressions<br/>Net_Measured_Impressions<br/>Net_Viewable_Impressions<br/>Net_Non_Viewable_Impressions<br/>Net_Unmeasured_Impressions<br/>Net_Viewable_Rate<br/>Total_Net_Eligible_Impressions<br/>Total_Net_Measured_Impressions<br/>Total_Net_Unmeasured_Impressions<br/>Total_Net_Viewable_Rate<br/>Total_Net_Measured_Rate<br/>Total_Net_In_View<br/>Total_Net_Out_of_View<br/>Total_Net_Unmeasured</i>",
       "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->IAS_Dashboard</b> to be created.",

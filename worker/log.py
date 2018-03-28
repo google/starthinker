@@ -48,7 +48,7 @@ def log_get(uid):
 
 
 def log_project(project, output=None, errors=None):
-  if 'uuid' in project['setup']:
+  if 'uuid' in project.get('setup', {}):
     # store time zone
     data = 'TIMEZONE:%s\n' % project['setup'].get('timezone', 'America/Los_Angeles')
     # store time without timezone suffix ( already stored above )
@@ -76,7 +76,7 @@ def log_status(uid):
     since = tz_datetime - log_datetime
     if since.days: log_since += '%d Days ' % since.days
     if since.seconds > 3600: log_since += '%d Hours ' % int(since.seconds / 3600)
-    if since.seconds > 60: log_since += '%d Minutes ' % int(since.seconds / 60)
+    if (since.seconds % 3600) > 60: log_since += '%d Minutes ' % int((since.seconds % 3600 ) / 60)
     if since.seconds % 60: log_since += '%d Seconds ' % (since.seconds % 60)
   except Exception, e:
     log_timezone = 'America/Los_Angeles'

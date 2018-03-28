@@ -42,7 +42,7 @@ def dbm():
     )
 
   # check if report is to be created
-  if 'type' in project.task['report']: 
+  if 'type' in project.task['report']:
     report_create(
       project.task['auth'],
       project.task['report']['name'],
@@ -53,7 +53,9 @@ def dbm():
       project.task['report'].get('dimensions'),
       project.task['report'].get('metrics'),
       project.task['report'].get('data_range'),
-      project.task['report'].get('timezone', 'America/Los Angeles')
+      project.task['report'].get('timezone', 'America/Los Angeles'),
+      project.id,
+      project.task['report'].get('dataset_id', None)
     )
 
   # moving a report
@@ -66,18 +68,18 @@ def dbm():
       project.task['auth'],
       project.task['report'].get('report_id', None),
       project.task['report'].get('name', None),
-      project.task['report'].get('timeout', 60),
+      project.task['report'].get('timeout', 10),
       DBM_CHUNKSIZE
     )
 
     # if a report exists
     if report:
       if project.verbose: print 'DBM FILE', filename
-  
+
       # clean up the report
       rows = report_to_rows(report)
       rows = report_clean(rows, datastudio=project.task.get('datastudio', False) == True, nulls=True)
-  
+
       #rows = rows_print(rows, 0, 3)
 
       # upload to cloud if data

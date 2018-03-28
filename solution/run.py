@@ -50,7 +50,7 @@ def set_constants(struct, constants):
       else: set_constants(value, constants)
 
 
-def make_solution(filename, uuid, pid, credentials_user, credentials_service, constants, remote):
+def make_solution(filename, uuid, project_id, credentials_user, credentials_service, credentials_client, constants, remote):
   solution = {}
 
   with open(filename, 'r') as solution_file:
@@ -62,12 +62,13 @@ def make_solution(filename, uuid, pid, credentials_user, credentials_service, co
   return {
     "setup":{
       "uuid":uuid,
-      "id":pid,
+      "id":project_id,
       "timezone":constants['timezone'],
       "auth":{
         "source":"remote" if remote else "local",
         "user":credentials_user,
-        "service":credentials_service
+        "service":credentials_service,
+        "client":credentials_client
       }
     },
     "tasks":tasks
@@ -77,59 +78,64 @@ def make_solution(filename, uuid, pid, credentials_user, credentials_service, co
 if __name__ == "__main__":
 
   parser = argparse.ArgumentParser()
-  parser.add_argument('client', help='path to client json file')
+  parser.add_argument('solution', help='path to solution json file')
+
+  # add credentials ( solutions have no credentials by default )
+  parser.add_argument('--project', '-p', help='cloud id of project, defaults to None', default=None)
+  parser.add_argument('--user', '-u', help='path to user credentials json file, defaults to GOOGLE_APPLICATION_CREDENTIALS', default=None)
+  parser.add_argument('--service', '-s', help='path to service credentials json file, defaults None', default=None)
+  parser.add_argument('--client', '-c', help='path to client credentials json file, defaults None', default=None)
+
+  # specify deployment ( may require access to pub/sub )
   group = parser.add_mutually_exclusive_group(required=True)
   group.add_argument('--directory', '-d', help='write solution scripts to a directory')
   group.add_argument('--topic', '-t', help='execute solution using pub/sub topic')
   args = parser.parse_args()
 
   # get script name
-  script = args.client.rsplit('.', 1)[0].rsplit('/', 1)[-1]
+  script = args.solution.rsplit('.', 1)[0].rsplit('/', 1)[-1]
 
   # load configuration
-  client = json.load(open(args.client))
-
-  # check for uuid ( if not present, open file, add it using regexp to preserve user formatting )
-  if not client['setup'].get('uuid', None):
-    client['setup']['uuid'] = str(uuid.uuid4())
-    with open(args.client, 'r') as json_file: filedata = json_file.read()
-    filedata = RE_UUID.sub(r'\1\2\1  "uuid":"%s",' % client['setup']['uuid'], filedata)
-    with open(args.client, 'w') as json_file: json_file.write(filedata)
+  solution = json.load(open(args.solution))
 
   # add computed variables
-  name = RE_NAME.sub('', client['constants']['name'])
-  client['constants']['email_token'] = client['constants']['email'].replace("@", "+%s@" % client['constants']['token'])
-  client['constants']['report'] = name + ' ( StarThinker )'
-  client['constants']['dataset'] = name
-  client['constants']['bucket'] = name
+  name = RE_NAME.sub('', solution['constants']['name'])
+  solution['constants']['email_token'] = solution['constants']['email'].replace("@", "+%s@" % solution['constants']['token'])
+  solution['constants']['report'] = name + ' ( StarThinker )'
+  solution['constants']['dataset'] = name
+  solution['constants']['bucket'] = name
+
+  # create a UUID ( all templates get same with suffix )
+  master_uuid = str(uuid.uuid4())
 
   # create scripts for each template
-  for template in client['templates']:
+  for template in solution['templates']:
 
     # get solution tag for uuid
     tag = template.rsplit('.', 1)[0].rsplit('/', 1)[-1]
 
     # construct script from solution template
-    solution = make_solution(
+    recipe = make_solution(
       template,
-      '%s_%s' % (client['setup']['uuid'], tag),
-      client['setup']['id'],
-      client['setup']['auth'].get('user'),
-      client['setup']['auth'].get('service'),
-      client['constants'],
+      '%s_%s' % (master_uuid, tag),
+      args.project,
+      args.user,
+      args.service,
+      args.client,
+      solution['constants'],
       bool(args.topic) 
     )
 
-    #print json.dumps(solution, indent=2)
+    #print json.dumps(recipe, indent=2)
 
     # if remote ( pub/sub )
     if args.topic:
       print 'SOLUTON REMOTE'
-      send_message(client['setup']['id'], args.topic, json.dumps(solution))
+      send_message(recipe['setup']['id'], args.topic, json.dumps(recipe))
 
     # if local
     else:
       filename = '%s%s%s_%s.json' % (args.directory, '' if args.directory[-1] == '/' else '/', script, tag)
       print 'SOLUTION SCRIPT', filename
       with open(filename, 'w') as outfile:
-        json.dump(solution, outfile)
+        json.dump(recipe, outfile)

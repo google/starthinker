@@ -24,7 +24,7 @@ import os
 import csv
 
 from util.project import project
-from util.bigquery import local_file_to_table
+from util.bigquery import csv_to_table, field_list_to_schema
 from util.bigquery.file_processor import FileProcessor
 
 processor = FileProcessor()
@@ -73,19 +73,17 @@ def sftp():
     reader = csv.reader(input_file)
     header = reader.next()
     input_file.seek(0)
-    schema = processor.field_list_to_schema(header)
+    schema = field_list_to_schema(header)
     output_file_name = '/tmp/%s.csv' % str(uuid.uuid1())
     processor.clean_csv(input_file, output_file_name, len(header), header=True)
     input_file.close()
-    local_file_to_table(project.task['auth'],
-                        project.task['to'].get('dataset'),
-                        project.task['to'].get('table'),
-                        schema,
-                        output_file_name,
-                        replace=project.task['to'].get('write_disposition', 'APPEND') == 'REPLACE',
-                        file_type='CSV')
 
-  os.remove(input_file_name)
+    output_file = open(output_file_name, 'rb')
+    csv_to_table(project.task['auth'], project.id, project.task['to'].get('dataset'), project.task['to'].get('table'), output_file, schema, skip_rows=0, structure='CSV', disposition=project.task['to'].get('write_disposition', 'WRITE_TRUNCATE'))
+    output_file.close()
+
+    os.remove(input_file_name)
+
   os.remove(output_file_name)
 
 if __name__ == "__main__":

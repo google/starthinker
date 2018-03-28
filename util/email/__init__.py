@@ -34,6 +34,25 @@ from util.auth import get_service
 from util.regexp import parse_url, date_to_str
 from util.storage import parse_filename
 
+# ADD RETRY
+
+def _retry(job, retries=10, wait=5):
+  try:
+    data = job.execute()
+    return data
+  except HttpError, e:
+    if project.verbose: print 'ERROR', str(e)
+    if e.resp.status in [403, 429, 500, 503]:
+      if retries > 0:
+        sleep(wait)
+        if project.verbose: print 'RETRY', retries
+        return _retry(job, retries - 1, wait * 2)
+      elif json.loads(e.content)['error']['code'] == 409:
+        return # already exists ( ignore )
+    # raise all other errors
+    raise
+
+
 def _list_unique(seq):
   seen = set()
   seen_add = seen.add
@@ -99,7 +118,7 @@ def _email_attachments(service, message, attachment_regexp):
           data=part['body']['data']
         else:
           att_id=part['body']['attachmentId']
-          att=service.users().messages().attachments().get(userId='me', messageId=message['id'], id=att_id).execute()
+          att=_retry(service.users().messages().attachments().get(userId='me', messageId=message['id'], id=att_id))
           data=att['data']
         file_data = BytesIO(base64.urlsafe_b64decode(data.encode('UTF-8')))
 
@@ -126,7 +145,7 @@ def _email_find(service, email_from, email_to, date_min=None, date_max=None):
   if date_min: query += ' AND after:%s' % date_to_str(date_min)
   if date_max: query += ' AND before:%s' % date_to_str(date_max + timedelta(days=1)) # make it inclusive
   if project.verbose: print 'EMAIL SEARCH:', query
-  results = service.users().messages().list(userId='me', q=query).execute()
+  results = _retry(service.users().messages().list(userId='me', q=query))
   messages = results.get('messages', [])
   if project.verbose: print 'EMAILS FOUND:', len(messages)
   return messages
@@ -139,7 +158,7 @@ def get_email_attachments(auth, email_from, email_to, date_min, date_max, subjec
   messages = _email_find(service, email_from, email_to, date_min, date_max)
   subject_filter = re.compile(r'%s' % subject_regexp) if subject_regexp else None
   for message in messages:
-    message = service.users().messages().get(userId='me', id=message['id']).execute()
+    message = _retry(service.users().messages().get(userId='me', id=message['id']))
     if subject_filter is None or subject_filter.match(_get_subject(message)):
       attachements.extend(_email_attachments(service, message, attachment_regexp))
   return attachements
@@ -152,7 +171,7 @@ def get_email_links(auth, email_from, email_to, date_min, date_max, subject_rege
   messages = _email_find(service, email_from, email_to, date_min, date_max)
   subject_filter = re.compile(r'%s' % subject_regexp) if subject_regexp else None
   for message in messages:
-    message = service.users().messages().get(userId='me', id=message['id']).execute()
+    message = _retry(service.users().messages().get(userId='me', id=message['id']))
     if subject_filter is None or subject_filter.match(_get_subject(message)):
       links.extend(_email_links(service, message, link_regexp, download))
   return links
@@ -165,7 +184,7 @@ def get_email_messages(auth, email_from, email_to, date_min, date_max, subject_r
   messages = _email_find(service, email_from, email_to, date_min, date_max)
   subject_filter = re.compile(r'%s' % subject_regexp) if subject_regexp else None
   for message in messages:
-    message = service.users().messages().get(userId='me', id=message['id']).execute()
+    message = _retry(service.users().messages().get(userId='me', id=message['id']))
     if subject_filter is None or subject_filter.match(_get_subject(message)):
       emails.append(_email_message(service, message, link_regexp, attachment_regexp, download))
   return emails
@@ -186,6 +205,6 @@ def send_email(auth, email_to, email_from, email_cc, subject, text, html):
   message.attach(text_part)
   message.attach(html_part)
   
-  service.users().messages().send(userId='me', body={'raw': base64.urlsafe_b64encode(message.as_string())}).execute()
+  _retry(service.users().messages().send(userId='me', body={'raw': base64.urlsafe_b64encode(message.as_string())}))
   
  
