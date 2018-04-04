@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <link rel="shortcut icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize.min.css">
+
+    <style>
+       #message { justify-content: center; font-size: 2em;}
+       #message i { font-size: 2em; margin: 10px; }
+       #message ul, #message li { display: inline; margin-left: 10px; }
+       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
+
+       span.square_box {
+         display: inline-block;
+         width: 40px;
+         height: 40px;
+         border: 2px solid #fff;
+         text-align: center;
+         line-height: 40px;
+         margin: 5px;
+       }
+
+       div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+       h1 a i.material-icons { font-size: 3.28rem; }
+       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+       ol li { line-height: 1.8em; }
+       textarea { margin-top: 7px; height: 10rem; }
+       table.list { width: 96%; max-width: 800px; margin: 0px auto; }
+       a.menu_link { display: inline-block; margin: 20px; }
+
+       div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
+       div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
+       div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
+
+
+       div.service_card { min-height: 250px; width: 300px; margin: 10px;}
+       div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
+       div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
+       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+
+       #cards { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; }
+       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
+       div.card h4 { width 100%; padding: 20px;}
+       div.card h4 i.material-icons { font-size: 2.28rem; }
+       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+
+       
+    </style>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  
+  <nav>
+    <div class="nav-wrapper">
+      <a href="." class="brand-logo"><img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker</a>
+    </div>
+  </nav>
+
+
+  <body>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize.min.js"></script>
+
+    
+
+    <div id="page" class="center">
+      
+
+  <h1 id="recipe-scripts">Open Source Handover</h1>
+  <p class="flow-text">Deploying recipes and solutions using using <a href="https://github.com/google/starthinker" target="_blank">StarThinker Framework</a>.</p>
+
+  <br/>
+  <h3 id="recipe_run">Running A JSON Recipe</h3>
+  <p class="flow-text">You received a recipe from Google, here is how to run it in 15 minutes.</p>
+
+  <table class="bordered highlight list">
+    <thead>
+      <tr>
+        <th class="center" style="width:90px;"></th>
+        <th>Instructions</th>
+        <th class="center-align" style="width:90px;">Minutes</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td><i class="material-icons medium teal-text">file_download</i></td>
+        <td>
+          <strong>Get the open source framework:</strong>
+          <br/>git clone https://github.com/google/starthinker
+          <br/>cd starthinker
+        </td>
+        <td class="center-align">1</td>
+      </tr>
+
+      <tr>
+        <td><i class="material-icons medium teal-text">build</i></td>
+        <td>
+          <strong>Install dependencies:</strong>
+          <br/>pip install -r requirements.txt
+          <br/>source setup.sh
+        </td>
+        <td class="center-align">3</td>
+      </tr>
+
+      <tr>
+        <td><i class="material-icons medium teal-text">cloud</i></td>
+        <td>
+          <strong>Set up cloud project credentials:</strong>
+          <br/>Create a <a href="https://pantheon.corp.google.com/flows/enableapi?apiid=genomics,storage_api" target="_blank">cloud project</a>.
+          <br/>Create <a href="https://pantheon.corp.google.com/apis/credentials/oauthclient" target="_blank">client credentials ( other )</a>, download json.
+          <br/>Create <a href="https://pantheon.corp.google.com/apis/credentials/serviceaccountkey" target="_blank">service credentials</a>, download json.
+        </td>
+        <td class="center-align">10</td>
+      </tr>
+
+      <tr>
+        <td><i class="material-icons medium teal-text">directions_run</i></td>
+        <td>
+          <strong>Run a the json recipe:</strong>
+          <br/>python all/run.py [recipe json file] -p [project_id] -c [client_json] -s [service_json]
+          <br/><br/><strong>Or schedule recipe to run on schedule:</strong>
+          <br/>python cron/run.py [path to recipe json folder] -p [project_id] -c [client_json] -s [service_json]
+        </td>
+        <td class="center-align">1</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <br/><br/>
+  <h3 id="solution_run">Running A Solution</h3>
+  <p class="flow-text">You want to run a solution template for a client.</p>
+
+  <table class="bordered highlight list">
+    <thead>
+      <tr>
+        <th class="center" style="width:90px;"></th>
+        <th>Instructions</th>
+        <th class="center-align" style="width:90px;">Minutes</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td><i class="material-icons medium teal-text">file_download</i></td>
+        <td>
+          <strong>Install StarThinker framework:</strong>
+          <br/>Same first three steps as <a href="#recipe_run">Running A Json Recipe</a>
+        </td>
+        <td class="center-align">14</td>
+      </tr>
+
+      <tr>
+        <td><i class="material-icons medium teal-text">business</i></td>
+        <td>
+          <strong>Create a solution spec:</strong>
+          <br/>Copy template: cp solution/test.py [client_name].json
+          <br/>Change values for your client: vi [client_name].json
+        </td>
+        <td class="center-align">1</td>
+      </tr>
+
+      <tr>
+        <td><i class="material-icons medium teal-text">settings</i></td>
+        <td>
+          <strong>Generate recipe(s) json:</strong>
+          <br/>python solution/run.py [path to client_name].json -d [path to generate recipe json(s) in] 
+        </td>
+        <td class="center-align">1</td>
+      </tr>
+
+      <tr>
+        <td><i class="material-icons medium teal-text">directions_run</i></td>
+        <td>
+          <strong>Run a the json recipe(s):</strong>
+          <br/>python all/run.py [recipe json file] -p [project_id] -c [client_json] -s [service_json]
+          <br/><br/><strong>Or schedule recipe to run on schedule:</strong>
+          <br/>python cron/run.py [path to recipe json folder] -p [project_id] -c [client_json] -s [service_json]
+        </td>
+        <td class="center-align">1</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+
+
+
+
+
+
+
+
+
+
+  <br/><br/>
+  <h3 id="recipe_code">Coding A Recipe</h3>
+  <p class="flow-text">Create a recipe by assembling tested reliable json instructions.</p>
+
+  <table class="bordered highlight list">
+    <thead>
+      <tr>
+        <th colspan="2">1. Copy the recipe template...</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="vertical-align:top;width:90px;"><i class="material-icons medium teal-text">content_paste</i></td>
+        <td>
+          cp project/sample/say_hello.json project/[ldap]/[project_name].json
+          <br/>vi project/[ldap]/[project_name].json
+        </td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr>
+        <th colspan="2">2. Add task json from the list below to execute tasks.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="vertical-align:top;"><i class="material-icons medium teal-text">list</i></td>
+        <td>
+           Copy and paste each task JSON into the "task":[...] list.
+           <br/>Replace { "field": ... } with actual values.
+           </br/>You can change the "auth" from "user" to "service".
+           <br/>You can add "day" and "hour" elements to a task to execute at specific times.
+           <br/>Look through the sample recipes in /project/* for reference implementations. 
+        </td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr>
+        <th colspan="2">3. Run and test your script. You can run it all or parts to help debug.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="vertical-align:top;"><i class="material-icons medium teal-text">settings</i></td>
+        <td>
+           To run the whole script...
+           <br/>python all/run.py project/[ldap]/[project_name].json --verbose
+           <br/>To run a specific task...
+           <br/>python [task]/run.py project/[ldap]/[project_name].json --verbose -i 1
+           <br/>To run on a schedule ...
+           <br/>python cron/run.py project/[ldap]/
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br/><br/>
+  <h3 id="recipe_tasks">Available Recipe Tasks</h3>
+  <p class="flow-text">Copy and paste the JSON to add tasks to your recipe. Replace <i>{ "field": ... }</i> with your values.</p>
+
+  
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_1">3P Data</span>
+  
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_2">BigQuery</span>
+  
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_3">DBM</span>
+  
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_4">DCM</span>
+  
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_5">Storage</span>
+  
+
+  <br/><br/>
+  
+    <table class="view_product bordered highlight list" id="view_product_1">
+      <thead>
+        <tr>
+          <th class="center" style="width:90px;"></th>
+          <th>3P Data</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">file_download</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_ias_to_bigquery">JSON</span>
+            <h4>IAS BigQuery</h4>
+            <p>TASK: ias_to_bigquery</p>
+            <p>Move an IAS report to a BigQuery table.</p>
+            <ol>
+              <li>Schedule an IAS report to be sent to <b>{{EMAIL_TOKEN}}</b>.</li><li>The report must be from <strong>reports@integralads.com</strong>.</li><li>Optionally, specify a regular expression for the file link or attachment.</li><li>It will be moved to the bigquery table you specify.</li>
+            </ol>
+            <pre class="view_code" id="view_code_ias_to_bigquery" style="display:none;">{
+    &quot;ias&quot;: {
+        &quot;in&quot;: {
+            &quot;email&quot;: {
+                &quot;attachment&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;ias_attachment&quot;, 
+                        &quot;order&quot;: 4
+                    }
+                }, 
+                &quot;to&quot;: {
+                    &quot;constant&quot;: &quot;email_token&quot;
+                }, 
+                &quot;link&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;ias_link&quot;, 
+                        &quot;order&quot;: 3
+                    }
+                }, 
+                &quot;days&quot;: 3, 
+                &quot;from&quot;: &quot;reports@integralads.com&quot;
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;out&quot;: {
+            &quot;bigquery&quot;: {
+                &quot;table&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;ias_table&quot;, 
+                        &quot;order&quot;: 7
+                    }
+                }, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;ias_dataset&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">file_download</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_ias_to_storage">JSON</span>
+            <h4>IAS Storage</h4>
+            <p>TASK: ias_to_storage</p>
+            <p>Move an IAS report ot a storage bucket.</p>
+            <ol>
+              <li>Schedule an IAS report to be sent to <b>{{EMAIL_TOKEN}}</b>.</li><li>The report must be from <strong>reports&at;integralads.com</strong>.</li><li>Optionally, specify a regular expression for the file link or attachment.</li><li>It will be moved to the storage bucket you specify.</li>
+            </ol>
+            <pre class="view_code" id="view_code_ias_to_storage" style="display:none;">{
+    &quot;ias&quot;: {
+        &quot;in&quot;: {
+            &quot;email&quot;: {
+                &quot;attachment&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;ias_attachment&quot;, 
+                        &quot;order&quot;: 4
+                    }
+                }, 
+                &quot;to&quot;: {
+                    &quot;constant&quot;: &quot;email_token&quot;
+                }, 
+                &quot;link&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;ias_link&quot;, 
+                        &quot;order&quot;: 3
+                    }
+                }, 
+                &quot;days&quot;: 3, 
+                &quot;from&quot;: &quot;reports@integralads.com&quot;
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;out&quot;: {
+            &quot;storage&quot;: {
+                &quot;path&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;ias_path&quot;, 
+                        &quot;order&quot;: 7
+                    }
+                }, 
+                &quot;bucket&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;ias_bucket&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">trending_down</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_moat">JSON</span>
+            <h4>MOAT Import</h4>
+            <p>TASK: moat</p>
+            <p>Import daily data from MOAT into a BigQuery table. Schedule a MOAT report and send it to the an email.</p>
+            <ol>
+              <li>Schedule an MOAT report to be sent to <b>{{EMAIL_TOKEN}}</b>.</li><li>Optionally, specify a regular expression for the file link or attachment.</li><li>It will be moved to the storage bucket you specify.</li>
+            </ol>
+            <pre class="view_code" id="view_code_moat" style="display:none;">{
+    &quot;moat&quot;: {
+        &quot;in&quot;: {
+            &quot;email&quot;: {
+                &quot;from&quot;: &quot;moat.reports@moat.com&quot;, 
+                &quot;days&quot;: 1, 
+                &quot;to&quot;: {
+                    &quot;constant&quot;: &quot;email_token&quot;
+                }, 
+                &quot;link&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;moat_link&quot;, 
+                        &quot;order&quot;: 3
+                    }
+                }, 
+                &quot;attachment&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;moat_attachment&quot;, 
+                        &quot;order&quot;: 4
+                    }
+                }, 
+                &quot;subject&quot;: &quot;Moat .* Export \\d\\d\\d\\d-\\d\\d-\\d\\d&quot;
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;out&quot;: {
+            &quot;storage&quot;: {
+                &quot;path&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;moat_path&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }, 
+                &quot;bucket&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;moat_bucket&quot;, 
+                        &quot;order&quot;: 5
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+      </tbody>
+    </table>
+  
+    <table class="view_product bordered highlight list" id="view_product_2" style="display:none;">
+      <thead>
+        <tr>
+          <th class="center" style="width:90px;"></th>
+          <th>BigQuery</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">device_hub</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_mapping">JSON</span>
+            <h4>Column Mapping</h4>
+            <p>TASK: mapping</p>
+            <p>Map column keywords to new dimensions columns with tags.</p>
+            <ol>
+              <li>For the sheet, provide the full URL.</li><li>A tab called <strong>Mapping</strong> will be created.</li><li>Follow the instructions in the tab to complete the mapping.</li><li>The in table should have the columns you want to map.</li><li>The out view will have the new columns created in the mapping.</li>
+            </ol>
+            <pre class="view_code" id="view_code_mapping" style="display:none;">{
+    &quot;mapping&quot;: {
+        &quot;in&quot;: {
+            &quot;table&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;in_table&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }, 
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;in_dataset&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }
+        }, 
+        &quot;sheet&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;sheet&quot;, 
+                &quot;order&quot;: 1
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;tab&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;tab&quot;, 
+                &quot;order&quot;: 2
+            }
+        }, 
+        &quot;out&quot;: {
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;out_dataset&quot;, 
+                    &quot;order&quot;: 7
+                }
+            }, 
+            &quot;view&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;out_view&quot;, 
+                    &quot;order&quot;: 8
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">folder</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dataset">JSON</span>
+            <h4>Dataset</h4>
+            <p>TASK: dataset</p>
+            <p>Create a dataset on a project.</p>
+            <ol>
+              <li>Specify the name of the dataset and who will have view permissions.</li><li>Existing datasets are preserved.</li><li>Adding a permission to the list will update the permissions but removing them will not.</li><li>You have to manualy remove grants.</li>
+            </ol>
+            <pre class="view_code" id="view_code_dataset" style="display:none;">{
+    &quot;dataset&quot;: {
+        &quot;auth&quot;: &quot;service&quot;, 
+        &quot;emails&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string_list&quot;, 
+                &quot;name&quot;: &quot;dataset_emails&quot;, 
+                &quot;order&quot;: 2
+            }
+        }, 
+        &quot;groups&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string_list&quot;, 
+                &quot;name&quot;: &quot;dataset_groups&quot;, 
+                &quot;order&quot;: 3
+            }
+        }, 
+        &quot;dataset&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;dataset_dataset&quot;, 
+                &quot;order&quot;: 1
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_move_query">JSON</span>
+            <h4>Query To Table</h4>
+            <p>TASK: move_query</p>
+            <p>Move data from a Query or PLX into a BigQuery table.</p>
+            <ol>
+              <li>To query PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...</li><li>The query will only be created once, to update it, visit the dataset and remove the existing query.</li>
+            </ol>
+            <pre class="view_code" id="view_code_move_query" style="display:none;">{
+    &quot;move&quot;: {
+        &quot;to&quot;: {
+            &quot;table&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;move_table&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }, 
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;move_dataset&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }
+        }, 
+        &quot;from&quot;: {
+            &quot;query&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;text&quot;, 
+                    &quot;name&quot;: &quot;move_query&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;useLegacySql&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: true, 
+                    &quot;kind&quot;: &quot;boolean&quot;, 
+                    &quot;name&quot;: &quot;move_useLegacySql&quot;, 
+                    &quot;order&quot;: 1
+                }
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_move_view">JSON</span>
+            <h4>Query To View</h4>
+            <p>TASK: move_view</p>
+            <p>Move data from a Query or PLX into a BigQuery view.</p>
+            <ol>
+              
+            </ol>
+            <pre class="view_code" id="view_code_move_view" style="display:none;">{
+    &quot;move&quot;: {
+        &quot;to&quot;: {
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;move_dataset&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }, 
+            &quot;view&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;move_view&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }
+        }, 
+        &quot;from&quot;: {
+            &quot;query&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;text&quot;, 
+                    &quot;name&quot;: &quot;move_query&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;useLegacySql&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: true, 
+                    &quot;kind&quot;: &quot;boolean&quot;, 
+                    &quot;name&quot;: &quot;move_useLegacySql&quot;, 
+                    &quot;order&quot;: 1
+                }
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_move_storage">JSON</span>
+            <h4>Storage To Table</h4>
+            <p>TASK: move_storage</p>
+            <p>Move data from a Storage bucket into a BigQuery table.</p>
+            <ol>
+              
+            </ol>
+            <pre class="view_code" id="view_code_move_storage" style="display:none;">{
+    &quot;move&quot;: {
+        &quot;to&quot;: {
+            &quot;table&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;move_table&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;move_dataset&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }
+        }, 
+        &quot;from&quot;: {
+            &quot;path&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;move_path&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;bucket&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;move_bucket&quot;, 
+                    &quot;order&quot;: 1
+                }
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;schema&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;json&quot;, 
+                &quot;name&quot;: &quot;move_schema&quot;, 
+                &quot;order&quot;: 5
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+      </tbody>
+    </table>
+  
+    <table class="view_product bordered highlight list" id="view_product_3" style="display:none;">
+      <thead>
+        <tr>
+          <th class="center" style="width:90px;"></th>
+          <th>DBM</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_large</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dbm">JSON</span>
+            <h4>DBM Report</h4>
+            <p>TASK: dbm</p>
+            <p>Import a DBM report into BigQuery table.</p>
+            <ol>
+              <li>Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DBM API</a> to build a report.</li><li>Filters for partners and advertisers are added automatically.</li><li>The report is only created, use a move script to move it.</li><li>You will be able to see the report name with a ( Starthinker ) suffix in DBM.</li><li>To reset a report, delete it from DBM reporting.</li>
+            </ol>
+            <pre class="view_code" id="view_code_dbm" style="display:none;">{
+    &quot;dbm&quot;: {
+        &quot;report&quot;: {
+            &quot;partners&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer_list&quot;, 
+                    &quot;name&quot;: &quot;dbm_partners&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }, 
+            &quot;name&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dbm_title&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;data_range&quot;: &quot;LAST_7_DAYS&quot;, 
+            &quot;metrics&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: [
+                        &quot;METRIC_REVENUE_ADVERTISER&quot;, 
+                        &quot;METRIC_IMPRESSIONS&quot;
+                    ], 
+                    &quot;kind&quot;: &quot;string_list&quot;, 
+                    &quot;name&quot;: &quot;dbm_metrics&quot;, 
+                    &quot;order&quot;: 8
+                }
+            }, 
+            &quot;filters&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;[]&quot;, 
+                    &quot;kind&quot;: &quot;json&quot;, 
+                    &quot;name&quot;: &quot;dbm_filters&quot;, 
+                    &quot;order&quot;: 9
+                }
+            }, 
+            &quot;timezone&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;America/Los_Angeles&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dbm_timezone&quot;, 
+                    &quot;order&quot;: 6
+                }
+            }, 
+            &quot;advertisers&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer_list&quot;, 
+                    &quot;name&quot;: &quot;dbm_advertisers&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }, 
+            &quot;type&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;TYPE_CROSS_PARTNER&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dbm_type&quot;, 
+                    &quot;order&quot;: 5
+                }
+            }, 
+            &quot;dimensions&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: [
+                        &quot;FILTER_DATE&quot;, 
+                        &quot;FILTER_ADVERTISER&quot;, 
+                        &quot;FILTER_INSERTION_ORDER&quot;, 
+                        &quot;FILTER_CREATIVE_ID&quot;, 
+                        &quot;FILTER_ADVERTISER_CURRENCY&quot;
+                    ], 
+                    &quot;kind&quot;: &quot;string_list&quot;, 
+                    &quot;name&quot;: &quot;dbm_dimensions&quot;, 
+                    &quot;order&quot;: 7
+                }
+            }
+        }, 
+        &quot;datastudio&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: false, 
+                &quot;kind&quot;: &quot;boolean&quot;, 
+                &quot;name&quot;: &quot;dbm_datastudio&quot;, 
+                &quot;order&quot;: 12
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_large</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dbm_to_bigquery">JSON</span>
+            <h4>DBM To BigQuery</h4>
+            <p>TASK: dbm_to_bigquery</p>
+            <p>Move Existing DBM reports into a bigquery table.</p>
+            <ol>
+              <li>Specify either report name or report id to move a report.</li><li>The most recent file name will be moved to storage.</li>
+            </ol>
+            <pre class="view_code" id="view_code_dbm_to_bigquery" style="display:none;">{
+    &quot;dbm&quot;: {
+        &quot;report&quot;: {
+            &quot;name&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dbm_report_name&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;report_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;dbm_report_id&quot;, 
+                    &quot;order&quot;: 1
+                }
+            }
+        }, 
+        &quot;datastudio&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: true, 
+                &quot;kind&quot;: &quot;boolean&quot;, 
+                &quot;name&quot;: &quot;dbm_datastudio&quot;, 
+                &quot;order&quot;: 5
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;out&quot;: {
+            &quot;bigquery&quot;: {
+                &quot;table&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dbm_table&quot;, 
+                        &quot;order&quot;: 4
+                    }
+                }, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dbm_dataset&quot;, 
+                        &quot;order&quot;: 3
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">exit_to_app</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dbm_to_sheets">JSON</span>
+            <h4>DBM To Sheets</h4>
+            <p>TASK: dbm_to_sheets</p>
+            <p>Move Existing DBM reports into a sheets tab.</p>
+            <ol>
+              <li>Specify either report name or report id to move a report.</li><li>The most recent file name will be moved to sheet.</li>
+            </ol>
+            <pre class="view_code" id="view_code_dbm_to_sheets" style="display:none;">{
+    &quot;dbm&quot;: {
+        &quot;report&quot;: {
+            &quot;name&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;report_name&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;report_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;report_id&quot;, 
+                    &quot;order&quot;: 1
+                }
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;out&quot;: {
+            &quot;sheets&quot;: {
+                &quot;range&quot;: &quot;A1&quot;, 
+                &quot;sheet&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;sheet&quot;, 
+                        &quot;order&quot;: 3
+                    }
+                }, 
+                &quot;tab&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;tab&quot;, 
+                        &quot;order&quot;: 4
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_large</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dbm_to_storage">JSON</span>
+            <h4>DBM To Storage</h4>
+            <p>TASK: dbm_to_storage</p>
+            <p>Move Existing DBM reports into a storage bucket.</p>
+            <ol>
+              
+            </ol>
+            <pre class="view_code" id="view_code_dbm_to_storage" style="display:none;">{
+    &quot;dbm&quot;: {
+        &quot;report&quot;: {
+            &quot;name&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dbm_report_name&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;report_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;dbm_report_id&quot;, 
+                    &quot;order&quot;: 1
+                }
+            }
+        }, 
+        &quot;datastudio&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: true, 
+                &quot;kind&quot;: &quot;boolean&quot;, 
+                &quot;name&quot;: &quot;dbm_datastudio&quot;, 
+                &quot;order&quot;: 5
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;out&quot;: {
+            &quot;storage&quot;: {
+                &quot;path&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;DBM_Report&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dbm_path&quot;, 
+                        &quot;order&quot;: 4
+                    }
+                }, 
+                &quot;bucket&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dbm_bucket&quot;, 
+                        &quot;order&quot;: 3
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">file_download</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_entity">JSON</span>
+            <h4>Entity Read</h4>
+            <p>TASK: entity</p>
+            <p>Imports the latest entity read files into BigQuery.</p>
+            <ol>
+              <li>Provide one or more DBM partners ( comma seperated ).</li><li>Entity read files are read using your user credentials.</li><li>Entity read files are written using the chosen service credentials.</li><li>All, even the public ones,  entity read file will be prefixed by <strong>Entity_</strong>.</li><li>CAUTION: ENTITY READ FILES ARE PARTNER LEVEL, NO ADVERTISER IDS.</li>
+            </ol>
+            <pre class="view_code" id="view_code_entity" style="display:none;">{
+    &quot;entity&quot;: {
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;entities&quot;: [
+            &quot;LineItem&quot;, 
+            &quot;Creative&quot;, 
+            &quot;UserList&quot;, 
+            &quot;Partner&quot;, 
+            &quot;Advertiser&quot;, 
+            &quot;InsertionOrder&quot;, 
+            &quot;Pixel&quot;, 
+            &quot;InventorySource&quot;, 
+            &quot;CustomAffinity&quot;, 
+            &quot;UniversalChannel&quot;, 
+            &quot;UniversalSite&quot;, 
+            &quot;SupportedExchange&quot;, 
+            &quot;DataPartner&quot;, 
+            &quot;GeoLocation&quot;, 
+            &quot;Language&quot;, 
+            &quot;DeviceCriteria&quot;, 
+            &quot;Browser&quot;, 
+            &quot;Isp&quot;
+        ], 
+        &quot;prefix&quot;: &quot;Entity&quot;, 
+        &quot;version&quot;: 0.2, 
+        &quot;accounts&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: [], 
+                &quot;kind&quot;: &quot;integer_list&quot;, 
+                &quot;name&quot;: &quot;partners&quot;, 
+                &quot;order&quot;: 1
+            }
+        }, 
+        &quot;out&quot;: {
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;entity_dataset&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+      </tbody>
+    </table>
+  
+    <table class="view_product bordered highlight list" id="view_product_4" style="display:none;">
+      <thead>
+        <tr>
+          <th class="center" style="width:90px;"></th>
+          <th>DCM</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">file_upload</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_conversion_upload">JSON</span>
+            <h4>Conversion Upload</h4>
+            <p>TASK: conversion_upload</p>
+            <p>Upload DCM Conversions from Bigquery or Sheets.</p>
+            <ol>
+              <li>Specify a DCM Account ID, Floodligh Activity ID and Conversion Type.</li><li>Include BigQuery and/or Sheets information.</li><li>Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId</li><li>Include encryption information if using encryptedUserId or encryptedUserIdCandidates.</li>
+            </ol>
+            <pre class="view_code" id="view_code_conversion_upload" style="display:none;">{
+    &quot;conversion_upload&quot;: {
+        &quot;activity_id&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;integer&quot;, 
+                &quot;name&quot;: &quot;floodlight_activity_id&quot;, 
+                &quot;order&quot;: 1
+            }
+        }, 
+        &quot;account_id&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;dcm_account&quot;, 
+                &quot;order&quot;: 0
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;conversion_type&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;encryptedUserId&quot;, 
+                &quot;kind&quot;: &quot;choice&quot;, 
+                &quot;order&quot;: 2, 
+                &quot;name&quot;: &quot;floodlight_conversion_type&quot;, 
+                &quot;choices&quot;: [
+                    &quot;encryptedUserId&quot;, 
+                    &quot;encryptedUserIdCandidates&quot;, 
+                    &quot;gclid&quot;, 
+                    &quot;mobileDeviceId&quot;
+                ]
+            }
+        }, 
+        &quot;bigquery&quot;: {
+            &quot;table&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;bigquery_table&quot;, 
+                    &quot;order&quot;: 7
+                }
+            }, 
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;bigquery_dataset&quot;, 
+                    &quot;order&quot;: 6
+                }
+            }
+        }, 
+        &quot;sheets&quot;: {
+            &quot;url&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;sheet_url&quot;, 
+                    &quot;order&quot;: 8
+                }
+            }, 
+            &quot;range&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;sheet_range&quot;, 
+                    &quot;order&quot;: 10
+                }
+            }, 
+            &quot;tab&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;sheet_tab&quot;, 
+                    &quot;order&quot;: 9
+                }
+            }
+        }, 
+        &quot;encryptionInfo&quot;: {
+            &quot;encryptionEntityId&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;encryption_entity_id&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }, 
+            &quot;encryptionSource&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;DATA_TRANSFER&quot;, 
+                    &quot;kind&quot;: &quot;choice&quot;, 
+                    &quot;order&quot;: 5, 
+                    &quot;name&quot;: &quot;encryption_entity_source&quot;, 
+                    &quot;choices&quot;: [
+                        &quot;AD_SERVING&quot;, 
+                        &quot;DATA_TRANSFER&quot;, 
+                        &quot;ENCRYPTION_SCOPE_UNKNOWN&quot;
+                    ]
+                }
+            }, 
+            &quot;encryptionEntityType&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;DCM_ACCOUNT&quot;, 
+                    &quot;kind&quot;: &quot;choice&quot;, 
+                    &quot;order&quot;: 4, 
+                    &quot;name&quot;: &quot;encryption_entity_type&quot;, 
+                    &quot;choices&quot;: [
+                        &quot;ADWORDS_CUSTOMER&quot;, 
+                        &quot;DBM_ADVERTISER&quot;, 
+                        &quot;DBM_PARTNER&quot;, 
+                        &quot;DCM_ACCOUNT&quot;, 
+                        &quot;DCM_ADVERTISER&quot;, 
+                        &quot;ENCRYPTION_ENTITY_TYPE_UNKNOWN&quot;
+                    ]
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_small</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm">JSON</span>
+            <h4>DCM Report</h4>
+            <p>TASK: dcm</p>
+            <p>Create a DCM report.</p>
+            <ol>
+              
+            </ol>
+            <pre class="view_code" id="view_code_dcm" style="display:none;">{
+    &quot;dcm&quot;: {
+        &quot;report&quot;: {
+            &quot;dimensions&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: [
+                        &quot;date&quot;, 
+                        &quot;platformType&quot;, 
+                        &quot;creativeType&quot;, 
+                        &quot;state&quot;, 
+                        &quot;dmaRegion&quot;
+                    ], 
+                    &quot;kind&quot;: &quot;string_list&quot;, 
+                    &quot;name&quot;: &quot;dcm_dimensions&quot;, 
+                    &quot;order&quot;: 7
+                }
+            }, 
+            &quot;format&quot;: &quot;CSV&quot;, 
+            &quot;relativeDateRange&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dcm_range&quot;, 
+                    &quot;order&quot;: 6
+                }
+            }, 
+            &quot;account_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dcm_account&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }, 
+            &quot;metrics&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: [
+                        &quot;impressions&quot;
+                    ], 
+                    &quot;kind&quot;: &quot;string_list&quot;, 
+                    &quot;name&quot;: &quot;dcm_metrics&quot;, 
+                    &quot;order&quot;: 8
+                }
+            }, 
+            &quot;template&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;standard&quot;, 
+                    &quot;kind&quot;: &quot;choice&quot;, 
+                    &quot;order&quot;: 2, 
+                    &quot;name&quot;: &quot;dcm_template&quot;, 
+                    &quot;choices&quot;: [
+                        &quot;standard&quot;, 
+                        &quot;path_to_conversion&quot;
+                    ]
+                }
+            }, 
+            &quot;name&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dcm_name&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }
+        }, 
+        &quot;datastudio&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: true, 
+                &quot;kind&quot;: &quot;boolean&quot;, 
+                &quot;name&quot;: &quot;dcm_datastudio&quot;, 
+                &quot;order&quot;: 13
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;delete&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;boolean&quot;, 
+                &quot;name&quot;: &quot;dcm_delete&quot;, 
+                &quot;order&quot;: 11
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_small</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_bulk_standard">JSON</span>
+            <h4>DCM Standard Bulk</h4>
+            <p>TASK: dcm_bulk_standard</p>
+            <p>Aggregate multiple DCM networks into one destination.</p>
+            <ol>
+              <li>See API docs for <a href='https://developers.google.com/doubleclick-advertisers/v3.0/dimensions' target='_blank'>Metrics</a>.</li><li>A report will be created for each account '[Report Name] [Account ID] ( StarThinker )'.</li><li>Specify either bucket and path or dataset and table.</li>
+            </ol>
+            <pre class="view_code" id="view_code_dcm_bulk_standard" style="display:none;">{
+    &quot;dcm_bulk&quot;: {
+        &quot;datastudio&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: true, 
+                &quot;kind&quot;: &quot;boolean&quot;, 
+                &quot;name&quot;: &quot;datastudio&quot;, 
+                &quot;order&quot;: 11
+            }
+        }, 
+        &quot;name&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;name&quot;, 
+                &quot;order&quot;: 2
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;accounts&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;integer_list&quot;, 
+                &quot;name&quot;: &quot;accounts&quot;, 
+                &quot;order&quot;: 1
+            }
+        }, 
+        &quot;report&quot;: {
+            &quot;metrics&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: [
+                        &quot;impressions&quot;
+                    ], 
+                    &quot;kind&quot;: &quot;string_list&quot;, 
+                    &quot;name&quot;: &quot;dcm_metrics&quot;, 
+                    &quot;order&quot;: 5
+                }
+            }, 
+            &quot;relativeDateRange&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;LAST_7_DAYS&quot;, 
+                    &quot;kind&quot;: &quot;choice&quot;, 
+                    &quot;order&quot;: 3, 
+                    &quot;name&quot;: &quot;range&quot;, 
+                    &quot;choices&quot;: [
+                        &quot;LAST_24_MONTHS&quot;, 
+                        &quot;LAST_30_DAYS&quot;, 
+                        &quot;LAST_365_DAYS&quot;, 
+                        &quot;LAST_7_DAYS&quot;, 
+                        &quot;LAST_90_DAYS&quot;, 
+                        &quot;MONTH_TO_DATE&quot;, 
+                        &quot;PREVIOUS_MONTH&quot;, 
+                        &quot;PREVIOUS_QUARTER&quot;, 
+                        &quot;PREVIOUS_WEEK&quot;, 
+                        &quot;PREVIOUS_YEAR&quot;, 
+                        &quot;QUARTER_TO_DATE&quot;, 
+                        &quot;TODAY&quot;, 
+                        &quot;WEEK_TO_DATE&quot;, 
+                        &quot;YEAR_TO_DATE&quot;, 
+                        &quot;YESTERDAY&quot;
+                    ]
+                }
+            }, 
+            &quot;type&quot;: &quot;STANDARD&quot;, 
+            &quot;dimensions&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: [
+                        &quot;date&quot;, 
+                        &quot;platformType&quot;, 
+                        &quot;creativeType&quot;, 
+                        &quot;state&quot;, 
+                        &quot;dmaRegion&quot;
+                    ], 
+                    &quot;kind&quot;: &quot;string_list&quot;, 
+                    &quot;name&quot;: &quot;dcm_dimensions&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }, 
+            &quot;timeout&quot;: 0
+        }, 
+        &quot;delete&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: false, 
+                &quot;kind&quot;: &quot;boolean&quot;, 
+                &quot;name&quot;: &quot;delete&quot;, 
+                &quot;order&quot;: 10
+            }
+        }, 
+        &quot;out&quot;: {
+            &quot;storage&quot;: {
+                &quot;path&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;DCM_Report&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;path&quot;, 
+                        &quot;order&quot;: 8
+                    }
+                }, 
+                &quot;bucket&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;bucket&quot;, 
+                        &quot;order&quot;: 7
+                    }
+                }
+            }, 
+            &quot;bigquery&quot;: {
+                &quot;table&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;table&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;order&quot;: 5
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">exit_to_app</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_to_bigquery">JSON</span>
+            <h4>DCM To BigQuery</h4>
+            <p>TASK: dcm_to_bigquery</p>
+            <p>Move existing DCM reports into a bigquery table.</p>
+            <ol>
+              
+            </ol>
+            <pre class="view_code" id="view_code_dcm_to_bigquery" style="display:none;">{
+    &quot;dcm&quot;: {
+        &quot;report&quot;: {
+            &quot;report_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;dcm_report_id&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }, 
+            &quot;account_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;dcm_account&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;name&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dcm_report_name&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }
+        }, 
+        &quot;datastudio&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: true, 
+                &quot;kind&quot;: &quot;boolean&quot;, 
+                &quot;name&quot;: &quot;dcm_datastudio&quot;, 
+                &quot;order&quot;: 7
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;out&quot;: {
+            &quot;bigquery&quot;: {
+                &quot;table&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dcm_table&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dcm_dataset&quot;, 
+                        &quot;order&quot;: 5
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">exit_to_app</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_to_sheets">JSON</span>
+            <h4>DCM To Sheets</h4>
+            <p>TASK: dcm_to_sheets</p>
+            <p>Move Existing DCM reports into a sheet tab.</p>
+            <ol>
+              
+            </ol>
+            <pre class="view_code" id="view_code_dcm_to_sheets" style="display:none;">{
+    &quot;dcm&quot;: {
+        &quot;report&quot;: {
+            &quot;report_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;report_id&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }, 
+            &quot;account_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;account&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;name&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;report_name&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;out&quot;: {
+            &quot;sheets&quot;: {
+                &quot;range&quot;: &quot;A1&quot;, 
+                &quot;sheet&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;sheet&quot;, 
+                        &quot;order&quot;: 5
+                    }
+                }, 
+                &quot;tab&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;tab&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">exit_to_app</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_to_storage">JSON</span>
+            <h4>DCM To Storage</h4>
+            <p>TASK: dcm_to_storage</p>
+            <p>Move Existing DCM reports into a storage bucket.</p>
+            <ol>
+              
+            </ol>
+            <pre class="view_code" id="view_code_dcm_to_storage" style="display:none;">{
+    &quot;dcm&quot;: {
+        &quot;report&quot;: {
+            &quot;report_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;dcm_report_id&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }, 
+            &quot;account_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;dcm_account&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;name&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dcm_report_name&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }
+        }, 
+        &quot;datastudio&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: true, 
+                &quot;kind&quot;: &quot;boolean&quot;, 
+                &quot;name&quot;: &quot;dcm_datastudio&quot;, 
+                &quot;order&quot;: 7
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;out&quot;: {
+            &quot;storage&quot;: {
+                &quot;path&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;DCM_Report&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dcm_path&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }, 
+                &quot;bucket&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dcm_bucket&quot;, 
+                        &quot;order&quot;: 5
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+      </tbody>
+    </table>
+  
+    <table class="view_product bordered highlight list" id="view_product_5" style="display:none;">
+      <thead>
+        <tr>
+          <th class="center" style="width:90px;"></th>
+          <th>Storage</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">archive</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_archive">JSON</span>
+            <h4>Archive</h4>
+            <p>TASK: archive</p>
+            <p>Wipe old information from a storage bucket.</p>
+            <ol>
+              <li>Specify how many days back to retain data and which buckets and paths to purge.</li><li>Everything under a path will be moved to archive or deleted depending on your choice.</li>
+            </ol>
+            <pre class="view_code" id="view_code_archive" style="display:none;">{
+    &quot;archive&quot;: {
+        &quot;storage&quot;: {
+            &quot;path&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;archive_path&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }, 
+            &quot;bucket&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;archive_bucket&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }
+        }, 
+        &quot;days&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: 7, 
+                &quot;kind&quot;: &quot;integer&quot;, 
+                &quot;name&quot;: &quot;archive_days&quot;, 
+                &quot;order&quot;: 1
+            }
+        }, 
+        &quot;auth&quot;: &quot;service&quot;, 
+        &quot;delete&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: false, 
+                &quot;kind&quot;: &quot;boolean&quot;, 
+                &quot;name&quot;: &quot;archive_delete&quot;, 
+                &quot;order&quot;: 4
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">storage</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_bucket">JSON</span>
+            <h4>Bucket</h4>
+            <p>TASK: bucket</p>
+            <p>Create a bucket on a project.</p>
+            <ol>
+              <li>Specify the name of the bucket and who will have owner permissions.</li><li>Existing buckets are preserved.</li><li>Adding a permission to the list will update the permissions but removing them will not.</li><li>You have to manualy remove grants.</li>
+            </ol>
+            <pre class="view_code" id="view_code_bucket" style="display:none;">{
+    &quot;bucket&quot;: {
+        &quot;auth&quot;: &quot;service&quot;, 
+        &quot;bucket&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;bucket_bucket&quot;, 
+                &quot;order&quot;: 2
+            }
+        }, 
+        &quot;emails&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string_list&quot;, 
+                &quot;name&quot;: &quot;bucket_emails&quot;, 
+                &quot;order&quot;: 3
+            }
+        }, 
+        &quot;groups&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string_list&quot;, 
+                &quot;name&quot;: &quot;bucket_groups&quot;, 
+                &quot;order&quot;: 4
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+      </tbody>
+    </table>
+  
+
+  <br/><br/>
+  <h3 id="code-tasks">Need Help With A Recipe?</h3>
+  <p class="flow-text">Ask the StarThinker team for advice <a href="mailto:starthinker-help@google.com?subject=Custom+StarThinker+Recipe">starthinker-help@google.com</a></p>
+
+
+    </div>
+
+  </body>
+
+  <footer class="page-footer">
+  <div class="footer-copyright">
+    <div class="container center">
+    &copy; 2018 Google, Inc
+    </div>
+  </div>
+</footer>
+
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".button-collapse").sideNav();
+      $('select').material_select();
+      $('.modal').modal();
+    });
+  </script>
+  
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('span.trigger_product').on('click tap', function() {
+        $('table.view_product').hide();
+        $('#' + this.id.replace('trigger_', 'view_') ).show();
+      });
+      $('span.trigger_code').on('click tap', function() {
+        $('#' + this.id.replace('trigger_', 'view_') ).toggle();
+      });
+    });
+  </script>
+
+
+</html>
