@@ -1,0 +1,12 @@
+google-cloud-core==0.26.0
+google-auth==1.2.0
+google-auth-httplib2
+google-cloud-bigquery==0.26.0
+google-cloud-storage==1.3.2
+google-cloud-pubsub==0.27.0
+google-api-python-client==1.6.4
+jsonpickle
+django
+panda
+pysftp
+Jinja2==2.10
