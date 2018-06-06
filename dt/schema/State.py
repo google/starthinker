@@ -17,6 +17,6 @@
 ###########################################################################
 
 State_Schema = [
-  { "name":"region", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"region_full_name", "type":"STRING", "mode":"NULLABLE" }
+  { "name":"Region", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Region_Full_Name", "type":"STRING", "mode":"NULLABLE" }
 ]

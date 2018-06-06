@@ -60,6 +60,7 @@ class FieldMap:
   PLACEMENT_END_DATE = 'Placement End Date'
   PLACEMENT_TYPE = 'Type'
   PLACEMENT_ARCHIVED = 'Archived'
+  PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION = 'Active View and Verification'
 
   EVENT_TAG_NAME = 'Event Tag Name'
   EVENT_TAG_STATUS = 'Event Tag Status'

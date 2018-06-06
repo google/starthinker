@@ -16,7 +16,6 @@
 #
 ###########################################################################
 
-from util.project import project
 import json
 
 from util.sheets import sheets_read, sheets_write

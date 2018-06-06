@@ -27,20 +27,19 @@ import errno
 import json
 import traceback
 import httplib2
-from urllib import quote
 from time import sleep
 from io import BytesIO
 
 from google.cloud import storage
-
 from apiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 from googleapiclient.errors import HttpError
 
+from setup import BUFFER_SCALE
 from util.project import project
 from util.auth import get_service, get_client
 
 
-CHUNKSIZE = 20 * 1024 * 1024
+CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # scale is controlled in setup.py
 RETRIES = 3
 
 

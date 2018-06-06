@@ -51,4 +51,4 @@ if __name__ == "__main__":
           command = 'python2.7 %s/all/run.py %s/%s %s' % (EXECUTE_PATH, root, filename, ' '.join(sys.argv[1:]))
           print ''
           print 'TEST:', command
-          subprocess.call(command, shell=True, cwd=EXECUTE_PATH, stderr=subprocess.PIPE)
+          subprocess.call(command, shell=True, cwd=EXECUTE_PATH, stderr=subprocess.STDOUT)

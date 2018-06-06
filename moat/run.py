@@ -16,9 +16,11 @@
 #
 ###########################################################################
 
+
 from util.project import project 
-from util.data import get_emails, put_files
-from util.csv import csv_to_rows, rows_to_csv, rows_date_sanitize, rows_percent_sanitize, rows_print, rows_to_type
+from util.data import put_rows
+from util.email import get_email_messages
+from util.csv import csv_to_rows, rows_date_sanitize, rows_percent_sanitize, rows_print, rows_to_type
 
 
 def moat_filter(rows):
@@ -31,7 +33,17 @@ def moat_filter(rows):
 def moat():
 
   # find emails with reports
-  for email in get_emails(project.task['auth'], project.task['in'], project.date):
+  for email in get_email_messages(
+    project.task['auth'],
+    project['task']['email']['from'],
+    project['task']['email']['to'],
+    project.day,
+    project.day,
+    project['task']['email'].get('subject', None),
+    porject['task']['email'].get('link', None),
+    project['task']['email'].get('attachment', None),
+    True
+  ):
     if project.verbose: print 'PROCESSING:', email['subject']
     if len(email['attachments']) == 0: continue
 
@@ -43,10 +55,10 @@ def moat():
     rows = rows_to_type(rows)
     rows = moat_filter(rows)
 
-    rows = rows_print(rows, 0, 100)
+    #rows = rows_print(rows, 0, 100)
 
     print 'MOAT Filename:', attachment[0]
-    put_files(project.task['auth'], project.task['out'], attachment[0], rows_to_csv(rows))
+    put_rows(project.task['auth'], project.task['out'], attachment[0], rows)
 
 if __name__ == "__main__":
   project.load('moat')

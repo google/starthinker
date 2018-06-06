@@ -16,46 +16,73 @@
 #
 ###########################################################################
 
+import io
 from util.project import project 
 from util.dcm import conversions_upload
 from util.bigquery import query_to_rows
 from util.sheets import sheets_read
+from util.csv import csv_to_rows
 
-def conversion_upload():
-  if project.verbose: print 'CONVERSION UPLOAD'
+# Possible CSV headers to ignore
+CSV_HEADERS = ["user_id", "encrypted_user_id"]
 
-  rows = []
+def conversions_download():
+  if project.verbose: print 'CONVERSION DOWNLOAD'
 
   # pull from bigquery if specified
   if project.task['bigquery']['dataset']:
-    rows.extend(query_to_rows(
+    if project.verbose: print 'READING BIGQUERY'
+    rows = query_to_rows(
       project.task['auth'],
       project.id,
       project.task['bigquery']['dataset'],
-      'SELECT * FROM %s' % project.task['bigquery']['table']
-    ))
+      'SELECT * FROM %s' % project.task['bigquery']['table'],
+      legacy=project.task['bigquery'].get('legacy', True)
+    )
+    for row in rows: yield row
 
   # pull from sheets if specified
   if project.task['sheets']['url']:
-    rows.extend(sheets_read(
+    if project.verbose: print 'READING SHEET'
+    rows = sheets_read(
       project.task['auth'], 
       project.task['sheets']['url'], 
       project.task['sheets']['tab'], 
       project.task['sheets']['range']
-    ))
-
-  # write to account
-  if rows:
-    if project.verbose: print 'WRITING ROWS', len(rows)
-    conversions_upload(
-      project.task['auth'], 
-      project.task['account_id'], 
-      project.task['activity_id'], 
-      project.task['conversion_type'], 
-      rows, 
-      project.task['encryptionInfo']
     )
-  else:
+    for row in rows: yield row
+
+  # pull from csv if specified
+  if project.task['csv']['file']:
+    if project.verbose: print 'READING CSV FILE'
+    with io.open(project.task['csv']['file']) as f:
+      for row in csv_to_rows(f):
+        if row[0] not in CSV_HEADERS: yield row
+
+
+
+def conversion_upload():
+
+  rows = conversions_download()
+
+  if project.verbose: print 'CONVERSION UPLOAD'
+
+  statuses = conversions_upload(
+    project.task['auth'], 
+    project.task['account_id'], 
+    project.task['activity_id'], 
+    project.task['conversion_type'], 
+    rows, 
+    project.task['encryptionInfo']
+  )
+
+  has_rows = False
+  for status in statuses:
+    has_rows = True
+    if 'errors' in 'status': 
+      if project.verbose: print 'ERROR:', status['conversion']['ordinal'], status['errors'][0]['message']
+      
+  if not has_rows:
     if project.verbose: print 'NO ROWS'
 
 

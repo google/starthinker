@@ -18,8 +18,8 @@
 
 from util.project import project
 from util.sheets import sheets_tab_create, sheets_read, sheets_tab_copy, sheets_clear, sheets_tab_delete
-from util.bigquery import get_schema, csv_to_table
-from util.csv import rows_to_type, rows_to_csv
+from util.bigquery import get_schema, rows_to_table
+from util.csv import rows_to_type
 
 def sheets():
   if project.verbose: print 'SHEETS'
@@ -45,24 +45,24 @@ def sheets():
     if rows:
       schema = None
 
-      # cast rows to types
-      rows = rows_to_type(rows)
-     
       # RECOMMENDED: define schema in json
       if project.task['out']['bigquery'].get('schema'):
+        if project.verbose: print 'SHEETS SCHEMA DEFINED'
         schema = project.task['out']['bigquery']['schema']
       # NOT RECOMMENDED: determine schema if missing 
       else:
+        if project.verbose: print 'SHEETS SCHEMA DETECT ( Note Recommended - Define Schema In JSON )'
+        # cast rows to types ( for schema detection )
+        rows = rows_to_type(rows)
         rows, schema = get_schema(rows, project.task.get('header', False), infer_type=project.task.get('infer_type', True))
-        print schema
 
       # write to table ( not using put bcause no use cases for other destinations )
-      csv_to_table(
+      rows_to_table(
         auth=project.task['auth'],
         project_id=project.id,
         dataset_id=project.task['out']['bigquery']['dataset'],
         table_id=project.task['out']['bigquery']['table'],
-        data=rows_to_csv(rows),
+        rows=rows,
         schema=schema,
         skip_rows=1 if project.task.get('header', False) else 0,
         structure='CSV',

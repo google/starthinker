@@ -50,7 +50,7 @@ def move():
         project.task['to']['table'],
         query_parameters(project.task['from']['query'], project.task['from'].get('parameters')),
         disposition = project.task['write_disposition'] if 'write_disposition' in project.task else 'WRITE_TRUNCATE',
-        use_legacy_sql=project.task['from']['useLegacySql'] if 'useLegacySql' in project.task['from'] else True
+        legacy=project.task['from'].get('legacy', project.task['from'].get('useLegacySql', True)) # DEPRECATED: useLegacySql
       )
     # NOT USED SO RIPPING IT OUT
     # Mauriciod: Yes, it is used, look at project/mauriciod/target_winrate.json
@@ -71,7 +71,7 @@ def move():
       os.remove(local_file_name)
     elif 'trix' in project.task['to']:
       if project.verbose: print "QUERY TO SHEET", project.task['to']['trix']
-      rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'])
+      rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'], legacy=project.task['from'].get('legacy', True))
 
       # makes sure types are correct in sheet
       rows = rows_to_type(rows)
@@ -85,7 +85,8 @@ def move():
         project.id,
         project.task['to']['dataset'],
         project.task['to']['view'],
-        query_parameters(project.task['from']['query'], project.task['from'].get('parameters'))
+        query_parameters(project.task['from']['query'], project.task['from'].get('parameters')),
+        project.task['from'].get('legacy', project.task['from'].get('useLegacySql', True)) # DEPRECATED: useLegacySql
       )
   else:
     if project.verbose: print "STORAGE TO TABLE", project.task['to']['table']

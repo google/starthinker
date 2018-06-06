@@ -17,9 +17,8 @@
 ###########################################################################
 
 from util.project import project
-from util.data import put_files
-from util.dbm import report_delete, report_create, report_file, report_bigquery, report_to_rows, report_clean, accounts_split, DBM_CHUNKSIZE
-from util.csv import rows_to_csv, rows_print
+from util.data import put_rows
+from util.dbm import report_delete, report_create, report_file, report_to_rows, report_clean, accounts_split, DBM_CHUNKSIZE
 
 
 def dbm():
@@ -35,6 +34,7 @@ def dbm():
 
   # check if report is to be deleted
   if project.task.get('delete', False):
+    if project.verbose: print 'DBM DELETE',
     report_delete(
       project.task['auth'],
       project.task['report'].get('report_id', None),
@@ -43,6 +43,7 @@ def dbm():
 
   # check if report is to be created
   if 'type' in project.task['report']:
+    if project.verbose: print 'DBM CREATE',
     report_create(
       project.task['auth'],
       project.task['report']['name'],
@@ -61,9 +62,6 @@ def dbm():
   # moving a report
   if 'out' in project.task:
 
-    # if cleaning is required
-    #if project.task.get('datastudio', False) and 'bigquery' in project.task.get('out', {}):
-
     filename, report = report_file(
       project.task['auth'],
       project.task['report'].get('report_id', None),
@@ -78,23 +76,10 @@ def dbm():
 
       # clean up the report
       rows = report_to_rows(report)
-      rows = report_clean(rows, datastudio=project.task.get('datastudio', False) == True, nulls=True)
+      rows = report_clean(rows, datastudio=project.task.get('datastudio', False), nulls=True)
 
-      #rows = rows_print(rows, 0, 3)
-
-      # upload to cloud if data
-      if rows: put_files(project.task['auth'], project.task['out'], filename, rows_to_csv(rows))
-
-    # if storage copy ( DOES NOT WORK BECAUSE SERVICE OR USER NEEDS TO BE ADDED TO EVERY BILLING PROJECT! )
-    #else:
-    #  report_bigquery(
-    #    project.task['auth'],
-    #    project.task['report'].get('report_id', None),
-    #    report_name,
-    #    project.task['out']['bigquery']['dataset'],
-    #    project.task['out']['bigquery']['table'],
-    #    project.task['out']['bigquery'].get('schema', [])
-    #  )
+      # write rows using standard out block in json ( allows customization across all scripts )
+      if rows: put_rows(project.task['auth'], project.task['out'], filename, rows)
 
 if __name__ == "__main__":
   project.load('dbm')

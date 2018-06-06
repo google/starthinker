@@ -73,6 +73,7 @@ def worker(project_id, execution_topic_name, execution_subscription_name, projec
 
         try:
           command = ['python', 'all/run.py', project_file_name, '--verbose']
+
           if not 'hour' in job['setup']:
             command.append('--force')
 

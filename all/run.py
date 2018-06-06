@@ -64,13 +64,15 @@ if __name__ == "__main__":
     if args.force or is_scheduled(project, task):
 
       # writes running if UUID is present
-      log_project(project)
+      try: log_project(project)
+      except: pass
 
       child = subprocess.Popen(command, shell=True, cwd=EXECUTE_PATH, stderr=subprocess.PIPE)
       outputs, errors = child.communicate()
 
       # writes status if UUID is present
-      log_project(project, outputs, errors)
+      try: log_project(project, outputs, errors)
+      except: pass
 
       #print errors
       if errors:

@@ -16,99 +16,64 @@
 #
 ###########################################################################
 
-import os
-import errno
-from datetime import timedelta
-
-import csv
-import uuid
-
-from io import BytesIO
-#from google.cloud import storage
 
 from util.project import project
-from util.storage import parse_filename, parse_path, makedirs_safe, object_get, object_put, object_list, bucket_create
-from util.regexp import parse_yyyymmdd, parse_dbm_report_id
-from util.email import get_email_attachments, get_email_links, get_email_messages
-
-from util.bigquery import datasets_create, csv_to_table, field_list_to_schema
-
-from util.sheets import sheets_write, sheets_clear
-
-#def date_range(day, source):
-#  if 'days' in source['email']: return day, day + timedelta(days=abs(source['email']['days']))
-#  else: return None, None
+from util.storage import parse_path, makedirs_safe, object_put, bucket_create
+from util.bigquery import query_to_rows, rows_to_table
+from util.sheets import sheets_read, sheets_write, sheets_clear
+from util.csv import rows_to_csv
 
 
-def get_files(auth, source, day = None):
-  if project.verbose: print 'LOADING FILES:', source 
+def get_rows(auth, source):
 
-  # not affected by day since explicitly defined
-  if 'file' in source:
-    if project.verbose: print 'OPENING', source['file']
-    with open(source['file'], 'rb') as excel_file:
-      return (source['file'], BytesIO(excel_file.read()))
+  if 'values' in source:
+    for value in source['values']:
+      yield value if source.get('single_cell', False) else [value]
 
-  # can be day filtered
-  elif 'directory' in source:
-    files = []
-    for file_in in glob.glob(source['directory']):
-      if parse_filename(file_in).startswith('~'): continue # skip temporary files
-      if day and parse_yyyymmdd(file_in) != day: continue # skip if day does not match
-      if project.verbose: print 'OPENING', file_in
-      with open(file_in, 'rb') as excel_file:
-        files.append((file_in, BytesIO(excel_file.read())))
-    return files
+  if 'sheet' in source:
+    rows = sheets_read(project.task['auth'], source['sheet']['url'], source['sheet']['tab'], source['sheet']['range'])
+    for row in rows:
+      yield row[0] if source.get('single_cell', False) else row
 
-  elif 'storage' in source:
-    # not affected by day since explicitly defined
-    if 'blob' in source:
-      if project.verbose: print 'OPENING', blob.name
-      object_get(auth, source['storage']['blob'])
-      return (source['blob'], blob.download_as_string())
-
-    # can be day filtered
-    elif 'bucket' in source:
-      files = []
-      for blob_name in object_list(auth, source['storage']['bucket'] + ':' + source['storage']['path']):
-        if day and parse_yyyymmdd(blob_name) != day: continue # skip if day does not match
-        if project.verbose: print 'OPENING', blob_name
-        files.append((blob_name, object_get(auth, blob_name)))
-      return files
-
-  # can be day filtered ( pased in for aditional efficiency )
-  elif 'email' in source:
-    data = []
-
-    #date_min, date_max = date_range(day, source)
-    subject_regexp =  source['email'].get('subject', None)
-    link_regexp =  source['email'].get('link', None)
-    attachment_regexp =  source['email'].get('attachment', None)
-
-    if attachment_regexp: data.extend(get_email_attachments(auth, source['email']['from'], source['email']['to'], day, day, subject_regexp, attachment_regexp))
-    if link_regexp: data.extend(get_email_links(auth, source['email']['from'], source['email']['to'], day, day, subject_regexp, link_regexp, download=True))
-
-    return data 
+  if 'bigquery' in source:
+    rows = query_to_rows(
+      source['bigquery'].get('auth', auth),
+      project.id,
+      source['bigquery']['dataset'],
+      source['bigquery']['query'],
+      legacy=source['bigquery'].get('legacy', False)
+    )
+    for row in rows:
+      yield row[0] if source.get('single_cell', False) else row
 
 
-def get_emails(auth, source, day):
-  #date_min, date_max = date_range(day, source)
-  subject_regexp =  source['email'].get('subject', None)
-  link_regexp =  source['email'].get('link', None)
-  attachment_regexp =  source['email'].get('attachment', None)
-  return get_email_messages(auth, source['email']['from'], source['email']['to'], day, day, subject_regexp, link_regexp, attachment_regexp, True)
+def put_rows(auth, target, filename, rows):
 
+  if 'bigquery' in target:
+    rows_to_table(
+      target['bigquery'].get('auth', auth),
+      project.id,
+      target['bigquery']['dataset'],
+      target['bigquery']['table'],
+      rows,
+      schema=target['bigquery'].get('schema', []),
+      skip_rows=target['bigquery'].get('skip_rows', 1),
+      structure='CSV',
+      disposition=target['bigquery'].get('disposition', 'WRITE_TRUNCATE'),
+      destination_project_id=target['bigquery'].get('project_id', None),
+    )
 
-def put_files(auth, target, filename, data):
+  if 'sheets' in target:
+    if target['sheets'].get('delete', False): sheets_clear(auth, target['sheets']['sheet'], target['sheets']['tab'], target['sheets']['range'])
+    sheets_write(auth, target['sheets']['sheet'], target['sheets']['tab'], target['sheets']['range'], rows) 
 
   if 'directory' in target:
     file_out = target['directory'] + filename
     if project.verbose: print 'SAVING', file_out
     makedirs_safe(parse_path(file_out))
     with open(file_out, 'wb') as save_file:
-      save_file.write(data.read())
+      save_file.write(rows_to_csv(rows).read())
 
-  # make sure all storage parameters are present
   if 'storage' in target and target['storage'].get('bucket') and target['storage'].get('path'):
     # create the bucket
     bucket_create(auth, project.id, target['storage']['bucket'])
@@ -116,57 +81,10 @@ def put_files(auth, target, filename, data):
     # put the file
     file_out = target['storage']['bucket'] + ':' + target['storage']['path'] + filename
     if project.verbose: print 'SAVING', file_out
-    object_put(auth, file_out, data)
-
-  if 'bigquery' in target and target['bigquery'].get('dataset') and target['bigquery'].get('table'):
-
-    # allows different read vs write auth, DO WE WANT THIS?
-    if 'auth' in target['bigquery']:
-      auth = target['bigquery']['auth']
-
-    if target['bigquery'].get('autodetect_schema', True):
-      csv_to_table(
-        auth,
-        project.id,
-        target['bigquery']['dataset'],
-        target['bigquery']['table'],
-        data, 
-        schema=target['bigquery'].get('schema', []),
-        skip_rows=target['bigquery'].get('skip_rows', 1),
-        structure='CSV',
-        disposition=target['bigquery'].get('disposition', 'WRITE_TRUNCATE')
-      )
-    else:
-      reader = csv.reader(data)
-      rows = [item for item in reader]
-
-      dataset = target['bigquery']['dataset']
-      datasets_create(auth, project.id, dataset)
-
-      table_name = target['bigquery']['table']
-      replace = target['bigquery']['replace']
-      schema = field_list_to_schema(rows[0])
-      temp_file_name = '/tmp/%s' % str(uuid.uuid1())
-      f = open(temp_file_name, 'w')
-      writer = csv.writer(f)
-
-      if project.verbose: print 'SAVING', dataset, table_name
-
-      for row in rows[1:]: writer.writerow(row)
-
-      f.close()
-      f = open(temp_file_name, 'rb')
-
-      csv_to_table(auth, project.id, dataset, table_name, f, schema, skip_rows=0, structure='CSV', disposition='WRITE_TRUNCATE')
-
-      os.remove(temp_file_name)
+    object_put(auth, file_out, rows_to_csv(rows))
 
   if 'trix' in target:
-    trix_update(auth, target['trix']['sheet_id'], target['trix']['sheet_range'], data, target['trix']['clear'])
-
-  if 'sheets' in target:
-    if target['sheets'].get('delete', False): sheets_clear(auth, target['sheets']['sheet'], target['sheets']['tab'], target['sheets']['range'])
-    sheets_write(auth, target['sheets']['sheet'], target['sheets']['tab'], target['sheets']['range'], [row for row in csv.reader(data)]) # optimize this in the future should really be passing rows to these functions
+    trix_update(auth, target['trix']['sheet_id'], target['trix']['sheet_range'], rows_to_csv(rows), target['trix']['clear'])
 
   if 'email' in target:
     pass

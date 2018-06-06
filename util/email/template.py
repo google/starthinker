@@ -37,7 +37,7 @@ class EmailTemplate:
 
   # only do the look, as this can be applied to various elements with different layouts
   def _text_css(self):
-    return 'color:#222;font-family:Verdana;font-size:18px;line-height:28px;'
+    return 'color:#222;font-family:Verdana;font-size:16px;line-height:24px;'
 
 
   # only do the look, as this can be applied to various elements with different layouts ( also used for table headers )
@@ -45,7 +45,7 @@ class EmailTemplate:
     if big:
       return 'display:block;margin:40px 0px;border-radius:100px;padding:12px 36px;background-color:%(foreground)s;color:%(background)s;font-family:Verdana;font-size:24px;text-decoration:none;text-align:center;' % self.segment_next(False)
     else:
-      return 'border-radius:50px;padding:6px 18px;background-color:%(foreground)s;color:%(background)s;font-family:Verdana;font-size:18px;text-decoration:none;text-align:center;' % self.segment_next(False)
+      return 'border-radius:50px;padding:6px 18px;background-color:%(foreground)s;color:%(background)s;font-family:Verdana;font-size:16px;text-decoration:none;text-align:center;' % self.segment_next(False)
 
 
   def _table_css(self):
@@ -79,12 +79,20 @@ class EmailTemplate:
     return value
 
 
-  def greeting(self, name, salutation='Hi'):
-    # HTML
-    self.content_html += '<p style="width:100%%;margin:0px;padding:0px;border:0px;%s">%s %s,<p>' % (self._text_css(), salutation, name)
+  def greeting(self, name='', salutation='Hi'):
+    if name:
+      # HTML
+      self.content_html += '<p style="width:100%%;margin:0px;padding:0px;border:0px;%s">%s %s,<p>' % (self._text_css(), salutation, name)
 
-    # Text
-    self.content_text += '%s %s,\n\n' % (salutation, name)
+      # Text
+      self.content_text += '%s %s,\n\n' % (salutation, name)
+
+    else:
+      # HTML
+      self.content_html += '<p style="width:100%%;margin:0px;padding:0px;border:0px;%s">%s,<p>' % (self._text_css(), salutation)
+
+      # Text
+      self.content_text += '%s,\n\n' % salutation
 
 
   def header(self, text):
@@ -97,7 +105,7 @@ class EmailTemplate:
 
   def paragraph(self, text, bold=False):
     # HTML
-    self.content_html += '<p style="width:100%%;margin:10px 0px;padding:0px;border:0px;font-weight:%s;%s">%s<p>' % ('bold' if bold else 'normal', self._text_css(), text)
+    self.content_html += '<p style="width:100%%;margin:10px 0px;padding:0px;border:0px;font-weight:%s;%s">%s<p>' % ('bold' if bold else 'normal', self._text_css(), text.replace('\n', '<br/><br/>'))
 
     # Text
     self.content_text += '%s\n\n' % text

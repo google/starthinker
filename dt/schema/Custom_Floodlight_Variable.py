@@ -17,9 +17,9 @@
 ###########################################################################
 
 Custom_Floodlight_Variable_Schema = [
-  { "name":"advertiser_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"floodlight_config_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"floodlight_variable_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"floodlight_variable_name", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"account_id", "type":"INTEGER", "mode":"NULLABLE" }
+  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Floodlight_Variable_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Floodlight_Variable_Name", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
 ]

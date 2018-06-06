@@ -77,7 +77,7 @@ def bigquery():
     object_compare(sorted(rows), sorted(project.task['bigquery']['values']))
 
   # simple table check ( unless query given )
-  elif 'table' in project.task['bigquery']:
+  elif 'values' in project.task['bigquery']:
     rows = table_to_rows(
       project.task['auth'],
       project.id,

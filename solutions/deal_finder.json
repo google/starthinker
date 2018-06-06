@@ -37,7 +37,8 @@
       "When prompted choose the new data source you just created.",
       "Or give these intructions to the client."
     ],
-    "authors":["kenjora@google.com"]
+    "authors":["kenjora@google.com"],
+    "managers":["kenjora@google.com"]
   },
   "setup":{
     "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],

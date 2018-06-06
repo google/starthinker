@@ -20,6 +20,7 @@
 #https://developers.google.com/android-publisher/authorization#generating_a_refresh_token
 
 import os
+import re
 import json
 import httplib2
 import pprint
@@ -52,25 +53,33 @@ SCOPES = [
   'https://www.googleapis.com/auth/drive',
   'https://www.googleapis.com/auth/spreadsheets',
   'https://www.googleapis.com/auth/doubleclicksearch',
-  'https://www.googleapis.com/auth/content'
+  'https://www.googleapis.com/auth/content',
+  'https://www.googleapis.com/auth/ddmconversions'
 ]
 SERVICE_CACHE = {}
+
+RE_CREDENTIALS_BUCKET = re.compile(r'[a-z0-9_\-\.]+:.+\.json')
+RE_CREDENTIALS_JSON = re.compile(r'^\s*\{.*\}\s*$', re.DOTALL)
 
 
 def get_credentials():
 
-  # if credentials are UI generated ( remember this runs as worker )
-  if project.configuration['setup']['auth'].get('source', 'local') == 'ui':
-    credentials = BucketCredentials.from_bucket(project.configuration['setup']['auth']['user'])
+  auth = project.configuration['setup']['auth']['user']
 
-  # if credentials are UI generated ( remember this runs as worker )
-  elif project.configuration['setup']['auth'].get('source', 'local') == 'remote':
-    credentials = BucketCredentials.from_bucket(project.configuration['setup']['auth']['user'])
+  # if credentials are stored in a bucket
+  if RE_CREDENTIALS_BUCKET.match(auth):
+    credentials = BucketCredentials.from_bucket(auth)
+
+  # if credentials are embeded as JSON
+  elif RE_CREDENTIALS_JSON.match(auth):
+    return Credentials.from_json_keyfile_dict(
+      json.loads(auth),
+      scopes or SCOPES
+    )
 
   # if credentials are local path ( remember this runs as command line )
   else:
-    credential_path = project.configuration['setup']['auth']['user']
-    store = Storage(credential_path)
+    store = Storage(auth)
     credentials = store.get()
 
     if not credentials or credentials.invalid:
@@ -78,25 +87,26 @@ def get_credentials():
       flow.user_agent = APPLICATION_NAME
       flags = tools.argparser.parse_args(args=['--noauth_local_webserver'])
       credentials = tools.run_flow(flow, store, flags)
-      print('Storing credentials to ' + credential_path)
+      print('Storing credentials to ' + auth)
 
   return credentials
 
 
 def get_service_credentials(scopes=None):
 
-  # if credentials are embeded as JSON ( used by ui )
-  if project.configuration['setup']['auth'].get('source', 'local') == 'ui':
+  auth = project.configuration['setup']['auth']['service']
+
+  # if credentials are embeded as JSON
+  if RE_CREDENTIALS_JSON.match(auth):
     return ServiceAccountCredentials.from_json_keyfile_dict(
-      json.loads(
-        project.configuration['setup']['auth']['service']), 
-        scopes or SCOPES
-      )
+      json.loads(auth),
+      scopes or SCOPES
+    )
 
   # if credentials are local path then check if they exist ( used by command line )
   else:
     return ServiceAccountCredentials.from_json_keyfile_name(
-      project.configuration['setup']['auth']['service'],
+      auth,
       scopes or SCOPES
     )
 

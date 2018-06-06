@@ -18,6 +18,7 @@
 
 # https://developers.google.com/bid-manager/v1/queries
 # https://developers.google.com/drive/v3/web/manage-downloads
+# https://developers.google.com/bid-manager/guides/entity-write/format
 
 import re
 import pprint
@@ -30,15 +31,18 @@ from types import GeneratorType
 
 from googleapiclient.errors import HttpError
 
+from setup import BUFFER_SCALE
 from util.project import project
 from util.auth import get_service
 from util.bigquery import query_to_rows, storage_to_table
 from util.storage import object_get_chunks
+from util.csv import column_header_sanitize, csv_to_rows, rows_to_csv
+from util.dbm.schema import LineItem_Write_Schema
 
 
-DBM_CHUNKSIZE = 200 * 1024 * 1024 # 200MB recommended by docs
+API_VERSION = 'v1'
+DBM_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200MB recommended by docs * scale in setup.py
 RE_FILENAME = re.compile(r'.*/(.*)\?GoogleAccess')
-RE_HUMAN = re.compile('[^0-9a-zA-Z]+')
 
 
 def _retry(job, key=None, retries=10, wait=30):
@@ -114,7 +118,7 @@ def accounts_split(accounts):
 
 
 def report_get(auth, report_id=None, name=None):
-  service = get_service('doubleclickbidmanager', 'v1', auth)
+  service = get_service('doubleclickbidmanager', API_VERSION, auth)
   if name:
     job = service.queries().listqueries()
     result = _retry(job)
@@ -134,7 +138,7 @@ def report_create(auth, name, typed, partners, advertisers, filters, dimensions,
   if report is None:
     if project.verbose: print 'DBM Report Create:', name
 
-    service = get_service('doubleclickbidmanager', 'v1', auth)
+    service = get_service('doubleclickbidmanager', API_VERSION, auth)
 
     body = {
       'kind': 'doubleclickbidmanager#query',
@@ -252,7 +256,7 @@ def report_delete(auth, report_id=None, name=None):
   if project.verbose: print "DBM DELETE:", report_id or name
   report = report_get(auth, report_id, name)
   if report:
-    service = get_service('doubleclickbidmanager', 'v1', auth)
+    service = get_service('doubleclickbidmanager', API_VERSION, auth)
     job = service.queries().deletequery(queryId=report['queryId'])
     _retry(job)
   else:
@@ -260,11 +264,10 @@ def report_delete(auth, report_id=None, name=None):
 
 
 def report_list(auth):
-  service = get_service('doubleclickbidmanager', 'v1', auth)
+  service = get_service('doubleclickbidmanager', API_VERSION, auth)
   job = service.queries().listqueries()
   for query in _retry(job, 'queries'):
     yield query
-
 
 
 def report_to_rows(report):
@@ -301,7 +304,7 @@ def report_clean(rows, datastudio=False, nulls=False):
     if first:
       try: date = row.index('Date')
       except ValueError: pass
-      if datastudio: row = [RE_HUMAN.sub('_', column) for column in row]
+      if datastudio: row = [column_header_sanitize(cell) for cell in row]
 
     # check if data studio formatting is applied
     if datastudio and date is not None:
@@ -315,3 +318,68 @@ def report_clean(rows, datastudio=False, nulls=False):
 
     # not first row anymore
     first = False
+
+
+def lineitem_read(auth, advertisers=[], insertion_orders=[], lineitems=[]):
+
+  service = get_service('doubleclickbidmanager', API_VERSION, auth)
+
+  body = {
+    'format':'CSV',
+    'fileSpec':'EWF'
+  }
+
+  if advertisers: 
+    body['filterType'] = 'ADVERTISER_ID'
+    body['filterIds'] = list(advertisers) # in case its a generator
+
+  elif insertion_orders: 
+    body['filterType'] = 'INSERTION_ORDER_ID'
+    body['filterIds'] = list(insertion_orders) # in case its a generator
+
+  elif lineitems: 
+    body['filterType'] = 'LINE_ITEM_ID'
+    body['filterIds'] = list(lineitems) # in case its a generator
+
+  print body
+
+  job = service.lineitems().downloadlineitems(body=body)
+  result = _retry(job)
+
+  for count, row in enumerate(csv_to_rows(result.get('lineItems', ''))):
+    if count == 0: continue # skip header
+    row[0] = int(row[0] or 0) # LineItem ID
+    row[2] = int(row[2] or 0) # Partner ID	
+    row[11] = float(row[11] or 0) # IO Budget Amount
+    row[18] = float(row[18] or 0) # LineItem Budget Amount
+    row[21] = float(row[21] or 0) # LineItem Pacing Amount
+    row[23] = int(row[23] or 0) # LineItem Frequency Exposures
+    row[25] = int(row[25] or 0) # LineItem Frequency Amount
+    row[26] = float(row[26] or 0) # Bid Price (CPM)
+    row[28] = float(row[28] or 0) # Partner Revenue Amount
+    yield row
+
+
+def lineitem_edit(row, column_name, value):
+  lineitem_lookup = {k['name']:v for v,k in enumerate(LineItem_Write_Schema)}
+  row[lineitem_lookup[column_name]] = value
+  
+
+def lineitem_write(auth, rows, dry_run=True):
+
+  service = get_service('doubleclickbidmanager', API_VERSION, auth)
+
+  header = [s['name'] for s in LineItem_Write_Schema]
+
+  body = {
+    "lineItems":'%s\n%s' % (','.join(header), rows_to_csv(rows).read()), # add header row
+    "format":'CSV',
+    "dryRun":dry_run
+  }
+
+  job = service.lineitems().uploadlineitems(body=body)
+  result = _retry(job)
+  print result
+  return result
+
+

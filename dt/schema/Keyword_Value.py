@@ -17,9 +17,9 @@
 ###########################################################################
 
 Keyword_Value_Schema = [
-  { "name":"ad_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"advertiser_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"keyword", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"floodlight_config_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"account_id", "type":"INTEGER", "mode":"NULLABLE" }
+  { "name":"Ad_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Keyword", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
 ]

@@ -44,23 +44,43 @@ class PlacementDAO(BaseDAO):
 
     self.cache = PlacementDAO.cache
 
+  def _process_active_view_and_verification(self, placement, feed_item):
+    if FieldMap.PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION in feed_item:
+      if feed_item[FieldMap.PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION] == 'ON':
+        placement['vpaidAdapterChoice'] = 'HTML5'
+        placement['videoActiveViewOptOut'] = False
+      elif feed_item[FieldMap.PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION] == 'OFF':
+        placement['vpaidAdapterChoice'] = 'DEFAULT'
+        placement['videoActiveViewOptOut'] = True
+      elif feed_item[FieldMap.
+                     PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION] == 'LET_DCM_DECIDE' or feed_item[FieldMap.
+                                                                                              PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION] == '':
+        placement['vpaidAdapterChoice'] = 'DEFAULT'
+        placement['videoActiveViewOptOut'] = False
+      else:
+        raise Exception(
+            '%s is not a valid value for the placement Active View and Verification field'
+            % feed_item[FieldMap.PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION])
+
   def _process_update(self, item, feed_item):
+    if feed_item.get(FieldMap.CAMPAIGN_ID, "") == "":
+      feed_item[FieldMap.CAMPAIGN_ID] = item['campaignId']
+
     campaign = self.campaign_dao.get(feed_item)
 
     feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
 
-    item['pricingSchedule']['startDate'] = feed_item[
-        FieldMap.PLACEMENT_START_DATE]
-    item['pricingSchedule']['endDate'] = feed_item[FieldMap.PLACEMENT_END_DATE]
-    item['pricingSchedule']['pricingPeriods'][0]['startDate'] = feed_item[
-        FieldMap.PLACEMENT_START_DATE]
-    item['pricingSchedule']['pricingPeriods'][0]['endDate'] = feed_item[
-        FieldMap.PLACEMENT_END_DATE]
-    item['name'] = feed_item[FieldMap.PLACEMENT_NAME]
-    item['archived'] = feed_item[FieldMap.PLACEMENT_ARCHIVED]
+    item['pricingSchedule']['startDate'] = feed_item[FieldMap.PLACEMENT_START_DATE] if feed_item.get(FieldMap.PLACEMENT_START_DATE, '') else item['pricingSchedule']['startDate']
+    item['pricingSchedule']['endDate'] = feed_item[FieldMap.PLACEMENT_END_DATE] if feed_item.get(FieldMap.PLACEMENT_END_DATE, '') else item['pricingSchedule']['endDate']
+    item['pricingSchedule']['pricingPeriods'][0]['startDate'] = feed_item[FieldMap.PLACEMENT_START_DATE] if feed_item.get(FieldMap.PLACEMENT_START_DATE, '') else item['pricingSchedule']['pricingPeriods'][0]['startDate']
+    item['pricingSchedule']['pricingPeriods'][0]['endDate'] = feed_item[FieldMap.PLACEMENT_END_DATE] if feed_item.get(FieldMap.PLACEMENT_END_DATE, '') else item['pricingSchedule']['pricingPeriods'][0]['endDate']
+    item['name'] = feed_item[FieldMap.PLACEMENT_NAME] if feed_item.get(FieldMap.PLACEMENT_NAME, '') else item['name']
+    item['archived'] = feed_item[FieldMap.PLACEMENT_ARCHIVED] if feed_item.get(FieldMap.PLACEMENT_ARCHIVED, '') else item['archived']
 
     self._process_transcode(item, feed_item)
+
+    self._process_active_view_and_verification(item, feed_item)
 
   def _process_transcode(self, item, feed_item):
     if 'transcode_config' in feed_item:
@@ -101,7 +121,11 @@ class PlacementDAO(BaseDAO):
         }
     }
 
-    if feed_item[FieldMap.PLACEMENT_TYPE] == 'VIDEO' or feed_item[FieldMap.PLACEMENT_TYPE] == 'IN_STREAM_VIDEO':
+    self._process_active_view_and_verification(result, feed_item)
+
+    if feed_item[FieldMap.
+                 PLACEMENT_TYPE] == 'VIDEO' or feed_item[FieldMap.
+                                                         PLACEMENT_TYPE] == 'IN_STREAM_VIDEO':
       result['compatibility'] = 'IN_STREAM_VIDEO'
       result['size'] = {'width': '0', 'height': '0'}
       result['tagFormats'] = ['PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH']
@@ -129,7 +153,7 @@ class PlacementDAO(BaseDAO):
                                       transcode_configs_feed):
     for placement in placement_feed:
       for transcode_config in transcode_configs_feed:
-        if placement[FieldMap.TRANSCODE_ID] == transcode_config[
+        if placement.get(FieldMap.TRANSCODE_ID, '') == transcode_config[
             FieldMap.TRANSCODE_ID]:
           placement['transcode_config'] = transcode_config
           break

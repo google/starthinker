@@ -17,13 +17,13 @@
 ###########################################################################
 
 Activity_Category_Schema = [
-  { "name":"activity", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"activity_group_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"activity_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"activity_sub_type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"activity_type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"advertiser_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"floodlight_config_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"tag_counting_method_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"account_id", "type":"INTEGER", "mode":"NULLABLE" }
+  { "name":"Activity", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Activity_Group_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Activity_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Activity_Sub_Type", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Activity_Type", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Tag_Counting_Method_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
 ]

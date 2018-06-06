@@ -18,19 +18,16 @@
 
 # https://developers.google.com/bid-manager/guides/entity-read/format-v2
 
-import json
-import os
-import sys
-import time
-from datetime import datetime, timedelta
 from io import BytesIO
 
+from setup import BUFFER_SCALE
 from util.project import project
 from util.storage import object_get_chunks
-from util.bigquery import datasets_create, csv_to_table
+from util.bigquery import csv_to_table
 from entity.schema import Entity_Schema_Lookup
 
-CHUNK_SIZE = 1024000 * 200  # 200 MB
+
+CHUNK_SIZE = int(200 * 1024000 * BUFFER_SCALE) # 200 MB * scale in setup.py
 PUBLIC_FILES = ('SupportedExchange', 'DataPartner', 'UniversalSite',
                 'GeoLocation', 'Language', 'DeviceCriteria', 'Browser', 'Isp')
 

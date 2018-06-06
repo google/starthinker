@@ -17,6 +17,6 @@
 ###########################################################################
 
 City_Schema = [
-  { "name":"city", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"city_id", "type":"INTEGER", "mode":"NULLABLE" }
+  { "name":"City", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"City_Id", "type":"INTEGER", "mode":"NULLABLE" }
 ]

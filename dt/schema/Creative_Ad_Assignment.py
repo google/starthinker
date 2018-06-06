@@ -17,18 +17,18 @@
 ###########################################################################
 
 Creative_Ad_Assignment_Schema = [
-  { "name":"ad_click_url", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"ad_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"advertiser_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"creative_end_date", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"creative_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"creative_group1", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"creative_group1_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"creative_group2", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"creative_group2_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"creative_rotation_type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"creative_rotation_type_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"creative_start_date", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"floodlight_config_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"account_id", "type":"INTEGER", "mode":"NULLABLE" }
+  { "name":"Ad_Click_Url", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Ad_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Creative_End_Date", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Creative_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Creative_Group1", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Creative_Group1_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Creative_Group2", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Creative_Group2_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Creative_Rotation_Type", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Creative_Rotation_Type_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Creative_Start_Date", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
 ]

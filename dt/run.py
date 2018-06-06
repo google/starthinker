@@ -43,7 +43,15 @@ def dt_header():
 
 
 def dt_schema(header):
-  return [{ 'name':column_header_sanitize(h), 'type':DT_Field_Lookup.get(h, 'STRING'), 'mode':'NULLABLE' } for h in header]
+  schema = []
+  for h in header:
+    h = column_header_sanitize(h)
+    schema.append({ 
+      'name':h, 
+      'type':DT_Field_Lookup.get(h, 'STRING'), 
+      'mode':'NULLABLE' 
+    }) 
+  return schema
 
 
 def dt():

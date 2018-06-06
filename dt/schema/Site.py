@@ -17,9 +17,9 @@
 ###########################################################################
 
 Site_Schema = [
-  { "name":"site", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"site_directory", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"site_directory_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"site_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"account_id", "type":"INTEGER", "mode":"NULLABLE" }
+  { "name":"Site", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Site_Directory", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Site_Directory_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Site_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
 ]

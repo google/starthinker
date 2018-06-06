@@ -31,7 +31,12 @@
       "technical level":50
     },
     "instructions":[
-      "A tab called <strong>SOV_DCM_Peers</strong> will be added to the trix, with instructions.",
+      "Add a blank sheet URL, this is where your peers will go.",
+      "Specify DBM partner and/or advertiser IDs.  This will be your client.",
+      "Click run now once, a tab called <strong>SOV_DBM_Peers</strong> will be added to the trix, with instructions.",
+      "Follow the instructions on the sheet, these will be your peer sets.",
+      "StarThinker will create two reports in DBM, to change the peer mix you will have to delete these reports and run again.",
+      "The error log will tell you if you need more peers or a different peer mix to meet obfuscation criteria",
       "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->Share_Of_Voice_DBM</b> to be created or click Run Now.",
       "Copy <a href='https://datastudio.google.com/open/0B1dzmNeF4E-MUWtYYlZDZVpIdU0' target='_blank'>Share Of Voice Sample Data ( Copy From This )</a>.",
       "Click Edit Connection, and Change to <b>BigQuery->StarThinker Data->{{DATASET}}->Share_Of_Voice_DBM</b>.",

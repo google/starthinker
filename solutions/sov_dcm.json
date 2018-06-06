@@ -31,8 +31,13 @@
       "technical level":50
     },
     "instructions":[
-      "You will need access to all DCM Accounts ( add profile ).",
-      "A tab called <strong>SOV_DCM_Peers</strong> will be added to the trix, with instructions.",
+      "You need to be a member of <a href='https://groups.google.com/a/google.com/forum/#!members/starthinker' target='_blank'>starthinker</a> group.",
+      "Add a blank sheet URL, this is where your peers will go.",
+      "Specify DCM network and/or advertiser IDs.  This will be your client.",
+      "Click run now once, a tab called <strong>SOV_DCM_Peers</strong> will be added to the trix, with instructions.",
+      "Follow the instructions on the sheet, these will be your peer sets.",
+      "StarThinker will create a report in DCM for each peer and client, if you change the peer mix, StarThinker does not delete unused reports .",
+      "The error log will tell you if you need more peers or a different peer mix to meet obfuscation criteria",
       "Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->Share_Of_Voice_DCM</b> to be created, or click Run Now.",
       "Copy <a href='https://datastudio.google.com/open/0B1dzmNeF4E-MUWtYYlZDZVpIdU0' target='_blank'>Share Of Voice Sample Data ( Copy From This )</a>.",
       "Click Edit Connection, and change to <b>BigQuery->StarThinker Data->{{DATASET}}->Share_Of_Voice_DCM</b>.",

@@ -127,7 +127,9 @@ class BaseDAO(object):
       data = job.execute()
       return data
     except http.HttpError, e:
-      logger.log(str(e))
+      msg = traceback.format_exc()
+      print msg
+      logger.log(msg)
       if e.resp.status in [403, 429, 500, 503]:
         if retries > 0:
           time.sleep(wait)

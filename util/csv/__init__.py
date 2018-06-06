@@ -28,6 +28,7 @@ from third_party.xlsx import Workbook
 RE_HUMAN = re.compile('[^0-9a-zA-Z]+')
 INT_LIMIT = 9223372036854775807 # defined by BigQuery 64 bit mostly ( not system )
 
+
 def excel_to_rows(excel_bytes):
   book = Workbook(excel_bytes)
   # load all sheets in document
@@ -39,7 +40,9 @@ def excel_to_rows(excel_bytes):
 
 
 def csv_to_rows(csv_string):
-  return  list(csv.reader(csv_string, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL))
+  if isinstance(csv_string, basestring): csv_string = StringIO(csv_string)
+  for row in csv.reader(csv_string, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL):
+    yield row
 
 
 def rows_to_csv(rows):
@@ -80,19 +83,19 @@ def rows_header_trim(rows):
     first = False
 
 
-def rows_header_sanitize(rows):
-  # replace any special characters in the header
-  try: rows[0] = [RE_HUMAN.sub('', cell.replace(' ', '_')).strip('_') for cell in rows[0]]
-  except: pass
-  return rows
+def column_header_sanitize(cell):
+  return RE_HUMAN.sub('_', cell.title()).strip('_')
 
 
 def row_header_sanitize(row):
-  return [RE_HUMAN.sub('', cell.replace(' ', '_')).strip('_') for cell in row]
+  return [column_header_sanitize(cell) for cell in row]
 
 
-def column_header_sanitize(cell):
-  return RE_HUMAN.sub('', cell.replace(' ', '_')).strip('_')
+def rows_header_sanitize(rows):
+  first = True
+  for row in rows:
+    if first: row = row_header_sanitize(row)
+    yield row
 
 
 def rows_percent_sanitize(rows):

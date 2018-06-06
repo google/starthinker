@@ -85,8 +85,14 @@ class AdDAO(BaseDAO):
   def _process_update(self, item, feed_item):
     self._wait_all_creative_activation(feed_item)
 
-    item['creativeRotation']['type'] = feed_item[FieldMap.CREATIVE_ROTATION_TYPE]
-    item['creativeRotation']['weightCalculationStrategy'] = feed_item[FieldMap.CREATIVE_ROTATION_WEIGHT_CALCULATION_STRATEGY]
+    creative_rotation_type = feed_item.get(FieldMap.CREATIVE_ROTATION_TYPE, 'CREATIVE_ROTATION_TYPE_RANDOM')
+    creative_rotation_type = creative_rotation_type if creative_rotation_type else 'CREATIVE_ROTATION_TYPE_RANDOM'
+
+    creative_rotation_strategy = feed_item.get(FieldMap.CREATIVE_ROTATION_WEIGHT_CALCULATION_STRATEGY, 'WEIGHT_STRATEGY_EQUAL')
+    creative_rotation_strategy = creative_rotation_strategy if creative_rotation_strategy else 'WEIGHT_STRATEGY_EQUAL'
+
+    item['creativeRotation']['type'] = creative_rotation_type
+    item['creativeRotation']['weightCalculationStrategy'] = creative_rotation_strategy
     item['creativeRotation']['creativeAssignments'] = []
 
     item['placementAssignments'] = []
@@ -124,10 +130,16 @@ class AdDAO(BaseDAO):
       if not creative['id'] in assigned_creatives:
         assigned_creatives.append(creative['id'])
 
+        sequence = assignment.get(FieldMap.CREATIVE_ROTATION_SEQUENCE, None)
+        weight = assignment.get(FieldMap.CREATIVE_ROTATION_WEIGHT, None),
+
+        sequence = sequence if type(sequence) is int else None
+        weight = weight if type(weight) is int else None
+
         creative_assignments.append({
             'active': True,
-            'sequence': assignment[FieldMap.CREATIVE_ROTATION_SEQUENCE],
-            'weight': assignment[FieldMap.CREATIVE_ROTATION_WEIGHT],
+            'sequence': sequence,
+            'weight': weight,
             'creativeId': assignment[FieldMap.CREATIVE_ID],
             'clickThroughUrl': {
                 'defaultLandingPage': True
@@ -170,10 +182,17 @@ class AdDAO(BaseDAO):
     self._process_assignments(feed_item, creative_assignments, placement_assignments, event_tag_assignments)
 
     # Construct creative rotation.
+
+    creative_rotation_type = feed_item.get(FieldMap.CREATIVE_ROTATION_TYPE, 'CREATIVE_ROTATION_TYPE_RANDOM')
+    creative_rotation_type = creative_rotation_type if creative_rotation_type else 'CREATIVE_ROTATION_TYPE_RANDOM'
+
+    creative_rotation_strategy = feed_item.get(FieldMap.CREATIVE_ROTATION_WEIGHT_CALCULATION_STRATEGY, 'WEIGHT_STRATEGY_EQUAL')
+    creative_rotation_strategy = creative_rotation_strategy if creative_rotation_strategy else 'WEIGHT_STRATEGY_EQUAL'
+
     creative_rotation = {
         'creativeAssignments': creative_assignments,
-        'type': feed_item[FieldMap.CREATIVE_ROTATION_TYPE],
-        'weightCalculationStrategy': feed_item[FieldMap.CREATIVE_ROTATION_WEIGHT_CALCULATION_STRATEGY]
+        'type': creative_rotation_type,
+        'weightCalculationStrategy': creative_rotation_strategy
     }
 
     # Construct delivery schedule.

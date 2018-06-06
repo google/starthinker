@@ -28,6 +28,9 @@ from urllib2 import urlopen
 from HTMLParser import HTMLParser
 from apiclient import errors
 from datetime import timedelta
+from time import sleep
+
+from googleapiclient.errors import HttpError
 
 from util.project import project
 from util.auth import get_service
@@ -191,17 +194,18 @@ def get_email_messages(auth, email_from, email_to, date_min, date_max, subject_r
 
 
 def send_email(auth, email_to, email_from, email_cc, subject, text, html):
-  if project.verbose: print 'Send email'
+  if project.verbose: print 'SENDING EMAIL', email_to
   
   service = get_service('gmail', 'v1', auth)
   message = MIMEMultipart('alternative')
+  message.set_charset('utf8')
 
   message['to'] = email_to
   message['cc'] = email_cc
   message['from'] = email_from
   message['subject'] = subject
-  text_part = MIMEText(text, 'plain')
-  html_part = MIMEText(html, 'html')
+  text_part = MIMEText(text, 'plain', 'UTF-8')
+  html_part = MIMEText(html, 'html', 'UTF-8')
   message.attach(text_part)
   message.attach(html_part)
   

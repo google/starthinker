@@ -15,3 +15,35 @@
 #  limitations under the License.
 #
 ###########################################################################
+
+
+"""Generic utilities that do not belong in any specific sub module.
+
+Add general utility functions that are used across many modules.  Do
+not add classes here.
+"""
+
+
+def flag_last(o):
+  """Flags the last loop of an iterator.
+
+  Consumes an iterator, buffers one instance so it can look ahead.
+  Returns True on last iteration.
+
+  Args:
+    o: An iterator instance.
+
+  Returns:
+    A tuple of ([True/False, iteration). Returns True on StopIteration.
+  """
+
+  it = o.__iter__()
+  e = it.next()
+  while True:
+    try:
+      nxt = it.next()
+      yield (False, e)
+      e = nxt
+    except StopIteration:
+      yield (True, e)
+      break

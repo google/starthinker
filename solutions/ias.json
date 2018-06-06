@@ -61,13 +61,11 @@
     { "ias":{
       "hour":[10],
       "auth":"user",
-      "in":{
-        "email":{
-          "from":"reports@integralads.com",
-          "to":{ "constant":"email_token" },
-          "link":"^https://integral-reports.s3.amazonaws.com/.*",
-          "attachment":"^daily_.*\\.xlsx"
-        }
+      "email":{
+        "from":"reports@integralads.com",
+        "to":{ "constant":"email_token" },
+        "link":"^https://integral-reports.s3.amazonaws.com/.*",
+        "attachment_off":"^daily_.*\\.xlsx"
       },
       "sheets":[
         { "sheet":"3MS Viewability",

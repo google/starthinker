@@ -19,6 +19,7 @@
 # https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets#SheetProperties
 import re
 import time
+import pprint
 
 from util.auth import get_service
 from util.project import project

@@ -85,11 +85,11 @@ if __name__ == "__main__":
   parser.add_argument('--user', '-u', help='path to user credentials json file, defaults to GOOGLE_APPLICATION_CREDENTIALS', default=None)
   parser.add_argument('--service', '-s', help='path to service credentials json file, defaults None', default=None)
   parser.add_argument('--client', '-c', help='path to client credentials json file, defaults None', default=None)
+  parser.add_argument('--directory', '-d', help='write solution scripts to a directory')
+  parser.add_argument('--topic', '-t', help='execute solution using pub/sub topic')
+  parser.add_argument('--instance', '-i', help='IGNORE', default=1, type=int)
+  parser.add_argument('--verbose', '-v', help='print json insted of just a dry run.', action='store_true')
 
-  # specify deployment ( may require access to pub/sub )
-  group = parser.add_mutually_exclusive_group(required=True)
-  group.add_argument('--directory', '-d', help='write solution scripts to a directory')
-  group.add_argument('--topic', '-t', help='execute solution using pub/sub topic')
   args = parser.parse_args()
 
   # get script name
@@ -126,16 +126,18 @@ if __name__ == "__main__":
       bool(args.topic) 
     )
 
-    #print json.dumps(recipe, indent=2)
-
     # if remote ( pub/sub )
     if args.topic:
       print 'SOLUTON REMOTE'
       send_message(recipe['setup']['id'], args.topic, json.dumps(recipe))
 
     # if local
-    else:
+    if args.directory:
       filename = '%s%s%s_%s.json' % (args.directory, '' if args.directory[-1] == '/' else '/', script, tag)
       print 'SOLUTION SCRIPT', filename
       with open(filename, 'w') as outfile:
         json.dump(recipe, outfile)
+
+    # else dry run / stdout
+    if args.verbose: 
+      print json.dumps(recipe, indent=2)

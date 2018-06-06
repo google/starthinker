@@ -17,11 +17,11 @@
 ###########################################################################
 
 Custom_Rich_Media_Schema = [
-  { "name":"advertiser_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"rich_media_event_name", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"rich_media_event_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"rich_media_event_type_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"rich_media_event_type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"floodlight_config_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"account_id", "type":"INTEGER", "mode":"NULLABLE" }
+  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Rich_Media_Event_Name", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Rich_Media_Event_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Rich_Media_Event_Type_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Rich_Media_Event_Type", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
 ]

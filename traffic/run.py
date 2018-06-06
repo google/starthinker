@@ -29,9 +29,12 @@ from traffic.landing_page import LandingPageDAO
 from traffic.placement import PlacementDAO
 from traffic.event_tag import EventTagDAO
 from traffic.store import store
+from traffic.config import config
 from traffic.logger import logger
 import json
 import sys
+import traceback
+from util.auth import get_service
 
 
 video_format_dao = None
@@ -71,6 +74,10 @@ def setup():
   store.auth = project.task['auth']
   store.trix_id = project.task.get('store', {}).get('sheet_id', project.task['sheet_id'])
   store.load_id_map()
+
+  config.auth = project.task['auth']
+  config.trix_id = project.task.get('store', {}).get('sheet_id', project.task['sheet_id'])
+  config.load()
 
   logger.auth = project.task['auth']
   logger.trix_id = project.task.get('logger', {}).get('sheet_id', project.task['sheet_id'])
@@ -131,23 +138,32 @@ def traffic():
     setup()
 
     logger.log('Bulkdozer traffic job starting')
-    assets()
-    landing_pages()
-    campaigns()
-    event_tags()
-    placements()
-    creatives()
-    ads()
+    logger.log('Execution config is %s' % config.mode)
+    if config.mode in ['ALWAYS', 'ONCE']:
+
+      if config.mode == 'ONCE':
+        config.mode = 'OFF'
+        config.update()
+
+      assets()
+      landing_pages()
+      campaigns()
+      event_tags()
+      placements()
+      creatives()
+      ads()
+    else:
+      logger.log('Nothing to do, please update exeuction flag in the Store tab for the process to run next time')
   except:
-    logger.log(sys.exc_info()[0])
+    logger.log(traceback.format_exc())
   finally:
     logger.log('Bulkdozer traffic job ended')
 
 def test():
   setup()
-  ads()
+  placements()
 
 if __name__ == "__main__":
   project.load('traffic')
   traffic()
-  #test()
+  # test()

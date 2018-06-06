@@ -17,20 +17,20 @@
 ###########################################################################
 
 Paid_Search_Schema = [
-  { "name":"ad_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"advertiser_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"campaign_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"paid_search_ad_group", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"paid_search_ad_group_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"paid_search_ad_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"paid_search_bid_strategy", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"paid_search_bid_strategy_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"paid_search_campaign", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"paid_search_campaign_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"paid_search_landing_page_url", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"paid_search_legacy_keyword_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"paid_search_keyword", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"paid_search_keyword_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"paid_search_match_type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"floodlight_config_id", "type":"INTEGER", "mode":"NULLABLE" }
+  { "name":"Ad_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Campaign_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Paid_Search_Ad_Group", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Paid_Search_Ad_Group_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Paid_Search_Ad_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Paid_Search_Bid_Strategy", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Paid_Search_Bid_Strategy_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Paid_Search_Campaign", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Paid_Search_Campaign_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Paid_Search_Landing_Page_Url", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Paid_Search_Legacy_Keyword_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Paid_Search_Keyword", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Paid_Search_Keyword_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Paid_Search_Match_Type", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" }
 ]

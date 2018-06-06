@@ -17,15 +17,15 @@
 ###########################################################################
 
 Ad_Schema = [
-  { "name":"ad", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"ad_click_url", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"ad_comments", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"ad_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"ad_type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"ad_type_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"advertiser_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"campaign_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"creative_size", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"floodlight_config_id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"account_id", "type":"INTEGER", "mode":"NULLABLE" }
+  { "name":"Ad", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Ad_Click_Url", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Ad_Comments", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Ad_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Ad_Type", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Ad_Type_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Campaign_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Creative_Size", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
+  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
 ]

@@ -17,6 +17,6 @@
 ###########################################################################
 
 Browser_Schema = [
-  { "name":"browser_platform", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"browser_platform_id", "type":"INTEGER", "mode":"NULLABLE" }
+  { "name":"Browser_Platform", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Browser_Platform_Id", "type":"INTEGER", "mode":"NULLABLE" }
 ]
