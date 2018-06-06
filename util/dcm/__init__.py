@@ -452,10 +452,10 @@ def conversions_upload(auth, account_id, floodlight_activity_id, conversion_type
 
       if update:
         if INTERNAL_MODE: results = _retry(service.conversions().batchupdate(accountId=account_id, profileId=profile_id, body=body))
-        else: results = _retry(service.conversions().batchupdate(profileId=profile_id, body=request_body))
+        else: results = _retry(service.conversions().batchupdate(profileId=profile_id, body=body))
       else:
         if INTERNAL_MODE: results = _retry(service.conversions().batchinsert(accountId=account_id, profileId=profile_id, body=body))
-        else: results = _retry(service.conversions().batchinsert(profileId=profile_id, body=request_body))
+        else: results = _retry(service.conversions().batchinsert(profileId=profile_id, body=body))
 
       # stream back satus
       for status in results['status']: yield status 
