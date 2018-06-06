@@ -10,3 +10,4 @@ django
 panda
 pysftp
 Jinja2==2.10
+TwitterAPI
