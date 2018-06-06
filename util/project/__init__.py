@@ -120,7 +120,7 @@ class project:
     if 'auth' not in cls.configuration['setup']: cls.configuration['setup']['auth'] = {}
     if _project: cls.configuration['setup']['id'] = _project
     if _service: cls.configuration['setup']['auth']['service'] = _service
-    if _client: cls.configuration['setup']['auth']['client'] = _service
+    if _client: cls.configuration['setup']['auth']['client'] = _client
     # if user explicity specified by command line
     if _user: 
       cls.configuration['setup']['auth']['user'] = _user
