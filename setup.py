@@ -23,6 +23,9 @@ EXECUTE_PATH = os.environ.get('STARTHINKER_PATH', "/home/starthinker") + '/'
 # In production simply create this file: touch /mnt/SERVER
 DEVELOPMENT_MODE = not os.path.isfile('/mnt/SERVER')
 
+# This is always set to False ( setting it to True does nothing productive )
+INTERNAL_MODE = False
+
 # Used for local testing, 
 if DEVELOPMENT_MODE:
  
@@ -37,6 +40,9 @@ if DEVELOPMENT_MODE:
   CLOUD_PROJECT = 'cloud-project-id-data-test'
   CLOUD_SERVICE = '/home/credentials/test/starthinker_data_service.json'
 
+  # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
+  BUFFER_SCALE = 1
+
 else:
   # credentials used to manage universal infomation such as logs, and project that does NOT store data
   UI_PROJECT = 'cloud-project-id'
@@ -48,3 +54,6 @@ else:
   # credentials used to store data ( for security reasons not same project as logs and credentials )
   CLOUD_PROJECT = 'cloud-project-id-data'
   CLOUD_SERVICE = '/home/credentials/starthinker_data_service.json'
+
+ # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
+  BUFFER_SCALE = 5
