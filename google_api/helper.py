@@ -13,6 +13,7 @@ if __name__ == "__main__":
   parser.add_argument('-api', help='api to run, name of product api')
   parser.add_argument('-version', help='version of api')
   parser.add_argument('-function', help='function to call in api')
+  parser.add_argument('-uri', help='function to call in api', default=None)
   parser.add_argument('-kwargs', help='kwargs to pass to function, json string of name:value pairs')
   parser.add_argument('--iterate', help='set to true to force iteration', action='store_true')
 
@@ -24,6 +25,7 @@ if __name__ == "__main__":
     "api":project.args.api,
     "version":project.args.version,
     "function":project.args.function,
+    "uri":project.args.uri,
     "kwargs":json.loads(project.args.kwargs),
     "iterate":project.args.iterate,
   }
