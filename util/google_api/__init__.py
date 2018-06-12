@@ -183,7 +183,7 @@ class API():
       "auth":"user",
       "iterate":False
     }
-    api = API(configuration).placements().list().execute(profile_id=1234, archived=False)
+    api = API(configuration).placements().list(profile_id=1234, archived=False).execute()
 
     Args:
       configuration: (json) see example above, configures all API parameters
