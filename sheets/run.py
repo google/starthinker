@@ -56,7 +56,7 @@ def sheets():
         rows = rows_to_type(rows)
         rows, schema = get_schema(rows, project.task.get('header', False), infer_type=project.task.get('infer_type', True))
 
-      # write to table ( not using put bcause no use cases for other destinations )
+      # write to table ( not using put because no use cases for other destinations )
       rows_to_table(
         auth=project.task['auth'],
         project_id=project.id,
@@ -65,7 +65,6 @@ def sheets():
         rows=rows,
         schema=schema,
         skip_rows=1 if project.task.get('header', False) else 0,
-        structure='CSV',
         disposition=project.task['out']['bigquery'].get('disposition', 'WRITE_TRUNCATE')
       )
 

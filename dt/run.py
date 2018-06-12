@@ -25,7 +25,9 @@ from util.csv import column_header_sanitize
 
 from dt.schema.Lookup import DT_Field_Lookup
 
+
 HEADER_SIZE = 1024 * 10 # 10K should be enough for longest possible DT header
+
 
 def dt_header():
   if project.verbose: print "DT HEADER",
@@ -68,6 +70,7 @@ def dt():
     'CSV',
     'WRITE_TRUNCATE'
   )
+
 
 if __name__ == "__main__":
   project.load('dt')

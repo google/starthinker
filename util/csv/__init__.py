@@ -167,15 +167,13 @@ def rows_to_type(rows, column=None):
             row[index] = None
           # all digits less than 64 bytes are integers
           elif value.isdigit():
-            v = int(value)
+            v = long(value)
             if abs(v) <= INT_LIMIT : row[index] = v
           # float probably needs a byte check
           elif '.' in value:
             w, d = value.split('.', 1)
             if w.isdigit() and d.isdigit():
               row[index] = float(value)
-        else:
-          row[index] = value
     yield row
 
 

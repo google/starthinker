@@ -1,6 +1,6 @@
 ###########################################################################
-#
-#  Copyright 2017 Google Inc.
+# 
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,26 +17,24 @@
 ###########################################################################
 
 
-import argparse
-
 from util.project import project
-from util.dbm import lineitem_read, lineitem_write
+from util.google_api import API
+from util.data import put_rows
+
+
+def google_api():
+  if project.verbose: print 'GOOGLE_API', project.task['api'], project.task['version']
+
+  results = API(project.task).execute()
+
+  put_rows(
+    project.task['auth'], 
+    project.task['out'], 
+    '%s_%s.json' % (project.task['function'].replace('.', '_'), project.date), 
+    results
+  )
 
 
 if __name__ == "__main__":
-
-  # get parameters
-  parser = argparse.ArgumentParser()
-  parser.add_argument('lineitem', help='lineitem ID to pull schema, or "list" to get index')
-
-  # initialize project
-  project.load(parser=parser)
-  auth = 'service' if project.args.service else 'user'
-
-  for row in lineitem_read(auth, lineitems=[project.args.lineitem]):
-    print row
-
-'''
-Example:
-python lineitem/helper.py 9915840 -u /Users/kenjora/.credentials/kenjora_user.json
-'''
+  project.load('google_api')
+  google_api()

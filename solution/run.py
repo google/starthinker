@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,16 +16,80 @@
 #
 ###########################################################################
 
+
+"""Creates recipes from solution templates for a given set of constants.
+
+This is the recommended way of scaling a script, using a solution template and remote pub/sub.
+
+All arguments are optional, since recipes can be generated with or without credentials
+embeded in them.  If you are using local paths as credentials, be sure the recipe
+will be executed on a machine with credentails at the same paths.
+
+Define a constants json like the solution/test.json:
+
+{
+  "constants":{
+    "name":"Test",
+    "token":"123testabc",
+    "timezone":"America/Los_Angeles",
+    "email":"kenjora@google.com",
+    "dbm_accounts":["849131"],
+    "dcm_accounts":["5778:4448053"],
+    "ds_accounts":[],
+    "sheet":"https://docs.google.com/spreadsheets/d/1h-Ic-DlCv-Ct8-k-VJnpo_BAkqsS70rNe0KKeXKJNx0/edit#gid=0",
+    "emails":"",
+    "groups":""
+  },
+  "templates":[
+    "solutions/audience_mapper.json",
+    "solutions/deal_finder.json",
+    "solutions/pacing.json",
+    "solutions/sov_dbm.json",
+    "solutions/sov_dcm.json"
+  ],
+  "tasks":[
+    {"solution":{}}
+  ]
+}
+
+Validate the json is correct by running:
+
+  python solution/run.py solution/test.json 
+
+Then turn the templates into recipes using the following commands:
+
+  python solution/run.py solution/test.json --directory /mnt/starthinker/
+
+For remote, you will need to define UI_SERVICE in setup.py as the pub/sub service.
+And/Or construct and deploy the tempaltes into a pub/sub for processing using:
+
+  python solution/run.py solution/test.json --topic [topic]
+
+Arguments: ( --optional )
+
+  constants - path to constants json file
+  --project/-p (string) - cloud id of project, defaults to None
+  --user/-u (string) - path to user credentials json file, defaults to None
+  --service/-s (string) - path to service credentials json file, defaults None
+  --client/-c (string) - path to client credentials json file, defaults None
+  --directory/-d (string) - write solution scripts to a directory
+  --topic/-t (string) - execute solution using pub/sub topic
+  --verbose/-v (string) - print json insted of just a dry run.
+
+"""
+
+
 import re
 import json
 import argparse
 import uuid
 
-RE_NAME = re.compile(r'[^a-zA-Z0-9_]')
-RE_UUID = re.compile(r'(\s*)("setup"\s*:\s*{)')
-
 from google.cloud import pubsub
 from setup import UI_SERVICE
+
+
+RE_NAME = re.compile(r'[^a-zA-Z0-9_]')
+RE_UUID = re.compile(r'(\s*)("setup"\s*:\s*{)')
 
 
 def send_message(project_id, topic, data):
@@ -50,7 +114,7 @@ def set_constants(struct, constants):
       else: set_constants(value, constants)
 
 
-def make_solution(filename, uuid, project_id, credentials_user, credentials_service, credentials_client, constants, remote):
+def make_solution(filename, uuid, project_id, credentials_user, credentials_service, credentials_client, constants):
   solution = {}
 
   with open(filename, 'r') as solution_file:
@@ -65,7 +129,6 @@ def make_solution(filename, uuid, project_id, credentials_user, credentials_serv
       "id":project_id,
       "timezone":constants['timezone'],
       "auth":{
-        "source":"remote" if remote else "local",
         "user":credentials_user,
         "service":credentials_service,
         "client":credentials_client
@@ -78,25 +141,23 @@ def make_solution(filename, uuid, project_id, credentials_user, credentials_serv
 if __name__ == "__main__":
 
   parser = argparse.ArgumentParser()
-  parser.add_argument('solution', help='path to solution json file')
-
-  # add credentials ( solutions have no credentials by default )
+  parser.add_argument('constants', help='path to constants json file')
   parser.add_argument('--project', '-p', help='cloud id of project, defaults to None', default=None)
   parser.add_argument('--user', '-u', help='path to user credentials json file, defaults to GOOGLE_APPLICATION_CREDENTIALS', default=None)
   parser.add_argument('--service', '-s', help='path to service credentials json file, defaults None', default=None)
   parser.add_argument('--client', '-c', help='path to client credentials json file, defaults None', default=None)
   parser.add_argument('--directory', '-d', help='write solution scripts to a directory')
   parser.add_argument('--topic', '-t', help='execute solution using pub/sub topic')
-  parser.add_argument('--instance', '-i', help='IGNORE', default=1, type=int)
   parser.add_argument('--verbose', '-v', help='print json insted of just a dry run.', action='store_true')
+  parser.add_argument('--instance', '-i', help='ignored, added to enable automated testing.', default=None)
 
   args = parser.parse_args()
 
   # get script name
-  script = args.solution.rsplit('.', 1)[0].rsplit('/', 1)[-1]
+  script = args.constants.rsplit('.', 1)[0].rsplit('/', 1)[-1]
 
   # load configuration
-  solution = json.load(open(args.solution))
+  solution = json.load(open(args.constants))
 
   # add computed variables
   name = RE_NAME.sub('', solution['constants']['name'])
@@ -122,8 +183,7 @@ if __name__ == "__main__":
       args.user,
       args.service,
       args.client,
-      solution['constants'],
-      bool(args.topic) 
+      solution['constants']
     )
 
     # if remote ( pub/sub )
@@ -136,7 +196,7 @@ if __name__ == "__main__":
       filename = '%s%s%s_%s.json' % (args.directory, '' if args.directory[-1] == '/' else '/', script, tag)
       print 'SOLUTION SCRIPT', filename
       with open(filename, 'w') as outfile:
-        json.dump(recipe, outfile)
+        json.dump(recipe, outfile, indent=2)
 
     # else dry run / stdout
     if args.verbose: 

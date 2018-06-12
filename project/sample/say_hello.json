@@ -14,6 +14,11 @@
         "auth":"user",
         "say":"Hello World"
       }
-    }
+    },
+    { "dbm":{
+      "auth":"user",
+      "report":{ "name":"Not A Real Report" },
+      "out":{}
+    }}
   ]
 }

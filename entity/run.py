@@ -23,7 +23,7 @@ from io import BytesIO
 from setup import BUFFER_SCALE
 from util.project import project
 from util.storage import object_get_chunks
-from util.bigquery import csv_to_table
+from util.bigquery import json_to_table
 from entity.schema import Entity_Schema_Lookup
 
 
@@ -62,14 +62,13 @@ def move_entity(project, path, table, schema, disposition):
   # read the entity file in parts
   for data in get_entity(path):
     # write each part
-    csv_to_table(
+    json_to_table(
         project.task.get('out', project.task)['auth'],
         project.id,
         project.task.get('out', project.task)['dataset'],
         table,
         BytesIO(data),
         schema=schema,
-        structure='NEWLINE_DELIMITED_JSON',
         disposition=disposition)
     disposition = 'WRITE_APPEND'
 

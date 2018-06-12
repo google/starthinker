@@ -79,7 +79,7 @@ def sftp():
     input_file.close()
 
     output_file = open(output_file_name, 'rb')
-    csv_to_table(project.task['auth'], project.id, project.task['to'].get('dataset'), project.task['to'].get('table'), output_file, schema, skip_rows=0, structure='CSV', disposition=project.task['to'].get('write_disposition', 'WRITE_TRUNCATE'))
+    csv_to_table(project.task['auth'], project.id, project.task['to'].get('dataset'), project.task['to'].get('table'), output_file, schema, skip_rows=0, disposition=project.task['to'].get('write_disposition', 'WRITE_TRUNCATE'))
     output_file.close()
 
     os.remove(input_file_name)

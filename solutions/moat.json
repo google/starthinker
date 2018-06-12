@@ -1,5 +1,7 @@
 {
   "solution":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
     "icon":"file_download",
     "title":"Third Party MOAT Report",
     "image":"https://storage.googleapis.com/starthinker-ui/third_party_moat_report.png",

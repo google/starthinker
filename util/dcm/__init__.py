@@ -70,10 +70,32 @@ def _retry(job, retries=10, wait=5):
 
 def get_profile_id(auth, account_id):
   service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
+
+  profile_admin = None
+  profile_network = None
+
   for p in _retry(service.userProfiles().list())['items']:
-    if INTERNAL_MODE: return int(p['profileId'])
-    elif int(p['accountId']) == account_id: return int(p['profileId'])
-  raise Exception('Add your user profile to DCM account %s.' % account_id)
+    p_id = int(p['profileId'])
+    a_id = int(p['accountId'])
+
+    # take the first profile for admin
+    if '@dcm' in p['userName']: profile_admin = p_id
+
+    # try to find a network profile if exists
+    if a_id == account_id: 
+      profile_network = p_id
+      break
+
+  # return admin if exists, network if exists, and finally throw exception
+  if profile_network or profile_admin: return profile_admin or profile_network
+  else: raise Exception('Add your user profile to DCM account %s.' % account_id)
+
+
+def account_profile_kwargs(auth, account, **kwargs):
+  account_id, ignore, profile_id = parse_account(auth, account)
+  if INTERNAL_MODE: kwargs['accountId']= account_id
+  kwargs['profileId']= profile_id
+  return kwargs
 
 
 def get_account_name(auth, account_id):

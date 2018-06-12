@@ -1,5 +1,7 @@
 {
   "solution":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
     "icon":"whatshot",
     "title":"Deal Finder",
     "description":"Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.",
@@ -127,7 +129,7 @@
         }
       }
     }},
-    {"move":{
+    {"bigquery":{
       "hour":[4], 
       "auth":"service",
       "from":{

@@ -39,6 +39,7 @@ from util.auth.google_bucket_auth import BucketCredentials
 from setup import CLOUD_SERVICE
 
 APPLICATION_NAME = 'StarThinker Client'
+MAX_TOKEN_LIFETIME_SECS = 6 * 60 * 60 # 6 hours
 SCOPES = [
   'https://www.googleapis.com/auth/userinfo.profile', # must be first for manager login
   'https://www.googleapis.com/auth/userinfo.email', # must be first for manager login
@@ -55,6 +56,7 @@ SCOPES = [
   'https://www.googleapis.com/auth/doubleclicksearch',
   'https://www.googleapis.com/auth/content',
   'https://www.googleapis.com/auth/ddmconversions'
+
 ]
 SERVICE_CACHE = {}
 
@@ -119,6 +121,7 @@ def get_service(api='gmail', version='v1', auth='service', scopes=None, uri_file
   if key not in SERVICE_CACHE:
     credentials = get_service_credentials(scopes) if auth == 'service' else get_credentials()
     http = credentials.authorize(httplib2.Http())
+    http.MAX_TOKEN_LIFETIME_SECS = MAX_TOKEN_LIFETIME_SECS
 
     # if using alterante version ( for example internal )
     if uri_file:

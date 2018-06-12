@@ -1,5 +1,7 @@
 {
   "solution":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
     "icon":"file_download",
     "title":"Third Party IAS Report",
     "description":"Import IAS and DBM data into a BigQuery table and connect to dashboard.  Used to verify viewability data against third party.",
@@ -62,7 +64,7 @@
       "hour":[10],
       "auth":"user",
       "email":{
-        "from":"reports@integralads.com",
+        "from":"(reports@integralads.com OR dog@integralads.com)",
         "to":{ "constant":"email_token" },
         "link":"^https://integral-reports.s3.amazonaws.com/.*",
         "attachment_off":"^daily_.*\\.xlsx"

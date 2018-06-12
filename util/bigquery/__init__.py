@@ -26,18 +26,17 @@ import csv
 import pprint
 import uuid
 import json
-import httplib2
 from time import sleep
 from StringIO import StringIO
 
 from google.cloud import bigquery
-from google.cloud.bigquery.table import Table
 from googleapiclient.errors import HttpError
 from apiclient.http import MediaIoBaseUpload
 
 from setup import BUFFER_SCALE
 from util.project import project
-from util.auth import get_service, get_client
+from util.auth import get_service
+from util.google_api import API_BigQuery
 
 BIGQUERY_RETRIES = 3
 BIGQUERY_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200 MB * scale in setup.py
@@ -347,7 +346,7 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
   job_wait(service, job)
 
 
-def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_rows=1, structure='CSV', disposition='WRITE_TRUNCATE', destination_project_id=None):
+def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_rows=1, disposition='WRITE_TRUNCATE'):
   if project.verbose: print 'BIGQUERY ROWS TO TABLE: ', project_id, dataset_id, table_id
 
   csv_string = StringIO()
@@ -361,7 +360,7 @@ def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_
       # write the buffer in chunks
       if project.verbose: print 'BigQuery CSV Buffer Size', csv_string.tell()
       csv_string.seek(0) # reset for read
-      csv_to_table(auth, project_id, dataset_id, table_id, csv_string, schema, skip_rows, structure, disposition)
+      csv_to_table(auth, project_id, dataset_id, table_id, csv_string, schema, skip_rows, disposition)
 
       # reset buffer for next loop, be sure to do an append to the table
       csv_string.seek(0) #reset for write
@@ -374,20 +373,17 @@ def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_
   if csv_string.tell() > 0:
     if project.verbose: print 'BigQuery CSV Buffer Size', csv_string.tell()
     csv_string.seek(0)
-    csv_to_table(auth, project_id, dataset_id, table_id, csv_string, schema, skip_rows, structure, disposition)
+    csv_to_table(auth, project_id, dataset_id, table_id, csv_string, schema, skip_rows, disposition)
     has_rows = True
 
   # if no rows, clear table to simulate empty write
   if not has_rows:
     if project.verbose: print 'BigQuery Zero Rows'
-    csv_to_table(auth, project_id, dataset_id, table_id, csv_string, schema, skip_rows, structure, disposition)
+    csv_to_table(auth, project_id, dataset_id, table_id, csv_string, schema, skip_rows, disposition)
 
 
-def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_rows=1, structure='CSV', disposition='WRITE_TRUNCATE', destination_project_id=None):
+def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_rows=1, disposition='WRITE_TRUNCATE'):
   if project.verbose: print 'BIGQUERY CSV TO TABLE: ', project_id, dataset_id, table_id
-
-  # change project_id to be project.id, better yet project.cloud_id from JSON, destination_project_id NOT REQUIRED
-  if not destination_project_id: destination_project_id = project_id
 
   service = get_service('bigquery', 'v2', auth)
 
@@ -399,16 +395,16 @@ def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_r
   if(getSize(data) > 0):
     media = MediaIoBaseUpload(data, mimetype='application/octet-stream', resumable=True, chunksize=BIGQUERY_CHUNKSIZE)
 
-
     body = {
       'configuration': {
         'load': {
           'destinationTable': {
-            'projectId': destination_project_id,
+            'projectId': project_id,
             'datasetId': dataset_id,
             'tableId': table_id,
           },
-          'sourceFormat': 'NEWLINE_DELIMITED_JSON',
+          'sourceFormat': 'CSV',
+          'skipLeadingRows': skip_rows,
           'writeDisposition': disposition,
           'autodetect': True,
           'allowJaggedRows': True,
@@ -421,13 +417,7 @@ def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_r
       body['configuration']['load']['schema'] = { 'fields':schema }
       body['configuration']['load']['autodetect'] = False
 
-    if structure == 'CSV':
-      body['configuration']['load']['sourceFormat'] = 'CSV'
-      body['configuration']['load']['skipLeadingRows'] = skip_rows
-    #print 'BODY', body
-
-    # change project_id to be project.id, better yet project.cloud_id from JSON
-    job = service.jobs().insert(projectId=project_id, body=body, media_body=media)
+    job = service.jobs().insert(projectId=project.id, body=body, media_body=media)
     response = None
     while response is None:
       status, response = job.next_chunk()
@@ -452,7 +442,49 @@ def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_r
       }
     }
     # change project_id to be project.id, better yet project.cloud_id from JSON
-    service.tables().insert(projectId=project_id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
+    service.tables().insert(projectId=project.id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
+
+
+def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None, disposition='WRITE_TRUNCATE'):
+
+  service = get_service('bigquery', 'v2', auth)
+
+  media = MediaIoBaseUpload(
+    StringIO('\n'.join([json.dumps(row) for row in json_data])),
+    mimetype='application/octet-stream',
+    resumable=True,
+    chunksize=BIGQUERY_CHUNKSIZE
+  )
+
+  body = {
+    'configuration': {
+      'load': {
+        'destinationTable': {
+          'projectId': project_id,
+          'datasetId': dataset_id,
+          'tableId': table_id,
+        },
+        'sourceFormat': 'NEWLINE_DELIMITED_JSON',
+        'writeDisposition': disposition,
+        'autodetect': True,
+        'allowJaggedRows': True,
+        'ignoreUnknownValues': True,
+      }
+    }
+  }
+
+  if schema:
+    body['configuration']['load']['schema'] = { 'fields':schema }
+    body['configuration']['load']['autodetect'] = False
+
+  job = API_BigQuery(auth).jobs().insert(projectId=project_id, body=body, media_body=media).execute(run=False)
+
+  response = None
+  while response is None:
+    status, response = job.next_chunk()
+    if project.verbose and status: print "Uploaded %d%%." % int(status.progress() * 100)
+  if project.verbose: print "Uploaded 100%."
+  job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
 
 
 def tables_get(auth, project_id, name):
@@ -522,11 +554,11 @@ def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True
       response = _retry(service.jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], startIndex=row_count))
 
 
-def list_jobs(auth, project_id):
-  service = get_service('bigquery', 'v2', auth)
-  client = get_client('bigquery')
-  #return service.jobs().list(projectId=project_id).execute()
-  return client.list_jobs()
+#def list_jobs(auth, project_id):
+#  service = get_service('bigquery', 'v2', auth)
+#  client = get_client('bigquery')
+#  #return service.jobs().list(projectId=project_id).execute()
+#  return client.list_jobs()
 
 
 def get_job(auth, project_id, job_id):
@@ -534,13 +566,13 @@ def get_job(auth, project_id, job_id):
   return service.jobs().get(projectId=project_id, jobId=job_id).execute()
 
 
-def get_table(auth, dataset, table_name):
-  client = get_client('bigquery', auth=auth)
-
-  dataset = client.dataset(dataset)
-  table = dataset.table(table_name)
-
-  return table
+#def get_table(auth, dataset, table_name):
+#  client = get_client('bigquery', auth=auth)
+#
+#  dataset = client.dataset(dataset)
+#  table = dataset.table(table_name)
+#
+#  return table
 
 
 # CAUTION: Memory suck. This function sabotages iteration by iterating thorough the new object and returning a new iterator
