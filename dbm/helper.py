@@ -1,44 +1,30 @@
-import pprint
 import argparse
+import pprint
 
-from util.auth import get_service
 from util.project import project
-from util.dbm import report_get, report_list
+from util.google_api import API_DBM
+from util.dcm import account_profile_kwargs
+
 
 if __name__ == "__main__":
 
   # get parameters
   parser = argparse.ArgumentParser()
-  parser.add_argument('report', help='report ID to pull schema, or "list" to get index')
-  parser.add_argument('--creds', help='path to credentials file', default=None)
-  parser.add_argument('--json', help='path to project json file', default=None)
-  parser.add_argument('--auth', '-a', help='user (default) or service.', default='user')
-  parser.add_argument('--format', '-f', help='print StarThinker json instead of DBM json.', action='store_true')
+  parser.add_argument('report', help='report ID to pull the achema, or "list" to get index')
 
-  args = parser.parse_args()
+  # initialize project
+  project.load(parser=parser)
+  auth = 'service' if project.args.service else 'user'
 
-  # initialize project from credentials
-  if args.creds:
-    if args.auth == 'user': project.initialize(_user=args.creds)
-    elif args.auth == 'service': project.initialize(_service=args.creds)
-  # initialize from project file
-  elif args.json:
-    project.initialize(args.json)
+  # get report
+  if project.args.report == 'list':
+    for report in API_DBM(auth, iterate=True).queries().listqueries().execute():
+      pprint.PrettyPrinter().pprint(report)
   else:
-    print 'Please provide --creds or --json'
-    exit()
-
-  if args.report == 'list':
-    for query in report_list(args.auth):
-      print query['queryId'], query['metadata']['title']
-  else:
-    report = report_get(args.auth, report_id=args.report)
-    if args.format:
-      report = {
-        'title':report['metadata']['title'],
-        'type':report['params']['type'],
-        'filters':report['params']['filters'],
-        'dimensions':report['params']['groupBys'],
-        'metrics':report['params']['metrics'],
-      }   
+    report = API_DBM(auth).queries().getquery(queryId=project.args.report).execute()
     pprint.PrettyPrinter().pprint(report)
+
+'''
+Example:
+python dbm/helper.py list -u /Users/kenjora/.credentials/kenjora_user.json -c /Users/kenjora/.credentials/kenjora_client.json
+'''
