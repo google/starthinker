@@ -1,21 +1,26 @@
 {
   "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
     "icon":"file_download",
     "product":"DBM",
-    "title":"Entity Read",
-    "description":"Imports the latest entity read files into BigQuery.",
+    "title":"Entity Read To BigQuery",
+    "description":"Moves all entity read files into BigQuery.",
     "instructions":[
-      "Provide one or more DBM partners ( comma seperated ).",
-      "Entity read files are read using your user credentials.",
-      "Entity read files are written using the chosen service credentials.",
-      "All, even the public ones,  entity read file will be prefixed by <strong>Entity_</strong>.",
-      "CAUTION: ENTITY READ FILES ARE PARTNER LEVEL, NO ADVERTISER IDS."
+      "Specify a list of partner ids, comma seperated.",
+      "Files are <a href='https://developers.google.com/bid-manager/guides/entity-read/overview'>imported from storage</a> using your user credentials.",
+      "Both public and private files are imported.",
+      "Each file gets a table in the dataset, prefixed with <strong>'Entity_'</strong>.",
+      "CAUTION: Entity Read Files are ONLY partner level."
     ],
     "authors":["mauriciod@google.com", "pkenjora@google.com"]
   },
   "entity":{
+    "version":0.2,
     "auth":"user",
-    "dbm_accounts": {"field":{ "name":"partners", "kind":"integer_list", "order":1, "default": [] }},
+    "prefix":"Entity",
+    "accounts": {"field":{ "name":"partners", "kind":"integer_list", "order":1, "default":"[]" }},
     "entities":["LineItem", "Creative", "UserList", "Partner", "Advertiser", "InsertionOrder", "Pixel", "InventorySource", "CustomAffinity", "UniversalChannel", "UniversalSite", "SupportedExchange", "DataPartner", "GeoLocation", "Language", "DeviceCriteria", "Browser", "Isp"],
     "out":{
       "auth":"service",

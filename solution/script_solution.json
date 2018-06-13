@@ -1,5 +1,8 @@
 {
   "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
     "icon":"touch_app",
     "product":"gTech",
     "title":"Solution Runner",
@@ -13,7 +16,7 @@
   },
   "solution":{
     "constants":{
-      "name":{"field":{ "name":"token", "kind":"string", "order":2, "default":"" }},
+      "name":{"field":{ "name":"name", "kind":"string", "order":2, "default":"" }},
       "token":{"field":{ "name":"token", "kind":"string", "order":3, "default":"" }},
       "timezone":{"field":{ "name":"timezone", "kind":"string", "order":4, "default":"Los Angeles/America" }},
       "email":{"field":{ "name":"email", "kind":"string", "order":5, "default":"" }},
@@ -26,6 +29,6 @@
       "emails":{"field":{ "name":"emails", "kind":"string_list", "order":14, "default":[] }},
       "groups":{"field":{ "name":"groups", "kind":"string_list", "order":15, "default":[] }}
     },
-    "templates":{"field":{ "name":"token", "kind":"string_list", "order":1, "default":[] }}
+    "templates":{"field":{ "name":"template", "kind":"string_list", "order":1, "default":[] }}
   }
 }

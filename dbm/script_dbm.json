@@ -1,14 +1,17 @@
 {
   "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
     "icon":"donut_large",
     "product":"DBM",
     "title":"DBM Report",
-    "description":"Import a DBM report into BigQuery table.",
+    "description":"Create a DBM report.",
     "instructions":[
       "Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DBM API</a> to build a report.",
-      "Filters for partners and advertisers are added automatically.",
+      "Filters for partners and advertisers are added from the partners and advertisers field.",
       "The report is only created, use a move script to move it.",
-      "You will be able to see the report name with a ( Starthinker ) suffix in DBM.",
+      "A report with a ( Starthinker ) suffix will be created in DBM.",
       "To reset a report, delete it from DBM reporting."
     ],
     "authors":["mauriciod@google.com", "kenjora@google.com"]

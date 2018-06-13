@@ -1,5 +1,7 @@
 {
   "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
     "id":"cloud-project-id",
     "auth":{
       "client":"/home/.credentials/project_client.json",

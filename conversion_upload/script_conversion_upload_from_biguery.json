@@ -1,0 +1,50 @@
+{
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
+    "icon":"file_upload",
+    "product":"DCM",
+    "title":"Conversion Upload BigQuery",
+    "description":"Move from BigQuery to DCM.",
+    "instructions":[
+      "Specify a DCM Account ID, Floodligh Activity ID and Conversion Type.",
+      "Include BigQuery dataset and table.",
+      "Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId",
+      "Include encryption information if using encryptedUserId or encryptedUserIdCandidates."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "conversion_upload":{
+    "auth":"user",
+    "account_id":{"field":{ "name":"dcm_account", "kind":"string", "order":0, "default":"" }},
+    "activity_id":{"field":{ "name":"floodlight_activity_id", "kind":"integer", "order":1, "default":"" }},
+    "conversion_type":{"field":{ "name":"floodlight_conversion_type", "kind":"choice", "order":2, "choices":[
+      "encryptedUserId",
+      "encryptedUserIdCandidates",
+      "gclid",
+      "mobileDeviceId"
+    ], "default":"encryptedUserId" }},
+    "encryptionInfo":{ 
+      "encryptionEntityId":{"field":{ "name":"encryption_entity_id", "kind":"integer", "order":3, "default":"" }},
+      "encryptionEntityType":{"field":{ "name":"encryption_entity_type", "kind":"choice", "order":4, "choices":[
+        "ADWORDS_CUSTOMER",
+        "DBM_ADVERTISER",
+        "DBM_PARTNER",
+        "DCM_ACCOUNT",
+        "DCM_ADVERTISER",
+        "ENCRYPTION_ENTITY_TYPE_UNKNOWN"
+      ], "default":"DCM_ACCOUNT" }},
+      "encryptionSource":{"field":{ "name":"encryption_entity_source", "kind":"choice", "order":5, "choices":[
+        "AD_SERVING",
+        "DATA_TRANSFER",
+        "ENCRYPTION_SCOPE_UNKNOWN"
+      ], "default":"DATA_TRANSFER" }}
+    },
+    "bigquery":{
+      "dataset":{"field":{ "name":"bigquery_dataset", "kind":"string", "order":6, "default":"" }},
+      "table":{"field":{ "name":"bigquery_table", "kind":"string", "order":7, "default":"" }},
+      "legacy":{"field":{ "name":"bigquery_legacy", "kind":"boolean", "order":8, "default":true }}
+    }
+  }
+}

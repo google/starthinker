@@ -1,0 +1,30 @@
+{
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
+    "icon":"donut_large",
+    "product":"DBM",
+    "title":"DBM To Sheets",
+    "description":"Move existing DBM report into a Sheets tab.",
+    "instructions":[
+      "Specify either report name or report id to move a report.",
+      "The most recent valid file will be moved to the sheet."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "dbm":{
+    "auth":"user",
+    "report":{
+      "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":1, "default":"" }},
+      "name":{"field":{ "name":"report_name", "kind":"string", "order":2, "default":"" }}
+    },
+    "out":{
+      "sheets":{
+        "sheet":{"field":{ "name":"sheet", "kind":"string", "order":3, "default":"" }},
+        "tab":{"field":{ "name":"tab", "kind":"string", "order":4, "default":"" }},
+        "range":"A1"
+      }
+    }
+  }
+}

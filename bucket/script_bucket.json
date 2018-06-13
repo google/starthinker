@@ -1,9 +1,12 @@
 { 
   "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
     "icon":"storage",
     "product":"Storage",
     "title":"Bucket",
-    "description":"Create a bucket on a project.",
+    "description":"Create and permission a bucket in Storage.",
     "instructions":[
       "Specify the name of the bucket and who will have owner permissions.",
       "Existing buckets are preserved.",

@@ -1,13 +1,17 @@
 {
   "script":{
-    "icon":"exit_to_app",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
+    "icon":"donut_small",
     "product":"DCM",
     "title":"DCM To Storage",
-    "description":"Move Existing DCM reports into a storage bucket.",
-    "insructions":[
+    "description":"Move existing DCM report into a Storage bucket.",
+    "instructions":[
       "Specify an account_id.",
       "Specify either report name or report id to move a report.",
-      "The most recent file name will be moved to storage."
+      "The most recent file will be moved to the bucket.",
+      "Schema is pulled from the official DCM specification."
     ],
     "authors":["kenjora@google.com"]
   },

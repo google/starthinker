@@ -1,8 +1,11 @@
 {
   "solution":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
     "icon":"directions_run",
     "title":"Pacing DBM",
     "description":"Pace the spend of DBM campaigns to hit targets.",
+    "open_source":"https://github.com/google/starthinker/blob/master/solutions/pacing.json",
     "requirements":{
       "dbm":true,
       "dcm":false,

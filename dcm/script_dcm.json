@@ -1,11 +1,18 @@
 {
   "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
     "icon":"donut_small",
     "product":"DCM",
     "title":"DCM Report",
-    "description":"Create DCM reports in bulk.",
-    "insructions":[
-      "Specify an account_id or account_id:subaccount_id."
+    "description":"Create a DCM report.",
+    "instructions":[
+      "Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DCM API</a> to build a report.",
+      "Specify an account_id or account_id:subaccount_id.",
+      "The report is only created, use a move script to move it.",
+      "A report with a ( Starthinker ) suffix will be created in DCM.",
+      "To reset a report, delete it from DCM reporting."
     ],
     "authors":["jfno@google.com", "kenjora@google.com"]
   },
@@ -40,7 +47,6 @@
         }
       }
     },
-    "delete":{"field":{ "name":"dcm_delete", "kind":"boolean", "order":11, "default":"" }},
-    "datastudio":{"field":{ "name":"dcm_datastudio", "kind":"boolean", "order":13, "default":true }}
+    "delete":{"field":{ "name":"dcm_delete", "kind":"boolean", "order":11, "default":"" }}
   }
 }

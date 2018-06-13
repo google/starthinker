@@ -1,5 +1,8 @@
 { 
   "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
     "icon":"view_column",
     "product":"Sheets",
     "title":"Sheet Clear",

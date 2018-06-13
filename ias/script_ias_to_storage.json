@@ -1,14 +1,17 @@
 { 
   "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
     "icon":"file_download",
     "product":"3P Data",
     "title":"IAS Storage",
-    "description":"Move an IAS report ot a storage bucket.",
+    "description":"Import emailed IAS report into a Storage bucket.",
     "instructions":[
-      "Schedule an IAS report to be sent to <b>{{EMAIL_TOKEN}}</b>.",
-      "The report must be from <strong>reports&at;integralads.com</strong>.",
-      "Optionally, specify a regular expression for the file link or attachment.",
-      "It will be moved to the storage bucket you specify."
+      "The person executing this recipe must be the recipient of the email.",
+      "Schedule a IAS report to be sent to <b>{{ EMAIL_TOKEN }}</b>.",
+      "Give a regular expression to match the email link or attachment.",
+      "THe report will be added to the storage bucket."
     ],
     "authors":["kenjora@google.com"]
   },

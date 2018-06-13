@@ -1,12 +1,15 @@
 {
   "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
     "icon":"donut_large",
     "product":"DBM",
     "title":"DBM To Storage",
-    "description":"Move Existing DBM reports into a storage bucket.",
-    "insructions":[
+    "description":"Move existing DBM report into a Storage bucket.",
+    "instructions":[
       "Specify either report name or report id to move a report.",
-      "The most recent file name will be moved to storage."
+      "The most recent valid file will be moved to the bucket."
     ],
     "authors":["kenjora@google.com"]
   },

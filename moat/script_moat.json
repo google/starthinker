@@ -1,0 +1,37 @@
+{ 
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
+    "icon":"trending_down",
+    "product":"3P Data",
+    "title":"MOAT Import",
+    "description":"Import emailed MOAT reports into a BigQuery table.",
+    "instructions":[
+      "The person executing this recipe must be the recipient of the email.",
+      "Schedule a MOAT report to be sent to <b>{{ EMAIL_TOKEN }}</b>.",
+      "Give a regular expression to match the email link or attachment.",
+      "The report will overwrite the table specified."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "moat":{
+    "auth":"user",
+    "in":{
+      "email":{
+        "days":1,
+        "from":"moat.reports@moat.com",
+        "to":{"constant":"email_token"},
+        "subject":"Moat .* Export \\d\\d\\d\\d-\\d\\d-\\d\\d",
+        "link":{"field":{ "name":"moat_link", "kind":"string", "order":3, "default":"" }},
+        "attachment":{"field":{ "name":"moat_attachment", "kind":"string", "order":4, "default":"" }}
+      }
+    },
+    "out":{
+      "storage":{
+        "bucket":{"field":{ "name":"moat_bucket", "kind":"string", "order":5, "default":"" }},
+        "path":{"field":{ "name":"moat_path", "kind":"string", "order":6, "default":"" }}
+      }
+    }
+  }
+}

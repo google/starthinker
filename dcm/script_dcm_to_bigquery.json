@@ -1,13 +1,17 @@
 {
   "script":{
-    "icon":"exit_to_app",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
+    "icon":"donut_small",
     "product":"DCM",
     "title":"DCM To BigQuery",
-    "description":"Move existing DCM reports into a bigquery table.",
-    "insructions":[
-      "Specify an account_id.",
+    "description":"Move existing DCM report into a BigQuery table.",
+    "instructions":[
+      "Specify a DCM Account Id.",
       "Specify either report name or report id to move a report.",
-      "The most recent file will overwrite the table."
+      "The most recent valid file will overwrite the table.",
+      "Schema is pulled from the official DCM specification."
     ],
     "authors":["kenjora@google.com"]
   },

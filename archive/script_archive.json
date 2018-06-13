@@ -1,9 +1,12 @@
 { 
   "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
     "icon":"archive",
     "product":"Storage",
     "title":"Archive",
-    "description":"Wipe old information from a storage bucket.",
+    "description":"Wipe old information from a Storage bucket.",
     "instructions":[
       "Specify how many days back to retain data and which buckets and paths to purge.",
       "Everything under a path will be moved to archive or deleted depending on your choice."
