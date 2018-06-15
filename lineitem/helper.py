@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -15,6 +15,15 @@
 #  limitations under the License.
 #
 ###########################################################################
+
+
+"""Command line interface for fetching line items via API.
+
+Helps developers quickl debug lineitem issues or permissions access issues.
+
+For example: https://developers.google.com/bid-manager/v1/lineitems/downloadlineitems
+python lineitem/helper.py [line item id] -u [credentials]
+"""
 
 
 import argparse
@@ -35,8 +44,3 @@ if __name__ == "__main__":
 
   for row in lineitem_read(auth, lineitems=[project.args.lineitem]):
     print row
-
-'''
-Example:
-python lineitem/helper.py 9915840 -u /Users/kenjora/.credentials/kenjora_user.json
-'''

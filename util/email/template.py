@@ -21,6 +21,7 @@ from itertools import cycle
 class EmailTemplate:
 
   def __init__(self):
+    self.text_align = 'center'
     self.content_html = ''
     self.content_text = ''
     self.segments = [
@@ -43,13 +44,13 @@ class EmailTemplate:
   # only do the look, as this can be applied to various elements with different layouts ( also used for table headers )
   def _button_css(self, big=False):
     if big:
-      return 'display:block;margin:40px 0px;border-radius:100px;padding:12px 36px;background-color:%(foreground)s;color:%(background)s;font-family:Verdana;font-size:24px;text-decoration:none;text-align:center;' % self.segment_next(False)
+      return 'display:inline-block;margin:0px auto;border-radius:100px;padding:12px 36px;background-color:%(foreground)s;color:%(background)s;font-family:Verdana;font-size:24px;text-decoration:none;text-align:center;' % self.segment_next(False)
     else:
-      return 'border-radius:50px;padding:6px 18px;background-color:%(foreground)s;color:%(background)s;font-family:Verdana;font-size:16px;text-decoration:none;text-align:center;' % self.segment_next(False)
+      return 'display:inline-block;margin:0px auto;border-radius:50px;padding:6px 18px;background-color:%(foreground)s;color:%(background)s;font-family:Verdana;font-size:16px;text-decoration:none;text-align:center;' % self.segment_next(False)
 
 
   def _table_css(self):
-    return 'color:#222;font-family:Verdana;font-size:16px;line-height:20px;'
+    return 'color:#222;font-family:Verdana;font-size:12px;line-height:16px;'
 
 
   # define colors for each section and cycle them for each section
@@ -69,7 +70,7 @@ class EmailTemplate:
 
       # HTML
       if self.segment > 0: self.content_html += '</div>'
-      self.content_html += '<div style="background-color:%(background)s;padding:30px 20px;">' % value
+      self.content_html += '<div style="background-color:%(background)s;padding:40px 20px;">' % value
 
       # Text
       self.content_text += '----------------------------------------------------------------'
@@ -78,6 +79,8 @@ class EmailTemplate:
 
     return value
 
+  def align(self, text_align):
+    self.text_align = text_align
 
   def greeting(self, name='', salutation='Hi'):
     if name:
@@ -97,7 +100,7 @@ class EmailTemplate:
 
   def header(self, text):
     # HTML
-    self.content_html += '<p style="width:100%%;margin:0px 0px 20px 0px;padding:0px;border:0px;text-align:center;font-weight:bold;%s">%s</p>' % (self._header_css(), text)
+    self.content_html += '<p style="width:100%%;margin:0px 0px 40px 0px;padding:0px;border:0px;text-align:%s;font-weight:bold;%s">%s</p>' % (self.text_align, self._header_css(), text)
 
     # Text
     self.content_text += '--------------------------------------------------\n\n%s\n\n' % text
@@ -105,7 +108,7 @@ class EmailTemplate:
 
   def paragraph(self, text, bold=False):
     # HTML
-    self.content_html += '<p style="width:100%%;margin:10px 0px;padding:0px;border:0px;font-weight:%s;%s">%s<p>' % ('bold' if bold else 'normal', self._text_css(), text.replace('\n', '<br/><br/>'))
+    self.content_html += '<p style="width:100%%;margin:40px 0px;padding:0px;border:0px;text-align:%s;font-weight:%s;%s">%s<p>' % (self.text_align, 'bold' if bold else 'normal', self._text_css(), text.replace('\n', '<br/><br/>'))
 
     # Text
     self.content_text += '%s\n\n' % text
@@ -124,7 +127,8 @@ class EmailTemplate:
 
   def button(self, text, link, big=False):
     # HTML
-    self.content_html += '<a href="%s" style="%s">%s</a>' % (link, self._button_css(big), text)
+
+    self.content_html += '<p style="width:100%%;margin:40px 0px;padding:0px;border:0px;text-align:%s"><a href="%s" style="%s">%s</a></p>' % (self.text_align, link, self._button_css(big), text)
 
     # Text
     self.content_text += '%s: %s' % (text, link)
@@ -132,7 +136,7 @@ class EmailTemplate:
 
   def section(self, header, paragraph, image, link, button):
     # HTML
-    self.content_html += '<table style="width:100%;margin:10px 0px 20px 0px;padding:0px;border:0px">'
+    self.content_html += '<table style="width:100%;margin:40px 0px;padding:0px;border:0px">'
     self.content_html += '<tr>'
     if image:
       self.content_html += '<td style="width:45%;padding:10px;text-align:center;vertical-align:top;">'
@@ -162,7 +166,7 @@ class EmailTemplate:
 
   def list(self, elements):
     # HTML
-    self.content_html += '<table style="width:100%;margin:10px 0px 40px 0px;padding:0px;border:0px;border-collapse:collapse;">'
+    self.content_html += '<table style="width:100%;margin:40px 0px;padding:0px;border:0px;border-collapse:collapse;">'
     for element in elements:
       self.content_html += '<tr><td style="padding:10px;text-align:left;border-bottom:1px solid #ccc;%s">%s</td></tr>' % (self._table_css(), element)
     self.content_html += '</table>' 
@@ -175,10 +179,10 @@ class EmailTemplate:
 
 
   def table(self, schema, rows):
-    aligns = {'BOOLEAN':'center', 'INTEGER':'right', 'FLOAT':'right', 'STRING':'left'}
+    aligns = {'BOOLEAN':'center', 'INTEGER':'right', 'FLOAT':'right', 'STRING':'left', 'URL':'center'}
 
     # HTML
-    self.content_html += '<table style="width:100%;margin:10px 0px 40px 0px;padding:0px;border:0px;border-collapse:collapse;">'
+    self.content_html += '<table style="width:100%;margin:40px 0px;padding:0px;border:0px;border-collapse:collapse;">'
     self.content_html += '<tr>'
 
     # headers
@@ -226,6 +230,20 @@ if __name__ == "__main__":
     'http://www.image.com/image.jpg',
     'http://www.google.com',
     'A Button'
+  )
+  t.table(
+    [
+      { "name":"Column A", "type":"STRING" },
+      { "name":"Column B", "type":"INTEGER" },
+      { "name":"Column C", "type":"BOOLEAN" },
+      { "name":"Column D", "type":"FLOAT" },
+      { "name":"Column E", "type":"URL" },
+    ],
+    [
+      [ 'First', 1, True, 1.1, 'http://www.google.com' ],
+      [ 'Second', 2, False, 2.2, 'http://www.google.com' ],
+      [ 'Third', 3, True, 3.3, 'http://www.google.com' ],
+    ]
   )
   print t.get_html()
   print t.get_text()

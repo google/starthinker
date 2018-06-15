@@ -128,6 +128,30 @@ def report_get(auth, report_id=None, name=None):
     return _retry(job)
 
 
+def report_build(auth, body):
+  report = report_get(auth, name=body['name'])
+
+  if report:
+    service = get_service('doubleclickbidmanager', API_VERSION, auth)
+
+    # build report
+    job = service.queries().createquery(body=body)
+    report = _retry(job)
+
+    # run report first time
+    body = {
+     "dataRange":report['metadata']['dataRange'],
+     "timezoneCode":report['schedule']['nextRunTimezoneCode']
+    }
+    run = service.queries().runquery(queryId=report['queryId'], body=body)
+    _retry(run)
+
+  else:
+    if project.verbose: print 'DBM Report Exists:', body['name']
+
+  return report
+
+
 def report_create(auth, name, typed, partners, advertisers, filters, dimensions, metrics, data_range, timezone, project_id=None, dataset_id=None):
   report = report_get(auth, name=name)
   #pprint.PrettyPrinter().pprint(report)

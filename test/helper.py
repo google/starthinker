@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2017 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,6 +16,17 @@
 #
 ###########################################################################
 
+
+"""Command line to run all tests or list all runnable tests.
+
+Meant to speed up an automate testing of StarThinker.
+
+To get list: python test/helper.py --list -u [credentials] -s [credentials] -p [project_id]
+To get report: python test/helper.py -u [credentials] -s [credentials] -p [project_id]
+
+"""
+
+
 import os
 import sys
 import re
@@ -23,28 +34,28 @@ import argparse
 import subprocess
 
 from setup import EXECUTE_PATH
+from util.project import project
+
 
 RE_TEST = re.compile(r'test\.json')
+
 
 if __name__ == "__main__":
 
   # get parameters
   parser = argparse.ArgumentParser()
-  parser.add_argument('--project', '-p', help='cloud id of project, defaults to None', default=None)
-  parser.add_argument('--user', '-u', help='path to user credentials json file, defaults to GOOGLE_APPLICATION_CREDENTIALS', default=None)
-  parser.add_argument('--service', '-s', help='path to service credentials json file, defaults None', default=None)
-  parser.add_argument('--client', '-c', help='path to client credentials json file, defaults None', default=None)
+  parser.add_argument('--report', help='report ID to pull the achema.', default=None)
+  parser.add_argument('--list', help='list tests.', action='store_true')
 
-  parser.add_argument('--verbose', '-v', help='print all the steps as they happen.', action='store_true')
-  parser.add_argument('--list', '-l', help='list all tests that will be discovered and run.', action='store_true')
-
-  args = parser.parse_args()
+  # initialize project
+  project.load(parser=parser)
+  auth = 'service' if project.args.service else 'user'
 
   for root, dirs, files in os.walk(EXECUTE_PATH):
     for filename in files:
       if RE_TEST.match(filename) and '/project/' not in root:
 
-        if args.list:
+        if project.args.list:
           print '%s/%s' % (root, filename)
         else:
           # assemble command ( replace command, use all arguments passed, and add instance )
