@@ -131,9 +131,9 @@
         <td><i class="material-icons medium teal-text">directions_run</i></td>
         <td>
           <strong>Run a json recipe:</strong>
-          <br/>python all/run.py [recipe json file] -p [project_id] -c [client_json] -s [service_json]
+          <br/>python all/run.py [recipe json path] -p [project id] -c [client json path] -s [service json path] -u [user json path] --verbose
           <br/><br/><strong>Or schedule recipe to run on schedule:</strong>
-          <br/>python cron/run.py [path to recipe json folder] -p [project_id] -c [client_json] -s [service_json]
+          <br/>python cron/run.py [path to recipe destination folder] -p [project id] -c [client json path] -s [service json path] -u [user json path] --verbose
         </td>
         <td class="center-align">1</td>
       </tr>
@@ -204,32 +204,32 @@
   <table class="bordered highlight list">
     <tbody>
       <tr>
-        <th>1</th>
+        <th style="vertical-align:top;">1</th>
         <td>Look for helper.py to invoke the code from the command line, helpful for testing setup.</td>
       </tr>
       <tr>
-        <th>2</th>
+        <th style="vertical-align:top;">2</th>
         <td>Look in solutions/*.json and projects/sample/*.json for samples.</td>
       </tr>
       <tr>
-        <th>3</th>
+        <th style="vertical-align:top;">3</th>
         <td>Look in [task]/script*.json for json definitions.</td>
       </tr>
       <tr>
-        <th>4</th>
+        <th style="vertical-align:top;">4</th>
         <td>Review arguments in utils/project/__init__.py at least once.</td>
       </tr>
       <tr>
-        <th>5</th>
-        <td>Learn to love: find . -name '*.py' | xargs grep 'somestring'.</td>
+        <th style="vertical-align:top;">5</th>
+        <td>Learn to love: find . -name '*.py' | xargs grep 'somestring'</td>
       </tr>
       <tr>
-        <th>6</th>
+        <th style="vertical-align:top;">6</th>
         <td>Adding --verbose to python all/run.py or python [task]/run.py produces debug.</td>
       </tr>
       <tr>
-        <th>7</th>
-        <td>Review the core code:
+        <th style="vertical-align:top;">7</th>
+        <td>Read the core framework documentation and code that glues things together:
             <br/>&nbsp;&nbsp;&nbsp;util/project/__init__.py
             <br/>&nbsp;&nbsp;&nbsp;util/data/__init__.py
             <br/>&nbsp;&nbsp;&nbsp;util/google_api/__init__.py
@@ -237,23 +237,23 @@
         </td>
       </tr>
       <tr>
-        <th>8</th>
+        <th style="vertical-align:top;">8</th>
         <td>python solution/run.py [json] --directory [dir] creates recipes.</td>
       </tr>
       <tr>
-        <th>9</th>
+        <th style="vertical-align:top;">9</th>
         <td>Make use of util/data/__init__.py ( get_rows / put_rows ).</td>
       </tr>
       <tr>
-        <th>10</th>
+        <th style="vertical-align:top;">10</th>
         <td>Use shared links for sheets.</td>
       </tr>
       <tr>
-        <th>11</th>
+        <th style="vertical-align:top;">11</th>
         <td>First get the data, then operate on it.</td>
       </tr>
       <tr>
-        <th>12</th>
+        <th style="vertical-align:top;">12</th>
         <td>There are more than 3 ways to do anything by design.</td>
       </tr>
     </tbody>
@@ -717,6 +717,114 @@
         <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
           <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_move_query">JSON</span>
+            <h4>Query To Table</h4>
+            <p>TASK: move_query</p>
+            <p>Save query results into a BigQuery table.</p>
+            <ol>
+              <li>Specify a single query and choose legacy or standard mode.</li><li>For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...</li><li>Every time the query runs it will overwrite the table.</li>
+            </ol>
+            <pre class="view_code" id="view_code_move_query" style="display:none;">{
+    &quot;bigquery&quot;: {
+        &quot;to&quot;: {
+            &quot;table&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;table&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }, 
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dataset&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }
+        }, 
+        &quot;from&quot;: {
+            &quot;query&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;text&quot;, 
+                    &quot;name&quot;: &quot;query&quot;, 
+                    &quot;order&quot;: 1
+                }
+            }, 
+            &quot;legacy&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: true, 
+                    &quot;kind&quot;: &quot;boolean&quot;, 
+                    &quot;name&quot;: &quot;legacy&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_move_view">JSON</span>
+            <h4>Query To View</h4>
+            <p>TASK: move_view</p>
+            <p>Create a BigQuery view.</p>
+            <ol>
+              <li>Specify a single query and choose legacy or standard mode.</li><li>For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...</li><li>If the view exists, it is unchanged, delete it manually to re-create.</li>
+            </ol>
+            <pre class="view_code" id="view_code_move_view" style="display:none;">{
+    &quot;bigquery&quot;: {
+        &quot;to&quot;: {
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dataset&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;view&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;view&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }
+        }, 
+        &quot;from&quot;: {
+            &quot;query&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;text&quot;, 
+                    &quot;name&quot;: &quot;query&quot;, 
+                    &quot;order&quot;: 1
+                }
+            }, 
+            &quot;legacy&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: true, 
+                    &quot;kind&quot;: &quot;boolean&quot;, 
+                    &quot;name&quot;: &quot;legacy&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
+          <td style="vertical-align: top;">
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_bigquery_view">JSON</span>
             <h4>Query To View</h4>
             <p>TASK: bigquery_view</p>
@@ -763,6 +871,69 @@
             }
         }, 
         &quot;auth&quot;: &quot;user&quot;
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_move_storage">JSON</span>
+            <h4>Storage To Table</h4>
+            <p>TASK: move_storage</p>
+            <p>Move using bucket and path prefix.</p>
+            <ol>
+              <li>Specify a bucket and path prefix, * suffix is NOT required.</li><li>Every time the job runs it will overwrite the table.</li>
+            </ol>
+            <pre class="view_code" id="view_code_move_storage" style="display:none;">{
+    &quot;bigquery&quot;: {
+        &quot;to&quot;: {
+            &quot;table&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;table&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;dataset&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }
+        }, 
+        &quot;from&quot;: {
+            &quot;path&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;path&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;bucket&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;bucket&quot;, 
+                    &quot;order&quot;: 1
+                }
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;schema&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;json&quot;, 
+                &quot;name&quot;: &quot;schema&quot;, 
+                &quot;order&quot;: 5
+            }
+        }
     }
 }</pre>
           <td>

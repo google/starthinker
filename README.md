@@ -21,6 +21,14 @@ of how to use and deploy the code see:
 
 [StarThinker GitHub Documentation Page](https://google.github.io/starthinker/)
 
+## Whats The Most Basic Use?
+
+The Say Hello workflow, is a basic example endpoint for running workflows from the comand line.  It
+provides an explination of all the components of a workflow.  Run it first, look at the source of both
+the JSON and say_hello/run.py to see how the two connect.  Then write your own.
+
+python all/run.py project/sample/say_hello.json --verbose
+
 ## Where Do I Get Help?
 
 Email: starthinker-help@google.com
