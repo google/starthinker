@@ -67,8 +67,10 @@
       "accounts": { "constant":"dbm_accounts" },
       "entities": ["LineItem", "InsertionOrder", "Advertiser"],
       "out": {
-        "auth":"service",
-        "dataset": { "constant":"dataset" }
+        "bigquery":{
+          "auth":"service",
+          "dataset": { "constant":"dataset" }
+        }
       }
     }},
     { "dbm": {

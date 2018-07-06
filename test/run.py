@@ -63,7 +63,7 @@ def bigquery():
       project.task['bigquery']['dataset'],
       project.task['bigquery']['table']
     )
-    object_compare(schema, { 'fields':project.task['bigquery']['schema'] })
+    object_compare(schema['fields'], project.task['bigquery']['schema'])
 
   # if query given check it
   if 'query' in project.task['bigquery']:

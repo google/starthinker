@@ -20,7 +20,7 @@ import re
 
 from util.project import project 
 from util.dbm import report_create, report_file, report_to_rows, report_clean, accounts_split, DBM_CHUNKSIZE
-from util.bigquery import csv_to_table
+from util.bigquery import rows_to_table
 from util.csv import rows_to_csv, rows_header_trim
 from util.sheets import sheets_tab_copy, sheets_read
 
@@ -225,12 +225,12 @@ def sov():
   sov_rows.extend(sov_process_peer(peer_name))
 
   # 3 - Save the report to the specified table
-  csv_to_table(
+  rows_to_table(
     project.task['auth'],
     project.id,
     project.task['dataset'],
     project.task['table'],
-    rows_to_csv(sov_rows),
+    sov_rows,
     SCHEMA,
     0
   )

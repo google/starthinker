@@ -36,6 +36,15 @@ class CreativeDAO(BaseDAO):
 
     self.creative_asset_dao = CreativeAssetDAO(auth, profile_id, None)
 
+  def map_creative_third_party_url_feeds(self, creative_feed,
+                                         third_party_url_feed):
+    for creative in creative_feed:
+      creative['third_party_urls'] = [
+          third_party_url for third_party_url in third_party_url_feed
+          if third_party_url[FieldMap.CREATIVE_ID] == creative[
+              FieldMap.CREATIVE_ID]
+      ]
+
   def map_creative_and_association_feeds(self, creative_feed,
                                          creative_association_feed):
     for creative in creative_feed:
@@ -44,8 +53,20 @@ class CreativeDAO(BaseDAO):
           if association[FieldMap.CREATIVE_ID] == creative[FieldMap.CREATIVE_ID]
       ]
 
+  def _associate_third_party_urls(self, feed_item, creative):
+    third_party_urls = []
+    for third_party_url in feed_item.get('third_party_urls', []):
+      third_party_urls.append({
+          'thirdPartyUrlType': third_party_url[FieldMap.THIRD_PARTY_URL_TYPE],
+          'url': third_party_url[FieldMap.THIRD_PARTY_URL]
+      })
+
+    if third_party_urls:
+      creative['thirdPartyUrls'] = third_party_urls
+
   def _process_update(self, item, feed_item):
     item['name'] = feed_item[FieldMap.CREATIVE_NAME]
+    self._associate_third_party_urls(feed_item, item)
 
   def _process_new(self, feed_item):
     creative = {
@@ -53,6 +74,8 @@ class CreativeDAO(BaseDAO):
         'name': feed_item[FieldMap.CREATIVE_NAME],
         'active': True
     }
+
+    self._associate_third_party_urls(feed_item, creative)
 
     if feed_item[FieldMap.CREATIVE_TYPE] == 'VIDEO':
       creative['type'] = 'INSTREAM_VIDEO'
@@ -75,6 +98,12 @@ class CreativeDAO(BaseDAO):
     return creative
 
   def _post_process(self, feed_item, new_item):
+    # TODO loop through 3p urls and update the feed
+    for third_party_url in feed_item.get('third_party_urls', []):
+      third_party_url[FieldMap.CREATIVE_ID] = new_item['id']
+      third_party_url[FieldMap.CREATIVE_NAME] = new_item['name']
+
     for association in feed_item.get('associations', []):
       association[FieldMap.CREATIVE_ID] = self.get(association)['id']
-      association[FieldMap.CREATIVE_ASSET_ID] = self.creative_asset_dao.get(association)['id']
+      association[FieldMap.CREATIVE_ASSET_ID] = self.creative_asset_dao.get(
+          association)['id']

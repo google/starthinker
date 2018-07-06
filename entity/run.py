@@ -18,8 +18,6 @@
 
 # https://developers.google.com/bid-manager/guides/entity-read/format-v2
 
-from io import BytesIO
-
 from setup import BUFFER_SCALE
 from util.project import project
 from util.storage import object_get_chunks
@@ -57,20 +55,30 @@ def get_entity(path):
 
 
 def move_entity(project, path, table, schema, disposition):
-  if project.task['version'] >= 0.2 and 'prefix' in project.task: table = '%s_%s' % (project.task['prefix'], table)
+  if 'prefix' in project.task: table = '%s_%s' % (project.task['prefix'], table)
+
+  if 'out' in project.task:
+    auth = project.task['out']['bigquery'].get('auth', project.task['auth'])
+    dataset = project.task['out']['bigquery']['dataset']
+  # deprecated, need out to allow auth mix on in and out
+  else:
+    auth = project.task['auth']
+    dataset = project.task['dataset']
 
   # read the entity file in parts
-  for data in get_entity(path):
-    # write each part
-    json_to_table(
-        project.task.get('out', project.task)['auth'],
-        project.id,
-        project.task.get('out', project.task)['dataset'],
-        table,
-        BytesIO(data),
-        schema=schema,
-        disposition=disposition)
-    disposition = 'WRITE_APPEND'
+  records = get_entity(path)
+
+  # write each part
+  json_to_table(
+    auth,
+    project.id,
+    dataset,
+    table,
+    records,
+    schema=schema,
+    disposition=disposition)
+  # after first write switch to append
+  #disposition = 'WRITE_APPEND'
 
 
 def entity():

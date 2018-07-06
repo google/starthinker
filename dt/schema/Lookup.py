@@ -127,7 +127,7 @@ DT_Field_Lookup = {
   "Dbm_Media_Fee_1_Partner_Currency":"FLOAT",
   "Dbm_Language":"STRING",
   "Dbm_Adx_Page_Categories":"STRING",
-  "Browser_Platform_Id":"STRING",
+  "Browser_Platform_Id":"INTEGER",
   "Floodlight_Variable_Id":"INTEGER",
   "Dbm_Site_Id":"INTEGER",
   "Dbm_Cpm_Fee_5_Usd":"FLOAT",

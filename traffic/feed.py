@@ -67,6 +67,9 @@ class FieldMap:
   EVENT_TAG_TYPE = 'Event Tag Type'
   EVENT_TAG_URL = 'Event Tag URL'
   EVENT_TAG_ID = 'Event Tag ID'
+  EVENT_TAG_ENABLED_BY_DEFAULT = 'Enable By Default'
+
+  EVENT_TAG_PROFILE_NAME = 'Event Tag Profile'
 
   SITE_ID = 'Site ID'
 
@@ -78,6 +81,9 @@ class FieldMap:
   TRANSCODE_MIN_BITRATE = 'Min Bitrate (kbps)'
   TRANSCODE_MAX_BITRATE = 'Max Bitrate (kbps)'
   TRANSCODE_FILE_TYPES = ['THREEGPP', 'FLV', 'MOV', 'MP4', 'WEBM', 'M3U8']
+
+  THIRD_PARTY_URL_TYPE = '3P URL Type'
+  THIRD_PARTY_URL = '3P URL'
 
 class Feed:
 

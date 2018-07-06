@@ -30,7 +30,7 @@ def conversions_download():
   if project.verbose: print 'CONVERSION DOWNLOAD'
 
   # pull from bigquery if specified
-  if project.task['bigquery']['dataset']:
+  if 'bigquery' in project.task:
     if project.verbose: print 'READING BIGQUERY'
     rows = query_to_rows(
       project.task['auth'],
@@ -42,7 +42,7 @@ def conversions_download():
     for row in rows: yield row
 
   # pull from sheets if specified
-  if project.task['sheets']['url']:
+  if 'sheets' in project.task:
     if project.verbose: print 'READING SHEET'
     rows = sheets_read(
       project.task['auth'], 
@@ -53,7 +53,7 @@ def conversions_download():
     for row in rows: yield row
 
   # pull from csv if specified
-  if project.task['csv']['file']:
+  if 'csv' in project.task:
     if project.verbose: print 'READING CSV FILE'
     with io.open(project.task['csv']['file']) as f:
       for row in csv_to_rows(f):
@@ -79,8 +79,10 @@ def conversion_upload():
   has_rows = False
   for status in statuses:
     has_rows = True
-    if 'errors' in 'status': 
-      if project.verbose: print 'ERROR:', status['conversion']['ordinal'], status['errors'][0]['message']
+    if 'errors' in status: 
+      if project.verbose: print 'ERROR:', status['conversion']['ordinal'], '\n'.join([e['message'] for e in status['errors']])
+    else:
+      if project.verbose: print 'OK:', status['conversion']['ordinal'] 
       
   if not has_rows:
     if project.verbose: print 'NO ROWS'

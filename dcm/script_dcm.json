@@ -6,47 +6,20 @@
     "icon":"donut_small",
     "product":"DCM",
     "title":"DCM Report",
-    "description":"Create a DCM report.",
+    "description":"Create a DCM report from a JSON definition.",
     "instructions":[
-      "Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DCM API</a> to build a report.",
-      "Specify an account_id or account_id:subaccount_id.",
-      "The report is only created, use a move script to move it.",
-      "A report with a ( Starthinker ) suffix will be created in DCM.",
-      "To reset a report, delete it from DCM reporting."
+      "Add a an account as [account_id]@[profile_id]",
+      "Fetch the report JSON definition. Arguably could be better.",
+      "The account is automatically added to the report definition."
     ],
-    "authors":["jfno@google.com", "kenjora@google.com"]
+    "authors":["kenjora@google.com"]
   },
   "dcm":{
     "auth":"user",
     "report":{
-      "template":{"field":{ "name":"dcm_template", "kind":"choice", "order":2, "choices":["standard", "path_to_conversion"], "default":"standard" }},
-      "account_id":{"field":{ "name":"dcm_account", "kind":"string", "order":3, "default":"" }},
-      "name":{"field":{ "name":"dcm_name", "kind":"string", "order":4, "default":"" }},
-      "format":"CSV",
-      "relativeDateRange":{"field":{ "name":"dcm_range", "kind":"string", "order":6, "default":"" }},
-      "dimensions":{
-        "field":{
-          "name":"dcm_dimensions",
-          "kind":"string_list",
-          "order":7,
-          "default":[
-            "date",
-            "platformType",
-            "creativeType",
-            "state",
-            "dmaRegion"
-          ]
-        }
-      },
-      "metrics":{
-        "field":{
-          "name":"dcm_metrics",
-          "kind":"string_list",
-          "order":8,
-          "default":["impressions"]
-        }
-      }
+      "account":{"field":{ "name":"account", "kind":"string", "order":1, "default":"" }},
+      "body":{"field":{ "name":"body", "kind":"json", "order":2, "default":"" }}
     },
-    "delete":{"field":{ "name":"dcm_delete", "kind":"boolean", "order":11, "default":"" }}
+    "delete":{"field":{ "name":"delete", "kind":"boolean", "order":3, "default":"" }}
   }
 }

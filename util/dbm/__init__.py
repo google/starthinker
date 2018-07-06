@@ -365,10 +365,9 @@ def lineitem_read(auth, advertisers=[], insertion_orders=[], lineitems=[]):
     body['filterType'] = 'LINE_ITEM_ID'
     body['filterIds'] = list(lineitems) # in case its a generator
 
-  print body
+  #print body
 
-  job = service.lineitems().downloadlineitems(body=body)
-  result = _retry(job)
+  result = _retry(service.lineitems().downloadlineitems(body=body))
 
   for count, row in enumerate(csv_to_rows(result.get('lineItems', ''))):
     if count == 0: continue # skip header
@@ -403,7 +402,7 @@ def lineitem_write(auth, rows, dry_run=True):
 
   job = service.lineitems().uploadlineitems(body=body)
   result = _retry(job)
-  print result
+  #print result
   return result
 
 

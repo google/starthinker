@@ -150,7 +150,7 @@ def object_get_chunks(auth, path, chunksize=1024000):
     else:
       retries = 0
 
-  print 'Download 100%'
+  print 'Download End'
 
 
 def object_put(auth, path, data, mimetype='application/octet-stream'):

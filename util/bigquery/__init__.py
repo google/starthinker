@@ -28,12 +28,14 @@ import uuid
 import json
 from time import sleep
 from StringIO import StringIO
+#from io import BytesIO
 
 from google.cloud import bigquery
 from googleapiclient.errors import HttpError
 from apiclient.http import MediaIoBaseUpload
 
 from setup import BUFFER_SCALE
+from util import flag_last
 from util.project import project
 from util.auth import get_service
 from util.google_api import API_BigQuery
@@ -326,6 +328,8 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
         'sourceFormat': 'NEWLINE_DELIMITED_JSON',
         'writeDisposition': disposition,
         'autodetect': True,
+        'allowJaggedRows': True,
+        'allowQuotedNewlines':True,
         'ignoreUnknownValues':True,
         'sourceUris': [
           'gs://%s' % path.replace(':', '/'),
@@ -346,55 +350,150 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
   job_wait(service, job)
 
 
+#def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_rows=1, disposition='WRITE_TRUNCATE'):
+#  if project.verbose: print 'BIGQUERY CSV TO TABLE: ', project_id, dataset_id, table_id
+#
+#  service = get_service('bigquery', 'v2', auth)
+#
+#  def getSize(fileObject):
+#    fileObject.seek(0,2)
+#    retVal = fileObject.tell()
+#    return retVal
+#
+#  if(getSize(data) > 0):
+#    media = MediaIoBaseUpload(data, mimetype='application/octet-stream', resumable=True, chunksize=BIGQUERY_CHUNKSIZE)
+#
+#    body = {
+#      'configuration': {
+#        'load': {
+#          'destinationTable': {
+#            'projectId': project_id,
+#            'datasetId': dataset_id,
+#            'tableId': table_id,
+#          },
+#          'sourceFormat': 'CSV',
+#          'skipLeadingRows': skip_rows,
+#          'writeDisposition': disposition,
+#          'autodetect': True,
+#          'allowJaggedRows': True,
+#          'allowQuotedNewlines':True,
+#          'ignoreUnknownValues': True,
+#        }
+#      }
+#    }
+#
+#    if schema:
+#      body['configuration']['load']['schema'] = { 'fields':schema }
+#      body['configuration']['load']['autodetect'] = False
+#
+#    job = service.jobs().insert(projectId=project.id, body=body, media_body=media)
+#    response = None
+#    while response is None:
+#      status, response = job.next_chunk()
+#      if project.verbose and status: print "Uploaded %d%%." % int(status.progress() * 100)
+#    if project.verbose: print "Uploaded 100%."
+#    job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
+#
+#  else:
+#    try:
+#      service.tables().delete(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute(num_retries=BIGQUERY_RETRIES)
+#      print 'APR table exists. deleting current table...'
+#    except:
+#      print 'APR table does not exist. creating empty table...'
+#    body = {
+#      "tableReference": {
+#        "projectId": project_id,
+#        "datasetId": dataset_id,
+#        "tableId": table_id
+#      },
+#      "schema": {
+#        "fields": schema
+#      }
+#    }
+#    # change project_id to be project.id, better yet project.cloud_id from JSON
+#    service.tables().insert(projectId=project.id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
+
+
 def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_rows=1, disposition='WRITE_TRUNCATE'):
   if project.verbose: print 'BIGQUERY ROWS TO TABLE: ', project_id, dataset_id, table_id
 
-  csv_string = StringIO()
-  writer = csv.writer(csv_string, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+  buffer_data = StringIO()
+  writer = csv.writer(buffer_data, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
   has_rows = False
 
-  # loop through rows writing segments to table
-  for row in rows:
+  for is_last, row in flag_last(rows):
+
+    # write row to csv buffer
     writer.writerow(row)
-    if csv_string.tell() + 1 > BIGQUERY_BUFFERSIZE:
-      # write the buffer in chunks
-      if project.verbose: print 'BigQuery CSV Buffer Size', csv_string.tell()
-      csv_string.seek(0) # reset for read
-      csv_to_table(auth, project_id, dataset_id, table_id, csv_string, schema, skip_rows, disposition)
+
+    # write the buffer in chunks
+    if is_last or buffer_data.tell() + 1 > BIGQUERY_BUFFERSIZE:
+      if project.verbose: print 'BigQuery Buffer Size', buffer_data.tell()
+      buffer_data.seek(0) # reset for read
+      io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'CSV', schema, skip_rows, disposition)
 
       # reset buffer for next loop, be sure to do an append to the table
-      csv_string.seek(0) #reset for write
-      csv_string.truncate() # reset for write ( yes its needed for EOF marker )
-      has_rows = True
+      buffer_data.seek(0) #reset for write
+      buffer_data.truncate() # reset for write ( yes its needed for EOF marker )
+      disposition = 'WRITE_APPEND' # append all remaining records
       skip_rows = 0
-      disposition = 'WRITE_APPEND'
-  
-  # finish last segment if its incomplete ( non-zero length )
-  if csv_string.tell() > 0:
-    if project.verbose: print 'BigQuery CSV Buffer Size', csv_string.tell()
-    csv_string.seek(0)
-    csv_to_table(auth, project_id, dataset_id, table_id, csv_string, schema, skip_rows, disposition)
-    has_rows = True
+      has_rows = True
 
   # if no rows, clear table to simulate empty write
   if not has_rows:
     if project.verbose: print 'BigQuery Zero Rows'
-    csv_to_table(auth, project_id, dataset_id, table_id, csv_string, schema, skip_rows, disposition)
+    io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'CSV', schema, skip_rows, disposition)
 
 
-def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_rows=1, disposition='WRITE_TRUNCATE'):
-  if project.verbose: print 'BIGQUERY CSV TO TABLE: ', project_id, dataset_id, table_id
+def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None, disposition='WRITE_TRUNCATE'):
+  if project.verbose: print 'BIGQUERY JSON TO TABLE: ', project_id, dataset_id, table_id
 
+  buffer_data = StringIO()
+  has_rows = False
+
+  for is_last, record in flag_last(json_data):
+
+    # check if json is already string encoded, and write to buffer
+    buffer_data.write(record if isinstance(record, basestring) else json.dumps(record))
+
+    # write the buffer in chunks
+    if is_last or buffer_data.tell() + 1 > BIGQUERY_BUFFERSIZE:
+      if project.verbose: print 'BigQuery Buffer Size', buffer_data.tell()
+      buffer_data.seek(0) # reset for read
+      io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'NEWLINE_DELIMITED_JSON', schema, 0, disposition)
+
+      # reset buffer for next loop, be sure to do an append to the table
+      buffer_data.seek(0) #reset for write
+      buffer_data.truncate() # reset for write ( yes its needed for EOF marker )
+      disposition = 'WRITE_APPEND' # append all remaining records
+      has_rows = True
+
+    # if not end append newline, for newline delimited json
+    else:
+      buffer_data.write('\n')
+
+  # if no rows, clear table to simulate empty write
+  if not has_rows:
+    if project.verbose: print 'BigQuery Zero Rows'
+    io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'NEWLINE_DELIMITED_JSON', schema, skip_rows, disposition)
+
+
+# NEWLINE_DELIMITED_JSON, CSV
+def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV', schema=None, skip_rows=0, disposition='WRITE_TRUNCATE'):
   service = get_service('bigquery', 'v2', auth)
 
-  def getSize(fileObject):
-    fileObject.seek(0,2)
-    retVal = fileObject.tell()
-    return retVal
+  # if data exists, write data to table
+  data.seek(0, 2)
+  if data.tell() > 0:
+    data.seek(0)
 
-  if(getSize(data) > 0):
-    media = MediaIoBaseUpload(data, mimetype='application/octet-stream', resumable=True, chunksize=BIGQUERY_CHUNKSIZE)
-
+    media = MediaIoBaseUpload(
+      data,
+      mimetype='application/octet-stream',
+      resumable=True,
+      chunksize=BIGQUERY_CHUNKSIZE
+    )
+ 
     body = {
       'configuration': {
         'load': {
@@ -403,34 +502,36 @@ def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_r
             'datasetId': dataset_id,
             'tableId': table_id,
           },
-          'sourceFormat': 'CSV',
-          'skipLeadingRows': skip_rows,
+          'sourceFormat': source_format,
           'writeDisposition': disposition,
           'autodetect': True,
           'allowJaggedRows': True,
+          'allowQuotedNewlines':True,
           'ignoreUnknownValues': True,
         }
       }
     }
-
+ 
     if schema:
       body['configuration']['load']['schema'] = { 'fields':schema }
       body['configuration']['load']['autodetect'] = False
 
-    job = service.jobs().insert(projectId=project.id, body=body, media_body=media)
+    if source_format == 'CSV':
+      body['configuration']['load']['skipLeadingRows'] = skip_rows
+
+    job = API_BigQuery(auth).jobs().insert(projectId=project.id, body=body, media_body=media).execute(run=False)
+
     response = None
     while response is None:
       status, response = job.next_chunk()
       if project.verbose and status: print "Uploaded %d%%." % int(status.progress() * 100)
-    if project.verbose: print "Uploaded 100%."
+    if project.verbose: print "Upload End"
     job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
 
-  else:
-    try:
-      service.tables().delete(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute(num_retries=BIGQUERY_RETRIES)
-      print 'APR table exists. deleting current table...'
-    except:
-      print 'APR table does not exist. creating empty table...'
+  # if it does not exist and write, clear the table
+  elif disposition == 'WRITE_TRUNCATE':
+    if project.verbose: print "BIGQUERY: No data, clearing table."
+
     body = {
       "tableReference": {
         "projectId": project_id,
@@ -443,48 +544,6 @@ def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_r
     }
     # change project_id to be project.id, better yet project.cloud_id from JSON
     service.tables().insert(projectId=project.id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
-
-
-def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None, disposition='WRITE_TRUNCATE'):
-
-  service = get_service('bigquery', 'v2', auth)
-
-  media = MediaIoBaseUpload(
-    StringIO('\n'.join([json.dumps(row) for row in json_data])),
-    mimetype='application/octet-stream',
-    resumable=True,
-    chunksize=BIGQUERY_CHUNKSIZE
-  )
-
-  body = {
-    'configuration': {
-      'load': {
-        'destinationTable': {
-          'projectId': project_id,
-          'datasetId': dataset_id,
-          'tableId': table_id,
-        },
-        'sourceFormat': 'NEWLINE_DELIMITED_JSON',
-        'writeDisposition': disposition,
-        'autodetect': True,
-        'allowJaggedRows': True,
-        'ignoreUnknownValues': True,
-      }
-    }
-  }
-
-  if schema:
-    body['configuration']['load']['schema'] = { 'fields':schema }
-    body['configuration']['load']['autodetect'] = False
-
-  job = API_BigQuery(auth).jobs().insert(projectId=project_id, body=body, media_body=media).execute(run=False)
-
-  response = None
-  while response is None:
-    status, response = job.next_chunk()
-    if project.verbose and status: print "Uploaded %d%%." % int(status.progress() * 100)
-  if project.verbose: print "Uploaded 100%."
-  job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
 
 
 def tables_get(auth, project_id, name):

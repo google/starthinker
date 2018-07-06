@@ -8,7 +8,7 @@
     "title":"DCM To BigQuery",
     "description":"Move existing DCM report into a BigQuery table.",
     "instructions":[
-      "Specify a DCM Account Id.",
+      "Specify an account id.",
       "Specify either report name or report id to move a report.",
       "The most recent valid file will overwrite the table.",
       "Schema is pulled from the official DCM specification."
@@ -18,16 +18,16 @@
   "dcm":{
     "auth":"user",
     "report":{
-      "account_id":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"" }},
-      "report_id":{"field":{ "name":"dcm_report_id", "kind":"integer", "order":3, "default":"" }},
-      "name":{"field":{ "name":"dcm_report_name", "kind":"string", "order":4, "default":"" }}
+      "account":{"field":{ "name":"account", "kind":"integer", "order":2, "default":"" }},
+      "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":3, "default":"" }},
+      "name":{"field":{ "name":"report_name", "kind":"string", "order":4, "default":"" }}
     },
     "out":{
       "bigquery":{
-        "dataset":{"field":{ "name":"dcm_dataset", "kind":"string", "order":5, "default":"" }},
-        "table":{"field":{ "name":"dcm_table", "kind":"string", "order":6, "default":"" }}
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":5, "default":"" }},
+        "table":{"field":{ "name":"table", "kind":"string", "order":6, "default":"" }}
       }
     },
-    "datastudio":{"field":{ "name":"dcm_datastudio", "kind":"boolean", "order":7, "default":true }}
+    "datastudio":{"field":{ "name":"datastudio", "kind":"boolean", "order":7, "default":true }}
   }
 }

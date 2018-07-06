@@ -66,13 +66,6 @@ def _retry(job, retries=10, wait=5):
       else:
         raise
 
-  # handle a special case where part or all of a batch operation failed, but
-  # a 200 is still returned (since the rest of the operation succeeded)
-  if 'hasFailures' in data and data['hasFailures']:
-    print 'Errors occurred in batch operation, see verbose output.'
-    if project.verbose:
-      for status in data['status']: print status['errors'] 
-
   return data
 
 
@@ -107,16 +100,16 @@ def account_profile_kwargs(auth, account, **kwargs):
 
 
 def get_account_name(auth, account):
-  account_id, subaccount_id, profile_id = parse_account(auth, account)
+  account_id, advertiser_ids, profile_id = parse_account(auth, account)
   service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
   response = _retry(service.accounts().get(id=account_id, profileId=profile_id))
   return response["name"]
 
 
-# if id has a sub account in the form of [account_id:subaccount_id@profile_id] then split them
+# if id has a sub account in the form of [account_id:[advertiser_ids,...]@profile_id] then split them
 def parse_account(auth, account):
   network_id = account
-  advertiser_id = None
+  advertiser_ids = None
   profile_id = None
 
   # if exists, get profile from end
@@ -124,17 +117,17 @@ def parse_account(auth, account):
   except: profile_id = None
 
   # if exists, get avertiser from end
-  try: network_id, advertiser_id = network_id.split(':', 1)
+  try: network_id, advertiser_ids = network_id.split(':', 1)
   except: pass
 
   # if network or advertiser, convert to integer
   if network_id is not None: network_id = int(network_id)
-  if advertiser_id is not None: advertiser_id = int(advertiser_id)
+  if advertiser_ids is not None: advertiser_ids = [int(advertiser_id.strip()) for advertiser_id in advertiser_ids.split(',')]
 
   # if no profile, fetch a default one ( returns as int )
   if profile_id is None: profile_id = get_profile_id(auth, network_id)
 
-  return network_id, advertiser_id, profile_id
+  return network_id, advertiser_ids, profile_id
 
 
 def get_body_floodlight(report, advertiser=None):
@@ -191,7 +184,7 @@ def get_body_standard(report, advertiser=None):
 
 
 def report_get(auth, account, report_id = None, name=None):
-  account_id, subaccount_id, profile_id = parse_account(auth, account)
+  account_id, advertiser_ids, profile_id = parse_account(auth, account)
   service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
   report = None
 
@@ -214,7 +207,7 @@ def report_get(auth, account, report_id = None, name=None):
 
 
 def report_delete(auth, account, report_id = None, name=None):
-  account_id, subaccount_id, profile_id = parse_account(auth, account)
+  account_id, advertiser_ids, profile_id = parse_account(auth, account)
   report = report_get(auth, account, report_id, name)
   if report:
     service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
@@ -228,8 +221,20 @@ def report_build(auth, account, body):
   report = report_get(auth, account, name=body['name'])
 
   if report is None:
-    account_id, subaccount_id, profile_id = parse_account(auth, account)
+    account_id, advertiser_ids, profile_id = parse_account(auth, account)
     service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
+
+    # add the account id to the body
+    body['account_id'] = account_id
+
+    # add advertisers to the body
+    if advertiser_ids:
+       body['criteria']['dimensionFilters'] = body['criteria'].get('dimensionFilters', []) + [{
+         'kind':'dfareporting#dimensionValue',
+         'dimensionName':'dfa:advertiser',
+         'id':advertiser_id,
+         'matchType':'EXACT'
+       } for advertiser_id in advertiser_ids]
 
     # create the report
     if INTERNAL_MODE: report = _retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))
@@ -238,6 +243,7 @@ def report_build(auth, account, body):
     # run the report
     if INTERNAL_MODE: _retry(service.reports().run(accountId=account_id, profileId=profile_id, reportId=report['id']))
     else: _retry(service.reports().run(profileId=profile_id, reportId=report['id']))
+
   else:
     if project.verbose: print 'DCM Report Exists:', body['name']
 
@@ -245,7 +251,7 @@ def report_build(auth, account, body):
 
 
 def report_create(auth, account, name, config):
-  account_id, subaccount_id, profile_id = parse_account(auth, account)
+  account_id, advertiser_ids, profile_id = parse_account(auth, account)
   report = report_get(auth, account_id, name=name)
 
   if report is None:
@@ -273,13 +279,13 @@ def report_create(auth, account, name, config):
     if body['type'] == 'STANDARD': body.update(get_body_standard(config))
     elif body['type'] == 'FLOODLIGHT': body.update(get_body_floodlight(config))
 
-    if subaccount_id:
+    if advertiser_ids:
        body['criteria']['dimensionFilters'] = body['criteria'].get('dimensionFilters', []) + [{
          'kind':'dfareporting#dimensionValue',
          'dimensionName':'dfa:advertiser',
-         'id':subaccount_id,
+         'id':advertiser_id,
          'matchType':'EXACT'
-       }]
+       } for advertiser_id in advertiser_ids]
 
     #pprint.PrettyPrinter().pprint(body)
 
@@ -339,8 +345,8 @@ def report_fetch(auth, account, report_id=None, name=None, timeout = 60):
   return running
 
 
-def report_file(auth, account, report_id=None, name=None, timeout=60, chunksize=None):
-  account_id, subaccount_id, profile_id = parse_account(auth, account)
+def report_file(auth, account, report_id=None, name=None, timeout=60, chunksize=DCM_CHUNK_SIZE):
+  account_id, advertiser_id, profile_id = parse_account(auth, account)
   file_json = report_fetch(auth, account, report_id, name, timeout)
 
   if file_json == False:
@@ -361,7 +367,7 @@ def report_file(auth, account, report_id=None, name=None, timeout=60, chunksize=
 
        
 def report_list(auth, account):
-  account_id, subaccount_id, profile_id = parse_account(auth, account)
+  account_id, advertiser_id, profile_id = parse_account(auth, account)
   service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
   next_page = None
   while next_page != '':
@@ -373,7 +379,7 @@ def report_list(auth, account):
 
 
 def report_files(auth, account, report_id):
-  account_id, subaccount_id, profile_id = parse_account(auth, account)
+  account_id, advertiser_id, profile_id = parse_account(auth, account)
   service = get_service('dfareporting', API_VERSION, auth)
   next_page = None
   while next_page != '':
@@ -470,7 +476,7 @@ def report_clean(rows, datastudio=False):
 #filed: encryptedUserId, encryptedUserIdCandidates[], gclid, mobileDeviceId
 
 def conversions_upload(auth, account, floodlight_activity_id, conversion_type, conversion_rows, encryption_entity=None, update=False):
-  account_id, subaccount_id, profile_id = parse_account(auth, account)
+  account_id, advertiser_id, profile_id = parse_account(auth, account)
 
   service = get_service('dfareporting', API_VERSION, auth)
   if INTERNAL_MODE: response = _retry(service.floodlightActivities().get(accountId=account_id, profileId=profile_id, id=floodlight_activity_id))

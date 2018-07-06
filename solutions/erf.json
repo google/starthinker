@@ -55,14 +55,15 @@
       "groups":{"constant":"groups" }
     }},
     { "entity":{
-      "version":0.2,
       "auth":"user",
       "prefix":"Entity",
       "entities":["Campaign", "LineItem", "Creative", "UserList", "Partner", "Advertiser", "InsertionOrder", "Pixel", "InventorySource", "CustomAffinity", "UniversalChannel", "UniversalSite", "SupportedExchange", "DataPartner", "GeoLocation", "Language", "DeviceCriteria", "Browser", "Isp"],
       "accounts": {"constant":"dbm_accounts" },
       "out":{
-        "auth":"service",
-        "dataset": { "constant":"dataset" }
+        "bigquery":{
+          "auth":"service",
+          "dataset": { "constant":"dataset" }
+        }
       }
     }}
   ]

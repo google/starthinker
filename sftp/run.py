@@ -24,7 +24,7 @@ import os
 import csv
 
 from util.project import project
-from util.bigquery import csv_to_table, field_list_to_schema
+from util.bigquery import io_to_table, field_list_to_schema
 from util.bigquery.file_processor import FileProcessor
 
 processor = FileProcessor()
@@ -79,7 +79,18 @@ def sftp():
     input_file.close()
 
     output_file = open(output_file_name, 'rb')
-    csv_to_table(project.task['auth'], project.id, project.task['to'].get('dataset'), project.task['to'].get('table'), output_file, schema, skip_rows=0, disposition=project.task['to'].get('write_disposition', 'WRITE_TRUNCATE'))
+    io_to_table(
+      project.task['auth'],
+      project.id,
+      project.task['to'].get('dataset'),
+      project.task['to'].get('table'),
+      output_file,
+      'CSV',
+      schema,
+      skip_rows=0,
+      disposition=project.task['to'].get('write_disposition',
+      'WRITE_TRUNCATE')
+    )
     output_file.close()
 
     os.remove(input_file_name)

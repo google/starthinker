@@ -17,8 +17,8 @@
     "authors":["mauriciod@google.com", "pkenjora@google.com"]
   },
   "entity":{
-    "version":0.2,
     "auth":"user",
+    "version":0.2,
     "prefix":"Entity",
     "accounts": {"field":{ "name":"partners", "kind":"integer_list", "order":1, "default":"[]" }},
     "entities":["LineItem", "Creative", "UserList", "Partner", "Advertiser", "InsertionOrder", "Pixel", "InventorySource", "CustomAffinity", "UniversalChannel", "UniversalSite", "SupportedExchange", "DataPartner", "GeoLocation", "Language", "DeviceCriteria", "Browser", "Isp"],

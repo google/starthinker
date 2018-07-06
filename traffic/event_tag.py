@@ -26,7 +26,12 @@ class EventTagDAO(BaseDAO):
     super(EventTagDAO, self).__init__(auth, profile_id)
 
     self._id_field = FieldMap.EVENT_TAG_ID
-    self._search_field = FieldMap.EVENT_TAG_NAME
+
+    # This causes the dao to search event tag by name, but 
+    # to do so it is required to pass campaign or advertiser id
+    # self._search_field = FieldMap.EVENT_TAG_NAME
+    self._search_field = None
+
     self._list_name = 'eventTags'
     self._entity = 'EVENT_TAGS'
     self._campaign_dao = CampaignDAO(auth, profile_id)
@@ -43,7 +48,8 @@ class EventTagDAO(BaseDAO):
 
     return {
       'advertiserId': feed_item[FieldMap.ADVERTISER_ID],
-      'campaignId': campaign['id'],
+      'campaignId': campaign.get('id', None) if campaign else None,
+      'enabledByDefault': feed_item.get(FieldMap.EVENT_TAG_ENABLED_BY_DEFAULT, False),
       'name': feed_item[FieldMap.EVENT_TAG_NAME],
       'status': feed_item[FieldMap.EVENT_TAG_STATUS],
       'type': feed_item[FieldMap.EVENT_TAG_TYPE],

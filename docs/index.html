@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize.min.css">
 
     <style>
+       html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
+ 
        #message { justify-content: center; font-size: 2em;}
        #message i { font-size: 2em; margin: 10px; }
        #message ul, #message li { display: inline; margin-left: 10px; }
@@ -38,7 +40,6 @@
        div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
        div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
 
-
        div.service_card { min-height: 250px; width: 300px; margin: 10px;}
        div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
        div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
@@ -49,6 +50,8 @@
        div.card h4 { width 100%; padding: 20px;}
        div.card h4 i.material-icons { font-size: 2.28rem; }
        div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+
+       .card .card-content .card-title { word-wrap: break-word; }
 
        
     </style>
@@ -117,9 +120,9 @@
         <td><i class="material-icons medium teal-text">cloud</i></td>
         <td>
           <strong>Set up cloud project credentials:</strong>
-          <br/>Create a <a href="https://pantheon.corp.google.com/flows/enableapi?apiid=genomics,storage_api" target="_blank">cloud project</a>.
-          <br/>Create <a href="https://pantheon.corp.google.com/apis/credentials/oauthclient" target="_blank">client credentials ( other )</a>, download json.
-          <br/>Create <a href="https://pantheon.corp.google.com/apis/credentials/serviceaccountkey" target="_blank">service credentials</a>, download json.
+          <br/>Create a <a href="https://cloud.google.com/resource-manager/docs/creating-managing-projects" target="_blank">cloud project</a>.
+          <br/>Create <a href="https://cloud.google.com/docs/authentication/api-keys" target="_blank">client credentials ( other )</a>, download json.
+          <br/>Create <a href="https://cloud.google.com/iam/docs/creating-managing-service-accounts" target="_blank">service credentials</a>, download json.
         </td>
         <td class="center-align">10</td>
       </tr>
@@ -127,7 +130,7 @@
       <tr>
         <td><i class="material-icons medium teal-text">directions_run</i></td>
         <td>
-          <strong>Run a the json recipe:</strong>
+          <strong>Run a json recipe:</strong>
           <br/>python all/run.py [recipe json file] -p [project_id] -c [client_json] -s [service_json]
           <br/><br/><strong>Or schedule recipe to run on schedule:</strong>
           <br/>python cron/run.py [path to recipe json folder] -p [project_id] -c [client_json] -s [service_json]
@@ -194,15 +197,67 @@
     </tbody>
   </table>
 
+  <br/><br/>
+  <h3 id="recipe_code">Helpful Tips And Tricks</h3>
+  <p class="flow-text">Best practices for finding, using, and building code on top of StarThinker.</p>
 
-
-
-
-
-
-
-
-
+  <table class="bordered highlight list">
+    <tbody>
+      <tr>
+        <th>1</th>
+        <td>Look for helper.py to invoke the code from the command line, helpful for testing setup.</td>
+      </tr>
+      <tr>
+        <th>2</th>
+        <td>Look in solutions/*.json and projects/sample/*.json for samples.</td>
+      </tr>
+      <tr>
+        <th>3</th>
+        <td>Look in [task]/script*.json for json definitions.</td>
+      </tr>
+      <tr>
+        <th>4</th>
+        <td>Review arguments in utils/project/__init__.py at least once.</td>
+      </tr>
+      <tr>
+        <th>5</th>
+        <td>Learn to love: find . -name '*.py' | xargs grep 'somestring'.</td>
+      </tr>
+      <tr>
+        <th>6</th>
+        <td>Adding --verbose to python all/run.py or python [task]/run.py produces debug.</td>
+      </tr>
+      <tr>
+        <th>7</th>
+        <td>Review the core code:
+            <br/>&nbsp;&nbsp;&nbsp;util/project/__init__.py
+            <br/>&nbsp;&nbsp;&nbsp;util/data/__init__.py
+            <br/>&nbsp;&nbsp;&nbsp;util/google_api/__init__.py
+            <br/>&nbsp;&nbsp;&nbsp;solution/run.py
+        </td>
+      </tr>
+      <tr>
+        <th>8</th>
+        <td>python solution/run.py [json] --directory [dir] creates recipes.</td>
+      </tr>
+      <tr>
+        <th>9</th>
+        <td>Make use of util/data/__init__.py ( get_rows / put_rows ).</td>
+      </tr>
+      <tr>
+        <th>10</th>
+        <td>Use shared links for sheets.</td>
+      </tr>
+      <tr>
+        <th>11</th>
+        <td>First get the data, then operate on it.</td>
+      </tr>
+      <tr>
+        <th>12</th>
+        <td>There are more than 3 ways to do anything by design.</td>
+      </tr>
+    </tbody>
+  </table>
 
   <br/><br/>
   <h3 id="recipe_code">Coding A Recipe</h3>
@@ -273,7 +328,11 @@
   
      <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_4">DCM</span>
   
-     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_5">Storage</span>
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_5">Google API</span>
+  
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_6">Storage</span>
+  
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_7">Twitter</span>
   
 
   <br/><br/>
@@ -293,9 +352,9 @@
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_ias_to_bigquery">JSON</span>
             <h4>IAS BigQuery</h4>
             <p>TASK: ias_to_bigquery</p>
-            <p>Move an IAS report to a BigQuery table.</p>
+            <p>Import emailed IAS report into a BigQuery table.</p>
             <ol>
-              <li>Schedule an IAS report to be sent to <b>{{EMAIL_TOKEN}}</b>.</li><li>The report must be from <strong>reports@integralads.com</strong>.</li><li>Optionally, specify a regular expression for the file link or attachment.</li><li>It will be moved to the bigquery table you specify.</li>
+              <li>The person executing this recipe must be the recipient of the email.</li><li>Schedule a IAS report to be sent to <b>{{ EMAIL_TOKEN }}</b>.</li><li>Give a regular expression to match the email link or attachment.</li><li>The report will overwrite the table specified.</li>
             </ol>
             <pre class="view_code" id="view_code_ias_to_bigquery" style="display:none;">{
     &quot;ias&quot;: {
@@ -356,9 +415,9 @@
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_ias_to_storage">JSON</span>
             <h4>IAS Storage</h4>
             <p>TASK: ias_to_storage</p>
-            <p>Move an IAS report ot a storage bucket.</p>
+            <p>Import emailed IAS report into a Storage bucket.</p>
             <ol>
-              <li>Schedule an IAS report to be sent to <b>{{EMAIL_TOKEN}}</b>.</li><li>The report must be from <strong>reports&at;integralads.com</strong>.</li><li>Optionally, specify a regular expression for the file link or attachment.</li><li>It will be moved to the storage bucket you specify.</li>
+              <li>The person executing this recipe must be the recipient of the email.</li><li>Schedule a IAS report to be sent to <b>{{ EMAIL_TOKEN }}</b>.</li><li>Give a regular expression to match the email link or attachment.</li><li>THe report will be added to the storage bucket.</li>
             </ol>
             <pre class="view_code" id="view_code_ias_to_storage" style="display:none;">{
     &quot;ias&quot;: {
@@ -419,9 +478,9 @@
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_moat">JSON</span>
             <h4>MOAT Import</h4>
             <p>TASK: moat</p>
-            <p>Import daily data from MOAT into a BigQuery table. Schedule a MOAT report and send it to the an email.</p>
+            <p>Import emailed MOAT reports into a BigQuery table.</p>
             <ol>
-              <li>Schedule an MOAT report to be sent to <b>{{EMAIL_TOKEN}}</b>.</li><li>Optionally, specify a regular expression for the file link or attachment.</li><li>It will be moved to the storage bucket you specify.</li>
+              <li>The person executing this recipe must be the recipient of the email.</li><li>Schedule a MOAT report to be sent to <b>{{ EMAIL_TOKEN }}</b>.</li><li>Give a regular expression to match the email link or attachment.</li><li>The report will overwrite the table specified.</li>
             </ol>
             <pre class="view_code" id="view_code_moat" style="display:none;">{
     &quot;moat&quot;: {
@@ -495,7 +554,7 @@
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_mapping">JSON</span>
             <h4>Column Mapping</h4>
             <p>TASK: mapping</p>
-            <p>Map column keywords to new dimensions columns with tags.</p>
+            <p>Use sheet to define keyword to column mappings.</p>
             <ol>
               <li>For the sheet, provide the full URL.</li><li>A tab called <strong>Mapping</strong> will be created.</li><li>Follow the instructions in the tab to complete the mapping.</li><li>The in table should have the columns you want to map.</li><li>The out view will have the new columns created in the mapping.</li>
             </ol>
@@ -565,9 +624,9 @@
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dataset">JSON</span>
             <h4>Dataset</h4>
             <p>TASK: dataset</p>
-            <p>Create a dataset on a project.</p>
+            <p>Create and permission a dataset in BigQuery.</p>
             <ol>
-              <li>Specify the name of the dataset and who will have view permissions.</li><li>Existing datasets are preserved.</li><li>Adding a permission to the list will update the permissions but removing them will not.</li><li>You have to manualy remove grants.</li>
+              <li>Specify the name of the dataset.</li><li>If dataset exists, it is inchanged.</li><li>Add emails and / or groups to add read permission.</li><li>CAUTION: Removing permissions in StarThinker has no effect.</li><li>CAUTION: To remove permissions you have to edit the dataset.</li>
             </ol>
             <pre class="view_code" id="view_code_dataset" style="display:none;">{
     &quot;dataset&quot;: {
@@ -604,30 +663,30 @@
         <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
           <td style="vertical-align: top;">
-            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_move_query">JSON</span>
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_bigquery_query">JSON</span>
             <h4>Query To Table</h4>
-            <p>TASK: move_query</p>
-            <p>Move data from a Query or PLX into a BigQuery table.</p>
+            <p>TASK: bigquery_query</p>
+            <p>Save query results into a BigQuery table.</p>
             <ol>
-              <li>To query PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...</li><li>The query will only be created once, to update it, visit the dataset and remove the existing query.</li>
+              <li>Specify a single query and choose legacy or standard mode.</li><li>For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...</li><li>Every time the query runs it will overwrite the table.</li>
             </ol>
-            <pre class="view_code" id="view_code_move_query" style="display:none;">{
-    &quot;move&quot;: {
+            <pre class="view_code" id="view_code_bigquery_query" style="display:none;">{
+    &quot;bigquery&quot;: {
         &quot;to&quot;: {
             &quot;table&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;move_table&quot;, 
-                    &quot;order&quot;: 4
+                    &quot;name&quot;: &quot;table&quot;, 
+                    &quot;order&quot;: 3
                 }
             }, 
             &quot;dataset&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;move_dataset&quot;, 
-                    &quot;order&quot;: 3
+                    &quot;name&quot;: &quot;dataset&quot;, 
+                    &quot;order&quot;: 2
                 }
             }
         }, 
@@ -636,16 +695,16 @@
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;text&quot;, 
-                    &quot;name&quot;: &quot;move_query&quot;, 
-                    &quot;order&quot;: 2
+                    &quot;name&quot;: &quot;query&quot;, 
+                    &quot;order&quot;: 1
                 }
             }, 
-            &quot;useLegacySql&quot;: {
+            &quot;legacy&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: true, 
                     &quot;kind&quot;: &quot;boolean&quot;, 
-                    &quot;name&quot;: &quot;move_useLegacySql&quot;, 
-                    &quot;order&quot;: 1
+                    &quot;name&quot;: &quot;legacy&quot;, 
+                    &quot;order&quot;: 4
                 }
             }
         }, 
@@ -658,30 +717,30 @@
         <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
           <td style="vertical-align: top;">
-            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_move_view">JSON</span>
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_bigquery_view">JSON</span>
             <h4>Query To View</h4>
-            <p>TASK: move_view</p>
-            <p>Move data from a Query or PLX into a BigQuery view.</p>
+            <p>TASK: bigquery_view</p>
+            <p>Create a BigQuery view.</p>
             <ol>
-              
+              <li>Specify a single query and choose legacy or standard mode.</li><li>For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...</li><li>If the view exists, it is unchanged, delete it manually to re-create.</li>
             </ol>
-            <pre class="view_code" id="view_code_move_view" style="display:none;">{
-    &quot;move&quot;: {
+            <pre class="view_code" id="view_code_bigquery_view" style="display:none;">{
+    &quot;bigquery&quot;: {
         &quot;to&quot;: {
             &quot;dataset&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;move_dataset&quot;, 
-                    &quot;order&quot;: 3
+                    &quot;name&quot;: &quot;dataset&quot;, 
+                    &quot;order&quot;: 2
                 }
             }, 
             &quot;view&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;move_view&quot;, 
-                    &quot;order&quot;: 4
+                    &quot;name&quot;: &quot;view&quot;, 
+                    &quot;order&quot;: 3
                 }
             }
         }, 
@@ -690,16 +749,16 @@
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;text&quot;, 
-                    &quot;name&quot;: &quot;move_query&quot;, 
-                    &quot;order&quot;: 2
+                    &quot;name&quot;: &quot;query&quot;, 
+                    &quot;order&quot;: 1
                 }
             }, 
-            &quot;useLegacySql&quot;: {
+            &quot;legacy&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: true, 
                     &quot;kind&quot;: &quot;boolean&quot;, 
-                    &quot;name&quot;: &quot;move_useLegacySql&quot;, 
-                    &quot;order&quot;: 1
+                    &quot;name&quot;: &quot;legacy&quot;, 
+                    &quot;order&quot;: 4
                 }
             }
         }, 
@@ -712,21 +771,21 @@
         <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
           <td style="vertical-align: top;">
-            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_move_storage">JSON</span>
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_bigquery_storage">JSON</span>
             <h4>Storage To Table</h4>
-            <p>TASK: move_storage</p>
-            <p>Move data from a Storage bucket into a BigQuery table.</p>
+            <p>TASK: bigquery_storage</p>
+            <p>Move using bucket and path prefix.</p>
             <ol>
-              
+              <li>Specify a bucket and path prefix, * suffix is NOT required.</li><li>Every time the job runs it will overwrite the table.</li>
             </ol>
-            <pre class="view_code" id="view_code_move_storage" style="display:none;">{
-    &quot;move&quot;: {
+            <pre class="view_code" id="view_code_bigquery_storage" style="display:none;">{
+    &quot;bigquery&quot;: {
         &quot;to&quot;: {
             &quot;table&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;move_table&quot;, 
+                    &quot;name&quot;: &quot;table&quot;, 
                     &quot;order&quot;: 4
                 }
             }, 
@@ -735,7 +794,7 @@
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;move_dataset&quot;, 
+                    &quot;name&quot;: &quot;dataset&quot;, 
                     &quot;order&quot;: 3
                 }
             }
@@ -745,7 +804,7 @@
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;move_path&quot;, 
+                    &quot;name&quot;: &quot;path&quot;, 
                     &quot;order&quot;: 2
                 }
             }, 
@@ -753,7 +812,7 @@
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;move_bucket&quot;, 
+                    &quot;name&quot;: &quot;bucket&quot;, 
                     &quot;order&quot;: 1
                 }
             }
@@ -763,7 +822,7 @@
             &quot;field&quot;: {
                 &quot;default&quot;: &quot;&quot;, 
                 &quot;kind&quot;: &quot;json&quot;, 
-                &quot;name&quot;: &quot;move_schema&quot;, 
+                &quot;name&quot;: &quot;schema&quot;, 
                 &quot;order&quot;: 5
             }
         }
@@ -790,9 +849,9 @@
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dbm">JSON</span>
             <h4>DBM Report</h4>
             <p>TASK: dbm</p>
-            <p>Import a DBM report into BigQuery table.</p>
+            <p>Create a DBM report.</p>
             <ol>
-              <li>Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DBM API</a> to build a report.</li><li>Filters for partners and advertisers are added automatically.</li><li>The report is only created, use a move script to move it.</li><li>You will be able to see the report name with a ( Starthinker ) suffix in DBM.</li><li>To reset a report, delete it from DBM reporting.</li>
+              <li>Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DBM API</a> to build a report.</li><li>Filters for partners and advertisers are added from the partners and advertisers field.</li><li>The report is only created, use a move script to move it.</li><li>A report with a ( Starthinker ) suffix will be created in DBM.</li><li>To reset a report, delete it from DBM reporting.</li>
             </ol>
             <pre class="view_code" id="view_code_dbm" style="display:none;">{
     &quot;dbm&quot;: {
@@ -892,9 +951,9 @@
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dbm_to_bigquery">JSON</span>
             <h4>DBM To BigQuery</h4>
             <p>TASK: dbm_to_bigquery</p>
-            <p>Move Existing DBM reports into a bigquery table.</p>
+            <p>Move existing DBM reports into a BigQuery table.</p>
             <ol>
-              <li>Specify either report name or report id to move a report.</li><li>The most recent file name will be moved to storage.</li>
+              <li>Specify either report name or report id to move a report.</li><li>A schema is recommended, if not provided it will be guessed.</li><li>The most recent valid file will be moved to the table.</li>
             </ol>
             <pre class="view_code" id="view_code_dbm_to_bigquery" style="display:none;">{
     &quot;dbm&quot;: {
@@ -942,6 +1001,14 @@
                         &quot;name&quot;: &quot;dbm_dataset&quot;, 
                         &quot;order&quot;: 3
                     }
+                }, 
+                &quot;schema&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;[]&quot;, 
+                        &quot;kind&quot;: &quot;json&quot;, 
+                        &quot;name&quot;: &quot;dbm_schema&quot;, 
+                        &quot;order&quot;: 5
+                    }
                 }
             }
         }
@@ -951,14 +1018,14 @@
         </tr>
       
         <tr>
-          <td style="vertical-align: top;"><i class="material-icons medium teal-text">exit_to_app</i></td>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_large</i></td>
           <td style="vertical-align: top;">
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dbm_to_sheets">JSON</span>
             <h4>DBM To Sheets</h4>
             <p>TASK: dbm_to_sheets</p>
-            <p>Move Existing DBM reports into a sheets tab.</p>
+            <p>Move existing DBM report into a Sheets tab.</p>
             <ol>
-              <li>Specify either report name or report id to move a report.</li><li>The most recent file name will be moved to sheet.</li>
+              <li>Specify either report name or report id to move a report.</li><li>The most recent valid file will be moved to the sheet.</li>
             </ol>
             <pre class="view_code" id="view_code_dbm_to_sheets" style="display:none;">{
     &quot;dbm&quot;: {
@@ -1013,9 +1080,9 @@
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dbm_to_storage">JSON</span>
             <h4>DBM To Storage</h4>
             <p>TASK: dbm_to_storage</p>
-            <p>Move Existing DBM reports into a storage bucket.</p>
+            <p>Move existing DBM report into a Storage bucket.</p>
             <ol>
-              
+              <li>Specify either report name or report id to move a report.</li><li>The most recent valid file will be moved to the bucket.</li>
             </ol>
             <pre class="view_code" id="view_code_dbm_to_storage" style="display:none;">{
     &quot;dbm&quot;: {
@@ -1075,11 +1142,11 @@
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">file_download</i></td>
           <td style="vertical-align: top;">
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_entity">JSON</span>
-            <h4>Entity Read</h4>
+            <h4>Entity Read To BigQuery</h4>
             <p>TASK: entity</p>
-            <p>Imports the latest entity read files into BigQuery.</p>
+            <p>Moves all entity read files into BigQuery.</p>
             <ol>
-              <li>Provide one or more DBM partners ( comma seperated ).</li><li>Entity read files are read using your user credentials.</li><li>Entity read files are written using the chosen service credentials.</li><li>All, even the public ones,  entity read file will be prefixed by <strong>Entity_</strong>.</li><li>CAUTION: ENTITY READ FILES ARE PARTNER LEVEL, NO ADVERTISER IDS.</li>
+              <li>Specify a list of partner ids, comma seperated.</li><li>Files are <a href='https://developers.google.com/bid-manager/guides/entity-read/overview'>imported from storage</a> using your user credentials.</li><li>Both public and private files are imported.</li><li>Each file gets a table in the dataset, prefixed with <strong>'Entity_'</strong>.</li><li>CAUTION: Entity Read Files are ONLY partner level.</li>
             </ol>
             <pre class="view_code" id="view_code_entity" style="display:none;">{
     &quot;entity&quot;: {
@@ -1108,7 +1175,7 @@
         &quot;version&quot;: 0.2, 
         &quot;accounts&quot;: {
             &quot;field&quot;: {
-                &quot;default&quot;: [], 
+                &quot;default&quot;: &quot;[]&quot;, 
                 &quot;kind&quot;: &quot;integer_list&quot;, 
                 &quot;name&quot;: &quot;partners&quot;, 
                 &quot;order&quot;: 1
@@ -1130,6 +1197,173 @@
           <td>
         </tr>
       
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_upward</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_lineitem_write_from_bigquery">JSON</span>
+            <h4>Line Item From BigQuery</h4>
+            <p>TASK: lineitem_write_from_bigquery</p>
+            <p>Upload Line Items From BigQuery To DBM.</p>
+            <ol>
+              <li>Specify the table or view where the lineitem data is defined.</li><li>The schema should match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>.</li>
+            </ol>
+            <pre class="view_code" id="view_code_lineitem_write_from_bigquery" style="display:none;">{
+    &quot;lineitem&quot;: {
+        &quot;write&quot;: {
+            &quot;dry_run&quot;: false, 
+            &quot;bigquery&quot;: {
+                &quot;query&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;SELECT * FROM `Dataset.Table`;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;query&quot;, 
+                        &quot;order&quot;: 2
+                    }
+                }, 
+                &quot;legacy&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: false, 
+                        &quot;kind&quot;: &quot;boolean&quot;, 
+                        &quot;name&quot;: &quot;legacy&quot;, 
+                        &quot;order&quot;: 3
+                    }
+                }, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;order&quot;: 1
+                    }
+                }
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_downward</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_lineitem_read_to_bigquery_via_query">JSON</span>
+            <h4>Line Item To BigQuery Via Query</h4>
+            <p>TASK: lineitem_read_to_bigquery_via_query</p>
+            <p>Move using an Id query.</p>
+            <ol>
+              <li>Specify the query that will pull the lineitem ids to download.</li><li>Specify the dataset and table where the lineitems will be written.</li><li>The schema will match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>.</li>
+            </ol>
+            <pre class="view_code" id="view_code_lineitem_read_to_bigquery_via_query" style="display:none;">{
+    &quot;lineitem&quot;: {
+        &quot;read&quot;: {
+            &quot;line_items&quot;: {
+                &quot;single_cell&quot;: true, 
+                &quot;bigquery&quot;: {
+                    &quot;query&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;SELECT * FROM `Dataset.Table`;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;id_query&quot;, 
+                            &quot;order&quot;: 2
+                        }
+                    }, 
+                    &quot;legacy&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: false, 
+                            &quot;kind&quot;: &quot;boolean&quot;, 
+                            &quot;name&quot;: &quot;id_legacy&quot;, 
+                            &quot;order&quot;: 3
+                        }
+                    }, 
+                    &quot;dataset&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;id_dataset&quot;, 
+                            &quot;order&quot;: 1
+                        }
+                    }
+                }
+            }, 
+            &quot;out&quot;: {
+                &quot;bigquery&quot;: {
+                    &quot;table&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;destination_table&quot;, 
+                            &quot;order&quot;: 5
+                        }
+                    }, 
+                    &quot;dataset&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;destination_dataset&quot;, 
+                            &quot;order&quot;: 4
+                        }
+                    }
+                }
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_downward</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_lineitem_read_to_bigquery_via_value">JSON</span>
+            <h4>Line Item To BigQuery Via Values</h4>
+            <p>TASK: lineitem_read_to_bigquery_via_value</p>
+            <p>Move using hard coded Id values.</p>
+            <ol>
+              <li>Provide a comma delimited list of line item ids.</li><li>Specify the dataset and table where the lineitems will be written.</li><li>The schema will match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>.</li>
+            </ol>
+            <pre class="view_code" id="view_code_lineitem_read_to_bigquery_via_value" style="display:none;">{
+    &quot;lineitem&quot;: {
+        &quot;read&quot;: {
+            &quot;line_items&quot;: {
+                &quot;single_cell&quot;: true, 
+                &quot;values&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: [], 
+                        &quot;kind&quot;: &quot;integer_list&quot;, 
+                        &quot;name&quot;: &quot;ids&quot;, 
+                        &quot;order&quot;: 1
+                    }
+                }
+            }, 
+            &quot;out&quot;: {
+                &quot;bigquery&quot;: {
+                    &quot;table&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;destination_table&quot;, 
+                            &quot;order&quot;: 3
+                        }
+                    }, 
+                    &quot;dataset&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;destination_dataset&quot;, 
+                            &quot;order&quot;: 2
+                        }
+                    }
+                }
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;
+    }
+}</pre>
+          <td>
+        </tr>
+      
       </tbody>
     </table>
   
@@ -1145,14 +1379,127 @@
         <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">file_upload</i></td>
           <td style="vertical-align: top;">
-            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_conversion_upload">JSON</span>
-            <h4>Conversion Upload</h4>
-            <p>TASK: conversion_upload</p>
-            <p>Upload DCM Conversions from Bigquery or Sheets.</p>
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_conversion_upload_from_biguery">JSON</span>
+            <h4>Conversion Upload BigQuery</h4>
+            <p>TASK: conversion_upload_from_biguery</p>
+            <p>Move from BigQuery to DCM.</p>
             <ol>
-              <li>Specify a DCM Account ID, Floodligh Activity ID and Conversion Type.</li><li>Include BigQuery and/or Sheets information.</li><li>Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId</li><li>Include encryption information if using encryptedUserId or encryptedUserIdCandidates.</li>
+              <li>Specify a DCM Account ID, Floodligh Activity ID and Conversion Type.</li><li>Include BigQuery dataset and table.</li><li>Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId</li><li>Include encryption information if using encryptedUserId or encryptedUserIdCandidates.</li>
             </ol>
-            <pre class="view_code" id="view_code_conversion_upload" style="display:none;">{
+            <pre class="view_code" id="view_code_conversion_upload_from_biguery" style="display:none;">{
+    &quot;conversion_upload&quot;: {
+        &quot;activity_id&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;integer&quot;, 
+                &quot;name&quot;: &quot;floodlight_activity_id&quot;, 
+                &quot;order&quot;: 1
+            }
+        }, 
+        &quot;account_id&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;account&quot;, 
+                &quot;order&quot;: 0
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;conversion_type&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;encryptedUserId&quot;, 
+                &quot;kind&quot;: &quot;choice&quot;, 
+                &quot;order&quot;: 2, 
+                &quot;name&quot;: &quot;floodlight_conversion_type&quot;, 
+                &quot;choices&quot;: [
+                    &quot;encryptedUserId&quot;, 
+                    &quot;encryptedUserIdCandidates&quot;, 
+                    &quot;gclid&quot;, 
+                    &quot;mobileDeviceId&quot;
+                ]
+            }
+        }, 
+        &quot;bigquery&quot;: {
+            &quot;table&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;bigquery_table&quot;, 
+                    &quot;order&quot;: 7
+                }
+            }, 
+            &quot;legacy&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: true, 
+                    &quot;kind&quot;: &quot;boolean&quot;, 
+                    &quot;name&quot;: &quot;bigquery_legacy&quot;, 
+                    &quot;order&quot;: 8
+                }
+            }, 
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;bigquery_dataset&quot;, 
+                    &quot;order&quot;: 6
+                }
+            }
+        }, 
+        &quot;encryptionInfo&quot;: {
+            &quot;encryptionEntityId&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;encryption_entity_id&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }, 
+            &quot;encryptionSource&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;DATA_TRANSFER&quot;, 
+                    &quot;kind&quot;: &quot;choice&quot;, 
+                    &quot;order&quot;: 5, 
+                    &quot;name&quot;: &quot;encryption_entity_source&quot;, 
+                    &quot;choices&quot;: [
+                        &quot;AD_SERVING&quot;, 
+                        &quot;DATA_TRANSFER&quot;, 
+                        &quot;ENCRYPTION_SCOPE_UNKNOWN&quot;
+                    ]
+                }
+            }, 
+            &quot;encryptionEntityType&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;DCM_ACCOUNT&quot;, 
+                    &quot;kind&quot;: &quot;choice&quot;, 
+                    &quot;order&quot;: 4, 
+                    &quot;name&quot;: &quot;encryption_entity_type&quot;, 
+                    &quot;choices&quot;: [
+                        &quot;ADWORDS_CUSTOMER&quot;, 
+                        &quot;DBM_ADVERTISER&quot;, 
+                        &quot;DBM_PARTNER&quot;, 
+                        &quot;DCM_ACCOUNT&quot;, 
+                        &quot;DCM_ADVERTISER&quot;, 
+                        &quot;ENCRYPTION_ENTITY_TYPE_UNKNOWN&quot;
+                    ]
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">file_upload</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_conversion_upload_from_sheets">JSON</span>
+            <h4>Conversion Upload Sheets</h4>
+            <p>TASK: conversion_upload_from_sheets</p>
+            <p>Move form Sheets to DCM.</p>
+            <ol>
+              <li>Specify a DCM Account ID, Floodligh Activity ID and Conversion Type.</li><li>Include Sheets url, tab, and range, omit headers in range.</li><li>Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId</li><li>Include encryption information if using encryptedUserId or encryptedUserIdCandidates.</li>
+            </ol>
+            <pre class="view_code" id="view_code_conversion_upload_from_sheets" style="display:none;">{
     &quot;conversion_upload&quot;: {
         &quot;activity_id&quot;: {
             &quot;field&quot;: {
@@ -1185,31 +1532,13 @@
                 ]
             }
         }, 
-        &quot;bigquery&quot;: {
-            &quot;table&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;bigquery_table&quot;, 
-                    &quot;order&quot;: 7
-                }
-            }, 
-            &quot;dataset&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;bigquery_dataset&quot;, 
-                    &quot;order&quot;: 6
-                }
-            }
-        }, 
         &quot;sheets&quot;: {
             &quot;url&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
                     &quot;name&quot;: &quot;sheet_url&quot;, 
-                    &quot;order&quot;: 8
+                    &quot;order&quot;: 9
                 }
             }, 
             &quot;range&quot;: {
@@ -1217,7 +1546,7 @@
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
                     &quot;name&quot;: &quot;sheet_range&quot;, 
-                    &quot;order&quot;: 10
+                    &quot;order&quot;: 11
                 }
             }, 
             &quot;tab&quot;: {
@@ -1225,7 +1554,7 @@
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
                     &quot;name&quot;: &quot;sheet_tab&quot;, 
-                    &quot;order&quot;: 9
+                    &quot;order&quot;: 10
                 }
             }
         }, 
@@ -1279,81 +1608,28 @@
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm">JSON</span>
             <h4>DCM Report</h4>
             <p>TASK: dcm</p>
-            <p>Create a DCM report.</p>
+            <p>Create a DCM report from a JSON definition.</p>
             <ol>
-              
+              <li>Add a an account as [account_id]@[profile_id]</li><li>Fetch the report JSON definition. Arguably could be better.</li><li>The account is automatically added to the report definition.</li>
             </ol>
             <pre class="view_code" id="view_code_dcm" style="display:none;">{
     &quot;dcm&quot;: {
         &quot;report&quot;: {
-            &quot;dimensions&quot;: {
+            &quot;body&quot;: {
                 &quot;field&quot;: {
-                    &quot;default&quot;: [
-                        &quot;date&quot;, 
-                        &quot;platformType&quot;, 
-                        &quot;creativeType&quot;, 
-                        &quot;state&quot;, 
-                        &quot;dmaRegion&quot;
-                    ], 
-                    &quot;kind&quot;: &quot;string_list&quot;, 
-                    &quot;name&quot;: &quot;dcm_dimensions&quot;, 
-                    &quot;order&quot;: 7
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;json&quot;, 
+                    &quot;name&quot;: &quot;body&quot;, 
+                    &quot;order&quot;: 2
                 }
             }, 
-            &quot;format&quot;: &quot;CSV&quot;, 
-            &quot;relativeDateRange&quot;: {
+            &quot;account&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;dcm_range&quot;, 
-                    &quot;order&quot;: 6
+                    &quot;name&quot;: &quot;account&quot;, 
+                    &quot;order&quot;: 1
                 }
-            }, 
-            &quot;account_id&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;dcm_account&quot;, 
-                    &quot;order&quot;: 3
-                }
-            }, 
-            &quot;metrics&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: [
-                        &quot;impressions&quot;
-                    ], 
-                    &quot;kind&quot;: &quot;string_list&quot;, 
-                    &quot;name&quot;: &quot;dcm_metrics&quot;, 
-                    &quot;order&quot;: 8
-                }
-            }, 
-            &quot;template&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;standard&quot;, 
-                    &quot;kind&quot;: &quot;choice&quot;, 
-                    &quot;order&quot;: 2, 
-                    &quot;name&quot;: &quot;dcm_template&quot;, 
-                    &quot;choices&quot;: [
-                        &quot;standard&quot;, 
-                        &quot;path_to_conversion&quot;
-                    ]
-                }
-            }, 
-            &quot;name&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;dcm_name&quot;, 
-                    &quot;order&quot;: 4
-                }
-            }
-        }, 
-        &quot;datastudio&quot;: {
-            &quot;field&quot;: {
-                &quot;default&quot;: true, 
-                &quot;kind&quot;: &quot;boolean&quot;, 
-                &quot;name&quot;: &quot;dcm_datastudio&quot;, 
-                &quot;order&quot;: 13
             }
         }, 
         &quot;auth&quot;: &quot;user&quot;, 
@@ -1361,8 +1637,8 @@
             &quot;field&quot;: {
                 &quot;default&quot;: &quot;&quot;, 
                 &quot;kind&quot;: &quot;boolean&quot;, 
-                &quot;name&quot;: &quot;dcm_delete&quot;, 
-                &quot;order&quot;: 11
+                &quot;name&quot;: &quot;delete&quot;, 
+                &quot;order&quot;: 3
             }
         }
     }
@@ -1376,9 +1652,9 @@
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_bulk_standard">JSON</span>
             <h4>DCM Standard Bulk</h4>
             <p>TASK: dcm_bulk_standard</p>
-            <p>Aggregate multiple DCM networks into one destination.</p>
+            <p>Aggregate multiple standard DCM reports into one BigQuery or Sheet.</p>
             <ol>
-              <li>See API docs for <a href='https://developers.google.com/doubleclick-advertisers/v3.0/dimensions' target='_blank'>Metrics</a>.</li><li>A report will be created for each account '[Report Name] [Account ID] ( StarThinker )'.</li><li>Specify either bucket and path or dataset and table.</li>
+              <li>See API docs for <a href='https://developers.google.com/doubleclick-advertisers/v3.0/dimensions' target='_blank'>Metrics</a>.</li><li>DCM report name format '[Report Name] [Account ID] ( StarThinker )'.</li><li>Specify either bucket and path or dataset and table.</li><li>Schema is pulled from the official DCM specification.</li>
             </ol>
             <pre class="view_code" id="view_code_dcm_bulk_standard" style="display:none;">{
     &quot;dcm_bulk&quot;: {
@@ -1512,99 +1788,19 @@
         </tr>
       
         <tr>
-          <td style="vertical-align: top;"><i class="material-icons medium teal-text">exit_to_app</i></td>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_small</i></td>
           <td style="vertical-align: top;">
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_to_bigquery">JSON</span>
             <h4>DCM To BigQuery</h4>
             <p>TASK: dcm_to_bigquery</p>
-            <p>Move existing DCM reports into a bigquery table.</p>
+            <p>Move existing DCM report into a BigQuery table.</p>
             <ol>
-              
+              <li>Specify an account id.</li><li>Specify either report name or report id to move a report.</li><li>The most recent valid file will overwrite the table.</li><li>Schema is pulled from the official DCM specification.</li>
             </ol>
             <pre class="view_code" id="view_code_dcm_to_bigquery" style="display:none;">{
     &quot;dcm&quot;: {
         &quot;report&quot;: {
-            &quot;report_id&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;integer&quot;, 
-                    &quot;name&quot;: &quot;dcm_report_id&quot;, 
-                    &quot;order&quot;: 3
-                }
-            }, 
-            &quot;account_id&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;integer&quot;, 
-                    &quot;name&quot;: &quot;dcm_account&quot;, 
-                    &quot;order&quot;: 2
-                }
-            }, 
-            &quot;name&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;dcm_report_name&quot;, 
-                    &quot;order&quot;: 4
-                }
-            }
-        }, 
-        &quot;datastudio&quot;: {
-            &quot;field&quot;: {
-                &quot;default&quot;: true, 
-                &quot;kind&quot;: &quot;boolean&quot;, 
-                &quot;name&quot;: &quot;dcm_datastudio&quot;, 
-                &quot;order&quot;: 7
-            }
-        }, 
-        &quot;auth&quot;: &quot;user&quot;, 
-        &quot;out&quot;: {
-            &quot;bigquery&quot;: {
-                &quot;table&quot;: {
-                    &quot;field&quot;: {
-                        &quot;default&quot;: &quot;&quot;, 
-                        &quot;kind&quot;: &quot;string&quot;, 
-                        &quot;name&quot;: &quot;dcm_table&quot;, 
-                        &quot;order&quot;: 6
-                    }
-                }, 
-                &quot;dataset&quot;: {
-                    &quot;field&quot;: {
-                        &quot;default&quot;: &quot;&quot;, 
-                        &quot;kind&quot;: &quot;string&quot;, 
-                        &quot;name&quot;: &quot;dcm_dataset&quot;, 
-                        &quot;order&quot;: 5
-                    }
-                }
-            }
-        }
-    }
-}</pre>
-          <td>
-        </tr>
-      
-        <tr>
-          <td style="vertical-align: top;"><i class="material-icons medium teal-text">exit_to_app</i></td>
-          <td style="vertical-align: top;">
-            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_to_sheets">JSON</span>
-            <h4>DCM To Sheets</h4>
-            <p>TASK: dcm_to_sheets</p>
-            <p>Move Existing DCM reports into a sheet tab.</p>
-            <ol>
-              
-            </ol>
-            <pre class="view_code" id="view_code_dcm_to_sheets" style="display:none;">{
-    &quot;dcm&quot;: {
-        &quot;report&quot;: {
-            &quot;report_id&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;integer&quot;, 
-                    &quot;name&quot;: &quot;report_id&quot;, 
-                    &quot;order&quot;: 3
-                }
-            }, 
-            &quot;account_id&quot;: {
+            &quot;account&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;integer&quot;, 
@@ -1618,6 +1814,86 @@
                     &quot;kind&quot;: &quot;string&quot;, 
                     &quot;name&quot;: &quot;report_name&quot;, 
                     &quot;order&quot;: 4
+                }
+            }, 
+            &quot;report_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;report_id&quot;, 
+                    &quot;order&quot;: 3
+                }
+            }
+        }, 
+        &quot;datastudio&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: true, 
+                &quot;kind&quot;: &quot;boolean&quot;, 
+                &quot;name&quot;: &quot;datastudio&quot;, 
+                &quot;order&quot;: 7
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;out&quot;: {
+            &quot;bigquery&quot;: {
+                &quot;table&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;table&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;order&quot;: 5
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_small</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_to_sheets">JSON</span>
+            <h4>DCM To Sheets</h4>
+            <p>TASK: dcm_to_sheets</p>
+            <p>Move existing DCM report into a Sheet tab.</p>
+            <ol>
+              <li>Specify an account id.</li><li>Specify either report name or report id to move a report.</li><li>The most recent valid file will be moved to the sheet.</li><li>Schema is pulled from the official DCM specification.</li>
+            </ol>
+            <pre class="view_code" id="view_code_dcm_to_sheets" style="display:none;">{
+    &quot;dcm&quot;: {
+        &quot;report&quot;: {
+            &quot;account&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;account&quot;, 
+                    &quot;order&quot;: 2
+                }
+            }, 
+            &quot;name&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;name&quot;: &quot;report_name&quot;, 
+                    &quot;order&quot;: 4
+                }
+            }, 
+            &quot;report_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;report_id&quot;, 
+                    &quot;order&quot;: 3
                 }
             }
         }, 
@@ -1649,31 +1925,23 @@
         </tr>
       
         <tr>
-          <td style="vertical-align: top;"><i class="material-icons medium teal-text">exit_to_app</i></td>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_small</i></td>
           <td style="vertical-align: top;">
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_to_storage">JSON</span>
             <h4>DCM To Storage</h4>
             <p>TASK: dcm_to_storage</p>
-            <p>Move Existing DCM reports into a storage bucket.</p>
+            <p>Move existing DCM report into a Storage bucket.</p>
             <ol>
-              
+              <li>Specify an account id.</li><li>Specify either report name or report id to move a report.</li><li>The most recent file will be moved to the bucket.</li><li>Schema is pulled from the official DCM specification.</li>
             </ol>
             <pre class="view_code" id="view_code_dcm_to_storage" style="display:none;">{
     &quot;dcm&quot;: {
         &quot;report&quot;: {
-            &quot;report_id&quot;: {
+            &quot;account&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;integer&quot;, 
-                    &quot;name&quot;: &quot;dcm_report_id&quot;, 
-                    &quot;order&quot;: 3
-                }
-            }, 
-            &quot;account_id&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;integer&quot;, 
-                    &quot;name&quot;: &quot;dcm_account&quot;, 
+                    &quot;name&quot;: &quot;account&quot;, 
                     &quot;order&quot;: 2
                 }
             }, 
@@ -1681,8 +1949,16 @@
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;dcm_report_name&quot;, 
+                    &quot;name&quot;: &quot;report_name&quot;, 
                     &quot;order&quot;: 4
+                }
+            }, 
+            &quot;report_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;integer&quot;, 
+                    &quot;name&quot;: &quot;report_id&quot;, 
+                    &quot;order&quot;: 3
                 }
             }
         }, 
@@ -1690,7 +1966,7 @@
             &quot;field&quot;: {
                 &quot;default&quot;: true, 
                 &quot;kind&quot;: &quot;boolean&quot;, 
-                &quot;name&quot;: &quot;dcm_datastudio&quot;, 
+                &quot;name&quot;: &quot;datastudio&quot;, 
                 &quot;order&quot;: 7
             }
         }, 
@@ -1701,7 +1977,7 @@
                     &quot;field&quot;: {
                         &quot;default&quot;: &quot;DCM_Report&quot;, 
                         &quot;kind&quot;: &quot;string&quot;, 
-                        &quot;name&quot;: &quot;dcm_path&quot;, 
+                        &quot;name&quot;: &quot;path&quot;, 
                         &quot;order&quot;: 6
                     }
                 }, 
@@ -1709,7 +1985,7 @@
                     &quot;field&quot;: {
                         &quot;default&quot;: &quot;&quot;, 
                         &quot;kind&quot;: &quot;string&quot;, 
-                        &quot;name&quot;: &quot;dcm_bucket&quot;, 
+                        &quot;name&quot;: &quot;bucket&quot;, 
                         &quot;order&quot;: 5
                     }
                 }
@@ -1720,10 +1996,156 @@
           <td>
         </tr>
       
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">add_alert</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_floodlight_monitor">JSON</span>
+            <h4>Floodlight Monitor</h4>
+            <p>TASK: floodlight_monitor</p>
+            <p>Monitor floodlight impressions specified in sheet and send email alerts.</p>
+            <ol>
+              <li>Specify an account_id or account_id:subaccount_id.</li><li>Will copy <a href='https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing'>Floodlight Monitor Sheet</a> to the sheet you specify.</li><li>Follow instructions on sheet.</li><li>Emails are sent once a day.</li>
+            </ol>
+            <pre class="view_code" id="view_code_floodlight_monitor" style="display:none;">{
+    &quot;floodlight_monitor&quot;: {
+        &quot;account&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;dcm_account&quot;, 
+                &quot;order&quot;: 1
+            }
+        }, 
+        &quot;sheet&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;sheet_url&quot;, 
+                &quot;order&quot;: 2
+            }
+        }, 
+        &quot;template&quot;: {
+            &quot;template&quot;: {
+                &quot;range&quot;: &quot;A1&quot;, 
+                &quot;sheet&quot;: &quot;https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing&quot;, 
+                &quot;tab&quot;: &quot;Floodlight Monitor&quot;
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;range&quot;: &quot;A2:C&quot;, 
+        &quot;tab&quot;: &quot;Floodlight Monitor&quot;
+    }
+}</pre>
+          <td>
+        </tr>
+      
       </tbody>
     </table>
   
     <table class="view_product bordered highlight list" id="view_product_5" style="display:none;">
+      <thead>
+        <tr>
+          <th class="center" style="width:90px;"></th>
+          <th>Google API</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">settings_input_component</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_google_api_to_bigquery">JSON</span>
+            <h4>API To BigQuery</h4>
+            <p>TASK: google_api_to_bigquery</p>
+            <p>Execute a Google API function and store results to BigQuery.</p>
+            <ol>
+              <li>Enter an api name and version.</li><li>Specify the function using dot notation and arguments using json.</li><li>If nextPageToken can be in response check iterate.</li><li>Give BigQuery dataset and table where response will be written.</li>
+            </ol>
+            <pre class="view_code" id="view_code_google_api_to_bigquery" style="display:none;">{
+    &quot;google_api&quot;: {
+        &quot;function&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;reports.files.list&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;function&quot;, 
+                &quot;order&quot;: 3
+            }
+        }, 
+        &quot;api&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;doubleclickbidmanager&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;api&quot;, 
+                &quot;order&quot;: 1
+            }
+        }, 
+        &quot;auth&quot;: &quot;user&quot;, 
+        &quot;version&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;v1&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;version&quot;, 
+                &quot;order&quot;: 2
+            }
+        }, 
+        &quot;kwargs&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: {
+                    &quot;profileId&quot;: 2782211, 
+                    &quot;reportId&quot;: 132847265, 
+                    &quot;accountId&quot;: 7480
+                }, 
+                &quot;kind&quot;: &quot;json&quot;, 
+                &quot;name&quot;: &quot;kwargs&quot;, 
+                &quot;order&quot;: 4
+            }
+        }, 
+        &quot;iterate&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: false, 
+                &quot;kind&quot;: &quot;boolean&quot;, 
+                &quot;name&quot;: &quot;iterate&quot;, 
+                &quot;order&quot;: 5
+            }
+        }, 
+        &quot;out&quot;: {
+            &quot;bigquery&quot;: {
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }, 
+                &quot;table&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;table&quot;, 
+                        &quot;order&quot;: 7
+                    }
+                }, 
+                &quot;schema&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: [], 
+                        &quot;kind&quot;: &quot;json&quot;, 
+                        &quot;name&quot;: &quot;schema&quot;, 
+                        &quot;order&quot;: 9
+                    }
+                }, 
+                &quot;format&quot;: &quot;JSON&quot;
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+      </tbody>
+    </table>
+  
+    <table class="view_product bordered highlight list" id="view_product_6" style="display:none;">
       <thead>
         <tr>
           <th class="center" style="width:90px;"></th>
@@ -1738,7 +2160,7 @@
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_archive">JSON</span>
             <h4>Archive</h4>
             <p>TASK: archive</p>
-            <p>Wipe old information from a storage bucket.</p>
+            <p>Wipe old information from a Storage bucket.</p>
             <ol>
               <li>Specify how many days back to retain data and which buckets and paths to purge.</li><li>Everything under a path will be moved to archive or deleted depending on your choice.</li>
             </ol>
@@ -1790,7 +2212,7 @@
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_bucket">JSON</span>
             <h4>Bucket</h4>
             <p>TASK: bucket</p>
-            <p>Create a bucket on a project.</p>
+            <p>Create and permission a bucket in Storage.</p>
             <ol>
               <li>Specify the name of the bucket and who will have owner permissions.</li><li>Existing buckets are preserved.</li><li>Adding a permission to the list will update the permissions but removing them will not.</li><li>You have to manualy remove grants.</li>
             </ol>
@@ -1829,10 +2251,348 @@
       </tbody>
     </table>
   
+    <table class="view_product bordered highlight list" id="view_product_7" style="display:none;">
+      <thead>
+        <tr>
+          <th class="center" style="width:90px;"></th>
+          <th>Twitter</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">perm_phone_msg</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_trends_places_to_bigquery_via_query">JSON</span>
+            <h4>Trends Places To BigQuery Via Query</h4>
+            <p>TASK: trends_places_to_bigquery_via_query</p>
+            <p>Move using a WOEID query.</p>
+            <ol>
+              <li>Provide <a href='https://apps.twitter.com/' target='_blank'>Twitter credentials</a>.</li><li>Provide BigQuery WOEID source query.</li><li>Specify BigQuery dataset and table to write API call results to.</li><li>Writes: WOEID, Name, Url, Promoted_Content, Query, Tweet_Volume</li><li>Note Twitter API is rate limited to 15 requests per 15 minutes. So keep WOEID lists short.</li>
+            </ol>
+            <pre class="view_code" id="view_code_trends_places_to_bigquery_via_query" style="display:none;">{
+    &quot;twitter&quot;: {
+        &quot;secret&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;secret&quot;, 
+                &quot;order&quot;: 1
+            }
+        }, 
+        &quot;auth&quot;: &quot;service&quot;, 
+        &quot;trends&quot;: {
+            &quot;places&quot;: {
+                &quot;single_cell&quot;: true, 
+                &quot;bigquery&quot;: {
+                    &quot;query&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;places_query&quot;, 
+                            &quot;order&quot;: 4
+                        }
+                    }, 
+                    &quot;legacy&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: false, 
+                            &quot;kind&quot;: &quot;boolean&quot;, 
+                            &quot;name&quot;: &quot;places_legacy&quot;, 
+                            &quot;order&quot;: 5
+                        }
+                    }, 
+                    &quot;dataset&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;places_dataset&quot;, 
+                            &quot;order&quot;: 3
+                        }
+                    }
+                }
+            }
+        }, 
+        &quot;key&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;key&quot;, 
+                &quot;order&quot;: 2
+            }
+        }, 
+        &quot;out&quot;: {
+            &quot;bigquery&quot;: {
+                &quot;table&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;destination_table&quot;, 
+                        &quot;order&quot;: 7
+                    }
+                }, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;destination_dataset&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">perm_phone_msg</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_trends_places_to_bigquery_via_value">JSON</span>
+            <h4>Trends Places To BigQuery Via Values</h4>
+            <p>TASK: trends_places_to_bigquery_via_value</p>
+            <p>Move using hard coded WOEID values.</p>
+            <ol>
+              <li>Provide <a href='https://apps.twitter.com/' target='_blank'>Twitter credentials</a>.</li><li>Provide a comma delimited list of WOEIDs.</li><li>Specify BigQuery dataset and table to write API call results to.</li><li>Writes: WOEID, Name, Url, Promoted_Content, Query, Tweet_Volume</li><li>Note Twitter API is rate limited to 15 requests per 15 minutes. So keep WOEID lists short.</li>
+            </ol>
+            <pre class="view_code" id="view_code_trends_places_to_bigquery_via_value" style="display:none;">{
+    &quot;twitter&quot;: {
+        &quot;secret&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;secret&quot;, 
+                &quot;order&quot;: 1
+            }
+        }, 
+        &quot;auth&quot;: &quot;service&quot;, 
+        &quot;trends&quot;: {
+            &quot;places&quot;: {
+                &quot;single_cell&quot;: true, 
+                &quot;values&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: [], 
+                        &quot;kind&quot;: &quot;integer_list&quot;, 
+                        &quot;name&quot;: &quot;woeids&quot;, 
+                        &quot;order&quot;: 3
+                    }
+                }
+            }
+        }, 
+        &quot;key&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;key&quot;, 
+                &quot;order&quot;: 2
+            }
+        }, 
+        &quot;out&quot;: {
+            &quot;bigquery&quot;: {
+                &quot;table&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;destination_table&quot;, 
+                        &quot;order&quot;: 7
+                    }
+                }, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;destination_dataset&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">perm_phone_msg</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_trends_places_to_sheets_via_query">JSON</span>
+            <h4>Trends Places To Sheets Via Query</h4>
+            <p>TASK: trends_places_to_sheets_via_query</p>
+            <p>Move using a WOEID query.</p>
+            <ol>
+              <li>Provide <a href='https://apps.twitter.com/' target='_blank'>Twitter credentials</a>.</li><li>Provide BigQuery WOEID source query.</li><li>Specify Sheet url and tab to write API call results to.</li><li>Writes: WOEID, Name, Url, Promoted_Content, Query, Tweet_Volume</li><li>Note Twitter API is rate limited to 15 requests per 15 minutes. So keep WOEID lists short.</li>
+            </ol>
+            <pre class="view_code" id="view_code_trends_places_to_sheets_via_query" style="display:none;">{
+    &quot;twitter&quot;: {
+        &quot;secret&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;secret&quot;, 
+                &quot;order&quot;: 1
+            }
+        }, 
+        &quot;auth&quot;: &quot;service&quot;, 
+        &quot;trends&quot;: {
+            &quot;places&quot;: {
+                &quot;single_cell&quot;: true, 
+                &quot;bigquery&quot;: {
+                    &quot;query&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;places_query&quot;, 
+                            &quot;order&quot;: 4
+                        }
+                    }, 
+                    &quot;legacy&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: false, 
+                            &quot;kind&quot;: &quot;boolean&quot;, 
+                            &quot;name&quot;: &quot;places_legacy&quot;, 
+                            &quot;order&quot;: 5
+                        }
+                    }, 
+                    &quot;dataset&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;places_dataset&quot;, 
+                            &quot;order&quot;: 3
+                        }
+                    }
+                }
+            }
+        }, 
+        &quot;key&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;key&quot;, 
+                &quot;order&quot;: 2
+            }
+        }, 
+        &quot;out&quot;: {
+            &quot;sheets&quot;: {
+                &quot;range&quot;: &quot;A1&quot;, 
+                &quot;sheet&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;destination_sheet&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }, 
+                &quot;tab&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;destination_tab&quot;, 
+                        &quot;order&quot;: 7
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">perm_phone_msg</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_trends_places_to_sheets_via_value">JSON</span>
+            <h4>Trends Places To Sheets Via Values</h4>
+            <p>TASK: trends_places_to_sheets_via_value</p>
+            <p>Move using hard coded WOEID values.</p>
+            <ol>
+              <li>Provide <a href='https://apps.twitter.com/' target='_blank'>Twitter credentials</a>.</li><li>Provide a comma delimited list of WOEIDs.</li><li>Specify Sheet url and tab to write API call results to.</li><li>Writes: WOEID, Name, Url, Promoted_Content, Query, Tweet_Volume</li><li>Note Twitter API is rate limited to 15 requests per 15 minutes. So keep WOEID lists short.</li>
+            </ol>
+            <pre class="view_code" id="view_code_trends_places_to_sheets_via_value" style="display:none;">{
+    &quot;twitter&quot;: {
+        &quot;secret&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;secret&quot;, 
+                &quot;order&quot;: 1
+            }
+        }, 
+        &quot;auth&quot;: &quot;service&quot;, 
+        &quot;trends&quot;: {
+            &quot;places&quot;: {
+                &quot;single_cell&quot;: true, 
+                &quot;bigquery&quot;: {
+                    &quot;query&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;places_query&quot;, 
+                            &quot;order&quot;: 4
+                        }
+                    }, 
+                    &quot;legacy&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: false, 
+                            &quot;kind&quot;: &quot;boolean&quot;, 
+                            &quot;name&quot;: &quot;places_legacy&quot;, 
+                            &quot;order&quot;: 5
+                        }
+                    }, 
+                    &quot;dataset&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;places_dataset&quot;, 
+                            &quot;order&quot;: 3
+                        }
+                    }
+                }
+            }
+        }, 
+        &quot;key&quot;: {
+            &quot;field&quot;: {
+                &quot;default&quot;: &quot;&quot;, 
+                &quot;kind&quot;: &quot;string&quot;, 
+                &quot;name&quot;: &quot;key&quot;, 
+                &quot;order&quot;: 2
+            }
+        }, 
+        &quot;out&quot;: {
+            &quot;sheets&quot;: {
+                &quot;range&quot;: &quot;A1&quot;, 
+                &quot;sheet&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;destination_sheet&quot;, 
+                        &quot;order&quot;: 6
+                    }
+                }, 
+                &quot;tab&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;destination_tab&quot;, 
+                        &quot;order&quot;: 7
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+          <td>
+        </tr>
+      
+      </tbody>
+    </table>
+  
 
   <br/><br/>
   <h3 id="code-tasks">Need Help With A Recipe?</h3>
   <p class="flow-text">Ask the StarThinker team for advice <a href="mailto:starthinker-help@google.com?subject=Custom+StarThinker+Recipe">starthinker-help@google.com</a></p>
+
+  <p class="">This code is an open source reference implementation and is not an officially supported Google product.</p>
 
 
     </div>

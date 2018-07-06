@@ -19,7 +19,8 @@
 
 """Command line to get a DCM report or show list of report or files.
 
-This is a helper to help developers debug and create reports.
+This is a helper to help developers debug and create reports. Prints using JSON for
+copy and paste compatibility.
 
 To get list: python dcm/helper.py --account [id] --profile [id] --list -u [credentials]
 To get report: python dcm/helper.py --account [id] --profile [id] --report [id] -u [credentials]
@@ -27,8 +28,8 @@ To get files: python dcm/helper.py --account [id] --profile [id] --report [id] -
 
 """
 
+import json
 import argparse
-import pprint
 
 from util.project import project
 from util.google_api import API_DCM
@@ -56,10 +57,10 @@ if __name__ == "__main__":
     kwargs['reportId'] = project.args.report
     if project.args.list:
       for report_file in API_DCM(auth).reports().files().list(**kwargs).execute():
-        pprint.PrettyPrinter().pprint(report_file)
+        print json.dumps(report_file, indent=2, sort_keys=True)
     else:
       report = API_DCM(auth).reports().get(**kwargs).execute()
-      pprint.PrettyPrinter().pprint(report)
+      print json.dumps(report, indent=2, sort_keys=True)
   else:
     for report in API_DCM(auth).reports().list(**kwargs).execute():
-      pprint.PrettyPrinter().pprint(report)
+      print json.dumps(report, indent=2, sort_keys=True)
