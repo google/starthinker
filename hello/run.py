@@ -78,7 +78,7 @@ def hello():
 
   print '-' * 80
   print "Take a look inside 'hello/run.py'."
-  print "Its a great skelaton for your first project."
+  print "Its a great skeleton for your first project."
   print ''
   print ''
 

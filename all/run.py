@@ -55,7 +55,7 @@ if __name__ == "__main__":
     instances[script] += 1
 
     # assemble command ( replace command, use all arguments passed, and add instance )
-    command = 'python2.7 %s%s/run.py %s -i %d' % (EXECUTE_PATH, script, ' '.join(sys.argv[1:]), instances[script])
+    command = 'python %s%s/run.py %s -i %d' % (EXECUTE_PATH, script, ' '.join(sys.argv[1:]), instances[script])
 
     # show command so user can run each task
     print command

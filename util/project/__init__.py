@@ -62,8 +62,8 @@ three important concepts:
 
     C. Use default credentials ( lowest priority, last resort )
        If neither the json not the command line provides a path, the environmental 
-       variable GOOGLE_APPLICATION_CREDENTIALS will be used.  It is created by 
-       google cloud utilities.
+       variable GOOGLE_APPLICATION_CREDENTIALS will be used for service accounts.  
+       It is created by google cloud utilities.
 """
 
 
