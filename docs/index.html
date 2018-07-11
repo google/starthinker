@@ -33,7 +33,7 @@
        a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
        ol li { line-height: 1.8em; }
        textarea { margin-top: 7px; height: 10rem; }
-       table.list { width: 96%; max-width: 800px; margin: 0px auto; }
+       table.list { width: 96%; max-width: 800px; margin: 0px auto; line-height: 1.8em; }
        a.menu_link { display: inline-block; margin: 20px; }
 
        div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
@@ -79,7 +79,7 @@
       
 
   <h1 id="recipe-scripts">Open Source Handover</h1>
-  <p class="flow-text">Deploying recipes and solutions using <a href="https://github.com/google/starthinker" target="_blank">StarThinker Framework</a>.</p>
+  <p class="flow-text">Quickly deploying recipes and solutions using <a href="https://github.com/google/starthinker" target="_blank">StarThinker Framework</a>.</p>
 
   <br/>
   <h3 id="recipe_run">Running A JSON Recipe</h3>
@@ -198,7 +198,55 @@
   </table>
 
   <br/><br/>
-  <h3 id="recipe_code">Helpful Tips And Tricks</h3>
+  <h3 id="cron_deployment">Basic Recipe Scheduler</h3>
+  <p class="flow-text">Create a minimal cron to run recipes on a schedule.</p>
+
+  <table class="bordered highlight list">
+    <thead>
+      <tr>
+        <th class="center" style="width:90px;"></th>
+        <th>Instructions</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td class="center">
+          <i class="material-icons medium teal-text">cloud</i>
+          <br/>Creates a cloud machine that will run StarThinker jobs 24 hours a day.
+        </td>
+        <td>
+          <br/>Create a <a href="https://cloud.google.com/resource-manager/docs/creating-managing-projects" target="_blank">cloud project</a>.
+          <br/>Within a Google Cloud Project visit <a href="https://pantheon.corp.google.com/compute/instances">Compute Engine &rarr; VM Instances</a>
+          <br/>We recommend starting the following setup:
+          <br/>Machine type: micro (1 shared vCPU), f1-micro
+          <br/>Identity and API access: Allow full access to all Cloud APIs
+          <br/>Boot Disk Choose: SUSE Linux Enterprise Server
+          <br/>Click Create
+        </td>
+      </tr>
+
+      <tr>
+        <td class="center">
+          <i class="material-icons medium teal-text">loop</i>
+          <br/>Deploy a cron job to run recipes.
+        </td>
+        <td>
+          <br>SSH into the new instance.
+          <br/>Request access to the private repository, email <a href="mailto:starthinker-help@google.com?subject=Custom+StarThinker+Recipe">starthinker-help@google.com</a>.
+          <br/>On the command line run:
+          <br/>git clone <a href="https://github.com/google/starthinker">https://github.com/google/starthinker</a>
+          <br/>cd starthinker
+          <br/>./deploy.sh
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+
+  <br/><br/>
+  <h3 id="tips_tricks">Helpful Tips And Tricks</h3>
   <p class="flow-text">Best practices for finding, using, and building code on top of StarThinker.</p>
 
   <table class="bordered highlight list">
@@ -717,114 +765,6 @@
         <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
           <td style="vertical-align: top;">
-            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_move_query">JSON</span>
-            <h4>Query To Table</h4>
-            <p>TASK: move_query</p>
-            <p>Save query results into a BigQuery table.</p>
-            <ol>
-              <li>Specify a single query and choose legacy or standard mode.</li><li>For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...</li><li>Every time the query runs it will overwrite the table.</li>
-            </ol>
-            <pre class="view_code" id="view_code_move_query" style="display:none;">{
-    &quot;bigquery&quot;: {
-        &quot;to&quot;: {
-            &quot;table&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;table&quot;, 
-                    &quot;order&quot;: 3
-                }
-            }, 
-            &quot;dataset&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;dataset&quot;, 
-                    &quot;order&quot;: 2
-                }
-            }
-        }, 
-        &quot;from&quot;: {
-            &quot;query&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;text&quot;, 
-                    &quot;name&quot;: &quot;query&quot;, 
-                    &quot;order&quot;: 1
-                }
-            }, 
-            &quot;legacy&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: true, 
-                    &quot;kind&quot;: &quot;boolean&quot;, 
-                    &quot;name&quot;: &quot;legacy&quot;, 
-                    &quot;order&quot;: 4
-                }
-            }
-        }, 
-        &quot;auth&quot;: &quot;user&quot;
-    }
-}</pre>
-          <td>
-        </tr>
-      
-        <tr>
-          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
-          <td style="vertical-align: top;">
-            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_move_view">JSON</span>
-            <h4>Query To View</h4>
-            <p>TASK: move_view</p>
-            <p>Create a BigQuery view.</p>
-            <ol>
-              <li>Specify a single query and choose legacy or standard mode.</li><li>For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...</li><li>If the view exists, it is unchanged, delete it manually to re-create.</li>
-            </ol>
-            <pre class="view_code" id="view_code_move_view" style="display:none;">{
-    &quot;bigquery&quot;: {
-        &quot;to&quot;: {
-            &quot;dataset&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;dataset&quot;, 
-                    &quot;order&quot;: 2
-                }
-            }, 
-            &quot;view&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;view&quot;, 
-                    &quot;order&quot;: 3
-                }
-            }
-        }, 
-        &quot;from&quot;: {
-            &quot;query&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;text&quot;, 
-                    &quot;name&quot;: &quot;query&quot;, 
-                    &quot;order&quot;: 1
-                }
-            }, 
-            &quot;legacy&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: true, 
-                    &quot;kind&quot;: &quot;boolean&quot;, 
-                    &quot;name&quot;: &quot;legacy&quot;, 
-                    &quot;order&quot;: 4
-                }
-            }
-        }, 
-        &quot;auth&quot;: &quot;user&quot;
-    }
-}</pre>
-          <td>
-        </tr>
-      
-        <tr>
-          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
-          <td style="vertical-align: top;">
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_bigquery_view">JSON</span>
             <h4>Query To View</h4>
             <p>TASK: bigquery_view</p>
@@ -871,69 +811,6 @@
             }
         }, 
         &quot;auth&quot;: &quot;user&quot;
-    }
-}</pre>
-          <td>
-        </tr>
-      
-        <tr>
-          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
-          <td style="vertical-align: top;">
-            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_move_storage">JSON</span>
-            <h4>Storage To Table</h4>
-            <p>TASK: move_storage</p>
-            <p>Move using bucket and path prefix.</p>
-            <ol>
-              <li>Specify a bucket and path prefix, * suffix is NOT required.</li><li>Every time the job runs it will overwrite the table.</li>
-            </ol>
-            <pre class="view_code" id="view_code_move_storage" style="display:none;">{
-    &quot;bigquery&quot;: {
-        &quot;to&quot;: {
-            &quot;table&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;table&quot;, 
-                    &quot;order&quot;: 4
-                }
-            }, 
-            &quot;auth&quot;: &quot;service&quot;, 
-            &quot;dataset&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;dataset&quot;, 
-                    &quot;order&quot;: 3
-                }
-            }
-        }, 
-        &quot;from&quot;: {
-            &quot;path&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;path&quot;, 
-                    &quot;order&quot;: 2
-                }
-            }, 
-            &quot;bucket&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;name&quot;: &quot;bucket&quot;, 
-                    &quot;order&quot;: 1
-                }
-            }
-        }, 
-        &quot;auth&quot;: &quot;user&quot;, 
-        &quot;schema&quot;: {
-            &quot;field&quot;: {
-                &quot;default&quot;: &quot;&quot;, 
-                &quot;kind&quot;: &quot;json&quot;, 
-                &quot;name&quot;: &quot;schema&quot;, 
-                &quot;order&quot;: 5
-            }
-        }
     }
 }</pre>
           <td>
@@ -2760,7 +2637,7 @@
   
 
   <br/><br/>
-  <h3 id="code-tasks">Need Help With A Recipe?</h3>
+  <h3 id="recipe_help">Need Help With A Recipe?</h3>
   <p class="flow-text">Ask the StarThinker team for advice <a href="mailto:starthinker-help@google.com?subject=Custom+StarThinker+Recipe">starthinker-help@google.com</a></p>
 
   <p class="">This code is an open source reference implementation and is not an officially supported Google product.</p>

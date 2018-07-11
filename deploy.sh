@@ -47,12 +47,14 @@ fi
 read_multiline() {
   read_multiline_return=""
   printf ">"
-  while read -e read_multiline_line
+  while IFS= read -e -r read_multiline_line
   do
-    read_multiline_return=${read_multiline_return}${read_multiline_line}
+    read_multiline_return="${read_multiline_return}${read_multiline_line}"
     if [ "${1}" ];then
       if [[ $read_multiline_line = *"${1}"* ]]; then
         break
+      else
+        read_multiline_return="${read_multiline_return} "
       fi
     fi
   done
@@ -101,7 +103,7 @@ setup_credentials() {
   read_multiline "}}"
 
   if [ "${read_multiline_return}" ];then
-    echo $read_multiline_return > "${CLIENT_CREDENTIALS}"
+    printf "%s" "$read_multiline_return" > "${CLIENT_CREDENTIALS}"
   fi
 
   # service
@@ -113,7 +115,7 @@ setup_credentials() {
   read_multiline "}"
 
   if [ "${read_multiline_return}" ];then
-    echo $read_multiline_return > "${SERVICE_CREDENTIALS}"
+    printf "%s" "$read_multiline_return" > "${SERVICE_CREDENTIALS}"
   fi
 
   # user
@@ -209,8 +211,8 @@ list_recipes() {
 
 delete_recipe() {
 
-  all_done=0
-  while (( !all_done ))
+  delete_recipe_done=0
+  while (( !delete_recipe_done ))
   do
     echo ""
     echo "----------------------------------------"
@@ -223,7 +225,7 @@ delete_recipe() {
     select file in "${files[@]##*/}" "Quit"
     do
      case ${file} in 
-      "Quit") all_done=1; break;;
+      "Quit") delete_recipe_done=1; break;;
       *)
         if [ "${file}" ]
         then
@@ -241,8 +243,8 @@ delete_recipe() {
 
 run_recipe() {
 
-  all_done=0
-  while (( !all_done ))
+  run_recipe_done=0
+  while (( !run_recipe_done ))
   do
     echo ""
     echo "----------------------------------------"
@@ -255,13 +257,13 @@ run_recipe() {
     select file in "${files[@]##*/}" "Quit"
     do
      case ${file} in 
-      "Quit") all_done=1; break;;
+      "Quit") run_recipe_done=1; break;;
       *)
         if [ "${file}" ]
         then
           echo ""
           source "${THIS_DIR}/setup.sh" 
-          python "${THIS_DIR}/all/run.py" "${CRON_DIRECTORY}/${file}" -p "${CLOUD_PROJECT_ID}" -c "${CLIENT_CREDENTIALS}" -u "${USER_CREDENTIALS}" -s "${SERVICE_CREDENTIALS}" --verbose
+          python "${THIS_DIR}/all/run.py" "${CRON_DIRECTORY}/${file}" -p "${CLOUD_PROJECT_ID}" -c "${CLIENT_CREDENTIALS}" -u "${USER_CREDENTIALS}" -s "${SERVICE_CREDENTIALS}" --verbose --force
           break
         else
           echo "Please choose a number from 1 to $((${#files[@]}+1))"
@@ -291,8 +293,8 @@ add_recipe() {
       echo "Paste in your recipe json: ( CTRL+D after paste )"
       read_multiline ""
       if [ "${read_multiline_return}" ];then
-        echo $read_multiline_return > "${recipe_file}"
-        echo "${recipe_file}"
+        printf "%s" "$read_multiline_return" > "${recipe_file}"
+        echo "${recipe_file} Created"
       else
         echo "Error: No JSON To Write"
       fi
@@ -359,16 +361,16 @@ instructions() {
 # main - root menu of all actions
 
 echo ""
-echo "Welcome To StarThinker Deployment"
+echo "Welcome To StarThinker ( Google gTech )"
 echo ""
 echo "This utility will help you set up and manage long running recipes."
 echo "If this is your first time running this script, select Full Setup."
 echo ""
 
-all_done=0
+main_done=0
 options=("Full Setup" "Install Dependencies" "Set Paths" "Set Cloud Project" "Set Credentials" "Start Cron" "Stop Cron" "List Recipes" "Add Recipe" "Run Recipe" "Delete Recipe" "Instructions" "Quit")
 
-while (( !all_done ))
+while (( !main_done ))
 do
   echo "----------------------------------------------------------------------"
   echo "Main Menu"
@@ -389,7 +391,7 @@ do
       10) run_recipe; break ;;
       11) delete_recipe; break ;;
       12) instructions; break ;;
-      13) all_done=1; break;;
+      13) main_done=1; break;;
       *) echo "What's that?" ;;
     esac
   done
