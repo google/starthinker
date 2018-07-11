@@ -6,6 +6,7 @@ google-cloud-storage==1.3.2
 google-cloud-pubsub==0.27.0
 google-api-python-client==1.6.4
 httplib2
+urllib3
 jsonpickle
 django
 panda
