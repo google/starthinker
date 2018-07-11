@@ -16,6 +16,7 @@
 #
 ###########################################################################
 
+import sys
 import subprocess
 import argparse
 
@@ -54,8 +55,9 @@ if __name__ == "__main__":
         if args.force or is_scheduled(project):
 
           script = 'all' if project.get('setup', {}).get('local', True) else 'remote'
-          command = 'python %s/run.py %s --date TODAY' % (script, filepath)
-          if verbose: command += ' --verbose'
+          #command = 'python %s/run.py %s --date TODAY' % (script, filepath)
+          command = 'python %s/run.py %s %s' % (script, filepath, ' '.join(sys.argv[2:]))
+
           if verbose: print 'COMMAND:', command
 
           subprocess.Popen(command, shell=True, cwd=EXECUTE_PATH)
