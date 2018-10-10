@@ -287,8 +287,8 @@ def bucket_access(auth, project, name,  role, emails=[], groups=[], services=[],
 
 
 # USE: object_get function above ( it will pull the download down in memory, no need for a file write )
-def object_download(gc_project, bucket_name, object_name, local_path):
-  client = get_client('storage')
+def object_download(gc_project, bucket_name, object_name, local_path, auth='user'):
+  client = get_client('storage', auth=auth)
 
   print "BN", bucket_name
 

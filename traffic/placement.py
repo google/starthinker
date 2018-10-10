@@ -15,6 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
+"""Handles creation and updates of Placements.
+
+"""
 
 import json
 
@@ -22,13 +25,20 @@ from traffic.dao import BaseDAO
 from traffic.campaign import CampaignDAO
 from traffic.video_format import VideoFormatDAO
 from traffic.feed import FieldMap
+from dateutil import parser
 
 
 class PlacementDAO(BaseDAO):
+  """Placement data access object.
+
+  Inherits from BaseDAO and implements placement specific logic for creating and
+  updating placement.
+  """
 
   cache = {}
 
   def __init__(self, auth, profile_id):
+    """Initializes PlacementDAO with profile id and authentication scheme."""
     super(PlacementDAO, self).__init__(auth, profile_id)
 
     self._entity = 'PLACEMENT'
@@ -45,25 +55,79 @@ class PlacementDAO(BaseDAO):
     self.cache = PlacementDAO.cache
 
   def _process_active_view_and_verification(self, placement, feed_item):
+    """Updates / creates active view and verification settings.
+
+    This method updates the CM item by setting or creating active view and
+    verification settings based on the Bulkdozer feed configurations.
+
+    Args:
+      placement: The CM placement object to be updated.
+      feed_item: The Bulkdozer feed item with the configurations.
+
+    Raises:
+      Exception: In case the values for active view and verification enumeration
+      is invalid.
+    """
+
     if FieldMap.PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION in feed_item:
-      if feed_item[FieldMap.PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION] == 'ON':
+      if feed_item.get(FieldMap.PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION, None) == 'ON':
         placement['vpaidAdapterChoice'] = 'HTML5'
         placement['videoActiveViewOptOut'] = False
-      elif feed_item[FieldMap.PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION] == 'OFF':
+      elif feed_item.get(FieldMap.PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION, None) == 'OFF':
         placement['vpaidAdapterChoice'] = 'DEFAULT'
         placement['videoActiveViewOptOut'] = True
-      elif feed_item[FieldMap.
-                     PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION] == 'LET_DCM_DECIDE' or feed_item[FieldMap.
-                                                                                              PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION] == '':
+      elif feed_item[
+          FieldMap.
+          PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION] == 'LET_DCM_DECIDE' or feed_item[
+              FieldMap.PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION] == '':
         placement['vpaidAdapterChoice'] = 'DEFAULT'
         placement['videoActiveViewOptOut'] = False
       else:
         raise Exception(
             '%s is not a valid value for the placement Active View and Verification field'
-            % feed_item[FieldMap.PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION])
+            % feed_item.get(FieldMap.PLACEMENT_ACTIVE_VIEW_AND_VERIFICATION, None))
+
+  def _process_pricing_schedule(self, item, feed_item):
+    """Updates / creates pricing schedule settings.
+
+    This method updates the CM item with pricing schedule based on
+    configurations from the Bulkdozer feed.
+
+    Args:
+      item: the CM placement object to update.
+      feed_item: The Bulkdozer feed item representing the settings to define.
+    """
+    if 'pricing_schedule' in feed_item:
+
+      if not 'pricingSchedule' in item:
+        item['pricingSchedule'] = {}
+
+      item['pricingSchedule']['pricingPeriods'] = []
+
+      for pricing_schedule in feed_item['pricing_schedule']:
+        item['pricingSchedule']['pricingPeriods'].append({
+            'endDate':
+                pricing_schedule.get(FieldMap.PLACEMENT_PERIOD_END),
+            'startDate':
+                pricing_schedule.get(FieldMap.PLACEMENT_PERIOD_START),
+            'rateOrCostNanos':
+                float(pricing_schedule.get(FieldMap.PLACEMENT_PERIOD_RATE)) *
+                1000000000,
+            'units':
+                pricing_schedule.get(FieldMap.PLACEMENT_PERIOD_UNITS),
+        })
 
   def _process_update(self, item, feed_item):
-    if feed_item.get(FieldMap.CAMPAIGN_ID, "") == "":
+    """Updates an placement based on the values from the feed.
+
+    Args:
+      item: Object representing the placement to be updated, this object is
+        updated directly.
+      feed_item: Feed item representing placement values from the Bulkdozer
+        feed.
+    """
+
+    if feed_item.get(FieldMap.CAMPAIGN_ID, '') == '':
       feed_item[FieldMap.CAMPAIGN_ID] = item['campaignId']
 
     campaign = self.campaign_dao.get(feed_item)
@@ -71,19 +135,47 @@ class PlacementDAO(BaseDAO):
     feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
 
-    item['pricingSchedule']['startDate'] = feed_item[FieldMap.PLACEMENT_START_DATE] if feed_item.get(FieldMap.PLACEMENT_START_DATE, '') else item['pricingSchedule']['startDate']
-    item['pricingSchedule']['endDate'] = feed_item[FieldMap.PLACEMENT_END_DATE] if feed_item.get(FieldMap.PLACEMENT_END_DATE, '') else item['pricingSchedule']['endDate']
-    item['pricingSchedule']['pricingPeriods'][0]['startDate'] = feed_item[FieldMap.PLACEMENT_START_DATE] if feed_item.get(FieldMap.PLACEMENT_START_DATE, '') else item['pricingSchedule']['pricingPeriods'][0]['startDate']
-    item['pricingSchedule']['pricingPeriods'][0]['endDate'] = feed_item[FieldMap.PLACEMENT_END_DATE] if feed_item.get(FieldMap.PLACEMENT_END_DATE, '') else item['pricingSchedule']['pricingPeriods'][0]['endDate']
-    item['name'] = feed_item[FieldMap.PLACEMENT_NAME] if feed_item.get(FieldMap.PLACEMENT_NAME, '') else item['name']
-    item['archived'] = feed_item[FieldMap.PLACEMENT_ARCHIVED] if feed_item.get(FieldMap.PLACEMENT_ARCHIVED, '') else item['archived']
+    item['pricingSchedule']['startDate'] = feed_item.get(
+        FieldMap.PLACEMENT_START_DATE, None) if feed_item.get(
+            FieldMap.PLACEMENT_START_DATE,
+            '') else item['pricingSchedule']['startDate']
+
+    item['pricingSchedule']['endDate'] = feed_item.get(
+        FieldMap.PLACEMENT_END_DATE, None) if feed_item.get(
+            FieldMap.PLACEMENT_END_DATE,
+            '') else item['pricingSchedule']['endDate']
+
+    item['pricingSchedule']['pricingType'] = feed_item.get(
+        FieldMap.PLACEMENT_PRICING_SCHEDULE_COST_STRUCTURE,
+        None) if feed_item.get(
+            FieldMap.PLACEMENT_PRICING_SCHEDULE_COST_STRUCTURE,
+            '') else item['pricingSchedule']['pricingType']
+
+    item['name'] = feed_item.get(FieldMap.PLACEMENT_NAME,
+                                 None) if feed_item.get(FieldMap.PLACEMENT_NAME,
+                                                        '') else item['name']
+    item['archived'] = feed_item.get(
+        FieldMap.PLACEMENT_ARCHIVED, None) if feed_item.get(
+            FieldMap.PLACEMENT_ARCHIVED, '') else item['archived']
+    item['adBlockingOptOut'] = feed_item.get(FieldMap.PLACEMENT_AD_BLOCKING,
+                                             False)
 
     self._process_transcode(item, feed_item)
-
     self._process_active_view_and_verification(item, feed_item)
+    self._process_pricing_schedule(item, feed_item)
 
   def _process_transcode(self, item, feed_item):
+    """Updates / creates transcode configuration for the placement.
+
+    This method updates the CM placement object with transcoding configuration
+    from the feed.
+
+    Args:
+      item: The CM placement object to update.
+      feed_item: The Bulkdozer feed item with the transcode configurations.
+    """
     if 'transcode_config' in feed_item:
+
       if not 'videoSettings' in item:
         item['videoSettings'] = {}
 
@@ -94,44 +186,69 @@ class PlacementDAO(BaseDAO):
           'enabledVideoFormats'] = self.video_format_dao.translate_transcode_config(
               feed_item['transcode_config'])
 
-  def _process_new(self, feed_item):
+      if not item['videoSettings']['transcodeSettings']['enabledVideoFormats']:
+        raise Exception(
+            'Specified transcode profile did not match any placement level transcode settings in Campaign Manager'
+        )
 
+  def _process_new(self, feed_item):
+    """Creates a new placement DCM object from a feed item representing an placement from the Bulkdozer feed.
+
+    This function simply creates the object to be inserted later by the BaseDAO
+    object.
+
+    Args:
+      feed_item: Feed item representing the placement from the Bulkdozer feed.
+
+    Returns:
+      An placement object ready to be inserted in DCM through the API.
+
+    """
     campaign = self.campaign_dao.get(feed_item)
 
     feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
 
     result = {
-        'name': feed_item[FieldMap.PLACEMENT_NAME],
-        'campaignId': campaign['id'],
-        'archived': feed_item[FieldMap.PLACEMENT_ARCHIVED],
-        'siteId': feed_item[FieldMap.SITE_ID],
-        'paymentSource': 'PLACEMENT_AGENCY_PAID',
+        'name':
+            feed_item.get(FieldMap.PLACEMENT_NAME, None),
+        'adBlockingOptOut':
+            feed_item.get(FieldMap.PLACEMENT_AD_BLOCKING, False),
+        'campaignId':
+            campaign['id'],
+        'archived':
+            feed_item.get(FieldMap.PLACEMENT_ARCHIVED, None),
+        'siteId':
+            feed_item.get(FieldMap.SITE_ID, None),
+        'paymentSource':
+            'PLACEMENT_AGENCY_PAID',
         'pricingSchedule': {
             'startDate':
-                feed_item[FieldMap.PLACEMENT_START_DATE],
+                feed_item.get(FieldMap.PLACEMENT_START_DATE, None),
             'endDate':
-                feed_item[FieldMap.PLACEMENT_END_DATE],
+                feed_item.get(FieldMap.PLACEMENT_END_DATE, None),
             'pricingType':
                 'PRICING_TYPE_CPM',
             'pricingPeriods': [{
-                'startDate': feed_item[FieldMap.PLACEMENT_START_DATE],
-                'endDate': feed_item[FieldMap.PLACEMENT_END_DATE]
+                'startDate':
+                    feed_item.get(FieldMap.PLACEMENT_START_DATE, None),
+                'endDate':
+                    feed_item.get(FieldMap.PLACEMENT_END_DATE, None)
             }]
         }
     }
 
     self._process_active_view_and_verification(result, feed_item)
 
-    if feed_item[FieldMap.
-                 PLACEMENT_TYPE] == 'VIDEO' or feed_item[FieldMap.
-                                                         PLACEMENT_TYPE] == 'IN_STREAM_VIDEO':
+    if feed_item.get(FieldMap.PLACEMENT_TYPE, None) == 'VIDEO' or feed_item[
+        FieldMap.PLACEMENT_TYPE] == 'IN_STREAM_VIDEO':
       result['compatibility'] = 'IN_STREAM_VIDEO'
       result['size'] = {'width': '0', 'height': '0'}
       result['tagFormats'] = ['PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH']
     else:
       result['compatibility'] = 'DISPLAY'
-      width, height = feed_item[FieldMap.ASSET_SIZE].strip().lower().split('x')
+      width, height = feed_item.get(FieldMap.ASSET_SIZE,
+                                    '0x0').strip().lower().split('x')
       sizes = self.get_sizes(int(width), int(height))['sizes']
       if sizes:
         result['size'] = {'id': sizes[0]['id']}
@@ -146,14 +263,31 @@ class PlacementDAO(BaseDAO):
       ]
 
     self._process_transcode(result, feed_item)
+    self._process_pricing_schedule(result, feed_item)
 
     return result
 
-  def map_placement_transcode_configs(self, placement_feed,
-                                      transcode_configs_feed):
+  def map_placement_transcode_configs(
+      self, placement_feed, transcode_configs_feed, pricing_schedule_feed):
+    """Maps sub feeds with the parent feed based on placement id.
+
+    Args:
+      placement_feed: Bulkdozer feed representing the placements configurations.
+      trascode_configs_feed: Bulkdozer feed representing the transcode configs.
+      pricing_schedule_feed: Bulkdozer feed representing the pricing schedules.
+    """
+
     for placement in placement_feed:
-      for transcode_config in transcode_configs_feed:
-        if placement.get(FieldMap.TRANSCODE_ID, '') == transcode_config[
-            FieldMap.TRANSCODE_ID]:
-          placement['transcode_config'] = transcode_config
-          break
+      placement['pricing_schedule'] = []
+
+      for pricing_schedule in pricing_schedule_feed:
+        if placement.get(FieldMap.PLACEMENT_ID,
+                         '') == pricing_schedule.get(FieldMap.PLACEMENT_ID, None):
+          placement['pricing_schedule'].append(pricing_schedule)
+
+      transcode_id = placement.get(FieldMap.TRANSCODE_ID, '')
+      if transcode_id:
+        for transcode_config in transcode_configs_feed:
+          if transcode_id == transcode_config.get(FieldMap.TRANSCODE_ID, None):
+            placement['transcode_config'] = transcode_config
+            break

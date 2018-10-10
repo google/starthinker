@@ -36,7 +36,7 @@ from googleapiclient.discovery_cache.base import Cache
 from util.project import project
 from util.auth.google_bucket_auth import BucketCredentials
 
-from setup import CLOUD_SERVICE
+from setup import CLOUD_SERVICE, INTERNAL_MODE
 
 APPLICATION_NAME = 'StarThinker Client'
 MAX_TOKEN_LIFETIME_SECS = 6 * 60 * 60 # 6 hours
@@ -56,8 +56,10 @@ SCOPES = [
   'https://www.googleapis.com/auth/doubleclicksearch',
   'https://www.googleapis.com/auth/content',
   'https://www.googleapis.com/auth/ddmconversions'
-
 ]
+
+if INTERNAL_MODE: SCOPES.append('https://www.googleapis.com/auth/snippets.readonly')
+
 SERVICE_CACHE = {}
 
 RE_CREDENTIALS_BUCKET = re.compile(r'[a-z0-9_\-\.]+:.+\.json')

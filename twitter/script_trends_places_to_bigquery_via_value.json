@@ -16,21 +16,23 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "twitter":{
-    "auth":"service",
-    "secret":{"field":{ "name":"secret", "kind":"string", "order":1, "default":"" }},
-    "key":{"field":{ "name":"key", "kind":"string", "order":2, "default":"" }},
-    "trends":{
-      "places":{
-        "single_cell":true,
-        "values": {"field":{ "name":"woeids", "kind":"integer_list", "order":3, "default":[] }}
+  "tasks":[
+    { "twitter":{
+      "auth":"service",
+      "secret":{"field":{ "name":"secret", "kind":"string", "order":1, "default":"" }},
+      "key":{"field":{ "name":"key", "kind":"string", "order":2, "default":"" }},
+      "trends":{
+        "places":{
+          "single_cell":true,
+          "values": {"field":{ "name":"woeids", "kind":"integer_list", "order":3, "default":[] }}
+        }
+      },
+      "out":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"destination_dataset", "kind":"string", "order":6, "default":"" }},
+          "table":{"field":{ "name":"destination_table", "kind":"string", "order":7, "default":"" }}
+        }
       }
-    },
-    "out":{
-      "bigquery":{
-        "dataset":{"field":{ "name":"destination_dataset", "kind":"string", "order":6, "default":"" }},
-        "table":{"field":{ "name":"destination_table", "kind":"string", "order":7, "default":"" }}
-      }
-    }
-  }
+    }}
+  ]
 }

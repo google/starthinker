@@ -14,12 +14,14 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "dcm":{
-    "auth":"user",
-    "report":{
-      "account":{"field":{ "name":"account", "kind":"string", "order":1, "default":"" }},
-      "body":{"field":{ "name":"body", "kind":"json", "order":2, "default":"" }}
-    },
-    "delete":{"field":{ "name":"delete", "kind":"boolean", "order":3, "default":"" }}
-  }
+  "tasks":[
+    { "dcm":{
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account", "kind":"string", "order":1, "default":"" }},
+        "body":{"field":{ "name":"body", "kind":"json", "order":2, "default":"" }}
+      },
+      "delete":{"field":{ "name":"delete", "kind":"boolean", "order":3, "default":"" }}
+    }}
+  ]
 }

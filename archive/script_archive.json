@@ -13,13 +13,15 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "archive":{
-    "auth":"service",
-    "days":{"field":{ "name":"archive_days", "kind":"integer", "order":1, "default":7 }},
-    "storage": {
-      "bucket":{"field":{ "name":"archive_bucket", "kind":"string", "order":2, "default":"" }},
-      "path":{"field":{ "name":"archive_path", "kind":"string", "order":3, "default":"" }}
-    },
-    "delete":{"field":{ "name":"archive_delete", "kind":"boolean", "order":4, "default":false }}
-  }
+  "tasks":[
+    { "archive":{
+      "auth":"service",
+      "days":{"field":{ "name":"archive_days", "kind":"integer", "order":1, "default":7 }},
+      "storage": {
+        "bucket":{"field":{ "name":"archive_bucket", "kind":"string", "order":2, "default":"" }},
+        "path":{"field":{ "name":"archive_path", "kind":"string", "order":3, "default":"" }}
+      },
+      "delete":{"field":{ "name":"archive_delete", "kind":"boolean", "order":4, "default":false }}
+    }}
+  ]
 }

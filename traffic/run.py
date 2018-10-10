@@ -15,6 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
+"""Main entry point of Bulkdozer.
+
+"""
 
 from util.project import project
 from traffic.feed import Feed
@@ -48,21 +51,53 @@ event_tag_dao = None
 
 
 def process_feed(feed_name, dao, print_field, msg='Processing'):
-  feed = Feed(project.task['auth'], project.task[feed_name].get(
-      'sheet_id', project.task['sheet_id']), project.task[feed_name]['range'])
+  """Processes a feed that represents a specific entity in the Bulkdozer feed.
+
+  Args:
+    feed_name: Name of the feed to process, refer to feed.py for the supported
+      feed names.
+    dao: The data access object to be used to interact with the CM API and
+      update, must match the entity being updated in CM, in the sense that the
+      required fields to fetch, create, and update the entity in CM must be
+      included in the feed.
+    print_field: Field that identifies the item, used to print status messages
+      to the Log tab of the Bulkdozer feed.
+    msg: Prefix message to use when writing to the Log tab of the Bulkdozer
+      feed, for instance we display Processing Campaign for campaign, and
+      Uploading Asset for assets.
+  """
+  feed = Feed(project.task['auth'], project.task['sheet_id'], feed_name)
 
   execute_feed(feed, dao, print_field, msg)
 
 
 def execute_feed(feed, dao, print_field, msg='Processing'):
+  """Executes a specific feed.
+
+  Args:
+    feed: Feed object representing the Bulkdozer feed to process.
+    dao: The data access object to be used to interact with the CM API and
+      update, must match the entity being updated in CM, in the sense that the
+      required fields to fetch, create, and update the entity in CM must be
+      included in the feed.
+    print_field: Field that identifies the item, used to print status messages
+      to the Log tab of the Bulkdozer feed.
+    msg: Prefix message to use when writing to the Log tab of the Bulkdozer
+      feed, for instance we display Processing Campaign for campaign, and
+      Uploading Asset for assets.
+  """
   for feed_item in feed.feed:
-    print '%s %s' % (msg, feed_item[print_field])
-    logger.log('%s %s' % (msg, feed_item[print_field]))
+    value = str(feed_item[print_field])
+    print '%s %s' % (msg, value.encode('utf-8'))
+    logger.log('%s %s' % (msg, value.encode('utf-8')))
     dao.process(feed_item)
     feed.update()
 
 
 def setup():
+  """Sets up Bulkdozer configuration and required object to execute the job.
+
+  """
   global video_format_dao
   global landing_page_dao
   global campaign_dao
@@ -87,8 +122,6 @@ def setup():
   logger.auth = project.task['auth']
   logger.trix_id = project.task.get('logger', {}).get('sheet_id',
                                                       project.task['sheet_id'])
-  logger.clear()
-
   video_format_dao = VideoFormatDAO(project.task['auth'],
                                     project.task['dcm_profile_id'])
   landing_page_dao = LandingPageDAO(project.task['auth'],
@@ -109,55 +142,71 @@ def setup():
 
 
 def assets():
+  """Processes assets.
+
+  """
   process_feed('creative_asset_feed', creative_asset_dao,
                FieldMap.CREATIVE_ASSET_FILE_NAME, 'Uploading creative asset')
 
 
 def landing_pages():
+  """Processes landing pages.
+
+  """
   process_feed('landing_page_feed', landing_page_dao,
                FieldMap.CAMPAIGN_LANDING_PAGE_NAME, 'Processing landing page')
 
 
 def campaigns():
+  """Processes campaigns.
+
+  """
   process_feed('campaign_feed', campaign_dao, FieldMap.CAMPAIGN_NAME,
                'Processing campaign')
 
 
 def event_tags():
+  """Processes event tags.
+
+  """
   process_feed('event_tag_feed', event_tag_dao, FieldMap.EVENT_TAG_NAME,
                'Processing event tag')
 
 
 def placements():
-  placement_feed = Feed(
-      project.task['auth'], project.task['placement_feed'].get(
-          'sheet_id', project.task['sheet_id']),
-      project.task['placement_feed']['range'])
-  transcode_configs_feed = Feed(
-      project.task['auth'], project.task['transcode_configs_feed'].get(
-          'sheet_id', project.task['sheet_id']),
-      project.task['transcode_configs_feed']['range'])
+  """Processes placements.
+
+  """
+  placement_feed = Feed(project.task['auth'], project.task['sheet_id'],
+                        'placement_feed')
+
+  pricing_schedule_feed = Feed(project.task['auth'], project.task['sheet_id'],
+                               'placement_pricing_schedule_feed')
+
+  transcode_configs_feed = Feed(project.task['auth'], project.task['sheet_id'],
+                                'transcode_configs_feed')
+
   placement_dao.map_placement_transcode_configs(placement_feed.feed,
-                                                transcode_configs_feed.feed)
+                                                transcode_configs_feed.feed,
+                                                pricing_schedule_feed.feed)
+
   execute_feed(placement_feed, placement_dao, FieldMap.PLACEMENT_NAME,
                'Processing placement')
 
 
 def creatives():
-  creative_feed = Feed(
-      project.task['auth'], project.task['creative_feed'].get(
-          'sheet_id', project.task['sheet_id']),
-      project.task['creative_feed']['range'])
+  """Processes creatives.
 
-  third_party_url_feed = Feed(
-      project.task['auth'], project.task['third_party_url_feed'].get(
-          'sheet_id', project.task['sheet_id']),
-      project.task['third_party_url_feed']['range'])
+  """
+  creative_feed = Feed(project.task['auth'], project.task['sheet_id'],
+                       'creative_feed')
 
-  creative_association_feed = Feed(
-      project.task['auth'], project.task['creative_asset_association_feed'].get(
-          'sheet_id', project.task['sheet_id']),
-      project.task['creative_asset_association_feed']['range'])
+  third_party_url_feed = Feed(project.task['auth'], project.task['sheet_id'],
+                              'third_party_url_feed')
+
+  creative_association_feed = Feed(project.task['auth'],
+                                   project.task['sheet_id'],
+                                   'creative_asset_association_feed')
 
   creative_dao.map_creative_third_party_url_feeds(creative_feed.feed,
                                                   third_party_url_feed.feed)
@@ -175,30 +224,25 @@ def creatives():
 
 
 def ads():
-  placement_feed = Feed(
-      project.task['auth'], project.task['placement_feed'].get(
-          'sheet_id', project.task['sheet_id']),
-      project.task['placement_feed']['range'])
-  event_tag_profile_feed = Feed(
-      project.task['auth'], project.task['event_tag_profile_feed'].get(
-          'sheet_id', project.task['sheet_id']),
-      project.task['event_tag_profile_feed']['range'])
-  ad_feed = Feed(
-      project.task['auth'], project.task['ad_feed'].get(
-          'sheet_id', project.task['sheet_id']),
-      project.task['ad_feed']['range'])
-  ad_creative_assignment_feed = Feed(
-      project.task['auth'], project.task['ad_creative_assignment_feed'].get(
-          'sheet_id', project.task['sheet_id']),
-      project.task['ad_creative_assignment_feed']['range'])
-  ad_placement_assignment_feed = Feed(
-      project.task['auth'], project.task['ad_placement_assignment_feed'].get(
-          'sheet_id', project.task['sheet_id']),
-      project.task['ad_placement_assignment_feed']['range'])
-  ad_event_tag_assignment_feed = Feed(
-      project.task['auth'], project.task['event_tag_ad_assignment_feed'].get(
-          'sheet_id', project.task['sheet_id']),
-      project.task['event_tag_ad_assignment_feed']['range'])
+  """Processes ads.
+
+  """
+  placement_feed = Feed(project.task['auth'], project.task['sheet_id'],
+                        'placement_feed')
+  event_tag_profile_feed = Feed(project.task['auth'], project.task['sheet_id'],
+                                'event_tag_profile_feed')
+  ad_feed = Feed(project.task['auth'], project.task['sheet_id'], 'ad_feed')
+  ad_creative_assignment_feed = Feed(project.task['auth'],
+                                     project.task['sheet_id'],
+                                     'ad_creative_assignment_feed')
+
+  ad_placement_assignment_feed = Feed(project.task['auth'],
+                                      project.task['sheet_id'],
+                                      'ad_placement_assignment_feed')
+  ad_event_tag_assignment_feed = Feed(project.task['auth'],
+                                      project.task['sheet_id'],
+                                      'event_tag_ad_assignment_feed')
+
   ad_dao.map_feeds(ad_feed.feed, ad_creative_assignment_feed.feed,
                    ad_placement_assignment_feed.feed,
                    ad_event_tag_assignment_feed.feed, placement_feed.feed,
@@ -212,15 +256,19 @@ def ads():
 
 
 def traffic():
+  """Main function of Bulkdozer, performs the Bulkdozer job
+
+  """
   if project.verbose:
     print 'traffic'
 
   try:
     setup()
 
-    logger.log('Bulkdozer traffic job starting')
-    logger.log('Execution config is %s' % config.mode)
     if config.mode in ['ALWAYS', 'ONCE']:
+      logger.clear()
+      logger.log('Bulkdozer traffic job starting')
+      logger.log('Execution config is %s' % config.mode)
 
       if config.mode == 'ONCE':
         config.mode = 'OFF'
@@ -233,22 +281,29 @@ def traffic():
       placements()
       creatives()
       ads()
-    else:
-      logger.log(
-          'Nothing to do, please update exeuction flag in the Store tab for the process to run next time'
-      )
-  except:
-    logger.log(traceback.format_exc())
+
+      store.clear()
+  except Exception as error:
+    stack = traceback.format_exc()
+    print stack
+
+    logger.log(str(error))
   finally:
     logger.log('Bulkdozer traffic job ended')
 
 
 def test():
+  """For development purposes when debugging a specific entity, this function is handy to run just that entity.
+
+  """
   setup()
   ads()
 
 
 if __name__ == '__main__':
+  """Main entry point of Bulkdozer.
+
+  """
   project.load('traffic')
   traffic()
   #test()

@@ -15,10 +15,12 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "bucket":{
-    "auth":"service",
-    "bucket":{"field":{ "name":"bucket_bucket", "kind":"string", "order":2, "default":"" }},
-    "emails":{"field":{ "name":"bucket_emails", "kind":"string_list", "order":3, "default":"" }},
-    "groups":{"field":{ "name":"bucket_groups", "kind":"string_list", "order":4, "default":"" }}
-  }
+  "tasks":[
+    { "bucket":{
+      "auth":"service",
+      "bucket":{"field":{ "name":"bucket_bucket", "kind":"string", "order":2, "default":"" }},
+      "emails":{"field":{ "name":"bucket_emails", "kind":"string_list", "order":3, "default":"" }},
+      "groups":{"field":{ "name":"bucket_groups", "kind":"string_list", "order":4, "default":"" }}
+    }}
+  ]
 }

@@ -26,6 +26,7 @@ import csv
 import pprint
 import uuid
 import json
+from datetime import datetime, timedelta
 from time import sleep
 from StringIO import StringIO
 #from io import BytesIO
@@ -249,7 +250,10 @@ def datasets_access(auth, project_id, dataset_id, role='READER', emails=[], grou
 #  out_file.close()
 
 
-def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='WRITE_TRUNCATE', legacy=True):
+def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='WRITE_TRUNCATE', legacy=True, billing_project_id=None):
+  if not billing_project_id:
+    billing_project_id = project_id
+
   service = get_service('bigquery', 'v2', auth)
 
   body={
@@ -270,7 +274,7 @@ def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='W
   }
 
   #try:
-  job = service.jobs().insert(projectId=project_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
+  job = service.jobs().insert(projectId=billing_project_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
   job_wait(service, job)
 
   #print job
@@ -493,7 +497,7 @@ def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV
       resumable=True,
       chunksize=BIGQUERY_CHUNKSIZE
     )
- 
+
     body = {
       'configuration': {
         'load': {
@@ -546,8 +550,68 @@ def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV
     service.tables().insert(projectId=project.id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
 
 
+def incremental_rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_rows=1, disposition='WRITE_APPEND', billing_project_id=None):
+  if project.verbose: print 'BIGQUERY INCREMENTAL ROWS TO TABLE: ', project_id, dataset_id, table_id
+
+  #load the data in rows to BQ into a temp table
+  table_id_temp = table_id + str(uuid.uuid4()).replace('-','_')
+  rows_to_table(auth, project_id, dataset_id, table_id_temp, rows, schema, skip_rows, disposition)
+
+  #query the temp table to find the max and min date
+  start_date = _get_min_date_from_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
+  end_date = _get_max_date_from_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
+
+  #check if master table exists: if not create it, if so clear old data
+  if not check_table_exists(auth, project_id, dataset_id, table_id):
+    create_table(auth, project_id, dataset_id, table_id)
+  else:
+    _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id, start_date, end_date, billing_project_id=billing_project_id)
+
+  #append temp table to master
+  query = ('SELECT * FROM `' 
+    + project_id + '.' + dataset_id + '.' + table_id_temp + '` ')
+  query_to_table(auth, project_id, dataset_id, table_id, query, disposition, False, billing_project_id=billing_project_id)
+
+  #delete temp table
+  _drop_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
+
+
+def create_table(auth, project_id, dataset_id, table_id):
+  service = get_service('bigquery', 'v2', auth)
+
+  body = {
+    "tableReference": {
+      "projectId": project_id,
+      "tableId": table_id,
+      "datasetId": dataset_id,
+    }
+  }
+
+  service.tables().insert(projectId=project_id, datasetId=dataset_id, body=body).execute()
+
+def check_table_exists(auth, project_id, dataset_id, table_id):
+  service = get_service('bigquery', 'v2', auth)
+
+  table_list = service.tables().list(projectId=project_id, datasetId=dataset_id).execute()
+
+  while table_list and table_list['tables']:
+    for table in table_list['tables']:
+      if table_id == table['tableReference']['tableId']:
+        return True
+
+    table_list = service.tables().list(projectId=project_id, datasetId=dataset_id, pageToken=table_list['nextPageToken']).execute()
+
+
+  return False
+
+
 def tables_get(auth, project_id, name):
   dataset_id, table_id = name.split(':', 1)
+  service = get_service('bigquery', 'v2', auth)
+  return service.tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()
+
+
+def tables_get(auth, project_id, dataset_id, table_id):
   service = get_service('bigquery', 'v2', auth)
   return service.tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()
 
@@ -733,3 +797,94 @@ def _build_converter_array(schema, fields, col_count):
     converters = [lambda v: v] * col_count
   #print converters
   return converters
+
+
+def _drop_table(auth, project_id, dataset_id, table_id, billing_project_id=None):
+  if not billing_project_id:
+    billing_project_id = project_id
+
+  service = get_service('bigquery', 'v2', auth)
+  query = ('DROP TABLE `' 
+    + project_id + '.' + dataset_id + '.' + table_id + '` ')
+
+  body = {
+    "kind": "bigquery#queryRequest",
+    'query': query,
+    'defaultDataset': {
+      'datasetId' : dataset_id,
+    },
+    'useLegacySql': False,
+  }
+
+  job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute(run=False)
+  
+  max_date = job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
+
+
+def _get_max_date_from_table(auth, project_id, dataset_id, table_id, billing_project_id=None):
+  if not billing_project_id:
+    billing_project_id = project_id
+
+  service = get_service('bigquery', 'v2', auth)
+  query = ('SELECT MAX(Date) FROM `' 
+    + project_id + '.' + dataset_id + '.' + table_id + '` ')
+
+  body = {
+    "kind": "bigquery#queryRequest",
+    'query': query,
+    'defaultDataset': {
+      'datasetId' : dataset_id,
+    },
+    'useLegacySql': False,
+  }
+
+  job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute()
+  
+  return job['rows'][0]['f'][0]['v']
+
+
+def _get_min_date_from_table(auth, project_id, dataset_id, table_id, billing_project_id=None):
+  if not billing_project_id:
+    billing_project_id = project_id
+
+  service = get_service('bigquery', 'v2', auth)
+  query = ('SELECT MIN(Date) FROM `' 
+    + project_id + '.' + dataset_id + '.' + table_id + '` ')
+
+  body = {
+    "kind": "bigquery#queryRequest",
+    'query': query,
+    'defaultDataset': {
+      'datasetId' : dataset_id,
+    },
+    'useLegacySql': False,
+  }
+
+  job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute()
+  
+  return job['rows'][0]['f'][0]['v']
+
+#start and end date must be in format YYYY-MM-DD
+def _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id, start_date, end_date, billing_project_id=None):
+  if not billing_project_id:
+    billing_project_id = project_id
+
+  service = get_service('bigquery', 'v2', auth)
+
+  query = ('DELETE FROM `' 
+    + project_id + '.' + dataset_id + '.' + table_id + '` '
+    + 'WHERE Date >= "' + start_date + '"' + 'AND Date <= "' + end_date + '"'
+    )
+
+  body = {
+    "kind": "bigquery#queryRequest",
+    'query': query,
+    'defaultDataset': {
+      'datasetId' : dataset_id,
+    },
+    'useLegacySql': False,
+  }
+
+  job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute(run=False)
+  job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
+

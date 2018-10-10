@@ -84,7 +84,7 @@ def rows_header_trim(rows):
 
 
 def column_header_sanitize(cell):
-  return RE_HUMAN.sub('_', cell.title().replace('%', 'Percent')).strip('_')
+  return RE_HUMAN.sub('_', str(cell).title().replace('%', 'Percent')).strip('_')
 
 
 def row_header_sanitize(row):
@@ -94,9 +94,10 @@ def row_header_sanitize(row):
 def rows_header_sanitize(rows):
   first = True
   for row in rows:
-    if first: row = row_header_sanitize(row)
+    if first: 
+      row = row_header_sanitize(row)
+      first = False
     yield row
-
 
 def rows_percent_sanitize(rows):
   for row in rows:

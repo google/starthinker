@@ -81,6 +81,7 @@ RE_UUID = re.compile(r'(\s*)("setup"\s*:\s*{)')
 
 def get_project(filepath):
   """Loads json for Project Class.  Intended for this module only. Available as helper.
+     Able to load JSON with newlines ( strips all newlines before load ).
 
     Args:
       filepath: (string) The local file path to the recipe json file to load.
@@ -90,7 +91,7 @@ def get_project(filepath):
     """
 
   with open(filepath) as data_file:
-    return json.load(data_file)
+    return json.loads(data_file.read().replace('\n', ' '))
 
 
 def is_scheduled(project, task = None):

@@ -14,15 +14,17 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "bigquery":{
-    "auth":"user",
-    "from":{
-      "query":{"field":{ "name":"query", "kind":"text", "order":1, "default":"" }},
-      "legacy":{"field":{ "name":"legacy", "kind":"boolean", "order":4, "default":true }}
-    },
-    "to":{
-      "dataset":{"field":{ "name":"dataset", "kind":"string", "order":2, "default":"" }},
-      "view":{"field":{ "name":"view", "kind":"string", "order":3, "default":"" }}
-    }
-  }
+  "tasks":[
+    { "bigquery":{
+      "auth":"user",
+      "from":{
+        "query":{"field":{ "name":"query", "kind":"text", "order":1, "default":"" }},
+        "legacy":{"field":{ "name":"legacy", "kind":"boolean", "order":4, "default":true }}
+      },
+      "to":{
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":2, "default":"" }},
+        "view":{"field":{ "name":"view", "kind":"string", "order":3, "default":"" }}
+      }
+    }}
+  ]
 }

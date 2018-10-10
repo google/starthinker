@@ -30,9 +30,15 @@ Key benfits include:
 """
 
 
+import pysftp
+import datetime
+import os
+import sys
+from StringIO import StringIO
+
 from util.project import project
 from util.storage import parse_path, makedirs_safe, object_put, bucket_create
-from util.bigquery import query_to_rows, rows_to_table, json_to_table
+from util.bigquery import query_to_rows, rows_to_table, json_to_table, incremental_rows_to_table
 from util.sheets import sheets_read, sheets_write, sheets_clear
 from util.csv import rows_to_csv
 
@@ -40,7 +46,7 @@ from util.csv import rows_to_csv
 def get_rows(auth, source):
   """Processes standard read JSON block for dynamic loading of data.
   
-  Allows us to quickly pull a column or columns of data from and us it as an input 
+  Allows us to quickly pull a column or columns of data from and use it as an input 
   into a script. For example pull a list of ids from bigquery and act on each one.
 
   - When pulling a single column specify single_cell = True. Returns list AKA values. 
@@ -116,13 +122,13 @@ def get_rows(auth, source):
       yield row[0] if source.get('single_cell', False) else row
 
 
-def put_rows(auth, destination, filename, rows):
+def put_rows(auth, destination, filename, rows, variant=''):
   """Processes standard write JSON block for dynamic export of data.
   
   Allows us to quickly write the results of a script to a destination.  For example
   write the results of a DCM report into BigQuery.
 
-  - Will srite to multiple destinations if specified.
+  - Will write to multiple destinations if specified.
   - Extensible, add a handler to define a new destination ( be kind update the documentation json ).
 
   Include the following JSON in a recipe, then in the run.py handler when
@@ -172,6 +178,7 @@ def put_rows(auth, destination, filename, rows):
     destination: (json) A json block resembling var_json described above.
     filename: (string) A unique filename if writing to medium requiring one, Usually gnerated by script.
     rows ( list ) The data being written as a list object.
+    variant ( string ) Appends this to the destination name to create a variant ( for example when downloading multiple tabs in a sheet ).
 
   Returns:
     If single_cell is False: Returns a list of row values [[v1], [v2], ... ]
@@ -185,10 +192,23 @@ def put_rows(auth, destination, filename, rows):
         destination['bigquery'].get('auth', auth),
         destination['bigquery'].get('project_id', project.id),
         destination['bigquery']['dataset'],
-        destination['bigquery']['table'],
+        destination['bigquery']['table'] + variant,
         rows,
         destination['bigquery'].get('schema', []),
         destination['bigquery'].get('disposition', 'WRITE_TRUNCATE'),
+      )
+    
+    elif destination['bigquery'].get('is_incremental_load', False) == True:
+      incremental_rows_to_table( 
+        destination['bigquery'].get('auth', auth),
+        destination['bigquery'].get('project_id', project.id),
+        destination['bigquery']['dataset'],
+        destination['bigquery']['table'] + variant,
+        rows,
+        destination['bigquery'].get('schema', []),
+        destination['bigquery'].get('skip_rows', 1),
+        destination['bigquery'].get('disposition', 'WRITE_APPEND'),
+        billing_project_id=project.id
       )
 
     else:
@@ -196,7 +216,7 @@ def put_rows(auth, destination, filename, rows):
         destination['bigquery'].get('auth', auth),
         destination['bigquery'].get('project_id', project.id),
         destination['bigquery']['dataset'],
-        destination['bigquery']['table'],
+        destination['bigquery']['table'] + variant,
         rows,
         destination['bigquery'].get('schema', []),
         destination['bigquery'].get('skip_rows', 1),
@@ -205,11 +225,11 @@ def put_rows(auth, destination, filename, rows):
 
   if 'sheets' in destination:
     if destination['sheets'].get('delete', False): 
-      sheets_clear(auth, destination['sheets']['sheet'], destination['sheets']['tab'], destination['sheets']['range'])
-    sheets_write(auth, destination['sheets']['sheet'], destination['sheets']['tab'], destination['sheets']['range'], rows) 
+      sheets_clear(auth, destination['sheets']['sheet'], destination['sheets']['tab'] + variant, destination['sheets']['range'])
+    sheets_write(auth, destination['sheets']['sheet'], destination['sheets']['tab'] + variant, destination['sheets']['range'], rows) 
 
   if 'directory' in destination:
-    file_out = destination['directory'] + filename
+    file_out = destination['directory'] + variant + filename
     if project.verbose: print 'SAVING', file_out
     makedirs_safe(parse_path(file_out))
     with open(file_out, 'wb') as save_file:
@@ -220,7 +240,7 @@ def put_rows(auth, destination, filename, rows):
     bucket_create(auth, project.id, destination['storage']['bucket'])
 
     # put the file
-    file_out = destination['storage']['bucket'] + ':' + destination['storage']['path'] + filename
+    file_out = destination['storage']['bucket'] + ':' + destination['storage']['path'] + variant + filename
     if project.verbose: print 'SAVING', file_out
     object_put(auth, file_out, rows_to_csv(rows))
 
@@ -230,3 +250,32 @@ def put_rows(auth, destination, filename, rows):
 
   if 'email' in destination:
     pass
+
+  if 'sftp' in destination:
+    sys.stderr = StringIO();
+
+    cnopts = pysftp.CnOpts()
+    cnopts.hostkeys = None
+
+    file_prefix = 'report'
+    if 'file_prefix' in destination['sftp']:
+      file_prefix = destination['sftp'].get('file_prefix')
+      del destination['sftp']['file_prefix']
+
+    #sftp_configs = destination['sftp']
+    #sftp_configs['cnopts'] = cnopts
+    #sftp = pysftp.Connection(**sftp_configs)
+
+    sftp = pysftp.Connection(host=destination['sftp']['host'], username=destination['sftp']['username'], password=destination['sftp']['password'], port=destination['sftp']['port'], cnopts=cnopts)
+
+    tmp_file_name = '/tmp/%s_%s.csv' % (file_prefix, datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S'))
+
+    tmp_file = open(tmp_file_name, 'wb')
+    tmp_file.write(rows_to_csv(rows).read())
+    tmp_file.close()
+
+    sftp.put(tmp_file_name)
+
+    os.remove(tmp_file_name)
+
+    sys.stderr = sys.__stderr__;

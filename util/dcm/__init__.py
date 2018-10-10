@@ -65,6 +65,8 @@ def _retry(job, retries=10, wait=5):
         pass # already exists ( ignore )
       else:
         raise
+    else:
+      raise
 
   return data
 
@@ -81,12 +83,12 @@ def get_profile_id(auth, account_id):
 
     # take the first profile for admin
     if '@dcm' in p['userName']: profile_admin = p_id
+    elif '@dfa' in p['userName']: profile_admin = p_id
 
     # try to find a network profile if exists
     if a_id == account_id: 
       profile_network = p_id
       break
-
   # return admin if exists, network if exists, and finally throw exception
   if profile_network or profile_admin: return profile_admin or profile_network
   else: raise Exception('Add your user profile to DCM account %s.' % account_id)

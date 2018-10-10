@@ -15,6 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
+"""Handles creation and updates of creative asset association.
+
+"""
 
 import json
 
@@ -25,8 +28,15 @@ from traffic.creative import CreativeDAO
 
 
 class CreativeAssociationDAO(BaseDAO):
+  """Creative Association data access object.
+
+  Inherits from BaseDAO and implements creative association specific logic for
+  creating and
+  updating creative association.
+  """
 
   def __init__(self, auth, profile_id):
+    """Initializes CreativeAssociationDAO with profile id and authentication scheme."""
     super(CreativeAssociationDAO, self).__init__(auth, profile_id)
 
     self._service = self.service.campaignCreativeAssociations()
@@ -36,14 +46,36 @@ class CreativeAssociationDAO(BaseDAO):
     self.creative_dao = CreativeDAO(auth, profile_id)
 
   def get(self, feed_item):
+    """It is not possible to retrieve creative associations from DCM,
+
+    and they are read-only, so the get method just returns None,
+    it does this to avoid errors when this is invoked polimorfically.
+
+    For more information on the get method, refer to BaseDAO.
+
+    Args:
+      feed_item: Feed item representing the creative association from the
+        Bulkdozer feed.
+
+    Returns:
+      None.
+    """
     return None
 
   def process(self, feed_item):
+    """Processes a feed item by creating the creative association in DCM.
 
-    if feed_item[FieldMap.
-                 CREATIVE_ID] and feed_item[FieldMap.
-                                            CAMPAIGN_ID] and not feed_item[FieldMap.
-                                                                           CAMPAIGN_CREATIVE_ASSOCIATION_ID]:
+    Args:
+      feed_item: Feed item representing the creative association from the
+        Bulkdozer feed.
+
+    Returns:
+      The newly created object from DCM.
+    """
+
+    if feed_item.get(FieldMap.CREATIVE_ID, None) and feed_item.get(
+        FieldMap.CAMPAIGN_ID, None) and not feed_item.get(
+            FieldMap.CAMPAIGN_CREATIVE_ASSOCIATION_ID, None):
       campaign = self.campaign_dao.get(feed_item)
       creative = self.creative_dao.get(feed_item)
 
@@ -56,6 +88,6 @@ class CreativeAssociationDAO(BaseDAO):
               body=association))
 
       feed_item[FieldMap.CAMPAIGN_CREATIVE_ASSOCIATION_ID] = '%s|%s' % (
-        campaign['id'], creative['id'])
+          campaign['id'], creative['id'])
 
       return result

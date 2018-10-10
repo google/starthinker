@@ -14,19 +14,21 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "dbm":{
-    "auth":"user",
-    "report":{
-      "report_id":{"field":{ "name":"dbm_report_id", "kind":"integer", "order":1, "default":"" }},
-      "name":{"field":{ "name":"dbm_report_name", "kind":"string", "order":2, "default":"" }}
-    },
-    "out":{
-      "bigquery":{
-        "dataset":{"field":{ "name":"dbm_dataset", "kind":"string", "order":3, "default":"" }},
-        "table":{"field":{ "name":"dbm_table", "kind":"string", "order":4, "default":"" }},
-        "schema":{"field":{ "name":"dbm_schema", "kind":"json", "order":5, "default":"[]" }}
-      }
-    },
-    "datastudio":{"field":{ "name":"dbm_datastudio", "kind":"boolean", "order":5, "default":true }}
-  }
+  "tasks":[
+    { "dbm":{
+      "auth":"user",
+      "report":{
+        "report_id":{"field":{ "name":"dbm_report_id", "kind":"integer", "order":1, "default":"" }},
+        "name":{"field":{ "name":"dbm_report_name", "kind":"string", "order":2, "default":"" }}
+      },
+      "out":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"dbm_dataset", "kind":"string", "order":3, "default":"" }},
+          "table":{"field":{ "name":"dbm_table", "kind":"string", "order":4, "default":"" }},
+          "schema":{"field":{ "name":"dbm_schema", "kind":"json", "order":5, "default":"[]" }}
+        }
+      },
+      "datastudio":{"field":{ "name":"dbm_datastudio", "kind":"boolean", "order":5, "default":true }}
+    }}
+  ]
 }

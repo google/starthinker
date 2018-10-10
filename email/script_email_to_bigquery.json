@@ -1,0 +1,38 @@
+{ 
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
+    "icon":"file_download",
+    "product":"Google API",
+    "title":"Email Fetch",
+    "description":"Import emailed csv or excel into a BigQuery table.",
+    "instructions":[
+      "The person executing this recipe must be the recipient of the email.",
+      "Schedule a CSV or Excel to be sent to <b>{{ EMAIL_TOKEN }}</b>.",
+      "Give a regular expression to match the email subject, link or attachment.",
+      "The data downloaded will overwrite the table specified."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "email":{
+      "auth":"user",
+      "in":{
+        "email":{
+          "from":{"field":{ "name":"email_from", "kind":"string", "order":1, "default":"" }}.
+          "to":{"field":{ "name":"email_to", "kind":"string", "order":2, "default":"" }}.
+          "subject":{"field":{ "name":"subject", "kind":"string", "order":3, "default":"" }},
+          "link":{"field":{ "name":"link", "kind":"string", "order":4, "default":"" }},
+          "attachment":{"field":{ "name":"attachment", "kind":"string", "order":5, "default":"" }}
+        }
+      },
+      "out":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":6, "default":"" }},
+          "table":{"field":{ "name":"table", "kind":"string", "order":7, "default":"" }}
+        }
+      }
+    }}
+  ]
+}

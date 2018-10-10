@@ -2,29 +2,63 @@
   "script":{
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
-    "open":true,
-    "icon":"file_download",
+    "icon":"storage",
     "product":"DBM",
-    "title":"Entity Read To BigQuery",
-    "description":"Moves all entity read files into BigQuery.",
-    "instructions":[
-      "Specify a list of partner ids, comma seperated.",
-      "Files are <a href='https://developers.google.com/bid-manager/guides/entity-read/overview'>imported from storage</a> using your user credentials.",
-      "Both public and private files are imported.",
-      "Each file gets a table in the dataset, prefixed with <strong>'Entity_'</strong>.",
-      "CAUTION: Entity Read Files are ONLY partner level."
+    "title":"Entity Read Files",
+    "image":"https://storage.googleapis.com/starthinker-ui/entity_read_files.png",
+    "open_surce":"https://github.com/google/starthinker/blob/master/solutions/erf.json",
+    "description":"Import public and private <a href='https://developers.google.com/bid-manager/guides/entity-read/format-v2' target='_blank'>Entity Read Files</a> into a BigQuery dataset.<br/>CAUTION: PARTNER ONLY, ADVERTISER FILTER IS NOT APPLIED.",
+    "requirements":{
+      "dbm":true,
+      "dcm":false,
+      "ds":false,
+      "trix":false,
+      "datastudio":false,
+      "bigquery":true
+    },
+    "categories":["data transfer"],
+    "pitches":[
+      "Provide Entity Read Files to client.",
+      "Automatically updated every 24 hours.",
+      "Empower clients to run data mining.",
+      "Provide schema definitions.",
+      "Entity Read Files ONLY work at the partner level."
     ],
-    "authors":["mauriciod@google.com", "pkenjora@google.com"]
+    "impacts":{
+      "spend optimization":50,
+      "spend growth":20,
+      "time savings":100,
+      "account health":100,
+      "csat improvement":80
+    },
+    "instructions":[
+      "Entity Read Files ONLY work at the partner level.",
+      "Advertiser filter is NOT APPLIED.",
+      "Specify one or more partners to be moved into the dataset.",
+      "Add client group or email to share dataset with client."
+    ],
+    "authors":["kenjora@google.com"]
   },
-  "entity":{
-    "auth":"user",
-    "version":0.2,
-    "prefix":"Entity",
-    "accounts": {"field":{ "name":"partners", "kind":"integer_list", "order":1, "default":"[]" }},
-    "entities":["LineItem", "Creative", "UserList", "Partner", "Advertiser", "InsertionOrder", "Pixel", "InventorySource", "CustomAffinity", "UniversalChannel", "UniversalSite", "SupportedExchange", "DataPartner", "GeoLocation", "Language", "DeviceCriteria", "Browser", "Isp"],
-    "out":{
+  "setup":{
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "hour":[5]
+  },
+  "tasks":[
+    { "dataset":{
       "auth":"service",
-      "dataset": {"field":{ "name":"entity_dataset", "kind":"string", "order":3, "default": "" }}
-    }
-  }
+      "dataset":{ "constant":"dataset" }
+    }},
+    { "entity":{
+      "auth":"user",
+      "prefix":"Entity",
+      "entities":["Campaign", "LineItem", "Creative", "UserList", "Partner", "Advertiser", "InsertionOrder", "Pixel", "InventorySource", "CustomAffinity", "UniversalChannel", "UniversalSite", "SupportedExchange", "DataPartner", "GeoLocation", "Language", "DeviceCriteria", "Browser", "Isp"],
+      "accounts": {"constant":"dbm_accounts" },
+      "out":{
+        "bigquery":{
+          "auth":"service",
+          "dataset": { "constant":"dataset" }
+        }
+      }
+    }}
+  ]
 }
