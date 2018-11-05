@@ -60,6 +60,8 @@ def _retry(job, key=None, retries=10, wait=30):
         pass  # already exists ( ignore )
       else:
         raise
+    else:
+      raise
 
 
 def _process_filters(partners, advertisers, filters, project_id, dataset_id, auth='user'):
@@ -68,13 +70,13 @@ def _process_filters(partners, advertisers, filters, project_id, dataset_id, aut
   for p in (partners or []):
     structures.append({
       'type':'FILTER_PARTNER',
-      'value':p
+      'value':int(p)
     })
 
   for a in (advertisers or []):
     structures.append({
       'type':'FILTER_ADVERTISER',
-      'value':a
+      'value':int(a)
     })
 
   for f in (filters or []):

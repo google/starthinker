@@ -39,6 +39,23 @@ def object_compare(actual, expected):
 
 
 # check if sheet matches given values
+#    { "test": {
+#      "auth":"user",
+#      "sheets": {
+#        "url":"https://docs.google.com/spreadsheets/d/1h-Ic-DlCv-Ct8-k-VJnpo_BAkqsS70rNe0KKeXKJNx0/edit?usp=sharing",
+#        "tab":"Sheet_Clear",
+#        "range":"A1:C",
+#        "values":[
+#          ["Animal", "Age", "Weight ( lbs )"],
+#          ["dog", 7, 67],
+#          ["cat", 5, 1.5],
+#          ["bird", 12, 0.44],
+#          ["lizard", 22, 1],
+#          ["dinosaur", 1600, 273.97]
+#        ]
+#      }
+#    }}
+
 def sheets():
 
   rows = sheets_read(
@@ -53,6 +70,26 @@ def sheets():
 
 
 # check if bigquery table has given values or has data
+#    { "test": {
+#      "auth":"user",
+#      "bigquery":{
+#        "dataset":"Test",
+#        "table":"Sheet_To_BigQuery",
+#        "schema":[
+#          {"name": "Animal", "type": "STRING"},
+#          {"name": "Age", "type": "INTEGER"},
+#          {"name": "Weight_lbs", "type": "FLOAT"}
+#        ],
+#        "values":[
+#          ["dog", 7, 67],
+#          ["cat", 5, 1.5],
+#          ["bird", 12, 0.44],
+#          ["lizard", 22, 1],
+#          ["dinosaur", 1600, 273.97]
+#        ]
+#      }
+#    }}
+
 def bigquery():
 
   # check schema if given ( check independent of values )

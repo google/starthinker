@@ -14,23 +14,25 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "lineitem":{
-    "auth":"user",
-    "read":{
-      "line_items": {
-        "single_cell":true,
-        "bigquery":{
-          "dataset":{"field":{ "name":"id_dataset", "kind":"string", "order":1, "default":"" }},
-          "query":{"field":{ "name":"id_query", "kind":"string", "order":2, "default":"SELECT * FROM `Dataset.Table`;" }},
-          "legacy":{"field":{ "name":"id_legacy", "kind":"boolean", "order":3, "default":false }}
-        }
-      },
-      "out":{
-        "bigquery":{
-          "dataset":{"field":{ "name":"destination_dataset", "kind":"string", "order":4, "default":"" }},
-          "table":{"field":{ "name":"destination_table", "kind":"string", "order":5, "default":"" }}
+  "tasks":[
+    { "lineitem":{
+      "auth":"user",
+      "read":{
+        "line_items": {
+          "single_cell":true,
+          "bigquery":{
+            "dataset":{"field":{ "name":"id_dataset", "kind":"string", "order":1, "default":"" }},
+            "query":{"field":{ "name":"id_query", "kind":"string", "order":2, "default":"SELECT * FROM `Dataset.Table`;" }},
+            "legacy":{"field":{ "name":"id_legacy", "kind":"boolean", "order":3, "default":false }}
+          }
+        },
+        "out":{
+          "bigquery":{
+            "dataset":{"field":{ "name":"destination_dataset", "kind":"string", "order":4, "default":"" }},
+            "table":{"field":{ "name":"destination_table", "kind":"string", "order":5, "default":"" }}
+          }
         }
       }
-    }
-  }
+    }}
+  ]
 }

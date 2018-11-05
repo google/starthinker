@@ -30,6 +30,7 @@ This does not change or augment the standard API calls other than the following:
 """
 
 import json
+import traceback
 from time import sleep
 from googleapiclient.errors import HttpError
 
@@ -287,5 +288,21 @@ def API_DCM(auth, iterate=False):
     # fetch discovery uri using: wget https://www.googleapis.com/discovery/v1/apis/dfareporting/internalv3.0/rest > util/dcm/internalv30_uri.json
     configuration['version'] = 'internalv3.0'
     configuration['uri'] = '%sutil/dcm/internalv30_uri.json' % EXECUTE_PATH
+
+  return API(configuration)
+
+
+def API_SNIPPETS(auth, iterate=False):
+  """Snippets helper configuration for Google API. Defines agreed upon version.
+  """
+
+  # fetch discovery uri using: wget https://snippets-hrdb.googleplex.com/_ah/api/discovery/v1/apis/snippets/v1/rest
+  configuration = {
+    'api':'snippets',
+    'version':'v1',
+    'auth':auth,
+    'iterate':iterate,
+    'uri':'%sutil/snippets/snippets_v1.json' % EXECUTE_PATH
+  }
 
   return API(configuration)

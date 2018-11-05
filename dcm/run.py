@@ -16,9 +16,31 @@
 #
 ###########################################################################
 
+"""Script that executes { "dcm":{...}} task.
+
+This script translates JSON instructions into operations on DCM reporting.
+It deletes, or creates, and/or downloads DCM reports.  See JSON files in
+this directory for examples of operations.
+
+This script uses put_rows as defined in util/data/README.md. This allows
+multiple destinations for downloaded reports. To add a destination modify
+the util/data/__init__.py functions.
+
+Note
+
+The underlying libraries use streaming download buffers, no disk is used.
+Buffers are controlled in setup.py.
+For superusers, this script will use the internal API, bypassing the 
+need for profiles.
+Reports uploaded to BigQuery use automatic schema detection based on official
+proto files.  
+
+"""
+
 from util.project import project 
 from util.data import put_rows
 from util.dcm import report_delete, report_build, report_create, report_file, report_to_rows, report_clean, report_schema
+
 
 def dcm():
   if project.verbose: print 'DCM'

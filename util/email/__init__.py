@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@ from util.auth import get_service
 from util.regexp import parse_url, date_to_str
 from util.storage import parse_filename
 
-# ADD RETRY
 
 def _retry(job, retries=10, wait=5):
   try:
@@ -52,8 +51,7 @@ def _retry(job, retries=10, wait=5):
         return _retry(job, retries - 1, wait * 2)
       elif json.loads(e.content)['error']['code'] == 409:
         return # already exists ( ignore )
-    # raise all other errors
-    raise
+    raise # raise all other errors
 
 
 def _list_unique(seq):
@@ -100,46 +98,48 @@ def _email_links(service, message, link_regexp, download=False):
   # filter links
   if link_filter: links = [link for link in links if link_filter.match(link)]
 
-
   # for downloads convert links into files and data
-  if download:
-    for i, link in enumerate(links):
-      try: links[i] = (parse_filename(link, url=True), BytesIO(urlopen(link).read()))
+  for link in links: 
+    if download:
+      try: yield parse_filename(link, url=True), BytesIO(urlopen(link).read())
       except: 'ERROR: Unable To Download', link
-
-  return links
+    else:
+      yield link
 
 
 def _email_attachments(service, message, attachment_regexp):
-  attachments = []
+
   file_filter = re.compile(r'%s' % attachment_regexp) if attachment_regexp else None
 
   try:
     for part in message['payload']['parts']:
+
       if part['filename']:
-        if 'data' in part['body']:
-          data=part['body']['data']
-        else:
-          att_id=part['body']['attachmentId']
-          att=_retry(service.users().messages().attachments().get(userId='me', messageId=message['id'], id=att_id))
-          data=att['data']
-        file_data = BytesIO(base64.urlsafe_b64decode(data.encode('UTF-8')))
 
         # filter regexp
-        if not file_filter or file_filter.match(part['filename']): attachments.append((part['filename'], file_data))
+        if not file_filter or file_filter.match(part['filename']): 
+
+          if 'data' in part['body']:
+            data=part['body']['data']
+
+          else:
+            att_id=part['body']['attachmentId']
+            att=_retry(service.users().messages().attachments().get(userId='me', messageId=message['id'], id=att_id))
+            data=att['data']
+
+          file_data = BytesIO(base64.urlsafe_b64decode(data.encode('UTF-8')))
+          yield part['filename'], file_data
 
   except errors.HttpError, e:
     print 'EMAIL ATTACHMENT ERROR:', str(e)
-
-  return attachments
 
 
 def _email_message(service, message, link_regexp, attachment_regexp, download=False):
   return {
     'subject':_get_subject(message),
     'snippet':message['snippet'],
-    'links':_email_links(service, message, link_regexp, download),
-    'attachments':_email_attachments(service, message, attachment_regexp),
+    'links':[] if link_regexp is None else _email_links(service, message, link_regexp, download),
+    'attachments':[] if attachment_regexp is None else _email_attachments(service, message, attachment_regexp),
   } 
 
 
@@ -154,46 +154,40 @@ def _email_find(service, email_from, email_to, date_min=None, date_max=None):
   return messages
 
 
-def get_email_attachments(auth, email_from, email_to, date_min, date_max, subject_regexp=None, attachment_regexp=None):
+def get_email_attachments(auth, email_from, email_to, subject_regexp=None, attachment_regexp=None, date_min=None, date_max=None):
   if project.verbose: print 'GETTING EMAIL ATTACHMENTS'
-  attachements = []
   service = get_service('gmail', 'v1', auth)
   messages = _email_find(service, email_from, email_to, date_min, date_max)
   subject_filter = re.compile(r'%s' % subject_regexp) if subject_regexp else None
   for message in messages:
     message = _retry(service.users().messages().get(userId='me', id=message['id']))
     if subject_filter is None or subject_filter.match(_get_subject(message)):
-      attachements.extend(_email_attachments(service, message, attachment_regexp))
-  return attachements
+      yield _email_attachments(service, message, attachment_regexp)
 
 
-def get_email_links(auth, email_from, email_to, date_min, date_max, subject_regexp=None, link_regexp=None, download=False):
+def get_email_links(auth, email_from, email_to, subject_regexp=None, link_regexp=None, download=False, date_min=None, date_max=None):
   if project.verbose: print 'GETTING EMAIL LINKS'
-  links = []
   service = get_service('gmail', 'v1', auth)
   messages = _email_find(service, email_from, email_to, date_min, date_max)
   subject_filter = re.compile(r'%s' % subject_regexp) if subject_regexp else None
   for message in messages:
     message = _retry(service.users().messages().get(userId='me', id=message['id']))
     if subject_filter is None or subject_filter.match(_get_subject(message)):
-      links.extend(_email_links(service, message, link_regexp, download))
-  return links
+      yield _email_links(service, message, link_regexp, download)
 
 
-def get_email_messages(auth, email_from, email_to, date_min, date_max, subject_regexp=None, link_regexp=None, attachment_regexp=None, download=False):
+def get_email_messages(auth, email_from, email_to,  subject_regexp=None, link_regexp=None, attachment_regexp=None, download=False, date_min=None, date_max=None):
   if project.verbose: print 'GETTING EMAILS'
-  emails = []
   service = get_service('gmail', 'v1', auth)
   messages = _email_find(service, email_from, email_to, date_min, date_max)
   subject_filter = re.compile(r'%s' % subject_regexp) if subject_regexp else None
   for message in messages:
     message = _retry(service.users().messages().get(userId='me', id=message['id']))
     if subject_filter is None or subject_filter.match(_get_subject(message)):
-      emails.append(_email_message(service, message, link_regexp, attachment_regexp, download))
-  return emails
+      yield _email_message(service, message, link_regexp, attachment_regexp, download)
 
 
-def send_email(auth, email_to, email_from, email_cc, subject, text, html):
+def send_email(auth, email_to, email_from, email_cc, subject, text, html=None):
   if project.verbose: print 'SENDING EMAIL', email_to
   
   service = get_service('gmail', 'v1', auth)
@@ -205,9 +199,11 @@ def send_email(auth, email_to, email_from, email_cc, subject, text, html):
   message['from'] = email_from
   message['subject'] = subject
   text_part = MIMEText(text, 'plain', 'UTF-8')
-  html_part = MIMEText(html, 'html', 'UTF-8')
   message.attach(text_part)
-  message.attach(html_part)
+
+  if html: 
+    html_part = MIMEText(html, 'html', 'UTF-8')
+    message.attach(html_part)
   
   _retry(service.users().messages().send(userId='me', body={'raw': base64.urlsafe_b64encode(message.as_string())}))
   

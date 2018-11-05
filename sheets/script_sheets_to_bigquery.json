@@ -15,17 +15,19 @@
     "authors":["mauriciod@google.com"],
     "private":["kenjora@google.com"]
   },
-  "sheets":{
-    "auth":"user",
-    "sheet":{"field":{ "name":"sheets_sheet", "kind":"string", "order":1, "default":"" }},
-    "tab":{"field":{ "name":"sheets_tab", "kind":"string", "order":2, "default":"" }},
-    "range":{"field":{ "name":"sheets_range", "kind":"string", "order":3, "default":"" }},
-    "header":{"field":{ "name":"sheets_header", "kind":"boolean", "order":9, "default":true }},
-    "out":{
-      "bigquery":{
-        "dataset":{"field":{ "name":"sheets_dataset", "kind":"string", "order":7, "default":"" }},
-        "table":{"field":{ "name":"sheets_table", "kind":"string", "order":8, "default":"" }}
+  "tasks":[
+    { "sheets":{
+      "auth":"user",
+      "sheet":{"field":{ "name":"sheets_sheet", "kind":"string", "order":1, "default":"" }},
+      "tab":{"field":{ "name":"sheets_tab", "kind":"string", "order":2, "default":"" }},
+      "range":{"field":{ "name":"sheets_range", "kind":"string", "order":3, "default":"" }},
+      "header":{"field":{ "name":"sheets_header", "kind":"boolean", "order":9, "default":true }},
+      "out":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"sheets_dataset", "kind":"string", "order":7, "default":"" }},
+          "table":{"field":{ "name":"sheets_table", "kind":"string", "order":8, "default":"" }}
+        }
       }
-    }
-  }
+    }}
+  ]
 }

@@ -15,24 +15,26 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "google_api":{
-    "auth":"user",
-    "api":{ "field":{ "name":"api", "kind":"string", "order":1, "default":"doubleclickbidmanager" }},
-    "version": { "field":{ "name":"version", "kind":"string", "order":2, "default":"v1" }},
-    "function":{ "field":{ "name":"function", "kind":"string", "order":3, "default":"reports.files.list" }},
-    "kwargs":{ "field":{ "name":"kwargs", "kind":"json", "order":4, "default":{
-        "accountId": 7480,
-        "profileId": 2782211,
-        "reportId": 132847265
-    }}},
-    "iterate":{ "field":{ "name":"iterate", "kind":"boolean", "order":5, "default":false }},
-    "out": {
-      "bigquery":{
-        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":6, "default":"" }},
-        "table":{ "field":{ "name":"table", "kind":"string", "order":7, "default":"" }},
-        "schema":{ "field":{ "name":"schema", "kind":"json", "order":9, "default":[] }},
-        "format":"JSON"
+  "tasks":[
+    { "google_api":{
+      "auth":"user",
+      "api":{ "field":{ "name":"api", "kind":"string", "order":1, "default":"doubleclickbidmanager", "description":"See developer guide." }},
+      "version": { "field":{ "name":"version", "kind":"string", "order":2, "default":"v1", "description":"Must be supported version." }},
+      "function":{ "field":{ "name":"function", "kind":"string", "order":3, "default":"reports.files.list", "description":"Full function dot notation path." }},
+      "kwargs":{ "field":{ "name":"kwargs", "kind":"json", "order":4, "default":{
+          "accountId": 7480,
+          "profileId": 2782211,
+          "reportId": 132847265
+      }, "description":"Dictionray object of name value pairs." }},
+      "iterate":{ "field":{ "name":"iterate", "kind":"boolean", "order":5, "default":false, "description":"Is the result a list?" }},
+      "out": {
+        "bigquery":{
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":6, "default":"", "description":"Existing dataset in BigQuery." }},
+          "table":{ "field":{ "name":"table", "kind":"string", "order":7, "default":"", "description":"Table to write API call results to." }},
+          "schema":{ "field":{ "name":"schema", "kind":"json", "order":9, "default":[], "description":"Schema provided in JSON list format or empty list." }},
+          "format":"JSON"
+        }
       }
-    }
-  }
+    }}
+  ]
 }

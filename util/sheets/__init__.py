@@ -20,6 +20,7 @@
 import re
 import time
 import pprint
+import json
 
 from util.auth import get_service
 from util.project import project
@@ -72,11 +73,11 @@ def sheets_tab_id(auth, sheet_url, sheet_tab):
   return sheets_id(sheet_url), None
 
 
-def sheets_read(auth, sheet_url, sheet_tab, sheet_range):
+def sheets_read(auth, sheet_url, sheet_tab, sheet_range, retries=10):
   if project.verbose: print 'SHEETS READ', sheet_url, sheet_tab, sheet_range
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
-  return _retry(service.spreadsheets().values().get(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range)), 'values')
+  return _retry(service.spreadsheets().values().get(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range)), 'values', retries=retries)
 
 
 # TIP: Specify sheet_range as 'Tab!A1' coordinate, the API will figure out length and height based on data

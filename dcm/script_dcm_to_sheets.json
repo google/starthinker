@@ -15,19 +15,21 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "dcm":{
-    "auth":"user",
-    "report":{
-      "account":{"field":{ "name":"account", "kind":"integer", "order":2, "default":"" }},
-      "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":3, "default":"" }},
-      "name":{"field":{ "name":"report_name", "kind":"string", "order":4, "default":"" }}
-    },
-    "out":{
-     "sheets":{
-        "sheet":{"field":{ "name":"sheet", "kind":"string", "order":5, "default":"" }},
-        "tab":{"field":{ "name":"tab", "kind":"string", "order":6, "default":"" }},
-        "range":"A1"
+  "tasks":[
+    { "dcm":{
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account", "kind":"integer", "order":2, "default":"" }},
+        "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":3, "default":"" }},
+        "name":{"field":{ "name":"report_name", "kind":"string", "order":4, "default":"" }}
+      },
+      "out":{
+       "sheets":{
+          "sheet":{"field":{ "name":"sheet", "kind":"string", "order":5, "default":"" }},
+          "tab":{"field":{ "name":"tab", "kind":"string", "order":6, "default":"" }},
+          "range":"A1"
+        }
       }
-    }
-  }
+    }}
+  ]
 }

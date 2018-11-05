@@ -39,7 +39,7 @@ from setup import UI_SERVICE
 def get_service():
   credentials = ServiceAccountCredentials.from_json_keyfile_name(UI_SERVICE, ['https://www.googleapis.com/auth/devstorage.full_control'])
   http = credentials.authorize(httplib2.Http())
-  return discovery.build('storage', 'v1', http=http)
+  return discovery.build('storage', 'v1', http=http, cache_discovery=False)
 
 
 def auth_decode(value):

@@ -79,18 +79,22 @@ from datetime import datetime
 RE_UUID = re.compile(r'(\s*)("setup"\s*:\s*{)')
 
 
-def get_project(filepath):
+def get_project(filepath, debug=False):
   """Loads json for Project Class.  Intended for this module only. Available as helper.
+     Able to load JSON with newlines ( strips all newlines before load ).
 
     Args:
       filepath: (string) The local file path to the recipe json file to load.
+      debug: (boolean) If true, newlines are not stripped to correctly identify error line numbers.
 
     Returns:
       Json of recipe file.
     """
 
   with open(filepath) as data_file:
-    return json.load(data_file)
+    data = data_file.read()
+    if not debug: data = data.replace('\n', ' ')
+    return json.loads(data)
 
 
 def is_scheduled(project, task = None):

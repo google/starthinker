@@ -15,13 +15,25 @@
 #  limitations under the License.
 #
 ###########################################################################
+"""Handles creation and updates of landing pages.
+
+"""
 
 from traffic.dao import BaseDAO
 from traffic.feed import FieldMap
 
+
 class LandingPageDAO(BaseDAO):
+  """Landing page data access object.
+
+  Inherits from BaseDAO and implements landing page specific logic for creating
+  and
+  updating landing pages.
+  """
 
   def __init__(self, auth, profile_id):
+    """Initializes LandingPageDAO with profile id and authentication scheme."""
+
     super(LandingPageDAO, self).__init__(auth, profile_id)
 
     self._service = self.service.advertiserLandingPages()
@@ -31,12 +43,34 @@ class LandingPageDAO(BaseDAO):
     self._entity = 'LANDING_PAGE'
 
   def _process_update(self, item, feed_item):
-    item['name'] = feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_NAME]
-    item['url'] = feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_URL]
+    """Updates an landing page based on the values from the feed.
+
+    Args:
+      item: Object representing the landing page to be updated, this object is
+        updated directly.
+      feed_item: Feed item representing landing page values from the Bulkdozer
+        feed.
+    """
+
+    item['name'] = feed_item.get(FieldMap.CAMPAIGN_LANDING_PAGE_NAME, None)
+    item['url'] = feed_item.get(FieldMap.CAMPAIGN_LANDING_PAGE_URL, None)
 
   def _process_new(self, feed_item):
+    """Creates a new landing page DCM object from a feed item representing a landing page from the Bulkdozer feed.
+
+    This function simply creates the object to be inserted later by the BaseDAO
+    object.
+
+    Args:
+      feed_item: Feed item representing the landing page from the Bulkdozer
+        feed.
+
+    Returns:
+      An landing page object ready to be inserted in DCM through the API.
+
+    """
     return {
-      'name': feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_NAME],
-      'url': feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_URL],
-      'advertiserId': feed_item[FieldMap.ADVERTISER_ID]
+        'name': feed_item.get(FieldMap.CAMPAIGN_LANDING_PAGE_NAME, None),
+        'url': feed_item.get(FieldMap.CAMPAIGN_LANDING_PAGE_URL, None),
+        'advertiserId': feed_item.get(FieldMap.ADVERTISER_ID, None)
     }

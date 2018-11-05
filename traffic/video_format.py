@@ -15,7 +15,12 @@
 #  limitations under the License.
 #
 ###########################################################################
+"""Handles creation and updates of video formats.
 
+"""
+
+import traceback
+import sys
 import time
 import json
 
@@ -24,8 +29,15 @@ from traffic.feed import FieldMap
 
 
 class VideoFormatDAO(BaseDAO):
+  """Video format data access object.
+
+  Inherits from BaseDAO and implements video format specific logic for creating
+  and
+  updating video format.
+  """
 
   def __init__(self, auth, profile_id):
+    """Initializes VideoFormatDAO with profile id and authentication scheme."""
     super(VideoFormatDAO, self).__init__(auth, profile_id)
 
     self.profile_id = profile_id
@@ -34,25 +46,43 @@ class VideoFormatDAO(BaseDAO):
     self._video_formats = None
 
   def get_video_formats(self):
+    """Fetches video formats from CM.
+
+    Returns:
+      The lists of video formats from CM.
+    """
 
     if not self._video_formats:
-      self._video_formats = self._service.list(
-          profileId=self.profile_id).execute()['videoFormats']
+      self._video_formats = self._retry(self._service.list(
+          profileId=self.profile_id))['videoFormats']
 
     return self._video_formats
 
   def translate_transcode_config(self, transcode_config):
+    """Given a transcode config, returns the CM transcodes that match the config.
+
+    Args:
+      transcode_config: The transcode configuration feed item.
+
+    Returns:
+      All trancode objects from Campaign Manager that match the transcode configuration specified.
+    """
     result = []
 
-    min_width = int(transcode_config[FieldMap.TRANSCODE_MIN_WIDTH])
-    max_width = int(transcode_config[FieldMap.TRANSCODE_MAX_WIDTH])
-    min_height = int(transcode_config[FieldMap.TRANSCODE_MIN_HEIGHT])
-    max_height = int(transcode_config[FieldMap.TRANSCODE_MAX_HEIGHT])
-    min_bitrate = int(transcode_config[FieldMap.TRANSCODE_MIN_BITRATE])
-    max_bitrate = int(transcode_config[FieldMap.TRANSCODE_MAX_BITRATE])
+    try:
+      min_width = int(transcode_config.get(FieldMap.TRANSCODE_MIN_WIDTH, 0))
+      min_height = int(transcode_config.get(FieldMap.TRANSCODE_MIN_HEIGHT, 0))
+      min_bitrate = int(transcode_config.get(FieldMap.TRANSCODE_MIN_BITRATE, 0))
+
+      max_width = int(transcode_config.get(FieldMap.TRANSCODE_MAX_WIDTH, sys.maxint))
+      max_height = int(transcode_config.get(FieldMap.TRANSCODE_MAX_HEIGHT, sys.maxint))
+      max_bitrate = int(transcode_config.get(FieldMap.TRANSCODE_MAX_BITRATE, sys.maxint))
+    except:
+      return result
+
     file_types = [
         file_type for file_type in FieldMap.TRANSCODE_FILE_TYPES
-        if transcode_config[file_type] == 'TRUE'
+        if transcode_config.get(file_type, False)
     ]
 
     for video_format in self.get_video_formats():

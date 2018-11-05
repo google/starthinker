@@ -13,16 +13,18 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "dt":{
-    "auth":"user",
-    "from":{
-      "bucket":{"field":{ "name":"bucket", "kind":"string", "order":1, "default":"" }},
-      "path":{"field":{ "name":"path", "kind":"string", "order":2, "default":"" }}
-    },
-    "to":{
-      "auth":"service",
-      "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "default":"" }},
-      "table":{"field":{ "name":"table", "kind":"string", "order":4, "default":"" }}
-    }
-  }
+  "tasks":[
+    { "dt":{
+      "auth":"user",
+      "from":{
+        "bucket":{"field":{ "name":"bucket", "kind":"string", "order":1, "default":"", "description":"For example: dcdt_-dcm_account[Network ID]" }},
+        "path":{"field":{ "name":"path", "kind":"string", "order":2, "default":"", "description":"For example: dcm_account[Network ID]_match_table_campaigns_" }}
+      },
+      "to":{
+        "auth":"service",
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "default":"", "description":"Existing dataset in BigQuery." }},
+        "table":{"field":{ "name":"table", "kind":"string", "order":4, "default":"", "description":"Table to write DT files to." }}
+      }
+    }}
+  ]
 }

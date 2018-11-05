@@ -21,7 +21,7 @@ from itertools import cycle
 class EmailTemplate:
 
   def __init__(self):
-    self.text_align = 'center'
+    self.text_align = 'left'
     self.content_html = ''
     self.content_text = ''
     self.segments = [

@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,9 +16,27 @@
 #
 ###########################################################################
 
+"""Script that executes { "dbm":{...}} task.
+
+This script translates JSON instructions into operations on DBM reporting.
+It deletes, or creates, and/or downloads DBM reports.  See JSON files in
+this directory for examples of operations.
+
+This script uses put_rows as defined in util/data/README.md. This allows
+multiple destinations for downloaded reports. To add a destination modify
+the util/data/__init__.py functions.
+
+Note
+
+The underlying libraries use streaming download buffers, no disk is used.
+Buffers are controlled in setup.py.
+
+"""
+
+
 from util.project import project
-from util.data import put_rows
-from util.dbm import report_delete, report_create, report_file, report_to_rows, report_clean, accounts_split, DBM_CHUNKSIZE
+from util.data import put_rows, get_rows
+from util.dbm import report_delete, report_create, report_file, report_to_rows, report_clean, DBM_CHUNKSIZE
 
 
 def dbm():
@@ -27,10 +45,6 @@ def dbm():
   # legacy translations ( changed report title to name )
   if 'title' in project.task['report']:
     project.task['report']['name'] = project.task['report']['title']
-
-  # legacy translations ( changed partners, advertisers to accounts with "partner_id:advertiser_id" )
-  if 'accounts' in project.task['report']:
-    project.task['report']['partners'], project.task['report']['advertisers'] = accounts_split(project.task['report']['accounts'])
 
   # check if report is to be deleted
   if project.task.get('delete', False):
@@ -43,13 +57,18 @@ def dbm():
 
   # check if report is to be created
   if 'type' in project.task['report']:
+
     if project.verbose: print 'DBM CREATE',
+
+    partners = get_rows(project.task['auth'], project.task['report']['partners']) if 'partners' in project.task['report'] else []
+    advertisers = get_rows(project.task['auth'], project.task['report']['advertisers']) if 'advertisers' in project.task['report'] else []
+
     report_create(
       project.task['auth'],
       project.task['report']['name'],
       project.task['report']['type'],
-      project.task['report'].get('partners'),
-      project.task['report'].get('advertisers'),
+      partners,
+      advertisers,
       project.task['report'].get('filters'),
       project.task['report'].get('dimensions'),
       project.task['report'].get('metrics'),

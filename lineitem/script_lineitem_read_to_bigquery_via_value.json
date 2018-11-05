@@ -14,19 +14,21 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "lineitem":{
-    "auth":"user",
-    "read":{
-      "line_items": {
-        "single_cell":true,
-        "values": {"field":{ "name":"ids", "kind":"integer_list", "order":1, "default":[] }}
-      },
-      "out":{
-        "bigquery":{
-          "dataset":{"field":{ "name":"destination_dataset", "kind":"string", "order":2, "default":"" }},
-          "table":{"field":{ "name":"destination_table", "kind":"string", "order":3, "default":"" }}
+  "tasks":[
+    { "lineitem":{
+      "auth":"user",
+      "read":{
+        "line_items": {
+          "single_cell":true,
+          "values": {"field":{ "name":"ids", "kind":"integer_list", "order":1, "default":[] }}
+        },
+        "out":{
+          "bigquery":{
+            "dataset":{"field":{ "name":"destination_dataset", "kind":"string", "order":2, "default":"" }},
+            "table":{"field":{ "name":"destination_table", "kind":"string", "order":3, "default":"" }}
+          }
         }
       }
-    }
-  }
+    }}
+  ]
 }

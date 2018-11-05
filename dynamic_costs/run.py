@@ -32,7 +32,10 @@ def write_report(report, dataset, table):
     if project.verbose: print "DYNAMIC COSTS WRITTEN:", table
 
     # pull DCM schema automatically
-    schema = report_schema(rows.next())
+    try:
+      schema = report_schema(rows.next())
+    except StopIteration: # report is empty
+      raise ValueError("REPORT DID NOT RUN")
 
     # write report to bigquery
     rows_to_table(
@@ -50,56 +53,61 @@ def write_report(report, dataset, table):
 
 
 
-def report_combos(name, startDate, endDate, advertiser, campaign, dynamicProfile):
+def report_combos(name, dateRange, advertiser, campaign, dynamicProfile):
   if project.verbose: print "DYNAMIC COSTS COMBOS:", name
+
+  # basic report schema, with no dynamic elements
+  report_schema = {
+    "kind": "dfareporting#report",
+    "type": "STANDARD",
+    "name": "Dynamic Costs %s - Dynamic Combos ( StarThinker )" % name,
+    "criteria": {
+      "dateRange": dateRange,
+      "dimensionFilters": [
+        {
+          "kind": "dfareporting#dimensionValue",
+          "dimensionName": "dfa:dynamicProfile",
+          "id": dynamicProfile,
+          "matchType": "EXACT"
+        },
+        {
+          "kind": "dfareporting#dimensionValue",
+          "dimensionName": "dfa:advertiser",
+          "id": advertiser,
+          "matchType": "EXACT"},
+        {
+          "kind": "dfareporting#dimensionValue",
+          "dimensionName": "dfa:campaign",
+          "id": campaign,
+          "matchType": "EXACT"
+        }
+      ],
+      "dimensions": [
+        {"kind": "dfareporting#sortedDimension", "name": "dfa:placement"},
+        {"kind": "dfareporting#sortedDimension", "name": "dfa:placementId"},
+        {"kind": "dfareporting#sortedDimension", "name": "dfa:activity"},
+        {"kind": "dfareporting#sortedDimension", "name": "dfa:activityId"}
+      ],
+      "metricNames": [
+        "dfa:impressions",
+        "dfa:clicks",
+        "dfa:totalConversions"
+      ]
+    }
+  }
+
+  # add in all reasonable dynamic elements
+  for i in range(1, 5 + 1): # 5 elements/feeds
+    for j in range(1, 6 + 1): # 6 fields per element
+      report_schema["criteria"]["dimensions"].append(
+        {"kind": "dfareporting#sortedDimension", "name": "dfa:dynamicElement%iField%iValue" % (i, j)}
+      )
 
   # create the report if it does not exist
   report = report_build(
     project.task["auth"],
     project.task["account"],
-    {
-      "kind": "dfareporting#report",
-      "type": "STANDARD",
-      "name": "Dynamic Costs %s - Dynamic Combos ( StarThinker )" % name,
-      "criteria": {
-        "dateRange": {
-          "kind": "dfareporting#dateRange",
-          "startDate": str(startDate),
-          "endDate": str(endDate),
-        },
-        "dimensionFilters": [
-          {
-            "kind": "dfareporting#dimensionValue",
-            "dimensionName": "dfa:dynamicProfile",
-            "id": dynamicProfile,
-            "matchType": "EXACT"
-          },
-          {
-            "kind": "dfareporting#dimensionValue",
-            "dimensionName": "dfa:advertiser",
-            "id": advertiser,
-            "matchType": "EXACT"},
-          {
-            "kind": "dfareporting#dimensionValue",
-            "dimensionName": "dfa:campaign",
-            "id": campaign,
-            "matchType": "EXACT"
-          }
-        ],
-        "dimensions": [
-          {"kind": "dfareporting#sortedDimension", "name": "dfa:placement"},
-          {"kind": "dfareporting#sortedDimension", "name": "dfa:placementId"},
-          {"kind": "dfareporting#sortedDimension", "name": "dfa:dynamicElement1Value"},
-          {"kind": "dfareporting#sortedDimension", "name": "dfa:dynamicElement1Field1Value"},
-          {"kind": "dfareporting#sortedDimension", "name": "dfa:dynamicElement1Field2Value"}
-        ],
-        "metricNames": [
-          "dfa:impressions",
-          "dfa:clicks",
-          "dfa:totalConversions"
-        ]
-      }
-    }
+    report_schema
   )
 
   # fetch report file if it exists ( timeout = 0 means grab most reent ready )
@@ -108,7 +116,7 @@ def report_combos(name, startDate, endDate, advertiser, campaign, dynamicProfile
     project.task["account"],
     report["id"],
     None,
-    0,
+    60,
     DCM_CHUNK_SIZE
   )
 
@@ -123,48 +131,52 @@ def report_combos(name, startDate, endDate, advertiser, campaign, dynamicProfile
   return table_name
 
 
-def report_main(name, startDate, endDate, advertiser, campaign):
+def report_main(name, dateRange, advertiser, campaign, shadow=True):
   if project.verbose: print "DYNAMIC COSTS MAIN:", name
+
+  # base report schema
+  report_schema = {
+    "kind": "dfareporting#report",
+    "type": "STANDARD",
+    "name": "Dynamic Costs %s - Main Advertiser ( StarThinker )" % name,
+    "criteria": {
+      "dateRange": dateRange,
+      "dimensionFilters": [
+        {
+          "kind": "dfareporting#dimensionValue",
+          "dimensionName": "dfa:advertiser",
+          "id": advertiser,
+          "matchType": "EXACT"
+        },
+        {
+          "kind": "dfareporting#dimensionValue",
+          "dimensionName": "dfa:campaign",
+          "id": campaign,
+          "matchType": "EXACT"
+        }
+      ],
+      "dimensions": [
+        {"kind": "dfareporting#sortedDimension", "name": "dfa:placement"},
+        {"kind": "dfareporting#sortedDimension", "name": "dfa:placementId"}
+      ],
+      "metricNames": [
+        "dfa:impressions", 
+        "dfa:clicks"
+      ]
+    }
+  }
+  
+  # if not using shadow advertiser, pull DBM cost here
+  if not shadow:
+    report_schema["criteria"]["metricNames"].append("dfa:dbmCost")
 
   # create the report if it does not exist
   report = report_build(
     project.task["auth"],
     project.task["account"],
-    {
-      "kind": "dfareporting#report",
-      "type": "STANDARD",
-      "name": "Dynamic Costs %s - Main Advertiser ( StarThinker )" % name,
-      "criteria": {
-        "dateRange": {
-          "kind": "dfareporting#dateRange",
-          "startDate": str(startDate),
-          "endDate": str(endDate),
-        },
-        "dimensionFilters": [
-          {
-            "kind": "dfareporting#dimensionValue",
-            "dimensionName": "dfa:advertiser",
-            "id": advertiser,
-            "matchType": "EXACT"
-          },
-          {
-            "kind": "dfareporting#dimensionValue",
-            "dimensionName": "dfa:campaign",
-            "id": campaign,
-            "matchType": "EXACT"
-          }
-        ],
-        "dimensions": [
-          {"kind": "dfareporting#sortedDimension", "name": "dfa:placement"},
-          {"kind": "dfareporting#sortedDimension", "name": "dfa:placementId"}
-        ],
-        "metricNames": [
-          "dfa:impressions", 
-          "dfa:clicks"
-        ]
-      }
-    }
+    report_schema
   )
+  
 
   # fetch report file if it exists ( timeout = 0 means grab most reent ready )
   filename, filedata = report_file(
@@ -172,7 +184,7 @@ def report_main(name, startDate, endDate, advertiser, campaign):
     project.task["account"],
     report["id"],
     None,
-    0,
+    60,
     DCM_CHUNK_SIZE
   )
 
@@ -187,7 +199,7 @@ def report_main(name, startDate, endDate, advertiser, campaign):
   return table_name
 
 
-def report_shadow(name, startDate, endDate, advertiser, campaign):
+def report_shadow(name, dateRange, advertiser, campaign):
   if project.verbose: print "DYNAMIC COSTS SHADOW:", name
 
   # create the report if it does not exist
@@ -199,11 +211,7 @@ def report_shadow(name, startDate, endDate, advertiser, campaign):
       "type": "STANDARD",
       "name": "Dynamic Costs %s - Shadow Advertiser ( StarThinker )" % name,
       "criteria": {
-        "dateRange": {
-          "kind": "dfareporting#dateRange",
-          "startDate": str(startDate),
-          "endDate": str(endDate),
-        },
+        "dateRange": dateRange,
         "dimensionFilters": [
           {
             "dimensionName": "dfa:advertiser",
@@ -232,7 +240,7 @@ def report_shadow(name, startDate, endDate, advertiser, campaign):
   filename, filedata = report_file(
     project.task["auth"],
     project.task["account"],
-    report["id"],
+    report["id"]
   )
 
   # write report to a table ( avoid collisions as best as possible )
@@ -249,22 +257,37 @@ def report_shadow(name, startDate, endDate, advertiser, campaign):
 def view_combine(name, combos_table, main_table, shadow_table):
   if project.verbose: print "DYNAMIC COSTS VIEW:", name
 
-  query = """
-    SELECT
-      combos.*,
-      (combos.Impressions / main.Impressions) * shadow.Dbm_Cost_Account_Currency AS Scaled_Dbm_Cost_Account_Currency
-    FROM `%(project)s.%(dataset)s.%(combos_table)s` combos
-    JOIN `%(project)s.%(dataset)s.%(main_table)s` main
-    ON combos.Placement_Id = main.Placement_Id
-    JOIN `%(project)s.%(dataset)s.%(shadow_table)s` shadow
-    ON STARTS_WITH(shadow.Placement, combos.Placement)
-    """ % {
-      "project":project.id,
-      "dataset":project.task['out']['dataset'],
-      "combos_table":combos_table,
-      "main_table":main_table,
-      "shadow_table":shadow_table
-    }
+  if shadow_table:
+    query = """
+      SELECT
+        combos.*,
+        (combos.Impressions / main.Impressions) * shadow.Dbm_Cost_Account_Currency AS Scaled_Dbm_Cost_Account_Currency
+      FROM `%(project)s.%(dataset)s.%(combos_table)s` combos
+      JOIN `%(project)s.%(dataset)s.%(main_table)s` main
+      ON combos.Placement_Id = main.Placement_Id
+      JOIN `%(project)s.%(dataset)s.%(shadow_table)s` shadow
+      ON STARTS_WITH(shadow.Placement, combos.Placement)
+      """ % {
+        "project": project.id,
+        "dataset": project.task['out']['dataset'],
+        "combos_table": combos_table,
+        "main_table": main_table,
+        "shadow_table": shadow_table
+      }
+  else:
+    query = """
+      SELECT
+        combos.*,
+        (combos.Impressions / main.Impressions) * main.Dbm_Cost_Account_Currency AS Scaled_Dbm_Cost_Account_Currency
+      FROM `%(project)s.%(dataset)s.%(combos_table)s` combos
+      JOIN `%(project)s.%(dataset)s.%(main_table)s` main
+      ON combos.Placement_Id = main.Placement_Id
+      """ % {
+        "project": project.id,
+        "dataset": project.task['out']['dataset'],
+        "combos_table": combos_table,
+        "main_table": main_table
+      }
 
   query_to_view(
     project.task['out']['auth'],
@@ -295,37 +318,62 @@ def dynamic_costs():
   )
 
   # convert inputs into dictionary
+  def expand_list(lst):
+    if len(lst) == 1: return (lst[0], "")
+    elif len(lst) == 2: return lst
+  inputs = [expand_list(row) for row in inputs]
   inputs = dict(inputs)
 
   if project.verbose: print "DYNAMIC COSTS PARAMETERS", inputs
+  
+  if not inputs['Main Advertiser ID']:
+    print "Configuration sheet not filled out."
+    return
 
   # allows each advertiser to run multiple reports ( somewhat collision avoidance )
   unique_name = inputs['Dynamic Profile ID']
 
+  # check if using wrapped tags
+  shadow = inputs['Shadow Advertiser ID'] and inputs['Shadow Campaign ID']
+
+  # parse date range
+  if inputs['Relative Date Range'] == 'CUSTOM':
+    date_range = {
+        "kind": "dfareporting#dateRange",
+        "startDate": str(inputs['Start Date']),
+        "endDate": str(inputs['End Date']),
+    }
+  else:
+    date_range = {
+        "kind": "dfareporting#dateRange",
+        "relativeDateRange": str(inputs['Relative Date Range'])
+    }
+
   combos_table = report_combos(
     unique_name,
-    inputs['Start Date'],
-    inputs['End Date'],
+    date_range,
     inputs['Main Advertiser ID'],
     inputs['Main Campaign ID'],
-    inputs['Dynamic Profile ID'],
+    inputs['Dynamic Profile ID']
   )
 
   main_table = report_main(
     unique_name,
-    inputs['Start Date'],
-    inputs['End Date'],
+    date_range,
     inputs['Main Advertiser ID'],
     inputs['Main Campaign ID'],
+    shadow
   )
-
-  shadow_table = report_shadow(
-    unique_name,
-    inputs['Start Date'],
-    inputs['End Date'],
-    inputs['Shadow Advertiser ID'],
-    inputs['Shadow Campaign ID'],
-  )
+  
+  if shadow:
+    shadow_table = report_shadow(
+      unique_name,
+      date_range,
+      inputs['Shadow Advertiser ID'],
+      inputs['Shadow Campaign ID']
+    )
+  else:
+    shadow_table = None
 
   view_combine(
     unique_name,

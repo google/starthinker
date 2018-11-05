@@ -1,0 +1,28 @@
+{ 
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
+    "icon":"view_column",
+    "product":"Sheets",
+    "title":"Sheet Copy",
+    "description":"Copy tab from a sheet to a sheet.",
+    "instructions":[
+      "Provide the full edit URL for both sheets.",
+      "Provide the tab name for both sheets.",
+      "The tab will only be copied if it does not already exist."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "sheets":{
+      "auth":"user",
+      "template":{
+        "sheet":{"field":{ "name":"from_sheet", "kind":"string", "order":1, "default":"" }},
+        "tab":{"field":{ "name":"from_tab", "kind":"string", "order":2, "default":"" }}
+      },
+      "sheet":{"field":{ "name":"to_sheet", "kind":"string", "order":3, "default":"" }},
+      "tab":{"field":{ "name":"to_tab", "kind":"string", "order":4, "default":"" }}
+    }}
+  ]
+}

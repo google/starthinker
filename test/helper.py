@@ -37,7 +37,7 @@ from setup import EXECUTE_PATH
 from util.project import project
 
 
-RE_TEST = re.compile(r'test\.json')
+RE_TEST = re.compile(r'test.*\.json')
 
 
 if __name__ == "__main__":

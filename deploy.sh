@@ -367,8 +367,10 @@ echo "This utility will help you set up and manage long running recipes."
 echo "If this is your first time running this script, select Full Setup."
 echo ""
 
+setup_paths;
+
 main_done=0
-options=("Full Setup" "Install Dependencies" "Set Paths" "Set Cloud Project" "Set Credentials" "Start Cron" "Stop Cron" "List Recipes" "Add Recipe" "Run Recipe" "Delete Recipe" "Instructions" "Quit")
+options=("Full Setup" "Install Dependencies" "Set Cloud Project" "Set Credentials" "Start Cron" "Stop Cron" "List Recipes" "Add Recipe" "Run Recipe" "Delete Recipe" "Instructions" "Quit")
 
 while (( !main_done ))
 do
@@ -379,19 +381,18 @@ do
   PS3='Your Choice: '
   select option in "${options[@]}"; do
     case $REPLY in
-      1) install_dependencies; setup_paths; setup_project; setup_credentials; start_cron; break ;;
+      1) install_dependencies; setup_project; setup_credentials; start_cron; break ;;
       2) install_dependencies; break ;;
-      3) setup_paths; break ;;
-      4) setup_project; break ;;
-      5) setup_credentials; break ;;
-      6) start_cron; break ;;
-      7) stop_cron; break ;;
-      8) list_recipes; break ;;
-      9) add_recipe; break ;;
-      10) run_recipe; break ;;
-      11) delete_recipe; break ;;
-      12) instructions; break ;;
-      13) main_done=1; break;;
+      3) setup_project; break ;;
+      4) setup_credentials; break ;;
+      5) start_cron; break ;;
+      6) stop_cron; break ;;
+      7) list_recipes; break ;;
+      8) add_recipe; break ;;
+      9) run_recipe; break ;;
+      10) delete_recipe; break ;;
+      11) instructions; break ;;
+      12) main_done=1; break;;
       *) echo "What's that?" ;;
     esac
   done

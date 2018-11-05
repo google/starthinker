@@ -65,6 +65,8 @@ def _retry(job, retries=10, wait=5):
         pass # already exists ( ignore )
       else:
         raise
+    else:
+      raise
 
   return data
 
@@ -81,6 +83,8 @@ def get_profile_id(auth, account_id):
 
     # take the first profile for admin
     if '@dcm' in p['userName']: profile_admin = p_id
+    elif '@dfa' in p['userName']: profile_admin = p_id
+    elif a_id == 2515: profile_admin = p_id
 
     # try to find a network profile if exists
     if a_id == account_id: 

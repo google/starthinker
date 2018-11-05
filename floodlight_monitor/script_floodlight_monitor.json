@@ -4,7 +4,7 @@
     "copyright":"Copyright 2018 Google Inc.",
     "open":true,
     "icon":"add_alert",
-    "product":"DCM",
+    "product":"gTech",
     "title":"Floodlight Monitor",
     "description":"Monitor floodlight impressions specified in sheet and send email alerts.",
     "instructions":[
@@ -15,18 +15,20 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "floodlight_monitor": {
-    "auth":"user",
-    "account":{"field":{ "name":"dcm_account", "kind":"string", "order":1, "default":"" }},
-    "template":{
+  "tasks":[
+    { "floodlight_monitor": {
+      "auth":"user",
+      "account":{"field":{ "name":"dcm_account", "kind":"string", "order":1, "default":"", "description":"Specify an account_id or account_id:subaccount_id." }},
       "template":{
-        "sheet":"https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing",
-        "tab":"Floodlight Monitor",
-        "range":"A1"
-      }
-    },
-    "sheet":{"field":{ "name":"sheet_url", "kind":"string", "order":2, "default":"" }},
-    "tab":"Floodlight Monitor",
-    "range":"A2:C"
-  }
+        "template":{
+          "sheet":"https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing",
+          "tab":"Floodlight Monitor",
+          "range":"A1"
+        }
+      },
+      "sheet":{"field":{ "name":"sheet_url", "kind":"string", "order":2, "default":"", "description":"Full URL to Google Sheet, Floodlight Monitor tab will be added." }},
+      "tab":"Floodlight Monitor",
+      "range":"A2:C"
+    }}
+  ]
 }

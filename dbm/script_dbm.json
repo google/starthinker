@@ -16,42 +16,44 @@
     ],
     "authors":["mauriciod@google.com", "kenjora@google.com"]
   },
-  "dbm":{
-    "auth":"user",
-    "report":{
-      "name":{"field":{ "name":"dbm_title", "kind":"string", "order":2, "default":"" }},
-      "partners":{"field":{ "name":"dbm_partners", "kind":"integer_list", "order":3, "default":"" }},
-      "advertisers":{"field":{ "name":"dbm_advertisers", "kind":"integer_list", "order":4, "default":"" }},
-      "type":{"field":{ "name":"dbm_type", "kind":"string", "order":5, "default":"TYPE_CROSS_PARTNER" }},
-      "data_range":"LAST_7_DAYS",
-      "timezone":{"field":{ "name":"dbm_timezone", "kind":"string", "order":6, "default":"America/Los_Angeles" }},
-      "dimensions":{ 
-        "field":{ 
-          "name":"dbm_dimensions", 
-          "kind":"string_list",
-          "order":7,
-          "default":[
-            "FILTER_DATE",
-            "FILTER_ADVERTISER",
-            "FILTER_INSERTION_ORDER",
-            "FILTER_CREATIVE_ID",
-            "FILTER_ADVERTISER_CURRENCY"
-          ]
-        }
+  "tasks":[
+    { "dbm":{
+      "auth":"user",
+      "report":{
+        "name":{"field":{ "name":"dbm_title", "kind":"string", "order":2, "default":"" }},
+        "partners":{"field":{ "name":"dbm_partners", "kind":"integer_list", "order":3, "default":"" }},
+        "advertisers":{"field":{ "name":"dbm_advertisers", "kind":"integer_list", "order":4, "default":"" }},
+        "type":{"field":{ "name":"dbm_type", "kind":"string", "order":5, "default":"TYPE_CROSS_PARTNER" }},
+        "data_range":"LAST_7_DAYS",
+        "timezone":{"field":{ "name":"dbm_timezone", "kind":"string", "order":6, "default":"America/Los_Angeles" }},
+        "dimensions":{ 
+          "field":{ 
+            "name":"dbm_dimensions", 
+            "kind":"string_list",
+            "order":7,
+            "default":[
+              "FILTER_DATE",
+              "FILTER_ADVERTISER",
+              "FILTER_INSERTION_ORDER",
+              "FILTER_CREATIVE_ID",
+              "FILTER_ADVERTISER_CURRENCY"
+            ]
+          }
+        },
+        "metrics":{
+          "field":{ 
+            "name":"dbm_metrics", 
+            "kind":"string_list", 
+            "order":8,
+            "default":[
+              "METRIC_REVENUE_ADVERTISER",
+              "METRIC_IMPRESSIONS"
+            ]
+          }
+        },
+        "filters":{"field":{ "name":"dbm_filters", "kind":"json", "order":9, "default":"[]" }}
       },
-      "metrics":{
-        "field":{ 
-          "name":"dbm_metrics", 
-          "kind":"string_list", 
-          "order":8,
-          "default":[
-            "METRIC_REVENUE_ADVERTISER",
-            "METRIC_IMPRESSIONS"
-          ]
-        }
-      },
-      "filters":{"field":{ "name":"dbm_filters", "kind":"json", "order":9, "default":"[]" }}
-    },
-    "datastudio":{"field":{ "name":"dbm_datastudio", "kind":"boolean", "order":12, "default":false }}
-  }
+      "datastudio":{"field":{ "name":"dbm_datastudio", "kind":"boolean", "order":12, "default":false }}
+    }}
+  ]
 }

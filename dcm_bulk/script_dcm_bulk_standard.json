@@ -15,48 +15,50 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "dcm_bulk":{
-    "auth":"user",
-    "accounts":{"field":{ "name":"accounts", "kind":"integer_list", "order":1, "default":"" }},
-    "name":{"field":{ "name":"name", "kind":"string", "order":2, "default":"" }},
-    "report":{
-      "type":"STANDARD",
-      "timeout":0,
-      "relativeDateRange":{"field":{ "name":"range", "kind":"choice", "order":3, "default":"LAST_7_DAYS", "choices":["LAST_24_MONTHS", "LAST_30_DAYS", "LAST_365_DAYS", "LAST_7_DAYS", "LAST_90_DAYS", "MONTH_TO_DATE", "PREVIOUS_MONTH", "PREVIOUS_QUARTER", "PREVIOUS_WEEK", "PREVIOUS_YEAR", "QUARTER_TO_DATE", "TODAY", "WEEK_TO_DATE", "YEAR_TO_DATE", "YESTERDAY"] }},
-      "dimensions":{
-        "field":{
-          "name":"dcm_dimensions",
-          "kind":"string_list",
-          "order":4,
-          "default":[
-            "date",
-            "platformType",
-            "creativeType",
-            "state",
-            "dmaRegion"
-          ]
+  "tasks":[
+    { "dcm_bulk":{
+      "auth":"user",
+      "accounts":{"field":{ "name":"accounts", "kind":"integer_list", "order":1, "default":"" }},
+      "name":{"field":{ "name":"name", "kind":"string", "order":2, "default":"" }},
+      "report":{
+        "type":"STANDARD",
+        "timeout":0,
+        "relativeDateRange":{"field":{ "name":"range", "kind":"choice", "order":3, "default":"LAST_7_DAYS", "choices":["LAST_24_MONTHS", "LAST_30_DAYS", "LAST_365_DAYS", "LAST_7_DAYS", "LAST_90_DAYS", "MONTH_TO_DATE", "PREVIOUS_MONTH", "PREVIOUS_QUARTER", "PREVIOUS_WEEK", "PREVIOUS_YEAR", "QUARTER_TO_DATE", "TODAY", "WEEK_TO_DATE", "YEAR_TO_DATE", "YESTERDAY"] }},
+        "dimensions":{
+          "field":{
+            "name":"dcm_dimensions",
+            "kind":"string_list",
+            "order":4,
+            "default":[
+              "date",
+              "platformType",
+              "creativeType",
+              "state",
+              "dmaRegion"
+            ]
+          }
+        },
+        "metrics":{
+          "field":{
+            "name":"dcm_metrics",
+            "kind":"string_list",
+            "order":5,
+            "default":["impressions"]
+          }
         }
       },
-      "metrics":{
-        "field":{
-          "name":"dcm_metrics",
-          "kind":"string_list",
-          "order":5,
-          "default":["impressions"]
+      "out":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":5, "default":"" }},
+          "table":{"field":{ "name":"table", "kind":"string", "order":6, "default":"" }}
+        },
+        "storage":{
+          "bucket":{"field":{ "name":"bucket", "kind":"string", "order":7, "default":"" }},
+          "path":{"field":{ "name":"path", "kind":"string", "order":8, "default":"DCM_Report" }}
         }
-      }
-    },
-    "out":{
-      "bigquery":{
-        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":5, "default":"" }},
-        "table":{"field":{ "name":"table", "kind":"string", "order":6, "default":"" }}
       },
-      "storage":{
-        "bucket":{"field":{ "name":"bucket", "kind":"string", "order":7, "default":"" }},
-        "path":{"field":{ "name":"path", "kind":"string", "order":8, "default":"DCM_Report" }}
-      }
-    },
-    "delete":{"field":{ "name":"delete", "kind":"boolean", "order":10, "default":false }},
-    "datastudio":{"field":{ "name":"datastudio", "kind":"boolean", "order":11, "default":true }}
-  }
+      "delete":{"field":{ "name":"delete", "kind":"boolean", "order":10, "default":false }},
+      "datastudio":{"field":{ "name":"datastudio", "kind":"boolean", "order":11, "default":true }}
+    }}
+  ]
 }

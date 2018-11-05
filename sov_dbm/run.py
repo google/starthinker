@@ -80,7 +80,7 @@ def sov_create_reports():
     raise Exception('Peer sheet needs 5+ DBM entries to ensure anonymity, there are %d!' % len(rows))
   
   # create a report for the peers ( given in sheet ), make partner_id:advertiser_id
-  peer_name = sov_report([('%s:%s' % (r[0], r[1])) if r[1] else r[0] for r in rows], 'Peer')
+  peer_name = sov_report([('%s:%s' % (r[0], r[1])) if len(r) == 2 else r[0] for r in rows], 'Peer')
 
   # create a report for the client ( given in JSON )
   client_name = sov_report(project.task['dbm_accounts'], 'Client')

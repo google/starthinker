@@ -17,11 +17,18 @@
 ###########################################################################
 
 
-"""Evaluate the validity of a json file.
+"""Evaluate the validity of a json file. Helps in debugging recipes.
 
 Print the line and character position of any errors in the given json file.
 
-For example: python project/helper.py 
+Arguments
+
+  file - path to JSON file to be evaluated
+
+Example 
+
+  python project/helper.py project/sample.json
+
 """
 
 
@@ -37,7 +44,7 @@ if __name__ == "__main__":
   args = parser.parse_args()
 
   try:
-    project = get_project(args.file)
+    project = get_project(args.file, debug=True)
     print 'JSON OK:', args.file
   except Exception, e:
     print 'JSON ERROR:', args.file, str(e)

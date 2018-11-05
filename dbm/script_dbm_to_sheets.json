@@ -13,18 +13,20 @@
     ],
     "authors":["kenjora@google.com"]
   },
-  "dbm":{
-    "auth":"user",
-    "report":{
-      "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":1, "default":"" }},
-      "name":{"field":{ "name":"report_name", "kind":"string", "order":2, "default":"" }}
-    },
-    "out":{
-      "sheets":{
-        "sheet":{"field":{ "name":"sheet", "kind":"string", "order":3, "default":"" }},
-        "tab":{"field":{ "name":"tab", "kind":"string", "order":4, "default":"" }},
-        "range":"A1"
+  "tasks":[
+    { "dbm":{
+      "auth":"user",
+      "report":{
+        "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":1, "default":"", "description":"DBM report ID given in UI, not needed if name used." }},
+        "name":{"field":{ "name":"report_name", "kind":"string", "order":2, "default":"", "description":"Name of report, not needed if ID used." }}
+      },
+      "out":{
+        "sheets":{
+          "sheet":{"field":{ "name":"sheet", "kind":"string", "order":3, "default":"", "description":"Full URL to sheet being written to." }},
+          "tab":{"field":{ "name":"tab", "kind":"string", "order":4, "default":"", "description":"Existing tab in sheet to write to." }},
+          "range":"A1"
+        }
       }
-    }
-  }
+    }}
+  ]
 }
