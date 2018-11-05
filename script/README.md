@@ -4,7 +4,7 @@
 # Python Scripts
 
 
-# script/run.py
+## [/script/run.py](/script/run.py)
 
 Command line to convert script with fields into a recipe with specific values.
 
@@ -74,7 +74,7 @@ Example:
 
   
 
-# script/parse.py
+## [/script/parse.py](/script/parse.py)
 
 
 

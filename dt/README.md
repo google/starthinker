@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [DT To Table](dt/script_dt.json)
+## [DT To Table](/dt/script_dt.json)
 
 Move data from a DT bucket into a BigQuery table.
 
@@ -26,9 +26,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py dt/script_dt.json -h`
+`python script/run.py /dt/script_dt.json -h`
 
-`python script/run.py dt/script_dt.json [all required parameters] > projects/recipe.json`
+`python script/run.py /dt/script_dt.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

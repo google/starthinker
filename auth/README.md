@@ -4,7 +4,7 @@
 # Python Scripts
 
 
-# auth/helper.py
+## [/auth/helper.py](/auth/helper.py)
 
 Command line to get user profile, mainly for testing the client auth flow.
 

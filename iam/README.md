@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Project IAM](iam/script_iam.json)
+## [Project IAM](/iam/script_iam.json)
 
 Sets project permissions for an email.
 
@@ -24,9 +24,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py iam/script_iam.json -h`
+`python script/run.py /iam/script_iam.json -h`
 
-`python script/run.py iam/script_iam.json [all required parameters] > projects/recipe.json`
+`python script/run.py /iam/script_iam.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

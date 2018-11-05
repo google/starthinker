@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Archive](archive/script_archive.json)
+## [Archive](/archive/script_archive.json)
 
 Wipe old information from a Storage bucket.
 
@@ -25,9 +25,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py archive/script_archive.json -h`
+`python script/run.py /archive/script_archive.json -h`
 
-`python script/run.py archive/script_archive.json [all required parameters] > projects/recipe.json`
+`python script/run.py /archive/script_archive.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

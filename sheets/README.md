@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Sheet Clear](sheets/script_sheets_clear.json)
+## [Sheet Clear](/sheets/script_sheets_clear.json)
 
 Clear data from a sheet.
 
@@ -23,9 +23,9 @@ Maintained and supported by: mauriciod@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py sheets/script_sheets_clear.json -h`
+`python script/run.py /sheets/script_sheets_clear.json -h`
 
-`python script/run.py sheets/script_sheets_clear.json [all required parameters] > projects/recipe.json`
+`python script/run.py /sheets/script_sheets_clear.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -35,7 +35,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Sheet To Table](sheets/script_sheets_to_bigquery.json)
+## [Sheet To Table](/sheets/script_sheets_to_bigquery.json)
 
 Import data from a sheet and move it to a BigQuery table.
 
@@ -60,9 +60,9 @@ Maintained and supported by: mauriciod@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py sheets/script_sheets_to_bigquery.json -h`
+`python script/run.py /sheets/script_sheets_to_bigquery.json -h`
 
-`python script/run.py sheets/script_sheets_to_bigquery.json [all required parameters] > projects/recipe.json`
+`python script/run.py /sheets/script_sheets_to_bigquery.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -72,7 +72,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Sheet Copy](sheets/script_sheets_copy.json)
+## [Sheet Copy](/sheets/script_sheets_copy.json)
 
 Copy tab from a sheet to a sheet.
 
@@ -95,9 +95,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py sheets/script_sheets_copy.json -h`
+`python script/run.py /sheets/script_sheets_copy.json -h`
 
-`python script/run.py sheets/script_sheets_copy.json [all required parameters] > projects/recipe.json`
+`python script/run.py /sheets/script_sheets_copy.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Entity Read Files](entity/script_entity.json)
+## [Entity Read Files](/entity/script_entity.json)
 
 Import public and private <a href='https://developers.google.com/bid-manager/guides/entity-read/format-v2' target='_blank'>Entity Read Files</a> into a BigQuery dataset.<br/>CAUTION: PARTNER ONLY, ADVERTISER FILTER IS NOT APPLIED.
 
@@ -24,9 +24,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py entity/script_entity.json -h`
+`python script/run.py /entity/script_entity.json -h`
 
-`python script/run.py entity/script_entity.json [all required parameters] > projects/recipe.json`
+`python script/run.py /entity/script_entity.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

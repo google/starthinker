@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Line Item To BigQuery Via Query](lineitem/script_lineitem_read_to_bigquery_via_query.json)
+## [Line Item To BigQuery Via Query](/lineitem/script_lineitem_read_to_bigquery_via_query.json)
 
 Move using an Id query.
 
@@ -27,9 +27,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py lineitem/script_lineitem_read_to_bigquery_via_query.json -h`
+`python script/run.py /lineitem/script_lineitem_read_to_bigquery_via_query.json -h`
 
-`python script/run.py lineitem/script_lineitem_read_to_bigquery_via_query.json [all required parameters] > projects/recipe.json`
+`python script/run.py /lineitem/script_lineitem_read_to_bigquery_via_query.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -39,7 +39,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Line Item To BigQuery Via Values](lineitem/script_lineitem_read_to_bigquery_via_value.json)
+## [Line Item To BigQuery Via Values](/lineitem/script_lineitem_read_to_bigquery_via_value.json)
 
 Move using hard coded Id values.
 
@@ -61,9 +61,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py lineitem/script_lineitem_read_to_bigquery_via_value.json -h`
+`python script/run.py /lineitem/script_lineitem_read_to_bigquery_via_value.json -h`
 
-`python script/run.py lineitem/script_lineitem_read_to_bigquery_via_value.json [all required parameters] > projects/recipe.json`
+`python script/run.py /lineitem/script_lineitem_read_to_bigquery_via_value.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -73,7 +73,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Line Item From BigQuery](lineitem/script_lineitem_write_from_bigquery.json)
+## [Line Item From BigQuery](/lineitem/script_lineitem_write_from_bigquery.json)
 
 Upload Line Items From BigQuery To DBM.
 
@@ -94,9 +94,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py lineitem/script_lineitem_write_from_bigquery.json -h`
+`python script/run.py /lineitem/script_lineitem_write_from_bigquery.json -h`
 
-`python script/run.py lineitem/script_lineitem_write_from_bigquery.json [all required parameters] > projects/recipe.json`
+`python script/run.py /lineitem/script_lineitem_write_from_bigquery.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -109,7 +109,7 @@ For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Scri
 # Python Scripts
 
 
-# lineitem/helper.py
+## [/lineitem/helper.py](/lineitem/helper.py)
 
 Command line interface for fetching line items via API.
 

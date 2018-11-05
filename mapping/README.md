@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Column Mapping](mapping/script_mapping.json)
+## [Column Mapping](/mapping/script_mapping.json)
 
 Use sheet to define keyword to column mappings.
 
@@ -30,9 +30,9 @@ Maintained and supported by:
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py mapping/script_mapping.json -h`
+`python script/run.py /mapping/script_mapping.json -h`
 
-`python script/run.py mapping/script_mapping.json [all required parameters] > projects/recipe.json`
+`python script/run.py /mapping/script_mapping.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

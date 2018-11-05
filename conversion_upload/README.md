@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Conversion Upload Sheets](conversion_upload/script_conversion_upload_from_sheets.json)
+## [Conversion Upload Sheets](/conversion_upload/script_conversion_upload_from_sheets.json)
 
 Move form Sheets to DCM.
 
@@ -32,9 +32,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py conversion_upload/script_conversion_upload_from_sheets.json -h`
+`python script/run.py /conversion_upload/script_conversion_upload_from_sheets.json -h`
 
-`python script/run.py conversion_upload/script_conversion_upload_from_sheets.json [all required parameters] > projects/recipe.json`
+`python script/run.py /conversion_upload/script_conversion_upload_from_sheets.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -44,7 +44,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Conversion Upload BigQuery](conversion_upload/script_conversion_upload_from_biguery.json)
+## [Conversion Upload BigQuery](/conversion_upload/script_conversion_upload_from_biguery.json)
 
 Move from BigQuery to DCM.
 
@@ -73,9 +73,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py conversion_upload/script_conversion_upload_from_biguery.json -h`
+`python script/run.py /conversion_upload/script_conversion_upload_from_biguery.json -h`
 
-`python script/run.py conversion_upload/script_conversion_upload_from_biguery.json [all required parameters] > projects/recipe.json`
+`python script/run.py /conversion_upload/script_conversion_upload_from_biguery.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

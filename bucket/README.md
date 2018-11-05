@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Bucket](bucket/script_bucket.json)
+## [Bucket](/bucket/script_bucket.json)
 
 Create and permission a bucket in Storage.
 
@@ -26,9 +26,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py bucket/script_bucket.json -h`
+`python script/run.py /bucket/script_bucket.json -h`
 
-`python script/run.py bucket/script_bucket.json [all required parameters] > projects/recipe.json`
+`python script/run.py /bucket/script_bucket.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

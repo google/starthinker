@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [DCM Standard Bulk](dcm_bulk/script_dcm_bulk_standard.json)
+## [DCM Standard Bulk](/dcm_bulk/script_dcm_bulk_standard.json)
 
 Aggregate multiple standard DCM reports into one BigQuery or Sheet.
 
@@ -34,9 +34,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py dcm_bulk/script_dcm_bulk_standard.json -h`
+`python script/run.py /dcm_bulk/script_dcm_bulk_standard.json -h`
 
-`python script/run.py dcm_bulk/script_dcm_bulk_standard.json [all required parameters] > projects/recipe.json`
+`python script/run.py /dcm_bulk/script_dcm_bulk_standard.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

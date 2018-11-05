@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Dynamic Costs Reporting](dynamic_costs/script_dynamic_costs.json)
+## [Dynamic Costs Reporting](/dynamic_costs/script_dynamic_costs.json)
 
 Calculate DBM cost at the dynamic creative combination level.
 
@@ -34,9 +34,9 @@ Maintained and supported by: aritrab@google.com, kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py dynamic_costs/script_dynamic_costs.json -h`
+`python script/run.py /dynamic_costs/script_dynamic_costs.json -h`
 
-`python script/run.py dynamic_costs/script_dynamic_costs.json [all required parameters] > projects/recipe.json`
+`python script/run.py /dynamic_costs/script_dynamic_costs.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -49,7 +49,7 @@ For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Scri
 # Python Scripts
 
 
-# dynamic_costs/run.py
+## [/dynamic_costs/run.py](/dynamic_costs/run.py)
 
 
 

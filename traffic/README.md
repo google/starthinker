@@ -4,7 +4,7 @@
 # Python Scripts
 
 
-# traffic/store.py
+## [/traffic/store.py](/traffic/store.py)
 
 Manages id maps and caching.
 
@@ -106,7 +106,7 @@ Manages id maps and caching.
 
     
 
-# traffic/run.py
+## [/traffic/run.py](/traffic/run.py)
 
 Main entry point of Bulkdozer.
 
@@ -234,7 +234,7 @@ Main entry point of Bulkdozer.
 
   
 
-# traffic/landing_page.py
+## [/traffic/landing_page.py](/traffic/landing_page.py)
 
 Handles creation and updates of landing pages.
 
@@ -280,7 +280,7 @@ Handles creation and updates of landing pages.
         'advertiserId': feed_item.get(FieldMap.ADVERTISER_ID, None)
     }
 
-# traffic/config.py
+## [/traffic/config.py](/traffic/config.py)
 
 Utility to read and write configuration data to the Bulkdozer feed.
 
@@ -317,7 +317,7 @@ Utility to read and write configuration data to the Bulkdozer feed.
 
     
 
-# traffic/feed.py
+## [/traffic/feed.py](/traffic/feed.py)
 
 Handles interactions with the Buldozer feed.
 
@@ -467,7 +467,7 @@ Google Sheet that represents the Bulkdozer feed, and
 
     
 
-# traffic/logger.py
+## [/traffic/logger.py](/traffic/logger.py)
 
 Handles logging actions back to the Bulkdozer feed Log tab.
 
@@ -518,7 +518,7 @@ Handles logging actions back to the Bulkdozer feed Log tab.
 
     
 
-# traffic/campaign.py
+## [/traffic/campaign.py](/traffic/campaign.py)
 
 Handles creation and updates of Ads.
 
@@ -577,7 +577,7 @@ Handles creation and updates of Ads.
     }
 
 
-# traffic/creative.py
+## [/traffic/creative.py](/traffic/creative.py)
 
 Handles creation and updates of Creatives.
 
@@ -696,7 +696,7 @@ Handles creation and updates of Creatives.
         association[FieldMap.CREATIVE_ASSET_ID] = dcm_association.get(
             'id', None)
 
-# traffic/creative_assets.py
+## [/traffic/creative_assets.py](/traffic/creative_assets.py)
 
 Handles creation and updates of creative assets.
 
@@ -803,7 +803,7 @@ Handles creation and updates of creative assets.
     
     object_download(self.gc_project, bucket, object_name, local_file, auth=auth)
 
-# traffic/creative_association.py
+## [/traffic/creative_association.py](/traffic/creative_association.py)
 
 Handles creation and updates of creative asset association.
 
@@ -860,7 +860,7 @@ Handles creation and updates of creative asset association.
 
       return result
 
-# traffic/placement.py
+## [/traffic/placement.py](/traffic/placement.py)
 
 Handles creation and updates of Placements.
 
@@ -1095,7 +1095,7 @@ Handles creation and updates of Placements.
             placement['transcode_config'] = transcode_config
             break
 
-# traffic/dao.py
+## [/traffic/dao.py](/traffic/dao.py)
 
 Module that centralizes all CM data access.
 
@@ -1294,7 +1294,7 @@ Module that centralizes all CM data access.
 
       raise
 
-# traffic/ad.py
+## [/traffic/ad.py](/traffic/ad.py)
 
 Handles creation and updates of Ads.
 
@@ -1665,7 +1665,7 @@ Handles creation and updates of Ads.
     self._sub_entity_map(feed_item['placement_assignment'], item, campaign)
     self._sub_entity_map(feed_item['event_tag_assignment'], item, campaign)
 
-# traffic/event_tag.py
+## [/traffic/event_tag.py](/traffic/event_tag.py)
 
 Handles creation and updates of Ads.
 
@@ -1738,7 +1738,7 @@ Handles creation and updates of Ads.
       feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
       feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
 
-# traffic/video_format.py
+## [/traffic/video_format.py](/traffic/video_format.py)
 
 Handles creation and updates of video formats.
 

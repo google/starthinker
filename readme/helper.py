@@ -97,7 +97,7 @@ def parse_py(filepath):
       #print crawl_class, crawl_def, in_comment, line.strip()
 
   if crawl:
-    doc = '\n# %s\n\n' % filepath.replace(EXECUTE_PATH, '')
+    doc = '\n## [%s](%s)\n\n' % (filepath.replace(EXECUTE_PATH, '/'), filepath.replace(EXECUTE_PATH, '/'))
     for cls in crawl.keys():
       if cls: doc += '\n\n## %s\n\n' % cls.split('(', 1)[0]
  
@@ -119,7 +119,7 @@ def parse_json(filepath):
       exit()
 
     params = script['script']
-    params['path'] = filepath.replace(EXECUTE_PATH, '')
+    params['path'] = filepath.replace(EXECUTE_PATH, '/')
     params['tasks'] = json.dumps(script['tasks'], indent=2)
     params['instructions'] = '- ' + '\n- '.join(script['script'].get('instructions', []))
     params['authors'] = ', '.join(script['script'].get('authors', []))

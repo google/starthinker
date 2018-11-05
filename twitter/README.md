@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Trends Places To Sheets Via Values](twitter/script_trends_places_to_sheets_via_value.json)
+## [Trends Places To Sheets Via Values](/twitter/script_trends_places_to_sheets_via_value.json)
 
 Move using hard coded WOEID values.
 
@@ -31,9 +31,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py twitter/script_trends_places_to_sheets_via_value.json -h`
+`python script/run.py /twitter/script_trends_places_to_sheets_via_value.json -h`
 
-`python script/run.py twitter/script_trends_places_to_sheets_via_value.json [all required parameters] > projects/recipe.json`
+`python script/run.py /twitter/script_trends_places_to_sheets_via_value.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -43,7 +43,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Trends Places To Sheets Via Query](twitter/script_trends_places_to_sheets_via_query.json)
+## [Trends Places To Sheets Via Query](/twitter/script_trends_places_to_sheets_via_query.json)
 
 Move using a WOEID query.
 
@@ -71,9 +71,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py twitter/script_trends_places_to_sheets_via_query.json -h`
+`python script/run.py /twitter/script_trends_places_to_sheets_via_query.json -h`
 
-`python script/run.py twitter/script_trends_places_to_sheets_via_query.json [all required parameters] > projects/recipe.json`
+`python script/run.py /twitter/script_trends_places_to_sheets_via_query.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -83,7 +83,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Trends Places To BigQuery Via Query](twitter/script_trends_places_to_bigquery_via_query.json)
+## [Trends Places To BigQuery Via Query](/twitter/script_trends_places_to_bigquery_via_query.json)
 
 Move using a WOEID query.
 
@@ -111,9 +111,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py twitter/script_trends_places_to_bigquery_via_query.json -h`
+`python script/run.py /twitter/script_trends_places_to_bigquery_via_query.json -h`
 
-`python script/run.py twitter/script_trends_places_to_bigquery_via_query.json [all required parameters] > projects/recipe.json`
+`python script/run.py /twitter/script_trends_places_to_bigquery_via_query.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -123,7 +123,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Trends Places To BigQuery Via Values](twitter/script_trends_places_to_bigquery_via_value.json)
+## [Trends Places To BigQuery Via Values](/twitter/script_trends_places_to_bigquery_via_value.json)
 
 Move using hard coded WOEID values.
 
@@ -149,9 +149,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py twitter/script_trends_places_to_bigquery_via_value.json -h`
+`python script/run.py /twitter/script_trends_places_to_bigquery_via_value.json -h`
 
-`python script/run.py twitter/script_trends_places_to_bigquery_via_value.json [all required parameters] > projects/recipe.json`
+`python script/run.py /twitter/script_trends_places_to_bigquery_via_value.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

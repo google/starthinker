@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Audience Mapper](gtech/script_audience_mapper.json)
+## [Audience Mapper](/gtech/script_audience_mapper.json)
 
 Create custom audience mappings based on keywords.
 
@@ -32,9 +32,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py gtech/script_audience_mapper.json -h`
+`python script/run.py /gtech/script_audience_mapper.json -h`
 
-`python script/run.py gtech/script_audience_mapper.json [all required parameters] > projects/recipe.json`
+`python script/run.py /gtech/script_audience_mapper.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -44,7 +44,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Deal Finder](gtech/script_deal_finder.json)
+## [Deal Finder](/gtech/script_deal_finder.json)
 
 Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.
 
@@ -70,9 +70,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py gtech/script_deal_finder.json -h`
+`python script/run.py /gtech/script_deal_finder.json -h`
 
-`python script/run.py gtech/script_deal_finder.json [all required parameters] > projects/recipe.json`
+`python script/run.py /gtech/script_deal_finder.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -82,7 +82,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Third Party MOAT Report](gtech/script_moat.json)
+## [Third Party MOAT Report](/gtech/script_moat.json)
 
 Import MOAT and DBM data into a BigQuery table and connect to dashboard.
 
@@ -108,9 +108,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py gtech/script_moat.json -h`
+`python script/run.py /gtech/script_moat.json -h`
 
-`python script/run.py gtech/script_moat.json [all required parameters] > projects/recipe.json`
+`python script/run.py /gtech/script_moat.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -120,7 +120,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Pacing DBM](gtech/script_pacing.json)
+## [Pacing DBM](/gtech/script_pacing.json)
 
 Pace the spend of DBM campaigns to hit targets.
 
@@ -148,9 +148,9 @@ Maintained and supported by: mauriciod@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py gtech/script_pacing.json -h`
+`python script/run.py /gtech/script_pacing.json -h`
 
-`python script/run.py gtech/script_pacing.json [all required parameters] > projects/recipe.json`
+`python script/run.py /gtech/script_pacing.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -160,7 +160,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Third Party IAS Report](gtech/script_ias.json)
+## [Third Party IAS Report](/gtech/script_ias.json)
 
 Import IAS and DBM data into a BigQuery table and connect to dashboard.  Used to verify viewability data against third party.
 
@@ -185,9 +185,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py gtech/script_ias.json -h`
+`python script/run.py /gtech/script_ias.json -h`
 
-`python script/run.py gtech/script_ias.json [all required parameters] > projects/recipe.json`
+`python script/run.py /gtech/script_ias.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

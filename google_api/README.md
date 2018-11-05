@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [API To BigQuery](google_api/script_google_api_to_bigquery.json)
+## [API To BigQuery](/google_api/script_google_api_to_bigquery.json)
 
 Execute a Google API function and store results to BigQuery.
 
@@ -31,9 +31,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py google_api/script_google_api_to_bigquery.json -h`
+`python script/run.py /google_api/script_google_api_to_bigquery.json -h`
 
-`python script/run.py google_api/script_google_api_to_bigquery.json [all required parameters] > projects/recipe.json`
+`python script/run.py /google_api/script_google_api_to_bigquery.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -46,7 +46,7 @@ For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Scri
 # Python Scripts
 
 
-# google_api/helper.py
+## [/google_api/helper.py](/google_api/helper.py)
 
 Command line interface for running Google API calls.  Any API works.
 

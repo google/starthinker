@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [DCM To BigQuery](dcm/script_dcm_to_bigquery.json)
+## [DCM To BigQuery](/dcm/script_dcm_to_bigquery.json)
 
 Move existing DCM report into a BigQuery table.
 
@@ -29,9 +29,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py dcm/script_dcm_to_bigquery.json -h`
+`python script/run.py /dcm/script_dcm_to_bigquery.json -h`
 
-`python script/run.py dcm/script_dcm_to_bigquery.json [all required parameters] > projects/recipe.json`
+`python script/run.py /dcm/script_dcm_to_bigquery.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -41,7 +41,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [DCM Report](dcm/script_dcm.json)
+## [DCM Report](/dcm/script_dcm.json)
 
 Create a DCM report from a JSON definition.
 
@@ -63,9 +63,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py dcm/script_dcm.json -h`
+`python script/run.py /dcm/script_dcm.json -h`
 
-`python script/run.py dcm/script_dcm.json [all required parameters] > projects/recipe.json`
+`python script/run.py /dcm/script_dcm.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -75,7 +75,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [DCM To Storage](dcm/script_dcm_to_storage.json)
+## [DCM To Storage](/dcm/script_dcm_to_storage.json)
 
 Move existing DCM report into a Storage bucket.
 
@@ -101,9 +101,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py dcm/script_dcm_to_storage.json -h`
+`python script/run.py /dcm/script_dcm_to_storage.json -h`
 
-`python script/run.py dcm/script_dcm_to_storage.json [all required parameters] > projects/recipe.json`
+`python script/run.py /dcm/script_dcm_to_storage.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -113,7 +113,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [DCM To Sheets](dcm/script_dcm_to_sheets.json)
+## [DCM To Sheets](/dcm/script_dcm_to_sheets.json)
 
 Move existing DCM report into a Sheet tab.
 
@@ -138,9 +138,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py dcm/script_dcm_to_sheets.json -h`
+`python script/run.py /dcm/script_dcm_to_sheets.json -h`
 
-`python script/run.py dcm/script_dcm_to_sheets.json [all required parameters] > projects/recipe.json`
+`python script/run.py /dcm/script_dcm_to_sheets.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -153,7 +153,7 @@ For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Scri
 # Python Scripts
 
 
-# dcm/run.py
+## [/dcm/run.py](/dcm/run.py)
 
 Script that executes { "dcm":{...}} task.
 
@@ -176,7 +176,7 @@ proto files.
 
 
 
-# dcm/helper.py
+## [/dcm/helper.py](/dcm/helper.py)
 
 Command line to get a DCM report or show list of report or files.
 

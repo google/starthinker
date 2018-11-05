@@ -4,7 +4,7 @@
 # Python Scripts
 
 
-# all/run.py
+## [/all/run.py](/all/run.py)
 
  Command line to execute all tasks in a recipe once. ( Common Entry Point )
 

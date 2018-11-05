@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Dataset](dataset/script_dataset.json)
+## [Dataset](/dataset/script_dataset.json)
 
 Create and permission a dataset in BigQuery.
 
@@ -27,9 +27,9 @@ Maintained and supported by: ceh@google.com, kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py dataset/script_dataset.json -h`
+`python script/run.py /dataset/script_dataset.json -h`
 
-`python script/run.py dataset/script_dataset.json [all required parameters] > projects/recipe.json`
+`python script/run.py /dataset/script_dataset.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

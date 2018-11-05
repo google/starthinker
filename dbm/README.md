@@ -33,9 +33,9 @@ Maintained and supported by: mauriciod@google.com, kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py dbm/script_dbm.json -h`
+`python script/run.py /dbm/script_dbm.json -h`
 
-`python script/run.py dbm/script_dbm.json [all required parameters] > projects/recipe.json`
+`python script/run.py /dbm/script_dbm.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -43,7 +43,7 @@ After [getting Google Cloud Credentials](/auth/README.md), execute the recipe cr
 
 Any two or more recipes can be combined by copying and pasting task JSON into the task [...] list.  All tasks execute in sequence.
 
-For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/README.md)
+For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
 ## [DBM To BigQuery](/dbm/script_dbm_to_bigquery.json)
 
@@ -70,9 +70,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py dbm/script_dbm_to_bigquery.json -h`
+`python script/run.py /dbm/script_dbm_to_bigquery.json -h`
 
-`python script/run.py dbm/script_dbm_to_bigquery.json [all required parameters] > projects/recipe.json`
+`python script/run.py /dbm/script_dbm_to_bigquery.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -105,9 +105,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py dbm/script_dbm_to_storage.json -h`
+`python script/run.py /dbm/script_dbm_to_storage.json -h`
 
-`python script/run.py dbm/script_dbm_to_storage.json [all required parameters] > projects/recipe.json`
+`python script/run.py /dbm/script_dbm_to_storage.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -117,7 +117,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [DBM To Sheets](dbm/script_dbm_to_sheets.json)
+## [DBM To Sheets](/dbm/script_dbm_to_sheets.json)
 
 Move existing DBM report into a Sheets tab.
 
@@ -139,9 +139,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py dbm/script_dbm_to_sheets.json -h`
+`python script/run.py /dbm/script_dbm_to_sheets.json -h`
 
-`python script/run.py dbm/script_dbm_to_sheets.json [all required parameters] > projects/recipe.json`
+`python script/run.py /dbm/script_dbm_to_sheets.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -154,7 +154,7 @@ For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Scri
 # Python Scripts
 
 
-## dbm/run.py
+## [/dbm/run.py](/dbm/run.py)
 
 Script that executes { "dbm":{...}} task.
 
@@ -166,20 +166,20 @@ This script uses put_rows as defined in util/data/README.md. This allows
 multiple destinations for downloaded reports. To add a destination modify
 the util/data/__init__.py functions.
 
-### Note
+Note
 
 The underlying libraries use streaming download buffers, no disk is used.
 Buffers are controlled in setup.py.
 
 
 
-## dbm/helper.py
+## [/dbm/helper.py](/dbm/helper.py)
 
 Command line to get a DBM report or show list of reports.
 
 This is a helper to help developers debug and create reports.
 
-To get list: `python dbm/helper.py --list -u [credentials]`
-To get report: `python dbm/helper.py --report [id] -u [credentials]`
+To get list: python dbm/helper.py --list -u [credentials]
+To get report: python dbm/helper.py --report [id] -u [credentials]
 
 

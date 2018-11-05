@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Floodlight Monitor](floodlight_monitor/script_floodlight_monitor.json)
+## [Floodlight Monitor](/floodlight_monitor/script_floodlight_monitor.json)
 
 Monitor floodlight impressions specified in sheet and send email alerts.
 
@@ -25,9 +25,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py floodlight_monitor/script_floodlight_monitor.json -h`
+`python script/run.py /floodlight_monitor/script_floodlight_monitor.json -h`
 
-`python script/run.py floodlight_monitor/script_floodlight_monitor.json [all required parameters] > projects/recipe.json`
+`python script/run.py /floodlight_monitor/script_floodlight_monitor.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -40,7 +40,7 @@ For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Scri
 # Python Scripts
 
 
-# floodlight_monitor/run.py
+## [/floodlight_monitor/run.py](/floodlight_monitor/run.py)
 
 Pulls floodlights from a sheet, checks if impressions have changed significantly and sends an alert email.
 

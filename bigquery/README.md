@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Storage To Table](bigquery/script_bigquery_storage.json)
+## [Storage To Table](/bigquery/script_bigquery_storage.json)
 
 Move using bucket and path prefix.
 
@@ -26,9 +26,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py bigquery/script_bigquery_storage.json -h`
+`python script/run.py /bigquery/script_bigquery_storage.json -h`
 
-`python script/run.py bigquery/script_bigquery_storage.json [all required parameters] > projects/recipe.json`
+`python script/run.py /bigquery/script_bigquery_storage.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -38,7 +38,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Query To View](bigquery/script_bigquery_view.json)
+## [Query To View](/bigquery/script_bigquery_view.json)
 
 Create a BigQuery view.
 
@@ -61,9 +61,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py bigquery/script_bigquery_view.json -h`
+`python script/run.py /bigquery/script_bigquery_view.json -h`
 
-`python script/run.py bigquery/script_bigquery_view.json [all required parameters] > projects/recipe.json`
+`python script/run.py /bigquery/script_bigquery_view.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
@@ -73,7 +73,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [Query To Table](bigquery/script_bigquery_query.json)
+## [Query To Table](/bigquery/script_bigquery_query.json)
 
 Save query results into a BigQuery table.
 
@@ -96,9 +96,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py bigquery/script_bigquery_query.json -h`
+`python script/run.py /bigquery/script_bigquery_query.json -h`
 
-`python script/run.py bigquery/script_bigquery_query.json [all required parameters] > projects/recipe.json`
+`python script/run.py /bigquery/script_bigquery_query.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 

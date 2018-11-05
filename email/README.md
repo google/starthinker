@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [Email Fetch](email/script_email_to_bigquery.json)
+## [Email Fetch](/email/script_email_to_bigquery.json)
 
 Import emailed csv or excel into a BigQuery table.
 
@@ -30,9 +30,9 @@ Maintained and supported by: kenjora@google.com
 
 To see all required parameters and generate a recipe from this script template run:
 
-`python script/run.py email/script_email_to_bigquery.json -h`
+`python script/run.py /email/script_email_to_bigquery.json -h`
 
-`python script/run.py email/script_email_to_bigquery.json [all required parameters] > projects/recipe.json`
+`python script/run.py /email/script_email_to_bigquery.json [all required parameters] > projects/recipe.json`
 
 After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
 
