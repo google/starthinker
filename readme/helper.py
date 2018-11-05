@@ -112,7 +112,11 @@ def parse_json(filepath):
   doc = ''
 
   with open(filepath) as f:
-    script = json.load(f)
+    try:
+      script = json.load(f)
+    except Exception, e:
+      print 'JSON ERROR', filepath, str(e) 
+      exit()
 
     params = script['script']
     params['path'] = filepath.replace(EXECUTE_PATH, '')

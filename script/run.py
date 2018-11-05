@@ -29,37 +29,41 @@ and produce a specific recipe as STDOUT.  Which can be piped to a file.
 
 Example:
 
-  > python script/run.py dcm/script_dcm_to_bigquery.json
+  `python script/run.py dcm/script_dcm_to_bigquery.json`
 
   Will produce the following because it expects the arguments in the json script.
 
-  > usage: run.py [-h] json account report_id report_name dataset table
-  > run.py: error: too few arguments
+  `
+  usage: run.py [-h] json account report_id report_name dataset table
+  run.py: error: too few arguments
+  `
 
   To see a detailed list of arguments run with the -h option:
 
-  > python script/run.py dcm/script_dcm_to_bigquery.json -h
-  > usage: run.py [-h] json account report_id report_name dataset table
-  >
-  > positional arguments:
-  >   json         JSON recipe file to script.
-  >   account      DCM network id.
-  >   report_id    DCM report id from the UI.
-  >   report_name  DCM report name, pass '' if using id instead.
-  >   dataset      Dataset to be written to in BigQuery.
-  >   table        Table to be written to in BigQuery.
-  > 
-  > optional arguments:
-  >   -h, --help   show this help message and exit
-  >   --datastudio  Alter columns for datastudio, fixes nulls and date format.
+  `
+  python script/run.py dcm/script_dcm_to_bigquery.json -h
+  usage: run.py [-h] json account report_id report_name dataset table
+  
+  positional arguments:
+    json         JSON recipe file to script.
+    account      DCM network id.
+    report_id    DCM report id from the UI.
+    report_name  DCM report name, pass '' if using id instead.
+    dataset      Dataset to be written to in BigQuery.
+    table        Table to be written to in BigQuery.
+  
+  optional arguments:
+    -h, --help   show this help message and exit
+    --datastudio  Alter columns for datastudio, fixes nulls and date format.
+  `
 
   Then to turn the script into a recipe run:
 
-  > python script/run.py dcm/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" --datastudio > test_recipe.json
+  `python script/run.py dcm/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" --datastudio > test_recipe.json`
 
   To perform the work of the script for the now filled in recipe:
  
-  > python all/run.py test_recipe.json
+  `python all/run.py test_recipe.json`
 
 """
 

@@ -19,15 +19,9 @@
   "tasks":[
     { "dataset":{
       "auth":"service",
-<<<<<<< HEAD
       "dataset":{"field":{ "name":"dataset_dataset", "kind":"string", "order":1, "default":"", "description":"Name of Google BigQuery dataset to create." }},
       "emails":{"field":{ "name":"dataset_emails", "kind":"string_list", "order":2, "default":"", "description":"Comma separated emails." }},
       "groups":{"field":{ "name":"dataset_groups", "kind":"string_list", "order":3, "default":"", "description":"Comma separated groups." }}
-=======
-      "dataset":{"field":{ "name":"dataset_dataset", "kind":"string", "order":1, "default":"" }},
-      "emails":{"field":{ "name":"dataset_emails", "kind":"string_list", "order":2, "default":"" }},
-      "groups":{"field":{ "name":"dataset_groups", "kind":"string_list", "order":3, "default":"" }}
->>>>>>> 7e970f76b47fcf0079efec612f0b3f59ebdd961a
     }}
   ]
 }
