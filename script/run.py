@@ -33,14 +33,14 @@ Example:
 
   Will produce the following because it expects the arguments in the json script.
 
-  `
+  ```
   usage: run.py [-h] json account report_id report_name dataset table
   run.py: error: too few arguments
-  `
+  ```
 
   To see a detailed list of arguments run with the -h option:
 
-  `
+  ```
   python script/run.py dcm/script_dcm_to_bigquery.json -h
   usage: run.py [-h] json account report_id report_name dataset table
   
@@ -55,7 +55,7 @@ Example:
   optional arguments:
     -h, --help   show this help message and exit
     --datastudio  Alter columns for datastudio, fixes nulls and date format.
-  `
+  ```
 
   Then to turn the script into a recipe run:
 

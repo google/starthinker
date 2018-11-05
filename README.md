@@ -49,13 +49,13 @@ data on the command line ( or a UI ).
 
 For a quick start that will do nothing other than show how to sucesfully run recipes, try:
 
-`
+```
 git clone https://github.com/google/starthinker
 cd starthinker
 pip install -r requirements.txt
 source setup.sh
 python all/run.py project/sample/say_hello.json --verbose
-`
+```
 
 Read more at [all/README.md](all/README.md) under Useful Developer Features. 
 
@@ -64,11 +64,11 @@ Read more at [all/README.md](all/README.md) under Useful Developer Features.
 
 To quickly use any one of the template to perform a task, moving a DCM report for example:
 
-`
+```
 python script/run.py dcm/script_dcm_to_bigquery.json -h
 python script/run.py dcm/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" --datastudio > test_recipe.json
 python python all/run.py test_recipe.json
-`
+```
 
 Read more at [script/README.md](script/README.md).
 
@@ -77,20 +77,20 @@ Read more at [script/README.md](script/README.md).
 To execute recipes on a regular schedule, for example moving a report every day. Find an always
 on machine, like a Google Cloud Instance. Download the open source code, and execute the following
 
-`
+```
 git clone https://github.com/google/starthinker
 cd starthinker
 pip install -r requirements.txt
 source setup.sh
 ./deploy.sh
-`
+```
 
 A micro UI will activate ( no system changes are made unless you choose an option ), choose the 
 appropriate option.  Full setup walks through everything, including credentials and install.  
 The process is re-entrant so you can run it multiple times without corrupting the setup.  
 Start with Option 11 to get an overview. Here is the main utility menu:
 
-`
+```
 Welcome To StarThinker ( Google gTech )
 
 This utility will help you set up and manage long running recipes.
@@ -107,7 +107,7 @@ Main Menu
 3) Set Cloud Project	   7) List Recipes	    11) Instructions
 4) Set Credentials	   8) Add Recipe	    12) Quit
 Your Choice: 
-`
+```
 
 ## Where Do I Get Help?
 

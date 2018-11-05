@@ -3,7 +3,7 @@
 
 # JOSN Recipes
 
-## [DBM Report](dbm/script_dbm.json)
+## [DBM Report](/dbm/script_dbm.json)
 
 Create a DBM report.
 
@@ -43,9 +43,9 @@ After [getting Google Cloud Credentials](/auth/README.md), execute the recipe cr
 
 Any two or more recipes can be combined by copying and pasting task JSON into the task [...] list.  All tasks execute in sequence.
 
-For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
+For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/README.md)
 
-## [DBM To BigQuery](dbm/script_dbm_to_bigquery.json)
+## [DBM To BigQuery](/dbm/script_dbm_to_bigquery.json)
 
 Move existing DBM reports into a BigQuery table.
 
@@ -82,7 +82,7 @@ Any two or more recipes can be combined by copying and pasting task JSON into th
 
 For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
-## [DBM To Storage](dbm/script_dbm_to_storage.json)
+## [DBM To Storage](/dbm/script_dbm_to_storage.json)
 
 Move existing DBM report into a Storage bucket.
 
@@ -154,7 +154,7 @@ For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Scri
 # Python Scripts
 
 
-# dbm/run.py
+## dbm/run.py
 
 Script that executes { "dbm":{...}} task.
 
@@ -166,20 +166,20 @@ This script uses put_rows as defined in util/data/README.md. This allows
 multiple destinations for downloaded reports. To add a destination modify
 the util/data/__init__.py functions.
 
-Note
+### Note
 
 The underlying libraries use streaming download buffers, no disk is used.
 Buffers are controlled in setup.py.
 
 
 
-# dbm/helper.py
+## dbm/helper.py
 
 Command line to get a DBM report or show list of reports.
 
 This is a helper to help developers debug and create reports.
 
-To get list: python dbm/helper.py --list -u [credentials]
-To get report: python dbm/helper.py --report [id] -u [credentials]
+To get list: `python dbm/helper.py --list -u [credentials]`
+To get report: `python dbm/helper.py --report [id] -u [credentials]`
 
 
