@@ -22,7 +22,8 @@ from datetime import timedelta
 
 from util.project import project 
 from util.ds import report_get, report_fetch, report_to_rows, report_to_csv, report_read_data
-from util.bigquery import csv_to_table
+from util.bigquery import rows_to_table
+from util.data import put_rows, rows_to_csv
 from util.auth import get_service
 
 def ds_run(day):
@@ -45,7 +46,6 @@ def _one_report(day):
   # retrieve the report meta-data
   reports = ds_run(day)
 
-  disposition = 'WRITE_TRUNCATE'
   # if a report exists
   for report in reports:
     for report_frag in report:
@@ -54,23 +54,11 @@ def _one_report(day):
       # read data and clean up the report
       # TODO change to fully streaming @jfno
       rows = report_to_rows(report_read_data(project.task['auth'], report_frag['report_id'], report_frag['report_fragment']))
-      data = report_to_csv(rows)
 
       # upload to cloud if data
       if rows: #put_rows(project.task['auth'], project.task['out'], report_frag['name'], rows)
-          table = project.task['out']['table'] 
-          schema = project.task['out']['schema']
-          dataset = project.task['out']['dataset']
-          csv_to_table(
-            project.task['auth'],
-            project.id,
-            project.task['out']['dataset'],
-            project.task['out']['table'],
-            data,
-            schema=project.task['out']['schema'],
-            disposition=disposition
-          )
-          disposition = 'WRITE_APPEND'
+
+        put_rows(project.task['auth'], project.task['out'], None, rows)
 
 
 def ds():

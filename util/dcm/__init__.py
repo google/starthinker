@@ -16,7 +16,7 @@
 #
 ###########################################################################
 
-#https://developers.google.com/doubleclick-advertisers/v3.0/reports/get
+#https://developers.google.com/doubleclick-advertisers/v3.2/reports/get
 
 import pprint
 import csv
@@ -39,11 +39,11 @@ from util.dcm.schema.Lookup import DCM_Field_Lookup
 
 
 if INTERNAL_MODE:
-  # fetch discovery uri using: wget https://www.googleapis.com/discovery/v1/apis/dfareporting/internalv3.0/rest > util/dcm/internalv30_uri.json
-  API_VERSION = 'internalv3.0'
-  API_URI = '%sutil/dcm/internalv30_uri.json' % EXECUTE_PATH
+  # fetch discovery uri using: wget https://www.googleapis.com/discovery/v1/apis/dfareporting/internalv3.2/rest > util/dcm/internalv32_uri.json
+  API_VERSION = 'internalv3.2'
+  API_URI = '%sutil/dcm/internalv32_uri.json' % EXECUTE_PATH
 else:
-  API_VERSION = 'v3.0'
+  API_VERSION = 'v3.2'
   API_URI = None
 
 DCM_CHUNK_SIZE = int(200 * 1024000 * BUFFER_SCALE) # 200MB minimum recommended by docs * scale in setup.py

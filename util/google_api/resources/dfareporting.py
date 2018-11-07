@@ -33,7 +33,7 @@ def Placement(
   """ Default minial placement definition.
 
   Args:
-    See docs: https://developers.google.com/doubleclick-advertisers/v3.1/placements#resource
+    See docs: https://developers.google.com/doubleclick-advertisers/v3.2/placements#resource
 
   Returns:
     Placement JSON.

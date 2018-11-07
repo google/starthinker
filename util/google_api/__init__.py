@@ -96,9 +96,9 @@ def API_Iterator(function, kwargs, results = None):
      
       For example if calling the DCM list placement API:
      
-        https://developers.google.com/doubleclick-advertisers/v3.1/placements/list
+        https://developers.google.com/doubleclick-advertisers/v3.2/placements/list
     
-        function = get_service('dfareporting', 'v3.1', 'user').placements().list
+        function = get_service('dfareporting', 'v3.2', 'user').placements().list
         kwargs = { 'profile_id':1234, 'archived':False } 
         for placement in API_Iterator(function, kwargs):
           print placement 
@@ -279,15 +279,15 @@ def API_DCM(auth, iterate=False):
 
   configuration = {
     'api':'dfareporting',
-    'version':'v3.0',
+    'version':'v3.2',
     'auth':auth,
     'iterate':iterate
   }
 
   if INTERNAL_MODE:
-    # fetch discovery uri using: wget https://www.googleapis.com/discovery/v1/apis/dfareporting/internalv3.0/rest > util/dcm/internalv30_uri.json
-    configuration['version'] = 'internalv3.0'
-    configuration['uri'] = '%sutil/dcm/internalv30_uri.json' % EXECUTE_PATH
+    # fetch discovery uri using: wget https://www.googleapis.com/discovery/v1/apis/dfareporting/internalv3.2/rest > util/dcm/internalv32_uri.json
+    configuration['version'] = 'internalv3.2'
+    configuration['uri'] = '%sutil/dcm/internalv32_uri.json' % EXECUTE_PATH
 
   return API(configuration)
 

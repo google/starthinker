@@ -45,7 +45,7 @@
   "tasks":[
     { "dataset":{
       "auth":"service",
-      "dataset":{ "constant":"dataset" }
+      "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "default":"", "description":"BigQuery dataset to write tables for each entity." }}
     }},
     { "entity":{
       "auth":"user",

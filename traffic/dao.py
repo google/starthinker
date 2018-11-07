@@ -38,7 +38,7 @@ class BaseDAO(object):
   entities.
   """
   """Version of the CM API to use."""
-  API_VERSION = 'v3.0'
+  API_VERSION = 'v3.2'
 
   def __init__(self, auth, profile_id):
     """Initializes the object with a specific CM profile ID and an authorization scheme.
@@ -196,45 +196,27 @@ class BaseDAO(object):
     item = self.get(feed_item)
 
     if item:
-      self.start_timer('process_update')
       self._process_update(item, feed_item)
-      self.end_timer('process_update')
 
-      self.start_timer('clean')
       self._clean(item)
-      self.end_timer('clean')
 
-      self.start_timer('update')
       self._update(item, feed_item)
-      self.end_timer('update')
     else:
-      self.start_timer('process_new')
       new_item = self._process_new(feed_item)
-      self.end_timer('process_new')
 
-      self.start_timer('clean')
       self._clean(new_item)
-      self.end_timer('clean')
 
-      self.start_timer('insert')
       item = self._insert(new_item, feed_item)
-      self.end_timer('insert')
 
-      self.start_timer('store')
       if self._id_field and feed_item.get(self._id_field, '').startswith('ext'):
         store.map(self._entity, feed_item.get(self._id_field), item['id'])
         store.set(self._entity, [feed_item[self._id_field]], item)
-      self.end_timer('store')
 
-    self.start_timer('store 2')
     if item:
       feed_item[self._id_field] = item['id']
       store.set(self._entity, [item['id']], item)
-    self.start_timer('store 2')
 
-    self.start_timer('post_process')
     self._post_process(feed_item, item)
-    self.end_timer('post_process')
 
     return item
 
