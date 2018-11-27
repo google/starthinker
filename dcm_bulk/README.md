@@ -1,7 +1,7 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
 
-# JOSN Recipes
+# JSON Recipes
 
 ## [DCM Standard Bulk](/dcm_bulk/script_dcm_bulk_standard.json)
 
@@ -25,7 +25,7 @@ Maintained and supported by: kenjora@google.com
 
 ### Instructions
 
-- See API docs for <a href='https://developers.google.com/doubleclick-advertisers/v3.0/dimensions' target='_blank'>Metrics</a>.
+- See API docs for <a href='https://developers.google.com/doubleclick-advertisers/v3.2/dimensions' target='_blank'>Metrics</a>.
 - DCM report name format '[Report Name] [Account ID] ( StarThinker )'.
 - Specify either bucket and path or dataset and table.
 - Schema is pulled from the official DCM specification.

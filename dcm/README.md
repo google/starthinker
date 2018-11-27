@@ -1,7 +1,7 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
 
-# JOSN Recipes
+# JSON Recipes
 
 ## [DCM To BigQuery](/dcm/script_dcm_to_bigquery.json)
 
@@ -50,7 +50,7 @@ Maintained and supported by: kenjora@google.com
 ### Fields
 
 - account (string) 
-- body (json) 
+- body (json) Default: {}
 - delete (boolean)
 
 ### Instructions
@@ -155,7 +155,7 @@ For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Scri
 
 ## [/dcm/run.py](/dcm/run.py)
 
-Script that executes { "dcm":{...}} task.
+Handler that executes { "dcm":{...}} task in recipe JSON.
 
 This script translates JSON instructions into operations on DCM reporting.
 It deletes, or creates, and/or downloads DCM reports.  See JSON files in
@@ -181,10 +181,12 @@ proto files.
 Command line to get a DCM report or show list of report or files.
 
 This is a helper to help developers debug and create reports. Prints using JSON for
-copy and paste compatibility.
+copy and paste compatibility. The following command lines are available:
 
-To get list: python dcm/helper.py --account [id] --profile [id] --list -u [credentials]
-To get report: python dcm/helper.py --account [id] --profile [id] --report [id] -u [credentials]
-To get files: python dcm/helper.py --account [id] --profile [id] --report [id] --list -u [credentials]
+- To get list of reports: `python dcm/helper.py --account [id] --profile [id] --list -u [credentials]`
+- To get report: `python dcm/helper.py --account [id] --profile [id] --report [id] -u [credentials]`
+- To get report files: `python dcm/helper.py --account [id] --profile [id] --files [id] -u [credentials]`
+- To get report sample: `python dcm/helper.py --account [id] --profile [id] --sample [id] -u [credentials]`
+- To get report schema: `python dcm/helper.py --account [id] --profile [id] --schema [id] -u [credentials]`
 
 

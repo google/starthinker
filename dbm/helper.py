@@ -19,27 +19,34 @@
 
 """Command line to get a DBM report or show list of reports.
 
-This is a helper to help developers debug and create reports.
+This is a helper to help developers debug and create reports. The following
+calls are valid:
 
-To get list: python dbm/helper.py --list -u [credentials]
-To get report: python dbm/helper.py --report [id] -u [credentials]
+- To get list of reports: `python dbm/helper.py --list -u [credentials]`
+- To get report json: `python dbm/helper.py --report [id] -u [credentials]`
+- To get report schema: `python dbm/helper.py --schema [id] -u [credentials]`
+- To get report sample: `python dbm/helper.py --sample [id] -u [credentials]`
 
 """
 
 
+import json
 import argparse
-import pprint
 
 from util.project import project
 from util.google_api import API_DBM
-
+from util.dbm import report_file, report_to_rows, report_clean
+from util.bigquery import get_schema
+from util.csv import rows_to_type, rows_print
 
 if __name__ == "__main__":
 
   # get parameters
   parser = argparse.ArgumentParser()
-  parser.add_argument('--report', help='report ID to pull the achema.', default=None)
-  parser.add_argument('--list', help='list reports or files.', action='store_true')
+  parser.add_argument('--report', help='report ID to pull json definition', default=None)
+  parser.add_argument('--schema', help='report ID to pull schema format', default=None)
+  parser.add_argument('--sample', help='report ID to pull sample data', default=None)
+  parser.add_argument('--list', help='list reports', action='store_true')
 
   # initialize project
   project.load(parser=parser)
@@ -48,7 +55,26 @@ if __name__ == "__main__":
   # get report
   if project.args.report:
     report = API_DBM(auth).queries().getquery(queryId=project.args.report).execute()
-    pprint.PrettyPrinter().pprint(report)
+    print json.dumps(report, indent=2, sort_keys=True)
+
+  # get schema
+  elif project.args.schema:
+    filename, report = report_file(auth, project.args.schema, None, 10)
+    rows = report_to_rows(report)
+    rows = report_clean(rows)
+    rows = rows_to_type(rows)
+    print json.dumps(get_schema(rows)[1], indent=2, sort_keys=True)
+
+  # get sample
+  elif project.args.sample:
+    filename, report = report_file(auth, project.args.sample, None, 10)
+    rows = report_to_rows(report)
+    rows = report_clean(rows)
+    rows = rows_to_type(rows)
+    for r in rows_print(rows, row_min=0, row_max=20): pass
+
+  # get list
   else:
     for report in API_DBM(auth, iterate=True).queries().listqueries().execute():
-      pprint.PrettyPrinter().pprint(report)
+      print json.dumps(report, indent=2, sort_keys=True)
+

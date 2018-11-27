@@ -229,7 +229,8 @@ def report_build(auth, account, body):
     service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
 
     # add the account id to the body
-    body['account_id'] = account_id
+    body['accountId'] = account_id
+    body['ownerProfileId'] = profile_id
 
     # add advertisers to the body
     if advertiser_ids:
@@ -239,6 +240,8 @@ def report_build(auth, account, body):
          'id':advertiser_id,
          'matchType':'EXACT'
        } for advertiser_id in advertiser_ids]
+
+    #pprint.PrettyPrinter().pprint(body)
 
     # create the report
     if INTERNAL_MODE: report = _retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))

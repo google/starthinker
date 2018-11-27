@@ -1,7 +1,7 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
 
-# JOSN Recipes
+# JSON Recipes
 
 ## [Audience Mapper](/gtech/script_audience_mapper.json)
 

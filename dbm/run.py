@@ -16,7 +16,7 @@
 #
 ###########################################################################
 
-"""Script that executes { "dbm":{...}} task.
+"""Handler that executes { "dbm":{...}} task in recipe JSON.
 
 This script translates JSON instructions into operations on DBM reporting.
 It deletes, or creates, and/or downloads DBM reports.  See JSON files in
@@ -36,7 +36,7 @@ Buffers are controlled in setup.py.
 
 from util.project import project
 from util.data import put_rows, get_rows
-from util.dbm import report_delete, report_create, report_file, report_to_rows, report_clean, DBM_CHUNKSIZE
+from util.dbm import report_delete, report_create, report_build, report_file, report_to_rows, report_clean, DBM_CHUNKSIZE
 
 
 def dbm():
@@ -55,7 +55,9 @@ def dbm():
       project.task['report'].get('name', None)
     )
 
-  # check if report is to be created
+  # check if report is to be created ( LEGACY, DO NOT USE, SEE body format below )
+  # REASON: this call tried to pass all parts of the json as parameters, this does not scale
+  #         the new body call simply passes the report json in, leaving flexibility in the JSON recipe
   if 'type' in project.task['report']:
 
     if project.verbose: print 'DBM CREATE',
@@ -76,6 +78,22 @@ def dbm():
       project.task['report'].get('timezone', 'America/Los Angeles'),
       project.id,
       project.task['report'].get('dataset_id', None)
+    )
+
+  # check if report is to be created
+  if 'body' in project.task['report']:
+    if project.verbose: print 'DBM BUILD', project.task['report']['body']['metadata']['title']
+
+    # filters can be passed using special get_rows handler, allows reading values from sheets etc...
+    if 'filters' in project.task['report']:
+      for f, d in project.task['report']['filters'].items():
+        for v in get_rows(project.task['auth'], d):
+          project.task['report']['body']['params'].setdefault('filters', []).append({"type": f, "value": v})
+
+    # create the report
+    report = report_build(
+      project.task['auth'],
+      project.task['report']['body']
     )
 
   # moving a report

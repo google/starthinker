@@ -186,3 +186,15 @@ class CreativeAssetDAO(BaseDAO):
       auth: Authentication scheme to use to access Cloud Storage.
     """
     object_download(self.gc_project, bucket, object_name, local_file, auth=auth)
+
+  def get_identifier(self, association, feed):
+    asset_ids = (association.get(FieldMap.CREATIVE_ASSET_ID, None), store.translate(self._entity, association[FieldMap.CREATIVE_ASSET_ID]))
+
+    for creative_asset in feed.feed:
+      if str(creative_asset[FieldMap.CREATIVE_ASSET_ID]) in asset_ids:
+        return {
+            'name': creative_asset.get(FieldMap.CREATIVE_ASSET_NAME, None),
+            'type': creative_asset.get(FieldMap.CREATIVE_TYPE, None)
+        }
+
+    return None

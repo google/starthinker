@@ -16,7 +16,7 @@
 #
 ###########################################################################
 
-"""Script that executes { "dcm":{...}} task.
+"""Handler that executes { "dcm":{...}} task in recipe JSON.
 
 This script translates JSON instructions into operations on DCM reporting.
 It deletes, or creates, and/or downloads DCM reports.  See JSON files in
@@ -38,7 +38,7 @@ proto files.
 """
 
 from util.project import project 
-from util.data import put_rows
+from util.data import get_rows, put_rows
 from util.dcm import report_delete, report_build, report_create, report_file, report_to_rows, report_clean, report_schema
 
 
@@ -58,7 +58,7 @@ def dcm():
       project.task['report'].get('name', None)
     )
 
-  # check if report is to be created
+  # check if report is to be created - DEPRECATED
   if 'type' in project.task['report']:
     if project.verbose: print 'DCM CREATE'
     report = report_create(
@@ -70,10 +70,34 @@ def dcm():
 
   # check if report is to be created
   if 'body' in project.task['report']:
-    if project.verbose: print 'DCM CREATE'
+    if project.verbose: print 'DCM BUILD', project.task['report']['body']['name']
+
+    # filters can be passed using special get_rows handler, allows reading values from sheets etc...
+    if 'filters' in project.task['report']:
+      for f, d in project.task['report']['filters'].items():
+        for v in get_rows(project.task['auth'], d):
+          # accounts are specified in a unique part of the report json
+          if f in 'accountId':
+            project.task['report']['body']['accountId'] = v
+          # activities are specified in a unique part of the report json
+          elif f in 'dfa:activity':
+            project.task['report']['body']['reachCriteria']['activities'].setdefault('filters', []).append({
+              "kind":"dfareporting#dimensionValue",
+              "dimensionName": f,
+              "id": v
+            })
+          # all other filters go in the same place
+          else:
+            project.task['report']['body']['reachCriteria'].setdefault('dimensionFilters', []).append({
+              "kind":"dfareporting#dimensionValue",
+              "dimensionName": f,
+              "id": v,
+              "matchType": "EXACT"
+            })
+
     report = report_build(
       project.task['auth'],
-      project.task['report']['account'],
+      project.task['report']['body'].get('accountId') or project.task['report']['account'],
       project.task['report']['body']
     )
 

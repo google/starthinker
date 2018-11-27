@@ -19,9 +19,9 @@
       "auth":"user",
       "report":{
         "account":{"field":{ "name":"account", "kind":"string", "order":1, "default":"" }},
-        "body":{"field":{ "name":"body", "kind":"json", "order":2, "default":"" }}
+        "body":{"field":{ "name":"body", "kind":"json", "order":2, "default":"{}" }}
       },
-      "delete":{"field":{ "name":"delete", "kind":"boolean", "order":3, "default":"" }}
+      "delete":{"field":{ "name":"delete", "kind":"boolean", "order":3, "default":false }}
     }}
   ]
 }

@@ -1,7 +1,7 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
 
-# JOSN Recipes
+# JSON Recipes
 
 ## [API To BigQuery](/google_api/script_google_api_to_bigquery.json)
 
@@ -57,8 +57,8 @@ For example, pull a DBM report via API: https://developers.google.com/bid-manage
 
 python google_api/helper.py -api doubleclickbidmanager -version v1 -function queries.getquery -kwargs '{ "queryId": 132865172 }' -u [credentials path] 
 
-For example, pull a list of placements: https://developers.google.com/doubleclick-advertisers/v3.1/placements/list
+For example, pull a list of placements: https://developers.google.com/doubleclick-advertisers/v3.2/placements/list
 
-python google_api/helper.py -api dfareporting -version v3.0 -function placements.list -kwargs '{ "profileId":2782211 }' -u [credentials path]
+python google_api/helper.py -api dfareporting -version v3.2 -function placements.list -kwargs '{ "profileId":2782211 }' -u [credentials path]
 
 

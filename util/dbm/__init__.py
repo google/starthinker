@@ -131,10 +131,21 @@ def report_get(auth, report_id=None, name=None):
 
 
 def report_build(auth, body):
-  report = report_get(auth, name=body['name'])
+  report = report_get(auth, name=body['metadata']['title'])
 
-  if report:
+  if not report:
     service = get_service('doubleclickbidmanager', API_VERSION, auth)
+
+    # add default daily schedule if it does not exist ( convenience )
+    if "schedule" not in body:
+      body['schedule'] = {
+        "endTimeMs": long((time.time() + (365 * 24 * 60 * 60)) * 1000), # 1 year in future
+        "frequency": "DAILY",
+        "nextRunMinuteOfDay": 4 * 60,
+        "nextRunTimezoneCode": body['timezoneCode']
+      }   
+
+    #pprint.PrettyPrinter().pprint(body)
 
     # build report
     job = service.queries().createquery(body=body)
@@ -145,11 +156,12 @@ def report_build(auth, body):
      "dataRange":report['metadata']['dataRange'],
      "timezoneCode":report['schedule']['nextRunTimezoneCode']
     }
+
     run = service.queries().runquery(queryId=report['queryId'], body=body)
     _retry(run)
 
   else:
-    if project.verbose: print 'DBM Report Exists:', body['name']
+    if project.verbose: print 'DBM Report Exists:', body['metadata']['title']
 
   return report
 

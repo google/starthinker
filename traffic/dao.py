@@ -77,11 +77,49 @@ class BaseDAO(object):
       feed_item: Feed item from Bulkdozer feed representing the item to fetch
         from CM.
     """
+    print 'hitting API to get %s id %s' % (self._entity, feed_item[self._id_field])
     return self._retry(
         self._service.get(
             profileId=self.profile_id, id=feed_item[self._id_field]))
 
   def get(self, feed_item):
+    """Retrieves an item.
+
+    Items could be retrieved from a in memory cache in case it has already been
+    retrieved within the current execution. Also, this method is capable of
+    translating 'ext' placeholder IDs with concrete CM ids.
+
+    Args:
+      feed_item: Feed item from the Bulkdozer feed representing the item to
+        retrieve.
+
+    Returns:
+      The CM object that represents the identified entity.
+    """
+    result = None
+    keys = []
+    id_value = feed_item.get(self._id_field, None)
+
+    if id_value and type(id_value) in (str, unicode) and id_value.startswith('ext'):
+      keys.append(id_value)
+      id_value = store.translate(self._entity, id_value)
+
+      if id_value:
+        feed_item[self._id_field] = id_value
+
+    keys.append(feed_item.get(self._id_field, None))
+
+    if id_value:
+      result = store.get(self._entity, id_value)
+
+      if not result:
+        result = self._get(feed_item)
+
+    store.set(self._entity, keys, result)
+
+    return result
+
+  def deprecated_get(self, feed_item):
     """Retrieves an item.
 
     Items could be retrieved from a in memory cache in case it has already been
@@ -107,18 +145,19 @@ class BaseDAO(object):
         dcm_id = store.translate(self._entity, id_value)
         if dcm_id:
           feed_item[self._id_field] = dcm_id
-          result = self._get(feed_item)
-        else:
-          result = store.get(self._entity, id_value)
+          result = self.get(feed_item)
       else:
         # Otherwise use the ID to fetch it from DCM
-        result = self._get(feed_item)
+        result = store.get(self._entity, feed_item[self._id_field])
+        if not result:
+          result = self._get(feed_item)
     # If no ID field was provided, check if a search field was, if so try to
     # search for the object
     elif self._search_field and self._search_field in feed_item and len(
         feed_item[self._search_field]) > 0:
       result = store.get(self._entity, feed_item[self._search_field])
       if not result:
+        print 'hitting API to list %s id %s' % (self._entity, feed_item[self._search_field])
         item_list = self._retry(
             self._service.list(
                 profileId=self.profile_id,
@@ -159,6 +198,7 @@ class BaseDAO(object):
     Returns:
       The CM object representing the item inserted.
     """
+    print 'hitting API to insert %s id %s' % (self._entity, feed_item[self._id_field])
     return self._retry(
         self._service.insert(profileId=self.profile_id, body=item))
 
@@ -170,15 +210,11 @@ class BaseDAO(object):
       feed_item: The feed item from the Bulkdozer feed representing the item to
         update.
     """
+    print 'hitting API to update %s id %s' % (self._entity, feed_item[self._id_field])
     self._retry(self._service.update(profileId=self.profile_id, body=item))
 
   def start_timer(self, name):
     self._metrics[name] = datetime.datetime.now()
-
-  def end_timer(self, name):
-    if name in self._metrics:
-      delta = datetime.datetime.now() - self._metrics[name]
-      print '%s: %d.%d' % (name, delta.seconds, delta.microseconds / 1000)
 
   def process(self, feed_item):
     """Processes a Bulkdozer feed item.

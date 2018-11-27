@@ -114,9 +114,9 @@ This does not change or augment the standard API calls other than the following:
      
       For example if calling the DCM list placement API:
      
-        https://developers.google.com/doubleclick-advertisers/v3.1/placements/list
+        https://developers.google.com/doubleclick-advertisers/v3.2/placements/list
     
-        function = get_service('dfareporting', 'v3.1', 'user').placements().list
+        function = get_service('dfareporting', 'v3.2', 'user').placements().list
         kwargs = { 'profile_id':1234, 'archived':False } 
         for placement in API_Iterator(function, kwargs):
           print placement 

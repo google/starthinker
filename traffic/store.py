@@ -27,7 +27,7 @@
 
 import json
 
-from util.sheets import sheets_read, sheets_write
+from util.sheets import sheets_read, sheets_write, sheets_clear
 
 
 class Store(object):
@@ -52,9 +52,13 @@ class Store(object):
 
     """
     if self.trix_id:
-      data = sheets_read(self.auth, self.trix_id, 'Store', 'A1')
+      data = sheets_read(self.auth, self.trix_id, 'Store', 'A1:Z1')
+      content = ''
       if data and data[0]:
-        self._id_map = json.loads(data[0][0])
+        for cell in data[0]:
+          content += cell
+
+        self._id_map = json.loads(content)
       else:
         self._id_map = {}
 
@@ -63,15 +67,20 @@ class Store(object):
 
     """
     if self.trix_id:
-      sheets_write(self.auth, self.trix_id, 'Store', 'A1',
-                   [[json.dumps(self._id_map)]])
+      columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'W', 'X', 'Y', 'Z']
+
+      data = json.dumps(self._id_map)
+      data = [data[start:start+49999] for start in xrange(0, len(data), 49999)]
+      sheets_write(self.auth, self.trix_id, 'Store', 'A:' + columns[len(data) + 1],
+                   [data])
+
 
   def clear(self):
     """Clears the store in the Bulkdozer feed.
 
     """
     if self.trix_id:
-      sheets_write(self.auth, self.trix_id, 'Store', 'A1', [['']])
+      sheets_clear(self.auth, self.trix_id, 'Store', 'A1:Z1')
 
     self._store = {}
     self._id_map = {}

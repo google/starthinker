@@ -651,96 +651,30 @@
             <p>TASK: dbm</p>
             <p>Create a DBM report.</p>
             <ol>
-              <li>Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DBM API</a> to build a report.</li><li>Filters for partners and advertisers are added from the partners and advertisers field.</li><li>The report is only created, use a move script to move it.</li><li>A report with a ( Starthinker ) suffix will be created in DBM.</li><li>To reset a report, delete it from DBM reporting.</li>
+              <li>Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DBM API</a> to build a report.</li><li>Copy and paste the JSON definition of a report.</li><li>The report is only created, use a move script to move it.</li><li>To reset a report, delete it from DBM reporting.</li>
             </ol>
             <pre class="view_code" id="view_code_dbm" style="display:none;">[
     {
         &quot;dbm&quot;: {
             &quot;report&quot;: {
-                &quot;partners&quot;: {
+                &quot;body&quot;: {
                     &quot;field&quot;: {
-                        &quot;default&quot;: &quot;&quot;, 
-                        &quot;kind&quot;: &quot;integer_list&quot;, 
-                        &quot;name&quot;: &quot;dbm_partners&quot;, 
-                        &quot;order&quot;: 3
-                    }
-                }, 
-                &quot;name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;default&quot;: &quot;&quot;, 
-                        &quot;kind&quot;: &quot;string&quot;, 
-                        &quot;name&quot;: &quot;dbm_title&quot;, 
-                        &quot;order&quot;: 2
-                    }
-                }, 
-                &quot;data_range&quot;: &quot;LAST_7_DAYS&quot;, 
-                &quot;metrics&quot;: {
-                    &quot;field&quot;: {
-                        &quot;default&quot;: [
-                            &quot;METRIC_REVENUE_ADVERTISER&quot;, 
-                            &quot;METRIC_IMPRESSIONS&quot;
-                        ], 
-                        &quot;kind&quot;: &quot;string_list&quot;, 
-                        &quot;name&quot;: &quot;dbm_metrics&quot;, 
-                        &quot;order&quot;: 8
-                    }
-                }, 
-                &quot;filters&quot;: {
-                    &quot;field&quot;: {
-                        &quot;default&quot;: &quot;[]&quot;, 
+                        &quot;default&quot;: &quot;{}&quot;, 
                         &quot;kind&quot;: &quot;json&quot;, 
-                        &quot;name&quot;: &quot;dbm_filters&quot;, 
-                        &quot;order&quot;: 9
-                    }
-                }, 
-                &quot;timezone&quot;: {
-                    &quot;field&quot;: {
-                        &quot;default&quot;: &quot;America/Los_Angeles&quot;, 
-                        &quot;kind&quot;: &quot;string&quot;, 
-                        &quot;name&quot;: &quot;dbm_timezone&quot;, 
-                        &quot;order&quot;: 6
-                    }
-                }, 
-                &quot;advertisers&quot;: {
-                    &quot;field&quot;: {
-                        &quot;default&quot;: &quot;&quot;, 
-                        &quot;kind&quot;: &quot;integer_list&quot;, 
-                        &quot;name&quot;: &quot;dbm_advertisers&quot;, 
-                        &quot;order&quot;: 4
-                    }
-                }, 
-                &quot;type&quot;: {
-                    &quot;field&quot;: {
-                        &quot;default&quot;: &quot;TYPE_CROSS_PARTNER&quot;, 
-                        &quot;kind&quot;: &quot;string&quot;, 
-                        &quot;name&quot;: &quot;dbm_type&quot;, 
-                        &quot;order&quot;: 5
-                    }
-                }, 
-                &quot;dimensions&quot;: {
-                    &quot;field&quot;: {
-                        &quot;default&quot;: [
-                            &quot;FILTER_DATE&quot;, 
-                            &quot;FILTER_ADVERTISER&quot;, 
-                            &quot;FILTER_INSERTION_ORDER&quot;, 
-                            &quot;FILTER_CREATIVE_ID&quot;, 
-                            &quot;FILTER_ADVERTISER_CURRENCY&quot;
-                        ], 
-                        &quot;kind&quot;: &quot;string_list&quot;, 
-                        &quot;name&quot;: &quot;dbm_dimensions&quot;, 
-                        &quot;order&quot;: 7
+                        &quot;name&quot;: &quot;body&quot;, 
+                        &quot;order&quot;: 1
                     }
                 }
             }, 
-            &quot;datastudio&quot;: {
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;delete&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: false, 
                     &quot;kind&quot;: &quot;boolean&quot;, 
-                    &quot;name&quot;: &quot;dbm_datastudio&quot;, 
-                    &quot;order&quot;: 12
+                    &quot;name&quot;: &quot;delete&quot;, 
+                    &quot;order&quot;: 3
                 }
-            }, 
-            &quot;auth&quot;: &quot;user&quot;
+            }
         }
     }
 ]</pre>
@@ -1392,7 +1326,7 @@
             &quot;report&quot;: {
                 &quot;body&quot;: {
                     &quot;field&quot;: {
-                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;default&quot;: &quot;{}&quot;, 
                         &quot;kind&quot;: &quot;json&quot;, 
                         &quot;name&quot;: &quot;body&quot;, 
                         &quot;order&quot;: 2
@@ -1410,7 +1344,7 @@
             &quot;auth&quot;: &quot;user&quot;, 
             &quot;delete&quot;: {
                 &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;default&quot;: false, 
                     &quot;kind&quot;: &quot;boolean&quot;, 
                     &quot;name&quot;: &quot;delete&quot;, 
                     &quot;order&quot;: 3

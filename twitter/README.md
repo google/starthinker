@@ -1,7 +1,7 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
 
-# JOSN Recipes
+# JSON Recipes
 
 ## [Trends Places To Sheets Via Values](/twitter/script_trends_places_to_sheets_via_value.json)
 

@@ -1,32 +1,24 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
 
-# JOSN Recipes
+# JSON Recipes
 
 ## [DBM Report](/dbm/script_dbm.json)
 
 Create a DBM report.
 
-Maintained and supported by: mauriciod@google.com, kenjora@google.com
+Maintained and supported by: kenjora@google.com
 
 ### Fields
 
-- dbm_title (string) 
-- dbm_partners (integer_list) 
-- dbm_advertisers (integer_list) 
-- dbm_type (string) Default: TYPE_CROSS_PARTNER
-- dbm_timezone (string) Default: America/Los_Angeles
-- dbm_dimensions (string_list) Default: [u'FILTER_DATE', u'FILTER_ADVERTISER', u'FILTER_INSERTION_ORDER', u'FILTER_CREATIVE_ID', u'FILTER_ADVERTISER_CURRENCY']
-- dbm_metrics (string_list) Default: [u'METRIC_REVENUE_ADVERTISER', u'METRIC_IMPRESSIONS']
-- dbm_filters (json) Default: []
-- dbm_datastudio (boolean)
+- body (json) Default: {}
+- delete (boolean)
 
 ### Instructions
 
 - Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DBM API</a> to build a report.
-- Filters for partners and advertisers are added from the partners and advertisers field.
+- Copy and paste the JSON definition of a report.
 - The report is only created, use a move script to move it.
-- A report with a ( Starthinker ) suffix will be created in DBM.
 - To reset a report, delete it from DBM reporting.
 
 ### Quick Command Line
@@ -156,7 +148,7 @@ For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Scri
 
 ## [/dbm/run.py](/dbm/run.py)
 
-Script that executes { "dbm":{...}} task.
+Handler that executes { "dbm":{...}} task in recipe JSON.
 
 This script translates JSON instructions into operations on DBM reporting.
 It deletes, or creates, and/or downloads DBM reports.  See JSON files in
@@ -177,9 +169,12 @@ Buffers are controlled in setup.py.
 
 Command line to get a DBM report or show list of reports.
 
-This is a helper to help developers debug and create reports.
+This is a helper to help developers debug and create reports. The following
+calls are valid:
 
-To get list: python dbm/helper.py --list -u [credentials]
-To get report: python dbm/helper.py --report [id] -u [credentials]
+- To get list of reports: `python dbm/helper.py --list -u [credentials]`
+- To get report json: `python dbm/helper.py --report [id] -u [credentials]`
+- To get report schema: `python dbm/helper.py --schema [id] -u [credentials]`
+- To get report sample: `python dbm/helper.py --sample [id] -u [credentials]`
 
 

@@ -33,7 +33,8 @@ from traffic.placement import PlacementDAO
 from traffic.event_tag import EventTagDAO
 from traffic.store import store
 from traffic.config import config
-from traffic.logger import logger
+from traffic.logger import logger, timer
+import datetime
 import json
 import sys
 import traceback
@@ -143,6 +144,7 @@ def init_daos():
                              project.task['dcm_profile_id'])
   creative_association_dao = CreativeAssociationDAO(
       project.task['auth'], project.task['dcm_profile_id'])
+
   creative_dao = CreativeDAO(project.task['auth'],
                              project.task['dcm_profile_id'])
   placement_dao = PlacementDAO(project.task['auth'],
@@ -211,6 +213,9 @@ def creatives():
   """Processes creatives.
 
   """
+  creative_asset_feed = Feed(project.task['auth'], project.task['sheet_id'],
+                        'creative_asset_feed', spreadsheet=spreadsheet)
+
   creative_feed = Feed(project.task['auth'], project.task['sheet_id'],
                        'creative_feed', spreadsheet=spreadsheet)
 
@@ -225,6 +230,8 @@ def creatives():
                                                   third_party_url_feed.feed)
   creative_dao.map_creative_and_association_feeds(
       creative_feed.feed, creative_association_feed.feed)
+
+  creative_dao.map_assets_feed(creative_asset_feed)
 
   execute_feed(creative_feed, creative_dao, FieldMap.CREATIVE_NAME,
                'Processing creative')
@@ -318,13 +325,16 @@ def test():
   """
   setup()
   init_daos()
-  ads()
+  creatives()
 
 
 if __name__ == '__main__':
   """Main entry point of Bulkdozer.
 
   """
+  timer.start_timer('bulkdozer job')
   project.load('traffic')
   traffic()
+  timer.check_timer('bulkdozer job')
+
   #test()

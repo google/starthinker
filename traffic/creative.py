@@ -142,7 +142,7 @@ class CreativeDAO(BaseDAO):
       creative['type'] = 'INSTREAM_VIDEO'
 
       for association in feed_item.get('associations', []):
-        identifier = self.creative_asset_dao.get(association)['assetIdentifier']
+        identifier = self.creative_asset_dao.get_identifier(association, self._creative_asset_feed)
 
         creative['creativeAssets'] = [{
             'assetIdentifier': identifier,
@@ -157,6 +157,9 @@ class CreativeDAO(BaseDAO):
     # have to be uploaded in the creative_assets dao
 
     return creative
+
+  def map_assets_feed(self, creative_asset_feed):
+    self._creative_asset_feed = creative_asset_feed
 
   def _post_process(self, feed_item, new_item):
     """Maps ids and names of related entities so they can be updated in the Bulkdozer feed.

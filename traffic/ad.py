@@ -480,6 +480,7 @@ class AdDAO(BaseDAO):
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
 
     landing_page = self._landing_page_dao.get(feed_item)
+
     if landing_page:
       feed_item[FieldMap.AD_LANDING_PAGE_ID] = landing_page['id']
 

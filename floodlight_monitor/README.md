@@ -1,7 +1,7 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
 
-# JOSN Recipes
+# JSON Recipes
 
 ## [Floodlight Monitor](/floodlight_monitor/script_floodlight_monitor.json)
 

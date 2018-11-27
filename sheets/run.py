@@ -17,9 +17,10 @@
 ###########################################################################
 
 from util.project import project
-from util.sheets import sheets_tab_create, sheets_read, sheets_tab_copy, sheets_clear, sheets_tab_delete
+from util.sheets import sheets_tab_create, sheets_read, sheets_write, sheets_clear, sheets_tab_copy, sheets_tab_delete
 from util.bigquery import get_schema, rows_to_table
 from util.csv import rows_to_type
+from util.data import get_rows
 
 def sheets():
   if project.verbose: print 'SHEETS'
@@ -37,6 +38,11 @@ def sheets():
     sheets_tab_copy(project.task['auth'], project.task['template']['sheet'], project.task['template']['tab'], project.task['sheet'], project.task['tab'])
   else:
     sheets_tab_create(project.task['auth'], project.task['sheet'], project.task['tab'])
+
+  # write data if specified
+  if 'write' in project.task:
+    rows = get_rows(project.task['auth'], project.task['write'])
+    sheets_write(project.task['auth'], project.task['sheet'], project.task['tab'], project.task['range'], rows)
 
   # move if specified
   if 'out' in project.task:

@@ -30,10 +30,12 @@ Key benfits include:
 """
 
 
+import json
 import pysftp
 import datetime
 import os
 import sys
+import traceback
 from StringIO import StringIO
 
 from util.project import project
@@ -101,26 +103,34 @@ def get_rows(auth, source):
     If single_cell is True: Returns a list of values [v1, v2, ...]
 """
 
-  if 'values' in source:
-    for value in source['values']:
-      yield value if source.get('single_cell', False) else [value]
+  # if handler points to list, concatenate all the values from various sources into one list
+  if isinstance(source, list):  
+    for s in source:
+      for r in get_rows(auth, s):
+        yield r
 
-  if 'sheet' in source:
-    rows = sheets_read(project.task['auth'], source['sheet']['url'], source['sheet']['tab'], source['sheet']['range'])
+  # if handler is an endpoint, fetch data
+  else:
+    if 'values' in source:
+      for value in source['values']:
+        yield value if source.get('single_cell', False) else [value]
 
-    for row in rows:
-      yield row[0] if source.get('single_cell', False) else row
+    if 'sheet' in source:
+      rows = sheets_read(project.task['auth'], source['sheet']['url'], source['sheet']['tab'], source['sheet']['range'])
 
-  if 'bigquery' in source:
-    rows = query_to_rows(
-      source['bigquery'].get('auth', auth),
-      project.id,
-      source['bigquery']['dataset'],
-      source['bigquery']['query'],
-      legacy=source['bigquery'].get('legacy', False)
-    )
-    for row in rows:
-      yield row[0] if source.get('single_cell', False) else row
+      for row in rows:
+        yield row[0] if source.get('single_cell', False) else row
+
+    if 'bigquery' in source:
+      rows = query_to_rows(
+        source['bigquery'].get('auth', auth),
+        project.id,
+        source['bigquery']['dataset'],
+        source['bigquery']['query'],
+        legacy=source['bigquery'].get('legacy', False)
+      )
+      for row in rows:
+        yield row[0] if source.get('single_cell', False) else row
 
 
 def put_rows(auth, destination, filename, rows, variant=''):
@@ -253,30 +263,37 @@ def put_rows(auth, destination, filename, rows, variant=''):
     pass
 
   if 'sftp' in destination:
-    sys.stderr = StringIO();
+    try:
+      sys.stderr = StringIO();
 
-    cnopts = pysftp.CnOpts()
-    cnopts.hostkeys = None
+      cnopts = pysftp.CnOpts()
+      cnopts.hostkeys = None
 
-    file_prefix = 'report'
-    if 'file_prefix' in destination['sftp']:
-      file_prefix = destination['sftp'].get('file_prefix')
-      del destination['sftp']['file_prefix']
+      file_prefix = 'report'
+      if 'file_prefix' in destination['sftp']:
+        file_prefix = destination['sftp'].get('file_prefix')
+        del destination['sftp']['file_prefix']
 
-    #sftp_configs = destination['sftp']
-    #sftp_configs['cnopts'] = cnopts
-    #sftp = pysftp.Connection(**sftp_configs)
+      #sftp_configs = destination['sftp']
+      #sftp_configs['cnopts'] = cnopts
+      #sftp = pysftp.Connection(**sftp_configs)
 
-    sftp = pysftp.Connection(host=destination['sftp']['host'], username=destination['sftp']['username'], password=destination['sftp']['password'], port=destination['sftp']['port'], cnopts=cnopts)
+      sftp = pysftp.Connection(host=destination['sftp']['host'], username=destination['sftp']['username'], password=destination['sftp']['password'], port=destination['sftp']['port'], cnopts=cnopts)
 
-    tmp_file_name = '/tmp/%s_%s.csv' % (file_prefix, datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S'))
+      if 'directory' in destination['sftp']:
+        sftp.cwd(destination['sftp']['directory'])
 
-    tmp_file = open(tmp_file_name, 'wb')
-    tmp_file.write(rows_to_csv(rows).read())
-    tmp_file.close()
+      tmp_file_name = '/tmp/%s_%s.csv' % (file_prefix, datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S'))
 
-    sftp.put(tmp_file_name)
+      tmp_file = open(tmp_file_name, 'wb')
+      tmp_file.write(rows_to_csv(rows).read())
+      tmp_file.close()
 
-    os.remove(tmp_file_name)
+      sftp.put(tmp_file_name)
 
-    sys.stderr = sys.__stderr__;
+      os.remove(tmp_file_name)
+
+      sys.stderr = sys.__stderr__;
+    except e:
+      print e
+      traceback.print_exc()

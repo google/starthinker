@@ -23,11 +23,12 @@ import os
 import csv
 
 from util.project import project
-from util.bigquery import query_to_table, query_to_view, storage_to_table, query_to_rows
+from util.bigquery import query_to_table, query_to_view, storage_to_table, query_to_rows, execute_statement
 from util.csv import rows_to_type
 from util.sheets import sheets_clear
 from util.sheets import sheets_write
 from util.storage import object_put
+from util.data import put_rows
 
 
 # loop all parameters and replace with values, for lists turn them into strings
@@ -42,9 +43,20 @@ def query_parameters(query, parameters):
 
 def bigquery():
 
+
   if 'query' in project.task['from']:
     if 'table' in project.task['to']:
       if project.verbose: print "QUERY TO TABLE", project.task['to']['table']
+
+      if 'pre_process_query' in project.task['to']:
+        print 'executing statement'
+        execute_statement(
+            project.task['auth'],
+            project.id,
+            project.task['to']['dataset'],
+            project.task['to']['pre_process_query'],
+            use_legacy_sql=project.task['from'].get('legacy', project.task['from'].get('useLegacySql', True))
+        )
       query_to_table(
         project.task['auth'],
         project.id,
@@ -52,7 +64,8 @@ def bigquery():
         project.task['to']['table'],
         query_parameters(project.task['from']['query'], project.task['from'].get('parameters')),
         disposition = project.task['write_disposition'] if 'write_disposition' in project.task else 'WRITE_TRUNCATE',
-        legacy=project.task['from'].get('legacy', project.task['from'].get('useLegacySql', True)) # DEPRECATED: useLegacySql
+        legacy=project.task['from'].get('legacy', project.task['from'].get('useLegacySql', True)), # DEPRECATED: useLegacySql,
+        target_project_id=project.task['to'].get('project_id', project.id)
       )
     # NOT USED SO RIPPING IT OUT
     # Mauriciod: Yes, it is used, look at project/mauriciod/target_winrate.json
@@ -80,6 +93,12 @@ def bigquery():
 
       sheets_clear(project.task['auth'], project.task['to']['trix'], project.task['to']['range'].split('!')[0], project.task['to']['range'].split('!')[1])
       sheets_write(project.task['auth'], project.task['to']['trix'], project.task['to']['range'].split('!')[0], project.task['to']['range'].split('!')[1], rows)
+    elif 'sftp' in project.task['to']:
+      rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'], legacy=project.task['from'].get('use_legacy_sql', True))
+
+      if rows:
+        if project.verbose: print "QUERY TO SFTP"
+        put_rows(project.task['auth'], project.task['to'], '', rows)
     else:
       if project.verbose: print "QUERY TO VIEW", project.task['to']['view']
       query_to_view(

@@ -251,7 +251,9 @@ def datasets_access(auth, project_id, dataset_id, role='READER', emails=[], grou
 #  out_file.close()
 
 
-def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='WRITE_TRUNCATE', legacy=True, billing_project_id=None):
+def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='WRITE_TRUNCATE', legacy=True, billing_project_id=None, target_project_id=None):
+  target_project_id = target_project_id or project_id
+
   if not billing_project_id:
     billing_project_id = project_id
 
@@ -263,7 +265,7 @@ def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='W
         'useLegacySql': legacy,
         'query':query,
         'destinationTable': {
-          'projectId':project_id,
+          'projectId':target_project_id,
           'datasetId':dataset_id,
           'tableId':table_id
         },
@@ -865,6 +867,24 @@ def _get_min_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
   job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute()
   
   return job['rows'][0]['f'][0]['v']
+
+def execute_statement(auth, project_id, dataset_id, statement, billing_project_id=None, use_legacy_sql=False):
+  if not billing_project_id:
+    billing_project_id = project_id
+
+  service = get_service('bigquery', 'v2', auth)
+
+  body = {
+    "kind": "bigquery#queryRequest",
+    'query': statement,
+    'defaultDataset': {
+      'datasetId' : dataset_id,
+    },
+    'useLegacySql': use_legacy_sql,
+  }
+
+  job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute(run=False)
+  job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
 
 #start and end date must be in format YYYY-MM-DD
 def _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id, start_date, end_date, billing_project_id=None):

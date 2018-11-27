@@ -1,7 +1,7 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
 
-# JOSN Recipes
+# JSON Recipes
 
 ## [Line Item To BigQuery Via Query](/lineitem/script_lineitem_read_to_bigquery_via_query.json)
 

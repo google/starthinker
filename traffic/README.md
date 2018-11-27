@@ -518,6 +518,39 @@ Handles logging actions back to the Bulkdozer feed Log tab.
 
     
 
+
+## class Timer
+
+  Timer class responsible for measuring run time for performance profiling and optimization.
+  
+
+
+###   function __init__(self):
+
+
+    Constructor.
+    
+
+
+###   function check_timer(self, timer_name):
+
+
+    Checks and prints the elapsed time of a given timer.
+
+    Args:
+      timer_name: Name of the timer to check and print, it must have been initialized with start_timer.
+    
+
+
+###   function start_timer(self, timer_name):
+
+
+    Initializes a new timer.
+
+    Args:
+      timer_name: name of the timer to initialize, if not unique will reset existing timer.
+    
+
 ## [/traffic/campaign.py](/traffic/campaign.py)
 
 Handles creation and updates of Ads.
@@ -664,7 +697,7 @@ Handles creation and updates of Creatives.
       creative['type'] = 'INSTREAM_VIDEO'
 
       for association in feed_item.get('associations', []):
-        identifier = self.creative_asset_dao.get(association)['assetIdentifier']
+        identifier = self.creative_asset_dao.get_identifier(association, self._creative_asset_feed)
 
         creative['creativeAssets'] = [{
             'assetIdentifier': identifier,
@@ -679,6 +712,9 @@ Handles creation and updates of Creatives.
     # have to be uploaded in the creative_assets dao
 
     return creative
+
+  def map_assets_feed(self, creative_asset_feed):
+    self._creative_asset_feed = creative_asset_feed
 
   def _post_process(self, feed_item, new_item):
     Maps ids and names of related entities so they can be updated in the Bulkdozer feed.
@@ -802,6 +838,18 @@ Handles creation and updates of creative assets.
     Downloads assets from Google Cloud Storage locally to be uploaded to DCM.
     
     object_download(self.gc_project, bucket, object_name, local_file, auth=auth)
+
+  def get_identifier(self, association, feed):
+    asset_ids = (association.get(FieldMap.CREATIVE_ASSET_ID, None), store.translate(self._entity, association[FieldMap.CREATIVE_ASSET_ID]))
+
+    for creative_asset in feed.feed:
+      if str(creative_asset[FieldMap.CREATIVE_ASSET_ID]) in asset_ids:
+        return {
+            'name': creative_asset.get(FieldMap.CREATIVE_ASSET_NAME, None),
+            'type': creative_asset.get(FieldMap.CREATIVE_TYPE, None)
+        }
+
+    return None
 
 ## [/traffic/creative_association.py](/traffic/creative_association.py)
 
@@ -1055,8 +1103,13 @@ Handles creation and updates of Placements.
       result['tagFormats'] = ['PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH']
     else:
       result['compatibility'] = 'DISPLAY'
-      width, height = feed_item.get(FieldMap.ASSET_SIZE,
-                                    '0x0').strip().lower().split('x')
+      width = 0
+      height = 0
+      raw_size = feed_item.get(FieldMap.ASSET_SIZE,
+                                    '0x0')
+      if(raw_size and 'x' in raw_size):
+        width, height = raw_size.strip().lower().split('x')
+
       sizes = self.get_sizes(int(width), int(height))['sizes']
       if sizes:
         result['size'] = {'id': sizes[0]['id']}
@@ -1110,7 +1163,7 @@ Module that centralizes all CM data access.
   entities.
   
   Version of the CM API to use.
-  API_VERSION = 'v3.0'
+  API_VERSION = 'v3.2'
 
   def __init__(self, auth, profile_id):
     Initializes the object with a specific CM profile ID and an authorization scheme.
@@ -1137,11 +1190,38 @@ Module that centralizes all CM data access.
   def _get(self, feed_item):
     Fetches an item from CM.
     
+    print 'hitting API to get %s id %s' % (self._entity, feed_item[self._id_field])
     return self._retry(
         self._service.get(
             profileId=self.profile_id, id=feed_item[self._id_field]))
 
   def get(self, feed_item):
+    Retrieves an item.
+    
+    result = None
+    keys = []
+    id_value = feed_item.get(self._id_field, None)
+
+    if id_value and type(id_value) in (str, unicode) and id_value.startswith('ext'):
+      keys.append(id_value)
+      id_value = store.translate(self._entity, id_value)
+
+      if id_value:
+        feed_item[self._id_field] = id_value
+
+    keys.append(feed_item.get(self._id_field, None))
+
+    if id_value:
+      result = store.get(self._entity, id_value)
+
+      if not result:
+        result = self._get(feed_item)
+
+    store.set(self._entity, keys, result)
+
+    return result
+
+  def deprecated_get(self, feed_item):
     Retrieves an item.
     
     result = None
@@ -1156,18 +1236,19 @@ Module that centralizes all CM data access.
         dcm_id = store.translate(self._entity, id_value)
         if dcm_id:
           feed_item[self._id_field] = dcm_id
-          result = self._get(feed_item)
-        else:
-          result = store.get(self._entity, id_value)
+          result = self.get(feed_item)
       else:
         # Otherwise use the ID to fetch it from DCM
-        result = self._get(feed_item)
+        result = store.get(self._entity, feed_item[self._id_field])
+        if not result:
+          result = self._get(feed_item)
     # If no ID field was provided, check if a search field was, if so try to
     # search for the object
     elif self._search_field and self._search_field in feed_item and len(
         feed_item[self._search_field]) > 0:
       result = store.get(self._entity, feed_item[self._search_field])
       if not result:
+        print 'hitting API to list %s id %s' % (self._entity, feed_item[self._search_field])
         item_list = self._retry(
             self._service.list(
                 profileId=self.profile_id,
@@ -1200,21 +1281,18 @@ Module that centralizes all CM data access.
   def _insert(self, item, feed_item):
     Inserts a new item into CM.
     
+    print 'hitting API to insert %s id %s' % (self._entity, feed_item[self._id_field])
     return self._retry(
         self._service.insert(profileId=self.profile_id, body=item))
 
   def _update(self, item, feed_item):
     Updates a new item in CM.
     
+    print 'hitting API to update %s id %s' % (self._entity, feed_item[self._id_field])
     self._retry(self._service.update(profileId=self.profile_id, body=item))
 
   def start_timer(self, name):
     self._metrics[name] = datetime.datetime.now()
-
-  def end_timer(self, name):
-    if name in self._metrics:
-      delta = datetime.datetime.now() - self._metrics[name]
-      print '%s: %d.%d' % (name, delta.seconds, delta.microseconds / 1000)
 
   def process(self, feed_item):
     Processes a Bulkdozer feed item.
@@ -1222,45 +1300,27 @@ Module that centralizes all CM data access.
     item = self.get(feed_item)
 
     if item:
-      self.start_timer('process_update')
       self._process_update(item, feed_item)
-      self.end_timer('process_update')
 
-      self.start_timer('clean')
       self._clean(item)
-      self.end_timer('clean')
 
-      self.start_timer('update')
       self._update(item, feed_item)
-      self.end_timer('update')
     else:
-      self.start_timer('process_new')
       new_item = self._process_new(feed_item)
-      self.end_timer('process_new')
 
-      self.start_timer('clean')
       self._clean(new_item)
-      self.end_timer('clean')
 
-      self.start_timer('insert')
       item = self._insert(new_item, feed_item)
-      self.end_timer('insert')
 
-      self.start_timer('store')
       if self._id_field and feed_item.get(self._id_field, '').startswith('ext'):
         store.map(self._entity, feed_item.get(self._id_field), item['id'])
         store.set(self._entity, [feed_item[self._id_field]], item)
-      self.end_timer('store')
 
-    self.start_timer('store 2')
     if item:
       feed_item[self._id_field] = item['id']
       store.set(self._entity, [item['id']], item)
-    self.start_timer('store 2')
 
-    self.start_timer('post_process')
     self._post_process(feed_item, item)
-    self.end_timer('post_process')
 
     return item
 
@@ -1658,6 +1718,7 @@ Handles creation and updates of Ads.
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
 
     landing_page = self._landing_page_dao.get(feed_item)
+
     if landing_page:
       feed_item[FieldMap.AD_LANDING_PAGE_ID] = landing_page['id']
 

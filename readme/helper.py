@@ -205,7 +205,7 @@ if __name__ == "__main__":
 
       if doc_py or doc_json:
         doc = parse_readme(root + '/README.md') + '\n\n'
-        if doc_json:  doc += '# JOSN Recipes\n\n' + doc_json
+        if doc_json:  doc += '# JSON Recipes\n\n' + doc_json
         if doc_py:  doc += '# Python Scripts\n\n' + doc_py
 
         if args.write:

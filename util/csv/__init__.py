@@ -84,7 +84,9 @@ def rows_header_trim(rows):
 
 
 def column_header_sanitize(cell):
-  return RE_HUMAN.sub('_', str(cell).title().replace('%', 'Percent')).strip('_')
+  header_sanitized = RE_HUMAN.sub('_', str(cell).title().replace('%', 'Percent')).strip('_')
+  if header_sanitized[0].isdigit(): header_sanitized = '_' + header_sanitized # bigquery does not take leading digits
+  return header_sanitized  
 
 
 def row_header_sanitize(row):

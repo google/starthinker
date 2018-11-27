@@ -26,6 +26,37 @@ import json
 from util.sheets import sheets_read, sheets_write, sheets_clear
 
 
+class Timer(object):
+  """Timer class responsible for measuring run time for performance profiling and optimization.
+  """
+
+  def __init__(self):
+    """Constructor.
+    """
+    self._timers = {}
+
+  def start_timer(self, timer_name):
+    """Initializes a new timer.
+
+    Args:
+      timer_name: name of the timer to initialize, if not unique will reset existing timer.
+    """
+    self._timers[timer_name] = datetime.datetime.now()
+
+  def check_timer(self, timer_name):
+    """Checks and prints the elapsed time of a given timer.
+
+    Args:
+      timer_name: Name of the timer to check and print, it must have been initialized with start_timer.
+    """
+    if timer_name in self._timers:
+      elapsed = datetime.datetime.now() - self._timers[timer_name]
+
+      print '%s: %d seconds' % (timer_name, elapsed.seconds)
+    else:
+      print 'timer %s not defined' % timer_name
+
+
 class Logger(object):
   """Logger class responsible for logging data into the Bulkdozer feed's Log tab.
 
@@ -79,3 +110,4 @@ class Logger(object):
 
 
 logger = Logger()
+timer = Timer() 

@@ -266,8 +266,13 @@ class PlacementDAO(BaseDAO):
       result['tagFormats'] = ['PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH']
     else:
       result['compatibility'] = 'DISPLAY'
-      width, height = feed_item.get(FieldMap.ASSET_SIZE,
-                                    '0x0').strip().lower().split('x')
+      width = 0
+      height = 0
+      raw_size = feed_item.get(FieldMap.ASSET_SIZE,
+                                    '0x0')
+      if(raw_size and 'x' in raw_size):
+        width, height = raw_size.strip().lower().split('x')
+
       sizes = self.get_sizes(int(width), int(height))['sizes']
       if sizes:
         result['size'] = {'id': sizes[0]['id']}
