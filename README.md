@@ -47,7 +47,7 @@ data on the command line ( or a UI ).
 
 ## Whats The Most Basic Use?
 
-For a quick start that will do nothing other than show how to sucesfully run recipes, try:
+For a quick start that will do nothing other than show how to successfully run recipes, try:
 
 ```
 git clone https://github.com/google/starthinker
