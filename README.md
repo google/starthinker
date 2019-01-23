@@ -56,7 +56,7 @@ source setup.sh
 python all/run.py gtech/say_hello.json --verbose
 ```
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2FREADME.md)
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=LAUNCH_RECIPE.txt&cloudshell_tutorial=README.md)
 
 Read more at [all/README.md](all/README.md) under Useful Developer Features. 
 
@@ -70,7 +70,7 @@ python script/run.py dcm/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Datas
 python python all/run.py test_recipe.json
 ```
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_DEPLOY.txt&cloudshell_tutorial=%2FREADME.md)
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=LAUNCH_DEPLOY.txt&cloudshell_tutorial=README.md)
 
 Read more at [script/README.md](script/README.md).
 
@@ -87,7 +87,7 @@ source setup.sh
 ./deploy.sh
 ```
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_DEPLOY.txt&cloudshell_tutorial=README.md)
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=LAUNCH_DEPLOY.txt&cloudshell_tutorial=README.md)
 
 A micro UI will activate ( no system changes are made unless you choose an option ), choose the 
 appropriate option.  Full setup walks through everything, including credentials and install.  
