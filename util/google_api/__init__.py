@@ -21,11 +21,11 @@
 
 This does not change or augment the standard API calls other than the following:
 
-  - Allows passing of auth parameter to constructor, required for switching.
-  - Execute statement is overloaded to include iterator for responses with nextPageToken. 
-  - Retries handle some common errors and have a back off scheme.
-  - JSON based configuration allows StarThinker recipe definitions.
-  - Pre-defined functions for each API can be added to fix version and uri options.
+  * Allows passing of auth parameter to constructor, required for switching.
+  * Execute statement is overloaded to include iterator for responses with nextPageToken. 
+  * Retries handle some common errors and have a back off scheme.
+  * JSON based configuration allows StarThinker recipe definitions.
+  * Pre-defined functions for each API can be added to fix version and uri options.
 
 """
 
@@ -34,35 +34,44 @@ import traceback
 from time import sleep
 from googleapiclient.errors import HttpError
 
-import os.path
-from setup import EXECUTE_PATH, INTERNAL_MODE
-from util.auth import get_service
-from util.project import project
+from starthinker.setup import EXECUTE_PATH, INTERNAL_MODE
+from starthinker.util.auth import get_service
+from starthinker.util.project import project
 
 
-def API_Retry(job, retries=10, wait=10):
+def API_Retry(job, key=None, retries=50, wait=30):
   """ API retry that includes back off and some common error handling.
 
+  The back off executes [retry] times.  Each time the [wait] is doubled.
+  By default retries are: 0:30 + 1:00 + 2:00 + 4:00 + 8:00 = 15:30
+
+  * Errors retried: 403, 429, 500, 503
+  * Errors ignored: 409 - already exists ( triggered by create only and also returns None )
+  * Errors raised: ALL OTHERS
+
   Args:
-    job: (function) The type of authentication to use, user or service.
-    retries: (integer) Number of times to attempt this operation.
-    wait: (integer) Number of seconds to sleep between retries.
+    * job: (object) Everything before the execute() statement.
+    * key: (string) key of value from data to return.
+    * retries: (int) Number of times to try the job.
+    * wait: (seconds) Time to wait in seconds between retries.
 
   Returns:
-    If sucesful, returns the JOSN response form the call.
-
+    * JSON result of job or key value from JSON result if job succeed.
+    * None if object already exists.
+       
   Raises:
-    All API exceptions other than 409 = Already Exists.
+    * Any exceptions not listed in comments above.
+
   """
 
   try:
     # try to run the job and return the response
     data = job.execute()
-    return data
+    return data if not key else data.get(key, [])
 
   except HttpError, e:
     # errors that can be overcome or re-tried
-    if e.resp.status in [403, 429, 500, 503]:
+    if e.resp.status in [403, 409, 429, 500, 503]:
       # already exists ( ignore benign )
       if json.loads(e.content)['error']['code'] == 409:
         return
@@ -70,7 +79,7 @@ def API_Retry(job, retries=10, wait=10):
       elif retries > 0:
         if project.verbose: print 'API RETRY:', retries
         sleep(wait)
-        return API_Retry(job, retries - 1, wait * 2)
+        return API_Retry(job, key, retries - 1, wait * 2)
       # if no retries, raise
       else:
         raise
@@ -267,6 +276,19 @@ def API_DBM(auth, iterate=False):
   configuration = {
     'api':'doubleclickbidmanager',
     'version':'v1',
+    'auth':auth,
+    'iterate':iterate
+  }
+  return API(configuration)
+
+
+def API_Sheets(auth, iterate=False):
+  """DBM helper configuration for Google API. Defines agreed upon version.
+  """
+
+  configuration = {
+    'api':'sheets',
+    'version':'v4',
     'auth':auth,
     'iterate':iterate
   }

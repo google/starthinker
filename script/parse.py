@@ -47,11 +47,10 @@ def json_get_fields(struct, path=[]):
 
 def get_field_value(field, variables):
   value = None
-
   try:
     value = variables.get(field['name'], field.get('default', ''))
-    if 'prefix' in field and isinstance(value, (basestring, int, long)):
-      value = "%s%s" % (value['field']['prefix'], value)
+    if 'prefix' in field: # and isinstance(value, (basestring, int, long)): # why check this? It should never happen.
+      value = "%s%s" % (field['prefix'], value)
   except KeyError:
     pass
 

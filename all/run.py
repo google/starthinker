@@ -29,7 +29,7 @@ To execute a recipe run:
 
 ### Arguments
 
-- path - run all json files in the specified path
+- path - run all tasks the specified recipe
 - --project / -p - cloud id of project
 - --user / -u - path to user credentials json file, defaults to GOOGLE_APPLICATION_CREDENTIALS
 - --service / -s - path to service credentials json file
@@ -42,7 +42,6 @@ To execute a recipe run:
 If an exception is raised in any task, all following tasks are not executed by design.
 Obeys the schedule rules defined in /cron/README.md.
 Uses credentials logic defined in /util/project/README.md.
-Uses logs if defined in /setup.py.
 For scheduled jobs this script is called by /cron/run.py.
 
 ### CAUTION
@@ -58,11 +57,11 @@ can easily replace "all" with the name of any "task" in the json.  For example
 
 Can be easily replaced with the following to run only the "hello" task:
 
-`python hello/run.py project/sample/say_hello.json`
+`python task/hello/run.py project/sample/say_hello.json`
 
 Or specified further to run only the second hello task:
 
-`python hello/run.py project/sample/say_hello.json -i 2`
+`python task/hello/run.py project/sample/say_hello.json -i 2`
 
 """
 
@@ -71,9 +70,8 @@ import sys
 import subprocess
 import argparse
 
-from setup import EXECUTE_PATH
-from util.project import get_project, is_scheduled
-from worker.log import log_project
+from starthinker.setup import EXECUTE_PATH
+from starthinker.util.project import get_project, is_scheduled
 
 if __name__ == "__main__":
 
@@ -106,7 +104,7 @@ if __name__ == "__main__":
     instances[script] += 1
 
     # assemble command ( replace command, use all arguments passed, and add instance )
-    command = 'python %s%s/run.py %s -i %d' % (EXECUTE_PATH, script, ' '.join(sys.argv[1:]), instances[script])
+    command = 'python %stask/%s/run.py %s -i %d' % (EXECUTE_PATH, script, ' '.join(sys.argv[1:]), instances[script])
 
     # show command so user can run each task
     print command
@@ -115,15 +113,15 @@ if __name__ == "__main__":
     if args.force or is_scheduled(project, task):
 
       # writes running if UUID is present
-      try: log_project(project)
-      except: pass
+      #try: log_project(project)
+      #except: pass
 
       child = subprocess.Popen(command, shell=True, cwd=EXECUTE_PATH, stderr=subprocess.PIPE)
       outputs, errors = child.communicate()
 
       # writes status if UUID is present
-      try: log_project(project, outputs, errors)
-      except: pass
+      #try: log_project(project, outputs, errors)
+      #except: pass
 
       #print errors
       if errors:

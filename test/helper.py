@@ -33,8 +33,8 @@ import re
 import argparse
 import subprocess
 
-from setup import EXECUTE_PATH
-from util.project import project
+from starthinker.setup import EXECUTE_PATH
+from starthinker.util.project import project
 
 
 RE_TEST = re.compile(r'test.*\.json')

@@ -33,10 +33,10 @@ from google.cloud import bigquery, storage
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery_cache.base import Cache
 
-from util.project import project
-from util.auth.google_bucket_auth import BucketCredentials
+from starthinker.setup import CLOUD_SERVICE, INTERNAL_MODE
+from starthinker.util.project import project
+from starthinker.util.auth.google_bucket_auth import BucketCredentials
 
-from setup import CLOUD_SERVICE, INTERNAL_MODE
 
 APPLICATION_NAME = 'StarThinker Client'
 MAX_TOKEN_LIFETIME_SECS = 6 * 60 * 60 # 6 hours

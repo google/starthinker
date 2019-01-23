@@ -34,7 +34,7 @@ Example
 
 import argparse
 
-from util.project import get_project
+from starthinker.util.project import get_project
 
 
 if __name__ == "__main__":

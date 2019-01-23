@@ -30,11 +30,10 @@ from oauth2client import _helpers
 from googleapiclient.errors import HttpError
 from apiclient.http import MediaIoBaseUpload
 from apiclient import discovery
-from google.cloud import storage
 
-#from django.db import models
 from django.utils import encoding
-from setup import UI_SERVICE
+
+from starthinker.setup import UI_SERVICE
 
 def get_service():
   credentials = ServiceAccountCredentials.from_json_keyfile_name(UI_SERVICE, ['https://www.googleapis.com/auth/devstorage.full_control'])

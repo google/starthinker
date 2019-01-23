@@ -33,8 +33,12 @@ if DEVELOPMENT_MODE:
   UI_PROJECT = 'cloud-project-id-test'
   UI_CLIENT = '/home/credentials/test/starthinker_client.json'
   UI_SERVICE = '/home/credentials/test/starthinker_service.json'
-  UI_BUCKET_LOG = 'starthinker-test-log'
+  UI_BUCKET_AUTH = 'starthinker-test-auth'
   UI_TOPIC = 'test_worker'
+
+  # used to log job execution
+  UI_LOG_DATASET = 'starthinker-test-log'
+  UI_LOG_TABLE = 'test-worker'
 
   # credentials used to store data ( for security reasons not same project as logs and credentials )
   CLOUD_PROJECT = 'cloud-project-id-data-test'
@@ -48,8 +52,12 @@ else:
   UI_PROJECT = 'cloud-project-id'
   UI_CLIENT = '/home/credentials/starthinker_client.json'
   UI_SERVICE = '/home/credentials/starthinker_service.json'
-  UI_BUCKET_LOG = 'starthinker-log'
+  UI_BUCKET_AUTH = 'starthinker-auth'
   UI_TOPIC = 'prod_worker'
+
+  # used to log job execution
+  UI_LOG_DATASET = 'starthinker-log'
+  UI_LOG_TABLE = 'worker'
 
   # credentials used to store data ( for security reasons not same project as logs and credentials )
   CLOUD_PROJECT = 'cloud-project-id-data'

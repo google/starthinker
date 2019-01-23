@@ -5,7 +5,7 @@
     "icon":"device_hub",
     "product":"gTech",
     "title":"Audience Mapper",
-    "open_source":"https://github.com/google/starthinker/blob/master/solutions/audience_mapper.json",
+    "open_source":"https://github.com/google/starthinker/blob/master/gtech/script_audience_mapper.json",
     "description":"Create custom audience mappings based on keywords.",
     "requirements":{
       "dbm":true,

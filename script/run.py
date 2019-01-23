@@ -45,7 +45,7 @@ Example:
   usage: run.py [-h] json account report_id report_name dataset table
   
   positional arguments:
-    json         JSON recipe file to script.
+    json         JSON input recipe template file to onfigure.
     account      DCM network id.
     report_id    DCM report id from the UI.
     report_name  DCM report name, pass '' if using id instead.
@@ -55,6 +55,7 @@ Example:
   optional arguments:
     -h, --help   show this help message and exit
     --datastudio  Alter columns for datastudio, fixes nulls and date format.
+    --output JSON file to write resulting recipe.
   ```
 
   Then to turn the script into a recipe run:
@@ -71,7 +72,7 @@ import sys
 import json
 import argparse
 
-from parse import json_get_fields, json_set_fields, json_set_instructions, json_set_description
+from starthinker.script.parse import json_get_fields, json_set_fields, json_set_instructions, json_set_description
 
 
 def parser_add_field(parser, field):
@@ -90,51 +91,38 @@ def parser_add_field(parser, field):
   """
 
   if field['kind'] == 'string':
-    parser.add_argument(field['name'], help=field.get('description', 'No instructions.'), default=field.get('default', ''))
+    parser.add_argument('--' + field['name'], help=field.get('description', 'No instructions.'), default=field.get('default', ''))
   elif field['kind'] == 'email':
-    parser.add_argument(field['name'], help=field.get('description', 'No instructions.'), default=field.get('default', ''))
+    parser.add_argument('--' + field['name'], help=field.get('description', 'No instructions.'), default=field.get('default', ''))
   elif field['kind'] == 'integer':
-    parser.add_argument(field['name'], type=int, help=field.get('description', 'No instructions.'), default=field.get('default', ''))
+    parser.add_argument('--' + field['name'], type=int, help=field.get('description', 'No instructions.'), default=field.get('default', ''))
   elif field['kind'] == 'boolean':
     parser.add_argument('--' + field['name'], help=field.get('description', 'No instructions.'), action='store_%s' % str(field.get('default', 'false')).lower())
   elif field['kind'] == 'text':
-    parser.add_argument(field['name'], help=field.get('description', 'No instructions.'), default=field.get('default', ''))
+    parser.add_argument('--' + field['name'], help=field.get('description', 'No instructions.'), default=field.get('default', ''))
   elif field['kind'] == 'choice':
-    parser.add_argument(field['name'], nargs='?', choices=field['choices'], help=field.get('description', 'No instructions'), default=field.get('default', ''))
+    parser.add_argument('--' + field['name'], nargs='?', choices=field['choices'], help=field.get('description', 'No instructions'), default=field.get('default', ''))
   elif field['kind'] == 'timezone':
-    parser.add_argument(field['name'], help=field.get('description', 'No instructions.'), default=field.get('default', ''))
+    parser.add_argument('--' + field['name'], help=field.get('description', 'No instructions.'), default=field.get('default', ''))
   elif field['kind'] == 'json':
     raise NotImplementedError("JSON is not a suported field type")
   elif field['kind'] == 'integer_list':
-    parser.add_argument(field['name'], type=int, nargs='+', help=field.get('description', 'No instructions.'), default=field.get('default', ''))
+    parser.add_argument('--' + field['name'], type=int, nargs='+', help=field.get('description', 'No instructions.'), default=field.get('default', ''))
   elif field['kind'] == 'string_list':
-    parser.add_argument(field['name'], nargs='+', help=field.get('description', 'No instructions.'), default=field.get('default', ''))
+    parser.add_argument('--' + field['name'], nargs='+', help=field.get('description', 'No instructions.'), default=field.get('default', ''))
   else:
     raise NotImplementedError("%s is not a suported field type" % field)
 
 
-if __name__ == "__main__":
-
-  if len(sys.argv) == 0:
-    print "usage: run.py json"
-
-  # load json
+def script_read():
+  # load recipe json template
   with open(sys.argv[1]) as data_file:
     data = data_file.read()
     data = data.replace('\n', ' ')
-    script = json.loads(data)
+    return json.loads(data)
 
-  # assemble parameters
-  parser = argparse.ArgumentParser()
-  parser.add_argument('json', help='JSON recipe file to script.', default=None)
 
-  # parse fields and constants into parameters
-  for field in json_get_fields(script):
-    parser_add_field(parser, field)
-
-  # run new arg parser with parameters from script
-  args = vars(parser.parse_args())
-
+def script_write(script, args, filepath=None):
   # insert fields into json
   json_set_fields(script, args)
 
@@ -145,4 +133,66 @@ if __name__ == "__main__":
   json_set_description(script, args)
 
   # produce output or run task 
-  print json.dumps(script, indent=2)
+  if filepath:
+    with open(filepath, 'w') as data_file:
+      data_file.write(json.dumps(script, indent=2))
+      print 'JSON Written To: ', filepath
+  else:
+    print json.dumps(script, indent=2)
+
+
+def script_interactive():
+  args = {}
+  script = script_read()
+
+  # parse fields and constants into parameters
+  fields = json_get_fields(script)
+
+  print '\n(1 of %d) Recipe file to create from %s template.\n' % (len(fields), sys.argv[1])
+  filepath = raw_input("Full Path TO JSON File:") 
+  print '\n'
+
+  for count, field in enumerate(fields):
+    print '\n(%d of %d) %s\n' % (count + 2, len(fields), field['description'])
+    if 'default' in field: print 'Will default to %s if blank.\n' % field['default']
+    args[field['name']] = raw_input("%s ( %s ):" % (field['name'], field['kind']))
+    print '\n'
+
+    # remove blanks ( they should have defaults )
+    if not args[field['name']]: del args[field['name']]
+
+  script_write(script, args, filepath)
+
+
+def script_commandline():
+
+  script = script_read()
+
+  # assemble parameters
+  parser = argparse.ArgumentParser()
+  parser.add_argument('json', help='JSON recipe template to configure.', default=None)
+
+  # parse fields and constants into parameters
+  for field in json_get_fields(script):
+    parser_add_field(parser, field)
+
+  # run new arg parser with parameters from script
+  args = vars(parser.parse_args())
+
+  # always write to STDOUT, caller whould rediect output to a JSON file
+  script_write(script, args)
+
+
+if __name__ == "__main__":
+
+  # invalid command line
+  if len(sys.argv) < 2:
+    print "USAGE: run.py [json recipe template file path] -h"
+
+  # only script and json supplied, assume interactive
+  elif len(sys.argv) == 2:
+    script_interactive()
+
+  # parameters supplied, assume command line
+  else:
+    script_commandline()

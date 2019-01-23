@@ -31,13 +31,14 @@ from types import GeneratorType
 
 from googleapiclient.errors import HttpError
 
-from setup import BUFFER_SCALE
-from util.project import project
-from util.auth import get_service
-from util.bigquery import query_to_rows, storage_to_table
-from util.storage import object_get_chunks
-from util.csv import column_header_sanitize, csv_to_rows, rows_to_csv
-from util.dbm.schema import LineItem_Write_Schema
+from starthinker.setup import BUFFER_SCALE
+from starthinker.util.project import project
+from starthinker.util.auth import get_service
+from starthinker.util.google_api import API_Retry
+from starthinker.util.bigquery import query_to_rows, storage_to_table
+from starthinker.util.storage import object_get_chunks
+from starthinker.util.csv import column_header_sanitize, csv_to_rows, rows_to_csv
+from starthinker.util.dbm.schema import LineItem_Write_Schema
 
 
 API_VERSION = 'v1'
@@ -45,25 +46,7 @@ DBM_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200MB recommended by docs * 
 RE_FILENAME = re.compile(r'.*/(.*)\?GoogleAccess')
 
 
-def _retry(job, key=None, retries=10, wait=30):
-  try:
-    data = job.execute()
-    #pprint.PrettyPrinter().pprint(data)
-    return data if not key else data[key] if key in data else []
-  except HttpError, e:
-    if project.verbose: print str(e)
-    if e.resp.status in [403, 429, 500, 503]:
-      if retries > 0:
-        time.sleep(wait)
-        return _retry(job, key, retries - 1, wait * 2)
-      elif json.loads(e.content)['error']['code'] == 409:
-        pass  # already exists ( ignore )
-      else:
-        raise
-    else:
-      raise
-
-
+# DEPRECATED DO NOT USE
 def _process_filters(partners, advertisers, filters, project_id, dataset_id, auth='user'):
   structures = []
 
@@ -104,7 +87,7 @@ def _process_filters(partners, advertisers, filters, project_id, dataset_id, aut
 
   return structures
 
-
+# DEPRECATED DO NOT USE
 def accounts_split(accounts):
   partners = []
   advertisers = []
@@ -120,17 +103,51 @@ def accounts_split(accounts):
 
 
 def report_get(auth, report_id=None, name=None):
+  """ Returns the DBM JSON definition of a report based on name or ID.
+ 
+  Bulletproofing: https://developers.google.com/bid-manager/v1/queries/getquery
+
+  Args:
+    * auth: (string) Either user or service.
+    * account: (string) [account:advertiser@profile] token.
+    * account: (string) [account:advertiser@profile] token.
+    * report_id: (int) ID of DCm report to fetch ( either or name ).
+    * name: (string) Name of report to fetch ( either or report_id ).
+
+  Returns:
+    * JSON definition of report.
+
+  """
+
   service = get_service('doubleclickbidmanager', API_VERSION, auth)
   if name:
     job = service.queries().listqueries()
-    result = _retry(job)
+    result = API_Retry(job)
     return ([query for query in result.get('queries', []) if query['metadata']['title'] == name ] or [None])[0]
   else:
     job = service.queries().getquery(queryId=report_id)
-    return _retry(job)
+    return API_Retry(job)
 
 
 def report_build(auth, body):
+  """ Creates a DBM report given a JSON definition.
+
+  Bulletproofing: https://developers.google.com/bid-manager/v1/queries/createquery
+
+  The report will be automatically run the first time.
+
+  The body JSON provided will have the following fields added if not present:
+    * schedule - set to run daily and expire in one year.
+  
+  Args:
+    * auth: (string) Either user or service.
+    * body: (json) As defined in: https://developers.google.com/doubleclick-advertisers/v3.2/reports#resource
+
+  Returns:
+    * JSON definition of report created or existing.
+
+  """
+
   report = report_get(auth, name=body['metadata']['title'])
 
   if not report:
@@ -149,7 +166,7 @@ def report_build(auth, body):
 
     # build report
     job = service.queries().createquery(body=body)
-    report = _retry(job)
+    report = API_Retry(job)
 
     # run report first time
     body = {
@@ -158,7 +175,7 @@ def report_build(auth, body):
     }
 
     run = service.queries().runquery(queryId=report['queryId'], body=body)
-    _retry(run)
+    API_Retry(run)
 
   else:
     if project.verbose: print 'DBM Report Exists:', body['metadata']['title']
@@ -166,6 +183,7 @@ def report_build(auth, body):
   return report
 
 
+# DEPRECATED DO NOT USE
 def report_create(auth, name, typed, partners, advertisers, filters, dimensions, metrics, data_range, timezone, project_id=None, dataset_id=None):
   report = report_get(auth, name=name)
   #pprint.PrettyPrinter().pprint(report)
@@ -214,7 +232,7 @@ def report_create(auth, name, typed, partners, advertisers, filters, dimensions,
 
     # create the job
     job = service.queries().createquery(body=body)
-    report = _retry(job)
+    report = API_Retry(job)
 
     #pprint.PrettyPrinter().pprint(report)
 
@@ -224,15 +242,33 @@ def report_create(auth, name, typed, partners, advertisers, filters, dimensions,
      "timezoneCode":report['schedule']['nextRunTimezoneCode']
     }
     run = service.queries().runquery(queryId=report['queryId'], body=body)
-    _retry(run)
+    API_Retry(run)
   else:
     if project.verbose: print 'DBM Report Exists:', name
 
   return report
 
 
-# timeout is in minutes ( retries will happen at 5 minute interval, default total time is 60 minutes )
 def report_fetch(auth, report_id=None, name=None, timeout = 4):
+  """ Retrieves most recent DBM file JSON by name or ID, if in progress, waits for it to complete.
+
+  Bulletproofing: https://developers.google.com/bid-manager/v1/queries/getquery
+
+  Timeout is in minutes ( retries will happen at 5 minute interval, default total time is 20 minutes )
+
+  Args:
+    * auth: (string) Either user or service.
+    * report_id: (int) ID of DCm report to fetch ( either or name ).
+    * name: (string) Name of report to fetch ( either or report_id ).
+    * timeout: (int) Minutes to wait for in progress report before giving up.
+
+  Returns:
+    * Report JSON if report exists and is ready. 
+    * True if report is in progress but not ready.
+    * False if report does not exist.
+
+  """
+
   if project.verbose: print 'DBM Report Download ( timeout ):', report_id or name, timeout
 
   wait = 256
@@ -269,6 +305,28 @@ def report_bigquery(auth, report_id, name, dataset, table, schema=[], timeout=60
 
 
 def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = None):
+  """ Retrieves most recent DBM file by name or ID, if in progress, waits for it to complete.
+
+  Bulletproofing: https://developers.google.com/bid-manager/v1/queries/getquery
+
+  Timeout is in minutes ( retries will happen at 1 minute interval, default total time is 60 minutes )
+  If chunksize is set to None then the whole file is downloaded at once.
+
+  Args:
+    * auth: (string) Either user or service.
+    * report_id: (int) ID of DCm report to fetch ( either or name ).
+    * name: (string) Name of report to fetch ( either or report_id ).
+    * timeout: (int) Minutes to wait for in progress report before giving up.
+    * chunksize: (int) number of bytes to download at a time, for memory constrained systems.
+
+  Returns:
+    * (filename, iterator) if file exists and is ready to download in chunks.
+    * (filename, file) if file exists and chunking is off.
+    * ('report_running.csv', None) if report is in progress.
+    * (None, None) if file does not exist.
+
+  """
+
   storage_path = report_fetch(auth, report_id, name, timeout)
 
   if storage_path == False:
@@ -291,24 +349,66 @@ def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = None)
 
 
 def report_delete(auth, report_id=None, name=None):
+  """ Deletes a DBM report based on name or ID.
+
+  Bulletproofing: https://developers.google.com/bid-manager/v1/queries/deletequery
+
+  Args:
+    * auth: (string) Either user or service.
+    * report_id: (int) ID of DCm report to fetch ( either or name ).
+    * name: (string) Name of report to fetch ( either or report_id ).
+
+  Returns:
+    * None
+
+  """
+
   if project.verbose: print "DBM DELETE:", report_id or name
   report = report_get(auth, report_id, name)
   if report:
     service = get_service('doubleclickbidmanager', API_VERSION, auth)
     job = service.queries().deletequery(queryId=report['queryId'])
-    _retry(job)
+    API_Retry(job)
   else:
     if project.verbose: print 'DBM DELETE: No Report'
 
 
 def report_list(auth):
+  """ Lists all the DBM report configurations for the current credentials.
+
+  Bulletproofing: https://developers.google.com/bid-manager/v1/queries/listqueries
+
+  Args:
+    * auth: (string) Either user or service.
+
+  Returns:
+    * Iterator of JSONs.
+
+  """
+
   service = get_service('doubleclickbidmanager', API_VERSION, auth)
   job = service.queries().listqueries()
-  for query in _retry(job, 'queries'):
+  for query in API_Retry(job, 'queries'):
     yield query
 
 
 def report_to_rows(report):
+  """ Helper to convert DBM files into iterator of rows, memory efficient.
+
+  Usage example:
+
+  ```
+  filename, report = report_file(...)
+  rows = report_to_rows(report)
+  ```
+
+  Args:
+    * report: (iterator or file) Either an iterator or file that will be converted to rows.
+
+  Returns:
+    * Iterator of lists representing each row.
+
+  """
 
   # if reading from stream
   if type(report) is GeneratorType:
@@ -326,6 +426,30 @@ def report_to_rows(report):
 
 
 def report_clean(rows, datastudio=False, nulls=False):
+  """ Helper to fix DBM report issues for BigQuery and ensure schema compliance.
+
+  Memory efficiently cleans each row by fixing:
+  * Strips header and footer to preserve only data rows.
+  * Changes 'Date' to 'Report_Day' to avoid using reserved name in BigQuery.
+  * Changes data format to match data studio if datastusio=True.
+  * Changes cell string Unknown to blank ( None ) if nulls=True.
+
+  Usage example:
+
+  ```
+  filename, report = report_file(...)
+  rows = report_to_rows(report)
+  rows = report_clean(rows,  project.task.get('datastudio', False))
+  ```
+
+  Args:
+    * rows: (iterator) Rows to clean.
+   
+  Returns:
+    * Iterator of cleaned rows.
+
+  """
+
   if project.verbose: print 'DBM Report Clean'
 
   first = True
@@ -359,6 +483,20 @@ def report_clean(rows, datastudio=False, nulls=False):
 
 
 def lineitem_read(auth, advertisers=[], insertion_orders=[], lineitems=[]):
+  """ Reads line item configurations from DBM.
+  
+  Bulletproofing: https://developers.google.com/bid-manager/v1/lineitems/downloadlineitems 
+
+  Args:
+    * auth: (string) Either user or service.
+    * advertisers (list) List of advertiser ids ( exclusive with insertion_orders and lineitems ).
+    * insertion_orders (list) List of insertion_order ids ( exclusive with advertisers and lineitems ).
+    * lineitems (list) List of ilineitem ids ( exclusive with insertion_orders and advertisers ).
+  
+  Returns:
+    * Iterator of lists: https://developers.google.com/bid-manager/guides/entity-write/format
+
+  """
 
   service = get_service('doubleclickbidmanager', API_VERSION, auth)
 
@@ -381,7 +519,7 @@ def lineitem_read(auth, advertisers=[], insertion_orders=[], lineitems=[]):
 
   #print body
 
-  result = _retry(service.lineitems().downloadlineitems(body=body))
+  result = API_Retry(service.lineitems().downloadlineitems(body=body))
 
   for count, row in enumerate(csv_to_rows(result.get('lineItems', ''))):
     if count == 0: continue # skip header
@@ -403,6 +541,19 @@ def lineitem_edit(row, column_name, value):
   
 
 def lineitem_write(auth, rows, dry_run=True):
+  """ Writes a list of lineitem configurations to DBM.
+
+  Bulletproofing: https://developers.google.com/bid-manager/v1/lineitems/uploadlineitems
+
+   Args:
+    * auth: (string) Either user or service.
+    * rows (iterator) List of lineitems: https://developers.google.com/bid-manager/guides/entity-write/format
+    * dry_run (boolean) If set to True no write will occur, only a test of the upload for errors.
+  
+  Returns:
+    * Results of upload.
+
+  """
 
   service = get_service('doubleclickbidmanager', API_VERSION, auth)
 
@@ -415,8 +566,6 @@ def lineitem_write(auth, rows, dry_run=True):
   }
 
   job = service.lineitems().uploadlineitems(body=body)
-  result = _retry(job)
+  result = API_Retry(job)
   #print result
   return result
-
-

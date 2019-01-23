@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -34,30 +34,14 @@ from google.cloud import storage
 from apiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 from googleapiclient.errors import HttpError
 
-from setup import BUFFER_SCALE
-from util.project import project
-from util.auth import get_service, get_client
+from starthinker.setup import BUFFER_SCALE
+from starthinker.util.project import project
+from starthinker.util.auth import get_service, get_client
+from starthinker.util.google_api import API_Retry
 
 
 CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # scale is controlled in setup.py
 RETRIES = 3
-
-
-def _retry(job, retries=10, wait=5):
-  try:
-    data = job.execute()
-    #pprint.PrettyPrinter().pprint(data)
-    return data
-  except HttpError, e:
-    if project.verbose: print str(e)
-    if e.resp.status in [403, 429, 500, 503]:
-      if retries > 0:
-        sleep(wait)
-        if project.verbose: print 'RETRY', retries
-        return _retry(job, retries - 1, wait * 2)
-      elif json.loads(e.content)['error']['code'] == 409:
-        return # already exists ( ignore )
-    raise # raise all remaining exceptions
 
 
 def makedirs_safe(path):
@@ -266,7 +250,7 @@ def bucket_access(auth, project, name,  role, emails=[], groups=[], services=[],
       "entity":entity,
       "role":role
     }
-    _retry(service.bucketAccessControls().insert(bucket=name, body=body))
+    API_Retry(service.bucketAccessControls().insert(bucket=name, body=body))
 
 # Alternative for managing permissions ( overkill? )
 #  if emails or groups or services or groups:

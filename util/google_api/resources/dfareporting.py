@@ -37,6 +37,7 @@ def Placement(
 
   Returns:
     Placement JSON.
+
   """
 
   body = {

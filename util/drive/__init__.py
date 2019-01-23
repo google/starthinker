@@ -26,9 +26,10 @@ from StringIO import StringIO
 from googleapiclient.errors import HttpError
 from apiclient.http import MediaIoBaseUpload
 
-from setup import BUFFER_SCALE
-from util.project import project
-from util.auth import get_service
+from starthinker.setup import BUFFER_SCALE
+from starthinker.util.project import project
+from starthinker.util.auth import get_service
+from starthinker.util.google_api import API_Retry
 
 CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # scale is controlled in setup.py
 
@@ -59,29 +60,9 @@ def create_folder(auth, parent, name):
 # START NEW FUNCTIONS
 # New handlers being built below this line ( with additional error handling and robustness
 
-
-def _retry(job, retries=10, wait=5):
-  try:
-    data = job.execute()
-  except HttpError, e:
-    if project.verbose: print str(e)
-    if e.resp.status in [403, 429, 500, 503]:
-      if retries > 0:
-        sleep(wait)
-        if project.verbose: print 'DCM RETRY', retries
-        return _retry(job, retries - 1, wait * 2)
-      elif json.loads(e.content)['error']['code'] == 409:
-        pass # already exists ( ignore )
-      else:
-        raise
-    else:
-      raise
-  return data
-
-
 def about(auth, fields='importFormats'):
   drive = get_service('drive', 'v3', auth)
-  response = _retry(drive.about().get(fields=fields))
+  response = API_Retry(drive.about().get(fields=fields))
   #if project.verbose: print json.dumps(response, indent=4)
   return response
 
@@ -92,33 +73,33 @@ def file_find(auth, name, parent = None):
    query = "trashed = false and name = '%s'" % name
    if parent: query = "%s and '%s' in parents" % (query, parent)
 
-   try: return (_retry(drive.files().list(q=query))['files'] or [None])[0]
+   try: return (API_Retry(drive.files().list(q=query))['files'] or [None])[0]
    except HttpError: return None
 
 
 def file_create(auth, name, filename, data, parent=None):
-  """Checks if file with name already exists ( outside of trash ) and 
+  """ Checks if file with name already exists ( outside of trash ) and 
     if not, uploads the file.  Determines filetype based on filename extension
     and attempts to map to Google native such as Docs, Sheets, Slides, etc...
 
     For example:
-      file_Create('user', 'Sample Document', 'sample.txt', StringIO('File contents')) 
-      Creates a Google Document object in the user's drive.
+    -  ```file_create('user', 'Sample Document', 'sample.txt', StringIO('File contents'))``` 
+    -  Creates a Google Document object in the user's drive.
 
-      file_Create('user', 'Sample Sheet', 'sample.csv', StringIO('col1,col2\nrow1a,row1b\n')) 
-      Creates a Google Sheet object in the user's drive.
+    -  ```file_Create('user', 'Sample Sheet', 'sample.csv', StringIO('col1,col2\nrow1a,row1b\n'))````
+    -  Creates a Google Sheet object in the user's drive.
 
     See: https://developers.google.com/drive/api/v3/manage-uploads 
 
-    Args:
-      auth: (string) specify 'service' or 'user' to toggle between credentials used to access
-      name: (string) name of file to create, used as key to check if file exists
-      filename: ( string) specified as "file.extension" only to automate detection of mime type.
-      data: (StringIO) any file like object that can be read from
-      parent: (string) the Google Drive to upload the file to
+    ### Args:
+    -  * auth: (string) specify 'service' or 'user' to toggle between credentials used to access
+    -  * name: (string) name of file to create, used as key to check if file exists
+    -  * filename: ( string) specified as "file.extension" only to automate detection of mime type.
+    -  * data: (StringIO) any file like object that can be read from
+    -  * parent: (string) the Google Drive to upload the file to
 
-    Returns:
-      Json specification of file created or existing.
+    ### Returns:
+    -  * JSON specification of file created or existing.
 
     """
 
@@ -155,7 +136,7 @@ def file_create(auth, name, filename, data, parent=None):
     )
 
     service = get_service('drive', 'v3', auth)
-    drive_file = _retry(service.files().create(
+    drive_file = API_Retry(service.files().create(
       body=body,
       media_body=media,
       fields='id'

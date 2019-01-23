@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,32 +16,14 @@
 #
 ###########################################################################
 
-# https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets#SheetProperties
 import re
-import time
-import pprint
-import json
 
-from util.auth import get_service
-from util.project import project
 from googleapiclient.errors import HttpError
 
-
-def _retry(job, key=None, retries=10, wait=30):
-  try:
-    data = job.execute()
-    #pprint.PrettyPrinter().pprint(data)
-    return data if not key else data.get(key, [])
-  except HttpError, e:
-    if project.verbose: print str(e)
-    if e.resp.status in [403, 409, 429, 500, 503]:
-      if retries > 0:
-        time.sleep(wait)
-        return _retry(job, key, retries - 1, wait * 2)
-      elif json.loads(e.content)['error']['code'] == 409:
-        pass  # already exists ( ignore )
-      else:
-        raise
+from starthinker.util.project import project
+from starthinker.util.auth import get_service
+from starthinker.util.google_api import API_Retry
+from starthinker.util.drive import file_create
 
 
 def sheets_id(url):
@@ -60,9 +42,10 @@ def sheets_tab_range(sheet_tab, sheet_range):
 
 
 def sheets_get(auth, sheet_url):
+  # https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets#SheetProperties
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
-  return _retry(service.spreadsheets().get(spreadsheetId=sheet_id))
+  return API_Retry(service.spreadsheets().get(spreadsheetId=sheet_id))
   
 
 def sheets_tab_id(auth, sheet_url, sheet_tab):
@@ -77,7 +60,7 @@ def sheets_read(auth, sheet_url, sheet_tab, sheet_range, retries=10):
   if project.verbose: print 'SHEETS READ', sheet_url, sheet_tab, sheet_range
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
-  return _retry(service.spreadsheets().values().get(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range)), 'values', retries=retries)
+  return API_Retry(service.spreadsheets().values().get(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range)), 'values', retries=retries)
 
 
 # TIP: Specify sheet_range as 'Tab!A1' coordinate, the API will figure out length and height based on data
@@ -89,14 +72,14 @@ def sheets_write(auth, sheet_url, sheet_tab, sheet_range, data, valueInputOption
   body = {
     "values": list(data)
   }
-  _retry(service.spreadsheets().values().update(spreadsheetId=sheet_id, range=range, body=body, valueInputOption=valueInputOption))
+  API_Retry(service.spreadsheets().values().update(spreadsheetId=sheet_id, range=range, body=body, valueInputOption=valueInputOption))
 
 
 def sheets_clear(auth, sheet_url, sheet_tab, sheet_range):
   if project.verbose: print 'SHEETS CLEAR', sheet_url, sheet_tab, sheet_range
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
-  _retry(service.spreadsheets().values().clear(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range), body={}))
+  API_Retry(service.spreadsheets().values().clear(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range), body={}))
 
 
 def sheets_tab_copy(auth, from_sheet_url, from_sheet_tab, to_sheet_url, to_sheet_tab):
@@ -110,7 +93,7 @@ def sheets_tab_copy(auth, from_sheet_url, from_sheet_tab, to_sheet_url, to_sheet
   # overwrite only if does not exist ( PROTECTION )
   if to_tab_id is None:
     # copy tab between sheets ( seriously, the name changes to be "Copy of [from_sheet_tab]" )
-    request = _retry(service.spreadsheets().sheets().copyTo(spreadsheetId=from_sheet_id, sheetId=from_tab_id, body={
+    request = API_Retry(service.spreadsheets().sheets().copyTo(spreadsheetId=from_sheet_id, sheetId=from_tab_id, body={
       "destinationSpreadsheetId": to_sheet_id,
     }))
 
@@ -121,13 +104,13 @@ def sheets_tab_copy(auth, from_sheet_url, from_sheet_tab, to_sheet_url, to_sheet
 def sheets_batch_update(auth, sheet_url, data):
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
-  _retry(service.spreadsheets().batchUpdate(spreadsheetId=sheet_id, body=data))
+  API_Retry(service.spreadsheets().batchUpdate(spreadsheetId=sheet_id, body=data))
 
 
 def sheets_values_batch_update(auth, sheet_url, data):
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(sheet_url)
-  _retry(service.spreadsheets().values().batchUpdate(spreadsheetId=sheet_id, body=data))
+  API_Retry(service.spreadsheets().values().batchUpdate(spreadsheetId=sheet_id, body=data))
 
 
 def sheets_tab_create(auth, sheet_url, sheet_tab):
@@ -171,3 +154,20 @@ def sheets_tab_rename(auth, sheet_url, old_sheet_tab, new_sheet_tab):
         }
       }]
     }) 
+
+
+def sheets_create(auth, name, parent=None):
+  """ Checks if sheet with name already exists ( outside of trash ) and
+  if not, creates the sheet.
+
+  Args:
+    * auth: (string) Either user or service.
+    * name: (string) name of sheet to create, used as key to check if it exists in the future.
+    * parent: (string) the Google Drive to upload the file to. 
+
+  Returns:
+    * JSON specification of the file created or existing.
+
+  """
+
+  return file_create(auth, name, "sheet.csv", "", parent)

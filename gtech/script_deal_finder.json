@@ -9,7 +9,7 @@
     "description":"Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.",
     "image":"https://storage.googleapis.com/starthinker-ui/deal_finder.png",
     "sample":"https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO",
-    "open_source":"https://github.com/google/starthinker/blob/master/solutions/deal_finder.json",
+    "open_source":"https://github.com/google/starthinker/blob/master/gtech/script_deal_finder.json",
     "requirements":{ 
       "dbm":true, 
       "dcm":false, 
@@ -63,7 +63,7 @@
         "sheet":"https://docs.google.com/spreadsheets/d/1WrytP5Jxwi4I-53i-1OvdTVsXA0zXsge1z0N9yasCZc/edit?usp=sharing",
         "tab":"Accounts"
       },
-      "sheet":{"field":{ "name":"dbm_sheet", "kind":"string", "order":1, "default":"", "description":"URL to sheet where DBM accounts will be read from." }},
+      "sheet":{"field":{ "name":"sheet_url", "kind":"string", "order":1, "default":"", "description":"URL to sheet where DBM accounts will be read from." }},
       "tab":"Deal Finder"
     }},
     { "dbm":{
@@ -72,13 +72,13 @@
       "auth":"user",
       "report":{
         "name":{"field":{ "name":"report", "kind":"string", "prefix":"Deal_Finder_", "description":"Name of report in DBM, should be unique." }}, 
-        "timezone":{"field":{ "name":"timezone", "kind":"timezone", "description":"Timezone in 'America/Los_Angeles' format." }},
+        "timezone":{"field":{ "name":"timezone", "kind":"timezone", "description":"Timezone in 'America/Los_Angeles' format.", "default":"America/Los_Angeles" }},
         "type":"TYPE_CROSS_PARTNER",
         "data_range":"LAST_30_DAYS",
         "partners": { 
           "single_cell":true,
           "sheet":{
-            "url":{ "field":{ "name":"dbm_sheet", "kind":"string", "order":1, "default":"", "description":"URL to sheet where DBM accounts will be read from." }},
+            "url":{ "field":{ "name":"sheet_url", "kind":"string", "order":1, "default":"", "description":"URL to sheet where DBM accounts will be read from." }},
             "tab":"Deal Finder",
             "range":"A2:A"
           }
@@ -86,7 +86,7 @@
         "advertisers": { 
           "single_cell":true,
           "sheet":{
-            "url":{ "field":{ "name":"dbm_sheet", "kind":"string", "order":1, "default":"", "description":"URL to sheet where DBM accounts will be read from." }},
+            "url":{ "field":{ "name":"sheet_url", "kind":"string", "order":1, "default":"", "description":"URL to sheet where DBM accounts will be read from." }},
             "tab":"Deal Finder",
             "range":"B2:B"
           }

@@ -38,11 +38,11 @@ import sys
 import traceback
 from StringIO import StringIO
 
-from util.project import project
-from util.storage import parse_path, makedirs_safe, object_put, bucket_create
-from util.bigquery import query_to_rows, rows_to_table, json_to_table, incremental_rows_to_table
-from util.sheets import sheets_read, sheets_write, sheets_clear
-from util.csv import rows_to_csv
+from starthinker.util.project import project
+from starthinker.util.storage import parse_path, makedirs_safe, object_put, bucket_create
+from starthinker.util.bigquery import query_to_rows, rows_to_table, json_to_table, incremental_rows_to_table
+from starthinker.util.sheets import sheets_read, sheets_write, sheets_clear
+from starthinker.util.csv import rows_to_csv
 
 
 def get_rows(auth, source):
@@ -217,7 +217,7 @@ def put_rows(auth, destination, filename, rows, variant=''):
         destination['bigquery']['table'] + variant,
         rows,
         destination['bigquery'].get('schema', []),
-        destination['bigquery'].get('skip_rows', 1),
+        destination['bigquery'].get('skip_rows', 1), #0 if 'schema' in destination['bigquery'] else 1),
         destination['bigquery'].get('disposition', 'WRITE_APPEND'),
         billing_project_id=project.id
       )
@@ -230,7 +230,7 @@ def put_rows(auth, destination, filename, rows, variant=''):
         destination['bigquery']['table'] + variant,
         rows,
         destination['bigquery'].get('schema', []),
-        destination['bigquery'].get('skip_rows', 1),
+        destination['bigquery'].get('skip_rows', 1), #0 if 'schema' in destination['bigquery'] else 1),
         destination['bigquery'].get('disposition', 'WRITE_TRUNCATE'),
       )
 

@@ -15,3 +15,6 @@ pytz
 Jinja2==2.10
 TwitterAPI
 python-dateutil
+mysqlclient
+uwsgi
+pandas

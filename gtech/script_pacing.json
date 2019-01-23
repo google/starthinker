@@ -6,7 +6,7 @@
     "product":"gTech",
     "title":"Pacing DBM",
     "description":"Pace the spend of DBM campaigns to hit targets.",
-    "open_source":"https://github.com/google/starthinker/blob/master/solutions/pacing.json",
+    "open_source":"https://github.com/google/starthinker/blob/master/gtech/script_pacing.json",
     "requirements":{
       "dbm":true,
       "dcm":false,

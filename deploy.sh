@@ -30,6 +30,7 @@ CLIENT_CREDENTIALS="${HOME}/starthinker_client.json"
 SERVICE_CREDENTIALS="${HOME}/starthinker_service.json"
 USER_CREDENTIALS="${HOME}/starthinker_user.json"
 DATA_FILE="${HOME}/starthinker_cloud.txt"
+RECIPE_DIRECTORY="${THIS_DIR}/gtech"
 CLOUD_PROJECT_ID=""
 
 # stop if any part fails
@@ -262,8 +263,7 @@ run_recipe() {
         if [ "${file}" ]
         then
           echo ""
-          source "${THIS_DIR}/setup.sh" 
-          python "${THIS_DIR}/all/run.py" "${CRON_DIRECTORY}/${file}" -p "${CLOUD_PROJECT_ID}" -c "${CLIENT_CREDENTIALS}" -u "${USER_CREDENTIALS}" -s "${SERVICE_CREDENTIALS}" --verbose --force
+          python "${THIS_DIR}/script/run.py" "${RECIPE_DIRECTORY}/${file}" 
           break
         else
           echo "Please choose a number from 1 to $((${#files[@]}+1))"
@@ -275,9 +275,43 @@ run_recipe() {
 
 
 add_recipe() {
+
+  add_recipe_done=0
+  while (( !add_recipe_done ))
+  do
+    echo ""
+    echo "----------------------------------------"
+    echo "Add Recipe"
+    echo ""
+
+    files=("${RECIPE_DIRECTORY}"/script_*.json)
+
+    PS3='Your Choice: '
+    select file in "${files[@]##*/}" "Paste Custom" "Quit"
+    do
+     case ${file} in
+      "Paste Custom") paste_recipe; break;;
+      "Quit") add_recipe_done=1; break;;
+      *)
+        if [ "${file}" ]
+        then
+          echo ""
+          source "${THIS_DIR}/setup.sh"
+          python "${THIS_DIR}/script/run.py" "${RECIPE_DIRECTORY}/${file}"
+          break
+        else
+          echo "Please choose a number from 1 to $((${#files[@]}+1))"
+        fi;;
+      esac
+    done
+  done
+}
+
+
+paste_recipe() {
   echo ""
   echo "----------------------------------------"
-  echo "Add Recipe"
+  echo "Paste Recipe"
   echo ""
 
   read -p "Name Of Recipe ( do not include .json ): " recipe_name

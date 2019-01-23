@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -31,10 +31,11 @@ def flag_last(o):
   Returns True on last iteration.
 
   Args:
-    o: An iterator instance.
+    * o: An iterator instance.
 
   Returns:
-    A tuple of ([True/False, iteration). Returns True on StopIteration.
+    * A tuple of ([True/False, iteration). Returns True on StopIteration.
+
   """
 
   it = o.__iter__()

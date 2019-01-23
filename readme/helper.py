@@ -39,11 +39,12 @@ import os
 import sys
 import re
 import json
+import urllib
 import argparse
 import subprocess
 
-from setup import EXECUTE_PATH
-from script.parse import json_get_fields
+from starthinker.setup import EXECUTE_PATH
+from starthinker.script.parse import json_get_fields
 
 RE_PY = re.compile(r'.*\.py')
 RE_TEST = re.compile(r'^test.*\.json')
@@ -66,6 +67,12 @@ def parse_readme(filepath):
         if line.startswith(README_DIVIDER): break
   except IOError:
     doc = README_DIVIDER 
+
+  doc += '\n### Launch In Google Cloud\n\n'
+
+  doc += 'Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).\n\n'
+
+  doc += '[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%%3A%%2F%%2Fgithub.com%%2Fgoogle%%2Fstarthinker&cloudshell_print=%%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%s)\n' % urllib.quote_plus(filepath.replace(EXECUTE_PATH, '/'))
 
   return doc
 
@@ -102,13 +109,15 @@ def parse_py(filepath):
       if cls: doc += '\n\n## %s\n\n' % cls.split('(', 1)[0]
  
       for func in crawl[cls].keys():
-        if func: doc += '\n\n### %s\n\n' % func.replace('def ', 'function ')
+        if func: doc += '\n\n### %s\n\n' % func.replace('def ', '')
         doc += crawl[cls][func]
 
   return doc.replace('*', '\*')
 
 
 def parse_json(filepath):
+  print 'PROCESSING:', filepath
+
   doc = ''
 
   with open(filepath) as f:
@@ -120,7 +129,6 @@ def parse_json(filepath):
 
     params = script['script']
     params['path'] = filepath.replace(EXECUTE_PATH, '/')
-    params['tasks'] = json.dumps(script['tasks'], indent=2)
     params['instructions'] = '- ' + '\n- '.join(script['script'].get('instructions', []))
     params['authors'] = ', '.join(script['script'].get('authors', []))
 
@@ -131,6 +139,10 @@ def parse_json(filepath):
       params['fields'] += '\n'
 
     params['fields'] = params['fields'].strip()
+
+    #params['tasks'] = json.dumps(script['tasks'], indent=2)
+    tasks = sorted(set([task.keys()[0] for task in  script['tasks']]))
+    params['tasks'] = '- ' + '\n- '.join(['[/task/%s](%s)' % (task, task) for task in tasks])
 
     doc = '''## [%(title)s](%(path)s)
 
@@ -146,6 +158,12 @@ Maintained and supported by: %(authors)s
 
 %(instructions)s
 
+### Task Code Used
+
+Each task in the %(title)s recipe maps to the following stand alone python code modules:
+
+%(tasks)s
+
 ### Quick Command Line
 
 To see all required parameters and generate a recipe from this script template run:
@@ -159,8 +177,6 @@ After [getting Google Cloud Credentials](/auth/README.md), execute the recipe cr
 `python all/run.py projects/recipe.json -u [user credentials path] -s [service credentials path]`
 
 Any two or more recipes can be combined by copying and pasting task JSON into the task [...] list.  All tasks execute in sequence.
-
-For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
 ''' % params
 
@@ -187,7 +203,6 @@ if __name__ == "__main__":
     if '/ui' in root: continue
     if '/paper' in root: continue
 
-
     if args.check:
       check['ok' if 'README.md' in files else 'fail'].append(root)      
 
@@ -195,13 +210,11 @@ if __name__ == "__main__":
       doc_json = ''
       doc_py = ''
 
-
       for filename in files:
         if RE_SCRIPT.match(filename): doc_json += parse_json(root + '/' + filename)
 
       for filename in files:
         if RE_PY.match(filename): doc_py += parse_py(root + '/' + filename)
-
 
       if doc_py or doc_json:
         doc = parse_readme(root + '/README.md') + '\n\n'
@@ -224,7 +237,6 @@ if __name__ == "__main__":
     ok = len(check['ok'])
     fail = len(check['fail'])
     total = ok + fail
-
 
     print '%d / %d - %d%% OK' % (ok, total, ok * 100 / total)
     print '%d / %d - %d%% MISSING' % (fail, total, fail * 100 / total)

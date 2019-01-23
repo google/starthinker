@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,26 +16,25 @@
 #
 ###########################################################################
 
-#https://developers.google.com/doubleclick-advertisers/v3.2/reports/get
-
 import pprint
 import csv
 import re
 import json
+from time import sleep
 from StringIO import StringIO
 from types import GeneratorType
-from time import sleep
 from datetime import date, timedelta
 
 from googleapiclient.errors import HttpError
 
-from setup import INTERNAL_MODE, EXECUTE_PATH, BUFFER_SCALE
-from util import flag_last
-from util.project import project
-from util.auth import get_service
-from util.storage import media_download
-from util.csv import column_header_sanitize
-from util.dcm.schema.Lookup import DCM_Field_Lookup
+from starthinker.setup import INTERNAL_MODE, EXECUTE_PATH, BUFFER_SCALE
+from starthinker.util import flag_last
+from starthinker.util.project import project
+from starthinker.util.auth import get_service
+from starthinker.util.google_api import API_Retry
+from starthinker.util.storage import media_download
+from starthinker.util.csv import column_header_sanitize
+from starthinker.util.dcm.schema.Lookup import DCM_Field_Lookup
 
 
 if INTERNAL_MODE:
@@ -50,34 +49,33 @@ DCM_CHUNK_SIZE = int(200 * 1024000 * BUFFER_SCALE) # 200MB minimum recommended b
 DCM_CONVERSION_SIZE = 1000
 
 
-def _retry(job, retries=10, wait=5):
-  try:
-    data = job.execute()
-    #pprint.PrettyPrinter().pprint(data)
-  except HttpError, e:
-    if project.verbose: print str(e)
-    if e.resp.status in [403, 429, 500, 503]:
-      if retries > 0:
-        sleep(wait)
-        if project.verbose: print 'DCM RETRY', retries
-        return _retry(job, retries - 1, wait * 2)
-      elif json.loads(e.content)['error']['code'] == 409:
-        pass # already exists ( ignore )
-      else:
-        raise
-    else:
-      raise
-
-  return data
-
-
 def get_profile_id(auth, account_id):
+  """Return a DCM profile ID for the currently supplied credentials.
+
+  Bulletproofing: https://developers.google.com/doubleclick-advertisers/v3.2/userProfiles/get
+
+  Handles cases of superuser, otherwise chooses the first matched profile.
+  Allows DCM jobs to only specify account ID, which makes jobs more portable
+  between accounts.
+
+  Args:
+    * auth: (string) Either user or service.
+    * account_id: (int) Account number for which report is retrieved.
+
+  Returns:
+    * Profile ID.
+       
+  Raises:
+    * If current credentials do not have a profile for this account.
+
+  """
+
   service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
 
   profile_admin = None
   profile_network = None
 
-  for p in _retry(service.userProfiles().list())['items']:
+  for p in API_Retry(service.userProfiles().list())['items']:
     p_id = int(p['profileId'])
     a_id = int(p['accountId'])
 
@@ -104,14 +102,46 @@ def account_profile_kwargs(auth, account, **kwargs):
 
 
 def get_account_name(auth, account):
+  """ Return the name of a DCM account given the account ID.
+
+  Args:
+    * auth: (string) Either user or service.
+    * account: (string) [account:advertiser@profile] token.
+
+  Returns:
+    * Profile ID.
+       
+  Raises:
+    * If current credentials do not have a profile for this account.
+
+  """
+
   account_id, advertiser_ids, profile_id = parse_account(auth, account)
   service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
-  response = _retry(service.accounts().get(id=account_id, profileId=profile_id))
+  response = API_Retry(service.accounts().get(id=account_id, profileId=profile_id))
   return response["name"]
 
 
-# if id has a sub account in the form of [account_id:[advertiser_ids,...]@profile_id] then split them
 def parse_account(auth, account):
+  """ Breaks a [account:advertiser@profile] string into parts if supplied.
+
+  This function was created to accomodate supplying advertiser and profile information
+  as a single token.  It needs to be refactored as this approach is messy.
+
+  Possible variants include:
+    * [account:advertiser@profile]
+    * [account:advertiser]
+    * [account@profile]
+
+  Args:
+    * auth: (string) Either user or service.
+    * account: (string) A string represeting [account:advertiser@profile]
+
+  Returns:
+    * ( network_id, advertiser_ids, profile_id) after parsing the account token.
+
+  """
+
   network_id = account
   advertiser_ids = None
   profile_id = None
@@ -134,6 +164,7 @@ def parse_account(auth, account):
   return network_id, advertiser_ids, profile_id
 
 
+# DEPRECATED DO NOT USE
 def get_body_floodlight(report, advertiser=None):
   return {
     "floodlightCriteria": {
@@ -165,6 +196,7 @@ def get_body_floodlight(report, advertiser=None):
     }
   }
 
+# DEPRECATED DO NOT USE
 def get_body_standard(report, advertiser=None):
   return {
     "criteria": {
@@ -188,6 +220,22 @@ def get_body_standard(report, advertiser=None):
 
 
 def report_get(auth, account, report_id = None, name=None):
+  """ Returns the DCM JSON definition of a report based on name or ID.
+ 
+  Bulletproofing: https://developers.google.com/doubleclick-advertisers/v3.2/reports/get
+
+  Args:
+    * auth: (string) Either user or service.
+    * account: (string) [account:advertiser@profile] token.
+    * account: (string) [account:advertiser@profile] token.
+    * report_id: (int) ID of DCm report to fetch ( either or name ).
+    * name: (string) Name of report to fetch ( either or report_id ).
+
+  Returns:
+    * JSON definition of report.
+
+  """
+
   account_id, advertiser_ids, profile_id = parse_account(auth, account)
   service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
   report = None
@@ -195,33 +243,67 @@ def report_get(auth, account, report_id = None, name=None):
   if name:
     next_page = None
     while next_page != '' and report is None:
-      if INTERNAL_MODE: response = _retry(service.reports().list(accountId=account_id, profileId=profile_id, pageToken=next_page))
-      else: response = _retry(service.reports().list(profileId=profile_id, pageToken=next_page))
+      if INTERNAL_MODE: response = API_Retry(service.reports().list(accountId=account_id, profileId=profile_id, pageToken=next_page))
+      else: response = API_Retry(service.reports().list(profileId=profile_id, pageToken=next_page))
       next_page = response['nextPageToken']
       for r in response['items']:
         if r['name'] == name: 
           report = r
           break
   elif report_id:
-    if INTERNAL_MODE: response = _retry(service.reports().get(accountId=account_id, profileId=profile_id, reportId=report_id))
-    else: response = _retry(service.reports().get(profileId=profile_id, reportId=report_id))
+    if INTERNAL_MODE: response = API_Retry(service.reports().get(accountId=account_id, profileId=profile_id, reportId=report_id))
+    else: response = API_Retry(service.reports().get(profileId=profile_id, reportId=report_id))
     pprint.PrettyPrinter().pprint(response)
     
   return report
 
 
 def report_delete(auth, account, report_id = None, name=None):
+  """ Deletes a DCM report based on name or ID.
+
+  Bulletproofing: https://developers.google.com/doubleclick-advertisers/v3.2/reports/delete
+
+  Args:
+    * auth: (string) Either user or service.
+    * account: (string) [account:advertiser@profile] token.
+    * report_id: (int) ID of DCm report to fetch ( either or name ).
+    * name: (string) Name of report to fetch ( either or report_id ).
+
+  Returns:
+    * None
+
+  """
+
   account_id, advertiser_ids, profile_id = parse_account(auth, account)
   report = report_get(auth, account, report_id, name)
   if report:
     service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
-    if INTERNAL_MODE: _retry(service.reports().delete(accountId=account_id, profileId=profile_id, reportId=report['id']))
-    else: _retry(service.reports().delete(profileId=profile_id, reportId=report['id']))
+    if INTERNAL_MODE: API_Retry(service.reports().delete(accountId=account_id, profileId=profile_id, reportId=report['id']))
+    else: API_Retry(service.reports().delete(profileId=profile_id, reportId=report['id']))
   else:
     if project.verbose: print 'DCM DELETE: No Report'
 
 
 def report_build(auth, account, body):
+  """ Creates a DCM report given a JSON definition.
+
+  Bulletproofing: https://developers.google.com/doubleclick-advertisers/v3.2/reports/insert
+
+  The body JSON provided will have the following fields overriden:
+    * accountId - supplied as a parameter in account token.
+    * ownerProfileId - determined from the current credentials.
+    * advertiser_ids - supplied as a parameter in account token.
+  
+  Args:
+    * auth: (string) Either user or service.
+    * account: (string) [account:advertiser@profile] token.
+    * body: (json) As defined in: https://developers.google.com/doubleclick-advertisers/v3.2/reports#resource
+
+  Returns:
+    * JSON definition of report created or existing.
+
+  """
+
   report = report_get(auth, account, name=body['name'])
 
   if report is None:
@@ -244,12 +326,12 @@ def report_build(auth, account, body):
     #pprint.PrettyPrinter().pprint(body)
 
     # create the report
-    if INTERNAL_MODE: report = _retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))
-    else: report = _retry(service.reports().insert(profileId=profile_id, body=body))
+    if INTERNAL_MODE: report = API_Retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))
+    else: report = API_Retry(service.reports().insert(profileId=profile_id, body=body))
 
     # run the report
-    if INTERNAL_MODE: _retry(service.reports().run(accountId=account_id, profileId=profile_id, reportId=report['id']))
-    else: _retry(service.reports().run(profileId=profile_id, reportId=report['id']))
+    if INTERNAL_MODE: API_Retry(service.reports().run(accountId=account_id, profileId=profile_id, reportId=report['id']))
+    else: API_Retry(service.reports().run(profileId=profile_id, reportId=report['id']))
 
   else:
     if project.verbose: print 'DCM Report Exists:', body['name']
@@ -257,6 +339,7 @@ def report_build(auth, account, body):
   return report
 
 
+# DEPRECATED DO NOT USE
 def report_create(auth, account, name, config):
   account_id, advertiser_ids, profile_id = parse_account(auth, account)
   report = report_get(auth, account_id, name=name)
@@ -297,18 +380,37 @@ def report_create(auth, account, name, config):
     #pprint.PrettyPrinter().pprint(body)
 
     # create the report
-    if INTERNAL_MODE: report = _retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))
-    else: report = _retry(service.reports().insert(profileId=profile_id, body=body))
+    if INTERNAL_MODE: report = API_Retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))
+    else: report = API_Retry(service.reports().insert(profileId=profile_id, body=body))
 
     # run the report
-    if INTERNAL_MODE: _retry(service.reports().run(accountId=account_id, profileId=profile_id, reportId=report['id']))
-    else: _retry(service.reports().run(profileId=profile_id, reportId=report['id']))
+    if INTERNAL_MODE: API_Retry(service.reports().run(accountId=account_id, profileId=profile_id, reportId=report['id']))
+    else: API_Retry(service.reports().run(profileId=profile_id, reportId=report['id']))
 
   return report
 
 
-# timeout is in minutes ( retries will happen at 1 minute interval, default total time is 60 minutes )
 def report_fetch(auth, account, report_id=None, name=None, timeout = 60):
+  """ Retrieves most recent DCM file JSON by name or ID, if in progress, waits for it to complete.
+
+  Bulletproofing: https://developers.google.com/doubleclick-advertisers/v3.2/files/get
+
+  Timeout is in minutes ( retries will happen at 1 minute interval, default total time is 60 minutes )
+
+  Args:
+    * auth: (string) Either user or service.
+    * account: (string) [account:advertiser@profile] token.
+    * report_id: (int) ID of DCm report to fetch ( either or name ).
+    * name: (string) Name of report to fetch ( either or report_id ).
+    * timeout: (int) Minutes to wait for in progress report before giving up.
+
+  Returns:
+    * Report JSON if report exists and is ready. 
+    * True if report is in progress but not ready.
+    * False if report does not exist.
+
+  """
+
   if project.verbose: print 'DCM REPORT FILE', report_id or name
 
   if report_id is None:
@@ -353,6 +455,29 @@ def report_fetch(auth, account, report_id=None, name=None, timeout = 60):
 
 
 def report_file(auth, account, report_id=None, name=None, timeout=60, chunksize=DCM_CHUNK_SIZE):
+  """ Retrieves most recent DCM file by name or ID, if in progress, waits for it to complete.
+
+  Bulletproofing: https://developers.google.com/doubleclick-advertisers/v3.2/files/get
+
+  Timeout is in minutes ( retries will happen at 1 minute interval, default total time is 60 minutes )
+  If chunksize is set to 0 then the whole file is downloaded at once.
+
+  Args:
+    * auth: (string) Either user or service.
+    * account: (string) [account:advertiser@profile] token.
+    * report_id: (int) ID of DCm report to fetch ( either or name ).
+    * name: (string) Name of report to fetch ( either or report_id ).
+    * timeout: (int) Minutes to wait for in progress report before giving up.
+    * chunksize: (int) number of bytes to download at a time, for memory constrained systems.
+
+  Returns:
+    * (filename, iterator) if file exists and is ready to download in chunks.
+    * (filename, file) if file exists and chunking is off.
+    * ('report_running.csv', None) if report is in progress.
+    * (None, None) if file does not exist.
+
+  """
+
   account_id, advertiser_id, profile_id = parse_account(auth, account)
   file_json = report_fetch(auth, account, report_id, name, timeout)
 
@@ -370,34 +495,78 @@ def report_file(auth, account, report_id=None, name=None, timeout=60, chunksize=
 
     # single object
     else:
-      return filename, StringIO(_retry(service.files().get_media(reportId=file_json['reportId'], fileId=file_json['id'])))
+      return filename, StringIO(API_Retry(service.files().get_media(reportId=file_json['reportId'], fileId=file_json['id'])))
 
        
 def report_list(auth, account):
+  """ Lists all the DCM report configurations for an account given the current credentials.
+
+  Bulletproofing: https://developers.google.com/doubleclick-advertisers/v3.2/reports/list
+
+  Args:
+    * auth: (string) Either user or service.
+    * account: (string) [account:advertiser@profile] token.
+
+  Returns:
+    * Iterator of JSONs.
+
+  """
+
   account_id, advertiser_id, profile_id = parse_account(auth, account)
   service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
   next_page = None
   while next_page != '':
-    if INTERNAL_MODE: response = _retry(service.reports().list(accountId=account_id, profileId=profile_id, pageToken=next_page))
-    else: _retry(service.reports().list(profileId=profile_id, pageToken=next_page))
+    if INTERNAL_MODE: response = API_Retry(service.reports().list(accountId=account_id, profileId=profile_id, pageToken=next_page))
+    else: API_Retry(service.reports().list(profileId=profile_id, pageToken=next_page))
     next_page = response['nextPageToken']
     for report in response['items']:
       yield report
 
 
 def report_files(auth, account, report_id):
+  """ Lists all the files available for a given DCM report configuration.
+
+  Bulletproofing: https://developers.google.com/doubleclick-advertisers/v3.2/files/list
+
+  Args:
+    * auth: (string) Either user or service.
+    * account: (string) [account:advertiser@profile] token.
+    * report_id: (int) DCM report identifier.
+
+  Returns:
+    * Iterator of JSONs.
+
+  """
+
   account_id, advertiser_id, profile_id = parse_account(auth, account)
   service = get_service('dfareporting', API_VERSION, auth)
   next_page = None
   while next_page != '':
-    if INTERNAL_MODE: response = _retry(service.reports().files().list(accountId=account_id, profileId=profile_id, reportId=report_id, pageToken=next_page))
-    else: response = _retry(service.reports().files().list(profileId=profile_id, reportId=report_id, pageToken=next_page))
+    if INTERNAL_MODE: response = API_Retry(service.reports().files().list(accountId=account_id, profileId=profile_id, reportId=report_id, pageToken=next_page))
+    else: response = API_Retry(service.reports().files().list(profileId=profile_id, reportId=report_id, pageToken=next_page))
     next_page = response['nextPageToken']
     for report in response['items']:
       yield report
 
 
 def report_to_rows(report):
+  """ Helper to convert DCM files into iterator of rows, memory efficient.
+
+  Usage example:
+
+  ```
+  filename, report = report_file(...)
+  rows = report_to_rows(report)
+  ```
+
+  Args:
+    * report: (iterator or file) Either an iterator or file that will be converted to rows.
+
+  Returns:
+    * Iterator of lists representing each row.
+
+  """
+
   # if reading from stream
   if type(report) is GeneratorType:
     leftovers = ''
@@ -414,6 +583,27 @@ def report_to_rows(report):
 
 
 def report_schema(headers):
+  """ Helper to determine the schema of a given set of report headers.
+
+  Using a match table generated from the DCM proto, each report header is matched
+  to its type and a schema is assembled. If not found defaults to STRING.
+
+  Usage example:
+
+  ```
+  filename, report = report_file(...)
+  rows = report_to_rows(report)
+  rows = report_clean(rows,  project.task.get('datastudio', False))
+  schema = report_schema(rows.next())
+  ```
+
+  Args:
+    * headers: (list) First row of a report.
+   
+  Returns:
+    * JSON schema definition.
+
+  """
   schema = []
 
   for header_name in headers:
@@ -442,6 +632,29 @@ def report_schema(headers):
 
 
 def report_clean(rows, datastudio=False):
+  """ Helper to fix DCM report issues for BigQuery and ensure schema compliance.
+
+  Memory efficiently cleans each row by fixing:
+  * Strips header and footer to preserve only data rows.
+  * Changes 'Date' to 'Report_Day' to avoid using reserved name in BigQuery.
+  * Changes data format to match data studio if datastusio=True.
+
+  Usage example:
+
+  ```
+  filename, report = report_file(...)
+  rows = report_to_rows(report)
+  rows = report_clean(rows,  project.task.get('datastudio', False))
+  ```
+
+  Args:
+    * rows: (iterator) Rows to clean.
+   
+  Returns:
+    * Iterator of cleaned rows.
+
+  """
+
   if project.verbose: print 'DCM REPORT CLEAN'
 
   first = True
@@ -480,14 +693,28 @@ def report_clean(rows, datastudio=False):
     first = False
 
 
-#filed: encryptedUserId, encryptedUserIdCandidates[], gclid, mobileDeviceId
-
 def conversions_upload(auth, account, floodlight_activity_id, conversion_type, conversion_rows, encryption_entity=None, update=False):
+  """ Uploads an offline conversion list to DCM.
+
+  BulletProofing: https://developers.google.com/doubleclick-advertisers/guides/conversions_upload
+
+  Handles errors and segmentation of conversion so list can be any size.
+
+  Args:
+    * auth: (string) Either user or service.
+    * account: (string) [account:advertiser@profile] token.
+    * floodlight_activity_id: (int) ID of DCM floodlight to upload conversions to.
+    * converstion_type: (string) One of the following: encryptedUserId, encryptedUserIdCandidates, gclid, mobileDeviceId.
+    * conversion_rows: (iterator) List of the following rows: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId.
+    * encryption_entity: (object) See EncryptionInfo docs: https://developers.google.com/doubleclick-advertisers/v3.2/conversions/batchinsert#encryptionInfo
+
+  """
+
   account_id, advertiser_id, profile_id = parse_account(auth, account)
 
   service = get_service('dfareporting', API_VERSION, auth)
-  if INTERNAL_MODE: response = _retry(service.floodlightActivities().get(accountId=account_id, profileId=profile_id, id=floodlight_activity_id))
-  else: response = _retry(service.floodlightActivities().get(profileId=profile_id, id=floodlight_activity_id))
+  if INTERNAL_MODE: response = API_Retry(service.floodlightActivities().get(accountId=account_id, profileId=profile_id, id=floodlight_activity_id))
+  else: response = API_Retry(service.floodlightActivities().get(profileId=profile_id, id=floodlight_activity_id))
   
   # upload in batch sizes of DCM_CONVERSION_SIZE
   row_count = 0
@@ -514,11 +741,11 @@ def conversions_upload(auth, account, floodlight_activity_id, conversion_type, c
       if encryption_entity: body['encryptionInfo'] = encryption_entity
 
       if update:
-        if INTERNAL_MODE: results = _retry(service.conversions().batchupdate(accountId=account_id, profileId=profile_id, body=body))
-        else: results = _retry(service.conversions().batchupdate(profileId=profile_id, body=body))
+        if INTERNAL_MODE: results = API_Retry(service.conversions().batchupdate(accountId=account_id, profileId=profile_id, body=body))
+        else: results = API_Retry(service.conversions().batchupdate(profileId=profile_id, body=body))
       else:
-        if INTERNAL_MODE: results = _retry(service.conversions().batchinsert(accountId=account_id, profileId=profile_id, body=body))
-        else: results = _retry(service.conversions().batchinsert(profileId=profile_id, body=body))
+        if INTERNAL_MODE: results = API_Retry(service.conversions().batchinsert(accountId=account_id, profileId=profile_id, body=body))
+        else: results = API_Retry(service.conversions().batchinsert(profileId=profile_id, body=body))
 
       # stream back satus
       for status in results['status']: yield status 

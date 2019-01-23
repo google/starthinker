@@ -48,8 +48,8 @@ Example
 import json
 import argparse
 
-from util.project import project
-from util.auth import get_profile
+from starthinker.util.project import project
+from starthinker.util.auth import get_profile
 
 
 if __name__ == "__main__":

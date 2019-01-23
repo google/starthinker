@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -35,11 +35,11 @@ from google.cloud import bigquery
 from googleapiclient.errors import HttpError
 from apiclient.http import MediaIoBaseUpload
 
-from setup import BUFFER_SCALE
-from util import flag_last
-from util.project import project
-from util.auth import get_service
-from util.google_api import API_BigQuery
+from starthinker.setup import BUFFER_SCALE
+from starthinker.util import flag_last
+from starthinker.util.project import project
+from starthinker.util.auth import get_service
+from starthinker.util.google_api import API_BigQuery, API_Retry
 
 BIGQUERY_RETRIES = 3
 BIGQUERY_BUFFERMAX = 4294967296
@@ -85,26 +85,6 @@ def bigquery_date(value):
   return value.strftime('%Y%m%d')
 
 
-def _retry(job, retries=10, wait=5):
-  try:
-    data = job.execute()
-    #pprint.PrettyPrinter().pprint(data)
-    return data
-  except HttpError, e:
-    if project.verbose: print str(e)
-    if e.resp.status in [403, 429, 500, 503]:
-      if json.loads(e.content)['error']['code'] == 409:
-        return # already exists ( ignore )
-      elif retries > 0:
-        sleep(wait)
-        if project.verbose: print 'BIGQUERY RETRY', retries
-        return _retry(job, retries - 1, wait * 2)
-      else:
-        raise
-    else:
-      raise
-
-
 def job_wait(service, job):
   if project.verbose: print 'BIGQUERY JOB WAIT:', job['jobReference']['jobId']
 
@@ -117,7 +97,7 @@ def job_wait(service, job):
     sleep(5)
     if project.verbose: print '.',
     sys.stdout.flush()
-    result = _retry(request)
+    result = API_Retry(request)
     if 'errorResult' in result['status']: 
       errors = ' '.join([e['message'] for e in result['status']['errors']])
       raise Exception('BigQuery Job Error: %s' % errors)
@@ -635,7 +615,7 @@ def table_to_rows(auth, project_id, dataset_id, table_id, fields=None, row_start
 def table_to_schema(auth, project_id, dataset_id, table_id):
   if project.verbose: print 'TABLE SCHEMA:', project_id, dataset_id, table_id
   service = get_service('bigquery', 'v2', auth)
-  response = _retry(service.tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id))
+  response = API_Retry(service.tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id))
   return response['schema']
 
 
@@ -661,11 +641,11 @@ def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True
       "datasetId": dataset_id
     }
 
-  response = _retry(service.jobs().query(projectId=project_id, body=body))
+  response = API_Retry(service.jobs().query(projectId=project_id, body=body))
 
   while not response['jobComplete']:
     sleep(5)
-    response = _retry(service.jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId']))
+    response = API_Retry(service.jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId']))
 
   # Fetch all results
   row_count = 0
@@ -676,9 +656,9 @@ def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True
       row_count += 1
 
     if 'PageToken' in response:
-      response = _retry(service.jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], pageToken=response['PageToken']))
+      response = API_Retry(service.jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], pageToken=response['PageToken']))
     elif row_count < response['totalRows']: 
-      response = _retry(service.jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], startIndex=row_count))
+      response = API_Retry(service.jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], startIndex=row_count))
 
 
 #def list_jobs(auth, project_id):

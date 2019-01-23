@@ -61,7 +61,7 @@ Arguments
   --client / -c' - path to client credentials json file
   --verbose / -v - print all the steps as they happen.
   --force / -f - execute all scripts once then exit.
-  --remote / -r - execute scripts remotely, requires pub/sub
+  --remote / -r - execute scripts remotely, requires pub/sub ( not set up yet )
 
 Each recipe can run under different credentials, specify project, client, user, and service 
 values in the JSON for each recipe. See /util/project/README.md.
@@ -80,8 +80,8 @@ import argparse
 from glob import glob
 from time import sleep
 
-from util.project import get_project, is_scheduled
-from setup import EXECUTE_PATH
+from starthinker.setup import EXECUTE_PATH
+from starthinker.util.project import get_project, is_scheduled
 
 ONE_HOUR_AND_ONE_SECOND = (60 * 60) + 1 # ensures no repeat in a single hour but never runs over in 24 hours
 
@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
   parser.add_argument('--verbose', '-v', help='print all the steps as they happen.', action='store_true')
   parser.add_argument('--force', '-f', help='execute all scripts once then exit.', action='store_true')
-  parser.add_argument('--remote', '-r', help='execute the scripts remotely, equires pub/sub setup.', action='store_true')
+  #parser.add_argument('--remote', '-r', help='execute the scripts remotely, equires pub/sub setup.', action='store_true')
 
   args = parser.parse_args()
 
@@ -111,10 +111,6 @@ if __name__ == "__main__":
 
         if args.force or is_scheduled(project):
 
-          if '-r' in sys.argv: sys.argv.remove('-r')
-          if '--remote' in sys.argv: sys.argv.remove('--remote')
-
-          script = 'remote' if args.remote else 'all'
           command = 'python %s/run.py %s %s' % (script, filepath, ' '.join(sys.argv[2:]))
 
           if args.verbose: print 'COMMAND:', command

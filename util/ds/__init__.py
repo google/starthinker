@@ -31,10 +31,10 @@ from datetime import datetime, time, date, timedelta
 from googleapiclient.errors import HttpError
 from jinja2 import Environment, FileSystemLoader
 
-from util.project import project
-from util.auth import get_service
-from util.regexp import parse_dbm_report_id
-from util.bigquery import bigquery_date
+from starthinker.util.project import project
+from starthinker.util.auth import get_service
+from starthinker.util.regexp import parse_dbm_report_id
+from starthinker.util.bigquery import bigquery_date
 
 
 def report_request(auth, title, template_name, parameters, day=date.today()):

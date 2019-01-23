@@ -20,38 +20,24 @@
 
 import re
 import base64
-import mimetypes
+from email.encoders import encode_base64
 from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from io import BytesIO
 from urllib2 import urlopen
 from HTMLParser import HTMLParser
 from apiclient import errors
 from datetime import timedelta
-from time import sleep
 
 from googleapiclient.errors import HttpError
 
-from util.project import project
-from util.auth import get_service
-from util.regexp import parse_url, date_to_str
-from util.storage import parse_filename
-
-
-def _retry(job, retries=10, wait=5):
-  try:
-    data = job.execute()
-    return data
-  except HttpError, e:
-    if project.verbose: print 'ERROR', str(e)
-    if e.resp.status in [403, 429, 500, 503]:
-      if retries > 0:
-        sleep(wait)
-        if project.verbose: print 'RETRY', retries
-        return _retry(job, retries - 1, wait * 2)
-      elif json.loads(e.content)['error']['code'] == 409:
-        return # already exists ( ignore )
-    raise # raise all other errors
+from starthinker.util.project import project
+from starthinker.util.auth import get_service
+from starthinker.util.google_api import API_Retry
+from starthinker.util.regexp import parse_url, date_to_str
+from starthinker.util.storage import parse_filename
+from starthinker.util.csv import rows_to_csv
 
 
 def _list_unique(seq):
@@ -62,7 +48,7 @@ def _list_unique(seq):
 
 def _get_subject(message):
   for header in message['payload']['headers']:
-    if header.get('name', '') == 'Subject': return header['value']
+    if header.get('name', '').lower() == 'subject': return header['value']
   return ''
 
 
@@ -124,7 +110,7 @@ def _email_attachments(service, message, attachment_regexp):
 
           else:
             att_id=part['body']['attachmentId']
-            att=_retry(service.users().messages().attachments().get(userId='me', messageId=message['id'], id=att_id))
+            att=API_Retry(service.users().messages().attachments().get(userId='me', messageId=message['id'], id=att_id))
             data=att['data']
 
           file_data = BytesIO(base64.urlsafe_b64decode(data.encode('UTF-8')))
@@ -148,7 +134,7 @@ def _email_find(service, email_from, email_to, date_min=None, date_max=None):
   if date_min: query += ' AND after:%s' % date_to_str(date_min)
   if date_max: query += ' AND before:%s' % date_to_str(date_max + timedelta(days=1)) # make it inclusive
   if project.verbose: print 'EMAIL SEARCH:', query
-  results = _retry(service.users().messages().list(userId='me', q=query))
+  results = API_Retry(service.users().messages().list(userId='me', q=query))
   messages = results.get('messages', [])
   if project.verbose: print 'EMAILS FOUND:', len(messages)
   return messages
@@ -160,7 +146,7 @@ def get_email_attachments(auth, email_from, email_to, subject_regexp=None, attac
   messages = _email_find(service, email_from, email_to, date_min, date_max)
   subject_filter = re.compile(r'%s' % subject_regexp) if subject_regexp else None
   for message in messages:
-    message = _retry(service.users().messages().get(userId='me', id=message['id']))
+    message = API_Retry(service.users().messages().get(userId='me', id=message['id']))
     if subject_filter is None or subject_filter.match(_get_subject(message)):
       yield _email_attachments(service, message, attachment_regexp)
 
@@ -171,7 +157,7 @@ def get_email_links(auth, email_from, email_to, subject_regexp=None, link_regexp
   messages = _email_find(service, email_from, email_to, date_min, date_max)
   subject_filter = re.compile(r'%s' % subject_regexp) if subject_regexp else None
   for message in messages:
-    message = _retry(service.users().messages().get(userId='me', id=message['id']))
+    message = API_Retry(service.users().messages().get(userId='me', id=message['id']))
     if subject_filter is None or subject_filter.match(_get_subject(message)):
       yield _email_links(service, message, link_regexp, download)
 
@@ -182,12 +168,12 @@ def get_email_messages(auth, email_from, email_to,  subject_regexp=None, link_re
   messages = _email_find(service, email_from, email_to, date_min, date_max)
   subject_filter = re.compile(r'%s' % subject_regexp) if subject_regexp else None
   for message in messages:
-    message = _retry(service.users().messages().get(userId='me', id=message['id']))
+    message = API_Retry(service.users().messages().get(userId='me', id=message['id']))
     if subject_filter is None or subject_filter.match(_get_subject(message)):
       yield _email_message(service, message, link_regexp, attachment_regexp, download)
 
 
-def send_email(auth, email_to, email_from, email_cc, subject, text, html=None):
+def send_email(auth, email_to, email_from, email_cc, subject, text, html=None, attachment_filename=None, attachment_rows=None):
   if project.verbose: print 'SENDING EMAIL', email_to
   
   service = get_service('gmail', 'v1', auth)
@@ -205,6 +191,11 @@ def send_email(auth, email_to, email_from, email_cc, subject, text, html=None):
     html_part = MIMEText(html, 'html', 'UTF-8')
     message.attach(html_part)
   
-  _retry(service.users().messages().send(userId='me', body={'raw': base64.urlsafe_b64encode(message.as_string())}))
-  
- 
+  if attachment_filename and attachment_rows:
+    attachment = MIMEBase("text", "csv")
+    attachment.set_payload(rows_to_csv(attachment_rows).read())
+    attachment.add_header('Content-Disposition', 'attachment',filename=attachment_filename)
+    encode_base64(attachment)
+    message.attach(attachment)
+
+  API_Retry(service.users().messages().send(userId='me', body={'raw': base64.urlsafe_b64encode(message.as_string())}))

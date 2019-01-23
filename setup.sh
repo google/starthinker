@@ -2,7 +2,7 @@
 
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -24,6 +24,6 @@ echo "RUN: source setup.sh"
 echo ""
 
 THIS_DIR="$( cd "$( dirname "$_" )" && pwd )"
-export PYTHONPATH="${PYTHONPATH}:${THIS_DIR}:${THIS_DIR}/ui"
+export PYTHONPATH="${PYTHONPATH}:${THIS_DIR}/../"
 export STARTHINKER_PATH=${THIS_DIR}
 echo ${THIS_DIR}

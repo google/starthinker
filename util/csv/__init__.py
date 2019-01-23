@@ -20,9 +20,9 @@ import re
 import csv
 from StringIO import StringIO
 
-from util.project import project
-from util.bigquery import bigquery_date
-from third_party.xlsx import Workbook
+from starthinker.util.project import project
+from starthinker.util.bigquery import bigquery_date
+from starthinker.third_party.xlsx import Workbook
 
 
 RE_HUMAN = re.compile('[^0-9a-zA-Z]+')
@@ -41,9 +41,8 @@ def excel_to_rows(excel_bytes):
 
 def csv_to_rows(csv_string):
   if isinstance(csv_string, basestring): csv_string = StringIO(csv_string)
-  for row in csv.reader(csv_string, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL):
+  for row in csv.reader(csv_string, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL, skipinitialspace=True, escapechar='\\'):
     yield row
-
 
 def rows_to_csv(rows):
   csv_string = StringIO()
