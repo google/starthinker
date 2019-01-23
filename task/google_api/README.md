@@ -1,52 +1,16 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
+### Launch In Google Cloud
 
-# JSON Recipes
+Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
 
-## [API To BigQuery](/google_api/script_google_api_to_bigquery.json)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2Ftask%2Fgoogle_api%2FREADME.md)
 
-Execute a Google API function and store results to BigQuery.
-
-Maintained and supported by: kenjora@google.com
-
-### Fields
-
-- api (string) See developer guide.Default: doubleclickbidmanager
-- version (string) Must be supported version.Default: v1
-- function (string) Full function dot notation path.Default: reports.files.list
-- kwargs (json) Dictionray object of name value pairs.Default: {u'profileId': 2782211, u'reportId': 132847265, u'accountId': 7480}
-- iterate (boolean) Is the result a list?
-- dataset (string) Existing dataset in BigQuery.
-- table (string) Table to write API call results to.
-- schema (json) Schema provided in JSON list format or empty list.
-
-### Instructions
-
-- Enter an api name and version.
-- Specify the function using dot notation and arguments using json.
-- If nextPageToken can be in response check iterate.
-- Give BigQuery dataset and table where response will be written.
-
-### Quick Command Line
-
-To see all required parameters and generate a recipe from this script template run:
-
-`python script/run.py /google_api/script_google_api_to_bigquery.json -h`
-
-`python script/run.py /google_api/script_google_api_to_bigquery.json [all required parameters] > projects/recipe.json`
-
-After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
-
-`python all/run.py projects/recipe.json -u [user credentials path] -s [service credentials path]`
-
-Any two or more recipes can be combined by copying and pasting task JSON into the task [...] list.  All tasks execute in sequence.
-
-For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
 # Python Scripts
 
 
-## [/google_api/helper.py](/google_api/helper.py)
+## [/task/google_api/helper.py](/task/google_api/helper.py)
 
 Command line interface for running Google API calls.  Any API works.
 

@@ -1,159 +1,16 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
+### Launch In Google Cloud
 
-# JSON Recipes
+Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
 
-## [DCM To BigQuery](/dcm/script_dcm_to_bigquery.json)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2Ftask%2Fdcm%2FREADME.md)
 
-Move existing DCM report into a BigQuery table.
-
-Maintained and supported by: kenjora@google.com
-
-### Fields
-
-- account (integer) DCM network id.
-- report_id (integer) DCM report id, empty if using name .
-- report_name (string) DCM report name, empty if using id instead.
-- dataset (string) Dataset to be written to in BigQuery.
-- table (string) Table to be written to in BigQuery.
-- datastudio (boolean) Alter columns for datastudio, fixes nulls and date format.Default: True
-
-### Instructions
-
-- Specify an account id.
-- Specify either report name or report id to move a report.
-- The most recent valid file will overwrite the table.
-- Schema is pulled from the official DCM specification.
-
-### Quick Command Line
-
-To see all required parameters and generate a recipe from this script template run:
-
-`python script/run.py /dcm/script_dcm_to_bigquery.json -h`
-
-`python script/run.py /dcm/script_dcm_to_bigquery.json [all required parameters] > projects/recipe.json`
-
-After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
-
-`python all/run.py projects/recipe.json -u [user credentials path] -s [service credentials path]`
-
-Any two or more recipes can be combined by copying and pasting task JSON into the task [...] list.  All tasks execute in sequence.
-
-For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
-
-## [DCM Report](/dcm/script_dcm.json)
-
-Create a DCM report from a JSON definition.
-
-Maintained and supported by: kenjora@google.com
-
-### Fields
-
-- account (string) 
-- body (json) Default: {}
-- delete (boolean)
-
-### Instructions
-
-- Add a an account as [account_id]@[profile_id]
-- Fetch the report JSON definition. Arguably could be better.
-- The account is automatically added to the report definition.
-
-### Quick Command Line
-
-To see all required parameters and generate a recipe from this script template run:
-
-`python script/run.py /dcm/script_dcm.json -h`
-
-`python script/run.py /dcm/script_dcm.json [all required parameters] > projects/recipe.json`
-
-After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
-
-`python all/run.py projects/recipe.json -u [user credentials path] -s [service credentials path]`
-
-Any two or more recipes can be combined by copying and pasting task JSON into the task [...] list.  All tasks execute in sequence.
-
-For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
-
-## [DCM To Storage](/dcm/script_dcm_to_storage.json)
-
-Move existing DCM report into a Storage bucket.
-
-Maintained and supported by: kenjora@google.com
-
-### Fields
-
-- account (integer) 
-- report_id (integer) 
-- report_name (string) 
-- bucket (string) 
-- path (string) Default: DCM_Report
-- datastudio (boolean) Default: True
-
-### Instructions
-
-- Specify an account id.
-- Specify either report name or report id to move a report.
-- The most recent file will be moved to the bucket.
-- Schema is pulled from the official DCM specification.
-
-### Quick Command Line
-
-To see all required parameters and generate a recipe from this script template run:
-
-`python script/run.py /dcm/script_dcm_to_storage.json -h`
-
-`python script/run.py /dcm/script_dcm_to_storage.json [all required parameters] > projects/recipe.json`
-
-After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
-
-`python all/run.py projects/recipe.json -u [user credentials path] -s [service credentials path]`
-
-Any two or more recipes can be combined by copying and pasting task JSON into the task [...] list.  All tasks execute in sequence.
-
-For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
-
-## [DCM To Sheets](/dcm/script_dcm_to_sheets.json)
-
-Move existing DCM report into a Sheet tab.
-
-Maintained and supported by: kenjora@google.com
-
-### Fields
-
-- account (integer) 
-- report_id (integer) 
-- report_name (string) 
-- sheet (string) 
-- tab (string)
-
-### Instructions
-
-- Specify an account id.
-- Specify either report name or report id to move a report.
-- The most recent valid file will be moved to the sheet.
-- Schema is pulled from the official DCM specification.
-
-### Quick Command Line
-
-To see all required parameters and generate a recipe from this script template run:
-
-`python script/run.py /dcm/script_dcm_to_sheets.json -h`
-
-`python script/run.py /dcm/script_dcm_to_sheets.json [all required parameters] > projects/recipe.json`
-
-After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
-
-`python all/run.py projects/recipe.json -u [user credentials path] -s [service credentials path]`
-
-Any two or more recipes can be combined by copying and pasting task JSON into the task [...] list.  All tasks execute in sequence.
-
-For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
 # Python Scripts
 
 
-## [/dcm/run.py](/dcm/run.py)
+## [/task/dcm/run.py](/task/dcm/run.py)
 
 Handler that executes { "dcm":{...}} task in recipe JSON.
 
@@ -176,7 +33,7 @@ proto files.
 
 
 
-## [/dcm/helper.py](/dcm/helper.py)
+## [/task/dcm/helper.py](/task/dcm/helper.py)
 
 Command line to get a DCM report or show list of report or files.
 

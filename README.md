@@ -1,6 +1,6 @@
 This is not an officially supported Google product.  It is a reference implementation.
 
-# StarThinker Workflow Framework For Google
+# StarThinker Workflow Framework For Google Solution Hand Over
 
 StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components. 
 To make it easier for partners and clients to work with some of our advertsing solutions, the gTech team has
@@ -20,17 +20,16 @@ using Google Cloud as fast and re-usable as possible, allowing teams to focus on
 Every directory contains a README.me file. These are instructions for how to use the code in that directory.
 General structure ofthe code is:
 
+- [/deploy.sh](/deploy.sh) - a micro UI for setting up credentials, and running recipes on a schedule
 - [/setup.sh](setup.sh) - source this to set up python paths to run commands using this framework.
 - [/setup.py](setup.py) - global settings covering buffer size, cloud paths, and production vs debug.
-- [/utils](utils/) - Low level library wrappers around Google API with helpers to handle common errors.
-- [/gtech](gtech/) - complete solution templates provided by Google gTech
+- [/util](util/) - Low level library wrappers around Google API with helpers to handle common errors.
+- [/task](task/) - Handlers for each task specified in a JSON recipe.
+- [/gtech](gtech/) - complete solution templates provided by Google gTech, great starting point for ideas.
 - [/script](script/) - command line for converting a recipe template into a client specific executable recipe
 - [/all](all/) - command line for executing a recipe in its entirety
 - [/cron](cron/) - command line for executing recipes on a schedule
-- [/projects](projects/) - a place where custom recipes can be checked into the repository
 - [/auth](auth/) - command line for testing user credential setup
-- [/deploy.sh](/deploy.sh) - a micro UI for setting up credentials, and running recipes on a schedule
-- others - command line handlers for specific tasks within a recipe
 
 ## What are some common terms?
 
@@ -54,11 +53,12 @@ git clone https://github.com/google/starthinker
 cd starthinker
 pip install -r requirements.txt
 source setup.sh
-python all/run.py project/sample/say_hello.json --verbose
+python all/run.py gtech/say_hello.json --verbose
 ```
 
-Read more at [all/README.md](all/README.md) under Useful Developer Features. 
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2FREADME.md)
 
+Read more at [all/README.md](all/README.md) under Useful Developer Features. 
 
 ## How Do I Turn A Recipe Template Into A Recipe?
 
@@ -69,6 +69,8 @@ python script/run.py dcm/script_dcm_to_bigquery.json -h
 python script/run.py dcm/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" --datastudio > test_recipe.json
 python python all/run.py test_recipe.json
 ```
+
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_DEPLOY.txt&cloudshell_tutorial=%2FREADME.md)
 
 Read more at [script/README.md](script/README.md).
 
@@ -84,6 +86,8 @@ pip install -r requirements.txt
 source setup.sh
 ./deploy.sh
 ```
+
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_DEPLOY.txt&cloudshell_tutorial=README.md)
 
 A micro UI will activate ( no system changes are made unless you choose an option ), choose the 
 appropriate option.  Full setup walks through everything, including credentials and install.  
@@ -115,8 +119,8 @@ Email: starthinker-help@google.com
 
 ## Authors 
 
-Paul Kenjora ( kenjora@google.com ) - Google gTech
-Mauricio Desiderio ( mauriciod@google.com ) - Google gTech
+- Paul Kenjora ( kenjora@google.com ) - Google gTech
+- Mauricio Desiderio ( mauriciod@google.com ) - Google gTech
 
 Additional contributors to individual handlers and recipes are listed in each file.
 

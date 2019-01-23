@@ -1,5 +1,11 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
+### Launch In Google Cloud
+
+Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2Fscript%2FREADME.md)
+
 
 # Python Scripts
 
@@ -8,7 +14,7 @@
 
 Command line to convert script with fields into a recipe with specific values.
 
-Scripts are JSON templates that define a workflow.  Files in the format script_\*.json.
+Scripts are JSON templates that define a workflow.  Files in the format script_*.json.
 Each script can be converted to a recipe by replacing { field:{...}} elements with
 actual vaues.
 
@@ -34,7 +40,7 @@ Example:
   usage: run.py [-h] json account report_id report_name dataset table
   
   positional arguments:
-    json         JSON recipe file to script.
+    json         JSON input recipe template file to onfigure.
     account      DCM network id.
     report_id    DCM report id from the UI.
     report_name  DCM report name, pass '' if using id instead.
@@ -44,6 +50,7 @@ Example:
   optional arguments:
     -h, --help   show this help message and exit
     --datastudio  Alter columns for datastudio, fixes nulls and date format.
+    --output JSON file to write resulting recipe.
   ```
 
   Then to turn the script into a recipe run:
@@ -57,7 +64,7 @@ Example:
 
 
 
-### function parser_add_field(parser, field):
+### parser_add_field(parser, field):
 
 
   Translates JOSN field specification into a command line argument.
@@ -78,7 +85,7 @@ Example:
 
 
 
-### function json_set_fields(struct, variables):
+### json_set_fields(struct, variables):
 
 
   Recusrsively replaces fields in script JSON with values provided.
@@ -94,7 +101,7 @@ Example:
   
 
 
-### function json_set_instructions(struct, variables):
+### json_set_instructions(struct, variables):
 
 
   Replaces all fields in instructions with values provided.
@@ -111,7 +118,7 @@ Example:
   
 
 
-### function json_get_fields(struct, path=[]):
+### json_get_fields(struct, path=[]):
 
 
   Recusrsively finds fields in script JSON and returns them as a list.
@@ -127,7 +134,7 @@ Example:
   
 
 
-### function json_set_description(struct, variables):
+### json_set_description(struct, variables):
 
 
   Replaces all fields in description with values provided.

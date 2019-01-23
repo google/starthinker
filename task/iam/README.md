@@ -1,45 +1,16 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
+### Launch In Google Cloud
 
-# JSON Recipes
+Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
 
-## [Project IAM](/iam/script_iam.json)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2Ftask%2Fiam%2FREADME.md)
 
-Sets project permissions for an email.
-
-Maintained and supported by: kenjora@google.com
-
-### Fields
-
-- role (string) projects/[project name]/roles/[role name]
-- email (string) Email address to grant role to.
-
-### Instructions
-
-- Provide a role in the form of projects/[project name]/roles/[role name]
-- Enter an email to grant that role to.
-- This only grants roles, you must remove them from the project manually.
-
-### Quick Command Line
-
-To see all required parameters and generate a recipe from this script template run:
-
-`python script/run.py /iam/script_iam.json -h`
-
-`python script/run.py /iam/script_iam.json [all required parameters] > projects/recipe.json`
-
-After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
-
-`python all/run.py projects/recipe.json -u [user credentials path] -s [service credentials path]`
-
-Any two or more recipes can be combined by copying and pasting task JSON into the task [...] list.  All tasks execute in sequence.
-
-For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
 # Python Scripts
 
 
-## [/iam/run.py](/iam/run.py)
+## [/task/iam/run.py](/task/iam/run.py)
 
  Handler that executes { "iam":{...}} task in recipe JSON.
 

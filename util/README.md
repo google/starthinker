@@ -1,5 +1,11 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
+### Launch In Google Cloud
+
+Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2Futil%2FREADME.md)
+
 
 # Python Scripts
 
@@ -13,7 +19,7 @@ not add classes here.
 
 
 
-### function flag_last(o):
+### flag_last(o):
 
 
   Flags the last loop of an iterator.
@@ -22,8 +28,9 @@ not add classes here.
   Returns True on last iteration.
 
   Args:
-    o: An iterator instance.
+    * o: An iterator instance.
 
   Returns:
-    A tuple of ([True/False, iteration). Returns True on StopIteration.
+    * A tuple of ([True/False, iteration). Returns True on StopIteration.
+
   

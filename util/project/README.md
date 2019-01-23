@@ -1,5 +1,11 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
+### Launch In Google Cloud
+
+Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2Futil%2Fproject%2FREADME.md)
+
 
 # Python Scripts
 
@@ -56,7 +62,7 @@ three important concepts:
 
 
 
-### function is_scheduled(project, task = None):
+### is_scheduled(project, task = None):
 
 
   Determines if given tasks is executing this hour in a time zone safe way. 
@@ -73,7 +79,7 @@ three important concepts:
     
 
 
-### function get_project(filepath, debug=False):
+### get_project(filepath, debug=False):
 
 
   Loads json for Project Class.  Intended for this module only. Available as helper.
@@ -102,7 +108,7 @@ three important concepts:
     from util.project import project
 
     def task():
-      pass # execute work using project.\* as data from json
+      pass # execute work using project.* as data from json
 
     if __name__ == "__main__":
       project.load('task')
@@ -156,7 +162,7 @@ three important concepts:
   
 
 
-###   function set_task(cls, json_definition):
+###   set_task(cls, json_definition):
 
 
     Helper for setting task json in a project.  not recommended, use load and initialize instead.
@@ -169,7 +175,7 @@ three important concepts:
     
 
 
-###   function load(cls, _task = None, parser = None):
+###   load(cls, _task = None, parser = None):
 
 
     Used in StarThinker scripts as entry point for command line calls. Loads json for execution.
@@ -179,7 +185,7 @@ three important concepts:
          from util.project import project
 
          def task():
-           pass # execute work using project.\* as data from json
+           pass # execute work using project.* as data from json
 
          if __name__ == "__main__":
            project.load('task')
@@ -190,12 +196,12 @@ three important concepts:
       parser: (ArgumentParser) optional custom argument parser ( json argument becomes optional if not None )
 
     Returns:
-      Nothing, this manipulates a singleton object.  All calls to project.\* result in the same object.
+      Nothing, this manipulates a singleton object.  All calls to project.* result in the same object.
 
     
 
 
-###   function initialize(cls, 
+###   initialize(cls, 
 
 
     Used in StarThinker scripts as programmatic entry point. 
@@ -224,11 +230,11 @@ three important concepts:
       _force: (boolean) See module description.
 
     Returns:
-      Nothing, this manipulates a singleton object.  All calls to project.\* result in the same object.
+      Nothing, this manipulates a singleton object.  All calls to project.* result in the same object.
     
 
 
-###   function get_uuid(cls):
+###   get_uuid(cls):
 
 
     Helper for deploying to pub/sub.  Injects a UUID into the current project's json file.

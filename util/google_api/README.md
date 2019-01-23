@@ -1,5 +1,11 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
+### Launch In Google Cloud
+
+Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2Futil%2Fgoogle_api%2FREADME.md)
+
 
 # Python Scripts
 
@@ -10,16 +16,16 @@ Thin wrapper around Google Sevice API for integraton into StarThinker.
 
 This does not change or augment the standard API calls other than the following:
 
-  - Allows passing of auth parameter to constructor, required for switching.
-  - Execute statement is overloaded to include iterator for responses with nextPageToken. 
-  - Retries handle some common errors and have a back off scheme.
-  - JSON based configuration allows StarThinker recipe definitions.
-  - Pre-defined functions for each API can be added to fix version and uri options.
+  * Allows passing of auth parameter to constructor, required for switching.
+  * Execute statement is overloaded to include iterator for responses with nextPageToken. 
+  * Retries handle some common errors and have a back off scheme.
+  * JSON based configuration allows StarThinker recipe definitions.
+  * Pre-defined functions for each API can be added to fix version and uri options.
 
 
 
 
-### function API_Iterator(function, kwargs, results = None):
+### API_Iterator(function, kwargs, results = None):
 
 
    See below API_Iterator_Instance for documentaion, this is just an iter wrapper. 
@@ -29,21 +35,31 @@ This does not change or augment the standard API calls other than the following:
   
 
 
-### function API_Retry(job, retries=10, wait=10):
+### API_Retry(job, key=None, retries=50, wait=30):
 
 
    API retry that includes back off and some common error handling.
 
+  The back off executes [retry] times.  Each time the [wait] is doubled.
+  By default retries are: 0:30 + 1:00 + 2:00 + 4:00 + 8:00 = 15:30
+
+  * Errors retried: 403, 429, 500, 503
+  * Errors ignored: 409 - already exists ( triggered by create only and also returns None )
+  * Errors raised: ALL OTHERS
+
   Args:
-    job: (function) The type of authentication to use, user or service.
-    retries: (integer) Number of times to attempt this operation.
-    wait: (integer) Number of seconds to sleep between retries.
+    * job: (object) Everything before the execute() statement.
+    * key: (string) key of value from data to return.
+    * retries: (int) Number of times to try the job.
+    * wait: (seconds) Time to wait in seconds between retries.
 
   Returns:
-    If sucesful, returns the JOSN response form the call.
-
+    * JSON result of job or key value from JSON result if job succeed.
+    * None if object already exists.
+       
   Raises:
-    All API exceptions other than 409 = Already Exists.
+    * Any exceptions not listed in comments above.
+
   
 
 
@@ -75,28 +91,35 @@ This does not change or augment the standard API calls other than the following:
   
 
 
-### function API_DCM(auth, iterate=False):
-
-
-  DCM helper configuration for Google API. Defines agreed upon version.
-  
-
-
-### function API_DBM(auth, iterate=False):
+### API_DBM(auth, iterate=False):
 
 
   DBM helper configuration for Google API. Defines agreed upon version.
   
 
 
-### function API_SNIPPETS(auth, iterate=False):
+### API_SNIPPETS(auth, iterate=False):
 
 
   Snippets helper configuration for Google API. Defines agreed upon version.
   
 
 
-### function API_BigQuery(auth, iterate=False):
+### API_DCM(auth, iterate=False):
+
+
+  DCM helper configuration for Google API. Defines agreed upon version.
+  
+
+
+### API_Sheets(auth, iterate=False):
+
+
+  DBM helper configuration for Google API. Defines agreed upon version.
+  
+
+
+### API_BigQuery(auth, iterate=False):
 
 
   BigQuery helper configuration for Google API. Defines agreed upon version.

@@ -1,46 +1,16 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
+### Launch In Google Cloud
 
-# JSON Recipes
+Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
 
-## [Floodlight Monitor](/floodlight_monitor/script_floodlight_monitor.json)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2Ftask%2Ffloodlight_monitor%2FREADME.md)
 
-Monitor floodlight impressions specified in sheet and send email alerts.
-
-Maintained and supported by: kenjora@google.com
-
-### Fields
-
-- dcm_account (string) Specify an account_id or account_id:subaccount_id.
-- sheet_url (string) Full URL to Google Sheet, Floodlight Monitor tab will be added.
-
-### Instructions
-
-- Specify an account_id or account_id:subaccount_id.
-- Will copy <a href='https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing'>Floodlight Monitor Sheet</a> to the sheet you specify.
-- Follow instructions on sheet.
-- Emails are sent once a day.
-
-### Quick Command Line
-
-To see all required parameters and generate a recipe from this script template run:
-
-`python script/run.py /floodlight_monitor/script_floodlight_monitor.json -h`
-
-`python script/run.py /floodlight_monitor/script_floodlight_monitor.json [all required parameters] > projects/recipe.json`
-
-After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
-
-`python all/run.py projects/recipe.json -u [user credentials path] -s [service credentials path]`
-
-Any two or more recipes can be combined by copying and pasting task JSON into the task [...] list.  All tasks execute in sequence.
-
-For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
 # Python Scripts
 
 
-## [/floodlight_monitor/run.py](/floodlight_monitor/run.py)
+## [/task/floodlight_monitor/run.py](/task/floodlight_monitor/run.py)
 
 Pulls floodlights from a sheet, checks if impressions have changed significantly and sends an alert email.
 

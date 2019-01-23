@@ -112,7 +112,7 @@ def parse_py(filepath):
         if func: doc += '\n\n### %s\n\n' % func.replace('def ', '')
         doc += crawl[cls][func]
 
-  return doc.replace('*', '\*')
+  return doc #.replace('*', '\*') # * are used for lists markup, any use of * in text should be escaped as such in the code comment
 
 
 def parse_json(filepath):

@@ -1,45 +1,16 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
+### Launch In Google Cloud
 
-# JSON Recipes
+Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
 
-## [Entity Read Files](/entity/script_entity.json)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2Ftask%2Fentity%2FREADME.md)
 
-Import public and private <a href='https://developers.google.com/bid-manager/guides/entity-read/format-v2' target='_blank'>Entity Read Files</a> into a BigQuery dataset.<br/>CAUTION: PARTNER ONLY, ADVERTISER FILTER IS NOT APPLIED.
-
-Maintained and supported by: kenjora@google.com
-
-### Fields
-
-- partners (integer_list) Comma sparated list of DBM partners.Default: []
-- dataset (string) BigQuery dataset to write tables for each entity.
-
-### Instructions
-
-- Entity Read Files ONLY work at the partner level.
-- Advertiser filter is NOT APPLIED.
-- Specify one or more partners to be moved into the dataset.
-
-### Quick Command Line
-
-To see all required parameters and generate a recipe from this script template run:
-
-`python script/run.py /entity/script_entity.json -h`
-
-`python script/run.py /entity/script_entity.json [all required parameters] > projects/recipe.json`
-
-After [getting Google Cloud Credentials](/auth/README.md), execute the recipe created run the following:
-
-`python all/run.py projects/recipe.json -u [user credentials path] -s [service credentials path]`
-
-Any two or more recipes can be combined by copying and pasting task JSON into the task [...] list.  All tasks execute in sequence.
-
-For scheduled recipes, see [Recipe Corn Job](/cron/README.md) or [Deplyment Script](/deploy/README.md)
 
 # Python Scripts
 
 
-## [/entity/run.py](/entity/run.py)
+## [/task/entity/run.py](/task/entity/run.py)
 
 Script that executes { "entity":{...}} task.
 

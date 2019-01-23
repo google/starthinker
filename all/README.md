@@ -1,5 +1,11 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
+### Launch In Google Cloud
+
+Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2Fall%2FREADME.md)
+
 
 # Python Scripts
 
@@ -19,7 +25,7 @@ To execute a recipe run:
 
 ### Arguments
 
-- path - run all json files in the specified path
+- path - run all tasks the specified recipe
 - --project / -p - cloud id of project
 - --user / -u - path to user credentials json file, defaults to GOOGLE_APPLICATION_CREDENTIALS
 - --service / -s - path to service credentials json file
@@ -32,7 +38,6 @@ To execute a recipe run:
 If an exception is raised in any task, all following tasks are not executed by design.
 Obeys the schedule rules defined in /cron/README.md.
 Uses credentials logic defined in /util/project/README.md.
-Uses logs if defined in /setup.py.
 For scheduled jobs this script is called by /cron/run.py.
 
 ### CAUTION
@@ -48,10 +53,10 @@ can easily replace "all" with the name of any "task" in the json.  For example
 
 Can be easily replaced with the following to run only the "hello" task:
 
-`python hello/run.py project/sample/say_hello.json`
+`python task/hello/run.py project/sample/say_hello.json`
 
 Or specified further to run only the second hello task:
 
-`python hello/run.py project/sample/say_hello.json -i 2`
+`python task/hello/run.py project/sample/say_hello.json -i 2`
 
 
