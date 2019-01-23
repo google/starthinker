@@ -38,10 +38,10 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Audience Mapper recipe maps to the following stand alone python code modules:
 
-- [/task/dataset](dataset)
-- [/task/dbm](dbm)
-- [/task/mapping](mapping)
-- [/task/sheets](sheets)
+- [/task/dataset](/task/dataset)
+- [/task/dbm](/task/dbm)
+- [/task/mapping](/task/mapping)
+- [/task/sheets](/task/sheets)
 
 ### Quick Command Line
 
@@ -83,7 +83,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the DCM To BigQuery recipe maps to the following stand alone python code modules:
 
-- [/task/dcm](dcm)
+- [/task/dcm](/task/dcm)
 
 ### Quick Command Line
 
@@ -130,7 +130,7 @@ Maintained and supported by: aritrab@google.com, kenjora@google.com
 
 Each task in the Dynamic Costs Reporting recipe maps to the following stand alone python code modules:
 
-- [/task/dynamic_costs](dynamic_costs)
+- [/task/dynamic_costs](/task/dynamic_costs)
 
 ### Quick Command Line
 
@@ -173,7 +173,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Email Fetch recipe maps to the following stand alone python code modules:
 
-- [/task/email](email)
+- [/task/email](/task/email)
 
 ### Quick Command Line
 
@@ -215,10 +215,10 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Deal Finder recipe maps to the following stand alone python code modules:
 
-- [/task/bigquery](bigquery)
-- [/task/dataset](dataset)
-- [/task/dbm](dbm)
-- [/task/sheets](sheets)
+- [/task/bigquery](/task/bigquery)
+- [/task/dataset](/task/dataset)
+- [/task/dbm](/task/dbm)
+- [/task/sheets](/task/sheets)
 
 ### Quick Command Line
 
@@ -262,7 +262,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Trends Places To Sheets Via Values recipe maps to the following stand alone python code modules:
 
-- [/task/twitter](twitter)
+- [/task/twitter](/task/twitter)
 
 ### Quick Command Line
 
@@ -301,7 +301,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Storage To Table recipe maps to the following stand alone python code modules:
 
-- [/task/bigquery](bigquery)
+- [/task/bigquery](/task/bigquery)
 
 ### Quick Command Line
 
@@ -337,7 +337,7 @@ Maintained and supported by: mauriciod@google.com
 
 Each task in the Sheet Clear recipe maps to the following stand alone python code modules:
 
-- [/task/sheets](sheets)
+- [/task/sheets](/task/sheets)
 
 ### Quick Command Line
 
@@ -375,7 +375,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the DBM Report recipe maps to the following stand alone python code modules:
 
-- [/task/dbm](dbm)
+- [/task/dbm](/task/dbm)
 
 ### Quick Command Line
 
@@ -416,7 +416,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the DBM To BigQuery recipe maps to the following stand alone python code modules:
 
-- [/task/dbm](dbm)
+- [/task/dbm](/task/dbm)
 
 ### Quick Command Line
 
@@ -456,7 +456,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Line Item To BigQuery Via Query recipe maps to the following stand alone python code modules:
 
-- [/task/lineitem](lineitem)
+- [/task/lineitem](/task/lineitem)
 
 ### Quick Command Line
 
@@ -499,7 +499,7 @@ Maintained and supported by:
 
 Each task in the Column Mapping recipe maps to the following stand alone python code modules:
 
-- [/task/mapping](mapping)
+- [/task/mapping](/task/mapping)
 
 ### Quick Command Line
 
@@ -543,7 +543,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Trends Places To Sheets Via Query recipe maps to the following stand alone python code modules:
 
-- [/task/twitter](twitter)
+- [/task/twitter](/task/twitter)
 
 ### Quick Command Line
 
@@ -583,7 +583,7 @@ Maintained and supported by: ceh@google.com, kenjora@google.com
 
 Each task in the Dataset recipe maps to the following stand alone python code modules:
 
-- [/task/dataset](dataset)
+- [/task/dataset](/task/dataset)
 
 ### Quick Command Line
 
@@ -622,7 +622,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Query To View recipe maps to the following stand alone python code modules:
 
-- [/task/bigquery](bigquery)
+- [/task/bigquery](/task/bigquery)
 
 ### Quick Command Line
 
@@ -660,7 +660,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Line Item To BigQuery Via Values recipe maps to the following stand alone python code modules:
 
-- [/task/lineitem](lineitem)
+- [/task/lineitem](/task/lineitem)
 
 ### Quick Command Line
 
@@ -704,11 +704,11 @@ Maintained and supported by: mauriciod@google.com
 
 Each task in the Pacing DBM recipe maps to the following stand alone python code modules:
 
-- [/task/dataset](dataset)
-- [/task/dbm](dbm)
-- [/task/entity](entity)
-- [/task/move](move)
-- [/task/sheets](sheets)
+- [/task/dataset](/task/dataset)
+- [/task/dbm](/task/dbm)
+- [/task/entity](/task/entity)
+- [/task/move](/task/move)
+- [/task/sheets](/task/sheets)
 
 ### Quick Command Line
 
@@ -748,11 +748,11 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Twitter Targeting recipe maps to the following stand alone python code modules:
 
-- [/task/bigquery](bigquery)
-- [/task/dataset](dataset)
-- [/task/lineitem](lineitem)
-- [/task/sheets](sheets)
-- [/task/twitter](twitter)
+- [/task/bigquery](/task/bigquery)
+- [/task/dataset](/task/dataset)
+- [/task/lineitem](/task/lineitem)
+- [/task/sheets](/task/sheets)
+- [/task/twitter](/task/twitter)
 
 ### Quick Command Line
 
@@ -790,7 +790,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the DCM Report recipe maps to the following stand alone python code modules:
 
-- [/task/dcm](dcm)
+- [/task/dcm](/task/dcm)
 
 ### Quick Command Line
 
@@ -834,7 +834,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Trends Places To BigQuery Via Query recipe maps to the following stand alone python code modules:
 
-- [/task/twitter](twitter)
+- [/task/twitter](/task/twitter)
 
 ### Quick Command Line
 
@@ -872,7 +872,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Floodlight Monitor recipe maps to the following stand alone python code modules:
 
-- [/task/floodlight_monitor](floodlight_monitor)
+- [/task/floodlight_monitor](/task/floodlight_monitor)
 
 ### Quick Command Line
 
@@ -914,7 +914,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the DCM To Storage recipe maps to the following stand alone python code modules:
 
-- [/task/dcm](dcm)
+- [/task/dcm](/task/dcm)
 
 ### Quick Command Line
 
@@ -959,7 +959,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Conversion Upload Sheets recipe maps to the following stand alone python code modules:
 
-- [/task/conversion_upload](conversion_upload)
+- [/task/conversion_upload](/task/conversion_upload)
 
 ### Quick Command Line
 
@@ -998,7 +998,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Query To Table recipe maps to the following stand alone python code modules:
 
-- [/task/bigquery](bigquery)
+- [/task/bigquery](/task/bigquery)
 
 ### Quick Command Line
 
@@ -1045,7 +1045,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the DCM Standard Bulk recipe maps to the following stand alone python code modules:
 
-- [/task/dcm_bulk](dcm_bulk)
+- [/task/dcm_bulk](/task/dcm_bulk)
 
 ### Quick Command Line
 
@@ -1086,7 +1086,7 @@ Maintained and supported by: mauriciod@google.com
 
 Each task in the Sheet To Table recipe maps to the following stand alone python code modules:
 
-- [/task/sheets](sheets)
+- [/task/sheets](/task/sheets)
 
 ### Quick Command Line
 
@@ -1127,7 +1127,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the DCM To Sheets recipe maps to the following stand alone python code modules:
 
-- [/task/dcm](dcm)
+- [/task/dcm](/task/dcm)
 
 ### Quick Command Line
 
@@ -1165,7 +1165,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Archive recipe maps to the following stand alone python code modules:
 
-- [/task/archive](archive)
+- [/task/archive](/task/archive)
 
 ### Quick Command Line
 
@@ -1209,7 +1209,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the API To BigQuery recipe maps to the following stand alone python code modules:
 
-- [/task/google_api](google_api)
+- [/task/google_api](/task/google_api)
 
 ### Quick Command Line
 
@@ -1248,7 +1248,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Bucket recipe maps to the following stand alone python code modules:
 
-- [/task/bucket](bucket)
+- [/task/bucket](/task/bucket)
 
 ### Quick Command Line
 
@@ -1287,7 +1287,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the DT To Table recipe maps to the following stand alone python code modules:
 
-- [/task/dt](dt)
+- [/task/dt](/task/dt)
 
 ### Quick Command Line
 
@@ -1332,7 +1332,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Conversion Upload BigQuery recipe maps to the following stand alone python code modules:
 
-- [/task/conversion_upload](conversion_upload)
+- [/task/conversion_upload](/task/conversion_upload)
 
 ### Quick Command Line
 
@@ -1371,7 +1371,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the DBM To Storage recipe maps to the following stand alone python code modules:
 
-- [/task/dbm](dbm)
+- [/task/dbm](/task/dbm)
 
 ### Quick Command Line
 
@@ -1409,7 +1409,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the DBM To Sheets recipe maps to the following stand alone python code modules:
 
-- [/task/dbm](dbm)
+- [/task/dbm](/task/dbm)
 
 ### Quick Command Line
 
@@ -1446,7 +1446,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Project IAM recipe maps to the following stand alone python code modules:
 
-- [/task/iam](iam)
+- [/task/iam](/task/iam)
 
 ### Quick Command Line
 
@@ -1488,7 +1488,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Trends Places To BigQuery Via Values recipe maps to the following stand alone python code modules:
 
-- [/task/twitter](twitter)
+- [/task/twitter](/task/twitter)
 
 ### Quick Command Line
 
@@ -1525,8 +1525,8 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Entity Read Files recipe maps to the following stand alone python code modules:
 
-- [/task/dataset](dataset)
-- [/task/entity](entity)
+- [/task/dataset](/task/dataset)
+- [/task/entity](/task/entity)
 
 ### Quick Command Line
 
@@ -1563,7 +1563,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Line Item From BigQuery recipe maps to the following stand alone python code modules:
 
-- [/task/lineitem](lineitem)
+- [/task/lineitem](/task/lineitem)
 
 ### Quick Command Line
 
@@ -1602,7 +1602,7 @@ Maintained and supported by: kenjora@google.com
 
 Each task in the Sheet Copy recipe maps to the following stand alone python code modules:
 
-- [/task/sheets](sheets)
+- [/task/sheets](/task/sheets)
 
 ### Quick Command Line
 

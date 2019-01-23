@@ -142,7 +142,7 @@ def parse_json(filepath):
 
     #params['tasks'] = json.dumps(script['tasks'], indent=2)
     tasks = sorted(set([task.keys()[0] for task in  script['tasks']]))
-    params['tasks'] = '- ' + '\n- '.join(['[/task/%s](%s)' % (task, task) for task in tasks])
+    params['tasks'] = '- ' + '\n- '.join(['[/task/%s](/task/%s)' % (task, task) for task in tasks])
 
     doc = '''## [%(title)s](%(path)s)
 
