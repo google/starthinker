@@ -28,7 +28,7 @@ python google_api/helper.py -api doubleclickbidmanager -version v1 -function que
 
 For example, pull a list of placements: https://developers.google.com/doubleclick-advertisers/v3.2/placements/list
 
-python google_api/helper.py -api dfareporting -version v3.2 -function placements.list -kwargs '{ "profileId":2782211 }' -u [credentials path]
+python task/google_api/helper.py -api dfareporting -version v3.2 -function placements.list -kwargs '{ "profileId":2782211 }' -u [credentials path]
 
 """
 
@@ -37,8 +37,8 @@ import argparse
 import pprint
 import json
 
-from util.project import project
-from util.google_api import API
+from starthinker.util.project import project
+from starthinker.util.google_api import API
 
 
 if __name__ == "__main__":
@@ -53,7 +53,7 @@ if __name__ == "__main__":
   parser.add_argument('--iterate', help='set to true to force iteration', action='store_true')
 
   # initialize project ( used to load standard credentials parameters )
-  project.load(parser=parser)
+  project.from_commandline(parser=parser)
 
   # the api wrapper takes parameters as JSON
   job = { 

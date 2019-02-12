@@ -39,6 +39,7 @@ from starthinker.util.data import put_rows, get_rows
 from starthinker.util.dbm import report_delete, report_create, report_build, report_file, report_to_rows, report_clean, DBM_CHUNKSIZE
 
 
+@project.from_parameters
 def dbm():
   if project.verbose: print 'DBM'
 
@@ -119,5 +120,4 @@ def dbm():
       if rows: put_rows(project.task['auth'], project.task['out'], filename, rows)
 
 if __name__ == "__main__":
-  project.load('dbm')
   dbm()

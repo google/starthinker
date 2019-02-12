@@ -41,6 +41,9 @@ class LandingPageDAO(BaseDAO):
     self._search_field = FieldMap.CAMPAIGN_LANDING_PAGE_NAME
     self._list_name = 'landingPages'
     self._entity = 'LANDING_PAGE'
+    self._parent_filter_name = 'advertiserIds'
+    self._parent_filter_field_name = FieldMap.ADVERTISER_ID
+    self._parent_dao = None
 
   def _process_update(self, item, feed_item):
     """Updates an landing page based on the values from the feed.

@@ -49,7 +49,7 @@ if __name__ == "__main__":
   parser.add_argument('--list', help='list reports', action='store_true')
 
   # initialize project
-  project.load(parser=parser)
+  project.from_commandline(parser=parser)
   auth = 'service' if project.args.service else 'user'
 
   # get report

@@ -61,7 +61,7 @@ def conversions_download():
         if row[0] not in CSV_HEADERS: yield row
 
 
-
+@project.from_parameters
 def conversion_upload():
 
   rows = conversions_download()
@@ -90,5 +90,4 @@ def conversion_upload():
 
 
 if __name__ == "__main__":
-  project.load('conversion_upload')
   conversion_upload()

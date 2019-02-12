@@ -58,7 +58,7 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser()
 
   # initialize project
-  project.load(parser=parser)
+  project.from_commandline(parser=parser)
 
   # get profile
   print 'Profile:', json.dumps(get_profile(), indent=2, sort_keys=True)

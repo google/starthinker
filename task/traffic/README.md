@@ -1,11 +1,5 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
-### Launch In Google Cloud
-
-Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
-
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=LAUNCH_RECIPE.txt&cloudshell_tutorial=task%2Ftraffic%2FREADME.md)
-
 
 # Python Scripts
 
@@ -181,7 +175,10 @@ Main entry point of Bulkdozer.
 ### traffic():
 
 
-  Main function of Bulkdozer, performs the Bulkdozer job
+  For development purposes when debugging a specific entity, this function is handy to run just that entity.
+
+  
+  Main entry point of Bulkdozer.
 
   
 
@@ -205,10 +202,7 @@ Main entry point of Bulkdozer.
 ### test():
 
 
-  For development purposes when debugging a specific entity, this function is handy to run just that entity.
-
-  
-  Main entry point of Bulkdozer.
+  Main function of Bulkdozer, performs the Bulkdozer job
 
   
 
@@ -238,6 +232,14 @@ Main entry point of Bulkdozer.
     msg: Prefix message to use when writing to the Log tab of the Bulkdozer
       feed, for instance we display Processing Campaign for campaign, and
       Uploading Asset for assets.
+  
+
+
+### dynamic_targeting_keys():
+
+
+  Processes dynamic targeting keys.
+
   
 
 
@@ -277,6 +279,9 @@ Handles creation and updates of landing pages.
     self._search_field = FieldMap.CAMPAIGN_LANDING_PAGE_NAME
     self._list_name = 'landingPages'
     self._entity = 'LANDING_PAGE'
+    self._parent_filter_name = 'advertiserIds'
+    self._parent_filter_field_name = FieldMap.ADVERTISER_ID
+    self._parent_dao = None
 
   def _process_update(self, item, feed_item):
     Updates an landing page based on the values from the feed.
@@ -362,10 +367,14 @@ Handles creation and updates of placement groups.
     self._list_name = 'placementGroups'
     self._entity = 'PLACEMENT_GROUP'
 
+    self._parent_filter_name = 'campaignIds'
+    self._parent_filter_field_name = FieldMap.CAMPAIGN_ID
+    self._parent_dao = self.campaign_dao
+
   def _process_update(self, item, feed_item):
     Updates a placement group based on the values from the feed.
     
-    campaign = self.campaign_dao.get(feed_item)
+    campaign = self.campaign_dao.get(feed_item, required=True)
 
     feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
@@ -379,7 +388,7 @@ Handles creation and updates of placement groups.
   def _process_new(self, feed_item):
     Creates a new placement group DCM object from a feed item representing a placement group from the Bulkdozer feed.
     
-    campaign = self.campaign_dao.get(feed_item)
+    campaign = self.campaign_dao.get(feed_item, required=True)
 
     feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
@@ -547,6 +556,38 @@ Google Sheet that represents the Bulkdozer feed, and
 
     
 
+## [/task/traffic/dynamic_targeting_key.py](/task/traffic/dynamic_targeting_key.py)
+
+Handles creation and updates of dynamic targeting keys.
+
+from starthinker.task.traffic.dao import BaseDAO
+from starthinker.task.traffic.feed import FieldMap
+
+
+class DynamicTargetingKeyDAO(BaseDAO):
+  Landing page data access object.
+  
+
+  def __init__(self, auth, profile_id):
+    Initializes DynamicTargetingKeyDAO with profile id and authentication scheme.
+
+
+###   process(self, feed_item):
+
+
+    Processes a Bulkdozer feed item.
+
+    This method identifies if the dyanmic targeting key already exists in CM, if
+    it doesn't it creates it associated with the advertiser, and then inserts an
+    association with the identified object.
+
+    Args:
+      feed_item: Bulkdozer feed item to process.
+
+    Returns:
+      Newly created or updated CM object.
+    
+
 ## [/task/traffic/logger.py](/task/traffic/logger.py)
 
 Handles logging actions back to the Bulkdozer feed Log tab.
@@ -657,13 +698,17 @@ Handles creation and updates of Ads.
     self._id_field = FieldMap.CAMPAIGN_ID
     self._search_field = FieldMap.CAMPAIGN_NAME
     self._list_name = 'campaigns'
+
+    self._parent_filter_name = None
+    self._parent_filter_field_name = None
+
     self._entity = 'CAMPAIGN'
     self._service = self.service.campaigns()
 
   def _process_update(self, item, feed_item):
     Updates a campaign based on the values from the feed.
     
-    lp = self.landing_page_dao.get(feed_item)
+    lp = self.landing_page_dao.get(feed_item, required=True)
 
     feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_ID] = lp['id']
     feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_NAME] = lp['name']
@@ -676,7 +721,7 @@ Handles creation and updates of Ads.
   def _process_new(self, feed_item):
     Creates a new campaign DCM object from a feed item representing a campaign from the Bulkdozer feed.
     
-    lp = self.landing_page_dao.get(feed_item)
+    lp = self.landing_page_dao.get(feed_item, required=True)
 
     feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_ID] = lp['id']
     feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_NAME] = lp['name']
@@ -713,12 +758,23 @@ Handles creation and updates of Creatives.
     super(CreativeDAO, self).__init__(auth, profile_id)
 
     self._entity = 'CREATIVE'
+
+    self._parent_filter_name = 'advertiserId'
+    self._parent_filter_field_name = FieldMap.ADVERTISER_ID
+
     self._service = self.service.creatives()
     self._id_field = FieldMap.CREATIVE_ID
     self._search_field = FieldMap.CREATIVE_NAME
     self._list_name = 'creatives'
+    self._parent_dao = None
 
     self.creative_asset_dao = CreativeAssetDAO(auth, profile_id, None)
+
+  def _assignment_matches(self, item, assignment):
+    if item.get(FieldMap.CREATIVE_ID, None) and assignment.get(FieldMap.CREATIVE_ID, None):
+      return item.get(FieldMap.CREATIVE_ID, None) == assignment.get(FieldMap.CREATIVE_ID, None)
+    else:
+      return item.get(FieldMap.CREATIVE_NAME, '1') == assignment.get(FieldMap.CREATIVE_NAME, '2')
 
   def map_creative_third_party_url_feeds(self, creative_feed,
                                          third_party_url_feed):
@@ -727,7 +783,7 @@ Handles creation and updates of Creatives.
     for creative in creative_feed:
       creative['third_party_urls'] = [
           third_party_url for third_party_url in third_party_url_feed
-          if third_party_url.get(FieldMap.CREATIVE_ID, None) == creative.get(FieldMap.CREATIVE_ID, None)
+          if self._assignment_matches(creative, third_party_url)
       ]
 
   def map_creative_and_association_feeds(self, creative_feed,
@@ -737,7 +793,7 @@ Handles creation and updates of Creatives.
     for creative in creative_feed:
       creative['associations'] = [
           association for association in creative_association_feed
-          if association.get(FieldMap.CREATIVE_ID, None) == creative.get(FieldMap.CREATIVE_ID, None)
+          if self._assignment_matches(creative, association)
       ]
 
   def _associate_third_party_urls(self, feed_item, creative):
@@ -807,7 +863,7 @@ Handles creation and updates of Creatives.
     for association in feed_item.get('associations', []):
       association[FieldMap.CREATIVE_ID] = self.get(association)['id']
 
-      dcm_association = self.creative_asset_dao.get(association)
+      dcm_association = self.creative_asset_dao.get(association, required=True)
       if dcm_association:
         association[FieldMap.CREATIVE_ASSET_ID] = dcm_association.get(
             'id', None)
@@ -841,6 +897,9 @@ Handles creation and updates of creative assets.
     self._id_field = FieldMap.CREATIVE_ASSET_ID
     self._search_field = None
     self.auth = auth
+
+    self._parent_filter_name = None
+    self._parent_filter_field_name = None
 
   def pre_fetch(self, feed):
     Pre-fetches all required items to be update into the cache.
@@ -965,6 +1024,9 @@ Handles creation and updates of creative asset association.
     self.campaign_dao = CampaignDAO(auth, profile_id)
     self.creative_dao = CreativeDAO(auth, profile_id)
 
+    self._parent_filter_name = None
+    self._parent_filter_field_name = None
+
   def get(self, feed_item):
     It is not possible to retrieve creative associations from DCM,
     
@@ -974,8 +1036,8 @@ Handles creation and updates of creative asset association.
     Processes a feed item by creating the creative association in DCM.
     
     if not feed_item.get(FieldMap.CAMPAIGN_CREATIVE_ASSOCIATION_ID, None):
-      campaign = self.campaign_dao.get(feed_item)
-      creative = self.creative_dao.get(feed_item)
+      campaign = self.campaign_dao.get(feed_item, required=True)
+      creative = self.creative_dao.get(feed_item, required=True)
 
       if campaign and creative:
         if campaign:
@@ -1028,6 +1090,11 @@ Handles creation and updates of Placements.
     self._service = self.service.placements()
     self._id_field = FieldMap.PLACEMENT_ID
     self._search_field = FieldMap.PLACEMENT_NAME
+
+    self._parent_filter_name = 'campaignIds'
+    self._parent_filter_field_name = FieldMap.CAMPAIGN_ID
+    self._parent_dao = self.campaign_dao
+
 
     self._list_name = 'placements'
 
@@ -1114,8 +1181,8 @@ Handles creation and updates of Placements.
     if feed_item.get(FieldMap.CAMPAIGN_ID, '') == '':
       feed_item[FieldMap.CAMPAIGN_ID] = item['campaignId']
 
-    campaign = self.campaign_dao.get(feed_item)
-    placement_group = self.placement_group_dao.get(feed_item)
+    campaign = self.campaign_dao.get(feed_item, required=True)
+    placement_group = self.placement_group_dao.get(feed_item, required=True)
 
     feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
@@ -1159,6 +1226,12 @@ Handles creation and updates of Placements.
     self._process_active_view_and_verification(item, feed_item)
     self._process_pricing_schedule(item, feed_item)
 
+    if feed_item.get(FieldMap.PLACEMENT_ADDITIONAL_KEY_VALUES, None):
+      if not 'tagSetting' in item:
+        item['tagSetting'] = {}
+
+      item['tagSetting']['additionalKeyValues'] = feed_item.get(FieldMap.PLACEMENT_ADDITIONAL_KEY_VALUES, None)
+
   def _process_transcode(self, item, feed_item):
     Updates / creates transcode configuration for the placement.
     
@@ -1192,8 +1265,8 @@ Handles creation and updates of Placements.
   def _process_new(self, feed_item):
     Creates a new placement DCM object from a feed item representing an placement from the Bulkdozer feed.
     
-    campaign = self.campaign_dao.get(feed_item)
-    placement_group = self.placement_group_dao.get(feed_item)
+    campaign = self.campaign_dao.get(feed_item, required=True)
+    placement_group = self.placement_group_dao.get(feed_item, required=True)
 
     feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
@@ -1234,6 +1307,11 @@ Handles creation and updates of Placements.
     }
 
     self._process_skipability(feed_item, result)
+
+    if feed_item.get(FieldMap.PLACEMENT_ADDITIONAL_KEY_VALUES, None):
+      result['tagSetting'] = {
+        'additionalKeyValues': feed_item.get(FieldMap.PLACEMENT_ADDITIONAL_KEY_VALUES, None)
+      }
 
     if feed_item.get(FieldMap.PLACEMENT_PRICING_TESTING_START, None):
       result['pricingSchedule']['testingStartDate'] = feed_item.get(FieldMap.PLACEMENT_PRICING_TESTING_START , None)
@@ -1343,11 +1421,12 @@ Module that centralizes all CM data access.
   def _get(self, feed_item):
     Fetches an item from CM.
     
+    print 'hitting the api to get %s, %s' % (self._entity, feed_item[self._id_field])
     return self._retry(
         self._service.get(
             profileId=self.profile_id, id=feed_item[self._id_field]))
 
-  def get(self, feed_item):
+  def get(self, feed_item, required=False):
     Retrieves an item.
     
     result = None
@@ -1355,13 +1434,20 @@ Module that centralizes all CM data access.
     id_value = feed_item.get(self._id_field, None)
 
     if not id_value and self._search_field and feed_item.get(self._search_field, None):
-      result = store.get(self._entity, feed_item[self._search_field])
+      store_key = feed_item[self._search_field]
+
+      if self._parent_filter_name:
+        if feed_item.get(self._parent_filter_field_name, None):
+          store_key = str(feed_item.get(self._parent_filter_field_name, None)) + store_key
+
+      result = store.get(self._entity, store_key)
 
       if not result:
-        result = self._get_by_name(feed_item)
+        result, key = self._get_by_name(feed_item)
+        keys.append(key)
 
-      if result:
-        keys.append(feed_item[self._search_field])
+      if not result and required:
+        raise Exception('ERROR: Could not find %s with name %s' % (self._entity, feed_item[self._search_field]))
     elif id_value:
       if type(id_value) in (str, unicode) and id_value.startswith('ext'):
         keys.append(id_value)
@@ -1372,31 +1458,62 @@ Module that centralizes all CM data access.
 
       if id_value:
         keys.append(id_value)
-        result = self._get(feed_item)
+        result = store.get(self._entity, id_value)
 
         if not result:
+          result = self._get(feed_item)
+
+        if not result and required:
           raise Exception('ERROR: Could not find %s with id %s' % (self._entity, id_value))
 
     store.set(self._entity, keys, result)
 
     return result
 
+  def _get_base_search_args(self, search_string):
+    return {
+      'profileId': self.profile_id,
+      'searchString': search_string,
+      'sortField': 'NAME',
+      'maxResults': 2
+    }
+
   def _get_by_name(self, feed_item):
     Searches CM for an item of name defined in the search field of the DAO class.
     
+    key = ''
     if self._search_field:
+      key = feed_item[self._search_field].strip()
+
+      search_string = feed_item[self._search_field].strip()
+      args = self._get_base_search_args(search_string)
+
+      if self._parent_filter_name:
+        if feed_item.get(self._parent_filter_field_name, None):
+          args[self._parent_filter_name] = feed_item.get(self._parent_filter_field_name, None)
+        elif self._parent_dao:
+          parent = self._parent_dao.get(feed_item, required=True)
+          if parent:
+            args[self._parent_filter_name] = parent.get('id', None)
+
+        key = str(args.get(self._parent_filter_name, '')) + key
+
+      print 'hitting the api to search for %s, %s' % (self._entity, search_string)
       search_result = self._retry(
-          self._service.list(
-              profileId=self.profile_id, searchString=feed_item[self._search_field].strip()))
+          self._service.list(**args))
 
       items = search_result[self._list_name]
 
-      if items and len(items) == 1:
-        return items[0]
-      elif len(items) > 1:
-        raise Exception('ERROR: More than one item found with %s %s' % (self._search_field, feed_item[self._search_field]))
+      if items and len(items) > 0:
+        item = items[0]
 
-    return None
+        if search_string == item['name']:
+          if len(items) > 1 and items[1]['name'] == search_string:
+            raise Exception('ERROR: More than one item found with %s %s' % (self._search_field, feed_item[self._search_field]))
+          else:
+            return item, key
+
+    return None, key
 
 
   def _insert(self, item, feed_item):
@@ -1424,6 +1541,7 @@ Module that centralizes all CM data access.
     Pre-fetches all required items to be update into the cache.
     
     if hasattr(self, '_list_name') and self._list_name and self._id_field:
+      print 'pre fetching %s' % self._list_name
       ids = [feed_item[self._id_field] for feed_item in feed if isinstance(feed_item[self._id_field], int)]
 
       if ids:
@@ -1506,379 +1624,191 @@ Module that centralizes all CM data access.
 
 Handles creation and updates of Ads.
 
+import time
+import json
+
+from starthinker.task.traffic.campaign import CampaignDAO
+from starthinker.task.traffic.class_extensions import StringExtensions
+from starthinker.task.traffic.creative import CreativeDAO
+from starthinker.task.traffic.dao import BaseDAO
+from starthinker.task.traffic.event_tag import EventTagDAO
+from starthinker.task.traffic.feed import FieldMap
+from starthinker.task.traffic.landing_page import LandingPageDAO
+from starthinker.task.traffic.placement import PlacementDAO
+from starthinker.task.traffic.store import store
 
 
-
-## class AdDAO
-
+class AdDAO(BaseDAO):
   Ad data access object.
-
-  Inherits from BaseDAO and implements ad specific logic for creating and
-  updating ads.
   
 
-
-###   __init__(self, auth, profile_id):
-
-
+  def __init__(self, auth, profile_id):
     Initializes AdDAO with profile id and authentication scheme.
-    super(AdDAO, self).__init__(auth, profile_id)
 
-    self._service = self.service.ads()
-    self._id_field = FieldMap.AD_ID
-    self._search_field = FieldMap.AD_NAME
-    self._list_name = 'ads'
 
-    self._creative_dao = CreativeDAO(auth, profile_id)
-    self._placement_dao = PlacementDAO(auth, profile_id)
-    self._campaign_dao = CampaignDAO(auth, profile_id)
-    self._event_tag_dao = EventTagDAO(auth, profile_id)
-    self._landing_page_dao = LandingPageDAO(auth, profile_id)
+###   _process_assignments(self, feed_item, creative_assignments,
 
-    self._entity = 'AD'
 
-  def _wait_creative_activation(self, creative_id, timeout=128):
-    Waits for a creative to become active.
-    
-    # Only wait for creative activation if it is a new creative trafficked by
-    # this Bulkdozer session
-    if store.get('CREATIVE', creative_id):
-      creative = self._retry(self.service.creatives().get(
-          profileId=self.profile_id, id=creative_id))
-      wait = 2
-
-      while not creative['active'] and timeout > 0:
-        time.sleep(wait)
-        timeout -= wait
-        wait *= 2
-        creative = self._retry(self.service.creatives().get(
-            profileId=self.profile_id, id=creative_id))
-
-      if not creative['active']:
-        raise Exception('Creative %s failed to activate within defined timeout' %
-                        creative['id'])
-
-  def _wait_all_creative_activation(self, feed_item, timeout=128):
-    Waits for activation of all creatives that should be associated to the feed item that represents an ad.
-    
-    for association in feed_item['creative_assignment']:
-      creative = self._creative_dao.get(association)
-      self._wait_creative_activation(creative['id'], timeout)
-
-  def map_feeds(self, ad_feed, ad_creative_assignment, ad_placement_assignment,
-                ad_event_tag_assignment, placement_feed,
-                event_tag_profile_feed):
-    Maps subfeeds to the corresponding ad.
-    
-    for ad in ad_feed:
-      ad['creative_assignment'] = [
-          association for association in ad_creative_assignment
-          if association.get(FieldMap.AD_ID, None) == ad.get(FieldMap.AD_ID, None)
-      ]
-
-      ad['placement_assignment'] = [
-          association for association in ad_placement_assignment
-          if association.get(FieldMap.AD_ID, None) == ad.get(FieldMap.AD_ID, None)
-      ]
-
-      if ad.get(FieldMap.PLACEMENT_ID, None):
-        ad['placement_assignment'].append(ad)
-
-      ad['event_tag_assignment'] = [
-          association for association in ad_event_tag_assignment
-          if association.get(FieldMap.AD_ID, None) == ad.get(FieldMap.AD_ID, None)
-      ]
-
-      if ad.get(FieldMap.EVENT_TAG_ID, None):
-        ad['event_tag_assignment'].append(ad)
-
-      # Identify all event tag profiles associated with the placements
-      ad['placement_event_tag_profile'] = []
-      for placement_assignment in ad['placement_assignment']:
-        placement = self._placement_dao.get(placement_assignment)
-
-        if placement:
-          ad_placement = None
-          for item in placement_feed:
-            if int(placement['id']) == item.get(FieldMap.PLACEMENT_ID, None):
-              ad_placement = item
-
-          if ad_placement:
-            event_tag_profile_name = ad_placement.get(
-                FieldMap.EVENT_TAG_PROFILE_NAME, '')
-
-            if event_tag_profile_name:
-              ad['placement_event_tag_profile'] += [
-                  event_tag_profile for event_tag_profile in event_tag_profile_feed
-                  if event_tag_profile.get(FieldMap.EVENT_TAG_PROFILE_NAME, None) ==
-                  event_tag_profile_name
-              ]
-
-  def _setup_rotation_strategy(self, creative_rotation, feed_item):
-    Analyzes the feed and sets up rotation strategy for the ad.
-    
-    option = feed_item.get(FieldMap.CREATIVE_ROTATION, 'Even').upper()
-
-    if option == 'EVEN':
-      creative_rotation['type'] = 'CREATIVE_ROTATION_TYPE_RANDOM'
-      creative_rotation['weightCalculationStrategy'] = 'WEIGHT_STRATEGY_EQUAL'
-    elif option == 'SEQUENTIAL':
-      creative_rotation['type'] = 'CREATIVE_ROTATION_TYPE_SEQUENTIAL'
-      creative_rotation['weightCalculationStrategy'] = None
-    elif option == 'CUSTOM':
-      creative_rotation['type'] = 'CREATIVE_ROTATION_TYPE_RANDOM'
-      creative_rotation['weightCalculationStrategy'] = 'WEIGHT_STRATEGY_CUSTOM'
-    elif option == 'CLICK-THROUGH RATE':
-      creative_rotation['type'] = 'CREATIVE_ROTATION_TYPE_RANDOM'
-      creative_rotation[
-          'weightCalculationStrategy'] = 'WEIGHT_STRATEGY_HIGHEST_CTR'
-    elif option == 'OPTIMIZED':
-      creative_rotation['type'] = 'CREATIVE_ROTATION_TYPE_RANDOM'
-      creative_rotation[
-          'weightCalculationStrategy'] = 'WEIGHT_STRATEGY_OPTIMIZED'
-
-  def _process_update(self, item, feed_item):
-    Updates an ad based on the values from the feed.
-    
-    item['active'] = feed_item.get(FieldMap.AD_ACTIVE, None)
-
-    if item['active']:
-      self._wait_all_creative_activation(feed_item)
-
-    self._setup_rotation_strategy(item['creativeRotation'], feed_item)
-
-    if feed_item['creative_assignment']:
-      item['creativeRotation']['creativeAssignments'] = []
-
-    item['placementAssignments'] = []
-    item['eventTagOverrides'] = []
-
-    self._process_assignments(
-        feed_item, item['creativeRotation']['creativeAssignments'],
-        item['placementAssignments'], item['eventTagOverrides'])
-
-    if 'deliverySchedule' in item:
-      item['deliverySchedule']['priority'] = feed_item.get(
-          FieldMap.AD_PRIORITY, None)
-
-    if feed_item.get(FieldMap.AD_HARDCUTOFF, None) != None:
-      if not 'deliverySchedule' in item:
-        item['deliverySchedule'] = {}
-
-      item['deliverySchedule']['hardCutoff'] = feed_item.get(FieldMap.AD_HARDCUTOFF)
-
-    item['archived'] = feed_item.get(FieldMap.AD_ARCHIVED, None)
-
-    if 'T' in feed_item.get(FieldMap.AD_END_DATE, None):
-      item['endTime'] = feed_item.get(FieldMap.AD_END_DATE, None)
-    else:
-      item['endTime'] = StringExtensions.convertDateStrToDateTimeStr(
-                          feed_item.get(FieldMap.AD_END_DATE, None), '23:59:59')
-
-    if 'T' in feed_item.get(FieldMap.AD_START_DATE, None):
-      item['startTime'] = feed_item.get(FieldMap.AD_START_DATE, None)
-    else:
-      item['startTime'] = StringExtensions.convertDateStrToDateTimeStr(
-                          feed_item.get(FieldMap.AD_START_DATE, None))
-
-    item['name'] = feed_item.get(FieldMap.AD_NAME, None)
-
-    self._process_landing_page(item, feed_item)
-
-  def _process_assignments(self, feed_item, creative_assignments,
-                           placement_assignments, event_tag_assignments):
     Updates the ad by setting the values of child objects based on secondary feeds.
+
+    Args:
+      feed_item: Feed item representing the ad from the Bulkdozer feed.
+      creative_assignments: Feed items representing creative assignments related
+        with the current ad.
+      placement_assignments: Feed items representing placement assignments
+        related with the current ad.
+      event_tag_assignments: Feed items representing event tag assignments
+        related with the current ad.
     
-    assigned_creatives = []
-    assigned_placements = []
-    assigned_event_tags = []
 
-    for assignment in feed_item['creative_assignment']:
-      creative = self._creative_dao.get(assignment)
-      assignment[FieldMap.CREATIVE_ID] = creative['id']
 
-      if not creative['id'] in assigned_creatives:
-        assigned_creatives.append(creative['id'])
+###   map_feeds(self, ad_feed, ad_creative_assignment, ad_placement_assignment,
 
-        sequence = assignment.get(FieldMap.CREATIVE_ROTATION_SEQUENCE, None)
-        weight = assignment.get(FieldMap.CREATIVE_ROTATION_WEIGHT, None)
 
-        sequence = sequence if type(sequence) is int else None
-        weight = weight if type(weight) is int else None
+    Maps subfeeds to the corresponding ad.
 
-        if assignment.get(FieldMap.AD_CREATIVE_ROTATION_START_TIME, ''):
-          startTime = (assignment.get(FieldMap.AD_CREATIVE_ROTATION_START_TIME, '') 
-            if 'T' in assignment.get(FieldMap.AD_CREATIVE_ROTATION_START_TIME, '') 
-            else StringExtensions.convertDateStrToDateTimeStr(feed_item.get(FieldMap.AD_CREATIVE_ROTATION_START_TIME, None))) 
-          assignment[FieldMap.AD_CREATIVE_ROTATION_START_TIME] = startTime
-        else:
-          startTime = None
+    The Ad is an object that has several other dependent entities, they could be
+    other entities like creative assignment, or complex sub objects in the ad
+    entity like the placement assignment. This function maps those feeds by ID
+    and injects the child feeds into the feed item representing the ad.
 
-        if assignment.get(FieldMap.AD_CREATIVE_ROTATION_END_TIME, ''):
-          endTime = (assignment.get(FieldMap.AD_CREATIVE_ROTATION_END_TIME, '') 
-            if 'T' in assignment.get(FieldMap.AD_CREATIVE_ROTATION_END_TIME, '') 
-            else StringExtensions.convertDateStrToDateTimeStr(feed_item.get(FieldMap.AD_CREATIVE_ROTATION_END_TIME, None), '23:59:59')) 
-          assignment[FieldMap.AD_CREATIVE_ROTATION_END_TIME] = endTime
-        else:
-          endTime = None
+    Also, the ad level is where placement event tag profiles are assigned, and
+    therefore this function is also responsible to determining if the placement
+    event tag profile should be used, or if the direct event tag assignment in
+    the ad should be used.
 
-        lp = self._landing_page_dao.get(assignment)
-
-        creative_assignments.append({
-            'active': True,
-            'sequence': sequence,
-            'weight': weight,
-            'creativeId': assignment.get(FieldMap.CREATIVE_ID, None),
-            'clickThroughUrl': {
-                'defaultLandingPage': False if assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') else True,
-                'landingPageId': lp.get('id', None) if lp else None
-            },
-            'startTime': startTime,
-            'endTime': endTime
-        })
-
-    for assignment in feed_item['placement_assignment']:
-      placement = self._placement_dao.get(assignment)
-      if placement:
-        assignment[FieldMap.PLACEMENT_ID] = placement['id']
-
-        if not placement['id'] in assigned_placements:
-          assigned_placements.append(placement['id'])
-
-          placement_assignments.append({
-              'active': True,
-              'placementId': assignment.get(FieldMap.PLACEMENT_ID, None),
-          })
-
-    event_tags = [
-        item for item in feed_item['event_tag_assignment']
-        if item.get(FieldMap.EVENT_TAG_ID, None)
-    ]
-
-    event_tags += feed_item.get('placement_event_tag_profile', [])
-
-    for assignment in event_tags:
-      event_tag = self._event_tag_dao.get(assignment)
-      if event_tag:
-        assignment[FieldMap.EVENT_TAG_ID] = event_tag['id']
-
-        if not event_tag['id'] in assigned_event_tags:
-          assigned_event_tags.append(event_tag['id'])
-
-          event_tag_assignments.append({'id': event_tag['id'], 'enabled': assignment.get(FieldMap.EVENT_TAG_ENABLED, True)})
-
-  def _process_new(self, feed_item):
-    Creates a new ad DCM object from a feed item representing an ad from the Bulkdozer feed.
+    Args:
+      ad_feed: Ad feed.
+      ad_creative_assignment: Ad creative assignment feed.
+      ad_placement_assignment: Ad placement assignment feed.
+      placement_feed: Placement feed.
+      event_tag_profile_feed: Event tag profile feed.
     
-    if feed_item.get(FieldMap.AD_ACTIVE, None):
-      self._wait_all_creative_activation(feed_item)
 
-    campaign = self._campaign_dao.get(feed_item)
 
-    creative_assignments = []
-    placement_assignments = []
-    event_tag_assignments = []
-    self._process_assignments(feed_item, creative_assignments,
-                              placement_assignments, event_tag_assignments)
+###   _process_landing_page(self, item, feed_item):
 
-    creative_rotation = {'creativeAssignments': creative_assignments}
 
-    self._setup_rotation_strategy(creative_rotation, feed_item)
-
-    delivery_schedule = {
-        'impressionRatio': '1',
-        'priority': feed_item.get(FieldMap.AD_PRIORITY, None),
-        'hardCutoff': feed_item.get(FieldMap.AD_HARDCUTOFF, None)
-    }
-
-    ad = {
-        'active':
-            feed_item.get(FieldMap.AD_ACTIVE, None),
-        'archived':
-            feed_item.get(FieldMap.AD_ARCHIVED, None),
-        'campaignId':
-            campaign['id'],
-        'creativeRotation':
-            creative_rotation,
-        'deliverySchedule':
-            delivery_schedule,
-        'endTime':
-            feed_item.get(FieldMap.AD_END_DATE, None) if 'T' in feed_item.get(
-                FieldMap.AD_END_DATE, None) else
-                StringExtensions.convertDateStrToDateTimeStr(feed_item.get(FieldMap.AD_END_DATE, None), '23:59:59'),
-        'name':
-            feed_item.get(FieldMap.AD_NAME, None),
-        'placementAssignments':
-            placement_assignments,
-        'startTime':
-            feed_item.get(FieldMap.AD_START_DATE, None) if 'T' in feed_item.get(
-                FieldMap.AD_START_DATE, None) else
-                StringExtensions.convertDateStrToDateTimeStr(feed_item.get(FieldMap.AD_START_DATE, None)),
-        'type':
-            feed_item.get(FieldMap.AD_TYPE, 'AD_SERVING_STANDARD_AD'),
-        'eventTagOverrides':
-            event_tag_assignments
-    }
-
-    self._process_landing_page(ad, feed_item)
-
-    return ad
-
-  def _process_landing_page(self, item, feed_item):
     Configures ad landing page.
+
+    Args:
+      item: DCM ad object to update.
+      feed_item: Feed item representing the ad from the Bulkdozer feed
     
-    if feed_item.get(FieldMap.AD_LANDING_PAGE_ID, ''):
 
-      landing_page = self._landing_page_dao.get(feed_item)
-      item['clickThroughUrl'] = {'landingPageId': landing_page['id']}
 
-  def _sub_entity_map(self, assignments, item, campaign):
-    Maps ids and names of sub entities so they can be updated in the Bulkdozer feed.
+###   _process_new(self, feed_item):
+
+
+    Creates a new ad DCM object from a feed item representing an ad from the Bulkdozer feed.
+
+    This function simply creates the object to be inserted later by the BaseDAO
+    object.
+
+    Args:
+      feed_item: Feed item representing the ad from the Bulkdozer feed.
+
+    Returns:
+      An ad object ready to be inserted in DCM through the API.
+
     
-    for assignment in assignments:
-      placement = self._placement_dao.get(assignment)
-      event_tag = self._event_tag_dao.get(assignment)
-      creative = self._creative_dao.get(assignment)
-      landing_page = self._landing_page_dao.get(assignment)
 
-      if landing_page:
-        assignment[FieldMap.AD_LANDING_PAGE_ID] = landing_page['id']
 
-      if item:
-        assignment[FieldMap.AD_ID] = item['id']
-        assignment[FieldMap.AD_NAME] = item['name']
+###   _process_update(self, item, feed_item):
 
-      if campaign:
-        assignment[FieldMap.CAMPAIGN_ID] = campaign['id']
-        assignment[FieldMap.CAMPAIGN_NAME] = campaign['name']
 
-      if placement:
-        assignment[FieldMap.PLACEMENT_ID] = placement['id']
-        assignment[FieldMap.PLACEMENT_NAME] = placement['name']
+    Updates an ad based on the values from the feed.
 
-      if creative:
-        assignment[FieldMap.CREATIVE_ID] = creative['id']
-        assignment[FieldMap.CREATIVE_NAME] = creative['name']
+    Args:
+      item: Object representing the ad to be updated, this object is updated
+        directly.
+      feed_item: Feed item representing ad values from the Bulkdozer feed.
+    
 
-      if event_tag:
-        assignment[FieldMap.EVENT_TAG_ID] = event_tag['id']
-        assignment[FieldMap.EVENT_TAG_NAME] = event_tag['name']
 
-  def _post_process(self, feed_item, item):
+###   _wait_creative_activation(self, creative_id, timeout=128):
+
+
+    Waits for a creative to become active.
+
+    This function checks the if the creative is active in intervals that
+    increase exponentially (exponential backoff).
+
+    Args:
+      creative_id: Creative identifier.
+      timeout: Optional parameter, determines how many seconds to wait for the
+        activation.
+
+    Raises:
+      Exception: In case the creative doesn't activate within the specified
+      timeout
+
+    
+
+
+###   _wait_all_creative_activation(self, feed_item, timeout=128):
+
+
+    Waits for activation of all creatives that should be associated to the feed item that represents an ad.
+
+    Args:
+      feed_item: Feed item representing an Ad from the Bulkdozer feed.
+      timeout: Optional parameter identifying how long to wait for all creatives
+        to be activated in seconds.
+
+    Raises:
+      Exception: In case one or more creatives do not get activated within the
+      specified timeout.
+
+    
+
+
+###   _post_process(self, feed_item, item):
+
+
     Maps ids and names of related entities so they can be updated in the Bulkdozer feed.
+
+    When Bulkdozer is done processing an item, it writes back the updated names
+    and ids of related objects, this method makes sure those are updated in the
+    ad feed.
+
+    Args:
+      feed_item: Feed item representing the ad from the Bulkdozer feed.
+      item: The DCM ad being updated or created.
     
-    campaign = self._campaign_dao.get(feed_item)
-    feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
-    feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
 
-    landing_page = self._landing_page_dao.get(feed_item)
 
-    if landing_page:
-      feed_item[FieldMap.AD_LANDING_PAGE_ID] = landing_page['id']
+###   _sub_entity_map(self, assignments, item, campaign):
 
-    self._sub_entity_map(feed_item['creative_assignment'], item, campaign)
-    self._sub_entity_map(feed_item['placement_assignment'], item, campaign)
-    self._sub_entity_map(feed_item['event_tag_assignment'], item, campaign)
+
+    Maps ids and names of sub entities so they can be updated in the Bulkdozer feed.
+
+    When Bulkdozer is done processing an item, it writes back the updated names
+    and ids of related objects, this method makes sure those are updated in the
+    ad feed.
+
+    Args:
+      assignments: List of child feeds to map.
+      item: The DCM ad object that was updated or created.
+      campaign: The campaign object associated with the ad.
+    
+
+
+###   _setup_rotation_strategy(self, creative_rotation, feed_item):
+
+
+    Analyzes the feed and sets up rotation strategy for the ad.
+
+    For better user experience, the creative rotaion values that come from the
+    feed map directly to values in the UI, this function is responsible for
+    translating that to API specific values for the creative rotation objects
+    under the ad.
+
+    Args:
+      creative_rotation: Feed item representing the creative rotation setup from
+        the feed.
+      feed_item: Feed item representing the ad.
+    
 
 ## [/task/traffic/event_tag.py](/task/traffic/event_tag.py)
 
@@ -1907,10 +1837,14 @@ Handles creation and updates of Ads.
     # This causes the dao to search event tag by name, but
     # to do so it is required to pass campaign or advertiser id
     # self._search_field = FieldMap.EVENT_TAG_NAME
+    #self._search_field = FieldMap.EVENT_TAG_NAME
     self._search_field = None
 
     self._list_name = 'eventTags'
     self._entity = 'EVENT_TAGS'
+    self._parent_filter_name = 'advertiserId'
+    self._parent_dao = None
+    self._parent_filter_field_name = FieldMap.ADVERTISER_ID
     self._campaign_dao = CampaignDAO(auth, profile_id)
     self._service = self.service.eventTags()
 
@@ -1918,6 +1852,13 @@ Handles creation and updates of Ads.
     Pre-fetches all required items to be update into the cache.
     
     pass
+
+  def _get_base_search_args(self, search_string):
+    return {
+      'profileId': self.profile_id,
+      'searchString': search_string,
+      'sortField': 'NAME'
+    }
 
   def _process_update(self, item, feed_item):
     Processes the update of an Event Tag
@@ -1930,7 +1871,7 @@ Handles creation and updates of Ads.
   def _process_new(self, feed_item):
     Creates a new event tag DCM object from a feed item representing a event tag from the Bulkdozer feed.
     
-    campaign = self._campaign_dao.get(feed_item)
+    campaign = self._campaign_dao.get(feed_item, required=True)
 
     return {
         'advertiserId':
@@ -1952,7 +1893,7 @@ Handles creation and updates of Ads.
   def _post_process(self, feed_item, item):
     Updates the feed item with ids and names of related object so those can be updated in the Bulkdozer feed.
     
-    campaign = self._campaign_dao.get(feed_item)
+    campaign = self._campaign_dao.get(feed_item, required=True)
 
     if campaign:
       feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
@@ -2028,3 +1969,9 @@ Handles creation and updates of video formats.
         result.append(video_format['id'])
 
     return result
+
+# Launch In Google Cloud
+
+Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2Ftask%2Ftraffic%2FREADME.md)

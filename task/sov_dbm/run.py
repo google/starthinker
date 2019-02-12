@@ -59,7 +59,7 @@ def sov_report(dbm_accounts, label):
     ['FILTER_ADVERTISER', 'FILTER_DATE', 'FILTER_MONTH', 'FILTER_MOBILE_DEVICE_TYPE', 'FILTER_CREATIVE_TYPE', 'FILTER_REGION', 'FILTER_CITY'],
     ['METRIC_IMPRESSIONS'],
     'LAST_365_DAYS',
-    project.configuration['setup']['timezone']
+    project.recipe['setup']['timezone']
   )
 
   # name is used later to look up this report
@@ -216,7 +216,8 @@ def sov_process_peer(report_name):
   return sov_rows.values()
 
 
-def sov():
+@project.from_parameters
+def sov_dbm():
   # 1 - creat one report for client and oen report for peers
   client_name, peer_name = sov_create_reports()
 
@@ -236,5 +237,4 @@ def sov():
   )
 
 if __name__ == "__main__":
-  project.load('sov_dbm')
-  sov()
+  sov_dbm()

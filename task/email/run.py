@@ -109,11 +109,11 @@ def email_send():
   )
 
 
+@project.from_parameters
 def email():
   if 'read' in project.task: email_read()
   elif 'send' in project.task: email_send()
 
 
 if __name__ == "__main__":
-  project.load('email')
   email()

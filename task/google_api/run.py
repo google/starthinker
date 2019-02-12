@@ -22,6 +22,7 @@ from starthinker.util.google_api import API
 from starthinker.util.data import put_rows
 
 
+@project.from_parameters
 def google_api():
   if project.verbose: print 'GOOGLE_API', project.task['api'], project.task['version']
 
@@ -36,5 +37,4 @@ def google_api():
 
 
 if __name__ == "__main__":
-  project.load('google_api')
   google_api()

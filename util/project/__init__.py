@@ -49,6 +49,7 @@ three important concepts:
     B. Define credentials paths in JSON ( overruled by command line )
        In each json file create the following entry ( client, or user, or service )
 
+         ```
          {
            "setup":{
              "id":"[cloud project id]",
@@ -59,6 +60,7 @@ three important concepts:
              }
           },
          }
+         ```
 
     C. Use default credentials ( lowest priority, last resort )
        If neither the json not the command line provides a path, the environmental 
@@ -81,13 +83,14 @@ RE_UUID = re.compile(r'(\s*)("setup"\s*:\s*{)')
 
 def get_project(filepath, debug=False):
   """Loads json for Project Class.  Intended for this module only. Available as helper.
+
      Able to load JSON with newlines ( strips all newlines before load ).
 
-    Args:
-      filepath: (string) The local file path to the recipe json file to load.
-      debug: (boolean) If true, newlines are not stripped to correctly identify error line numbers.
+    ### Args:
+      - filepath: (string) The local file path to the recipe json file to load.
+      - debug: (boolean) If true, newlines are not stripped to correctly identify error line numbers.
 
-    Returns:
+    ### Returns:
       Json of recipe file.
     """
 
@@ -103,11 +106,11 @@ def is_scheduled(project, task = None):
      Used as a helper for any cron job running projects.  Keeping this logic in project
      helps avoid time zone detection issues and scheduling discrepencies between machines.
 
-    Args:
-      project: (Project Class) The instance of the project being evaluated ( not sure this is required ).
-      task: ( dictionary / JSON ) The specific task being considered for execution.
+    ### Args:
+      - project: (Project Class) The instance of the project being evaluated ( not sure this is required ).
+      - task: ( dictionary / JSON ) The specific task being considered for execution.
 
-    Returns:
+    ### Returns:
       Task is scheduled for exection this hour ias True / False. 
     """
 
@@ -129,21 +132,24 @@ class project:
 
   All access to json scripts within StarThinker must pass through the project
   class.  It handles parameters, time zones, permissions management, and 
-  scheduling overhead.
+  scheduling overhead. Task function name must match JSON task name.
 
   Project is meant as the entry point into all StarThinker scripts as follows:
 
+    ```
     from util.project import project
 
+    @project.from_parameters
     def task():
       pass # execute work using project.* as data from json
 
     if __name__ == "__main__":
-      project.load('task')
       task()
+    ```
 
   Project is meant to be used by a helper.
 
+    ```
     import argparse
     from util.project import project
 
@@ -154,14 +160,16 @@ class project:
       parser.add_argument('custom', help='custom parameter to be added to standard project set.')
 
       # initialize project
-      project.load(parser=parser)
+      project.from_commandline(parser=parser)
 
       # access arguments
       auth = 'service' if project.args.service else 'user'
       print project.args.custom
+    ```
 
   Project can also be initialized directly for non-json tasks:
 
+    ```
     from util.project import project
 
     if __name__ == "__main__":
@@ -170,23 +178,24 @@ class project:
       var_service = '/somepath/service.json'
 
       project.initialize(_json=var_json, _user=var_user, _service=var_service, _verbose=True)
+    ```
 
-  Attributes:
+  ### Attributes:
     
     Dealing with authentication...
-      project: (string) The Google Cloud project id.
-      user: (string) Path to the user credentials json file.  It can also be a Google Cloud Bucket path when passed to the class directly.
-      service: (string) Path to the service credentials json file.  It can also be a json object when passed to the project class directly.
-      client: (string) Path to the client credentials json file.  It can only be a local path.
+      - project: (string) The Google Cloud project id.
+      - user: (string) Path to the user credentials json file.  It can also be a Google Cloud Bucket path when passed to the class directly.
+      - service: (string) Path to the service credentials json file.  It can also be a json object when passed to the project class directly.
+      - client: (string) Path to the client credentials json file.  It can only be a local path.
 
     Dealing with execution data...
-      instance: (integer) When executing all tasks, it is the one based index offset of the task to run.
-      date: (date) A specific date or 'TODAY', which is changed to today's date, passed to python scripts for reference.
-      hour: (integer) When executing all tasks, it is the hour if spefified for a task to execute.
+      - instance: (integer) When executing all tasks, it is the one based index offset of the task to run.
+      - date: (date) A specific date or 'TODAY', which is changed to today's date, passed to python scripts for reference.
+      - hour: (integer) When executing all tasks, it is the hour if spefified for a task to execute.
 
     Dealing with debugging...
-      verbose: (boolean) Prints all debug information in StarThinker code.  See: if project.verbose: print '...'.
-      force: (boolean) For recipes with specific task hours, forces all tasks to run regardless of hour specified.
+      - verbose: (boolean) Prints all debug information in StarThinker code.  See: if project.verbose: print '...'.
+      - force: (boolean) For recipes with specific task hours, forces all tasks to run regardless of hour specified.
   """
 
   args = None
@@ -196,34 +205,42 @@ class project:
   date = None
 
   @classmethod
-  def load(cls, _task = None, parser = None):
+  def from_commandline(cls, _task = None, parser = None):
     """Used in StarThinker scripts as entry point for command line calls. Loads json for execution.
 
-       Usage example:
+    ### Usage example:
 
-         from util.project import project
+    ```
+    import argparse
+    from util.project import project
 
-         def task():
-           pass # execute work using project.* as data from json
+    if __name__ == "__main__":
 
-         if __name__ == "__main__":
-           project.load('task')
-           task()
-    
-    Args:
-      task: (string) Name of task to execute, matching task in json, hard coded by calling script.
-      parser: (ArgumentParser) optional custom argument parser ( json argument becomes optional if not None )
+      # custom parameters
+      parser = argparse.ArgumentParser()
+      parser.add_argument('custom', help='custom parameter to be added to standard project set.')
 
-    Returns:
+      # initialize project
+      project.from_commandline(parser=parser)
+
+      # access arguments
+      auth = 'service' if project.args.service else 'user'
+      print project.args.custom
+    ```
+
+    ### Args:
+      - parser: (ArgumentParser) optional custom argument parser ( json argument becomes optional if not None )
+
+    ### Returns:
       Nothing, this manipulates a singleton object.  All calls to project.* result in the same object.
 
     """
 
     if parser is None:
       parser = argparse.ArgumentParser()
-      parser.add_argument('json', help='path to tasks json file')
+      parser.add_argument('json', help='path to recipe json file to load')
     else:
-      parser.add_argument('--json', '-j', help='path to tasks json file')
+      parser.add_argument('--json', '-j', help='path to recipe json file to load')
 
     parser.add_argument('--project', '-p', help='cloud id of project, defaults to None', default=None)
     parser.add_argument('--user', '-u', help='path to user credentials json file, defaults to GOOGLE_APPLICATION_CREDENTIALS', default=None)
@@ -241,31 +258,93 @@ class project:
 
     # initialize the project singleton with passed in parameters
     cls.initialize(
-      cls.args.json,
+      get_project(cls.args.json) if cls.args.json else {},
       _task,
       cls.args.instance,
       cls.args.project,
       cls.args.user,
       cls.args.service,
       cls.args.client,
+      cls.args.json,
       cls.args.date,
       cls.args.hour,
       cls.args.verbose,
       cls.args.force
     )
 
-  # set up the project singleton for execution of a script ( usually called by helper ), be sure to mimic defaults in helper
-  # this function loads credentials from various source ( command line argument, json, default credentials )
-  # it also sets up time zone aware date and various helper flags such as force and verbose
+  recipe = None
+  verbose = None
+  filepath = None
+  instance = None
+  function = None
+  task = None
+
+  
+  @classmethod
+  def get_task_index(cls):
+    i = 0
+    for c, t in enumerate(cls.recipe.get('tasks', [])):
+      if t.keys()[0] == cls.function:
+        i += 1 
+        if i == cls.instance:
+          return c
+    return None
+
+
+  @classmethod
+  def get_task(cls):
+    if cls.task is None: 
+      i = cls.get_task_index()
+      cls.task = None if i is None else cls.recipe['tasks'][i].values()[0]
+    return cls.task
+
+
+  @classmethod
+  def set_task(cls, function, parameters):
+    if cls.task is None: 
+      cls.recipe['tasks'].append({ function:parameters })
+      cls.function = function
+      cls.task = parameters
+      cls.instance = 1
+    else: 
+      i = cls.get_task_index()
+      cls.recipe['tasks'][i] = { function:parameters }
+      cls.function = function
+      cls.task = parameters
+      cls.instance = sum([1 for c, t in enumerate(cls.recipe['tasks']) if t == function and c <= i])
+
+
+  @staticmethod
+  def from_parameters(func):
+    """Initializes a project singleton for execution by a task.
+    
+    Either loads parameters (recipe, instance) passed to task programatically,
+    or if no parameters passed attmepts to load them from the command line. 
+    Uses decorator pattern, task name is inferred from function ebing decorated.
+
+    ### Args:
+      - recipe: (dict) JSON object representing the project ( setup plus at least one task )
+      - instance: (integer) numeric offset of task to run if multiple calls to thsi task exist
+ 
+    """
+
+    def from_parameters_wrapper(recipe=None, instance=1):
+      if recipe: project.initialize(_recipe=recipe, _task=func.__name__, _instance=instance)
+      else: project.from_commandline(func.__name__)
+      func()
+    return from_parameters_wrapper
+
+
   @classmethod
   def initialize(cls, 
-    _json=None,
+    _recipe=None,
     _task=None,
     _instance=1,
     _project=None,
     _user=None,
     _service=None,
     _client=None,
+    _filepath=None,
     _date='TODAY',
     _hour='NOW',
     _verbose=False,
@@ -273,57 +352,67 @@ class project:
   ):
     """Used in StarThinker scripts as programmatic entry point. 
 
-       Usage example:
+    Set up the project singleton for execution of a task, be sure to mimic defaults in helper
+    this function loads credentials from various source ( command line argument, json, default credentials )
+    it also sets up time zone aware date and various helper flags such as force and verbose.
 
+    ### Usage example:
+    ```
        from util.project import project
 
        if __name__ == "__main__":
-         client = 'project.json'
          user = 'user.json'
          service = 'service.json' 
-         project.initialize(_json=json, _user=user, _service=service, _verbose=True)
+         recipe = {'setup':..., 'tasks':.... }
+         project.initialize(_recipe=recipe, _user=user, _service=service, _verbose=True)
+    ```
 
-    Args:
-      _json: (string) Path to recipe json file with tasks and or auth block.
-      _task: (string) Task name form recipe json task list to execute.
-      _instance: (integer) See module description.
-      _project: (string) See module description.
-      _user: (string) See module description.
-      _service: (string) See module description.
-      _client: (string) See module description.
-      _date: (date) See module description.
-      _hour: (integer) See module description.
-      _verbose: (boolean) See module description.
-      _force: (boolean) See module description.
+    ### Args:
+      - _recipe: (dict) JSON object representing the project ( setup plus at least one task )
+      - _task: (string) Task name form recipe json task list to execute.
+      - _instance: (integer) See module description.
+      - _project: (string) See module description.
+      - _user: (string) See module description.
+      - _service: (string) See module description.
+      - _client: (string) See module description.
+      - _date: (date) See module description.
+      - _hour: (integer) See module description.
+      - _verbose: (boolean) See module description.
+      - _force: (boolean) See module description.
 
-    Returns:
+    ### Returns:
       Nothing, this manipulates a singleton object.  All calls to project.* result in the same object.
     """
 
-    # json path is optional if using project purely to interact with libraries ( just auth purposes )
-    cls.configuration = get_project(_json) if _json else {}
+    cls.recipe = _recipe
+    cls.function = _task
+    cls.instance = _instance
+
+    # populates the task variable based on function and instance
+    cls.get_task()
+
     cls.verbose = _verbose
-    cls.filepath = _json
+    cls.filepath = _filepath
 
     # add setup to json if not provided and loads command line credentials if given
-    if 'setup' not in cls.configuration: cls.configuration['setup'] = {}
-    if 'auth' not in cls.configuration['setup']: cls.configuration['setup']['auth'] = {}
-    if _project: cls.configuration['setup']['id'] = _project
-    if _service: cls.configuration['setup']['auth']['service'] = _service
-    if _client: cls.configuration['setup']['auth']['client'] = _client
+    if 'setup' not in cls.recipe: cls.recipe['setup'] = {}
+    if 'auth' not in cls.recipe['setup']: cls.recipe['setup']['auth'] = {}
+    if _project: cls.recipe['setup']['id'] = _project
+    if _service: cls.recipe['setup']['auth']['service'] = _service
+    if _client: cls.recipe['setup']['auth']['client'] = _client
     # if user explicity specified by command line
     if _user: 
-      cls.configuration['setup']['auth']['user'] = _user
+      cls.recipe['setup']['auth']['user'] = _user
     # or if user not give, then try default credentials
-    elif not cls.configuration['setup']['auth'].get('user'): 
-      cls.configuration['setup']['auth']['user'] = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', None)
+    elif not cls.recipe['setup']['auth'].get('user'): 
+      cls.recipe['setup']['auth']['user'] = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', None)
 
-    cls.id = cls.configuration['setup'].get('id')
-    cls.uuid = cls.configuration['setup'].get('uuid')
+    cls.id = cls.recipe['setup'].get('id')
+    cls.uuid = cls.recipe['setup'].get('uuid')
 
     # find date based on timezone
     if _date == 'TODAY':
-      tz = pytz.timezone(cls.configuration['setup'].get('timezone', 'America/Los_Angeles'))
+      tz = pytz.timezone(cls.recipe['setup'].get('timezone', 'America/Los_Angeles'))
       tz_datetime = datetime.now(tz)
       cls.date = tz_datetime.date()
       cls.hour = tz_datetime.hour if _hour == 'NOW' else int(_hour)
@@ -333,42 +422,10 @@ class project:
       cls.date = datetime.strptime(_date.replace('/', '-').replace('_', '-'), '%Y-%m-%d').date()
       cls.hour = datetime.now().hour if _hour == 'NOW' else int(_hour)
 
-    # find task
-    cls.task = None
-    instance = 0
-    if _task:
-      for task in cls.configuration['tasks']:
-        # remove script meta if copied with task
-        if 'script' in task: del task['script'] 
-        # ensure every task as a version
-        if 'version' not in task.values()[0]: task.values()[0]['version'] = 0.1
-        # stop when the instance of a task is found
-        if instance == _instance: break 
-        # otherwise increment the instance
-        elif task.keys()[0] == _task: 
-          cls.set_task(task.values()[0])
-          #cls.task = task.values()[0]
-          instance += 1
-
     if cls.verbose:
       print 'TASK:', _task 
       print 'DATE:', cls.date 
       print 'HOUR:', cls.hour 
-
-
-  @classmethod
-  def set_task(cls, json_definition):
-    """Helper for setting task json in a project.  not recommended, use load and initialize instead.
-
-    Args:
-      json_difinition (json) the json to use as a task   
-
-    Returns:
-      Project singleton instance.
-    """
-
-    cls.task = json_definition
-    return cls
 
 
   @classmethod
@@ -381,10 +438,15 @@ class project:
       UUID, and changes underlying json recipe file.
     """
 
-    if cls.filepath and not cls.uuid:
+    # set uid
+    if not cls.uuid: 
       cls.uuid = str(uuid.uuid4())
-      with open(cls.filepath, 'r') as json_file: filedata = json_file.read()
-      filedata = RE_UUID.sub(r'\1\2\1  "uuid":"%s",' % cls.uuid, filedata)
-      with open(cls.filepath, 'w') as json_file: json_file.write(filedata)
-      cls.configuration = get_project(cls.filepath)
+
+      # write to file if path defined
+      if cls.filepath:
+        with open(cls.filepath, 'r') as json_file: filedata = json_file.read()
+        filedata = RE_UUID.sub(r'\1\2\1  "uuid":"%s",' % cls.uuid, filedata)
+        with open(cls.filepath, 'w') as json_file: json_file.write(filedata)
+        cls.recipe = get_project(cls.filepath)
+
     return cls.uuid 

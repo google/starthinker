@@ -77,11 +77,12 @@ class BaseDAO(object):
       feed_item: Feed item from Bulkdozer feed representing the item to fetch
         from CM.
     """
+    print 'hitting the api to get %s, %s' % (self._entity, feed_item[self._id_field])
     return self._retry(
         self._service.get(
             profileId=self.profile_id, id=feed_item[self._id_field]))
 
-  def get(self, feed_item):
+  def get(self, feed_item, required=False):
     """Retrieves an item.
 
     Items could be retrieved from a in memory cache in case it has already been
@@ -100,13 +101,20 @@ class BaseDAO(object):
     id_value = feed_item.get(self._id_field, None)
 
     if not id_value and self._search_field and feed_item.get(self._search_field, None):
-      result = store.get(self._entity, feed_item[self._search_field])
+      store_key = feed_item[self._search_field]
+
+      if self._parent_filter_name:
+        if feed_item.get(self._parent_filter_field_name, None):
+          store_key = str(feed_item.get(self._parent_filter_field_name, None)) + store_key
+
+      result = store.get(self._entity, store_key)
 
       if not result:
-        result = self._get_by_name(feed_item)
+        result, key = self._get_by_name(feed_item)
+        keys.append(key)
 
-      if result:
-        keys.append(feed_item[self._search_field])
+      if not result and required:
+        raise Exception('ERROR: Could not find %s with name %s' % (self._entity, feed_item[self._search_field]))
     elif id_value:
       if type(id_value) in (str, unicode) and id_value.startswith('ext'):
         keys.append(id_value)
@@ -117,14 +125,25 @@ class BaseDAO(object):
 
       if id_value:
         keys.append(id_value)
-        result = self._get(feed_item)
+        result = store.get(self._entity, id_value)
 
         if not result:
+          result = self._get(feed_item)
+
+        if not result and required:
           raise Exception('ERROR: Could not find %s with id %s' % (self._entity, id_value))
 
     store.set(self._entity, keys, result)
 
     return result
+
+  def _get_base_search_args(self, search_string):
+    return {
+      'profileId': self.profile_id,
+      'searchString': search_string,
+      'sortField': 'NAME',
+      'maxResults': 2
+    }
 
   def _get_by_name(self, feed_item):
     """Searches CM for an item of name defined in the search field of the DAO class.
@@ -137,19 +156,39 @@ class BaseDAO(object):
     Returns:
       If found, the CM entity object that matches the search string.
     """
+    key = ''
     if self._search_field:
+      key = feed_item[self._search_field].strip()
+
+      search_string = feed_item[self._search_field].strip()
+      args = self._get_base_search_args(search_string)
+
+      if self._parent_filter_name:
+        if feed_item.get(self._parent_filter_field_name, None):
+          args[self._parent_filter_name] = feed_item.get(self._parent_filter_field_name, None)
+        elif self._parent_dao:
+          parent = self._parent_dao.get(feed_item, required=True)
+          if parent:
+            args[self._parent_filter_name] = parent.get('id', None)
+
+        key = str(args.get(self._parent_filter_name, '')) + key
+
+      print 'hitting the api to search for %s, %s' % (self._entity, search_string)
       search_result = self._retry(
-          self._service.list(
-              profileId=self.profile_id, searchString=feed_item[self._search_field].strip()))
+          self._service.list(**args))
 
       items = search_result[self._list_name]
 
-      if items and len(items) == 1:
-        return items[0]
-      elif len(items) > 1:
-        raise Exception('ERROR: More than one item found with %s %s' % (self._search_field, feed_item[self._search_field]))
+      if items and len(items) > 0:
+        item = items[0]
 
-    return None
+        if search_string == item['name']:
+          if len(items) > 1 and items[1]['name'] == search_string:
+            raise Exception('ERROR: More than one item found with %s %s' % (self._search_field, feed_item[self._search_field]))
+          else:
+            return item, key
+
+    return None, key
 
 
   def _insert(self, item, feed_item):
@@ -195,6 +234,7 @@ class BaseDAO(object):
       feed: List of feed items to retrieve
     """
     if hasattr(self, '_list_name') and self._list_name and self._id_field:
+      print 'pre fetching %s' % self._list_name
       ids = [feed_item[self._id_field] for feed_item in feed if isinstance(feed_item[self._id_field], int)]
 
       if ids:

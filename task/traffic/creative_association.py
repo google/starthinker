@@ -45,6 +45,9 @@ class CreativeAssociationDAO(BaseDAO):
     self.campaign_dao = CampaignDAO(auth, profile_id)
     self.creative_dao = CreativeDAO(auth, profile_id)
 
+    self._parent_filter_name = None
+    self._parent_filter_field_name = None
+
   def get(self, feed_item):
     """It is not possible to retrieve creative associations from DCM,
 
@@ -73,8 +76,8 @@ class CreativeAssociationDAO(BaseDAO):
       The newly created object from DCM.
     """
     if not feed_item.get(FieldMap.CAMPAIGN_CREATIVE_ASSOCIATION_ID, None):
-      campaign = self.campaign_dao.get(feed_item)
-      creative = self.creative_dao.get(feed_item)
+      campaign = self.campaign_dao.get(feed_item, required=True)
+      creative = self.creative_dao.get(feed_item, required=True)
 
       if campaign and creative:
         if campaign:

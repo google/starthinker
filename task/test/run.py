@@ -127,6 +127,7 @@ def bigquery():
 
 
 # decide which test to run
+@project.from_parameters
 def test():
   if 'sheets' in project.task: sheets()
   elif 'bigquery' in project.task: bigquery()
@@ -137,5 +138,4 @@ def test():
 # calling script already indicates which test is being run
 # print only PASS or FAIL 
 if __name__ == "__main__":
-  project.load('test')
   test()

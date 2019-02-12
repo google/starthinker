@@ -30,14 +30,15 @@ from starthinker.task.traffic.feed import Feed
 from starthinker.task.traffic.feed import FieldMap
 from starthinker.task.traffic.ad import AdDAO
 from starthinker.task.traffic.creative_assets import CreativeAssetDAO
-from starthinker.task.traffic.video_format import VideoFormatDAO
 from starthinker.task.traffic.creative_association import CreativeAssociationDAO
 from starthinker.task.traffic.creative import CreativeDAO
 from starthinker.task.traffic.campaign import CampaignDAO
-from starthinker.task.traffic.landing_page import LandingPageDAO
-from starthinker.task.traffic.placement_group import PlacementGroupDAO
-from starthinker.task.traffic.placement import PlacementDAO
+from starthinker.task.traffic.dynamic_targeting_key import DynamicTargetingKeyDAO
 from starthinker.task.traffic.event_tag import EventTagDAO
+from starthinker.task.traffic.landing_page import LandingPageDAO
+from starthinker.task.traffic.placement import PlacementDAO
+from starthinker.task.traffic.placement_group import PlacementGroupDAO
+from starthinker.task.traffic.video_format import VideoFormatDAO
 from starthinker.task.traffic.store import store
 from starthinker.task.traffic.config import config
 from starthinker.task.traffic.logger import logger
@@ -52,6 +53,7 @@ placement_dao = None
 creative_asset_dao = None
 ad_dao = None
 event_tag_dao = None
+dynamic_targeting_key_dao = None
 spreadsheet = None
 
 clean_run = True
@@ -140,6 +142,7 @@ def init_daos():
   global creative_asset_dao
   global ad_dao
   global event_tag_dao
+  global dynamic_targeting_key_dao
   global spreadsheet
 
 
@@ -172,6 +175,8 @@ def init_daos():
       project.task['auth'], project.task['dcm_profile_id'], project.id)
   ad_dao = AdDAO(project.task['auth'], project.task['dcm_profile_id'])
   event_tag_dao = EventTagDAO(project.task['auth'],
+                              project.task['dcm_profile_id'])
+  dynamic_targeting_key_dao = DynamicTargetingKeyDAO(project.task['auth'],
                               project.task['dcm_profile_id'])
 
 
@@ -306,7 +311,15 @@ def ads():
   event_tag_profile_feed.update()
 
 
-def traffic():
+def dynamic_targeting_keys():
+  """Processes dynamic targeting keys.
+
+  """
+  process_feed('dynamic_targeting_key_feed', dynamic_targeting_key_dao,
+               FieldMap.DYNAMIC_TARGETING_KEY_NAME, 'Processing dynamic targeting key')
+
+@project.from_parameters
+def test():
   """Main function of Bulkdozer, performs the Bulkdozer job
 
   """
@@ -337,9 +350,13 @@ def traffic():
         placements()
         creatives()
         ads()
+        dynamic_targeting_keys()
 
         if clean_run:
+          print 'Done: clean run'
           store.clear()
+        else:
+          print 'Done: errors happened'
       finally:
         logger.log('Bulkdozer traffic job ended')
         logger.flush()
@@ -353,20 +370,19 @@ def traffic():
     logger.flush()
 
 
-def test():
+@project.from_parameters
+def traffic():
   """For development purposes when debugging a specific entity, this function is handy to run just that entity.
 
   """
   setup()
   init_daos()
-  creatives()
-
+  dynamic_targeting_keys()
 
 if __name__ == '__main__':
   """Main entry point of Bulkdozer.
 
   """
-  project.load('traffic')
   traffic()
 
   #test()

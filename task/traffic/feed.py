@@ -115,6 +115,7 @@ class FieldMap:
   PLACEMENT_SKIP_OFFSET_SECONDS = 'Skip Offset Seconds'
   PLACEMENT_SKIP_OFFSET_PERCENTAGE = 'Skip Offset Percentage'
   PLACEMENT_PROGRESS_OFFSET_SECONDS = 'Progress Offset Seconds'
+  PLACEMENT_ADDITIONAL_KEY_VALUES = 'Additional Key Values'
   PLACEMENT_PROGRESS_OFFSET_PERCENTAGE = 'Progress Offset Percentage'
 
   EVENT_TAG_NAME = 'Event Tag Name'
@@ -150,6 +151,9 @@ class FieldMap:
   LP_DAWN_UPDATE_TIME = 'Update Time'
   LP_DAWN_MESSAGE = 'Message'
 
+  DYNAMIC_TARGETING_KEY_NAME = 'Key Name'
+  DYNAMIC_TARGETING_KEY_OBJECT_TYPE = 'Object Type'
+  DYNAMIC_TARGETING_KEY_OBJECT_ID = 'Object ID'
 
 class Feed:
   """Maps Bulkdozer feed items to and from dictionaries.
@@ -185,7 +189,8 @@ class Feed:
       ],
       'transcode_configs_feed': ['Transcode Configuration'],
       'event_tag_profile_feed': ['Event Tag Profile'],
-      'lp_dawn': ['Form Responses 1']
+      'lp_dawn': ['Form Responses 1'],
+      'dynamic_targeting_key_feed': ['Dynamic Targeting Keys']
   }
 
   def __init__(self, auth, trix_id, feed_name, parse=True, spreadsheet=None):

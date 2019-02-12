@@ -1,0 +1,105 @@
+{% extends "page.html" %}
+
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% load website_app %}
+
+{% block content %}
+
+  <br/>
+  <br/>
+  <h3>Account Statistics</h3>
+  <p class="flow-text">Which user deployed what?</p>
+
+  <table id="stats_accounts" class="responsive-table list">
+    <thead>
+      <tr>
+        <th>Account</th>
+        <th class="center-align">Recipes</th>
+        <th class="center-align">Scripts</th>
+        <th class="center-align">Authors</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in metrics.accounts %}
+        <tr>
+          <td>{{ row.account }}</td>
+          <td class="center-align">{{ row.recipes }}</td>
+          <td class="center-align">{{ row.scripts }} : {{ row.scripts_percent }}%</td>
+          <td class="center-align">{{ row.script_authors }} : {{ row.script_authors_percent }}%</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <br/>
+  <br/>
+
+  <h3>Script Reach</h3>
+  <p class="flow-text">Most leveraged scripts?</p>
+
+  <table id="stats_scripts" class="responsive-table list">
+    <thead>
+      <tr>
+        <th>Script</th>
+        <th class="center-align">Accounts</th>
+        <th class="center-align">Recipes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in metrics.scripts %}
+        <tr>
+          <td>{{ row.script }}</td>
+          <td class="center-align">{{ row.accounts }} : {{ row.accounts_percent }}%</td>
+          <td class="center-align">{{ row.recipes }} : {{ row.recipes_percent }}%</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <br/>
+  <br/>
+  
+  <h3>Script Author Impact</h3>
+  <p class="flow-text">Which author's scripts are being utilized?</p>
+
+  <table id="stats_script_authors" class="responsive-table list">
+    <thead>
+      <tr>
+        <th>Author</th>
+        <th class="center-align">Accounts</th>
+        <th class="center-align">Recipes</th>
+        <th class="center-align">Scripts</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in metrics.script_authors %}
+        <tr>
+          <td>{{ row.author }}</td>
+          <td class="center-align">{{ row.accounts }} : {{ row.accounts_percent }}%</td>
+          <td class="center-align">{{ row.recipes }} : {{ row.recipes_percent }}%</td>
+          <td class="center-align">{{ row.scripts }} : {{ row.scripts_percent }}%</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <br/>
+  <br/>
+
+{% endblock %}

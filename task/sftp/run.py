@@ -38,6 +38,8 @@ def query_parameters(query, parameters):
   if project.verbose: print 'QUERY:', query
   return query
 
+
+@project.from_parameters
 def sftp():
 
   cnopts = pysftp.CnOpts()
@@ -98,5 +100,4 @@ def sftp():
   os.remove(output_file_name)
 
 if __name__ == "__main__":
-  project.load('sftp')
   sftp()

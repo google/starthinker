@@ -61,6 +61,7 @@ def _one_report(day):
         put_rows(project.task['auth'], project.task['out'], None, rows)
 
 
+@project.from_parameters
 def ds():
   if project.verbose: print 'DS'
 
@@ -71,5 +72,4 @@ def ds():
 
 
 if __name__ == "__main__":
-  project.load('ds')
   ds()

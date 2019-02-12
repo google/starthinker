@@ -1,0 +1,171 @@
+{% extends "page.html" %}
+
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% load website_app %}
+
+{% block js %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('span.trigger_product').on('click tap', function() {
+        $('table.view_product').hide();
+        $('#' + this.id.replace('trigger_', 'view_') ).show();
+      });
+      $('span.trigger_code').on('click tap', function() {
+        $('#' + this.id.replace('trigger_', 'view_') ).toggle();
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+
+  <h1 id="recipe-scripts">Creating A Workflow Recipe</h1>
+  <p class="flow-text">StarThinker will get your custom solutions prototyped and scaled quickly.<br/>Using the <a href="https://github.com/google/starthinker" target="_blank">open source code</a>, each JSON task can be combined to form custom recipes.</p>  
+
+  <br/><br/>
+  <h3 id="code_start">Quick Start</h3>
+  <p class="flow-text">Run your first recipe in 5 minutes.</p>
+
+  <table class="bordered highlight list">
+    <thead>
+      <tr>
+        <th class="center" style="width:90px;"></th>
+        <th>Instructions</th>
+        <th class="center-align" style="width:90px;">Minutes</th>
+      </tr>
+     </thead>
+     <tbody>
+
+       <tr>
+         <td><i class="material-icons medium teal-text">file_download</i></td>
+         <td>
+           <strong>Get the open source code:</strong>
+           <br/>git clone https://github.com/google/starthinker
+           <br/>cd starthinker
+         </td>
+         <td class="center-align">1</td>
+       </tr>
+
+       <tr>
+         <td><i class="material-icons medium teal-text">build</i></td>
+         <td>
+           <strong>Set up and run using deploy script:</strong>
+           <br/>./deploy.sh
+           <br/>Choose 1) Full Setup
+           <br/>Choose 9) Add Recipe
+           <br/>Choose 10) Run Recipe
+         </td>
+         <td class="center-align">4</td>
+       </tr>
+
+       <tr>
+         <td><i class="material-icons medium teal-text">settings</i></td>
+         <td>
+           <strong>Or set up and run using command line:</strong>
+           <br/>pip install -r requirements.txt
+           <br/>source setup.sh
+           <br/>python all/run.py gtech/say_hello.json
+           <br/>If you need to download service, client, or user credentials. ( use deploy.sh )
+         </td>
+         <td class="center-align">4</td>
+       </tr>
+
+     </tbody>
+  </table>
+
+  <br/><br/>
+  <h3 id="recipe_code">Creating A Custom Recipe</h3>
+  <p class="flow-text">Create a recipe by assembling from scratch or using templates.</p>
+
+  <table class="bordered highlight list">
+    <tbody>
+      <tr>
+        <td style="vertical-align:top;width:90px;"><i class="material-icons medium teal-text">content_paste</i></td>
+        <td>
+          <strong>Copy the Say Hello recipe and start building a workflow using JSON samples below.</strong>
+          <br/>cp gtech/say_hello.json [project_name].json
+          <br/>vi [project_name].json
+          <br/>python all/run.py [project_name].json --verbose
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align:top;"><i class="material-icons medium teal-text">list</i></td>
+        <td>
+           <strong>Create a recipe from a template by running the following and following screen prompts.</strong>
+           <br/>python script/run.py gtech/script_dcm_to_bigquery.json
+           <br/>python all/run.py [JSON file in step above].json --verbose
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align:top;"><i class="material-icons medium teal-text">settings</i></td>
+        <td>
+           <strong>For more detailed instructions see the open source documentations.</strong>
+           <br/><a href="https://github.com/google/starthinker/blob/master/README.md">https://github.com/google/starthinker/blob/master/README.md</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br/><br/>
+  <h3 id="code-tasks">Available Recipe Tasks</h3>
+  <p class="flow-text">Copy and paste the JSON to add tasks to your recipe. Replace <i>{ "field": ... }</i> with your values.</p>
+
+  {% for product in products %}
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_{{ forloop.counter }}">{{ product.name }}</span>
+  {% endfor %}
+
+  <br/><br/>
+  {% for product in products %}
+    <table class="view_product bordered highlight list" id="view_product_{{ forloop.counter }}"{% if not forloop.first %} style="display:none;"{% endif %}>
+      <thead>
+        <tr>
+          <th class="center" style="width:90px;"></th>
+          <th>{{ product.name }}</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for script in product.scripts %}
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">{{ script.get_icon }}</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_{{ script.get_tag }}">JSON</span>
+            <h4>{{ script.get_name }}</h4>
+            <p>TASK: {{ script.get_tag }}</p>
+            <p>{{ script.get_description }}</p>
+            <ol>
+              {% for instruction in script.get_instructions %}<li>{{ instruction|safe }}</li>{% endfor %}
+            </ol>
+            <pre class="view_code" id="view_code_{{ script.get_tag }}" style="display:none;">{{ script.get_task|json_pretty }}</pre>
+          <td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+
+  <br/><br/>
+  <h3 id="code-tasks">Can Always Write Your Own Custom Task</h3>
+  <p class="flow-text">See <a href="https://github.com/google/starthinker/tree/master/task" target="_blank">StarThinker Task Samples</a> for creating a json task anyone can use.</p>
+
+{% endblock %}

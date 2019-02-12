@@ -87,11 +87,11 @@ def get_rows(auth, source):
     from util.project import project
     from utils.data import get_rows
   
+    @project.from_parameters
     def something():
       values = get_rows(project.task['auth'], project.task['in'])
   
     if __name__ == "__main__":
-      project.load('something')
       something()
   
   Args:
@@ -177,11 +177,11 @@ def put_rows(auth, destination, filename, rows, variant=''):
     from util.project import project
     from utils.data import put_rows
   
+    @project.from_parameters
     def something():
       values = get_rows(project.task['auth'], project.task['out'])
   
     if __name__ == "__main__":
-      project.load('something')
       something()
   
   Args:

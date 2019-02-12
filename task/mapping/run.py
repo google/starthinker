@@ -26,6 +26,8 @@ TEMPLATE_SHEET = 'https://docs.google.com/spreadsheets/d/1_faknNlaPlltLwsleMyQH0
 TEMPLATE_TAB = 'Mapping'
 RE_SQLINJECT = re.compile(r'[^a-z0-9_\-, ]+', re.UNICODE|re.IGNORECASE)
 
+
+@project.from_parameters
 def mapping():
   if project.verbose: print 'MAPPING'
 
@@ -81,5 +83,4 @@ def mapping():
   )
 
 if __name__ == "__main__":
-  project.load('mapping')
   mapping()

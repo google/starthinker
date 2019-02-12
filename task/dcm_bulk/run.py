@@ -76,6 +76,7 @@ def dcm(account_id, disposition):
       if rows: put_rows(project.task['auth'], project.task['out'], filename, rows)
 
 
+@project.from_parameters
 def dcm_bulk():
   if project.verbose: print 'DCM BULK'
   disposition = 'WRITE_TRUNCATE'
@@ -87,5 +88,4 @@ def dcm_bulk():
 
 
 if __name__ == "__main__":
-  project.load('dcm_bulk')
   dcm_bulk()

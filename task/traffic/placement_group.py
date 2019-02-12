@@ -44,6 +44,10 @@ class PlacementGroupDAO(BaseDAO):
     self._list_name = 'placementGroups'
     self._entity = 'PLACEMENT_GROUP'
 
+    self._parent_filter_name = 'campaignIds'
+    self._parent_filter_field_name = FieldMap.CAMPAIGN_ID
+    self._parent_dao = self.campaign_dao
+
   def _process_update(self, item, feed_item):
     """Updates a placement group based on the values from the feed.
 
@@ -53,7 +57,7 @@ class PlacementGroupDAO(BaseDAO):
       feed_item: Feed item representing placement group values from the Bulkdozer
         feed.
     """
-    campaign = self.campaign_dao.get(feed_item)
+    campaign = self.campaign_dao.get(feed_item, required=True)
 
     feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
@@ -78,7 +82,7 @@ class PlacementGroupDAO(BaseDAO):
       A placement group object ready to be inserted in DCM through the API.
 
     """
-    campaign = self.campaign_dao.get(feed_item)
+    campaign = self.campaign_dao.get(feed_item, required=True)
 
     feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']

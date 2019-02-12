@@ -48,6 +48,9 @@ class CreativeAssetDAO(BaseDAO):
     self._search_field = None
     self.auth = auth
 
+    self._parent_filter_name = None
+    self._parent_filter_field_name = None
+
   def pre_fetch(self, feed):
     """Pre-fetches all required items to be update into the cache.
 

@@ -130,6 +130,7 @@ def move_entity(project, path, table, schema, disposition):
   #disposition = 'WRITE_APPEND'
 
 
+@project.from_parameters
 def entity():
   if project.verbose: print 'ENTITY'
 
@@ -165,5 +166,4 @@ def entity():
 
 
 if __name__ == '__main__':
-  project.load('entity')
   entity()

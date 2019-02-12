@@ -28,8 +28,8 @@ python lineitem/helper.py [line item id] -u [credentials]
 
 import argparse
 
-from util.project import project
-from util.dbm import lineitem_read, lineitem_write
+from starthinker.util.project import project
+from starthinker.util.dbm import lineitem_read, lineitem_write
 
 
 if __name__ == "__main__":
@@ -39,7 +39,7 @@ if __name__ == "__main__":
   parser.add_argument('lineitem', help='lineitem ID to pull schema, or "list" to get index')
 
   # initialize project
-  project.load(parser=parser)
+  project.from_commandline(parser=parser)
   auth = 'service' if project.args.service else 'user'
 
   for row in lineitem_read(auth, lineitems=[project.args.lineitem]):

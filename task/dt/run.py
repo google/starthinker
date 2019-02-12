@@ -91,6 +91,7 @@ def dt_csv():
     first_file = False
 
 
+@project.from_parameters
 def dt():
   if project.verbose: print "DT TO TABLE", project.task['to']['table']
 
@@ -134,5 +135,4 @@ def dt():
 
 
 if __name__ == "__main__":
-  project.load('dt')
   dt()

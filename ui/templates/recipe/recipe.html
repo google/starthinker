@@ -1,0 +1,40 @@
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% load website_app %}
+
+<div class="card teal left-align hoverable service_card">
+  <a href="{{ recipe.link_edit }}">
+    <div class="card-content white-text">
+      <i class="right large material-icons">{% if recipe.active %}play_arrow{% else %}pause{% endif %}</i>
+      <span class="card-title">{{ recipe.name }}</span>
+      <p>
+        {% for day in recipe.get_days %}{{ day }}{% if not forloop.last %} + {% endif %}{% endfor %}
+        x {% for hour in recipe.get_hours %}{{ hour }}{% if not forloop.last %} + {% endif %}{% endfor %}
+      </p>
+      <br/>
+      <div class="service_callouts">
+        {% for script in recipe.get_scripts %}
+          <div class="service_callout valign-wrapper"><i class="material-icons">{{ script.get_icon }}</i>&nbsp;&nbsp;{{ script.get_name }}</div>
+        {% endfor %}
+      </div>
+    </div>
+  </a>
+</div>

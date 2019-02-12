@@ -38,12 +38,23 @@ class CreativeDAO(BaseDAO):
     super(CreativeDAO, self).__init__(auth, profile_id)
 
     self._entity = 'CREATIVE'
+
+    self._parent_filter_name = 'advertiserId'
+    self._parent_filter_field_name = FieldMap.ADVERTISER_ID
+
     self._service = self.service.creatives()
     self._id_field = FieldMap.CREATIVE_ID
     self._search_field = FieldMap.CREATIVE_NAME
     self._list_name = 'creatives'
+    self._parent_dao = None
 
     self.creative_asset_dao = CreativeAssetDAO(auth, profile_id, None)
+
+  def _assignment_matches(self, item, assignment):
+    if item.get(FieldMap.CREATIVE_ID, None) and assignment.get(FieldMap.CREATIVE_ID, None):
+      return item.get(FieldMap.CREATIVE_ID, None) == assignment.get(FieldMap.CREATIVE_ID, None)
+    else:
+      return item.get(FieldMap.CREATIVE_NAME, '1') == assignment.get(FieldMap.CREATIVE_NAME, '2')
 
   def map_creative_third_party_url_feeds(self, creative_feed,
                                          third_party_url_feed):
@@ -61,7 +72,7 @@ class CreativeDAO(BaseDAO):
     for creative in creative_feed:
       creative['third_party_urls'] = [
           third_party_url for third_party_url in third_party_url_feed
-          if third_party_url.get(FieldMap.CREATIVE_ID, None) == creative.get(FieldMap.CREATIVE_ID, None)
+          if self._assignment_matches(creative, third_party_url)
       ]
 
   def map_creative_and_association_feeds(self, creative_feed,
@@ -80,7 +91,7 @@ class CreativeDAO(BaseDAO):
     for creative in creative_feed:
       creative['associations'] = [
           association for association in creative_association_feed
-          if association.get(FieldMap.CREATIVE_ID, None) == creative.get(FieldMap.CREATIVE_ID, None)
+          if self._assignment_matches(creative, association)
       ]
 
   def _associate_third_party_urls(self, feed_item, creative):
@@ -180,7 +191,7 @@ class CreativeDAO(BaseDAO):
     for association in feed_item.get('associations', []):
       association[FieldMap.CREATIVE_ID] = self.get(association)['id']
 
-      dcm_association = self.creative_asset_dao.get(association)
+      dcm_association = self.creative_asset_dao.get(association, required=True)
       if dcm_association:
         association[FieldMap.CREATIVE_ASSET_ID] = dcm_association.get(
             'id', None)

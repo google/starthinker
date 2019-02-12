@@ -299,6 +299,7 @@ def view_combine(name, combos_table, main_table, shadow_table):
   )
 
 
+@project.from_parameters
 def dynamic_costs():
 
   # make sure tab exists in sheet
@@ -384,5 +385,4 @@ def dynamic_costs():
 
 
 if __name__ == "__main__":
-  project.load("dynamic_costs")
   dynamic_costs()

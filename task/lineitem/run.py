@@ -23,6 +23,7 @@ from starthinker.util.dbm import lineitem_read, lineitem_write
 from starthinker.util.dbm.schema import LineItem_Read_Schema
 
 
+@project.from_parameters
 def lineitem():
   if project.verbose: print 'LINEITEM'
 
@@ -65,5 +66,4 @@ def lineitem():
   
 
 if __name__ == "__main__":
-  project.load('lineitem')
   lineitem()

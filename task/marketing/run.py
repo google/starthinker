@@ -291,10 +291,10 @@ def assemble_offers_solution_centric():
   if project.verbose: print 'SENT OFFERS', count
 
 
+@project.from_parameters
 def marketing():
   assemble_offers_solution_centric()
 
 
 if __name__ == "__main__":
-  project.load('marketing')
   marketing()

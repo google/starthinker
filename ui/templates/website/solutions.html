@@ -1,0 +1,121 @@
+{% extends "page.html" %}
+
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% load website_app %}
+
+{% block js %}
+  <script type="text/javascript">
+    var category = 'category_all';
+
+    function render() {
+      $("#solutions tbody tr").each(function() {
+        var show = false;
+        if ($(this).attr("class").includes(category)) {
+          var spend_growth = parseInt($("#spend-growth").val());
+          var account_health = parseInt($("#account-health").val());
+          var spend_optimization = parseInt($("#spend-optimization").val());
+          var time_savings = parseInt($("#time-savings").val());
+          var csat_improvement = parseInt($("#csat-improvement").val());
+          if (parseInt($(this).attr("spend-growth")) > spend_growth) {
+            if (parseInt($(this).attr("account-health")) > account_health) {
+              if (parseInt($(this).attr("spend-optimization")) > spend_optimization) {
+                if (parseInt($(this).attr("time-savings")) > time_savings) {
+                  if (parseInt($(this).attr("csat-improvement")) > csat_improvement) {
+                    show = true;
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (show) { $(this).show(); } 
+        else { $(this).hide(); }
+      });
+    }
+
+    $(document).ready(function() {
+
+      $('span.trigger_category').on('click tap', function() {
+        category = this.id.replace('trigger_', '');
+        render();
+      });
+
+      $('input.impact').on('change', render);
+
+    });
+  </script>
+{% endblock %}
+
+{% block css %}
+  #solution_impact { margin: 3vh auto; }
+{% endblock %}
+
+{% block content %}
+
+  <h1 id="solutions">Packaged Solutions</h1>
+  <p class="flow-text">These recipes are entire workflows that deploy end to end solutions for clients.</p>
+
+  <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_all">All</span>
+  {% for category in categories %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_{{ category|slugify }}">{{ category }}</span>
+  {% endfor %}
+
+  <table id="solution_impact" class="list">
+    <tbody>
+      <tr>
+        <td width="100">Growth</td>
+        <td><input type="range" id="spend-growth" class="impact" min="0" max="100" value="0"/></td>
+      </tr><tr>
+        <td>Health</td>
+        <td><input type="range" id="account-health" class="impact" min="0" max="100" value="0"/></td>
+      </tr><tr>
+        <td>Spend</td>
+        <td><input type="range" id="spend-optimization" class="impact" min="0" max="100" value="0"/></td>
+      </tr><tr>
+        <td>Time</td>
+        <td><input type="range" id="time-savings" class="impact" min="0" max="100" value="0"/></td>
+      </tr><tr>
+        <td>CSAT</td>
+        <td><input type="range" id="csat-improvement" class="impact" min="0" max="100" value="0"/></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table id="solutions" class="view_product bordered highlight list">
+    <tbody>
+    {% for script in scripts %}
+      <tr class="category_all{% for c in script.get_categories %} category_{{ c|slugify }}{% endfor %}" {% for i, v in script.get_impacts.items %} {{ i|slugify }}="{{ v }}"{% endfor %}">
+        <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">{{ script.get_icon }}</i></td>
+        <td style="vertical-align:top;">
+          <a href="/solution/{{ script.get_tag }}/"><h4>{{ script.get_name }}</h4></a>
+          <p>{{ script.get_description }}</p>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <br/><br/>
+  <h3 id="code-tasks">You Can Always Write Your Own Recipe</h3>
+  <p class="flow-text">See <a href="http:///go/starthinker-howto" target="_blank">StarThinker HowTo</a> for creating a json task anyone can use.</p>
+
+{% endblock %}

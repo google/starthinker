@@ -68,7 +68,7 @@ RE_CREDENTIALS_JSON = re.compile(r'^\s*\{.*\}\s*$', re.DOTALL)
 
 def get_credentials():
 
-  auth = project.configuration['setup']['auth']['user']
+  auth = project.recipe['setup']['auth']['user']
 
   # if credentials are stored in a bucket
   if RE_CREDENTIALS_BUCKET.match(auth):
@@ -87,7 +87,7 @@ def get_credentials():
     credentials = store.get()
 
     if not credentials or credentials.invalid:
-      flow = client.flow_from_clientsecrets(project.configuration['setup']['auth']['client'], SCOPES)
+      flow = client.flow_from_clientsecrets(project.recipe['setup']['auth']['client'], SCOPES)
       flow.user_agent = APPLICATION_NAME
       flags = tools.argparser.parse_args(args=['--noauth_local_webserver'])
       credentials = tools.run_flow(flow, store, flags)
@@ -98,7 +98,7 @@ def get_credentials():
 
 def get_service_credentials(scopes=None):
 
-  auth = project.configuration['setup']['auth']['service']
+  auth = project.recipe['setup']['auth']['service']
 
   # if credentials are embeded as JSON
   if RE_CREDENTIALS_JSON.match(auth):
@@ -161,8 +161,8 @@ def get_client(api='storage', auth='user'):
     credentials_service.client_id,
     credentials_service.client_secret
   )
-  if api == 'storage': return storage.Client(project=project.configuration['setup']['id'], credentials=credentials_client)
-  elif api == 'bigquery': return bigquery.Client(project=project.configuration['setup']['id'], credentials=credentials_client)
+  if api == 'storage': return storage.Client(project=project.recipe['setup']['id'], credentials=credentials_client)
+  elif api == 'bigquery': return bigquery.Client(project=project.recipe['setup']['id'], credentials=credentials_client)
   else: return None
 
 

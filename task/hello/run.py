@@ -28,6 +28,10 @@ Call from the command line using:
 
 `python all/run.py gtech/say_hello.json`
 
+Call from code using:
+
+`hello(recipe, instance)`
+
 ### Notes
 
 - See [/all/README.md](/all/README.md) to learn about running recipes.
@@ -36,12 +40,14 @@ Call from the command line using:
 
 """
 
-import pprint
-from time import sleep
+import json
 
-from starthinker.util.project import project 
+from starthinker.util.project import project
 
+
+@project.from_parameters
 def hello():
+
   if project.verbose: print 'HELLO'
 
   print ''
@@ -70,9 +76,9 @@ def hello():
   print "If you use the 'service' credentials, you must add them manually." 
   print ''
   print 'PROJECT ID:', project.id
-  print 'PROJECT CLIENT CREDENTIALS:', project.configuration['setup']['auth']['client']
-  print 'PROJECT USER CREDENTIALS:', project.configuration['setup']['auth']['user']
-  print 'PROJECT SERVICE CREDENTIALS:', project.configuration['setup']['auth']['service']
+  print 'PROJECT CLIENT CREDENTIALS:', project.recipe['setup']['auth']['client']
+  print 'PROJECT USER CREDENTIALS:', project.recipe['setup']['auth']['user']
+  print 'PROJECT SERVICE CREDENTIALS:', project.recipe['setup']['auth']['service']
   print ''
   print ''
 
@@ -82,7 +88,8 @@ def hello():
   print "For example, 'hello' is a task which will executed by 'task/hello/run.py'."
   print ''
   print 'PROJECT JSON:'
-  pprint.PrettyPrinter(depth=20).pprint(project.configuration)
+  print json.dumps(project.recipe, indent=2)
+
   print ''
   print ''
 
@@ -104,10 +111,6 @@ def hello():
   print ''
   print ''
 
-  while True:
-    print 'I am hanging - this is a test for long running job'
-    sleep(60)
 
 if __name__ == "__main__":
-  project.load('hello')
   hello()

@@ -23,6 +23,7 @@ from starthinker.util.regexp import parse_yyyymmdd
 from starthinker.util.storage import object_list, object_move, object_delete
 
 
+@project.from_parameters
 def archive():
   if project.verbose: print 'ARCHIVE'
 
@@ -41,5 +42,4 @@ def archive():
 
 
 if __name__ == "__main__":
-  project.load('archive')
   archive()

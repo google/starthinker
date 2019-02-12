@@ -42,6 +42,7 @@ from starthinker.util.data import get_rows, put_rows
 from starthinker.util.dcm import report_delete, report_build, report_create, report_file, report_to_rows, report_clean, report_schema
 
 
+@project.from_parameters
 def dcm():
   if project.verbose: print 'DCM'
 
@@ -129,5 +130,4 @@ def dcm():
       if rows: put_rows(project.task['auth'], project.task['out'], filename, rows)
 
 if __name__ == "__main__":
-  project.load('dcm')
   dcm()

@@ -637,6 +637,7 @@ def report_clean(rows, datastudio=False):
   Memory efficiently cleans each row by fixing:
   * Strips header and footer to preserve only data rows.
   * Changes 'Date' to 'Report_Day' to avoid using reserved name in BigQuery.
+  * removes '-' as columns
   * Changes data format to match data studio if datastusio=True.
 
   Usage example:
@@ -684,7 +685,7 @@ def report_clean(rows, datastudio=False):
       row[date] = 'Report_Day' if first else row[date].replace('-', '')
 
     # remove not set columns ( which throw off schema on import types )
-    row = ['' if cell.strip() == '(not set)' else cell for cell in row]
+    row = ['' if cell.strip() in ('(not set)', '-') else cell for cell in row]
 
     # return the row
     yield row

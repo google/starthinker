@@ -22,6 +22,8 @@ from starthinker.util.bigquery import get_schema, rows_to_table
 from starthinker.util.csv import rows_to_type
 from starthinker.util.data import get_rows
 
+
+@project.from_parameters
 def sheets():
   if project.verbose: print 'SHEETS'
 
@@ -79,5 +81,4 @@ def sheets():
 
 
 if __name__ == "__main__":
-  project.load('sheets')
   sheets()

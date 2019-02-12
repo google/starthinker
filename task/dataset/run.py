@@ -19,6 +19,7 @@
 from starthinker.util.project import project 
 from starthinker.util.bigquery import datasets_create, datasets_access
 
+@project.from_parameters
 def dataset():
   if project.verbose: print "DATASET", project.id, project.task['dataset']
 
@@ -27,5 +28,4 @@ def dataset():
   datasets_access(project.task['auth'], project.id, project.task['dataset'], emails=project.task.get('emails', []), groups=project.task.get('groups', []))
 
 if __name__ == "__main__":
-  project.load('dataset')
   dataset()

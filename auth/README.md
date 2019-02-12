@@ -1,11 +1,5 @@
 # The Rest Of This Document Is Pulled From Code Comments
 
-### Launch In Google Cloud
-
-Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
-
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=LAUNCH_RECIPE.txt&cloudshell_tutorial=auth%2FREADME.md)
-
 
 # Python Scripts
 
@@ -16,7 +10,7 @@ Sample code for Google OAuth designed for a web application and pub/sub.
 
 ### Problem
 
-User credentials typically need to be downoaded from a web application, and
+User credentials typically need to be downloaded from a web application, and
 then refreshed periodically.  When jobs are run in a distributed pub/sub,
 multiple processes may need a refreshed user token at once.  Refreshing the
 token for one job but not others will invalidate the token for the other jobs.
@@ -88,3 +82,9 @@ Example
   python auth/helper.py -u [user credentials path] -c [client credentials path]
 
 
+
+# Launch In Google Cloud
+
+Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%2Fauth%2FREADME.md)

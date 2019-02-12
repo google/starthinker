@@ -68,12 +68,6 @@ def parse_readme(filepath):
   except IOError:
     doc = README_DIVIDER 
 
-  doc += '\n### Launch In Google Cloud\n\n'
-
-  doc += 'Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).\n\n'
-
-  doc += '[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%%3A%%2F%%2Fgithub.com%%2Fgoogle%%2Fstarthinker&cloudshell_print=LAUNCH_RECIPE.txt&cloudshell_tutorial=%s)\n' % urllib.quote_plus(filepath.replace(EXECUTE_PATH, ''))
-
   return doc
 
 
@@ -112,7 +106,7 @@ def parse_py(filepath):
         if func: doc += '\n\n### %s\n\n' % func.replace('def ', '')
         doc += crawl[cls][func]
 
-  return doc #.replace('*', '\*') # * are used for lists markup, any use of * in text should be escaped as such in the code comment
+  return doc #.replace('*', '\*') # * is markup, it should be escaped int he code comment
 
 
 def parse_json(filepath):
@@ -217,9 +211,16 @@ if __name__ == "__main__":
         if RE_PY.match(filename): doc_py += parse_py(root + '/' + filename)
 
       if doc_py or doc_json:
-        doc = parse_readme(root + '/README.md') + '\n\n'
-        if doc_json:  doc += '# JSON Recipes\n\n' + doc_json
-        if doc_py:  doc += '# Python Scripts\n\n' + doc_py
+        doc = parse_readme(root + '/README.md') + '\n'
+        if doc_json:  doc += '\n# JSON Recipes\n\n' + doc_json
+        if doc_py:  doc += '\n# Python Scripts\n\n' + doc_py
+
+        doc += '\n# Launch In Google Cloud\n\n'
+
+        doc += 'Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).\n\n'
+
+        filepath = root + '/README.md'
+        doc += '[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%%3A%%2F%%2Fgithub.com%%2Fgoogle%%2Fstarthinker&cloudshell_print=%%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%s)\n' % urllib.quote_plus(filepath.replace(EXECUTE_PATH, '/'))
 
         if args.write:
           print root + '/README.md'

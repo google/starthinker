@@ -85,6 +85,7 @@ def twitter_trends_available():
     yield [r['country'], r['countryCode'], r['name'], r['parentid'], r['placeType']['code'], r['placeType']['name'], r['url'], r['woeid']]
 
 
+@project.from_parameters
 def twitter():
   if project.verbose: print 'TWITTER'
   
@@ -107,5 +108,4 @@ def twitter():
   if rows: put_rows(project.task['auth'], project.task['out'], 'twitter_%s.csv' % project.date, rows)
 
 if __name__ == "__main__":
-  project.load('twitter')
   twitter()

@@ -40,10 +40,14 @@ class EventTagDAO(BaseDAO):
     # This causes the dao to search event tag by name, but
     # to do so it is required to pass campaign or advertiser id
     # self._search_field = FieldMap.EVENT_TAG_NAME
+    #self._search_field = FieldMap.EVENT_TAG_NAME
     self._search_field = None
 
     self._list_name = 'eventTags'
     self._entity = 'EVENT_TAGS'
+    self._parent_filter_name = 'advertiserId'
+    self._parent_dao = None
+    self._parent_filter_field_name = FieldMap.ADVERTISER_ID
     self._campaign_dao = CampaignDAO(auth, profile_id)
     self._service = self.service.eventTags()
 
@@ -56,6 +60,13 @@ class EventTagDAO(BaseDAO):
       feed: List of feed items to retrieve
     """
     pass
+
+  def _get_base_search_args(self, search_string):
+    return {
+      'profileId': self.profile_id,
+      'searchString': search_string,
+      'sortField': 'NAME'
+    }
 
   def _process_update(self, item, feed_item):
     """Processes the update of an Event Tag
@@ -84,7 +95,7 @@ class EventTagDAO(BaseDAO):
       A event tag object ready to be inserted in DCM through the API.
 
     """
-    campaign = self._campaign_dao.get(feed_item)
+    campaign = self._campaign_dao.get(feed_item, required=True)
 
     return {
         'advertiserId':
@@ -110,7 +121,7 @@ class EventTagDAO(BaseDAO):
       feed_item: The Bulkdozer feed item.
       item: The CM newly created or updated object.
     """
-    campaign = self._campaign_dao.get(feed_item)
+    campaign = self._campaign_dao.get(feed_item, required=True)
 
     if campaign:
       feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']

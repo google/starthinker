@@ -41,6 +41,10 @@ class CampaignDAO(BaseDAO):
     self._id_field = FieldMap.CAMPAIGN_ID
     self._search_field = FieldMap.CAMPAIGN_NAME
     self._list_name = 'campaigns'
+
+    self._parent_filter_name = None
+    self._parent_filter_field_name = None
+
     self._entity = 'CAMPAIGN'
     self._service = self.service.campaigns()
 
@@ -52,7 +56,7 @@ class CampaignDAO(BaseDAO):
         updated directly.
       feed_item: Feed item representing campaign values from the Bulkdozer feed.
     """
-    lp = self.landing_page_dao.get(feed_item)
+    lp = self.landing_page_dao.get(feed_item, required=True)
 
     feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_ID] = lp['id']
     feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_NAME] = lp['name']
@@ -75,7 +79,7 @@ class CampaignDAO(BaseDAO):
       A campaign object ready to be inserted in DCM through the API.
 
     """
-    lp = self.landing_page_dao.get(feed_item)
+    lp = self.landing_page_dao.get(feed_item, required=True)
 
     feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_ID] = lp['id']
     feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_NAME] = lp['name']

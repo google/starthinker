@@ -53,6 +53,11 @@ class PlacementDAO(BaseDAO):
     self._id_field = FieldMap.PLACEMENT_ID
     self._search_field = FieldMap.PLACEMENT_NAME
 
+    self._parent_filter_name = 'campaignIds'
+    self._parent_filter_field_name = FieldMap.CAMPAIGN_ID
+    self._parent_dao = self.campaign_dao
+
+
     self._list_name = 'placements'
 
     self.cache = PlacementDAO.cache
@@ -166,8 +171,8 @@ class PlacementDAO(BaseDAO):
     if feed_item.get(FieldMap.CAMPAIGN_ID, '') == '':
       feed_item[FieldMap.CAMPAIGN_ID] = item['campaignId']
 
-    campaign = self.campaign_dao.get(feed_item)
-    placement_group = self.placement_group_dao.get(feed_item)
+    campaign = self.campaign_dao.get(feed_item, required=True)
+    placement_group = self.placement_group_dao.get(feed_item, required=True)
 
     feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
@@ -210,6 +215,12 @@ class PlacementDAO(BaseDAO):
     self._process_transcode(item, feed_item)
     self._process_active_view_and_verification(item, feed_item)
     self._process_pricing_schedule(item, feed_item)
+
+    if feed_item.get(FieldMap.PLACEMENT_ADDITIONAL_KEY_VALUES, None):
+      if not 'tagSetting' in item:
+        item['tagSetting'] = {}
+
+      item['tagSetting']['additionalKeyValues'] = feed_item.get(FieldMap.PLACEMENT_ADDITIONAL_KEY_VALUES, None)
 
   def _process_transcode(self, item, feed_item):
     """Updates / creates transcode configuration for the placement.
@@ -271,8 +282,8 @@ class PlacementDAO(BaseDAO):
       An placement object ready to be inserted in DCM through the API.
 
     """
-    campaign = self.campaign_dao.get(feed_item)
-    placement_group = self.placement_group_dao.get(feed_item)
+    campaign = self.campaign_dao.get(feed_item, required=True)
+    placement_group = self.placement_group_dao.get(feed_item, required=True)
 
     feed_item[FieldMap.CAMPAIGN_ID] = campaign['id']
     feed_item[FieldMap.CAMPAIGN_NAME] = campaign['name']
@@ -313,6 +324,11 @@ class PlacementDAO(BaseDAO):
     }
 
     self._process_skipability(feed_item, result)
+
+    if feed_item.get(FieldMap.PLACEMENT_ADDITIONAL_KEY_VALUES, None):
+      result['tagSetting'] = {
+        'additionalKeyValues': feed_item.get(FieldMap.PLACEMENT_ADDITIONAL_KEY_VALUES, None)
+      }
 
     if feed_item.get(FieldMap.PLACEMENT_PRICING_TESTING_START, None):
       result['pricingSchedule']['testingStartDate'] = feed_item.get(FieldMap.PLACEMENT_PRICING_TESTING_START , None)

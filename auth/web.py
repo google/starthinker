@@ -20,7 +20,7 @@
 
 ### Problem
 
-User credentials typically need to be downoaded from a web application, and
+User credentials typically need to be downloaded from a web application, and
 then refreshed periodically.  When jobs are run in a distributed pub/sub,
 multiple processes may need a refreshed user token at once.  Refreshing the
 token for one job but not others will invalidate the token for the other jobs.

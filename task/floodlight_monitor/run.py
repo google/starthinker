@@ -182,6 +182,7 @@ def floodlight_email(day, alerts):
     )
 
 
+@project.from_parameters
 def floodlight_monitor():
   if project.verbose: print "FLOODLIGHT MONITOR"
 
@@ -231,5 +232,4 @@ def floodlight_monitor():
 
 
 if __name__ == "__main__":
-  project.load('floodlight_monitor')
   floodlight_monitor()

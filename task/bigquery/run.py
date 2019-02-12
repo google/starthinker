@@ -41,6 +41,7 @@ def query_parameters(query, parameters):
   return query
 
 
+@project.from_parameters
 def bigquery():
 
 
@@ -124,5 +125,4 @@ def bigquery():
     )
 
 if __name__ == "__main__":
-  project.load('bigquery')
   bigquery()

@@ -1,0 +1,119 @@
+{% extends "page.html" %}
+
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% block content %}
+
+  <h1>Recipes <a href="/recipe/edit/"><i class="material-icons teal-text">add_circle</i></a></h1>
+  <p class="flow-text">Assemble recipes that run on a schedule.</p>
+
+  <table class="bordered highlight list">
+    <thead>
+      <tr>
+        <th>Recipe</th>
+        <th></th>
+        <th class="center">Status</th>
+      </tr>
+     </thead>
+     <tbody>
+       {% for recipe in recipes %}
+         <tr>
+           <td style="width:90px;">
+             <a href="{{ recipe.link_edit }}"><i class="material-icons medium teal-text">{% if recipe.active %}play_arrow{% else %}pause{% endif %}</i></a>
+           </td>
+           <td>
+             <a href="{{ recipe.link_edit }}">{{ recipe.name }}</a>
+             <br/>{% for day in recipe.get_days %}{{ day }}{% if not forloop.last %}, {% endif %}{% endfor %}
+             <br/>{% for hour in recipe.get_hours %}{{ hour }}{% if not forloop.last %}, {% endif %}{% endfor %}
+           </td>
+           <td class="center">
+             {{ recipe.log.status }}
+             <br/>{{ recipe.log.time_ago }}
+           </td>
+         </tr>
+       {% endfor %}
+     </tbody>
+  </table>
+
+  <br/><br/>
+  <h3 id="code_start">What To Do With Recipes</h3>
+  <p class="flow-text">Create workflows <i>without coding</i>, and run them or give them to clients.</p>
+
+
+  <table class="bordered highlight list">
+    <thead>
+      <tr>
+        <th class="center" style="width:90px;"></th>
+        <th>Option</th>
+        <th>Instructions</th>
+      </tr>
+     </thead>
+     <tbody>
+       <tr>
+         <td><i class="material-icons medium teal-text">face</i></td>
+         <td><strong>Run Your Own Recipes</strong></td>
+         <td>
+           <ol>
+             <li><a href="/project/">Specify Project Credentials</a> for a Google Cloud Project you own.</li>
+             <li>Add tasks to the recipe and fill in the required fields.</li>
+             <li>Click <strong>Save</strong> to save the recipe.</li>
+             <li>Click <strong>Run Now</strong> to run and test the recipe.</li>
+             <li>Check <strong>Active</strong>, the recipe will run on the schedule you specify.</li>
+             <li>Done, data will appear in your project.</li>
+           </ol>
+         </td>
+       </tr>
+       <tr>
+         <td><i class="material-icons medium teal-text">business</i></td>
+         <td><strong>Run Recipes For The Client</strong></td>
+         <td>
+           <ol>
+             <li><a href="/project/">Specify Project Credentials</a> for a client owned Google Cloud Project.</li>
+             <li>Add tasks to the recipe and fill in the required fields.</li>
+             <li>Click <strong>Save</strong> to save the recipe.</li>
+             <li>Click <strong>Run Now</strong> to run and test the recipe.</li>
+             <li>Check <strong>Active</strong>, the recipe will run on the schedule you specify.</li>
+             <li>Done, data will appear in client project.</li>
+           </ol>
+         </td>
+       </tr>
+       <tr>
+         <td><i class="material-icons medium teal-text">sd_storage</i></td>
+         <td><strong>Give Recipe To Client To Run</strong></td>
+         <td>
+           <ol>
+             <li>Add tasks to the recipe and fill in the required fields.</li>
+             <li>Click <strong>Save</strong> to save the recipe.</li>
+             <li>Click <strong>Download</strong> to get a shareable recipe file.</li>
+             <li>Email the file to the client plus a link to the <a href="https://github.com/google/starthinker" target="_blank">Open Source StarThinker</a>.</li>
+             <li>The client can run the script, instructions are in the repository.</li>
+           </ol>
+         </td>
+       </tr>
+     </tbody>
+  </table>
+
+  <br/><br/>
+  <h3 id="code-tasks">Need A Custom Task?</h3>
+  <p class="flow-text">Ask a CSE to write one for you <a href="mailto:starthinker-help@google.com?subject=Custom+StarThinker+Recipe">starthinker-help@google.com</a></p>
+
+
+{% endblock %}

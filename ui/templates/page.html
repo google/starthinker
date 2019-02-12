@@ -1,0 +1,174 @@
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
+
+    <style>
+       html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
+ 
+       #message { justify-content: center; font-size: 2em;}
+       #message i { font-size: 2em; margin: 10px; }
+       #message ul, #message li { display: inline; margin-left: 10px; }
+       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
+
+       span.square_box {
+         display: inline-block;
+         width: 40px;
+         height: 40px;
+         border: 2px solid #fff;
+         text-align: center;
+         line-height: 40px;
+         margin: 5px;
+       }
+
+       div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+       h1 a i.material-icons { font-size: 3.28rem; }
+       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+       ol li { line-height: 1.8em; }
+       textarea { margin-top: 7px; height: 10rem; }
+       table.list { width: 96%; max-width: 800px; margin: 0px auto; line-height: 1.8em; }
+       a.menu_link { display: inline-block; margin: 20px; }
+
+       div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
+       div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
+       div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
+
+       div.service_card { min-height: 250px; width: 300px; margin: 10px;}
+       div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
+       div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
+       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+
+       #cards { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; }
+       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
+       div.card h4 { width 100%; padding: 20px;}
+       div.card h4 i.material-icons { font-size: 2.28rem; }
+       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+
+       .card .card-content .card-title { word-wrap: break-word; }
+       div.select-wrapper { margin-top: 2rem; }
+
+       {% block css %}{% endblock %}
+    </style>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  {% block nav %}
+  <nav>
+    <div class="nav-wrapper">
+      <a href="/" class="brand-logo"><img src="{% static 'StarThinker.png' %}"/>&nbsp;StarThinker</a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/">Recipes</a></li>
+        <li><a href="/storage/">Storage</a></li>
+        <li><a href="/project/">Projects</a></li>
+        <li><a href="/solution/">Solutions</a></li>
+        <li><a href="/stats/">Stats</a></li>
+        <li><a href="/code/">Coding</a></li>
+        <li><a href="/team/">Team</a></li>
+        {% if request.user.is_authenticated %}
+          <li><a href="/logout/">Logout</a></li>
+          <li>
+            <div class="chip">
+              <img src="{{ request.user.picture }}" alt="{{ request.user.name }}">
+              {{ request.user.name }}
+            </div>
+          </li>
+        {% endif %}
+      </ul>
+      <ul class="side-nav red lighten-2" id="mobile-demo">
+        {% if request.user.is_authenticated %}
+          <li>
+            <div class="chip" style="margin: 0px 30px;">
+              <img src="{{ request.user.picture }}" alt="{{ request.user.name }}">
+              {{ request.user.name }}
+            </div>
+          </li>
+        {% endif %}
+        <li><a class="white-text" href="/">Recipes</a></li>
+        <li><a class="white-text" href="/storage/">Storage</a></li>
+        <li><a class="white-text" href="/project/">Project</a></li>
+        <li><a class="white-text" href="/solution/">Solutions</a></li>
+        <li><a class="white-text" href="/stats/">Stats</a></li>
+        <li><a class="white-text" href="/code/">Code</a></li>
+        <li><a class="white-text" href="/team/">Team</a></li>
+        {% if request.user.is_authenticated %}
+          <li><a class="white-text" href="/logout/">Logout</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+  {% endblock %}
+
+  <body>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
+
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'success' %}
+          <div id="message" class="card-panel teal darken-2 white-text valign-wrapper center-align">
+            <i class="material-icons">check</i>
+            {{ message|safe }}
+          </div>
+        {% else %}
+          <div id="message" class="card-panel red darken-2 white-text valign-wrapper center-align">
+            <i class="material-icons">error</i>
+            {{ message|safe }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <div id="page" class="center">
+      {% block content %}{% endblock %}
+    </div>
+
+    {% block megadash %}
+      <img src="https://megadash.googleplex.com/tracking/{{ megadash_id|default:245950 }}" alt="Megadash Usage Tracking Pixel, see http://goto/megadash-tracking" height="1" width="1" />
+    {% endblock %}
+
+  </body>
+
+  {% include "footer.html" %}
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".button-collapse").sideNav();
+      $('select').material_select();
+      $('.modal').modal();
+    });
+  </script>
+  {% block js %}{% endblock %}
+
+</html>
