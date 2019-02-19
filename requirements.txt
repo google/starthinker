@@ -9,7 +9,7 @@ httplib2
 urllib3
 jsonpickle
 django
-panda
+pandas
 pysftp
 pytz
 Jinja2==2.10
