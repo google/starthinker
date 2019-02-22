@@ -6,6 +6,6 @@ Please type the following command and hit the enter key:
 
 pip install -r requirements.txt
 source setup.sh
-python all/run.py project/sample/say_hello.json --verbose
+python all/run.py gtech/say_hello.json --verbose
 
 You will need to upload the recipe you plan to run, and execute it just like the sample.
