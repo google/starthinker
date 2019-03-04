@@ -18,14 +18,14 @@
 
 import subprocess
 
-from starthinker.setup import EXECUTE_PATH
+from starthinker.config import EXECUTE_PATH
 
 
 if __name__ == "__main__":
 
-  subprocess.call("python manage.py recipe_to_json --remote", shell=True, cwd=EXECUTE_PATH + "ui/")
+  subprocess.call("python manage.py recipe_to_json --remote --settings=ui.settings_internal", shell=True, cwd=EXECUTE_PATH + "ui/")
   print 'Recipes ran'
 
-  subprocess.call("python manage.py storage_to_json --remote", shell=True, cwd=EXECUTE_PATH + "ui/")
+  subprocess.call("python manage.py storage_to_json --remote --settings=ui.settings_internal", shell=True, cwd=EXECUTE_PATH + "ui/")
   print 'Storage ran'
 

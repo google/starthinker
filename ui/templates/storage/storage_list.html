@@ -46,9 +46,9 @@
              <a href="{{ recipe.link_storage }}" target="_blank">{{ recipe.name }}</a>
            </td>
            <td class="center">
-             {{ recipe.log.status }}
-             <br/>{{ recipe.log.time_ago }}
-             <br/>{{ recipe.log.time_stamp }}
+             {{ recipe.log.execution_status }}
+             <br/>{{ recipe.log.execution_timeago }}
+             <br/>{{ recipe.log.execution_timestamp }}
            </td>
            <td class="center-align">
              <a href="{{ recipe.link_run }}" class="waves-effect waves-light btn form_button modal-trigger">

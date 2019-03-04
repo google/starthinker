@@ -149,11 +149,7 @@ install_dependencies() {
 # set up paths for execution of cron jobs and create a cron directory - called by menu
 
 setup_paths() {
-  echo ""
-  export PYTHONPATH="${PYTHONPATH}:${THIS_DIR}"
-  export STARTHINKER_PATH=${THIS_DIR}
-  echo "Path Setup Finished"
-  echo ""
+  source "${THIS_DIR}/setup.sh"
 }
 
 
@@ -296,7 +292,6 @@ add_recipe() {
         if [ "${file}" ]
         then
           echo ""
-          source "${THIS_DIR}/setup.sh"
           python "${THIS_DIR}/script/run.py" "${RECIPE_DIRECTORY}/${file}"
           break
         else
@@ -375,13 +370,13 @@ instructions() {
   echo "  4 - Each all/run.py launches a blocking process for each task in the recipe."
   echo ""
   echo "Possible Optimizations"
-  echo "  Memory - In setup.py there is a BUFFER_SCALE parameter, setting it to 1 maxes out memory per process at 1 about GB."
+  echo "  Memory - In config.py there is a BUFFER_SCALE parameter, setting it to 1 maxes out memory per process at 1 about GB."
   echo "  Processes - Recipes run concurrently, for a large number of processes consider an instance with more memory."
   echo "  CPU - Most task execute work using cloud resources, memory is more important than CPUs."
   echo "  Disk - 99% of tasks do not use disk, our goal is 100%." 
   echo "  Caching - Setting up a disk cache for memory may prevent many memory limit failures."
   echo "  Scaling - To scale to a larger instance, create an image of this one, then launch it as a larger one."
-  echo "  Logs - To enable logging to a Google Cloud Storage Bucket, configure UI_PROJECT, UI_SERVICE, UI_BUCKET_LOG in setup.py."
+  echo "  Logs - To enable logging to a Google Cloud Storage Bucket, configure UI_PROJECT, UI_SERVICE, UI_BUCKET_LOG in config.py."
   echo ""
   echo "Thank You For Using StarThinker"
   echo "  - Paul Kenjora @ Google gTech"

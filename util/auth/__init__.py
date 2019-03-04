@@ -33,7 +33,7 @@ from google.cloud import bigquery, storage
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery_cache.base import Cache
 
-from starthinker.setup import CLOUD_SERVICE, INTERNAL_MODE
+from starthinker.config import CLOUD_SERVICE, INTERNAL_MODE
 from starthinker.util.project import project
 from starthinker.util.auth.google_bucket_auth import BucketCredentials
 
@@ -55,7 +55,8 @@ SCOPES = [
   'https://www.googleapis.com/auth/spreadsheets',
   'https://www.googleapis.com/auth/doubleclicksearch',
   'https://www.googleapis.com/auth/content',
-  'https://www.googleapis.com/auth/ddmconversions'
+  'https://www.googleapis.com/auth/ddmconversions',
+  'https://www.googleapis.com/auth/datastore',
 ]
 
 if INTERNAL_MODE: SCOPES.append('https://www.googleapis.com/auth/snippets.readonly')
@@ -68,7 +69,10 @@ RE_CREDENTIALS_JSON = re.compile(r'^\s*\{.*\}\s*$', re.DOTALL)
 
 def get_credentials():
 
-  auth = project.recipe['setup']['auth']['user']
+  try:
+    auth = project.recipe['setup']['auth']['user']
+  except KeyError: 
+    raise KeyError("Either specify a -u [user credentials path] parameter on the command line or include setup->auth->user->[JSON OR PATH] in the recipe.")
 
   # if credentials are stored in a bucket
   if RE_CREDENTIALS_BUCKET.match(auth):
@@ -98,7 +102,10 @@ def get_credentials():
 
 def get_service_credentials(scopes=None):
 
-  auth = project.recipe['setup']['auth']['service']
+  try:
+    auth = project.recipe['setup']['auth']['service']
+  except KeyError: 
+    raise KeyError("Either specify a -s [service credentials path] parameter on the command line or include setup->auth->service->[JSON OR PATH] in the recipe.")
 
   # if credentials are embeded as JSON
   if RE_CREDENTIALS_JSON.match(auth):

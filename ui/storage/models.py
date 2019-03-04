@@ -23,7 +23,7 @@ from time import sleep
 
 from django.conf import settings
 
-from starthinker.setup import CLOUD_PROJECT, CLOUD_SERVICE
+from starthinker.config import CLOUD_PROJECT, CLOUD_SERVICE
 from starthinker.manager.log import log_get
 from starthinker.util.project import project
 from starthinker.util.storage import bucket_create, bucket_access, object_list, object_get
@@ -54,7 +54,7 @@ class Storage():
   def __init__(self, filename_storage):
     self.name = filename_storage.split(':', 1)[1]
     self.filename_storage = filename_storage
-    self.filename_local = settings.UI_CRON + RE_UID.sub('_', filename_storage.replace('starthinker', 'storage', 1))
+    self.filename_local = RE_UID.sub('_', filename_storage.replace('starthinker', 'storage', 1))
     self.link_storage = 'https://storage.cloud.google.com/%s' % filename_storage.replace(':', '/', 1)
     self.link_run = '/storage/run/%s/' % self.name
     self.json = None
@@ -123,5 +123,11 @@ def storage_run(account, recipe_name):
   if 'day' in data['setup']: del data['setup']['day']
   if 'hour' in data['setup']: del data['setup']['hour']
 
-  send_message(settings.UI_PROJECT, settings.UI_TOPIC, json.dumps(data))
-  sleep(5) # give the task enough time to start and flag RUNNING
+  if settings.UI_TOPIC:
+    # dispatch to pub/sub
+    send_message(settings.UI_PROJECT, settings.UI_TOPIC, json.dumps(data))
+    sleep(5) # give the task enough time to start and flag RUNNING
+  else:
+    # write to local file
+    with open(settings.UI_CRON + '/storage_%d_%s' % (account.pk, recipe_name) , 'w') as f:
+      f.write(json.dumps(data))

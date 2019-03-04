@@ -1,0 +1,31 @@
+{
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "icon":"waves",
+    "product":"gTech",
+    "title":"Anonymize Dataset",
+    "description":"Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.",
+    "instructions":[
+       "Ensure you have user access to both datasets.",
+       "Provide the source project and dataset.",
+       "Provide the destination project and dataset."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "anonymize":{
+      "auth":"user",
+      "bigquery":{
+        "from":{
+          "project":{"field":{ "name":"from_project", "kind":"string", "order":1, "description":"Original project to copy from." }},
+          "dataset":{"field":{ "name":"from_dataset", "kind":"string", "order":2, "description":"Original dataset to copy from." }}
+        },
+        "to":{
+          "project":{"field":{ "name":"to_project", "kind":"string", "order":3, "description":"Anonymous data will be writen to." }},
+          "dataset":{"field":{ "name":"to_dataset", "kind":"string", "order":4, "description":"Anonymous data will be writen to." }}
+        }
+      }
+    }}
+  ]
+}

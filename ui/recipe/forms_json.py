@@ -21,7 +21,7 @@ import json
 
 from django import forms
 
-from starthinker.setup import EXECUTE_PATH
+from starthinker.config import EXECUTE_PATH
 from starthinker.script.parse import json_get_fields
 from starthinker.ui.recipe.forms_fields import CommaSeparatedCharField, CommaSeparatedIntegerField, JsonField, TimezoneField
 

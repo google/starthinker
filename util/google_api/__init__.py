@@ -34,18 +34,18 @@ import traceback
 from time import sleep
 from googleapiclient.errors import HttpError
 
-from starthinker.setup import EXECUTE_PATH, INTERNAL_MODE
+from starthinker.config import EXECUTE_PATH, INTERNAL_MODE
 from starthinker.util.auth import get_service
 from starthinker.util.project import project
 
 
-def API_Retry(job, key=None, retries=50, wait=30):
+def API_Retry(job, key=None, retries=5, wait=30):
   """ API retry that includes back off and some common error handling.
 
-  The back off executes [retry] times.  Each time the [wait] is doubled.
+  For critical but recoverable errors, the back off executes [retry] times.  Each time the [wait] is doubled.
   By default retries are: 0:30 + 1:00 + 2:00 + 4:00 + 8:00 = 15:30
 
-  * Errors retried: 403, 429, 500, 503
+  * Errors retried: 429, 500, 503
   * Errors ignored: 409 - already exists ( triggered by create only and also returns None )
   * Errors raised: ALL OTHERS
 
@@ -70,13 +70,14 @@ def API_Retry(job, key=None, retries=50, wait=30):
     return data if not key else data.get(key, [])
 
   except HttpError, e:
-    # errors that can be overcome or re-tried
-    if e.resp.status in [403, 409, 429, 500, 503]:
+    # errors that can be overcome or re-tried ( removed 403 as it should fail )
+    if e.resp.status in [409, 429, 500, 503]:
       # already exists ( ignore benign )
       if json.loads(e.content)['error']['code'] == 409:
         return
       # check if retries left
       elif retries > 0:
+        if project.verbose: print 'API ERROR:', str(e)
         if project.verbose: print 'API RETRY:', retries
         sleep(wait)
         return API_Retry(job, key, retries - 1, wait * 2)
@@ -244,14 +245,14 @@ class API():
       results = API_Retry(job)
 
       # if paginated, automatically iterate
-      if 'nextPageToken' in results or self.iterate == True:
+      if results and ( 'nextPageToken' in results or self.iterate == True ):
         return API_Iterator(f, self.function_kwargs, results)
 
       # if not pagenated, return object as is
       else:
         return results
 
-    # if not run, just return job object ( for chunke dupload for example )
+    # if not run, just return job object ( for chunked upload for example )
     else:
       return job
 
@@ -327,4 +328,17 @@ def API_SNIPPETS(auth, iterate=False):
     'uri':'%sutil/snippets/snippets_v1.json' % EXECUTE_PATH
   }
 
+  return API(configuration)
+
+
+def API_Datastore(auth, iterate=False):
+  """Datastore helper configuration for Google API. Defines agreed upon version.
+  """
+
+  configuration = {
+    'api':'datastore',
+    'version':'v1',
+    'auth':auth,
+    'iterate':iterate
+  }
   return API(configuration)

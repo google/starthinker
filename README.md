@@ -22,7 +22,7 @@ General structure ofthe code is:
 
 - [/deploy.sh](/deploy.sh) - a micro UI for setting up credentials, and running recipes on a schedule
 - [/setup.sh](setup.sh) - source this to set up python paths to run commands using this framework.
-- [/setup.py](setup.py) - global settings covering buffer size, cloud paths, and production vs debug.
+- [/config.py](config.py) - global settings covering buffer size, cloud paths, and production vs debug.
 - [/util](util/) - Low level library wrappers around Google API with helpers to handle common errors.
 - [/task](task/) - Handlers for each task specified in a JSON recipe.
 - [/gtech](gtech/) - complete solution templates provided by Google gTech, great starting point for ideas.
@@ -45,6 +45,21 @@ data on the command line ( or a UI ).
 [StarThinker GitHub Documentation Page](https://google.github.io/starthinker/)
 
 ## Whats The Most Basic Use?
+
+If you need virtual environment to prevent install conflicts, try:
+
+```
+pip install --upgrade pip
+pip install --user virtualenv
+python -m virtualenv env
+source env/bin/activate
+```
+
+To exit virtualenv:
+
+```
+deactivate
+```
 
 For a quick start that will do nothing other than show how to sucesfully run recipes, try:
 

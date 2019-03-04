@@ -125,11 +125,16 @@ def bigquery():
 
     object_compare(sorted(rows), sorted(project.task['bigquery']['values']))
 
+def asserts():
+  print project.task['assert']
+  print 'PASSED'
+
 
 # decide which test to run
 @project.from_parameters
 def test():
-  if 'sheets' in project.task: sheets()
+  if 'assert' in project.task: asserts()
+  elif 'sheets' in project.task: sheets()
   elif 'bigquery' in project.task: bigquery()
 
 

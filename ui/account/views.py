@@ -30,7 +30,7 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
 
-from starthinker.setup import CLOUD_PROJECT, CLOUD_SERVICE
+from starthinker.config import CLOUD_PROJECT, CLOUD_SERVICE
 from starthinker.util.auth import APPLICATION_NAME, SCOPES
 from starthinker.util.project import project
 from starthinker.util.storage import bucket_create, bucket_access

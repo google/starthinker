@@ -29,7 +29,7 @@ the util/data/__init__.py functions.
 Note
 
 The underlying libraries use streaming download buffers, no disk is used.
-Buffers are controlled in setup.py.
+Buffers are controlled in config.py.
 
 """
 

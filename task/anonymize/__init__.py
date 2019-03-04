@@ -1,4 +1,3 @@
-{% comment %}
 ###########################################################################
 #
 #  Copyright 2019 Google Inc.
@@ -16,15 +15,3 @@
 #  limitations under the License.
 #
 ###########################################################################
-{% endcomment %}
-
-{% for section in form_setup.structure %}
-  <div class="card-panel">
-    <h3>{{ section.title }}</h3>
-    <p class="flow-text">{{ section.description|safe }}</p>
-    {% with fields=section.fields %}
-      {% include "form_fields.html" %}
-    {% endwith %}
-  </div>
-  <br/>
-{% endfor %}

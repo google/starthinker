@@ -1,0 +1,31 @@
+{
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2019 Google Inc.",
+    "open":true,
+    "icon":"donut_small",
+    "product":"DCM",
+    "title":"DCM API To BigQuery",
+    "description":"Write the current state of accounts, subaccounts, profiles, advertisers, campaigns, sites, roles, and reports to BigQuery for a given list of DCM accounts.",
+    "instructions":[
+      "Specify the name of the dataset, several tables will be created here.",
+      "If dataset exists, it is inchanged.",
+      "Add DCM account ids for the accounts to pull data from."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "dcm_api":{
+      "auth":"user",
+      "endpoints":["accounts", "subaccounts", "profiles", "advertisers", "campaigns", "sites", "roles", "reports"],
+      "accounts":{
+        "single_cell":true,
+        "values":{"field":{ "name":"cm_accounts", "kind":"integer_list", "order":2, "default":"", "description":"Comma separated DCM account ids." }}
+      },
+      "out":{
+        "auth":"service",
+        "dataset":{"field":{ "name":"dataset_dataset", "kind":"string", "order":1, "default":"", "description":"Google BigQuery dataset to create tables in." }}
+      }
+    }}
+  ]
+}

@@ -43,7 +43,7 @@ import urllib
 import argparse
 import subprocess
 
-from starthinker.setup import EXECUTE_PATH
+from starthinker.config import EXECUTE_PATH
 from starthinker.script.parse import json_get_fields
 
 RE_PY = re.compile(r'.*\.py')

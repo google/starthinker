@@ -43,7 +43,7 @@ class SetupForm(forms.ModelForm):
 
     self.structure = [
       { 'title':'Cloud Project',
-        'description':'Provide a cloud project where data will be stored.  The service level authentication will be used where possible in lieu of your user credentials.',
+        'description':'Provide a <a href="/project/">cloud project service account</a> where data will be stored.  The service level authentication will be used to write to your cloud project.',
         'fields':[
           self['name'],
           self['project'],

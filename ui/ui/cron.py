@@ -19,7 +19,7 @@
 import subprocess
 from time import sleep
 
-from starthinker.setup import EXECUTE_PATH
+from starthinker.config import EXECUTE_PATH
 
 ONE_HOUR_AND_ONE_SECOND = (60 * 60) + 1 # ensures no repeat in a single hour but never runs over in 24 hours
 
@@ -27,8 +27,8 @@ if __name__ == "__main__":
 
   try:
     while True:
-      subprocess.call("python manage.py recipe_to_json --remote", shell=True, cwd=EXECUTE_PATH + "ui/")
-      subprocess.call("python manage.py client_to_json --remote", shell=True, cwd=EXECUTE_PATH + "ui/")
+      subprocess.call("python manage.py recipe_to_json --remote --settings=ui.settings_internal", shell=True, cwd=EXECUTE_PATH + "ui/")
+      subprocess.call("python manage.py client_to_json --remote --settings=ui.settings_internal", shell=True, cwd=EXECUTE_PATH + "ui/")
       print 'SLEEP:', ONE_HOUR_AND_ONE_SECOND
       sleep(ONE_HOUR_AND_ONE_SECOND)
 

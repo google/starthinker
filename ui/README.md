@@ -31,18 +31,18 @@ For production deployment, see: https://docs.djangoproject.com/en/1.11/howto/dep
 For a non-production reference deployment, first set up the local SQLite database.
 
 ```
-source setup.sh
-python ui/manage.py makemigrations account --settings=ui.settings_open
-python ui/manage.py makemigrations project --settings=ui.settings_open
-python ui/manage.py makemigrations recipe --settings=ui.settings_open
-python ui/manage.py makemigrations storage --settings=ui.settings_open
-python ui/manage.py makemigrations website --settings=ui.settings_open
-python ui/manage.py migrate --settings=ui.settings_open
+python manage.py makemigrations account --settings=ui.settings_open
+python manage.py makemigrations project --settings=ui.settings_open
+python manage.py makemigrations recipe --settings=ui.settings_open
+python manage.py makemigrations storage --settings=ui.settings_open
+python manage.py makemigrations website --settings=ui.settings_open
+python manage.py migrate --settings=ui.settings_open
 ```
 
 Then run the non-production local server. 
 
 ```
+source setup.sh
 python ui/manage.py runserver localhost:8000 --settings=ui.settings_open
 ```
 

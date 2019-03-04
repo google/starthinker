@@ -69,7 +69,6 @@ def get_rows(auth, source):
         "bigquery":{
           "dataset": [ string ],
           "table": [ string ],
-          "columns":[ integer list ],
           "legacy":[ boolean ]
         },
         "sheet":{
@@ -113,7 +112,7 @@ def get_rows(auth, source):
   else:
     if 'values' in source:
       for value in source['values']:
-        yield value if source.get('single_cell', False) else [value]
+        yield value 
 
     if 'sheet' in source:
       rows = sheets_read(project.task['auth'], source['sheet']['url'], source['sheet']['tab'], source['sheet']['range'])

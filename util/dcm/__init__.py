@@ -27,7 +27,7 @@ from datetime import date, timedelta
 
 from googleapiclient.errors import HttpError
 
-from starthinker.setup import INTERNAL_MODE, EXECUTE_PATH, BUFFER_SCALE
+from starthinker.config import INTERNAL_MODE, EXECUTE_PATH, BUFFER_SCALE
 from starthinker.util import flag_last
 from starthinker.util.project import project
 from starthinker.util.auth import get_service
@@ -45,11 +45,11 @@ else:
   API_VERSION = 'v3.2'
   API_URI = None
 
-DCM_CHUNK_SIZE = int(200 * 1024000 * BUFFER_SCALE) # 200MB minimum recommended by docs * scale in setup.py
+DCM_CHUNK_SIZE = int(200 * 1024000 * BUFFER_SCALE) # 200MB minimum recommended by docs * scale in config.py
 DCM_CONVERSION_SIZE = 1000
 
 
-def get_profile_id(auth, account_id):
+def get_profile_for_api(auth, account_id):
   """Return a DCM profile ID for the currently supplied credentials.
 
   Bulletproofing: https://developers.google.com/doubleclick-advertisers/v3.2/userProfiles/get
@@ -63,7 +63,8 @@ def get_profile_id(auth, account_id):
     * account_id: (int) Account number for which report is retrieved.
 
   Returns:
-    * Profile ID.
+    * Is Superuser ( bool ): True if superuser account
+    * Profile ID ( int ): profile id to be used to make API call
        
   Raises:
     * If current credentials do not have a profile for this account.
@@ -81,7 +82,7 @@ def get_profile_id(auth, account_id):
 
     # take the first profile for admin
     if '@dcm' in p['userName']: profile_admin = p_id
-    elif '@dfa' in p['userName']: profile_admin = p_id
+    #elif '@dfa' in p['userName']: profile_admin = p_id
     elif a_id == 2515: profile_admin = p_id
 
     # try to find a network profile if exists
@@ -89,9 +90,15 @@ def get_profile_id(auth, account_id):
       profile_network = p_id
       break
 
-  # return admin if exists, network if exists, and finally throw exception
-  if profile_network or profile_admin: return profile_admin or profile_network
+  if profile_admin: return True, profile_admin
+  elif profile_network: return False, profile_network
   else: raise Exception('Add your user profile to DCM account %s.' % account_id)
+    
+
+def get_profile_id(auth, account_id):
+  """Legacy function replaced by get_profile_for_api(...).
+  """
+  return get_profile_for_api(auth, account_id)[1]
 
 
 def account_profile_kwargs(auth, account, **kwargs):
@@ -253,7 +260,7 @@ def report_get(auth, account, report_id = None, name=None):
   elif report_id:
     if INTERNAL_MODE: response = API_Retry(service.reports().get(accountId=account_id, profileId=profile_id, reportId=report_id))
     else: response = API_Retry(service.reports().get(profileId=profile_id, reportId=report_id))
-    pprint.PrettyPrinter().pprint(response)
+    #pprint.PrettyPrinter().pprint(response)
     
   return report
 
@@ -660,7 +667,6 @@ def report_clean(rows, datastudio=False):
 
   first = True
   last = False
-  date = None
 
   # find start of report
   for row in rows:
@@ -676,14 +682,12 @@ def report_clean(rows, datastudio=False):
 
     # find 'Date' column if it exists
     if first: 
-      try: date = row.index('Date')
+      try: 
+        date_column = row.index('Date')
+        row[date_column] = 'Report_Day'
       except ValueError: pass
       if datastudio: row = [column_header_sanitize(cell) for cell in row]
       
-    # check if data studio formatting is applied
-    if datastudio and date is not None:
-      row[date] = 'Report_Day' if first else row[date].replace('-', '')
-
     # remove not set columns ( which throw off schema on import types )
     row = ['' if cell.strip() in ('(not set)', '-') else cell for cell in row]
 
@@ -754,3 +758,21 @@ def conversions_upload(auth, account, floodlight_activity_id, conversion_type, c
       # clear the buffer
       row_count += len(row_buffer)
       row_buffer = []
+
+
+def id_to_timezone(reportGenerationTimeZoneId):
+  return {
+    1:"America/New_York",
+    2:"Europe/London",
+    3:"Europe/Paris",
+    4:"Africa/Johannesburg",
+    5:"Asia/Jerusalem",
+    6:"Asia/Shanghai",
+    7:"Asia/Hong_Kong",
+    8:"Asia/Tokyo",
+    9:"Australia/Sydney",
+    10:"Asia/Dubai",
+    11:"America/Los_Angeles",
+    12:"Pacific/Auckland",
+    13:"America/Sao_Paulo",
+  }.get(reportGenerationTimeZoneId)

@@ -60,14 +60,14 @@ The following Entity Read Files Can Be Specified:
 
 ### Notes
 
-- Files are moved using an in memory buffer, controlled by BUFFER_SCALE in setup.py. 
+- Files are moved using an in memory buffer, controlled by BUFFER_SCALE in config.py. 
 - Bigger buffer means faster move but needs a machine with more memory.
 - These transfers take a long time, two jobs can write over each other.
 - The tables are filled over time, if you need instant data switch, use table copy after job.
 
 """
 
-from starthinker.setup import BUFFER_SCALE
+from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
 from starthinker.util.storage import object_get_chunks
 from starthinker.util.bigquery import json_to_table
@@ -75,7 +75,7 @@ from starthinker.util.data import get_rows
 from starthinker.task.entity.schema import Entity_Schema_Lookup
 
 
-CHUNK_SIZE = int(200 * 1024000 * BUFFER_SCALE) # 200 MB * scale in setup.py
+CHUNK_SIZE = int(200 * 1024000 * BUFFER_SCALE) # 200 MB * scale in config.py
 PUBLIC_FILES = ('SupportedExchange', 'DataPartner', 'UniversalSite',
                 'GeoLocation', 'Language', 'DeviceCriteria', 'Browser', 'Isp')
 

@@ -33,7 +33,7 @@ import re
 import argparse
 import subprocess
 
-from starthinker.setup import EXECUTE_PATH
+from starthinker.config import EXECUTE_PATH
 from starthinker.util.project import project
 
 

@@ -23,18 +23,21 @@ import os
 import csv
 
 from starthinker.util.project import project
-from starthinker.util.bigquery import query_to_table, query_to_view, storage_to_table, query_to_rows, execute_statement
+from starthinker.util.bigquery import query_to_table, query_to_view, storage_to_table, query_to_rows, execute_statement, rows_to_table
 from starthinker.util.csv import rows_to_type
 from starthinker.util.sheets import sheets_clear
 from starthinker.util.sheets import sheets_write
 from starthinker.util.storage import object_put
-from starthinker.util.data import put_rows
+from starthinker.util.data import get_rows, put_rows
 
 
 # loop all parameters and replace with values, for lists turn them into strings
 def query_parameters(query, parameters):
   while '[PARAMETER]' in query:
-    parameter = parameters.pop(0)
+    try:
+      parameter = parameters.pop(0)
+    except IndexError:
+      raise IndexError('BigQuery: Missing PARAMETER values for this query.')
     if isinstance(parameter, list) or isinstance(parameter, tuple): parameter = ', '.join([str(p) for p in parameter])
     query = query.replace('[PARAMETER]', parameter, 1)
   if project.verbose: print 'QUERY:', query
@@ -44,8 +47,21 @@ def query_parameters(query, parameters):
 @project.from_parameters
 def bigquery():
 
+  
+  if 'values' in project.task['from']:
+    rows = get_rows(project.task['auth'], project.task['from'])
 
-  if 'query' in project.task['from']:
+    rows_to_table(
+      project.task['auth'],
+      project.id,
+      project.task['to']['dataset'],
+      project.task['to']['table'],
+      rows,
+      project.task.get('schema', []),
+      0
+    )
+      
+  elif 'query' in project.task['from']:
     if 'table' in project.task['to']:
       if project.verbose: print "QUERY TO TABLE", project.task['to']['table']
 

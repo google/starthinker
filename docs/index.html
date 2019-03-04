@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -64,10 +67,32 @@
   
   <nav>
     <div class="nav-wrapper">
-      <a href="." class="brand-logo"><img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker</a>
+      <a href="/" class="brand-logo"><img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker</a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/">Recipes</a></li>
+        <li><a href="/storage/">Storage</a></li>
+        <li><a href="/project/">Projects</a></li>
+        <li><a href="/solution/">Solutions</a></li>
+        <li><a href="/stats/">Stats</a></li>
+        <li><a href="/code/">Coding</a></li>
+        <li><a href="/team/">Team</a></li>
+        
+      </ul>
+      <ul class="side-nav red lighten-2" id="mobile-demo">
+        
+        <li><a class="white-text" href="/">Recipes</a></li>
+        <li><a class="white-text" href="/storage/">Storage</a></li>
+        <li><a class="white-text" href="/project/">Project</a></li>
+        <li><a class="white-text" href="/solution/">Solutions</a></li>
+        <li><a class="white-text" href="/stats/">Stats</a></li>
+        <li><a class="white-text" href="/code/">Code</a></li>
+        <li><a class="white-text" href="/team/">Team</a></li>
+        
+      </ul>
     </div>
   </nav>
-
+  
 
   <body>
     <!--Import jQuery before materialize.js-->
@@ -79,12 +104,12 @@
     <div id="page" class="center">
       
 
-  <h1 id="recipe-scripts">Open Source Handover</h1>
-  <p class="flow-text">Quickly deploying recipes and solutions using <a href="https://github.com/google/starthinker" target="_blank">StarThinker Framework</a>.</p>
+  <h1 id="recipe-scripts">Creating A Workflow Recipe</h1>
+  <p class="flow-text">StarThinker will get your custom solutions prototyped and scaled quickly.<br/>Using the <a href="https://github.com/google/starthinker" target="_blank">open source code</a>, each JSON task can be combined to form custom recipes.</p>  
 
-  <br/>
-  <h3 id="recipe_run">Running A JSON Recipe</h3>
-  <p class="flow-text">You received a recipe from Google, here is how to run it in 15 minutes.</p>
+  <br/><br/>
+  <h3 id="code_start">Quick Start</h3>
+  <p class="flow-text">Run your first recipe in 5 minutes.</p>
 
   <table class="bordered highlight list">
     <thead>
@@ -93,21 +118,34 @@
         <th>Instructions</th>
         <th class="center-align" style="width:90px;">Minutes</th>
       </tr>
-    </thead>
-    <tbody>
+     </thead>
+     <tbody>
 
-      <tr>
-        <td><i class="material-icons medium teal-text">file_download</i></td>
-        <td>
-          <strong>Get the open source framework:</strong>
-          <br/>Request access to the private ( beta ) repository, email <a href="mailto:starthinker-help@google.com?subject=Custom+StarThinker+Recipe">starthinker-help@google.com</a>.
-          <br/>git clone <a href="https://github.com/google/starthinker">https://github.com/google/starthinker</a>
-          <br/>cd starthinker
-        </td>
-        <td class="center-align">1</td>
-      </tr>
+       <tr>
+         <td><i class="material-icons medium teal-text">file_download</i></td>
+         <td>
+           <strong>Get the open source code:</strong>
+           <br/>git clone https://github.com/google/starthinker
+           <br/>cd starthinker
+         </td>
+         <td class="center-align">1</td>
+       </tr>
 
-      <tr>
+       <tr>
+         <td><i class="material-icons medium teal-text">aspect_ratio</i></td>
+         <td>
+           <strong>Optional, Install virtual environment:</strong>
+           <br/>pip install --upgrade pip
+           <br/>pip install --user virtualenv
+           <br/>python -m virtualenv env
+           <br/>source env/bin/activate
+           <br/><strong>Optional, Turn off virtual environment::</strong>
+           <br/>deactivate
+         </td>
+         <td class="center-align">2</td>
+       </tr>
+
+       <tr>
          <td><i class="material-icons medium teal-text">build</i></td>
          <td>
            <strong>Set up and run using deploy script:</strong>
@@ -116,7 +154,7 @@
            <br/>Choose 9) Add Recipe
            <br/>Choose 10) Run Recipe
          </td>
-         <td class="center-align">4</td>
+         <td class="center-align">3</td>
        </tr>
 
        <tr>
@@ -125,172 +163,50 @@
            <strong>Or set up and run using command line:</strong>
            <br/>pip install -r requirements.txt
            <br/>source setup.sh
-           <br/>python all/run.py project/sample/say_hello.json
-           <br/>python all/run.py [recipe json path] -p [project id] -c [client json path] -s [service json path] -u [user json path] --verbose
+           <br/>python all/run.py gtech/say_hello.json
            <br/>If you need to download service, client, or user credentials. ( use deploy.sh )
-           <br/>Create a <a href="https://cloud.google.com/resource-manager/docs/creating-managing-projects" target="_blank">cloud project</a>.
-           <br/>Create <a href="https://cloud.google.com/docs/authentication/api-keys" target="_blank">client credentials ( other )</a>, download json.
-           <br/>Create <a href="https://cloud.google.com/iam/docs/creating-managing-service-accounts" target="_blank">service credentials</a>, download json.
          </td>
          <td class="center-align">4</td>
        </tr>
 
-    </tbody>
+     </tbody>
   </table>
 
   <br/><br/>
-  <h3 id="cron_deployment">Basic Recipe Cloud Scheduler</h3>
-  <p class="flow-text">Create a minimal cloud cron to run recipes on a schedule.</p>
-
-  <table class="bordered highlight list">
-    <tbody>
-
-      <tr>
-        <td class="center">
-          <i class="material-icons medium teal-text">cloud</i>
-        </td>
-        <td>
-          <strong>Creates a cloud machine that will run StarThinker jobs 24 hours a day.</strong>
-          <br/>Create a <a href="https://cloud.google.com/resource-manager/docs/creating-managing-projects" target="_blank">cloud project</a>.
-          <br/>Within a Google Cloud Project visit <a href="https://pantheon.corp.google.com/compute/instances">Compute Engine &rarr; VM Instances</a>
-          <br/>We recommend starting the following setup:
-          <br/>Machine type: micro (1 shared vCPU), f1-micro
-          <br/>Identity and API access: Allow full access to all Cloud APIs
-          <br/>Boot Disk Choose: SUSE Linux Enterprise Server
-          <br/>Click Create
-        </td>
-      </tr>
-
-      <tr>
-        <td class="center">
-          <i class="material-icons medium teal-text">loop</i>
-        </td>
-        <td>
-          <strong>Deploy a cron job to run recipes.</strong>
-          <br>SSH into the new instance.
-          <br/>Request access to the private repository, email <a href="mailto:starthinker-help@google.com?subject=Custom+StarThinker+Recipe">starthinker-help@google.com</a>.
-          <br/>On the command line run:
-          <br/>git clone <a href="https://github.com/google/starthinker">https://github.com/google/starthinker</a>
-          <br/>cd starthinker
-          <br/>./deploy.sh
-          <br/>Choose 1) Full Setup
-          <br/>Choose 9) Add Recipe
-          <br/>Choose 6) Start Cron
-        </td>
-      </tr>
-
-    </tbody>
-  </table>
-
-
-  <br/><br/>
-  <h3 id="tips_tricks">Helpful Tips And Tricks</h3>
-  <p class="flow-text">Best practices for finding, using, and building code on top of StarThinker.</p>
-
-  <table class="bordered highlight list">
-    <tbody>
-      <tr>
-        <th style="vertical-align:top;">1</th>
-        <td>Look for helper.py to invoke the code from the command line, helpful for testing setup.</td>
-      </tr>
-      <tr>
-        <th style="vertical-align:top;">2</th>
-        <td>Look in solutions/*.json and projects/sample/*.json for samples.</td>
-      </tr>
-      <tr>
-        <th style="vertical-align:top;">3</th>
-        <td>Look in [task]/script*.json for json definitions.</td>
-      </tr>
-      <tr>
-        <th style="vertical-align:top;">4</th>
-        <td>Review arguments in utils/project/__init__.py at least once.</td>
-      </tr>
-      <tr>
-        <th style="vertical-align:top;">5</th>
-        <td>Learn to love: find . -name '*.py' | xargs grep 'somestring'</td>
-      </tr>
-      <tr>
-        <th style="vertical-align:top;">6</th>
-        <td>Adding --verbose to python all/run.py or python [task]/run.py produces debug.</td>
-      </tr>
-      <tr>
-        <th style="vertical-align:top;">7</th>
-        <td>Read the core framework documentation and code that glues things together:
-            <br/>&nbsp;&nbsp;&nbsp;util/project/__init__.py
-            <br/>&nbsp;&nbsp;&nbsp;util/data/__init__.py
-            <br/>&nbsp;&nbsp;&nbsp;util/google_api/__init__.py
-            <br/>&nbsp;&nbsp;&nbsp;solution/run.py
-        </td>
-      </tr>
-      <tr>
-        <th style="vertical-align:top;">8</th>
-        <td>python solution/run.py [json] --directory [dir] creates recipes.</td>
-      </tr>
-      <tr>
-        <th style="vertical-align:top;">9</th>
-        <td>Make use of util/data/__init__.py ( get_rows / put_rows ).</td>
-      </tr>
-      <tr>
-        <th style="vertical-align:top;">10</th>
-        <td>Use shared links for sheets.</td>
-      </tr>
-      <tr>
-        <th style="vertical-align:top;">11</th>
-        <td>First get the data, then operate on it.</td>
-      </tr>
-      <tr>
-        <th style="vertical-align:top;">12</th>
-        <td>There are more than 3 ways to do anything by design.</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <br/><br/>
-  <h3 id="recipe_code">Coding A Recipe</h3>
-  <p class="flow-text">Create a recipe by assembling tested reliable json instructions.</p>
+  <h3 id="recipe_code">Creating A Custom Recipe</h3>
+  <p class="flow-text">Create a recipe by assembling from scratch or using templates.</p>
 
   <table class="bordered highlight list">
     <tbody>
       <tr>
         <td style="vertical-align:top;width:90px;"><i class="material-icons medium teal-text">content_paste</i></td>
         <td>
-          <strong>1. Copy the recipe template...</strong>
-          <br/>cp project/sample/say_hello.json project/[ldap]/[project_name].json
-          <br/>vi project/[ldap]/[project_name].json
+          <strong>Copy the Say Hello recipe and start building a workflow using JSON samples below.</strong>
+          <br/>cp gtech/say_hello.json [project_name].json
+          <br/>vi [project_name].json
+          <br/>python all/run.py [project_name].json --verbose
         </td>
       </tr>
-    </tbody>
-    <tbody>
       <tr>
         <td style="vertical-align:top;"><i class="material-icons medium teal-text">list</i></td>
         <td>
-           <strong>2. Add task json from the list below to execute tasks.</strong>
-           <br/>Copy and paste each task JSON into the "task":[...] list.
-           <br/>Replace { "field": ... } with actual values.
-           </br/>You can change the "auth" from "user" to "service".
-           <br/>You can add "day" and "hour" elements to a task to execute at specific times.
-           <br/>Look through the sample recipes in /project/* for reference implementations. 
+           <strong>Create a recipe from a template by running the following and following screen prompts.</strong>
+           <br/>python script/run.py gtech/script_dcm_to_bigquery.json
+           <br/>python all/run.py [JSON file in step above].json --verbose
         </td>
       </tr>
-    </tbody>
-    <tbody>
       <tr>
         <td style="vertical-align:top;"><i class="material-icons medium teal-text">settings</i></td>
         <td>
-           <strong>3. Run and test your script. You can run it all or parts to help debug.</strong>
-           <br/>To run the whole script...
-           <br/>python all/run.py project/[ldap]/[project_name].json --verbose
-           <br/>To run a specific task...
-           <br/>python [task]/run.py project/[ldap]/[project_name].json --verbose -i 1
-           <br/>To run on a schedule ...
-           <br/>python cron/run.py project/[ldap]/
+           <strong>For more detailed instructions see the open source documentations.</strong>
+           <br/><a href="https://github.com/google/starthinker/blob/master/README.md">https://github.com/google/starthinker/blob/master/README.md</a>
         </td>
       </tr>
     </tbody>
   </table>
 
   <br/><br/>
-  <h3 id="recipe_tasks">Available Recipe Tasks</h3>
+  <h3 id="code-tasks">Available Recipe Tasks</h3>
   <p class="flow-text">Copy and paste the JSON to add tasks to your recipe. Replace <i>{ "field": ... }</i> with your values.</p>
 
   
@@ -1301,6 +1217,60 @@
                             &quot;DCM_ADVERTISER&quot;, 
                             &quot;ENCRYPTION_ENTITY_TYPE_UNKNOWN&quot;
                         ]
+                    }
+                }
+            }
+        }
+    }
+]</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_small</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_api_to_bigquery">JSON</span>
+            <h4>DCM API To BigQuery</h4>
+            <p>TASK: dcm_api_to_bigquery</p>
+            <p>Write the current state of accounts, subaccounts, profiles, advertisers, campaigns, sites, roles, and reports to BigQuery for a given list of DCM accounts.</p>
+            <ol>
+              <li>Specify the name of the dataset, several tables will be created here.</li><li>If dataset exists, it is inchanged.</li><li>Add DCM account ids for the accounts to pull data from.</li>
+            </ol>
+            <pre class="view_code" id="view_code_dcm_api_to_bigquery" style="display:none;">[
+    {
+        &quot;dcm_api&quot;: {
+            &quot;endpoints&quot;: [
+                &quot;accounts&quot;, 
+                &quot;subaccounts&quot;, 
+                &quot;profiles&quot;, 
+                &quot;advertisers&quot;, 
+                &quot;campaigns&quot;, 
+                &quot;sites&quot;, 
+                &quot;roles&quot;, 
+                &quot;reports&quot;
+            ], 
+            &quot;accounts&quot;: {
+                &quot;single_cell&quot;: true, 
+                &quot;values&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;integer_list&quot;, 
+                        &quot;order&quot;: 2, 
+                        &quot;description&quot;: &quot;Comma separated DCM account ids.&quot;, 
+                        &quot;name&quot;: &quot;cm_accounts&quot;
+                    }
+                }
+            }, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;out&quot;: {
+                &quot;auth&quot;: &quot;service&quot;, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 1, 
+                        &quot;description&quot;: &quot;Google BigQuery dataset to create tables in.&quot;, 
+                        &quot;name&quot;: &quot;dataset_dataset&quot;
                     }
                 }
             }
@@ -2505,6 +2475,850 @@
       <tbody>
       
         <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_small</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_barnacle">JSON</span>
+            <h4>Barnacle</h4>
+            <p>TASK: barnacle</p>
+            <p>Gives DCM clients ability to see which profiles have access to which parts of an account. Loads DCM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.</p>
+            <ol>
+              <li>Wait for <b>BigQuery->%(project)s->%(dataset)s->CM_*</b> to be created.</li><li>Wait for <b>BigQuery->%(project)s->%(dataset)s->Barnacle_*</b> to be created.</li><li>Copy <a href='https://datastudio.google.com/open/1Azk_Nul-auinf4NnDq8T9fDyiKkUWD7A' target='_blank'>Barnacle Profile Advertiser Map</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1NEzrQWWnPjkD90iUwN-ASKbVBzoeBdoT' target='_blank'>Barnacle Profile Campaign Map</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1-YGDiQPDnk0gD78_QOY5XdTXRlTrLeEq' target='_blank'>Barnacle Profile Report Map</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1v_GRaitwPaHHKUzfJZYNBhzotvZ-bR7Y' target='_blank'>Barnacle Profile Site Map</a>.</li><li>Copy <a href='https://datastudio.google.com/open/14tWlh7yiqzxKJIppMFVOw2MoMtQV_ucE' target='_blank'>Barnacle Profiles Connections</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1mavjxvHSEPfJq5aW4FYgCXsBCE5rthZG' target='_blank'>Barnacle Report Delivery Profiles</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1Azk_Nul-auinf4NnDq8T9fDyiKkUWD7A' target='_blank'>Barnacle Roles Duplicates</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1ogoofpKtqkLwcW9qC_Ju_JvJdIajsjNI' target='_blank'>Barnacle Roles Not Used</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1xLgZPjOPDtmPyEqYMiMbWwMI8-WTslfj' target='_blank'>Barnacle Site Contacts Profiles</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT' target='_blank'>Barnacle Sample Report</a>.</li><li>When prompted choose the new data sources you just created.</li><li>Or give these intructions to the client.</li>
+            </ol>
+            <pre class="view_code" id="view_code_barnacle" style="display:none;">[
+    {
+        &quot;dataset&quot;: {
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;order&quot;: 1, 
+                    &quot;description&quot;: &quot;Name of Google BigQuery dataset to create.&quot;, 
+                    &quot;name&quot;: &quot;dataset&quot;
+                }
+            }, 
+            &quot;description&quot;: &quot;The dataset will hold multiple tables, amke sure it exists.&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;hour&quot;: [
+                4
+            ]
+        }
+    }, 
+    {
+        &quot;dcm_api&quot;: {
+            &quot;description&quot;: &quot;Will create tables with format CM_* to hold each endpoint via a call to the API list function. Accounts are pulled via UI.&quot;, 
+            &quot;hour&quot;: [
+                4
+            ], 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;accounts&quot;: {
+                &quot;single_cell&quot;: true, 
+                &quot;values&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;integer_list&quot;, 
+                        &quot;order&quot;: 2, 
+                        &quot;description&quot;: &quot;Comma separated DCM account ids.&quot;, 
+                        &quot;name&quot;: &quot;accounts&quot;
+                    }
+                }
+            }, 
+            &quot;endpoints&quot;: [
+                &quot;accounts&quot;, 
+                &quot;subaccounts&quot;, 
+                &quot;profiles&quot;, 
+                &quot;advertisers&quot;, 
+                &quot;campaigns&quot;, 
+                &quot;sites&quot;, 
+                &quot;roles&quot;, 
+                &quot;reports&quot;
+            ], 
+            &quot;out&quot;: {
+                &quot;auth&quot;: &quot;service&quot;, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 1, 
+                        &quot;description&quot;: &quot;Google BigQuery dataset to create tables in.&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;
+                    }
+                }
+            }
+        }
+    }, 
+    {
+        &quot;bigquery&quot;: {
+            &quot;to&quot;: {
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                    }
+                }, 
+                &quot;view&quot;: &quot;Barnacle_Profile_Role_Account_SubAccount_Map&quot;
+            }, 
+            &quot;from&quot;: {
+                &quot;query&quot;: &quot; SELECT   P.profileId AS profileId,   P.accountId AS accountId,   P.subaccountId AS subaccountId,   P.name AS Profile_Name,    P.email AS Profile_Email,    REGEXP_EXTRACT(P.email, r&#39;@(.+)&#39;) AS Profile_Domain,   P.userAccessType AS Profile_userAccessType,    P.active AS Profie_active,    P.traffickerType AS Profile_traffickerType,    P.comments AS Profile_comments,   P.userRoleId AS Profile_userRoleId,    R.role_name AS Role_role_name,    R.role_defaultUserRole AS Role_role_defaultUserRole,    R.permission_name AS Role_permission_name,        R.permission_availability AS Role_permission_availability,   A.name AS Account_name,   A.active AS Account_active,   A.description AS Account_description,   A.locale AS Account_locale,   S.name AS SubAccount_name FROM `[PARAMETER].[PARAMETER].CM_Profiles` AS P  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Roles` AS R    ON P.userRoleId=R.roleId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A    ON P.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS S    ON P.accountId=S.accountId   AND P.subaccountId=S.subaccountId ; &quot;, 
+                &quot;legacy&quot;: false, 
+                &quot;parameters&quot;: [
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }
+                ]
+            }, 
+            &quot;description&quot;: &quot;Combine profile, account, subaccount, and roles into one view, used by other views in this workflow.&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;hour&quot;: [
+                5
+            ]
+        }
+    }, 
+    {
+        &quot;bigquery&quot;: {
+            &quot;to&quot;: {
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                    }
+                }, 
+                &quot;view&quot;: &quot;Barnacle_Profile_Advertiser_Map&quot;
+            }, 
+            &quot;from&quot;: {
+                &quot;query&quot;: &quot; SELECT   APRASM.*,   A.advertiserId AS advertiserId,   A.name AS Advertiser_name,    A.status AS Advertiser_status,    A.defaultEmail AS Advertiser_defaultEmail,    A.suspended AS Advertiser_suspended FROM `[PARAMETER].[PARAMETER].CM_Profile_Advertisers` As PA LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM    ON PA.profileID=APRASM.profileID LEFT JOIN `[PARAMETER].[PARAMETER].CM_Advertisers` AS A    ON PA.advertiserId=A.advertiserId ; &quot;, 
+                &quot;legacy&quot;: false, 
+                &quot;parameters&quot;: [
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }
+                ]
+            }, 
+            &quot;description&quot;: &quot;Combine profiles and advertisers.&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;hour&quot;: [
+                5
+            ]
+        }
+    }, 
+    {
+        &quot;bigquery&quot;: {
+            &quot;to&quot;: {
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                    }
+                }, 
+                &quot;view&quot;: &quot;Barnacle_Profile_Campaign_Map&quot;
+            }, 
+            &quot;from&quot;: {
+                &quot;query&quot;: &quot; SELECT   APRASM.*,   C.campaignId AS campaignId,   C.name AS Campaign_name,    C.archived AS Campaign_archived,   IF(C.startDate &lt;= CURRENT_DATE() AND C.endDate &gt;= CURRENT_DATE(), True, False) AS Campaign_running,   ROUND(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), C.lastModifiedInfo_time, DAY) / 7) AS Campaign_Modified_Weeks_Ago FROM `[PARAMETER].[PARAMETER].CM_Profile_Campaigns` As PC LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM    ON PC.profileID=APRASM.profileID  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Campaigns` AS C    ON PC.campaignId=C.campaignId ; &quot;, 
+                &quot;legacy&quot;: false, 
+                &quot;parameters&quot;: [
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }
+                ]
+            }, 
+            &quot;description&quot;: &quot;Profile to campaign mapping.&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;hour&quot;: [
+                5
+            ]
+        }
+    }, 
+    {
+        &quot;bigquery&quot;: {
+            &quot;to&quot;: {
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                    }
+                }, 
+                &quot;view&quot;: &quot;Barnacle_Profile_Report_Map&quot;
+            }, 
+            &quot;from&quot;: {
+                &quot;query&quot;: &quot; SELECT   APRASM.*,   R.reportId AS reportId,   R.name AS Report_name,    R.type AS Report_type,   R.format AS Report_format,   R.schedule_active AS Report_schedule_active,   R.schedule_repeats AS Report_schedule_repeats,   ROUND(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), R.lastModifiedTime, DAY) / 7) AS Report_Modified_Weeks_Ago,   DATE_DIFF(R.schedule_expirationDate, CURRENT_DATE(), MONTH) AS Report_Schedule_Weeks_To_Go FROM `[PARAMETER].[PARAMETER].CM_Reports` As R LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM    ON R.profileID=APRASM.profileID ; &quot;, 
+                &quot;legacy&quot;: false, 
+                &quot;parameters&quot;: [
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }
+                ]
+            }, 
+            &quot;description&quot;: &quot;The logic query for Deal Finder, transforms report into view used by datastudio.&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;hour&quot;: [
+                5
+            ]
+        }
+    }, 
+    {
+        &quot;bigquery&quot;: {
+            &quot;to&quot;: {
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                    }
+                }, 
+                &quot;view&quot;: &quot;Barnacle_Profile_Site_Map&quot;
+            }, 
+            &quot;from&quot;: {
+                &quot;query&quot;: &quot; SELECT   APRASM.*,   S.siteId AS siteId,   S.name AS Site_Name,    S.keyName AS Site_keyName,    S.approved AS Site_approved FROM `[PARAMETER].[PARAMETER].CM_Profile_Sites` As PS LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM    ON PS.profileID=APRASM.profileID  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Sites` AS S    ON PS.siteId=S.siteId ; &quot;, 
+                &quot;legacy&quot;: false, 
+                &quot;parameters&quot;: [
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }
+                ]
+            }, 
+            &quot;description&quot;: &quot;The logic query for Deal Finder, transforms report into view used by datastudio.&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;hour&quot;: [
+                5
+            ]
+        }
+    }, 
+    {
+        &quot;bigquery&quot;: {
+            &quot;to&quot;: {
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                    }
+                }, 
+                &quot;view&quot;: &quot;Barnacle_Profiles_Connections&quot;
+            }, 
+            &quot;from&quot;: {
+                &quot;query&quot;: &quot; SELECT    APRASM.* FROM `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM LEFT JOIN `[PARAMETER].[PARAMETER].CM_Profile_Advertisers` AS PA    ON APRASM.profileId=PA.profileId  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Profile_Campaigns` AS PC    ON APRASM.profileId=PC.profileId  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Profile_Sites` AS PS   ON APRASM.profileId=PS.profileId  WHERE   PA.advertiserId IS NULL   AND PC.campaignId IS NULL   AND PS.siteId IS NULL  &quot;, 
+                &quot;legacy&quot;: false, 
+                &quot;parameters&quot;: [
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }
+                ]
+            }, 
+            &quot;description&quot;: &quot;The logic query for Deal Finder, transforms report into view used by datastudio.&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;hour&quot;: [
+                5
+            ]
+        }
+    }, 
+    {
+        &quot;bigquery&quot;: {
+            &quot;to&quot;: {
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                    }
+                }, 
+                &quot;view&quot;: &quot;Barnacle_Report_Delivery_Profiles&quot;
+            }, 
+            &quot;from&quot;: {
+                &quot;query&quot;: &quot; SELECT   RD.accountId AS accountId,   RD.subaccountId AS subaccountId,   RD.reportId AS reportId,   A.name AS Account_name,   A.active AS Account_active,   SA.name as SubAccount_name,   R.name as Report_name,   R.schedule_active AS Report_schedule_active,   RD.emailOwnerDeliveryType AS Delivery_emailOwnerDeliveryType,   RD.deliveryType AS Delivery_deliveryType,   RD.email AS Delivery_email,   RD.message AS Delivery_message,   IF(RD.email in (SELECT email from `[PARAMETER].[PARAMETER].CM_Profiles`), True, False) AS Profile_Match_Exists FROM `[PARAMETER].[PARAMETER].CM_Report_Deliveries` AS RD  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A    ON RD.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA    ON RD.subaccountId=SA.subaccountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Reports` AS R    ON RD.reportId=R.reportId &quot;, 
+                &quot;legacy&quot;: false, 
+                &quot;parameters&quot;: [
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }
+                ]
+            }, 
+            &quot;description&quot;: &quot;&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;hour&quot;: [
+                5
+            ]
+        }
+    }, 
+    {
+        &quot;bigquery&quot;: {
+            &quot;to&quot;: {
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                    }
+                }, 
+                &quot;view&quot;: &quot;Barnacle_Roles_Not_Used&quot;
+            }, 
+            &quot;from&quot;: {
+                &quot;query&quot;: &quot; SELECT   R.accountId AS accountId,   R.subaccountId AS subaccountId,   R.roleId AS roleId,   A.name AS Account_name,   A.active AS Account_active,   SA.name AS SubAccount_name,   R.role_name as Role_role_name,   R.role_defaultUserRole AS Role_role_defaultUserRole,   R.permission_name AS Role_permission_name,   R.permission_availability AS Role_permission_availability   FROM `[PARAMETER].[PARAMETER].CM_Roles` AS R LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A on R.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA on R.subaccountId=SA.subaccountId WHERE roleId NOT IN (   SELECT roleId FROM `[PARAMETER].[PARAMETER].CM_Profile_Roles`  ) &quot;, 
+                &quot;legacy&quot;: false, 
+                &quot;parameters&quot;: [
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }
+                ]
+            }, 
+            &quot;description&quot;: &quot;&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;hour&quot;: [
+                5
+            ]
+        }
+    }, 
+    {
+        &quot;bigquery&quot;: {
+            &quot;to&quot;: {
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                    }
+                }, 
+                &quot;view&quot;: &quot;Barnacle_Site_Contacts_Profiles&quot;
+            }, 
+            &quot;from&quot;: {
+                &quot;query&quot;: &quot; SELECT   SC.accountId AS accountId,   SC.subaccountId AS subaccountId,   SC.siteId AS siteId,   SC.contactId AS contactId,   A.name AS Account_name,   A.active AS Account_active,   SA.name as SubAccount_name,   S.name as Site_name,   S.approved AS Site_approved,   SC.email AS Site_Contact_email,   CONCAT(SC.firstName, &#39; &#39;, sc.lastname) AS Site_Contact_Name,   SC.phone AS Site_Contact_phone,   SC.contactType AS Site_Contact_contactType,   IF(sc.email in (SELECT email from `[PARAMETER].[PARAMETER].CM_Profiles`), True, False) AS Profile_Match_Exists FROM `[PARAMETER].[PARAMETER].CM_Site_Contacts` AS SC  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A    ON SC.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA    ON SC.accountId=SA.accountId    AND SC.subaccountId=SA.subaccountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Sites` AS S    ON SC.siteId=S.siteId ; &quot;, 
+                &quot;legacy&quot;: false, 
+                &quot;parameters&quot;: [
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }
+                ]
+            }, 
+            &quot;description&quot;: &quot;&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;hour&quot;: [
+                5
+            ]
+        }
+    }, 
+    {
+        &quot;bigquery&quot;: {
+            &quot;to&quot;: {
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;, 
+                        &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                    }
+                }, 
+                &quot;view&quot;: &quot;Barnacle_Roles_Duplicates&quot;
+            }, 
+            &quot;from&quot;: {
+                &quot;query&quot;: &quot; WITH   profile_counts AS (   SELECT userRoleId, COUNT(profileId) as profile_count   FROM `[PARAMETER].[PARAMETER].CM_Profiles`   GROUP BY 1  ),  permission_fingerprints AS (   SELECT     accountId,     subaccountId,     roleId,     role_name,     role_defaultUserRole,     SUM(profile_count) AS profile_count,     FARM_FINGERPRINT(       ARRAY_TO_STRING(       ARRAY_AGG(         DISTINCT permission_name ORDER BY permission_name ASC       ), &#39;,&#39;, &#39;-&#39;     )   ) AS permissions_fingerprint   FROM     `[PARAMETER].[PARAMETER].CM_Roles` AS R   LEFT JOIN profile_counts AS P   ON R.roleId = P.userRoleId   GROUP BY     accountId,     subaccountId,     roleId,     role_name,     role_defaultUserRole )  SELECT    PFL.accountId AS accountId,   A.name AS Account_name,   A.active AS Account_active,   PFL.subaccountId AS subaccountId,    SA.name AS SubAccount_name,   PFL.roleId AS roleId,   PFL.role_name AS role_name,   PFL.role_defaultUserRole AS role_defaultUserRole,   COALESCE(PFL.profile_count, 0) AS profile_count,   PFR.roleId AS duplicate_roleId,   PFR.role_name AS duplicate_role_name,   PFR.role_defaultUserRole AS duplicate_role_defaultUserRole,   COALESCE(PFR.profile_count, 0) AS duplicate_profile_count FROM permission_fingerprints AS PFL LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A on PFL.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA on PFL.subaccountId=SA.subaccountId LEFT JOIN permission_fingerprints AS PFR    ON PFL.permissions_fingerprint=PFR.permissions_fingerprint   AND PFL.accountId=PFR.accountId   AND COALESCE(PFL.subaccountId, 0)=COALESCE(PFR.subaccountId, 0) WHERE PFL.roleId != PFR.roleId ; &quot;, 
+                &quot;legacy&quot;: false, 
+                &quot;parameters&quot;: [
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }
+                ]
+            }, 
+            &quot;description&quot;: &quot;&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;hour&quot;: [
+                5
+            ]
+        }
+    }
+]</pre>
+          <td>
+        </tr>
+      
+        <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">whatshot</i></td>
           <td style="vertical-align: top;">
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_deal_finder">JSON</span>
@@ -2539,7 +3353,7 @@
                     &quot;kind&quot;: &quot;string&quot;, 
                     &quot;order&quot;: 1, 
                     &quot;description&quot;: &quot;URL to sheet where DBM accounts will be read from.&quot;, 
-                    &quot;name&quot;: &quot;dbm_sheet&quot;
+                    &quot;name&quot;: &quot;sheet_url&quot;
                 }
             }, 
             &quot;description&quot;: &quot;DBM Partner and Advertiser input sheet template.&quot;, 
@@ -2566,7 +3380,7 @@
                                 &quot;kind&quot;: &quot;string&quot;, 
                                 &quot;order&quot;: 1, 
                                 &quot;description&quot;: &quot;URL to sheet where DBM accounts will be read from.&quot;, 
-                                &quot;name&quot;: &quot;dbm_sheet&quot;
+                                &quot;name&quot;: &quot;sheet_url&quot;
                             }
                         }, 
                         &quot;range&quot;: &quot;A2:A&quot;, 
@@ -2593,6 +3407,7 @@
                 ], 
                 &quot;timezone&quot;: {
                     &quot;field&quot;: {
+                        &quot;default&quot;: &quot;America/Los_Angeles&quot;, 
                         &quot;kind&quot;: &quot;timezone&quot;, 
                         &quot;name&quot;: &quot;timezone&quot;, 
                         &quot;description&quot;: &quot;Timezone in &#39;America/Los_Angeles&#39; format.&quot;
@@ -2607,7 +3422,7 @@
                                 &quot;kind&quot;: &quot;string&quot;, 
                                 &quot;order&quot;: 1, 
                                 &quot;description&quot;: &quot;URL to sheet where DBM accounts will be read from.&quot;, 
-                                &quot;name&quot;: &quot;dbm_sheet&quot;
+                                &quot;name&quot;: &quot;sheet_url&quot;
                             }
                         }, 
                         &quot;range&quot;: &quot;B2:B&quot;, 
@@ -2909,19 +3724,21 @@
   
 
   <br/><br/>
-  <h3 id="recipe_help">Need Help With A Recipe?</h3>
-  <p class="flow-text">Ask the StarThinker team for advice <a href="mailto:starthinker-help@google.com?subject=Custom+StarThinker+Recipe">starthinker-help@google.com</a></p>
-
-  <p class="">This code is an open source reference implementation and is not an officially supported Google product.</p>
+  <h3 id="code-tasks">Can Always Write Your Own Custom Task</h3>
+  <p class="flow-text">See <a href="https://github.com/google/starthinker/tree/master/task" target="_blank">StarThinker Task Samples</a> for creating a json task anyone can use.</p>
 
 
     </div>
 
     
+      <img src="https://megadash.googleplex.com/tracking/5384865225375744" alt="Megadash Usage Tracking Pixel, see https://goto/megadash-tracking" height="1" width="1" />
+    
 
   </body>
 
-  <footer class="page-footer">
+  
+
+<footer class="page-footer">
   <div class="footer-copyright">
     <div class="container center">
     &copy; 2018 Google, Inc

@@ -41,10 +41,11 @@ if __name__ == "__main__":
 
   parser = argparse.ArgumentParser()
   parser.add_argument('file', help='A JSON file.')
+  parser.add_argument('--debug', '-d', help='Debug mode, do not scrub newlines.', action='store_true')
   args = parser.parse_args()
 
   try:
-    project = get_project(args.file, debug=True)
+    project = get_project(args.file, debug=args.debug)
     print 'JSON OK:', args.file
   except Exception, e:
     print 'JSON ERROR:', args.file, str(e)

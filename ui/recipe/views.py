@@ -82,7 +82,7 @@ def recipe_download(request, pk):
     recipe = request.user.recipe_set.get(pk=pk)
     filename, data = recipe.get_json(credentials=False)
     response = HttpResponse(json.dumps(data, indent=2), content_type='application/json')
-    response['Content-Disposition'] = 'attachment; filename=%s' % filename.rsplit('/', 1)[-1]
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
     return response
   except Exception, e:
     messages.error(request, str(e))

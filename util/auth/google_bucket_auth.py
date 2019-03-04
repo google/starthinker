@@ -33,7 +33,7 @@ from apiclient import discovery
 
 from django.utils import encoding
 
-from starthinker.setup import UI_SERVICE
+from starthinker.config import UI_SERVICE
 
 def get_service():
   credentials = ServiceAccountCredentials.from_json_keyfile_name(UI_SERVICE, ['https://www.googleapis.com/auth/devstorage.full_control'])

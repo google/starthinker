@@ -23,8 +23,9 @@ from copy import deepcopy
 
 from django.conf import settings
 
-from starthinker.setup import EXECUTE_PATH
+from starthinker.config import EXECUTE_PATH
 from starthinker.script.parse import json_set_fields, json_set_instructions, json_set_description
+from starthinker.util.project import get_project
 
 RE_SCRIPT = re.compile(r'^script_.*\.json$')
 
@@ -35,13 +36,13 @@ for root, dirs, files in os.walk(EXECUTE_PATH):
   for filename in files:
     if RE_SCRIPT.match(filename):
       try:
-        with open(root + '/' + filename, 'r') as script_file:
-          script = json.load(script_file)
-          SCRIPTS[filename.replace('script_', '').replace('.json', '')] = script
-          # authors ( for solution lookup )
-          container = root.rsplit('/', 1)[-1]
-          AUTHORS[container] = AUTHORS.get(container, set()) | set(script['script'].get('authors', []))
-          print 'OK', filename
+        script = get_project(root + '/' + filename)
+        if not 'script' in script: continue
+        SCRIPTS[filename.replace('script_', '').replace('.json', '')] = script
+        # authors ( for solution lookup )
+        container = root.rsplit('/', 1)[-1]
+        AUTHORS[container] = AUTHORS.get(container, set()) | set(script['script'].get('authors', []))
+        print 'OK', filename
       except Exception, e:
         print 'ERROR:', filename, str(e) 
 

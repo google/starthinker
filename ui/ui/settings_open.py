@@ -31,8 +31,8 @@ TIME_ZONE = 'America/Los_Angeles'
 # If sendmail is set up, will email if site failure or error occurs.
 ADMINS = [('User Name', 'email@domain.com')]
 
-# Store your logo and front end website graphics here ( change to yours if white labeling ).
-STATIC_URL = 'https://storage.googleapis.com/starthinker-ui/'
+# Store your logo and front end website graphics here.
+STATIC_URL = 'https://storage.googleapis.com/[ Name Of Static Content Bucket ]/'
 
 # Each user in the UI will receive a bucket in the cloud project, this creates [BUCKET_PREFIX]-userid for storing recipes.
 BUCKET_PREFIX = '[Usually Name Of Company]-'
@@ -44,8 +44,11 @@ if DEVELOPMENT_MODE:
   ALLOWED_HOSTS = [] 
   DATABASES = {
     'default': {
-      'ENGINE': 'django.db.backends.sqlite3',
-      'NAME': 'starthinker',
+      'ENGINE': 'django.db.backends.mysql',
+      'HOST': 'localhost',
+      'NAME': 'database_name',
+      'USER': 'database_user',
+      'PASSWORD': 'database_password',
     }
   }
 else:

@@ -74,7 +74,7 @@ def process_feed(feed_name, dao, print_field, msg='Processing'):
       feed, for instance we display Processing Campaign for campaign, and
       Uploading Asset for assets.
   """
-  feed = Feed(project.task['auth'], project.task['sheet_id'], feed_name, spreadsheet=spreadsheet)
+  feed = Feed(project.task['auth'], project.task['sheet_id'], feed_name, spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
 
   execute_feed(feed, dao, print_field, msg)
 
@@ -225,13 +225,13 @@ def placements():
 
   """
   placement_feed = Feed(project.task['auth'], project.task['sheet_id'],
-                        'placement_feed', spreadsheet=spreadsheet)
+                        'placement_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
 
   pricing_schedule_feed = Feed(project.task['auth'], project.task['sheet_id'],
-                               'placement_pricing_schedule_feed', spreadsheet=spreadsheet)
+                               'placement_pricing_schedule_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
 
   transcode_configs_feed = Feed(project.task['auth'], project.task['sheet_id'],
-                                'transcode_configs_feed', spreadsheet=spreadsheet)
+                                'transcode_configs_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
 
   placement_dao.map_placement_transcode_configs(placement_feed.feed,
                                                 transcode_configs_feed.feed,
@@ -248,18 +248,18 @@ def creatives():
 
   """
   creative_asset_feed = Feed(project.task['auth'], project.task['sheet_id'],
-                        'creative_asset_feed', spreadsheet=spreadsheet)
+                        'creative_asset_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
 
   creative_feed = Feed(project.task['auth'], project.task['sheet_id'],
-                       'creative_feed', spreadsheet=spreadsheet)
+                       'creative_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
 
   third_party_url_feed = Feed(project.task['auth'], project.task['sheet_id'],
-                              'third_party_url_feed', spreadsheet=spreadsheet)
+                              'third_party_url_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
 
 
   creative_association_feed = Feed(project.task['auth'],
                                    project.task['sheet_id'],
-                                   'creative_asset_association_feed', spreadsheet=spreadsheet)
+                                   'creative_asset_association_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
 
   creative_dao.map_creative_third_party_url_feeds(creative_feed.feed,
                                                   third_party_url_feed.feed)
@@ -284,20 +284,20 @@ def ads():
 
   """
   placement_feed = Feed(project.task['auth'], project.task['sheet_id'],
-                        'placement_feed', spreadsheet=spreadsheet)
+                        'placement_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
   event_tag_profile_feed = Feed(project.task['auth'], project.task['sheet_id'],
-                                'event_tag_profile_feed', spreadsheet=spreadsheet)
-  ad_feed = Feed(project.task['auth'], project.task['sheet_id'], 'ad_feed', spreadsheet=spreadsheet)
+                                'event_tag_profile_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
+  ad_feed = Feed(project.task['auth'], project.task['sheet_id'], 'ad_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
   ad_creative_assignment_feed = Feed(project.task['auth'],
                                      project.task['sheet_id'],
-                                     'ad_creative_assignment_feed', spreadsheet=spreadsheet)
+                                     'ad_creative_assignment_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
 
   ad_placement_assignment_feed = Feed(project.task['auth'],
                                       project.task['sheet_id'],
-                                      'ad_placement_assignment_feed', spreadsheet=spreadsheet)
+                                      'ad_placement_assignment_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
   ad_event_tag_assignment_feed = Feed(project.task['auth'],
                                       project.task['sheet_id'],
-                                      'event_tag_ad_assignment_feed', spreadsheet=spreadsheet)
+                                      'event_tag_ad_assignment_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
 
   ad_dao.map_feeds(ad_feed.feed, ad_creative_assignment_feed.feed,
                    ad_placement_assignment_feed.feed,
@@ -319,7 +319,7 @@ def dynamic_targeting_keys():
                FieldMap.DYNAMIC_TARGETING_KEY_NAME, 'Processing dynamic targeting key')
 
 @project.from_parameters
-def test():
+def traffic():
   """Main function of Bulkdozer, performs the Bulkdozer job
 
   """
@@ -371,7 +371,7 @@ def test():
 
 
 @project.from_parameters
-def traffic():
+def _traffic():
   """For development purposes when debugging a specific entity, this function is handy to run just that entity.
 
   """
@@ -384,5 +384,3 @@ if __name__ == '__main__':
 
   """
   traffic()
-
-  #test()

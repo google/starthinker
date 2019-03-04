@@ -80,7 +80,7 @@ import argparse
 from glob import glob
 from time import sleep
 
-from starthinker.setup import EXECUTE_PATH
+from starthinker.config import EXECUTE_PATH
 from starthinker.util.project import get_project, is_scheduled
 
 ONE_HOUR_AND_ONE_SECOND = (60 * 60) + 1 # ensures no repeat in a single hour but never runs over in 24 hours
@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
   parser.add_argument('--verbose', '-v', help='print all the steps as they happen.', action='store_true')
   parser.add_argument('--force', '-f', help='execute all scripts once then exit.', action='store_true')
-  #parser.add_argument('--remote', '-r', help='execute the scripts remotely, equires pub/sub setup.', action='store_true')
+  #parser.add_argument('--remote', '-r', help='execute the scripts remotely, requires pub/sub config.', action='store_true')
 
   args = parser.parse_args()
 
@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
         if args.force or is_scheduled(project):
 
-          command = 'python %s/run.py %s %s' % (script, filepath, ' '.join(sys.argv[2:]))
+          command = 'python task/%s/run.py %s %s' % (script, filepath, ' '.join(sys.argv[2:]))
 
           if args.verbose: print 'COMMAND:', command
 

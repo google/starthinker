@@ -22,7 +22,7 @@ Conversion_Dimensions_Schema = [
   { "name":"Activity_Group", "type":"STRING", "mode":"NULLABLE" },
   { "name":"Activity_Group_Id", "type":"INTEGER", "mode":"NULLABLE" },
   { "name":"Activity_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Activity_Date_Time", "type":"STRING", "mode":"NULLABLE" },
+  { "name":"Activity_Date_Time", "type":"DATETIME", "mode":"NULLABLE" },
   { "name":"Browser_Platform", "type":"STRING", "mode":"NULLABLE" },
   { "name":"Channel_Mix", "type":"STRING", "mode":"NULLABLE" },
   { "name":"City", "type":"STRING", "mode":"NULLABLE" },

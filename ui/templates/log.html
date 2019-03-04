@@ -20,12 +20,11 @@
 
 <div id="modal_log" class="modal">
   <div class="modal-content">
-    <p><strong>{{ log.status }}</strong></p>
-    <p>{{ log.time_stamp }} / {{ log.time_ago }}<p>
+    <p><strong>{{ log.execution_status }}</strong></p>
+    <p>{{ log.execution_timestamp }} / {{ log.execution_timeago }}<p>
     <hr/>
-    {% if 'trace' in log %}
-      <pre style="text-align:left;">{{ log.trace }}</pre>
-    {% endif %}
+    {% if log.execution_stdout %}<pre style="text-align:left;">{{ log.execution_stdout }}</pre>{% endif %}
+    {% if log.execution_stderr %}<pre style="text-align:left;">{{ log.execution_stderr }}</pre>{% endif %}
   </div>
   <div class="modal-footer">
     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>

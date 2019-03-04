@@ -34,7 +34,7 @@ To launch the StarThinker UI or use manage.py please specify --settings=ui.setti
 import os
 
 # General StarThinker constants that can also be used from the command line interface
-from starthinker.setup import UI_PROJECT, UI_CLIENT, UI_SERVICE, UI_BUCKET_AUTH, UI_TOPIC, UI_CRON, CLOUD_PROJECT, CLOUD_SERVICE
+from starthinker.config import UI_PROJECT, UI_CLIENT, UI_SERVICE, UI_BUCKET_AUTH, UI_TOPIC, UI_CRON, CLOUD_PROJECT, CLOUD_SERVICE
 
 # To reduce accidental production as debug afer code pull, a blank file is used to check for mode ( the server always has it )
 DEVELOPMENT_MODE = not os.path.isfile('/mnt/SERVER')

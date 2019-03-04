@@ -86,13 +86,13 @@ def get_project(filepath, debug=False):
 
      Able to load JSON with newlines ( strips all newlines before load ).
 
-    ### Args:
+     Args:
       - filepath: (string) The local file path to the recipe json file to load.
       - debug: (boolean) If true, newlines are not stripped to correctly identify error line numbers.
 
-    ### Returns:
+     Returns:
       Json of recipe file.
-    """
+  """
 
   with open(filepath) as data_file:
     data = data_file.read()
@@ -106,12 +106,12 @@ def is_scheduled(project, task = None):
      Used as a helper for any cron job running projects.  Keeping this logic in project
      helps avoid time zone detection issues and scheduling discrepencies between machines.
 
-    ### Args:
+    Args:
       - project: (Project Class) The instance of the project being evaluated ( not sure this is required ).
       - task: ( dictionary / JSON ) The specific task being considered for execution.
 
-    ### Returns:
-      Task is scheduled for exection this hour ias True / False. 
+    Returns:
+      - Task is scheduled for exection this hour as True / False. 
     """
 
   if not 'hour' in project.get('setup', {}):
@@ -180,7 +180,7 @@ class project:
       project.initialize(_json=var_json, _user=var_user, _service=var_service, _verbose=True)
     ```
 
-  ### Attributes:
+  Attributes:
     
     Dealing with authentication...
       - project: (string) The Google Cloud project id.
@@ -208,7 +208,7 @@ class project:
   def from_commandline(cls, _task = None, parser = None):
     """Used in StarThinker scripts as entry point for command line calls. Loads json for execution.
 
-    ### Usage example:
+    Usage example:
 
     ```
     import argparse
@@ -228,10 +228,10 @@ class project:
       print project.args.custom
     ```
 
-    ### Args:
+    Args:
       - parser: (ArgumentParser) optional custom argument parser ( json argument becomes optional if not None )
 
-    ### Returns:
+    Returns:
       Nothing, this manipulates a singleton object.  All calls to project.* result in the same object.
 
     """
@@ -322,7 +322,7 @@ class project:
     or if no parameters passed attmepts to load them from the command line. 
     Uses decorator pattern, task name is inferred from function ebing decorated.
 
-    ### Args:
+    Args:
       - recipe: (dict) JSON object representing the project ( setup plus at least one task )
       - instance: (integer) numeric offset of task to run if multiple calls to thsi task exist
  
@@ -337,7 +337,7 @@ class project:
 
   @classmethod
   def initialize(cls, 
-    _recipe=None,
+    _recipe={},
     _task=None,
     _instance=1,
     _project=None,
@@ -356,7 +356,7 @@ class project:
     this function loads credentials from various source ( command line argument, json, default credentials )
     it also sets up time zone aware date and various helper flags such as force and verbose.
 
-    ### Usage example:
+    Usage example:
     ```
        from util.project import project
 
@@ -367,7 +367,7 @@ class project:
          project.initialize(_recipe=recipe, _user=user, _service=service, _verbose=True)
     ```
 
-    ### Args:
+    Args:
       - _recipe: (dict) JSON object representing the project ( setup plus at least one task )
       - _task: (string) Task name form recipe json task list to execute.
       - _instance: (integer) See module description.
@@ -380,7 +380,7 @@ class project:
       - _verbose: (boolean) See module description.
       - _force: (boolean) See module description.
 
-    ### Returns:
+    Returns:
       Nothing, this manipulates a singleton object.  All calls to project.* result in the same object.
     """
 

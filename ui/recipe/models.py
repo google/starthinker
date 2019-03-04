@@ -125,7 +125,7 @@ class Recipe(models.Model):
     }
 
   def get_json(self, credentials=True):
-    filename = '%srecipe_%d.json' % (settings.UI_CRON, self.pk)
+    filename = 'recipe_%d.json' % self.pk
     return filename, Script.get_json(
         self.uid(),
         self.get_project_identifier(),
@@ -144,6 +144,12 @@ class Recipe(models.Model):
     if 'day' in data['setup']: del data['setup']['day']
     if 'hour' in data['setup']: del data['setup']['hour']
 
-    # dispatch to pub/sub
-    send_message(settings.UI_PROJECT, settings.UI_TOPIC, json.dumps(data))
+    if settings.UI_TOPIC:
+      # dispatch to pub/sub
+      send_message(settings.UI_PROJECT, settings.UI_TOPIC, json.dumps(data))
+    else:
+      # write to local file
+      with open(settings.UI_CRON + '/' + filename, 'w') as f:
+        f.write(json.dumps(data))
+
     sleep(5) # give the task enough time to start and flag RUNNING

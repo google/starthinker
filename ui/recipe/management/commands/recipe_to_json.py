@@ -80,5 +80,6 @@ class Command(BaseCommand):
 
       # save the recipe to a local file
       else:
-        with open(filename, 'w') as outfile:
+        print 'SAVING TO:', settings.UI_CRON + '/' + filename
+        with open(settings.UI_CRON + '/' + filename, 'w') as outfile:
           json.dump(data, outfile)

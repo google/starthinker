@@ -35,7 +35,7 @@ from google.cloud import bigquery
 from googleapiclient.errors import HttpError
 from apiclient.http import MediaIoBaseUpload
 
-from starthinker.setup import BUFFER_SCALE
+from starthinker.config import BUFFER_SCALE
 from starthinker.util import flag_last
 from starthinker.util.project import project
 from starthinker.util.auth import get_service
@@ -43,8 +43,8 @@ from starthinker.util.google_api import API_BigQuery, API_Retry
 
 BIGQUERY_RETRIES = 3
 BIGQUERY_BUFFERMAX = 4294967296
-BIGQUERY_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200 MB * scale in setup.py
-BIGQUERY_BUFFERSIZE = min(BIGQUERY_CHUNKSIZE * 4, BIGQUERY_BUFFERMAX) # 1 GB * scale in setup.py
+BIGQUERY_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200 MB * scale in config.py
+BIGQUERY_BUFFERSIZE = min(BIGQUERY_CHUNKSIZE * 4, BIGQUERY_BUFFERMAX) # 1 GB * scale in config.py
 RE_SCHEMA = re.compile('[^0-9a-zA-Z]+')
 
 reload(sys)
@@ -106,34 +106,54 @@ def job_wait(service, job):
       break
 
 
-def job_insert(auth, job_id):
-  if project.verbose: print 'BIGQUERY JOB RUN:', job_id
-  project_id, job_id = job_id.split(':', 1)
-  service = get_service('bigquery', 'v2', auth)
+#def job_insert(auth, job_id):
+#  if project.verbose: print 'BIGQUERY JOB RUN:', job_id
+#  project_id, job_id = job_id.split(':', 1)
+#  service = get_service('bigquery', 'v2', auth)
+#
+#  # fetch existing job
+#  request = service.jobs().get(projectId=project_id, jobId=job_id)
+#  job_old = request.execute()
+#
+#  #pprint.PrettyPrinter(depth=20).pprint(job_old)
+#  #exit()
+#
+#  # copy configuration
+#  job_new = {
+#    'jobReference': {
+#      'projectId': project_id,
+#      'jobId': str(uuid.uuid4())
+#    },
+#   'configuration':job_old['configuration'],
+#  }
+#
+#  # execute new job and wait completion
+#  job = service.jobs().insert(projectId=project_id, body=job_new).execute(num_retries=BIGQUERY_RETRIES)
+#  job_wait(service, job)
 
-  # fetch existing job
-  request = service.jobs().get(projectId=project_id, jobId=job_id)
-  job_old = request.execute()
 
-  #pprint.PrettyPrinter(depth=20).pprint(job_old)
-  #exit()
+#def jobs_insert(auth, job_ids):
+#  for job_id in job_ids: job_insert(auth, job_id)
 
-  # copy configuration
-  job_new = {
-    'jobReference': {
-      'projectId': project_id,
-      'jobId': str(uuid.uuid4())
-    },
-   'configuration':job_old['configuration'],
+def table_copy(auth, from_project, from_dataset, from_table, to_project, to_dataset, to_table):
+
+  body = {
+    "copy": {
+      "sourceTable": {
+        "projectId": from_project,
+        "datasetId": from_dataset,
+        "tableId": from_table
+      },
+      "destinationTable": {
+        "projectId": to_project,
+        "datasetId": to_dataset,
+        "tableId": to_table
+      }
+    }
   }
 
-  # execute new job and wait completion
-  job = service.jobs().insert(projectId=project_id, body=job_new).execute(num_retries=BIGQUERY_RETRIES)
+  job = service.jobs().insert(projectId=project.id, body=body).execute(num_retries=BIGQUERY_RETRIES)
   job_wait(service, job)
-
-
-def jobs_insert(auth, job_ids):
-  for job_id in job_ids: job_insert(auth, job_id)
 
 
 def datasets_get(auth, project_id, name):
@@ -467,7 +487,7 @@ def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None
 
 
 # NEWLINE_DELIMITED_JSON, CSV
-def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV', schema=None, skip_rows=0, disposition='WRITE_TRUNCATE'):
+def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV', schema=None, skip_rows=0, disposition='WRITE_TRUNCATE', wait=True):
   service = get_service('bigquery', 'v2', auth)
 
   # if data exists, write data to table
@@ -513,8 +533,8 @@ def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV
     while response is None:
       status, response = job.next_chunk()
       if project.verbose and status: print "Uploaded %d%%." % int(status.progress() * 100)
-    if project.verbose: print "Upload End"
-    job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
+    if project.verbose: print "Uploaded 100%"
+    if wait: job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
 
   # if it does not exist and write, clear the table
   elif disposition == 'WRITE_TRUNCATE':
@@ -531,7 +551,8 @@ def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV
       }
     }
     # change project_id to be project.id, better yet project.cloud_id from JSON
-    service.tables().insert(projectId=project.id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
+    #service.tables().insert(projectId=project.id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
+    API_BigQuery(auth).tables().insert(projectId=project.id, datasetId=dataset_id, body=body).execute()
 
 
 def incremental_rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_rows=1, disposition='WRITE_APPEND', billing_project_id=None):
@@ -607,9 +628,10 @@ def table_to_rows(auth, project_id, dataset_id, table_id, fields=None, row_start
   while next_page != '':
     response = service.tabledata().list(projectId=project_id, datasetId=dataset_id, tableId=table_id, selectedFields=fields, startIndex=row_start, maxResults=row_max, pageToken=next_page).execute()
     next_page = response.get('PageToken', '')
-    converters = _build_converter_array(table_to_schema(auth, project_id, dataset_id, table_id), fields, len(response['rows'][0].get('f')))
-    for row in response['rows']:
-      yield [converters[i](r.values()[0]) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
+    if 'rows' in response:
+      converters = _build_converter_array(table_to_schema(auth, project_id, dataset_id, table_id), fields, len(response['rows'][0].get('f')))
+      for row in response['rows']:
+        yield [converters[i](r.values()[0]) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
 
 
 def table_to_schema(auth, project_id, dataset_id, table_id):

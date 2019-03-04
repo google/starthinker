@@ -70,7 +70,7 @@ import sys
 import subprocess
 import argparse
 
-from starthinker.setup import EXECUTE_PATH
+from starthinker.config import EXECUTE_PATH
 from starthinker.util.project import get_project, is_scheduled
 
 if __name__ == "__main__":

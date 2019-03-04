@@ -17,10 +17,30 @@
 ###########################################################################
 
 import re
+import pytz
 from datetime import date, datetime
 
+
 def date_to_str(value):
-  return value.strftime('%Y-%m-%d')
+  if value is None: return None
+  else: return value.strftime('%Y-%m-%d')
+
+
+def str_to_date(value):
+  if value is None: return None
+  else: return datetime.strptime(value, '%Y-%m-%d').date()
+
+
+# multiplier is used for milliseconds ( 1000 ) etc...
+def datetime_to_epoch(datetime_utc, multiplier=1):
+  if datetime_utc is None: return None
+  else: return (datetime_utc - datetime(1970, 1, 1)).total_seconds() * multiplier
+
+
+# multiplier is used for milliseconds ( 1000 ) etc...
+def epoch_to_datetime(epoch_seconds, multiplier=1):
+  if epoch_seconds is None: return None
+  else: return datetime.fromtimestamp(int(epoch_seconds)/multiplier, pytz.utc)
 
 
 RE_YYYYMMDD = re.compile(r'\d{4}[-/_]\d{2}[-/_]\d{2}')
@@ -47,3 +67,5 @@ def parse_dbm_report_id(download_url):
 RE_ALPHA_NUMERIC = re.compile('([^\s\w]|_)+')
 def parse_filename(text):
   return RE_ALPHA_NUMERIC.sub('', text).lower().replace(' ', '_')
+
+#RE_TABLE = re.compile(r'[\[`]([-\w]+)[:\.]([-\w]+)\.([-\w]+)[\]`]')

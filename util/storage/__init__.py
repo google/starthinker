@@ -34,13 +34,13 @@ from google.cloud import storage
 from apiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 from googleapiclient.errors import HttpError
 
-from starthinker.setup import BUFFER_SCALE
+from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
 from starthinker.util.auth import get_service, get_client
 from starthinker.util.google_api import API_Retry
 
 
-CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # scale is controlled in setup.py
+CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # scale is controlled in config.py
 RETRIES = 3
 
 
@@ -102,7 +102,7 @@ def object_get(auth, path):
   return service.objects().get_media(bucket=bucket, object=filename).execute()
 
 
-def object_get_chunks(auth, path, chunksize=1024000):
+def object_get_chunks(auth, path, chunksize=CHUNKSIZE):
   bucket, filename = path.split(':', 1)
   service = get_service('storage', 'v1', auth)
 

@@ -26,4 +26,4 @@ echo ""
 THIS_DIR="$( cd "$( dirname "$_" )" && pwd )"
 export PYTHONPATH="${PYTHONPATH}:${THIS_DIR}/../"
 export STARTHINKER_PATH=${THIS_DIR}
-echo ${THIS_DIR}
+echo ${THIS_DIR}/../

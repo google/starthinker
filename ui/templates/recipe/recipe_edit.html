@@ -96,8 +96,8 @@
         <p><a href="{{ recipe.link_download }}" class="waves-effect waves-light btn form_button modal-trigger">
           Download <i class="material-icons right">file_download</i>
         </a></p>
-        <p class="flow-text"><strong>Status:</strong> {{ log.status }}</p>
-        {% if log.time_stamp %}<p class="flow-text"><strong>Time:</strong> {{ log.time_stamp }}</p>{% endif %}
+        <p class="flow-text"><strong>Status:</strong> {{ log.execution_status }}</p>
+        {% if log.execution_timestamp %}<p class="flow-text"><strong>Time:</strong> {{ log.execution_timestamp }}</p>{% endif %}
 
         <div class="right-align">
           {% for product in form_script.products %}

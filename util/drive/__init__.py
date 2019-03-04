@@ -26,12 +26,12 @@ from StringIO import StringIO
 from googleapiclient.errors import HttpError
 from apiclient.http import MediaIoBaseUpload
 
-from starthinker.setup import BUFFER_SCALE
+from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
 from starthinker.util.auth import get_service
 from starthinker.util.google_api import API_Retry
 
-CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # scale is controlled in setup.py
+CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # scale is controlled in config.py
 
 # This file is undergoing maintenanace, please start using new funtions further down
 
@@ -82,24 +82,24 @@ def file_create(auth, name, filename, data, parent=None):
     if not, uploads the file.  Determines filetype based on filename extension
     and attempts to map to Google native such as Docs, Sheets, Slides, etc...
 
-    ### For example:
-      - ```file_create('user', 'Sample Document', 'sample.txt', StringIO('File contents'))``` 
-      - Creates a Google Document object in the user's drive.
+    For example:
+    -  ```file_create('user', 'Sample Document', 'sample.txt', StringIO('File contents'))``` 
+    -  Creates a Google Document object in the user's drive.
 
-      - ```file_Create('user', 'Sample Sheet', 'sample.csv', StringIO('col1,col2\nrow1a,row1b\n'))````
-      - Creates a Google Sheet object in the user's drive.
+    -  ```file_Create('user', 'Sample Sheet', 'sample.csv', StringIO('col1,col2\nrow1a,row1b\n'))````
+    -  Creates a Google Sheet object in the user's drive.
 
     See: https://developers.google.com/drive/api/v3/manage-uploads 
 
     ### Args:
-      - auth: (string) specify 'service' or 'user' to toggle between credentials used to access
-      - name: (string) name of file to create, used as key to check if file exists
-      - filename: ( string) specified as "file.extension" only to automate detection of mime type.
-      - data: (StringIO) any file like object that can be read from
-      - parent: (string) the Google Drive to upload the file to
+    -  * auth: (string) specify 'service' or 'user' to toggle between credentials used to access
+    -  * name: (string) name of file to create, used as key to check if file exists
+    -  * filename: ( string) specified as "file.extension" only to automate detection of mime type.
+    -  * data: (StringIO) any file like object that can be read from
+    -  * parent: (string) the Google Drive to upload the file to
 
     ### Returns:
-      - JSON specification of file created or existing.
+    -  * JSON specification of file created or existing.
 
     """
 

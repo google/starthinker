@@ -18,7 +18,7 @@
 
 from google.cloud import pubsub
 
-from starthinker.setup import UI_SERVICE
+from starthinker.config import UI_SERVICE
 
 def send_message(project_id, topic, data):
   client = pubsub.Client.from_service_account_json(UI_SERVICE)

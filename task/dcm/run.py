@@ -29,7 +29,7 @@ the util/data/__init__.py functions.
 Note
 
 The underlying libraries use streaming download buffers, no disk is used.
-Buffers are controlled in setup.py.
+Buffers are controlled in config.py.
 For superusers, this script will use the internal API, bypassing the 
 need for profiles.
 Reports uploaded to BigQuery use automatic schema detection based on official

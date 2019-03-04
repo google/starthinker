@@ -31,7 +31,7 @@ from types import GeneratorType
 
 from googleapiclient.errors import HttpError
 
-from starthinker.setup import BUFFER_SCALE
+from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
 from starthinker.util.auth import get_service
 from starthinker.util.google_api import API_Retry
@@ -42,7 +42,7 @@ from starthinker.util.dbm.schema import LineItem_Write_Schema
 
 
 API_VERSION = 'v1'
-DBM_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200MB recommended by docs * scale in setup.py
+DBM_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200MB recommended by docs * scale in config.py
 RE_FILENAME = re.compile(r'.*/(.*)\?GoogleAccess')
 
 
@@ -431,7 +431,7 @@ def report_clean(rows, datastudio=False, nulls=False):
   Memory efficiently cleans each row by fixing:
   * Strips header and footer to preserve only data rows.
   * Changes 'Date' to 'Report_Day' to avoid using reserved name in BigQuery.
-  * Changes data format to match data studio if datastusio=True.
+  * Changes date values to use '-' instead of '/' for BigQuery compatibility.
   * Changes cell string Unknown to blank ( None ) if nulls=True.
 
   Usage example:
@@ -462,15 +462,22 @@ def report_clean(rows, datastudio=False, nulls=False):
     # stop at blank row ( including sum row )
     if not row or row[0] is None or row[0] == '': break
 
-    # find 'Date' column if it exists
+    # sanitizie header row
     if first:
-      try: date = row.index('Date')
+      try: 
+        date_column = row.index('Date')
+        row[date_column] = 'Report_Day'
       except ValueError: pass
       if datastudio: row = [column_header_sanitize(cell) for cell in row]
 
-    # check if data studio formatting is applied
-    if datastudio and date is not None:
-      row[date] = 'Report_Day' if first else row[date].replace('/', '')
+    # for all data rows clean up cells
+    else:
+      # check if data studio formatting is applied reformat the dates
+      if datastudio: 
+        row = [cell.replace('/', '-') if isinstance(cell, basestring) and len(cell) == 4 + 1 + 2 + 1 + 2 and cell[4] == '/' and cell[7] == '/'
+              else cell
+              for cell in row
+            ] # 5x faster than regexp
 
     # remove unknown columns ( which throw off schema on import types )
     if nulls: row = ['' if cell.strip() == 'Unknown' else cell for cell in row]

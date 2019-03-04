@@ -21,9 +21,11 @@ This module has all the column name mappings, reads and writes data to the
 Google Sheet that represents the Bulkdozer feed, and
 """
 
+import json
+import pytz
+
 from util.auth import get_service
 from util.sheets import sheets_read, sheets_write
-import json
 from dateutil import parser
 
 
@@ -190,10 +192,11 @@ class Feed:
       'transcode_configs_feed': ['Transcode Configuration'],
       'event_tag_profile_feed': ['Event Tag Profile'],
       'lp_dawn': ['Form Responses 1'],
+      'lp_dawn_status': ['Status'],
       'dynamic_targeting_key_feed': ['Dynamic Targeting Keys']
   }
 
-  def __init__(self, auth, trix_id, feed_name, parse=True, spreadsheet=None):
+  def __init__(self, auth, trix_id, feed_name, parse=True, spreadsheet=None, timezone=None):
     """Initializes the feed with parameters.
 
     Args:
@@ -214,6 +217,7 @@ class Feed:
     self.feed_name = feed_name
     self._service = get_service('sheets', 'v4', auth)
     self._parse = parse
+    self._timezone = timezone or 'America/New_York'
 
     # TODO: Make sure we only read the spreadsheet object or the list of tabs
     # once
@@ -266,6 +270,9 @@ class Feed:
     """
     try:
       result = parser.parse(value)
+
+      if not result.tzinfo:
+        result = pytz.timezone(self._timezone).localize(result)
 
       if ':' in value:
         return result.strftime('%Y-%m-%dT%H:%M:%S.000%z')
