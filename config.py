@@ -34,7 +34,14 @@ if DEVELOPMENT_MODE:
   UI_CLIENT = '/home/credentials/test/starthinker_client.json'
   UI_SERVICE = '/home/credentials/test/starthinker_service.json'
   UI_BUCKET_AUTH = 'starthinker-test-auth'
-  UI_TOPIC = 'test_worker'
+
+  # used to run jobs ( if UI_TOPIC use pub/sub, if UI_CRON write recipe to folder, assumes cron tab executes starthinker/ui/ui/crontab.py )
+  UI_TOPIC = '' 
+  UI_CRON = '/mnt/starthinker'
+
+  # used to log job execution ( optional, leave blank )
+  UI_LOG_NAMESPACE = 'StarThinker'
+  UI_LOG_KIND = 'Recipe_Execution'
 
   # used to log job execution
   UI_LOG_DATASET = 'starthinker-test-log'
@@ -53,7 +60,14 @@ else:
   UI_CLIENT = '/home/credentials/starthinker_client.json'
   UI_SERVICE = '/home/credentials/starthinker_service.json'
   UI_BUCKET_AUTH = 'starthinker-auth'
-  UI_TOPIC = 'prod_worker'
+
+  # used to run jobs ( if UI_TOPIC use pub/sub, if UI_CRON write recipe to folder, assumes cron tab executes starthinker/ui/ui/crontab.py )
+  UI_TOPIC = '' #'default_test_worker'
+  UI_CRON = '/mnt/starthinker'
+
+  # used to log job execution ( optional, leave blank )
+  UI_LOG_NAMESPACE = 'StarThinker'
+  UI_LOG_KIND = 'Recipe_Execution'
 
   # used to log job execution
   UI_LOG_DATASET = 'starthinker-log'
@@ -63,5 +77,5 @@ else:
   CLOUD_PROJECT = 'cloud-project-id-data'
   CLOUD_SERVICE = '/home/credentials/starthinker_data_service.json'
 
- # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
-  BUFFER_SCALE = 5
+  # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
+  BUFFER_SCALE = 6
