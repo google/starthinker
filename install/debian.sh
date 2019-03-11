@@ -35,7 +35,7 @@ install_dependencies() {
   echo ""
   echo "----------------------------------------"
   echo "Update Debian Installer"
-  sudo apt-get update -qq
+  sudo apt-get update -qq > /dev/null
   echo "Done"
   
   echo ""
@@ -48,7 +48,7 @@ install_dependencies() {
   echo ""
   echo "----------------------------------------"
   echo "Install Postgre SQL Database"
-  sudo apt-get install python-dev libpq-dev postgresql postgresql-contrib -qq
+  sudo apt-get install python-dev libpq-dev postgresql postgresql-contrib -qq > /dev/null
   sudo -u postgres bash -c "psql -c \"CREATE USER starthinker_user WITH PASSWORD 'starthinker_password';\""
   sudo -u postgres bash -c "psql -c \"CREATE DATABASE starthinker;\""
   sudo -u postgres bash -c "psql -c \"ALTER ROLE starthinker_user SET default_transaction_isolation TO 'read committed';\""
@@ -66,7 +66,7 @@ install_dependencies() {
   echo ""
   echo "----------------------------------------"
   echo "Install Virtual Environment"
-  sudo apt-get install python-pip -qq
+  sudo apt-get install python-pip -qq > /dev/null
   sudo -H pip install --quiet --upgrade pip
   sudo -H pip install --quiet virtualenv
   virtualenv env
@@ -82,8 +82,6 @@ install_dependencies() {
   source setup.sh
   python ui/manage.py makemigrations --settings=ui.settings_open
   python ui/manage.py migrate --settings=ui.settings_open
-  deactivate
-  cd ..
   echo "Done"
   
   echo ""
@@ -109,6 +107,8 @@ install_dependencies() {
   RANDOM_HASH=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 24 | head -n 1)
   sed -i "s|RECIPE BUCKET PREFIX|starthinker-recipes-$RANDOM_HASH-|" ui/ui/settings_open.py
   sed -i "s|USER TOKEN STORAGE BUCKET|starthinker-users-$RANDOM_HASH-|" ui/ui/settings_open.py
+  deactivate
+  cd ..
   echo "Done"
   
   echo ""
@@ -162,7 +162,7 @@ EOL
   echo "----------------------------------------"
   echo "- Configure Nginx"
   Configure Nginx
-  sudo apt-get install nginx -qq
+  sudo apt-get install nginx -qq > /dev/null
   sudo bash -c "cat > /etc/nginx/sites-available/starthinker" << EOL
 server {
   listen 80;
