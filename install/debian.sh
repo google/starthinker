@@ -35,7 +35,7 @@ install_dependencies() {
   echo ""
   echo "----------------------------------------"
   echo "Update Debian Installer"
-  sudo apt-get -qq update
+  sudo apt-get update -qq
   echo "Done"
   
   echo ""
@@ -48,7 +48,7 @@ install_dependencies() {
   echo ""
   echo "----------------------------------------"
   echo "Install Postgre SQL Database"
-  sudo apt-get -qq install python-dev libpq-dev postgresql postgresql-contrib
+  sudo apt-get install python-dev libpq-dev postgresql postgresql-contrib -qq
   sudo -u postgres bash -c "psql -c \"CREATE USER starthinker_user WITH PASSWORD 'starthinker_password';\""
   sudo -u postgres bash -c "psql -c \"CREATE DATABASE starthinker;\""
   sudo -u postgres bash -c "psql -c \"ALTER ROLE starthinker_user SET default_transaction_isolation TO 'read committed';\""
@@ -66,7 +66,7 @@ install_dependencies() {
   echo ""
   echo "----------------------------------------"
   echo "Install Virtual Environment"
-  sudo apt-get -qq install python-pip
+  sudo apt-get install python-pip -qq
   sudo -H pip install --quiet --upgrade pip
   sudo -H pip install --quiet virtualenv
   virtualenv env
@@ -114,6 +114,7 @@ install_dependencies() {
   echo ""
   echo "----------------------------------------"
   echo "- Configure uWSGI"
+  sudo pip install --quiet uwsgi
   sudo mkdir -p /etc/uwsgi/sites
   sudo bash -c "cat > /etc/uwsgi/sites/starthinker.ini" << EOL
 [uwsgi]
@@ -161,7 +162,7 @@ EOL
   echo "----------------------------------------"
   echo "- Configure Nginx"
   Configure Nginx
-  sudo apt-get -qq install nginx
+  sudo apt-get install nginx -qq
   sudo bash -c "cat > /etc/nginx/sites-available/starthinker" << EOL
 server {
   listen 80;
