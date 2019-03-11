@@ -156,12 +156,12 @@ EOL
   sudo systemctl daemon-reload
   sudo systemctl start uwsgi
   sudo systemctl enable uwsgi
+  sleep 15
   echo "Done"
   
   echo ""
   echo "----------------------------------------"
   echo "- Configure Nginx"
-  Configure Nginx
   sudo apt-get install nginx -qq > /dev/null
   sudo bash -c "cat > /etc/nginx/sites-available/starthinker" << EOL
 server {
@@ -253,6 +253,11 @@ EOL
   echo "  - /etc/systemd/system/uwsgi.service" 
   echo "  - /etc/nginx/sites-available/starthinker"
   echo "  - /etc/nginx/nginx.conf" 
+  echo ""
+  echo "- Useful commands:"
+  echo "  - sudo systemctl status uwsgi"
+  echo "  - sudo systemctl restart uwsgi"
+  echo "  - sudo systemctl restart nginx"
 }
 
 echo ""
