@@ -25,10 +25,11 @@
         "bigquery":{
           "dataset":{"field":{ "name":"dbm_dataset", "kind":"string", "order":3, "default":"", "description":"Existing BigQuery dataset." }},
           "table":{"field":{ "name":"dbm_table", "kind":"string", "order":4, "default":"", "description":"Table to create from this report." }},
-          "schema":{"field":{ "name":"dbm_schema", "kind":"json", "order":5, "default":"[]", "description":"Schema provided in JSON list format or empty list." }}
+          "schema":{"field":{ "name":"dbm_schema", "kind":"json", "order":5, "default":"[]", "description":"Schema provided in JSON list format or empty list." }},
+          "is_incremental_load":{"field":{ "name":"is_incremental_load", "kind":"boolean", "order":6, "default":false, "description":"Clear data in destination table during this report's time period, then append report data to destination table." }}  
         }
       },
-      "datastudio":{"field":{ "name":"dbm_datastudio", "kind":"boolean", "order":5, "default":true, "description":"Format date and column nulls for DataStudio?" }}
+      "datastudio":{"field":{ "name":"dbm_datastudio", "kind":"boolean", "order":7, "default":true, "description":"Format date and column nulls for DataStudio?" }}
     }}
   ]
 }

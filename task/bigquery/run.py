@@ -23,7 +23,7 @@ import os
 import csv
 
 from starthinker.util.project import project
-from starthinker.util.bigquery import query_to_table, query_to_view, storage_to_table, query_to_rows, execute_statement, rows_to_table
+from starthinker.util.bigquery import query_to_table, query_to_view, storage_to_table, query_to_rows, execute_statement, rows_to_table, run_query
 from starthinker.util.csv import rows_to_type
 from starthinker.util.sheets import sheets_clear
 from starthinker.util.sheets import sheets_write
@@ -47,8 +47,16 @@ def query_parameters(query, parameters):
 @project.from_parameters
 def bigquery():
 
-  
-  if 'values' in project.task['from']:
+  if 'run' in project.task and 'query' in project.task.get('run', {}):
+    if project.verbose: print "QUERY", project.task['run']['query']
+    run_query(
+      project.task['auth'],
+      project.id,
+      project.task['run']['query'],
+      project.task['run'].get('legacy', True),
+      project.task['run'].get('billing_project_id', None))
+
+  elif 'values' in project.task['from']:
     rows = get_rows(project.task['auth'], project.task['from'])
 
     rows_to_table(
@@ -124,7 +132,8 @@ def bigquery():
         project.task['to']['dataset'],
         project.task['to']['view'],
         query_parameters(project.task['from']['query'], project.task['from'].get('parameters')),
-        project.task['from'].get('legacy', project.task['from'].get('useLegacySql', True)) # DEPRECATED: useLegacySql
+        project.task['from'].get('legacy', project.task['from'].get('useLegacySql', True)), # DEPRECATED: useLegacySql
+        project.task['to'].get('replace', False)
       )
   else:
     if project.verbose: print "STORAGE TO TABLE", project.task['to']['table']

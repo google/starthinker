@@ -576,3 +576,63 @@ def lineitem_write(auth, rows, dry_run=True):
   result = API_Retry(job)
   #print result
   return result
+
+
+def sdf_read(auth, file_types, filter_type, filter_ids):
+  """ Read sdf file from DV360 api
+
+  https://developers.google.com/bid-manager/v1/sdf/download
+
+  Args:
+    * auth:  (string) Either user or service.
+    * file_types: (list[string]) List of the requested file types 
+    * filter_type: (string) Value of the type of filter ids to be expected
+    * filter_ids: (list[int]) Filter ids for the api call
+
+  Returns:
+    * Rows of the sdf files requested
+
+  """
+  service = get_service('doubleclickbidmanager', API_VERSION, auth)
+
+  body = {
+      "fileTypes": file_types,
+      "filterType": filter_type,
+      "filterIds": filter_ids
+  }
+
+  result = API_Retry(service.sdf().download(body=body))
+
+  # Clean the date field in each row
+  for key in result.keys():
+    date_idx_list = []
+    for count, row in enumerate(csv_to_rows(result.get(key, ''))):
+      # Get date fields from header
+      if count == 0:
+        date_idx_list = _get_idx_sdf_date_fields(row)
+        yield row
+      # Clean and yield data rows
+      else:
+        yield _clean_sdf_row(row, date_idx_list)
+
+
+def _get_idx_sdf_date_fields(header):
+  date_idx_list = []
+
+  for idx, header in enumerate(header):
+    if "date" in header or "Date" in header:
+      date_idx_list.append(idx)
+
+  return date_idx_list
+
+
+def _clean_sdf_row(row, date_idx_list):
+  # fix format: MM/DD/YYYY HH:MM   =>   YYYY-MM-DD HH:MM
+  for idx in date_idx_list:
+    row[idx] = _convert_sdf_date(row[idx])
+
+  return row
+
+
+def _convert_sdf_date(date_string):
+  return date_string[6:9] + '-' + date_string[:1] + '-' + date_string[3:4] + ' ' + date_string[11:12] + ':' + date_string[14:15]

@@ -26,10 +26,11 @@
       "out":{
         "bigquery":{
           "dataset":{"field":{ "name":"dataset", "kind":"string", "order":5, "default":"", "description":"Dataset to be written to in BigQuery." }},
-          "table":{"field":{ "name":"table", "kind":"string", "order":6, "default":"", "description":"Table to be written to in BigQuery." }}
+          "table":{"field":{ "name":"table", "kind":"string", "order":6, "default":"", "description":"Table to be written to in BigQuery." }},
+          "is_incremental_load":{"field":{ "name":"is_incremental_load", "kind":"boolean", "order":7, "default":false, "description":"Clear data in destination table during this report's time period, then append report data to existing table." }}
         }
       },
-      "datastudio":{"field":{ "name":"datastudio", "kind":"boolean", "order":7, "default":true, "description":"Alter columns for datastudio, fixes nulls and date format." }}
+      "datastudio":{"field":{ "name":"datastudio", "kind":"boolean", "order":8, "default":true, "description":"Alter columns for datastudio, fixes nulls and date format." }}
     }}
   ]
 }

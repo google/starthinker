@@ -250,6 +250,24 @@ def datasets_access(auth, project_id, dataset_id, role='READER', emails=[], grou
 #
 #  out_file.close()
 
+# TODO terwilleger: Remove project_id
+def run_query(auth, project_id, query, legacy=True):
+
+  service = get_service('bigquery', 'v2', auth)
+
+  body={
+    'configuration': {
+      'query': {
+        'useLegacySql': legacy,
+        'query':query
+      }
+    }
+  }
+
+  #try:
+  job = service.jobs().insert(projectId=project_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
+  job_wait(service, job)
+
 
 def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='WRITE_TRUNCATE', legacy=True, billing_project_id=None, target_project_id=None):
   target_project_id = target_project_id or project_id
@@ -304,7 +322,14 @@ def query_to_view(auth, project_id, dataset_id, view_id, query, legacy=True, rep
 
   try:
     job = service.tables().list(projectId=project_id, datasetId=dataset_id).execute(num_retries=BIGQUERY_RETRIES)
-    if replace and ('%s:%s.%s' % (project_id, dataset_id, view_id)) in [table['id'] for table in job['tables']]:
+
+    table_id = ('%s:%s.%s' % (project_id, dataset_id, view_id))
+    table_exist = False
+    for table in job['tables']:
+      if table_id == table['id']:
+        table_exist = True
+
+    if replace and table_exist:
       job = service.tables().update(
           projectId=project_id,
           datasetId=dataset_id,
@@ -578,10 +603,26 @@ def incremental_rows_to_table(auth, project_id, dataset_id, table_id, rows, sche
   query_to_table(auth, project_id, dataset_id, table_id, query, disposition, False, billing_project_id=billing_project_id)
 
   #delete temp table
-  _drop_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
+  drop_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
 
 
-def create_table(auth, project_id, dataset_id, table_id):
+def create_table_if_not_exist(auth, project_id, dataset_id, table_id, is_time_partition=False):
+  service = get_service('bigquery', 'v2', auth)
+
+  if not check_table_exists(auth, 
+    project_id, 
+    dataset_id, 
+    table_id,
+    is_time_partition):
+
+    create_table(auth,
+      project_id,
+      dataset_id,
+      table_id,
+      is_time_partition)
+
+
+def create_table(auth, project_id, dataset_id, table_id, is_time_partition=False):
   service = get_service('bigquery', 'v2', auth)
 
   body = {
@@ -592,9 +633,15 @@ def create_table(auth, project_id, dataset_id, table_id):
     }
   }
 
+  if is_time_partition:
+    body['timePartitioning'] = {
+      "type": "DAY"
+    }
+
   service.tables().insert(projectId=project_id, datasetId=dataset_id, body=body).execute()
 
-def check_table_exists(auth, project_id, dataset_id, table_id):
+
+def check_table_exists(auth, project_id, dataset_id, table_id, is_time_partition=False):
   service = get_service('bigquery', 'v2', auth)
 
   table_list = service.tables().list(projectId=project_id, datasetId=dataset_id).execute()
@@ -602,10 +649,24 @@ def check_table_exists(auth, project_id, dataset_id, table_id):
   while table_list and table_list['tables']:
     for table in table_list['tables']:
       if table_id == table['tableReference']['tableId']:
+        # Check if the found table is time partitioned
+        is_table_time_partition = False
+        if 'timePartitioning' in table and 'type' in table['timePartitioning'] and table['timePartitioning']['type'] == 'DAY':
+          is_table_time_partition = True
+
+        if is_time_partition and not is_table_time_partition:
+          raise Exception('BigQuery Error:  Table %s is not a time partitioned database.', table_id)
+        elif not is_time_partition and is_table_time_partition:
+          raise Exception('BigQuery Error:  Table %s is a time partitioned database.', table_id)
+          
         return True
 
-    table_list = service.tables().list(projectId=project_id, datasetId=dataset_id, pageToken=table_list['nextPageToken']).execute()
-
+    # Get the next page of tables
+    if 'nextPageToken' in table_list:
+      print 'next'
+      table_list = service.tables().list(projectId=project_id, datasetId=dataset_id, pageToken=table_list['nextPageToken']).execute()
+    else:
+      break
 
   return False
 
@@ -805,7 +866,7 @@ def _build_converter_array(schema, fields, col_count):
   return converters
 
 
-def _drop_table(auth, project_id, dataset_id, table_id, billing_project_id=None):
+def drop_table(auth, project_id, dataset_id, table_id, billing_project_id=None):
   if not billing_project_id:
     billing_project_id = project_id
 

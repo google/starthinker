@@ -68,7 +68,7 @@ def get_rows(auth, source):
         "values": [ integer list ],
         "bigquery":{
           "dataset": [ string ],
-          "table": [ string ],
+          "query": [ string ],
           "legacy":[ boolean ]
         },
         "sheet":{

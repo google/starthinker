@@ -34,8 +34,8 @@ ADMINS = [('User Name', 'email@domain.com')]
 # Store your logo and front end website graphics here.
 STATIC_URL = 'https://storage.googleapis.com/starthinker-ui/'
 
-# Each user in the UI will receive a bucket in the cloud project, this creates [BUCKET_PREFIX]-userid for storing recipes.
-BUCKET_PREFIX = '[Usually Name Of Company]-'
+# Each user in the UI will receive a bucket in the cloud project, this creates BUCKET-PREFIX-userid for storing recipes.
+BUCKET_PREFIX = 'BUCKET_PREFIX-'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 if DEVELOPMENT_MODE:
@@ -45,19 +45,19 @@ if DEVELOPMENT_MODE:
   DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'database_name',
+        'NAME': 'starthinker',
     }
   }
 else:
   CONST_URL = 'https://starthinker.domain.com'
   SECRET_KEY = 'THIS_MUST_BE_A_RANDOM_ALPHA_NUMERIC_STRING_YOU_GENERATE'
-  ALLOWED_HOSTS = ['starthinker.domain.com', 'AND/OR IP ADDRESS']
+  ALLOWED_HOSTS = ['DOMAINS OR IP ADDRESS']
   DATABASES = {
     'default': {
-      'ENGINE': 'django.db.backends.mysql',
+      'ENGINE': 'django.db.backends.postgresql_psycopg2',
       'HOST': 'localhost',
-      'NAME': 'database_name',
-      'USER': 'database_user',
-      'PASSWORD': 'database_password',
+      'NAME': 'starthinker',
+      'USER': 'starthinker_user',
+      'PASSWORD': 'starthinker_password',
     }
   }

@@ -18,6 +18,7 @@
 
 import re
 import csv
+import sys
 from StringIO import StringIO
 
 from starthinker.util.project import project
@@ -40,6 +41,7 @@ def excel_to_rows(excel_bytes):
 
 
 def csv_to_rows(csv_string):
+  csv.field_size_limit(sys.maxsize)
   if isinstance(csv_string, basestring): csv_string = StringIO(csv_string)
   for row in csv.reader(csv_string, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL, skipinitialspace=True, escapechar='\\'):
     yield row

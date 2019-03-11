@@ -13,6 +13,9 @@
     ],
     "authors":["kenjora@google.com"]
   },
+  "setup":{
+    "timeout_seconds": "30000"
+  },
   "tasks":[
     { "dt":{
       "auth":"user",

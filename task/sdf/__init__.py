@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -15,21 +15,3 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-google-cloud-core==0.26.0
-google-auth==1.2.0
-google-auth-httplib2
-google-cloud-bigquery==0.26.0
-google-cloud-storage==1.3.2
-google-cloud-pubsub==0.27.0
-google-api-python-client==1.6.4
-oauth2client==4.1.2
-httplib2
-jsonpickle
-django
-pandas
-pysftp
-pytz
-Jinja2==2.10
-TwitterAPI
-python-dateutil
