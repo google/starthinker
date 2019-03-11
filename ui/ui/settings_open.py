@@ -54,7 +54,7 @@ if DEVELOPMENT_MODE:
   UI_BUCKET_AUTH = 'starthinker-test-auth'
 
 else:
-  CONST_URL = 'DOMAIN OR IP ADDRESS'
+  CONST_URL = 'http://DOMAIN OR IP ADDRESS'
   SECRET_KEY = 'THIS MUST BE A 50 CHARACTER RANDOM ALPHA NUMERIC STRING YOU GENERATE'
   ALLOWED_HOSTS = ['DOMAIN OR IP ADDRESS']
   DATABASES = {
@@ -70,6 +70,6 @@ else:
   CLOUD_PROJECT = 'RECIPE STORAGE PROJECT'
   CLOUD_SERVICE = 'RECIPE STORAGE SERVICE CREDENTIALS PATH'
   # Each user in the UI will receive a bucket in the cloud project, this creates BUCKET-PREFIX-userid for storing recipes.
-  BUCKET_PREFIX = 'starthinker-RECIPE_BUCKET PREFIX'
+  BUCKET_PREFIX = 'RECIPE BUCKET PREFIX'
   # Each user will have a credentials token stored in this bucket.
-  UI_BUCKET_AUTH = 'starthinker-USER TOKEN STORAGE BUCKET'
+  UI_BUCKET_AUTH = 'USER TOKEN STORAGE BUCKET'

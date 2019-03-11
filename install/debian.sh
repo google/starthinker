@@ -16,7 +16,7 @@
 #
 ###########################################################################
 
-source install/config.sh
+source starthinker/install/config.sh
 
 install_dependencies() {
   echo "----------------------------------------"
@@ -82,31 +82,33 @@ install_dependencies() {
   source setup.sh
   python ui/manage.py makemigrations --settings=ui.settings_open
   python ui/manage.py migrate --settings=ui.settings_open
+  deactivate
+  cd ..
   echo "Done"
   
   echo ""
   echo "----------------------------------------"
   echo "Configure StarThinker: starthinker/config.py"
   setup_project
-  sed -i "s/UI CLOUD PROJECT/$CLOUD_PROJECT_ID/" config.py
+  sed -i "s|UI CLOUD PROJECT|$CLOUD_PROJECT_ID|" config.py
   setup_credentials
-  sed -i "s/UI CLIENT CREDENTIALS PATH/$CLIENT_CREDENTIALS/" config.py
-  sed -i "s/UI SERVICE CREDENTIALS PATH/$SERVICE_CREDENTIALS/" config.py
-  sed -i "s/CRON DIRECTORY/$CRON_DIRECTORY/" config.py
+  sed -i "s|UI CLIENT CREDENTIALS PATH|$CLIENT_CREDENTIALS|" config.py
+  sed -i "s|UI SERVICE CREDENTIALS PATH|$SERVICE_CREDENTIALS|" config.py
+  sed -i "s|CRON DIRECTORY|$CRON_DIRECTORY|" config.py
   echo "Done"
   
   echo ""
   echo "----------------------------------------"
   echo "Configure StarThinker: starthinker/ui/ui/settings_open.py"
-  sed -i "s/RECIPE STORAGE PROJECT/$CLOUD_PROJECT_ID/" ui/ui/settings_open.py
-  sed -i "s/RECIPE STORAGE SERVICE CREDENTIALS PATH/$SERVICE_CREDENTIALS/" ui/ui/settings_open.py
+  sed -i "s|RECIPE STORAGE PROJECT|$CLOUD_PROJECT_ID|" ui/ui/settings_open.py
+  sed -i "s|RECIPE STORAGE SERVICE CREDENTIALS PATH|$SERVICE_CREDENTIALS|" ui/ui/settings_open.py
   SECRET_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1)
-  sed -i "s/THIS MUST BE A 50 CHARACTER RANDOM ALPHA NUMERIC STRING YOU GENERATE/$SECRET_KEY/" ui/ui/settings_open.py
+  sed -i "s|THIS MUST BE A 50 CHARACTER RANDOM ALPHA NUMERIC STRING YOU GENERATE|$SECRET_KEY|" ui/ui/settings_open.py
   ALLOWED_HOST=$(curl -s -H "Metadata-Flavor: Google" http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
-  sed -i "s/DOMAIN OR IP ADDRESS/$ALLOWED_HOST/g" ui/ui/settings_open.py
+  sed -i "s|DOMAIN OR IP ADDRESS|$ALLOWED_HOST|g" ui/ui/settings_open.py
   RANDOM_HASH=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 24 | head -n 1)
-  sed -i "s/RECIPE BUCKET PREFIX/starthinker-recipes-$RANDOM_HASH-/" ui/ui/settings_open.py
-  sed -i "s/USER TOKEN STORAGE BUCKET/starthinker-users-$RANDOM_HASH-/" ui/ui/settings_open.py
+  sed -i "s|RECIPE BUCKET PREFIX|starthinker-recipes-$RANDOM_HASH-|" ui/ui/settings_open.py
+  sed -i "s|USER TOKEN STORAGE BUCKET|starthinker-users-$RANDOM_HASH-|" ui/ui/settings_open.py
   echo "Done"
   
   echo ""
@@ -233,10 +235,6 @@ EOL
   sudo systemctl start nginx
   sudo systemctl enable nginx
   echo "Done"
-  
-  # Exit Virtual Environment And Back Out Directory
-  deactivate
-  cd ..
   
   echo ""
   echo "------------------------------------------------------------------------------"
