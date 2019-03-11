@@ -17,6 +17,9 @@
 ###########################################################################
 
 echo ""
+echo "This is a reference implementation only and not warrantied by Google."
+echo ""
+
 echo "----------------------------------------"
 echo "Installing StarThinker UI On Debian"
 echo "- Update Debian Installer"
@@ -83,14 +86,14 @@ sed -i "s/THIS_MUST_BE_A_RANDOM_ALPHA_NUMERIC_STRING_YOU_GENERATE/$SECRET_KEY/" 
 ALLOWED_HOST=$(curl -s -H "Metadata-Flavor: Google" http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
 sed -i "s/DOMAINS OR IP ADDRESS/$ALLOWED_HOST/" ui/ui/settings_open.py
 BUCKET_PREFIX=starthinker_ui_users_$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 24 | head -n 1)
-sed -i "s/BUCKET_PREFIX/$BUCKET_PREFIX/" ui/ui/settings_open.py
+sed -i "s/BUCKET_PREFIX-/$BUCKET_PREFIX-/" ui/ui/settings_open.py
 echo "Done"
 
 echo ""
 echo "----------------------------------------"
 echo "- Configure uWSGI"
 sudo mkdir -p /etc/uwsgi/sites
-sudo cat > /etc/uwsgi/sites/starthinker.ini << EOL
+sudo bash -c "cat > /etc/uwsgi/sites/starthinker.ini" << EOL
 [uwsgi]
 plugin = python
 uid = $USER
@@ -122,7 +125,7 @@ echo "----------------------------------------"
 echo "- Configure Nginx"
 Configure Nginx
 sudo apt-get -qq install nginx
-sudo cat > /etc/nginx/sites-available/starthinker << EOL
+sudo bash -c "cat > /etc/nginx/sites-available/starthinker" << EOL
 server {
   listen 80;
   location = /favicon.ico { access_log off; log_not_found off; }
@@ -132,7 +135,7 @@ server {
   }
 }
 EOL
-sudo cat > /etc/nginx/nginx.conf << EOL
+sudo bash -c "cat > /etc/nginx/nginx.conf" << EOL
 user www-data;
 worker_processes auto;
 pid /run/nginx.pid;
