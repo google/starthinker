@@ -33,7 +33,7 @@ from google.cloud import bigquery, storage
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery_cache.base import Cache
 
-from starthinker.config import CLOUD_SERVICE, INTERNAL_MODE
+from starthinker.config import INTERNAL_MODE
 from starthinker.util.project import project
 from starthinker.util.auth.google_bucket_auth import BucketCredentials
 

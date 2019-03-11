@@ -33,7 +33,6 @@ if DEVELOPMENT_MODE:
   UI_PROJECT = 'cloud-project-id-test'
   UI_CLIENT = '/home/credentials/test/starthinker_client.json'
   UI_SERVICE = '/home/credentials/test/starthinker_service.json'
-  UI_BUCKET_AUTH = 'starthinker-test-auth'
 
   # used to run jobs ( if UI_TOPIC use pub/sub, if UI_CRON write recipe to folder, assumes cron tab executes starthinker/ui/ui/crontab.py )
   UI_TOPIC = '' 
@@ -47,23 +46,18 @@ if DEVELOPMENT_MODE:
   UI_LOG_DATASET = 'starthinker-test-log'
   UI_LOG_TABLE = 'test-worker'
 
-  # credentials used to store data ( for security reasons not same project as logs and credentials )
-  CLOUD_PROJECT = 'cloud-project-id-data-test'
-  CLOUD_SERVICE = '/home/credentials/test/starthinker_data_service.json'
-
   # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
   BUFFER_SCALE = 1
 
 else:
   # credentials used to manage universal infomation such as logs, and project that does NOT store data
-  UI_PROJECT = 'cloud-project-id'
-  UI_CLIENT = '/home/credentials/starthinker_client.json'
-  UI_SERVICE = '/home/credentials/starthinker_service.json'
-  UI_BUCKET_AUTH = 'starthinker-auth'
+  UI_PROJECT = 'UI CLOUD PROJECT'
+  UI_CLIENT = 'UI CLIENT CREDENTIALS PATH'
+  UI_SERVICE = 'UI SERVICE CREDENTIALS PATH'
 
   # used to run jobs ( if UI_TOPIC use pub/sub, if UI_CRON write recipe to folder, assumes cron tab executes starthinker/ui/ui/crontab.py )
   UI_TOPIC = '' #'default_test_worker'
-  UI_CRON = '/mnt/starthinker'
+  UI_CRON = 'CRON DIRECTORY'
 
   # used to log job execution ( optional, leave blank )
   UI_LOG_NAMESPACE = 'StarThinker'
@@ -72,10 +66,6 @@ else:
   # used to log job execution
   UI_LOG_DATASET = 'starthinker-log'
   UI_LOG_TABLE = 'worker'
-
-  # credentials used to store data ( for security reasons not same project as logs and credentials )
-  CLOUD_PROJECT = 'cloud-project-id-data'
-  CLOUD_SERVICE = '/home/credentials/starthinker_data_service.json'
 
   # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
   BUFFER_SCALE = 6

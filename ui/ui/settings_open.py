@@ -34,9 +34,6 @@ ADMINS = [('User Name', 'email@domain.com')]
 # Store your logo and front end website graphics here.
 STATIC_URL = 'https://storage.googleapis.com/starthinker-ui/'
 
-# Each user in the UI will receive a bucket in the cloud project, this creates BUCKET-PREFIX-userid for storing recipes.
-BUCKET_PREFIX = 'BUCKET_PREFIX-'
-
 # SECURITY WARNING: keep the secret key used in production secret!
 if DEVELOPMENT_MODE:
   CONST_URL = 'http://localhost:8000'
@@ -48,10 +45,18 @@ if DEVELOPMENT_MODE:
         'NAME': 'starthinker',
     }
   }
+  # Seperate project for storing each users recipes
+  CLOUD_PROJECT = 'starthinker-test-project'
+  CLOUD_SERVICE = '/home/credentials/test/starthinker_service.json'
+  # Each user in the UI will receive a bucket in the cloud project, this creates BUCKET_PREFIX-userid for storing recipes.
+  BUCKET_PREFIX = 'starthinker-test-recipes'
+  # Each user will have a credentials token stored in this bucket.
+  UI_BUCKET_AUTH = 'starthinker-test-auth'
+
 else:
-  CONST_URL = 'https://starthinker.domain.com'
-  SECRET_KEY = 'THIS_MUST_BE_A_RANDOM_ALPHA_NUMERIC_STRING_YOU_GENERATE'
-  ALLOWED_HOSTS = ['DOMAINS OR IP ADDRESS']
+  CONST_URL = 'DOMAIN OR IP ADDRESS'
+  SECRET_KEY = 'THIS MUST BE A 50 CHARACTER RANDOM ALPHA NUMERIC STRING YOU GENERATE'
+  ALLOWED_HOSTS = ['DOMAIN OR IP ADDRESS']
   DATABASES = {
     'default': {
       'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -61,3 +66,10 @@ else:
       'PASSWORD': 'starthinker_password',
     }
   }
+  # Seperate project for storing each users recipes
+  CLOUD_PROJECT = 'RECIPE STORAGE PROJECT'
+  CLOUD_SERVICE = 'RECIPE STORAGE SERVICE CREDENTIALS PATH'
+  # Each user in the UI will receive a bucket in the cloud project, this creates BUCKET-PREFIX-userid for storing recipes.
+  BUCKET_PREFIX = 'starthinker-RECIPE_BUCKET PREFIX'
+  # Each user will have a credentials token stored in this bucket.
+  UI_BUCKET_AUTH = 'starthinker-USER TOKEN STORAGE BUCKET'

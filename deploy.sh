@@ -2,7 +2,7 @@
 
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -19,116 +19,13 @@
 ###########################################################################
 
 
-################################################################################
-#
-# just some utility functions and constants
-
-# constants
 THIS_DIR="$( cd "$( dirname "$_" )" && pwd )"
-CRON_DIRECTORY="${HOME}/starthinker_cron"
-CLIENT_CREDENTIALS="${HOME}/starthinker_client.json"
-SERVICE_CREDENTIALS="${HOME}/starthinker_service.json"
-USER_CREDENTIALS="${HOME}/starthinker_user.json"
-DATA_FILE="${HOME}/starthinker_cloud.txt"
-RECIPE_DIRECTORY="${THIS_DIR}/gtech"
-CLOUD_PROJECT_ID=""
+
+source install/config.sh
 
 # stop if any part fails
 set -e 
 set -o pipefail
-
-# read stored data ( right now only project id )
-if [ -e "${DATA_FILE}" ];then
-  CLOUD_PROJECT_ID=`cat "${DATA_FILE}"`
-fi
-
-# read_multiline 
-# $1 = termination parameter ( optional )
-# $read_multiline_return = global result return
-read_multiline() {
-  read_multiline_return=""
-  printf ">"
-  while IFS= read -e -r read_multiline_line
-  do
-    read_multiline_return="${read_multiline_return}${read_multiline_line}"
-    if [ "${1}" ];then
-      if [[ $read_multiline_line = *"${1}"* ]]; then
-        break
-      else
-        read_multiline_return="${read_multiline_return} "
-      fi
-    fi
-  done
-}
-
-
-################################################################################
-#
-# set project - in case service account operates on foreign project, used in menu below
-
-setup_project() {
-
-  echo ""
-  echo "----------------------------------------"
-  echo "Set Cloud Project - ${CLOUD_PROJECT_ID}"
-  echo ""
-
-  read -p "Cloud Project ID ( blank to skip ): " cloud_id
-
-  if [ "${cloud_id}" ];then
-    CLOUD_PROJECT_ID="${cloud_id}"
-    echo $CLOUD_PROJECT_ID > "${DATA_FILE}"
-    echo "Project ID Saved"
-  else
-    echo "Project ID Unchanged"
-  fi
-}
-
-
-################################################################################
-#
-# download credentials - called by menu below
-
-setup_credentials() {
-
-  echo ""
-  echo "----------------------------------------"
-  echo "Setup Credentials"
-  echo ""
-
-  # client
-  echo "Retrieve OAuth Client ID credentials from: https://console.cloud.google.com/apis/credentials"
-  echo "Application type: Other"
-  echo "Paste in your client credentials here: ( CTRL+D to skip )"
-
-  read_multiline "}}"
-
-  if [ "${read_multiline_return}" ];then
-    printf "%s" "$read_multiline_return" > "${CLIENT_CREDENTIALS}"
-  fi
-
-  # service
-  echo ""
-  echo "Retrieve Service account key credentials from: https://console.cloud.google.com/apis/credentials"
-  echo "Key type: JSON"
-  echo "Paste in your service credentials: ( CTRL+D to skip )"
-
-  read_multiline "}"
-
-  if [ "${read_multiline_return}" ];then
-    printf "%s" "$read_multiline_return" > "${SERVICE_CREDENTIALS}"
-  fi
-
-  # user
-  echo ""
-  echo "Using client credentials to get user credentials..."
-
-  python auth/helper.py -c "${CLIENT_CREDENTIALS}" -u "${USER_CREDENTIALS}"
-
-  echo "Credentials Setup Finished"
-  echo ""
-}
-
 
 ################################################################################
 #

@@ -30,7 +30,6 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
 
-from starthinker.config import CLOUD_PROJECT, CLOUD_SERVICE
 from starthinker.util.auth import APPLICATION_NAME, SCOPES
 from starthinker.util.project import project
 from starthinker.util.storage import bucket_create, bucket_access
@@ -79,8 +78,8 @@ def storage(request):
   bucket = request.user.get_bucket(full_path=False)
 
   # create and permission bucket ( will do nothing if it exists )
-  project.initialize(_project=CLOUD_PROJECT, _service=CLOUD_SERVICE)
-  bucket_create('service', CLOUD_PROJECT, bucket)
-  bucket_access('service', CLOUD_PROJECT, bucket, 'OWNER', emails=[request.user.email])
+  project.initialize(_project=settings.CLOUD_PROJECT, _service=settings.CLOUD_SERVICE)
+  bucket_create('service', settings.CLOUD_PROJECT, bucket)
+  bucket_access('service', settings.CLOUD_PROJECT, bucket, 'OWNER', emails=[request.user.email])
 
   return HttpResponseRedirect(request.user.get_bucket())

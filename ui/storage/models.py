@@ -23,7 +23,6 @@ from time import sleep
 
 from django.conf import settings
 
-from starthinker.config import CLOUD_PROJECT, CLOUD_SERVICE
 from starthinker.manager.log import log_get
 from starthinker.util.project import project
 from starthinker.util.storage import bucket_create, bucket_access, object_list, object_get
@@ -67,15 +66,15 @@ class Storage():
 # create and permission bucket ( will do nothing if it exists )
 def storage_create(account):
   bucket = account.get_bucket(full_path=False)
-  project.initialize(_project=CLOUD_PROJECT, _service=CLOUD_SERVICE)
-  bucket_create('service', CLOUD_PROJECT, bucket)
-  bucket_access('service', CLOUD_PROJECT, bucket, 'OWNER', emails=[account.email])
+  project.initialize(_project=settings.CLOUD_PROJECT, _service=settings.CLOUD_SERVICE)
+  bucket_create('service', settings.CLOUD_PROJECT, bucket)
+  bucket_access('service', settings.CLOUD_PROJECT, bucket, 'OWNER', emails=[account.email])
 
 
 # retrieve recipes from bucket and add status
 def storage_list(account):
   path = '%s:' % account.get_bucket(full_path=False)
-  project.initialize(_project=CLOUD_PROJECT, _service=CLOUD_SERVICE)
+  project.initialize(_project=settings.CLOUD_PROJECT, _service=settings.CLOUD_SERVICE)
 
   try:
     for filename_storage in object_list('service', path, files_only=True):
@@ -91,7 +90,7 @@ def storage_get(account, recipe_name):
 
   # fetch recipe from storage ( always base bucket name on account, never pass full bucket path )
   path = '%s:%s' % (account.get_bucket(full_path=False), recipe_name)
-  project.initialize(_project=CLOUD_PROJECT, _service=CLOUD_SERVICE)
+  project.initialize(_project=settings.CLOUD_PROJECT, _service=settings.CLOUD_SERVICE)
 
   recipe = Storage(path)
   data = json.loads(object_get('service', path))
