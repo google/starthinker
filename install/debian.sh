@@ -233,7 +233,7 @@ EOL
   sudo ln -s /etc/nginx/sites-available/starthinker /etc/nginx/sites-enabled/starthinker
   sudo nginx -t
   sudo systemctl daemon-reload
-  sudo systemctl start nginx
+  sudo systemctl restart nginx
   sudo systemctl enable nginx
   echo "Done"
   
