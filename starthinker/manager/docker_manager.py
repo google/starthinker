@@ -71,14 +71,14 @@ def run_job(recipe):
     '-v', '%s/starthinker_assets/:/home/starthinker_assets' % UI_ROOT, 
     '-v', '/tmp:/tmp', 
     docker_tag,
-    'python', '/home/sarthinker/all/run.py', job_file_name, '--verbose'
+    'python', '/home/starthinker/all/run.py', job_file_name, '--verbose'
   ]
 
   if INTERNAL_MODE: 
-    command.insert(-4, '-v')
-    command.insert(-4, '/home/mauriciod/credentials:/home/credentials')
-    command.insert(-4, '-v')
-    command.insert(-4, '/home/mauriciod/.config:/root/.config')
+    command.insert(-5, '-v')
+    command.insert(-5, '/home/mauriciod/credentials:/home/credentials')
+    command.insert(-5, '-v')
+    command.insert(-5, '/home/mauriciod/.config:/root/.config')
 
   if not 'hour' in recipe['setup']: command.append('--force')
 

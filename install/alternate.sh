@@ -99,7 +99,7 @@ install_uwsgi() {
   echo "----------------------------------------"
   echo ""
 
-  sudo pip install --quiet uwsgi
+  sudo pip2 install --quiet uwsgi
   sudo mkdir -p /etc/uwsgi/sites
   sudo bash -c "cat > /etc/uwsgi/sites/starthinker.ini" << EOL
 [uwsgi]

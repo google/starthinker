@@ -26,10 +26,9 @@ google-api-python-client
 oauth2client
 httplib2
 jsonpickle
-django==1.11
+django==1.19
 pysftp
 pytz
 tzlocal
 TwitterAPI
 python-dateutil
-MySQL-python==1.2.5

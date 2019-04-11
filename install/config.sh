@@ -405,12 +405,13 @@ install_virtualenv() {
   echo ""
 
   if [ $(command -v pip) == "" ]; then
-    sudo apt-get install python-pip -qq > /dev/null
+    sudo apt-get install python-pip2 -qq > /dev/null
   fi
 
-  pip install --quiet --upgrade pip
-  pip install --quiet virtualenv
-  virtualenv ${STARTHINKER_ENV}
+  PYTHON2=$(which python2);
+  pip2 install --quiet --upgrade pip
+  pip2 install --quiet virtualenv
+  virtualenv --python=${PYTHON2} ${STARTHINKER_ENV}
 
   echo "Done"
   echo ""
@@ -430,8 +431,8 @@ install_requirements() {
   echo ""
 
   source "${STARTHINKER_ENV}/bin/activate"
-  pip install --quiet -r ${THIS_DIR}/requirements.txt
-  pip install --quiet -r ${THIS_DIR}/starthinker_ui/requirements.txt
+  pip2 install --quiet -r ${THIS_DIR}/requirements.txt
+  pip2 install --quiet -r ${THIS_DIR}/starthinker_ui/requirements.txt
   deactivate
 
   echo "Done"

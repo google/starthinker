@@ -26,17 +26,17 @@ this recipe handler.
 
 Call from the command line using:
 
-`python all/run.py gtech/say_hello.json`
+  - `python all/run.py gtech/say_hello.json`
 
 Call from code using:
 
-`hello(recipe, instance)`
+  - `hello(recipe, instance)`
 
-### Notes
+Notes
 
-- See [/all/README.md](/all/README.md) to learn about running recipes.
-- See [/cron/README.md](/cron/README.md) to learn about scheduling recipes.
-- See [/auth/README.md](/auth/README.md) to learn about setting up credentials.
+  - See [/all/README.md](/all/README.md) to learn about running recipes.
+  - See [/cron/README.md](/cron/README.md) to learn about scheduling recipes.
+  - See [/auth/README.md](/auth/README.md) to learn about setting up credentials.
 
 """
 
@@ -76,9 +76,9 @@ def hello():
   print "If you use the 'service' credentials, you must add them manually." 
   print ''
   print 'PROJECT ID:', project.id
-  print 'PROJECT CLIENT CREDENTIALS:', project.recipe['setup']['auth']['client']
-  print 'PROJECT USER CREDENTIALS:', project.recipe['setup']['auth']['user']
-  print 'PROJECT SERVICE CREDENTIALS:', project.recipe['setup']['auth']['service']
+  print 'PROJECT CLIENT CREDENTIALS:', project.recipe['setup']['auth'].get('client', 'MISSING')
+  print 'PROJECT USER CREDENTIALS:', project.recipe['setup']['auth'].get('user', 'MISSING')
+  print 'PROJECT SERVICE CREDENTIALS:', project.recipe['setup']['auth'].get('service', 'MISSING')
   print ''
   print ''
 
