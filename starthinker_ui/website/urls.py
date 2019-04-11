@@ -16,20 +16,14 @@
 #
 ###########################################################################
 
-google-cloud-core==0.24.1
-google-cloud-bigquery==0.25.0
-google-cloud-storage==1.2.0
-google-cloud-pubsub
-google-auth
-google-auth-httplib2
-google-api-python-client
-oauth2client
-httplib2
-jsonpickle
-django==1.11
-pysftp
-pytz
-tzlocal
-TwitterAPI
-python-dateutil
-MySQL-python==1.2.5
+from django.conf.urls import url
+
+import views
+
+urlpatterns = [
+  #url(r'^stats/$', views.stats, name='website.stats'),
+  url(r'^code/$', views.code, name='website.code'),
+  url(r'^solution/$', views.solutions, name='website.solutions'),
+  url(r'^solution/(?P<tag>\w+)/$', views.solution, name='website.solution'),
+  url(r'^cron/$', views.cron, name='website.cron'),
+]

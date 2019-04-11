@@ -16,20 +16,36 @@
 #
 ###########################################################################
 
-google-cloud-core==0.24.1
-google-cloud-bigquery==0.25.0
-google-cloud-storage==1.2.0
-google-cloud-pubsub
-google-auth
-google-auth-httplib2
-google-api-python-client
-oauth2client
-httplib2
-jsonpickle
-django==1.11
-pysftp
-pytz
-tzlocal
-TwitterAPI
-python-dateutil
-MySQL-python==1.2.5
+
+"""Evaluate the validity of a json file. Helps in debugging recipes.
+
+Print the line and character position of any errors in the given json file.
+
+Arguments
+
+  file - path to JSON file to be evaluated
+
+Example 
+
+  python project/helper.py project/sample.json
+
+"""
+
+
+import argparse
+
+from starthinker.util.project import get_project
+
+
+if __name__ == "__main__":
+
+  parser = argparse.ArgumentParser()
+  parser.add_argument('file', help='A JSON file.')
+  parser.add_argument('--debug', '-d', help='Debug mode, do not scrub newlines.', action='store_true')
+  args = parser.parse_args()
+
+  try:
+    project = get_project(args.file, debug=args.debug)
+    print 'JSON OK:', args.file
+  except Exception, e:
+    print 'JSON ERROR:', args.file, str(e)

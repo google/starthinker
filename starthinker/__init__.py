@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,20 +16,6 @@
 #
 ###########################################################################
 
-google-cloud-core==0.24.1
-google-cloud-bigquery==0.25.0
-google-cloud-storage==1.2.0
-google-cloud-pubsub
-google-auth
-google-auth-httplib2
-google-api-python-client
-oauth2client
-httplib2
-jsonpickle
-django==1.11
-pysftp
-pytz
-tzlocal
-TwitterAPI
-python-dateutil
-MySQL-python==1.2.5
+VERSION = (0, 0, 3)
+
+__version__ = '.'.join(map(str, VERSION))

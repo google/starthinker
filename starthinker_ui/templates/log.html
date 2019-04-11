@@ -1,5 +1,6 @@
+{% comment %}
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,21 +16,22 @@
 #  limitations under the License.
 #
 ###########################################################################
+{% endcomment %}
 
-google-cloud-core==0.24.1
-google-cloud-bigquery==0.25.0
-google-cloud-storage==1.2.0
-google-cloud-pubsub
-google-auth
-google-auth-httplib2
-google-api-python-client
-oauth2client
-httplib2
-jsonpickle
-django==1.11
-pysftp
-pytz
-tzlocal
-TwitterAPI
-python-dateutil
-MySQL-python==1.2.5
+<div id="modal_log" class="modal">
+  <div class="modal-content">
+    <p><strong>{{ log.status }}</strong></p>
+    <p>{{ log.date }}<p>
+    <hr/>
+    <ul>
+    {% for task, times in log.tasks.items %}
+      <li><strong>{{ task }}</strong> - {{ times|join:"," }}</li>
+    {% endfor %}
+    </ul>
+    {% if log.stdout %}<hr/><pre style="text-align:left;">{{ log.stdout }}</pre>{% endif %}
+    {% if log.stderr %}<hr/><pre style="text-align:left;">{{ log.stderr }}</pre>{% endif %}
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+  </div>
+</div>

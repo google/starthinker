@@ -20,16 +20,16 @@ using Google Cloud as fast and re-usable as possible, allowing teams to focus on
 Every directory contains a README.me file. These are instructions for how to use the code in that directory.
 General structure ofthe code is:
 
-- [/deploy.sh](/deploy.sh) - a micro UI for setting up credentials, and running recipes on a schedule
-- [/setup.sh](setup.sh) - source this to set up python paths to run commands using this framework.
-- [/config.py](config.py) - global settings covering buffer size, cloud paths, and production vs debug.
-- [/util](util/) - Low level library wrappers around Google API with helpers to handle common errors.
-- [/task](task/) - Handlers for each task specified in a JSON recipe.
-- [/gtech](gtech/) - complete solution templates provided by Google gTech, great starting point for ideas.
-- [/script](script/) - command line for converting a recipe template into a client specific executable recipe
-- [/all](all/) - command line for executing a recipe in its entirety
-- [/cron](cron/) - command line for executing recipes on a schedule
-- [/auth](auth/) - command line for testing user credential setup
+- [/install](install/) - Scripts for installing and deploying StarThinker.
+- [/starthinker/config.py](starthinker/config.py) - global settings covering buffer size, cloud credentials, and production vs debug.
+- [/starthinker/util](starthinker/util/) - Low level library wrappers around Google API with helpers to handle common errors.
+- [/starthinker/task](starthinker/task/) - Handlers for each task specified in a JSON recipe.
+- [/starthinker/gtech](starthinker/gtech/) - complete solution templates provided by Google gTech, great starting point for ideas.
+- [/starthinker/script](starthinker/script/) - command line for converting a recipe template into a client specific executable recipe
+- [/starthinker/all](starthinker/all/) - command line for executing a recipe in its entirety
+- [/starthinker/cron](starthinker/cron/) - command line for executing recipes on a schedule
+- [/starthinker/auth](starthinker/auth/) - command line for testing user credential setup
+- [/starthinker_ui](starthinker/starthinker_ui/) - browser based UI powered by Django
 
 ## What are some common terms?
 
@@ -46,28 +46,14 @@ data on the command line ( or a UI ).
 
 ## Whats The Most Basic Use?
 
-If you need virtual environment to prevent install conflicts, try:
-
-```
-pip install --upgrade pip
-pip install --user virtualenv
-python -m virtualenv env
-source env/bin/activate
-```
-
-To exit virtualenv:
-
-```
-deactivate
-```
 
 For a quick start that will do nothing other than show how to sucesfully run recipes, try:
 
 ```
 git clone https://github.com/google/starthinker
 cd starthinker
-pip install -r requirements.txt
-source setup.sh
+source install/developer.sh --instance
+Choose Option 1) Full Install
 python all/run.py gtech/say_hello.json --verbose
 ```
 
@@ -80,8 +66,8 @@ Read more at [all/README.md](all/README.md) under Useful Developer Features.
 To quickly use any one of the template to perform a task, moving a DCM report for example:
 
 ```
-python script/run.py dcm/script_dcm_to_bigquery.json -h
-python script/run.py dcm/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" --datastudio > test_recipe.json
+python script/run.py gtech/script_dcm_to_bigquery.json -h
+python script/run.py gtech/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" --datastudio > test_recipe.json
 python python all/run.py test_recipe.json
 ```
 
@@ -97,12 +83,18 @@ on machine, like a Google Cloud Instance. Download the open source code, and exe
 ```
 git clone https://github.com/google/starthinker
 cd starthinker
-pip install -r requirements.txt
-source setup.sh
-./deploy.sh
+source install/cron.sh --instance
 ```
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_print=%2FLAUNCH_DEPLOY.txt&cloudshell_tutorial=README.md)
+
+## Using The Micro UI To Deploy Recipes...
+
+```
+git clone https://github.com/google/starthinker
+cd starthinker
+source install/deploy.sh
+```
 
 A micro UI will activate ( no system changes are made unless you choose an option ), choose the 
 appropriate option.  Full setup walks through everything, including credentials and install.  
@@ -110,21 +102,33 @@ The process is re-entrant so you can run it multiple times without corrupting th
 Start with Option 11 to get an overview. Here is the main utility menu:
 
 ```
-Welcome To StarThinker ( Google gTech )
+----------------------------------------------------------------------
+gTech StarThinker
+----------------------------------------------------------------------
 
-This utility will help you set up and manage long running recipes.
-If this is your first time running this script, select Full Setup.
+Developer Menu
+Sets up local environment to run StarThinker recipes from the command line. Most basic setup.
 
 
-Path Setup Finished
+Data Scientist Menu
+Sets up local job that will run recipes on a schedule persistently.  For long running custom jobs.
+
+
+Enterprise Setup Menu
+Sets up a Google App Engine Instance web UI for multiple users and disctributed jobs.  Highly scalable team wide deployment.
+
+
+Alternate Setup Menu
+Sets up a traditional full stack UI server on Google Cloud Instance for multiple users and disctributed jobs.  Highly customizable deployment.
 
 ----------------------------------------------------------------------
 Main Menu
+----------------------------------------------------------------------
 
-1) Full Setup		   5) Start Cron	     9) Run Recipe
-2) Install Dependencies	   6) Stop Cron		    10) Delete Recipe
-3) Set Cloud Project	   7) List Recipes	    11) Instructions
-4) Set Credentials	   8) Add Recipe	    12) Quit
+1) Developer Menu
+2) Data Scientist Menu
+3) Enterprise Setup Menu
+4) Quit
 Your Choice: 
 ```
 
