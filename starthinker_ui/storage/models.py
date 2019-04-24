@@ -19,48 +19,34 @@
 
 import re
 import json
-from time import sleep
 
 from django.conf import settings
 
-from starthinker.manager.log import log_get, log_job_dispatch
 from starthinker.util.project import project
 from starthinker.util.pubsub import topic_publish
 from starthinker.util.storage import bucket_create, bucket_access, object_list, object_get
-
-RE_UID = re.compile(r'\W+')
+from starthinker_ui.job.models import job_update, job_status
 
 
 class Storage():
   name = ''
-  status = {}
   filename_storage = ''
-  filename_local = ''
   link_storage = ''
   link_run = ''
 
-  _log = None
-
-  def _get_log(self):
-    if self._log is None: self._log = log_get(self.uid(), {})
-    return self._log
-
-  def _set_log(self, value):
-    self._log = value
-
-  log = property(_get_log, _set_log)
-
-  def __init__(self, filename_storage):
+  def __init__(self, account, filename_storage):
+    self.account = account
     self.name = filename_storage.split(':', 1)[1]
     self.filename_storage = filename_storage
-    self.filename_local = RE_UID.sub('_', filename_storage.replace('starthinker', 'storage', 1))
     self.link_storage = 'https://storage.cloud.google.com/%s' % filename_storage.replace(':', '/', 1)
     self.link_run = '/storage/run/%s/' % self.name
     self.json = None
-    self.log = None
 
   def uid(self):
-    return self.filename_local
+    return 'storage_%d_%s' % (self.account.pk, self.name)
+
+  def get_log(self):
+    return job_status(self.account, self.uid())
 
 
 # create and permission bucket ( will do nothing if it exists )
@@ -78,21 +64,19 @@ def storage_list(account):
 
   try:
     for filename_storage in object_list('service', path, files_only=True):
-      yield Storage(filename_storage)
+      yield Storage(account, filename_storage)
   except:
     pass # if no bucket then skip ( maybe not set up yet )
 
 
 # gets a recipe stored in a bucket
-def storage_get(account, recipe_name):
-
-  # converst to storage class to get helpers such as uid
+def storage_get(account, recipe_uid):
 
   # fetch recipe from storage ( always base bucket name on account, never pass full bucket path )
-  path = '%s:%s' % (account.get_bucket(full_path=False), recipe_name)
+  path = '%s:%s' % (account.get_bucket(full_path=False), recipe_uid)
   project.initialize(_project=settings.RECIPE_PROJECT, _service=settings.RECIPE_SERVICE)
 
-  recipe = Storage(path)
+  recipe = Storage(account, path)
   data = json.loads(object_get('service', path))
 
   # ensure there is a setup auth section
@@ -114,22 +98,19 @@ def storage_get(account, recipe_name):
   return data
 
 
+# runs all recipes stored in the bucket
+def storage_run_all(account, remote=True):
+  for recipe in storage_list(account):
+    storage_run(account, recipe.uid(), force=False, remote=remote)
+
+
 # runs a recipe stored in a bucket
-def storage_run(account, recipe_name, force=True, topic=settings.UI_TOPIC):
-  recipe = storage_get(account, recipe_name)
-
-  # remove schedule since this is a run now
-  if force: 
-    if 'day' in recipe['setup']: del recipe['setup']['day']
-    if 'hour' in recipe['setup']: del recipe['setup']['hour']
-
-  if topic:
-    # dispatch to pub/sub
-    log_job_dispatch(recipe)
-    project.initialize(_project=settings.UI_PROJECT, _service=settings.UI_SERVICE)
-    topic_publish( 'service', settings.UI_PROJECT, topic + '_worker', json.dumps(recipe))
-    sleep(5) # give the task enough time to start and flag RUNNING
-  else:
-    # write to local file
-    with open(settings.UI_CRON + '/storage_%d_%s' % (account.pk, recipe_name) , 'w') as f:
+def storage_run(account, recipe_uid, force=True, remote=True):
+  recipe = storage_get(account, recipe_uid)
+  if remote:
+    job_update(account, recipe, force=force, pause=False)
+  elif settings.UI_CRON:
+    with open(settings.UI_CRON + '/storage_%d_%s' % (account.pk, recipe_uid) , 'w') as f:
       f.write(json.dumps(recipe))
+  else:
+    raise Exception('Neither UI_CRON configured nor remote set.')

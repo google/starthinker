@@ -16,8 +16,23 @@
 #
 ###########################################################################
 
-wheel
-gunicorn
-uwsgi
-django==1.11
-psycopg2
+from django.core.management.base import BaseCommand, CommandError
+from django.template.loader import render_to_string
+
+from starthinker_worker.log import log_get
+
+class Command(BaseCommand):
+  help = 'Render Log HTML'
+
+  def add_arguments(self, parser):
+    parser.add_argument(
+      '--recipe',
+      action='store',
+      dest='recipe',
+      required=True,
+      help='Recipe to pull log for.',
+    )
+
+  def handle(self, *args, **kwargs):
+    log = log_get(kwargs['recipe'])
+    print render_to_string('log.html', { 'log':log })

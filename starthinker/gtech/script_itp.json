@@ -169,7 +169,7 @@
           "timezoneCode":"America/Los_Angeles",
           "metadata":{
             "title":{"field":{ "name":"dataset", "kind":"string", "prefix":"DV360_Browser_Delivery_", "description":"Name of report in DBM, should be unique." }},
-            "dataRange":"LAST_90_DAYS"
+            "dataRange":"LAST_24_MONTHS"
           },
           "params": {
             "type": "TYPE_GENERAL",
@@ -297,7 +297,7 @@
           "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"BigQuery dataset to contain data." }}
         }, 
         "from": {
-          "query": "WITH cm AS ( SELECT Report_Day, CASE  WHEN Platform_Type=\"Desktop\" THEN \"Desktop\" WHEN Platform_Type=\"Tablet\" THEN \"Mobile_Tablet\" WHEN Platform_Type=\"Mobile highend: smartphone\" THEN \"Mobile_Tablet\" WHEN Platform_Type=\"Mobile midrange: feature phone\" THEN \"Mobile_Tablet\" WHEN Platform_Type=\"Connected TV\" THEN \"CTV\" END AS Device_Clean, SUM(Impressions) as CM_Impressions FROM `[PARAMETER].CM_Browser_Delivery_Clean`  GROUP BY 1,2 ),  dv3 AS ( SELECT Report_Day as RD, CASE  WHEN Device_Type=\"Desktop\" THEN \"Desktop\" WHEN Device_Type=\"Tablet\" THEN \"Mobile_Tablet\" WHEN Device_Type=\"Smart Phone\" THEN \"Mobile_Tablet\" WHEN Device_Type=\"Connected TV\" THEN \"CTV\" END AS Device_Clean_DV360, SUM(Impressions) as DV360_Impressions FROM `[PARAMETER].DV360_Browser_Delivery_Clean`  GROUP BY 1,2 )  SELECT Report_Day, Device_Clean, CM_Impressions, DV360_Impressions FROM cm a JOIN dv3 b ON a.Report_Day=b.RD AND a.Device_Clean=b.Device_Clean_DV360", 
+          "query": "WITH cm AS ( SELECT Report_Day, CASE  WHEN Platform_Type=\"Desktop\" THEN \"Desktop\" WHEN Platform_Type=\"Tablet\" THEN \"Mobile_Tablet\" WHEN Platform_Type=\"Mobile highend: smartphone\" THEN \"Mobile_Tablet\" WHEN Platform_Type=\"Mobile midrange: feature phone\" THEN \"Mobile_Tablet\" WHEN Platform_Type=\"Connected TV\" THEN \"CTV\" END AS Device_Clean, SUM(Impressions) as CM_Impressions FROM `[PARAMETER].CM_Browser_Delivery`  GROUP BY 1,2 ),  dv3 AS ( SELECT Report_Day as RD, CASE  WHEN Device_Type=\"Desktop\" THEN \"Desktop\" WHEN Device_Type=\"Tablet\" THEN \"Mobile_Tablet\" WHEN Device_Type=\"Smart Phone\" THEN \"Mobile_Tablet\" WHEN Device_Type=\"Connected TV\" THEN \"CTV\" END AS Device_Clean_DV360, SUM(Impressions) as DV360_Impressions FROM `[PARAMETER].DV360_Browser_Delivery`  GROUP BY 1,2 )  SELECT Report_Day, Device_Clean, CM_Impressions, DV360_Impressions FROM cm a JOIN dv3 b ON a.Report_Day=b.RD AND a.Device_Clean=b.Device_Clean_DV360", 
           "legacy": false,
           "parameters":[
             {"field":{ "name":"dataset", "kind":"string", "description":"Place where tables will be written in BigQuery." }},

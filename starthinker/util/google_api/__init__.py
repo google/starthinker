@@ -35,7 +35,7 @@ from time import sleep
 from googleapiclient.errors import HttpError
 from googleapiclient.discovery import Resource
 
-from starthinker.config import EXECUTE_PATH, INTERNAL_MODE
+from starthinker.config import UI_ROOT, INTERNAL_MODE
 from starthinker.util.auth import get_service
 from starthinker.util.project import project
 
@@ -78,7 +78,7 @@ def API_Retry(job, key=None, retries=5, wait=30):
       if content['error']['code'] == 409:
         return
       # permission denied ( won't change on retry so raise )
-      elif content['error']['status'] == 'PERMISSION_DENIED':
+      elif content['error'].get('status') == 'PERMISSION_DENIED':
         raise
       elif retries > 0:
         if project.verbose: print 'API ERROR:', str(e)
@@ -139,15 +139,15 @@ def API_Iterator(function, kwargs, results = None):
   
     def __find_tag__(self):
       # find the only list item for a paginated response, JOSN will only have list type, so ok to be specific
-      if self.results:
+      if self.results: # None and {} both excluded
         for tag in self.results.keys():
           if isinstance(self.results[tag], list): 
             self.iterable = tag
             break
   
-      # this shouldn't happen unless error or iterate
-      if self.iterable is None:
-        raise ValueError('JSON response with nextPageToken but no list type element.')
+        # this shouldn't happen unless error or iterate
+        if self.iterable is None:
+          raise ValueError('JSON response with nextPageToken but no list type element.')
       
     def __iter__(self):
       return self
@@ -157,22 +157,27 @@ def API_Iterator(function, kwargs, results = None):
   
     def next(self):
   
-      # if no initial results, get some
+      # if no initial results, get some, empty results {} different
       if self.results is None:
         self.results = API_Retry(self.function(**self.kwargs))
         self.__find_tag__()
   
-      # if exhausted page, get next page
-      if self.position >= len(self.results[self.iterable]):
-        self.kwargs['pageToken'] = self.results.get('nextPageToken', None)
-        if self.kwargs['pageToken']:
+      # if empty results or exhausted page, get next page
+      if self.iterable and self.position >= len(self.results[self.iterable]):
+        page_token = self.results.get('nextPageToken', None)
+        if page_token:
+
+          if 'body' in self.kwargs: self.kwargs['body']['pageToken'] = page_token
+          else: self.kwargs['pageToken'] = page_token
+
           self.results = API_Retry(self.function(**self.kwargs))
           self.position = 0
+
         else: 
           raise StopIteration
   
       # if results remain, return them
-      if self.position < len(self.results[self.iterable]):
+      if self.iterable and self.position < len(self.results[self.iterable]):
         value = self.results[self.iterable][self.position]
         self.position += 1
         return value
@@ -250,10 +255,10 @@ class API():
       results = API_Retry(job)
 
       # if paginated, automatically iterate
-      if results and ( 'nextPageToken' in results or self.iterate == True ):
+      if ( self.iterate or (isinstance(results, dict) and 'nextPageToken' in results)):
         return API_Iterator(f, self.function_kwargs, results)
 
-      # if not pagenated, return object as is
+      # if not paginated, return object as is
       else:
         return results
 
@@ -315,7 +320,7 @@ def API_DCM(auth, iterate=False, internal=INTERNAL_MODE):
   if internal:
     # fetch discovery uri using: wget https://www.googleapis.com/discovery/v1/apis/dfareporting/internalv3.2/rest > util/dcm/internalv32_uri.json
     configuration['version'] = 'internalv3.2'
-    configuration['uri'] = '%sutil/dcm/internalv32_uri.json' % EXECUTE_PATH
+    configuration['uri'] = '%s/starthinker/util/dcm/internalv32_uri.json' % UI_ROOT
 
   return API(configuration)
 
@@ -330,7 +335,7 @@ def API_SNIPPETS(auth, iterate=False):
     'version':'v1',
     'auth':auth,
     'iterate':iterate,
-    'uri':'%sutil/snippets/snippets_v1.json' % EXECUTE_PATH
+    'uri':'%s/startninker/util/snippets/snippets_v1.json' % UI_ROOT
   }
 
   return API(configuration)

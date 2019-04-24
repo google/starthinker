@@ -41,6 +41,7 @@ Notes
 """
 
 import json
+import time
 
 from starthinker.util.project import project
 
@@ -76,9 +77,9 @@ def hello():
   print "If you use the 'service' credentials, you must add them manually." 
   print ''
   print 'PROJECT ID:', project.id
-  print 'PROJECT CLIENT CREDENTIALS:', project.recipe['setup']['auth'].get('client', 'MISSING')
-  print 'PROJECT USER CREDENTIALS:', project.recipe['setup']['auth'].get('user', 'MISSING')
-  print 'PROJECT SERVICE CREDENTIALS:', project.recipe['setup']['auth'].get('service', 'MISSING')
+  print 'PROJECT CLIENT CREDENTIALS:', project.recipe.get('setup', {}).get('auth', {}).get('client', 'MISSING')
+  print 'PROJECT USER CREDENTIALS:', project.recipe.get('setup', {}).get('auth', {}).get('user', 'MISSING')
+  print 'PROJECT SERVICE CREDENTIALS:', project.recipe.get('setup', {}).get('auth', {}).get('service', 'MISSING')
   print ''
   print ''
 
@@ -104,6 +105,10 @@ def hello():
   print 'PROJECT TASK SAY:', project.task['say']
   print ''
   print ''
+
+  if 'sleep' in project.task:
+    print 'PROJECT TASK SLEEP:', project.task['sleep']
+    time.sleep(project.task['sleep'])
 
   print '-' * 80
   print "Take a look inside 'task/hello/run.py'."

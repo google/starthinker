@@ -47,8 +47,6 @@ configure_linux_ui() {
   echo ""
 
   STARTHINKER_SCALE=1
-  STARTHINKER_MANAGERS=1
-  STARTHINKER_WORKERS=6
   STARTHINKER_DEVELOPMENT=0
 
   STARTHINKER_UI_DATABASE_ENGINE="django.db.backends.postgresql";
@@ -113,8 +111,6 @@ chdir = %(base)/%(project)
 home = %(base)/starthinker_assets/env
 virtualenv = %(base)/starthinker_assets/env
 env = STARTHINKER_SCALE=$STARTHINKER_SCALE
-env = STARTHINKER_WORKERS=$STARTHINKER_WORKERS
-env = STARTHINKER_MANAGERS=$STARTHINKER_MANAGERS
 env = STARTHINKER_PROJECT=$STARTHINKER_PROJECT
 env = STARTHINKER_ZONE=$STARTHINKER_ZONE
 env = STARTHINKER_TOPIC=$STARTHINKER_TOPIC
@@ -127,7 +123,6 @@ env = STARTHINKER_CRT=$STARTHINKER_CRT
 env = STARTHINKER_KEY=$STARTHINKER_KEY
 env = STARTHINKER_CSR=$STARTHINKER_CSR
 env = STARTHINKER_CONFIG=$STARTHINKER_CONFIG
-env = STARTHINKER_CODE=$STARTHINKER_CODE
 env = STARTHINKER_ROOT=$STARTHINKER_ROOT
 env = STARTHINKER_UI_DEVELOPMENT=True
 env = STARTHINKER_UI_DOMAIN=$STARTHINKER_UI_DOMAIN
@@ -334,30 +329,33 @@ setup_linux() {
   echo ""
   echo ""
   
-  setup_project "optional";
-  setup_credentials "optional";
-  setup_domain "optional";
-  setup_database "optional" "optional" "optional";
-  save_config;
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    setup_project "optional";
+    setup_credentials "optional";
+    setup_domain "optional";
+    setup_database "optional" "optional" "optional";
+    save_config;
+  
+    setup_gcloud;
+  
+    gcloud_service;
+    gcloud_firewall_ssh;
+    gcloud_firewall_https;
 
-  setup_gcloud;
-
-  gcloud_service;
-  gcloud_firewall_ssh;
-  gcloud_firewall_https;
-
-  echo ""
-  echo "INSTANCE: starthinker-ui" 
-
-  instance_create "starthinker-ui"
-  instance_start "starthinker-ui"
-
-  instance_copy "starthinker-ui" $STARTHINKER_CLIENT starthinker_assets/client.json
-  instance_copy "starthinker-ui" $STARTHINKER_SERVICE starthinker_assets/service.json
-  instance_copy "starthinker-ui" $STARTHINKER_CONFIG starthinker_assets/config.sh
-  instance_copy "starthinker-ui" $STARTHINKER_CODE starthinker/
-
-  instance_command "starthinker-ui" "source install/alternate.sh --instance"
+    echo ""
+    echo "INSTANCE: starthinker-ui" 
+  
+    instance_create "starthinker-ui"
+    instance_start "starthinker-ui"
+  
+    instance_copy "starthinker-ui" $STARTHINKER_CLIENT starthinker_assets/client.json
+    instance_copy "starthinker-ui" $STARTHINKER_SERVICE starthinker_assets/service.json
+    instance_copy "starthinker-ui" $STARTHINKER_CONFIG starthinker_assets/production.sh
+    instance_copy "starthinker-ui" $STARTHINKER_ROOT/starthinker starthinker/ --recurse
+    instance_copy "starthinker-ui" $STARTHINKER_ROOT/starthinker_worker starthinker_worker/ --recurse
+  
+    instance_command "starthinker-ui" "source install/alternate.sh --instance"
+  fi
 
   echo "Done"
   echo ""
@@ -378,7 +376,6 @@ if [ "$1" == '--instance' ];then
 
     configure_linux_ui;
 
-    install_requirements;
     migrate_database;
     install_ssl;
     install_uwsgi;
@@ -388,7 +385,7 @@ if [ "$1" == '--instance' ];then
 
     echo ""
     echo "Directory starthinker not found."
-    echo "This utility must be run from the directory containing the starthinker directory."
+    echo "This utility must be run from the StarThinker directory containing the install folder."
     echo "Please change directories and try again."
     echo ""
 

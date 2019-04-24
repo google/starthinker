@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2018 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -29,9 +29,9 @@ How to include comments in README.md file...
 - Include a comment inside triple quotes.
 - Both module level comments and class / function comments are valid.
 
-To preview output run: python readme/helper.py
-To create README.md files run: python readme/helper.py --write
-To check README.md coverage: python readme/helper.py --check
+To preview output run: python readme.py
+To create README.md files run: python readme.py --write
+To check README.md coverage: python readme.py --check
 
 """
 
@@ -43,7 +43,7 @@ import urllib
 import argparse
 import subprocess
 
-from starthinker.config import EXECUTE_PATH
+from starthinker.config import UI_ROOT
 from starthinker.script.parse import json_get_fields
 
 RE_PY = re.compile(r'.*\.py')
@@ -98,7 +98,7 @@ def parse_py(filepath):
       #print crawl_class, crawl_def, in_comment, line.strip()
 
   if crawl:
-    doc = '\n## [%s](%s)\n\n' % (filepath.replace(EXECUTE_PATH, '/'), filepath.replace(EXECUTE_PATH, '/'))
+    doc = '\n## [%s](%s)\n\n' % (filepath.replace(UI_ROOT, '/'), filepath.replace(UI_ROOT, '/'))
     for cls in crawl.keys():
       if cls: doc += '\n\n## %s\n\n' % cls.split('(', 1)[0]
  
@@ -122,7 +122,7 @@ def parse_json(filepath):
       exit()
 
     params = script['script']
-    params['path'] = filepath.replace(EXECUTE_PATH, '/')
+    params['path'] = filepath.replace(UI_ROOT, '/')
     params['instructions'] = '- ' + '\n- '.join(script['script'].get('instructions', []))
     params['authors'] = ', '.join(script['script'].get('authors', []))
 
@@ -189,13 +189,14 @@ if __name__ == "__main__":
 
   check = { 'ok':[], 'fail':[] }
 
-  for root, dirs, files in os.walk(EXECUTE_PATH):
+  for root, dirs, files in os.walk(UI_ROOT):
     if '/project' in root and not '/util' in root: continue
     if '/.git' in root: continue
     if '/third_party' in root: continue
-    if '/readme' in root: continue
-    if '/ui' in root: continue
     if '/paper' in root: continue
+    if '/starthinker_assets' in root: continue
+    if '/legacy' in root: continue
+    if '/lib' in root: continue
 
     if args.check:
       check['ok' if 'README.md' in files else 'fail'].append(root)      
@@ -220,7 +221,7 @@ if __name__ == "__main__":
         doc += 'Every code sample and JSON recipe listed here is immediately available for execution using Google Cloud Shell.  The Google Cloud Shell will launch a virtual box with StarThinker code already on it.  It will also display this documentation in the Google Cloud UI.  This is ideal for using StarThinker once to execute a task.  For longer running jobs see [Recipe Corn Job](/cron/README.md) or [Deployment Script](/deploy/README.md).\n\n'
 
         filepath = root + '/README.md'
-        doc += '[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%%3A%%2F%%2Fgithub.com%%2Fgoogle%%2Fstarthinker&cloudshell_print=%%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%s)\n' % urllib.quote_plus(filepath.replace(EXECUTE_PATH, '/'))
+        doc += '[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%%3A%%2F%%2Fgithub.com%%2Fgoogle%%2Fstarthinker&cloudshell_print=%%2FLAUNCH_RECIPE.txt&cloudshell_tutorial=%s)\n' % urllib.quote_plus(filepath.replace(UI_ROOT, '/'))
 
         if args.write:
           print root + '/README.md'

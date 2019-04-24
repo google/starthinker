@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ###########################################################################
 # 
 #  Copyright 2019 Google Inc.
@@ -18,8 +16,22 @@
 #
 ###########################################################################
 
-from __future__ import unicode_literals
-
+import os
+import json
 from django.test import TestCase
 
-# Create your tests here.
+from starthinker.util.project import project
+from starthinker.util.auth import get_profile, get_credentials
+from starthinker_ui.account.models import  Account
+
+
+def account_create():
+  UI_CLIENT = os.environ.get('STARTHINKER_CLIENT', 'MISSING RUN deploy.sh TO SET')
+  UI_SERVICE = os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET')
+  UI_USER = os.environ.get('STARTHINKER_USER', 'MISSING RUN deploy.sh TO SET')
+
+  project.initialize(_client=UI_CLIENT, _service=UI_SERVICE, _user=UI_USER)
+  credentials = get_credentials()
+  profile = get_profile()
+
+  account = Account.objects.create_user(profile, credentials, 'password')

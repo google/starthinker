@@ -674,5 +674,6 @@ DCM_Field_Lookup = {
   "Paid_Search_Impressions":"INTEGER",
   "Cookie_Reach_Average_Impression_Frequency":"FLOAT",
   "Natural_Search_Engine_Country":"STRING",
-  "Paid_Search_Revenue":"FLOAT"
+  "Paid_Search_Revenue":"FLOAT",
+  "Percent_Composition_Impressions":"FLOAT",
 }

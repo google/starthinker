@@ -39,12 +39,12 @@
       </tr>
     </thead>
     <tbody>
-      {% for row in metrics.accounts %}
+      {% for row in metrics.account %}
         <tr>
           <td>{{ row.account }}</td>
-          <td class="center-align">{{ row.recipes }}</td>
-          <td class="center-align">{{ row.scripts }} : {{ row.scripts_percent }}%</td>
-          <td class="center-align">{{ row.script_authors }} : {{ row.script_authors_percent }}%</td>
+          <td class="center-align">{{ row.recipe }}</td>
+          <td class="center-align">{{ row.script }} : {{ row.script_percent }}%</td>
+          <td class="center-align">{{ row.author }} : {{ row.author_percent }}%</td>
         </tr>
       {% endfor %}
     </tbody>
@@ -64,11 +64,11 @@
       </tr>
     </thead>
     <tbody>
-      {% for row in metrics.scripts %}
+      {% for row in metrics.script %}
         <tr>
           <td>{{ row.script }}</td>
-          <td class="center-align">{{ row.accounts }} : {{ row.accounts_percent }}%</td>
-          <td class="center-align">{{ row.recipes }} : {{ row.recipes_percent }}%</td>
+          <td class="center-align">{{ row.account }} : {{ row.account_percent }}%</td>
+          <td class="center-align">{{ row.recipe }} : {{ row.recipe_percent }}%</td>
         </tr>
       {% endfor %}
     </tbody>
@@ -89,12 +89,12 @@
       </tr>
     </thead>
     <tbody>
-      {% for row in metrics.script_authors %}
+      {% for row in metrics.author %}
         <tr>
           <td>{{ row.author }}</td>
-          <td class="center-align">{{ row.accounts }} : {{ row.accounts_percent }}%</td>
-          <td class="center-align">{{ row.recipes }} : {{ row.recipes_percent }}%</td>
-          <td class="center-align">{{ row.scripts }} : {{ row.scripts_percent }}%</td>
+          <td class="center-align">{{ row.account }} : {{ row.account_percent }}%</td>
+          <td class="center-align">{{ row.recipe }} : {{ row.recipe_percent }}%</td>
+          <td class="center-align">{{ row.script }} : {{ row.script_percent }}%</td>
         </tr>
       {% endfor %}
     </tbody>

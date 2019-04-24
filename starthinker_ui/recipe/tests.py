@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ###########################################################################
 # 
 #  Copyright 2019 Google Inc.
@@ -18,8 +16,88 @@
 #
 ###########################################################################
 
-from __future__ import unicode_literals
-
+import time
+import copy
 from django.test import TestCase
 
-# Create your tests here.
+
+TEST_TIMESTAMP = int(time.time()) # ensures unique recipe every run
+
+TEST_RECIPE = {
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "icon":"folder",
+    "product":"gTech",
+    "title":"Sample Recipe",
+    "description":"Used for testing.",
+    "instructions":[
+      "Import this recipe.",
+      "Pass it to a test.",
+      "Make test pass."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "uuid":"RECIPE_UUID",
+    "id": "cloud-project-id",
+    "timezone": "America/Los_Angeles",
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  },
+  "tasks":[
+    { "hello":{
+        "auth":"user",
+        "say":"Task One"
+    }},
+    { "hello":{
+        "auth":"user",
+        "say":"Task Two"
+    }}
+  ]
+}
+
+
+def uuid_timestamp(uid):
+ return "%s_%d" % (uid, TEST_TIMESTAMP)
+
+
+def recipe_create(uid, hour=[]):
+  recipe = copy.deepcopy(TEST_RECIPE)
+  recipe['setup']['uuid'] = uid
+  if hour: recipe['setup']['hour'] = hour
+  return recipe
+ 
+
+def recipe_create_with_task_error(uid, hour=[]):
+  recipe = recipe_create(uid)
+  if hour: recipe['setup']['hour'] = hour
+  recipe['tasks'].insert(1, { 
+    "task_does_not_exist":{
+      "auth":"user",
+      "say":"Task Error"
+  }})
+  return recipe
+
+
+def recipe_create_with_task_sleep(uid, hour=[]):
+  recipe = recipe_create(uid)
+  if hour: recipe['setup']['hour'] = hour
+  recipe['tasks'][0]['hello']['sleep'] = 60 * 60 # 1 hour
+  return recipe
+
+
+class LogTest(TestCase):
+
+  def test_log_limit(self):
+    self.assertTrue(True)
+
+
+class RecipeViewTest(TestCase):
+
+  def test_recipe_list(self):
+    resp = self.client.get('/')
+    self.assertEqual(resp.status_code, 200)
+
+  def test_recipe_edit(self):
+    resp = self.client.get('/recipe/edit/')
+    self.assertEqual(resp.status_code, 302)

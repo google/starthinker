@@ -22,7 +22,6 @@
 Meant to speed up an automate testing of StarThinker.
 
 To get list: python test/helper.py --list -u [credentials] -s [credentials] -p [project_id]
-To get report: python test/helper.py -u [credentials] -s [credentials] -p [project_id]
 
 """
 
@@ -33,33 +32,42 @@ import re
 import argparse
 import subprocess
 
-from starthinker.config import EXECUTE_PATH
-from starthinker.util.project import project
+from starthinker.config import UI_ROOT, UI_CLIENT, UI_SERVICE, UI_PROJECT
 
+UI_USER = os.environ.get('STARTHINKER_USER', 'MISSING RUN deploy.sh TO SET')
 
 RE_TEST = re.compile(r'test.*\.json')
-
 
 if __name__ == "__main__":
 
   # get parameters
   parser = argparse.ArgumentParser()
-  parser.add_argument('--report', help='report ID to pull the achema.', default=None)
   parser.add_argument('--list', help='list tests.', action='store_true')
+  args = parser.parse_args()
 
-  # initialize project
-  project.from_commandline(parser=parser)
-  auth = 'service' if project.args.service else 'user'
-
-  for root, dirs, files in os.walk(EXECUTE_PATH):
+  for root, dirs, files in os.walk(UI_ROOT + '/starthinker/'):
     for filename in files:
       if RE_TEST.match(filename) and '/project/' not in root:
 
-        if project.args.list:
+        if args.list:
           print '%s/%s' % (root, filename)
+
         else:
-          # assemble command ( replace command, use all arguments passed, and add instance )
-          command = 'python2.7 %s/all/run.py %s/%s %s' % (EXECUTE_PATH, root, filename, ' '.join(sys.argv[1:]))
+          command = 'python %s/starthinker/all/run.py %s/%s -c %s -u %s -s %s -p %s --force' % (
+            UI_ROOT,
+            root,
+            filename,
+            UI_CLIENT,
+            UI_USER,
+            UI_SERVICE,
+            UI_PROJECT
+          )
+
           print ''
-          print 'TEST:', command
-          subprocess.call(command, shell=True, cwd=EXECUTE_PATH, stderr=subprocess.STDOUT)
+          print ''
+          print '----------------------------------------'
+          print ' TEST: ', command
+          print '----------------------------------------'
+          print ''
+
+          subprocess.call(command, shell=True, stderr=subprocess.STDOUT)

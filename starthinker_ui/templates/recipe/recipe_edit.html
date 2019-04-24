@@ -69,7 +69,7 @@
 
 {% block content %}
   {% with recipe=form_script.setup.instance %}
-  {% with log=recipe.log %}
+  {% with log=recipe.get_log %}
 
     <div class="split">
 
@@ -85,10 +85,10 @@
         <br/>
 
         <p><a href="{{ recipe.link_run }}" class="waves-effect waves-light btn form_button modal-trigger">
-          Run Now <i class="material-icons right">directions_run</i>
+          Run <i class="material-icons right">directions_run</i>
         </a></p>
-        <p><a href="#modal_log" class="waves-effect waves-light btn form_button modal-trigger">
-          View Log <i class="material-icons right">list</i>
+        <p><a href="#modal_log_{{ log.uid }}" class="waves-effect waves-light btn form_button modal-trigger">
+          Log <i class="material-icons right">list</i>
         </a></p>
         <p><a href="" class="waves-effect waves-light btn form_button modal-trigger">
           Refresh <i class="material-icons right">refresh</i>
@@ -96,8 +96,8 @@
         <p><a href="{{ recipe.link_download }}" class="waves-effect waves-light btn form_button modal-trigger">
           Download <i class="material-icons right">file_download</i>
         </a></p>
-        <p class="flow-text"><strong>Status:</strong> {{ log.status }}</p>
-        {% if log.date %}<p class="flow-text"><strong>Date:</strong> {{ log.date }}</p>{% endif %}
+        <p class="flow-text">{{ log.status }}</p>
+        {% if log.ago %}<p class="flow-text">{{ log.ago }}</p>{% endif %}
 
         <div class="right-align">
           {% for product in form_script.products %}

@@ -19,10 +19,6 @@
 ###########################################################################
 
 
-################################################################################
-#
-# main - root menu of all actions
-
 if [ -d "${PWD}/install" ]; then
   THIS_DIR=$PWD
 
@@ -71,7 +67,7 @@ if [ -d "${PWD}/install" ]; then
     echo ""
   
     main_done=0
-    main_options=("Developer Menu" "Data Scientist Menu" "Enterprise Setup Menu" "Quit")
+    main_options=("Developer Menu" "Data Scientist Menu" "Enterprise Setup Menu" "Setup Project" "Setup Credentials" "Setup User" "Quit")
   
     while (( !main_done ))
     do
@@ -86,7 +82,10 @@ if [ -d "${PWD}/install" ]; then
           1) setup_developer; break ;;
           2) setup_scientist; break ;;
           3) setup_enterprise; break ;;
-          4) main_done=1; break;;
+          4) setup_project; save_config; break ;;
+          5) setup_credentials; save_config; break ;;
+          6) setup_user; save_config; break ;;
+          7) main_done=1; break;;
           *) echo "What's that?" ;;
         esac
       done

@@ -52,7 +52,8 @@ gcloud_firewall_https()
 instance_create()
 {
   create_INSTANCE=$1
-  gcloud compute instances create $create_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE --machine-type=g1-small --boot-disk-size=200GB --scopes https://www.googleapis.com/auth/cloud-platform
+  create_MACHINE=$2
+  gcloud compute instances create $create_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE --machine-type=$create_MACHINE --boot-disk-size=200GB --scopes https://www.googleapis.com/auth/cloud-platform
 }
 
 
@@ -92,57 +93,150 @@ instance_copy()
   copy_INSTANCE=$1
   copy_SOURCE_FILENAME=$2
   copy_DESTINATION_FILENAME=$3
-  instance_command $copy_INSTANCE "rm -rf $copy_DESTINATION_FILENAME"
-  gcloud compute scp $copy_SOURCE_FILENAME $copy_INSTANCE:$copy_DESTINATION_FILENAME --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE --recurse --compress --scp-flag="-o ServerAliveInterval=30"
+  copy_RECURSIVE=$4
+  #instance_command $copy_INSTANCE "rm -rf $copy_DESTINATION_FILENAME"
+  gcloud compute scp $copy_SOURCE_FILENAME $copy_INSTANCE:$copy_DESTINATION_FILENAME --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE $copy_RECURSIVE --compress --scp-flag="-o ServerAliveInterval=30"
 }
 
 
-configure_worker() {
+start_worker_proxy() {
+  echo ""
+  echo "----------------------------------------"
+  echo "Start Worker Proxy"
+  echo "----------------------------------------"
+  echo ""
 
-  STARTHINKER_SCALE=6
-  STARTHINKER_MANAGERS=1
-  STARTHINKER_WORKERS=6
-  STARTHINKER_DEVELOPMENT=0
-  save_config; 
+  sudo bash -c "cat > /etc/systemd/system/starthinker_proxy.service" << EOL
+[Install]
+WantedBy=multi-user.target
 
+[Unit]
+Description=Google Cloud Compute Engine SQL Proxy
+Requires=networking.service
+After=networking.service
+
+[Service]
+Type=simple
+WorkingDirectory=$STARTHINKER_ROOT/starthinker_assets
+ExecStart="${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE
+Restart=always
+StandardOutput=journal
+User=root
+EOL
+
+  sudo systemctl daemon-reload
+  sudo systemctl start starthinker_proxy
+  sudo systemctl enable starthinker_proxy
+
+  echo ""
+  echo "Check status using: sudo systemctl status starthinker_proxy"
+  echo ""
   echo "Done"
   echo ""
 }
 
 
 start_worker() {
+  worker_PARAMETERS=${@}
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Start Worker"
+  echo "----------------------------------------"
+  echo ""
 
   sudo bash -c "cat > /etc/systemd/system/starthinker.service" << EOL
 [Unit]
 Description=Starthinker Worker Service
-After=multi-user.target
+After=multi-user.target starthinker_proxy.service
 
 [Service]
 Type=simple
 Environment=STARTHINKER_SCALE=$STARTHINKER_SCALE
-Environment=STARTHINKER_WORKERS=$STARTHINKER_WORKERS
+Environment=STARTHINKER_DEVELOPMENT=$STARTHINKER_DEVELOPMENT
+Environment=STARTHINKER_INTERNAL=$STARTHINKER_INTERNAL
 Environment=STARTHINKER_PROJECT=$STARTHINKER_PROJECT
 Environment=STARTHINKER_ZONE=$STARTHINKER_ZONE
-Environment=STARTHINKER_TOPIC=$STARTHINKER_TOPIC
 Environment=STARTHINKER_CLIENT=$STARTHINKER_CLIENT
 Environment=STARTHINKER_SERVICE=$STARTHINKER_SERVICE
-Environment=STARTHINKER_USER=$STARTHINKER_USER
+Environment=STARTHINKER_ROOT=$STARTHINKER_ROOT
 Environment=STARTHINKER_CRON=$STARTHINKER_CRON
-Environment=STARTHINKER_ENV=$STARTHINKER_ENV
-Environment=STARTHINKER_CODE=$STARTHINKER_CODE
-Environment=STARTHINKER_ASSETS=$STARTHINKER_ASSETS
+Environment=STARTHINKER_UI_DATABASE_ENGINE=$STARTHINKER_UI_DATABASE_ENGINE
+Environment=STARTHINKER_UI_DATABASE_HOST=$STARTHINKER_UI_DATABASE_HOST
+Environment=STARTHINKER_UI_DATABASE_PORT=$STARTHINKER_UI_DATABASE_PORT
+Environment=STARTHINKER_UI_DATABASE_NAME=$STARTHINKER_UI_DATABASE_NAME
+Environment=STARTHINKER_UI_DATABASE_USER=$STARTHINKER_UI_DATABASE_USER
+Environment=STARTHINKER_UI_DATABASE_PASSWORD=$STARTHINKER_UI_DATABASE_PASSWORD
+Environment=STARTHINKER_UI_DOMAIN=$STARTHINKER_UI_DOMAIN
+Environment=STARTHINKER_UI_SECRET=$STARTHINKER_UI_SECRET
 Environment=PYTHONPATH=$STARTHINKER_ROOT
 WorkingDirectory=$THIS_DIR
-ExecStart=$STARTHINKER_ENV/bin/python $STARTHINKER_CODE/manager/manager.py
+ExecStart=$STARTHINKER_ENV/bin/python $STARTHINKER_ROOT/starthinker_ui/manage.py job_worker $worker_PARAMETERS
 
 [Install]
 WantedBy=multi-user.target
 EOL
+
   sudo systemctl daemon-reload
   sudo systemctl start starthinker
   sudo systemctl enable starthinker
+
+  echo ""
+  echo "Check status using: sudo systemctl status starthinker"
+  echo ""
+  echo "Done"
+  echo ""
 }
 
+deploy_worker() {
+  instance_Label=$1
+  instance_Type=$2
+  instance_Workers=$3
+  instance_Jobs=$4
+
+  setup_project "optional";
+  setup_credentials "optional";
+  save_config;
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Deploy Worker Instances - $instance_Label: $instance_Type ( $instance_Workers x $instance_Jobs )"
+  echo "----------------------------------------"
+  echo ""
+
+  setup_gcloud;
+
+  gcloud_service;
+  gcloud_firewall_ssh;
+
+  #database_ip=$(gcloud sql instances describe ${STARTHINKER_UI_DATABASE_NAME} --format="value(ipAddresses[0].ipAddress)");
+  #gcloud sql instances patch $instance_name --authorized-networks=[IP_ADDR1]
+
+  for ((instance=1;instance<=instance_Workers;instance++)); do
+    instance_name="starthinker-${instance_Label}-${instance}"
+
+    echo ""
+    echo "----------------------------------------"
+    echo "Deploy Instance: $instance_name" 
+    echo "----------------------------------------"
+    echo ""
+
+    instance_create "$instance_name" "$instance_Type"
+    instance_start "$instance_name"
+
+    instance_command "$instance_name" "mkdir -p starthinker_assets"
+    instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_assets/*.*" "starthinker_assets/"
+    instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_ui" "starthinker_ui/" --recurse
+    instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker" "starthinker/" --recurse
+    instance_copy "$instance_name" "${STARTHINKER_ROOT}/install" "install/" --recurse
+    instance_copy "$instance_name" "${STARTHINKER_ROOT}/requirements.txt" "requirements.txt"
+
+    instance_command "$instance_name" "source install/worker.sh --instance --jobs $instance_Jobs"
+  done
+
+  echo "Done"
+  echo ""
+}
 
 setup_worker() {
 
@@ -150,69 +244,81 @@ setup_worker() {
   echo "----------------------------------------"
   echo "Setup Worker"
   echo "----------------------------------------"
-  echo "This will create $STARTHINKER_MANAGERS recipe manager instances in Google Cloud project $STARTHINKER_PROJECT."
   echo ""
-  read -p "Do you wish to proceed (y/n)? " -n 1 -r
+  echo "This will create Google Cloud Instances in project $STARTHINKER_PROJECT to run jobs."
   echo ""
+  echo "Pricing: https://cloud.google.com/compute/pricing"
+  echo ""
+  echo "Pick worker size to deploy.  Will overwrite existing workers."
+  echo "Test - 1 x f1-micro > (1 worker x 1 job) = 1 job at a time for testing."
+  echo "Small - 2 x n1-highmem-2 > (2 workers x 2 jobs) = 4 jobs per hour."
+  echo "Medium - 4 x n1-highmem-4 > (4 workers x 5 jobs) = 20 jobs per hour."
+  echo "Large - 5 x n1-highmem-8 > (5 workers x 10 jobs) = 50 jobs per hour."
+  echo ""
+  echo "You will have to manually shutdown and delete any unused workers if you change configuration."
+  echo " - https://pantheon.corp.google.com/compute/instances?project=$STARTHINKER_PROJECT"
+  echo ""
+  echo "StarThinker workers catch shutdown signals and attempt to gracefully finish jobs before shutdown."
   echo ""
 
-  setup_project "optional";
-  setup_credentials "optional";
-  save_config;
+  worker_done=0
+  worker_options=("Test - 1 Job" "Small - 4 Jobs" "Medium - 20 Jobs" "Large - 50 Jobs" "Quit")
 
-  setup_gcloud;
-
-  gcloud_service;
-  gcloud_firewall_ssh;
-
-  gcloud_topic "${STARTHINKER_TOPIC}_worker"
-  gcloud_topic "${STARTHINKER_TOPIC}_maintenance"
-  gcloud_subscription "${STARTHINKER_TOPIC}_worker" "${STARTHINKER_TOPIC}"
-
-  for ((instance=1;instance<=STARTHINKER_MANAGERS;instance++)); do
+  while (( !worker_done ))
+   do
+    echo "----------------------------------------------------------------------"
+    echo "Worker Deployment Menu"
+    echo "----------------------------------------------------------------------"
     echo ""
-    echo "INSTANCE: starthinker-worker-$instance" 
 
-    instance_create "starthinker-worker-$instance"
-    instance_start "starthinker-worker-$instance"
-
-    instance_command "starthinker-worker-$instance" "mkdir -p starthinker_assets"
-
-    instance_copy "starthinker-worker-$instance" $STARTHINKER_CLIENT starthinker_assets/client.json
-    instance_copy "starthinker-worker-$instance" $STARTHINKER_SERVICE starthinker_assets/service.json
-    instance_copy "starthinker-worker-$instance" $STARTHINKER_CONFIG starthinker_assets/config.sh
-    instance_copy "starthinker-worker-$instance" $STARTHINKER_CODE starthinker/
-
-    instance_command "starthinker-worker-$instance" "source starthinker/install/worker.sh --instance"
+    PS3='Your Choice: '
+    select worker_option in "${worker_options[@]}"; do
+      case $REPLY in
+        1) deploy_worker "test" "f1-micro" 1 1; break ;;
+        2) deploy_worker "small" "n1-highmem-2" 2 2; break ;;
+        3) deploy_worker "medium" "n1-highmem-4" 4 5; break ;;
+        4) deploy_worker "large" "n1-highmem-8" 5 10; break ;;
+        5) worker_done=1; break;;
+        *) echo "What's that?" ;;
+      esac
+    done
+    echo ""
   done
-
-  echo "Done"
-  echo ""
 }
 
 
 if [ "$1" == '--instance' ];then
+  shift
+  worker_PARAMETERS=${@}
 
   if [ -d "${PWD}/install" ]; then
 
     THIS_DIR=$PWD
     source ${THIS_DIR}/install/config.sh
 
+    export STARTHINKER_SCALE=5
+    export STARTHINKER_DEVELOPMENT=0
+    export STARTHINKER_UI_DATABASE_ENGINE="django.db.backends.postgresql"
+    export STARTHINKER_UI_DATABASE_HOST="127.0.0.1"
+    export STARTHINKER_UI_DATABASE_PORT="5432"
+    export STARTHINKER_UI_DATABASE_NAME="$STARTHINKER_UI_DATABASE_NAME"
+    export STARTHINKER_UI_DATABASE_USER="$STARTHINKER_UI_DATABASE_USER"
+    export STARTHINKER_UI_DATABASE_PASSWORD="$STARTHINKER_UI_DATABASE_PASSWORD"
+    save_config; 
+
+    make_cron;
     update_apt;
-    install_docker;
-    install_virtualenv;
-
-    configure_worker;
-
-    install_requirements;
+    install_proxy; # first so it installs psycopg dependencies
+    install_virtualenv; # second because pip is here
     setup_swap;
-    start_worker;
+    start_worker_proxy;
+    start_worker $worker_PARAMETERS;
 
   else
 
     echo ""
     echo "Directory starthinker not found."
-    echo "This utility must be run from the directory containing the starthinker directory."
+    echo "This utility must be run from the StarThinker directory containing the install folder."
     echo "Please change directories and try again."
     echo ""
 

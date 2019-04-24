@@ -22,7 +22,11 @@
 
 {% block content %}
 
-  <h1>Storage <a href="/storage/link/" target="_blank"><i class="material-icons teal-text">add_circle</i></a></h1>
+  <h1>
+     Storage 
+     <a href="/storage/link/" target="_blank"><i class="material-icons teal-text">cloud_upload</i></a>
+     <a href="/storage/run/" target="_blank"><i class="material-icons teal-text">directions_run</i></a>
+  </h1>
   <p class="flow-text">Upload custom recipes to your private recipe bucket.</p>
 
   <table class="bordered highlight list">
@@ -36,6 +40,7 @@
      </thead>
      <tbody>
        {% for recipe in recipes %}
+       {% with log=recipe.get_log %}
          <tr>
            <td style="width:90px;">
              <a href="{{ recipe.link_storage }}" target="_blank">
@@ -46,16 +51,20 @@
              <a href="{{ recipe.link_storage }}" target="_blank">{{ recipe.name }}</a>
            </td>
            <td class="center">
-             {{ recipe.log.execution_status }}
-             <br/>{{ recipe.log.execution_timeago }}
-             <br/>{{ recipe.log.execution_timestamp }}
+             {{ recipe.log.status }}
+             <br/>{{ recipe.log.ago }}
+             {% include "log.html" %}
            </td>
            <td class="center-align">
+             <a href="#modal_log_{{ log.uuid }}" class="waves-effect waves-light btn form_button modal-trigger">
+               Log <i class="material-icons right">list</i>
+             </a>
              <a href="{{ recipe.link_run }}" class="waves-effect waves-light btn form_button modal-trigger">
-               Run Now <i class="material-icons right">directions_run</i>
+               Run<i class="material-icons right">directions_run</i>
              </a>
            </td>
          </tr>
+       {% endwith %}
        {% endfor %}
      </tbody>
   </table>

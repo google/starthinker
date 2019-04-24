@@ -19,18 +19,17 @@
 ###########################################################################
 
 import json
-from time import sleep
+from datetime import date, datetime
 
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 
-from starthinker.manager.log import log_get, log_job_dispatch
 from starthinker.util.project import project
-from starthinker.util.pubsub import topic_publish
 from starthinker_ui.account.models import Account, token_generate
 from starthinker_ui.project.models import Project
 from starthinker_ui.recipe.scripts import Script
+from starthinker_ui.job.models import job_update, job_status
 
 
 class Recipe(models.Model):
@@ -51,39 +50,6 @@ class Recipe(models.Model):
 
   tasks = models.TextField()
 
-  _log = None
-
-  def _get_log(self):
-    if self._log is None: self._log = log_get(self.uid(), self.timezone) 
-
-    record = {'tasks':{}}
-
-    # calculate scripts
-    recipe = self.get_json()
-    instances = {}
-    for task in recipe['tasks']:
-      script = task.keys()[0]
-      instances.setdefault(script, 0)
-      instances[script] += 1
-      record['tasks']['%s-%d' % (script, instances[script])] = ['NOT RUN']
-     
-    # add logs
-    record['date'] = self._log.get('date', 'NOT RUN')
-    record['status'] = self._log.get('status', 'NEW')
-    record['stderr'] = self._log.get('stderr', '')
-    record['stdout'] = self._log.get('stdout', '')
-    for task, timestamps in self._log.get('tasks', {}).items():
-      record['tasks'][task] = timestamps
-
-    # check if really complete - all tasks must have an execution time
-
-    return record
-
-  def _set_log(self, value):
-    self._log = value
-
-  log = property(_get_log, _set_log)
-
   def __unicode__(self):
     return self.name
 
@@ -93,6 +59,9 @@ class Recipe(models.Model):
 
   def uid(self):
     return "UI-RECIPE-%s" % (self.pk or 'NEW')
+
+  def get_log(self):
+    return job_status(self.account, self.uid())
 
   def link_edit(self):
     return '/recipe/edit/%d/' % self.pk
@@ -158,22 +127,11 @@ class Recipe(models.Model):
         self.get_values()
       )
 
-  def run(self, force=True, topic=settings.UI_TOPIC):
-    recipe = self.get_json()
-
-    # remove schedule since this is a run now
-    if force:
-      if 'day' in recipe['setup']: del recipe['setup']['day']
-      if 'hour' in recipe['setup']: del recipe['setup']['hour']
-
-    if topic:
-      # dispatch to pub/sub
-      log_job_dispatch(recipe)
-      project.initialize(_project=settings.UI_PROJECT, _service=settings.UI_SERVICE)
-      topic_publish( 'service', settings.UI_PROJECT, topic + '_worker', json.dumps(recipe))
-    else:
-      # write to local file
+  def run(self, force=True, remote=True):
+    if remote:
+      job_update(self.account, self.get_json(), force=force, pause=not(self.active))
+    elif settings.UI_CRON:
       with open(settings.UI_CRON + '/recipe_%d.json' % self.pk, 'w') as f:
         f.write(json.dumps(recipe))
-
-    sleep(5) # give the task enough time to start and flag RUNNING
+    else:
+      raise Exception('Neither UI_CRON configured nor remote set.')

@@ -41,7 +41,7 @@ Recipes are generated from recipe templates using [/script/run.py](/script/run.p
 
 import argparse
 
-AIRFLOW_TEMPLATE = '''from starthinker.util.airflow import DAG_Factory
+AIRFLOW_TEMPLATE = '''from starthinker_airflow.factory import DAG_Factory
   
 dag_factory = DAG_Factory('%s')
 dag = dag_factory.execute()
@@ -53,7 +53,7 @@ if __name__ == "__main__":
 if __name__ == "__main__":
 
   # assemble parameters
-  parser = argparse.ArgumentParser(usage='python airflow/helper.py gtech/say_hello.json > ~/airflow/dags/say_hello.py\nTo get DAG testing commands run: python ~/airflow/dags/say_hello.py')
+  parser = argparse.ArgumentParser(usage='python starthinker_airflow/helper.py starthinker/gtech/say_hello.json > ~/airflow/dags/say_hello.py\nTo get DAG testing commands run: python ~/airflow/dags/say_hello.py\n')
   parser.add_argument('recipe', help='JSON recipe to connect to airflow.')
   args = parser.parse_args()
 

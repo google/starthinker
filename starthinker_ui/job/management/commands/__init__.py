@@ -15,9 +15,3 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-wheel
-gunicorn
-uwsgi
-django==1.11
-psycopg2

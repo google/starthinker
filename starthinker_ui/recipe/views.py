@@ -25,15 +25,14 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 
-from starthinker.manager.log import log_get, is_job_running
 from starthinker_ui.account.decorators import permission_admin
 from starthinker_ui.recipe.forms_script import ScriptForm
 
 def recipe_list(request):
-  logs = log_get()
-  recipes = request.user.recipe_set.all() if request.user.is_authenticated() else []
-  for recipe in recipes:
-    recipe.log = logs.get(recipe.uid(), {})
+  if request.user.is_authenticated():
+    recipes = request.user.recipe_set.all() if request.user.is_authenticated() else []
+  else:
+    recipes = []
   return render(request, "recipe/recipe_list.html", { 'recipes':recipes })
 
 
@@ -66,11 +65,11 @@ def recipe_delete(request, pk=None):
 def recipe_run(request, pk):
   try:
     recipe = request.user.recipe_set.get(pk=pk)
-    if is_job_running(recipe.uid()):
-      messages.error(request, 'Wait for current job to finish.')
+    if recipe.get_log()['status'] == 'RUNNING':
+      messages.success(request, 'Recipe dispatched, will run once in progress task completes.')
     else:
-      recipe.run()
-      messages.success(request, 'Recipe deployed.')
+      messages.success(request, 'Recipe dispatched, give it a few minutes to start.')
+    recipe.run()
   except Exception, e:
     messages.error(request, str(e))
   return HttpResponseRedirect('/recipe/edit/%s/' % pk)

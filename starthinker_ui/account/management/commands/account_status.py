@@ -25,7 +25,6 @@ from random import sample
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
-from starthinker.manager.log import log_get
 from starthinker.util.project import project
 from starthinker.util.email import send_email
 from starthinker.util.email.template import EmailTemplate
@@ -123,14 +122,11 @@ class Command(BaseCommand):
         email.greeting(account.name)
         email.paragraph(EMAIL_PARAGRAPH)
 
-        # pre fetch logs in one call
-        logs = log_get()
-
         # loop through recipes
         rows = []
         for recipe in account.recipe_set.all():
-          recipe.log = logs.get(recipe.uid(), {})
-          rows.append([recipe.name, recipe.log.get('status'), recipe.log.get('time_ago'), 'http://starthinker.corp.google.com/recipe/edit/%d/' % recipe.pk]) 
+          log = recipe.get_log()
+          rows.append([recipe.name, log.get('status'), log.get('ago'), 'http://starthinker.corp.google.com/recipe/edit/%d/' % recipe.pk]) 
 
         if rows:
           email.segment_next()
@@ -139,10 +135,10 @@ class Command(BaseCommand):
           status = True
 
         # loop through storage
-        rows = []
-        for recipe in storage_list(account):
-          recipe.log = logs.get(recipe.uid(), {})
-          rows.append([recipe.name, recipe.log.get('status'), recipe.log.get('time_ago'), recipe.link_storage]) 
+        #rows = []
+        #for recipe in storage_list(account):
+        #  recipe.log = logs.get(recipe.uid(), {})
+        #  rows.append([recipe.name, recipe.log.get('status'), recipe.log.get('time_ago'), recipe.link_storage]) 
 
         if rows:
           email.segment_next()

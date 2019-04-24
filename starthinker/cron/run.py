@@ -80,7 +80,7 @@ import argparse
 from glob import glob
 from time import sleep
 
-from starthinker.config import EXECUTE_PATH
+from starthinker.config import UI_ROOT
 from starthinker.util.project import get_project, is_scheduled
 
 ONE_HOUR_AND_ONE_SECOND = (60 * 60) + 1 # ensures no repeat in a single hour but never runs over in 24 hours
@@ -111,11 +111,11 @@ if __name__ == "__main__":
 
         if args.force or is_scheduled(project):
 
-          command = 'python task/%s/run.py %s %s' % (script, filepath, ' '.join(sys.argv[2:]))
+          command = 'python starthinker/task/%s/run.py %s %s' % (script, filepath, ' '.join(sys.argv[2:]))
 
           if args.verbose: print 'COMMAND:', command
 
-          subprocess.Popen(command, shell=True, cwd=EXECUTE_PATH)
+          subprocess.Popen(command, shell=True, cwd=UI_ROOT)
 
       if args.force: break
       if args.verbose: print 'SLEEP:', ONE_HOUR_AND_ONE_SECOND

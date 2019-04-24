@@ -1,5 +1,7 @@
+#!/bin/bash
+  
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +18,16 @@
 #
 ###########################################################################
 
-import subprocess
+source "${STARTHINKER_ROOT}/starthinker_assets/production.sh";
 
-from starthinker.config import EXECUTE_PATH
+export STARTHINKER_SCALE=1;
+export STARTHINKER_DEVELOPMENT=1;
 
-
-if __name__ == "__main__":
-
-  subprocess.call("python manage.py recipe_to_json --remote --settings=ui.settings_internal", shell=True, cwd=EXECUTE_PATH + "ui/")
-  print 'Recipes ran'
-
-  subprocess.call("python manage.py storage_to_json --remote --settings=ui.settings_internal", shell=True, cwd=EXECUTE_PATH + "ui/")
-  print 'Storage ran'
-
+export STARTHINKER_UI_DOMAIN="http://localhost:8000";
+export STARTHINKER_UI_SECRET="fordevelomentthisisokbutproductionneedsa50characterrandomsecret";
+export STARTHINKER_UI_DATABASE_ENGINE="django.db.backends.sqlite3";
+export STARTHINKER_UI_DATABASE_HOST="";
+export STARTHINKER_UI_DATABASE_PORT="";
+export STARTHINKER_UI_DATABASE_NAME="/home/starthinker/starthinker_assets/database.sqlite";
+export STARTHINKER_UI_DATABASE_USER="";
+export STARTHINKER_UI_DATABASE_PASSWORD="";

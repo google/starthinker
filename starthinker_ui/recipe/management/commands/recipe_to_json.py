@@ -20,7 +20,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
-from starthinker_ui.ui.pubsub import send_message
 from starthinker_ui.recipe.models import Recipe
 
 
@@ -56,5 +55,12 @@ class Command(BaseCommand):
   def handle(self, *args, **kwargs):
     
     for recipe in (Recipe.objects.filter(pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.filter(active=True)):
-      if not kwargs['remote']: print 'Deploy: %s/recipe_%d.json' % (settings.UI_CRON, recipe.pk)
-      recipe.run(kwargs['force'], settings.UI_TOPIC if kwargs['remote'] else '')
+      try:
+        if not kwargs['remote']: print 'Dispatch: %s' % recipe.uid()
+        else: print 'Write: %s/recipe_%d.json' % (settings.UI_CRON, recipe.pk)
+
+        recipe.run(kwargs['force'], settings.UI_TOPIC if kwargs['remote'] else '')
+      except (KeyboardInterrupt, SystemExit):
+        raise
+      except Exception, e:
+        print 'DEPLOY ERROR:', str(e)

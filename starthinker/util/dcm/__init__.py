@@ -27,7 +27,7 @@ from datetime import date, timedelta
 
 from googleapiclient.errors import HttpError
 
-from starthinker.config import INTERNAL_MODE, EXECUTE_PATH, BUFFER_SCALE
+from starthinker.config import INTERNAL_MODE, UI_ROOT, BUFFER_SCALE
 from starthinker.util import flag_last
 from starthinker.util.project import project
 from starthinker.util.auth import get_service
@@ -40,7 +40,7 @@ from starthinker.util.dcm.schema.Lookup import DCM_Field_Lookup
 if INTERNAL_MODE:
   # fetch discovery uri using: wget https://www.googleapis.com/discovery/v1/apis/dfareporting/internalv3.2/rest > util/dcm/internalv32_uri.json
   API_VERSION = 'internalv3.2'
-  API_URI = '%sutil/dcm/internalv32_uri.json' % EXECUTE_PATH
+  API_URI = '%s/starthinker/util/dcm/internalv32_uri.json' % UI_ROOT
 else:
   API_VERSION = 'v3.2'
   API_URI = None

@@ -16,21 +16,20 @@
 #
 ###########################################################################
 
-import subprocess
-from time import sleep
-
-from starthinker.config import EXECUTE_PATH
-
-ONE_HOUR_AND_ONE_SECOND = (60 * 60) + 1 # ensures no repeat in a single hour but never runs over in 24 hours
-
-if __name__ == "__main__":
-
-  try:
-    while True:
-      subprocess.call("python manage.py recipe_to_json --remote --settings=ui.settings_internal", shell=True, cwd=EXECUTE_PATH + "ui/")
-      subprocess.call("python manage.py client_to_json --remote --settings=ui.settings_internal", shell=True, cwd=EXECUTE_PATH + "ui/")
-      print 'SLEEP:', ONE_HOUR_AND_ONE_SECOND
-      sleep(ONE_HOUR_AND_ONE_SECOND)
-
-  except KeyboardInterrupt:
-    exit()
+# Core
+google-cloud-core==0.24.1
+google-cloud-bigquery==0.25.0
+google-cloud-storage==1.2.0
+google-cloud-pubsub
+google-auth
+google-auth-httplib2
+google-api-python-client
+oauth2client
+httplib2
+jsonpickle
+django==1.11
+pysftp
+pytz
+tzlocal
+TwitterAPI
+python-dateutil

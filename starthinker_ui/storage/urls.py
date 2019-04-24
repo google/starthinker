@@ -24,5 +24,5 @@ import views
 urlpatterns = [
   url(r'^storage/$', views.view_storage_list, name='storage.list'),
   url(r'^storage/link/$', views.view_storage_link, name='storage.link'),
-  url(r'^storage/run/(?P<recipe>[\w\.]+)/$', views.view_storage_run, name='storage.run'),
+  url(r'^storage/run/(?P<recipe>[\w\.]+)?/?$', views.view_storage_run, name='storage.run'),
 ]

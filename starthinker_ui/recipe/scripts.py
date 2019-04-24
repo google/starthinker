@@ -29,7 +29,7 @@ from starthinker.script.parse import json_set_fields, json_set_instructions, jso
 from starthinker.util.project import get_project
 
 
-# cache scripts and authors in memory
+# cache scripts in memory
 RE_SCRIPT = re.compile(r'^script_.*\.json$')
 SCRIPTS = {}
 
@@ -43,7 +43,7 @@ def load_scripts():
             script = get_project(root + '/' + filename)
             if not 'script' in script: continue
             script['path'] = root + '/' + filename
-            SCRIPTS[filename.replace('script_', '').replace('.json', '')] = script
+            SCRIPTS[filename.replace('script_', '', 1).replace('.json', '', 1)] = script
             print 'OK', filename
           except Exception, e:
             print 'ERROR:', filename, str(e) 
@@ -113,7 +113,7 @@ class Script:
 
   def get_open_source(self):
     if self.script.get('script', {}).get('license', '') == 'Apache License, Version 2.0':
-      return 'https://github.com/google/starthinker/blob/master/' + self.script.path
+      return 'https://github.com/google/starthinker/blob/master/' + self.script['path'].replace(UI_ROOT, '', 1)
     else:
       return ''
 
@@ -146,6 +146,10 @@ class Script:
       for t in ts: hours.update(t.get('hours', []))
 
     data = {
+      #"script":{
+      #  "tag":self.get_tag(),
+      #  "authors":self.get_authors()
+      #},
       "setup":{
         "uuid":uuid,
         "id":project_id,

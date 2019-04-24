@@ -70,9 +70,9 @@ import sys
 import subprocess
 import argparse
 
-from starthinker.config import EXECUTE_PATH
+from starthinker.config import UI_ROOT
 from starthinker.util.project import get_project, is_scheduled
-from starthinker.manager.log import log_job_task_start, log_job_task_complete
+
 
 if __name__ == "__main__":
 
@@ -92,10 +92,9 @@ if __name__ == "__main__":
 
   # load json to get each task
   recipe = get_project(args.json)
+
   # track per task instance count
   instances = {}
-  # return code changes if a task fails
-  return_code = 0
 
   for task in recipe['tasks']:
     script, task = task.items()[0]
@@ -105,33 +104,15 @@ if __name__ == "__main__":
     instances[script] += 1
 
     # assemble command ( replace command, use all arguments passed, and add instance )
-    command = 'python %stask/%s/run.py %s -i %d' % (EXECUTE_PATH, script, ' '.join(sys.argv[1:]), instances[script])
+    command = 'python -W ignore %s/starthinker/task/%s/run.py %s -i %d' % (UI_ROOT, script, ' '.join(sys.argv[1:]), instances[script])
 
     # show command so user can run each task
     print command
 
     # execute command if schedule
     if args.force or is_scheduled(recipe, task):
-
-      # writes status if logs are enabled is present
-      try: log_job_task_start(recipe, script, instances[script])
-      except: pass
-
-      child = subprocess.Popen(command, shell=True, cwd=EXECUTE_PATH, stderr=subprocess.PIPE)
-      outputs, errors = child.communicate()
-
-      # writes status if logs are enabled is present
-      try: log_job_task_complete(recipe, script, instances[script], outputs, errors)
-      except: pass
-
-      #print errors
-      if errors:
-        sys.stderr.write(errors)
-        return_code = 1
-        sys.exit(return_code)
+      subprocess.Popen(command, shell=True).wait()
 
     # skip command if not schedule
     else:
       print "Schedule Skipping: run command manually or add --force to run all"
-
-  sys.exit(return_code)

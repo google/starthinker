@@ -16,8 +16,9 @@
 #
 ###########################################################################
 
+
 # Load all technical settings
-from starthinker_ui.ui.settings_framework import *
+from starthinker_ui.ui.framework import *
 
 def domain_to_host(domain):
   return  domain.split('://', 1)[-1].split(':', 1)[0].split('/', 1)[0]
@@ -36,19 +37,22 @@ STATIC_URL = 'https://storage.googleapis.com/starthinker-ui/'
 
 CONST_URL = os.environ.get('STARTHINKER_UI_DOMAIN') or 'http://localhost:8000'
 SECRET_KEY = os.environ.get('STARTHINKER_UI_SECRET') or 'safetyandcivilreassuranceadministrationofficials'
-ALLOWED_HOSTS = [domain_to_host(os.environ.get('STARTHINKER_UI_DOMAIN', '')) or 'localhost']
+ALLOWED_HOSTS = [domain_to_host(os.environ.get('STARTHINKER_UI_DOMAIN', '')) or 'localhost', '127.0.0.1']
 
 DATABASES = {
   'default': {
     'ENGINE': os.environ.get('STARTHINKER_UI_DATABASE_ENGINE', 'MISSING RUN deploy.sh TO SET'),
-    'NAME': os.environ.get('STARTHINKER_UI_DATABASE_NAME', 'MISSING RUN deploy.sh TO SET'),
     'HOST': os.environ.get('STARTHINKER_UI_DATABASE_HOST', ''),
+    'PORT': os.environ.get('STARTHINKER_UI_DATABASE_PORT', ''),
+    'NAME': os.environ.get('STARTHINKER_UI_DATABASE_NAME', 'MISSING RUN deploy.sh TO SET'),
     'USER': os.environ.get('STARTHINKER_UI_DATABASE_USER', ''),
     'PASSWORD': os.environ.get('STARTHINKER_UI_DATABASE_PASSWORD', '')
   }
 }
 
 # Seperate project for storing each users recipes for security reasons
-# Each user in the UI will receive a bucket in the cloud project, this creates BUCKET-PREFIX-userid for storing recipes.
-CLOUD_PROJECT = os.environ.get('STARTHINKER_RECIPE_PROJECT', 'MISSING RUN deploy.sh TO SET')
-CLOUD_SERVICE = os.environ.get('STARTHINKER_RECIPE_SERVICE', 'MISSING RUN deploy.sh TO SET')
+RECIPE_PROJECT = os.environ.get('STARTHINKER_RECIPE_PROJECT', '')
+RECIPE_SERVICE = os.environ.get('STARTHINKER_RECIPE_SERVICE', '')
+
+if not RECIPE_PROJECT: RECIPE_PROJECT = UI_PROJECT
+if not RECIPE_SERVICE: RECIPE_SERVICE = UI_SERVICE

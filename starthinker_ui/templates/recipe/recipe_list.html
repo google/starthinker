@@ -35,6 +35,7 @@
      </thead>
      <tbody>
        {% for recipe in recipes %}
+       {% with log=recipe.get_log %}
          <tr>
            <td style="width:90px;">
              <a href="{{ recipe.link_edit }}"><i class="material-icons medium teal-text">{% if recipe.active %}play_arrow{% else %}pause{% endif %}</i></a>
@@ -45,10 +46,11 @@
              <br/>{% for hour in recipe.get_hours %}{{ hour }}{% if not forloop.last %}, {% endif %}{% endfor %}
            </td>
            <td class="center">
-             {{ recipe.log.status }}
-             <br/>{{ recipe.log.date }}
+             {{ log.status }}
+             <br/>{{ log.ago }}
            </td>
          </tr>
+       {% endwith %}
        {% endfor %}
      </tbody>
   </table>

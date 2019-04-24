@@ -1,1 +1,12 @@
+.DS_Store
 *.pyc 
+*.swp
+*.yaml
+starthinker_assets/
+!starthinker_assets/README.md
+!starthinker_assets/development.sh
+starthinker/legacy/
+starthinker/api/lib
+starthinker/api/client_secrets.json
+starthinker_ui/recipe/scripts_lookup.py
+starthinker_ui/*/migrations/0*.py

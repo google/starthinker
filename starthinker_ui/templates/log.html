@@ -18,18 +18,26 @@
 ###########################################################################
 {% endcomment %}
 
-<div id="modal_log" class="modal">
+<div id="modal_log_{{ log.uid }}" class="modal">
   <div class="modal-content">
-    <p><strong>{{ log.status }}</strong></p>
-    <p>{{ log.date }}<p>
-    <hr/>
-    <ul>
-    {% for task, times in log.tasks.items %}
-      <li><strong>{{ task }}</strong> - {{ times|join:"," }}</li>
-    {% endfor %}
-    </ul>
-    {% if log.stdout %}<hr/><pre style="text-align:left;">{{ log.stdout }}</pre>{% endif %}
-    {% if log.stderr %}<hr/><pre style="text-align:left;">{{ log.stderr }}</pre>{% endif %}
+    <p><strong>{{ log.status }} - {{ log.percent }}%</strong></p>
+    <p>{{ log.ago }}<p>
+    <table id="stats_accounts" class="responsive-table list">
+      <thead>
+        <tr>
+          <th style="min-width:120px;">Task</th>
+          <th>Output / Error</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task_key, task in log.tasks.items %}
+          <tr>
+            <td style="vertical-align:top;"><strong>{{ task_key }}</strong><br/>{{ task.event }}<br/>{{ task.ago }}</td>
+            <td class="left-align"><pre>{{ task.stdout }}</pre></pre>{{ task.stderr }}</pre></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
   <div class="modal-footer">
     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>

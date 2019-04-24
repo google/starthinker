@@ -19,26 +19,45 @@
 ###########################################################################
 
 
-setup_developer_database() {
+launch_developer_ui() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Setup Local UI And Database"
+  echo "Load Development Settings - ${STARTHINKER_ROOT}/starthinker_assets/development.sh"
   echo "----------------------------------------"
   echo ""
-  echo "Activating: $STARTHINKER_ASSETS/database.sqlite"
+
+  source "${STARTHINKER_ROOT}/starthinker_assets/development.sh";
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Configure Development Database - ${STARTHINKER_ROOT}/starthinker_assets/database.sqlite"
+  echo "----------------------------------------"
   echo ""
 
-  STARTHINKER_DEVELOPMENT=1
-  STARTHINKER_UI_DATABASE_ENGINE="django.db.backends.sqlite3"
-  STARTHINKER_UI_DATABASE_HOST=""
-  STARTHINKER_UI_DATABASE_PORT=""
-  STARTHINKER_UI_DATABASE_NAME="$STARTHINKER_ASSETS/database.sqlite"
-  STARTHINKER_UI_DATABASE_USER=""
-  STARTHINKER_UI_DATABASE_PASSWORD=""
+  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" makemigrations;
+  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" migrate;
+
+  echo "----------------------------------------"
+  echo "Launch Developer UI python ${STARTHINKER_ROOT}/starthinker_ui/manage.py runserver localhost:8000"
+  echo "----------------------------------------"
+  echo ""
+
+  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" runserver localhost:8000;
+
+  deactivate
 
   echo "Done"
   echo ""
+}
+
+
+install_developer() {
+  install_virtualenv; 
+  setup_project "optional"; 
+  setup_credentials "optional"; 
+  setup_user; 
+  save_config;
 }
 
 
@@ -51,23 +70,29 @@ setup_developer() {
   echo ""
   echo "------------------------------------------------------------------------------"
   echo ""
-  echo "Configure a basic development environment for StarThinker."
+  echo "This script manages environmental settings for StarThinker. you can edit them"
+  echo "manually from the command line or use this script to manage them. All settings are in:"
+  echo " - $STARTHINKER_CONFIG"
   echo ""
-  echo "This script may create or modify:"
+  echo "This script or you may create or modify:"
   echo "  - $STARTHINKER_CONFIG"
   echo "  - $STARTHINKER_ENV"
   echo "  - $STARTHINKER_CLIENT"
   echo "  - $STARTHINKER_SERVICE"
   echo "  - $STARTHINKER_USER"
-  echo "  - $STARTHINKER_ASSETS/database.sqlite"
+  echo "  - $STARTHINKER_ROOT/starthinker_assets/database.sqlite"
   echo ""
-  echo "After running this script once, activate StarThinker virtual environment and config using:"
+  echo "After running this script once, activate StarThinker development settings from the command line:"
+  echo " - source $STARTHINKER_ROOT/starthinker_assets/developmnet.sh"
+  echo ""
+  echo "Or activate production settings from the command line:"
   echo " - source $STARTHINKER_CONFIG"
   echo ""
   echo "After activating StarThinker run the sample code:"
-  echo " - python all/run.py gtech/say_hello.json -u \$STARTHINKER_USER -s \$STARTHINKER_SERVICE -p \$STARTHINKER_PROJECT"
+  echo " - python starthinker/all/run.py starthinker/gtech/say_hello.json -u \$STARTHINKER_USER -s \$STARTHINKER_SERVICE -p \$STARTHINKER_PROJECT"
   echo ""
-  echo "After activating StarThinker run the UI:"
+  echo "After activating StarThinker run the UI from the menu below or from the command line:"
+  echo " - source $STARTHINKER_ROOT/starthinker_assets/developmnet.sh"
   echo " - python starthinker_ui/manage.py runserver localhost:8000"
   echo ""
   echo "Deactivate the virtual environment:"
@@ -75,7 +100,7 @@ setup_developer() {
   echo ""
 
   developer_done=0
-  developer_options=("Install ( All Steps )" "Change Project" "Change Credentials" "Change User" "Setup Local UI + Database" "Re-Load Configuration" "Quit")
+  developer_options=("Install StarThinker" "Launch Developer UI" "Reset Root Path" "Quit")
  
   while (( !developer_done ))
   do
@@ -87,19 +112,17 @@ setup_developer() {
     PS3='Your Choice: '
     select developer_option in "${developer_options[@]}"; do
       case $REPLY in
-        1) install_virtualenv; install_requirements; setup_project "optional"; setup_credentials "optional"; setup_user; setup_developer_database; save_config; migrate_database; break;;
-        2) setup_project; save_config; break;;
-        3) setup_credentials; save_config; break;;
-        4) setup_user; save_config; break;;
-        5) setup_developer_database; save_config; migrate_database; break;;
-        6) load_config; break;;
-        7) developer_done=1; break;;
+        1) install_developer; break;;
+        2) launch_developer_ui; break;;
+        3) save_config; break;;
+        4) developer_done=1; break;;
         *) echo "What's that?";;
       esac
     done
     echo ""
   done
 }
+
 
 if [ "$1" == '--instance' ];then
   shift;
@@ -115,7 +138,7 @@ if [ "$1" == '--instance' ];then
 
     echo ""
     echo "Directory starthinker not found."
-    echo "This utility must be run from the directory containing the starthinker directory."
+    echo "This utility must be run from the StarThinker directory containing the install folder."
     echo "Please change directories and try again."
     echo ""
 

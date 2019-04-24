@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ###########################################################################
 # 
 #  Copyright 2019 Google Inc.
@@ -18,8 +16,14 @@
 #
 ###########################################################################
 
-from __future__ import unicode_literals
-
 from django.test import TestCase
 
-# Create your tests here.
+class WebsiteTest(TestCase):
+
+  def test_code(self):
+    resp = self.client.get('/code/')
+    self.assertEqual(resp.status_code, 200)
+
+  def test_solution(self):
+    resp = self.client.get('/solution/')
+    self.assertEqual(resp.status_code, 200)

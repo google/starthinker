@@ -23,13 +23,12 @@ import os
 import re
 import json
 import httplib2
-import pprint
 
 from apiclient import discovery
 from oauth2client import client, tools
 from oauth2client.file import Storage
 from oauth2client.service_account import ServiceAccountCredentials
-from google.cloud import bigquery, storage, pubsub
+from google.cloud import bigquery, storage
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery_cache.base import Cache
 
@@ -94,55 +93,58 @@ def get_credentials():
 
   try:
     auth = project.recipe['setup']['auth']['user']
-  except KeyError: 
+
+    # if credentials are stored in a bucket
+    if RE_CREDENTIALS_BUCKET.match(auth):
+      credentials = BucketCredentials.from_bucket(auth)
+
+    # if credentials are embeded as JSON
+    elif RE_CREDENTIALS_JSON.match(auth):
+      return Credentials.from_json_keyfile_dict(
+        json.loads(auth),
+        scopes or SCOPES
+      )
+
+    # if credentials are local path ( remember this runs as command line )
+    else:
+      store = Storage(auth)
+      credentials = store.get()
+
+      if not credentials or credentials.invalid:
+        flow = get_flow(project.recipe['setup']['auth']['client'])
+        flow.user_agent = APPLICATION_NAME
+        flags = tools.argparser.parse_args(args=['--noauth_local_webserver'])
+        credentials = tools.run_flow(flow, store, flags)
+        print('Storing credentials to ' + auth)
+
+    return credentials
+
+  except (KeyError, ValueError): 
     raise KeyError("Either specify a -u [user credentials path] parameter on the command line or include setup->auth->user->[JSON OR PATH] in the recipe.")
-
-  # if credentials are stored in a bucket
-  if RE_CREDENTIALS_BUCKET.match(auth):
-    credentials = BucketCredentials.from_bucket(auth)
-
-  # if credentials are embeded as JSON
-  elif RE_CREDENTIALS_JSON.match(auth):
-    return Credentials.from_json_keyfile_dict(
-      json.loads(auth),
-      scopes or SCOPES
-    )
-
-  # if credentials are local path ( remember this runs as command line )
-  else:
-    store = Storage(auth)
-    credentials = store.get()
-
-    if not credentials or credentials.invalid:
-      flow = get_flow(project.recipe['setup']['auth']['client'])
-      flow.user_agent = APPLICATION_NAME
-      flags = tools.argparser.parse_args(args=['--noauth_local_webserver'])
-      credentials = tools.run_flow(flow, store, flags)
-      print('Storing credentials to ' + auth)
-
-  return credentials
 
 
 def get_service_credentials(scopes=None):
 
   try:
     auth = project.recipe['setup']['auth']['service']
-  except KeyError: 
+
+    # if credentials are embeded as JSON
+    if RE_CREDENTIALS_JSON.match(auth):
+      return ServiceAccountCredentials.from_json_keyfile_dict(
+        json.loads(auth),
+        scopes or SCOPES
+      )
+  
+    # if credentials are local path then check if they exist ( used by command line )
+    else:
+      return ServiceAccountCredentials.from_json_keyfile_name(
+        auth,
+        scopes or SCOPES
+      )
+
+  except (KeyError, ValueError): 
     raise KeyError("Either specify a -s [service credentials path] parameter on the command line or include setup->auth->service->[JSON OR PATH] in the recipe.")
 
-  # if credentials are embeded as JSON
-  if RE_CREDENTIALS_JSON.match(auth):
-    return ServiceAccountCredentials.from_json_keyfile_dict(
-      json.loads(auth),
-      scopes or SCOPES
-    )
-
-  # if credentials are local path then check if they exist ( used by command line )
-  else:
-    return ServiceAccountCredentials.from_json_keyfile_name(
-      auth,
-      scopes or SCOPES
-    )
 
 #auth = 'user' or 'service'
 def get_service(api='gmail', version='v1', auth='service', scopes=None, uri_file=None):
@@ -193,7 +195,7 @@ def get_client(api='storage', auth='user'):
   )
   if api == 'storage': return storage.Client(project=project.recipe['setup']['id'], credentials=credentials_client)
   elif api == 'bigquery': return bigquery.Client(project=project.recipe['setup']['id'], credentials=credentials_client)
-  elif api == 'pubsub': return pubsub.Client(project=project.recipe['setup']['id'], credentials=credentials_client)
+  #elif api == 'pubsub': return pubsub.Client(project=project.recipe['setup']['id'], credentials=credentials_client)
   else: return None
 
 

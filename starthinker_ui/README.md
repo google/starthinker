@@ -13,33 +13,63 @@ framework. It illustrates:
 - Inserting service credentials into a recipe.
 - Assembling custom recipes from basic task building blocks.
 
+
+
 ## UI Technology
 
 This sample UI is built using open source [Django Open Source Framework](https://www.djangoproject.com/).
 Thank you to the Django team for developing an amazing framework.
 
-## Running The UI
 
-First, install StarThinker development environment...
 
-```
-git clone https://github.com/google/starthinker
-cd starthinker
-source install/developer.sh --instance
-Choose Option 1) Full Install
-```
+## Running The UI Locally For Development
 
-Second, activate environment and deploy UI...
+The local deployment uses an sqlite database and does not launch any workers, just the UI.  Workers
+can be launched manually from the command line. To launch the UI locally:
 
 ```
-source starthinker_assets/config.sh 
-python starthinker_ui/manage.py makemigrations 
-python starthinker_ui/manage.py migrate
-python starthinker_ui/manage.py runserver localhost:8000
+source install/deploy.sh
+```
+- Option 1) Developer Menu
+- Option 2) Launch Developer UI
+- Follow instructions on screen.
+
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
+
+
+
+## Running The UI In AppEngine
+
+To launch the UI fully in AppEngine with a production databse execute the following:
+
+```
+source install/deploy.sh
+```
+- Option 3) Enterprise Setup Menu
+- Option 1) Deploy App Engine UI
+- Option 2) Deploy Job Workers
+- Option 1) Test - 1 Job
+
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
+
+
+
+## UI Command Line Helpers
+
+Pull recipe from UI with credentails and execute from command line regardless of schedule ( uses UI user credentails ).
+
+```
+source starthinker_assets/production.sh 
+python starthinker_ui/manage.py recipe_to_json --recipe [RECIPE # FROM UI EDIT URL]
+python starthinker/all/run $STARTHINKER_CRON/[FILE WRITEN BY ABOVE COMMAND] --force
 ```
 
-If you are using a Google Cloud machine, you will have to access http:[IP ADDRESS]:8000 in your browser.
+Start the workers manually from the command line:
 
-See [Django 1.11 Configuration](https://docs.djangoproject.com/en/1.11/intro/tutorial01/) for instructions on running your first application.
+```
+source starthinker_assets/development.sh 
+python starthinker_ui/manage.py job_worker --test --verbose --jobs 1
+```
+
 
 # The Rest Of This Document Is Pulled From Code Comments

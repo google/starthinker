@@ -18,7 +18,15 @@
   "tasks":[
     { "sdf":{
         "auth": "user",
-        "file_types":{"field":{ "name":"file_types", "kind":"string_list", "order":1, "default":"", "description":"The sdf file types to be returned." }},
+        "file_types":{"field":{ "name":"file_types", "kind":"string_list", "order":1, "default":"", "description":"The sdf file types to be returned.",
+				  "choices": [
+				    "AD",
+						"AD_GROUP",
+						"CAMPAIGN",
+						"INSERTION_ORDER",
+						"INVENTORY_SOURCE",
+						"LINE_ITEM"
+					]}},
         "filter_type":{"field":{ "name":"filter_type", "kind":"choice", "order":2, "default":"", "description":"The filter type for the filter ids.", 
           "choices": [
             "ADVERTISER_ID",

@@ -54,7 +54,8 @@ def bigquery():
       project.id,
       project.task['run']['query'],
       project.task['run'].get('legacy', True),
-      project.task['run'].get('billing_project_id', None))
+      #project.task['run'].get('billing_project_id', None)
+   )
 
   elif 'values' in project.task['from']:
     rows = get_rows(project.task['auth'], project.task['from'])

@@ -20,7 +20,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
-from starthinker_ui.ui.pubsub import send_message
 from starthinker_ui.account.models import Account
 from starthinker_ui.storage.models import storage_list, storage_run
 
@@ -46,11 +45,11 @@ class Command(BaseCommand):
     )
 
     parser.add_argument(
-      '--json',
+      '--recipe',
       action='store',
-      dest='json',
+      dest='recipe',
       default=None,
-      help='Run a specific json.',
+      help='Run a specific recipe.',
     )
 
     parser.add_argument(
@@ -66,10 +65,16 @@ class Command(BaseCommand):
     
     for account in Account.objects.filter(pk=kwargs['account']) if kwargs['account'] else Account.objects.all():
       for recipe in storage_list(account):
+        try:
+          # skip all others if recipe specified
+          if kwargs['recipe'] and kwargs['recipe'] != recipe.name: continue
 
-        # skip all others if recipe specified
-        if kwargs['json'] and kwargs['json'] != recipe.name: continue
+          if kwargs['remote']: print 'Dispatch: %s' % recipe.name
+          else: print 'Write: %s/storage_%d_%s' % (settings.UI_CRON, account.pk, recipe.name)
 
-        if not kwargs['remote']:  print 'Deploy: %s/storage_%d_%s' % (settings.UI_CRON, account.pk, recipe.name)
+          storage_run(account, recipe.name, force=kwargs['force'], topic=settings.UI_TOPIC if kwargs['remote'] else '')
 
-        storage_run(account, recipe.name, force=kwargs['force'], topic=settings.UI_TOPIC if kwargs['remote'] else '')
+        except (KeyboardInterrupt, SystemExit):
+          raise
+        except Exception, e:
+          print 'DEPLOY ERROR:', str(e)

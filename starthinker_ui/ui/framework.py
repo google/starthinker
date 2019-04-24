@@ -29,10 +29,10 @@
 import os
 
 # General StarThinker constants that can also be used from the command line interface
-from starthinker.config import UI_PROJECT, UI_CLIENT, UI_SERVICE, UI_TOPIC, UI_CRON, DEVELOPMENT_MODE
+from starthinker.config import UI_ROOT, UI_PROJECT, UI_CLIENT, UI_SERVICE, UI_CRON, DEVELOPMENT_MODE
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = DEVELOPMENT_MODE
+DEBUG = True #DEVELOPMENT_MODE
 
 ADMIN_ENABLED = False
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
   'starthinker_ui.recipe',
   'starthinker_ui.storage',
   'starthinker_ui.project',
+  'starthinker_ui.job',
   'starthinker_ui.website',
 ]
 

@@ -34,7 +34,7 @@ def flag_last(o):
     * o: An iterator instance.
 
   Returns:
-    * A tuple of ([True/False, iteration). Returns True on StopIteration.
+    * A tuple of (True/False, iteration). Returns True, next on StopIteration.
 
   """
 

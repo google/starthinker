@@ -19,7 +19,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
-from starthinker.manager.log import log_get
+from starthinker_worker.log import log_get
 from starthinker_ui.recipe.models import Recipe
 
 class Command(BaseCommand):
@@ -35,9 +35,7 @@ class Command(BaseCommand):
     )
 
   def handle(self, *args, **kwargs):
-    #logs = log_get()
     for recipe in (Recipe.objects.filter(pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.all()):
-      #recipe.log = logs.get(recipe.uid(), {})
-      print recipe.log
-      exit()
-      print recipe.pk, recipe.uid(), recipe.account.email, recipe.log.get('status'), recipe.log.get('time_ago')
+      recipe.set_log()
+      print recipe.pk, recipe.get_log()
+      print log_get(recipe.uid())

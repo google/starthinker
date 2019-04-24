@@ -68,41 +68,16 @@
        </tr>
 
        <tr>
-         <td><i class="material-icons medium teal-text">aspect_ratio</i></td>
-         <td>
-           <strong>Optional, Install virtual environment:</strong>
-           <br/>pip install --upgrade pip
-           <br/>pip install --user virtualenv
-           <br/>python -m virtualenv env
-           <br/>source env/bin/activate
-           <br/><strong>Optional, Turn off virtual environment::</strong>
-           <br/>deactivate
-         </td>
-         <td class="center-align">2</td>
-       </tr>
-
-       <tr>
          <td><i class="material-icons medium teal-text">build</i></td>
          <td>
            <strong>Set up and run using deploy script:</strong>
-           <br/>./deploy.sh
-           <br/>Choose 1) Full Setup
-           <br/>Choose 9) Add Recipe
-           <br/>Choose 10) Run Recipe
+           <br/>source install/deploy.sh
+           <br/>Choose 2) Scientist Setup
+           <br/>Then Choose 1) Install All
+           <br/>Then Choose 8) Add Recipe
+           <br/>Then Choose 10) Run Recipe
          </td>
          <td class="center-align">3</td>
-       </tr>
-
-       <tr>
-         <td><i class="material-icons medium teal-text">settings</i></td>
-         <td>
-           <strong>Or set up and run using command line:</strong>
-           <br/>pip install -r requirements.txt
-           <br/>source setup.sh
-           <br/>python all/run.py gtech/say_hello.json
-           <br/>If you need to download service, client, or user credentials. ( use deploy.sh )
-         </td>
-         <td class="center-align">4</td>
        </tr>
 
      </tbody>
@@ -170,7 +145,7 @@
             <ol>
               {% for instruction in script.get_instructions %}<li>{{ instruction|safe }}</li>{% endfor %}
             </ol>
-            <pre class="view_code" id="view_code_{{ script.get_tag }}" style="display:none;">{{ script.get_task|json_pretty }}</pre>
+            <pre class="view_code" id="view_code_{{ script.get_tag }}" style="display:none;">{{ script.get_tasks|json_pretty }}</pre>
           <td>
         </tr>
       {% endfor %}
@@ -180,6 +155,6 @@
 
   <br/><br/>
   <h3 id="code-tasks">Can Always Write Your Own Custom Task</h3>
-  <p class="flow-text">See <a href="https://github.com/google/starthinker/tree/master/task" target="_blank">StarThinker Task Samples</a> for creating a json task anyone can use.</p>
+  <p class="flow-text">See <a href="https://github.com/google/starthinker/tree/master/starthinker/gtech" target="_blank">StarThinker Task Samples</a> for creating a json task anyone can use.</p>
 
 {% endblock %}

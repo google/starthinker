@@ -19,7 +19,8 @@
 import os
 
 UI_ROOT = os.environ.get('STARTHINKER_ROOT', 'MISSING RUN deploy.sh TO SET')
-EXECUTE_PATH = os.environ.get('STARTHINKER_CODE', "MISSING RUN deploy.sh TO SET") + '/'
+UI_CRON = os.environ.get('STARTHINKER_CRON', '')
+
 DEVELOPMENT_MODE = bool(os.environ.get('STARTHINKER_DEVELOPMENT', '0') == '1')
 INTERNAL_MODE = bool(os.environ.get('STARTHINKER_INTERNAL', '0') == '1')
 
@@ -29,13 +30,5 @@ UI_PROJECT = os.environ.get('STARTHINKER_PROJECT', 'MISSING RUN deploy.sh TO SET
 UI_CLIENT = os.environ.get('STARTHINKER_CLIENT', 'MISSING RUN deploy.sh TO SET')
 UI_SERVICE = os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET')
 
-# if topic is supplied a pub sub worker will be deployed with topics [UI_TOPIC]_worker and [UI_TOPIC]_maintenance, it will run jobs at scale
-UI_TOPIC = os.environ.get('STARTHINKER_TOPIC', 'MISSING RUN deploy.sh TO SET')
-# if no topic is given, jobs will be written to this directory, see starthinker/install/deploy.sh for startin up the local cron
-UI_CRON = os.environ.get('STARTHINKER_CRON', 'MISSING RUN deploy.sh TO SET')
-
 # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
 BUFFER_SCALE = int(os.environ.get('STARTHINKER_SCALE', 1))
-
-UI_WORKERS = int(os.environ.get('STARTHINKER_WORKERS', 1))
-

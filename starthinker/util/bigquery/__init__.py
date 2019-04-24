@@ -893,7 +893,7 @@ def _get_max_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
     billing_project_id = project_id
 
   service = get_service('bigquery', 'v2', auth)
-  query = ('SELECT MAX(Date) FROM `' 
+  query = ('SELECT MAX(Report_Day) FROM `' 
     + project_id + '.' + dataset_id + '.' + table_id + '` ')
 
   body = {
@@ -915,7 +915,7 @@ def _get_min_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
     billing_project_id = project_id
 
   service = get_service('bigquery', 'v2', auth)
-  query = ('SELECT MIN(Date) FROM `' 
+  query = ('SELECT MIN(Report_Day) FROM `' 
     + project_id + '.' + dataset_id + '.' + table_id + '` ')
 
   body = {
@@ -958,7 +958,7 @@ def _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id,
 
   query = ('DELETE FROM `' 
     + project_id + '.' + dataset_id + '.' + table_id + '` '
-    + 'WHERE Date >= "' + start_date + '"' + 'AND Date <= "' + end_date + '"'
+    + 'WHERE Report_Day >= "' + start_date + '"' + 'AND Report_Day <= "' + end_date + '"'
     )
 
   body = {

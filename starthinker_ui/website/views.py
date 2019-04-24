@@ -20,7 +20,6 @@
 
 from __future__ import unicode_literals
 
-#import pandas
 from itertools import chain
 
 from django.shortcuts import render
@@ -64,77 +63,61 @@ def code(request):
     return render_to_string('website/code.html', { 'products':products })
 
 
-#@permission_admin()
-#def stats(request):
-#
-#  data = []
-#
-#  # flatten all data into one table
-#  def data_row(account_id, account_name, recipe_id, recipe_name, script, script_author):
-#    data.append([account_id, account_name, recipe_id, recipe_name, script, script_author])
-#
-#  for account in Account.objects.all():
-#    for recipe in account.recipe_set.all():
-#      for s in recipe.get_values():
-#        script = Script(s['tag'])
-#        data_row(account.pk, account.name, recipe.pk, recipe.name,  s['tag'], None)
-#        for author in script.get_authors():
-#          data_row(account.pk, account.name, recipe.pk, recipe.name, s['tag'], author)
-#
-#    #for recipe in storage_recipes(account):
-#
-#  # create a database for anlaysis
-#  db = pandas.DataFrame.from_records(
-#    data, 
-#    columns=['account_id', 'account_name', 'recipe_id', 'recipe_name', 'script', 'script_author']
-#  )
-#
-#  uniques = {
-#    'accounts':db['account_id'].nunique(),
-#    'recipes':db['recipe_id'].nunique(),
-#    'scripts':db['script'].nunique(),
-#    'script_authors':db['script_author'].nunique(),
-#  }
-#
-#  # compute account values
-#  def db_compute(key, aggregate):
-#    data = db.groupby([key]).agg(aggregate).to_dict('records')
-#    return db_unique([dict([(k[1], v) for k,v in d.items()]) for d in data])
-#
-#  def db_unique(data):
-#    for row in data:
-#      for key in uniques.keys():
-#        if key in row: row['%s_percent' % key] = (((row[key] * 100) / uniques[key]) if uniques[key] else 0)
-#    return data
-#       
-#  metrics = {
-#    'accounts':db_compute('account_id', {
-#      'account_name':{ 'account':'first' },
-#      'recipe_id':{ 'recipes':'nunique' },
-#      'script':{ 'scripts':'nunique' },
-#      'script_author':{ 'script_authors':'nunique' },
-#    }),
-#    
-#    'scripts':db_compute('script', {
-#      'script':{ 'script':'first' },
-#      'account_id':{ 'accounts':'nunique' },
-#      'recipe_id':{ 'recipes':'nunique' },
-#    }),
-#
-#    'script_authors':db_compute('script_author', {
-#      'script_author':{ 'author':'first' },
-#      'account_id':{ 'accounts':'nunique' },
-#      'recipe_id':{ 'recipes':'nunique' },
-#      'script':{ 'scripts':'nunique' },
-#    }),
-#  }
-#
-#  return render(request, "website/stats.html", { 'metrics':metrics })
+@permission_admin()
+def stats(request):
 
+  metrics = {
+    'account':{} , #'account':{ 'recipe':'', 'script':'', 'author':'' }
+    'script':{}, # 'script':{ 'account':'', 'recipe':'' }
+    'author':{}, # 'author':{ 'account':'', 'recipe':'', 'script' }
+  }
 
-def cron(request):
-  if request.META.get('HTTP_X_APPENGINE_CRON') == 'true' and request.META.get('REMOTE_ADDR') == '0.1.0.1':
-    call_command('recipe_to_json', '--remote')
-    call_command('storage_to_json', '--remote')
-  return HttpResponse(status=204)
+  totals = {
+    'account':set(),
+    'author':set(),
+    'script':set(),
+    'recipe':set(),
+  }
 
+  for account in Account.objects.all():
+    totals['account'].add(account.name)
+
+    for recipe in account.recipe_set.all():
+      totals['recipe'].add(recipe.pk)
+
+      for s in recipe.get_values():
+        script = Script(s['tag'])
+        authors = script.get_authors()
+
+        metrics['account'].setdefault(account.name, {'recipe':set(), 'script':set(), 'author':set()})
+        metrics['account'][account.name]['recipe'].add(recipe.pk)
+        metrics['account'][account.name]['script'].add(s['tag'])
+        metrics['account'][account.name]['author'].update(authors)
+
+        totals['script'].add(s['tag'])
+        metrics['script'].setdefault(s['tag'], {'account':set(), 'recipe':set()})
+        metrics['script'][s['tag']]['recipe'].add(recipe.pk)
+        metrics['script'][s['tag']]['account'].add(account.name)
+
+        for author in authors:
+          totals['author'].add(author)
+          metrics['author'].setdefault(author, {'account':set(), 'recipe':set(), 'script':set()})
+          metrics['author'][author]['account'].add(account.name)
+          metrics['author'][author]['recipe'].add(recipe.pk)
+          metrics['author'][author]['script'].add(s['tag'])
+
+    #for recipe in storage_recipes(account):
+
+  # compute totals
+  for dimension in totals.keys():
+    totals[dimension] = len(totals[dimension])
+     
+  for metric_key, metric in metrics.items():
+    for row_key, row in metric.items():
+      for dimension in row.keys():
+        row[dimension] = len(row[dimension])
+        row['%s_percent' % dimension] = (row[dimension] * 100) / (totals[dimension] or 1)
+        row[metric_key] = row_key
+    metrics[metric_key] = metrics[metric_key].values()
+       
+  return render(request, "website/stats.html", { 'metrics':metrics })

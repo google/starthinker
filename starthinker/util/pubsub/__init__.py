@@ -32,7 +32,7 @@ def subscription_create(auth, project_id, topic, subscription):
   body = {
     "topic":'projects/%s/topics/%s' % (project_id, topic), 
     "pushConfig": {},
-    "ackDeadlineSeconds": 10,
+    "ackDeadlineSeconds": 600,
     "messageRetentionDuration": "86400s", # 24 hours
     "retainAckedMessages": False,
   }

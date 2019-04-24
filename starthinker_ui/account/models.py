@@ -25,7 +25,9 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 from starthinker.util.auth.google_bucket_auth import BucketCredentials
 
-CREDENTIALS_BUCKET = settings.UI_PROJECT + "-starthinker-users"
+
+BUCKET_PREFIX = settings.UI_PROJECT.split(':', 1)[-1] # remove domain: part
+
 
 def fix_picture(picture_url):
   return picture_url.replace('/photo.jpg', '/s32-c/photo.jpg') 
@@ -113,8 +115,8 @@ class Account(AbstractBaseUser):
     return BucketCredentials.from_bucket(self.get_credentials_path()) if self.identifier else None
 
   def get_credentials_path(self):
-    return '%s:ui/%s.json' % (CREDENTIALS_BUCKET, self.identifier)
+    return '%s:ui/%s.json' % (BUCKET_PREFIX + "-starthinker-users", self.identifier)
 
   def get_bucket(self, full_path=True):
-    bucket = settings.UI_PROJECT + '-starthinker-recipes-%d' % self.id
+    bucket = BUCKET_PREFIX + '-starthinker-recipes-%d' % self.id
     return ('https://pantheon.corp.google.com/storage/browser/%s/' % bucket) if full_path else bucket
