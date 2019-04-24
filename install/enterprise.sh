@@ -147,7 +147,7 @@ runtime_config:
   python_version: 2
 
 beta_settings:
-  cloud_sql_instances: kenjora-161023:us-central1:starthinker-pk
+  cloud_sql_instances: $STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME
 
 skip_files:
 - ^(.*/)?.*~$
