@@ -83,7 +83,7 @@ setup_developer() {
   echo "  - $STARTHINKER_ROOT/starthinker_assets/database.sqlite"
   echo ""
   echo "After running this script once, activate StarThinker development settings from the command line:"
-  echo " - source $STARTHINKER_ROOT/starthinker_assets/developmnet.sh"
+  echo " - source $STARTHINKER_ROOT/starthinker_assets/development.sh"
   echo ""
   echo "Or activate production settings from the command line:"
   echo " - source $STARTHINKER_CONFIG"

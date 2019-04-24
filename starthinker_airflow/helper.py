@@ -29,7 +29,7 @@ this connector generates the DAG in real time whenever AirFlow calls it.
 ### Sample call:
 
 ```
-python airflow/helper.py gtech/say_hello.json > ~/airflow/dags/say_hello.py
+python starthinker_airflow/helper.py starthinker/gtech/say_hello.json > ~/airflow/dags/say_hello.py
 ```
 
 ### Note
