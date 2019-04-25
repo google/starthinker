@@ -143,6 +143,18 @@ source install/deploy.sh
 - Option 2) Deploy Job Workers
 - Option 1) Test - 1 Job
 
+
+
+### When creating the oAuth Client:
+
+- For credentials type choose: Web Application..
+- For OAuth Consent Screen choose: Application Type Internal.
+- Be sure to add callbacks to your OAuth Client:
+````
+http://localhost:8000/oauth_callback/	
+https://[CLIENT_PROJECT_NAME].appspot.com/oauth_callback/	
+````
+
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
 
 

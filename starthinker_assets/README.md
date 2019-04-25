@@ -8,7 +8,8 @@ All assets are created using:
 
 Assets include...
 
- - config.sh - all paths and cloud project variables.
+ - production.sh - all paths and cloud project variables.
+ - development.sh - all paths and cloud project variables.
  - client.json - client credentials.
  - service.josn - service credentials.
  - env - virtual environment configuration.

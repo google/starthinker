@@ -69,7 +69,7 @@ def recipe_run(request, pk):
       messages.success(request, 'Recipe dispatched, will run once in progress task completes.')
     else:
       messages.success(request, 'Recipe dispatched, give it a few minutes to start.')
-    recipe.run()
+    recipe.run(force=True)
   except Exception, e:
     messages.error(request, str(e))
   return HttpResponseRedirect('/recipe/edit/%s/' % pk)

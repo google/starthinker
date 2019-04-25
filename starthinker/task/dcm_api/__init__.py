@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -15,14 +15,3 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-from django.conf.urls import url, include
-from django.contrib import admin
-
-urlpatterns = [
-  #url(r'^admin/', admin.site.urls),
-  url(r'', include('starthinker_ui.account.urls')),
-  url(r'', include('starthinker_ui.recipe.urls')),
-  url(r'', include('starthinker_ui.project.urls')),
-  url(r'', include('starthinker_ui.website.urls')),
-]

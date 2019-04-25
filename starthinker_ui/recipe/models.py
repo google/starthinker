@@ -56,6 +56,7 @@ class Recipe(models.Model):
   def save(self, *args, **kwargs):
     self.get_token()
     super(Recipe, self).save(*args, **kwargs)
+    self.run(self)
 
   def uid(self):
     return "UI-RECIPE-%s" % (self.pk or 'NEW')
@@ -127,7 +128,7 @@ class Recipe(models.Model):
         self.get_values()
       )
 
-  def run(self, force=True, remote=True):
+  def run(self, force=False, remote=True):
     if remote:
       job_update(self.account, self.get_json(), force=force, pause=not(self.active))
     elif settings.UI_CRON:

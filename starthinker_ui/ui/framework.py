@@ -45,7 +45,6 @@ INSTALLED_APPS = [
   'django.contrib.staticfiles',
   'starthinker_ui.account',
   'starthinker_ui.recipe',
-  'starthinker_ui.storage',
   'starthinker_ui.project',
   'starthinker_ui.job',
   'starthinker_ui.website',

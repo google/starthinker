@@ -17,11 +17,13 @@
 ###########################################################################
 
 import pprint
+from importlib import import_module
 
-from starthinker.util.project import project
+from starthinker.util.project import project, get_project
 from starthinker.util.bigquery import table_to_schema, table_to_rows, query_to_rows
 from starthinker.util.sheets import sheets_read
 from starthinker.util.csv import rows_to_type
+from starthinker.script.parse import json_set_fields
 
 
 # display results of list comparison
@@ -136,6 +138,7 @@ def test():
   if 'assert' in project.task: asserts()
   elif 'sheets' in project.task: sheets()
   elif 'bigquery' in project.task: bigquery()
+  elif 'template' in project.task: template()
 
 
 # test should be run like any other task

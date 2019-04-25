@@ -26,6 +26,8 @@ setup_sql() {
   echo "----------------------------------------"
   echo ""
 
+  gcloud services enable sql-component.googleapis.com --quiet
+
   gcloud sql instances create $STARTHINKER_UI_DATABASE_NAME --database-version=POSTGRES_9_6 --cpu=2 --memory=7680MiB --region=$STARTHINKER_REGION
   gcloud sql databases create $STARTHINKER_UI_DATABASE_NAME --instance=$STARTHINKER_UI_DATABASE_NAME 
   gcloud sql users create $STARTHINKER_UI_DATABASE_USER --host=% --instance=$STARTHINKER_UI_DATABASE_NAME --password=$STARTHINKER_UI_DATABASE_PASSWORD
@@ -98,6 +100,8 @@ deploy_appengine() {
   echo "----------------------------------------"
   echo ""
 
+  gcloud services enable appengine.googleapis.com --quiet
+  gcloud services enable appengineflex.googleapis.com --quiet
   gcloud app deploy app.yaml --stop-previous-version
 
   echo "Done"
@@ -225,7 +229,7 @@ setup_appengine() {
   echo "-----------------------------"
   echo "----------------------------------------"
   echo ""
-  echo "SECURE YOUR INSTANCE VISIT: https://pantheon.corp.google.com/security/iap?project=$STARTHINKER_PROJECT"
+  echo "SECURE YOUR INSTANCE VISIT: https://console.cloud.google.com/security/iap?project=$STARTHINKER_PROJECT"
   echo ""
   echo "----------------------------------------"
   echo "-----------------------------"
