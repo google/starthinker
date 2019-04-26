@@ -56,10 +56,9 @@ class Command(BaseCommand):
     
     for recipe in (Recipe.objects.filter(pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.filter(active=True)):
       try:
-        if not kwargs['remote']: print 'Dispatch: %s' % recipe.uid()
+        if kwargs['remote']: print 'Dispatch: %s' % recipe.uid()
         else: print 'Write: %s/recipe_%d.json' % (settings.UI_CRON, recipe.pk)
-
-        recipe.run(kwargs['force'], settings.UI_TOPIC if kwargs['remote'] else '')
+        recipe.run(force=kwargs['force'], remote=kwargs['remote'])
       except (KeyboardInterrupt, SystemExit):
         raise
       except Exception, e:

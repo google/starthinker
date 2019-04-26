@@ -82,7 +82,7 @@ class Workers():
       job_file.write(json.dumps(job['recipe'], default=str))
 
     command = [
-      '%s/starthinker_assets/env/bin/python' % settings.UI_ROOT,
+      '%s/starthinker_virtualenv/bin/python' % settings.UI_ROOT,
       '-W', 'ignore',
       '%s/starthinker/task/%s/run.py' % (settings.UI_ROOT, job['script']),
       filename,

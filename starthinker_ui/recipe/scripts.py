@@ -156,6 +156,7 @@ class Script:
         "timezone":timezone,
         "day":days,
         "hour":sorted(hours),
+        "timeout_seconds":60 * 60 * 8, # 8 hours
         "auth":{
           "user":credentials_user,
           "service":credentials_service,

@@ -68,7 +68,7 @@
           "accountId":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
           "criteria": {
             "dateRange": {
-              "relativeDateRange": "LAST_24_MONTHS"
+              "relativeDateRange": "LAST_365_DAYS"
             }, 
             "dimensions": [
               { "kind": "dfareporting#sortedDimension", "name": "dfa:advertiser" }, 
@@ -169,7 +169,7 @@
           "timezoneCode":"America/Los_Angeles",
           "metadata":{
             "title":{"field":{ "name":"dataset", "kind":"string", "prefix":"DV360_Browser_Delivery_", "description":"Name of report in DBM, should be unique." }},
-            "dataRange":"LAST_24_MONTHS"
+            "dataRange":"LAST_365_DAYS"
           },
           "params": {
             "type": "TYPE_GENERAL",

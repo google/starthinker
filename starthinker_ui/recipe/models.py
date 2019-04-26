@@ -133,6 +133,6 @@ class Recipe(models.Model):
       job_update(self.account, self.get_json(), force=force, pause=not(self.active))
     elif settings.UI_CRON:
       with open(settings.UI_CRON + '/recipe_%d.json' % self.pk, 'w') as f:
-        f.write(json.dumps(recipe))
+        f.write(json.dumps(self.get_json()))
     else:
       raise Exception('Neither UI_CRON configured nor remote set.')

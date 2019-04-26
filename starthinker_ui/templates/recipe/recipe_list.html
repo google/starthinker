@@ -46,7 +46,7 @@
              <br/>{% for hour in recipe.get_hours %}{{ hour }}{% if not forloop.last %}, {% endif %}{% endfor %}
            </td>
            <td class="center">
-             {{ log.status }}
+             {{ log.percent }}% {{ log.status }}
              <br/>{{ log.ago }}
            </td>
          </tr>

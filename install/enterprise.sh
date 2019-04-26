@@ -26,7 +26,8 @@ setup_sql() {
   echo "----------------------------------------"
   echo ""
 
-  gcloud services enable sql-component.googleapis.com --quiet
+  gcloud services enable sql-component.googleapis.com
+  gcloud services enable serviceusage.googleapis.com
 
   gcloud sql instances create $STARTHINKER_UI_DATABASE_NAME --database-version=POSTGRES_9_6 --cpu=2 --memory=7680MiB --region=$STARTHINKER_REGION
   gcloud sql databases create $STARTHINKER_UI_DATABASE_NAME --instance=$STARTHINKER_UI_DATABASE_NAME 
@@ -100,8 +101,8 @@ deploy_appengine() {
   echo "----------------------------------------"
   echo ""
 
-  gcloud services enable appengine.googleapis.com --quiet
-  gcloud services enable appengineflex.googleapis.com --quiet
+  gcloud services enable appengine.googleapis.com
+  gcloud services enable appengineflex.googleapis.com
   gcloud app deploy app.yaml --stop-previous-version
 
   echo "Done"
@@ -203,7 +204,6 @@ setup_appengine() {
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     setup_project "optional";
     setup_credentials "optional";
-    setup_domain "optional";
     setup_database "required" "optional" "optional";
     save_config;
   
@@ -256,7 +256,6 @@ test_appengine() {
 
   setup_project "optional";
   setup_credentials "optional";
-  setup_domain "optional";
   setup_database "required" "optional" "optional";
   save_config;
 
@@ -301,7 +300,7 @@ setup_enterprise() {
   echo ""
 
   enterprise_done=0
-  enterprise_options=("Deploy App Engine UI" "Deploy Job Workers" "Change Domain" "Test App Engine UI" "Quit")
+  enterprise_options=("Deploy App Engine UI" "Deploy Job Workers" "Change Domain" "Change Database" "Test App Engine UI" "Quit")
 
   while (( !enterprise_done ))
   do
@@ -316,8 +315,9 @@ setup_enterprise() {
         1) setup_appengine; break ;;
         2) setup_worker; break ;;
         3) setup_domain; save_config; break ;;
-        4) test_appengine; break ;;
-        5) enterprise_done=1; break;;
+        4) setup_database; save_config; break ;;
+        5) test_appengine; break ;;
+        6) enterprise_done=1; break;;
         *) echo "What's that?" ;;
       esac
     done

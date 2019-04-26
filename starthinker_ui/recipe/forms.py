@@ -42,14 +42,14 @@ class SetupForm(forms.ModelForm):
     self.fields['project'].queryset = account.project_set.all()
 
     self.structure = [
-      { 'title':'Cloud Project',
+      { 'title':'Recipe',
         'description':'Provide a <a href="/project/">cloud project service account</a> where data will be stored.  The service level authentication will be used to write to your cloud project.',
         'fields':[
           self['name'],
           self['project'],
         ]
       },
-      { 'title':'Task Schedule',
+      { 'title':'Schedule',
         'description':'Tasks in this project will be run on the day and hours specified below.  To pause all the tesks uncheck the cron option.',
         'fields':[
           self['timezone'],

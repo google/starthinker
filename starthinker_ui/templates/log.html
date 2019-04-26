@@ -30,9 +30,16 @@
         </tr>
       </thead>
       <tbody>
-        {% for task_key, task in log.tasks.items %}
+        {% for task in log.tasks %}
           <tr>
-            <td style="vertical-align:top;"><strong>{{ task_key }}</strong><br/>{{ task.event }}<br/>{{ task.ago }}</td>
+            <td style="vertical-align:top;">
+              <strong>{{ task.script }} - {{ task.instance }}</strong>
+              <br/>{{ task.event }}
+              <br/>{{ task.ago }}
+              {% if task.hours %}
+                <br/>Hours: {{ task.hours|join:"," }}
+              {% endif %}
+            </td>
             <td class="left-align"><pre>{{ task.stdout }}</pre></pre>{{ task.stderr }}</pre></td>
           </tr>
         {% endfor %}

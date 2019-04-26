@@ -59,8 +59,8 @@ derive_config() {
   STARTHINKER_KEY="${THIS_DIR}/starthinker_assets/ssl.key"
   STARTHINKER_CSR="${THIS_DIR}/starthinker_assets/ssl.csr"
 
-  STARTHINKER_CRON="${THIS_DIR}/starthinker_assets/cron"
-  STARTHINKER_ENV="${THIS_DIR}/starthinker_assets/env"
+  STARTHINKER_CRON="${THIS_DIR}/starthinker_cron"
+  STARTHINKER_ENV="${THIS_DIR}/starthinker_virtualenv"
 
 }
 
@@ -84,6 +84,9 @@ load_config() {
 
 
 save_config() {
+
+  derive_config;
+
   echo ""
   echo "----------------------------------------"
   echo "Saving Configuration - ${STARTHINKER_CONFIG}"
@@ -127,8 +130,8 @@ save_config() {
   echo "fi" >> "${STARTHINKER_CONFIG}"
   echo "" >> "${STARTHINKER_CONFIG}"
 
-  echo "if [ -d \"\${STARTHINKER_ROOT}/starthinker_assets/env\" ]; then" >> "${STARTHINKER_CONFIG}"
-  echo "  source \"\${STARTHINKER_ROOT}/starthinker_assets/env/bin/activate\";" >> "${STARTHINKER_CONFIG}"
+  echo "if [ -d \"\${STARTHINKER_ROOT}/starthinker_virtualenv\" ]; then" >> "${STARTHINKER_CONFIG}"
+  echo "  source \"\${STARTHINKER_ROOT}/starthinker_virtualenv/bin/activate\";" >> "${STARTHINKER_CONFIG}"
   echo "fi" >> "${STARTHINKER_CONFIG}"
   echo "" >> "${STARTHINKER_CONFIG}"
 
@@ -264,13 +267,14 @@ setup_project() {
 
     if [ "${cloud_id}" ]; then
       STARTHINKER_PROJECT="${cloud_id}"
-      gcloud config set project "${STARTHINKER_PROJECT}";
     else
       echo "Project ID Unchanged"
     fi
   else
     echo "Using Existing Project ID"
   fi
+
+  gcloud config set project "${STARTHINKER_PROJECT}";
 
   echo "Done"
   echo ""

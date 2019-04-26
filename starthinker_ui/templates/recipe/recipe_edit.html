@@ -96,7 +96,7 @@
         <p><a href="{{ recipe.link_download }}" class="waves-effect waves-light btn form_button modal-trigger">
           Download <i class="material-icons right">file_download</i>
         </a></p>
-        <p class="flow-text">{{ log.status }}</p>
+        <p class="flow-text">{{ log.percent }}% {{ log.status }}</p>
         {% if log.ago %}<p class="flow-text">{{ log.ago }}</p>{% endif %}
 
         <div class="right-align">
@@ -134,7 +134,7 @@
                 {% for step in form.get_instructions %}
                   <li>{{ step|safe }}</li>
                 {% endfor %}
-              </ol>
+              </ol><br/>
               {% with fields=form %}
                 <input type="hidden" name="form_prefix" value="{{ form.script.get_tag }}_{{ forloop.counter }}"/>
                 {% include "form_fields.html" %}
@@ -168,7 +168,7 @@
                   {% for step in blank.get_instructions %}
                     <li>{{ step|safe }}</li>
                   {% endfor %}
-                </ol>
+                </ol><br/>
                 {% with fields=blank %}
                   <input type="hidden" name="form_prefix" value="{{ blank.prefix }}"/>
                   {% include "form_fields.html" %}

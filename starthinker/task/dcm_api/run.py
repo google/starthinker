@@ -211,8 +211,8 @@ def get_accounts(accounts):
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = { 'profileId':profile_id, 'id':account_id } if is_superuser else { 'profileId':profile_id }
-    account = API_DCM("user", internal=is_superuser).accounts().get(**kwargs).execute()
+    kwargs = { 'profileId':profile_id, 'id':account_id }
+    account = API_DCM("user").accounts().get(**kwargs).execute()
     yield [
       account['id'],
       account['name'],

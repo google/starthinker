@@ -70,18 +70,23 @@ def job_status(account, recipe_uid):
   status = {}
   try: 
     job = Job.objects.get(account=account, recipe_uid=recipe_uid)
+    paused = job.job_pause
     status = job.get_status()
     utm = job.worker_utm
     try: recipe = json.loads(job.recipe_json)
     except ValueError: recipe = {}
 
   except Job.DoesNotExist:
+    paused = False
     status = {}
     recipe = {}
     utm = 0
 
+  # convert to ordered list for display
+  status['tasks'] = sorted(status.get('tasks', {}).values(), key = lambda k:k['order'], reverse=True)
+
   error = False
-  for task in status.get('tasks', {}).values():
+  for task in status['tasks']:
     task['utc'] = datetime.strptime(task['utc'].split('.', 1)[0], "%Y-%m-%d %H:%M:%S")
     task['ltc'] = utc_to_timezone(task['utc'], recipe.get('setup', {}).get('timezone', settings.TIME_ZONE))
     task['ago'] = time_ago(task['utc'])
@@ -92,15 +97,17 @@ def job_status(account, recipe_uid):
   if 'utc' not in status: status['utc'] = datetime.utcnow()
   status['utl'] = utc_to_timezone(status['utc'], recipe.get('setup', {}).get('timezone', settings.TIME_ZONE))
   status['ago'] = time_ago(status['utc'])
-  status['percent'] = ( len(status.get('tasks', [])) * 100 ) / ( len(status.get('queue', [])) + len(status.get('tasks', [])) or 1)
+  status['percent'] = ( len(status['tasks']) * 100 ) / ( len(status.get('queue', [])) + len(status['tasks']) or 1)
   status['uid'] = recipe_uid
 
   if error:
     status['status'] = 'ERROR'
-  elif len(status.get('queue', [])) == 0:
+  elif 'queue' in status and len(status['queue']) == 0:
     status['status'] = 'FINISHED'
   elif utc_milliseconds() - utm < JOB_LOOKBACK_MS:
     status['status'] = 'RUNNING'
+  elif paused:
+    status['status'] = 'PAUSED'
   else:
     status['status'] = 'QUEUED'
 
@@ -239,13 +246,14 @@ class Job(models.Model):
     }
 
     instances = {}
-    for task in recipe.get('tasks', []):
+    for order, task in enumerate(recipe.get('tasks', [])):
       script, task = task.items()[0]
       instances.setdefault(script, 0)
       instances[script] += 1
 
       task_key = '%s - %d' % (script, instances[script])
       status['tasks'][task_key] = {
+        'order':order,
         'script':script, 
         'instance':instances[script], 
         'utc':str(datetime.utcnow()),
@@ -308,7 +316,7 @@ class Job(models.Model):
   def set_task(self, script, instance, hour, event, stdout, stderr):
     status = self.get_status()
    
-    if event == 'JOB_END':
+    if event in ('JOB_END', 'JOB_ERROR'):
       try:
         status['queue'].remove({'script':script, 'instance':instance, 'hour':hour})
       except ValueError: 

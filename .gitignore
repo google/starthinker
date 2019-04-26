@@ -5,6 +5,8 @@
 starthinker_assets/
 !starthinker_assets/README.md
 !starthinker_assets/development.sh
+starthinker_virtualenv/
+starthinker_cron/
 starthinker/legacy/
 starthinker/api/lib
 starthinker/api/client_secrets.json

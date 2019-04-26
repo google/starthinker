@@ -20,4 +20,7 @@ If running developer deployment, load a StarThinker environment using:
 
 You are ready to start creating StarThinker recipes.
 
-# The Rest Of This Document Is Pulled From Code Comments
+In production to access the database try:
+
+psql -h localhost -d $STARTHINKER_UI_DATABSE_NAME -U $STARTHINKER_UI_DATABASE_USER
+
