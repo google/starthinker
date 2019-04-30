@@ -27,7 +27,7 @@ INTERNAL_MODE = bool(os.environ.get('STARTHINKER_INTERNAL', '0') == '1')
 # used to manage user credentials and UI data
 UI_ZONE = os.environ.get('STARTHINKER_ZONE', 'MISSING RUN deploy.sh TO SET')
 UI_PROJECT = os.environ.get('STARTHINKER_PROJECT', 'MISSING RUN deploy.sh TO SET')
-UI_CLIENT = os.environ.get('STARTHINKER_CLIENT', 'MISSING RUN deploy.sh TO SET')
+UI_CLIENT = os.environ.get('STARTHINKER_CLIENT_WEB', 'MISSING RUN deploy.sh TO SET')
 UI_SERVICE = os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET')
 
 # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float

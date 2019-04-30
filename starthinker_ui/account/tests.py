@@ -26,7 +26,7 @@ from starthinker_ui.account.models import  Account
 
 
 def account_create():
-  UI_CLIENT = os.environ.get('STARTHINKER_CLIENT', 'MISSING RUN deploy.sh TO SET')
+  UI_CLIENT = os.environ.get('STARTHINKER_CLIENT_INSTALLED', 'MISSING RUN deploy.sh TO SET')
   UI_SERVICE = os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET')
   UI_USER = os.environ.get('STARTHINKER_USER', 'MISSING RUN deploy.sh TO SET')
 

@@ -114,7 +114,7 @@ env = STARTHINKER_SCALE=$STARTHINKER_SCALE
 env = STARTHINKER_PROJECT=$STARTHINKER_PROJECT
 env = STARTHINKER_ZONE=$STARTHINKER_ZONE
 env = STARTHINKER_TOPIC=$STARTHINKER_TOPIC
-env = STARTHINKER_CLIENT=$STARTHINKER_CLIENT
+env = STARTHINKER_CLIENT_WEB=$STARTHINKER_CLIENT_WEB
 env = STARTHINKER_SERVICE=$STARTHINKER_SERVICE
 env = STARTHINKER_USER=$STARTHINKER_USER
 env = STARTHINKER_CRON=$STARTHINKER_CRON
@@ -309,7 +309,7 @@ setup_linux() {
   echo "This script will create the following files on the remote server."
   echo "  - $STARTHINKER_CONFIG"
   echo "  - $STARTHINKER_ENV"
-  echo "  - $STARTHINKER_CLIENT"
+  echo "  - $STARTHINKER_CLIENT_WEB"
   echo "  - $STARTHINKER_SERVICE"
   echo "  - $STARTHINKER_USER"
   echo "  - $STARTHINKER_CRT"
@@ -348,7 +348,7 @@ setup_linux() {
     instance_create "starthinker-ui"
     instance_start "starthinker-ui"
   
-    instance_copy "starthinker-ui" $STARTHINKER_CLIENT starthinker_assets/client.json
+    instance_copy "starthinker-ui" $STARTHINKER_CLIENT_WEB starthinker_assets/client_web.json
     instance_copy "starthinker-ui" $STARTHINKER_SERVICE starthinker_assets/service.json
     instance_copy "starthinker-ui" $STARTHINKER_CONFIG starthinker_assets/production.sh
     instance_copy "starthinker-ui" $STARTHINKER_ROOT/starthinker starthinker/ --recurse

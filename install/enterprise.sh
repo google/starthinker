@@ -122,7 +122,7 @@ configure_yaml() {
   echo "Copy settings from $STARTHINKER_CONFIG and adjust for App Engine deployment."
   echo ""
 
-  appengine_client=$(cat "$STARTHINKER_CLIENT_WEB" | tr '\n' ' ')
+  appengine_client_web=$(cat "$STARTHINKER_CLIENT_WEB" | tr '\n' ' ')
   appengine_service=$(cat "$STARTHINKER_SERVICE" | tr '\n' ' ')
 
   appengine_recipe_project="${STARTHINKER_RECIPE_PROJECT:-$STARTHINKER_PROJECT}"
@@ -167,7 +167,7 @@ env_variables:
   STARTHINKER_DEVELOPMENT: '$appengine_development'
   STARTHINKER_PROJECT: '$STARTHINKER_PROJECT'
   STARTHINKER_ZONE: '$STARTHINKER_ZONE'
-  STARTHINKER_CLIENT: '$appengine_client'
+  STARTHINKER_CLIENT_WEB: '$appengine_client_web'
   STARTHINKER_SERVICE: '$appengine_service'
   STARTHINKER_UI_DOMAIN: '$appengine_domain' 
   STARTHINKER_UI_SECRET: '$STARTHINKER_UI_SECRET'
