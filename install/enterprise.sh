@@ -26,6 +26,7 @@ setup_sql() {
   echo "----------------------------------------"
   echo ""
 
+  gcloud services enable sqladmin.googleapis.com
   gcloud services enable sql-component.googleapis.com
   gcloud services enable serviceusage.googleapis.com
 
@@ -121,7 +122,7 @@ configure_yaml() {
   echo "Copy settings from $STARTHINKER_CONFIG and adjust for App Engine deployment."
   echo ""
 
-  appengine_client=$(cat "$STARTHINKER_CLIENT" | tr '\n' ' ')
+  appengine_client=$(cat "$STARTHINKER_CLIENT_WEB" | tr '\n' ' ')
   appengine_service=$(cat "$STARTHINKER_SERVICE" | tr '\n' ' ')
 
   appengine_recipe_project="${STARTHINKER_RECIPE_PROJECT:-$STARTHINKER_PROJECT}"

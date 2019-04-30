@@ -104,7 +104,7 @@ run_recipe() {
         then
           echo ""
           source ${STARTHINKER_ENV}/bin/activate;
-          python "${STARTHINKER_ROOT}/starthinker/all/run.py" "${STARTHINKER_CRON}/${file}" -p "${STARTHINKER_PROJECT}" -c "${STARTHINKER_CLIENT}" -u "${STARTHINKER_USER}" -s "${STARTHINKER_SERVICE}" --force --verbose;
+          python "${STARTHINKER_ROOT}/starthinker/all/run.py" "${STARTHINKER_CRON}/${file}" -p "${STARTHINKER_PROJECT}" -c "${STARTHINKER_CLIENT_INSTALLED}" -u "${STARTHINKER_USER}" -s "${STARTHINKER_SERVICE}" --force --verbose;
           deactivate;
           break
         else

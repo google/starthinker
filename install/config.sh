@@ -51,7 +51,8 @@ derive_config() {
 
   STARTHINKER_ROOT="${THIS_DIR}"
 
-  STARTHINKER_CLIENT="${THIS_DIR}/starthinker_assets/client.json"
+  STARTHINKER_CLIENT_WEB="${THIS_DIR}/starthinker_assets/client_web.json"
+  STARTHINKER_CLIENT_INSTALLED="${THIS_DIR}/starthinker_assets/client_installed.json"
   STARTHINKER_SERVICE="${THIS_DIR}/starthinker_assets/service.json"
   STARTHINKER_USER="${THIS_DIR}/starthinker_assets/user.json"
   STARTHINKER_CONFIG="${THIS_DIR}/starthinker_assets/production.sh"
@@ -103,7 +104,8 @@ save_config() {
   echo "" >> "${STARTHINKER_CONFIG}"
 
   echo "export STARTHINKER_ROOT=\"$STARTHINKER_ROOT\";" >> "${STARTHINKER_CONFIG}"
-  echo "export STARTHINKER_CLIENT=\"$STARTHINKER_CLIENT\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_CLIENT_WEB=\"$STARTHINKER_CLIENT_WEB\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_CLIENT_INSTALLED=\"$STARTHINKER_CLIENT_INSTALLED\";" >> "${STARTHINKER_CONFIG}"
   echo "export STARTHINKER_SERVICE=\"$STARTHINKER_SERVICE\";" >> "${STARTHINKER_CONFIG}"
   echo "export STARTHINKER_USER=\"$STARTHINKER_USER\";" >> "${STARTHINKER_CONFIG}"
   echo "export STARTHINKER_CONFIG=\"$STARTHINKER_CONFIG\";" >> "${STARTHINKER_CONFIG}"
@@ -146,7 +148,7 @@ save_config() {
 #
 #  read_multiline "}}"
 #  if [ "${read_multiline_return}" ];then
-#    printf "%s" "$read_multiline_return" > "${STARTHINKER_CLIENT}"
+#    printf "%s" "$read_multiline_return" > "${STARTHINKER_CLIENT_WEB}"
 #  fi
 #
 read_multiline() {
@@ -290,17 +292,40 @@ setup_credentials() {
   echo "----------------------------------------"
   echo ""
 
-  if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_CLIENT" ]; then
+  if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_CLIENT_WEB" ]; then
 
-    # client
-    echo "Retrieve OAuth Client ID credentials from: https://console.cloud.google.com/apis/credentials"
+    # client Other
     echo "Application type: Other"
+    echo "Retrieve OAuth Client ID credentials from: https://console.cloud.google.com/apis/credentials"
+    echo "Used by for local development and command line commands."
     echo "Paste in your client credentials here: ( CTRL+D to skip )"
 
     read_multiline "}}"
 
     if [ "${read_multiline_return}" ];then
-      printf "%s" "$read_multiline_return" > "${STARTHINKER_CLIENT}"
+      printf "%s" "$read_multiline_return" > "${STARTHINKER_CLIENT_WEB}"
+    fi
+  else
+    echo "Using Existing Client Credentials"
+  fi
+
+  if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_CLIENT_INSTALLED" ]; then
+
+    # client WEB
+    echo ""
+    echo "----------------------------------------"
+    echo ""
+    echo "Application type: Web"
+    echo "Retrieve OAuth Client ID credentials from: https://console.cloud.google.com/apis/credentials"
+    echo "Application type: Internal"
+    echo "You may have to set up your OAuth Consent Screen: https://pantheon.corp.google.com/apis/credentials/consent"
+    echo "Used by web servers and local UI when launched."
+    echo "Paste in your client credentials here: ( CTRL+D to skip )"
+
+    read_multiline "}}"
+
+    if [ "${read_multiline_return}" ];then
+      printf "%s" "$read_multiline_return" > "${STARTHINKER_CLIENT_INSTALLED}"
     fi
   else
     echo "Using Existing Client Credentials"
@@ -308,6 +333,8 @@ setup_credentials() {
 
   if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_SERVICE" ]; then
     # service
+    echo ""
+    echo "----------------------------------------"
     echo ""
     echo "Retrieve Service account key credentials from: https://console.cloud.google.com/apis/credentials"
     echo "Key type: JSON"
@@ -338,7 +365,7 @@ setup_user() {
   echo ""
 
   source "${STARTHINKER_ENV}/bin/activate"
-  python "${THIS_DIR}/starthinker/auth/helper.py" -c "${STARTHINKER_CLIENT}" -u "${STARTHINKER_USER}"
+  python "${THIS_DIR}/starthinker/auth/helper.py" -c "${STARTHINKER_CLIENT_INSTALLED}" -u "${STARTHINKER_USER}"
   deactivate
 
   echo "Done"

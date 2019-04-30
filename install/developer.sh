@@ -77,7 +77,7 @@ setup_developer() {
   echo "This script or you may create or modify:"
   echo "  - $STARTHINKER_CONFIG"
   echo "  - $STARTHINKER_ENV"
-  echo "  - $STARTHINKER_CLIENT"
+  echo "  - $STARTHINKER_CLIENT_INSTALLED"
   echo "  - $STARTHINKER_SERVICE"
   echo "  - $STARTHINKER_USER"
   echo "  - $STARTHINKER_ROOT/starthinker_assets/database.sqlite"
