@@ -180,11 +180,6 @@ Email: starthinker-help@google.com
 
 - Paul Kenjora ( kenjora@google.com ) - Google gTech
 - Mauricio Desiderio ( mauriciod@google.com ) - Google gTech
+- John Terwilleger ( terwilleger@google.com ) - Google gTech
 
 Additional contributors to individual handlers and recipes are listed in each file.
-
-
-
-# The Rest Of This Document Is Pulled From Code Comments
-
-No code comments at this level.

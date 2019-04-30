@@ -372,6 +372,7 @@ class project:
     _date='TODAY',
     _hour='NOW',
     _verbose=False,
+    _force=False,
   ):
     """Used in StarThinker scripts as programmatic entry point. 
 
@@ -513,4 +514,4 @@ class project:
       print 'Running:', '%s_%d' % (function, instances[function])
 
       python_callable = getattr(import_module('starthinker.task.%s.run' % function), function)
-      python_callable('recipe': cls.recipe, 'instance':instances[function])
+      python_callable(cls.recipe, instances[function])
