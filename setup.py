@@ -22,9 +22,6 @@
 
 from setuptools import setup, find_packages
 
-with open('README.md') as readme_file:
-  README = readme_file.read()
-
 REQUIREMENTS = [
   'google-cloud-core==0.24.1',
   'google-cloud-bigquery==0.25.0',
@@ -54,7 +51,7 @@ setup(
   name='starthinker',
   version='0.0.8',
   description="StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components.",
-  long_description=README,
+  long_description="StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components. To make it easier for partners and clients to work with some of our advertsing solutions, the gTech team has open sourced this framework as a reference implementation.  Our goal is to make managing data workflows using Google Cloud as fast and re-usable as possible, allowing teams to focus on building advertising solutions.",
   author="Paul Kenjora & Mauricio Desidario",
   author_email='kenjora@google.com',
   url='https://github.com/google/starthinker',

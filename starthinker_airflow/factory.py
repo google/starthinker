@@ -99,6 +99,7 @@ class DAG_Factory():
 
 
   def schedule(self):
+    # for now simplest case is to execute all directories locally
     pass
 
 

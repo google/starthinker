@@ -372,7 +372,6 @@ class project:
     _date='TODAY',
     _hour='NOW',
     _verbose=False,
-    _force=False
   ):
     """Used in StarThinker scripts as programmatic entry point. 
 
@@ -474,3 +473,44 @@ class project:
         cls.recipe = get_project(cls.filepath)
 
     return cls.uuid 
+
+
+  @classmethod
+  def execute(cls):
+    '''Run all the tasks in a project in one sequence.
+
+    ```
+    from util.project import project
+
+    if __name__ == "__main__":
+      var_user = '[USER CREDENTIALS JSON STRING OR PATH]'
+      var_service = '[SERVICE CREDENTIALS JSON STRING OR PATH]'
+      var_json = {
+        "tasks":[
+          { "dataset":{
+            "auth":"service",
+            "dataset":"Test_Dataset"
+          }}
+        ]
+      }
+
+      project.initialize(_json=var_json, _user=var_user, _service=var_service, _verbose=True)
+      project.execute()
+    ```
+
+    For a full list of tasks see: starthinker/gtech/script_*.json
+
+    '''
+
+    instances = {}
+    for task in cls.recipe['tasks']:
+      function = task.items()[0][0]
+
+      # count instance per task
+      instances.setdefault(function, 0)
+      instances[function] += 1
+
+      print 'Running:', '%s_%d' % (function, instances[function])
+
+      python_callable = getattr(import_module('starthinker.task.%s.run' % function), function)
+      python_callable('recipe': cls.recipe, 'instance':instances[function])
