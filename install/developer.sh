@@ -58,6 +58,7 @@ install_developer() {
   setup_credentials "optional"; 
   setup_user; 
   save_config;
+  make_cron;
 }
 
 
