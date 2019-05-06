@@ -20,6 +20,24 @@
 
 from __future__ import unicode_literals
 
+import os
+
 from django.test import TestCase
 
-# Create your tests here.
+from starthinker_ui.account.tests import account_create
+from starthinker_ui.project.models import Project
+
+
+def project_create():
+
+  account = account_create()
+
+  with open(os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET'), 'r') as f:
+    service = f.read()
+
+  project = Project.objects.create(
+    account = account,
+    service = service
+  )
+
+  return project

@@ -66,7 +66,7 @@ def sheets():
 
       # write to table ( not using put because no use cases for other destinations )
       rows_to_table(
-        auth=project.task['auth'],
+        auth=project.task['out'].get('auth', project.task['auth']),
         project_id=project.id,
         dataset_id=project.task['out']['bigquery']['dataset'],
         table_id=project.task['out']['bigquery']['table'],

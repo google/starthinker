@@ -62,12 +62,9 @@ if [ -d "${PWD}/install" ]; then
     echo "Sets up a Google App Engine Instance web UI for multiple users and disctributed jobs.  Highly scalable team wide deployment."
     echo ""
     echo ""
-    echo "Alternate Setup Menu"
-    echo "Sets up a traditional full stack UI server on Google Cloud Instance for multiple users and disctributed jobs.  Highly customizable deployment."
-    echo ""
   
     main_done=0
-    main_options=("Developer Menu" "Data Scientist Menu" "Enterprise Setup Menu" "Setup Project" "Setup Credentials" "Setup User" "Quit")
+    main_options=("Developer Menu" "Data Scientist Menu" "Enterprise Menu" "Change Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials" "Reset Configuration" "Quit")
   
     while (( !main_done ))
     do
@@ -83,9 +80,11 @@ if [ -d "${PWD}/install" ]; then
           2) setup_scientist; break ;;
           3) setup_enterprise; break ;;
           4) setup_project; save_config; break ;;
-          5) setup_credentials; save_config; break ;;
-          6) setup_user; save_config; break ;;
-          7) main_done=1; break;;
+          5) setup_credentials_service; save_config; break ;;
+          6) setup_credentials_commandline; setup_credentials_user; save_config; break ;;
+          7) setup_credentials_ui; save_config; break ;;
+          8) save_config; break;;
+          9) main_done=1; break;;
           *) echo "What's that?" ;;
         esac
       done

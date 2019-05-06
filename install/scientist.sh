@@ -19,9 +19,53 @@
 ###########################################################################
 
 
-################################################################################
-#
-# recipe functions for adding and removing recipes - called by menu below
+start_cron() {
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Add Tasks To CronTab - crontab -l"
+  echo "----------------------------------------"
+  echo ""
+
+  echo "* * * * * command to be executed"
+  echo "- - - - -"
+  echo "| | | | |"
+  echo "| | | | ----- Day of week (0 - 7) (Sunday=0 or 7)"
+  echo "| | | ------- Month (1 - 12)"
+  echo "| | --------- Day of month (1 - 31)"
+  echo "| ----------- Hour (0 - 23)"
+  echo "------------- Minute (0 - 59)"
+  echo ""
+
+  ( echo "" ) | crontab -
+
+  #( crontab -l; echo "55 4 * * 3 ${STARTHINKER_ROOT}/install/cron.sh python starthinker_ui/manage.py account_status" ) | crontab -
+
+  if [ "${STARTHINKER_CRON}" ]; then
+    #( crontab -l; echo "20 * * * * ${STARTHINKER_ROOT}/install/cron.sh python starthinker_ui/manage.py recipe_to_json" ) | crontab -
+    #( crontab -l; echo "20 * * * * ${STARTHINKER_ROOT}/install/cron.sh python starthinker_ui/manage.py storage_to_json" ) | crontab -
+    (crontab -l ; echo "30 * * * * ${STARTHINKER_ROOT}/install/cron.sh python starthinker/cron/run.py ${STARTHINKER_CRON} run" ) | crontab -
+  fi
+
+  echo "Done"
+  echo ""
+}
+
+
+stop_cron() {
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Clear All Tasks In CronTab - crontab -l"
+  echo "----------------------------------------"
+  echo ""
+
+  ( echo "" ) | crontab -
+
+  echo "Done"
+  echo ""
+}
+
 
 list_recipes() {
 
@@ -193,10 +237,15 @@ add_recipe() {
 
 install_scientist() {
   install_virtualenv;
+  install_requirements;
+
   setup_project "optional";
-  setup_credentials "optional";
-  setup_user;
+  setup_credentials_service "optional";
+  setup_credentials_commandline "optional";
+  setup_credentials_user "optional";
   save_config;
+
+  make_cron;
   start_cron;
 }
 
@@ -225,7 +274,7 @@ setup_scientist() {
   echo ""
 
   scientist_done=0
-  scientist_options=("Install StarThinker" "Start Cron" "Stop Cron" "List Recipes" "Add Recipe" "Generate Recipe" "Run Recipe" "Delete Recipe" "Quit")
+  scientist_options=("Install Data Scientist StarThinker" "Start Cron" "Stop Cron" "List Recipes" "Add Recipe" "Generate Recipe" "Run Recipe" "Delete Recipe" "Quit")
  
   while (( !scientist_done ))
   do

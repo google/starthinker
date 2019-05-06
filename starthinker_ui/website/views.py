@@ -31,7 +31,6 @@ from starthinker_ui.account.decorators import permission_admin
 from starthinker_ui.account.models import Account
 from starthinker_ui.recipe.scripts import Script
 from starthinker_ui.recipe.models import Recipe
-from starthinker_ui.storage.models import storage_list
 
 
 def solutions(request):

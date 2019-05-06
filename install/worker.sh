@@ -118,7 +118,7 @@ After=networking.service
 [Service]
 Type=simple
 WorkingDirectory=$STARTHINKER_ROOT/starthinker_assets
-ExecStart="${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE
+ExecStart="${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE
 Restart=always
 StandardOutput=journal
 User=root
@@ -196,7 +196,8 @@ deploy_worker() {
   instance_Jobs=$4
 
   setup_project "optional";
-  setup_credentials "optional";
+  setup_credentials_service "optional";
+  setup_credentials_ui "optional";
   save_config;
 
   echo ""
@@ -209,9 +210,6 @@ deploy_worker() {
 
   gcloud_service;
   gcloud_firewall_ssh;
-
-  #database_ip=$(gcloud sql instances describe ${STARTHINKER_UI_DATABASE_NAME} --format="value(ipAddresses[0].ipAddress)");
-  #gcloud sql instances patch $instance_name --authorized-networks=[IP_ADDR1]
 
   for ((instance=1;instance<=instance_Workers;instance++)); do
     instance_name="starthinker-${instance_Label}-${instance}"
@@ -310,6 +308,10 @@ if [ "$1" == '--instance' ];then
     update_apt;
     install_proxy; # first so it installs psycopg dependencies
     install_virtualenv; # second because pip is here
+
+    install_requirements; # second because pip is here
+    install_requirements_ui; # second because pip is here
+
     setup_swap;
     start_worker_proxy;
     start_worker $worker_PARAMETERS;

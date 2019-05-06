@@ -32,7 +32,7 @@ import os
 from starthinker.config import UI_ROOT, UI_PROJECT, UI_CLIENT, UI_SERVICE, UI_CRON, DEVELOPMENT_MODE
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #DEVELOPMENT_MODE
+DEBUG = DEVELOPMENT_MODE
 
 ADMIN_ENABLED = False
 
@@ -46,7 +46,6 @@ INSTALLED_APPS = [
   'starthinker_ui.account',
   'starthinker_ui.recipe',
   'starthinker_ui.project',
-  'starthinker_ui.job',
   'starthinker_ui.website',
 ]
 

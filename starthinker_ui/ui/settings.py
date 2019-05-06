@@ -49,10 +49,3 @@ DATABASES = {
     'PASSWORD': os.environ.get('STARTHINKER_UI_DATABASE_PASSWORD', '')
   }
 }
-
-# Seperate project for storing each users recipes for security reasons
-RECIPE_PROJECT = os.environ.get('STARTHINKER_RECIPE_PROJECT', '')
-RECIPE_SERVICE = os.environ.get('STARTHINKER_RECIPE_SERVICE', '')
-
-if not RECIPE_PROJECT: RECIPE_PROJECT = UI_PROJECT
-if not RECIPE_SERVICE: RECIPE_SERVICE = UI_SERVICE

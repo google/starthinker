@@ -74,6 +74,12 @@ def is_checkbox(field):
 def multiply(value, arg):
   return value*arg
 
+
 @register.filter
 def json_get_fields(value):
   return json_get_fields_imported(value)
+
+@register.filter
+def day_or_night(value):
+  return mark_safe('<i class="small material-icons-outlined" style="vertical-align: middle;">%s</i>&nbsp;&nbsp;' % ('wb_sunny' if 6 < value < 18 else 'brightness_3'))
+

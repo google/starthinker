@@ -35,15 +35,12 @@ if [ "$STARTHINKER_UI_SECRET" == "" ]; then
 fi
 
 STARTHINKER_UI_DOMAIN=""
-STARTHINKER_UI_DATABASE_ENGINE=""
-STARTHINKER_UI_DATABASE_HOST=""
-STARTHINKER_UI_DATABASE_PORT=""
+STARTHINKER_UI_DATABASE_ENGINE="django.db.backends.postgresql"
+STARTHINKER_UI_DATABASE_HOST="127.0.0.1"
+STARTHINKER_UI_DATABASE_PORT="5432"
 STARTHINKER_UI_DATABASE_NAME="starthinker-test"
 STARTHINKER_UI_DATABASE_USER="starthinker_user"
 STARTHINKER_UI_DATABASE_PASSWORD="starthinker_password"
-
-STARTHINKER_RECIPE_PROJECT=""
-STARTHINKER_RECIPE_SERVICE=""
 
 derive_config() {
 
@@ -121,10 +118,6 @@ save_config() {
   echo "export STARTHINKER_UI_DATABASE_NAME=\"$STARTHINKER_UI_DATABASE_NAME\";" >> "${STARTHINKER_CONFIG}"
   echo "export STARTHINKER_UI_DATABASE_USER=\"$STARTHINKER_UI_DATABASE_USER\";" >> "${STARTHINKER_CONFIG}"
   echo "export STARTHINKER_UI_DATABASE_PASSWORD=\"$STARTHINKER_UI_DATABASE_PASSWORD\";" >> "${STARTHINKER_CONFIG}"
-  echo "" >> "${STARTHINKER_CONFIG}"
-
-  echo "export STARTHINKER_RECIPE_PROJECT=\"$STARTHINKER_RECIPE_PROJECT\";" >> "${STARTHINKER_CONFIG}"
-  echo "export STARTHINKER_RECIPE_SERVICE=\"$STARTHINKER_RECIPE_SERVICE\";" >> "${STARTHINKER_CONFIG}"
   echo "" >> "${STARTHINKER_CONFIG}"
 
   echo "if [[ "\$PYTHONPATH" != *\"\${STARTHINKER_ROOT}\"* ]]; then" >> "${STARTHINKER_CONFIG}"
@@ -237,23 +230,6 @@ setup_database() {
 }
 
 
-migrate_database() {
-  echo ""
-  echo "----------------------------------------"
-  echo "Setup Database"
-  echo "----------------------------------------"
-  echo ""
-
-  source "${STARTHINKER_CONFIG}";
-  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" makemigrations;
-  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" migrate;
-  deactivate
-
-  echo "Done"
-  echo ""
-}
-
-
 setup_project() {
   optional_project=$1
 
@@ -283,44 +259,21 @@ setup_project() {
 }
 
 
-setup_credentials() {
+setup_credentials_commandline() {
   optional_credentials=$1
 
   echo ""
   echo "----------------------------------------"
-  echo "Setup Credentials"
+  echo "Setup Command Line Credentials For User - ${STARTHINKER_CLIENT_INSTALLED}"
   echo "----------------------------------------"
   echo ""
 
-  if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_CLIENT_WEB" ]; then
-
-    # client Other
-    echo "Application type: Other"
-    echo "Retrieve OAuth Client ID credentials from: https://console.cloud.google.com/apis/credentials"
-    echo "Used by for local development and command line commands."
-    echo "Paste in your client credentials here: ( CTRL+D to skip )"
-
-    read_multiline "}}"
-
-    if [ "${read_multiline_return}" ];then
-      printf "%s" "$read_multiline_return" > "${STARTHINKER_CLIENT_WEB}"
-    fi
-  else
-    echo "Using Existing Client Credentials"
-  fi
-
   if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_CLIENT_INSTALLED" ]; then
 
-    # client WEB
-    echo ""
-    echo "----------------------------------------"
-    echo ""
-    echo "Application type: Web"
-    echo "Retrieve OAuth Client ID credentials from: https://console.cloud.google.com/apis/credentials"
-    echo "Application type: Internal"
-    echo "You may have to set up your OAuth Consent Screen: https://pantheon.corp.google.com/apis/credentials/consent"
-    echo "Used by web servers and local UI when launched."
-    echo "Paste in your client credentials here: ( CTRL+D to skip )"
+    # client OTHER
+    echo "Used by for local development and command line commands."
+    echo "Retrieve \"Other\" OAuth Client ID Credentials from: https://console.cloud.google.com/apis/credentials"
+    echo "Paste credentials JSON here: ( CTRL+D to skip )"
 
     read_multiline "}}"
 
@@ -331,14 +284,53 @@ setup_credentials() {
     echo "Using Existing Client Credentials"
   fi
 
+  echo "Done"
+  echo ""
+}
+
+
+setup_credentials_ui() {
+  optional_credentials=$1
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Setup UI Credentials - ${STARTHINKER_CLIENT_WEB}"
+  echo "----------------------------------------"
+  echo ""
+
+  if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_CLIENT_WEB" ]; then
+
+    echo "Used by UI when launched."
+    echo "Retrieve \"Web\" OAuth Client ID Credentials from: https://console.cloud.google.com/apis/credentials"
+    echo "You may have to set up the \"Internal\" OAuth Consent Screen: https://pantheon.corp.google.com/apis/credentials/consent"
+    echo "Paste credentials JSON here: ( CTRL+D to skip )"
+
+    read_multiline "}}"
+
+    if [ "${read_multiline_return}" ];then
+      printf "%s" "$read_multiline_return" > "${STARTHINKER_CLIENT_WEB}"
+    fi
+  else
+    echo "Using Existing Client Credentials"
+  fi
+
+  echo "Done"
+  echo ""
+}
+
+setup_credentials_service() {
+  optional_credentials=$1
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Setup Service Credentials - ${STARTHINKER_SERVICE}"
+  echo "----------------------------------------"
+  echo ""
+
   if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_SERVICE" ]; then
-    # service
-    echo ""
-    echo "----------------------------------------"
-    echo ""
-    echo "Retrieve Service account key credentials from: https://console.cloud.google.com/apis/credentials"
-    echo "Key type: JSON"
-    echo "Paste in your service credentials: ( CTRL+D to skip )"
+
+    echo "Retrieve Service Account Key Credentials from: https://console.cloud.google.com/apis/credentials"
+    echo "Paste credentials JSON here: ( CTRL+D to skip )"
 
     read_multiline "}"
 
@@ -357,7 +349,7 @@ setup_credentials() {
   echo ""
 }
 
-setup_user() {
+setup_credentials_user() {
   echo ""
   echo "----------------------------------------"
   echo "Update User Credentials - ${STARTHINKER_USER}"
@@ -429,18 +421,6 @@ install_virtualenv() {
     PYTHON2=$(which python2);
     virtualenv --python=${PYTHON2} ${STARTHINKER_ENV}
 
-    source "${STARTHINKER_ENV}/bin/activate"
-    
-    if [ -e "${THIS_DIR}/requirements.txt" ]; then
-      pip2 install -r ${THIS_DIR}/requirements.txt
-    fi
-
-    #if [ -e "${THIS_DIR}/starthinker_ui/requirements.txt" ]; then
-    #  pip2 install --quiet -r ${THIS_DIR}/starthinker_ui/requirements.txt
-    #fi
-
-    deactivate
-
   fi
 
   echo "Done"
@@ -448,18 +428,32 @@ install_virtualenv() {
 }
 
 
-install_repository() {
-
+install_requirements() {
   echo ""
   echo "----------------------------------------"
-  echo "Install Git And Clone Repository - ${THIS_DIR}/starthinker"
+  echo "Install Python Packages - ${STARTHINKER_ROOT}/starthinker/requirements.txt"
   echo "----------------------------------------"
   echo ""
 
-  if [ "$(command -v git)" == "" ]; then
-    sudo apt install git
-  fi
-  git clone https://github.com/google/starthinker
+  source "${STARTHINKER_ENV}/bin/activate"
+  pip2 install -r ${STARTHINKER_ROOT}/starthinker/requirements.txt --quiet
+  deactivate
+
+  echo "Done"
+  echo ""
+}
+
+
+install_requirements_ui() {
+  echo ""
+  echo "----------------------------------------"
+  echo "Install Python Packages For UI - ${STARTHINKER_ROOT}/starthinker_ui/requirements.txt"
+  echo "----------------------------------------"
+  echo ""
+
+  source "${STARTHINKER_ENV}/bin/activate"
+  pip2 install -r ${STARTHINKER_ROOT}/starthinker_ui/requirements.txt --quiet
+  deactivate
 
   echo "Done"
   echo ""
@@ -540,69 +534,20 @@ make_cron() {
 }
 
 
-start_cron() {
-
-  make_cron;
-
-  echo ""
-  echo "----------------------------------------"
-  echo "Add Tasks To CronTab - crontab -l"
-  echo "----------------------------------------"
-  echo ""
-
-  echo "* * * * * command to be executed"
-  echo "- - - - -"
-  echo "| | | | |"
-  echo "| | | | ----- Day of week (0 - 7) (Sunday=0 or 7)"
-  echo "| | | ------- Month (1 - 12)"
-  echo "| | --------- Day of month (1 - 31)"
-  echo "| ----------- Hour (0 - 23)"
-  echo "------------- Minute (0 - 59)"
-  echo ""
-
-  ( echo "" ) | crontab -
-   
-  #( crontab -l; echo "55 4 * * 3 ${STARTHINKER_ROOT}/install/cron.sh python starthinker_ui/manage.py account_status" ) | crontab -
-
-  if [ "${STARTHINKER_CRON}" ]; then
-    #( crontab -l; echo "20 * * * * ${STARTHINKER_ROOT}/install/cron.sh python starthinker_ui/manage.py recipe_to_json" ) | crontab -
-    #( crontab -l; echo "20 * * * * ${STARTHINKER_ROOT}/install/cron.sh python starthinker_ui/manage.py storage_to_json" ) | crontab -
-    (crontab -l ; echo "30 * * * * ${STARTHINKER_ROOT}/install/cron.sh python starthinker/cron/run.py ${STARTHINKER_CRON} run" ) | crontab -
-  fi
-
-  echo "Done"
-  echo ""
-}
-
-
-stop_cron() {
-
-  echo ""
-  echo "----------------------------------------"
-  echo "Clear All Tasks In CronTab - crontab -l"
-  echo "----------------------------------------"
-  echo ""
-
-  ( echo "" ) | crontab -
-
-  echo "Done"
-  echo ""
-}
-
 install_proxy_darwin() {
   if [ "$(uname -m)" == "x86_64" ]; then
-    curl -o "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy" https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.amd64
+    curl -o "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.amd64
   else
-    curl -o "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy" https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.386
+    curl -o "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.386
   fi
 }
 
 
 install_proxy_linux() {
   if [ "$(uname -m)" == "x86_64" ]; then
-    wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy"
+    wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy"
   else
-    wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.386 -O "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy"
+    wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.386 -O "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy"
   fi
 }
 
@@ -610,7 +555,7 @@ install_proxy_linux() {
 install_proxy() {
   echo ""
   echo "----------------------------------------"
-  echo "Install Cloud Proxy - ${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy"
+  echo "Install Cloud Proxy - ${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy"
   echo "----------------------------------------"
   echo ""
 
@@ -622,15 +567,18 @@ install_proxy() {
     esac
   fi
 
-  if [ ! -f "${STARTHINKER_iROOT}/starthinker_assets/cloud_sql_proxy" ]; then
+  if [ ! -f "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" ]; then
+
+    mkdir -p "${STARTHINKER_ROOT}/starthinker_database/"
+
     case "$(uname -s)" in
       Darwin) install_proxy_darwin;;
       Linux)  install_proxy_linux;;
       *) echo "ERROR: Unknown OS, Visit https://cloud.google.com/sql/docs/postgres/sql-proxy" ;;
     esac
-  fi
 
-  chmod +x "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy";
+    chmod +x "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy";
+  fi
 
   echo "Done"
   echo ""

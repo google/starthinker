@@ -34,4 +34,6 @@ def account_create():
   credentials = get_credentials()
   profile = get_profile()
 
-  account = Account.objects.create_user(profile, credentials, 'password')
+  account = Account.objects.get_or_create_user(profile, credentials, 'password')
+
+  return account

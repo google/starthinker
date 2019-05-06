@@ -43,11 +43,11 @@ start_proxy() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Start Cloud Proxy - ${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy"
+  echo "Start Cloud Proxy - ${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy"
   echo "----------------------------------------"
   echo ""
  
-  "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE &
+  "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE &
 
   echo "Done"
   echo ""
@@ -68,7 +68,7 @@ stop_proxy() {
 }
 
 
-migrate_proxy_database() {
+migrate_database_proxy() {
   echo ""
   echo "----------------------------------------"
   echo "Setup Database"
@@ -78,12 +78,12 @@ migrate_proxy_database() {
   (
     start_proxy;
     source "${STARTHINKER_CONFIG}";
-    export STARTHINKER_UI_DATABASE_ENGINE="django.db.backends.postgresql"
-    export STARTHINKER_UI_DATABASE_HOST="127.0.0.1"
-    export STARTHINKER_UI_DATABASE_PORT="5432"
-    export STARTHINKER_UI_DATABASE_NAME="$STARTHINKER_UI_DATABASE_NAME"
-    export STARTHINKER_UI_DATABASE_USER="$STARTHINKER_UI_DATABASE_USER"
-    export STARTHINKER_UI_DATABASE_PASSWORD="$STARTHINKER_UI_DATABASE_PASSWORD"
+    #export STARTHINKER_UI_DATABASE_ENGINE="django.db.backends.postgresql"
+    #export STARTHINKER_UI_DATABASE_HOST="127.0.0.1"
+    #export STARTHINKER_UI_DATABASE_PORT="5432"
+    #export STARTHINKER_UI_DATABASE_NAME="$STARTHINKER_UI_DATABASE_NAME"
+    #export STARTHINKER_UI_DATABASE_USER="$STARTHINKER_UI_DATABASE_USER"
+    #export STARTHINKER_UI_DATABASE_PASSWORD="$STARTHINKER_UI_DATABASE_PASSWORD"
     python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" makemigrations;
     python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" migrate;
     deactivate
@@ -104,6 +104,7 @@ deploy_appengine() {
 
   gcloud services enable appengine.googleapis.com
   gcloud services enable appengineflex.googleapis.com
+
   gcloud app deploy app.yaml --stop-previous-version
 
   echo "Done"
@@ -125,23 +126,11 @@ configure_yaml() {
   appengine_client_web=$(cat "$STARTHINKER_CLIENT_WEB" | tr '\n' ' ')
   appengine_service=$(cat "$STARTHINKER_SERVICE" | tr '\n' ' ')
 
-  appengine_recipe_project="${STARTHINKER_RECIPE_PROJECT:-$STARTHINKER_PROJECT}"
-  appengine_recipe_service="${STARTHINKER_RECIPE_SERVICE:-$STARTHINKER_SERVICE}"
-  appengine_recipe_service=$(cat "$appengine_recipe_service" | tr '\n' ' ')
-
-  if [ "$yaml_Target" == "app" ]; then
-    appengine_development="0"
-    appengine_domain="https://$STARTHINKER_PROJECT.appspot.com"
-    appengine_database_engine="django.db.backends.postgresql"
-    appengine_database_host="/cloudsql/$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME"
-    appengine_database_port="5432"
-  else
-    appengine_development="1"
-    appengine_domain="http://localhost:8080"
-    appengine_database_engine="django.db.backends.postgresql"
-    appengine_database_host="127.0.0.1"
-    appengine_database_port="5432"
-  fi
+  appengine_development="0"
+  appengine_domain="https://$STARTHINKER_PROJECT.appspot.com"
+  appengine_database_engine="django.db.backends.postgresql"
+  appengine_database_host="/cloudsql/$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME"
+  appengine_database_port="5432"
 
   bash -c "cat > $STARTHINKER_ROOT/$yaml_Target.yaml" << EOL
 runtime: python
@@ -177,8 +166,6 @@ env_variables:
   STARTHINKER_UI_DATABASE_NAME: "$STARTHINKER_UI_DATABASE_NAME"
   STARTHINKER_UI_DATABASE_USER: "$STARTHINKER_UI_DATABASE_USER"
   STARTHINKER_UI_DATABASE_PASSWORD: "$STARTHINKER_UI_DATABASE_PASSWORD"
-  STARTHINKER_RECIPE_PROJECT: '$appengine_recipe_project'
-  STARTHINKER_RECIPE_SERVICE: '$appengine_recipe_service'
 EOL
 
   source "${STARTHINKER_CONFIG}";
@@ -204,15 +191,20 @@ setup_appengine() {
   
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     setup_project "optional";
-    setup_credentials "optional";
-    setup_database "required" "optional" "optional";
+    setup_credentials_service "optional";
+    setup_credentials_ui "optional";
+    setup_database "optional" "optional" "optional";
     save_config;
   
     install_proxy; # first so it install dependencies
     install_virtualenv; # second because pip is here
 
+    install_requirements; # second because pip is here
+    install_requirements_ui; # second because pip is here
+
     setup_sql;
-    migrate_proxy_database; 
+    migrate_database_proxy; 
+
     configure_yaml "app"; 
     deploy_appengine; 
   fi
@@ -246,32 +238,26 @@ setup_appengine() {
 }
 
 
-test_appengine() {
+migrate_database_enterprise() {
   echo ""
   echo "----------------------------------------"
-  echo "Deploying Test Server Using test.yaml"
+  echo "Migrate Database To Latest Version"
   echo "----------------------------------------"
-  echo ""
-  echo "Configuring and running: dev_appserver.py test.yaml" 
   echo ""
 
   setup_project "optional";
-  setup_credentials "optional";
-  setup_database "required" "optional" "optional";
+  setup_credentials_service "optional";
+  setup_database "optional" "optional" "optional";
   save_config;
 
   install_proxy; # first so it install dependencies
   install_virtualenv; # second because pip is here
-  setup_sql;
-  configure_yaml "test"; 
 
-  (
-    start_proxy;
-    source "${STARTHINKER_CONFIG}";
-    dev_appserver.py test.yaml 
-    deactivate
-    stop_proxy;
-  )
+  install_requirements; # second because pip is here
+  install_requirements_ui; # second because pip is here
+
+  setup_sql;
+  migrate_database_proxy;
 
   echo "Done"
   echo ""
@@ -301,7 +287,7 @@ setup_enterprise() {
   echo ""
 
   enterprise_done=0
-  enterprise_options=("Deploy App Engine UI" "Deploy Job Workers" "Change Domain" "Change Database" "Test App Engine UI" "Quit")
+  enterprise_options=("Deploy App Engine UI" "Deploy Job Workers" "Change Domain" "Change Database" "Migrate Database" "Quit")
 
   while (( !enterprise_done ))
   do
@@ -317,7 +303,7 @@ setup_enterprise() {
         2) setup_worker; break ;;
         3) setup_domain; save_config; break ;;
         4) setup_database; save_config; break ;;
-        5) test_appengine; break ;;
+        5) migrate_database_enterprise; break ;;
         6) enterprise_done=1; break;;
         *) echo "What's that?" ;;
       esac

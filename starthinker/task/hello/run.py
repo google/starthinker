@@ -106,9 +106,13 @@ def hello():
   print ''
   print ''
 
-  if 'sleep' in project.task:
+  if project.task.get('sleep'):
     print 'PROJECT TASK SLEEP:', project.task['sleep']
     time.sleep(project.task['sleep'])
+
+  if project.task.get('error'):
+    print 'PROJECT TASK ERROR TRIGGERED:'
+    raise Exception(project.task['error'])
 
   print '-' * 80
   print "Take a look inside 'task/hello/run.py'."

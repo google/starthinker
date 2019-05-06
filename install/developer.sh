@@ -21,6 +21,14 @@
 
 launch_developer_ui() {
 
+  install_virtualenv; 
+  install_requirements; 
+  setup_project "optional"; 
+  setup_credentials_service "optional"; 
+  setup_credentials_ui "optional"; 
+  save_config;
+  make_cron;
+
   echo ""
   echo "----------------------------------------"
   echo "Load Development Settings - ${STARTHINKER_ROOT}/starthinker_assets/development.sh"
@@ -31,10 +39,11 @@ launch_developer_ui() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Configure Development Database - ${STARTHINKER_ROOT}/starthinker_assets/database.sqlite"
+  echo "Configure Development Database - ${STARTHINKER_ROOT}/starthinker_database/database.sqlite"
   echo "----------------------------------------"
   echo ""
 
+  mkdir -p "${STARTHINKER_ROOT}/starthinker_database/"
   python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" makemigrations;
   python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" migrate;
 
@@ -54,9 +63,11 @@ launch_developer_ui() {
 
 install_developer() {
   install_virtualenv; 
+  install_requirements; 
   setup_project "optional"; 
-  setup_credentials "optional"; 
-  setup_user; 
+  setup_credentials_service "optional"; 
+  setup_credentials_commandline "optional"; 
+  setup_credentials_user; 
   save_config;
   make_cron;
 }
@@ -81,7 +92,7 @@ setup_developer() {
   echo "  - $STARTHINKER_CLIENT_INSTALLED"
   echo "  - $STARTHINKER_SERVICE"
   echo "  - $STARTHINKER_USER"
-  echo "  - $STARTHINKER_ROOT/starthinker_assets/database.sqlite"
+  echo "  - $STARTHINKER_ROOT/starthinker_database/database.sqlite"
   echo ""
   echo "After running this script once, activate StarThinker development settings from the command line:"
   echo " - source $STARTHINKER_ROOT/starthinker_assets/development.sh"
@@ -101,7 +112,7 @@ setup_developer() {
   echo ""
 
   developer_done=0
-  developer_options=("Install StarThinker" "Launch Developer UI" "Reset Root Path" "Quit")
+  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Quit")
  
   while (( !developer_done ))
   do
@@ -115,8 +126,7 @@ setup_developer() {
       case $REPLY in
         1) install_developer; break;;
         2) launch_developer_ui; break;;
-        3) save_config; break;;
-        4) developer_done=1; break;;
+        3) developer_done=1; break;;
         *) echo "What's that?";;
       esac
     done

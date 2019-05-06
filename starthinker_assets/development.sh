@@ -45,7 +45,7 @@ if [ ! -z "${STARTHINKER_ROOT}" ]; then
   export STARTHINKER_UI_DATABASE_ENGINE="django.db.backends.sqlite3";
   export STARTHINKER_UI_DATABASE_HOST="";
   export STARTHINKER_UI_DATABASE_PORT="";
-  export STARTHINKER_UI_DATABASE_NAME="${STARTHINKER_ROOT}/starthinker_assets/database.sqlite";
+  export STARTHINKER_UI_DATABASE_NAME="${STARTHINKER_ROOT}/starthinker_database/database.sqlite";
   export STARTHINKER_UI_DATABASE_USER="";
   export STARTHINKER_UI_DATABASE_PASSWORD="";
 

@@ -33,16 +33,13 @@ REQUIREMENTS = [
   'oauth2client',
   'httplib2',
   'jsonpickle',
-  'django==1.11',
   'pysftp',
   'pytz',
   'tzlocal',
   'TwitterAPI',
   'python-dateutil',
-  'wheel',
-  'gunicorn',
-  'psycopg2',
   'django==1.11',
+  'pandas',
 ]
 
 #TEST_REQUIREMENTS = []

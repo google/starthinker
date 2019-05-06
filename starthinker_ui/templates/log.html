@@ -18,6 +18,8 @@
 ###########################################################################
 {% endcomment %}
 
+{% load website_app %}
+
 <div id="modal_log_{{ log.uid }}" class="modal">
   <div class="modal-content">
     <p><strong>{{ log.status }} - {{ log.percent }}%</strong></p>
@@ -25,6 +27,7 @@
     <table id="stats_accounts" class="responsive-table list">
       <thead>
         <tr>
+          <th style="min-width:30px;" class="center">Hour</th>
           <th style="min-width:120px;">Task</th>
           <th>Output / Error</th>
         </tr>
@@ -32,6 +35,9 @@
       <tbody>
         {% for task in log.tasks %}
           <tr>
+            <td style="vertical-align:top;" class="center">
+              {{ task.hour|day_or_night }} {{ task.hour }}
+            </td>
             <td style="vertical-align:top;">
               <strong>{{ task.script }} - {{ task.instance }}</strong>
               <br/>{{ task.event }}

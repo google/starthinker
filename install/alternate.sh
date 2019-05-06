@@ -61,11 +61,9 @@ configure_linux_ui() {
   fi
 
   echo ""
-  echo "CAUTION: Configures UI credentials and recipe buckets in same cloud projec."
-  echo "CAUTION: For added security please edit STARTHINKER_RECIPE_PROJECT in config to be dofferent."
+  echo "CAUTION: Configures UI credentials and recipe buckets in same cloud project."
   echo ""
-  STARTHINKER_RECIPE_PROJECT=$STARTHINKER_PROJECT
-  STARTHINKER_RECIPE_SERVICE=$STARTHINKER_SERVICE
+
   save_config;
 
   echo "Done"
@@ -133,8 +131,6 @@ env = STARTHINKER_UI_DATABASE_NAME=$STARTHINKER_UI_DATABASE_NAME
 env = STARTHINKER_UI_DATABASE_USER=$STARTHINKER_UI_DATABASE_USER
 env = STARTHINKER_UI_DATABASE_PASSWORD=$STARTHINKER_UI_DATABASE_PASSWORD
 env = STARTHINKER_UI_DATABASE_PORT=$STARTHINKER_UI_DATABASE_PORT
-env = STARTHINKER_RECIPE_PROJECT=$STARTHINKER_RECIPE_PROJECT
-env = STARTHINKER_RECIPE_SERVICE=$STARTHINKER_RECIPE_SERVICE
 module = %(project).ui.ui.wsgi:application
 master = true
 processes = 2
