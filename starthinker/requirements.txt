@@ -33,3 +33,4 @@ tzlocal
 TwitterAPI
 python-dateutil
 pandas
+psutil

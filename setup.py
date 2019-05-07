@@ -40,6 +40,7 @@ REQUIREMENTS = [
   'python-dateutil',
   'django==1.11',
   'pandas',
+  'psutil',
 ]
 
 #TEST_REQUIREMENTS = []

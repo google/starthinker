@@ -22,11 +22,11 @@
 This is a helper to help developers debug and create reports. Prints using JSON for
 copy and paste compatibility. The following command lines are available:
 
-- To get list of reports: `python dcm/helper.py --account [id] --profile [id] --list -u [credentials]`
-- To get report: `python dcm/helper.py --account [id] --profile [id] --report [id] -u [credentials]`
-- To get report files: `python dcm/helper.py --account [id] --profile [id] --files [id] -u [credentials]`
-- To get report sample: `python dcm/helper.py --account [id] --profile [id] --sample [id] -u [credentials]`
-- To get report schema: `python dcm/helper.py --account [id] --profile [id] --schema [id] -u [credentials]`
+- To get list of reports: `python dcm/helper.py --account [id] --list -u [credentials]`
+- To get report: `python dcm/helper.py --account [id] --report [id] -u [credentials]`
+- To get report files: `python dcm/helper.py --account [id] --files [id] -u [credentials]`
+- To get report sample: `python dcm/helper.py --account [id] --sample [id] -u [credentials]`
+- To get report schema: `python dcm/helper.py --account [id] --schema [id] -u [credentials]`
 
 """
 
@@ -35,16 +35,14 @@ import argparse
 
 from starthinker.util.project import project
 from starthinker.util.google_api import API_DCM
-from starthinker.util.dcm import report_to_rows, report_clean, report_file, report_schema
+from starthinker.util.dcm import get_profile_for_api, report_to_rows, report_clean, report_file, report_schema
 from starthinker.util.csv import rows_to_type, rows_print
-
 
 if __name__ == "__main__":
 
   # get parameters
   parser = argparse.ArgumentParser()
   parser.add_argument('--account', help='account ID to use to pull the report', default=None)
-  parser.add_argument('--profile', help='profile ID to use to pull the report', default=None)
   parser.add_argument('--report', help='report ID to pull JSON definition', default=None)
   parser.add_argument('--schema', help='report ID to pull achema definition', default=None)
   parser.add_argument('--sample', help='report ID to pull sample data', default=None)
@@ -55,20 +53,19 @@ if __name__ == "__main__":
   project.from_commandline(parser=parser)
   auth = 'service' if project.args.service else 'user'
 
-  kwargs = {}
-  if project.args.account: kwargs['accountId'] = project.args.account
-  if project.args.profile: kwargs['profileId'] = project.args.profile
+  is_superuser, profile = get_profile_for_api(auth, project.args.account)
+  kwargs = { 'profileId':profile, 'accountId':project.args.account } if is_superuser else { 'profileId':profile }
 
   # get report list
   if project.args.report:
     kwargs['reportId'] = project.args.report
-    report = API_DCM(auth).reports().get(**kwargs).execute()
+    report = API_DCM(auth, internal=is_superuser).reports().get(**kwargs).execute()
     print json.dumps(report, indent=2, sort_keys=True)
 
   # get report files
   elif project.args.files:
     kwargs['reportId'] = project.args.files
-    for report_file in API_DCM(auth).reports().files().list(**kwargs).execute():
+    for report_file in API_DCM(auth, internal=is_superuser).reports().files().list(**kwargs).execute():
       print json.dumps(report_file, indent=2, sort_keys=True)
 
   # get schema
@@ -88,5 +85,5 @@ if __name__ == "__main__":
 
   # get list
   else:
-    for report in API_DCM(auth).reports().list(**kwargs).execute():
+    for report in API_DCM(auth, internal=is_superuser).reports().list(**kwargs).execute():
       print json.dumps(report, indent=2, sort_keys=True)

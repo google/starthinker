@@ -22,7 +22,6 @@ UI_ROOT = os.environ.get('STARTHINKER_ROOT', 'MISSING RUN deploy.sh TO SET')
 UI_CRON = os.environ.get('STARTHINKER_CRON', '')
 
 DEVELOPMENT_MODE = bool(os.environ.get('STARTHINKER_DEVELOPMENT', '0') == '1')
-INTERNAL_MODE = bool(os.environ.get('STARTHINKER_INTERNAL', '0') == '1')
 
 # used to manage user credentials and UI data
 UI_ZONE = os.environ.get('STARTHINKER_ZONE', 'MISSING RUN deploy.sh TO SET')

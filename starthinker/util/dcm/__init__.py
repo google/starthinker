@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -18,32 +18,19 @@
 
 import pprint
 import csv
-import re
-import json
 from time import sleep
 from StringIO import StringIO
 from types import GeneratorType
 from datetime import date, timedelta
 
-from googleapiclient.errors import HttpError
-
-from starthinker.config import INTERNAL_MODE, UI_ROOT, BUFFER_SCALE
+from starthinker.config import BUFFER_SCALE
 from starthinker.util import flag_last
 from starthinker.util.project import project
-from starthinker.util.auth import get_service
-from starthinker.util.google_api import API_Retry, API_DCM
+from starthinker.util.google_api import API_DCM
 from starthinker.util.storage import media_download
 from starthinker.util.csv import column_header_sanitize
 from starthinker.util.dcm.schema.Lookup import DCM_Field_Lookup
 
-
-if INTERNAL_MODE:
-  # fetch discovery uri using: wget https://www.googleapis.com/discovery/v1/apis/dfareporting/internalv3.2/rest > util/dcm/internalv32_uri.json
-  API_VERSION = 'internalv3.2'
-  API_URI = '%s/starthinker/util/dcm/internalv32_uri.json' % UI_ROOT
-else:
-  API_VERSION = 'v3.2'
-  API_URI = None
 
 DCM_CHUNK_SIZE = int(200 * 1024000 * BUFFER_SCALE) # 200MB minimum recommended by docs * scale in config.py
 DCM_CONVERSION_SIZE = 1000
@@ -93,19 +80,6 @@ def get_profile_for_api(auth, account_id):
   else: raise Exception('Add your user profile to DCM account %s.' % account_id)
     
 
-def get_profile_id(auth, account_id):
-  """Legacy function replaced by get_profile_for_api(...).
-  """
-  return get_profile_for_api(auth, account_id)[1]
-
-
-def account_profile_kwargs(auth, account, **kwargs):
-  account_id, ignore, profile_id = parse_account(auth, account)
-  if INTERNAL_MODE: kwargs['accountId']= account_id
-  kwargs['profileId']= profile_id
-  return kwargs
-
-
 def get_account_name(auth, account):
   """ Return the name of a DCM account given the account ID.
 
@@ -121,9 +95,9 @@ def get_account_name(auth, account):
 
   """
 
-  account_id, advertiser_ids, profile_id = parse_account(auth, account)
-  service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
-  response = API_Retry(service.accounts().get(id=account_id, profileId=profile_id))
+  account_id, advertiser_ids = parse_account(auth, account)
+  is_superuser, profile_id = get_profile_for_api(auth, account_id)
+  response = API_DCM(auth, internal=is_superuser).accounts().get(id=account_id, profileId=profile_id).execute()
   return response["name"]
 
 
@@ -163,10 +137,7 @@ def parse_account(auth, account):
   if network_id is not None: network_id = int(network_id)
   if advertiser_ids is not None: advertiser_ids = [int(advertiser_id.strip()) for advertiser_id in advertiser_ids.split(',')]
 
-  # if no profile, fetch a default one ( returns as int )
-  if profile_id is None: profile_id = get_profile_id(auth, network_id)
-
-  return network_id, advertiser_ids, profile_id
+  return network_id, advertiser_ids
 
 
 # DEPRECATED DO NOT USE
@@ -241,25 +212,22 @@ def report_get(auth, account, report_id = None, name=None):
 
   """
 
-  account_id, advertiser_ids, profile_id = parse_account(auth, account)
-  service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
   report = None
 
+  account_id, advertiser_ids = parse_account(auth, account)
+  is_superuser, profile_id = get_profile_for_api(auth, account_id)
+  kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+
   if name:
-    next_page = None
-    while next_page != '' and report is None:
-      if INTERNAL_MODE: response = API_Retry(service.reports().list(accountId=account_id, profileId=profile_id, pageToken=next_page))
-      else: response = API_Retry(service.reports().list(profileId=profile_id, pageToken=next_page))
-      next_page = response['nextPageToken']
-      for r in response['items']:
-        if r['name'] == name: 
-          report = r
-          break
+    for r in API_DCM(auth, internal=is_superuser).reports().list(**kwargs).execute():
+      if r['name'] == name:
+        report = r
+        break
+
   elif report_id:
-    if INTERNAL_MODE: response = API_Retry(service.reports().get(accountId=account_id, profileId=profile_id, reportId=report_id))
-    else: response = API_Retry(service.reports().get(profileId=profile_id, reportId=report_id))
-    #pprint.PrettyPrinter().pprint(response)
-    
+    kwargs['reportId'] = report_id
+    report = API_DCM(auth, internal=is_superuser).reports().get(**kwargs).execute()
+
   return report
 
 
@@ -279,12 +247,13 @@ def report_delete(auth, account, report_id = None, name=None):
 
   """
 
-  account_id, advertiser_ids, profile_id = parse_account(auth, account)
   report = report_get(auth, account, report_id, name)
   if report:
-    service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
-    if INTERNAL_MODE: API_Retry(service.reports().delete(accountId=account_id, profileId=profile_id, reportId=report['id']))
-    else: API_Retry(service.reports().delete(profileId=profile_id, reportId=report['id']))
+    account_id, advertiser_ids = parse_account(auth, account)
+    is_superuser, profile_id = get_profile_for_api(auth, account_id)
+    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    kwargs['reportId'] = report['id']
+    API_DCM(auth, internal=is_superuser).reports().delete(**kwargs).execute()
   else:
     if project.verbose: print 'DCM DELETE: No Report'
 
@@ -312,8 +281,8 @@ def report_build(auth, account, body):
   report = report_get(auth, account, name=body['name'])
 
   if report is None:
-    account_id, advertiser_ids, profile_id = parse_account(auth, account)
-    service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
+    account_id, advertiser_ids = parse_account(auth, account)
+    is_superuser, profile_id = get_profile_for_api(auth, account_id)
 
     # add the account id to the body
     body['accountId'] = account_id
@@ -328,15 +297,27 @@ def report_build(auth, account, body):
          'matchType':'EXACT'
        } for advertiser_id in advertiser_ids]
 
+    # add default daily schedule if it does not exist ( convenience )
+    if "schedule" not in body:
+      body['schedule'] = {
+        'active':True,
+        'repeats':'DAILY',
+        'every': 1,
+        'startDate':str(date.today()),
+        'expirationDate':str((date.today() + timedelta(days=365))),
+      }
+
     #pprint.PrettyPrinter().pprint(body)
 
     # create the report
-    if INTERNAL_MODE: report = API_Retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))
-    else: report = API_Retry(service.reports().insert(profileId=profile_id, body=body))
+    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    kwargs['body'] = body
+    report = API_DCM(auth, internal=is_superuser).reports().insert(**kwargs).execute()
 
     # run the report
-    if INTERNAL_MODE: API_Retry(service.reports().run(accountId=account_id, profileId=profile_id, reportId=report['id']))
-    else: API_Retry(service.reports().run(profileId=profile_id, reportId=report['id']))
+    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    kwargs['reportId'] = report['id']
+    API_DCM(auth, internal=is_superuser).reports().run(**kwargs).execute()
 
   else:
     if project.verbose: print 'DCM Report Exists:', body['name']
@@ -346,11 +327,10 @@ def report_build(auth, account, body):
 
 # DEPRECATED DO NOT USE
 def report_create(auth, account, name, config):
-  account_id, advertiser_ids, profile_id = parse_account(auth, account)
+  account_id, advertiser_ids = parse_account(auth, account)
   report = report_get(auth, account_id, name=name)
 
   if report is None:
-    service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
 
     body = { 
       'kind':'dfareporting#report',
@@ -385,12 +365,14 @@ def report_create(auth, account, name, config):
     #pprint.PrettyPrinter().pprint(body)
 
     # create the report
-    if INTERNAL_MODE: report = API_Retry(service.reports().insert(accountId=account_id, profileId=profile_id, body=body))
-    else: report = API_Retry(service.reports().insert(profileId=profile_id, body=body))
+    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    kwargs['body'] = body
+    report = API_DCM(auth, internal=is_superuser).reports().insert(**kwargs).execute()
 
     # run the report
-    if INTERNAL_MODE: API_Retry(service.reports().run(accountId=account_id, profileId=profile_id, reportId=report['id']))
-    else: API_Retry(service.reports().run(profileId=profile_id, reportId=report['id']))
+    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    kwargs['reportId'] = report['id']
+    API_DCM(auth, internal=is_superuser).reports().insert(**kwargs).execute()
 
   return report
 
@@ -486,7 +468,7 @@ def report_file(auth, account, report_id=None, name=None, timeout=60, chunksize=
 
   """
 
-  account_id, advertiser_id, profile_id = parse_account(auth, account)
+  account_id, advertiser_id = parse_account(auth, account)
   file_json = report_fetch(auth, account, report_id, name, timeout)
 
   if file_json == False:
@@ -494,16 +476,15 @@ def report_file(auth, account, report_id=None, name=None, timeout=60, chunksize=
   elif file_json == True:
     return 'report_running.csv', None
   else:
-    service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
     filename = '%s_%s.csv' % (file_json['fileName'], file_json['dateRange']['endDate'].replace('-', ''))
 
     # streaming
     if chunksize:
-      return filename, media_download(service.files().get_media(reportId=file_json['reportId'], fileId=file_json['id']), chunksize)
+      return filename, media_download(API_DCM(auth).files().get_media(reportId=file_json['reportId'], fileId=file_json['id']).execute(False), chunksize)
 
     # single object
     else:
-      return filename, StringIO(API_Retry(service.files().get_media(reportId=file_json['reportId'], fileId=file_json['id'])))
+      return filename, StringIO(API_DCM(auth).files().get_media(reportId=file_json['reportId'], fileId=file_json['id']).execute(False), chunksize)
 
        
 def report_list(auth, account):
@@ -520,15 +501,11 @@ def report_list(auth, account):
 
   """
 
-  account_id, advertiser_id, profile_id = parse_account(auth, account)
-  service = get_service('dfareporting', API_VERSION, auth, uri_file=API_URI)
-  next_page = None
-  while next_page != '':
-    if INTERNAL_MODE: response = API_Retry(service.reports().list(accountId=account_id, profileId=profile_id, pageToken=next_page))
-    else: API_Retry(service.reports().list(profileId=profile_id, pageToken=next_page))
-    next_page = response['nextPageToken']
-    for report in response['items']:
-      yield report
+  account_id, advertiser_id = parse_account(auth, account)
+  is_superuser, profile_id = get_profile_for_api(auth, account_id)
+  kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+  for report in API_DCM(auth, internal=is_superuser).reports().list(**kwargs).execute():
+    yield report
 
 
 def report_files(auth, account, report_id):
@@ -546,15 +523,12 @@ def report_files(auth, account, report_id):
 
   """
 
-  account_id, advertiser_id, profile_id = parse_account(auth, account)
-  service = get_service('dfareporting', API_VERSION, auth)
-  next_page = None
-  while next_page != '':
-    if INTERNAL_MODE: response = API_Retry(service.reports().files().list(accountId=account_id, profileId=profile_id, reportId=report_id, pageToken=next_page))
-    else: response = API_Retry(service.reports().files().list(profileId=profile_id, reportId=report_id, pageToken=next_page))
-    next_page = response['nextPageToken']
-    for report in response['items']:
-      yield report
+  account_id, advertiser_id = parse_account(auth, account)
+  is_superuser, profile_id = get_profile_for_api(auth, account_id)
+  kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+  kwargs['reportId'] = report_id
+  for report_file in API_DCM(auth, internal=is_superuser).reports().files().list(**kwargs).execute():
+    yield report_file
 
 
 def report_to_rows(report):
@@ -716,12 +690,13 @@ def conversions_upload(auth, account, floodlight_activity_id, conversion_type, c
 
   """
 
-  account_id, advertiser_id, profile_id = parse_account(auth, account)
+  account_id, advertiser_id = parse_account(auth, account)
+  is_superuser, profile_id = get_profile_for_api(auth, account_id)
 
-  service = get_service('dfareporting', API_VERSION, auth)
-  if INTERNAL_MODE: response = API_Retry(service.floodlightActivities().get(accountId=account_id, profileId=profile_id, id=floodlight_activity_id))
-  else: response = API_Retry(service.floodlightActivities().get(profileId=profile_id, id=floodlight_activity_id))
-  
+  kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+  kwargs['id'] = floodlight_activity_id
+  response = API_DCM(auth, internal=is_superuser).floodlightActivities().get(**kwargs).execute()
+
   # upload in batch sizes of DCM_CONVERSION_SIZE
   row_count = 0
   row_buffer = []
@@ -746,12 +721,11 @@ def conversions_upload(auth, account, floodlight_activity_id, conversion_type, c
 
       if encryption_entity: body['encryptionInfo'] = encryption_entity
 
-      if update:
-        if INTERNAL_MODE: results = API_Retry(service.conversions().batchupdate(accountId=account_id, profileId=profile_id, body=body))
-        else: results = API_Retry(service.conversions().batchupdate(profileId=profile_id, body=body))
-      else:
-        if INTERNAL_MODE: results = API_Retry(service.conversions().batchinsert(accountId=account_id, profileId=profile_id, body=body))
-        else: results = API_Retry(service.conversions().batchinsert(profileId=profile_id, body=body))
+      kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+      kwargs['body'] = body
+
+      if update: results = API_DCM(auth, internal=is_superuser).conversions().batchupdate(**kwargs).execute()
+      else: results = API_DCM(auth, internal=is_superuser).conversions().batchinsert(**kwargs).execute()
 
       # stream back satus
       for status in results['status']: yield status 

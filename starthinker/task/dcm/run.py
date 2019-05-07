@@ -51,12 +51,12 @@ def dcm():
 
   # check if report is to be deleted
   if project.task.get('delete', False):
-    if project.verbose: print 'DCM DELETE'
+    if project.verbose: print 'DCM DELETE', project.task['report'].get('name', None) or project.task['report'].get('body', {}).get('name', None) or project.task['report'].get('report_id', None)
     report_delete(
       project.task['auth'],
       project.task['report']['account'],
       project.task['report'].get('report_id', None),
-      project.task['report'].get('name', None)
+      project.task['report'].get('name', None) or project.task['report'].get('body', {}).get('name', None),
     )
 
   # check if report is to be created - DEPRECATED

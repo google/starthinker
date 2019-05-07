@@ -32,7 +32,6 @@ from google.cloud import bigquery, storage
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery_cache.base import Cache
 
-from starthinker.config import INTERNAL_MODE
 from starthinker.util.project import project
 from starthinker.util.auth.google_bucket_auth import BucketCredentials
 
@@ -61,7 +60,7 @@ SCOPES = [
   'https://www.googleapis.com/auth/pubsub',
 ]
 
-if INTERNAL_MODE: SCOPES.append('https://www.googleapis.com/auth/snippets.readonly')
+#if INTERNAL_MODE: SCOPES.append('https://www.googleapis.com/auth/snippets.readonly')
 
 SERVICE_CACHE = {}
 

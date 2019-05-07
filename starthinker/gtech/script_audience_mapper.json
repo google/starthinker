@@ -51,40 +51,19 @@
       "auth":"service",
       "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "description":"Place where tables will be created in BigQuery." }}
     }},
-    { "sheets":{
-      "description":"DBM Partner and Advertiser input sheet template.",
-      "hour":[3],
-      "auth":"user",
-      "template":{
-        "sheet":"https://docs.google.com/spreadsheets/d/1WrytP5Jxwi4I-53i-1OvdTVsXA0zXsge1z0N9yasCZc/edit?usp=sharing",
-        "tab":"Accounts"
-      },
-      "sheet":{"field":{ "name":"sheet_url", "kind":"string", "order":3, "default":"", "description":"URL to sheet where DBM accounts will be read from." }},
-      "tab":"Audience Mapper DBM Accounts"
-    }},
     { "dbm":{
       "hour":[4], 
       "auth":"user",
       "report":{
-        "name":{"field":{ "name":"report", "kind":"string", "order":2, "prefix":"Audience_Mapper_", "description":"Name of report in DBM, should be unique." }},
-        "timezone":{"field":{ "name":"timezone", "kind":"timezone", "description":"Timezone in 'America/Los_Angeles' format." }},
+        "name":{"field":{ "name":"recipe_name", "kind":"string", "order":2, "prefix":"Audience_Mapper_", "description":"Name of report in DBM, should be unique." }},
+        "timezone":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone in 'America/Los_Angeles' format." }},
         "type":"TYPE_CROSS_PARTNER",
         "data_range":"LAST_7_DAYS",
         "partners": {
-          "single_cell":true,
-          "sheet":{
-            "url":{ "field":{ "name":"sheet_url", "kind":"string", "order":3, "default":"", "description":"URL to sheet where DBM accounts will be read from." }},
-            "tab":"Audience Mapper DBM Accounts",
-            "range":"A2:A"
-          }
+          "values":{"field":{ "name":"partners", "kind":"integer_list", "order":3, "default":"", "description":"Comma separated DBM partner ids." }}
         },
         "advertisers": {
-          "single_cell":true,
-          "sheet":{
-            "url":{ "field":{ "name":"sheet_url", "kind":"string", "order":3, "default":"", "description":"URL to sheet where DBM accounts will be read from." }},
-            "tab":"Audience Mapper",
-            "range":"B2:B"
-          }
+          "values":{"field":{ "name":"advertisers", "kind":"integer_list", "order":4, "default":"", "description":"Comma separated DBM advertiser ids." }}
         },
         "dimensions":[
           "FILTER_PARTNER",
@@ -109,7 +88,7 @@
       "hour":[6], 
       "auth":"user",
       "report":{
-        "name":{"field":{ "name":"report", "kind":"string", "order":2, "prefix":"Audience_Mapper_", "description":"Name of report in DBM, should be unique." }},
+        "name":{"field":{ "name":"recipe_name", "kind":"string", "order":2, "prefix":"Audience_Mapper_", "description":"Name of report in DBM, should be unique." }},
         "timeout":10
       },
       "out":{
@@ -151,15 +130,15 @@
     {"mapping":{
       "hour":[6, 8, 10, 12, 14, 16, 18, 20, 22],
       "auth":"user",
-      "sheet":{"field":{ "name":"sheet_url", "kind":"string", "order":3, "default":"" }},
+      "sheet":{"field":{ "name":"sheet_url", "kind":"string", "order":5, "default":"", "description":"Used to map audiences to categories." }},
       "tab":"Audience Mapper Column Map",
       "in":{
-        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"" }},
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Place where data will be writen." }},
         "table":"Audience_Mapper_DBM_Report"
       },
       "out":{
         "auth":"service",
-        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"" }},
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Place where data will be writen." }},
         "view":"Audience_Mapper_Dashboard"
       }
     }}

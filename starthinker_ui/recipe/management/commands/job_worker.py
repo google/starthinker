@@ -64,7 +64,6 @@ class Workers():
 
   def run(self, job, force=False):
    
-
     self.jobs.append(job)
 
     job['recipe']['setup'].setdefault('timeout_seconds', self.timeout_seconds)
@@ -213,7 +212,7 @@ class Command(BaseCommand):
       '--timeout',
       action='store',
       dest='timeout',
-      default=60 * 60 * 8, # 8 hours
+      default=60 * 60 * 12, # 12 hours
       type=int,
       help='Default seconds to allow a task to run before timing it out, also controlled by recipe.',
     )

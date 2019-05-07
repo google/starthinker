@@ -55,41 +55,20 @@
       "auth":"service",
       "dataset":{"field":{ "name":"dataset", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
     }},
-    { "sheets":{
-      "description":"DBM Partner and Advertiser input sheet template.",
-      "hour":[3], 
-      "auth":"user",
-      "template":{
-        "sheet":"https://docs.google.com/spreadsheets/d/1WrytP5Jxwi4I-53i-1OvdTVsXA0zXsge1z0N9yasCZc/edit?usp=sharing",
-        "tab":"Accounts"
-      },
-      "sheet":{"field":{ "name":"sheet_url", "kind":"string", "order":1, "default":"", "description":"URL to sheet where DBM accounts will be read from." }},
-      "tab":"Deal Finder"
-    }},
     { "dbm":{
       "description":"Create a DBM report.",
       "hour":[3], 
       "auth":"user",
       "report":{
-        "name":{"field":{ "name":"report", "kind":"string", "prefix":"Deal_Finder_", "description":"Name of report in DBM, should be unique." }}, 
-        "timezone":{"field":{ "name":"timezone", "kind":"timezone", "description":"Timezone in 'America/Los_Angeles' format.", "default":"America/Los_Angeles" }},
+        "name":{"field":{ "name":"recipe_name", "kind":"string", "prefix":"Deal_Finder_", "description":"Name of report in DBM, should be unique." }}, 
+        "timezone":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Los_Angeles" }},
         "type":"TYPE_CROSS_PARTNER",
         "data_range":"LAST_30_DAYS",
         "partners": { 
-          "single_cell":true,
-          "sheet":{
-            "url":{ "field":{ "name":"sheet_url", "kind":"string", "order":1, "default":"", "description":"URL to sheet where DBM accounts will be read from." }},
-            "tab":"Deal Finder",
-            "range":"A2:A"
-          }
+          "values":{"field":{ "name":"partners", "kind":"integer_list", "order":1, "default":"", "description":"Comma separated DBM partner ids." }}
         },
         "advertisers": { 
-          "single_cell":true,
-          "sheet":{
-            "url":{ "field":{ "name":"sheet_url", "kind":"string", "order":1, "default":"", "description":"URL to sheet where DBM accounts will be read from." }},
-            "tab":"Deal Finder",
-            "range":"B2:B"
-          }
+          "values":{"field":{ "name":"advertisers", "kind":"integer_list", "order":2, "default":"", "description":"Comma separated DBM advertiser ids." }}
         },
         "dimensions":[
           "FILTER_PARTNER",
@@ -117,7 +96,7 @@
       "hour":[4], 
       "auth":"user",
       "report":{
-        "name":{"field":{ "name":"report", "kind":"string", "prefix":"Deal_Finder_", "description":"Name of report in DBM, should be unique." }},
+        "name":{"field":{ "name":"recipe_name", "kind":"string", "prefix":"Deal_Finder_", "description":"Name of report in DBM, should be unique." }},
         "timeout":10
       },
       "out":{

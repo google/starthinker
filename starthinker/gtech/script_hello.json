@@ -5,7 +5,7 @@
     "open":true,
     "icon":"notifications",
     "product":"gTech",
-    "title":"Test Script",
+    "title":"Say Hello",
     "description":"Recipe template for say hello.",
     "instructions":[
       "This should be called for testing only."

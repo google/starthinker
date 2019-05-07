@@ -155,7 +155,6 @@ Type=simple
 Restart=always
 Environment=STARTHINKER_SCALE=$STARTHINKER_SCALE
 Environment=STARTHINKER_DEVELOPMENT=$STARTHINKER_DEVELOPMENT
-Environment=STARTHINKER_INTERNAL=$STARTHINKER_INTERNAL
 Environment=STARTHINKER_PROJECT=$STARTHINKER_PROJECT
 Environment=STARTHINKER_ZONE=$STARTHINKER_ZONE
 Environment=STARTHINKER_CLIENT_WEB=$STARTHINKER_CLIENT_WEB
@@ -223,6 +222,9 @@ deploy_worker() {
     instance_create "$instance_name" "$instance_Type"
     instance_start "$instance_name"
 
+    instance_command $copy_INSTANCE "sudo systemctl stop starthinker"
+    instance_command $copy_INSTANCE "sudo systemctl stop starthinker_proxy"
+
     instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_assets" "starthinker_assets/" --recurse
     instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_ui" "starthinker_ui/" --recurse
     instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker" "starthinker/" --recurse
@@ -250,8 +252,8 @@ setup_worker() {
   echo "Pick worker size to deploy.  Will overwrite existing workers."
   echo "Test - 1 x f1-micro > (1 worker x 1 job) = 1 job at a time for testing."
   echo "Small - 2 x n1-highmem-2 > (2 workers x 2 jobs) = 4 jobs per hour."
-  echo "Medium - 4 x n1-highmem-4 > (4 workers x 5 jobs) = 20 jobs per hour."
-  echo "Large - 5 x n1-highmem-8 > (5 workers x 10 jobs) = 50 jobs per hour."
+  echo "Medium - 4 x n1-highmem-4 > (4 workers x 4 jobs) = 16 jobs per hour."
+  echo "Large - 5 x n1-highmem-8 > (5 workers x 8 jobs) = 40 jobs per hour."
   echo ""
   echo "You will have to manually shutdown and delete any unused workers if you change configuration."
   echo " - https://pantheon.corp.google.com/compute/instances?project=$STARTHINKER_PROJECT"
@@ -274,8 +276,8 @@ setup_worker() {
       case $REPLY in
         1) deploy_worker "test" "f1-micro" 1 1; break ;;
         2) deploy_worker "small" "n1-highmem-2" 2 2; break ;;
-        3) deploy_worker "medium" "n1-highmem-4" 4 5; break ;;
-        4) deploy_worker "large" "n1-highmem-8" 5 10; break ;;
+        3) deploy_worker "medium" "n1-highmem-4" 4 4; break ;;
+        4) deploy_worker "large" "n1-highmem-8" 5 8; break ;;
         5) worker_done=1; break;;
         *) echo "What's that?" ;;
       esac

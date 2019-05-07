@@ -360,15 +360,18 @@ class Recipe(models.Model):
     status = self.get_status()
 
     error = False
+    timeout = False
     done = 0
     for task in status['tasks']:
       task['utc'] = datetime.strptime(task['utc'].split('.', 1)[0], "%Y-%m-%d %H:%M:%S")
       task['ltc'] = utc_to_timezone(task['utc'], self.timezone)
       task['ago'] = time_ago(task['utc'])
   
-      if status.get('utc', task['utc']) <= task['utc']: status['utc'] = task['utc']
-      if task['event'] not in ('JOB_PENDING', 'JOB_START', 'JOB_END'): error = True
       if task['done']: done += 1
+      if status.get('utc', task['utc']) <= task['utc']: status['utc'] = task['utc']
+
+      if task['event'] == 'JOB_TIMEOUT': timeout = True
+      elif task['event'] not in ('JOB_PENDING', 'JOB_START', 'JOB_END'): error = True
   
     if 'utc' not in status: status['utc'] = datetime.utcnow()
     status['utl'] = utc_to_timezone(status['utc'], self.timezone)
@@ -376,7 +379,9 @@ class Recipe(models.Model):
     status['percent'] = ( done * 100 ) / ( len(status['tasks']) or 1 )
     status['uid'] = self.uid()
   
-    if error:
+    if timeout:
+      status['status'] = 'TIMEOUT'
+    elif error:
       status['status'] = 'ERROR'
     elif self.job_done:
       status['status'] = 'FINISHED'

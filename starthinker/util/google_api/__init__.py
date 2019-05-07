@@ -35,7 +35,7 @@ from time import sleep
 from googleapiclient.errors import HttpError
 from googleapiclient.discovery import Resource
 
-from starthinker.config import UI_ROOT, INTERNAL_MODE
+from starthinker.config import UI_ROOT
 from starthinker.util.auth import get_service
 from starthinker.util.project import project
 
@@ -110,9 +110,9 @@ def API_Iterator(function, kwargs, results = None):
      
       For example if calling the DCM list placement API:
      
-        https://developers.google.com/doubleclick-advertisers/v3.2/placements/list
+        https://developers.google.com/doubleclick-advertisers/v3.3/placements/list
     
-        function = get_service('dfareporting', 'v3.2', 'user').placements().list
+        function = get_service('dfareporting', 'v3.3', 'user').placements().list
         kwargs = { 'profile_id':1234, 'archived':False } 
         for placement in API_Iterator(function, kwargs):
           print placement 
@@ -306,21 +306,21 @@ def API_Sheets(auth, iterate=False):
   return API(configuration)
 
 
-def API_DCM(auth, iterate=False, internal=INTERNAL_MODE):
+def API_DCM(auth, iterate=False, internal=False):
   """DCM helper configuration for Google API. Defines agreed upon version.
   """
 
   configuration = {
     'api':'dfareporting',
-    'version':'v3.2',
+    'version':'v3.3',
     'auth':auth,
     'iterate':iterate
   }
 
   if internal:
-    # fetch discovery uri using: wget https://www.googleapis.com/discovery/v1/apis/dfareporting/internalv3.2/rest > util/dcm/internalv32_uri.json
-    configuration['version'] = 'internalv3.2'
-    configuration['uri'] = '%s/starthinker/util/dcm/internalv32_uri.json' % UI_ROOT
+    # https://cs.corp.google.com/piper///depot/google3/apiserving/discoverydata/dfareporting/dfareporting.internalv3_3.rest.json?g=0
+    configuration['version'] = 'internalv3.3'
+    configuration['uri'] = '%s/starthinker/util/dcm/internalv33_uri.json' % UI_ROOT
 
   return API(configuration)
 
