@@ -36,12 +36,14 @@ from starthinker_ui.recipe.models import Recipe
 def solutions(request):
   scripts = [s for s in Script.get_scripts() if s.is_solution()]
   categories = sorted(set(chain.from_iterable([s.get_categories() for s in scripts])))
-  return render(request, "website/solutions.html", { 'scripts':scripts, 'categories':categories })
+  if request: return render(request, "website/solutions.html", { 'scripts':scripts, 'categories':categories })
+  else: return render_to_string("website/solutions.html", { 'scripts':scripts, 'categories':categories, 'external':True })
 
 
 def solution(request, tag):
   script = Script(tag)
-  return render(request, "website/solution.html", { 'script':script })
+  if request: return render(request, "website/solution.html", { 'script':script })
+  else: return render_to_string('website/solution.html', { 'script':script, "external":True })
 
 
 # also called by website/management/commands/code.py without request to render open source doc
@@ -56,10 +58,8 @@ def code(request):
     
   products = sorted([{ 'name':k, 'scripts':v } for k,v in products.items()], key=lambda p: p['name'])
 
-  if request:
-    return render(request, "website/code.html", { 'products':products })
-  else:
-    return render_to_string('website/code.html', { 'products':products })
+  if request: return render(request, "website/code.html", { 'products':products })
+  else: return render_to_string('website/code.html', { 'products':products, "external":True })
 
 
 @permission_admin()

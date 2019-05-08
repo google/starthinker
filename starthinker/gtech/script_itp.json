@@ -8,6 +8,7 @@
     "description":"Visualizes a client's Campaign Manager and DV360 activity by browser and device",
     "image":"https://storage.cloud.google.com/starthinker-ui/itp.png",
     "sample":"https://datastudio.google.com/c/reporting/1ftGTV0jaHKwGemhSgKOcoesuWzf4Jcwd/page/E3bj",
+    "documentation":"https://docs.google.com/document/d/11NlVWzbw6UeSUVUeNuERZGU9FYySWcRbu2Fg6zJ4O-A/edit",
     "requirements":{
       "dbm":true,
       "dcm":true,

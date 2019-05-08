@@ -111,6 +111,9 @@ class Script:
   def get_sample(self):
     return self.script.get('script', {}).get('sample', None)
 
+  def get_documentation(self):
+    return self.script.get('script', {}).get('documentation', None)
+
   def get_open_source(self):
     if self.script.get('script', {}).get('license', '') == 'Apache License, Version 2.0':
       return 'https://github.com/google/starthinker/blob/master/' + self.script['path'].replace(UI_ROOT, '', 1)

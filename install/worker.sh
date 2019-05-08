@@ -125,7 +125,7 @@ User=root
 EOL
 
   sudo systemctl daemon-reload
-  sudo systemctl start starthinker_proxy
+  sudo systemctl restart starthinker_proxy
   sudo systemctl enable starthinker_proxy
 
   echo ""
@@ -178,7 +178,7 @@ WantedBy=multi-user.target
 EOL
 
   sudo systemctl daemon-reload
-  sudo systemctl start starthinker
+  sudo systemctl restart starthinker
   sudo systemctl enable starthinker
 
   echo ""
@@ -221,6 +221,8 @@ deploy_worker() {
 
     instance_create "$instance_name" "$instance_Type"
     instance_start "$instance_name"
+
+    sleep 1m
 
     instance_command $copy_INSTANCE "sudo systemctl stop starthinker"
     instance_command $copy_INSTANCE "sudo systemctl stop starthinker_proxy"

@@ -315,19 +315,19 @@ class Recipe(models.Model):
           task['stderr'] = task_prior['stderr']
           task['done'] = task_prior['done']
 
+    # check if done ( maybe recipe changed )
+    done = all([task['done'] for task in status['tasks']])
+    if self.job_done != done:
+      Recipe.objects.filter(pk=self.pk).update(job_done=done)
+
     return status
 
 
   def get_task(self):
     status = self.get_status()
 
-    # check if done ( maybe recipe changed )
-    done = all([task['done'] for task in status['tasks']])
-    if self.job_done != done:
-      Recipe.objects.filter(pk=self.pk).update(job_done=done)
-
     # if not done return next task prior or equal to current time zone hour
-    if not done:
+    if not self.job_done:
       hour_tz = utc_to_timezone(datetime.utcnow(), self.timezone).hour
       for task in status['tasks']:
         if not task['done'] and task['hour'] <= hour_tz:

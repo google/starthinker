@@ -16,25 +16,38 @@
 #
 ###########################################################################
 
+import os
+
 from django.core.management.base import BaseCommand, CommandError
 
-from website.views import code
+from starthinker_ui.recipe.scripts import Script
+from website.views import code, solutions, solution
+
 
 class Command(BaseCommand):
-  help = 'Generate Code HTML'
+  help = 'Generate HTML For GitHub'
 
   def add_arguments(self, parser):
     parser.add_argument(
-      '--filename',
+      '--path',
       action='store',
-      dest='filename',
+      dest='path',
       required=True,
-      help='HTML file to create.',
+      help='Open Source Directory',
     )
 
   def handle(self, *args, **kwargs):
     
-    print 'Writing:', kwargs['filename']
+    print 'Writing:', kwargs['path']
 
-    with open(kwargs['filename'], 'w') as index_file:
-      index_file.write(code(request=None))
+    with open(kwargs['path'] + '/docs/index.html', 'w') as index_file:
+      index_file.write(solutions(request=None))
+
+    with open(kwargs['path'] + '/docs/code.html', 'w') as code_file:
+      code_file.write(code(request=None))
+
+    for s in Script.get_scripts():
+      if s.is_solution() and s.get_open_source():
+        os.mkdir('%s/docs/%s/' % (kwargs['path'], s.get_tag()))
+        with open('%s/docs/%s/index.html' % (kwargs['path'], s.get_tag()), 'w') as solution_file:
+          solution_file.write(solution(request=None, tag=s.get_tag()))
