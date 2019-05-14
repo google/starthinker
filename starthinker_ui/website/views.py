@@ -36,14 +36,21 @@ from starthinker_ui.recipe.models import Recipe
 def solutions(request):
   scripts = [s for s in Script.get_scripts() if s.is_solution()]
   categories = sorted(set(chain.from_iterable([s.get_categories() for s in scripts])))
-  if request: return render(request, "website/solutions.html", { 'scripts':scripts, 'categories':categories })
-  else: return render_to_string("website/solutions.html", { 'scripts':scripts, 'categories':categories, 'external':True })
+  if request: 
+    return render(request, "website/solutions.html", { 'scripts':scripts, 'categories':categories })
+  else: 
+    # for open source reduce scripts and categories
+    scripts = [s for s in scripts if s.get_open_source()]
+    categories = sorted(set(chain.from_iterable([s.get_categories() for s in scripts])))
+    return render_to_string("website/solutions.html", { 'scripts':scripts, 'categories':categories, 'external':True })
 
 
 def solution(request, tag):
   script = Script(tag)
-  if request: return render(request, "website/solution.html", { 'script':script })
-  else: return render_to_string('website/solution.html', { 'script':script, "external":True })
+  if request: 
+    return render(request, "website/solution.html", { 'script':script })
+  else: 
+    return render_to_string('website/solution.html', { 'script':script, "external":True })
 
 
 # also called by website/management/commands/code.py without request to render open source doc
@@ -58,12 +65,13 @@ def code(request):
     
   products = sorted([{ 'name':k, 'scripts':v } for k,v in products.items()], key=lambda p: p['name'])
 
-  if request: return render(request, "website/code.html", { 'products':products })
-  else: return render_to_string('website/code.html', { 'products':products, "external":True })
+  if request:
+    return render(request, "website/code.html", { 'products':products })
+  else:
+    return render_to_string('website/code.html', { 'products':products, "external":True })
 
 
-@permission_admin()
-def stats(request):
+def get_metrics():
 
   metrics = {
     'account':{} , #'account':{ 'recipe':'', 'script':'', 'author':'' }
@@ -105,8 +113,6 @@ def stats(request):
           metrics['author'][author]['recipe'].add(recipe.pk)
           metrics['author'][author]['script'].add(s['tag'])
 
-    #for recipe in storage_recipes(account):
-
   # compute totals
   for dimension in totals.keys():
     totals[dimension] = len(totals[dimension])
@@ -118,5 +124,9 @@ def stats(request):
         row['%s_percent' % dimension] = (row[dimension] * 100) / (totals[dimension] or 1)
         row[metric_key] = row_key
     metrics[metric_key] = metrics[metric_key].values()
+
+  return metrics
        
-  return render(request, "website/stats.html", { 'metrics':metrics })
+@permission_admin()
+def stats(request):
+  return render(request, "website/stats.html", { 'metrics':get_metrics() })

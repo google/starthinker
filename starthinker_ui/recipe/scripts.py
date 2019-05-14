@@ -78,6 +78,12 @@ class Script:
   def get_link(self):
     return '%s/solution/%s/' % (settings.CONST_URL, self.tag, )
 
+  def get_link_client(self):
+    if self.script.get('script', {}).get('license', '') == 'Apache License, Version 2.0':
+      return 'https://google.github.io/starthinker/solution/%s/' % self.tag
+    else:
+      return ''
+
   def get_tag(self):
     return self.tag
 

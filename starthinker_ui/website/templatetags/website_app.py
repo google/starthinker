@@ -16,12 +16,15 @@
 #
 ###########################################################################
 
+import re
 import json
+import hashlib
 
 from urllib import quote_plus
 from django import template
 from django.utils.html import mark_safe
 from django.forms.widgets import CheckboxInput
+from django.utils.encoding import force_unicode
 
 from starthinker_ui.recipe.forms_json import json_get_fields as json_get_fields_imported
 
@@ -79,7 +82,38 @@ def multiply(value, arg):
 def json_get_fields(value):
   return json_get_fields_imported(value)
 
-@register.filter
-def day_or_night(value):
-  return mark_safe('<i class="small material-icons-outlined" style="vertical-align: middle;">%s</i>&nbsp;&nbsp;' % ('wb_sunny' if 6 < value < 18 else 'brightness_3'))
 
+@register.filter
+def task_status_icon(status):
+
+  icon = 'hourglass_empty'
+
+  if status == 'TIMEOUT': icon = 'alarm_off'
+  elif status == 'ERROR': icon = 'error'
+  elif status == 'FINISHED': icon = 'done_outline'
+  elif status == 'RUNNING': icon = 'directions_walk'
+  elif status == 'PAUSED': icon = 'pause_circle'
+  elif status == 'QUEUED': icon = 'traffic'
+
+  return mark_safe('<i class="small material-icons-outlined" style="vertical-align: middle;">%s</i>&nbsp;&nbsp;' % icon)
+
+
+@register.filter
+def calvin_id(name):
+  return (5*10**10) + int(hashlib.sha256(name.encode('utf-8')).hexdigest(), 16) % 10**9 # 5 + 9 digits
+
+
+class GaplessNode(template.Node):
+
+  def __init__(self, nodelist):
+    self.nodelist = nodelist
+
+  def render(self, context):
+    return re.sub(r'\n\s*\n+', '\n', force_unicode(self.nodelist.render(context).strip()))
+
+
+@register.tag
+def gapless(parser, token):
+  nodelist = parser.parse(('endgapless',))
+  parser.delete_first_token()
+  return GaplessNode(nodelist)

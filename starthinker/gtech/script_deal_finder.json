@@ -13,7 +13,7 @@
       "dbm":true, 
       "dcm":false, 
       "ds":false, 
-      "trix":false,
+      "sheets":false,
       "datastudio":true,
       "bigquery":true
     },

@@ -39,12 +39,8 @@ start_cron() {
 
   ( echo "" ) | crontab -
 
-  #( crontab -l; echo "55 4 * * 3 ${STARTHINKER_ROOT}/install/cron.sh python starthinker_ui/manage.py account_status" ) | crontab -
-
   if [ "${STARTHINKER_CRON}" ]; then
-    #( crontab -l; echo "20 * * * * ${STARTHINKER_ROOT}/install/cron.sh python starthinker_ui/manage.py recipe_to_json" ) | crontab -
-    #( crontab -l; echo "20 * * * * ${STARTHINKER_ROOT}/install/cron.sh python starthinker_ui/manage.py storage_to_json" ) | crontab -
-    (crontab -l ; echo "30 * * * * ${STARTHINKER_ROOT}/install/cron.sh python starthinker/cron/run.py ${STARTHINKER_CRON} run" ) | crontab -
+    (crontab -l ; echo "30 * * * * ${STARTHINKER_ROOT}/install/cron_recipe.sh ${STARTHINKER_ROOT}" ) | crontab -
   fi
 
   echo "Done"

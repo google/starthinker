@@ -32,8 +32,9 @@ import re
 import argparse
 import subprocess
 
-from starthinker.config import UI_ROOT, UI_CLIENT, UI_SERVICE, UI_PROJECT
+from starthinker.config import UI_ROOT, UI_SERVICE, UI_PROJECT
 
+UI_CLIENT = os.environ.get('STARTHINKER_CLIENT_INSTALLED', 'MISSING RUN deploy.sh TO SET')
 UI_USER = os.environ.get('STARTHINKER_USER', 'MISSING RUN deploy.sh TO SET')
 
 RE_TEST = re.compile(r'test.*\.json')

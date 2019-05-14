@@ -18,15 +18,11 @@
 #
 ###########################################################################
 
-# Wrapper for crontab to execute python commands in the virtualenv.
-# Assumes StarThinker directory structure. Not for use outside of StarThinker.
-# Writes to a log file for easier debugging of cron, log file is overwritten each time to keep it small.
-# Deploy cron using install/deploy.sh
-#
-# For Example: 0/3 * * * * /home/starthinker/install/cron recipe_log python starthinker_ui/manage.py recipe_log
+# Executes the starthinker cron command using virtualenv ( called from crontab -l )
+# For Example: 0/3 * * * * /home/starthinker/install/cron_recipe.sh /home/starthinker
 
-THIS_DIR="$(dirname $0)/.."
+starthinker_ROOT=$1
 
-source "${THIS_DIR}/starthinker_assets/production.sh"
-$2 "${THIS_DIR}/${@:3}" 2>&1 | tee "${THIS_DIR}/starthinker_assets/cron/cron_$1.log"
+source "${starthinker_ROOT}/starthinker_assets/production.sh"
+python starthinker/cron/run.py ${STARTHINKER_CRON} -c ${STARTHINKER_CLIENT_INSTALLED} -u ${STARTHINKER_USER} -s ${STARTHINKER_SERVICE} -p ${STARTHINKER_PROJECT} 2>&1 | tee "${STARTHINKER_CRON}/cron_recipe.log"
 deactivate

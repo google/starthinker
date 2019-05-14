@@ -1,6 +1,6 @@
 This is not an officially supported Google product.  It is a reference implementation.
 
-# StarThinker Workflow Framework For Google
+# gTech StarThinker Workflow Framework For Externalizing Solutions
 
 StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components. 
 To make it easier for partners and clients to work with some of our advertsing solutions, the gTech team has
@@ -122,7 +122,7 @@ source starthinker_assets/development.sh
 python starthinker/all/run.py starthinker/gtech/say_hello.json --verbose
 ```
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=%2FREADME.md)
 
 
 
@@ -150,19 +150,25 @@ source install/deploy.sh
 - For credentials type choose: Web Application..
 - For OAuth Consent Screen choose: Application Type Internal.
 - Be sure to add callbacks to your OAuth Client:
-````
+```
 http://localhost:8000/oauth_callback/	
 https://[CLIENT_PROJECT_NAME].appspot.com/oauth_callback/	
-````
+```
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
+If you DO NOT see Application Type Internal as an option, your project is not
+a member of a [GSuite Organization](https://support.google.com/a/answer/6365252).
+Having a GSuite Organization is the recommended setup, it provides additional
+security and control over access to your cloud assets.  Alternatively you can
+set up a verified domain and controll access using firewalls and other tools
+available in Google Cloud.
+
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=%2FREADME.md)
 
 
 
-### Using StarThinker As A Python Package
+## Using StarThinker As A Python Package
 
 You can use the starthinker module directly in any python project to run a recipe.
-
 
 ```
 pip install git+https://github.com/google/starthinker

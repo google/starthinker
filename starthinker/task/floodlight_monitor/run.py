@@ -40,7 +40,7 @@ python floodlight_monitor/run.py floodlight_monitor/test.json -u [user credentia
 
 def floodlight_report(floodlight_id):
 
-  account_id, subaccount_id, profile_id = parse_account(project.task['auth'], project.task['account'])
+  account_id, subaccount_id = parse_account(project.task['auth'], project.task['account'])
 
   name = 'Floodlight Monitor %s %s ( StarThinker )' % ( account_id, floodlight_id )
 
@@ -54,7 +54,7 @@ def floodlight_report(floodlight_id):
       'kind': 'dfareporting#report',
       'type': 'FLOODLIGHT',
       'accountId': account_id,
-      'ownerProfileId': profile_id,
+      #'ownerProfileId': profile_id,
       'name': name,
       'fileName': name.replace('( ', '').replace(' )', '').replace(' ', '_'),
       'format': 'CSV',

@@ -38,16 +38,26 @@ class Command(BaseCommand):
 
   def handle(self, *args, **kwargs):
     
-    print 'Writing:', kwargs['path']
-
-    with open(kwargs['path'] + '/docs/index.html', 'w') as index_file:
+    directory = '%s/docs' % kwargs['path']
+    print 'Writing:', directory
+    with open('%s/index.html' % directory, 'w') as index_file:
       index_file.write(solutions(request=None))
 
-    with open(kwargs['path'] + '/docs/code.html', 'w') as code_file:
+    directory = '%s/docs/solution' % kwargs['path']
+    print 'Writing:', directory
+    with open('%s/index.html' % directory, 'w') as index_file:
+      index_file.write(solutions(request=None))
+
+    directory = '%s/docs/code' % kwargs['path']
+    print 'Writing:', directory
+    if not os.path.exists(directory): os.makedirs(directory)
+    with open('%s/index.html' % directory, 'w') as code_file:
       code_file.write(code(request=None))
 
     for s in Script.get_scripts():
       if s.is_solution() and s.get_open_source():
-        os.mkdir('%s/docs/%s/' % (kwargs['path'], s.get_tag()))
-        with open('%s/docs/%s/index.html' % (kwargs['path'], s.get_tag()), 'w') as solution_file:
+        directory = '%s/docs/solution/%s' % (kwargs['path'], s.get_tag())
+        print 'Writing:', directory
+        if not os.path.exists(directory): os.makedirs(directory)
+        with open('%s/index.html' % directory, 'w') as solution_file:
           solution_file.write(solution(request=None, tag=s.get_tag()))

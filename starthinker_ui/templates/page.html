@@ -85,13 +85,15 @@
   {% block nav %}
   <nav>
     <div class="nav-wrapper">
-      <a href="/" class="brand-logo"><img src="{% static 'StarThinker.png' %}"/>&nbsp;StarThinker</a>
+      <a href="{% if not external %}/{% else %}/starthinker/{% endif %}" class="brand-logo">
+        <img src="{% static 'StarThinker.png' %}"/>&nbsp;StarThinker
+      </a>
       <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
         {% if not external %}<li><a href="/">Recipes</a></li>{% endif %}
         {% if not external %}<li><a href="/project/">Projects</a></li>{% endif %}
-        <li><a href="/solution/">Solutions</a></li>
-        <li><a href="/code/">Coding</a></li>
+        <li><a href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
+        <li><a href="{% if external %}/starthinker{% endif %}/code/">Coding</a></li>
         {% if not external %}<li><a href="/stats/">Stats</a></li>{% endif %}
         {% if request.user.is_authenticated %}
           <li><a href="/logout/">Logout</a></li>
@@ -114,8 +116,8 @@
         {% endif %}
         {% if not external %}<li><a class="white-text" href="/">Recipes</a></li>{% endif %}
         {% if not external %}<li><a class="white-text" href="/project/">Project</a></li>{% endif %}
-        <li><a class="white-text" href="/solution/">Solutions</a></li>
-        <li><a class="white-text" href="/code/">Code</a></li>
+        <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
+        <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/code/">Code</a></li>
         {% if not external %}<li><a class="white-text" href="/stats/">Stats</a></li>{% endif %}
         {% if request.user.is_authenticated %}
           <li><a class="white-text" href="/logout/">Logout</a></li>

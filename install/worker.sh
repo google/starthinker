@@ -114,12 +114,16 @@ WantedBy=multi-user.target
 Description=Google Cloud Compute Engine SQL Proxy
 Requires=networking.service
 After=networking.service
+StartLimitIntervalSec=0
+StartLimitBurst=60
 
 [Service]
 Type=simple
+Restart=always
+RestartSec=5
+TimeoutSec=10
 WorkingDirectory=$STARTHINKER_ROOT/starthinker_assets
 ExecStart="${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE
-Restart=always
 StandardOutput=journal
 User=root
 EOL
@@ -149,10 +153,14 @@ start_worker() {
 [Unit]
 Description=Starthinker Worker Service
 After=multi-user.target starthinker_proxy.service
+StartLimitIntervalSec=0
+StartLimitBurst=60
 
 [Service]
 Type=simple
 Restart=always
+RestartSec=5
+TimeoutSec=10
 Environment=STARTHINKER_SCALE=$STARTHINKER_SCALE
 Environment=STARTHINKER_DEVELOPMENT=$STARTHINKER_DEVELOPMENT
 Environment=STARTHINKER_PROJECT=$STARTHINKER_PROJECT
@@ -224,8 +232,8 @@ deploy_worker() {
 
     sleep 1m
 
-    instance_command $copy_INSTANCE "sudo systemctl stop starthinker"
-    instance_command $copy_INSTANCE "sudo systemctl stop starthinker_proxy"
+    instance_command "$instance_name" "sudo systemctl stop starthinker"
+    instance_command "$instance_name" "sudo systemctl stop starthinker_proxy"
 
     instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_assets" "starthinker_assets/" --recurse
     instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_ui" "starthinker_ui/" --recurse

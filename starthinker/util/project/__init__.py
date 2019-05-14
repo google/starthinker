@@ -76,7 +76,7 @@ import pytz
 import uuid
 import argparse
 from datetime import datetime 
-
+from importlib import import_module
 
 RE_UUID = re.compile(r'(\s*)("setup"\s*:\s*{)')
 
@@ -100,41 +100,12 @@ def get_project(filepath, debug=False):
     return json.loads(data)
 
 
-def day_hour_scheduled(recipe, task = None):
-  """Returns date, day, hour tuple if recipe schedule matches current timezone time.
-
-     Used as a helper for any cron job running recipe.  Keeping this logic in project
-     helps avoid time zone detection issues and scheduling discrepencies between machines.
-
-    Args:
-      - recipe: (Recipe JSON) The JSON of a recipe.
-      - task: ( dictionary / JSON ) The specific task being considered for execution.
-
-    Returns:
-      - (timezone date, timezone day, timezone hour) or (None, None, None)
-    """
-
-  # days ( deprecate week )
-  days = recipe.get('setup', {}).get('day', recipe.get('setup', {}).get('week', []))
-
-  # hours ( task or setup )
-  if task: hours = [int(i) for i in task.get('hour', recipe.get('setup', {}).get('hour', []))]
-  else: hours = [int(i) for i in recipe.get('setup', {}).get('hour', [])]
-
-  # current day and hour
-  tz = pytz.timezone(recipe.get('setup', {}).get('timezone', 'America/Los_Angeles'))
-  tz_datetime = datetime.now(tz)
-  tz_day = tz_datetime.strftime('%a')
-  tz_hour = tz_datetime.hour
-
-  # return tule if schedule not specified or matches
-  if (days == [] or tz_day in days) and (hours == [] or tz_hour in hours):
-    return (tz_datetime.date(), tz_day, tz_hour)
-  else:
-    return (None, None, None)
+def utc_to_timezone(timestamp, timezone):
+  if timestamp: return timestamp.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(timezone))
+  else: return None
 
 
-def is_scheduled(recipe, task = None):
+def is_scheduled(recipe, task = {}):
   """Wrapper for day_hour_scheduled that returns True if current time zone safe hour is in recipe schedule.
 
      Used as a helper for any cron job running projects.  Keeping this logic in project
@@ -148,7 +119,19 @@ def is_scheduled(recipe, task = None):
       - True if task is scheduled to run current hour, else False.
   """
 
-  return day_hour_scheduled(recipe, task) != (None, None, None)
+  tz = pytz.timezone(recipe.get('setup', {}).get('timezone', 'America/Los_Angeles'))
+  now_tz = datetime.now(tz)
+  day_tz = now_tz.strftime('%a')
+  hour_tz = now_tz.hour
+
+  days = recipe.get('setup', {}).get('day', [])
+  hours = [int(h) for h in task.get('hour', recipe.get('setup', {}).get('hour', []))]
+
+  if days == [] or day_tz in days:
+    if hours == [] or hour_tz in hours:
+      return True 
+
+  return False
 
 
 class project:
@@ -197,11 +180,11 @@ class project:
     from util.project import project
 
     if __name__ == "__main__":
-      var_json = '/somepath/recipe.json'
+      var_recipe = '/somepath/recipe.json'
       var_user = '/somepath/user.json'
       var_service = '/somepath/service.json'
 
-      project.initialize(_json=var_json, _user=var_user, _service=var_service, _verbose=True)
+      project.initialize(_recipe=var_recipe, _user=var_user, _service=var_service, _verbose=True)
     ```
 
   Attributes:
@@ -317,9 +300,9 @@ class project:
 
   @classmethod
   def get_task(cls):
-    if cls.task is None: 
-      i = cls.get_task_index()
-      cls.task = None if i is None else cls.recipe['tasks'][i].values()[0]
+    #if cls.task is None: 
+    i = cls.get_task_index()
+    cls.task = None if i is None else cls.recipe['tasks'][i].values()[0]
     return cls.task
 
 
@@ -427,9 +410,9 @@ class project:
     # if user explicity specified by command line
     if _user: 
       cls.recipe['setup']['auth']['user'] = _user
-    # or if user not give, then try default credentials
-    elif not cls.recipe['setup']['auth'].get('user'): 
-      cls.recipe['setup']['auth']['user'] = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', None)
+    # or if user not give, then try default credentials ( disabled security risk to assume on behalf of recipe )
+    #elif not cls.recipe['setup']['auth'].get('user'): 
+    #  cls.recipe['setup']['auth']['user'] = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', None)
 
     cls.id = cls.recipe['setup'].get('id')
     cls.uuid = cls.recipe['setup'].get('uuid')
@@ -486,7 +469,7 @@ class project:
     if __name__ == "__main__":
       var_user = '[USER CREDENTIALS JSON STRING OR PATH]'
       var_service = '[SERVICE CREDENTIALS JSON STRING OR PATH]'
-      var_json = {
+      var_recipe = {
         "tasks":[
           { "dataset":{
             "auth":"service",
@@ -495,7 +478,7 @@ class project:
         ]
       }
 
-      project.initialize(_json=var_json, _user=var_user, _service=var_service, _verbose=True)
+      project.initialize(_recipe=var_recipe, _user=var_user, _service=var_service, _verbose=True)
       project.execute()
     ```
 
@@ -511,7 +494,7 @@ class project:
       instances.setdefault(function, 0)
       instances[function] += 1
 
-      print 'Running:', '%s_%d' % (function, instances[function])
+      print 'Running:', '%s %d' % (function, instances[function])
 
       python_callable = getattr(import_module('starthinker.task.%s.run' % function), function)
       python_callable(cls.recipe, instances[function])

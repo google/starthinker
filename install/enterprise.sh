@@ -105,7 +105,15 @@ deploy_appengine() {
   gcloud services enable appengine.googleapis.com
   gcloud services enable appengineflex.googleapis.com
 
+  # create recipe scripts python file for App Engine ( buffers scripts avoiding complex disk lookup )
+  source "${STARTHINKER_CONFIG}";
+  python starthinker_ui/recipe/scripts.py
+  deactivate
+
   gcloud app deploy app.yaml --stop-previous-version
+
+  # delete the recipe scripts python file for App Engine ( easy to forget and waste time debugging )
+  rm "${STARTHINKER_ROOT}/starthinker_ui/recipe/scripts_lookup.py*" 
 
   echo "Done"
   echo ""
@@ -167,10 +175,6 @@ env_variables:
   STARTHINKER_UI_DATABASE_USER: "$STARTHINKER_UI_DATABASE_USER"
   STARTHINKER_UI_DATABASE_PASSWORD: "$STARTHINKER_UI_DATABASE_PASSWORD"
 EOL
-
-  source "${STARTHINKER_CONFIG}";
-  python starthinker_ui/recipe/scripts.py
-  deactivate
 
   echo "Done"
   echo ""

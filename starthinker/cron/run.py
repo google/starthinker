@@ -18,8 +18,8 @@
 
 """Command line to schedule recipe execution.
 
-This script is meant to run persistently ( in a screen session ).  Once an hour, 
-it will read a directory and check each *.json recipe for a schedule.  If the
+This script is meant to be called form a crontab.  See installdeploy.sh.
+It will read a directory and check each *.json recipe for a schedule.  If the
 recipe has a task to run during the current time zone adjusted hour, it is executed.
 
 To add a schedule to any recipe include the following JSON.
@@ -44,13 +44,9 @@ every hour in setup section.
     ]
   }
 
-To start a scheduled cron from the command line: 
+To run the cron for the current hour:
 
 python cron/run.py [path to recipe directory] [see optional arguments below]
-
-To execute all recipes in a directory once run:
-
-python cron/run.py [path to recipe directory] [see optional arguments below] --force
 
 Arguments
 
@@ -60,8 +56,6 @@ Arguments
   --service / -s - path to service credentials json file
   --client / -c' - path to client credentials json file
   --verbose / -v - print all the steps as they happen.
-  --force / -f - execute all scripts once then exit.
-  --remote / -r - execute scripts remotely, requires pub/sub ( not set up yet )
 
 Each recipe can run under different credentials, specify project, client, user, and service 
 values in the JSON for each recipe. See /util/project/README.md.
@@ -78,12 +72,8 @@ import subprocess
 import argparse
 
 from glob import glob
-from time import sleep
 
 from starthinker.config import UI_ROOT
-from starthinker.util.project import get_project, is_scheduled
-
-ONE_HOUR_AND_ONE_SECOND = (60 * 60) + 1 # ensures no repeat in a single hour but never runs over in 24 hours
 
 if __name__ == "__main__":
 
@@ -97,29 +87,12 @@ if __name__ == "__main__":
 
   parser.add_argument('--verbose', '-v', help='print all the steps as they happen.', action='store_true')
   parser.add_argument('--force', '-f', help='execute all scripts once then exit.', action='store_true')
-  #parser.add_argument('--remote', '-r', help='execute the scripts remotely, requires pub/sub config.', action='store_true')
 
   args = parser.parse_args()
 
-  try:
 
-    while True:
-      for filepath in glob('%s*.json' % args.path):
-        if args.verbose: print 'PROJECT:', filepath
-
-        project = get_project(filepath)
-
-        if args.force or is_scheduled(project):
-
-          command = 'python starthinker/task/%s/run.py %s %s' % (script, filepath, ' '.join(sys.argv[2:]))
-
-          if args.verbose: print 'COMMAND:', command
-
-          subprocess.Popen(command, shell=True, cwd=UI_ROOT)
-
-      if args.force: break
-      if args.verbose: print 'SLEEP:', ONE_HOUR_AND_ONE_SECOND
-      sleep(ONE_HOUR_AND_ONE_SECOND)
-
-  except KeyboardInterrupt:
-    exit()
+  for filepath in glob('%s/*.json' % args.path):
+    if args.verbose: print 'RECIPE:', filepath
+    command = 'python -W ignore %s/starthinker/all/run.py %s %s' % (UI_ROOT, filepath, ' '.join(sys.argv[2:]))
+    if args.verbose: print 'COMMAND:', command
+    subprocess.Popen(command, shell=True)

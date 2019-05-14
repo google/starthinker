@@ -61,7 +61,7 @@ def bigquery():
     rows = get_rows(project.task['auth'], project.task['from'])
 
     rows_to_table(
-      project.task['auth'],
+      project.task['to'].get('auth', project.task['auth']),
       project.id,
       project.task['to']['dataset'],
       project.task['to']['table'],

@@ -36,7 +36,7 @@
         {% for task in log.tasks %}
           <tr>
             <td style="vertical-align:top;" class="center">
-              {{ task.hour|day_or_night }} {{ task.hour }}
+              {{ task.status|task_status_icon }} {{ task.hour }}
             </td>
             <td style="vertical-align:top;">
               <strong>{{ task.script }} - {{ task.instance }}</strong>

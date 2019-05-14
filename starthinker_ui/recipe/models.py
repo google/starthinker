@@ -33,8 +33,9 @@ from starthinker_ui.recipe.scripts import Script
 from starthinker_ui.ui.log import log_job_update
 
 
-JOB_INTERVAL_MS = 500 # milliseconds
+JOB_INTERVAL_MS = 800 # milliseconds
 JOB_LOOKBACK_MS = 3 * JOB_INTERVAL_MS # milliseconds
+JOB_RECHECK_MS = 30 * 60 * 1000 # 30 minutes
 
 
 def utc_milliseconds(timestamp=None):
@@ -83,7 +84,11 @@ def worker_pull(worker_uid, jobs=1):
 
   worker_utm = utc_milliseconds()
   worker_interval = worker_utm - JOB_LOOKBACK_MS
+  worker_recheck = worker_utm - JOB_RECHECK_MS
 
+  # every half hour put jobs back in rotation so worker can triggere get_status logic, triggers status at 24 hour mark
+  Recipe.objects.filter(worker_utm__lt=worker_recheck).update(job_done=False)
+  
   # sql level is necessary evil to get the most concurrency
   worker_skip_locked = 'FOR UPDATE SKIP LOCKED' if connection.vendor == 'postresql' else ''
   db_false = '0' if connection.vendor == 'sqlite' else 'false'
@@ -97,8 +102,7 @@ def worker_pull(worker_uid, jobs=1):
   """ % (db_false, db_false, worker_interval, worker_skip_locked, jobs)
 
   with connection.cursor() as cursor:
-    #cursor.execute("SELECT id, worker_uid, worker_utm from recipe_recipe")
-    #print ''
+    #cursor.execute("SELECT id, worker_uid, worker_utm, job_done from recipe_recipe")
     #for row in cursor.fetchall():
     #  print 'Before', row
 
@@ -229,15 +233,6 @@ class Recipe(models.Model):
         self.get_values()
       )
 
-  def run(self, force=False, remote=True):
-    if remote:
-      if force: self.force()
-    elif settings.UI_CRON:
-      with open(settings.UI_CRON + '/recipe_%d.json' % self.pk, 'w') as f:
-        f.write(json.dumps(self.get_json()))
-    else:
-      raise Exception('Neither UI_CRON configured nor remote set.')
-
   def force(self):
     status = self.get_status(force=True)
     self.job_status = json.dumps(status)
@@ -251,18 +246,23 @@ class Recipe(models.Model):
     # current 24 hour time zone derived frame to RUN the job
     now_tz = utc_to_timezone(datetime.utcnow(), self.timezone)
     date_tz = str(now_tz.date())
+    day_tz = now_tz.strftime('%a')
     hour_tz = now_tz.hour
 
-    # load prior status ( reset if new 24 hour block or force )
+    # load prior status 
     try: prior_status = json.loads(self.job_status)
     except ValueError: prior_status = {}
-    if force or date_tz != prior_status.get('date_tz'):
+
+    # reset prior status if force or scheduled today and new 24 hour block 
+    recipe_day = recipe.get('setup', {}).get('day',[]) or ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    if force or (date_tz != prior_status.get('date_tz') and day_tz in recipe_day):
       prior_status = { 'force':force }
 
     # create a vanilla status with all tasks pending ( always do this because recipe may change )
     status = {
       'date_tz':date_tz,
       'force':prior_status.get('force', False), 
+      'day':recipe_day,
       'tasks':[],
     }
 
@@ -315,10 +315,12 @@ class Recipe(models.Model):
           task['stderr'] = task_prior['stderr']
           task['done'] = task_prior['done']
 
-    # check if done ( maybe recipe changed )
+    # check if done ( not today or maybe recipe changed )
     done = all([task['done'] for task in status['tasks']])
+    done |= day_tz not in recipe_day
     if self.job_done != done:
-      Recipe.objects.filter(pk=self.pk).update(job_done=done)
+      self.job_done = done
+      Recipe.objects.filter(pk=self.pk).update(job_done=self.job_done)
 
     return status
 
@@ -328,11 +330,14 @@ class Recipe(models.Model):
 
     # if not done return next task prior or equal to current time zone hour
     if not self.job_done:
-      hour_tz = utc_to_timezone(datetime.utcnow(), self.timezone).hour
-      for task in status['tasks']:
-        if not task['done'] and task['hour'] <= hour_tz:
-          task['recipe'] = self.get_json()
-          return task 
+      now_tz = utc_to_timezone(datetime.utcnow(), self.timezone)
+      day_tz = now_tz.strftime('%a')
+      if day_tz in status['day']:
+        hour_tz = now_tz.hour
+        for task in status['tasks']:
+          if not task['done'] and task['hour'] <= hour_tz:
+            task['recipe'] = self.get_json()
+            return task 
 
     return None
 

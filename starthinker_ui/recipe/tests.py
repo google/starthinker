@@ -20,13 +20,15 @@ import json
 import copy
 from time import time, sleep
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.test import TestCase
 from django.core import management
 
 from starthinker_ui.account.tests import account_create
 from starthinker_ui.project.tests import project_create
 from starthinker_ui.recipe.models import Recipe, worker_pull, worker_status, worker_ping, utc_milliseconds, utc_to_timezone, JOB_LOOKBACK_MS, time_ago
+
+# test recipe done to undone
 
 # starthinker/gtech/script_test.json
 #
@@ -139,7 +141,7 @@ class StatusTest(TestCase):
 
 
   def test_forced(self):
-    self.recipe.run(force=True, remote=True)
+    self.recipe.force()
     status = self.recipe.get_status()
 
     now_tz = utc_to_timezone(datetime.utcnow(), self.recipe.timezone)
@@ -574,3 +576,64 @@ class JobTimeoutTest(TestCase):
     self.recipe.refresh_from_db()
     self.assertTrue(self.recipe.job_done)
 
+
+class JobDayTest(TestCase):
+
+  def setUp(self):
+    self.account = account_create()
+    self.project = project_create()
+    
+    now_tz = utc_to_timezone(datetime.utcnow(), 'America/Los_Angeles')
+    today_tz = now_tz.strftime('%a')
+    yesterday_tz = (now_tz - timedelta(hours=24)).strftime('%a')
+    tomorrow_tz = (now_tz + timedelta(hours=24)).strftime('%a')
+
+    self.recipe_today = Recipe.objects.create(
+      account = self.account,
+      project = self.project,
+      name = 'RECIPE_TODAY',
+      active = True,
+      week = json.dumps([today_tz]),
+      hour = json.dumps([0]),
+      timezone = 'America/Los_Angeles',
+      tasks = json.dumps([
+        { "tag": "hello",
+          "values": {},
+          "sequence": 1
+        },
+      ]),
+      worker_uid = "OTHER_WORKER",
+      worker_utm = utc_milliseconds() - (JOB_LOOKBACK_MS * 10) # important for test ( jobs older than this get job_done flag reset )
+    )
+
+    self.recipe_not_today = Recipe.objects.create(
+      account = self.account,
+      project = self.project,
+      name = 'RECIPE_NOT_TODAY',
+      active = True,
+      week = json.dumps([yesterday_tz, tomorrow_tz]),
+      hour = json.dumps([0]),
+      timezone = 'America/Los_Angeles',
+      tasks = json.dumps([
+        { "tag": "hello",
+          "values": {}, 
+          "sequence": 1
+        },
+      ]),
+      worker_uid = "OTHER_WORKER",
+      worker_utm = utc_milliseconds() - (JOB_LOOKBACK_MS * 10) # important for test ( jobs older than this get job_done flag reset )
+    )
+
+  def test_job_day(self):
+    # test low level pull ( no worker involved )
+    self.assertIsNotNone(self.recipe_today.get_task())
+    self.assertIsNone(self.recipe_not_today.get_task())
+    self.assertFalse(self.recipe_today.job_done)
+    self.assertTrue(self.recipe_not_today.job_done)
+
+    # first loop through manager ( use short timeout )
+    management.call_command('job_worker', worker='TEST_WORKER', jobs=5, timeout=60, verbose=True, test=True)
+
+    recipes = Recipe.objects.filter(worker_uid='TEST_WORKER')
+    self.assertEqual(len(recipes), 1)
+    self.assertEqual(recipes[0].name, 'RECIPE_TODAY')
