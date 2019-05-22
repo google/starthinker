@@ -33,13 +33,13 @@ General structure ofthe code is:
 - [/starthinker/all](starthinker/all/) - Developer command line for executing a recipe in its entirety.
 - [/starthinker/cron](starthinker/cron/) - Quick command line for executing recipes on a schedule.
 - [/starthinker/auth](starthinker/auth/) - Developer command line for testing user credential setup.
-- [/starthinker_ui](starthinker/starthinker_ui/) - UI deplyed on AppEngine powered by Django.
+- [/starthinker_ui](starthinker_ui/) - UI deplyed on AppEngine powered by Django.
 - [/starthinker_assets](starthinker_assets/) - Holds all configuration files when you launch StarThinker.
-- [/starthinker_virtualenv](starthinker_virtualenv/) - Holds virtual environment libraries on setup.
-- [/starthinker_database](starthinker_database/) - Holds local development database on setup.
-- [/starthinker_cron](starthinker_cron/) - Holds recipes executing using local cron on setup.
-- [/starthinker_virtualenv](starthinker_virtualenv/) - Holds virtual environment libraries on setup.
 - [/starthinker_airflow](starthinker_airflow/) - Deploys recipes as AirFlow DAGs, optional.
+- starthinker_virtualenv/ - After deploy, holds virtual environment libraries on setup.
+- starthinker_database/ - After deploy, holds local development database on setup.
+- starthinker_cron/ - After deploy, holds recipes executing using local cron on setup.
+- starthinker_virtualenv/ - After deploy, Holds virtual environment libraries on setup.
 
 
 ## What are some common terms?
