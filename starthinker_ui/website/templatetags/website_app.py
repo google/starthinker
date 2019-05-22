@@ -84,16 +84,14 @@ def json_get_fields(value):
 
 
 @register.filter
-def task_status_icon(status):
+def task_status_icon(event):
 
-  icon = 'hourglass_empty'
-
-  if status == 'TIMEOUT': icon = 'alarm_off'
-  elif status == 'ERROR': icon = 'error'
-  elif status == 'FINISHED': icon = 'done_outline'
-  elif status == 'RUNNING': icon = 'directions_walk'
-  elif status == 'PAUSED': icon = 'pause_circle'
-  elif status == 'QUEUED': icon = 'traffic'
+  if event == 'JOB_TIMEOUT': icon = 'alarm_off'
+  elif event == 'JOB_ERROR': icon = 'error'
+  elif event == 'JOB_END': icon = 'done_outline'
+  elif event == 'JOB_START': icon = 'directions_walk'
+  elif event == 'JOB_PENDING': icon = 'hourglass_empty'
+  else: icon = 'hourglass_empty'
 
   return mark_safe('<i class="small material-icons-outlined" style="vertical-align: middle;">%s</i>&nbsp;&nbsp;' % icon)
 

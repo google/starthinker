@@ -20,6 +20,7 @@
 
 import pytz
 import json
+from time import sleep
 from datetime import date, datetime
 
 from django.db import models, connection
@@ -34,7 +35,7 @@ from starthinker_ui.ui.log import log_job_update
 
 
 JOB_INTERVAL_MS = 800 # milliseconds
-JOB_LOOKBACK_MS = 3 * JOB_INTERVAL_MS # milliseconds
+JOB_LOOKBACK_MS = 10 * JOB_INTERVAL_MS # 8 seconds 
 JOB_RECHECK_MS = 30 * 60 * 1000 # 30 minutes
 
 
@@ -86,25 +87,32 @@ def worker_pull(worker_uid, jobs=1):
   worker_interval = worker_utm - JOB_LOOKBACK_MS
   worker_recheck = worker_utm - JOB_RECHECK_MS
 
-  # every half hour put jobs back in rotation so worker can triggere get_status logic, triggers status at 24 hour mark
-  Recipe.objects.filter(worker_utm__lt=worker_recheck).update(job_done=False)
-  
   # sql level is necessary evil to get the most concurrency
   worker_skip_locked = 'FOR UPDATE SKIP LOCKED' if connection.vendor == 'postresql' else ''
   db_false = '0' if connection.vendor == 'sqlite' else 'false'
 
-  where = """SELECT id 
-    FROM recipe_recipe 
-    WHERE job_done=%s AND active!=%s AND worker_utm < %s
-    ORDER BY worker_utm ASC 
-    %s 
-    LIMIT %d
-  """ % (db_false, db_false, worker_interval, worker_skip_locked, jobs)
-
   with connection.cursor() as cursor:
+
+    # every half hour put jobs back in rotation so worker can triggere get_status logic, triggers status at 24 hour mark
+    cursor.execute("""
+      UPDATE recipe_recipe
+      SET job_done=%s 
+      WHERE  id IN ( SELECT id FROM recipe_recipe WHERE worker_utm < %s %s )
+    """ % (db_false, worker_recheck, worker_skip_locked))
+
+    sleep(0.01) # 10 ms
+
     #cursor.execute("SELECT id, worker_uid, worker_utm, job_done from recipe_recipe")
     #for row in cursor.fetchall():
     #  print 'Before', row
+
+    where = """SELECT id 
+      FROM recipe_recipe 
+      WHERE job_done=%s AND active!=%s AND worker_utm < %s
+      ORDER BY worker_utm ASC 
+      %s 
+      LIMIT %d
+    """ % (db_false, db_false, worker_interval, worker_skip_locked, jobs)
 
     cursor.execute("""
       UPDATE recipe_recipe 

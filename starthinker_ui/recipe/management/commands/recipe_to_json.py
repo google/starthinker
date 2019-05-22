@@ -16,6 +16,7 @@
 #
 ###########################################################################
 
+import json
 
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
@@ -56,9 +57,9 @@ class Command(BaseCommand):
     
     for recipe in (Recipe.objects.filter(pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.filter(active=True)):
       try:
-        if remote:
+        if kwargs['remote']:
           print 'Dispatch: %s' % recipe.uid()
-          if force: recipe.force()
+          if kwargs['force']: recipe.force()
         elif settings.UI_CRON:
           print 'Write: %s/recipe_%d.json' % (settings.UI_CRON, recipe.pk)
           with open(settings.UI_CRON + '/recipe_%d.json' % recipe.pk, 'w') as f:

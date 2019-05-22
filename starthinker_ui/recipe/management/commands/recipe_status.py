@@ -65,4 +65,6 @@ class Command(BaseCommand):
         print '  Hour', task['hour']
         print '  Event', task['event']
         print '  Done', task['done']
+        print '  Output', task['stdout']
+        print '  Error', task['stderr']
         print ''

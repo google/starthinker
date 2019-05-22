@@ -24,5 +24,5 @@
 starthinker_ROOT=$1
 
 source "${starthinker_ROOT}/starthinker_assets/production.sh"
-python starthinker/cron/run.py ${STARTHINKER_CRON} -c ${STARTHINKER_CLIENT_INSTALLED} -u ${STARTHINKER_USER} -s ${STARTHINKER_SERVICE} -p ${STARTHINKER_PROJECT} 2>&1 | tee "${STARTHINKER_CRON}/cron_recipe.log"
+python "${starthinker_ROOT}/starthinker/cron/run.py" ${STARTHINKER_CRON} -c ${STARTHINKER_CLIENT_INSTALLED} -u ${STARTHINKER_USER} -s ${STARTHINKER_SERVICE} -p ${STARTHINKER_PROJECT} 2>&1 | tee "${STARTHINKER_CRON}/cron_recipe.log"
 deactivate

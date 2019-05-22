@@ -6,7 +6,7 @@
     "title":"Twitter Targeting",
     "product":"gTech",
     "description":"Adjusts line item settings based on Twitter hashtags and locations specified in a sheet.",
-    "image":"https://storage.googleapis.com/starthinker-ui/deal_finder.png",
+    "image":"https://storage.googleapis.com/starthinker-ui/twitter_targeting.png",
     "sample":"https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO",
     "open_source":"https://github.com/google/starthinker/blob/master/gtech/twitter.json",
     "requirements":{

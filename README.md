@@ -1,4 +1,6 @@
 This is not an officially supported Google product.  It is a reference implementation.
+There is absolutley NO WARRANTY provided for using this code.
+
 
 # gTech StarThinker Workflow Framework For Externalizing Solutions
 
@@ -6,7 +8,6 @@ StarThinker is a Google gTech built python framework for creating and sharing re
 To make it easier for partners and clients to work with some of our advertsing solutions, the gTech team has
 open sourced this framework as a reference implementation.  Our goal is to make managing data workflows
 using Google Cloud as fast and re-usable as possible, allowing teams to focus on building advertising solutions.
-
 
 
 ## Why Use The StarThinker Open Source Code?
@@ -19,14 +20,12 @@ using Google Cloud as fast and re-usable as possible, allowing teams to focus on
 - The code is Apache Licensed and fully modifiable by your team.
 
 
-
 ## Where Is The Documentation?
 
 Most directories contain a README.me file. These are instructions for how to use the code in that directory.
 General structure ofthe code is:
 
 - [/install](install/) - Scripts for installing and deploying StarThinker.
-- [/starthinker_assets](starthinker_assets/) - Holds all configuration files when you launch StarThinker.
 - [/starthinker/util](starthinker/util/) - Low level library wrappers around Google API with helpers to handle common errors.
 - [/starthinker/task](starthinker/task/) - Handlers for each task specified in a JSON recipe.
 - [/starthinker/gtech](starthinker/gtech/) - Complete solution templates provided by Google gTech that you can deploy.
@@ -35,7 +34,12 @@ General structure ofthe code is:
 - [/starthinker/cron](starthinker/cron/) - Quick command line for executing recipes on a schedule.
 - [/starthinker/auth](starthinker/auth/) - Developer command line for testing user credential setup.
 - [/starthinker_ui](starthinker/starthinker_ui/) - UI deplyed on AppEngine powered by Django.
-
+- [/starthinker_assets](starthinker_assets/) - Holds all configuration files when you launch StarThinker.
+- [/starthinker_virtualenv](starthinker_virtualenv/) - Holds virtual environment libraries on setup.
+- [/starthinker_database](starthinker_database/) - Holds local development database on setup.
+- [/starthinker_cron](starthinker_cron/) - Holds recipes executing using local cron on setup.
+- [/starthinker_virtualenv](starthinker_virtualenv/) - Holds virtual environment libraries on setup.
+- [/starthinker_airflow](starthinker_airflow/) - Deploys recipes as AirFlow DAGs, optional.
 
 
 ## What are some common terms?
@@ -125,7 +129,6 @@ python starthinker/all/run.py starthinker/gtech/say_hello.json --verbose
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=%2FREADME.md)
 
 
-
 ## Deploying StarThinker UI For Enterprise Multi User 
 
 When multiple users need to deploy and coordinate multiple reipces for multiple clients, stand up the UI.
@@ -142,7 +145,6 @@ source install/deploy.sh
 - Option 1) Deploy App Engine UI
 - Option 2) Deploy Job Workers
 - Option 1) Test - 1 Job
-
 
 
 ### When creating the oAuth Client:
@@ -165,7 +167,6 @@ available in Google Cloud.
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=%2FREADME.md)
 
 
-
 ## Using StarThinker As A Python Package
 
 You can use the starthinker module directly in any python project to run a recipe.
@@ -179,7 +180,6 @@ import starthinker
 ## Where Do I Get Help?
 
 Email: starthinker-help@google.com
-
 
 
 ## Authors 
