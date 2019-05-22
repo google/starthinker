@@ -78,7 +78,7 @@ source starthinker_assets/development.sh
 python starthinker/all/run.py starthinker/gtech/say_hello.json --verbose
 ```
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=%2FREADME.md)
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
 
 Read more at [all/README.md](all/README.md) under Useful Developer Features. 
 
@@ -94,7 +94,7 @@ python starthinker/script/run.py starthinker/gtech/script_dcm_to_bigquery.json 7
 python starthinker/all/run.py test_recipe.json
 ```
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=%2FREADME.md)
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
 
 Read more at [script/README.md](script/README.md).
 
@@ -126,7 +126,7 @@ source starthinker_assets/development.sh
 python starthinker/all/run.py starthinker/gtech/say_hello.json --verbose
 ```
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=%2FREADME.md)
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
 
 
 ## Deploying StarThinker UI For Enterprise Multi User 
@@ -164,7 +164,7 @@ security and control over access to your cloud assets.  Alternatively you can
 set up a verified domain and controll access using firewalls and other tools
 available in Google Cloud.
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=%2FREADME.md)
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
 
 
 ## Using StarThinker As A Python Package
