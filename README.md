@@ -29,7 +29,7 @@ General structure ofthe code is:
 - [/starthinker/util](starthinker/util/) - Low level library wrappers around Google API with helpers to handle common errors.
 - [/starthinker/task](starthinker/task/) - Handlers for each task specified in a JSON recipe.
 - [/starthinker/gtech](starthinker/gtech/) - Complete solution templates provided by Google gTech that you can deploy.
-- [/starthinker/script](starthinker/script/) - Command line for converting a recipe template into a client specific executable recipe
+- [/starthinker/script](starthinker/script/) - Command line for converting a recipe template into a client specific executable recipe.
 - [/starthinker/all](starthinker/all/) - Developer command line for executing a recipe in its entirety.
 - [/starthinker/cron](starthinker/cron/) - Quick command line for executing recipes on a schedule.
 - [/starthinker/auth](starthinker/auth/) - Developer command line for testing user credential setup.

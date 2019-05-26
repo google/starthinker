@@ -299,7 +299,7 @@ setup_scientist() {
 }
 
 
-if [ "$1" == '--instance' ];then
+if [ "$1" = "--instance" ];then
   shift
 
   if [ -d "${PWD}/install" ]; then

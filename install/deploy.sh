@@ -35,63 +35,76 @@ if [ -d "${PWD}/install" ]; then
   echo "If this is your first time running this script, select Full Setup."
   echo ""
   
-  echo ""
-  echo "------------------------------------------------------------------------------"
-  echo "This is a reference implementation only and not warrantied by Google."
-  echo ""
-  
-  read -p "Do you acknowledge and wish to proceed (y/n)? " -n 1 -r
-  echo ""
-  echo ""
-  
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
+  if [ ! -z "${BASH}" ]; then
 
-    echo "----------------------------------------------------------------------"
-    echo "gTech StarThinker"
-    echo "----------------------------------------------------------------------"
     echo ""
-    echo "Developer Menu"
-    echo "Sets up local environment to run StarThinker recipes from the command line. Most basic setup."
+    echo "------------------------------------------------------------------------------"
+    echo "This is a reference implementation only and not warrantied by Google."
     echo ""
-    echo ""
-    echo "Data Scientist Menu"
-    echo "Sets up local job that will run recipes on a schedule persistently.  For long running custom jobs."
-    echo ""
-    echo ""
-    echo "Enterprise Setup Menu"
-    echo "Sets up a Google App Engine Instance web UI for multiple users and disctributed jobs.  Highly scalable team wide deployment."
+  
+    read -p "Do you acknowledge and wish to proceed (y/n)? " -n 1 -r
     echo ""
     echo ""
   
-    main_done=0
-    main_options=("Developer Menu" "Data Scientist Menu" "Enterprise Menu" "Change Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials" "Reset Configuration" "Quit")
-  
-    while (( !main_done ))
-    do
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+
       echo "----------------------------------------------------------------------"
-      echo "Main Menu"
+      echo "gTech StarThinker"
       echo "----------------------------------------------------------------------"
+      echo ""
+      echo "Developer Menu"
+      echo "Sets up local environment to run StarThinker recipes from the command line. Most basic setup."
+      echo ""
+      echo ""
+      echo "Data Scientist Menu"
+      echo "Sets up local job that will run recipes on a schedule persistently.  For long running custom jobs."
+      echo ""
+      echo ""
+      echo "Enterprise Setup Menu"
+      echo "Sets up a Google App Engine Instance web UI for multiple users and disctributed jobs.  Highly scalable team wide deployment."
+      echo ""
       echo ""
     
-      PS3='Your Choice: '
-      select main_option in "${main_options[@]}"; do
-        case $REPLY in
-          1) setup_developer; break ;;
-          2) setup_scientist; break ;;
-          3) setup_enterprise; break ;;
-          4) setup_project; save_config; break ;;
-          5) setup_credentials_service; save_config; break ;;
-          6) setup_credentials_commandline; setup_credentials_user; save_config; break ;;
-          7) setup_credentials_ui; save_config; break ;;
-          8) save_config; break;;
-          9) main_done=1; break;;
-          *) echo "What's that?" ;;
-        esac
+      main_done=0
+      main_options=("Developer Menu" "Data Scientist Menu" "Enterprise Menu" "Change Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials" "Reset Configuration" "Quit")
+    
+      while (( !main_done ))
+      do
+        echo "----------------------------------------------------------------------"
+        echo "Main Menu"
+        echo "----------------------------------------------------------------------"
+        echo ""
+      
+        PS3='Your Choice: '
+        select main_option in "${main_options[@]}"; do
+          case $REPLY in
+            1) setup_developer; break ;;
+            2) setup_scientist; break ;;
+            3) setup_enterprise; break ;;
+            4) setup_project; save_config; break ;;
+            5) setup_credentials_service; save_config; break ;;
+            6) setup_credentials_commandline; setup_credentials_user; save_config; break ;;
+            7) setup_credentials_ui; save_config; break ;;
+            8) save_config; break;;
+            9) main_done=1; break;;
+            *) echo "What's that?" ;;
+          esac
+        done
+        echo ""
       done
-      echo ""
-    done
+    
+    fi
+
+  else
+
+    echo ""
+    echo "This script require a bash shell."
+    echo "Run: /bin/bash"
+    echo "Then run this script again." 
+  echo ""
   
   fi
+
 else
 
   echo ""
@@ -101,3 +114,7 @@ else
   echo ""
 
 fi
+
+
+
+

@@ -297,7 +297,7 @@ setup_worker() {
 }
 
 
-if [ "$1" == '--instance' ];then
+if [ "$1" = "--instance" ];then
   shift
   worker_PARAMETERS=${@}
 

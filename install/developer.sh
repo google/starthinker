@@ -19,6 +19,71 @@
 ###########################################################################
 
 
+test_ui() {
+
+  install_virtualenv; 
+  install_requirements; 
+  setup_project "optional"; 
+  setup_credentials_service "optional"; 
+  setup_credentials_commandline "optional"; 
+  save_config;
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Load Development Settings - ${STARTHINKER_ROOT}/starthinker_assets/development.sh"
+  echo "----------------------------------------"
+  echo ""
+
+  source "${STARTHINKER_ROOT}/starthinker_assets/development.sh";
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Run UI Tests - python ${STARTHINKER_ROOT}/starthinker_ui/manage.py test"
+  echo "----------------------------------------"
+  echo ""
+
+  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" test recipe;
+  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" test website;
+
+  deactivate
+
+  echo "Done"
+  echo ""
+}
+
+
+test_tasks() {
+
+  install_virtualenv; 
+  install_requirements; 
+  setup_project "optional"; 
+  setup_credentials_service "optional"; 
+  setup_credentials_commandline "optional"; 
+  save_config;
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Load Development Settings - ${STARTHINKER_ROOT}/starthinker_assets/development.sh"
+  echo "----------------------------------------"
+  echo ""
+
+  source "${STARTHINKER_ROOT}/starthinker_assets/development.sh";
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Run Task Tests - python ${STARTHINKER_ROOT}/starthinker/test/helper.py"
+  echo "----------------------------------------"
+  echo ""
+
+  python "${STARTHINKER_ROOT}/starthinker/test/helper.py";
+
+  deactivate
+
+  echo "Done"
+  echo ""
+}
+
+
 launch_developer_ui() {
 
   install_virtualenv; 
@@ -48,7 +113,7 @@ launch_developer_ui() {
   python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" migrate;
 
   echo "----------------------------------------"
-  echo "Launch Developer UI python ${STARTHINKER_ROOT}/starthinker_ui/manage.py runserver localhost:8000"
+  echo "Launch Developer UI - python ${STARTHINKER_ROOT}/starthinker_ui/manage.py runserver localhost:8000"
   echo "----------------------------------------"
   echo ""
 
@@ -112,7 +177,7 @@ setup_developer() {
   echo ""
 
   developer_done=0
-  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Quit")
+  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Test UI" "Test Tasks" "Quit")
  
   while (( !developer_done ))
   do
@@ -126,7 +191,9 @@ setup_developer() {
       case $REPLY in
         1) install_developer; break;;
         2) launch_developer_ui; break;;
-        3) developer_done=1; break;;
+        3) test_ui; break;;
+        4) test_tasks; break;;
+        5) developer_done=1; break;;
         *) echo "What's that?";;
       esac
     done
@@ -135,7 +202,7 @@ setup_developer() {
 }
 
 
-if [ "$1" == '--instance' ];then
+if [ "$1" = "--instance" ];then
   shift;
 
   if [ -d "${PWD}/install" ]; then

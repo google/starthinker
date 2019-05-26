@@ -392,6 +392,31 @@ def report_list(auth):
     yield query
 
 
+""" Get a DV360 report as a list
+
+Args:
+  * auth => auth from the job
+  * report_id => the report id that wants to be pulled
+
+Returns:
+  * a DV360 report represented as a list
+""" 
+def report_to_list(auth, report_id):
+  filename,report = report_file(
+      auth,
+      report_id,
+      None, #name
+      10, #timeout
+      DBM_CHUNKSIZE
+    )
+
+  if report:
+    rows = report_to_rows(report)
+    rows = report_clean(rows, False, False)
+
+  return list(rows)  
+
+
 def report_to_rows(report):
   """ Helper to convert DBM files into iterator of rows, memory efficient.
 

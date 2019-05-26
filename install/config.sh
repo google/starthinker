@@ -29,7 +29,7 @@ STARTHINKER_DEVELOPMENT=0
 STARTHINKER_PROJECT=""
 STARTHINKER_ZONE="us-west1-b"
 
-if [ "$STARTHINKER_UI_SECRET" == "" ]; then
+if [ -z "${STARTHINKER_UI_SECRET}" ]; then
   STARTHINKER_UI_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1)
 fi
 
