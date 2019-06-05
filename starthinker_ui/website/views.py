@@ -44,7 +44,8 @@ def solutions(request):
     'scripts':scripts,
     'categories':sorted(set(chain.from_iterable([s.get_categories() for s in scripts]))),
     'catalysts':sorted(set(chain.from_iterable([s.get_catalysts() for s in scripts]))),
-    'requirements':sorted(set(chain.from_iterable([s.get_requirements() for s in scripts])))
+    'requirements':sorted(set(chain.from_iterable([s.get_requirements() for s in scripts]))),
+    'external':(request is None)
   }
 
   # if open source then request will be null
