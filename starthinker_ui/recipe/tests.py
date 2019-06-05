@@ -136,7 +136,7 @@ class StatusTest(TestCase):
     date_tz = str(now_tz.date())
 
     self.assertEqual(status['date_tz'], date_tz)
-    self.assertEqual(len(status['tasks']), 1 + 1 + 1 + 24 + 3 + 1) 
+    self.assertEqual(len(status['tasks']), 1 + 1 + 1 + 0 + 3 + 1) 
     self.assertFalse(status['force'])
 
 
@@ -236,14 +236,96 @@ class StatusTest(TestCase):
 
 class RecipeViewTest(TestCase):
 
+  def setUp(self):
+    self.account = account_create()
+    self.project = project_create()
+
+    self.recipe_new = Recipe.objects.create(
+      account = self.account,
+      project = self.project,
+      name = 'RECIPE_NEW',
+      active = True,
+      week = json.dumps(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']),
+      hour = json.dumps([0]),
+      timezone = 'America/Los_Angeles',
+      tasks = json.dumps([
+        { "tag": "hello", 
+          "values": {"say_first":"Hi Once", "say_second":"Hi Twice", "sleep":0},
+          "sequence": 1
+        },
+      ]),
+    )
+    self.RECIPE_NEW = self.recipe_new.uid()
+
   def test_recipe_list(self):
     resp = self.client.get('/')
     self.assertEqual(resp.status_code, 200)
 
-
   def test_recipe_edit(self):
     resp = self.client.get('/recipe/edit/')
     self.assertEqual(resp.status_code, 302)
+
+  def test_recipe_start(self):
+    resp = self.client.post('/recipe/start/', {'reference':'THISREFERENCEISINVALID'})
+    self.assertEqual(resp.status_code, 404)
+    self.assertEqual(resp.content, 'RECIPE NOT FOUND')
+
+    resp = self.client.post('/recipe/start/', {'reference':self.recipe_new.reference})
+    self.assertEqual(resp.status_code, 200)
+    self.assertEqual(resp.content, 'RECIPE STARTED')
+
+    # start a recipe run to test interrupt
+    jobs = worker_pull('SAMPLE_WORKER', 1)
+    self.assertEqual(len(jobs), 1)
+
+    resp = self.client.post('/recipe/start/', {'reference':self.recipe_new.reference})
+    self.assertEqual(resp.status_code, 200)
+    self.assertEqual(resp.content, 'RECIPE INTERRUPTED')
+
+  def test_recipe_stop(self):
+    resp = self.client.post('/recipe/stop/', {'reference':'THISREFERENCEISINVALID'})
+    self.assertEqual(resp.status_code, 404)
+    self.assertEqual(resp.content, 'RECIPE NOT FOUND')
+
+    resp = self.client.post('/recipe/stop/', {'reference':self.recipe_new.reference})
+    self.assertEqual(resp.status_code, 200)
+    self.assertEqual(resp.content, 'RECIPE STOPPED')
+
+    self.recipe_new.refresh_from_db()
+    self.assertTrue(self.recipe_new.job_done)
+
+    # recipe is stopped and cannot be pulled
+    jobs = worker_pull('SAMPLE_WORKER', 1)
+    self.assertEqual(len(jobs), 0)
+
+    # start a recipe run to test interrupt
+    resp = self.client.post('/recipe/start/', {'reference':self.recipe_new.reference})
+    self.assertEqual(resp.status_code, 200)
+    self.assertEqual(resp.content, 'RECIPE STARTED')
+
+    self.recipe_new.refresh_from_db()
+    self.assertFalse(self.recipe_new.job_done)
+
+    # wait for next worker cycle
+    sleep((JOB_LOOKBACK_MS * 2) / 1000.0)
+
+    # recipe is started and can be pulled
+    jobs = worker_pull('SAMPLE_WORKER', 1)
+    self.assertEqual(len(jobs), 1)
+
+    resp = self.client.post('/recipe/stop/', {'reference':self.recipe_new.reference})
+    self.assertEqual(resp.status_code, 200)
+    self.assertEqual(resp.content, 'RECIPE INTERRUPTED')
+
+    self.recipe_new.refresh_from_db()
+    self.assertTrue(self.recipe_new.job_done)
+
+    # wait for next worker cycle
+    sleep((JOB_LOOKBACK_MS * 2) / 1000.0)
+
+    # recipe is stopped and cannot be pulled
+    jobs = worker_pull('SAMPLE_WORKER', 1)
+    self.assertEqual(len(jobs), 0)
 
 
 class JobTest(TestCase):

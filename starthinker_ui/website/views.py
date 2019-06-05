@@ -35,14 +35,23 @@ from starthinker_ui.recipe.models import Recipe
 
 def solutions(request):
   scripts = [s for s in Script.get_scripts() if s.is_solution()]
-  categories = sorted(set(chain.from_iterable([s.get_categories() for s in scripts])))
-  if request: 
-    return render(request, "website/solutions.html", { 'scripts':scripts, 'categories':categories })
-  else: 
-    # for open source reduce scripts and categories
+
+  # if open source then request will be null
+  if not request: 
     scripts = [s for s in scripts if s.get_open_source()]
-    categories = sorted(set(chain.from_iterable([s.get_categories() for s in scripts])))
-    return render_to_string("website/solutions.html", { 'scripts':scripts, 'categories':categories, 'external':True })
+  
+  context = {
+    'scripts':scripts,
+    'categories':sorted(set(chain.from_iterable([s.get_categories() for s in scripts]))),
+    'catalysts':sorted(set(chain.from_iterable([s.get_catalysts() for s in scripts]))),
+    'requirements':sorted(set(chain.from_iterable([s.get_requirements() for s in scripts])))
+  }
+
+  # if open source then request will be null
+  if not request: 
+    return render_to_string("website/solutions.html", context)
+  else:
+    return render(request, "website/solutions.html", context)
 
 
 def solution(request, tag):

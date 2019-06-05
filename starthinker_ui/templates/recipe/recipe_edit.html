@@ -79,25 +79,39 @@
           <div class="card-content white-text">
             <i class="right large material-icons">storage</i>
             <span class="card-title">{{ recipe.name }} Recipe</span>
-            <p>Assemble multiple scripts into a single custom recipe.  All scripts will be executed as one synchronized job.</p>
+            <p>Recipes are run on the schedule specified.  No hours means run every hour.  Run Now forces all tasks to execute sequential instead of on schedule. If StarThinker misses an hour, it will catch up and run it at the next job opportunity. Only active recipes run.</p>
           </div>
         </div>
         <br/>
 
-        <p><a href="{{ recipe.link_run }}" class="waves-effect waves-light btn form_button modal-trigger">
-          Run <i class="material-icons right">directions_run</i>
-        </a></p>
+        {% if recipe.active %}
+          <p><a href="{{ recipe.link_run }}" class="waves-effect waves-light btn form_button modal-trigger">
+            Run <i class="material-icons right">directions_run</i>
+          </a></p>
+        {% endif %}
+
         <p><a href="#modal_log_{{ log.uid }}" class="waves-effect waves-light btn form_button modal-trigger">
           Log <i class="material-icons right">list</i>
         </a></p>
+
         <p><a href="" class="waves-effect waves-light btn form_button modal-trigger">
           Refresh <i class="material-icons right">refresh</i>
         </a></p>
+
         <p><a href="{{ recipe.link_download }}" class="waves-effect waves-light btn form_button modal-trigger">
           Download <i class="material-icons right">file_download</i>
         </a></p>
-        <p class="flow-text">{{ log.percent }}% {{ log.status }}</p>
-        {% if log.ago %}<p class="flow-text">{{ log.ago }}</p>{% endif %}
+
+        {% if recipe.pk %}
+          <p><a href="#modal_trigger_{{ recipe.pk }}" class="waves-effect waves-light btn form_button modal-trigger">
+            Remote <i class="material-icons right">settings_remote</i>
+          </a></p>
+        {% endif %}
+
+        {% if recipe.pk %}
+          <p class="flow-text">{{ log.percent }}% {{ log.status }}</p>
+          {% if log.ago %}<p class="flow-text">{{ log.ago }}</p>{% endif %}
+        {% endif %}
 
         <div class="right-align">
           {% for product in form_script.products %}
@@ -181,6 +195,34 @@
       </div>
     </div>
     
+    {% if recipe.pk %}
+      <div id="modal_trigger_{{ recipe.pk }}" class="modal">
+        <div class="modal-content">
+          <h4>Start This Recipe Remotely</h4>
+          <hr/>
+          <p><strong>Issue a POST request to:</strong>  {{ recipe.link_start }}</p>
+          <p><strong>Include parameter:</strong> reference={{ recipe.reference }}</p>
+          <p><strong>Reponse codes include:</strong></p>
+          <p>RECIPE STARTED ( 200 ) - Recipe was succesfully scheduled to run all task in sequence.</p>
+          <p>RECIPE INTERRUPTED ( 200 ) - Recipe will be restarted as soon as current subtask stops.</p>
+          <p>RECIPE NOT FOUND ( 404 ) - The reference provided does not match any recipe.</p>
+          <br/>
+          <h4>Stop This Recipe Remotely</h4>
+          <hr/>
+          <p><strong>Issue a POST request to:</strong>  {{ recipe.link_stop }}</p>
+          <p><strong>Include parameter:</strong> reference={{ recipe.reference }}</p>
+          <p><strong>Reponse codes include:</strong></p>
+          <p>RECIPE STOPPED ( 200 ) - Recipe was succesfully stopped from running remianing tasks.</p>
+          <p>RECIPE INTERRUPTED ( 200 ) - Recipe will finish current task and not execute rmaining ones.</p>
+          <p>RECIPE NOT FOUND ( 404 ) - The reference provided does not match any recipe.</p>
+          <br/>
+          <hr/>
+          <p>If you use <a href="https://console.cloud.google.com/security/iap" target="_blank">Identity Aware Proxy</a>, add <a href="https://cloud.google.com/iap/docs/authentication-howto#iap_make_request-python" target="_blank">Bearer and Google Open Id</a> to your request.</p> 
+          <br/>
+        </div>
+      </div>
+    {% endif %}
+
     {% include "log.html" %}
 
   {% endwith %}

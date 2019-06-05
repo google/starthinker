@@ -9,15 +9,9 @@
     "description":"Gives DCM clients ability to see which profiles have access to which parts of an account. Loads DCM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.",
     "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
     "sample":"https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT",
-    "requirements":{
-      "dbm":false,
-      "dcm":true,
-      "ds":false,
-      "trix":false,
-      "datastudio":true,
-      "bigquery":true
-    },
     "categories":["security", "reporting"],
+    "requirements":[ "cm", "datastudio", "bigquery" ],
+    "catalysts":["insights", "experience"],
     "pitches":[
       "Meet contractual access reporting information.",
       "Reduce unauthorized use of DCM accounts and assets.",

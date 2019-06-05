@@ -5,21 +5,22 @@
     "icon":"perm_phone_msg",
     "title":"Monthly Budget Mover",
     "product":"gTech",
-    "description":"Apply the previous month's budget/spend delta to the current month.",
-    "requirements":{
-      "dbm":true,
-      "dcm":false,
-      "ds":false,
-      "trix":false,
-      "datastudio":false,
-      "bigquery":true
-    },
+    "image": "https://storage.googleapis.com/starthinker-ui/MonthlyBudgetMover.png",
+    "description":"Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.",
     "categories":["budget"],
+    "requirements":[ "dv360", "bigquery" ],
+    "catalysts":["monetization", "automation", "experience"],
     "pitches":[
-      "Saves on the time to manually move Insertion Order budgets from month to month."
+      "Saves on the time to manually move Insertion Order budgets from month to month.",
+      "Allows you to categorize line items into categories, then the tool will aggregate up all the spend and budget for those line items and determine any remaining or negative budget.  Then it will spread that amount equally across all of the Line Items in that category."
     ],
     "impacts":{
-      "time savings":90
+      "spend optimization":80,
+      "spend growth":90,
+      "time savings":100,
+      "account health":20,
+      "csat improvement":50,
+      "technical level":10
     },
     "instructions":[
       "No changes made can be made in DV360 from the start to the end of this process",
@@ -50,7 +51,7 @@
       "monthly_budget_mover":{
         "auth": "user",
         "spend_report_id":{"field":{"name":"spend_report_id", "kind":"string", "order":2, "default":"", "description":"The report Id for the DV360 spend report."}},
-        "budget_categories":{"field":{"name":"budget_categories", "kind":"json", "order":3, "description":"A dictionary to show which IO Ids go under which Category. Please view the solutions page for information on format."}},
+        "budget_categories":{"field":{"name":"budget_categories", "kind":"json", "order":3, "default":"{\"CATEGORY1\":[12345,12345,12345], \"CATEGORY2\":[12345,12345]}", "description":"A dictionary to show which IO Ids go under which Category. Please view the solutions page for information on format."}},
         "excluded_ios":{"field":{"name":"excluded_ios", "kind":"integer_list", "order":4, "description":"A comma separated list of Inserion Order Ids that should be exluded from the budget calculations"}},
         "sdf":{
           "auth": "user",
@@ -68,9 +69,9 @@
         },
         "out":{
           "dataset": {"field":{"name":"dataset", "kind":"string","order":8, "default":"", "description":"Dataset that you would like your output tables to be produced in."}},
-          "old_sdf_table_name":{"field":{"name":"old_sdf_table_name", "kind":"string", "order":9, "default":"", "description":"The table name where the old sdf will be saved."}},
-          "new_sdf_table_name":{"field":{"name":"new_sdf_table_name", "kind":"string", "order":10, "default":"", "description":"The table name where the new sdf with the budget changes will be saved."}},
-          "changes_table_name":{"field":{"name":"changes_table_name", "kind":"string", "order":11, "default":"", "description":"The table name where the log of changes will be saved."}}
+          "old_sdf_table_name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"SDF_OLD_", "description":"" }},
+          "new_sdf_table_name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"SDF_NEW_", "description":"" }},
+          "changes_table_name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"SDF_BUDGET_MOVER_LOG_", "description":"" }}
         }
   }}
   ]

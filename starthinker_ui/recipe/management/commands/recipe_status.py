@@ -36,11 +36,11 @@ class Command(BaseCommand):
 
   def handle(self, *args, **kwargs):
     for recipe in (Recipe.objects.filter(pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.all()):
-      data = serializers.serialize('yaml', [recipe])
       print '---------------------------------------'
       print 'Name:', recipe.name
       print 'Account:', recipe.account.email
       print 'UUID:', recipe.uid()
+      print 'Reference:', recipe.reference
       print 'Active:', recipe.active
       print 'Week:', recipe.week
       print 'Hour:', recipe.hour
@@ -68,3 +68,6 @@ class Command(BaseCommand):
         print '  Output', task['stdout']
         print '  Error', task['stderr']
         print ''
+
+      task = recipe.get_task()
+      print 'Next Task', task

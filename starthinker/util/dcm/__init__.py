@@ -52,7 +52,7 @@ def get_profile_for_api(auth, account_id):
   Returns:
     * Is Superuser ( bool ): True if superuser account
     * Profile ID ( int ): profile id to be used to make API call
-       
+
   Raises:
     * If current credentials do not have a profile for this account.
 
@@ -66,19 +66,19 @@ def get_profile_for_api(auth, account_id):
     a_id = int(p['accountId'])
 
     # take the first profile for admin
-    if a_id == 2515 and 'subAccountId' not in p: 
+    if a_id == 2515 and 'subAccountId' not in p:
       profile_admin = p_id
       break
 
     # try to find a network profile if exists
-    if a_id == account_id: 
+    if a_id == account_id:
       profile_network = p_id
       break
 
   if profile_admin: return True, profile_admin
   elif profile_network: return False, profile_network
   else: raise Exception('Add your user profile to DCM account %s.' % account_id)
-    
+
 
 def get_account_name(auth, account):
   """ Return the name of a DCM account given the account ID.
@@ -89,7 +89,7 @@ def get_account_name(auth, account):
 
   Returns:
     * Profile ID.
-       
+
   Raises:
     * If current credentials do not have a profile for this account.
 
@@ -172,6 +172,7 @@ def get_body_floodlight(report, advertiser=None):
     }
   }
 
+
 # DEPRECATED DO NOT USE
 def get_body_standard(report, advertiser=None):
   return {
@@ -197,7 +198,7 @@ def get_body_standard(report, advertiser=None):
 
 def report_get(auth, account, report_id = None, name=None):
   """ Returns the DCM JSON definition of a report based on name or ID.
- 
+
   Bulletproofing: https://developers.google.com/doubleclick-advertisers/v3.2/reports/get
 
   Args:
@@ -267,7 +268,7 @@ def report_build(auth, account, body):
     * accountId - supplied as a parameter in account token.
     * ownerProfileId - determined from the current credentials.
     * advertiser_ids - supplied as a parameter in account token.
-  
+
   Args:
     * auth: (string) Either user or service.
     * account: (string) [account:advertiser@profile] token.
@@ -332,7 +333,7 @@ def report_create(auth, account, name, config):
 
   if report is None:
 
-    body = { 
+    body = {
       'kind':'dfareporting#report',
       'type':config.get('type', 'STANDARD').upper(),
       'name':name,
@@ -349,7 +350,7 @@ def report_create(auth, account, name, config):
         'startDate':str(date.today()),
         'expirationDate':str((date.today() + timedelta(days=365))),
       }
-    } 
+    }
 
     if body['type'] == 'STANDARD': body.update(get_body_standard(config))
     elif body['type'] == 'FLOODLIGHT': body.update(get_body_floodlight(config))
@@ -392,7 +393,7 @@ def report_fetch(auth, account, report_id=None, name=None, timeout = 60):
     * timeout: (int) Minutes to wait for in progress report before giving up.
 
   Returns:
-    * Report JSON if report exists and is ready. 
+    * Report JSON if report exists and is ready.
     * True if report is in progress but not ready.
     * False if report does not exist.
 
@@ -410,7 +411,7 @@ def report_fetch(auth, account, report_id=None, name=None, timeout = 60):
   running = False
 
   # zero means run once
-  while timeout >= 0: 
+  while timeout >= 0:
 
     # loop all files recent to oldest looking for valid one
     for file_json in report_files(auth, account, report_id):
@@ -418,6 +419,7 @@ def report_fetch(auth, account, report_id=None, name=None, timeout = 60):
 
       # still running ( wait for timeout )
       if file_json['status'] == 'PROCESSING':
+        if project.verbose: print 'REPORT PROCESSING WILL WAIT'
         running = True
         if timeout > 0: break # go to outer loop wait
 
@@ -425,7 +427,7 @@ def report_fetch(auth, account, report_id=None, name=None, timeout = 60):
       elif file_json['status'] == 'REPORT_AVAILABLE':
         if project.verbose: print 'REPORT DONE'
         return file_json
-       
+
       # cancelled or failed ( go to next file in loop )
 
     # if no report running ( skip wait )
@@ -436,12 +438,55 @@ def report_fetch(auth, account, report_id=None, name=None, timeout = 60):
       if project.verbose: print 'WAITING MINUTES', timeout
       sleep(60)
 
-    # advance timeout 
+    # advance timeout
     timeout -= 1
 
   # if here, no file is ready, return status
   if project.verbose: print 'NO REPORT FILES'
   return running
+
+
+def report_run(auth, account, report_id=None, name=None):
+  """ Trigger a DCM report to run by name or ID. Will do nothing if report is currently in progress.
+
+  Bulletproofing: https://developers.google.com/doubleclick-advertisers/v3.3/reports/run
+
+  Args:
+    * auth: (string) Either user or service.
+    * account: (string) [account:advertiser@profile] token.
+    * report_id: (int) ID of DCm report to fetch ( either or name ).
+    * name: (string) Name of report to fetch ( either or report_id ).
+
+  Returns:
+    * True if report run is executed
+    * False otherwise
+
+  """
+
+  account_id, advertiser_id = parse_account(auth, account)
+  is_superuser, profile_id = get_profile_for_api(auth, account_id)
+  kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+
+  if project.verbose: print 'DCM REPORT RUN INIT', report_id or name
+  if report_id is None:
+    report = report_get(auth, account, name=name)
+    if report is None:
+      raise Exception('Report does not exist:', name)
+    else:
+      report_id = report['id']
+
+  kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+  kwargs['reportId'] = report_id
+
+  files = report_files(auth, account, report_id)
+  latest_file_json = next(files, None)
+  if latest_file_json == None or latest_file_json['status'] != 'PROCESSING':
+    # run report if previously never run or currently not running
+    if project.verbose: print 'RUNNING REPORT', report_id or name
+    API_DCM(auth, internal=is_superuser).reports().run(**kwargs).execute()
+    return True
+  if project.verbose: print 'REPORT RUN SKIPPED', report_id or name
+  return False
 
 
 def report_file(auth, account, report_id=None, name=None, timeout=60, chunksize=DCM_CHUNK_SIZE):
@@ -486,7 +531,7 @@ def report_file(auth, account, report_id=None, name=None, timeout=60, chunksize=
     else:
       return filename, StringIO(API_DCM(auth).files().get_media(reportId=file_json['reportId'], fileId=file_json['id']).execute(False), chunksize)
 
-       
+
 def report_list(auth, account):
   """ Lists all the DCM report configurations for an account given the current credentials.
 
@@ -581,7 +626,7 @@ def report_schema(headers):
 
   Args:
     * headers: (list) First row of a report.
-   
+
   Returns:
     * JSON schema definition.
 
@@ -601,10 +646,10 @@ def report_schema(headers):
           header_type = field_type
           break
 
-    # finally default it to STRING   
+    # finally default it to STRING
     if header_type is None: header_type = 'STRING'
 
-    schema.append({ 
+    schema.append({
       'name':header_sanitized,
       'type':header_type,
       'mode':'NULLABLE'
@@ -632,7 +677,7 @@ def report_clean(rows, datastudio=False):
 
   Args:
     * rows: (iterator) Rows to clean.
-   
+
   Returns:
     * Iterator of cleaned rows.
 
@@ -656,13 +701,13 @@ def report_clean(rows, datastudio=False):
     if not row or row[0] == 'Grand Total:': break
 
     # find 'Date' column if it exists
-    if first: 
-      try: 
+    if first:
+      try:
         date_column = row.index('Date')
         row[date_column] = 'Report_Day'
       except ValueError: pass
       if datastudio: row = [column_header_sanitize(cell) for cell in row]
-      
+
     # remove not set columns ( which throw off schema on import types )
     row = ['' if cell.strip() in ('(not set)', '-') else cell for cell in row]
 
@@ -704,7 +749,7 @@ def conversions_upload(auth, account, floodlight_activity_id, conversion_type, c
     row_buffer.append(row)
 
     if is_last or len(row_buffer) == DCM_CONVERSION_SIZE:
-          
+
       if project.verbose: print 'CONVERSION UPLOADING ROWS: %d - %d' % (row_count,  row_count + len(row_buffer))
 
       body = {
@@ -728,7 +773,7 @@ def conversions_upload(auth, account, floodlight_activity_id, conversion_type, c
       else: results = API_DCM(auth, internal=is_superuser).conversions().batchinsert(**kwargs).execute()
 
       # stream back satus
-      for status in results['status']: yield status 
+      for status in results['status']: yield status
 
       # clear the buffer
       row_count += len(row_buffer)

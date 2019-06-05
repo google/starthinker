@@ -2,22 +2,15 @@
   "script":{
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
-    "open":true,
     "product":"gTech",
     "icon":"whatshot",
     "title":"Deal Finder",
     "description":"Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.",
     "image":"https://storage.googleapis.com/starthinker-ui/deal_finder.png",
     "sample":"https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO",
-    "requirements":{ 
-      "dbm":true, 
-      "dcm":false, 
-      "ds":false, 
-      "sheets":false,
-      "datastudio":true,
-      "bigquery":true
-    },
-    "categories":["industry", "reporting"],
+    "categories":["budget", "reporting"],
+    "requirements":[ "dv360", "datastudio", "bigquery" ],
+    "catalysts":["experience", "monetization", "insights"],
     "pitches":[
       "Move client towards more deals.",
       "Help client decide which inventory to invest in.",

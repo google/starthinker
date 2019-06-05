@@ -82,18 +82,19 @@ def credentails_put(cloud_path, credentials):
   service = get_service()
   bucket, filename = cloud_path.split(':',1)
 
+  # ASSUMES BUCKET WAS CREATED EARLIER
   # create bucket if it does not exist
-  try:
-    body = {
-      "kind": "storage#bucket",
-      "name":bucket,
-      "storageClass":"REGIONAL",
-      "location":UI_ZONE.rsplit('-', 1)[0] # take only region part of zone
-    }
-    service.buckets().insert(project=UI_PROJECT, body=body).execute()
-  except HttpError, e:
-    if json.loads(e.content)['error']['code'] == 409: pass 
-    else: raise e
+  #try:
+  #  body = {
+  #    "kind": "storage#bucket",
+  #    "name":bucket,
+  #    "storageClass":"REGIONAL",
+  #    "location":UI_ZONE.rsplit('-', 1)[0] # take only region part of zone
+  #  }
+  #  service.buckets().insert(project=UI_PROJECT, body=body).execute()
+  #except HttpError, e:
+  #  if json.loads(e.content)['error']['code'] == 409: pass 
+  #  else: raise e
 
   data = auth_encode(credentials)
   media = MediaIoBaseUpload(BytesIO(str(data)), mimetype="text/json")

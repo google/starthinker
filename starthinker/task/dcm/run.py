@@ -30,16 +30,16 @@ Note
 
 The underlying libraries use streaming download buffers, no disk is used.
 Buffers are controlled in config.py.
-For superusers, this script will use the internal API, bypassing the 
+For superusers, this script will use the internal API, bypassing the
 need for profiles.
 Reports uploaded to BigQuery use automatic schema detection based on official
-proto files.  
+proto files.
 
 """
 
-from starthinker.util.project import project 
+from starthinker.util.project import project
 from starthinker.util.data import get_rows, put_rows
-from starthinker.util.dcm import report_delete, report_build, report_create, report_file, report_to_rows, report_clean, report_schema
+from starthinker.util.dcm import report_delete, report_build, report_create, report_file, report_to_rows, report_clean, report_schema, report_run
 
 
 @project.from_parameters
@@ -57,6 +57,16 @@ def dcm():
       project.task['report']['account'],
       project.task['report'].get('report_id', None),
       project.task['report'].get('name', None) or project.task['report'].get('body', {}).get('name', None),
+    )
+
+  # check if report is to be run
+  if project.task.get('report_run_only', False):
+    if project.verbose: print 'DCM REPORT RUN', project.task['report'].get('name', None) or project.task['report'].get('report_id', None)
+    report_run(
+      project.task['auth'],
+      project.task['report']['account'],
+      project.task['report'].get('report_id', None),
+      project.task['report'].get('name', None),
     )
 
   # check if report is to be created - DEPRECATED
@@ -122,7 +132,7 @@ def dcm():
       # if bigquery, remove header and determine schema
       schema = None
       if 'bigquery' in project.task['out']:
-        schema = report_schema(rows.next()) 
+        schema = report_schema(rows.next())
         project.task['out']['bigquery']['schema'] = schema
         project.task['out']['bigquery']['skip_rows'] = 0
 

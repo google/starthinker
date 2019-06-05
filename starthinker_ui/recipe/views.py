@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,11 +22,14 @@ from __future__ import unicode_literals
 import json
 
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 
 from starthinker_ui.account.decorators import permission_admin
 from starthinker_ui.recipe.forms_script import ScriptForm
+from starthinker_ui.recipe.models import Recipe
+
 
 def recipe_list(request):
   if request.user.is_authenticated():
@@ -70,9 +73,37 @@ def recipe_run(request, pk):
     else:
       messages.success(request, 'Recipe dispatched, give it a few minutes to start.')
       recipe.force()
-  except Exception, e:
+  except Recipe.DoesNotExist, e:
     messages.error(request, str(e))
   return HttpResponseRedirect('/recipe/edit/%s/' % pk)
+
+
+@csrf_exempt
+def recipe_start(request):
+  try:
+    recipe = Recipe.objects.get(reference=request.POST.get('reference', 'invalid'))
+    if recipe.get_log()['status'] == 'RUNNING':
+      response = HttpResponse('RECIPE INTERRUPTED')
+    else:
+      response = HttpResponse('RECIPE STARTED')
+    recipe.force()
+  except Recipe.DoesNotExist, e:
+    response = HttpResponseNotFound('RECIPE NOT FOUND')
+  return response
+
+
+@csrf_exempt
+def recipe_stop(request):
+  try:
+    recipe = Recipe.objects.get(reference=request.POST.get('reference', 'invalid'))
+    if recipe.get_log()['status'] == 'RUNNING':
+      response = HttpResponse('RECIPE INTERRUPTED')
+    else:
+      response = HttpResponse('RECIPE STOPPED')
+    recipe.cancel()
+  except Recipe.DoesNotExist, e:
+    response = HttpResponseNotFound('RECIPE NOT FOUND')
+  return response
 
 
 @permission_admin()

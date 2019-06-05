@@ -26,7 +26,7 @@ from apiclient import http
 from starthinker.task.traffic.dao import BaseDAO
 from starthinker.task.traffic.feed import FieldMap
 from starthinker.task.traffic.store import store
-from util.storage import object_download
+from starthinker.util.storage import object_download
 
 
 class CreativeAssetDAO(BaseDAO):

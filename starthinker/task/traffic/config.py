@@ -21,7 +21,7 @@
 
 import json
 
-from util.sheets import sheets_read, sheets_write
+from starthinker.util.sheets import sheets_read, sheets_write
 
 
 class Config(object):

@@ -26,7 +26,7 @@ import traceback
 import datetime
 
 from apiclient import http
-from util.auth import get_service
+from starthinker.util.auth import get_service
 from starthinker.task.traffic.store import store
 from starthinker.task.traffic.logger import logger
 

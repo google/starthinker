@@ -24,8 +24,8 @@ Google Sheet that represents the Bulkdozer feed, and
 import json
 import pytz
 
-from util.auth import get_service
-from util.sheets import sheets_read, sheets_write
+from starthinker.util.auth import get_service
+from starthinker.util.sheets import sheets_read, sheets_write
 from dateutil import parser
 
 

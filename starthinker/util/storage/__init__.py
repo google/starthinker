@@ -210,13 +210,13 @@ def bucket_get(auth, name):
     else: raise
 
 
-def bucket_create(auth, project, name):
+def bucket_create(auth, project, name, location="us-west1"):
   if bucket_get(auth, name) is None:
     body = {
       "kind": "storage#bucket",
       "name":name,
       "storageClass":"REGIONAL",
-      "location":"us-west1",
+      "location":location,
     }
     service = get_service('storage', 'v1', auth)
 

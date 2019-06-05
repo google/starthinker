@@ -25,5 +25,7 @@ urlpatterns = [
   url(r'^recipe/delete/(?P<pk>\d+)/$', views.recipe_delete, name='recipe.delete'),
   url(r'^recipe/run/(?P<pk>\d+)/$', views.recipe_run, name='recipe.run'),
   url(r'^recipe/download/(?P<pk>\d+)/$', views.recipe_download, name='recipe.download'),
+  url(r'^recipe/start/$', views.recipe_start, name='recipe.start'),
+  url(r'^recipe/stop/$', views.recipe_stop, name='recipe.stop'),
   url(r'^$', views.recipe_list, name='recipe.list'),
 ]

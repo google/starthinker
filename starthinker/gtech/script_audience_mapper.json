@@ -7,15 +7,9 @@
     "title":"Audience Mapper",
     "open_source":"https://github.com/google/starthinker/blob/master/gtech/script_audience_mapper.json",
     "description":"Create custom audience mappings based on keywords.",
-    "requirements":{
-      "dbm":true,
-      "dcm":false,
-      "ds":false,
-      "trix":true,
-      "datastudio":true,
-      "bigquery":true
-    },
     "categories":["reporting"],
+    "requirements":[ "dv360", "sheets", "datastudio", "bigquery" ],
+    "catalysts":["insights", "experience"],
     "pitches":[
       "Create custom creative groups.",
       "Allow different view of KPIs.",

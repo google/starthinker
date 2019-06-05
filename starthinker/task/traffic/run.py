@@ -24,8 +24,10 @@ import json
 import sys
 import traceback
 
+from starthinker.util.dcm import get_profile_for_api
 from starthinker.util.project import project
 from starthinker.util.auth import get_service
+from starthinker.util.sheets import sheets_id
 from starthinker.task.traffic.feed import Feed
 from starthinker.task.traffic.feed import FieldMap
 from starthinker.task.traffic.ad import AdDAO
@@ -119,6 +121,12 @@ def setup():
   """Sets up Bulkdozer configuration and required object to execute the job.
 
   """
+
+  if not 'dcm_profile_id' in project.task and 'account_id' in project.task:
+    project.task['dcm_profile_id'] = get_profile_for_api(project.task['auth'], project.task['account_id'])[1]
+
+  if 'sheet_url' in project.task and not 'sheet_id' in project.task:
+    project.task['sheet_id'] = sheets_id(project.task['sheet_url'])
 
   # Setting up required objects and parsing parameters
   config.auth = project.task['auth']

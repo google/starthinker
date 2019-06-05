@@ -328,6 +328,7 @@ setup_credentials_service() {
   if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_SERVICE" ]; then
 
     echo "Retrieve Service Account Key Credentials from: https://console.cloud.google.com/apis/credentials"
+    echo "Grant Roles To Service Account at: https://pantheon.corp.google.com/iam-admin/iam"
     echo "Paste credentials JSON here: ( CTRL+D to skip )"
 
     read_multiline "}"

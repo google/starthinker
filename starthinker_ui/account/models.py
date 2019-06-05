@@ -33,11 +33,11 @@ def fix_picture(picture_url):
   return picture_url.replace('/photo.jpg', '/s32-c/photo.jpg') 
 
 
-def token_generate(model_class, length=8):
+def token_generate(model_class, model_field, length=8):
   token = None
   while not token: 
     token = ''.join([choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') for i in range(length)])
-    if model_class.objects.filter(token=token).exists(): token = None
+    if model_class.objects.filter(**{model_field:token}).exists(): token = None
   return token
 
 
@@ -117,6 +117,6 @@ class Account(AbstractBaseUser):
   def get_credentials_path(self):
     return '%s:ui/%s.json' % (BUCKET_PREFIX + "-starthinker-users", self.identifier)
 
-  def get_bucket(self, full_path=True):
-    bucket = BUCKET_PREFIX + '-starthinker-recipes-%d' % self.id
-    return ('https://pantheon.corp.google.com/storage/browser/%s/' % bucket) if full_path else bucket
+  #def get_bucket(self, full_path=True):
+  #  bucket = BUCKET_PREFIX + '-starthinker-recipes-%d' % self.id
+  #  return ('https://pantheon.corp.google.com/storage/browser/%s/' % bucket) if full_path else bucket

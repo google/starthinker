@@ -19,11 +19,11 @@
 
 """
 
-from util.project import project
+from starthinker.util.project import project
 import datetime
 import json
 
-from util.sheets import sheets_read, sheets_write, sheets_clear
+from starthinker.util.sheets import sheets_read, sheets_write, sheets_clear
 
 
 class Timer(object):

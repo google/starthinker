@@ -127,10 +127,13 @@ class Script:
       return ''
 
   def get_requirements(self):
-    return self.script.get('script', {}).get('requirements', {})
+    return self.script.get('script', {}).get('requirements', [])
 
   def get_categories(self):
     return self.script.get('script', {}).get('categories', [])
+
+  def get_catalysts(self):
+    return self.script.get('script', {}).get('catalysts', [])
 
   def get_pitches(self):
     return self.script.get('script', {}).get('pitches', [])
@@ -147,7 +150,7 @@ class Script:
   @staticmethod
   def get_json(uuid, project_id, credentials_user, credentials_service, timezone, days, hours, values):
     tasks = []
-    hours = set([int(h) for h in hours])
+    hours = set(hours)
     for v in values:
       ts = Script(v['tag']).get_tasks()
       json_set_fields(ts, v['values'])

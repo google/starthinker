@@ -36,8 +36,8 @@
        a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
        ol li { line-height: 1.8em; }
        textarea { margin-top: 7px; height: 10rem; }
-       table.list { width: 96%; max-width: 800px; margin: 0px auto; line-height: 1.8em; }
-       a.menu_link { display: inline-block; margin: 20px; }
+       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
 
        div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
        div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
@@ -58,7 +58,7 @@
        div.select-wrapper { margin-top: 2rem; }
 
        
-  #solution_image { margin: 6vh auto; width: 80%; max-width: 800px; height: auto; display: block; }
+  #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
   div.solution { width: 80%; max-width: 400px; display: inline-table; margin: 5vh auto; padding: 0px 3%; }
   #solution_button { margin: 1vh 1vw; } 
 
@@ -109,6 +109,31 @@
   <br/>
   <h1><i class="medium material-icons">whatshot</i>&nbsp; Deal Finder</h1>
   <p class="flow-text">Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.</p>
+
+  <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=experience">experience</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=monetization">monetization</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=insights">insights</a>
+  
+
+  <br/><br/>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=datastudio">datastudio</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=bigquery">bigquery</a>
+  
+
+  <br/><br/>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=budget">budget</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=reporting">reporting</a>
+  
 
   <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/deal_finder.png"/>
 
@@ -249,43 +274,13 @@
           </td>
         </tr>
 
-        <tr>
-          <td>Categories</td>
-          <td>
-            
-              industry
-            
-              <br/>reporting
-            
-          </td>
-        </tr>
-
-        <tr>
-          <td>Requires</td>
-          <td>
-            
-              datastudio
-            
-              
-            
-              <br/>dbm
-            
-              <br/>bigquery
-            
-              
-            
-              
-            
-          </td>
-        </tr>
-
       </tbody>
     </table>
   </div>
 
   <br/><br/>
   <h3 id="code-tasks">You Can Always Write Your Own Recipe</h3>
-  <p class="flow-text">See <a href="http:///go/starthinker-howto" target="_blank">StarThinker HowTo</a> for creating a json task anyone can use.</p>
+  <p class="flow-text">See <a href="/starthinker/code/#recipe_code">StarThinker HowTo</a> for creating a json task anyone can use.</p>
 
 
     </div>

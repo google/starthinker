@@ -72,13 +72,13 @@ def logout(request):
   return HttpResponseRedirect('/')
 
 
-@permission_admin()
-def storage(request):
-  bucket = request.user.get_bucket(full_path=False)
-
-  # create and permission bucket ( will do nothing if it exists )
-  project.initialize(_project=settings.RECIPE_PROJECT, _service=settings.RECIPE_SERVICE)
-  bucket_create('service', settings.RECIPE_PROJECT, bucket)
-  bucket_access('service', settings.RECIPE_PROJECT, bucket, 'OWNER', emails=[request.user.email])
-
-  return HttpResponseRedirect(request.user.get_bucket())
+#@permission_admin()
+#def storage(request):
+#  bucket = request.user.get_bucket(full_path=False)
+#
+#  # create and permission bucket ( will do nothing if it exists )
+#  project.initialize(_project=settings.RECIPE_PROJECT, _service=settings.RECIPE_SERVICE)
+#  bucket_create('service', settings.RECIPE_PROJECT, bucket)
+#  bucket_access('service', settings.RECIPE_PROJECT, bucket, 'OWNER', emails=[request.user.email])
+#
+#  return HttpResponseRedirect(request.user.get_bucket())

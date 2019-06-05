@@ -16,7 +16,7 @@
   },
   "tasks":[
     { "bigquery":{
-      "auth":"user",
+      "auth":"service",
       "run":{
         "query":{"field":{ "name":"query", "kind":"text", "order":1, "default":"", "description":"SQL with newlines and all." }},
         "legacy":{"field":{ "name":"legacy", "kind":"boolean", "order":2, "default":true, "description":"Query type must match table and query format." }}

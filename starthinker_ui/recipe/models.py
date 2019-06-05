@@ -93,7 +93,7 @@ def worker_pull(worker_uid, jobs=1):
 
   with connection.cursor() as cursor:
 
-    # every half hour put jobs back in rotation so worker can triggere get_status logic, triggers status at 24 hour mark
+    # every half hour put jobs back in rotation so worker can trigger get_status logic, triggers status at 24 hour mark
     cursor.execute("""
       UPDATE recipe_recipe
       SET job_done=%s 
@@ -102,7 +102,7 @@ def worker_pull(worker_uid, jobs=1):
 
     sleep(0.01) # 10 ms
 
-    #cursor.execute("SELECT id, worker_uid, worker_utm, job_done from recipe_recipe")
+    #cursor.execute("SELECT id, worker_uid, worker_utm, job_done FROM recipe_recipe")
     #for row in cursor.fetchall():
     #  print 'Before', row
 
@@ -120,7 +120,7 @@ def worker_pull(worker_uid, jobs=1):
       WHERE id IN ( %s )
     """ % (worker_uid, worker_utm, where))
 
-    #cursor.execute("SELECT id, worker_uid, worker_utm from recipe_recipe")
+    #cursor.execute("SELECT id, worker_uid, worker_utm FROM recipe_recipe")
     #print 'Compare', worker_uid, 'current = ', worker_interval, 'worker_utm < ', worker_utm, 'gap = ', JOB_LOOKBACK_MS
     #for row in cursor.fetchall():
     #  print 'After', row
@@ -145,9 +145,14 @@ def worker_status(worker_uid, recipe_uid, script, instance, hour, event, stdout,
     print 'Expired Worker Job:', worker_uid, recipe_uid, script, instance, hour, event
 
 
+def reference_default():
+  return token_generate(Recipe, 'token', 32)
+
+
 class Recipe(models.Model):
   account = models.ForeignKey(Account, on_delete=models.PROTECT, null=True)
   token = models.CharField(max_length=8, unique=True)
+  reference = models.CharField(max_length=32, unique=True, default=reference_default)
 
   project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -155,7 +160,7 @@ class Recipe(models.Model):
   active = models.BooleanField(default=True)
 
   week = models.CharField(max_length=64, default=json.dumps(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']))
-  hour = models.CharField(max_length=64, default=json.dumps([3]))
+  hour = models.CharField(max_length=128, default=json.dumps([3]))
 
   timezone = models.CharField(max_length=32, blank=True, default='America/Los_Angeles')
 
@@ -171,6 +176,7 @@ class Recipe(models.Model):
 
   def save(self, *args, **kwargs):
     self.get_token()
+    self.get_reference()
     super(Recipe, self).save(*args, **kwargs)
 
   def uid(self):
@@ -189,9 +195,19 @@ class Recipe(models.Model):
   def link_download(self):
     return '/recipe/download/%d/' % self.pk if self.pk else ''
 
+  def link_start(self):
+    return '%s/recipe/start/' % settings.CONST_URL
+
+  def link_stop(self):
+    return '%s/recipe/stop/' % settings.CONST_URL
+
   def get_token(self):
-    if not self.token: self.token = token_generate(Recipe)
+    if not self.token: self.token = token_generate(Recipe, 'token')
     return self.token
+
+  def get_reference(self):
+    if not self.reference: self.reference = token_generate(Recipe, 'reference', 32)
+    return self.reference
 
   def get_values(self):
     constants = {
@@ -246,6 +262,19 @@ class Recipe(models.Model):
     self.job_status = json.dumps(status)
     self.save(update_fields=['job_status'])
 
+  def cancel(self):
+    status = self.get_status()
+
+    for task in status['tasks']:
+      if not task['done']:
+        task['done'] = True
+        task['utc'] = str(datetime.utcnow())
+        task['event'] = 'JOB_CANCEL'
+
+    self.job_done = True
+    self.job_status = json.dumps(status)
+    self.save(update_fields=['job_status', 'job_done'])
+
   # WORKER METHODS
 
   def get_status(self, force=False):
@@ -283,12 +312,11 @@ class Recipe(models.Model):
       # if force, queue each task in sequence without hours
       if prior_status.get('force', False):
         hours = [hour_tz]
-      # create an entry for each hour, default tasks without hours to every hour of the day if recipe wide hours are not set
+      # if schedule, take tasks with hours or no hours given defaulted to recipe wide hours
       else:
-        hours = task.get('hour', [])
-        if len(hours) == 0: hours = recipe['setup'].get('hour', [])
-        if len(hours) == 0: hours = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+        hours = task.get('hour', recipe['setup'].get('hour', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]))
 
+      # skip assigning any manual force only tasks,  explicitly ( task{ 'hour':[] }
       for hour in hours:
         status['tasks'].append({
           'order':order,

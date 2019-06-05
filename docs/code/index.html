@@ -36,8 +36,8 @@
        a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
        ol li { line-height: 1.8em; }
        textarea { margin-top: 7px; height: 10rem; }
-       table.list { width: 96%; max-width: 800px; margin: 0px auto; line-height: 1.8em; }
-       a.menu_link { display: inline-block; margin: 20px; }
+       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
 
        div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
        div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
@@ -141,6 +141,13 @@
          </td>
          <td class="center-align">3</td>
        </tr>
+       <tr>
+         <td style="vertical-align:top;"><i class="material-icons medium teal-text">settings</i></td>
+         <td>
+           <strong>For more detailed instructions see the open source documentations.</strong>
+           <br/><a href="https://github.com/google/starthinker/blob/master/README.md">https://github.com/google/starthinker/blob/master/README.md</a>
+         </td>
+       </tr>
 
      </tbody>
   </table>
@@ -172,7 +179,7 @@
         <td style="vertical-align:top;"><i class="material-icons medium teal-text">settings</i></td>
         <td>
            <strong>For more detailed instructions see the open source documentations.</strong>
-           <br/><a href="https://github.com/google/starthinker/blob/master/README.md">https://github.com/google/starthinker/blob/master/README.md</a>
+           <br/><a href="https://github.com/google/starthinker/blob/master/starthinker/gtech/README.md">https://github.com/google/starthinker/blob/master/starthinker/gtech/README.md</a>
         </td>
       </tr>
     </tbody>
@@ -483,7 +490,7 @@
                     }
                 }
             }, 
-            &quot;auth&quot;: &quot;user&quot;
+            &quot;auth&quot;: &quot;service&quot;
         }
     }
 ]</pre>
@@ -1109,18 +1116,10 @@
             }, 
             &quot;file_types&quot;: {
                 &quot;field&quot;: {
-                    &quot;kind&quot;: &quot;string_list&quot;, 
-                    &quot;description&quot;: &quot;The sdf file types to be returned.&quot;, 
                     &quot;default&quot;: &quot;&quot;, 
-                    &quot;choices&quot;: [
-                        &quot;AD&quot;, 
-                        &quot;AD_GROUP&quot;, 
-                        &quot;CAMPAIGN&quot;, 
-                        &quot;INSERTION_ORDER&quot;, 
-                        &quot;INVENTORY_SOURCE&quot;, 
-                        &quot;LINE_ITEM&quot;
-                    ], 
+                    &quot;kind&quot;: &quot;string_list&quot;, 
                     &quot;order&quot;: 1, 
+                    &quot;description&quot;: &quot;The sdf file types to be returned.&quot;, 
                     &quot;name&quot;: &quot;file_types&quot;
                 }
             }, 
@@ -1515,6 +1514,56 @@
                     &quot;order&quot;: 3
                 }
             }
+        }
+    }
+]</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_small</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_run">JSON</span>
+            <h4>DCM Report Run</h4>
+            <p>TASK: dcm_run</p>
+            <p>Trigger a DCM report run</p>
+            <ol>
+              <li>Specify an account id.</li><li>Specify either report name or report id to run.</li>
+            </ol>
+            <pre class="view_code" id="view_code_dcm_run" style="display:none;">[
+    {
+        &quot;dcm&quot;: {
+            &quot;report&quot;: {
+                &quot;account&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;integer&quot;, 
+                        &quot;order&quot;: 1, 
+                        &quot;description&quot;: &quot;DCM network id.&quot;, 
+                        &quot;name&quot;: &quot;account&quot;
+                    }
+                }, 
+                &quot;name&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 3, 
+                        &quot;description&quot;: &quot;DCM report name, empty if using id instead.&quot;, 
+                        &quot;name&quot;: &quot;report_name&quot;
+                    }
+                }, 
+                &quot;report_id&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;integer&quot;, 
+                        &quot;order&quot;: 2, 
+                        &quot;description&quot;: &quot;DCM report id, empty if using name.&quot;, 
+                        &quot;name&quot;: &quot;report_id&quot;
+                    }
+                }
+            }, 
+            &quot;report_run_only&quot;: true, 
+            &quot;auth&quot;: &quot;user&quot;
         }
     }
 ]</pre>
@@ -5073,6 +5122,131 @@
         </tr>
       
         <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">perm_phone_msg</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_monthly_budget_mover">JSON</span>
+            <h4>Monthly Budget Mover</h4>
+            <p>TASK: monthly_budget_mover</p>
+            <p>Apply the previous month&#39;s budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.</p>
+            <ol>
+              <li>No changes made can be made in DV360 from the start to the end of this process</li><li>Make sure there is budget information for the current and previous month's IOs in DV360</li><li>Make sure the provided spend report has spend data for every IO in the previous month</li><li>Spend report must contain 'Revenue (Adv Currency)' and 'Insertion Order ID'</li><li>There are no duplicate IO Ids in the categories outlined below</li><li>This process must be ran during the month of the budget it is updating</li><li>If you receive a 502 error then you must separate your jobs into two, because there is too much information being pulled in the sdf</li><li>Manually run this job</li><li>Once the job has completed go to the table for the new sdf and export to a csv</li><li>Take the new sdf and upload it into DV360</li>
+            </ol>
+            <pre class="view_code" id="view_code_monthly_budget_mover" style="display:none;">[
+    {
+        &quot;dataset&quot;: {
+            &quot;description&quot;: &quot;Create a dataset where data will be combined and transfored for upload.&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;order&quot;: 1, 
+                    &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;, 
+                    &quot;name&quot;: &quot;dataset&quot;
+                }
+            }
+        }
+    }, 
+    {
+        &quot;monthly_budget_mover&quot;: {
+            &quot;excluded_ios&quot;: {
+                &quot;field&quot;: {
+                    &quot;kind&quot;: &quot;integer_list&quot;, 
+                    &quot;order&quot;: 4, 
+                    &quot;description&quot;: &quot;A comma separated list of Inserion Order Ids that should be exluded from the budget calculations&quot;, 
+                    &quot;name&quot;: &quot;excluded_ios&quot;
+                }
+            }, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;sdf&quot;: {
+                &quot;file_types&quot;: &quot;INSERTION_ORDER&quot;, 
+                &quot;filter_ids&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;integer_list&quot;, 
+                        &quot;order&quot;: 7, 
+                        &quot;description&quot;: &quot;The filter ids for the request.&quot;, 
+                        &quot;name&quot;: &quot;filter_ids&quot;
+                    }
+                }, 
+                &quot;auth&quot;: &quot;user&quot;, 
+                &quot;filter_type&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;choice&quot;, 
+                        &quot;description&quot;: &quot;The filter type for the filter ids.&quot;, 
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;choices&quot;: [
+                            &quot;ADVERTISER_ID&quot;, 
+                            &quot;CAMPAIGN_ID&quot;, 
+                            &quot;INSERTION_ORDER_ID&quot;, 
+                            &quot;INVENTORY_SOURCE_ID&quot;, 
+                            &quot;LINE_ITEM_ID&quot;, 
+                            &quot;PARTNER_ID&quot;
+                        ], 
+                        &quot;order&quot;: 6, 
+                        &quot;name&quot;: &quot;filter_type&quot;
+                    }
+                }
+            }, 
+            &quot;spend_report_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;order&quot;: 2, 
+                    &quot;description&quot;: &quot;The report Id for the DV360 spend report.&quot;, 
+                    &quot;name&quot;: &quot;spend_report_id&quot;
+                }
+            }, 
+            &quot;budget_categories&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;{\&quot;CATEGORY1\&quot;:[12345,12345,12345], \&quot;CATEGORY2\&quot;:[12345,12345]}&quot;, 
+                    &quot;kind&quot;: &quot;json&quot;, 
+                    &quot;order&quot;: 3, 
+                    &quot;description&quot;: &quot;A dictionary to show which IO Ids go under which Category. Please view the solutions page for information on format.&quot;, 
+                    &quot;name&quot;: &quot;budget_categories&quot;
+                }
+            }, 
+            &quot;out&quot;: {
+                &quot;changes_table_name&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;description&quot;: &quot;&quot;, 
+                        &quot;prefix&quot;: &quot;SDF_BUDGET_MOVER_LOG_&quot;, 
+                        &quot;name&quot;: &quot;recipe_name&quot;
+                    }
+                }, 
+                &quot;new_sdf_table_name&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;description&quot;: &quot;&quot;, 
+                        &quot;prefix&quot;: &quot;SDF_NEW_&quot;, 
+                        &quot;name&quot;: &quot;recipe_name&quot;
+                    }
+                }, 
+                &quot;old_sdf_table_name&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;description&quot;: &quot;&quot;, 
+                        &quot;prefix&quot;: &quot;SDF_OLD_&quot;, 
+                        &quot;name&quot;: &quot;recipe_name&quot;
+                    }
+                }, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 8, 
+                        &quot;description&quot;: &quot;Dataset that you would like your output tables to be produced in.&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;
+                    }
+                }
+            }
+        }
+    }
+]</pre>
+          <td>
+        </tr>
+      
+        <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">notifications</i></td>
           <td style="vertical-align: top;">
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_hello">JSON</span>
@@ -5526,7 +5700,7 @@
 
   <br/><br/>
   <h3 id="code-tasks">Can Always Write Your Own Custom Task</h3>
-  <p class="flow-text">See <a href="https://github.com/google/starthinker/tree/master/starthinker/gtech" target="_blank">StarThinker Task Samples</a> for creating a json task anyone can use.</p>
+  <p class="flow-text">See <a href="https://github.com/google/starthinker/tree/master/starthinker/task" target="_blank">Task PYTHON</a> and <a href="https://github.com/google/starthinker/tree/master/starthinker/gtech" target="_blank">Task JSON</a> for creating a json task anyone can use.</p>
 
 
     </div>

@@ -19,7 +19,7 @@
 from django import forms
 
 from starthinker_ui.recipe.models import Recipe
-from starthinker_ui.recipe.forms_fields import ListChoiceField, TimezoneField
+from starthinker_ui.recipe.forms_fields import ListChoiceField, ListChoiceIntegerField, TimezoneField
 
 DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 HOURS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
@@ -27,7 +27,7 @@ HOURS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2
 # This form is always constructed with an object, so initial data doesn't really work here, need to set defaults at the model
 class SetupForm(forms.ModelForm):
   week = ListChoiceField(choices=map(lambda d: (d[:3],d), DAYS), initial=map(lambda d: d[:3], DAYS))
-  hour = ListChoiceField(choices=map(lambda h: (h,h), HOURS), initial=[3])
+  hour = ListChoiceIntegerField(choices=map(lambda h: (h,h), HOURS), initial=[3])
 
   timezone = TimezoneField(required=False)
 

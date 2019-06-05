@@ -69,6 +69,21 @@ class ListChoiceField(forms.MultipleChoiceField):
       return False
 
 
+class ListChoiceIntegerField(forms.MultipleChoiceField):
+  def prepare_value(self, value):
+    return json.loads(value or '[]') if isinstance(value, basestring) else value
+
+  def to_python(self, value):
+    return json.dumps([int(v) for v in value])
+
+  def validate(self, value):
+    try: 
+      json.loads(value)
+      return True
+    except:
+      return False
+
+
 class JsonField(forms.CharField):
   widget = forms.Textarea
 

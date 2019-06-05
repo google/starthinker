@@ -9,15 +9,9 @@
     "image":"https://storage.googleapis.com/starthinker-ui/twitter_targeting.png",
     "sample":"https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO",
     "open_source":"https://github.com/google/starthinker/blob/master/gtech/twitter.json",
-    "requirements":{
-      "dbm":true,
-      "dcm":false,
-      "ds":false,
-      "trix":true,
-      "datastudio":false,
-      "bigquery":true
-    },
-    "categories":["pacing", "3P"],
+    "categories":["budget", "3P"],
+    "requirements":[ "dv360", "sheets", "bigquery" ],
+    "catalysts":["automation", "monetization", "insights"],
     "pitches":[
       "Create campaigns that respond to twitter trends.",
       "Activate spend when a specific tag trends.",

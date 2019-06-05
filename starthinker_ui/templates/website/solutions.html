@@ -29,24 +29,7 @@
     function render() {
       $("#solutions tbody tr").each(function() {
         var show = false;
-        if ($(this).attr("class").includes(category)) {
-          var spend_growth = parseInt($("#spend-growth").val());
-          var account_health = parseInt($("#account-health").val());
-          var spend_optimization = parseInt($("#spend-optimization").val());
-          var time_savings = parseInt($("#time-savings").val());
-          var csat_improvement = parseInt($("#csat-improvement").val());
-          if (parseInt($(this).attr("spend-growth")) > spend_growth) {
-            if (parseInt($(this).attr("account-health")) > account_health) {
-              if (parseInt($(this).attr("spend-optimization")) > spend_optimization) {
-                if (parseInt($(this).attr("time-savings")) > time_savings) {
-                  if (parseInt($(this).attr("csat-improvement")) > csat_improvement) {
-                    show = true;
-                  }
-                }
-              }
-            }
-          }
-        }
+        if ($(this).attr("class").includes(category)) { show = true; }
         if (show) { $(this).show(); } 
         else { $(this).hide(); }
       });
@@ -59,14 +42,8 @@
         render();
       });
 
-      $('input.impact').on('change', render);
-
     });
   </script>
-{% endblock %}
-
-{% block css %}
-  #solution_impact { margin: 3vh auto; }
 {% endblock %}
 
 {% block content %}
@@ -74,36 +51,25 @@
   <h1 id="solutions">Packaged Solutions</h1>
   <p class="flow-text">These recipes are entire workflows that deploy end to end solutions for clients.</p>
 
-  <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_all">All</span>
-  {% for category in categories %}
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_{{ category|slugify }}">{{ category }}</span>
+  <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_all">All</span>
+  {% for c in catalysts %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
   {% endfor %}
 
-  <table id="solution_impact" class="list">
-    <tbody>
-      <tr>
-        <td width="100">Growth</td>
-        <td><input type="range" id="spend-growth" class="impact" min="0" max="100" value="0"/></td>
-      </tr><tr>
-        <td>Health</td>
-        <td><input type="range" id="account-health" class="impact" min="0" max="100" value="0"/></td>
-      </tr><tr>
-        <td>Spend</td>
-        <td><input type="range" id="spend-optimization" class="impact" min="0" max="100" value="0"/></td>
-      </tr><tr>
-        <td>Time</td>
-        <td><input type="range" id="time-savings" class="impact" min="0" max="100" value="0"/></td>
-      </tr><tr>
-        <td>CSAT</td>
-        <td><input type="range" id="csat-improvement" class="impact" min="0" max="100" value="0"/></td>
-      </tr>
-    </tbody>
-  </table>
+  <br/><br/>
+  {% for c in requirements %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
+  {% endfor %}
+
+  <br/><br/>
+  {% for c in categories %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
+  {% endfor %}
 
   <table id="solutions" class="view_product bordered highlight list">
     <tbody>
     {% for script in scripts %}
-      <tr class="category_all{% for c in script.get_categories %} category_{{ c|slugify }}{% endfor %}" {% for i, v in script.get_impacts.items %} {{ i|slugify }}="{{ v }}"{% endfor %}">
+      <tr class="category_all{% for c in script.get_categories %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_catalysts %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_requirements %} category_{{ c|slugify }}{% endfor %}">
         <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">{{ script.get_icon }}</i></td>
         <td style="vertical-align:top;">
           <a href="{% if external %}/starthinker{% endif %}/solution/{{ script.get_tag }}/"><h4>{{ script.get_name }}</h4></a>

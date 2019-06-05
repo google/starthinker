@@ -27,7 +27,7 @@
 
 import json
 
-from util.sheets import sheets_read, sheets_write, sheets_clear
+from starthinker.util.sheets import sheets_read, sheets_write, sheets_clear
 
 
 class Store(object):
