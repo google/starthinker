@@ -1,0 +1,303 @@
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <link rel="shortcut icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize.min.css">
+
+    <style>
+       html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
+ 
+       #message { justify-content: center; font-size: 2em;}
+       #message i { font-size: 2em; margin: 10px; }
+       #message ul, #message li { display: inline; margin-left: 10px; }
+       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
+
+       span.square_box {
+         display: inline-block;
+         width: 40px;
+         height: 40px;
+         border: 2px solid #fff;
+         text-align: center;
+         line-height: 40px;
+         margin: 5px;
+       }
+
+       div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+       h1 a i.material-icons { font-size: 3.28rem; }
+       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+       ol li { line-height: 1.8em; }
+       textarea { margin-top: 7px; height: 10rem; }
+       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
+
+       div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
+       div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
+       div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
+
+       div.service_card { min-height: 250px; width: 300px; margin: 10px;}
+       div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
+       div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
+       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+
+       #cards { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; }
+       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
+       div.card h4 { width 100%; padding: 20px;}
+       div.card h4 i.material-icons { font-size: 2.28rem; }
+       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+
+       .card .card-content .card-title { word-wrap: break-word; }
+       div.select-wrapper { margin-top: 2rem; }
+
+       
+  #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
+  div.solution { width: 80%; max-width: 400px; display: inline-table; margin: 5vh auto; padding: 0px 3%; }
+  #solution_button { margin: 1vh 1vw; } 
+
+    </style>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  
+  <nav>
+    <div class="nav-wrapper">
+      <a href="/starthinker/" class="brand-logo">
+        <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+      </a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        
+        
+        <li><a href="/starthinker/solution/">Solutions</a></li>
+        <li><a href="/starthinker/code/">Coding</a></li>
+        
+        
+      </ul>
+      <ul class="side-nav red lighten-2" id="mobile-demo">
+        
+        
+        
+        <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
+        <li><a class="white-text" href="/starthinker/code/">Code</a></li>
+        
+        
+      </ul>
+    </div>
+  </nav>
+  
+
+  <body>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize.min.js"></script>
+
+    
+
+    <div id="page" class="center">
+      
+
+  <br/>
+  <h1><i class="medium material-icons">perm_phone_msg</i>&nbsp; Monthly Budget Mover</h1>
+  <p class="flow-text">Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.</p>
+
+  <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=monetization">monetization</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=automation">automation</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=experience">experience</a>
+  
+
+  <br/><br/>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=bigquery">bigquery</a>
+  
+
+  <br/><br/>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=budget">budget</a>
+  
+
+  <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/MonthlyBudgetMover.png"/>
+
+  <div class="buttons">
+    <a id="solution_button" class="btn-large waves-effect waves-light" href="mailto:terwilleger@google.com?subject=Request+For+A+Monthly+Budget+Mover+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Monthly+Budget+Mover+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fmonthly_budget_mover%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">
+      <i class="material-icons right">send</i> Request Deployemt
+    </a>
+
+    <a id="solution_button" class="btn-large waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
+      <i class="material-icons right">lock_open</i>Get Access
+    </a>
+
+    
+
+    
+
+    
+      <a id="solution_button" class="btn-large waves-effect waves-light" href="https://github.com/google/starthinker/blob/master//starthinker/gtech/script_monthly_budget_mover.json" target="_blank">
+        <i class="material-icons right">list</i>Git Hub
+      </a>
+    
+  </div>
+
+  <div class="solution">
+    <table class="bordered">
+      <thead>
+        <tr>
+          <th>Value Proposition</th>
+        </tr>
+       </thead>
+       <tbody>
+       
+         <tr>
+           <td>Saves on the time to manually move Insertion Order budgets from month to month.</td>
+         </tr>
+       
+         <tr>
+           <td>Allows you to categorize line items into categories, then the tool will aggregate up all the spend and budget for those line items and determine any remaining or negative budget.  Then it will spread that amount equally across all of the Line Items in that category.</td>
+         </tr>
+       
+       </tbody>
+    </table>
+  </div>
+  
+  <div class="solution">
+    <table class="bordered">
+      <thead>
+        <tr>
+          <th>Impact</th>
+          <th>Level</th>
+        </tr>
+       </thead>
+       <tbody>
+         
+           <tr>
+             <td>Csat Improvement</td>
+             <td>
+               <div class="progress">
+                 <div class="determinate" style="width: 50%"></div>
+               </div>
+             </td>
+           </tr>
+         
+           <tr>
+             <td>Spend Growth</td>
+             <td>
+               <div class="progress">
+                 <div class="determinate" style="width: 90%"></div>
+               </div>
+             </td>
+           </tr>
+         
+           <tr>
+             <td>Account Health</td>
+             <td>
+               <div class="progress">
+                 <div class="determinate" style="width: 20%"></div>
+               </div>
+             </td>
+           </tr>
+         
+           <tr>
+             <td>Technical Level</td>
+             <td>
+               <div class="progress">
+                 <div class="determinate" style="width: 10%"></div>
+               </div>
+             </td>
+           </tr>
+         
+           <tr>
+             <td>Spend Optimization</td>
+             <td>
+               <div class="progress">
+                 <div class="determinate" style="width: 80%"></div>
+               </div>
+             </td>
+           </tr>
+         
+           <tr>
+             <td>Time Savings</td>
+             <td>
+               <div class="progress">
+                 <div class="determinate" style="width: 100%"></div>
+               </div>
+             </td>
+           </tr>
+         
+       </tbody>
+    </table>
+  </div> 
+
+  <div class="solution">
+    <table class="bordered">
+      <thead>
+        <tr>
+          <th colspan="2">Details</th>
+        </tr>
+       </thead>
+      <tbody>
+
+        
+        <tr>
+          <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
+        </tr>
+        
+
+        <tr>
+          <td>Authors</td>
+          <td><a href="mailto:terwilleger@google.com?subject=Request+For+A+Monthly+Budget+Mover+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Monthly+Budget+Mover+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fmonthly_budget_mover%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">terwilleger@google.com</a>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <br/><br/>
+  <h3 id="code-tasks">You Can Always Write Your Own Recipe</h3>
+  <p class="flow-text">See <a href="/starthinker/code/#recipe_code">StarThinker HowTo</a> for creating a json task anyone can use.</p>
+
+
+    </div>
+
+    
+      <img src="https://megadash.googleplex.com/tracking/5384865225375744" alt="Megadash Usage Tracking Pixel, see https://goto/megadash-tracking" height="1" width="1" />
+    
+
+  </body>
+
+  
+
+<footer class="page-footer">
+  <div class="footer-copyright">
+    <div class="container center">
+    &copy; 2019 Google, Inc
+    </div>
+  </div>
+</footer>
+
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".button-collapse").sideNav();
+      $('select').material_select();
+      $('.modal').modal();
+    });
+  </script>
+  
+
+</html>
