@@ -158,6 +158,7 @@ class StatusTest(TestCase):
     if hour_tz == 23:
       print 'SKIPPING test_hour_pulls, need 1 spare hour for test.'
     else:
+      print 'hour_tz', hour_tz
       task = self.recipe.get_task()
       while task != None:
         self.recipe.set_task(task['script'], task['instance'], task['hour'], 'JOB_END', 'Some output.', '')

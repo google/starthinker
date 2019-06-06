@@ -113,7 +113,7 @@ source install/deploy.sh
 ```
 - Option 2) Data Scientist Menu
 - Option 1) Install StarThinker
-- Option 5) Add Recipe of 6) Generate Recipe
+- Option 5) Add Recipe or Option 6) Generate Recipe
 - Option 2) Start Cron
 
 

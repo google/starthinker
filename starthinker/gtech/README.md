@@ -53,7 +53,9 @@ and testing and create the template last.
 
 To test the new task convert the template to a recipe:
 
+```
 python starthinker/script/run.py starthinker/gtech/script_[new task].json -h
+```
 
 To execute the generated recipe, when testing for example:
 
@@ -68,6 +70,15 @@ running, restart it.
 source install/deploy.sh
 1) Developer Menu
 2) Launch Developer UI
+```
+
+Once you configure and save the new recipe in the UI, run a worker to test it.  The
+worker grabs one task at a time in test mode so you may have to run it multiple times
+to complete the entire recipe.
+
+```
+source starthinker_assets/development.sh
+python starthinker_ui/manage.py job_worker --test --verbose
 ```
 
 ### Recipe Fields

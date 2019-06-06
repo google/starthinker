@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ class SetupForm(forms.ModelForm):
   class Meta:
     model = Recipe
     fields = ['name', 'project', 'timezone', 'week', 'hour', 'active']
- 
+
   def __init__(self, account, *args, **kwargs):
     super(SetupForm, self).__init__(*args, **kwargs)
     self.instance.account = account

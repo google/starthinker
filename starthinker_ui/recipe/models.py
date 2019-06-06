@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ from starthinker_ui.ui.log import log_job_update
 
 
 JOB_INTERVAL_MS = 800 # milliseconds
-JOB_LOOKBACK_MS = 10 * JOB_INTERVAL_MS # 8 seconds 
+JOB_LOOKBACK_MS = 10 * JOB_INTERVAL_MS # 8 seconds
 JOB_RECHECK_MS = 30 * 60 * 1000 # 30 minutes
 
 
@@ -96,7 +96,7 @@ def worker_pull(worker_uid, jobs=1):
     # every half hour put jobs back in rotation so worker can trigger get_status logic, triggers status at 24 hour mark
     cursor.execute("""
       UPDATE recipe_recipe
-      SET job_done=%s 
+      SET job_done=%s
       WHERE  id IN ( SELECT id FROM recipe_recipe WHERE worker_utm < %s %s )
     """ % (db_false, worker_recheck, worker_skip_locked))
 
@@ -106,17 +106,17 @@ def worker_pull(worker_uid, jobs=1):
     #for row in cursor.fetchall():
     #  print 'Before', row
 
-    where = """SELECT id 
-      FROM recipe_recipe 
+    where = """SELECT id
+      FROM recipe_recipe
       WHERE job_done=%s AND active!=%s AND worker_utm < %s
-      ORDER BY worker_utm ASC 
-      %s 
+      ORDER BY worker_utm ASC
+      %s
       LIMIT %d
     """ % (db_false, db_false, worker_interval, worker_skip_locked, jobs)
 
     cursor.execute("""
-      UPDATE recipe_recipe 
-      SET worker_uid='%s', worker_utm=%s 
+      UPDATE recipe_recipe
+      SET worker_uid='%s', worker_utm=%s
       WHERE id IN ( %s )
     """ % (worker_uid, worker_utm, where))
 
@@ -226,7 +226,7 @@ class Recipe(models.Model):
     self.tasks = json.dumps(scripts)
 
   def get_hours(self):
-    return json.loads(self.hour or '[]')
+    return [int(h) for h in json.loads(self.hour or '[]')]
 
   def get_days(self):
     return json.loads(self.week or '[]')
@@ -241,7 +241,7 @@ class Recipe(models.Model):
 
   def get_project_identifier(self):
     return self.project.get_project_id() if self.project else ''
-  
+
   def get_scripts(self):
     for value in self.get_values():  yield Script(value['tag'])
 
@@ -286,11 +286,11 @@ class Recipe(models.Model):
     day_tz = now_tz.strftime('%a')
     hour_tz = now_tz.hour
 
-    # load prior status 
+    # load prior status
     try: prior_status = json.loads(self.job_status)
     except ValueError: prior_status = {}
 
-    # reset prior status if force or scheduled today and new 24 hour block 
+    # reset prior status if force or scheduled today and new 24 hour block
     recipe_day = recipe.get('setup', {}).get('day',[]) or ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     if force or (date_tz != prior_status.get('date_tz') and day_tz in recipe_day):
       prior_status = { 'force':force }
@@ -298,7 +298,7 @@ class Recipe(models.Model):
     # create a vanilla status with all tasks pending ( always do this because recipe may change )
     status = {
       'date_tz':date_tz,
-      'force':prior_status.get('force', False), 
+      'force':prior_status.get('force', False),
       'day':recipe_day,
       'tasks':[],
     }
@@ -320,9 +320,9 @@ class Recipe(models.Model):
       for hour in hours:
         status['tasks'].append({
           'order':order,
-          'script':script, 
-          'instance':instances[script], 
-          'hour':hour, 
+          'script':script,
+          'instance':instances[script],
+          'hour':hour,
           'utc':str(datetime.utcnow()),
           'event':'JOB_PENDING',
           'stdout':'',
@@ -373,7 +373,7 @@ class Recipe(models.Model):
         for task in status['tasks']:
           if not task['done'] and task['hour'] <= hour_tz:
             task['recipe'] = self.get_json()
-            return task 
+            return task
 
     return None
 
@@ -407,19 +407,19 @@ class Recipe(models.Model):
       task['utc'] = datetime.strptime(task['utc'].split('.', 1)[0], "%Y-%m-%d %H:%M:%S")
       task['ltc'] = utc_to_timezone(task['utc'], self.timezone)
       task['ago'] = time_ago(task['utc'])
-  
+
       if task['done']: done += 1
       if status.get('utc', task['utc']) <= task['utc']: status['utc'] = task['utc']
 
       if task['event'] == 'JOB_TIMEOUT': timeout = True
       elif task['event'] not in ('JOB_PENDING', 'JOB_START', 'JOB_END'): error = True
-  
+
     if 'utc' not in status: status['utc'] = datetime.utcnow()
     status['utl'] = utc_to_timezone(status['utc'], self.timezone)
     status['ago'] = time_ago(status['utc'])
     status['percent'] = ( done * 100 ) / ( len(status['tasks']) or 1 )
     status['uid'] = self.uid()
-  
+
     if timeout:
       status['status'] = 'TIMEOUT'
     elif error:

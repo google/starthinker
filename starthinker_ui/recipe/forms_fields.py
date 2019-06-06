@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,10 +33,10 @@ class CommaSeparatedCharField(forms.CharField):
     #return ', '.join(json.loads(value or '[]') if isinstance(value, basestring) else (value or []))
 
   def clean(self, value):
-    try: 
+    try:
       v = [str(v.strip()) for v in value.split(',') if v.strip()]
       json.dumps(v) # only do a check if valid
-      return v 
+      return v
     except: raise ValidationError
 
 
@@ -62,7 +62,22 @@ class ListChoiceField(forms.MultipleChoiceField):
     return json.dumps(value)
 
   def validate(self, value):
-    try: 
+    try:
+      json.loads(value)
+      return True
+    except:
+      return False
+
+
+class ListChoiceIntegerField(forms.MultipleChoiceField):
+  def prepare_value(self, value):
+    return json.loads(value or '[]') if isinstance(value, basestring) else value
+
+  def to_python(self, value):
+    return json.dumps([int(v) for v in value])
+
+  def validate(self, value):
+    try:
       json.loads(value)
       return True
     except:

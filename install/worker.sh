@@ -296,6 +296,34 @@ setup_worker() {
   done
 }
 
+check_worker() {
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Check Workers"
+  echo "----------------------------------------"
+
+  for instance_name in $(gcloud compute instances list --filter="name~'^starthinker-.*'" --format="value(NAME)"); do
+
+    echo ""
+    echo "----------------------------------------"
+    echo "INSTANCE PROXY: $instance_name"
+    echo "----------------------------------------"
+    instance_command "$instance_name" "sudo systemctl status starthinker_proxy"
+
+    echo ""
+    echo "----------------------------------------"
+    echo "INSTANCE STARTHINKER: $instance_name"
+    echo "----------------------------------------"
+    instance_command "$instance_name" "sudo systemctl status starthinker"
+    echo ""
+
+  done
+
+  echo "Done"
+  echo ""
+}
+
 
 if [ "$1" = "--instance" ];then
   shift

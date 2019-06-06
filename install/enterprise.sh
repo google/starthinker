@@ -199,7 +199,15 @@ setup_appengine() {
     setup_credentials_ui "optional";
     setup_database "optional" "optional" "optional";
     save_config;
-  
+
+    gcloud services enable doubleclickbidmanager.googleapis.com
+    gcloud services enable storage-api.googleapis.com
+    gcloud services enable bigquery-json.googleapis.com
+    gcloud services enable dfareporting.googleapis.com
+    gcloud services enable drive.googleapis.com
+    gcloud services enable sheets.googleapis.com
+    gcloud services enable doubleclicksearch.googleapis.com
+
     install_proxy; # first so it install dependencies
     install_virtualenv; # second because pip is here
 
@@ -291,7 +299,7 @@ setup_enterprise() {
   echo ""
 
   enterprise_done=0
-  enterprise_options=("Deploy App Engine UI" "Deploy Job Workers" "Change Domain" "Change Database" "Migrate Database" "Quit")
+  enterprise_options=("Deploy App Engine UI" "Deploy Job Workers" "Check Job Workers" "Change Domain" "Change Database" "Migrate Database" "Quit")
 
   while (( !enterprise_done ))
   do
@@ -305,10 +313,11 @@ setup_enterprise() {
       case $REPLY in
         1) setup_appengine; break ;;
         2) setup_worker; break ;;
-        3) setup_domain; save_config; break ;;
-        4) setup_database; save_config; break ;;
-        5) migrate_database_enterprise; break ;;
-        6) enterprise_done=1; break;;
+        3) check_worker; break ;;
+        4) setup_domain; save_config; break ;;
+        5) setup_database; save_config; break ;;
+        6) migrate_database_enterprise; break ;;
+        7) enterprise_done=1; break;;
         *) echo "What's that?" ;;
       esac
     done

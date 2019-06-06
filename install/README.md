@@ -42,7 +42,6 @@ You can edit these variables using deploy.sh, production.sh, or just set them on
 
  - STARTHINKER_SCALE - ( int ) scales all iternal buffers by a multiplier, used to adjust memory allocation.
  - STARTHINKER_DEVELOPMENT ( 1 or 0 ) - Maps to Django DEVELOPMENT_MODE.
- - STARTHINKER_INTERNAL - ( 1 or 0 ) Internal to Google, activates parts of API not avilable externally.
 
  - STARTHINKER_PROJECT - ( string ) Google Cloud project identifier to run local recipes or UI in.
  - STARTHINKER_ZONE - ( string ) Zone and region to set up all assets in, for example: us-central1-a.
@@ -62,12 +61,7 @@ You can edit these variables using deploy.sh, production.sh, or just set them on
  - STARTHINKER_UI_SECRET - ( string ) Maps to Django SECRET_KEY.
  - STARTHINKER_UI_DATABASE_ENGINE - ( string ) Maps to Django DATABASES - ENGINE.
  - STARTHINKER_UI_DATABASE_HOST - ( string ) Maps to Django DATABASES - HOST.
+ - STARTHINKER_UI_DATABASE_PORT - ( int ) Maps to Django DATABASES - PORT.
  - STARTHINKER_UI_DATABASE_NAME - ( string ) Maps to Django DATABASES - NAME.
  - STARTHINKER_UI_DATABASE_USER - ( string ) Maps to Django DATABASES - USER.
  - STARTHINKER_UI_DATABASE_PASSWORD - ( string ) Maps to Django DATABASES - PASSWORD.
- - STARTHINKER_UI_DATABASE_PORT - ( int ) Maps to Django DATABASES - PORT.
-
- - STARTHINKER_RECIPE_PROJECT - Google Cloud project where UI will store recipes.
- - STARTHINKER_RECIPE_SERVICE= Google Cloud service account used by UI to store recipes.
-
-# The Rest Of This Document Is Pulled From Code Comments
