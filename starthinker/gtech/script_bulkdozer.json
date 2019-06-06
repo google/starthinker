@@ -1,0 +1,45 @@
+{
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "icon":"donut_small",
+    "product":"gTech",
+    "title":"Bulkdozer",
+    "description":"Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.",
+    "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
+    "sample":"https://docs.google.com/spreadsheets/d/1rcBXjVtz3HgMWImP-G8-ESjCj8VPhFjLca1kCu5KAeM/edit#gid=1151132593",
+    "categories":["automation", "trafficking"],
+    "requirements":[ "cm", "sheets"],
+    "catalysts":["automation"],
+    "pitches":[
+      "Reduce time to market of campaigns and provide the agility to respond quickly to changes.",
+      "Quality of campaigns increases as fewer manual steps lead to fewer errors, and the visualization that Bulkdozer provides is invaluable to validate and audit campaigns.",
+      "More efficiency means more time and resources available to focus on higher value tasks.",
+      "Leads to better media decisions and better ROAS."
+    ],
+    "impacts":{
+      "time savings":90
+    },
+    "instructions":[
+      "Open the latest version of the Bulkdozer feed template.",
+      "Make a copy: File -> Make Copy",
+      "Rename it to include your name and company. This will be your personal feed.",
+      "Share it with your service account email",
+      "Enter configurations in the 'Store' tab based on instructions provided by your Bulkdozer point of contact."
+    ],
+    "authors":["mauriciod@google.com"]
+  },
+  "setup":{
+    "day":[],
+    "hour":[]
+  },
+  "tasks":[
+    { "traffic": {
+        "hour":[],
+        "account_id": {"field":{ "name":"account_id", "kind":"string", "order":1, "description":"Campaign Manager Network ID", "default":"" }},
+        "auth": "user",
+        "sheet_url":{"field":{ "name":"sheet_url", "kind":"string", "order":1, "description":"Feed Sheet URL", "default":"" }},
+        "timezone": "America/Chicago"
+    }}
+  ]
+}
