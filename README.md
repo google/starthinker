@@ -26,6 +26,7 @@ Most directories contain a README.me file. These are instructions for how to use
 General structure ofthe code is:
 
 - [/install](install/) - Scripts for installing and deploying StarThinker.
+- [/tutorial](tutorial/) - Tutorials for using StarThinker code base.
 - [/starthinker/util](starthinker/util/) - Low level library wrappers around Google API with helpers to handle common errors.
 - [/starthinker/task](starthinker/task/) - Handlers for each task specified in a JSON recipe.
 - [/starthinker/gtech](starthinker/gtech/) - Complete solution templates provided by Google gTech that you can deploy.
