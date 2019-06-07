@@ -1,4 +1,4 @@
-# Deplouing For Development
+# Deploying For Development
 
 For a quick start that will do nothing other than show how to sucesfully run a recipe:
 
