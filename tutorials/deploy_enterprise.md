@@ -34,3 +34,6 @@ set up a verified domain and controll access using firewalls and other tools
 available in Google Cloud.
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
+
+---
+&copy; 2019 Google Inc. - Apache License, Version 2.0

@@ -29,10 +29,6 @@ STARTHINKER_DEVELOPMENT=0
 STARTHINKER_PROJECT=""
 STARTHINKER_ZONE="us-west1-b"
 
-if [ -z "${STARTHINKER_UI_SECRET}" ]; then
-  STARTHINKER_UI_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1)
-fi
-
 STARTHINKER_UI_DOMAIN=""
 STARTHINKER_UI_DATABASE_ENGINE="django.db.backends.postgresql"
 STARTHINKER_UI_DATABASE_HOST="127.0.0.1"
@@ -58,6 +54,10 @@ derive_config() {
 
   STARTHINKER_CRON="${THIS_DIR}/starthinker_cron"
   STARTHINKER_ENV="${THIS_DIR}/starthinker_virtualenv"
+
+  if [ -z "${STARTHINKER_UI_SECRET}" ]; then
+    STARTHINKER_UI_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1)
+  fi
 
 }
 

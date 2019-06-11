@@ -70,3 +70,6 @@ Start the workers manually from the command line:
 source starthinker_assets/development.sh 
 python starthinker_ui/manage.py job_worker --test --verbose --jobs 1
 ```
+
+---
+&copy; 2019 Google Inc. - Apache License, Version 2.0

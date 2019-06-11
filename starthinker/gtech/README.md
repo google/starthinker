@@ -172,3 +172,6 @@ Use at least one of the following categories when defining a solution.
 - Managed Services
 - Automation
 - Site Testing & Personalization
+
+---
+&copy; 2019 Google Inc. - Apache License, Version 2.0

@@ -6,3 +6,7 @@ You can use the starthinker module directly in any python project to run a recip
 pip install git+https://github.com/google/starthinker
 python
 import starthinker
+```
+
+---
+&copy; 2019 Google Inc. - Apache License, Version 2.0

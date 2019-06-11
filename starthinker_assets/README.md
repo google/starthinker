@@ -24,3 +24,5 @@ In production to access the database try:
 
 psql -h localhost -d $STARTHINKER_UI_DATABSE_NAME -U $STARTHINKER_UI_DATABASE_USER
 
+---
+&copy; 2019 Google Inc. - Apache License, Version 2.0

@@ -34,3 +34,6 @@ to use the product supported APIs.
 
 I can never rememember the airflow command to run dags so I added a helper to the factory
 to print it if you try to execute the dag directly via python.
+
+---
+&copy; 2019 Google Inc. - Apache License, Version 2.0
