@@ -1,7 +1,7 @@
 # Tutorials
 
-Samples and references for using the StarThinker code base. Use these to
-deploy and maintain a StarThinker instance.
+Samples and references for using the StarThinker code base. Use these to deploy and maintain 
+a StarThinker instance.
 
 ## Deployment
 

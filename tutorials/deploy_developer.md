@@ -7,11 +7,9 @@ First configure StarThinker by running...
 ```
 git clone https://github.com/google/starthinker
 ```
-
 ```
 cd starthinker
 ```
-
 ```
 source install/deploy.sh 
 ```
@@ -23,6 +21,11 @@ source install/deploy.sh
 ![StarThinker Deploy Script](images/deploy_developer.png)
 
 *Option 1) Install StarThinker*
+
+You will be prompted for a cloud project, be sure to use the project ID, not the name.  Include organization if
+the project is has one.  <project-setup>Choose Cloud Project</project-setup>
+
+![StarThinker Deploy Script](images/deploy_project.png)
 
 Then activate StarThinker virtualenv...
 
@@ -51,7 +54,7 @@ python starthinker/script/run.py starthinker/gtech/script_dcm_to_bigquery.json 7
 python starthinker/all/run.py test_recipe.json
 ```
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_developer.md)
 
 Read more at [script/README.md](script/README.md).
 
