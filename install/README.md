@@ -4,10 +4,10 @@ StarThinker is fully configured from environmental variables.
 A deployment script is provided to help with the configuration.
 To deploy a specific type of StarThinker setup see:
 
- - [Developer](deploy_developer.md) - Local machine, ideal for testing and development work.
- - [Data Scientist](deploy_scientist.md) - Single user recurring job running recipes.
- - [Enterprise](deploy_enterprise.md) - Google App Engine multi user web setup. 
-
+ - [Developer](../tutorials/deploy_developer.md) - Local machine, ideal for testing and development work.
+ - [Data Scientist](../tutorials/deploy_scientist.md) - Single user recurring job running recipes.
+ - [Enterprise](../tutorials/deploy_enterprise.md) - Google App Engine multi user web setup. 
+ - [Package](../tutorials/deploy_package.md) - Workshop import and run instantly.
 
 ## Quick Start
 
