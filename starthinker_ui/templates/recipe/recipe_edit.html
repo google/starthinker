@@ -90,6 +90,12 @@
           </a></p>
         {% endif %}
 
+        {% if recipe.is_running %}
+          <p><a href="{{ recipe.link_cancel }}" class="waves-effect waves-light btn form_button modal-trigger">
+            Cancel <i class="material-icons right">cancel</i>
+          </a></p>
+        {% endif %}
+
         <p><a href="#modal_log_{{ log.uid }}" class="waves-effect waves-light btn form_button modal-trigger">
           Log <i class="material-icons right">list</i>
         </a></p>

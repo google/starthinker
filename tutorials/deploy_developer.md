@@ -22,10 +22,16 @@ source install/deploy.sh
 
 *Option 1) Install StarThinker*
 
-You will be prompted for a cloud project, be sure to use the project ID, not the name.  Include organization if
-the project is has one.  <project-setup>Choose Cloud Project</project-setup>
+### Project
+When prompted for cloud a project, be sure to use the project ID, not the name.  Include organization if
+the project has one.
 
 ![StarThinker Deploy Script](images/deploy_project.png)
+
+### Service
+When prompted for a service account, create and permission it.
+
+![StarThinker Deploy Script](images/deploy_service.png)
 
 Then activate StarThinker virtualenv...
 

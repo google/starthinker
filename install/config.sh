@@ -239,6 +239,15 @@ setup_project() {
 
   if [ "$optional_project" != "optional" ] || [ "${STARTHINKER_PROJECT}" == "" ]; then
 
+    echo "Retrieve Project ID from: https://console.cloud.google.com"
+    echo ""
+    echo "IMPORTANT SETUP NOTES"
+    echo ""
+    echo " * The Project ID is in a drop down at the top of your Google Cloud Console."
+    echo " * Use the Project ID not the Name."
+    echo " * Include the organization if it is part of the Project ID."
+    echo ""
+
     read -p "Cloud Project ID ( blank to keep existing ): " cloud_id
 
     if [ "${cloud_id}" ]; then
@@ -269,8 +278,14 @@ setup_credentials_commandline() {
   if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_CLIENT_INSTALLED" ]; then
 
     # client OTHER
-    echo "Used by for local development and command line commands."
     echo "Retrieve \"Other\" OAuth Client ID Credentials from: https://console.cloud.google.com/apis/credentials"
+    echo ""
+    echo "IMPORTANT SETUP NOTES"
+    echo ""
+    echo " * In Google Cloud Console -> Services & APIs -> Create Credentials -> oAuth Credentials."
+    echo " TO BE CONTINUED"
+    echo ""
+
     echo "Paste credentials JSON here: ( CTRL+D to skip )"
 
     read_multiline "}}"
@@ -298,9 +313,19 @@ setup_credentials_ui() {
 
   if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_CLIENT_WEB" ]; then
 
-    echo "Used by UI when launched."
+    # client OTHER
     echo "Retrieve \"Web\" OAuth Client ID Credentials from: https://console.cloud.google.com/apis/credentials"
-    echo "You may have to set up the \"Internal\" OAuth Consent Screen: https://pantheon.corp.google.com/apis/credentials/consent"
+    echo ""
+    echo "IMPORTANT SETUP NOTES"
+    echo ""
+    echo " * In Google Cloud Console -> Services & APIs -> Create Credentials -> oAuth Credentials."
+    echo " TO BE CONTINUED"
+    echo ""
+
+    echo "Set up the \"Internal\" OAuth Consent Screen: https://pantheon.corp.google.com/apis/credentials/consent"
+    echo " TO BE CONTINUED"
+    echo ""
+
     echo "Paste credentials JSON here: ( CTRL+D to skip )"
 
     read_multiline "}}"
@@ -328,7 +353,16 @@ setup_credentials_service() {
   if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_SERVICE" ]; then
 
     echo "Retrieve Service Account Key Credentials from: https://console.cloud.google.com/apis/credentials"
-    echo "Grant Roles To Service Account at: https://pantheon.corp.google.com/iam-admin/iam"
+    echo ""
+    echo "IMPORTANT SETUP NOTES"
+    echo ""
+    echo " * In Google Cloud Console -> Services & APIs -> Create Credentials -> Service Credentials."
+    echo " * Choose JSON format."
+    echo " * Name the service 'starthinker' for ease of tracking later."
+    echo " * Assign project editor role or restrict roles to BigQuery / Storage editors."
+    echo " * Credentials will automatically download, open file and copy contents."
+    echo ""
+
     echo "Paste credentials JSON here: ( CTRL+D to skip )"
 
     read_multiline "}"
@@ -355,7 +389,7 @@ setup_credentials_user() {
   echo "----------------------------------------"
   echo ""
 
-  source "${STARTHINKER_ENV}/bin/activate"
+  source "${STARTHINKER_ROOT}/starthinker_assets/development.sh";
   python "${THIS_DIR}/starthinker/auth/helper.py" -c "${STARTHINKER_CLIENT_INSTALLED}" -u "${STARTHINKER_USER}"
   deactivate
 

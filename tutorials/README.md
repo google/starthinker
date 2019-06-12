@@ -12,10 +12,11 @@ a StarThinker instance.
 
 ## UI
 
-- [Client Credentials](ui_client.md) - How to get client credentials.
-- [Service Credentials](ui_project.md) - How to get service credentials.
+- [Service Credentials](cloud_service.md) - How to get service credentials.
+- [Client Command Line Credentials](cloud_client_installed.md) - How to get client credentials ( other ).
+- [Client UI Credentials](cloud_client_web.md) - How to get client credentials ( web ).
 - [Creating A Recipe Script](../starthinker/gtech/README.md) - How to code up a JSON recipe.
-- [Launching A Solution](ui_recipe.md) - How to deploy a solution using the UI.
+- [Launching A Recipe / Solution](ui_recipe.md) - How to deploy a solution using the UI.
 
 ## General
 

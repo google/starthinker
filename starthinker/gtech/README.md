@@ -3,6 +3,10 @@
 These JSON files are recipe temmplates that can be used to generate recipe workflows.
 All templates start with 'script'. There are two types of templates:
 
+![Cloud Client UI](../../tutorials/images/ui_say_hello.png)
+
+[View Cloud Client UI Setup Larger](../../tutorials/images/ui_say_hello.png)
+
 ## Recipe
 
 Simple definitions for parameters passed to a specific task. Recipes are used by the

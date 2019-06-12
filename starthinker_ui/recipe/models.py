@@ -192,6 +192,9 @@ class Recipe(models.Model):
   def link_run(self):
     return '/recipe/run/%d/' % self.pk if self.pk else ''
 
+  def link_cancel(self):
+    return '/recipe/cancel/%d/' % self.pk if self.pk else ''
+
   def link_download(self):
     return '/recipe/download/%d/' % self.pk if self.pk else ''
 
@@ -200,6 +203,9 @@ class Recipe(models.Model):
 
   def link_stop(self):
     return '%s/recipe/stop/' % settings.CONST_URL
+
+  def is_running(self):
+    return self.get_log()['status'] == 'RUNNING'
 
   def get_token(self):
     if not self.token: self.token = token_generate(Recipe, 'token')

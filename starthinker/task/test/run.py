@@ -24,6 +24,7 @@ from starthinker.util.bigquery import table_to_schema, table_to_rows, query_to_r
 from starthinker.util.sheets import sheets_read
 from starthinker.util.csv import rows_to_type
 from starthinker.script.parse import json_set_fields
+from starthinker.task.traffic.test import bulkdozer_test
 
 
 # display results of list comparison
@@ -131,6 +132,9 @@ def asserts():
   print project.task['assert']
   print 'PASSED'
 
+def traffic():
+  print 'running Bulkdozer test'
+  bulkdozer_test()
 
 # decide which test to run
 @project.from_parameters
@@ -139,6 +143,7 @@ def test():
   elif 'sheets' in project.task: sheets()
   elif 'bigquery' in project.task: bigquery()
   elif 'template' in project.task: template()
+  elif 'traffic' in project.task: traffic()
 
 
 # test should be run like any other task

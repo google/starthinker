@@ -68,11 +68,25 @@ def recipe_delete(request, pk=None):
 def recipe_run(request, pk):
   try:
     recipe = request.user.recipe_set.get(pk=pk)
-    if recipe.get_log()['status'] == 'RUNNING':
+    if recipe.is_running():
       messages.success(request, 'Recipe dispatched, will run once in progress task completes.')
     else:
       messages.success(request, 'Recipe dispatched, give it a few minutes to start.')
-      recipe.force()
+    recipe.force()
+  except Recipe.DoesNotExist, e:
+    messages.error(request, str(e))
+  return HttpResponseRedirect('/recipe/edit/%s/' % pk)
+
+
+@permission_admin()
+def recipe_cancel(request, pk):
+  try:
+    recipe = request.user.recipe_set.get(pk=pk)
+    if recipe.is_running():
+      messages.success(request, 'Recipe cancelled, active task will stop shortly.')
+    else:
+      messages.success(request, 'Recipe cancelled, no tasks are running.')
+    recipe.cancel()
   except Recipe.DoesNotExist, e:
     messages.error(request, str(e))
   return HttpResponseRedirect('/recipe/edit/%s/' % pk)
@@ -82,7 +96,7 @@ def recipe_run(request, pk):
 def recipe_start(request):
   try:
     recipe = Recipe.objects.get(reference=request.POST.get('reference', 'invalid'))
-    if recipe.get_log()['status'] == 'RUNNING':
+    if recipe.is_running():
       response = HttpResponse('RECIPE INTERRUPTED')
     else:
       response = HttpResponse('RECIPE STARTED')
@@ -96,7 +110,7 @@ def recipe_start(request):
 def recipe_stop(request):
   try:
     recipe = Recipe.objects.get(reference=request.POST.get('reference', 'invalid'))
-    if recipe.get_log()['status'] == 'RUNNING':
+    if recipe.is_running():
       response = HttpResponse('RECIPE INTERRUPTED')
     else:
       response = HttpResponse('RECIPE STOPPED')
