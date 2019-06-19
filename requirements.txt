@@ -18,9 +18,9 @@
 
 #-r starthinker/requirements.txt
 google-cloud-core
-google-cloud-bigquery
-google-cloud-storage
-google-cloud-pubsub
+#google-cloud-bigquery
+#google-cloud-storage
+#google-cloud-pubsub
 google-auth
 google-auth-httplib2
 google-api-python-client
