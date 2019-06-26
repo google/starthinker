@@ -44,5 +44,10 @@ Yes, however each StarThinker will need to run under a different user with disti
 ### Can StarThinker settings in Google Cloud Console be shared?
 No, The Google Cloud Console is tied to your user and cannot be shared.  To share deployment settings launch starthinkers form a virtual machine shared with multiple users.
 
+---
+### I'm getting an error on Mac OS X?
+You may have to install developer tools, specifically Command Line Tools using the command:
+```xcode-select --install```
+
 --- 
 &copy; 2019 Google Inc. - Apache License, Version 2.0

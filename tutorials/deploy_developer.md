@@ -1,8 +1,39 @@
 # Deploying For Development
 
-For a quick start that will do nothing other than show how to sucesfully run a recipe:
+The development deployment is intended for a basic command line only deployment of Starthinker ideal
+for testing and creating recipes.  Each developer should have a unigue Google Cloud project to fully
+utilize StarThinker out of the box.  StarThinker is fully extensible.
 
-First configure StarThinker by running...
+## Command Line Deploy
+```
+git clone https://github.com/google/starthinker
+```
+```
+cd starthinker
+```
+```
+source install/deploy.sh 
+```
+
+1. Option 1) Developer Menu
+1. Option 1) Install StarThinker
+  - You will be asked for a Cloud Project ID ( use the ID, not the Name, not the Number )
+  - You will be asked for [Service Credentials](cloud_service.md).
+  - You will be asked for [Installed Client Credentials](cloud_client_installed.md).
+1. Option 9) Quit
+
+```
+source starthinker_assets/development.sh
+```
+```
+python starthinker/all/run.py starthinker/gtech/say_hello.json --verbose
+```
+
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
+
+Next, learn how to [create a recipe](../starthinker/gtech/README.md) or look at the [cheat sheet of commands](cheat_sheet.md). 
+
+## UI For Development Deploy
 
 ```
 git clone https://github.com/google/starthinker
@@ -14,55 +45,23 @@ cd starthinker
 source install/deploy.sh 
 ```
 
-![StarThinker Deploy Script](images/deploy.png)
+1. Option 1) Developer Menu
+1. Option 2) Deploy Development UI
+  - You may be asked for a Cloud Project ID ( use the ID, not the Name, not the Number )
+  - You may be asked for [Service Credentials](cloud_service.md).
+  - You will be asked for [Web Client Credentials](cloud_client_web.md).
+1. Follow on screen instructions for how to access the UI via browser.
 
-*Option 1) Developer Menu*
-
-![StarThinker Deploy Script](images/deploy_developer.png)
-
-*Option 1) Install StarThinker*
-
-### Project
-When prompted for cloud a project, be sure to use the project ID, not the name.  Include organization if
-the project has one.
-
-![StarThinker Deploy Script](images/deploy_project.png)
-
-### Service
-When prompted for a service account, create and permission it.
-
-![StarThinker Deploy Script](images/deploy_service.png)
-
-Then activate StarThinker virtualenv...
-
-```
-source starthinker_assets/development.sh
-```
-
-Finally run the sample aplication...
-
-```
-python starthinker/all/run.py starthinker/gtech/say_hello.json --verbose
-```
-
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
-
-Read more at [all/README.md](all/README.md) under Useful Developer Features. 
-
-
-## How Do I Turn A Recipe Template Into A Recipe?
-
-To quickly use any one of the template to perform a task, moving a DCM report for example:
-
-```
-python starthinker/script/run.py starthinker/gtech/script_dcm_to_bigquery.json -h
-python starthinker/script/run.py starthinker/gtech/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" > test_recipe.json
-python starthinker/all/run.py test_recipe.json
-```
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_developer.md)
 
-Read more at [script/README.md](script/README.md).
+Next, learn how to [create a recipe](../starthinker/gtech/README.md) or look at the [cheat sheet of commands](cheat_sheet.md). 
+
+## Cloud Resources
+
+  - [Google Cloud Credentials](https://pantheon.corp.google.com/apis/credentials) - where you manage your credentials.
+  - [Google Cloud Billing](https://pantheon.corp.google.com/billing/linkedaccount) - examine costs in real time.
+
 
 ---
 &copy; 2019 Google Inc. - Apache License, Version 2.0
