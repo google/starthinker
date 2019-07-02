@@ -19,14 +19,16 @@
 import json
 import copy
 from time import time, sleep
-
 from datetime import datetime, timedelta
-from django.test import TestCase
+
 from django.core import management
+from django.test import TestCase
+from django.test.testcases import TransactionTestCase
 
 from starthinker_ui.account.tests import account_create
 from starthinker_ui.project.tests import project_create
-from starthinker_ui.recipe.models import Recipe, worker_pull, worker_status, worker_ping, utc_milliseconds, utc_to_timezone, JOB_LOOKBACK_MS, time_ago
+from starthinker_ui.recipe.models import Recipe, worker_pull, worker_status, worker_check, worker_ping, utc_milliseconds, utc_to_timezone, JOB_LOOKBACK_MS, time_ago
+from starthinker_ui.recipe.management.commands.job_worker import Workers
 
 # test recipe done to undone
 
@@ -104,26 +106,27 @@ class StatusTest(TestCase):
     self.assertEqual(len(status['tasks']), 1 + 1 + 1 + 3 + 3 + 1)
     self.assertFalse(status['force'])
 
+    # order two is hidden unless forced ( so it is skipped ) hour = [] excludes it from list
     self.assertEqual(status['tasks'][0]['hour'], 1)
     self.assertEqual(status['tasks'][0]['order'], 0)
     self.assertEqual(status['tasks'][1]['hour'], 1)
-    self.assertEqual(status['tasks'][1]['order'], 3)
+    self.assertEqual(status['tasks'][1]['order'], 4)
     self.assertEqual(status['tasks'][2]['hour'], 1)
-    self.assertEqual(status['tasks'][2]['order'], 4)
+    self.assertEqual(status['tasks'][2]['order'], 5)
     self.assertEqual(status['tasks'][3]['hour'], 3)
     self.assertEqual(status['tasks'][3]['order'], 1)
     self.assertEqual(status['tasks'][4]['hour'], 3)
-    self.assertEqual(status['tasks'][4]['order'], 3)
+    self.assertEqual(status['tasks'][4]['order'], 4)
     self.assertEqual(status['tasks'][5]['hour'], 3)
-    self.assertEqual(status['tasks'][5]['order'], 4)
+    self.assertEqual(status['tasks'][5]['order'], 5)
     self.assertEqual(status['tasks'][6]['hour'], 3)
-    self.assertEqual(status['tasks'][6]['order'], 5)
+    self.assertEqual(status['tasks'][6]['order'], 6)
     self.assertEqual(status['tasks'][7]['hour'], 23)
-    self.assertEqual(status['tasks'][7]['order'], 2)
+    self.assertEqual(status['tasks'][7]['order'], 3)
     self.assertEqual(status['tasks'][8]['hour'], 23)
-    self.assertEqual(status['tasks'][8]['order'], 3)
+    self.assertEqual(status['tasks'][8]['order'], 4)
     self.assertEqual(status['tasks'][9]['hour'], 23)
-    self.assertEqual(status['tasks'][9]['order'], 4)
+    self.assertEqual(status['tasks'][9]['order'], 5)
 
 
   def test_all_hours(self):
@@ -151,6 +154,55 @@ class StatusTest(TestCase):
     self.assertTrue(status['force'])
     self.assertEqual(len(status['tasks']), len(self.recipe.get_json()['tasks'])) 
 
+    # includes all tasks in sequence including hours=[], normally #2 is skipped
+    self.assertEqual(status['tasks'][0]['order'], 0)
+    self.assertEqual(status['tasks'][1]['order'], 1)
+    self.assertEqual(status['tasks'][2]['order'], 2)
+    self.assertEqual(status['tasks'][3]['order'], 3)
+    self.assertEqual(status['tasks'][4]['order'], 4)
+    self.assertEqual(status['tasks'][5]['order'], 5)
+    self.assertEqual(status['tasks'][6]['order'], 6)
+
+
+  def test_canceled(self):
+    self.recipe.force()
+    status = self.recipe.get_status()
+
+    self.assertFalse(status['tasks'][0]['done'])
+    self.assertEqual(status['tasks'][0]['event'], 'JOB_PENDING')
+    self.assertFalse(status['tasks'][1]['done'])
+    self.assertEqual(status['tasks'][1]['event'], 'JOB_PENDING')
+    self.assertFalse(status['tasks'][2]['done'])
+    self.assertEqual(status['tasks'][2]['event'], 'JOB_PENDING')
+    self.assertFalse(status['tasks'][3]['done'])
+    self.assertEqual(status['tasks'][3]['event'], 'JOB_PENDING')
+    self.assertFalse(status['tasks'][4]['done'])
+    self.assertEqual(status['tasks'][4]['event'], 'JOB_PENDING')
+    self.assertFalse(status['tasks'][5]['done'])
+    self.assertEqual(status['tasks'][5]['event'], 'JOB_PENDING')
+    self.assertFalse(status['tasks'][6]['done'])
+    self.assertEqual(status['tasks'][6]['event'], 'JOB_PENDING')
+    self.assertFalse(self.recipe.job_done)
+
+    self.recipe.cancel()
+    status = self.recipe.get_status()
+
+    self.assertTrue(status['tasks'][0]['done'])
+    self.assertEqual(status['tasks'][0]['event'], 'JOB_CANCEL')
+    self.assertTrue(status['tasks'][1]['done'])
+    self.assertEqual(status['tasks'][1]['event'], 'JOB_CANCEL')
+    self.assertTrue(status['tasks'][2]['done'])
+    self.assertEqual(status['tasks'][2]['event'], 'JOB_CANCEL')
+    self.assertTrue(status['tasks'][3]['done'])
+    self.assertEqual(status['tasks'][3]['event'], 'JOB_CANCEL')
+    self.assertTrue(status['tasks'][4]['done'])
+    self.assertEqual(status['tasks'][4]['event'], 'JOB_CANCEL')
+    self.assertTrue(status['tasks'][5]['done'])
+    self.assertEqual(status['tasks'][5]['event'], 'JOB_CANCEL')
+    self.assertTrue(status['tasks'][6]['done'])
+    self.assertEqual(status['tasks'][6]['event'], 'JOB_CANCEL')
+    self.assertTrue(self.recipe.job_done)
+
 
   def test_hour_pulls(self):
     hour_tz = utc_to_timezone(datetime.utcnow(), self.recipe.timezone).hour
@@ -158,7 +210,6 @@ class StatusTest(TestCase):
     if hour_tz == 23:
       print 'SKIPPING test_hour_pulls, need 1 spare hour for test.'
     else:
-      print 'hour_tz', hour_tz
       task = self.recipe.get_task()
       while task != None:
         self.recipe.set_task(task['script'], task['instance'], task['hour'], 'JOB_END', 'Some output.', '')
@@ -329,7 +380,7 @@ class RecipeViewTest(TestCase):
     self.assertEqual(len(jobs), 0)
 
 
-class JobTest(TestCase):
+class JobTest(TransactionTestCase):
 
   def setUp(self):
     self.account = account_create()
@@ -456,7 +507,7 @@ class JobTest(TestCase):
 
     # expire all workers except OTHER_WORKER / RECIPE_RUNNING
     sleep((JOB_LOOKBACK_MS * 2) / 1000.0)
-    worker_ping('OTHER_WORKER', self.RECIPE_RUNNING)
+    worker_ping('OTHER_WORKER', [self.RECIPE_RUNNING])
 
     # get oldest expired job first ( redo task since it never completes )
     jobs = worker_pull('SAMPLE_WORKER', 1)
@@ -502,7 +553,7 @@ class JobTest(TestCase):
 
     # advance time, since current jobs need to expire, artificially ping to keep out of queue
     sleep((JOB_LOOKBACK_MS * 2) / 1000.0)
-    worker_ping('OTHER_WORKER', self.RECIPE_RUNNING)
+    worker_ping('OTHER_WORKER', [self.RECIPE_RUNNING])
 
     # second loop through manager
     management.call_command('job_worker', worker='TEST_WORKER', jobs=5, timeout=60*60*1, verbose=True, test=True)
@@ -526,14 +577,14 @@ class JobTest(TestCase):
 
     # advance time, since current jobs need to expire, artificially ping to keep out of queue
     sleep((JOB_LOOKBACK_MS * 2) / 1000.0)
-    worker_ping('OTHER_WORKER', self.RECIPE_RUNNING)
+    worker_ping('OTHER_WORKER', [self.RECIPE_RUNNING])
 
     # all jobs either run by other workers or done
     jobs = worker_pull('TEST_WORKER', 5)
     self.assertEqual(len(jobs), 0)
 
 
-class JobErrorTest(TestCase):
+class JobErrorTest(TransactionTestCase):
 
   def setUp(self):
     self.account = account_create()
@@ -596,7 +647,7 @@ class JobErrorTest(TestCase):
     self.assertTrue(self.recipe.job_done)
 
 
-class JobTimeoutTest(TestCase):
+class JobTimeoutTest(TransactionTestCase):
 
   def setUp(self):
     self.account = account_create()
@@ -660,7 +711,7 @@ class JobTimeoutTest(TestCase):
     self.assertTrue(self.recipe.job_done)
 
 
-class JobDayTest(TestCase):
+class JobDayTest(TransactionTestCase):
 
   def setUp(self):
     self.account = account_create()
@@ -720,3 +771,61 @@ class JobDayTest(TestCase):
     recipes = Recipe.objects.filter(worker_uid='TEST_WORKER')
     self.assertEqual(len(recipes), 1)
     self.assertEqual(recipes[0].name, 'RECIPE_TODAY')
+
+
+class JobCancelTest(TransactionTestCase):
+
+  def setUp(self):
+    self.account = account_create()
+    self.project = project_create()
+
+    self.recipe = Recipe.objects.create(
+      account = self.account,
+      project = self.project,
+      name = 'RECIPE_NEW',
+      active = True,
+      week = json.dumps(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']),
+      hour = json.dumps([0]),
+      timezone = 'America/Los_Angeles',
+      tasks = json.dumps([
+        { "tag": "hello",
+          "values": { "sleep":15 }, # seconds
+          "sequence": 1
+        },
+      ]),
+    )
+
+    self.workers = Workers('TEST_WORKER', 5, 15)
+
+  def tearDown(self):
+    self.workers.shutdown()
+
+  def test_job_cancel(self):
+
+    self.workers.pull()
+    self.assertEqual(len(self.workers.jobs), 1)
+    job = self.workers.jobs[0]
+    self.assertEqual(job['job']['worker'], 'TEST_WORKER')
+    self.assertEqual(job['recipe']['setup']['uuid'], self.recipe.uid())
+    self.assertEqual(job['script'], 'hello')
+    self.assertEqual(job['instance'], 1)
+    self.assertIsNone(job['job']['process'].poll())
+
+    self.workers.poll()
+
+    self.assertEqual(worker_check('TEST_WORKER'), set([self.recipe.id]))
+    self.workers.check()
+    self.assertEqual(worker_check('TEST_WORKER'), set([self.recipe.id]))
+
+    self.recipe.cancel()
+
+    self.assertEqual(worker_check('TEST_WORKER'), set([]))
+    self.workers.check()
+    self.assertEqual(len(self.workers.jobs), 0)
+
+    self.recipe.refresh_from_db()
+    self.assertTrue(self.recipe.job_done)
+
+    status = self.recipe.get_status()
+    self.assertTrue(status['tasks'][0]['done'])
+    self.assertEqual(status['tasks'][0]['event'], 'JOB_CANCEL')

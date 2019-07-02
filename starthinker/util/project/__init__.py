@@ -144,7 +144,7 @@ class project:
   Project is meant as the entry point into all StarThinker scripts as follows:
 
     ```
-    from util.project import project
+    from starthinker.util.project import project
 
     @project.from_parameters
     def task():
@@ -158,7 +158,7 @@ class project:
 
     ```
     import argparse
-    from util.project import project
+    from starthinker.util.project import project
 
     if __name__ == "__main__":
 
@@ -177,7 +177,7 @@ class project:
   Project can also be initialized directly for non-json tasks:
 
     ```
-    from util.project import project
+    from starthinker.util.project import project
 
     if __name__ == "__main__":
       var_recipe = '/somepath/recipe.json'
@@ -219,7 +219,7 @@ class project:
 
     ```
     import argparse
-    from util.project import project
+    from starthinker.util.project import project
 
     if __name__ == "__main__":
 
@@ -365,7 +365,7 @@ class project:
 
     Usage example:
     ```
-       from util.project import project
+       from starthinker.util.project import project
 
        if __name__ == "__main__":
          user = 'user.json'
@@ -464,7 +464,7 @@ class project:
     '''Run all the tasks in a project in one sequence.
 
     ```
-    from util.project import project
+    from starthinker.util.project import project
 
     if __name__ == "__main__":
       var_user = '[USER CREDENTIALS JSON STRING OR PATH]'

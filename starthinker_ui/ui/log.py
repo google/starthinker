@@ -38,6 +38,7 @@ JOB_UPDATE = 'JOB_UPDATE'
 JOB_START = 'JOB_START'
 JOB_END = 'JOB_END'
 JOB_ERROR = 'JOB_ERROR'
+JOB_CANCEL = 'JOB_CANCEL'
 JOB_TIMEOUT = 'JOB_TIMEOUT'
 
 
@@ -214,6 +215,10 @@ def log_job_end(job):
 
 def log_job_error(job):
   log_put(JOB_ERROR, LogSeverity.ERROR, job)
+
+
+def log_job_cancel(job):
+  log_put(JOB_CANCEL, LogSeverity.WARNING, job)
 
 
 def log_job_timeout(job):

@@ -35,7 +35,7 @@ from starthinker_ui.ui.log import log_job_update
 
 
 JOB_INTERVAL_MS = 800 # milliseconds
-JOB_LOOKBACK_MS = 10 * JOB_INTERVAL_MS # 8 seconds
+JOB_LOOKBACK_MS = 3 * JOB_INTERVAL_MS #  2.4 seconds
 JOB_RECHECK_MS = 30 * 60 * 1000 # 30 minutes
 
 
@@ -80,8 +80,10 @@ def worker_pull(worker_uid, jobs=1):
   Args:
     - worker_uid ( string ) - identifies a unique worker, must be same for every call from same worker.
     - jobs ( integer ) - number of jobs to pull
-
   '''
+
+  # if the worker cannot do any work, do nothing
+  if jobs <= 0: return
 
   worker_utm = utc_milliseconds()
   worker_interval = worker_utm - JOB_LOOKBACK_MS
@@ -133,8 +135,14 @@ def worker_pull(worker_uid, jobs=1):
   return tasks
 
 
-def worker_ping(worker_uid, recipe_uid):
-  Recipe.objects.filter(worker_uid=worker_uid, id=recipe_uid).update(worker_utm=utc_milliseconds())
+def worker_ping(worker_uid, recipe_uids):
+  # update recipes that belong to this worker
+  if recipe_uids:
+    Recipe.objects.filter(worker_uid=worker_uid, id__in=recipe_uids).update(worker_utm=utc_milliseconds())
+
+
+def worker_check(worker_uid):
+  return set(Recipe.objects.filter(worker_uid=worker_uid).values_list('id', flat=True))
 
 
 def worker_status(worker_uid, recipe_uid, script, instance, hour, event, stdout, stderr):
@@ -263,6 +271,14 @@ class Recipe(models.Model):
         self.get_values()
       )
 
+  def activate(self):
+    self.active = True
+    self.save(update_fields=['active'])
+
+  def deactivate(self):
+    self.active = False
+    self.save(update_fields=['active'])
+
   def force(self):
     status = self.get_status(force=True)
     self.job_status = json.dumps(status)
@@ -279,7 +295,8 @@ class Recipe(models.Model):
 
     self.job_done = True
     self.job_status = json.dumps(status)
-    self.save(update_fields=['job_status', 'job_done'])
+    self.worker_uid = '' # forces worker to cancel job
+    self.save(update_fields=['job_status', 'job_done', 'worker_uid'])
 
   # WORKER METHODS
 
@@ -298,7 +315,7 @@ class Recipe(models.Model):
 
     # reset prior status if force or scheduled today and new 24 hour block
     recipe_day = recipe.get('setup', {}).get('day',[]) or ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    if force or (date_tz != prior_status.get('date_tz') and day_tz in recipe_day):
+    if force or date_tz != prior_status.get('date_tz'):
       prior_status = { 'force':force }
 
     # create a vanilla status with all tasks pending ( always do this because recipe may change )
@@ -312,29 +329,29 @@ class Recipe(models.Model):
     instances = {}
     for order, task in enumerate(recipe.get('tasks', [])):
       script, task = task.items()[0]
-      instances.setdefault(script, 0)
-      instances[script] += 1
-
       # if force, queue each task in sequence without hours
       if prior_status.get('force', False):
         hours = [hour_tz]
       # if schedule, take tasks with hours or no hours given defaulted to recipe wide hours
       else:
-        hours = task.get('hour', recipe['setup'].get('hour', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]))
+        hours = task.get('hour', recipe['setup'].get('hour', []))
 
-      # skip assigning any manual force only tasks,  explicitly ( task{ 'hour':[] }
-      for hour in hours:
-        status['tasks'].append({
-          'order':order,
-          'script':script,
-          'instance':instances[script],
-          'hour':hour,
-          'utc':str(datetime.utcnow()),
-          'event':'JOB_PENDING',
-          'stdout':'',
-          'stderr':'',
-          'done':False
-        })
+      # tasks with hours = [] will be skipped unless force=True
+      if hours:
+        instances.setdefault(script, 0)
+        instances[script] += 1
+        for hour in hours:
+          status['tasks'].append({
+            'order':order,
+            'script':script,
+            'instance':instances[script],
+            'hour':hour,
+            'utc':str(datetime.utcnow()),
+            'event':'JOB_PENDING',
+            'stdout':'',
+            'stderr':'',
+            'done':False
+          })
 
     # sort new order by first by hour and second by order
     def queue_compare(left, right):

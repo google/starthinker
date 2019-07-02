@@ -13,8 +13,7 @@
     "authors":["kenjora@google.com"]
   },
   "setup":{
-    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    "hour":[]
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
   },
   "tasks":[
     { "hello":{

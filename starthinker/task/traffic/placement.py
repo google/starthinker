@@ -232,8 +232,7 @@ class PlacementDAO(BaseDAO):
       item: The CM placement object to update.
       feed_item: The Bulkdozer feed item with the transcode configurations.
     """
-    if 'transcode_config' in feed_item:
-
+    if feed_item.get('transcode_config', None):
       if not 'videoSettings' in item:
         item['videoSettings'] = {}
 
@@ -395,8 +394,8 @@ class PlacementDAO(BaseDAO):
           placement['pricing_schedule'].append(pricing_schedule)
 
       transcode_id = placement.get(FieldMap.TRANSCODE_ID, '')
+      placement['transcode_config'] = []
       if transcode_id:
         for transcode_config in transcode_configs_feed:
           if transcode_id == transcode_config.get(FieldMap.TRANSCODE_ID, None):
-            placement['transcode_config'] = transcode_config
-            break
+            placement['transcode_config'].append(transcode_config)

@@ -603,7 +603,7 @@ def lineitem_write(auth, rows, dry_run=True):
   return result
 
 
-def sdf_read(auth, file_types, filter_type, filter_ids):
+def sdf_read(auth, file_types, filter_type, filter_ids, version='3.1'):
   """ Read sdf file from DV360 api
 
   https://developers.google.com/bid-manager/v1/sdf/download
@@ -623,7 +623,8 @@ def sdf_read(auth, file_types, filter_type, filter_ids):
   body = {
       "fileTypes": file_types,
       "filterType": filter_type,
-      "filterIds": filter_ids
+      "filterIds": filter_ids,
+      "version": version
   }
 
   result = API_Retry(service.sdf().download(body=body))

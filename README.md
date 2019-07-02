@@ -59,8 +59,8 @@ data on the command line or the UI.
 
 # Deploy StarThinker
 
-StarThinker can be deployed four different ways depending on the organization requirements. Read the
-[Tutorials](tutorials/README.md) or the specific instructions for each type of setup:
+StarThinker can be deployed four different ways depending on the organization requirements. For specific 
+instructions for each type of setup, read the [Tutorials](tutorials/README.md) or specific instructions:
 
 - [Enterprise](tutorials/deploy_enterprise.md) - Full browser based UI with multiple user login.
 - [Scientist](tutorials/deploy_scientist.md) - Single user, fast setup, long running job scheduler.
@@ -87,8 +87,9 @@ and extensible by your organization.
 
 ## Where Do I Get Help?
 
-Email: starthinker-help@google.com
+Read the [Tutorials](tutorials/README.md) to get a sense of how starthinker works. There is also the [FAQ](tutorials/faq.md).
 
+Or Email: starthinker-help@google.com
 
 ## Authors 
 

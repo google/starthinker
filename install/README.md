@@ -1,8 +1,7 @@
 # StarThinker Reference Installations
 
-StarThinker is fully configured from environmental variables.
-A deployment script is provided to help with the configuration.
-To deploy a specific type of StarThinker setup see:
+StarThinker is fully configured from environmental variables. A deployment script is provided to help with the configuration.
+To deploy a specific type of StarThinker setup see the [Tutorials](../tutorials/README.md) or specific instructions:
 
  - [Developer](../tutorials/deploy_developer.md) - Local machine, ideal for testing and development work.
  - [Data Scientist](../tutorials/deploy_scientist.md) - Single user recurring job running recipes.

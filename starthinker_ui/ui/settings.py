@@ -46,6 +46,7 @@ DATABASES = {
     'PORT': os.environ.get('STARTHINKER_UI_DATABASE_PORT', ''),
     'NAME': os.environ.get('STARTHINKER_UI_DATABASE_NAME', 'MISSING RUN deploy.sh TO SET'),
     'USER': os.environ.get('STARTHINKER_UI_DATABASE_USER', ''),
-    'PASSWORD': os.environ.get('STARTHINKER_UI_DATABASE_PASSWORD', '')
+    'PASSWORD': os.environ.get('STARTHINKER_UI_DATABASE_PASSWORD', ''),
+    'TEST': { 'NAME': 'starthinker_test' }
   }
 }

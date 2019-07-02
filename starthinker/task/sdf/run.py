@@ -58,7 +58,7 @@ def sdf():
 
     # Request 5 filter ids at a time so the API doesn't timeout
     for partial_filter_ids in filter_ids:
-      rows = sdf_read(project.task['auth'], [file_type], project.task['filter_type'], partial_filter_ids)
+      rows = sdf_read(project.task['auth'], [file_type], project.task['filter_type'], partial_filter_ids, project.task.get('version', '3.1'))
 
       if rows:
         schema = _sdf_schema(rows.next())

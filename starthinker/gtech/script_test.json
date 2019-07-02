@@ -31,6 +31,12 @@
     }},
     { "hello":{
       "auth":"user",
+      "hour":[],
+      "say":"Hello Manual",
+      "sleep":0
+    }},
+    { "hello":{
+      "auth":"user",
       "hour":[23],
       "say":"Hello At 23 Sleep",
       "sleep":30

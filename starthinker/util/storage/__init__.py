@@ -30,7 +30,7 @@ import httplib2
 from time import sleep
 from io import BytesIO
 
-from google.cloud import storage
+#from google.cloud import storage
 from apiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 from googleapiclient.errors import HttpError
 

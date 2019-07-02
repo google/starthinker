@@ -23,14 +23,15 @@ import time
 import signal
 import traceback
 import subprocess
+import threading
 from datetime import datetime
 
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
-from starthinker_ui.recipe.models import worker_pull, worker_status, worker_ping, utc_milliseconds, JOB_LOOKBACK_MS, JOB_INTERVAL_MS
+from starthinker_ui.recipe.models import worker_pull, worker_status, worker_check, worker_ping, utc_milliseconds, JOB_LOOKBACK_MS, JOB_INTERVAL_MS
 from starthinker_ui.ui.log import log_manager_start, log_manager_end, log_manager_error
-from starthinker_ui.ui.log import log_job_timeout, log_job_error, log_job_start, log_job_end
+from starthinker_ui.ui.log import log_job_timeout, log_job_error, log_job_start, log_job_end, log_job_cancel
 from starthinker_ui.ui.log import log_verbose, get_instance_name
 
 
@@ -51,20 +52,29 @@ class Workers():
     self.jobs_maximum = jobs_maximum
     self.jobs = []
 
+    self.lock_thread = threading.Lock()
+    self.ping_event = threading.Event()
+    self.ping_thread = threading.Thread(target=self.ping)
+    self.ping_thread.start()
+
 
   def available(self):
     return self.jobs_maximum - len(self.jobs)
 
 
   def pull(self):
+    self.lock_thread.acquire()
     jobs = worker_pull(self.uid, jobs=self.available())
+    self.lock_thread.release()
     for job in jobs: 
       self.run(job)
     
 
   def run(self, job, force=False):
    
+    self.lock_thread.acquire()
     self.jobs.append(job)
+    self.lock_thread.release()
 
     job['recipe']['setup'].setdefault('timeout_seconds', self.timeout_seconds)
 
@@ -103,6 +113,23 @@ class Workers():
     log_job_start(job)
 
 
+  def check(self):
+    self.lock_thread.acquire()
+    try:
+      recipes = worker_check(self.uid)
+      last_job = len(self.jobs) - 1
+      while last_job >= 0:
+        if self.jobs[last_job]['recipe']['setup']['uuid'] not in recipes:
+          self.jobs[last_job]['job']['process'].kill()
+          self.cleanup(self.jobs[last_job])
+          log_job_cancel(self.jobs[last_job])
+          del self.jobs[last_job]
+        last_job -= 1
+    except Exception, e:
+      log_manager_error(traceback.format_exc())
+    self.lock_thread.release()
+
+
   def cleanup(self, job):
     filename = '%s/%s.json' % (settings.UI_CRON, job['job']['id'])
     if os.path.exists(filename):
@@ -111,7 +138,20 @@ class Workers():
       print "The file does not exist:", filename
 
 
+  def ping(self):
+    # update all jobs belonging to worker
+    while not self.ping_event.wait(JOB_INTERVAL_MS / 1000):
+      self.lock_thread.acquire()
+      try:
+        worker_ping(self.uid, [job['recipe']['setup']['uuid'] for job in self.jobs])
+      except Exception, e:
+        log_manager_error(traceback.format_exc())
+      self.lock_thread.release()
+
+
   def poll(self):
+
+    self.lock_thread.acquire()
 
     for job in self.jobs:
 
@@ -135,9 +175,9 @@ class Workers():
           log_job_timeout(job)
           job['job']['process'] = None
 
-        # otherwise ping keep alive
+        # otherwise task is running, do nothing
         else:
-          worker_ping(job['job']['worker'], job['recipe']['setup']['uuid'])
+          pass
 
       # if process has return code, check if task is complete or error
       else:
@@ -178,13 +218,19 @@ class Workers():
     # remove all workers without a process, they are done
     self.jobs = [job for job in self.jobs if job['job']['process'] is not None]
 
+    self.lock_thread.release()
+
     # if workers remain, return True
     return bool(self.jobs)
 
 
   def shutdown(self):
+    # wait for jobs to finish
     while self.poll():
       time.sleep(JOB_INTERVAL_MS / 1000)
+
+    # turn off threads ( ping )
+    self.ping_event.set()
 
 
 class Command(BaseCommand):
@@ -241,46 +287,23 @@ class Command(BaseCommand):
 
     if kwargs['verbose']: log_verbose()
 
+    log_manager_start()
+
     workers = Workers(
       kwargs['worker'], 
       kwargs['jobs'], 
       kwargs['timeout'],
     ) 
 
-    log_manager_start()
-
     try:
 
       while MANAGER_ON:
-
-        # track loop time
-        run_start = utc_milliseconds()
-
-        # load new workers
         workers.pull()
-
-        # check on existing workers
-        if workers.poll():
-
-          # flag any runs that exceed lookback interval
-          runtime_ms = utc_milliseconds() - run_start
-          runtime_percent = (runtime_ms * 100) / JOB_LOOKBACK_MS
-          print 'Run Time ( milliseconds ): %d %d%%' % (runtime_ms, runtime_percent)
-          if (runtime_ms > JOB_LOOKBACK_MS):
-            log_manager_error('Caution: Worker exceeded JOB_INTERVAL_MS by %d%%.' % runtime_percent)
-            # possibly check each job and cancel if no longer owner
-
-          # if extermely short run ( jobs in queue but no responses yet, wait 1/2 an interval)
-          elif (runtime_ms < JOB_INTERVAL_MS):
-            time.sleep(((JOB_INTERVAL_MS - runtime_ms) / 1000 / 2))
-
-        else:
-          runtime_ms = utc_milliseconds() - run_start
-          print 'Run Time ( milliseconds ): %d %d%%' % (runtime_ms, (runtime_ms * 100) / JOB_LOOKBACK_MS)
-          # if no workers sleep for a bit ( wait for next wave of jobs )
-          time.sleep(JOB_LOOKBACK_MS / 1000)
-
-        # if test run, then exit after first loop and return workers for inspection
+        time.sleep(1)
+        workers.check()
+        time.sleep(1)
+        workers.poll()
+        time.sleep(1)
         if kwargs['test']: 
           MANAGER_ON = False
 

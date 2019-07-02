@@ -23,6 +23,7 @@ import os
 import re
 import json
 import httplib2
+import threading
 
 from apiclient import discovery
 from oauth2client import client, tools
@@ -149,8 +150,11 @@ def get_service_credentials(scopes=None):
 def get_service(api='gmail', version='v1', auth='service', scopes=None, uri_file=None):
   global SERVICE_CACHE # for some reason looking this up too frequently sometimes errors out
 
-  # FIX: does not work in threads, need to add pool specifier to key?
-  key = api + version + auth
+  # Cache service based on:
+  # api/version - different API and version
+  # auth - different for service or user
+  # thread - multiple threads cannot use the same service credentials or headers get confused
+  key = api + version + auth + str(threading.current_thread().ident)
   if key not in SERVICE_CACHE:
     credentials = get_service_credentials(scopes) if auth == 'service' else get_credentials()
     http = credentials.authorize(httplib2.Http())

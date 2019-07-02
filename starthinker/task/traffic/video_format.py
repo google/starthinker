@@ -58,7 +58,7 @@ class VideoFormatDAO(BaseDAO):
 
     return self._video_formats
 
-  def translate_transcode_config(self, transcode_config):
+  def translate_transcode_config(self, transcode_configs):
     """Given a transcode config, returns the CM transcodes that match the config.
 
     Args:
@@ -70,29 +70,27 @@ class VideoFormatDAO(BaseDAO):
     result = []
 
     try:
-      min_width = int(transcode_config.get(FieldMap.TRANSCODE_MIN_WIDTH, 0))
-      min_height = int(transcode_config.get(FieldMap.TRANSCODE_MIN_HEIGHT, 0))
-      min_bitrate = int(transcode_config.get(FieldMap.TRANSCODE_MIN_BITRATE, 0))
+      for video_format in self.get_video_formats():
+        for transcode_config in transcode_configs:
+          min_width = int(transcode_config.get(FieldMap.TRANSCODE_MIN_WIDTH, 0))
+          min_height = int(transcode_config.get(FieldMap.TRANSCODE_MIN_HEIGHT, 0))
+          min_bitrate = int(transcode_config.get(FieldMap.TRANSCODE_MIN_BITRATE, 0))
 
-      max_width = int(transcode_config.get(FieldMap.TRANSCODE_MAX_WIDTH, sys.maxint))
-      max_height = int(transcode_config.get(FieldMap.TRANSCODE_MAX_HEIGHT, sys.maxint))
-      max_bitrate = int(transcode_config.get(FieldMap.TRANSCODE_MAX_BITRATE, sys.maxint))
+          max_width = int(transcode_config.get(FieldMap.TRANSCODE_MAX_WIDTH, sys.maxint))
+          max_height = int(transcode_config.get(FieldMap.TRANSCODE_MAX_HEIGHT, sys.maxint))
+          max_bitrate = int(transcode_config.get(FieldMap.TRANSCODE_MAX_BITRATE, sys.maxint))
+
+          file_format = transcode_config.get(FieldMap.TRANSCODE_FORMAT, '')
+
+          if min_width <= video_format['resolution']['width'] \
+              and video_format['resolution']['width'] <= max_width \
+              and min_height <= video_format['resolution']['height'] \
+              and video_format['resolution']['height'] <= max_height \
+              and min_bitrate <= video_format['targetBitRate'] \
+              and video_format['targetBitRate'] <= max_bitrate \
+              and video_format['fileType'] == file_format:
+            result.append(video_format['id'])
     except:
-      return result
-
-    file_types = [
-        file_type for file_type in FieldMap.TRANSCODE_FILE_TYPES
-        if transcode_config.get(file_type, False)
-    ]
-
-    for video_format in self.get_video_formats():
-      if min_width <= video_format['resolution']['width'] and \
-          video_format['resolution']['width'] <= max_width \
-          and min_height <= video_format['resolution']['height'] \
-          and video_format['resolution']['height'] <= max_height \
-          and min_bitrate <= video_format['targetBitRate'] \
-          and video_format['targetBitRate'] <= max_bitrate \
-          and video_format['fileType'] in file_types:
-        result.append(video_format['id'])
+      raise Exception('Error determining file formats for transcode')
 
     return result

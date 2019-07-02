@@ -23,6 +23,7 @@ import jsonpickle
 import httplib2
 import datetime
 from io import BytesIO
+from time import sleep
 
 from oauth2client.client import Credentials, OAuth2Credentials, GoogleCredentials, Storage, EXPIRY_FORMAT
 from oauth2client.file import Storage as LocalStorage
@@ -81,24 +82,20 @@ def credentails_get(cloud_path):
 def credentails_put(cloud_path, credentials):
   service = get_service()
   bucket, filename = cloud_path.split(':',1)
-
-  # ASSUMES BUCKET WAS CREATED EARLIER
-  # create bucket if it does not exist
-  #try:
-  #  body = {
-  #    "kind": "storage#bucket",
-  #    "name":bucket,
-  #    "storageClass":"REGIONAL",
-  #    "location":UI_ZONE.rsplit('-', 1)[0] # take only region part of zone
-  #  }
-  #  service.buckets().insert(project=UI_PROJECT, body=body).execute()
-  #except HttpError, e:
-  #  if json.loads(e.content)['error']['code'] == 409: pass 
-  #  else: raise e
-
   data = auth_encode(credentials)
   media = MediaIoBaseUpload(BytesIO(str(data)), mimetype="text/json")
-  service.objects().insert(bucket=bucket, name=filename, media_body=media).execute()
+
+  def API_Retry(job, retries=3, wait=1):
+    try:
+      job.execute()
+    except HttpError, e:
+      if e.resp.status == 429 and retries > 0:
+        sleep(wait)
+        return API_Retry(job, retries - 1, wait * 2)
+      else:
+        raise
+
+  API_Retry(service.objects().insert(bucket=bucket, name=filename, media_body=media))
   return filename
 
 
@@ -120,7 +117,6 @@ class BucketStorage(Storage):
     #service.objects().delete(bucket=bucket, object=filename).execute()
 
 class BucketCredentials(OAuth2Credentials):
-
 
   def __init__(self, *args, **kwargs):
     self.cloud_path = kwargs.pop('cloud_path')

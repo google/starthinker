@@ -16,11 +16,14 @@
 #
 ###########################################################################
 
+import re
+
 from starthinker.util.project import project
 from starthinker.util.google_api import API_DCM
 from starthinker.util.data import put_rows, get_rows
 from starthinker.util.dcm import get_profile_for_api, id_to_timezone
 from starthinker.util.regexp import epoch_to_datetime
+from starthinker.task.dcm_api.schema.lookup import DCM_Schema_Lookup
 
 PROFILE_CAMPAIGNS = []
 PROFILE_SITES = []
@@ -206,6 +209,28 @@ REPORT_DELIVERIES_SCHEMA = [
 ]
 
 
+RE_DATETIME = re.compile(r'\d{4}[-/]\d{2}[-/]\d{2}[ T]\d{2}:\d{2}:\d{2}\.?\d+Z')
+def bigquery_clean(struct):
+  if isinstance(struct, dict):
+    for key, value in struct.items():
+      if isinstance(value, basestring) and RE_DATETIME.match(value):
+        struct[key] =  struct[key].replace('.000Z', '.0000')
+      else:
+        bigquery_clean(value)
+  elif isinstance(struct, list):
+    for index, value in enumerate(struct):
+      if isinstance(value, basestring) and RE_DATETIME.match(value):
+        struct[index] = struct[index].replace('.000Z', '.0000')
+      else:
+        bigquery_clean(value)
+  return  struct
+
+
+def row_clean(structs):
+  for struct in structs:
+    yield bigquery_clean(struct) 
+
+
 def get_accounts(accounts):
   if project.verbose: print 'DCM Accounts'
 
@@ -357,6 +382,28 @@ def get_campaigns(accounts):
        ]
 
 
+def get_ads(accounts):
+
+  if project.verbose: print 'DCM Ads'
+
+  for account_id in accounts:
+    is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
+    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    for ad in API_DCM("user", iterate=True, internal=is_superuser).ads().list(**kwargs).execute():
+      yield ad
+      break
+
+def get_creatives(accounts):
+
+  if project.verbose: print 'DCM Ads'
+
+  for account_id in accounts:
+    is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
+    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    for ad in API_DCM("user", iterate=True, internal=is_superuser).creatives().list(**kwargs).execute():
+      yield ad
+
+
 def get_sites(accounts):
 
   if project.verbose: print 'DCM Sites'
@@ -479,7 +526,7 @@ def get_reports(accounts):
         ]
 
 
-def put_json(kind, schema):
+def put_json(kind, schema, row_format='CSV'):
 
   out = {}
 
@@ -488,7 +535,8 @@ def put_json(kind, schema):
       "dataset": project.task['out']['dataset'],
       "table": kind,
       "schema": schema,
-      "skip_rows": 0
+      "skip_rows": 0,
+      "format":row_format,
     }
 
   if 'sheet' in project.task:
@@ -502,145 +550,191 @@ def put_json(kind, schema):
   return out
 
 
+def dcm_api_list(endpoint):
+  accounts = set(get_rows("user", project.task['accounts']))
+  for account_id in accounts:
+    is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
+    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    for item in API_DCM(project.task['auth'], iterate=True, internal=is_superuser).function(endpoint).list(**kwargs).execute():
+      yield item
+      break
+
 @project.from_parameters
 def dcm_api():
   if project.verbose: print 'DCM'
 
-  accounts = set(get_rows("user", project.task['accounts']))
+  if project.task.get('V2', False):
 
-  if 'accounts' in project.task['endpoints']:
-    # Accounts
-    rows = get_accounts(accounts)
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Accounts', ACCOUNTS_SCHEMA),
-      "DCM_Accounts.csv",
-      rows
-    )
+    for endpoint in project.task['endpoints']:
+      schema = DCM_Schema_Lookup[endpoint]
+      rows = dcm_api_list(endpoint)
+      rows = row_clean(rows)
+      put_rows(
+        project.task['out']['auth'], 
+        put_json('CM_%s' % endpoint, schema),
+        "DCM_Accounts.csv",
+        rows
+      )
 
-  if 'profiles' in project.task['endpoints']:
-    # Profiles
-    rows = get_profiles(accounts)
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Profiles', PROFILES_SCHEMA),
-      "DCM_Profiles.csv",
-      rows
-    )
+  else:
 
-    # Profiles Campaigns
-    if project.verbose: print 'DCM Profile Campaigns'
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Profile_Campaigns', PROFILE_CAMPAIGNS_SCHEMA),
-      "DCM_Profile_Campaigns.csv",
-      PROFILE_CAMPAIGNS
-    )
+    accounts = set(get_rows("user", project.task['accounts']))
 
-    # Profiles Sites
-    if project.verbose: print 'DCM Profile Sites'
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Profile_Sites', PROFILE_SITES_SCHEMA),
-      "DCM_Profile_Sites.csv",
-      PROFILE_SITES
-    )
+    if 'accounts' in project.task['endpoints']:
+      # Accounts
+      rows = get_accounts(accounts)
+      put_rows(
+        project.task['out']['auth'], 
+        put_json('CM_Accounts', ACCOUNTS_SCHEMA),
+        "DCM_Accounts.csv",
+        rows
+      )
+  
+    if 'profiles' in project.task['endpoints']:
+      # Profiles
+      rows = get_profiles(accounts)
+      put_rows(
+        project.task['out']['auth'], 
+        put_json('CM_Profiles', PROFILES_SCHEMA),
+        "DCM_Profiles.csv",
+        rows
+      )
+  
+      # Profiles Campaigns
+      if project.verbose: print 'DCM Profile Campaigns'
+      put_rows(
+        project.task['out']['auth'], 
+        put_json('CM_Profile_Campaigns', PROFILE_CAMPAIGNS_SCHEMA),
+        "DCM_Profile_Campaigns.csv",
+        PROFILE_CAMPAIGNS
+      )
+  
+      # Profiles Sites
+      if project.verbose: print 'DCM Profile Sites'
+      put_rows(
+        project.task['out']['auth'], 
+        put_json('CM_Profile_Sites', PROFILE_SITES_SCHEMA),
+        "DCM_Profile_Sites.csv",
+        PROFILE_SITES
+      )
+  
+      # Profiles Roles
+      if project.verbose: print 'DCM Profile Roles'
+      put_rows(
+        project.task['out']['auth'], 
+        put_json('CM_Profile_Roles', PROFILE_ROLES_SCHEMA),
+        "DCM_Profile_Roles.csv",
+        PROFILE_ROLES
+      )
+  
+      # Profiles Advertisers
+      if project.verbose: print 'DCM Profile Advertisers'
+      put_rows(
+        project.task['out']['auth'], 
+        put_json('CM_Profile_Advertisers', PROFILE_ADVERTISERS_SCHEMA),
+        "DCM_Profile_Advertisers.csv",
+        PROFILE_ADVERTISERS
+      )
+  
+    if 'subaccounts' in project.task['endpoints']:
+      # Subaccounts
+      rows = get_subaccounts(accounts)
+      put_rows(
+        project.task['out']['auth'],
+        put_json('CM_SubAccounts', SUBACCOUNTS_SCHEMA),
+        "DCM_SubAccounts.csv",
+        rows
+      )
+  
+    if 'advertisers' in project.task['endpoints']:
+      # Advertisers
+      rows = get_advertisers(accounts)
+      put_rows(
+        project.task['out']['auth'],
+        put_json('CM_Advertisers', ADVERTISERS_SCHEMA),
+        "DCM_Advertisers.csv",
+        rows
+      )
+  
+    if 'campaigns' in project.task['endpoints']:
+      # Campaigns 
+      rows = get_campaigns(accounts)
+      put_rows(
+        project.task['out']['auth'],
+        put_json('CM_Campaigns', CAMPAIGNS_SCHEMA),
+        "DCM_Campaigns.csv",
+        rows
+      )
+  
+    if 'ads' in project.task['endpoints']:
+      # Ads 
+      schema = DCM_Schema_Lookup['ads']
+      rows = get_ads(accounts)
+      rows = row_clean(rows)
+      put_rows(
+        project.task['out']['auth'],
+        put_json('CM_Ads', schema, 'JSON'),
+        "DCM_Ads.csv",
+        rows
+      )
+  
+    if 'creatives' in project.task['endpoints']:
+      # Creatives 
+      rows = get_creatives(accounts)
+      put_rows(
+        project.task['out']['auth'],
+        put_json('CM_Creatives', Creative_Schema),
+        "DCM_Creatives.csv",
+        rows
+      )
 
-    # Profiles Roles
-    if project.verbose: print 'DCM Profile Roles'
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Profile_Roles', PROFILE_ROLES_SCHEMA),
-      "DCM_Profile_Roles.csv",
-      PROFILE_ROLES
-    )
-
-    # Profiles Advertisers
-    if project.verbose: print 'DCM Profile Advertisers'
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Profile_Advertisers', PROFILE_ADVERTISERS_SCHEMA),
-      "DCM_Profile_Advertisers.csv",
-      PROFILE_ADVERTISERS
-    )
-
-  if 'subaccounts' in project.task['endpoints']:
-    # Subaccounts
-    rows = get_subaccounts(accounts)
-    put_rows(
-      project.task['out']['auth'],
-      put_json('CM_SubAccounts', SUBACCOUNTS_SCHEMA),
-      "DCM_SubAccounts.csv",
-      rows
-    )
-
-  if 'advertisers' in project.task['endpoints']:
-    # Advertisers
-    rows = get_advertisers(accounts)
-    put_rows(
-      project.task['out']['auth'],
-      put_json('CM_Advertisers', ADVERTISERS_SCHEMA),
-      "DCM_Advertisers.csv",
-      rows
-    )
-
-  if 'campaigns' in project.task['endpoints']:
-    # Campaigns 
-    rows = get_campaigns(accounts)
-    put_rows(
-      project.task['out']['auth'],
-      put_json('CM_Campaigns', CAMPAIGNS_SCHEMA),
-      "DCM_Campaigns.csv",
-      rows
-    )
-
-  if 'sites' in project.task['endpoints']:
-    # Sites 
-    rows = get_sites(accounts)
-    put_rows(
-      project.task['out']['auth'],
-      put_json('CM_Sites', SITES_SCHEMA),
-      "DCM_Sites.csv",
-      rows
-    )
-
-    # Sites Contacts
-    if project.verbose: print 'DCM Site Contacts'
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Site_Contacts', SITE_CONTACTS_SCHEMA),
-      "DCM_Site_Contacts.csv",
-      SITE_CONTACTS
-    )
-
-  if 'roles' in project.task['endpoints']:
-    # Roles
-    rows = get_roles(accounts)
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Roles', ROLES_SCHEMA),
-      "DCM_Roles.csv",
-      rows
-    )
-
-  if 'reports' in project.task['endpoints']:
-    # Reports
-    rows = get_reports(accounts)
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Reports', REPORTS_SCHEMA),
-      "DCM_Reports.csv",
-      rows
-    )
-
-    # Reports Deliveries
-    if project.verbose: print 'DCM Deliveries'
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Report_Deliveries', REPORT_DELIVERIES_SCHEMA),
-      "DCM_Report_Deliveriess.csv",
-      REPORT_DELIVERIES
-    )
-
+    if 'sites' in project.task['endpoints']:
+      # Sites 
+      rows = get_sites(accounts)
+      put_rows(
+        project.task['out']['auth'],
+        put_json('CM_Sites', SITES_SCHEMA),
+        "DCM_Sites.csv",
+        rows
+      )
+  
+      # Sites Contacts
+      if project.verbose: print 'DCM Site Contacts'
+      put_rows(
+        project.task['out']['auth'], 
+        put_json('CM_Site_Contacts', SITE_CONTACTS_SCHEMA),
+        "DCM_Site_Contacts.csv",
+        SITE_CONTACTS
+      )
+  
+    if 'roles' in project.task['endpoints']:
+      # Roles
+      rows = get_roles(accounts)
+      put_rows(
+        project.task['out']['auth'], 
+        put_json('CM_Roles', ROLES_SCHEMA),
+        "DCM_Roles.csv",
+        rows
+      )
+  
+    if 'reports' in project.task['endpoints']:
+      # Reports
+      rows = get_reports(accounts)
+      put_rows(
+        project.task['out']['auth'], 
+        put_json('CM_Reports', REPORTS_SCHEMA),
+        "DCM_Reports.csv",
+        rows
+      )
+  
+      # Reports Deliveries
+      if project.verbose: print 'DCM Deliveries'
+      put_rows(
+        project.task['out']['auth'], 
+        put_json('CM_Report_Deliveries', REPORT_DELIVERIES_SCHEMA),
+        "DCM_Report_Deliveriess.csv",
+        REPORT_DELIVERIES
+      )
+  
 if __name__ == "__main__":
   dcm_api()

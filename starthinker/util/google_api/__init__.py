@@ -236,6 +236,11 @@ class API():
       return self
     return function_call
 
+  # for calling function via string
+  def function(self, function_name):
+    self.function_stack.append(function_name)
+    return self
+
   # matches API execute with built in iteration and retry handlers
   def execute(self, run=True):
     # start building call sequence with service object

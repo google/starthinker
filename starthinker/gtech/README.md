@@ -1,19 +1,74 @@
 # Recipe And Solution Templates 
 
 These JSON files are recipe temmplates that can be used to generate recipe workflows.
-All templates start with 'script'. There are two types of templates:
+All templates start with 'script'. There are two types of templates, recipe and solution.
+A recipe template typically has only one task and is used with other tasks in the UI.
+A solution is a recipe template with additional JSON tags, and is show in the [Solution Gallery](https://google.github.io/starthinker/).
 
-![Cloud Client UI](../../tutorials/images/ui_say_hello.png)
+![UI Recipe Architecture](../../tutorials/images/ui_recipe_map.png)
+[UI Recipe  Architecture Larger](../../tutorials/images/ui_recipe_map.png)
 
-[View Cloud Client UI Setup Larger](../../tutorials/images/ui_say_hello.png)
+## Create A Recipe
+The JSON connects the UI to the Python code being executed.  To the UI the JSON is a template to fill
+in with variables.  To the Python function, the JSON is a set of parameters. To create a recipe template 
+that maps to a python task function...
 
-## Recipe
+ 1. Create a new directory in the [starthinker/task](../../starthinker/task) folder.
+   - Use the task name as the directory.
+   - You will use the same task name in the JSON recipe.
+ 1. Create a *starthinker/task/[task_name]/\_\_init\_\_.py* file with no content.
+   - See [starthinker/task/hello/\_\_init\_\_.py](../../starthinker/task/hello/__init__.py) as an example.
+ 1. Create a *starthinker/task/[task_name]/run.py* file.
+   - See [starthinker/task/hello/run.py](../../starthinker/task/hello/run.py) as an example.
+ 1. Create a *starthinker/gtech/script_[some_name].json* file.
+   - See [starthinker/gtech/script_hello.json](../../starthinker/gtech/script_hello.json) as an example.
+
+### Test Recipe Command Line
+
+To test the new task convert the template to a recipe:
+```
+source starthinker_assets/development.sh
+```
+```
+python starthinker/script/run.py starthinker/gtech/script_[new task].json -h
+```
+```
+python starthinker/all/run.py [recipe from above step].json
+```
+
+### Test Recipe UI
+
+To load the recipe into the UI, simply activate the development UI.  If UI is already
+running, restart it.
+```
+source install/deploy.sh
+```
+```
+1) Developer Menu
+```
+```
+2) Launch Developer UI
+```
+Once you configure and save the new recipe in the UI, run a worker to test it.  The
+worker grabs one task at a time in test mode so you may have to run it multiple times
+to complete the entire recipe.
+```
+source starthinker_assets/development.sh
+```
+```
+python starthinker_ui/manage.py job_worker --test --verbose
+```
+
+## Recipe JSON
 
 Simple definitions for parameters passed to a specific task. Recipes are used by the
 StarThinker UI to allow people to assemble their own workflows.  A task can have
 multiple recipes defining overloading variants.  Even though it is not in the JSON spec,
 Newlines are allowed in JSON used by StarThinker to allow readability of recipes.
 Newlines will be removed before the JSON is parsed.
+
+![UI Recipe](../../tutorials/images/ui_recipe.png)
+[UI Recipe Larger](../../tutorials/images/ui_recipe.png)
 
 ### JSON Schema
 
@@ -45,46 +100,6 @@ The tasks section defines the actual call to the task handling python.
 }
 ```
 
-### Creating A Template
-
-When developing a new task, start with a hard coded recipe for development
-and testing and create the template last.
-
-- Copy stathinker/task/hello to stathinker/task/[new task]
-- Modify the run.py code to perform your new task.
-- Copy starthinker/gtech/script_hello.json to starthinker/gtech/script_[new task].json
-- Modify the JSON to define the new task for the UI and parameters to pass.
-
-To test the new task convert the template to a recipe:
-
-```
-python starthinker/script/run.py starthinker/gtech/script_[new task].json -h
-```
-
-To execute the generated recipe, when testing for example:
-
-```
-python starthinker/all/run.py [recipe from above step].json
-```
-
-To load the recipe into the UI, simply activate the development UI.  If UI is already
-running, restart it.
-
-```
-source install/deploy.sh
-1) Developer Menu
-2) Launch Developer UI
-```
-
-Once you configure and save the new recipe in the UI, run a worker to test it.  The
-worker grabs one task at a time in test mode so you may have to run it multiple times
-to complete the entire recipe.
-
-```
-source starthinker_assets/development.sh
-python starthinker_ui/manage.py job_worker --test --verbose
-```
-
 ### Recipe Fields
 
 Templates use fields to collect inputs.  A field with the same name in multiple palces will be requested form the user 
@@ -111,10 +126,13 @@ only once. Template defines a field using the following JSON:
   - integer_list
   - string_list
 
-## Solution
+## Solution JSON
 
 A solution is just a recipe with multiple tasks.  Solutions are displayed in the UI 
 and designed to take the fewest parameters required for a complex workflow.
+
+![UI Solution](../../tutorials/images/ui_solution.png)
+[UI Solution Larger](../../tutorials/images/ui_solution.png)
 
 ### JSON Schema
 
@@ -153,13 +171,23 @@ In addition to the fields in a recipe template, a solution JSON also has the fol
 }
 ```
 
+### Impacts
+
+Always list all impact categories, even if the impact is zero. Impact is on a scale of 0 - 100.
+
+- spend optimization - How well does it help the client optimize budget.
+- spend growth - How well does it help the client grow their client base or account size.
+- time savings - How well does it reduce time for client performing specific tasks.
+- account health - How well does it reduce risk for the account.
+- csat improvement - How well does it improve client perception of Googles products and services.
+
 ### Catalysts
 
 Use these catalysts when defining a solution.
 
 - Acquisition - How do I reach growth by acquiring and reaching new customers? 
 - Monetization - How do I deliver the most value to my consumers and reach higher average revenue per order? 
-- Experience - How do I provide frictionless consumer experience to enable a deeper engagement and loyalty to my brand ?
+- Experience - How do I provide frictionless consumer experience to enable deeper engagement and loyalty to my brand?
 - Automation - How do I scale, optimize and automate processes to increase my proficiency? 
 - Insights - How do I get deeper consumer and brand insights to make better decisions? 
 - Data - How do I make my data usable and structured to measure and attribute my marketing efforts? 

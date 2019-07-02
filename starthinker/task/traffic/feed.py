@@ -139,7 +139,7 @@ class FieldMap:
   TRANSCODE_MAX_HEIGHT = 'Max Height'
   TRANSCODE_MIN_BITRATE = 'Min Bitrate (kbps)'
   TRANSCODE_MAX_BITRATE = 'Max Bitrate (kbps)'
-  TRANSCODE_FILE_TYPES = ['THREEGPP', 'FLV', 'MOV', 'MP4', 'WEBM', 'M3U8']
+  TRANSCODE_FORMAT = 'Format'
 
   THIRD_PARTY_URL_TYPE = '3P URL Type'
   THIRD_PARTY_URL = '3P URL'
