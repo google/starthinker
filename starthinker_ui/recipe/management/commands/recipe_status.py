@@ -56,6 +56,8 @@ class Command(BaseCommand):
       print 'Date Timezone', log['date_tz']
       print 'Forced', log.get('forced', False)
       print 'Status', log['status']
+      print 'Worker:', recipe.worker_uid
+
       for task in log['tasks']:
         print '  ----------------'
         print '  Utc', task['utc']

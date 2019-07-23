@@ -1,0 +1,27 @@
+{
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
+    "icon":"notifications",
+    "product":"Test",
+    "title":"Test Script",
+    "description":"Used by tests.",
+    "instructions":[
+      "This should be called by the tests scripts only."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "day":[],
+    "hour":[]
+  },
+  "tasks":[
+    { "hello":{
+      "auth":"user",
+      "hour":[],
+      "say":"Hello Manual",
+      "sleep":0
+    }}
+  ]
+}

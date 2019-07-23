@@ -26,6 +26,7 @@
   i.form_move:hover { color: #ee637e; }
   div.form_move_from { color: #ee637e; }
   h4.product_toggle { cursor: pointer; }
+  div.card-panel h3 { margin-top: 0px; }
 {% endblock %}
 
 {% block js %}
@@ -78,9 +79,13 @@
         <div class="card teal left-align">
           <div class="card-content white-text">
             <i class="right large material-icons">storage</i>
-            <span class="card-title">{{ recipe.name }} Recipe</span>
-            <p>Recipes are run on the schedule specified.  No hours means run every hour.  Run Now forces all tasks to execute sequential instead of on schedule. If StarThinker misses an hour, it will catch up and run it at the next job opportunity. Only active recipes run.</p>
-          </div>
+            <span class="card-title">{% if manual %}Manual{% else %}Scheduled{% endif %} Recipe</span>
+            {% if manual %}
+              <p>This recipe is run only when triggered by a user.  The recipe will only run once per trigger. These recipes can ONLY be executed manually.</p>
+            {% else %}
+              <p>This recipe is run on a schedule.  The recipe will execute on the specified days and hours.  If the recipe is forced to run manually it cancels the schedule, which resues the next day.</p>
+            {% endif %}
+            </div>
         </div>
         <br/>
 
@@ -154,7 +159,7 @@
                 {% for step in form.get_instructions %}
                   <li>{{ step|safe }}</li>
                 {% endfor %}
-              </ol><br/>
+              </ol>
               {% with fields=form %}
                 <input type="hidden" name="form_prefix" value="{{ form.script.get_tag }}_{{ forloop.counter }}"/>
                 {% include "form_fields.html" %}
@@ -188,7 +193,7 @@
                   {% for step in blank.get_instructions %}
                     <li>{{ step|safe }}</li>
                   {% endfor %}
-                </ol><br/>
+                </ol>
                 {% with fields=blank %}
                   <input type="hidden" name="form_prefix" value="{{ blank.prefix }}"/>
                   {% include "form_fields.html" %}

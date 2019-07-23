@@ -42,8 +42,8 @@ test_ui() {
   echo "----------------------------------------"
   echo ""
 
-  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" test recipe;
-  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" test website;
+  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" test recipe -v 2;
+  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" test website -v 2;
 
   deactivate
 

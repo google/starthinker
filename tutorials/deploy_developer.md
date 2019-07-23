@@ -21,12 +21,12 @@ source install/deploy.sh
   - You will be asked for [Service Credentials](cloud_service.md).
   - You will be asked for [Installed Client Credentials](cloud_client_installed.md).
 1. Option 9) Quit
-
+1. Then run a recipe using:
 ```
 source starthinker_assets/development.sh
 ```
 ```
-python starthinker/all/run.py starthinker/gtech/say_hello.json --verbose
+python starthinker/all/run.py starthinker/gtech/say_hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT --verbose 
 ```
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)

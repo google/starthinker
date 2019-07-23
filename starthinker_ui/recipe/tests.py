@@ -27,7 +27,7 @@ from django.test.testcases import TransactionTestCase
 
 from starthinker_ui.account.tests import account_create
 from starthinker_ui.project.tests import project_create
-from starthinker_ui.recipe.models import Recipe, worker_pull, worker_status, worker_check, worker_ping, utc_milliseconds, utc_to_timezone, JOB_LOOKBACK_MS, time_ago
+from starthinker_ui.recipe.models import Recipe, worker_pull, worker_status, worker_check, worker_ping, utc_milliseconds, utc_to_timezone, JOB_INTERVAL_MS, JOB_LOOKBACK_MS, time_ago
 from starthinker_ui.recipe.management.commands.job_worker import Workers
 
 # test recipe done to undone
@@ -94,6 +94,9 @@ class StatusTest(TestCase):
         },
       ]),
     )
+
+  def test_interval(self):
+    self.assertNotEqual(JOB_INTERVAL_MS / 1000, 0)
 
   def test_status(self):
     status = self.recipe.get_status()
@@ -277,13 +280,109 @@ class StatusTest(TestCase):
   def test_log(self):
     log = self.recipe.get_log()
 
-    #print json.dumps(log, indent=2, default=str)
-
     self.assertEqual(log["ago"], "1 Minute Ago") 
     self.assertFalse(log["force"])
     self.assertEqual(log["uid"], self.recipe.uid())
     self.assertEqual(log["percent"], 0) 
     self.assertEqual(log["status"], "QUEUED")
+
+
+class ManualTest(TestCase):
+
+  def setUp(self):
+    self.account = account_create()
+    self.project = project_create()
+
+    self.recipe = Recipe.objects.create(
+      account = self.account,
+      project = self.project,
+      name = 'RECIPE_MANUAL',
+      active = True,
+      manual = True,
+      week = [],
+      hour = [],
+      timezone = 'America/Los_Angeles',
+      tasks = json.dumps([
+        { "tag": "manual",
+          "values": {},
+          "sequence": 1
+        },
+      ]),
+    )
+
+
+  def test_status(self):
+    # without force manual tasks do not pull
+    status = self.recipe.get_status()
+
+    now_tz = utc_to_timezone(datetime.utcnow(), self.recipe.timezone)
+    date_tz = str(now_tz.date())
+    hour_tz = now_tz.hour
+
+    self.assertEqual(status['date_tz'], date_tz)
+    self.assertEqual(len(status['tasks']), 0)
+    self.assertFalse(status['force'])
+
+    # force a run now on a manual task
+    self.recipe.force()
+    status = self.recipe.get_status()
+    self.assertEqual(len(status['tasks']), 1)
+    self.assertTrue(status['force'])
+
+
+  def test_worker(self):
+    # manual mode ( without force always returns no tasks )
+    job = worker_pull('SAMPLE_WORKER', jobs=1)
+    self.assertEqual(len(job), 0)
+    
+    # advance time, since current jobs need to expire, artificially ping to keep out of queue
+    sleep((JOB_LOOKBACK_MS * 2) / 1000.0)
+
+    # remove time dependency for this test, force all tasks
+    self.recipe.force()
+    status = self.recipe.get_status()
+
+    for task in status['tasks']:
+
+      job = worker_pull('SAMPLE_WORKER', jobs=1)
+      self.assertEqual(len(job), 1)
+      job = job[0]
+
+      self.assertEqual(job['event'], 'JOB_PENDING')
+      self.assertEqual(job['instance'], task['instance'])
+      self.assertEqual(job['hour'], task['hour'])
+
+      # job is not run through actual worker, so 'job' key will be missing, simulate it
+      job['job'] = {
+        'worker':'SAMPLE_WORKER',
+        'id':'SAMPLE_JOB_UUID',
+        'process':None,
+        'utc':datetime.utcnow(),
+      }
+
+      worker_status(
+        job['job']['worker'],
+        job['recipe']['setup']['uuid'],
+        job['script'],
+        job['instance'],
+        job['hour'],
+        'JOB_END',
+        "Output is OK.",
+        ""
+      )
+
+      sleep((JOB_LOOKBACK_MS * 2) / 1000.0)
+
+    # after completing all tasks, check if they whole recipe is done
+    self.recipe.refresh_from_db()
+    self.assertTrue(self.recipe.job_done)
+    status = self.recipe.get_status()
+    self.assertTrue(
+      all([
+        (task['event'] == 'JOB_END')
+        for task in status['tasks']
+      ])
+    )
 
 
 class RecipeViewTest(TestCase):
@@ -315,6 +414,10 @@ class RecipeViewTest(TestCase):
 
   def test_recipe_edit(self):
     resp = self.client.get('/recipe/edit/')
+    self.assertEqual(resp.status_code, 302)
+
+  def test_recipe_manual(self):
+    resp = self.client.get('/recipe/edit/?manual=true')
     self.assertEqual(resp.status_code, 302)
 
   def test_recipe_start(self):

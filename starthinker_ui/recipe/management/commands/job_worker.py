@@ -66,8 +66,10 @@ class Workers():
     self.lock_thread.acquire()
     jobs = worker_pull(self.uid, jobs=self.available())
     self.lock_thread.release()
-    for job in jobs: 
-      self.run(job)
+
+    if jobs:
+      for job in jobs: 
+        self.run(job)
     
 
   def run(self, job, force=False):
@@ -156,6 +158,7 @@ class Workers():
     for job in self.jobs:
 
       # if process still running, check timeout or ping keep alive 
+      #if job['job']['process']:
       if job['job']['process'].poll() is None:
 
         # check if task is a timeout 

@@ -1,20 +1,19 @@
 # StarThinker Launch Recipe / Solution From UI
   
-## Launch a Recipe From The UI
+The StarThinker UI allows non-coding users to assemble and launch custom workflows.  It also
+permits development teams to quickly add custom tasks or complete solutions to the UI.
+
+The UI deploys two kinds of solution, scheduled solution that run repeatedly, and manual 
+solutions that must be triggered by a user.  Although the UI has Google Cloud helpers built 
+in ( such as service credentials ), the tasks are capable of integrating with any environment 
+becuse its just python underneath.
+
+### Launch a Recipe From The UI
 
 After logging into the UI, either development or deployed on AppEngine...
 
 ![UI Recipe Create](images/ui_recipe_create.png)
 [UI Recipe Create](images/ui_recipe_create.png)
-
-### Notes
-
- - [Workers must be deployed](deploy_enterprise.md) for job to execute after setting up UI.
- - If jobs time out, the size and number of workers must be increased.
- - If IAP is enabled, users accessing the UI must be specified in the IAP configuration.
- - Every account and recipe is tied to a user, they cannot be shared.
- - Most recipes will require a Google Cloud Service Account.
- - StarThinker UI will ask you to log in again if you close the browser window, for security.
 
 ###  Steps
 
@@ -83,6 +82,17 @@ After logging into the UI, either development or deployed on AppEngine...
 - DELETE
   * At bottom of recipe.
   * Delete the recipe ( cannot be undone ).
+
+### Notes
+
+ - [Workers must be deployed](deploy_enterprise.md) for job to execute after setting up UI.
+ - If jobs time out, the size and number of workers must be increased.
+ - If IAP is enabled, users accessing the UI must be specified in the IAP configuration.
+ - Every account and recipe is tied to a user, they cannot be shared.
+ - Most recipes will require a Google Cloud Service Account.
+ - StarThinker UI will ask you to log in again if you close the browser window, for security.
+ - If a new script or solution is added by developers, the UI must be restarted to load it.
+ - The UI will ask users to log in again if the browser is closed, for security and scope refresh.
 
 ---
 &copy; 2019 Google Inc. - Apache License, Version 2.0

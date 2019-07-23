@@ -32,12 +32,6 @@ Call from code using:
 
   - `hello(recipe, instance)`
 
-Notes
-
-  - See [/all/README.md](/all/README.md) to learn about running recipes.
-  - See [/cron/README.md](/cron/README.md) to learn about scheduling recipes.
-  - See [/auth/README.md](/auth/README.md) to learn about setting up credentials.
-
 """
 
 import json

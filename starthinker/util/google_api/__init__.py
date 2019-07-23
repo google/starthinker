@@ -40,11 +40,12 @@ from starthinker.util.auth import get_service
 from starthinker.util.project import project
 
 
-def API_Retry(job, key=None, retries=5, wait=30):
+def API_Retry(job, key=None, retries=5, wait=61):
   """ API retry that includes back off and some common error handling.
 
   For critical but recoverable errors, the back off executes [retry] times.  Each time the [wait] is doubled.
-  By default retries are: 0:30 + 1:00 + 2:00 + 4:00 + 8:00 = 15:30
+  By default retries are: 1:01 + 2:02 + 4:04 + 8:08 + 16:16 = 31:31 ( minutes )
+  The recommended minimum wait is 60 seconds for most APIs.
 
   * Errors retried: 429, 500, 503
   * Errors ignored: 409 - already exists ( triggered by create only and also returns None )
@@ -381,5 +382,17 @@ def API_PubSub(auth, iterate=False):
     'version':'v1',
     'auth':auth,
     'iterate':iterate
+  }
+  return API(configuration)
+
+def API_Analytics(auth, iterate=False):
+  """Analytics helper configuration Google API. Defines agreed upon version.
+  """
+
+  configuration = {
+      'api':'analytics',
+      'version':'v3',
+      'auth':auth,
+      'iterate':iterate
   }
   return API(configuration)

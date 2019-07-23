@@ -16,6 +16,13 @@ Retrieve Service Account Key Credentials from: https://console.cloud.google.com/
    1. Key Type is JSON.
  1. Click Create and open the downloaded file.
  1. Copy the contents and paste into the StarThinker deployment script when prompted for Service Credentials.
+   - You may have to click CTRL+D after pasting the service crdentials.
+
+### Verify
+
+If all goes well, after deployment, the following file should exist with your credentials inside:
+
+- starthinker_assets/service.json
 
 ---
 &copy; 2019 Google Inc. - Apache License, Version 2.0

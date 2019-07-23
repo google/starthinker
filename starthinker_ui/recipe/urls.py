@@ -22,6 +22,7 @@ import views
 
 urlpatterns = [
   url(r'^recipe/edit/(?P<pk>\d+)?/?$', views.recipe_edit, name='recipe.edit'),
+  url(r'^recipe/manual/(?P<pk>\d+)?/?$', views.recipe_manual, name='recipe.manual'),
   url(r'^recipe/delete/(?P<pk>\d+)/$', views.recipe_delete, name='recipe.delete'),
   url(r'^recipe/run/(?P<pk>\d+)/$', views.recipe_run, name='recipe.run'),
   url(r'^recipe/cancel/(?P<pk>\d+)/$', views.recipe_cancel, name='recipe.cancel'),

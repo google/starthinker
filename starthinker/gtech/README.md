@@ -33,7 +33,7 @@ source starthinker_assets/development.sh
 python starthinker/script/run.py starthinker/gtech/script_[new task].json -h
 ```
 ```
-python starthinker/all/run.py [recipe from above step].json
+python starthinker/all/run.py [recipe from above step].json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT --verbose
 ```
 
 ### Test Recipe UI

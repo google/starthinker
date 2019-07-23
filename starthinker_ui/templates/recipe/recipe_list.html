@@ -22,7 +22,10 @@
 
 {% block content %}
 
-  <h1>Recipes <a href="/recipe/edit/"><i class="material-icons teal-text">add_circle</i></a></h1>
+  <h1>Recipes 
+    <a href="/recipe/edit/"><i class="material-icons teal-text">add_alarm</i></a>
+    <a href="/recipe/manual/"><i class="material-icons teal-text">add</i></a>
+  </h1>
   <p class="flow-text">Assemble recipes that run on a schedule.</p>
 
   <table class="bordered highlight list">
@@ -42,8 +45,12 @@
            </td>
            <td>
              <a href="{{ recipe.link_edit }}">{{ recipe.name }}</a>
-             <br/>{% for day in recipe.get_days %}{{ day }}{% if not forloop.last %}, {% endif %}{% endfor %}
-             <br/>{% for hour in recipe.get_hours %}{{ hour }}{% if not forloop.last %}, {% endif %}{% endfor %}
+             {% if recipe.manual %}
+               <br/>Manual Trigger
+             {% else %}
+               <br/>{% for day in recipe.get_days %}{{ day }}{% if not forloop.last %}, {% endif %}{% endfor %}
+               <br/>{% for hour in recipe.get_hours %}{{ hour }}{% if not forloop.last %}, {% endif %}{% endfor %}
+             {% endif %}
            </td>
            <td class="center">
              {{ log.percent }}% {{ log.status }}

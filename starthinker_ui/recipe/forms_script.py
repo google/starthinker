@@ -27,7 +27,7 @@ from starthinker_ui.recipe.forms import SetupForm
 class ScriptForm(forms.Form):
   users = None
 
-  def __init__(self, recipe, account, *args, **kwargs):
+  def __init__(self, manual, recipe, account, *args, **kwargs):
     post = args[0] if len(args) > 0 else None
 
     # load scripts ( used when creating new recipe )
@@ -36,14 +36,15 @@ class ScriptForm(forms.Form):
 
     # fetch the instance and load intial data
     self.instance = recipe or Recipe()
-    self.setup = SetupForm(account, post, instance=self.instance)
+    self.setup = SetupForm(manual, account, post, instance=self.instance)
     super(ScriptForm, self).__init__(*args, **kwargs)
     
     # group blanks by product
     self.products = {}
     for s in sorted(Script.get_scripts(account.email), key=lambda s: s.get_tag()):
-      self.products.setdefault(s.get_product(), [])
-      self.products[s.get_product()].append(ScriptJsonForm('[BLANK]', s, {}, prefix='%s_[BLANK]' % s.get_tag()))
+      if s.is_manual() == manual:
+        self.products.setdefault(s.get_product(), [])
+        self.products[s.get_product()].append(ScriptJsonForm('[BLANK]', s, {}, prefix='%s_[BLANK]' % s.get_tag()))
     self.products = sorted([{ 'name':k, 'blanks':v } for k,v in self.products.items()], key=lambda p: p['name'])
 
     # processing incoming form

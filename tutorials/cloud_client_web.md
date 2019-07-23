@@ -26,8 +26,14 @@ If you change the Auth Redirect URI you will need to re-download the credentials
  1. Edit the credentials and add a new Auth Redirect URI.
  1. Click the download icon next to the new credentials and open the downloaded file.
  1. Copy the contents and paste into the StarThinker deployment script when prompted for Client Web Credentials.
-   1. source install/deploy.sh
-   1. 7) Change UI Credentials
+   1. ```source install/deploy.sh```
+   1. ```7) Change UI Credentials```
+
+### Verify
+
+If all goes well, after deployment, the following file should exist with your credentials inside:
+
+- starthinker_assets/client_web.json
 
 ---
 &copy; 2019 Google Inc. - Apache License, Version 2.0

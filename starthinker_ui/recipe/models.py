@@ -20,10 +20,9 @@
 
 import pytz
 import json
-from time import sleep
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
-from django.db import models, connection
+from django.db import models, connection, transaction
 from django.conf import settings
 from django.utils.text import slugify
 
@@ -34,7 +33,7 @@ from starthinker_ui.recipe.scripts import Script
 from starthinker_ui.ui.log import log_job_update
 
 
-JOB_INTERVAL_MS = 800 # milliseconds
+JOB_INTERVAL_MS = float(800) # milliseconds ( must be float for fraction math to work )
 JOB_LOOKBACK_MS = 3 * JOB_INTERVAL_MS #  2.4 seconds
 JOB_RECHECK_MS = 30 * 60 * 1000 # 30 minutes
 
@@ -75,8 +74,6 @@ def time_ago(timestamp):
 def worker_pull(worker_uid, jobs=1):
   '''Atomic reservation of worker in jobs.
 
-  Unfortunately this needs to be done at the DB level for performance.
-
   Args:
     - worker_uid ( string ) - identifies a unique worker, must be same for every call from same worker.
     - jobs ( integer ) - number of jobs to pull
@@ -85,52 +82,35 @@ def worker_pull(worker_uid, jobs=1):
   # if the worker cannot do any work, do nothing
   if jobs <= 0: return
 
+  tasks = []
   worker_utm = utc_milliseconds()
-  worker_interval = worker_utm - JOB_LOOKBACK_MS
+  worker_lookback = worker_utm - JOB_LOOKBACK_MS
   worker_recheck = worker_utm - JOB_RECHECK_MS
 
-  # sql level is necessary evil to get the most concurrency
-  worker_skip_locked = 'FOR UPDATE SKIP LOCKED' if connection.vendor == 'postresql' else ''
-  db_false = '0' if connection.vendor == 'sqlite' else 'false'
-
-  with connection.cursor() as cursor:
+  with transaction.atomic():
 
     # every half hour put jobs back in rotation so worker can trigger get_status logic, triggers status at 24 hour mark
-    cursor.execute("""
-      UPDATE recipe_recipe
-      SET job_done=%s
-      WHERE  id IN ( SELECT id FROM recipe_recipe WHERE worker_utm < %s %s )
-    """ % (db_false, worker_recheck, worker_skip_locked))
+    Recipe.objects.filter(active=True, manual=False, worker_utm__lt=worker_recheck).select_for_update(skip_locked=True).update(job_done=False)
 
-    sleep(0.01) # 10 ms
+    #for r in Recipe.objects.all().values():
+    #  print 'R', r
+ 
+    # find recipes that are available but have not been pinged recently to this worker
+    where = Recipe.objects.filter(
+      job_done=False, 
+      active=True, 
+      worker_utm__lt=worker_lookback,
+    ).select_for_update(skip_locked=True).order_by('worker_utm').values_list('id', flat=True)[:jobs]
 
-    #cursor.execute("SELECT id, worker_uid, worker_utm, job_done FROM recipe_recipe")
-    #for row in cursor.fetchall():
-    #  print 'Before', row
+    #print 'W', where
 
-    where = """SELECT id
-      FROM recipe_recipe
-      WHERE job_done=%s AND active!=%s AND worker_utm < %s
-      ORDER BY worker_utm ASC
-      %s
-      LIMIT %d
-    """ % (db_false, db_false, worker_interval, worker_skip_locked, jobs)
+    # mark those recipes as belonging to this worker
+    Recipe.objects.filter(id__in=where).update(worker_uid=worker_uid, worker_utm=worker_utm)
 
-    cursor.execute("""
-      UPDATE recipe_recipe
-      SET worker_uid='%s', worker_utm=%s
-      WHERE id IN ( %s )
-    """ % (worker_uid, worker_utm, where))
-
-    #cursor.execute("SELECT id, worker_uid, worker_utm FROM recipe_recipe")
-    #print 'Compare', worker_uid, 'current = ', worker_interval, 'worker_utm < ', worker_utm, 'gap = ', JOB_LOOKBACK_MS
-    #for row in cursor.fetchall():
-    #  print 'After', row
-
-  tasks = []
-  for job in Recipe.objects.filter(worker_uid=worker_uid, worker_utm=worker_utm):
-    task = job.get_task()
-    if task: tasks.append(task)
+    # find all recipes that belong to this worker and check if they have tasks
+    for job in Recipe.objects.filter(worker_uid=worker_uid, worker_utm=worker_utm):
+      task = job.get_task()
+      if task: tasks.append(task)
 
   return tasks
 
@@ -166,6 +146,7 @@ class Recipe(models.Model):
 
   name = models.CharField(max_length=64)
   active = models.BooleanField(default=True)
+  manual = models.BooleanField(default=False)
 
   week = models.CharField(max_length=64, default=json.dumps(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']))
   hour = models.CharField(max_length=128, default=json.dumps([3]))
@@ -281,8 +262,10 @@ class Recipe(models.Model):
 
   def force(self):
     status = self.get_status(force=True)
+    self.job_done = False
     self.job_status = json.dumps(status)
-    self.save(update_fields=['job_status'])
+    self.worker_uid = '' # forces current worker to cancel job
+    self.save(update_fields=['job_status', 'job_done', 'worker_uid'])
 
   def cancel(self):
     status = self.get_status()
@@ -295,7 +278,7 @@ class Recipe(models.Model):
 
     self.job_done = True
     self.job_status = json.dumps(status)
-    self.worker_uid = '' # forces worker to cancel job
+    self.worker_uid = '' # forces current worker to cancel job
     self.save(update_fields=['job_status', 'job_done', 'worker_uid'])
 
   # WORKER METHODS
@@ -305,6 +288,7 @@ class Recipe(models.Model):
 
     # current 24 hour time zone derived frame to RUN the job
     now_tz = utc_to_timezone(datetime.utcnow(), self.timezone)
+
     date_tz = str(now_tz.date())
     day_tz = now_tz.strftime('%a')
     hour_tz = now_tz.hour
@@ -381,6 +365,10 @@ class Recipe(models.Model):
       self.job_done = done
       Recipe.objects.filter(pk=self.pk).update(job_done=self.job_done)
 
+    if json.loads(self.job_status).get('force', False) != status.get('force', False):
+      self.job_status = json.dumps(status)
+      self.save(update_fields=['job_status'])
+
     return status
 
 
@@ -388,7 +376,7 @@ class Recipe(models.Model):
     status = self.get_status()
 
     # if not done return next task prior or equal to current time zone hour
-    if not self.job_done:
+    if self.job_done == False and ( self.manual == False or status['force'] == True ):
       now_tz = utc_to_timezone(datetime.utcnow(), self.timezone)
       day_tz = now_tz.strftime('%a')
       if day_tz in status['day']:
@@ -415,7 +403,6 @@ class Recipe(models.Model):
         self.job_done = all([task['done'] for task in status['tasks']])
         self.job_status = json.dumps(status)
         self.worker_utm=utc_milliseconds()
-
         self.save(update_fields=['worker_utm', 'job_status', 'job_done'])
         break
 

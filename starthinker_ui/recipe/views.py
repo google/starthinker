@@ -40,11 +40,15 @@ def recipe_list(request):
 
 
 @permission_admin()
-def recipe_edit(request, pk=None):
-  recipe = request.user.recipe_set.get(pk=pk) if pk else None
+def recipe_edit(request, pk=None, manual=False):
+  if pk:
+    recipe = request.user.recipe_set.get(pk=pk)
+    manual = recipe.manual
+  else:
+    recipe = None
 
   if request.method == 'POST':
-    form_script = ScriptForm(recipe, request.user, request.POST)
+    form_script = ScriptForm(manual, recipe, request.user, request.POST)
     if form_script.is_valid():
       form_script.save()
       messages.success(request, 'Recipe updated.')
@@ -53,9 +57,15 @@ def recipe_edit(request, pk=None):
       print 'ERRORS', form_script.get_errors()
       messages.error(request, 'Recipe Script Errors: %s' % form_script.get_errors())
   else:
-    form_script = ScriptForm(recipe, request.user, scripts=request.GET.get('scripts', ''))
+    form_script = ScriptForm(manual, recipe, request.user, scripts=request.GET.get('scripts', ''))
 
-  return render(request, "recipe/recipe_edit.html", { 'form_script':form_script })
+  return render(request, "recipe/recipe_edit.html", { 'form_script':form_script, 'manual':manual })
+
+
+@permission_admin()
+def recipe_manual(request, pk=None):
+  return recipe_edit(request, pk=None, manual=True)
+
 
 @permission_admin()
 def recipe_delete(request, pk=None):

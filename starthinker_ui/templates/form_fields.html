@@ -26,13 +26,13 @@
   {% elif field|is_checkbox %}
     <div>
       {{ field }}
-      <label for="{{ field.id_for_label }}"><strong>{{ field.label }}</strong>{% if field.help_text %} - {{ field.help_text }}{% endif %}</label>
+      <label for="{{ field.id_for_label }}"><strong>{{ field.label }}</strong>{% if field.help_text %} - {{ field.help_text|safe }}{% endif %}</label>
     </div>
   {% else %}
     <div>
       <div class="input-field">
         {{ field }}
-        <label for="{{ field.id_for_label }}"><strong>{{ field.label }}</strong>{% if field.help_text %} - {{ field.help_text }}{% endif %}</label>
+        <label for="{{ field.id_for_label }}"><strong>{{ field.label }}</strong>{% if field.help_text %} - {{ field.help_text|safe }}{% endif %}</label>
       </div>
     </div>
   {% endif %}

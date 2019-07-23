@@ -28,34 +28,56 @@ HOURS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2
 class SetupForm(forms.ModelForm):
   week = ListChoiceField(choices=map(lambda d: (d[:3],d), DAYS), initial=map(lambda d: d[:3], DAYS))
   hour = ListChoiceIntegerField(choices=map(lambda h: (h,h), HOURS), initial=[3])
-
   timezone = TimezoneField(required=False)
 
   class Meta:
     model = Recipe
     fields = ['name', 'project', 'timezone', 'week', 'hour', 'active']
 
-  def __init__(self, account, *args, **kwargs):
+  def __init__(self, manual, account, *args, **kwargs):
     super(SetupForm, self).__init__(*args, **kwargs)
     self.instance.account = account
     self.fields['active'].required = False
     self.fields['project'].queryset = account.project_set.all()
 
+    self.fields['name'].help_text = 'Identify this recipe in list of recipes.'
+    self.fields['project'].help_text = 'Choose a <b>Google Cloud Project Service Credential</b> uploaded to Projects.'
+    self.fields['timezone'].help_text = 'Frame of reference for all recipe times.'
+    self.fields['week'].help_text = 'Days of week to execute recipe.'
+    self.fields['hour'].help_text = 'Hours of day to execute recipe.'
+    self.fields['active'].help_text = 'To pause recipe, uncheck this.'
+
     self.structure = [
-      { 'title':'Recipe',
-        'description':'Provide a <a href="/project/">cloud project service account</a> where data will be stored.  The service level authentication will be used to write to your cloud project.',
+      { 'title':'%s Recipe' % self.instance.name.title(),
+        'description':'',
         'fields':[
           self['name'],
-          self['project'],
+          self['project']
         ]
-      },
-      { 'title':'Schedule',
-        'description':'Tasks in this project will be run on the day and hours specified below.  To pause all the tesks uncheck the cron option.',
-        'fields':[
-          self['timezone'],
-          self['week'],
-          self['hour'],
-          self['active'],
-        ]
-      },
+      }
     ]
+
+    if manual:
+      del self.fields['week']
+      del self.fields['hour']
+      del self.fields['active']
+
+      self.instance.week = []
+      self.instance.hour = []
+      self.instance.active = True
+      self.instance.manual = True
+
+      self.structure[0]['fields'].append(self['timezone'])
+
+    else:
+      self.structure.append( 
+        { 'title':'Schedule',
+          'description':'',
+          'fields':[
+            self['timezone'],
+            self['week'],
+            self['hour'],
+            self['active'],
+          ]
+        }
+      )
