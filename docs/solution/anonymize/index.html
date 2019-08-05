@@ -107,34 +107,30 @@
       
 
   <br/>
-  <h1><i class="medium material-icons">perm_phone_msg</i>&nbsp; Monthly Budget Mover</h1>
-  <p class="flow-text">Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.</p>
+  <h1><i class="medium material-icons">waves</i>&nbsp; Anonymize Dataset</h1>
+  <p class="flow-text">Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=monetization">monetization</a>
-  
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=automation">automation</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=data">data</a>
   
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=experience">experience</a>
   
 
   <br/><br/>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
-  
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=bigquery">bigquery</a>
   
 
   <br/><br/>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=budget">budget</a>
-  
 
-  <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/MonthlyBudgetMover.png"/>
+  <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/anonymize_dataset.png"/>
 
   <div class="buttons">
-    <a id="solution_button" class="btn-large waves-effect waves-light" href="mailto:terwilleger@google.com?subject=Request+For+A+Monthly+Budget+Mover+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Monthly+Budget+Mover+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fmonthly_budget_mover%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">
+    <a id="solution_button" class="btn-large waves-effect waves-light" href="mailto:kenjora@google.com?subject=Request+For+A+Anonymize+Dataset+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Anonymize+Dataset+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fanonymize%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">
       <i class="material-icons right">send</i> Request Deployemt
     </a>
 
@@ -147,7 +143,7 @@
     
 
     
-      <a id="solution_button" class="btn-large waves-effect waves-light" href="https://github.com/google/starthinker/blob/master//starthinker/gtech/script_monthly_budget_mover.json" target="_blank">
+      <a id="solution_button" class="btn-large waves-effect waves-light" href="https://github.com/google/starthinker/blob/master//starthinker/gtech/script_anonymize.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
     
@@ -163,11 +159,11 @@
        <tbody>
        
          <tr>
-           <td>Saves on the time to manually move Insertion Order budgets from month to month.</td>
+           <td>Create anonymous data sets for demos.</td>
          </tr>
        
          <tr>
-           <td>Allows you to categorize line items into categories, then the tool will aggregate up all the spend and budget for those line items and determine any remaining or negative budget.  Then it will spread that amount equally across all of the Line Items in that category.</td>
+           <td>Anonymize dashboard data.</td>
          </tr>
        
        </tbody>
@@ -185,19 +181,10 @@
        <tbody>
          
            <tr>
-             <td>Csat Improvement</td>
-             <td>
-               <div class="progress">
-                 <div class="determinate" style="width: 50%"></div>
-               </div>
-             </td>
-           </tr>
-         
-           <tr>
              <td>Spend Growth</td>
              <td>
                <div class="progress">
-                 <div class="determinate" style="width: 90%"></div>
+                 <div class="determinate" style="width: 0%"></div>
                </div>
              </td>
            </tr>
@@ -206,16 +193,7 @@
              <td>Account Health</td>
              <td>
                <div class="progress">
-                 <div class="determinate" style="width: 20%"></div>
-               </div>
-             </td>
-           </tr>
-         
-           <tr>
-             <td>Technical Level</td>
-             <td>
-               <div class="progress">
-                 <div class="determinate" style="width: 10%"></div>
+                 <div class="determinate" style="width: 0%"></div>
                </div>
              </td>
            </tr>
@@ -224,13 +202,22 @@
              <td>Spend Optimization</td>
              <td>
                <div class="progress">
-                 <div class="determinate" style="width: 80%"></div>
+                 <div class="determinate" style="width: 0%"></div>
                </div>
              </td>
            </tr>
          
            <tr>
              <td>Time Savings</td>
+             <td>
+               <div class="progress">
+                 <div class="determinate" style="width: 100%"></div>
+               </div>
+             </td>
+           </tr>
+         
+           <tr>
+             <td>Csat Improvement</td>
              <td>
                <div class="progress">
                  <div class="determinate" style="width: 100%"></div>
@@ -259,7 +246,7 @@
 
         <tr>
           <td>Authors</td>
-          <td><a href="mailto:terwilleger@google.com?subject=Request+For+A+Monthly+Budget+Mover+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Monthly+Budget+Mover+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fmonthly_budget_mover%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">terwilleger@google.com</a>
+          <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Anonymize+Dataset+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Anonymize+Dataset+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fanonymize%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
           </td>
         </tr>
 

@@ -55,7 +55,7 @@
        div.card table { margin: 0px 5% 30px 5%; width: 90%; }
 
        .card .card-content .card-title { word-wrap: break-word; }
-       div.select-wrapper { margin-top: 2rem; }
+       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
 
        
     </style>
@@ -128,11 +128,21 @@
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_datastudio">datastudio</span>
   
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_dbm">dbm</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_dcm">dcm</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_ds">ds</span>
+  
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_dv360">dv360</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_email">email</span>
   
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_ga">ga</span>
+  
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_sheets">sheets</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_trix">trix</span>
   
 
   <br/><br/>
@@ -203,6 +213,14 @@
         </td>
       </tr>
     
+      <tr class="category_all category_reporting category_datastudio category_dcm category_dbm category_bigquery category_trix category_ga category_ds">
+        <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">timeline</i></td>
+        <td style="vertical-align:top;">
+          <a href="/starthinker/solution/ga_timeline/"><h4>Google Analytics Timeline</h4></a>
+          <p>Download Google Analytics settings to a BigQuery table.</p>
+        </td>
+      </tr>
+    
       <tr class="category_all category_budget category_monetization category_automation category_experience category_dv360 category_bigquery">
         <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">perm_phone_msg</i></td>
         <td style="vertical-align:top;">
@@ -216,6 +234,14 @@
         <td style="vertical-align:top;">
           <a href="/starthinker/solution/entity/"><h4>Entity Read Files</h4></a>
           <p>Import public and private <a href='https://developers.google.com/bid-manager/guides/entity-read/format-v2' target='_blank'>Entity Read Files</a> into a BigQuery dataset.<br/>CAUTION: PARTNER ONLY, ADVERTISER FILTER IS NOT APPLIED.</p>
+        </td>
+      </tr>
+    
+      <tr class="category_all category_automation category_data category_experience category_bigquery">
+        <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">waves</i></td>
+        <td style="vertical-align:top;">
+          <a href="/starthinker/solution/anonymize/"><h4>Anonymize Dataset</h4></a>
+          <p>Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.</p>
         </td>
       </tr>
     

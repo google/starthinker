@@ -55,7 +55,7 @@
        div.card table { margin: 0px 5% 30px 5%; width: 90%; }
 
        .card .card-content .card-title { word-wrap: break-word; }
-       div.select-wrapper { margin-top: 2rem; }
+       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
 
        
     </style>
@@ -202,9 +202,13 @@
   
      <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_6">Storage</span>
   
-     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_7">Twitter</span>
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_7">Test</span>
   
-     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_8">gTech</span>
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_8">Twitter</span>
+  
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_9">Video</span>
+  
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_10">gTech</span>
   
 
   <br/><br/>
@@ -1114,16 +1118,16 @@
                     }
                 }
             }, 
-            &quot;file_types&quot;: {
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;version&quot;: {
                 &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string_list&quot;, 
-                    &quot;order&quot;: 1, 
-                    &quot;description&quot;: &quot;The sdf file types to be returned.&quot;, 
-                    &quot;name&quot;: &quot;file_types&quot;
+                    &quot;default&quot;: &quot;3.1&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;order&quot;: 4, 
+                    &quot;description&quot;: &quot;The sdf version to be returned.&quot;, 
+                    &quot;name&quot;: &quot;version&quot;
                 }
             }, 
-            &quot;auth&quot;: &quot;user&quot;, 
             &quot;filter_type&quot;: {
                 &quot;field&quot;: {
                     &quot;kind&quot;: &quot;choice&quot;, 
@@ -1141,13 +1145,22 @@
                     &quot;name&quot;: &quot;filter_type&quot;
                 }
             }, 
+            &quot;file_types&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string_list&quot;, 
+                    &quot;order&quot;: 1, 
+                    &quot;description&quot;: &quot;The sdf file types to be returned.&quot;, 
+                    &quot;name&quot;: &quot;file_types&quot;
+                }
+            }, 
             &quot;out&quot;: {
                 &quot;bigquery&quot;: {
                     &quot;table&quot;: {
                         &quot;field&quot;: {
                             &quot;default&quot;: &quot;&quot;, 
                             &quot;kind&quot;: &quot;string&quot;, 
-                            &quot;order&quot;: 5, 
+                            &quot;order&quot;: 6, 
                             &quot;description&quot;: &quot;Table to be written to in BigQuery.&quot;, 
                             &quot;name&quot;: &quot;table&quot;
                         }
@@ -1156,7 +1169,7 @@
                         &quot;field&quot;: {
                             &quot;default&quot;: false, 
                             &quot;kind&quot;: &quot;boolean&quot;, 
-                            &quot;order&quot;: 6, 
+                            &quot;order&quot;: 7, 
                             &quot;description&quot;: &quot;Whether the end table is time partitioned.&quot;, 
                             &quot;name&quot;: &quot;is_time_partition&quot;
                         }
@@ -1165,7 +1178,7 @@
                         &quot;field&quot;: {
                             &quot;default&quot;: &quot;&quot;, 
                             &quot;kind&quot;: &quot;string&quot;, 
-                            &quot;order&quot;: 4, 
+                            &quot;order&quot;: 5, 
                             &quot;description&quot;: &quot;Dataset to be written to in BigQuery.&quot;, 
                             &quot;name&quot;: &quot;dataset&quot;
                         }
@@ -2542,6 +2555,123 @@
       <thead>
         <tr>
           <th class="center" style="width:90px;"></th>
+          <th>Test</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">notifications</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_test">JSON</span>
+            <h4>Test Script</h4>
+            <p>TASK: test</p>
+            <p>Used by tests.</p>
+            <ol>
+              <li>This should be called by the tests scripts only.</li><li>When run will generate a say hello log.</li>
+            </ol>
+            <pre class="view_code" id="view_code_test" style="display:none;">[
+    {
+        &quot;hello&quot;: {
+            &quot;say&quot;: &quot;Hello At 1&quot;, 
+            &quot;sleep&quot;: 0, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;hour&quot;: [
+                1
+            ]
+        }
+    }, 
+    {
+        &quot;hello&quot;: {
+            &quot;say&quot;: &quot;Hello At 3&quot;, 
+            &quot;sleep&quot;: 0, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;hour&quot;: [
+                3
+            ]
+        }
+    }, 
+    {
+        &quot;hello&quot;: {
+            &quot;say&quot;: &quot;Hello Manual&quot;, 
+            &quot;sleep&quot;: 0, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;hour&quot;: []
+        }
+    }, 
+    {
+        &quot;hello&quot;: {
+            &quot;say&quot;: &quot;Hello At 23 Sleep&quot;, 
+            &quot;sleep&quot;: 30, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;hour&quot;: [
+                23
+            ]
+        }
+    }, 
+    {
+        &quot;hello&quot;: {
+            &quot;say&quot;: &quot;Hello At Anytime&quot;, 
+            &quot;sleep&quot;: 0, 
+            &quot;auth&quot;: &quot;user&quot;
+        }
+    }, 
+    {
+        &quot;hello&quot;: {
+            &quot;say&quot;: &quot;Hello At 1, 3, 23&quot;, 
+            &quot;sleep&quot;: 0, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;hour&quot;: [
+                1, 
+                3, 
+                23
+            ]
+        }
+    }, 
+    {
+        &quot;hello&quot;: {
+            &quot;say&quot;: &quot;Hello At 3 Reordered&quot;, 
+            &quot;sleep&quot;: 0, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;hour&quot;: [
+                3
+            ]
+        }
+    }
+]</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">notifications</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_manual">JSON</span>
+            <h4>Test Script</h4>
+            <p>TASK: manual</p>
+            <p>Used by tests.</p>
+            <ol>
+              <li>This should be called by the tests scripts only.</li><li>When run will generate a say hello log.</li>
+            </ol>
+            <pre class="view_code" id="view_code_manual" style="display:none;">[
+    {
+        &quot;hello&quot;: {
+            &quot;say&quot;: &quot;Hello Manual&quot;, 
+            &quot;sleep&quot;: 0, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;hour&quot;: []
+        }
+    }
+]</pre>
+          <td>
+        </tr>
+      
+      </tbody>
+    </table>
+  
+    <table class="view_product bordered highlight list" id="view_product_8" style="display:none;">
+      <thead>
+        <tr>
+          <th class="center" style="width:90px;"></th>
           <th>Twitter</th>
         </tr>
       </thead>
@@ -2882,7 +3012,117 @@
       </tbody>
     </table>
   
-    <table class="view_product bordered highlight list" id="view_product_8" style="display:none;">
+    <table class="view_product bordered highlight list" id="view_product_9" style="display:none;">
+      <thead>
+        <tr>
+          <th class="center" style="width:90px;"></th>
+          <th>Video</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">switch_video</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_video">JSON</span>
+            <h4>Video Overlay</h4>
+            <p>TASK: video</p>
+            <p>Add images, text, and audio to videos.</p>
+            <ol>
+              <li>Provide either a sheet or a BigQuery table.</li><li>Each video edit will be read from the sheet or table.</li>
+            </ol>
+            <pre class="view_code" id="view_code_video" style="display:none;">[
+    {
+        &quot;sheets&quot;: {
+            &quot;__comment__&quot;: &quot;Copy the tamplate sheet to the users sheet.  If it already exists, nothing happens.&quot;, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;sheet&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;order&quot;: 1, 
+                    &quot;description&quot;: &quot;Name or URL of sheet.&quot;, 
+                    &quot;name&quot;: &quot;sheet&quot;
+                }
+            }, 
+            &quot;template&quot;: {
+                &quot;sheet&quot;: &quot;https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit#gid=0&quot;, 
+                &quot;tab&quot;: &quot;Video&quot;
+            }, 
+            &quot;tab&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;order&quot;: 2, 
+                    &quot;description&quot;: &quot;Name of sheet tab.&quot;, 
+                    &quot;name&quot;: &quot;tab&quot;
+                }
+            }
+        }
+    }, 
+    {
+        &quot;video&quot;: {
+            &quot;__comment__&quot;: &quot;Read video effects and values from sheet and/or bigquery.&quot;, 
+            &quot;sheet&quot;: {
+                &quot;url&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 1, 
+                        &quot;description&quot;: &quot;Name or URL of sheet.&quot;, 
+                        &quot;name&quot;: &quot;sheet&quot;
+                    }
+                }, 
+                &quot;tab&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 2, 
+                        &quot;description&quot;: &quot;Name of sheet tab.&quot;, 
+                        &quot;name&quot;: &quot;tab&quot;
+                    }
+                }
+            }, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;bigquery&quot;: {
+                &quot;project&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 3, 
+                        &quot;description&quot;: &quot;Google Cloud Project Identifier.&quot;, 
+                        &quot;name&quot;: &quot;project&quot;
+                    }
+                }, 
+                &quot;table&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 5, 
+                        &quot;description&quot;: &quot;Name of table.&quot;, 
+                        &quot;name&quot;: &quot;table&quot;
+                    }
+                }, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 4, 
+                        &quot;description&quot;: &quot;Name of dataset.&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;
+                    }
+                }
+            }
+        }
+    }
+]</pre>
+          <td>
+        </tr>
+      
+      </tbody>
+    </table>
+  
+    <table class="view_product bordered highlight list" id="view_product_10" style="display:none;">
       <thead>
         <tr>
           <th class="center" style="width:90px;"></th>
@@ -4761,30 +5001,46 @@
             <p>TASK: bulkdozer</p>
             <p>Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.</p>
             <ol>
-              <li>Open the latest version of the Bulkdozer feed template.</li><li>Make a copy: File -> Make Copy</li><li>Rename it to include your name and company. This will be your personal feed.</li><li>Share it with your service account email</li><li>Enter configurations in the 'Store' tab based on instructions provided by your Bulkdozer point of contact.</li>
+              <li>Open the <a href='https://docs.google.com/spreadsheets/d/1U3Sre-t0ulQrP0AX4C_Cr3eShfyDSpxaUn6Je3KIPSA/edit?urp=gmail_link#gid=1037489387' target='_blank'>Bulkdozer 0.22</a> feed</li><li>Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed</li><li>Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version</li><li>Under the Account ID field below, enter the your Campaign Manager Network ID</li><li>Under Sheet URL, enter the URL of your copy of the feed that you just created in the steps above</li><li>Go to the Store tab of your new feed, and enter your profile ID in the profileId field (cell B2). Your profile ID is visible in Campaign Manager by clicking your avatar on the top right corner</li><li>Click the 'Save' button below</li><li>After clicking 'Save', copy this page's URL from your browser address bar, and paste it the recipe_url field (cell B5) of the Store tab of your feed</li><li>Bulkdozer is ready for use</li><li>Stay up to date on new releases and other general anouncements by joining <a href='https://groups.google.com/forum/#!forum/bulkdozer-announcements' target='_blank'>Bulkdozer Announcements</a></li><li>Review the <a href='https://sites.google.com/a/google.com/bulkdozer-user-guide/home' target='_blank'>Bulkdozer documentation</a></li>
             </ol>
             <pre class="view_code" id="view_code_bulkdozer" style="display:none;">[
     {
         &quot;traffic&quot;: {
-            &quot;hour&quot;: [], 
-            &quot;timezone&quot;: &quot;America/Chicago&quot;, 
-            &quot;auth&quot;: &quot;user&quot;, 
-            &quot;sheet_url&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;order&quot;: 1, 
-                    &quot;description&quot;: &quot;Feed Sheet URL&quot;, 
-                    &quot;name&quot;: &quot;sheet_url&quot;
-                }
-            }, 
             &quot;account_id&quot;: {
                 &quot;field&quot;: {
                     &quot;default&quot;: &quot;&quot;, 
                     &quot;kind&quot;: &quot;string&quot;, 
                     &quot;order&quot;: 1, 
-                    &quot;description&quot;: &quot;Campaign Manager Network ID&quot;, 
+                    &quot;description&quot;: &quot;Campaign Manager Network ID (optional if profile id provided)&quot;, 
                     &quot;name&quot;: &quot;account_id&quot;
+                }
+            }, 
+            &quot;hour&quot;: [], 
+            &quot;dcm_profile_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;order&quot;: 1, 
+                    &quot;description&quot;: &quot;Campaign Manager Profile ID (optional if account id provided)&quot;, 
+                    &quot;name&quot;: &quot;dcm_profile_id&quot;
+                }
+            }, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;sheet_url&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;order&quot;: 2, 
+                    &quot;description&quot;: &quot;Feed Sheet URL&quot;, 
+                    &quot;name&quot;: &quot;sheet_url&quot;
+                }
+            }, 
+            &quot;timezone&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;America/Chicago&quot;, 
+                    &quot;kind&quot;: &quot;timezone&quot;, 
+                    &quot;name&quot;: &quot;recipe_timezone&quot;, 
+                    &quot;description&quot;: &quot;Timezone for report dates.&quot;
                 }
             }
         }
@@ -5162,6 +5418,36 @@
         </tr>
       
         <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">timeline</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_ga_timeline">JSON</span>
+            <h4>Google Analytics Timeline</h4>
+            <p>TASK: ga_timeline</p>
+            <p>Download Google Analytics settings to a BigQuery table.</p>
+            <ol>
+              <li>Enter the dateset to which the Google Analytics settings will be downloaded.</li><li>Add the starthinker service account email to the Google Analytics account(s) in which you are interested.</li><li>Schedule the recipe to run once a day.</li>
+            </ol>
+            <pre class="view_code" id="view_code_ga_timeline" style="display:none;">[
+    {
+        &quot;ga_settings_download&quot;: {
+            &quot;description&quot;: &quot;Will create tables with format ga_* to hold each endpoint via a call to the API list function.&quot;, 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;order&quot;: 1, 
+                    &quot;description&quot;: &quot;Dataset to be written to in BigQuery.&quot;, 
+                    &quot;name&quot;: &quot;dataset&quot;
+                }
+            }
+        }
+    }
+]</pre>
+          <td>
+        </tr>
+      
+        <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">perm_phone_msg</i></td>
           <td style="vertical-align: top;">
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_monthly_budget_mover">JSON</span>
@@ -5350,80 +5636,6 @@
                 }
             }, 
             &quot;auth&quot;: &quot;user&quot;
-        }
-    }
-]</pre>
-          <td>
-        </tr>
-      
-        <tr>
-          <td style="vertical-align: top;"><i class="material-icons medium teal-text">notifications</i></td>
-          <td style="vertical-align: top;">
-            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_test">JSON</span>
-            <h4>Test Script</h4>
-            <p>TASK: test</p>
-            <p>Used by tests.</p>
-            <ol>
-              <li>THis should be called by the tests scripts only.</li>
-            </ol>
-            <pre class="view_code" id="view_code_test" style="display:none;">[
-    {
-        &quot;hello&quot;: {
-            &quot;say&quot;: &quot;Hello At 1&quot;, 
-            &quot;sleep&quot;: 0, 
-            &quot;auth&quot;: &quot;user&quot;, 
-            &quot;hour&quot;: [
-                1
-            ]
-        }
-    }, 
-    {
-        &quot;hello&quot;: {
-            &quot;say&quot;: &quot;Hello At 3&quot;, 
-            &quot;sleep&quot;: 0, 
-            &quot;auth&quot;: &quot;user&quot;, 
-            &quot;hour&quot;: [
-                3
-            ]
-        }
-    }, 
-    {
-        &quot;hello&quot;: {
-            &quot;say&quot;: &quot;Hello At 23 Sleep&quot;, 
-            &quot;sleep&quot;: 30, 
-            &quot;auth&quot;: &quot;user&quot;, 
-            &quot;hour&quot;: [
-                23
-            ]
-        }
-    }, 
-    {
-        &quot;hello&quot;: {
-            &quot;say&quot;: &quot;Hello At Anytime&quot;, 
-            &quot;sleep&quot;: 0, 
-            &quot;auth&quot;: &quot;user&quot;
-        }
-    }, 
-    {
-        &quot;hello&quot;: {
-            &quot;say&quot;: &quot;Hello At 1, 3, 23&quot;, 
-            &quot;sleep&quot;: 0, 
-            &quot;auth&quot;: &quot;user&quot;, 
-            &quot;hour&quot;: [
-                1, 
-                3, 
-                23
-            ]
-        }
-    }, 
-    {
-        &quot;hello&quot;: {
-            &quot;say&quot;: &quot;Hello At 3 Reordered&quot;, 
-            &quot;sleep&quot;: 0, 
-            &quot;auth&quot;: &quot;user&quot;, 
-            &quot;hour&quot;: [
-                3
-            ]
         }
     }
 ]</pre>
