@@ -126,7 +126,7 @@ def setup():
     project.task['dcm_profile_id'] = get_profile_for_api(project.task['auth'], project.task['account_id'])[1]
 
   if 'sheet_url' in project.task and not 'sheet_id' in project.task:
-    project.task['sheet_id'] = sheets_id(project.task['sheet_url'])
+    project.task['sheet_id'] = sheets_id(project.task['auth'], project.task['sheet_url'])
 
   # Setting up required objects and parsing parameters
   config.auth = project.task['auth']

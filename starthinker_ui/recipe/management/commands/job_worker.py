@@ -158,8 +158,8 @@ class Workers():
     for job in self.jobs:
 
       # if process still running, check timeout or ping keep alive 
-      #if job['job']['process']:
-      if job['job']['process'].poll() is None:
+      poll = job['job']['process'].poll()
+      if poll is None:
 
         # check if task is a timeout 
         if (datetime.utcnow() - job['job']['utc']).total_seconds() > job['recipe']['setup']['timeout_seconds']:
@@ -188,7 +188,7 @@ class Workers():
         self.cleanup(job)
 
         # if error scrap whole worker and flag error
-        if job['stderr']: 
+        if job['stderr']: # possibly alter this to use poll != 0 ( which indicates errror as well )
           self.cleanup(job)
           worker_status(
             job['job']['worker'],

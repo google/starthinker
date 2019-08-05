@@ -123,24 +123,12 @@ order_Schema = [
     "name": "advertiserId"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "approverUserProfileIds"
-    }, 
-    "type": "RECORD", 
+    "type": "INT64", 
     "name": "approverUserProfileIds", 
     "mode": "REPEATED"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "siteId"
-    }, 
-    "type": "RECORD", 
+    "type": "INT64", 
     "name": "siteId", 
     "mode": "REPEATED"
   }, 
@@ -157,13 +145,7 @@ order_Schema = [
     "name": "projectId"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "siteNames"
-    }, 
-    "type": "RECORD", 
+    "type": "STRING", 
     "name": "siteNames", 
     "mode": "REPEATED"
   }, 

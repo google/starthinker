@@ -52,6 +52,36 @@ test_ui() {
 }
 
 
+init_tests() {
+  #echo ""
+  #echo "----------------------------------------"
+  #echo "Copy the Starthinker Testing Google Sheet"
+  #echo "----------------------------------------"
+  #echo ""
+  #echo "Please follow the steps below to get a copy of the Starthinker Testing Google Sheet:"
+  #echo "1. Go to the URL below and make a copy of the sheet:"
+  #echo "  https://docs.google.com/spreadsheets/d/1aH_eT3N7M14YGLl2y429doz1m6RWp6oQHidfXkIaMdU/edit?usp=sharing"
+  #echo "2. Rename the copy of your sheet to the name below:"
+  #echo "  Primary Test Sheet ( StarThinker )"
+  #echo ""
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Load Development Settings - ${STARTHINKER_ROOT}/starthinker_assets/development.sh"
+  echo "----------------------------------------"
+  echo ""
+
+  source "${STARTHINKER_ROOT}/starthinker_assets/development.sh";
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Initialize Task Tests - python ${STARTHINKER_ROOT}/starthinker/test/helper.py -init true"
+  echo "----------------------------------------"
+  echo ""
+  python "${STARTHINKER_ROOT}/starthinker/test/helper.py" -init true;
+}
+
+
 test_tasks() {
 
   install_virtualenv; 
@@ -139,7 +169,6 @@ install_developer() {
 
 
 setup_developer() {
-
   echo ""
   echo "------------------------------------------------------------------------------"
   echo ""
@@ -178,7 +207,7 @@ setup_developer() {
   echo ""
 
   developer_done=0
-  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Test UI" "Test Tasks" "Quit")
+  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Test UI" "Initialize Tests" "Test Tasks" "Quit")
  
   while (( !developer_done ))
   do
@@ -193,8 +222,9 @@ setup_developer() {
         1) install_developer; break;;
         2) launch_developer_ui; break;;
         3) test_ui; break;;
-        4) test_tasks; break;;
-        5) developer_done=1; break;;
+        4) init_tests; break;;
+        5) test_tasks; break;;
+        6) developer_done=1; break;;
         *) echo "What's that?";;
       esac
     done

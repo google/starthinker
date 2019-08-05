@@ -82,13 +82,7 @@ directorySite_Schema = [
     "name": "url"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "IFRAME_JAVASCRIPT_INPAGE, INTERNAL_REDIRECT_INPAGE, JAVASCRIPT_INPAGE, STANDARD", 
-      "name": "inpageTagFormats"
-    }, 
-    "type": "RECORD", 
+    "type": "STRING", 
     "name": "inpageTagFormats", 
     "mode": "REPEATED"
   }, 
@@ -142,13 +136,7 @@ directorySite_Schema = [
     "mode": "NULLABLE"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "IFRAME_JAVASCRIPT_INTERSTITIAL, INTERNAL_REDIRECT_INTERSTITIAL, JAVASCRIPT_INTERSTITIAL", 
-      "name": "interstitialTagFormats"
-    }, 
-    "type": "RECORD", 
+    "type": "STRING", 
     "name": "interstitialTagFormats", 
     "mode": "REPEATED"
   }

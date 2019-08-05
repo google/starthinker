@@ -42,13 +42,7 @@ accountPermission_Schema = [
     "name": "permissionGroupId"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "ACCOUNT_PROFILE_BASIC, ACCOUNT_PROFILE_STANDARD", 
-      "name": "accountProfiles"
-    }, 
-    "type": "RECORD", 
+    "type": "STRING", 
     "name": "accountProfiles", 
     "mode": "REPEATED"
   }, 

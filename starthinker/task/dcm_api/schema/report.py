@@ -45,13 +45,7 @@ report_Schema = [
         "mode": "REPEATED"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "metricNames"
-        }, 
-        "type": "RECORD", 
+        "type": "STRING", 
         "name": "metricNames", 
         "mode": "REPEATED"
       }, 
@@ -373,13 +367,7 @@ report_Schema = [
         "name": "repeats"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "FRIDAY, MONDAY, SATURDAY, SUNDAY, THURSDAY, TUESDAY, WEDNESDAY", 
-          "name": "repeatsOnWeekDays"
-        }, 
-        "type": "RECORD", 
+        "type": "STRING", 
         "name": "repeatsOnWeekDays", 
         "mode": "REPEATED"
       }
@@ -453,13 +441,7 @@ report_Schema = [
           "mode": "REPEATED"
         }, 
         {
-          "fields": {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "metricNames"
-          }, 
-          "type": "RECORD", 
+          "type": "STRING", 
           "name": "metricNames", 
           "mode": "REPEATED"
         }
@@ -490,13 +472,7 @@ report_Schema = [
         "mode": "REPEATED"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "metricNames"
-        }, 
-        "type": "RECORD", 
+        "type": "STRING", 
         "name": "metricNames", 
         "mode": "REPEATED"
       }, 
@@ -570,13 +546,7 @@ report_Schema = [
         "mode": "REPEATED"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "reachByFrequencyMetricNames"
-        }, 
-        "type": "RECORD", 
+        "type": "STRING", 
         "name": "reachByFrequencyMetricNames", 
         "mode": "REPEATED"
       }, 
@@ -669,13 +639,7 @@ report_Schema = [
         "mode": "REPEATED"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "metricNames"
-        }, 
-        "type": "RECORD", 
+        "type": "STRING", 
         "name": "metricNames", 
         "mode": "REPEATED"
       }, 
@@ -970,13 +934,7 @@ report_Schema = [
           "mode": "REPEATED"
         }, 
         {
-          "fields": {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "metricNames"
-          }, 
-          "type": "RECORD", 
+          "type": "STRING", 
           "name": "metricNames", 
           "mode": "REPEATED"
         }
@@ -1007,13 +965,7 @@ report_Schema = [
         "mode": "REPEATED"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "metricNames"
-        }, 
-        "type": "RECORD", 
+        "type": "STRING", 
         "name": "metricNames", 
         "mode": "REPEATED"
       }, 
@@ -1188,24 +1140,12 @@ report_Schema = [
         "mode": "REPEATED"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "overlapMetricNames"
-        }, 
-        "type": "RECORD", 
+        "type": "STRING", 
         "name": "overlapMetricNames", 
         "mode": "REPEATED"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "metricNames"
-        }, 
-        "type": "RECORD", 
+        "type": "STRING", 
         "name": "metricNames", 
         "mode": "REPEATED"
       }, 

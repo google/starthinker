@@ -110,15 +110,15 @@ def bigquery():
       f.close()
 
       os.remove(local_file_name)
-    elif 'trix' in project.task['to']:
-      if project.verbose: print "QUERY TO SHEET", project.task['to']['trix']
+    elif 'sheet' in project.task['to']:
+      if project.verbose: print "QUERY TO SHEET", project.task['to']['sheet']
       rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'], legacy=project.task['from'].get('legacy', True))
 
       # makes sure types are correct in sheet
       rows = rows_to_type(rows)
 
-      sheets_clear(project.task['auth'], project.task['to']['trix'], project.task['to']['range'].split('!')[0], project.task['to']['range'].split('!')[1])
-      sheets_write(project.task['auth'], project.task['to']['trix'], project.task['to']['range'].split('!')[0], project.task['to']['range'].split('!')[1], rows)
+      sheets_clear(project.task['auth'], project.task['to']['sheet'], project.task['to']['tab'], project.task['to']['range'])
+      sheets_write(project.task['auth'], project.task['to']['sheet'], project.task['to']['tab'], project.task['to']['range'], rows)
     elif 'sftp' in project.task['to']:
       rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'], legacy=project.task['from'].get('use_legacy_sql', True))
 

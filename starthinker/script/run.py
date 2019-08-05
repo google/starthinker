@@ -114,9 +114,9 @@ def parser_add_field(parser, field):
     raise NotImplementedError("%s is not a suported field type" % field)
 
 
-def script_read():
+def script_read(path):
   # load recipe json template
-  with open(sys.argv[1]) as data_file:
+  with open(path) as data_file:
     data = data_file.read()
     data = data.replace('\n', ' ')
     return json.loads(data)
@@ -147,7 +147,7 @@ def script_interactive():
   from_json = sys.argv[1]
   to_json = sys.argv[2] if len(sys.argv) == 3 else ''
 
-  script = script_read()
+  script = script_read(sys.argv[1])
 
   # parse fields and constants into parameters
   fields = json_get_fields(script)
@@ -173,7 +173,7 @@ def script_interactive():
 
 def script_commandline():
 
-  script = script_read()
+  script = script_read(sys.argv[1])
 
   # assemble parameters
   parser = argparse.ArgumentParser()

@@ -147,13 +147,7 @@ placementGroup_Schema = [
     "mode": "NULLABLE"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "childPlacementIds"
-    }, 
-    "type": "RECORD", 
+    "type": "INT64", 
     "name": "childPlacementIds", 
     "mode": "REPEATED"
   }, 

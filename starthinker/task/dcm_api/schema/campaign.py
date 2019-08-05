@@ -206,13 +206,7 @@ campaign_Schema = [
     "name": "accountId"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "traffickerEmails"
-    }, 
-    "type": "RECORD", 
+    "type": "STRING", 
     "name": "traffickerEmails", 
     "mode": "REPEATED"
   }, 
@@ -278,13 +272,7 @@ campaign_Schema = [
     "name": "billingInvoiceCode"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "creativeGroupIds"
-    }, 
-    "type": "RECORD", 
+    "type": "INT64", 
     "name": "creativeGroupIds", 
     "mode": "REPEATED"
   }, 

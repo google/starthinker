@@ -44,13 +44,7 @@ accountsListResponse_Schema = [
         "name": "countryId"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "availablePermissionIds"
-        }, 
-        "type": "RECORD", 
+        "type": "INT64", 
         "name": "availablePermissionIds", 
         "mode": "REPEATED"
       }, 
@@ -79,13 +73,7 @@ accountsListResponse_Schema = [
         "name": "defaultCreativeSizeId"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "accountPermissionIds"
-        }, 
-        "type": "RECORD", 
+        "type": "INT64", 
         "name": "accountPermissionIds", 
         "mode": "REPEATED"
       }, 

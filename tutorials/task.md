@@ -49,6 +49,9 @@ python starthinker/all/run.py hello.json -u $STARTHINKER_USER -s $STARTHINKER_SE
 - Using the [util library](../starthinker/util/) is optional but convenient. 
 - Always check [starthinker/task](../starthinker/task/) folder for task samples.
 - Always check [starthinker/gtech](../starthinker/gtech/) folder for recipe samples.
+- New scopes for user authentication can be added at [starthinker/config.py](../starthinker/config.py).
+- You can remove scopes if you are not planning to use the tasks requiring them.
+- The Google API helper can be extended by adding an endpoint at [starthinker/util/google_api/\_\_init\_\_.py](../starthinker/util/google_api/__init__.py).
 - It is best practice to provide at least one or more [reference recipe scripts](recipe.md) for a task.
 - When develoing a new task, the first recipe should be a [test recipe](testing.md).
 - Event he credentials are optional, each recipe is pure python not tied to any Cloud Service.

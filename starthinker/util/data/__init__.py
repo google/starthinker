@@ -115,7 +115,7 @@ def get_rows(auth, source):
         yield value 
 
     if 'sheet' in source:
-      rows = sheets_read(project.task['auth'], source['sheet']['url'], source['sheet']['tab'], source['sheet']['range'])
+      rows = sheets_read(project.task['auth'], source['sheet']['tab'], source['sheet']['range'], sheet_url=project.task['sheet'].get('url', None), sheet_name=project.task['sheet'].get('sheet_name', None))
 
       for row in rows:
         yield row[0] if source.get('single_cell', False) else row
@@ -235,8 +235,8 @@ def put_rows(auth, destination, filename, rows, variant=''):
 
   if 'sheets' in destination:
     if destination['sheets'].get('delete', False): 
-      sheets_clear(auth, destination['sheets']['sheet'], destination['sheets']['tab'] + variant, destination['sheets']['range'])
-    sheets_write(auth, destination['sheets']['sheet'], destination['sheets']['tab'] + variant, destination['sheets']['range'], rows) 
+      sheets_clear(auth, destination['sheets']['tab'] + variant, destination['sheets']['range'], sheet_url=destination['sheets'].get('sheet', None), sheet_name=destination['sheets'].get('sheet_name', None))
+    sheets_write(auth, destination['sheets']['tab'] + variant, destination['sheets']['range'], rows, sheet_url=destination['sheets'].get('sheet', None), sheet_name=destination['sheets'].get('sheet_name', None)) 
 
   if 'directory' in destination:
     file_out = destination['directory'] + variant + filename

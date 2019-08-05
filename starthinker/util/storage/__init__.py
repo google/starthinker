@@ -30,7 +30,6 @@ import httplib2
 from time import sleep
 from io import BytesIO
 
-#from google.cloud import storage
 from apiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 from googleapiclient.errors import HttpError
 
@@ -95,6 +94,16 @@ def media_download(request, chunksize):
 
   print 'Download 100%'
 
+
+def object_exists(auth, path):
+  bucket, filename = path.split(':', 1)
+  service = get_service('storage', 'v1', auth)
+  try:
+    service.objects().get(bucket=bucket, object=filename).execute()
+    return True
+  except:
+    return False
+  
 
 def object_get(auth, path):
   bucket, filename = path.split(':', 1)

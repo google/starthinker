@@ -1156,24 +1156,12 @@ adsListResponse_Schema = [
           "mode": "NULLABLE"
         }, 
         {
-          "fields": {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "hoursOfDay"
-          }, 
-          "type": "RECORD", 
+          "type": "INT64", 
           "name": "hoursOfDay", 
           "mode": "REPEATED"
         }, 
         {
-          "fields": {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "FRIDAY, MONDAY, SATURDAY, SUNDAY, THURSDAY, TUESDAY, WEDNESDAY", 
-            "name": "daysOfWeek"
-          }, 
-          "type": "RECORD", 
+          "type": "STRING", 
           "name": "daysOfWeek", 
           "mode": "REPEATED"
         }

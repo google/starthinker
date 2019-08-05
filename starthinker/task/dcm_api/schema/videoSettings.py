@@ -132,13 +132,7 @@ videoSettings_Schema = [
       "name": "kind"
     }, 
     {
-      "fields": {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "enabledVideoFormats"
-      }, 
-      "type": "RECORD", 
+      "type": "INT64", 
       "name": "enabledVideoFormats", 
       "mode": "REPEATED"
     }

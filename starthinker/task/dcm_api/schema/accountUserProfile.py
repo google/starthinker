@@ -37,13 +37,7 @@ accountUserProfile_Schema = [
   }, 
   [
     {
-      "fields": {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "objectIds"
-      }, 
-      "type": "RECORD", 
+      "type": "INT64", 
       "name": "objectIds", 
       "mode": "REPEATED"
     }, 
@@ -68,13 +62,7 @@ accountUserProfile_Schema = [
   }, 
   [
     {
-      "fields": {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "objectIds"
-      }, 
-      "type": "RECORD", 
+      "type": "INT64", 
       "name": "objectIds", 
       "mode": "REPEATED"
     }, 
@@ -105,13 +93,7 @@ accountUserProfile_Schema = [
   }, 
   [
     {
-      "fields": {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "objectIds"
-      }, 
-      "type": "RECORD", 
+      "type": "INT64", 
       "name": "objectIds", 
       "mode": "REPEATED"
     }, 
@@ -130,13 +112,7 @@ accountUserProfile_Schema = [
   ], 
   [
     {
-      "fields": {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "objectIds"
-      }, 
-      "type": "RECORD", 
+      "type": "INT64", 
       "name": "objectIds", 
       "mode": "REPEATED"
     }, 

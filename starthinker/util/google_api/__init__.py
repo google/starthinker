@@ -31,6 +31,8 @@ This does not change or augment the standard API calls other than the following:
 
 import json
 import traceback
+import httplib
+import httplib2
 from time import sleep
 from googleapiclient.errors import HttpError
 from googleapiclient.discovery import Resource
@@ -39,6 +41,15 @@ from starthinker.config import UI_ROOT
 from starthinker.util.auth import get_service
 from starthinker.util.project import project
 
+
+RETRIABLE_EXCEPTIONS = (
+  httplib2.HttpLib2Error, IOError, httplib.NotConnected,
+  httplib.IncompleteRead, httplib.ImproperConnectionState,
+  httplib.CannotSendRequest, httplib.CannotSendHeader,
+  httplib.ResponseNotReady, httplib.BadStatusLine
+)
+
+RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
 
 def API_Retry(job, key=None, retries=5, wait=61):
   """ API retry that includes back off and some common error handling.
@@ -273,6 +284,41 @@ class API():
       return job
 
 
+  def upload(self, retries=5, wait=61):
+    job = self.execute(run=False)
+    response = None
+
+    while response is None:
+      error = None
+
+      try:
+        print "Uploading file..."
+        status, response = job.next_chunk()
+        if 'id' in response:
+          print "Object id '%s' was successfully uploaded." % response['id']
+        else:
+          exit("The upload failed with an unexpected response: %s" % response)
+
+      except HttpError, e:
+        if retries > 0 and e.resp.status in RETRIABLE_STATUS_CODES:
+          error = "A retriable HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
+        else:
+          raise
+
+      except RETRIABLE_EXCEPTIONS, e:
+        if retries > 0:
+          error = "A retriable error occurred: %s" % e
+        else:
+          raise
+  
+      if error is not None:
+        print error
+        retries -= 1
+        wait = wait * 2
+        print "Sleeping %d seconds and then retrying..." % wait
+        time.sleep(wait)
+
+
 def API_BigQuery(auth, iterate=False):
   """BigQuery helper configuration for Google API. Defines agreed upon version.
   """
@@ -385,12 +431,26 @@ def API_PubSub(auth, iterate=False):
   }
   return API(configuration)
 
+
 def API_Analytics(auth, iterate=False):
   """Analytics helper configuration Google API. Defines agreed upon version.
   """
 
   configuration = {
       'api':'analytics',
+      'version':'v3',
+      'auth':auth,
+      'iterate':iterate
+  }
+  return API(configuration)
+
+
+def API_YouTube(auth, iterate=False):
+  """Analytics helper configuration Google API. Defines agreed upon version.
+  """
+
+  configuration = {
+      'api':'youtube',
       'version':'v3',
       'auth':auth,
       'iterate':iterate

@@ -317,13 +317,7 @@ placementsListResponse_Schema = [
             "name": "kind"
           }, 
           {
-            "fields": {
-              "mode": "NULLABLE", 
-              "type": "INT64", 
-              "description": "", 
-              "name": "enabledVideoFormats"
-            }, 
-            "type": "RECORD", 
+            "type": "INT64", 
             "name": "enabledVideoFormats", 
             "mode": "REPEATED"
           }
@@ -338,13 +332,7 @@ placementsListResponse_Schema = [
         }
       ], 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "PLACEMENT_TAG_CLICK_COMMANDS, PLACEMENT_TAG_IFRAME_ILAYER, PLACEMENT_TAG_IFRAME_JAVASCRIPT, PLACEMENT_TAG_IFRAME_JAVASCRIPT_LEGACY, PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH, PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH_VAST_3, PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH_VAST_4, PLACEMENT_TAG_INTERNAL_REDIRECT, PLACEMENT_TAG_INTERSTITIAL_IFRAME_JAVASCRIPT, PLACEMENT_TAG_INTERSTITIAL_IFRAME_JAVASCRIPT_LEGACY, PLACEMENT_TAG_INTERSTITIAL_INTERNAL_REDIRECT, PLACEMENT_TAG_INTERSTITIAL_JAVASCRIPT, PLACEMENT_TAG_INTERSTITIAL_JAVASCRIPT_LEGACY, PLACEMENT_TAG_JAVASCRIPT, PLACEMENT_TAG_JAVASCRIPT_LEGACY, PLACEMENT_TAG_STANDARD, PLACEMENT_TAG_TRACKING, PLACEMENT_TAG_TRACKING_IFRAME, PLACEMENT_TAG_TRACKING_JAVASCRIPT", 
-          "name": "tagFormats"
-        }, 
-        "type": "RECORD", 
+        "type": "STRING", 
         "name": "tagFormats", 
         "mode": "REPEATED"
       }, 

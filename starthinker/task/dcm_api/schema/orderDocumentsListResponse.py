@@ -38,13 +38,7 @@ orderDocumentsListResponse_Schema = [
         "name": "orderId"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "approvedByUserProfileIds"
-        }, 
-        "type": "RECORD", 
+        "type": "INT64", 
         "name": "approvedByUserProfileIds", 
         "mode": "REPEATED"
       }, 
@@ -73,13 +67,7 @@ orderDocumentsListResponse_Schema = [
         "name": "lastSentTime"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "lastSentRecipients"
-        }, 
-        "type": "RECORD", 
+        "type": "STRING", 
         "name": "lastSentRecipients", 
         "mode": "REPEATED"
       }, 

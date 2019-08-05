@@ -767,13 +767,7 @@ creative_Schema = [
     "name": "backgroundColor"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "customKeyValues"
-    }, 
-    "type": "RECORD", 
+    "type": "STRING", 
     "name": "customKeyValues", 
     "mode": "REPEATED"
   }, 
@@ -987,13 +981,7 @@ creative_Schema = [
         "mode": "NULLABLE"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "APPLICATION_CACHE, AUDIO, CANVAS, CANVAS_TEXT, CSS_ANIMATIONS, CSS_BACKGROUND_SIZE, CSS_BORDER_IMAGE, CSS_BORDER_RADIUS, CSS_BOX_SHADOW, CSS_COLUMNS, CSS_FLEX_BOX, CSS_FONT_FACE, CSS_GENERATED_CONTENT, CSS_GRADIENTS, CSS_HSLA, CSS_MULTIPLE_BGS, CSS_OPACITY, CSS_REFLECTIONS, CSS_RGBA, CSS_TEXT_SHADOW, CSS_TRANSFORMS, CSS_TRANSFORMS3D, CSS_TRANSITIONS, DRAG_AND_DROP, GEO_LOCATION, HASH_CHANGE, HISTORY, INDEXED_DB, INLINE_SVG, INPUT_ATTR_AUTOCOMPLETE, INPUT_ATTR_AUTOFOCUS, INPUT_ATTR_LIST, INPUT_ATTR_MAX, INPUT_ATTR_MIN, INPUT_ATTR_MULTIPLE, INPUT_ATTR_PATTERN, INPUT_ATTR_PLACEHOLDER, INPUT_ATTR_REQUIRED, INPUT_ATTR_STEP, INPUT_TYPE_COLOR, INPUT_TYPE_DATE, INPUT_TYPE_DATETIME, INPUT_TYPE_DATETIME_LOCAL, INPUT_TYPE_EMAIL, INPUT_TYPE_MONTH, INPUT_TYPE_NUMBER, INPUT_TYPE_RANGE, INPUT_TYPE_SEARCH, INPUT_TYPE_TEL, INPUT_TYPE_TIME, INPUT_TYPE_URL, INPUT_TYPE_WEEK, LOCAL_STORAGE, POST_MESSAGE, SESSION_STORAGE, SMIL, SVG_CLIP_PATHS, SVG_FE_IMAGE, SVG_FILTERS, SVG_HREF, TOUCH, VIDEO, WEBGL, WEB_SOCKETS, WEB_SQL_DATABASE, WEB_WORKERS", 
-          "name": "detectedFeatures"
-        }, 
-        "type": "RECORD", 
+        "type": "STRING", 
         "name": "detectedFeatures", 
         "mode": "REPEATED"
       }, 
@@ -1252,13 +1240,7 @@ creative_Schema = [
         "mode": "NULLABLE"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "companionCreativeIds"
-        }, 
-        "type": "RECORD", 
+        "type": "INT64", 
         "name": "companionCreativeIds", 
         "mode": "REPEATED"
       }, 
@@ -1563,13 +1545,7 @@ creative_Schema = [
     "mode": "NULLABLE"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "APP, APP_INTERSTITIAL, DISPLAY, DISPLAY_INTERSTITIAL, IN_STREAM_AUDIO, IN_STREAM_VIDEO", 
-      "name": "compatibility"
-    }, 
-    "type": "RECORD", 
+    "type": "STRING", 
     "name": "compatibility", 
     "mode": "REPEATED"
   }, 
@@ -1594,13 +1570,7 @@ creative_Schema = [
     "name": "adParameters"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "adTagKeys"
-    }, 
-    "type": "RECORD", 
+    "type": "STRING", 
     "name": "adTagKeys", 
     "mode": "REPEATED"
   }, 
@@ -1678,13 +1648,7 @@ creative_Schema = [
     "mode": "NULLABLE"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "companionCreatives"
-    }, 
-    "type": "RECORD", 
+    "type": "INT64", 
     "name": "companionCreatives", 
     "mode": "REPEATED"
   }, 
@@ -1728,13 +1692,7 @@ creative_Schema = [
     "name": "htmlCode"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "APPLICATION_CACHE, AUDIO, CANVAS, CANVAS_TEXT, CSS_ANIMATIONS, CSS_BACKGROUND_SIZE, CSS_BORDER_IMAGE, CSS_BORDER_RADIUS, CSS_BOX_SHADOW, CSS_COLUMNS, CSS_FLEX_BOX, CSS_FONT_FACE, CSS_GENERATED_CONTENT, CSS_GRADIENTS, CSS_HSLA, CSS_MULTIPLE_BGS, CSS_OPACITY, CSS_REFLECTIONS, CSS_RGBA, CSS_TEXT_SHADOW, CSS_TRANSFORMS, CSS_TRANSFORMS3D, CSS_TRANSITIONS, DRAG_AND_DROP, GEO_LOCATION, HASH_CHANGE, HISTORY, INDEXED_DB, INLINE_SVG, INPUT_ATTR_AUTOCOMPLETE, INPUT_ATTR_AUTOFOCUS, INPUT_ATTR_LIST, INPUT_ATTR_MAX, INPUT_ATTR_MIN, INPUT_ATTR_MULTIPLE, INPUT_ATTR_PATTERN, INPUT_ATTR_PLACEHOLDER, INPUT_ATTR_REQUIRED, INPUT_ATTR_STEP, INPUT_TYPE_COLOR, INPUT_TYPE_DATE, INPUT_TYPE_DATETIME, INPUT_TYPE_DATETIME_LOCAL, INPUT_TYPE_EMAIL, INPUT_TYPE_MONTH, INPUT_TYPE_NUMBER, INPUT_TYPE_RANGE, INPUT_TYPE_SEARCH, INPUT_TYPE_TEL, INPUT_TYPE_TIME, INPUT_TYPE_URL, INPUT_TYPE_WEEK, LOCAL_STORAGE, POST_MESSAGE, SESSION_STORAGE, SMIL, SVG_CLIP_PATHS, SVG_FE_IMAGE, SVG_FILTERS, SVG_HREF, TOUCH, VIDEO, WEBGL, WEB_SOCKETS, WEB_SQL_DATABASE, WEB_WORKERS", 
-      "name": "backupImageFeatures"
-    }, 
-    "type": "RECORD", 
+    "type": "STRING", 
     "name": "backupImageFeatures", 
     "mode": "REPEATED"
   }, 

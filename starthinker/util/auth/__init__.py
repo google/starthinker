@@ -33,36 +33,12 @@ from google.cloud import bigquery, storage
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery_cache.base import Cache
 
+from starthinker.config import APPLICATION_NAME, APPLICATION_SCOPES
 from starthinker.util.project import project
 from starthinker.util.auth.google_bucket_auth import BucketCredentials
 
 
-APPLICATION_NAME = 'StarThinker Client'
 MAX_TOKEN_LIFETIME_SECS = 6 * 60 * 60 # 6 hours
-SCOPES = [
-  'https://www.googleapis.com/auth/userinfo.profile', # must be first for manager login
-  'https://www.googleapis.com/auth/userinfo.email', # must be first for manager login
-  'https://www.googleapis.com/auth/gmail.readonly',
-  'https://www.googleapis.com/auth/gmail.send', 
-  'https://www.googleapis.com/auth/doubleclickbidmanager',
-  'https://www.googleapis.com/auth/cloudplatformprojects',
-  'https://www.googleapis.com/auth/devstorage.full_control',
-  'https://www.googleapis.com/auth/bigquery',
-  'https://www.googleapis.com/auth/dfareporting',
-  'https://www.googleapis.com/auth/dfatrafficking',
-  'https://www.googleapis.com/auth/drive',
-  'https://www.googleapis.com/auth/spreadsheets',
-  'https://www.googleapis.com/auth/doubleclicksearch',
-  'https://www.googleapis.com/auth/content',
-  'https://www.googleapis.com/auth/ddmconversions',
-  'https://www.googleapis.com/auth/datastore',
-  'https://www.googleapis.com/auth/logging.write',
-  'https://www.googleapis.com/auth/logging.read',
-  'https://www.googleapis.com/auth/pubsub',
-]
-
-#if INTERNAL_MODE: SCOPES.append('https://www.googleapis.com/auth/snippets.readonly')
-
 SERVICE_CACHE = {}
 
 RE_CREDENTIALS_BUCKET = re.compile(r'[a-z0-9_\-\.]+:.+\.json')
@@ -75,13 +51,13 @@ def get_flow(client_json_or_filepath, redirect_uri=None):
     flow = client.OAuth2WebServerFlow(
       client_id=client_json.values()[0]['client_id'],
       client_secret=client_json.values()[0]['client_secret'],
-      scope=SCOPES,
+      scope=APPLICATION_SCOPES,
       redirect_uri=redirect_uri
     )
   else:
     flow = client.flow_from_clientsecrets(
       filename=client_json_or_filepath,
-      scope=SCOPES,
+      scope=APPLICATION_SCOPES,
       redirect_uri=redirect_uri
     )
   
@@ -102,7 +78,7 @@ def get_credentials():
     elif RE_CREDENTIALS_JSON.match(auth):
       return Credentials.from_json_keyfile_dict(
         json.loads(auth),
-        scopes or SCOPES
+        scopes or APPLICATION_SCOPES
       )
 
     # if credentials are local path ( remember this runs as command line )
@@ -132,14 +108,14 @@ def get_service_credentials(scopes=None):
     if RE_CREDENTIALS_JSON.match(auth):
       return ServiceAccountCredentials.from_json_keyfile_dict(
         json.loads(auth),
-        scopes or SCOPES
+        scopes or APPLICATION_SCOPES
       )
   
     # if credentials are local path then check if they exist ( used by command line )
     else:
       return ServiceAccountCredentials.from_json_keyfile_name(
         auth,
-        scopes or SCOPES
+        scopes or APPLICATION_SCOPES
       )
 
   except (KeyError, ValueError): 

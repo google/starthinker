@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,71 +16,98 @@
 #
 ###########################################################################
 
+import re
 from itertools import cycle
+from datetime import datetime
+
+MARKUP_TO_HTML = re.compile( r'\[(.*?)\]\((.*?)\)', flags=re.IGNORECASE)
+MARKUP_TO_TEXT = re.compile( r'\[(.*?)\]\((.*?)\)', flags=re.IGNORECASE)
 
 class EmailTemplate:
 
-  def __init__(self):
-    self.text_align = 'left'
+  def __init__(self, template={}):
     self.content_html = ''
     self.content_text = ''
-    self.segments = [
-      { 'foreground':'#222', 'background':'#fafafa' },
-      { 'foreground':'#222', 'background':'#f6f6f6' },
-      { 'foreground':'#222', 'background':'#f2f2f2' },
-    ]
-    self.segment = 0
 
-  # only do the look, as this can be applied to various elements with different layouts
+    self.style = {
+      "background":template.get('style', {}).get('background', "#f2f2f2"),
+      "foreground":template.get('style', {}).get('foreground', "#ffffff"),
+      "text":template.get('style', {}).get('text', "#414347"),
+      "link":template.get('style', {}).get('link', "#4285f4"),
+      "font":template.get('style', {}).get('font', "Roboto, Helvetica, Arial sans-serif;"),
+      "align":template.get('style', {}).get('align', "left"),
+    }
+
+    self.subject = template.get('subject', "")
+    self.logo = template.get('logo', "")
+    self.footer = template.get('footer', [])
+    self.copyright = template.get('copyright', "Copyright &copy; %d" % datetime.today().year)
+
+    if template: self.template(template)
+
+
+  def template(self, template):
+
+    if 'body' in template: self.template(template['body'])
+    if 'header' in template: self.header(template['header'])
+    if 'image' in template: self.image(**template['image'])
+    if 'paragraph' in template: self.paragraph(template['paragraph'])
+    if 'button' in template: self.button(**template['button'])
+    if 'table' in template: self.table(**template['table'])
+    if 'list' in template: self.list(template['list'])
+    if 'sections' in template: 
+      for s in template['sections']:
+        self.section(True, background=s.get('background', None))
+        self.template(s)
+        self.section()
+    if 'grid' in template:
+      self.grid(True)
+      for r in template['grid']:
+        self.row(True)
+        for c in r:
+          self.column(len(r))
+          self.template(c)
+          self.column()
+        self.row()
+      self.grid()
+
+
   def _header_css(self):
-    return 'color:%(foreground)s;font-family:Verdana;font-size:24px;line-height:36px;border:0px;' % self.segment_next(False)
+    return 'width:100%%;margin:10px 0px 20px 0px;padding:0px;border:0px;text-align:%(align)s;color:%(text)s;font-family:%(font)s;font-size:28px;line-height:36px;font-weight:500;letter-spacing:-0.31px;border:0px;' % self.style
 
 
-  # only do the look, as this can be applied to various elements with different layouts
   def _text_css(self):
-    return 'color:#222;font-family:Verdana;font-size:16px;line-height:24px;'
+    return 'width:100%%;margin:10px 0px;padding:0px;border:0px;font-weight:normal;text-align:%(align)s;color:%(text)s;font-family:%(font)s;font-size:15px;line-height:24px;' % self.style
 
 
-  # only do the look, as this can be applied to various elements with different layouts ( also used for table headers )
-  def _button_css(self, big=False):
-    if big:
-      return 'display:inline-block;margin:0px auto;border-radius:100px;padding:12px 36px;background-color:%(foreground)s;color:%(background)s;font-family:Verdana;font-size:24px;text-decoration:none;text-align:center;' % self.segment_next(False)
-    else:
-      return 'display:inline-block;margin:0px auto;border-radius:50px;padding:6px 18px;background-color:%(foreground)s;color:%(background)s;font-family:Verdana;font-size:16px;text-decoration:none;text-align:center;' % self.segment_next(False)
+  def _link_css(self):
+    return 'color:%(link)s;text-decoration:none;' % self.style
+
+
+  def _button_css(self):
+    return 'display:inline-block;margin:10px auto;border-radius:3px;-webkit-border-radius:3px;-moz-border-radius:3px;padding:11px 19px;background-color:%(link)s;color:%(background)s;font-family:%(font)s;font-size:16px;font-weight:bold;letter-spacing:-0.31px;text-decoration:none;text-align:center;' % self.style
 
 
   def _table_css(self):
-    return 'color:#222;font-family:Verdana;font-size:12px;line-height:16px;'
+    return 'color:%(text)s;font-family:%(font)s;font-size:12px;line-height:16px;' % self.style
 
 
-  # define colors for each section and cycle them for each section
-  def segments_clear(self):
-    self.segments = []
-    self.segment = 0
+  def section(self, on=False, background=None):
+    value = {
+      'image':'background-image:url(%s);background-repeat:no-repeat;background-size:contain;' % background if background else '',
+      'align': self.style['align']
+    }
 
+    # HTML
+    if on:
+      self.content_html += '<div style="margin:0px 15px;padding:1px;%(image)s">' % value
+    else:
+      self.content_html += '</div>'
 
-  def segments_add(self, foreground_color, background_color):
-    self.segments.append({'foreground':foreground_color, 'background':background_color})
-    self.segment = 0
-
-
-  def segment_next(self, advance=True):
-    value = self.segments[self.segment % len(self.segments)]
-    if advance: 
-
-      # HTML
-      if self.segment > 0: self.content_html += '</div>'
-      self.content_html += '<div style="background-color:%(background)s;padding:40px 20px;">' % value
-
-      # Text
-      self.content_text += '----------------------------------------------------------------'
-
-      self.segment += 1
-
-    return value
 
   def align(self, text_align):
-    self.text_align = text_align
+    self.style['align'] = text_align
+
 
   def greeting(self, name='', salutation='Hi'):
     if name:
@@ -100,79 +127,91 @@ class EmailTemplate:
 
   def header(self, text):
     # HTML
-    self.content_html += '<p style="width:100%%;margin:0px 0px 40px 0px;padding:0px;border:0px;text-align:%s;font-weight:bold;%s">%s</p>' % (self.text_align, self._header_css(), text)
+    self.content_html += '<p style="%s">%s</p>' % (self._header_css(), text)
 
     # Text
-    self.content_text += '--------------------------------------------------\n\n%s\n\n' % text
+    self.content_text += '\n--------------------------------------------------\n\n%s\n\n' % text
 
 
-  def paragraph(self, text, bold=False):
+  def paragraph(self, text):
+    
     # HTML
-    self.content_html += '<p style="width:100%%;margin:40px 0px;padding:0px;border:0px;text-align:%s;font-weight:%s;%s">%s<p>' % (self.text_align, 'bold' if bold else 'normal', self._text_css(), text.replace('\n', '<br/><br/>'))
+    self.content_html += '<p style="%s">%s<p>' % (
+      self._text_css(),
+      MARKUP_TO_HTML.sub(r'<a href="\2" style="%s">\1</a>' % self._link_css(), text).replace('\n', '<br/><br/>')
+    )
 
     # Text
-    self.content_text += '%s\n\n' % text
+    self.content_text += '%s\n\n' % MARKUP_TO_TEXT.sub(r'\1 (\2)', text).replace('\n', '<br/><br/>')
 
     
-  def image(self, url, link):
+  def image(self, src, link):
     # HTML
     if link: self.content_html += '<a href="%s">' % link
-    self.content_html += '<img src="%s" style="width:100%%;height:auto;margin:10px 0px;padding:0px;border:0px"/>' % url
+    self.content_html += '<img src="%s" style="width:100%%;height:auto;margin:10px 0px;padding:0px;border:0px"/>' % src
     if link: self.content_html += '</a>'
 
     # Text
-    self.content_text += 'IMAGE: %s\n' % url
-    if link: self.content_text += 'LINK: %s\n\n' % url
+    self.content_text += 'IMAGE: %s\n' % src
+    if link: self.content_text += 'LINK: %s\n\n' % link
 
 
   def button(self, text, link, big=False):
     # HTML
-
-    self.content_html += '<p style="width:100%%;margin:40px 0px;padding:0px;border:0px;text-align:%s"><a href="%s" style="%s">%s</a></p>' % (self.text_align, link, self._button_css(big), text)
+    self.content_html += '<p style="width:100%%;margin:0px 0px;padding:0px;border:0px;"><a href="%s" style="%s">%s</a></p>' % (link, self._button_css(), text)
 
     # Text
     self.content_text += '%s: %s' % (text, link)
 
 
-  def section(self, header, paragraph, image, link, button):
+  def grid(self, on=False):
+    if on: self.content_html += '<table style="width:100%;margin:20px 0px;padding:0px;border:0px">'
+    else: self.content_html += '</table>' 
+
+
+  def row(self, on=False):
+    if on: self.content_html += '<tr>'
+    else: self.content_html += '</tr>'
+
+
+  def column(self, number=0):
+    if number: 
+      width = int(100 / number)
+      self.content_html += '<td style="width:%d%%;padding:10px;text-align:center;vertical-align:top;">' % width
+    else: self.content_html += '</td>'
+
+
+  def display(self, header, paragraph, image, link, button):
     # HTML
-    self.content_html += '<table style="width:100%;margin:40px 0px;padding:0px;border:0px">'
-    self.content_html += '<tr>'
+    self.grid(True)
+    self.row(True)
+
     if image:
-      self.content_html += '<td style="width:45%;padding:10px;text-align:center;vertical-align:top;">'
-      if link: self.content_html += '<a href="%s">' % link
-      self.content_html += '<img src="%s" style="width:100%%;height:auto;margin:0px;padding:0px;border:0px"/>' % image
-      if link: self.content_html += '</a>'
-      self.content_html += '</td>'
+      self.column(True)
+      self.image(image, link)
+      self.column()
 
-    self.content_html += '<td style="padding:10px;text-align:left;vertical-align:top;">'
+    self.column(True)
+    if header: self.header(header)
+    if paragraph: self.paragraph(paragraph)
+    if button: self.button(button, link)
+    self.column()
 
-    if header: 
-      self.content_html += '<p style="width:100%%;margin:0px;padding:0px;border:0px;font-weight:bold;%s">%s<p>' % (self._header_css(), header)
-    if paragraph: 
-      self.content_html += '<p style="width:100%%;margin:0px;padding:0px;border:0px;%s">%s<p>' % (self._text_css(), paragraph)
-    if link: 
-      self.content_html += '<a href="%s" style="%s">%s</a>' % (link, self._button_css(), button)
-    self.content_html += '</td>'
-    self.content_html += '</tr>'
-    self.content_html += '</table>' 
-
-    # Text
-    if header: self.content_text += '--------------------------------------------------\n\n%s\n\n' % header
-    if image: self.content_text += 'IMAGE: %s\n\n' % image
-    self.content_text += '%s\n\n' % paragraph
-    if link: self.content_text += '%s: %s\n\n' % (button, link)
+    self.row()
+    self.grid()
 
 
   def list(self, elements):
     # HTML
-    self.content_html += '<table style="width:100%;margin:40px 0px;padding:0px;border:0px;border-collapse:collapse;">'
+    border = 0
+    self.content_html += '<table style="margin:20px auto 0px auto;padding:0px;border:0px;border-collapse:collapse;">'
     for element in elements:
-      self.content_html += '<tr><td style="padding:10px;text-align:left;border-bottom:1px solid #ccc;%s">%s</td></tr>' % (self._table_css(), element)
+      self.content_html += '<tr><td style="padding:10px;text-align:%s;border-top:%dpx solid #ccc;%s">%s</td></tr>' % (self.style['align'], border, self._table_css(), element)
+      border = 1
     self.content_html += '</table>' 
 
     # Text
-    self.content_text == '\n\n'
+    self.content_text += '\n\n'
     for element in elements:
       self.content_text += '  - %s\n' % element
     self.content_text == '\n'
@@ -182,7 +221,7 @@ class EmailTemplate:
     aligns = {'BOOLEAN':'center', 'INTEGER':'right', 'FLOAT':'right', 'STRING':'left', 'URL':'center'}
 
     # HTML
-    self.content_html += '<table style="width:100%;margin:40px 0px;padding:0px;border:0px;border-collapse:collapse;">'
+    self.content_html += '<table style="width:100%;margin:20px 0px;padding:0px;border:0px;border-collapse:collapse;">'
     self.content_html += '<tr>'
 
     # headers
@@ -211,12 +250,53 @@ class EmailTemplate:
       self.content_text += '\n'
 
 
-  def get_html(self):
-    return '<table style="width:100%%;max-width:600px;margin:0px auto;text-align:left;background-color:fff;"><tr><td>%s%s</td></tr></table>' % (self.content_html, '</div>' if self.segment > 0 else '')
+  def get_subject(self):
+    return self.subject
 
+  def get_html(self):
+    logo = ''
+    if self.logo:
+      logo += '<p style="width:100%%;margin:10px auto;padding:0.1em 0px;border:0px;text-align:left;">'
+      logo += '<img src="%s" style="margin:10px 0px;padding:0px;border:0px"/>' % self.logo
+      logo += '</p>'
+
+    footer = ''
+    if self.footer:
+      footer += '<p style="width:100%;margin:30px auto;padding:0px;border:0px;text-align:center;">'
+      for f in self.footer:
+        footer += '<a href="%s" style="display:inline-block;margin: 0px;padding:0px 10px;color:%s;font-family:%s;font-size:15px;font-weight:normal;line-height:32px;text-decoration:none;">%s</a>' % (f['link'], self.style['text'], self.style['font'], f['text'])
+      footer += '</p>'
+    if self.copyright:
+      footer += '<p style="width:100%%;margin:20px auto;padding:0px;border:0px;font-weight:bold;text-align:center;color:%(text)s;font-family:%(font)s;font-size:15px;line-height:32px;">' % self.style
+      footer += self.copyright
+      footer += '</p>'
+
+    return '''
+      <html>
+        <body>
+          <div style="width:100%%;padding:40px 0px;margin:0px;background-color:%s;">
+            <div style="max-width:600px;width:100%%;padding:0px;margin:0px auto;">
+              %s
+              <table style="width:100%%;margin:0px auto;text-align:left;background-color:%s">
+                <tr><td>%s</td></tr>
+              </table>
+              %s
+            </div>
+          </div>
+        </body>
+      </html>
+    ''' % (self.style['background'], logo, self.style['foreground'], self.content_html, footer)
 
   def get_text(self):
-    return self.content_text 
+    footer = ''
+    if self.footer:
+      footer += '\n--------------------------------------------------\n'
+      for f in self.footer:
+        footer += '\n%s: %s' % (f['text'], f['link'])
+    if self.copyright:
+      footer += '\n\n--------------------------------------------------\n\n%s' % self.copyright
+
+    return self.content_text  + footer
 
 
 if __name__ == "__main__":
@@ -224,7 +304,7 @@ if __name__ == "__main__":
   t = EmailTemplate();
   t.header('This Is A Header')
   t.paragraph('A paragraph is a few sentences of text.  Although you can use HTML, it will break the text version.')
-  t.section( 
+  t.display( 
     'Section Header',
     'A section paragraph is a few sentences of text.',
     'http://www.image.com/image.jpg',

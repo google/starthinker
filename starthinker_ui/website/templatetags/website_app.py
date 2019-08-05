@@ -101,6 +101,12 @@ def calvin_id(name):
   return (5*10**10) + int(hashlib.sha256(name.encode('utf-8')).hexdigest(), 16) % 10**9 # 5 + 9 digits
 
 
+@register.filter
+def email_to_ldap(email):
+  try: return email.split('@')[0].lower()
+  except: return ''
+
+
 class GaplessNode(template.Node):
 
   def __init__(self, nodelist):

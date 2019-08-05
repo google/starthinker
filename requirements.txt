@@ -35,6 +35,7 @@ TwitterAPI
 python-dateutil
 pandas
 psutil
+moviepy
 
 #-r starthinker_ui/requirements.txt
 wheel

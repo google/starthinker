@@ -23,7 +23,7 @@ from starthinker.util.project import project
 import datetime
 import json
 
-from starthinker.util.sheets import sheets_read, sheets_write, sheets_clear
+from starthinker.util.sheets import sheets_write, sheets_clear
 
 
 class Timer(object):
@@ -101,8 +101,7 @@ class Logger(object):
 
     """
     if self._buffer:
-      sheets_write(self.auth, self.trix_id, 'Log', 'A' + str(self._row),
-                   self._buffer)
+      sheets_write(self.auth, self.trix_id, 'Log', 'A' + str(self._row), self._buffer)
 
       self._row += len(self._buffer)
 

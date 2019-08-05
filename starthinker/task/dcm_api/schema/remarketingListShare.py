@@ -18,13 +18,7 @@
 
 remarketingListShare_Schema = [
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "sharedAdvertiserIds"
-    }, 
-    "type": "RECORD", 
+    "type": "INT64", 
     "name": "sharedAdvertiserIds", 
     "mode": "REPEATED"
   }, 
@@ -41,13 +35,7 @@ remarketingListShare_Schema = [
     "name": "remarketingListId"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "sharedAccountIds"
-    }, 
-    "type": "RECORD", 
+    "type": "INT64", 
     "name": "sharedAccountIds", 
     "mode": "REPEATED"
   }

@@ -32,7 +32,7 @@ https://cloud.google.com/genomics/docs/how-tos/getting-started#download_credenti
 
 Scopes Granted To This Application
 
-See SCOPES in util/auth/__init__.py or review util/auth/README.md
+See APPLICATION_SCOPES in starthinker/config.py or review util/auth/README.md
 
 Arguments
 

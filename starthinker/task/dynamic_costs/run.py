@@ -327,7 +327,7 @@ def dynamic_costs():
 
   if project.verbose: print "DYNAMIC COSTS PARAMETERS", inputs
   
-  if not inputs['Main Advertiser ID']:
+  if 'Main Advertiser ID' in inputs or not inputs['Main Advertiser ID']:
     print "Configuration sheet not filled out."
     return
 

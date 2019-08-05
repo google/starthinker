@@ -16,21 +16,28 @@
 #
 ###########################################################################
 
+import os
 import pprint
 from importlib import import_module
 
+from starthinker.config import UI_ROOT
 from starthinker.util.project import project, get_project
 from starthinker.util.bigquery import table_to_schema, table_to_rows, query_to_rows
 from starthinker.util.sheets import sheets_read
+from starthinker.util.storage import object_exists, object_delete
 from starthinker.util.csv import rows_to_type
 from starthinker.script.parse import json_set_fields
 from starthinker.task.traffic.test import bulkdozer_test
 
+LOG_FILE_PATH = UI_ROOT + '/starthinker/test/log.txt'
 
 # display results of list comparison
 def object_compare(actual, expected):
+  f = open(LOG_FILE_PATH, "a")
+
   if actual == expected:
     print 'PASSED'
+    f.write('PASSED\n')
   else:
     print ''
     print 'FAILED *******************************************************'
@@ -40,6 +47,21 @@ def object_compare(actual, expected):
     pprint.PrettyPrinter().pprint(expected)
     print '**************************************************************'
     print ''
+
+    # Log File Write
+    f.write('\n')
+    f.write('FAILED *******************************************************\n')
+    f.write('ACTUAL\n')
+    f.write(pprint.PrettyPrinter().pformat(actual))
+    f.write('\n')
+    f.write('EXPECTED\n')
+    f.write(pprint.PrettyPrinter().pformat(expected))
+    f.write('\n')
+    f.write('**************************************************************\n')
+    f.write('\n')
+
+  f.close()
+
 
 
 # check if sheet matches given values
@@ -132,14 +154,34 @@ def asserts():
   print project.task['assert']
   print 'PASSED'
 
+
+def path_exists():
+   if os.path.exists(project.task['path']): 
+     if project.task.get('delete', False):
+       os.remove(project.task['path']) 
+     print 'PASSED'
+   else: print 'FAILED'
+
+
+def storage_exists():
+   if object_exists(project.task['auth'], '%s:%s' % (project.task['storage']['bucket'], project.task['storage']['file'])): 
+     if project.task.get('delete', False):
+       object_delete(project.task['auth'], '%s:%s' % (project.task['storage']['bucket'], project.task['storage']['file']))
+     print 'PASSED'
+   else: print 'FAILED'
+
+
 def traffic():
   print 'running Bulkdozer test'
   bulkdozer_test()
+
 
 # decide which test to run
 @project.from_parameters
 def test():
   if 'assert' in project.task: asserts()
+  elif 'path' in project.task: path_exists()
+  elif 'storage' in project.task: storage_exists()
   elif 'sheets' in project.task: sheets()
   elif 'bigquery' in project.task: bigquery()
   elif 'template' in project.task: template()

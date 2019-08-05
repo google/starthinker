@@ -160,13 +160,7 @@ eventTagsListResponse_Schema = [
         }
       ], 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "siteIds"
-        }, 
-        "type": "RECORD", 
+        "type": "INT64", 
         "name": "siteIds", 
         "mode": "REPEATED"
       }, 

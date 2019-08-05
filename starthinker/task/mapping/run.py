@@ -18,7 +18,7 @@
 import re
 
 from starthinker.util.project import project
-from starthinker.util.sheets import sheets_tab_create, sheets_read, sheets_tab_copy
+from starthinker.util.sheets import sheets_read, sheets_tab_copy
 from starthinker.util.bigquery import get_schema, query_to_view
 from starthinker.util.csv import rows_to_type, rows_to_csv
 

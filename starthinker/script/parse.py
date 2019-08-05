@@ -62,7 +62,7 @@ def json_set_fields(struct, variables):
      Field has format: { "field":{ "name":"???", "kind":"???", "default":???, "description":"???" }}
 
     Args:
-      struct: (dict) A dictionary representation fo the JSON script.
+      struct: (dict) A dictionary representation of the JSON script.
       variables: (dict) A lookup table of all values to be replaced, key is name of field.
 
     Returns:

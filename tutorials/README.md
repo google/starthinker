@@ -8,6 +8,7 @@ a StarThinker instance.
 - [Enterprise](deploy_enterprise.md) - Full browser based UI with multiple user login.
 - [Scientist](deploy_scientist.md) - Single user, fast setup, long running job scheduler.
 - [Developer](deploy_developer.md) - Command line recipe creation, editing, and testing.
+- [AirFlow](deploy_airflow.md) - Run recipes usng cloud compoer / airflow framework.
 - [Package](deploy_package.md) - Workshop import and run instantly.
 
 ## UI
@@ -22,6 +23,7 @@ a StarThinker instance.
 - [Creating Python Task](task.md) - How to code up a task that can be used by recipes.
 - [Creating A Recipe Script For A Single Task](recipe.md) - How to create JSON task parameters and add them to the UI for re-use.
 - [Creating A Solution Script With Many Tasks](solution.md) - How to create a slution and add it to the solution gallery.
+- [Architecture](architecture.md) - All the components of this repository explained.
 - [Testing](testing.md) - How to test the UI, worker, and various recipes.
 
 ## Credentials

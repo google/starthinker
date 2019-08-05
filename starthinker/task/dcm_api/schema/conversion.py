@@ -123,13 +123,7 @@ conversion_Schema = [
     "name": "floodlightActivityId"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "encryptedUserIdCandidates"
-    }, 
-    "type": "RECORD", 
+    "type": "STRING", 
     "name": "encryptedUserIdCandidates", 
     "mode": "REPEATED"
   }

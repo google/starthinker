@@ -8,7 +8,8 @@
     "title":"Test Script",
     "description":"Used by tests.",
     "instructions":[
-      "This should be called by the tests scripts only."
+      "This should be called by the tests scripts only.",
+      "When run will generate a say hello log."
     ],
     "authors":["kenjora@google.com"]
   },

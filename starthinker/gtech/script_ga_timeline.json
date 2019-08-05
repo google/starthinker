@@ -1,0 +1,58 @@
+{
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
+    "icon":"timeline",
+    "product":"gTech",
+    "title":"Google Analytics Timeline",
+    "description":"Download Google Analytics settings to a BigQuery table.",
+    "image":"",
+    "sample":"",
+    "requirements":{
+      "dbm":false,
+      "dcm":false,
+      "ds":false,
+      "trix":false,
+      "datastudio":true,
+      "bigquery":true,
+      "ga":true
+    },
+    "categories":["reporting"],
+    "pitches":[
+      "Store, visualize, and compare Google Analytics settings over time."
+    ],
+    "impacts":{
+      "spend optimization":0,
+      "spend growth":0,
+      "time savings":90,
+      "account health":100,
+      "csat improvement":90
+    },
+    "instructions":[
+      "Enter the dateset to which the Google Analytics settings will be downloaded.",
+      "Add the starthinker service account email to the Google Analytics account(s) in which you are interested.",
+      "Schedule the recipe to run once a day."
+    ],
+    "authors":["bkuehn@google.com"]
+  },
+   "setup":{
+     "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+     "hour":[0, 7, 14, 23]
+  },
+  "tasks":[{
+    "ga_settings_download":{
+      "description":"Will create tables with format ga_* to hold each endpoint via a call to the API list function.",
+      "auth":"service",
+      "dataset":{
+        "field":{
+          "name":"dataset",
+          "kind":"string",
+          "order":1,
+          "default":"",
+          "description": "Dataset to be written to in BigQuery."
+        }
+      }
+    }
+  }]
+}

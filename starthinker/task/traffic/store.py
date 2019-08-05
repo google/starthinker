@@ -71,8 +71,7 @@ class Store(object):
 
       data = json.dumps(self._id_map)
       data = [data[start:start+49999] for start in xrange(0, len(data), 49999)]
-      sheets_write(self.auth, self.trix_id, 'Store', 'A:' + columns[len(data) + 1],
-                   [data])
+      sheets_write(self.auth, self.trix_id, 'Store', 'A:' + columns[len(data) + 1], [data])
 
 
   def clear(self):

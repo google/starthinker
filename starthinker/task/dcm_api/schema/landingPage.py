@@ -87,13 +87,7 @@ landingPage_Schema = [
         "name": "fallbackUrl"
       }, 
       {
-        "fields": {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "remarketingListIds"
-        }, 
-        "type": "RECORD", 
+        "type": "INT64", 
         "name": "remarketingListIds", 
         "mode": "REPEATED"
       }

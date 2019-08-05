@@ -238,8 +238,7 @@ class Feed:
     new_feed = self._dict_to_feed(parse=self._parse)
 
     if len(new_feed) > 1:
-      sheets_write(self.auth, self.trix_id, self.tab_name, self.trix_range,
-                   new_feed)
+      sheets_write(self.auth, self.trix_id, self.tab_name, self.trix_range, new_feed)
 
   def _get_feed(self):
     """Fetches the feed based on initialization parameters.
@@ -254,8 +253,7 @@ class Feed:
         for sheet in self.spreadsheet['sheets']:
           if sheet['properties']['title'] == tab_name:
             self.tab_name = tab_name
-            return sheets_read(self.auth, self.trix_id, tab_name,
-                               self.trix_range)
+            return sheets_read(self.auth, self.trix_id, tab_name, self.trix_range)
 
     return [[]]
 

@@ -45,6 +45,10 @@ Yes, however each StarThinker will need to run under a different user with disti
 No, The Google Cloud Console is tied to your user and cannot be shared.  To share deployment settings launch starthinkers form a virtual machine shared with multiple users.
 
 ---
+### I am getting an error that a service cannot be reached when trying to enable it, and when I go to the link to manually enable the page hangs.
+There may be an issue internally with that service.  Wait a few hours and try again at a later time.
+
+
 ### I'm getting an error on Mac OS X?
 You may have to install developer tools, specifically Command Line Tools using the command:
 ```xcode-select --install```

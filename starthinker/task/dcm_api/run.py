@@ -557,7 +557,6 @@ def dcm_api_list(endpoint):
     kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
     for item in API_DCM(project.task['auth'], iterate=True, internal=is_superuser).function(endpoint).list(**kwargs).execute():
       yield item
-      break
 
 @project.from_parameters
 def dcm_api():
@@ -571,7 +570,7 @@ def dcm_api():
       rows = row_clean(rows)
       put_rows(
         project.task['out']['auth'], 
-        put_json('CM_%s' % endpoint, schema),
+        put_json('CM_%s' % endpoint.title(), schema, 'JSON'),
         "DCM_Accounts.csv",
         rows
       )

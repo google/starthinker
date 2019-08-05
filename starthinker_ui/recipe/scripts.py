@@ -148,7 +148,8 @@ class Script:
     return 'impacts' in self.script.get('script', {})
 
   def is_manual(self):
-    return self.is_solution() and self.script.get('setup', {}).get('day', None) == []
+    #return self.is_solution() and self.script.get('setup', {}).get('day', None) == []
+    return self.script.get('setup', {}).get('day', None) == []
 
   @staticmethod
   def get_json(uuid, project_id, credentials_user, credentials_service, timezone, days, hours, values):

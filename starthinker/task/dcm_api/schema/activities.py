@@ -67,13 +67,7 @@ activities_Schema = [
     "mode": "REPEATED"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "metricNames"
-    }, 
-    "type": "RECORD", 
+    "type": "STRING", 
     "name": "metricNames", 
     "mode": "REPEATED"
   }

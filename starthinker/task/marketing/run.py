@@ -177,14 +177,12 @@ def compose_email_solution_centric(owner):
 
   # start an email template
   email = EmailTemplate()
-  email.segment_next()
   email.greeting(owner['Account Owner'])
   email.paragraph(project.task['email']['introduction'])
 
   # loop through solutions
   rows = []
   for solution in owner['Solutions']:
-    email.segment_next()
     email.header('Your %d Biggest %s Impact Opportunities This Week' % (project.task['offers'], solution['Solution']['name']))
 
     # create offer matrix for each solution
@@ -210,11 +208,11 @@ def compose_email_solution_centric(owner):
     email.image(solution['Solution']['image'], solution['Solution']['sample'])
     email.paragraph(solution['Solution']['description'])
 
-    email.paragraph('Product Gap', bold=True)
+    email.paragraph('Product Gap')
     email.paragraph(solution['Solution']['gap'])
 
     # solution pitch
-    email.paragraph('Benefits', bold=True)
+    email.paragraph('Benefits')
     email.list(solution['Solution']['pitches'])
 
     # solution impact

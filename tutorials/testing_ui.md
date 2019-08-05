@@ -22,6 +22,20 @@ source install/deploy.sh
   - [starthinker_ui/account/tests.py](../starthinker_ui/account/tests.py)
   - [starthinker_ui/project/tests.py](../starthinker_ui/project/tests.py)
 
+## Manual Testing
+
+When the UI is active it saves recipes to the local database.  Those recipes can be executed by the worker
+using the following commands:
+
+```
+source starthinker_assets/developer.sh
+python starthinker_ui/manage.py job_worker --test --verbose --jobs 1
+```
+
+This will execute one loop of the worker, pulling oe recipe at a time from the local databse and executing 
+it as the worker.
+
+
 ## Cloud Resources
 
   - [Google Cloud Credentials](https://pantheon.corp.google.com/apis/credentials) - where you manage your credentials.

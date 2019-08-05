@@ -31,3 +31,30 @@ UI_SERVICE = os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET
 
 # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
 BUFFER_SCALE = int(os.environ.get('STARTHINKER_SCALE', 1))
+
+# used for user authentication
+APPLICATION_NAME = 'StarThinker Client'
+APPLICATION_SCOPES = [
+  'https://www.googleapis.com/auth/userinfo.profile', 
+  'https://www.googleapis.com/auth/userinfo.email', 
+  'https://www.googleapis.com/auth/gmail.readonly',
+  'https://www.googleapis.com/auth/gmail.send',
+  'https://www.googleapis.com/auth/doubleclickbidmanager',
+  'https://www.googleapis.com/auth/cloudplatformprojects',
+  'https://www.googleapis.com/auth/devstorage.full_control',
+  'https://www.googleapis.com/auth/bigquery',
+  'https://www.googleapis.com/auth/dfareporting',
+  'https://www.googleapis.com/auth/dfatrafficking',
+  'https://www.googleapis.com/auth/drive',
+  'https://www.googleapis.com/auth/spreadsheets',
+  'https://www.googleapis.com/auth/doubleclicksearch',
+  'https://www.googleapis.com/auth/content',
+  'https://www.googleapis.com/auth/ddmconversions',
+  'https://www.googleapis.com/auth/datastore',
+  'https://www.googleapis.com/auth/logging.write',
+  'https://www.googleapis.com/auth/logging.read',
+  'https://www.googleapis.com/auth/pubsub',
+  'https://www.googleapis.com/auth/youtube',
+  'https://www.googleapis.com/auth/analytics',
+  'https://www.googleapis.com/auth/analytics.readonly',
+]

@@ -24,13 +24,7 @@ subaccount_Schema = [
     "name": "kind"
   }, 
   {
-    "fields": {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "availablePermissionIds"
-    }, 
-    "type": "RECORD", 
+    "type": "INT64", 
     "name": "availablePermissionIds", 
     "mode": "REPEATED"
   }, 
