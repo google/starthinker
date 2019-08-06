@@ -24,6 +24,7 @@ import sys
 import time
 import json
 
+from starthinker.task.traffic.logger import logger
 from starthinker.task.traffic.dao import BaseDAO
 from starthinker.task.traffic.feed import FieldMap
 
@@ -82,14 +83,22 @@ class VideoFormatDAO(BaseDAO):
 
           file_format = transcode_config.get(FieldMap.TRANSCODE_FORMAT, '')
 
-          if min_width <= video_format['resolution']['width'] \
+          # There is one video format entry of id 15 in CM that represents the
+          # Source File setting, it has no file type and no resolution, we are
+          # using SOURCE_FILE as an artificial handle to allow this transcode
+          # configuration to be selected from the sheet
+          if file_format == 'SOURCE_FILE':
+            if 15 not in result:
+              result.append(15)
+          elif min_width <= video_format['resolution']['width'] \
               and video_format['resolution']['width'] <= max_width \
               and min_height <= video_format['resolution']['height'] \
               and video_format['resolution']['height'] <= max_height \
               and min_bitrate <= video_format['targetBitRate'] \
               and video_format['targetBitRate'] <= max_bitrate \
-              and video_format['fileType'] == file_format:
-            result.append(video_format['id'])
+              and video_format.get('fileType', '') == file_format:
+            if video_format['id'] not in result:
+              result.append(video_format['id'])
     except:
       raise Exception('Error determining file formats for transcode')
 

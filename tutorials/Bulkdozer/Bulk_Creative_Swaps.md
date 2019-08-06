@@ -42,7 +42,7 @@ script" message to disappear before moving to the next step.
 ## Load your Campaign
 
 For details on how to load an existing campaign into the Bulkdozer feed 
-refer to the [Changing Existing Campaigns guide](tutorials/Bulkdozer/Changing_Existing_Campaigns.md).
+refer to the [Changing Existing Campaigns guide](Changing_Existing_Campaigns.md).
 
 ## Associate the new creative with the campaign
 
@@ -83,4 +83,4 @@ Manager to see the new creative associated with all ads you've identified.
 &copy; 2019 Google Inc. - Apache License, Version 2.0
 
 By using Bulkdozer the user agrees with the 
-[Terms & Conditions](tutorials/Bulkdozer/Terms_and_Conditions.md).
+[Terms & Conditions](Terms_and_Conditions.md).

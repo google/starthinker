@@ -108,4 +108,4 @@ you've configured with the profile.
 ---
 &copy; 2019 Google Inc. - Apache License, Version 2.0
 
-By using Bulkdozer the user agrees with the [Terms & Conditions](tutorials/Bulkdozer/Terms_and_Conditions.md).
+By using Bulkdozer the user agrees with the [Terms & Conditions](Terms_and_Conditions.md).

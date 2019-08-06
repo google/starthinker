@@ -32,15 +32,15 @@ Cloud platform projects.
 <a name="documentation"></a>
 ## How-to Guides
 
-> [Changing Existing Campaigns](tutorials/Bulkdozer/Changing_Existing_Campaigns.md)
+> [Changing Existing Campaigns](Changing_Existing_Campaigns.md)
 >
->[Campaign QA and Verification](tutorials/Bulkdozer/Campaign_QA_and_Verification.md)
+>[Campaign QA and Verification](Campaign_QA_and_Verification.md)
 >
->[Applying Event Tags at the Site Level](tutorials/Bulkdozer/Applying_Event_Tags_Placement_Level.md)
+>[Applying Event Tags at the Site Level](Applying_Event_Tags_Placement_Level.md)
 >
->[Bulk Creative Swaps](tutorials/Bulkdozer/Bulk_Creative_Swaps.md)
+>[Bulk Creative Swaps](Bulk_Creative_Swaps.md)
 >
->[Simple Campaign Trafficking - create a campaign from scratch](tutorials/Bulkdozer/Create_simple_campaign_from_scratch.md)
+>[Simple Campaign Trafficking - create a campaign from scratch](Create_simple_campaign_from_scratch.md)
 >
 >[Back to top](#top_page) <br/>
 
@@ -66,13 +66,13 @@ you must have proficient knowledge of the Campaign Manager.
 ### Before you begin
 
 Please make sure you have the StarThinker platform up and running on your 
-Google Cloud Platform (GCP) and have either the [Enterprise](https://team.git.corp.google.com/cse-dclk/starthinker/+/refs/heads/master/tutorials/deploy_enterprise.md) 
-or the [Scientist](https://team.git.corp.google.com/cse-dclk/starthinker/+/refs/heads/master/tutorials/deploy_scientist.md) 
+Google Cloud Platform (GCP) and have either the [Enterprise](https://github.com/google/starthinker/blob/master/tutorials/deploy_enterprise.md) 
+or the [Scientist](https://github.com/google/starthinker/blob/master/tutorials/deploy_scientist.md) 
 version deployed to enable Bulkdozer to fully work.
 
 
 #### Add a new recipe to the StarThinker platform:
-1. Navigate to [https://bulkdozer-starthinker.appspot.com]() and login 
+1. Navigate to [https://bulkdozer-starthinker.appspot.com](https://bulkdozer-starthinker.appspot.com ) and login 
 using your Google account.
 
 >In case the StarThinker platform is hosted under a different local 
@@ -183,7 +183,7 @@ process is done.
 ## Terms and Conditions
 
 By using Bulkdozer the user agrees with the 
-[Terms & Conditions](tutorials/Bulkdozer/Terms_and_Conditions.md).
+[Terms & Conditions](Terms_and_Conditions.md).
 
 [Back to top](#top_page)
 
@@ -193,7 +193,7 @@ By using Bulkdozer the user agrees with the
 
 Contact the team or request Bulkdozer: bulkdozer-support@google.com
 
-Sign up for updates and announcements: Bulkdozer Announcements
+Sign up for updates and announcements: [Bulkdozer Announcements](https://groups.google.com/forum/#!forum/bulkdozer-announcements)
 
 
 [Back to top](#top_page)
@@ -204,5 +204,5 @@ Sign up for updates and announcements: Bulkdozer Announcements
 &copy; 2019 Google Inc. - Apache License, Version 2.0
 
 By using Bulkdozer the user agrees with the 
-[Terms & Conditions](tutorials/Bulkdozer/Terms_and_Conditions.md).
+[Terms & Conditions](Terms_and_Conditions.md).
 

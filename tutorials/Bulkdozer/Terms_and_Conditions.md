@@ -45,4 +45,4 @@ POSSIBILITY OF SUCH DAMAGE.
 ----
 &copy; 2019 Google Inc. - Apache License, Version 2.0
 
-[Back to main page](tutorials/Bulkdozer/Intsallation_and_User_guides.md)
+[Back to main page](Intsallation_and_User_guides.md)

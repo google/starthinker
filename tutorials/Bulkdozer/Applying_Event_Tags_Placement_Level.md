@@ -33,7 +33,7 @@ script" message to disappear before moving to the next step.
 ## Load your Campaign
 
 For details on how to load an existing campaign into the Bulkdozer feed
-refer to the [Changing Existing Campaigns guide](tutorials/Bulkdozer/Applying_Event_Tags_Placement_Level.md).
+refer to the [Changing Existing Campaigns guide](Applying_Event_Tags_Placement_Level.md).
 
 ## Creating new Event Tags
 
@@ -109,6 +109,6 @@ you've configured with the profile.
 ---
 &copy; 2019 Google Inc. - Apache License, Version 2.0
 
-By using Bulkdozer the user agrees with the [Terms & Conditions](tutorials/Bulkdozer/Terms_and_Conditions.md)
+By using Bulkdozer the user agrees with the [Terms & Conditions](Terms_and_Conditions.md)
 
 

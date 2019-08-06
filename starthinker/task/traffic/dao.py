@@ -37,8 +37,9 @@ class BaseDAO(object):
   Centralizes all common logic to all classes that access CM to create or update
   entities.
   """
+
   """Version of the CM API to use."""
-  API_VERSION = 'v3.2'
+  API_VERSION = 'v3.3'
 
   def __init__(self, auth, profile_id):
     """Initializes the object with a specific CM profile ID and an authorization scheme.
