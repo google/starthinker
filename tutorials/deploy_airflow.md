@@ -1,11 +1,12 @@
 # Airflow Integration
 
 StarThinker can be easily deployed to Cloud Composer / Airflow using a basic factory.
-This allows recipe JSON built in STarThinker to execute on the Airflow stack.
+This allows recipe JSON built in StarThinker to execute on the [Apache Airflow](https://airflow.apache.org/) 
+stack and [Google Cloud Composer](https://cloud.google.com/composer/).
 
 ## Setup
 
-You must have airflow installed or deployed on Google Cloud.
+You must have airflow installed or deployed on Google Cloud Composer.
 
 ## Example 
 
