@@ -88,7 +88,6 @@
     }},
     { "dcm": {
       "auth": "user", 
-      "datastudio": true,
       "report": {
         "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
         "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"CM_Browser_Delivery_", "description":"Report in DCM, should be unique." }}
@@ -145,7 +144,6 @@
     }},
     { "dcm": {
       "auth": "user", 
-      "datastudio": true,
       "report": {
         "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
         "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"CM_Browser_Floodlight_", "description":"Report in DCM, should be unique." }}

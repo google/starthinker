@@ -43,7 +43,7 @@ python starthinker/all/run.py hello.json -u $STARTHINKER_USER -s $STARTHINKER_SE
 
 ### 5. Continue to the [script  tutorial](recipe.md)...
 
-### Notes
+## Notes
 
 - The [@project.from_parameters](../starthinker/util/project/__init__.py)  decorator is StarThinker.  Everything else is just python.
 - Using the [util library](../starthinker/util/) is optional but convenient. 

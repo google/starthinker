@@ -31,7 +31,6 @@ from time import sleep
 from StringIO import StringIO
 #from io import BytesIO
 
-from google.cloud import bigquery
 from googleapiclient.errors import HttpError
 from apiclient.http import MediaIoBaseUpload
 

@@ -83,7 +83,7 @@ def hello():
   print "For example, 'hello' is a task which will executed by 'task/hello/run.py'."
   print ''
   print 'PROJECT JSON:'
-  print json.dumps(project.recipe, indent=2)
+  print json.dumps(project.recipe, indent=2, default=str)
 
   print ''
   print ''

@@ -2,7 +2,7 @@
 
 ---
 ### Is gSuite needed to deploy StarThinker?
-No, however G Suite does make the deployment more secure and easier to set up.  If your organization cannot run gSuite, you'll need to set up a custom verified domain for your Google Cloud Project oAuth.  This requires domain name verification.
+No, only the [Enterprise Deployment](deploy_enterprise.md), with multiple users, requires gSuite or a verified domain.  StarThinker can also be deployed with [Data Scientist Deployment](deploy_scientist.md), with a single user, which will have the full UI but limited to a single authenticated user.
 
 ---
 ### Worker jobs are timing out, what do I do?
@@ -45,13 +45,19 @@ Yes, however each StarThinker will need to run under a different user with disti
 No, The Google Cloud Console is tied to your user and cannot be shared.  To share deployment settings launch starthinkers form a virtual machine shared with multiple users.
 
 ---
-### I am getting an error that a service cannot be reached when trying to enable it, and when I go to the link to manually enable the page hangs.
+### Service cannot be reached when trying to enable it, the Google Cloud UI is timing out.
 There may be an issue internally with that service.  Wait a few hours and try again at a later time.
 
 
-### I'm getting an error on Mac OS X?
+### I'm getting an error on Mac OS X.
 You may have to install developer tools, specifically Command Line Tools using the command:
-```xcode-select --install```
+```
+xcode-select --install
+```
+
+### I'm getting an admin_policy_enforced error.
+Odds are you need to active [gSuite](https://gsuite.google.com) for your Google Cloud Project, this error can ONLY be cleared with a gSuite setup . The error may also occur if the [StarThinker Scopes](../starthinker/config.py) do not match the [oAuth Consent Screen](https://console.cloud.google.com/apis/credentials/consent). This errro ONLY occurs in the [Enterprise Deployment](deploy_enterprise.md), try the [Data Scientist Deployment](deploy_scientist.md) instead.
+
 
 --- 
 &copy; 2019 Google Inc. - Apache License, Version 2.0

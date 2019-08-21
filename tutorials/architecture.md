@@ -32,7 +32,7 @@ Light weight open source [Django Framework](https://www.djangoproject.com/) usin
 
 ### [Job Worker](../starthinker_ui/recipe/management/commands/job_worker.py)
 
-Scalable back end for pulling and executing jobs. Multiple machines can be [deployed](deploy_enterprise.md) with several workers each.  Collision detecion is built in, each worker will reserve tasks.  If a worker stops working, other workers will begin pulling dropped tasks.  The [deploy](../install/deploy.sh) script offers 4 scale options, that can be extended to any size budget permitting.
+Scalable back end for pulling and executing jobs. Multiple machines can be [deployed](deploy_enterprise.md) with several workers each.  Collision detection is built in, each worker will reserve tasks.  If a worker stops working, other workers will begin pulling dropped tasks.  The [deploy](../install/deploy.sh) script offers 4 scale options, that can be extended to any size budget permitting.  The worker has [full test coverage](../starthinker_ui/recipe/tests.py) for safe maintenance.
 
    1. [Database](cheat_sheet.md#production) - Database polled by worker requesting recipe jobs.
    1. [Job](../starthinker_ui/recipe/models.py) - A task returned to the worker containing all information to run it.

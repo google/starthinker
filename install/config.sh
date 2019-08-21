@@ -279,11 +279,7 @@ setup_credentials_commandline() {
 
     # client OTHER
     echo "Retrieve \"Other\" OAuth Client ID Credentials from: https://console.cloud.google.com/apis/credentials"
-    echo ""
-    echo "IMPORTANT SETUP NOTES"
-    echo ""
-    echo " * In Google Cloud Console -> Services & APIs -> Create Credentials -> oAuth Credentials."
-    echo " TO BE CONTINUED"
+    echo "Google Cloud Console -> Services & APIs -> Create Credentials -> oAuth Credentials."
     echo ""
 
     echo "Paste credentials JSON here: ( CTRL+D to skip )"
@@ -315,15 +311,8 @@ setup_credentials_ui() {
 
     # client OTHER
     echo "Retrieve \"Web\" OAuth Client ID Credentials from: https://console.cloud.google.com/apis/credentials"
-    echo ""
-    echo "IMPORTANT SETUP NOTES"
-    echo ""
-    echo " * In Google Cloud Console -> Services & APIs -> Create Credentials -> oAuth Credentials."
-    echo " TO BE CONTINUED"
-    echo ""
-
     echo "Set up the \"Internal\" OAuth Consent Screen: https://pantheon.corp.google.com/apis/credentials/consent"
-    echo " TO BE CONTINUED"
+    echo "Google Cloud Console -> Services & APIs -> Create Credentials -> oAuth Credentials."
     echo ""
 
     echo "Paste credentials JSON here: ( CTRL+D to skip )"

@@ -68,6 +68,32 @@ class DAG_Factory():
     return RE_DAG_NAME.sub('.', self.recipe_path)
 
 
+  def python_task(self, function, instance):
+    PythonOperator(
+      task_id='%s_%d' % (function, instance),
+      python_callable = getattr(import_module('starthinker.task.%s.run' % function), function),
+      op_kwargs = {'recipe': self.recipe, 'instance':instance},
+      dag=self.dag
+    )
+
+
+  def airflow_task(self, function, instance, parameters):
+    af_source, af_package = parameters.items()[0]
+    af_package, af_module = af_package.items()[0]
+    af_module, af_operator = af_module.items()[0]
+    af_operator, af_parameters = af_operator.items()[0]
+
+    if af_source == 'concerto':
+      af_source = 'starthinker_airflow.concerto'
+
+    operator = getattr(import_module('%s.%s.%s' % (af_source, af_package, af_module)), af_operator)
+    
+    af_parameters['dag'] = self.dag 
+    af_parameters['task_id'] = '%s_%d' % (function, instance)
+     
+    operator(**af_parameters)
+
+
   def execute(self):
     self.dag = DAG(
       dag_id = self.dag_id(),
@@ -81,19 +107,19 @@ class DAG_Factory():
 
     instances = {}
     for task in self.recipe['tasks']:
-      function = task.items()[0][0]
+      function = task.keys()[0]
 
       # count instance per task
       instances.setdefault(function, 0)
       instances[function] += 1
 
-      # in future, ad logic here to dispatch some operators to AirFlow built in operators
-      PythonOperator(
-        task_id='%s_%d' % (function, instances[function]),
-        python_callable = getattr(import_module('starthinker.task.%s.run' % function), function),
-        op_kwargs = {'recipe': self.recipe, 'instance':instances[function]},
-        dag=self.dag
-      )
+      # if airflow operator
+      if function in ('airflow', 'concerto'):
+        self.airflow_task(function, instances[function], task)
+
+      # if native python operator
+      else:
+        self.python_task(function, instances[function])
 
     return self.dag
 
@@ -111,11 +137,11 @@ class DAG_Factory():
  
     instances = {}
     for task in self.recipe['tasks']:
-      function = task.items()[0][0]
+      function = task.keys()[0]
 
       # count instance per task
       instances.setdefault(function, 0)
       instances[function] += 1
 
-    print 'airflow test "%s" %s_%d %s' % (self.dag_id(), function, instances[function], str(date.today()))
-    print ''
+      print 'airflow test "%s" %s_%d %s' % (self.dag_id(), function, instances[function], str(date.today()))
+      print ''

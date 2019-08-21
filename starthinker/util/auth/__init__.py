@@ -29,7 +29,6 @@ from apiclient import discovery
 from oauth2client import client, tools
 from oauth2client.file import Storage
 from oauth2client.service_account import ServiceAccountCredentials
-from google.cloud import bigquery, storage
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery_cache.base import Cache
 
@@ -162,6 +161,18 @@ def get_service(api='gmail', version='v1', auth='service', scopes=None, uri_file
 
 
 def get_client(api='storage', auth='user'):
+  '''Translates discovery credentials into client credentials.
+  
+  Used to connect client API from StarThinker.
+
+  For example:
+
+  ```
+    credentials_client = get_client('storage', 'service)
+    api = storage.Client(project=project.recipe['setup']['id'], credentials=credentials_client)
+  ```
+  '''
+
   credentials_service = get_credentials() if auth == 'user' else get_service_credentials()
   credentials_service.get_access_token() # force acccess refresh check here ( custom client refresh isn't implemented )
                                          # not perect, single job can still time out, may need to write custom BucketClient
@@ -172,10 +183,7 @@ def get_client(api='storage', auth='user'):
     credentials_service.client_id,
     credentials_service.client_secret
   )
-  if api == 'storage': return storage.Client(project=project.recipe['setup']['id'], credentials=credentials_client)
-  elif api == 'bigquery': return bigquery.Client(project=project.recipe['setup']['id'], credentials=credentials_client)
-  #elif api == 'pubsub': return pubsub.Client(project=project.recipe['setup']['id'], credentials=credentials_client)
-  else: return None
+  return credentials_client
 
 
 def get_profile():

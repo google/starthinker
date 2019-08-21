@@ -95,6 +95,26 @@ migrate_database_proxy() {
 }
 
 
+setup_ui_account() {
+  echo ""
+  echo "----------------------------------------"
+  echo "Setup UI Account"
+  echo "----------------------------------------"
+  echo ""
+
+  (
+    start_proxy;
+    source "${STARTHINKER_CONFIG}";
+    python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" acount_setup --user "${STARTHINKER_USER}" --write;
+    deactivate
+    stop_proxy;
+  )
+  
+  echo "Done"
+  echo ""
+}
+
+
 deploy_appengine() {
   echo ""
   echo "----------------------------------------"
@@ -121,7 +141,7 @@ deploy_appengine() {
 
 
 configure_yaml() {
-  yaml_Target=$1
+  deploy_Type=$1
 
   echo ""
   echo "----------------------------------------"
@@ -131,7 +151,14 @@ configure_yaml() {
   echo "Copy settings from $STARTHINKER_CONFIG and adjust for App Engine deployment."
   echo ""
 
-  appengine_client_web=$(cat "$STARTHINKER_CLIENT_WEB" | tr '\n' ' ')
+  if [[ $deploy_Type == 'Scientist' ]]; then
+    appengine_client_web=""
+    appengine_user=$(cat "$STARTHINKER_USER" | tr '\n' ' ')
+  else
+    appengine_client_web=$(cat "$STARTHINKER_CLIENT_WEB" | tr '\n' ' ')
+    appengine_user=""
+  fi
+
   appengine_service=$(cat "$STARTHINKER_SERVICE" | tr '\n' ' ')
 
   appengine_development="0"
@@ -140,7 +167,7 @@ configure_yaml() {
   appengine_database_host="/cloudsql/$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME"
   appengine_database_port="5432"
 
-  bash -c "cat > $STARTHINKER_ROOT/$yaml_Target.yaml" << EOL
+  bash -c "cat > $STARTHINKER_ROOT/app.yaml" << EOL
 runtime: python
 env: flex
 entrypoint: gunicorn -b :\$PORT starthinker_ui.ui.wsgi
@@ -156,7 +183,11 @@ skip_files:
 - ^(.*/)?.*~$
 - ^(.*/)?.*\.pyc$
 - ^(.*/)?\..*$
+- ^starthinker_cron/.*$
 - ^starthinker_assets/.*$
+- ^starthinker_airflow/.*$
+- ^starthinker_database/.*$
+- ^starthinker_virtualenv/.*$
 - ^.git/.*$
 
 env_variables:
@@ -165,6 +196,7 @@ env_variables:
   STARTHINKER_PROJECT: '$STARTHINKER_PROJECT'
   STARTHINKER_ZONE: '$STARTHINKER_ZONE'
   STARTHINKER_CLIENT_WEB: '$appengine_client_web'
+  STARTHINKER_USER: '$appengine_user'
   STARTHINKER_SERVICE: '$appengine_service'
   STARTHINKER_UI_DOMAIN: '$appengine_domain' 
   STARTHINKER_UI_SECRET: '$STARTHINKER_UI_SECRET'
@@ -182,10 +214,11 @@ EOL
 
 
 setup_appengine() {
+  deploy_Type=$1
 
   echo ""
   echo "----------------------------------------"
-  echo "Setup UI Instance On App Engine"
+  echo "Setup ${deploy_Type} UI Instance On App Engine"
   echo "----------------------------------------"
   echo "This will create a StarThinker UI instances in Google Cloud project $STARTHINKER_PROJECT."
   echo ""
@@ -196,7 +229,13 @@ setup_appengine() {
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     setup_project "optional";
     setup_credentials_service "optional";
-    setup_credentials_ui "optional";
+
+    if [[ $deploy_Type == 'Scientist' ]]; then
+      setup_credentials_user "optional";
+    else
+      setup_credentials_ui "optional";
+    fi
+
     setup_database "optional" "optional" "optional";
     save_config;
 
@@ -217,7 +256,12 @@ setup_appengine() {
     setup_sql;
     migrate_database_proxy; 
 
-    configure_yaml "app"; 
+    if [[ $deploy_Type == 'Scientist' ]]; then
+      setup_ui_account;
+    fi
+
+    configure_yaml $deploy_Type; 
+
     deploy_appengine; 
   fi
 
@@ -299,7 +343,7 @@ setup_enterprise() {
   echo ""
 
   enterprise_done=0
-  enterprise_options=("Deploy App Engine UI" "Deploy Job Workers" "Check Job Workers" "Change Domain" "Change Database" "Migrate Database" "Quit")
+  enterprise_options=("Deploy Multi User UI" "Deploy Job Workers" "Check Job Workers" "Change Domain" "Change Database" "Migrate Database" "Quit")
 
   while (( !enterprise_done ))
   do
@@ -311,7 +355,7 @@ setup_enterprise() {
     PS3='Your Choice: '
     select enterprise_option in "${enterprise_options[@]}"; do
       case $REPLY in
-        1) setup_appengine; break ;;
+        1) setup_appengine "Enterprise"; break ;;
         2) setup_worker; break ;;
         3) check_worker; break ;;
         4) setup_domain; save_config; break ;;
@@ -347,4 +391,3 @@ if [ "$1" = "--instance" ];then
   fi
 
 fi
-

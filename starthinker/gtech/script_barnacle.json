@@ -2,7 +2,6 @@
   "script":{
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
-    "open":true,
     "icon":"donut_small",
     "product":"gTech",
     "title":"Barnacle",
@@ -49,13 +48,13 @@
     "hour":[1, 3, 8]
   },
   "tasks":[
-   { "dataset":{
+    { "dataset":{
       "description":"The dataset will hold multiple tables, amke sure it exists.",
       "hour":[1],
       "auth":"service",
       "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Name of Google BigQuery dataset to create." }}
     }},
-    { "dcm_api":{
+    { "barnacle":{
       "description":"Will create tables with format CM_* to hold each endpoint via a call to the API list function. Exclude reports for its own task.",
       "hour":[1],
       "auth":"user",
@@ -69,7 +68,7 @@
         "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Google BigQuery dataset to create tables in." }}
       }
     }},
-    { "dcm_api":{
+    { "barnacle":{
       "description":"Will create tables with format CM_* to hold each endpoint via a call to the API list function. Reports run long so seperate task.",
       "hour":[3],
       "auth":"user",

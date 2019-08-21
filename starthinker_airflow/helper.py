@@ -29,7 +29,7 @@ this connector generates the DAG in real time whenever AirFlow calls it.
 ### Sample call:
 
 ```
-python starthinker_airflow/helper.py starthinker/gtech/say_hello.json > ~/airflow/dags/say_hello.py
+python starthinker_airflow/helper.py starthinker/gtech/airflow.json > ~/airflow/dags/say_hello.py
 ```
 
 ### Note
@@ -53,7 +53,7 @@ if __name__ == "__main__":
 if __name__ == "__main__":
 
   # assemble parameters
-  parser = argparse.ArgumentParser(usage='python starthinker_airflow/helper.py starthinker/gtech/say_hello.json > ~/airflow/dags/say_hello.py\nTo get DAG testing commands run: python ~/airflow/dags/say_hello.py\n')
+  parser = argparse.ArgumentParser(usage='python starthinker_airflow/helper.py starthinker/gtech/airflow.json > ~/airflow/dags/say_hello.py\nTo get DAG testing commands run: python ~/airflow/dags/say_hello.py\n')
   parser.add_argument('recipe', help='JSON recipe to connect to airflow.')
   args = parser.parse_args()
 

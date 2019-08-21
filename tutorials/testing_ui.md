@@ -32,14 +32,14 @@ source starthinker_assets/developer.sh
 python starthinker_ui/manage.py job_worker --test --verbose --jobs 1
 ```
 
-This will execute one loop of the worker, pulling oe recipe at a time from the local databse and executing 
+This will execute one loop of the worker, pulling one recipe at a time from the local databse and executing 
 it as the worker.
 
 
 ## Cloud Resources
 
-  - [Google Cloud Credentials](https://pantheon.corp.google.com/apis/credentials) - where you manage your credentials.
-  - [Google Cloud Billing](https://pantheon.corp.google.com/billing/linkedaccount) - examine costs in real time.
+  - [Google Cloud Credentials](https://console.cloud.google.com/apis/credentials) - where you manage your credentials.
+  - [Google Cloud Billing](https://console.cloud.google.com/billing/linkedaccount) - examine costs in real time.
 
 ---
 &copy; 2019 Google Inc. - Apache License, Version 2.0

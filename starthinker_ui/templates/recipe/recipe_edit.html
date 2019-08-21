@@ -124,6 +124,7 @@
           {% if log.ago %}<p class="flow-text">{{ log.ago }}</p>{% endif %}
         {% endif %}
 
+        <br/>
         <div class="right-align">
           {% for product in form_script.products %}
             <h4 id="product_{{ forloop.counter }}" class="product_toggle">{{ product.name }}</h4>
@@ -136,6 +137,13 @@
             {% endfor %}
           {% endfor %}
         </div>
+
+        {% if manual %}
+          <p><br/>For scheduled recipes click &nbsp;<a href="/recipe/edit/"><i class="material-icons teal-text">add_alarm</i></a></p>
+        {% else %}
+          <p><br/>For manual recipes click &nbsp;<a href="/recipe/manual/"><i class="material-icons teal-text">add_box</i></a></p>
+        {% endif %}
+
       </div>
 
       <div class="split_right left-align">

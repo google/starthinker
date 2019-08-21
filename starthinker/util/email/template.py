@@ -92,17 +92,26 @@ class EmailTemplate:
     return 'color:%(text)s;font-family:%(font)s;font-size:12px;line-height:16px;' % self.style
 
 
+  def markup_to_html(self, markup):
+    return MARKUP_TO_HTML.sub(r'<a href="\2" style="%s">\1</a>' % self._link_css(), markup).replace('\n', '<br/><br/>')
+
+
+  def markup_to_text(self, markup):
+    return MARKUP_TO_TEXT.sub(r'\1 (\2)', markup).replace('\n', '<br/><br/>')
+
+
   def section(self, on=False, background=None):
     value = {
-      'image':'background-image:url(%s);background-repeat:no-repeat;background-size:contain;' % background if background else '',
+      'image':'background-image:url(\'%s\');background-repeat:no-repeat;background-size:contain;' % background if background else '',
       'align': self.style['align']
     }
 
     # HTML
     if on:
-      self.content_html += '<div style="margin:0px 15px;padding:1px;%(image)s">' % value
+      self.content_html += '<div style="margin:0px 15px;padding:1px;text-align:%(align)s;%(image)s">' % value
     else:
       self.content_html += '</div>'
+      self.content_text += '\n'
 
 
   def align(self, text_align):
@@ -138,17 +147,19 @@ class EmailTemplate:
     # HTML
     self.content_html += '<p style="%s">%s<p>' % (
       self._text_css(),
-      MARKUP_TO_HTML.sub(r'<a href="\2" style="%s">\1</a>' % self._link_css(), text).replace('\n', '<br/><br/>')
+      self.markup_to_html(text)
+      #MARKUP_TO_HTML.sub(r'<a href="\2" style="%s">\1</a>' % self._link_css(), text).replace('\n', '<br/><br/>')
     )
 
     # Text
-    self.content_text += '%s\n\n' % MARKUP_TO_TEXT.sub(r'\1 (\2)', text).replace('\n', '<br/><br/>')
+    #self.content_text += '%s\n\n' % MARKUP_TO_TEXT.sub(r'\1 (\2)', text).replace('\n', '<br/><br/>')
+    self.content_text += '%s\n\n' % self.markup_to_text(text)
 
     
-  def image(self, src, link):
+  def image(self, src, link=None):
     # HTML
     if link: self.content_html += '<a href="%s">' % link
-    self.content_html += '<img src="%s" style="width:100%%;height:auto;margin:10px 0px;padding:0px;border:0px"/>' % src
+    self.content_html += '<img src="%s" style="width:auto;height:auto;margin:10px auto;padding:0px;border:0px;"/>' % src
     if link: self.content_html += '</a>'
 
     # Text
@@ -206,14 +217,14 @@ class EmailTemplate:
     border = 0
     self.content_html += '<table style="margin:20px auto 0px auto;padding:0px;border:0px;border-collapse:collapse;">'
     for element in elements:
-      self.content_html += '<tr><td style="padding:10px;text-align:%s;border-top:%dpx solid #ccc;%s">%s</td></tr>' % (self.style['align'], border, self._table_css(), element)
+      self.content_html += '<tr><td style="padding:10px;text-align:%s;border-top:%dpx solid #ccc;%s">%s</td></tr>' % (self.style['align'], border, self._table_css(), self.markup_to_html(element))
       border = 1
     self.content_html += '</table>' 
 
     # Text
     self.content_text += '\n\n'
     for element in elements:
-      self.content_text += '  - %s\n' % element
+      self.content_text += '  - %s\n' % self.markup_to_text(element)
     self.content_text == '\n'
 
 

@@ -30,7 +30,7 @@ from starthinker.util.email import send_email
 from starthinker.util.email.template import EmailTemplate
 from starthinker_ui.account.models import Account
 from starthinker_ui.recipe.scripts import Script
-from starthinker_ui.storage.models import storage_list
+#from starthinker_ui.storage.models import storage_list
 from starthinker_ui.website.templatetags.website_app import mailto
 
 EMAIL_FROM = 'starthinker@google.com'

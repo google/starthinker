@@ -23,7 +23,7 @@ from __future__ import unicode_literals
 import httplib2
 
 from apiclient import discovery
-from oauth2client import client
+#from oauth2client import client
 
 from django.contrib.auth import login as django_login, logout as django_logout#, authenticate
 from django.http import HttpResponseRedirect
@@ -31,10 +31,7 @@ from django.conf import settings
 from django.contrib import messages
 
 from starthinker.util.auth import get_flow
-from starthinker.util.project import project
-from starthinker.util.storage import bucket_create, bucket_access
 from starthinker_ui.account.models import Account
-from starthinker_ui.account.decorators import permission_admin
 
 
 def oauth_callback(request):
@@ -70,15 +67,3 @@ def logout(request):
   django_logout(request)
   messages.success(request, 'You Are Logged Out')
   return HttpResponseRedirect('/')
-
-
-#@permission_admin()
-#def storage(request):
-#  bucket = request.user.get_bucket(full_path=False)
-#
-#  # create and permission bucket ( will do nothing if it exists )
-#  project.initialize(_project=settings.RECIPE_PROJECT, _service=settings.RECIPE_SERVICE)
-#  bucket_create('service', settings.RECIPE_PROJECT, bucket)
-#  bucket_access('service', settings.RECIPE_PROJECT, bucket, 'OWNER', emails=[request.user.email])
-#
-#  return HttpResponseRedirect(request.user.get_bucket())

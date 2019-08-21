@@ -59,8 +59,8 @@ Next, learn how to [create a recipe](../starthinker/gtech/README.md) or look at 
 
 ## Cloud Resources
 
-  - [Google Cloud Credentials](https://pantheon.corp.google.com/apis/credentials) - where you manage your credentials.
-  - [Google Cloud Billing](https://pantheon.corp.google.com/billing/linkedaccount) - examine costs in real time.
+  - [Google Cloud Credentials](https://console.cloud.google.com/apis/credentials) - where you manage your credentials.
+  - [Google Cloud Billing](https://console.cloud.google.com/billing/linkedaccount) - examine costs in real time.
 
 
 ---

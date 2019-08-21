@@ -1,4 +1,4 @@
-# ##########################################################################
+###########################################################################
 # 
 #  Copyright 2018 Google Inc.
 #
@@ -51,6 +51,7 @@ RETRIABLE_EXCEPTIONS = (
 
 RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
 
+
 def API_Retry(job, key=None, retries=5, wait=61):
   """ API retry that includes back off and some common error handling.
 
@@ -82,6 +83,7 @@ def API_Retry(job, key=None, retries=5, wait=61):
     data = job.execute()
     return data if not key else data.get(key, [])
 
+  # API errors
   except HttpError, e:
     # errors that can be overcome or re-tried ( 403 is rate limit and others, needs deep dive )
     if e.resp.status in [403, 409, 429, 500, 503]:
@@ -101,6 +103,16 @@ def API_Retry(job, key=None, retries=5, wait=61):
       else:
         raise
     # raise all other errors that cannot be overcome
+    else:
+      raise
+
+  # HTTP transport errors
+  except RETRIABLE_EXCEPTIONS, e:
+    if retries > 0:
+      if project.verbose: print 'HTTP ERROR:', str(e)
+      if project.verbose: print 'HTTP RETRY / WAIT:', retries, wait
+      sleep(wait)
+      return API_Retry(job, key, retries - 1, wait * 2)
     else:
       raise
 

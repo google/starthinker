@@ -127,7 +127,7 @@ def dcm():
 
       # clean up the report
       rows = report_to_rows(report)
-      rows = report_clean(rows,  project.task.get('datastudio', False))
+      rows = report_clean(rows)
 
       # if bigquery, remove header and determine schema
       schema = None

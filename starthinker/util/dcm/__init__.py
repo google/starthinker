@@ -303,10 +303,16 @@ def report_build(auth, account, body):
       body['schedule'] = {
         'active':True,
         'repeats':'DAILY',
-        'every': 1,
-        'startDate':str(date.today()),
-        'expirationDate':str((date.today() + timedelta(days=365))),
+        'every': 1
       }
+
+    # add default start and end if it does not exist ( convenience )
+    if 'startDate' not in body['schedule']:
+      body['schedule']['startDate'] = str(date.today())
+
+    # add default start and end if it does not exist ( convenience )
+    if 'expirationDate' not in body['schedule']:
+      body['schedule']['expirationDate'] = str((date.today() + timedelta(days=365)))
 
     #pprint.PrettyPrinter().pprint(body)
 
@@ -620,7 +626,7 @@ def report_schema(headers):
   ```
   filename, report = report_file(...)
   rows = report_to_rows(report)
-  rows = report_clean(rows,  project.task.get('datastudio', False))
+  rows = report_clean(rows)
   schema = report_schema(rows.next())
   ```
 
@@ -658,7 +664,7 @@ def report_schema(headers):
   return schema
 
 
-def report_clean(rows, datastudio=False):
+def report_clean(rows):
   """ Helper to fix DCM report issues for BigQuery and ensure schema compliance.
 
   Memory efficiently cleans each row by fixing:
@@ -672,7 +678,7 @@ def report_clean(rows, datastudio=False):
   ```
   filename, report = report_file(...)
   rows = report_to_rows(report)
-  rows = report_clean(rows,  project.task.get('datastudio', False))
+  rows = report_clean(rows)
   ```
 
   Args:
@@ -706,7 +712,7 @@ def report_clean(rows, datastudio=False):
         date_column = row.index('Date')
         row[date_column] = 'Report_Day'
       except ValueError: pass
-      if datastudio: row = [column_header_sanitize(cell) for cell in row]
+      row = [column_header_sanitize(cell) for cell in row]
 
     # remove not set columns ( which throw off schema on import types )
     row = ['' if cell.strip() in ('(not set)', '-') else cell for cell in row]

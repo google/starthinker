@@ -29,7 +29,7 @@
 import os
 
 # General StarThinker constants that can also be used from the command line interface
-from starthinker.config import UI_ROOT, UI_PROJECT, UI_CLIENT, UI_SERVICE, UI_CRON, UI_ZONE, DEVELOPMENT_MODE
+from starthinker.config import UI_ROOT, UI_PROJECT, UI_CLIENT, UI_USER, UI_SERVICE, UI_CRON, UI_ZONE, DEVELOPMENT_MODE
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = DEVELOPMENT_MODE

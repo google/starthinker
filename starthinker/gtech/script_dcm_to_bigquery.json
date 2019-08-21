@@ -29,8 +29,7 @@
           "table":{"field":{ "name":"table", "kind":"string", "order":6, "default":"", "description":"Table to be written to in BigQuery." }},
           "is_incremental_load":{"field":{ "name":"is_incremental_load", "kind":"boolean", "order":7, "default":false, "description":"Clear data in destination table during this report's time period, then append report data to existing table." }}
         }
-      },
-      "datastudio":true
+      }
     }}
   ]
 }

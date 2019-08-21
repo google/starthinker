@@ -16,30 +16,20 @@
 #
 ###########################################################################
 
-#-r starthinker/requirements.txt
-#google-cloud-core
-#google-cloud-bigquery
-#google-cloud-storage
-#google-cloud-pubsub
-#google-auth
-#google-auth-httplib2
-google-api-python-client
-oauth2client
-httplib2
-jsonpickle
-django==1.11
-pysftp
-pytz
-tzlocal
-TwitterAPI
-python-dateutil
-pandas
-psutil
-moviepy
+import time
 
-#-r starthinker_ui/requirements.txt
-wheel
-gunicorn
-uwsgi
-django==1.11
-psycopg2
+from airflow import models
+from airflow import utils as airflow_utils
+
+
+class Hello(models.BaseOperator):
+  @airflow_utils.apply_defaults
+  def __init__(self, say='', sleep=0, **kwargs):
+    self.say = say
+    self.sleep = sleep
+    super(Hello, self).__init__(**kwargs)
+
+  def execute(self, context):
+    print self.say
+    if self.sleep:
+      time.sleep(self.sleep)

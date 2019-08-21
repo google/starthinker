@@ -59,6 +59,7 @@ in StarThinker except that it doesn't do any work.  It simply compares and asser
 { "test": {
   "path":"somefile.txt"
 }}
+```
 
 ### Running Tests
 Tests are just recipes with some additional tasks sprinkeld in. You can run a test just like a recipe.  

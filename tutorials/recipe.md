@@ -102,7 +102,7 @@ starthinker/gtech/script_hello.json
 }
 ```
 
-### Script Parameters
+#### Script Parameters
   - license - Optional, include to open source.
   - copyright - Required, always include.
   - icon - Get from: https://material.io/tools/icons/

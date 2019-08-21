@@ -20,7 +20,6 @@ import os
 import re
 import csv
 
-from google.cloud import bigquery
 
 class FileProcessor(object):
 
@@ -68,20 +67,20 @@ class FileProcessor(object):
 
         if t == 'RECORD':
           result[key] = {
-              'name': str(key),
+            'name': str(key),
             'type': t,
             'mode': 'REPEATED',
             'fields':  self.__entity_read_analyze_schema__(item[0], prefix + '\t')
           }
         else:
           result[key] = {
-              'name': str(key),
+            'name': str(key),
             'type': t,
             'mode': 'REPEATED'
           }
       elif type(item) is dict:
         result[key] = {
-            'name': str(key),
+          'name': str(key),
           'type': 'RECORD',
           'mode': 'NULLABLE',
           'fields': self.__entity_read_analyze_schema__(item, prefix + '\t')
@@ -99,12 +98,12 @@ class FileProcessor(object):
         if 'fields' in src[key]:
           fields = self.__entity_read_convert__(src[key]['fields'])
 
-        converted.append(bigquery.table.SchemaField(
-            src[key]['name'],
-            src[key]['type'],
-            src[key]['mode'],
-            fields=fields
-          )
+        converted.append({
+            'name':src[key]['name'],
+            'type':src[key]['type'],
+            'mode':src[key]['mode'],
+            'fields':fields=fields
+          }
         )
 
 
@@ -128,11 +127,11 @@ class FileProcessor(object):
       field_name += suffix
       field_names.append(field_name)
 
-      result.append(bigquery.table.SchemaField(
-        field_name,
-        'STRING',
-        'NULLABLE'
-      ))
+      result.append({
+        'name':field_name,
+        'type':'STRING',
+        'mode':'NULLABLE'
+      })
 
     return result
 

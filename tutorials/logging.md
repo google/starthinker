@@ -13,7 +13,7 @@ logs to be filtered by values within each recipe.  Logging is used primarily by 
 
 1. Logging structure is defined in: [starthinker_ui/ui/log.py](../starthinker_ui/ui/log.py).
 1. Most logging occurs in: [starthinker_ui/recipe/management/commands/job_worker.py](../starthinker_ui/recipe/management/commands/job_worker.py)
-1. View logs by visitng: https://pantheon.corp.google.com/logs/viewer
+1. View logs by visitng: https://console.cloud.google.com/logs/viewer
   - Change 'All Logs' to 'StarThinker'
   - Suggested log view adjustments:
     - Add field to summary line: labels.event
@@ -31,7 +31,7 @@ optimization points.
 ![StackDriver Dashboard](images/logging_dashboard.png)
 [View StackDriver Dashboard Larger](images/logging_dashboard.png)
 
-1. First create metrics from the [StackDriver Logs Viewer](https://pantheon.corp.google.com/logs/viewer) screen.
+1. First create metrics from the [StackDriver Logs Viewer](https://console.cloud.google.com/logs/viewer) screen.
   - Name: StarThinker
   - Labels:
     - Severity:
@@ -103,10 +103,10 @@ Each recipe also has a curated custom status visible in the UI that is independe
 
 ## Cloud Resources
 
-  - [Google Cloud StackDriver Dashboards](https://pantheon.corp.google.com/dashboards) - where visualization of metrics will be displayed.
-  - [Google Cloud StackDriver Logs](https://pantheon.corp.google.com/logs/viewer) - where your logs will be written ( select StarThinker under All Logs ).
-  - [Google Cloud Credentials](https://pantheon.corp.google.com/apis/credentials) - where you manage your credentials.
-  - [Google Cloud Billing](https://pantheon.corp.google.com/billing/linkedaccount) - examine costs in real time.
+  - [Google Cloud StackDriver Dashboards](https://console.cloud.google.com/dashboards) - where visualization of metrics will be displayed.
+  - [Google Cloud StackDriver Logs](https://console.cloud.google.com/logs/viewer) - where your logs will be written ( select StarThinker under All Logs ).
+  - [Google Cloud Credentials](https://console.cloud.google.com/apis/credentials) - where you manage your credentials.
+  - [Google Cloud Billing](https://console.cloud.google.com/billing/linkedaccount) - examine costs in real time.
 
 ---
 &copy; 2019 Google Inc. - Apache License, Version 2.0

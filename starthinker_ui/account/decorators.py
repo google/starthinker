@@ -16,20 +16,30 @@
 #
 ###########################################################################
 
+import json
+
 from functools import wraps
 from oauth2client import client
-from django.http import HttpResponseRedirect
 from django.conf import settings
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+from django.contrib.auth import login as django_login
 
 from starthinker.util.auth import get_flow
+from starthinker_ui.account.models import Account
+
 
 def permission_admin():
   def _decorator(_view):
     @wraps(_view)
     def _wrapper(request, *args, **kwargs):
+
+      # user is logged in
       if request.user.is_authenticated():
         return _view(request, *args, **kwargs)
-      else:
+
+      # multi user mode, log user in using oauth
+      elif settings.UI_CLIENT:
         flow = get_flow(settings.UI_CLIENT, redirect_uri=settings.CONST_URL + '/oauth_callback/')
         flow.params['response_type'] = 'code'
         #flow.params['approval_prompt'] = 'auto'
@@ -37,5 +47,23 @@ def permission_admin():
         flow.params['access_type'] = 'offline'
         flow.params['include_granted_scopes'] = 'true'
         return HttpResponseRedirect(flow.step1_get_authorize_url())
+
+      # single user mode, no oath, just log the user in
+      else:
+
+        # fetch the default account
+        account = (Account.objects.filter(identifier=json.loads(settings.UI_USER)['id_token']['sub'])[:1] or (None))[0]
+        
+        # log the account in ( set cookie )
+        if account:
+          django_login(request, account, backend=settings.AUTHENTICATION_BACKENDS[0])
+          messages.success(request, 'Welcome %s To StarThinker' % account.name.title())
+          return _view(request, *args, **kwargs)
+
+        # or display a friendly error
+        else:
+          messages.error(request, 'Missing Account, Run Deployment Again')
+          return HttpResponseRedirect('/')
+
     return _wrapper
   return _decorator

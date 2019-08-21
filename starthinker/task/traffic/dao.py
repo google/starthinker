@@ -27,6 +27,7 @@ import datetime
 
 from apiclient import http
 from starthinker.util.auth import get_service
+from starthinker.util.google_api import API_Retry
 from starthinker.task.traffic.store import store
 from starthinker.task.traffic.logger import logger
 
@@ -304,36 +305,43 @@ class BaseDAO(object):
     pass
 
   def _retry(self, job, retries=6, wait=2):
-    """Handles required logic to ensure robust interactions with the CM API.
-
-    Analyzes errors to determine if retries are appropriate, performs retries,
-    and exponential backoff.
-
-    Args:
-      job: The API function to execute.
-      retries: Optional, defaults to 10. The number of retries before failing.
-      wait: Optional, defaults to 30. The number of seconds to wait between
-        retries. This number is doubled at each retry (a.k.a. exponential
-        backoff).
+    """Replaced by core StarThinker retry logic, more resiliant for version 3.3 of the CM API.
+   
+    All timing parameters are ignored, now handled by replacement function.
     """
-    try:
-      data = job.execute()
-      return data
-    except http.HttpError, e:
-      stack = traceback.format_exc()
-      print stack
 
-      msg = str(e)
-      match = re.search(r'"(.*)"', msg)
+    return API_Retry(job)
 
-      if e.resp.status in [403, 429, 500, 503]:
-        if retries > 0:
-          time.sleep(wait)
-          return self._retry(job, retries - 1, wait * 2)
-
-      if match:
-        raise Exception('ERROR: %s' % match.group(0))
-      else:
-        logger.log(msg)
-
-      raise
+#    """Handles required logic to ensure robust interactions with the CM API.
+#
+#    Analyzes errors to determine if retries are appropriate, performs retries,
+#    and exponential backoff.
+#
+#    Args:
+#      job: The API function to execute.
+#      retries: Optional, defaults to 10. The number of retries before failing.
+#      wait: Optional, defaults to 30. The number of seconds to wait between
+#        retries. This number is doubled at each retry (a.k.a. exponential
+#        backoff).
+#    """
+#    try:
+#      data = job.execute()
+#      return data
+#    except http.HttpError, e:
+#      stack = traceback.format_exc()
+#      print stack
+#
+#      msg = str(e)
+#      match = re.search(r'"(.*)"', msg)
+#
+#      if e.resp.status in [403, 429, 500, 503]:
+#        if retries > 0:
+#          time.sleep(wait)
+#          return self._retry(job, retries - 1, wait * 2)
+#
+#      if match:
+#        raise Exception('ERROR: %s' % match.group(0))
+#      else:
+#        logger.log(msg)
+#
+#      raise

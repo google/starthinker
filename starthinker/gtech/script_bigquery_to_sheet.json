@@ -1,0 +1,34 @@
+{
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
+    "icon":"arrow_forward",
+    "product":"BigQuery",
+    "title":"Query to Sheet",
+    "description":"Copy the contents of a query into a Google Sheet.",
+    "instructions":[
+      "Specify the sheet and the query.",
+      "Leave range blank or set to A2 to insert one line down.",
+      "The range is cleared before the sheet is written to.",
+      "To select a table use SELECT * FROM table."
+    ],
+    "authors":["terwilleger@google.com"]
+  },
+  "tasks":[
+    { "bigquery":{
+      "auth":"user",
+      "from":{
+        "auth": "service",
+        "dataset": {"field":{ "name":"dataset", "kind":"string", "order":4, "default":"", "description":"Existing BigQuery dataset." }},
+        "query": {"field":{ "name":"query", "kind":"string", "order":5, "default":"", "description":"Query to pull data from the table." }},
+        "legacy": {"field":{ "name":"legacy", "kind":"boolean", "order":6, "default":true, "description":"Use Legacy SQL" }}
+      },
+      "to":{
+        "sheet": {"field":{ "name":"sheet", "kind":"string", "order":1, "default":"", "description":"Either sheet url or sheet name." }},
+        "tab": {"field":{ "name":"tab", "kind":"string", "order":2, "default":"", "description":"Name of the tab where to put the data." }},
+        "range": {"field":{ "name":"range", "kind":"string", "order":3, "default":"", "description":"Range in the sheet to place the data, leave blank for whole sheet." }}
+      }
+    }}
+  ]
+}

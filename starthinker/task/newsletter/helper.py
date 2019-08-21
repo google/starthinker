@@ -18,6 +18,19 @@
 
 
 """Command line to send newsletter email to people.
+
+Before using StarThinker ensure you're set up by reading tutorials/deploy_developer.sh.
+
+To generate an HTML page:
+```
+python helper.py --template internal/2019_07_23.json > ~/Downloads/email.html
+```
+
+To actualy send an email:
+```
+python helper.py --template internal/2019_07_23.json --email_to kenjora@google.com --email_from kenjora@google.com -u $STARTHINKER_USER
+```
+
 """
 
 import json
@@ -49,4 +62,4 @@ if __name__ == "__main__":
   else:
     # write to STDOUT
     print email.get_html()
-    print '<pre>%s</pre>' % email.get_text()
+    print '<pre style="width:600px;margin:0px auto;">%s</pre>' % email.get_text()
