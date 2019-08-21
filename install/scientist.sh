@@ -77,6 +77,7 @@ if [ "$1" = "--instance" ];then
     THIS_DIR=$PWD
     source ${THIS_DIR}/install/config.sh
     source ${THIS_DIR}/install/worker.sh
+    source ${THIS_DIR}/install/enterprise.sh
 
     setup_scientist;
 

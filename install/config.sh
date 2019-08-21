@@ -29,13 +29,23 @@ STARTHINKER_DEVELOPMENT=0
 STARTHINKER_PROJECT=""
 STARTHINKER_ZONE="us-west1-b"
 
-STARTHINKER_UI_DOMAIN=""
-STARTHINKER_UI_DATABASE_ENGINE="django.db.backends.postgresql"
-STARTHINKER_UI_DATABASE_HOST="127.0.0.1"
-STARTHINKER_UI_DATABASE_PORT="5432"
-STARTHINKER_UI_DATABASE_NAME="starthinker-test"
-STARTHINKER_UI_DATABASE_USER="starthinker_user"
-STARTHINKER_UI_DATABASE_PASSWORD="starthinker_password"
+STARTHINKER_UI_PRODUCTION_DOMAIN=""
+STARTHINKER_UI_PRODUCTION_SECRET=""
+STARTHINKER_UI_PRODUCTION_DATABASE_ENGINE="django.db.backends.postgresql"
+STARTHINKER_UI_PRODUCTION_DATABASE_HOST="127.0.0.1"
+STARTHINKER_UI_PRODUCTION_DATABASE_PORT="5432"
+STARTHINKER_UI_PRODUCTION_DATABASE_NAME="starthinker-test"
+STARTHINKER_UI_PRODUCTION_DATABASE_USER="starthinker_user"
+STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD="starthinker_password"
+
+STARTHINKER_UI_DEVELOPMENT_DOMAIN="http://localhost:8000";
+STARTHINKER_UI_DEVELOPMENT_SECRET="fordevelomentthisisokbutproductionneedsa50characterrandomsecret";
+STARTHINKER_UI_DEVELOPMENT_DATABASE_ENGINE="django.db.backends.sqlite3";
+STARTHINKER_UI_DEVELOPMENT_DATABASE_HOST="";
+STARTHINKER_UI_DEVELOPMENT_DATABASE_PORT="";
+STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME="${STARTHINKER_ROOT}/starthinker_database/database.sqlite";
+STARTHINKER_UI_DEVELOPMENT_DATABASE_USER="";
+STARTHINKER_UI_DEVELOPMENT_DATABASE_PASSWORD="";
 
 derive_config() {
 
@@ -47,7 +57,7 @@ derive_config() {
   STARTHINKER_CLIENT_INSTALLED="${THIS_DIR}/starthinker_assets/client_installed.json"
   STARTHINKER_SERVICE="${THIS_DIR}/starthinker_assets/service.json"
   STARTHINKER_USER="${THIS_DIR}/starthinker_assets/user.json"
-  STARTHINKER_CONFIG="${THIS_DIR}/starthinker_assets/production.sh"
+  STARTHINKER_CONFIG="${THIS_DIR}/starthinker_assets/config.sh"
   STARTHINKER_CRT="${THIS_DIR}/starthinker_assets/ssl.crt"
   STARTHINKER_KEY="${THIS_DIR}/starthinker_assets/ssl.key"
   STARTHINKER_CSR="${THIS_DIR}/starthinker_assets/ssl.csr"
@@ -55,8 +65,8 @@ derive_config() {
   STARTHINKER_CRON="${THIS_DIR}/starthinker_cron"
   STARTHINKER_ENV="${THIS_DIR}/starthinker_virtualenv"
 
-  if [ -z "${STARTHINKER_UI_SECRET}" ]; then
-    STARTHINKER_UI_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1)
+  if [ -z "${STARTHINKER_UI_PRODUCTION_SECRET}" ]; then
+    STARTHINKER_UI_PRODUCTION_SECRET=$(openssl rand -base64 48)
   fi
 
 }
@@ -65,12 +75,12 @@ derive_config() {
 load_config() {
   echo ""
   echo "----------------------------------------"
-  echo "Loading Configuration - ${THIS_DIR}/starthinker_assets/production.sh"
+  echo "Loading Configuration - ${THIS_DIR}/starthinker_assets/config.sh"
   echo "----------------------------------------"
   echo ""
 
-  if [ -e "${THIS_DIR}/starthinker_assets/production.sh" ]; then
-    source "${THIS_DIR}/starthinker_assets/production.sh";
+  if [ -e "${THIS_DIR}/starthinker_assets/config.sh" ]; then
+    source "${THIS_DIR}/starthinker_assets/config.sh";
   fi
 
   derive_config;
@@ -108,14 +118,24 @@ save_config() {
   echo "export STARTHINKER_ENV=\"$STARTHINKER_ENV\";" >> "${STARTHINKER_CONFIG}"
   echo "" >> "${STARTHINKER_CONFIG}"
 
-  echo "export STARTHINKER_UI_DOMAIN=\"$STARTHINKER_UI_DOMAIN\";" >> "${STARTHINKER_CONFIG}"
-  echo "export STARTHINKER_UI_SECRET=\"$STARTHINKER_UI_SECRET\";" >> "${STARTHINKER_CONFIG}"
-  echo "export STARTHINKER_UI_DATABASE_ENGINE=\"$STARTHINKER_UI_DATABASE_ENGINE\";" >> "${STARTHINKER_CONFIG}"
-  echo "export STARTHINKER_UI_DATABASE_HOST=\"$STARTHINKER_UI_DATABASE_HOST\";" >> "${STARTHINKER_CONFIG}"
-  echo "export STARTHINKER_UI_DATABASE_PORT=\"$STARTHINKER_UI_DATABASE_PORT\";" >> "${STARTHINKER_CONFIG}"
-  echo "export STARTHINKER_UI_DATABASE_NAME=\"$STARTHINKER_UI_DATABASE_NAME\";" >> "${STARTHINKER_CONFIG}"
-  echo "export STARTHINKER_UI_DATABASE_USER=\"$STARTHINKER_UI_DATABASE_USER\";" >> "${STARTHINKER_CONFIG}"
-  echo "export STARTHINKER_UI_DATABASE_PASSWORD=\"$STARTHINKER_UI_DATABASE_PASSWORD\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_PRODUCTION_DOMAIN=\"$STARTHINKER_UI_PRODUCTION_DOMAIN\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_PRODUCTION_SECRET=\"$STARTHINKER_UI_PRODUCTION_SECRET\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_PRODUCTION_DATABASE_ENGINE=\"$STARTHINKER_UI_PRODUCTION_DATABASE_ENGINE\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_PRODUCTION_DATABASE_HOST=\"$STARTHINKER_UI_PRODUCTION_DATABASE_HOST\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_PRODUCTION_DATABASE_PORT=\"$STARTHINKER_UI_PRODUCTION_DATABASE_PORT\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_PRODUCTION_DATABASE_NAME=\"$STARTHINKER_UI_PRODUCTION_DATABASE_NAME\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_PRODUCTION_DATABASE_USER=\"$STARTHINKER_UI_PRODUCTION_DATABASE_USER\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD=\"$STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD\";" >> "${STARTHINKER_CONFIG}"
+  echo "" >> "${STARTHINKER_CONFIG}"
+
+  echo "export STARTHINKER_UI_DEVELOPMENT_DOMAIN=\"$STARTHINKER_UI_DEVELOPMENT_DOMAIN\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_DEVELOPMENT_SECRET=\"$STARTHINKER_UI_DEVELOPMENT_SECRET\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_DEVELOPMENT_DATABASE_ENGINE=\"$STARTHINKER_UI_DEVELOPMENT_DATABASE_ENGINE\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_DEVELOPMENT_DATABASE_HOST=\"$STARTHINKER_UI_DEVELOPMENT_DATABASE_HOST\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_DEVELOPMENT_DATABASE_PORT=\"$STARTHINKER_UI_DEVELOPMENT_DATABASE_PORT\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME=\"$STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_DEVELOPMENT_DATABASE_USER=\"$STARTHINKER_UI_DEVELOPMENT_DATABASE_USER\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_UI_DEVELOPMENT_DATABASE_PASSWORD=\"$STARTHINKER_UI_DEVELOPMENT_DATABASE_PASSWORD\";" >> "${STARTHINKER_CONFIG}"
   echo "" >> "${STARTHINKER_CONFIG}"
 
   echo "if [[ "\$PYTHONPATH" != *\"\${STARTHINKER_ROOT}\"* ]]; then" >> "${STARTHINKER_CONFIG}"
@@ -190,10 +210,10 @@ setup_database() {
   echo "----------------------------------------"
   echo ""
 
-  if [ "$optional_name" != "optional" ] || [ "${STARTHINKER_UI_DATABASE_NAME}" == "" ]; then
-    read -p "Database Name - ${STARTHINKER_UI_DATABASE_NAME} ( blank to skip ): " database_name
+  if [ "$optional_name" != "optional" ] || [ "${STARTHINKER_UI_PRODUCTION_DATABASE_NAME}" == "" ]; then
+    read -p "Database Name - ${STARTHINKER_UI_PRODUCTION_DATABASE_NAME} ( blank to skip ): " database_name
     if [ "${database_name}" ]; then
-      STARTHINKER_UI_DATABASE_NAME="${database_name}"
+      STARTHINKER_UI_PRODUCTION_DATABASE_NAME="${database_name}"
     else
       echo "Database Name Unchanged"
     fi
@@ -201,10 +221,10 @@ setup_database() {
     echo "Using Existing Database Name"
   fi
 
-  if [ "$optional_user" != "optional" ] || [ "${STARTHINKER_UI_DATABASE_USER}" == "" ]; then
-    read -p "Database User - ${STARTHINKER_UI_DATABASE_USER} ( blank to skip ): " database_user
+  if [ "$optional_user" != "optional" ] || [ "${STARTHINKER_UI_PRODUCTION_DATABASE_USER}" == "" ]; then
+    read -p "Database User - ${STARTHINKER_UI_PRODUCTION_DATABASE_USER} ( blank to skip ): " database_user
     if [ "${database_user}" ]; then
-      STARTHINKER_UI_DATABASE_USER="${database_user}"
+      STARTHINKER_UI_PRODUCTION_DATABASE_USER="${database_user}"
     else
       echo "Database User Unchanged"
     fi
@@ -212,10 +232,10 @@ setup_database() {
     echo "Using Existing Database User"
   fi
 
-  if [ "$optional_password" != "optional" ] || [ "${STARTHINKER_UI_DATABASE_PASSWORD}" == "" ]; then
-    read -p "Database Password - ${STARTHINKER_UI_DATABASE_PASSWORD} ( blank to skip ): " database_password
+  if [ "$optional_password" != "optional" ] || [ "${STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD}" == "" ]; then
+    read -p "Database Password - ${STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD} ( blank to skip ): " database_password
     if [ "${database_password}" ]; then
-      STARTHINKER_UI_DATABASE_PASSWORD="${database_password}"
+      STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD="${database_password}"
     else
       echo "Database Password Unchanged"
     fi
@@ -511,19 +531,19 @@ setup_domain() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Set UI Domain - $STARTHINKER_UI_DOMAIN"
+  echo "Set UI Domain - $STARTHINKER_UI_PRODUCTION_DOMAIN"
   echo "----------------------------------------"
   echo ""
   echo "If you DO NOT HAVE A DOMAIN then LEAVE IT BLANK."
   echo "The script will use whatever defaults necessay to get things working."
   echo ""
 
-  if [ "$optional_domain" != "optional" ] || [ "${STARTHINKER_UI_DOMAIN}" == "" ]; then
+  if [ "$optional_domain" != "optional" ] || [ "${STARTHINKER_UI_PRODUCTION_DOMAIN}" == "" ]; then
 
     read -p "Domain Name ( blank to skip ): " domain_name
 
     if [ "${domain_name}" ];then
-      STARTHINKER_UI_DOMAIN="${domain_name}"
+      STARTHINKER_UI_PRODUCTION_DOMAIN="${domain_name}"
     else
       echo "Domain Name Unchanged"
     fi

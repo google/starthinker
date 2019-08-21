@@ -30,9 +30,9 @@ setup_sql() {
   gcloud services enable sql-component.googleapis.com
   gcloud services enable serviceusage.googleapis.com
 
-  gcloud sql instances create $STARTHINKER_UI_DATABASE_NAME --database-version=POSTGRES_9_6 --cpu=2 --memory=7680MiB --region=$STARTHINKER_REGION
-  gcloud sql databases create $STARTHINKER_UI_DATABASE_NAME --instance=$STARTHINKER_UI_DATABASE_NAME 
-  gcloud sql users create $STARTHINKER_UI_DATABASE_USER --host=% --instance=$STARTHINKER_UI_DATABASE_NAME --password=$STARTHINKER_UI_DATABASE_PASSWORD
+  gcloud sql instances create $STARTHINKER_UI_PRODUCTION_DATABASE_NAME --database-version=POSTGRES_9_6 --cpu=2 --memory=7680MiB --region=$STARTHINKER_REGION
+  gcloud sql databases create $STARTHINKER_UI_PRODUCTION_DATABASE_NAME --instance=$STARTHINKER_UI_PRODUCTION_DATABASE_NAME 
+  gcloud sql users create $STARTHINKER_UI_PRODUCTION_DATABASE_USER --host=% --instance=$STARTHINKER_UI_PRODUCTION_DATABASE_NAME --password=$STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD
 
   echo "Done"
   echo ""
@@ -47,7 +47,7 @@ start_proxy() {
   echo "----------------------------------------"
   echo ""
  
-  "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE &
+  "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE &
 
   echo "Done"
   echo ""
@@ -78,12 +78,6 @@ migrate_database_proxy() {
   (
     start_proxy;
     source "${STARTHINKER_CONFIG}";
-    #export STARTHINKER_UI_DATABASE_ENGINE="django.db.backends.postgresql"
-    #export STARTHINKER_UI_DATABASE_HOST="127.0.0.1"
-    #export STARTHINKER_UI_DATABASE_PORT="5432"
-    #export STARTHINKER_UI_DATABASE_NAME="$STARTHINKER_UI_DATABASE_NAME"
-    #export STARTHINKER_UI_DATABASE_USER="$STARTHINKER_UI_DATABASE_USER"
-    #export STARTHINKER_UI_DATABASE_PASSWORD="$STARTHINKER_UI_DATABASE_PASSWORD"
     python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" makemigrations;
     python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" migrate;
     deactivate
@@ -163,9 +157,9 @@ configure_yaml() {
 
   appengine_development="0"
   appengine_domain="https://$STARTHINKER_PROJECT.appspot.com"
-  appengine_database_engine="django.db.backends.postgresql"
-  appengine_database_host="/cloudsql/$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME"
-  appengine_database_port="5432"
+  appengine_database_engine="${STARTHINKER_UI_PRODUCTION_DATABASE_ENGINE}"
+  appengine_database_host="/cloudsql/$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"
+  appengine_database_port="${STARTHINKER_UI_PRODUCTION_DATABASE_PORT}
 
   bash -c "cat > $STARTHINKER_ROOT/app.yaml" << EOL
 runtime: python
@@ -177,7 +171,7 @@ runtime_config:
   python_version: 2
 
 beta_settings:
-  cloud_sql_instances: $STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_DATABASE_NAME
+  cloud_sql_instances: $STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME
 
 skip_files:
 - ^(.*/)?.*~$
@@ -199,13 +193,13 @@ env_variables:
   STARTHINKER_USER: '$appengine_user'
   STARTHINKER_SERVICE: '$appengine_service'
   STARTHINKER_UI_DOMAIN: '$appengine_domain' 
-  STARTHINKER_UI_SECRET: '$STARTHINKER_UI_SECRET'
+  STARTHINKER_UI_SECRET: '$STARTHINKER_UI_PRODUCTION_SECRET'
   STARTHINKER_UI_DATABASE_ENGINE: '$appengine_database_engine'
   STARTHINKER_UI_DATABASE_HOST: '$appengine_database_host'
   STARTHINKER_UI_DATABASE_PORT: '$appengine_database_port'
-  STARTHINKER_UI_DATABASE_NAME: "$STARTHINKER_UI_DATABASE_NAME"
-  STARTHINKER_UI_DATABASE_USER: "$STARTHINKER_UI_DATABASE_USER"
-  STARTHINKER_UI_DATABASE_PASSWORD: "$STARTHINKER_UI_DATABASE_PASSWORD"
+  STARTHINKER_UI_DATABASE_NAME: "$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"
+  STARTHINKER_UI_DATABASE_USER: "$STARTHINKER_UI_PRODUCTION_DATABASE_USER"
+  STARTHINKER_UI_DATABASE_PASSWORD: "$STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD"
 EOL
 
   echo "Done"
