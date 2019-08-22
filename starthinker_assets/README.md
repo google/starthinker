@@ -16,7 +16,15 @@ Assets include...
 
 If running developer deployment, load a StarThinker environment using:
 
-```source starthinker_assets/config.sh```
+```
+source starthinker_assets/development.sh
+```
+
+For production, load a StarThinker environment using:
+
+```
+source starthinker_assets/development.sh
+```
 
 You are ready to start creating StarThinker recipes.
 

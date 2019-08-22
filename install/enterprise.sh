@@ -77,7 +77,7 @@ migrate_database_proxy() {
 
   (
     start_proxy;
-    source "${STARTHINKER_CONFIG}";
+    source "${STARTHINKER_ROOT}/starthinker_assets/production.sh";
     python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" makemigrations;
     python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" migrate;
     deactivate
@@ -98,8 +98,8 @@ setup_ui_account() {
 
   (
     start_proxy;
-    source "${STARTHINKER_CONFIG}";
-    python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" acount_setup --user "${STARTHINKER_USER}" --write;
+    source "${STARTHINKER_ROOT}/starthinker_assets/production.sh";
+    python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" account_setup --user "${STARTHINKER_USER}" --write;
     deactivate
     stop_proxy;
   )
@@ -120,8 +120,8 @@ deploy_appengine() {
   gcloud services enable appengineflex.googleapis.com
 
   # create recipe scripts python file for App Engine ( buffers scripts avoiding complex disk lookup )
-  source "${STARTHINKER_CONFIG}";
-  python starthinker_ui/recipe/scripts.py
+  source "${STARTHINKER_ROOT}/starthinker_assets/production.sh";
+  python "${STARTHINKER_ROOT}/starthinker_ui/recipe/scripts.py";
   deactivate
 
   gcloud app deploy app.yaml --stop-previous-version
@@ -159,7 +159,7 @@ configure_yaml() {
   appengine_domain="https://$STARTHINKER_PROJECT.appspot.com"
   appengine_database_engine="${STARTHINKER_UI_PRODUCTION_DATABASE_ENGINE}"
   appengine_database_host="/cloudsql/$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"
-  appengine_database_port="${STARTHINKER_UI_PRODUCTION_DATABASE_PORT}
+  appengine_database_port="${STARTHINKER_UI_PRODUCTION_DATABASE_PORT}"
 
   bash -c "cat > $STARTHINKER_ROOT/app.yaml" << EOL
 runtime: python
@@ -197,9 +197,9 @@ env_variables:
   STARTHINKER_UI_DATABASE_ENGINE: '$appengine_database_engine'
   STARTHINKER_UI_DATABASE_HOST: '$appengine_database_host'
   STARTHINKER_UI_DATABASE_PORT: '$appengine_database_port'
-  STARTHINKER_UI_DATABASE_NAME: "$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"
-  STARTHINKER_UI_DATABASE_USER: "$STARTHINKER_UI_PRODUCTION_DATABASE_USER"
-  STARTHINKER_UI_DATABASE_PASSWORD: "$STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD"
+  STARTHINKER_UI_DATABASE_NAME: '$STARTHINKER_UI_PRODUCTION_DATABASE_NAME'
+  STARTHINKER_UI_DATABASE_USER: '$STARTHINKER_UI_PRODUCTION_DATABASE_USER'
+  STARTHINKER_UI_DATABASE_PASSWORD: '$STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD'
 EOL
 
   echo "Done"
@@ -224,12 +224,6 @@ setup_appengine() {
     setup_project "optional";
     setup_credentials_service "optional";
 
-    if [[ $deploy_Type == 'Scientist' ]]; then
-      setup_credentials_user "optional";
-    else
-      setup_credentials_ui "optional";
-    fi
-
     setup_database "optional" "optional" "optional";
     save_config;
 
@@ -251,7 +245,13 @@ setup_appengine() {
     migrate_database_proxy; 
 
     if [[ $deploy_Type == 'Scientist' ]]; then
+      setup_credentials_commandline "optional";
+      setup_credentials_user "optional";
+      save_config;
       setup_ui_account;
+    else
+      setup_credentials_ui "optional";
+      save_config;
     fi
 
     configure_yaml $deploy_Type; 
