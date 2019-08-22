@@ -41,7 +41,7 @@ class Command(BaseCommand):
     parser.add_argument(
       '--write',
       action='store_true',
-      dest='verbose',
+      dest='write',
       default=False,
       help='Safety check for a dangerous operation.',
     )
