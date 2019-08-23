@@ -83,8 +83,8 @@ class DAG_Factory():
     af_module, af_operator = af_module.items()[0]
     af_operator, af_parameters = af_operator.items()[0]
 
-    if af_source == 'concerto':
-      af_source = 'starthinker_airflow.concerto'
+    if af_source == 'orchestra':
+      af_source = 'starthinker_airflow.orchestra'
 
     operator = getattr(import_module('%s.%s.%s' % (af_source, af_package, af_module)), af_operator)
     
@@ -114,7 +114,7 @@ class DAG_Factory():
       instances[function] += 1
 
       # if airflow operator
-      if function in ('airflow', 'concerto'):
+      if function in ('airflow', 'orchestra'):
         self.airflow_task(function, instances[function], task)
 
       # if native python operator

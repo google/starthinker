@@ -66,7 +66,7 @@ if [ -d "${PWD}/install" ]; then
       echo ""
     
       main_done=0
-      main_options=("Developer Menu" "Data Scientist Menu" "Enterprise Menu" "Change Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials" "Reset Configuration" "Quit")
+      main_options=("Developer Menu" "Data Scientist Menu" "Enterprise Menu" "Change Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials" "Quit")
     
       while (( !main_done ))
       do
@@ -85,8 +85,7 @@ if [ -d "${PWD}/install" ]; then
             5) setup_credentials_service; save_config; break ;;
             6) setup_credentials_commandline; setup_credentials_user; save_config; break ;;
             7) setup_credentials_ui; save_config; break ;;
-            8) save_config; break;;
-            9) main_done=1; break;;
+            8) main_done=1; break;;
             *) echo "What's that?" ;;
           esac
         done

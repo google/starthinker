@@ -148,9 +148,26 @@ launch_developer_ui() {
   echo ""
 
   python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" runserver localhost:8000;
-
   deactivate
 
+  echo ""
+  echo "Done"
+  echo ""
+}
+
+launch_developer_worker() {
+  options=$1
+
+  echo "----------------------------------------"
+  echo "Launch Developer Worker - python ${STARTHINKER_ROOT}/starthinker_ui/manage.py job_worker --verbose ${options}"
+  echo "----------------------------------------"
+  echo ""
+
+  source "${STARTHINKER_ROOT}/starthinker_assets/development.sh";
+  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" job_worker --verbose ${options}
+  deactivate
+
+  echo ""
   echo "Done"
   echo ""
 }
@@ -207,7 +224,7 @@ setup_developer() {
   echo ""
 
   developer_done=0
-  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Test UI" "Initialize Tests" "Test Tasks" "Quit")
+  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Developer Worker - Single" "Developer Worker - Peristent" "Test UI" "Initialize Tests" "Test Tasks" "Quit")
  
   while (( !developer_done ))
   do
@@ -221,10 +238,12 @@ setup_developer() {
       case $REPLY in
         1) install_developer; break;;
         2) launch_developer_ui; break;;
-        3) test_ui; break;;
-        4) init_tests; break;;
-        5) test_tasks; break;;
-        6) developer_done=1; break;;
+        3) launch_developer_worker "--test"; break;;
+        4) launch_developer_worker ""; break;;
+        5) test_ui; break;;
+        6) init_tests; break;;
+        7) test_tasks; break;;
+        8) developer_done=1; break;;
         *) echo "What's that?";;
       esac
     done
