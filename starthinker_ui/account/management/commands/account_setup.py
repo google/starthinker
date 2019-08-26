@@ -16,6 +16,8 @@
 #
 ###########################################################################
 
+import getpass
+
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
@@ -39,6 +41,14 @@ class Command(BaseCommand):
     )
 
     parser.add_argument(
+      '--password',
+      action='store',
+      dest='password',
+      default=None,
+      help='Login password for account.',
+    )
+
+    parser.add_argument(
       '--write',
       action='store_true',
       dest='write',
@@ -49,9 +59,16 @@ class Command(BaseCommand):
   def handle(self, *args, **kwargs):
     
     if kwargs.get('write'):
+
       # create or update master account credentials from installed user credentials
       project.initialize(_user=kwargs['user'])
-      account = Account.objects.get_or_create_user(get_profile(), get_credentials())
+
+      # if password not given on command line, ask for it inline
+      if not kwargs.get('password'):
+        print('Enter password for UI account access ( DO NOT USE YOUR GSUITE PASSWORD ):')
+        kwargs['password'] = getpass.getpass()
+
+      account = Account.objects.get_or_create_user(get_profile(), get_credentials(), kwargs['password'])
 
       # move all recipes to this account and remove all other accounts ( there can be ONLY one )
       #Project.objects.exclude(account=account).update(account=account)

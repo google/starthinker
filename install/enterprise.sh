@@ -259,7 +259,8 @@ setup_appengine() {
     deploy_appengine; 
   fi
 
-  echo "Done"
+  echo ""
+  echo "Access Your StarThinker UI At: https://${STARTHINKER_PROJECT}.appspot.com"
   echo ""
 
   echo ""
@@ -269,13 +270,13 @@ setup_appengine() {
   echo "-----------"
   echo "--------------------"
   echo "----------------------------------------"
-  echo "-----------------------------"
-  echo "----------------------------------------"
   echo ""
-  echo "SECURE YOUR INSTANCE VISIT: https://console.cloud.google.com/security/iap?project=$STARTHINKER_PROJECT"
+  echo "HIGHY SUGGESTED IAP SECURITY (WITH GSUITE): https://console.cloud.google.com/security/iap?project=$STARTHINKER_PROJECT"
   echo ""
-  echo "----------------------------------------"
-  echo "-----------------------------"
+  echo "AND / OR"
+  echo ""
+  echo "HIGHLY SUGGESTED FIREWALL SECURITY (WITHOUT GSUITE): https://cloud.google.com/appengine/docs/standard/python/application-security"
+  echo ""
   echo "----------------------------------------"
   echo "--------------------"
   echo "-----------"
@@ -283,8 +284,9 @@ setup_appengine() {
   echo ""
   echo ""
   echo ""
+
   echo ""
-  echo ""
+  echo "Done"
 }
 
 

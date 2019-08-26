@@ -23,15 +23,16 @@ from __future__ import unicode_literals
 import httplib2
 
 from apiclient import discovery
-#from oauth2client import client
 
-from django.contrib.auth import login as django_login, logout as django_logout#, authenticate
-from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
+from django.shortcuts import render
+from django.contrib.auth import login as django_login, logout as django_logout
+from django.http import HttpResponseRedirect
 
 from starthinker.util.auth import get_flow
 from starthinker_ui.account.models import Account
+from starthinker_ui.account.forms import LoginForm
 
 
 def oauth_callback(request):
@@ -67,3 +68,23 @@ def logout(request):
   django_logout(request)
   messages.success(request, 'You Are Logged Out')
   return HttpResponseRedirect('/')
+
+
+def login(request):
+
+  if request.user.is_authenticated():
+    messages.success(request, 'You Are Logged In')
+    return HttpResponseRedirect('/')
+
+  else:
+    if request.method == 'POST':
+      form_login = LoginForm(request)
+      if form_login.is_valid():
+        messages.success(request, 'Welcome To StarThinker')
+        return HttpResponseRedirect(form_login.get_redirect())
+      else:
+        messages.error(request, 'Invalid Login')
+    else:
+      form_login = LoginForm(request)
+
+  return render(request, "account/login.html", { 'form_login':form_login })

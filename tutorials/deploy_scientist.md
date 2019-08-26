@@ -17,8 +17,9 @@ source install/deploy.sh
  1. Option 1) Deploy Single User UI
      - You will be asked for a Cloud Project ID ( use the ID, not the Name, not the Number )
      - You will be asked for [Service Credentials](cloud_service.md).
-     - You will be asked for [User Client Credentials](cloud_user.md).
      - You will be asked for a databse user and password, remember this ( database name is starthinker ).
+     - You will be asked for [User Client Credentials](cloud_user.md).
+     - You will be asked for a UI password, remember this and use it to log into the UI. 
  1. Option 2) Deploy Job Workers
      - Option 1) Test - 1 Job ( not recommended for running large jobs )
      - Option 3) Small - 4 Jobs ( recommended for data scientist )

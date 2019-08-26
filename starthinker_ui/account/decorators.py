@@ -17,16 +17,12 @@
 ###########################################################################
 
 import json
-
 from functools import wraps
-from oauth2client import client
+
 from django.conf import settings
 from django.http import HttpResponseRedirect
-from django.contrib import messages
-from django.contrib.auth import login as django_login
 
 from starthinker.util.auth import get_flow
-from starthinker_ui.account.models import Account
 
 
 def permission_admin():
@@ -48,22 +44,9 @@ def permission_admin():
         flow.params['include_granted_scopes'] = 'true'
         return HttpResponseRedirect(flow.step1_get_authorize_url())
 
-      # single user mode, no oath, just log the user in
+      # single user mode, no oath, use native django user management ( intead of gsuite )
       else:
-
-        # fetch the default account
-        account = (Account.objects.filter(identifier=json.loads(settings.UI_USER)['id_token']['sub'])[:1] or (None))[0]
-        
-        # log the account in ( set cookie )
-        if account:
-          django_login(request, account, backend=settings.AUTHENTICATION_BACKENDS[0])
-          messages.success(request, 'Welcome %s To StarThinker' % account.name.title())
-          return _view(request, *args, **kwargs)
-
-        # or display a friendly error
-        else:
-          messages.error(request, 'Missing Account, Run Deployment Again')
-          return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/login/')
 
     return _wrapper
   return _decorator

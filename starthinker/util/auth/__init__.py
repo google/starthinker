@@ -64,7 +64,7 @@ def get_flow(client_json_or_filepath, redirect_uri=None):
   return flow
 
 
-def get_credentials():
+def get_credentials(scopes=None):
 
   try:
     auth = project.recipe['setup']['auth']['user']

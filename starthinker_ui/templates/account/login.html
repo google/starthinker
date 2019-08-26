@@ -1,5 +1,8 @@
+{% extends "page.html" %}
+
+{% comment %}
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +18,30 @@
 #  limitations under the License.
 #
 ###########################################################################
+{% endcomment %}
 
-from django.conf.urls import url
+{% block css %}
+  #login { margin: 100px auto 20px auto; max-width: 500px;}
+{% endblock %}
 
-import views
+{% block js %}
+{% endblock %}
 
-urlpatterns = [
-  url(r'^oauth_callback/$', views.oauth_callback, name='account.oauth.callback'),
-  url(r'^login/$', views.login, name='account.login'),
-  url(r'^logout/$', views.logout, name='account.logout'),
-]
+{% block content %}
+
+  <form action="." method="post">
+    {% csrf_token %}
+    <div id="login" class="card-panel">
+      <h3>Log In</h3>
+      <p class="flow-text">This login is specific to this application, do not use your gSuite password!</p>
+      {% with fields=form_login %}
+        {% include "form_fields.html" %}
+      {% endwith %}
+    </div>
+    <br/>
+    <button id="form_submit" class="btn waves-effect waves-light" type="submit" name="action">
+      Login <i class="material-icons right">security</i>
+    </button>
+  </form>
+
+{% endblock %}
