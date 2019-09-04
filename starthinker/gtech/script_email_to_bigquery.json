@@ -9,7 +9,7 @@
     "description":"Import emailed csv or excel into a BigQuery table.",
     "instructions":[
       "The person executing this recipe must be the recipient of the email.",
-      "Schedule a CSV or Excel to be sent to <b>{{ EMAIL_TOKEN }}</b>.",
+      "Schedule a CSV or Excel to be sent to <b>{field:receipe_email}</b>.",
       "Give a regular expression to match the email subject, link or attachment.",
       "The data downloaded will overwrite the table specified."
     ],

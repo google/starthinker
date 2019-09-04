@@ -17,7 +17,9 @@
 ###########################################################################
 
 import os
+import json
 import pprint
+from difflib import Differ
 from importlib import import_module
 
 from starthinker.config import UI_ROOT
@@ -25,43 +27,59 @@ from starthinker.util.project import project, get_project
 from starthinker.util.bigquery import table_to_schema, table_to_rows, query_to_rows
 from starthinker.util.sheets import sheets_read
 from starthinker.util.storage import object_exists, object_delete
+from starthinker.util.drive import file_exists, file_delete
 from starthinker.util.csv import rows_to_type
 from starthinker.script.parse import json_set_fields
 from starthinker.task.traffic.test import bulkdozer_test
 
 LOG_FILE_PATH = UI_ROOT + '/starthinker/test/log.txt'
 
+
+def deep_compare(actual, expected):
+
+  if type(actual) != type(expected):
+    return 'EXPECTED %s BUT ACTUAL %s' % (type(expected), type(actual))
+
+  elif isinstance(expected, (dict, tuple, list)):
+    expected_str = json.dumps(expected, indent=2, sort_keys=True)
+    actual_str = json.dumps(actual, indent=2, sort_keys=True)
+
+    delta = list(Differ().compare(
+      expected_str.splitlines(),
+      actual_str.splitlines()
+    ))
+
+    if sum(1 for d in delta if d[0] in ['-', '+', '?']):
+      return '%s\nEXPECTED *******************************************************\n%s\nACTUAL *******************************************************\n%s' % ('\n'.join(delta), expected_str, actual_str)
+
+  elif actual != expected:
+     return 'EXPECTED %s != ACTUAL %s' % (expected, actual)
+
+  return None
+
+
 # display results of list comparison
 def object_compare(actual, expected):
   f = open(LOG_FILE_PATH, "a")
 
-  if actual == expected:
-    print 'PASSED'
-    f.write('PASSED\n')
-  else:
-    print ''
-    print 'FAILED *******************************************************'
-    print 'ACTUAL'
-    pprint.PrettyPrinter().pprint(actual)
-    print 'EXPECTED'
-    pprint.PrettyPrinter().pprint(expected)
-    print '**************************************************************'
-    print ''
+  errors = deep_compare(actual, expected)
+
+  if errors:
+    print '\nFAILED *******************************************************\n'
+    print errors
+    print '\n**************************************************************\n'
 
     # Log File Write
+    f.write('\nFAILED *******************************************************\n')
+    f.write(errors)
+    f.write('\n**************************************************************\n')
     f.write('\n')
-    f.write('FAILED *******************************************************\n')
-    f.write('ACTUAL\n')
-    f.write(pprint.PrettyPrinter().pformat(actual))
-    f.write('\n')
-    f.write('EXPECTED\n')
-    f.write(pprint.PrettyPrinter().pformat(expected))
-    f.write('\n')
-    f.write('**************************************************************\n')
-    f.write('\n')
+
+  else:
+    print 'PASSED'
+    f.write('PASSED\n')
 
   f.close()
-
 
 
 # check if sheet matches given values
@@ -156,19 +174,27 @@ def asserts():
 
 
 def path_exists():
-   if os.path.exists(project.task['path']): 
-     if project.task.get('delete', False):
-       os.remove(project.task['path']) 
-     print 'PASSED'
-   else: print 'FAILED'
+  if os.path.exists(project.task['path']): 
+    if project.task.get('delete', False):
+      os.remove(project.task['path']) 
+    print 'PASSED'
+  else: print 'FAILED'
 
 
 def storage_exists():
-   if object_exists(project.task['auth'], '%s:%s' % (project.task['storage']['bucket'], project.task['storage']['file'])): 
-     if project.task.get('delete', False):
-       object_delete(project.task['auth'], '%s:%s' % (project.task['storage']['bucket'], project.task['storage']['file']))
-     print 'PASSED'
-   else: print 'FAILED'
+  if object_exists(project.task['auth'], '%s:%s' % (project.task['storage']['bucket'], project.task['storage']['file'])): 
+    if project.task.get('delete', False):
+      object_delete(project.task['auth'], '%s:%s' % (project.task['storage']['bucket'], project.task['storage']['file']))
+    print 'PASSED'
+  else: print 'FAILED'
+
+
+def drive_exists():
+  if file_exists(project.task['auth'], project.task['drive']['file']): 
+    if project.task.get('delete', False):
+      file_delete(project.task['auth'], project.task['drive']['file'])
+    print 'PASSED'
+  else: print 'FAILED'
 
 
 def traffic():
@@ -184,6 +210,7 @@ def test():
   elif 'storage' in project.task: storage_exists()
   elif 'sheets' in project.task: sheets()
   elif 'bigquery' in project.task: bigquery()
+  elif 'drive' in project.task: drive_exists()
   elif 'template' in project.task: template()
   elif 'traffic' in project.task: traffic()
 

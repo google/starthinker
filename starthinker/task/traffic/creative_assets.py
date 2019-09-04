@@ -22,12 +22,15 @@
 import os
 import json
 from apiclient import http
+from io import BytesIO
 
+from starthinker.config import BUFFER_SCALE
+from starthinker.util.storage import object_get, object_get_chunks, MediaIoBaseUpload
 from starthinker.task.traffic.dao import BaseDAO
 from starthinker.task.traffic.feed import FieldMap
 from starthinker.task.traffic.store import store
-from starthinker.util.storage import object_download
 
+CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # scale is controlled in config.py
 
 class CreativeAssetDAO(BaseDAO):
   """Creative asset data access object.
@@ -87,19 +90,9 @@ class CreativeAssetDAO(BaseDAO):
     Returns:
       The newly created item in DCM.
     """
-    local_file = os.path.join('/tmp', feed_item.get(FieldMap.CREATIVE_ASSET_FILE_NAME, None))
 
-    self._download_from_gcs(
-        feed_item.get(FieldMap.CREATIVE_ASSET_BUCKET_NAME, None),
-        feed_item.get(FieldMap.CREATIVE_ASSET_FILE_NAME, None),
-        local_file,
-        auth=self.auth)
-
-    media = http.MediaFileUpload(local_file)
-
-    if not media.mimetype():
-      mimetype = 'application/zip' if asset_type == 'HTML' else 'application/octet-stream'
-      media = http.MediaFileUpload(asset_file, mimetype)
+    file_buffer = object_get('user', '%s:%s' % (feed_item.get(FieldMap.CREATIVE_ASSET_BUCKET_NAME, None), feed_item.get(FieldMap.CREATIVE_ASSET_FILE_NAME, None)))
+    media = MediaIoBaseUpload(BytesIO(file_buffer), mimetype='video/mp4', chunksize=CHUNKSIZE, resumable=True)
 
     result = self._retry(
         self._service.insert(
@@ -107,8 +100,6 @@ class CreativeAssetDAO(BaseDAO):
             advertiserId=feed_item.get(FieldMap.ADVERTISER_ID, None),
             media_body=media,
             body=new_item))
-
-    os.remove(local_file)
 
     return result
 
@@ -186,19 +177,6 @@ class CreativeAssetDAO(BaseDAO):
     """
     if item['assetIdentifier']['name']:
       feed_item[FieldMap.CREATIVE_ASSET_NAME] = item['assetIdentifier']['name']
-
-  def _download_from_gcs(self, bucket, object_name, local_file, auth='user'):
-    """Downloads assets from Google Cloud Storage locally to be uploaded to DCM.
-
-    Args:
-      bucket: Name of the Google Cloud bucket where the asset is located.
-      object_name: Name of the object in Google Cloud within the specified
-        bucket.
-      local_file: The full physical path to a non existing local file where the
-        object should be saved.
-      auth: Authentication scheme to use to access Cloud Storage.
-    """
-    object_download(self.gc_project, bucket, object_name, local_file, auth=auth)
 
   def get_identifier(self, association, feed):
     asset_ids = (association.get(FieldMap.CREATIVE_ASSET_ID, None), store.translate(self._entity, association[FieldMap.CREATIVE_ASSET_ID]))

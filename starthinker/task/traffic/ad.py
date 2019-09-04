@@ -83,6 +83,7 @@ class AdDAO(BaseDAO):
       wait = 2
 
       while not creative['active'] and timeout > 0:
+        print("Waiting %s seconds for creative %s activation..." % (wait, creative_id))
         time.sleep(wait)
         timeout -= wait
         wait *= 2

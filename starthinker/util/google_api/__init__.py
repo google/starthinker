@@ -458,11 +458,24 @@ def API_Analytics(auth, iterate=False):
 
 
 def API_YouTube(auth, iterate=False):
-  """Analytics helper configuration Google API. Defines agreed upon version.
+  """YouTube helper configuration Google API. Defines agreed upon version.
   """
 
   configuration = {
       'api':'youtube',
+      'version':'v3',
+      'auth':auth,
+      'iterate':iterate
+  }
+  return API(configuration)
+
+
+def API_Drive(auth, iterate=False):
+  """Drive helper configuration Google API. Defines agreed upon version.
+  """
+
+  configuration = {
+      'api':'drive',
       'version':'v3',
       'auth':auth,
       'iterate':iterate

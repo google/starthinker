@@ -35,7 +35,7 @@ from shutil import copyfile
 
 
 from starthinker.config import UI_ROOT, UI_SERVICE, UI_PROJECT
-from starthinker.script.parse import json_get_fields, json_set_fields, json_set_instructions, json_set_description
+from starthinker.script.parse import json_get_fields, json_set_fields
 from starthinker.script.run import script_read
 from starthinker.util.sheets import sheets_create
 
@@ -179,7 +179,7 @@ def initialize_tests():
   print "------"
   print "------------"
   print "------------------------"
-  print "Please visit " + CONFIG_FILE_PATH + " to go through and update the necessary fields for the tests you with to run."
+  print "Please visit " + CONFIG_FILE_PATH + " to go through and update the necessary fields for the tests you wish to run."
   print "Please visit the Google Sheet \"Starthinker Test Sheet\" to input values for the necessary tests you would like to run."
   print "------------------------"
   print "------------"

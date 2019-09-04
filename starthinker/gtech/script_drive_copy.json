@@ -1,0 +1,26 @@
+{
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2019 Google Inc.",
+    "open":true,
+    "icon":"file_copy",
+    "product":"Drive",
+    "title":"Copy",
+    "description":"Copy a drive document.",
+    "instructions":[
+      "Specify a source URL or document name.",
+      "Specify a destination name.",
+      "If destination does not exist, source will be copied."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "drive":{
+      "auth":"user",
+      "copy":{
+        "source":{"field":{ "name":"source", "kind":"string", "order":1, "default":"", "description":"Name or URL of document to copy from." }},
+        "destination":{"field":{ "name":"destination", "kind":"string", "order":2, "default":"", "description":"Name document to copy to." }}
+      }
+    }}
+  ]
+}

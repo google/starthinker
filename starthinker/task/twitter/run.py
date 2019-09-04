@@ -26,6 +26,13 @@ from starthinker.util.project import project
 from starthinker.util.data import get_rows, put_rows
 
 
+# FOR WOEID SEE
+# http://cagricelebi.com/blog/dear-twitter-please-stop-using-woeid/
+# https://archive.org/details/geoplanet_data_7.10.0.zip
+# https://github.com/Ray-SunR/woeid
+# https://stackoverflow.com/questions/12434591/get-woeid-from-city-name
+
+
 TWITTER_API = None
 
 

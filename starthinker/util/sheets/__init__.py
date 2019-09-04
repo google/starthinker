@@ -84,7 +84,7 @@ def sheets_read(auth, sheet_url_or_name, sheet_tab, sheet_range, retries=10):
 
 
 # TIP: Specify sheet_range as 'Tab!A1' coordinate, the API will figure out length and height based on data
-def sheets_write(auth, sheet_url_or_name, sheet_tab, sheet_range, data, valueInputOption='RAW'):
+def sheets_write(auth, sheet_url_or_name, sheet_tab, sheet_range, data, append=False, valueInputOption='RAW'):
   if project.verbose: print 'SHEETS WRITE', sheet_url_or_name, sheet_tab, sheet_range
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(auth, sheet_url_or_name)
@@ -92,7 +92,22 @@ def sheets_write(auth, sheet_url_or_name, sheet_tab, sheet_range, data, valueInp
   body = {
     "values": list(data)
   }
-  API_Retry(service.spreadsheets().values().update(spreadsheetId=sheet_id, range=range, body=body, valueInputOption=valueInputOption))
+
+  if append:
+    API_Retry(service.spreadsheets().values().append(
+      spreadsheetId=sheet_id,
+      range=range,
+      body=body,
+      valueInputOption=valueInputOption,
+      insertDataOption='OVERWRITE'
+    ))
+  else:
+    API_Retry(service.spreadsheets().values().update(
+      spreadsheetId=sheet_id, 
+      range=range, 
+      body=body, 
+      valueInputOption=valueInputOption
+    ))
 
 
 def sheets_clear(auth, sheet_url_or_name, sheet_tab, sheet_range):

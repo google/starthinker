@@ -15,7 +15,6 @@
 #  limitations under the License.
 #
 ###########################################################################
-
 #google-cloud-core
 #google-cloud-bigquery
 #google-cloud-storage
@@ -35,3 +34,5 @@ python-dateutil
 pandas
 psutil
 moviepy
+py-xlsx
+simple-salesforce

@@ -23,7 +23,7 @@ from StringIO import StringIO
 
 from starthinker.util.project import project
 from starthinker.util.bigquery import bigquery_date
-from starthinker.third_party.xlsx import Workbook
+from xlsx import Workbook
 
 
 RE_HUMAN = re.compile('[^0-9a-zA-Z]+')

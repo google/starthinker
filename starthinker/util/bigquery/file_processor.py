@@ -102,7 +102,7 @@ class FileProcessor(object):
             'name':src[key]['name'],
             'type':src[key]['type'],
             'mode':src[key]['mode'],
-            'fields':fields=fields
+            'fields':fields
           }
         )
 

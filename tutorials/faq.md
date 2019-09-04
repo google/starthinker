@@ -58,6 +58,11 @@ xcode-select --install
 ### I'm getting an admin_policy_enforced error.
 Odds are you need to active [gSuite](https://gsuite.google.com) for your Google Cloud Project, this error can ONLY be cleared with a gSuite setup . The error may also occur if the [StarThinker Scopes](../starthinker/config.py) do not match the [oAuth Consent Screen](https://console.cloud.google.com/apis/credentials/consent). This errro ONLY occurs in the [Enterprise Deployment](deploy_enterprise.md), try the [Data Scientist Deployment](deploy_scientist.md) instead.
 
+### I'm getting an SSH Connection Timeout error.
+Odds are your firewall settings are not up to date for the machine you're on.  To enable ssh access to other machines, add the current machines IP to the firewall rules by running...
+```
+gcloud compute firewall-rules create default-allow-ssh --allow tcp:22
+```
 
 --- 
 &copy; 2019 Google Inc. - Apache License, Version 2.0

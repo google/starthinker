@@ -25,7 +25,7 @@ from copy import deepcopy
 from django.conf import settings
 
 from starthinker.config import UI_ROOT
-from starthinker.script.parse import json_set_fields, json_set_instructions, json_set_description
+from starthinker.script.parse import json_set_fields, text_set_fields
 from starthinker.util.project import get_project
 
 
@@ -97,16 +97,10 @@ class Script:
     return self.script.get('script', {}).get('product', 'Other')
 
   def get_description(self, variables = {}):
-    if variables: 
-      return self.script['script'].get('description', '') % variables
-    else:
-      return self.script['script'].get('description', '')
+    return text_set_fields(self.script['script'].get('description', ''), variables)
 
   def get_instructions(self, variables = {}):
-    if variables:
-      return [instruction % variables for instruction in self.script['script'].get('instructions', [])]
-    else:
-      return self.script['script'].get('instructions', []) 
+    return [text_set_fields(instruction, variables) for instruction in self.script['script'].get('instructions', [])]
 
   def get_authors(self):
     return set(deepcopy(self.script.get('script', {}).get('authors', [])))

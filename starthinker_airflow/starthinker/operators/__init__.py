@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,33 +15,3 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-#-r starthinker/requirements.txt
-#google-cloud-core
-#google-cloud-bigquery
-#google-cloud-storage
-#google-cloud-pubsub
-#google-auth
-#google-auth-httplib2
-google-api-python-client
-oauth2client
-httplib2
-jsonpickle
-django==1.11
-pysftp
-pytz
-tzlocal
-TwitterAPI
-python-dateutil
-pandas
-psutil
-moviepy
-py-xlsx
-simple-salesforce
-
-#-r starthinker_ui/requirements.txt
-wheel
-gunicorn
-uwsgi
-django==1.11
-psycopg2

@@ -230,11 +230,12 @@ def get_accounts(accounts):
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'id':account_id }
     account = API_DCM("user").accounts().get(**kwargs).execute()
+    print account
     yield [
       account['id'],
       account['name'],
       account['active'],
-      account['description'],
+      account.get('description', ''),
       id_to_timezone(account['reportsConfiguration']['reportGenerationTimeZoneId']),
       account.get('currencyId'),
       account.get('countryId'),

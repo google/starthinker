@@ -27,7 +27,7 @@ from starthinker.task.traffic.video_format import VideoFormatDAO
 from starthinker.task.traffic.feed import FieldMap
 from starthinker.task.traffic.placement_group import PlacementGroupDAO
 from dateutil import parser
-from class_extensions import StringExtensions
+from starthinker.task.traffic.class_extensions import StringExtensions
 
 
 class PlacementDAO(BaseDAO):

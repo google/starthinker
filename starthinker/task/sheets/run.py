@@ -86,9 +86,23 @@ def sheets():
       project.task['sheet'],
       project.task['tab'],
       project.task['range'],
-      rows
+      rows,
+      append = False
     )
 
+  # append data if specified
+  if 'append' in project.task:
+    rows = get_rows(project.task['auth'], project.task['append'])
+    sheets_write(
+      project.task['auth'], 
+      project.task['sheet'],
+      project.task['tab'],
+      project.task['range'],
+      rows,
+      append = True
+    )
+
+  # move data if specified
   # move data if specified
   if 'out' in project.task:
     rows = sheets_read(

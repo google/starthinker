@@ -361,10 +361,8 @@ def traffic():
         dynamic_targeting_keys()
 
         if clean_run:
-          print 'Done: clean run'
           store.clear()
-        else:
-          print 'Done: errors happened'
+
       finally:
         logger.log('Bulkdozer traffic job ended')
         logger.flush()
@@ -376,6 +374,11 @@ def traffic():
 
     logger.log(str(error))
     logger.flush()
+
+  if clean_run:
+    print 'Done: Clean run.'
+  else:
+    raise Exception("Done: Errors happened.")
 
 
 @project.from_parameters

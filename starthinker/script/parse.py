@@ -16,6 +16,10 @@
 #
 ###########################################################################
 
+import re
+
+RE_TEXT_FIELD = re.compile(r'\{(.*?:.*?)\}')
+
 def json_get_fields(struct, path=[]):
   """Recusrsively finds fields in script JSON and returns them as a list.
      Field has format: { "field":{ "name":"???", "kind":"???", "default":???, "description":"???" }}
@@ -83,6 +87,28 @@ def json_set_fields(struct, variables):
       else: json_set_fields(value, variables)
 
 
+def text_set_fields(text, variables):
+  """Replaces fields in text with values from recipe.
+
+     Fields are {field:[string]} or {field:[string], prefix:[string]} where field is a key in variables
+     and prefix is a string value that gets appended to the value from variables.
+
+     Args:
+       text (string) A paragraph containing {field:[string]} or {field:[string], prefix:[string]}.
+       variables: (dict) The keys mapping to field, and values to replace those fields.
+       
+     Returns:
+       A string with all the {field:[string]} or {field:[string], prefix:[string]} values replaced by actual values from variables.
+
+  """
+
+  for field in RE_TEXT_FIELD.findall(text):
+    parts = dict([p.strip().split(':') for p in field.split(',', 1)])
+    value = (parts.get('prefix', '') + variables[parts['field']]) if parts['field'] in variables else 'UNDEFINED'
+    text = text.replace('{' + field + '}', value)
+  return text
+
+
 def json_set_instructions(struct, variables):
   """Replaces all fields in instructions with values provided.
      Checks if struct['script']['instructions'] exist.  The replaces all %(???)s variables
@@ -99,7 +125,7 @@ def json_set_instructions(struct, variables):
 
   if 'script' in struct:
     if 'instructions' in struct['script']:
-      try: struct['script']['instructions'] = [instruction % variables for instruction in struct['script']['instructions']]
+      try: struct['script']['instructions'] = [text_set_fields(instruction, variables) for instruction in struct['script']['instructions']]
       except KeyError: pass
 
 
@@ -119,5 +145,5 @@ def json_set_description(struct, variables):
 
   if 'script' in struct:
     if 'description' in struct['script']:
-      try: struct['script']['description'] = struct['script']['description'] % variables
+      try: struct['script']['description'] = text_set_fields(struct['script']['description'], variables)
       except KeyError: pass

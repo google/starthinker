@@ -204,6 +204,7 @@ class BaseDAO(object):
     Returns:
       The CM object representing the item inserted.
     """
+    #print 'ITEM', item
     return self._retry(
         self._service.insert(profileId=self.profile_id, body=item))
 
@@ -215,6 +216,7 @@ class BaseDAO(object):
       feed_item: The feed item from the Bulkdozer feed representing the item to
         update.
     """
+    #print 'ITEM', item
     self._retry(self._service.update(profileId=self.profile_id, body=item))
 
   def _chunk(self, l, chunk_size):

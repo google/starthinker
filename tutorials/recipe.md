@@ -38,7 +38,7 @@ starthinker/gtech/script_hello.json
 }
 ```
 
-#### Recipe Fields
+#### Script JSON Fields
 
 A field with the same name in multiple palces will be requested form the user only once. A script defines a field using the following JSON:
 
@@ -86,9 +86,10 @@ starthinker/gtech/script_hello.json
     "icon":"notifications",
     "product":"gTech",
     "title":"Say Hello",
-    "description":"Recipe template for say hello.",
+    "description":"Recipe template for {field:recipe_name}.",
     "instructions":[
       "This should be called for testing only."
+      "It will print {field:say_first}."
     ],
     "authors":["kenjora@google.com"]
   },
@@ -111,6 +112,14 @@ starthinker/gtech/script_hello.json
   - description - - Required, informative description shown in UI.
   - instructions - Optional, additional instructions for this task.
   - authors - - Required, list of people maintaining this task, show in UI.
+
+#### Using Fields In Text
+
+The __instructions__ and __description__ parameters can also use fields to help construct instructions.
+
+Text fields are {field:[string]} or {field:[string], prefix:[string]} where field is a field from the JSON 
+parameters in a task and prefix is a string value that gets appended to the value from variables.
+
 
 ### 4. Continue to the [solution tutorial](solution.md)...
 

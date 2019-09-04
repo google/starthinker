@@ -25,7 +25,7 @@
       "csat improvement":60
     },
     "instructions":[
-      "Wait for <b>BigQuery->StarThinker Data->%(name)s->*</b> to be created.",
+      "Wait for <b>BigQuery->StarThinker Data->{field:recipe_name}->*</b> to be created.",
       "Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets",
       "For each of the following copy and connect to the new BigQuery sources above. See <a href='https://docs.google.com/document/d/11NlVWzbw6UeSUVUeNuERZGU9FYySWcRbu2Fg6zJ4O-A/edit?usp=sharing' target='_blank'>detailed instructions</a>.",
       "Copy <a href='https://datastudio.google.com/open/1lxRWIs3ozzWs4-9WTy3EcqMcrtYn-7nI' target='_blank'>Combined_Browser_Delivery</a>.",

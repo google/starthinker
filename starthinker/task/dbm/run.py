@@ -118,6 +118,8 @@ def dbm():
 
       # write rows using standard out block in json ( allows customization across all scripts )
       if rows: put_rows(project.task['auth'], project.task['out'], filename, rows)
+      #for row in rows:
+      #  print row
 
 if __name__ == "__main__":
   dbm()

@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -19,73 +19,96 @@
 # https://developers.google.com/drive/api/v3/manage-uploads
 # https://developers.google.com/drive/api/v3/reference/about#methods
 
-import json
+import re
 import mimetypes
 from io import BytesIO
-#from BytesIO import BytesIO
-from googleapiclient.errors import HttpError
 from apiclient.http import MediaIoBaseUpload
+from googleapiclient.errors import HttpError
 
 from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
-from starthinker.util.auth import get_service
-from starthinker.util.google_api import API_Retry
+from starthinker.util.google_api import API_Retry, API_Drive
+
 
 CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # scale is controlled in config.py
 
-# This file is undergoing maintenanace, please start using new funtions further down
 
-def files_copy(auth, file_id, body={}):
-  drive = get_service('drive', 'v3', auth)
- 
-  return drive.files().copy(fileId=file_id, body=body).execute()
+#https://drive.google.com/open?id=1um2RlasnKTvF_I6uVUsbmk4ioyW1Zemj
+#https://drive.google.com/open?id=1NQH5-yP9LM2dGTuGvdOA31KO1OwblruC-dK92F5IVLE
+#https://drive.google.com/open?id=1IM-Dnq5Pc1Lje6eTKrN1ubpclRcbvAROrmSn23xl7UI
+#https://drive.google.com/open?id=1XMFEUBxpRuAy8qG5tg3AM0NVm9bklpCc6SelZHpPj-g
 
+#https://docs.google.com/document/d/1XMFEUBxpRuAy8qG5tg3AM0NVm9bklpCc6SelZHpPj-g/edit
+#https://docs.google.com/presentation/d/1IM-Dnq5Pc1Lje6eTKrN1ubpclRcbvAROrmSn23xl7UI/edit
+#https://docs.google.com/spreadsheets/d/1YU8zXzmeqgQhnnRIs4FpNKfbZ2B_aN77XbSKHBEa_gc/edit
+#https://datastudio.google.com/c/reporting/0B1dzmNeF4E-MZ21Zb1h6SnRoc28/page/L1MF
+#https://datastudio.google.com/c/datasources/1a6K-XdPUzCYRXZp1ZcmeOUOURc9wn2Jj
 
-def find_file(auth, parent, name):
-   drive = get_service('drive', 'v3', auth)
-   return drive.files().list(q='name = \'%s\' and \'%s\' in parents' % (name, parent)).execute()
-
-
-def create_folder(auth, parent, name):
-   drive = get_service('drive', 'v3', auth)
-
-   file_metadata = {
-     'name' : name,
-     'parents' : [parent],
-     'mimeType' : 'application/vnd.google-apps.folder'
-   }
-   return drive.files().create(body=file_metadata, fields='id').execute()
-
-
-# START NEW FUNCTIONS
-# New handlers being built below this line ( with additional error handling and robustness
 
 def about(auth, fields='importFormats'):
-  drive = get_service('drive', 'v3', auth)
-  response = API_Retry(drive.about().get(fields=fields))
-  #if project.verbose: print json.dumps(response, indent=4)
+  response = API_Drive(auth).about().get(fields=fields).execute()
   return response
 
 
-def file_find(auth, name, parent = None):
-   drive = get_service('drive', 'v3', auth)
+def file_id(auth, url_or_name):
 
+  if url_or_name.startswith('https://drive.google.com/open?id='):
+    return url_or_name.split('?id=', 1)[-1]  
+
+  elif url_or_name.startswith('https://docs.google.com/'):
+    m = re.search('^(?:https:\/\/docs.google.com\/\w+\/d\/)([a-zA-Z0-9-_]+)(?:\/.*)?$', url_or_name)
+    if m: return m.group(1)
+
+  elif url_or_name.startswith('https://datastudio.google.com/'):
+    m = re.search('^(?:https:\/\/datastudio.google.com\/c\/\w+\/)([a-zA-Z0-9-_]+)(?:\/.*)?$', url_or_name)
+    if m: return m.group(1)
+
+  # check if name given convert to ID "Some Document"
+  else:
+    document = file_find(auth, url_or_name)
+    if document: return document['id']
+
+    # check if just ID given, "1uN9tnb-DZ9zZflZsoW4_34sf34tw3ff"
+    else:
+      m = re.search('^([a-zA-Z0-9-_]+)$', url_or_name)
+      if m: return m.group(1)
+
+  # probably a mangled id or name does not exist
+  if project.verbose: print 'DOCUMENT DOES NOT EXIST', url_or_name
+  return None
+
+
+def file_get(auth, drive_id):
+  return API_Drive(auth).files().get(fileId=drive_id).execute()
+
+
+def file_exists(auth, name):
+  drive_id = file_id(auth, name)
+  if drive_id:
+    try: 
+      API_Drive(auth).files().get(fileId=drive_id).execute()
+      return True
+    except HttpError: 
+      return False
+  return False
+
+
+def file_find(auth, name, parent = None):
    query = "trashed = false and name = '%s'" % name
    if parent: query = "%s and '%s' in parents" % (query, parent)
 
-   try: return (API_Retry(drive.files().list(q=query))['files'] or [None])[0]
-   except HttpError: return None
-
+   try: return API_Drive(auth, iterate=True).files().list(q=query).execute().next()
+   except StopIteration: return None
+ 
 
 def file_delete(auth, name, parent = None):
-   drive_file = file_find(auth, name, parent)
+  drive_id = file_id(auth, name)
 
-   if drive_file:
-     drive = get_service('drive', 'v3', auth)
-     API_Retry(drive.files().delete(fileId=drive_file['id']))
-     return True
-   else:
-     return False
+  if drive_id:
+    API_Drive(auth).files().delete(fileId=drive_id).execute()
+    return True
+  else:
+    return False
 
 
 def file_create(auth, name, filename, data, parent=None):
@@ -146,12 +169,39 @@ def file_create(auth, name, filename, data, parent=None):
       resumable=True
     )
 
-    service = get_service('drive', 'v3', auth)
-    drive_file = API_Retry(service.files().create(
+    drive_file = API_Drive(auth).files().create(
       body=body,
       media_body=media,
       fields='id'
-    ))
+    ).execute()
   
-  # return JSON specification for the file
   return drive_file
+
+
+def file_copy(auth, source_name, destination_name):
+  destination_id = file_id(auth, destination_name)
+
+  if destination_id:
+    if project.verbose: print 'Drive: File exists.'
+    return file_get(auth, destination_id)
+
+  else:
+    source_id = file_id(auth, source_name)
+
+    if source_id:
+      body = {
+        'visibility':'PRIVATE',
+        'name':destination_name 
+      }
+      return API_Drive(auth).files().copy(fileId=source_id, body=body).execute()
+    else:
+      return None
+
+
+def folder_create(auth, name, parent=None):
+   body = {
+     'name' : name,
+     'parents' : [parent] if parent else [],
+     'mimeType' : 'application/vnd.google-apps.folder'
+   }
+   return API_Drive(auth).files().create(body=body, fields='id').execute()

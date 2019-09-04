@@ -66,6 +66,7 @@ class ScriptJsonForm(forms.Form):
 
   def __init__(self, sequence, script, values, *args, **kwargs):
     self.script = script
+    self.values = values
     super(ScriptJsonForm, self).__init__(*args, **kwargs)
     self.fields['script_sequence'].initial = sequence
     x = script.get_tag()
@@ -78,10 +79,10 @@ class ScriptJsonForm(forms.Form):
       self.fields[variable['name']].help_text = variable.get('description', '')
 
   def get_description(self):
-    return self.script.get_description()
+    return self.script.get_description(self.values)
 
   def get_instructions(self):
-    return self.script.get_instructions()
+    return self.script.get_instructions(self.values)
 
   def get_script(self):
     # if marked for delete return nothing, will be filtered up stream

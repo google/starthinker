@@ -277,26 +277,3 @@ def bucket_access(auth, project, name,  role, emails=[], groups=[], services=[],
 #
 #    job = service.buckets().setIamPolicy(bucket=name, body=access).execute(num_retries=RETRIES)
 #    sleep(1)
-
-
-# USE: object_get function above ( it will pull the download down in memory, no need for a file write )
-def object_download(gc_project, bucket_name, object_name, local_path, auth='user'):
-  client = get_client('storage', auth=auth)
-
-  print "BN", bucket_name
-
-  try:
-    bucket = client.get_bucket(bucket_name)
-
-    blobs = bucket.list_blobs(prefix=object_name)
-
-    dest = local_path if local_path != None else object_name
-
-    for blob in blobs:
-      with open(dest, 'wb') as file_obj:
-        blob.download_to_file(file_obj)
-
-    return dest if os.path.isfile(dest) else None
-  except Exception, ex:
-    traceback.print_exc()
-

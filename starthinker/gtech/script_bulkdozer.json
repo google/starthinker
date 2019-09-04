@@ -8,6 +8,7 @@
     "description":"Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.",
     "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
     "sample":"https://docs.google.com/spreadsheets/d/1rcBXjVtz3HgMWImP-G8-ESjCj8VPhFjLca1kCu5KAeM/edit#gid=1151132593",
+    "documentation":"https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md",
     "categories":["automation", "trafficking"],
     "requirements":[ "cm", "sheets"],
     "catalysts":["automation"],
@@ -21,17 +22,17 @@
       "time savings":90
     },
     "instructions":[
-      "Open the <a href='https://docs.google.com/spreadsheets/d/1U3Sre-t0ulQrP0AX4C_Cr3eShfyDSpxaUn6Je3KIPSA/edit?urp=gmail_link#gid=1037489387' target='_blank'>Bulkdozer 0.22</a> feed",
-      "Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed",
-      "Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version",
-      "Under the Account ID field below, enter the your Campaign Manager Network ID",
-      "Under Sheet URL, enter the URL of your copy of the feed that you just created in the steps above",
-      "Go to the Store tab of your new feed, and enter your profile ID in the profileId field (cell B2). Your profile ID is visible in Campaign Manager by clicking your avatar on the top right corner",
-      "Click the 'Save' button below",
-      "After clicking 'Save', copy this page's URL from your browser address bar, and paste it the recipe_url field (cell B5) of the Store tab of your feed",
+      "Open the <a href='https://docs.google.com/spreadsheets/d/1hLrpsapXY5jsbgQRcSpjH04avvdcortufI0OXSJZQH8' target='_blank'>Bulkdozer 0.23</a> feed.",
+      "Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed.",
+      "Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version.",
+      "Under the Account ID field below, enter the your Campaign Manager Network ID.",
+      "Under Sheet URL, enter the URL of your copy of the feed that you just created in the steps above.",
+      "Go to the Store tab of your new feed, and enter your profile ID in the profileId field (cell B2). Your profile ID is visible in Campaign Manager by clicking your avatar on the top right corner.",
+      "Click the 'Save' button below.",
+      "After clicking 'Save', copy this page's URL from your browser address bar, and paste it in the Store tab for the recipe_url field (cell B5) your sheet.",
       "Bulkdozer is ready for use",
-      "Stay up to date on new releases and other general anouncements by joining <a href='https://groups.google.com/forum/#!forum/bulkdozer-announcements' target='_blank'>Bulkdozer Announcements</a>",
-      "Review the <a href='https://sites.google.com/a/google.com/bulkdozer-user-guide/home' target='_blank'>Bulkdozer documentation</a>"
+      "Stay up to date on new releases and other general anouncements by joining <a href='https://groups.google.com/forum/#!forum/bulkdozer-announcements' target='_blank'>Bulkdozer announcements</a>.",
+      "Review the <a href='https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md' target='_blank'>Bulkdozer documentation</a>."
     ],
     "authors":["mauriciod@google.com"]
   },
