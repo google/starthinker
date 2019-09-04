@@ -16,6 +16,8 @@
     <style>
        html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
  
+       .material-icons { line-height: normal; vertical-align: middle; }
+
        #message { justify-content: center; font-size: 2em;}
        #message i { font-size: 2em; margin: 10px; }
        #message ul, #message li { display: inline; margin-left: 10px; }
@@ -196,19 +198,21 @@
   
      <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_3">DCM</span>
   
-     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_4">Google API</span>
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_4">Drive</span>
   
-     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_5">Sheets</span>
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_5">Google API</span>
   
-     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_6">Storage</span>
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_6">Sheets</span>
   
-     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_7">Test</span>
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_7">Storage</span>
   
-     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_8">Twitter</span>
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_8">Test</span>
   
-     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_9">Video</span>
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_9">Twitter</span>
   
-     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_10">gTech</span>
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_10">Video</span>
+  
+     <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_11">gTech</span>
   
 
   <br/><br/>
@@ -451,6 +455,85 @@
                         &quot;order&quot;: 4, 
                         &quot;description&quot;: &quot;Query type must match source tables.&quot;, 
                         &quot;name&quot;: &quot;legacy&quot;
+                    }
+                }
+            }, 
+            &quot;auth&quot;: &quot;user&quot;
+        }
+    }
+]</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">arrow_forward</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_bigquery_to_sheet">JSON</span>
+            <h4>Query to Sheet</h4>
+            <p>TASK: bigquery_to_sheet</p>
+            <p>Copy the contents of a query into a Google Sheet.</p>
+            <ol>
+              <li>Specify the sheet and the query.</li><li>Leave range blank or set to A2 to insert one line down.</li><li>The range is cleared before the sheet is written to.</li><li>To select a table use SELECT * FROM table.</li>
+            </ol>
+            <pre class="view_code" id="view_code_bigquery_to_sheet" style="display:none;">[
+    {
+        &quot;bigquery&quot;: {
+            &quot;to&quot;: {
+                &quot;range&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 3, 
+                        &quot;description&quot;: &quot;Range in the sheet to place the data, leave blank for whole sheet.&quot;, 
+                        &quot;name&quot;: &quot;range&quot;
+                    }
+                }, 
+                &quot;sheet&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 1, 
+                        &quot;description&quot;: &quot;Either sheet url or sheet name.&quot;, 
+                        &quot;name&quot;: &quot;sheet&quot;
+                    }
+                }, 
+                &quot;tab&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 2, 
+                        &quot;description&quot;: &quot;Name of the tab where to put the data.&quot;, 
+                        &quot;name&quot;: &quot;tab&quot;
+                    }
+                }
+            }, 
+            &quot;from&quot;: {
+                &quot;query&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 5, 
+                        &quot;description&quot;: &quot;Query to pull data from the table.&quot;, 
+                        &quot;name&quot;: &quot;query&quot;
+                    }
+                }, 
+                &quot;legacy&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: true, 
+                        &quot;kind&quot;: &quot;boolean&quot;, 
+                        &quot;order&quot;: 6, 
+                        &quot;description&quot;: &quot;Use Legacy SQL&quot;, 
+                        &quot;name&quot;: &quot;legacy&quot;
+                    }
+                }, 
+                &quot;auth&quot;: &quot;service&quot;, 
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 4, 
+                        &quot;description&quot;: &quot;Existing BigQuery dataset.&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;
                     }
                 }
             }, 
@@ -1768,7 +1851,6 @@
                     }
                 }
             }, 
-            &quot;datastudio&quot;: true, 
             &quot;auth&quot;: &quot;user&quot;, 
             &quot;out&quot;: {
                 &quot;bigquery&quot;: {
@@ -2016,6 +2098,58 @@
       <thead>
         <tr>
           <th class="center" style="width:90px;"></th>
+          <th>Drive</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">file_copy</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_drive_copy">JSON</span>
+            <h4>Copy</h4>
+            <p>TASK: drive_copy</p>
+            <p>Copy a drive document.</p>
+            <ol>
+              <li>Specify a source URL or document name.</li><li>Specify a destination name.</li><li>If destination does not exist, source will be copied.</li>
+            </ol>
+            <pre class="view_code" id="view_code_drive_copy" style="display:none;">[
+    {
+        &quot;drive&quot;: {
+            &quot;copy&quot;: {
+                &quot;source&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 1, 
+                        &quot;description&quot;: &quot;Name or URL of document to copy from.&quot;, 
+                        &quot;name&quot;: &quot;source&quot;
+                    }
+                }, 
+                &quot;destination&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 2, 
+                        &quot;description&quot;: &quot;Name document to copy to.&quot;, 
+                        &quot;name&quot;: &quot;destination&quot;
+                    }
+                }
+            }, 
+            &quot;auth&quot;: &quot;user&quot;
+        }
+    }
+]</pre>
+          <td>
+        </tr>
+      
+      </tbody>
+    </table>
+  
+    <table class="view_product bordered highlight list" id="view_product_5" style="display:none;">
+      <thead>
+        <tr>
+          <th class="center" style="width:90px;"></th>
           <th>Google API</th>
         </tr>
       </thead>
@@ -2130,7 +2264,7 @@
             <p>TASK: email_to_bigquery</p>
             <p>Import emailed csv or excel into a BigQuery table.</p>
             <ol>
-              <li>The person executing this recipe must be the recipient of the email.</li><li>Schedule a CSV or Excel to be sent to <b>{{ EMAIL_TOKEN }}</b>.</li><li>Give a regular expression to match the email subject, link or attachment.</li><li>The data downloaded will overwrite the table specified.</li>
+              <li>The person executing this recipe must be the recipient of the email.</li><li>Schedule a CSV or Excel to be sent to <b>UNDEFINED</b>.</li><li>Give a regular expression to match the email subject, link or attachment.</li><li>The data downloaded will overwrite the table specified.</li>
             </ol>
             <pre class="view_code" id="view_code_email_to_bigquery" style="display:none;">[
     {
@@ -2254,7 +2388,7 @@
       </tbody>
     </table>
   
-    <table class="view_product bordered highlight list" id="view_product_5" style="display:none;">
+    <table class="view_product bordered highlight list" id="view_product_6" style="display:none;">
       <thead>
         <tr>
           <th class="center" style="width:90px;"></th>
@@ -2438,7 +2572,7 @@
       </tbody>
     </table>
   
-    <table class="view_product bordered highlight list" id="view_product_6" style="display:none;">
+    <table class="view_product bordered highlight list" id="view_product_7" style="display:none;">
       <thead>
         <tr>
           <th class="center" style="width:90px;"></th>
@@ -2551,7 +2685,7 @@
       </tbody>
     </table>
   
-    <table class="view_product bordered highlight list" id="view_product_7" style="display:none;">
+    <table class="view_product bordered highlight list" id="view_product_8" style="display:none;">
       <thead>
         <tr>
           <th class="center" style="width:90px;"></th>
@@ -2668,7 +2802,7 @@
       </tbody>
     </table>
   
-    <table class="view_product bordered highlight list" id="view_product_8" style="display:none;">
+    <table class="view_product bordered highlight list" id="view_product_9" style="display:none;">
       <thead>
         <tr>
           <th class="center" style="width:90px;"></th>
@@ -3012,7 +3146,7 @@
       </tbody>
     </table>
   
-    <table class="view_product bordered highlight list" id="view_product_9" style="display:none;">
+    <table class="view_product bordered highlight list" id="view_product_10" style="display:none;">
       <thead>
         <tr>
           <th class="center" style="width:90px;"></th>
@@ -3122,7 +3256,7 @@
       </tbody>
     </table>
   
-    <table class="view_product bordered highlight list" id="view_product_10" style="display:none;">
+    <table class="view_product bordered highlight list" id="view_product_11" style="display:none;">
       <thead>
         <tr>
           <th class="center" style="width:90px;"></th>
@@ -3190,307 +3324,6 @@
         </tr>
       
         <tr>
-          <td style="vertical-align: top;"><i class="material-icons medium teal-text">device_hub</i></td>
-          <td style="vertical-align: top;">
-            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_audience_mapper">JSON</span>
-            <h4>Audience Mapper</h4>
-            <p>TASK: audience_mapper</p>
-            <p>Create custom audience mappings based on keywords.</p>
-            <ol>
-              <li>Wait for <b>BigQuery->StarThinker Data->{{DATASET}}->Audience_Mapper_Dashboard</b> to be created.</li><li>Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Audinece Mapper Sample Data</a>.</li><li>Change data source to <b>BigQuery->StarThinker Data->{{DATASET}}->Deal_Finder_Dashboard</b>.</li><li>Copy <a href='https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO' target='_blank'>Audience Mapper Sample Report</a>.</li><li>When prompted choose the new data source you just created.</li><li>Create new dimensions in the sheet.</li><li>Synch the DataStudio data source to pick up the new dimension.</li><li>Create a DataStudio filter for each new dimension.</li><li>Or give these intructions to the client.</li>
-            </ol>
-            <pre class="view_code" id="view_code_audience_mapper" style="display:none;">[
-    {
-        &quot;dataset&quot;: {
-            &quot;hour&quot;: [
-                4
-            ], 
-            &quot;auth&quot;: &quot;service&quot;, 
-            &quot;dataset&quot;: {
-                &quot;field&quot;: {
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;order&quot;: 1, 
-                    &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;, 
-                    &quot;name&quot;: &quot;dataset&quot;
-                }
-            }
-        }
-    }, 
-    {
-        &quot;dbm&quot;: {
-            &quot;report&quot;: {
-                &quot;partners&quot;: {
-                    &quot;values&quot;: {
-                        &quot;field&quot;: {
-                            &quot;default&quot;: &quot;&quot;, 
-                            &quot;kind&quot;: &quot;integer_list&quot;, 
-                            &quot;order&quot;: 3, 
-                            &quot;description&quot;: &quot;Comma separated DBM partner ids.&quot;, 
-                            &quot;name&quot;: &quot;partners&quot;
-                        }
-                    }
-                }, 
-                &quot;name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;order&quot;: 2, 
-                        &quot;kind&quot;: &quot;string&quot;, 
-                        &quot;prefix&quot;: &quot;Audience_Mapper_&quot;, 
-                        &quot;description&quot;: &quot;Name of report in DBM, should be unique.&quot;, 
-                        &quot;name&quot;: &quot;recipe_name&quot;
-                    }
-                }, 
-                &quot;data_range&quot;: &quot;LAST_7_DAYS&quot;, 
-                &quot;metrics&quot;: [
-                    &quot;METRIC_IMPRESSIONS&quot;, 
-                    &quot;METRIC_CLICKS&quot;, 
-                    &quot;METRIC_TOTAL_CONVERSIONS&quot;, 
-                    &quot;METRIC_LAST_IMPRESSIONS&quot;, 
-                    &quot;METRIC_LAST_CLICKS&quot;, 
-                    &quot;METRIC_REVENUE_ADVERTISER&quot;, 
-                    &quot;METRIC_MEDIA_COST_ADVERTISER&quot;
-                ], 
-                &quot;timezone&quot;: {
-                    &quot;field&quot;: {
-                        &quot;kind&quot;: &quot;timezone&quot;, 
-                        &quot;name&quot;: &quot;recipe_timezone&quot;, 
-                        &quot;description&quot;: &quot;Timezone in &#39;America/Los_Angeles&#39; format.&quot;
-                    }
-                }, 
-                &quot;advertisers&quot;: {
-                    &quot;values&quot;: {
-                        &quot;field&quot;: {
-                            &quot;default&quot;: &quot;&quot;, 
-                            &quot;kind&quot;: &quot;integer_list&quot;, 
-                            &quot;order&quot;: 4, 
-                            &quot;description&quot;: &quot;Comma separated DBM advertiser ids.&quot;, 
-                            &quot;name&quot;: &quot;advertisers&quot;
-                        }
-                    }
-                }, 
-                &quot;type&quot;: &quot;TYPE_CROSS_PARTNER&quot;, 
-                &quot;dimensions&quot;: [
-                    &quot;FILTER_PARTNER&quot;, 
-                    &quot;FILTER_ADVERTISER&quot;, 
-                    &quot;FILTER_ADVERTISER_CURRENCY&quot;, 
-                    &quot;FILTER_INSERTION_ORDER&quot;, 
-                    &quot;FILTER_LINE_ITEM&quot;, 
-                    &quot;FILTER_USER_LIST&quot;
-                ]
-            }, 
-            &quot;hour&quot;: [
-                4
-            ], 
-            &quot;auth&quot;: &quot;user&quot;
-        }
-    }, 
-    {
-        &quot;dbm&quot;: {
-            &quot;report&quot;: {
-                &quot;name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;order&quot;: 2, 
-                        &quot;kind&quot;: &quot;string&quot;, 
-                        &quot;prefix&quot;: &quot;Audience_Mapper_&quot;, 
-                        &quot;description&quot;: &quot;Name of report in DBM, should be unique.&quot;, 
-                        &quot;name&quot;: &quot;recipe_name&quot;
-                    }
-                }, 
-                &quot;timeout&quot;: 10
-            }, 
-            &quot;hour&quot;: [
-                6
-            ], 
-            &quot;auth&quot;: &quot;user&quot;, 
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;table&quot;: &quot;Audience_Mapper_DBM_Report&quot;, 
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;kind&quot;: &quot;string&quot;, 
-                            &quot;name&quot;: &quot;dataset&quot;, 
-                            &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
-                        }
-                    }, 
-                    &quot;schema&quot;: [
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Partner&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;INTEGER&quot;, 
-                            &quot;name&quot;: &quot;Partner_ID&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Partner_Status&quot;, 
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Advertiser&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;INTEGER&quot;, 
-                            &quot;name&quot;: &quot;Advertiser_ID&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Advertiser_Status&quot;, 
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Advertiser_Integration_Code&quot;, 
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Advertiser_Currency&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Insertion_Order&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;INTEGER&quot;, 
-                            &quot;name&quot;: &quot;Insertion_Order_ID&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Insertion_Order_Status&quot;, 
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Insertion_Order_Integration_Code&quot;, 
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Line_Item&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;INTEGER&quot;, 
-                            &quot;name&quot;: &quot;Line_Item_ID&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Line_Item_Status&quot;, 
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Line_Item_Integration_Code&quot;, 
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Audience_List&quot;, 
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;INTEGER&quot;, 
-                            &quot;name&quot;: &quot;Audience_List_ID&quot;, 
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;STRING&quot;, 
-                            &quot;name&quot;: &quot;Audience_List_Type&quot;, 
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;FLOAT&quot;, 
-                            &quot;name&quot;: &quot;Audience_List_Cost&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;INTEGER&quot;, 
-                            &quot;name&quot;: &quot;Impressions&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;INTEGER&quot;, 
-                            &quot;name&quot;: &quot;Clicks&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;FLOAT&quot;, 
-                            &quot;name&quot;: &quot;Conversions&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;FLOAT&quot;, 
-                            &quot;name&quot;: &quot;Post_View_Conversions&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;FLOAT&quot;, 
-                            &quot;name&quot;: &quot;Post_Click_Conversions&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;FLOAT&quot;, 
-                            &quot;name&quot;: &quot;Revenue&quot;
-                        }, 
-                        {
-                            &quot;type&quot;: &quot;FLOAT&quot;, 
-                            &quot;name&quot;: &quot;Media_Cost&quot;
-                        }
-                    ]
-                }
-            }
-        }
-    }, 
-    {
-        &quot;mapping&quot;: {
-            &quot;sheet&quot;: {
-                &quot;field&quot;: {
-                    &quot;default&quot;: &quot;&quot;, 
-                    &quot;kind&quot;: &quot;string&quot;, 
-                    &quot;order&quot;: 5, 
-                    &quot;description&quot;: &quot;Used to map audiences to categories.&quot;, 
-                    &quot;name&quot;: &quot;sheet_url&quot;
-                }
-            }, 
-            &quot;hour&quot;: [
-                6, 
-                8, 
-                10, 
-                12, 
-                14, 
-                16, 
-                18, 
-                20, 
-                22
-            ], 
-            &quot;auth&quot;: &quot;user&quot;, 
-            &quot;tab&quot;: &quot;Audience Mapper Column Map&quot;, 
-            &quot;in&quot;: {
-                &quot;table&quot;: &quot;Audience_Mapper_DBM_Report&quot;, 
-                &quot;dataset&quot;: {
-                    &quot;field&quot;: {
-                        &quot;default&quot;: &quot;&quot;, 
-                        &quot;kind&quot;: &quot;string&quot;, 
-                        &quot;order&quot;: 1, 
-                        &quot;description&quot;: &quot;Place where data will be writen.&quot;, 
-                        &quot;name&quot;: &quot;dataset&quot;
-                    }
-                }
-            }, 
-            &quot;out&quot;: {
-                &quot;dataset&quot;: {
-                    &quot;field&quot;: {
-                        &quot;default&quot;: &quot;&quot;, 
-                        &quot;kind&quot;: &quot;string&quot;, 
-                        &quot;order&quot;: 1, 
-                        &quot;description&quot;: &quot;Place where data will be writen.&quot;, 
-                        &quot;name&quot;: &quot;dataset&quot;
-                    }
-                }, 
-                &quot;auth&quot;: &quot;service&quot;, 
-                &quot;view&quot;: &quot;Audience_Mapper_Dashboard&quot;
-            }
-        }
-    }
-]</pre>
-          <td>
-        </tr>
-      
-        <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_small</i></td>
           <td style="vertical-align: top;">
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_barnacle">JSON</span>
@@ -3498,7 +3331,7 @@
             <p>TASK: barnacle</p>
             <p>Gives DCM clients ability to see which profiles have access to which parts of an account. Loads DCM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.</p>
             <ol>
-              <li>Wait for <b>BigQuery->%(recipe_project)s->%(dataset)s->CM_*</b> to be created.</li><li>Wait for <b>BigQuery->%(recipe_project)s->%(dataset)s->Barnacle_*</b> to be created, then copy and connect the following data sources.</li><li>Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets</li><li>Copy <a href='https://datastudio.google.com/open/1a6K-XdPUzCYRXZp1ZcmeOUOURc9wn2Jj' target='_blank'>Barnacle Profile Advertiser Map</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1NEzrQWWnPjkD90iUwN-ASKbVBzoeBdoT' target='_blank'>Barnacle Profile Campaign Map</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1-YGDiQPDnk0gD78_QOY5XdTXRlTrLeEq' target='_blank'>Barnacle Profile Report Map</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1v_GRaitwPaHHKUzfJZYNBhzotvZ-bR7Y' target='_blank'>Barnacle Profile Site Map</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/14tWlh7yiqzxKJIppMFVOw2MoMtQV_ucE' target='_blank'>Barnacle Profiles Connections</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1mavjxvHSEPfJq5aW4FYgCXsBCE5rthZG' target='_blank'>Barnacle Report Delivery Profiles</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1Azk_Nul-auinf4NnDq8T9fDyiKkUWD7A' target='_blank'>Barnacle Roles Duplicates</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1ogoofpKtqkLwcW9qC_Ju_JvJdIajsjNI' target='_blank'>Barnacle Roles Not Used</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1xLgZPjOPDtmPyEqYMiMbWwMI8-WTslfj' target='_blank'>Barnacle Site Contacts Profiles</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT' target='_blank'>Barnacle Report</a>.</li><li>When prompted choose the new data sources you just created.</li><li>Or give these intructions to the client.</li>
+              <li>Wait for <b>BigQuery->UNDEFINED->UNDEFINED->CM_*</b> to be created.</li><li>Wait for <b>BigQuery->UNDEFINED->UNDEFINED->Barnacle_*</b> to be created, then copy and connect the following data sources.</li><li>Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets</li><li>Copy <a href='https://datastudio.google.com/open/1a6K-XdPUzCYRXZp1ZcmeOUOURc9wn2Jj' target='_blank'>Barnacle Profile Advertiser Map</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1NEzrQWWnPjkD90iUwN-ASKbVBzoeBdoT' target='_blank'>Barnacle Profile Campaign Map</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1-YGDiQPDnk0gD78_QOY5XdTXRlTrLeEq' target='_blank'>Barnacle Profile Report Map</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1v_GRaitwPaHHKUzfJZYNBhzotvZ-bR7Y' target='_blank'>Barnacle Profile Site Map</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/14tWlh7yiqzxKJIppMFVOw2MoMtQV_ucE' target='_blank'>Barnacle Profiles Connections</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1mavjxvHSEPfJq5aW4FYgCXsBCE5rthZG' target='_blank'>Barnacle Report Delivery Profiles</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1Azk_Nul-auinf4NnDq8T9fDyiKkUWD7A' target='_blank'>Barnacle Roles Duplicates</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1ogoofpKtqkLwcW9qC_Ju_JvJdIajsjNI' target='_blank'>Barnacle Roles Not Used</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1xLgZPjOPDtmPyEqYMiMbWwMI8-WTslfj' target='_blank'>Barnacle Site Contacts Profiles</a> and connect.</li><li>Copy <a href='https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT' target='_blank'>Barnacle Report</a>.</li><li>When prompted choose the new data sources you just created.</li><li>Or give these intructions to the client.</li>
             </ol>
             <pre class="view_code" id="view_code_barnacle" style="display:none;">[
     {
@@ -3520,7 +3353,7 @@
         }
     }, 
     {
-        &quot;dcm_api&quot;: {
+        &quot;barnacle&quot;: {
             &quot;description&quot;: &quot;Will create tables with format CM_* to hold each endpoint via a call to the API list function. Exclude reports for its own task.&quot;, 
             &quot;hour&quot;: [
                 1
@@ -3562,7 +3395,7 @@
         }
     }, 
     {
-        &quot;dcm_api&quot;: {
+        &quot;barnacle&quot;: {
             &quot;description&quot;: &quot;Will create tables with format CM_* to hold each endpoint via a call to the API list function. Reports run long so seperate task.&quot;, 
             &quot;hour&quot;: [
                 3
@@ -4377,7 +4210,7 @@
             <p>TASK: itp</p>
             <p>Visualizes a client&#39;s Campaign Manager and DV360 activity by browser and device</p>
             <ol>
-              <li>Wait for <b>BigQuery->StarThinker Data->%(name)s->*</b> to be created.</li><li>Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets</li><li>For each of the following copy and connect to the new BigQuery sources above. See <a href='https://docs.google.com/document/d/11NlVWzbw6UeSUVUeNuERZGU9FYySWcRbu2Fg6zJ4O-A/edit?usp=sharing' target='_blank'>detailed instructions</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1lxRWIs3ozzWs4-9WTy3EcqMcrtYn-7nI' target='_blank'>Combined_Browser_Delivery</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1CeOHxxo-yAAMWcjI1ALsu_Dv-u2W78Rk' target='_blank'>DV360_Browser_Delivery</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1NlN8rel--3t9VtTuA_0y2c6dcmIYog5g' target='_blank'>CM_Browser_Delivery</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1-mGW74gnWu8zKejBhfLvmgro5rlpVNkE' target='_blank'>Floodlight_Browser_Delivery</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1ftGTV0jaHKwGemhSgKOcoesuWzf4Jcwd' target='_blank'>Browser Delivery Report</a>.</li><li>When prompted choose the new data sources you just created.</li><li>Or give these intructions to the client.</li>
+              <li>Wait for <b>BigQuery->StarThinker Data->UNDEFINED->*</b> to be created.</li><li>Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets</li><li>For each of the following copy and connect to the new BigQuery sources above. See <a href='https://docs.google.com/document/d/11NlVWzbw6UeSUVUeNuERZGU9FYySWcRbu2Fg6zJ4O-A/edit?usp=sharing' target='_blank'>detailed instructions</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1lxRWIs3ozzWs4-9WTy3EcqMcrtYn-7nI' target='_blank'>Combined_Browser_Delivery</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1CeOHxxo-yAAMWcjI1ALsu_Dv-u2W78Rk' target='_blank'>DV360_Browser_Delivery</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1NlN8rel--3t9VtTuA_0y2c6dcmIYog5g' target='_blank'>CM_Browser_Delivery</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1-mGW74gnWu8zKejBhfLvmgro5rlpVNkE' target='_blank'>Floodlight_Browser_Delivery</a>.</li><li>Copy <a href='https://datastudio.google.com/open/1ftGTV0jaHKwGemhSgKOcoesuWzf4Jcwd' target='_blank'>Browser Delivery Report</a>.</li><li>When prompted choose the new data sources you just created.</li><li>Or give these intructions to the client.</li>
             </ol>
             <pre class="view_code" id="view_code_itp" style="display:none;">[
     {
@@ -4491,7 +4324,6 @@
     }, 
     {
         &quot;dcm&quot;: {
-            &quot;datastudio&quot;: true, 
             &quot;report&quot;: {
                 &quot;account&quot;: {
                     &quot;field&quot;: {
@@ -4633,7 +4465,6 @@
     }, 
     {
         &quot;dcm&quot;: {
-            &quot;datastudio&quot;: true, 
             &quot;report&quot;: {
                 &quot;account&quot;: {
                     &quot;field&quot;: {
@@ -5001,7 +4832,7 @@
             <p>TASK: bulkdozer</p>
             <p>Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.</p>
             <ol>
-              <li>Open the <a href='https://docs.google.com/spreadsheets/d/1U3Sre-t0ulQrP0AX4C_Cr3eShfyDSpxaUn6Je3KIPSA/edit?urp=gmail_link#gid=1037489387' target='_blank'>Bulkdozer 0.22</a> feed</li><li>Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed</li><li>Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version</li><li>Under the Account ID field below, enter the your Campaign Manager Network ID</li><li>Under Sheet URL, enter the URL of your copy of the feed that you just created in the steps above</li><li>Go to the Store tab of your new feed, and enter your profile ID in the profileId field (cell B2). Your profile ID is visible in Campaign Manager by clicking your avatar on the top right corner</li><li>Click the 'Save' button below</li><li>After clicking 'Save', copy this page's URL from your browser address bar, and paste it the recipe_url field (cell B5) of the Store tab of your feed</li><li>Bulkdozer is ready for use</li><li>Stay up to date on new releases and other general anouncements by joining <a href='https://groups.google.com/forum/#!forum/bulkdozer-announcements' target='_blank'>Bulkdozer Announcements</a></li><li>Review the <a href='https://sites.google.com/a/google.com/bulkdozer-user-guide/home' target='_blank'>Bulkdozer documentation</a></li>
+              <li>Open the <a href='https://docs.google.com/spreadsheets/d/1hLrpsapXY5jsbgQRcSpjH04avvdcortufI0OXSJZQH8' target='_blank'>Bulkdozer 0.23</a> feed.</li><li>Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed.</li><li>Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version.</li><li>Under the Account ID field below, enter the your Campaign Manager Network ID.</li><li>Under Sheet URL, enter the URL of your copy of the feed that you just created in the steps above.</li><li>Go to the Store tab of your new feed, and enter your profile ID in the profileId field (cell B2). Your profile ID is visible in Campaign Manager by clicking your avatar on the top right corner.</li><li>Click the 'Save' button below.</li><li>After clicking 'Save', copy this page's URL from your browser address bar, and paste it in the Store tab for the recipe_url field (cell B5) your sheet.</li><li>Bulkdozer is ready for use</li><li>Stay up to date on new releases and other general anouncements by joining <a href='https://groups.google.com/forum/#!forum/bulkdozer-announcements' target='_blank'>Bulkdozer announcements</a>.</li><li>Review the <a href='https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md' target='_blank'>Bulkdozer documentation</a>.</li>
             </ol>
             <pre class="view_code" id="view_code_bulkdozer" style="display:none;">[
     {
@@ -5057,7 +4888,7 @@
             <p>TASK: deal_finder</p>
             <p>Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.</p>
             <ol>
-              <li>Wait for <b>BigQuery->StarThinker Data->%(name)s->Deal_Finder_Dashboard</b> to be created.</li><li>Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets</li><li>Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Deal Finder Sample Data</a>.</li><li>Click Edit Connection, and change to <b>BigQuery->StarThinker Data->%(name)s->Deal_Finder_Dashboard</b>.</li><li>Copy <a href='https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO' target='_blank'>Deal Finder Sample Report</a>.</li><li>When prompted choose the new data source you just created.</li><li>Or give these intructions to the client.</li>
+              <li>Wait for <b>BigQuery->StarThinker Data->UNDEFINED->Deal_Finder_Dashboard</b> to be created.</li><li>Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets</li><li>Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Deal Finder Sample Data</a>.</li><li>Click Edit Connection, and change to <b>BigQuery->StarThinker Data->(field:recipe_name}->Deal_Finder_Dashboard</b>.</li><li>Copy <a href='https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO' target='_blank'>Deal Finder Sample Report</a>.</li><li>When prompted choose the new data source you just created.</li><li>Or give these intructions to the client.</li>
             </ol>
             <pre class="view_code" id="view_code_deal_finder" style="display:none;">[
     {
@@ -5322,7 +5153,7 @@
             <p>TASK: dynamic_costs</p>
             <p>Calculate DBM cost at the dynamic creative combination level.</p>
             <ol>
-              <li>Add a sheet URL. This is where you will enter advertiser and campaign level details.</li><li>Specify the DCM network ID.</li><li>Click run now once, and a tab called <strong>Dynamic Costs</strong> will be added to the sheet with instructions.</li><li>Follow the instructions on the sheet; this will be your configuration.</li><li>StarThinker will create two or three (depending on the case) reports in DCM named <strong>Dynamic Costs - ...</strong>.</li><li>Wait for <b>BigQuery->{{PROJECT}}->{{DATASET}}->Dynamic_Costs_Analysis</b> to be created or click Run Now.</li><li>Copy <a href='https://datastudio.google.com/open/1vBvBEiMbqCbBuJTsBGpeg8vCLtg6ztqA' target='_blank'>Dynamic Costs Sample Data ( Copy From This )</a>.</li><li>Click Edit Connection, and Change to <b>BigQuery->{{PROJECT}}->{{DATASET}}->Dynamic_Costs_Analysis</b>.</li><li>Copy <a href='https://datastudio.google.com/open/1xulBAdx95SnvjnUzFP6r14lhkvvVbsP8' target='_blank'>Dynamic Costs Sample Report ( Copy From This )</a>.</li><li>When prompted, choose the new data source you just created.</li><li>Edit the table to include or exclude columns as desired.</li><li>Or, give the dashboard connection intructions to the client.</li>
+              <li>Add a sheet URL. This is where you will enter advertiser and campaign level details.</li><li>Specify the DCM network ID.</li><li>Click run now once, and a tab called <strong>Dynamic Costs</strong> will be added to the sheet with instructions.</li><li>Follow the instructions on the sheet; this will be your configuration.</li><li>StarThinker will create two or three (depending on the case) reports in DCM named <strong>Dynamic Costs - ...</strong>.</li><li>Wait for <b>BigQuery->UNDEFINED->UNDEFINED->Dynamic_Costs_Analysis</b> to be created or click Run Now.</li><li>Copy <a href='https://datastudio.google.com/open/1vBvBEiMbqCbBuJTsBGpeg8vCLtg6ztqA' target='_blank'>Dynamic Costs Sample Data ( Copy From This )</a>.</li><li>Click Edit Connection, and Change to <b>BigQuery->UNDEFINED->UNDEFINED->Dynamic_Costs_Analysis</b>.</li><li>Copy <a href='https://datastudio.google.com/open/1xulBAdx95SnvjnUzFP6r14lhkvvVbsP8' target='_blank'>Dynamic Costs Sample Report ( Copy From This )</a>.</li><li>When prompted, choose the new data source you just created.</li><li>Edit the table to include or exclude columns as desired.</li><li>Or, give the dashboard connection intructions to the client.</li>
             </ol>
             <pre class="view_code" id="view_code_dynamic_costs" style="display:none;">[
     {
@@ -5573,6 +5404,40 @@
         </tr>
       
         <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">policy</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_policebot">JSON</span>
+            <h4>PoliceBot</h4>
+            <p>TASK: policebot</p>
+            <p>A tool that helps enforce CM object name conventions by checking names against a set of client-defined patterns, and emailing violations to appropriate agency teams on a daily basis.</p>
+            <ol>
+              <li>Add this card to a recipe and save it.</li><li>Then click <strong>Run Now</strong> to deploy.</li><li>Follow the <a href="https://docs.google.com/document/d/1euSZt5VFmaMfV-vShb6NH6LWfA7a5KSPpSl1hYeNlAA">instructuons</a> for setup.</li>
+            </ol>
+            <pre class="view_code" id="view_code_policebot" style="display:none;">[
+    {
+        &quot;drive&quot;: {
+            &quot;copy&quot;: {
+                &quot;source&quot;: &quot;https://docs.google.com/spreadsheets/d/1dkESiK2s8YvdC03F3t4Jk_wvxJ0NMNk8CTGxO0HQk6I&quot;, 
+                &quot;destination&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;description&quot;: &quot;Name of document to deploy to.&quot;, 
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;prefix&quot;: &quot;PoliceBot For &quot;, 
+                        &quot;order&quot;: 1, 
+                        &quot;name&quot;: &quot;recipe_name&quot;
+                    }
+                }
+            }, 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;hour&quot;: []
+        }
+    }
+]</pre>
+          <td>
+        </tr>
+      
+        <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">notifications</i></td>
           <td style="vertical-align: top;">
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_hello">JSON</span>
@@ -5635,6 +5500,350 @@
                     &quot;name&quot;: &quot;sleep&quot;
                 }
             }, 
+            &quot;auth&quot;: &quot;user&quot;
+        }
+    }
+]</pre>
+          <td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">fingerprint</i></td>
+          <td style="vertical-align: top;">
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_transparency">JSON</span>
+            <h4>Transparency Dashboard</h4>
+            <p>TASK: transparency</p>
+            <p>Reports the percentage of DCM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.</p>
+            <ol>
+              <li>Wait for <a href='https://console.cloud.google.com/bigquery?project=UNDEFINED&d=UNDEFINED' target='_blank'>BigQuery : UNDEFINED</a> : UNDEFINED : UNDEFINED</a> to be created.</li><li>Copy DataStudio <a href='https://datastudio.google.com/c/u/0/datasources/1Az6d9loAHo69GSIyKUfusrtyf_IDqTVs' target='_blank'>Transparency Combined KPI</a> and connect.</li><li>Copy DataStudio <a href='https://datastudio.google.com/c/u/0/reporting/1foircGRxgYCL_PR8gfdmYOleBacnPKwB/page/QCXj' target='_blank'>Transparency Breakdown</a>.</li><li>When prompted choose the new data source you just created.</li><li>Or give these intructions to the client, they will have to join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a>.</li>
+            </ol>
+            <pre class="view_code" id="view_code_transparency" style="display:none;">[
+    {
+        &quot;dataset&quot;: {
+            &quot;hour&quot;: [
+                1
+            ], 
+            &quot;auth&quot;: &quot;service&quot;, 
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;default&quot;: &quot;&quot;, 
+                    &quot;kind&quot;: &quot;string&quot;, 
+                    &quot;order&quot;: 1, 
+                    &quot;description&quot;: &quot;Name of Google BigQuery dataset to create.&quot;, 
+                    &quot;name&quot;: &quot;dataset&quot;
+                }
+            }
+        }
+    }, 
+    {
+        &quot;dcm&quot;: {
+            &quot;report&quot;: {
+                &quot;body&quot;: {
+                    &quot;format&quot;: &quot;CSV&quot;, 
+                    &quot;schedule&quot;: {
+                        &quot;active&quot;: true, 
+                        &quot;every&quot;: 1, 
+                        &quot;repeats&quot;: &quot;MONTHLY&quot;, 
+                        &quot;runsOnDayOfMonth&quot;: &quot;DAY_OF_MONTH&quot;
+                    }, 
+                    &quot;type&quot;: &quot;STANDARD&quot;, 
+                    &quot;name&quot;: {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;description&quot;: &quot;Name of report in CM, unique.&quot;, 
+                            &quot;prefix&quot;: &quot;Transparency_App_&quot;, 
+                            &quot;name&quot;: &quot;recipe_name&quot;
+                        }
+                    }, 
+                    &quot;criteria&quot;: {
+                        &quot;dateRange&quot;: {
+                            &quot;relativeDateRange&quot;: &quot;PREVIOUS_MONTH&quot;
+                        }, 
+                        &quot;dimensions&quot;: [
+                            {
+                                &quot;name&quot;: &quot;dfa:advertiser&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:advertiserId&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:campaign&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:campaignId&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:siteId&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:site&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:adType&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:environment&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:appId&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:app&quot;
+                            }
+                        ], 
+                        &quot;metricNames&quot;: [
+                            &quot;dfa:impressions&quot;
+                        ]
+                    }
+                }, 
+                &quot;account&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;integer&quot;, 
+                        &quot;order&quot;: 2, 
+                        &quot;description&quot;: &quot;DCM account id of client.&quot;, 
+                        &quot;name&quot;: &quot;dcm_account&quot;
+                    }
+                }, 
+                &quot;filters&quot;: {
+                    &quot;dfa:advertiser&quot;: {
+                        &quot;values&quot;: {
+                            &quot;field&quot;: {
+                                &quot;default&quot;: &quot;&quot;, 
+                                &quot;kind&quot;: &quot;integer_list&quot;, 
+                                &quot;order&quot;: 3, 
+                                &quot;description&quot;: &quot;Comma delimited list of DCM advertiser ids.&quot;, 
+                                &quot;name&quot;: &quot;dcm_advertisers&quot;
+                            }
+                        }
+                    }
+                }
+            }, 
+            &quot;hour&quot;: [
+                2
+            ], 
+            &quot;auth&quot;: &quot;user&quot;
+        }
+    }, 
+    {
+        &quot;dcm&quot;: {
+            &quot;report&quot;: {
+                &quot;body&quot;: {
+                    &quot;format&quot;: &quot;CSV&quot;, 
+                    &quot;schedule&quot;: {
+                        &quot;active&quot;: true, 
+                        &quot;every&quot;: 1, 
+                        &quot;repeats&quot;: &quot;MONTHLY&quot;, 
+                        &quot;runsOnDayOfMonth&quot;: &quot;DAY_OF_MONTH&quot;
+                    }, 
+                    &quot;type&quot;: &quot;STANDARD&quot;, 
+                    &quot;name&quot;: {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;description&quot;: &quot;Name of report in CM, unique.&quot;, 
+                            &quot;prefix&quot;: &quot;Transparency_Domain_&quot;, 
+                            &quot;name&quot;: &quot;recipe_name&quot;
+                        }
+                    }, 
+                    &quot;criteria&quot;: {
+                        &quot;dateRange&quot;: {
+                            &quot;relativeDateRange&quot;: &quot;PREVIOUS_MONTH&quot;
+                        }, 
+                        &quot;dimensions&quot;: [
+                            {
+                                &quot;name&quot;: &quot;dfa:advertiser&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:advertiserId&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:campaign&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:campaignId&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:site&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:siteId&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:adType&quot;
+                            }, 
+                            {
+                                &quot;name&quot;: &quot;dfa:domain&quot;
+                            }
+                        ], 
+                        &quot;metricNames&quot;: [
+                            &quot;dfa:verificationVerifiableImpressions&quot;
+                        ]
+                    }
+                }, 
+                &quot;account&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;integer&quot;, 
+                        &quot;order&quot;: 2, 
+                        &quot;description&quot;: &quot;DCM account id of client.&quot;, 
+                        &quot;name&quot;: &quot;dcm_account&quot;
+                    }
+                }, 
+                &quot;filters&quot;: {
+                    &quot;dfa:advertiser&quot;: {
+                        &quot;values&quot;: {
+                            &quot;field&quot;: {
+                                &quot;default&quot;: &quot;&quot;, 
+                                &quot;kind&quot;: &quot;integer_list&quot;, 
+                                &quot;order&quot;: 3, 
+                                &quot;description&quot;: &quot;Comma delimited list of DCM advertiser ids.&quot;, 
+                                &quot;name&quot;: &quot;dcm_advertisers&quot;
+                            }
+                        }
+                    }
+                }
+            }, 
+            &quot;hour&quot;: [
+                2
+            ], 
+            &quot;auth&quot;: &quot;user&quot;
+        }
+    }, 
+    {
+        &quot;dcm&quot;: {
+            &quot;report&quot;: {
+                &quot;account&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;integer&quot;, 
+                        &quot;order&quot;: 2, 
+                        &quot;description&quot;: &quot;DCM account id of client.&quot;, 
+                        &quot;name&quot;: &quot;dcm_account&quot;
+                    }
+                }, 
+                &quot;name&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;description&quot;: &quot;Name of report in CM, should be unique.&quot;, 
+                        &quot;prefix&quot;: &quot;Transparency_Domain_&quot;, 
+                        &quot;name&quot;: &quot;recipe_name&quot;
+                    }
+                }
+            }, 
+            &quot;hour&quot;: [
+                4
+            ], 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;out&quot;: {
+                &quot;bigquery&quot;: {
+                    &quot;table&quot;: &quot;Transparency_Domain_KPI&quot;, 
+                    &quot;auth&quot;: &quot;service&quot;, 
+                    &quot;dataset&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;order&quot;: 1, 
+                            &quot;description&quot;: &quot;Name of Google BigQuery dataset to create.&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;
+                        }
+                    }
+                }
+            }
+        }
+    }, 
+    {
+        &quot;dcm&quot;: {
+            &quot;report&quot;: {
+                &quot;account&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;integer&quot;, 
+                        &quot;order&quot;: 2, 
+                        &quot;description&quot;: &quot;DCM account id of client.&quot;, 
+                        &quot;name&quot;: &quot;dcm_account&quot;
+                    }
+                }, 
+                &quot;name&quot;: {
+                    &quot;field&quot;: {
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;description&quot;: &quot;Name of report in CM, should be unique.&quot;, 
+                        &quot;prefix&quot;: &quot;Transparency_App_&quot;, 
+                        &quot;name&quot;: &quot;recipe_name&quot;
+                    }
+                }
+            }, 
+            &quot;hour&quot;: [
+                4
+            ], 
+            &quot;auth&quot;: &quot;user&quot;, 
+            &quot;out&quot;: {
+                &quot;bigquery&quot;: {
+                    &quot;table&quot;: &quot;Transparency_App_KPI&quot;, 
+                    &quot;auth&quot;: &quot;service&quot;, 
+                    &quot;dataset&quot;: {
+                        &quot;field&quot;: {
+                            &quot;default&quot;: &quot;&quot;, 
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;order&quot;: 1, 
+                            &quot;description&quot;: &quot;Name of Google BigQuery dataset to create.&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;
+                        }
+                    }
+                }
+            }
+        }
+    }, 
+    {
+        &quot;bigquery&quot;: {
+            &quot;to&quot;: {
+                &quot;dataset&quot;: {
+                    &quot;field&quot;: {
+                        &quot;default&quot;: &quot;&quot;, 
+                        &quot;kind&quot;: &quot;string&quot;, 
+                        &quot;order&quot;: 1, 
+                        &quot;description&quot;: &quot;Name of Google BigQuery dataset to create.&quot;, 
+                        &quot;name&quot;: &quot;dataset&quot;
+                    }
+                }, 
+                &quot;view&quot;: &quot;Transparency_Combined_KPI&quot;
+            }, 
+            &quot;from&quot;: {
+                &quot;query&quot;: &quot;With \r\nTransparent_Domains AS ( \r\n  SELECT\r\n    CONCAT(Advertiser, &#39; - &#39;, CAST(Advertiser_Id AS STRING)) AS Advertiser,\r\n    CONCAT(Campaign, &#39; - &#39;, CAST(Campaign_Id AS STRING)) AS Campaign,\r\n    CONCAT(Site_Dcm, &#39; - &#39;, CAST(Site_Id_Dcm AS STRING)) AS Site,\r\n    Domain,\r\n    Ad_Type,\r\n    Verifiable_Impressions AS Impressions,\r\n    IF(Domain IS NOT NULL, Verifiable_Impressions, 0) AS Visible_Impressions,\r\n    IF(Domain IS NULL, Verifiable_Impressions, 0) AS Null_Impressions\r\n  FROM `[PARAMETER].[PARAMETER].Transparency_Domain_KPI`\r\n),\r\nTransparent_Apps AS ( \r\n  SELECT\r\n    CONCAT(Advertiser, &#39; - &#39;, CAST(Advertiser_Id AS STRING)) AS Advertiser,\r\n    CONCAT(Campaign, &#39; - &#39;, CAST(Campaign_Id AS STRING)) AS Campaign,\r\n    CONCAT(Site_Dcm, &#39; - &#39;, CAST(Site_Id_Dcm AS STRING)) AS Site,\r\n    /*If(App IS NOT NULL, CONCAT(App, &#39; - &#39;, CAST(App_Id AS STRING)), App_Id) AS App, */\r\n    CASE \r\n      WHEN App IS NOT NULL THEN CONCAT(App, &#39; - &#39;, CAST(App_Id AS STRING))\r\n      WHEN App_Id IS NOT NULL THEN App_Id\r\n      ELSE NULL\r\n    END AS App,\r\n    Ad_Type,\r\n    Impressions,\r\n    IF(App IS NOT NULL OR App_ID IS NOT NULL, Impressions, 0) AS Visible_Impressions,\r\n    IF(App IS NULL AND App_Id IS NULL, Impressions, 0) AS Null_Impressions\r\n  FROM `[PARAMETER].[PARAMETER].Transparency_App_KPI`\r\n  WHERE Environment = &#39;App&#39;\r\n),\r\nDomains_And_Apps AS (\r\n  SELECT \r\n    TD.Advertiser,\r\n    TD.Campaign,\r\n    TD.Site,\r\n    TD.Ad_Type,\r\n    TD.Domain,\r\n    TD.Impressions AS Domain_Impressions,\r\n    TD.Visible_Impressions AS Domain_Visible_Impressions,\r\n    TD.Null_Impressions AS Domain_Null_Impressions,\r\n    NULL AS App,\r\n    0 AS App_Impressions,\r\n    0 AS App_Visible_Impressions,\r\n    0 AS App_Null_Impressions\r\n  FROM Transparent_Domains AS TD\r\n  UNION ALL\r\n  SELECT \r\n    TA.Advertiser,\r\n    TA.Campaign,\r\n    TA.Site,\r\n    TA.Ad_Type,\r\n    NULL AS Domain,\r\n    0 AS Domain_Impressions,\r\n    0 AS Domain_Visible_Impressions,\r\n    0 AS Domain_Null_Impressions,\r\n    TA.App,\r\n    TA.Impressions AS App_Impressions,\r\n    TA.Visible_Impressions AS App_Visible_Impressions,\r\n    TA.Null_Impressions AS App_Null_Impressions\r\n  FROM Transparent_Apps AS TA\r\n)\r\n\r\n  SELECT\r\n    Advertiser,\r\n    Campaign,\r\n    Site,\r\n    COALESCE(Domain, App, &#39;&#39;) AS Domain_Or_App,\r\n    Ad_Type,\r\n    CASE\r\n      WHEN App IS NOT NULL AND Domain IS NOT NULL THEN &#39;Both&#39; /* SHOULD NOT HAPPEN */\r\n      WHEN App IS NOT NULL THEN &#39;App&#39;\r\n      WHEN Domain IS NOT NULL Then &#39;Domain&#39;\r\n      ELSE &#39;Neither&#39;\r\n    END AS Category,\r\n\r\n    SUM(Domain_Impressions) AS Domain_Impressions,\r\n    SUM(Domain_Visible_Impressions) AS Domain_Visible_Impressions,\r\n    SUM(Domain_Null_Impressions) AS Domain_Null_Impressions,\r\n\r\n    SUM(App_Impressions) AS App_Impressions,\r\n    SUM(App_Visible_Impressions) AS App_Visible_Impressions,\r\n    SUM(App_Null_Impressions) AS App_Null_Impressions,\r\n\r\n    SUM(App_Impressions + Domain_Impressions) AS Impressions /* Could also be MAX as its always one or the other*/\r\n\r\n  FROM Domains_And_Apps\r\n  GROUP By 1,2,3,4,5,6&quot;, 
+                &quot;legacy&quot;: false, 
+                &quot;parameters&quot;: [
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;recipe_project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;recipe_project&quot;, 
+                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        }
+                    }, 
+                    {
+                        &quot;field&quot;: {
+                            &quot;kind&quot;: &quot;string&quot;, 
+                            &quot;name&quot;: &quot;dataset&quot;, 
+                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        }
+                    }
+                ]
+            }, 
+            &quot;hour&quot;: [
+                5
+            ], 
             &quot;auth&quot;: &quot;user&quot;
         }
     }

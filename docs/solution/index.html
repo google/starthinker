@@ -16,6 +16,8 @@
     <style>
        html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
  
+       .material-icons { line-height: normal; vertical-align: middle; }
+
        #message { justify-content: center; font-size: 2em;}
        #message i { font-size: 2em; margin: 10px; }
        #message ul, #message li { display: inline; margin-left: 10px; }
@@ -151,6 +153,8 @@
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_alerts">alerts</span>
   
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_audit">audit</span>
+  
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_automation">automation</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_budget">budget</span>
@@ -245,11 +249,19 @@
         </td>
       </tr>
     
-      <tr class="category_all category_reporting category_insights category_experience category_dv360 category_sheets category_datastudio category_bigquery">
-        <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">device_hub</i></td>
+      <tr class="category_all category_audit category_reporting category_insights category_experience category_data category_cm category_datastudio category_bigquery">
+        <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">fingerprint</i></td>
         <td style="vertical-align:top;">
-          <a href="/starthinker/solution/audience_mapper/"><h4>Audience Mapper</h4></a>
-          <p>Create custom audience mappings based on keywords.</p>
+          <a href="/starthinker/solution/transparency/"><h4>Transparency Dashboard</h4></a>
+          <p>Reports the percentage of DCM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.</p>
+        </td>
+      </tr>
+    
+      <tr class="category_all category_automation category_trafficking category_automation category_cm category_sheets">
+        <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">policy</i></td>
+        <td style="vertical-align:top;">
+          <a href="/starthinker/solution/policebot/"><h4>PoliceBot</h4></a>
+          <p>A tool that helps enforce CM object name conventions by checking names against a set of client-defined patterns, and emailing violations to appropriate agency teams on a daily basis.</p>
         </td>
       </tr>
     

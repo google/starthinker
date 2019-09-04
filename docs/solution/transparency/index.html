@@ -16,6 +16,8 @@
     <style>
        html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
  
+       .material-icons { line-height: normal; vertical-align: middle; }
+
        #message { justify-content: center; font-size: 2em;}
        #message i { font-size: 2em; margin: 10px; }
        #message ul, #message li { display: inline; margin-left: 10px; }
@@ -107,8 +109,8 @@
       
 
   <br/>
-  <h1><i class="medium material-icons">device_hub</i>&nbsp; Audience Mapper</h1>
-  <p class="flow-text">Create custom audience mappings based on keywords.</p>
+  <h1><i class="medium material-icons">fingerprint</i>&nbsp; Transparency Dashboard</h1>
+  <p class="flow-text">Reports the percentage of DCM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
@@ -116,12 +118,12 @@
   
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=experience">experience</a>
   
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=data">data</a>
+  
 
   <br/><br/>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=sheets">sheets</a>
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=cm">cm</a>
   
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=datastudio">datastudio</a>
   
@@ -130,13 +132,15 @@
 
   <br/><br/>
   
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=audit">audit</a>
+  
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=reporting">reporting</a>
   
 
-  
+  <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/transparency.png"/>
 
   <div class="buttons">
-    <a id="solution_button" class="btn-large waves-effect waves-light" href="mailto:kenjora@google.com?subject=Request+For+A+Audience+Mapper+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Audience+Mapper+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Faudience_mapper%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">
+    <a id="solution_button" class="btn-large waves-effect waves-light" href="mailto:kenjora@google.com?subject=Request+For+A+Transparency+Dashboard+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Transparency+Dashboard+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Ftransparency%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">
       <i class="material-icons right">send</i> Request Deployemt
     </a>
 
@@ -145,11 +149,15 @@
     </a>
 
     
-
+      <a id="solution_button" class="btn-large waves-effect waves-light" href="https://datastudio.google.com/c/u/0/reporting/1foircGRxgYCL_PR8gfdmYOleBacnPKwB/page/QCXj" target="_blank">
+        <i class="material-icons right">directions_bike</i>Sample
+      </a>
     
 
     
-      <a id="solution_button" class="btn-large waves-effect waves-light" href="https://github.com/google/starthinker/blob/master//starthinker/gtech/script_audience_mapper.json" target="_blank">
+
+    
+      <a id="solution_button" class="btn-large waves-effect waves-light" href="https://github.com/google/starthinker/blob/master//starthinker/gtech/script_transparency.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
     
@@ -165,15 +173,19 @@
        <tbody>
        
          <tr>
-           <td>Create custom creative groups.</td>
+           <td>Measure mix of domain and app traffic.</td>
          </tr>
        
          <tr>
-           <td>Allow different view of KPIs.</td>
+           <td>Discover which sites are underepporting.</td>
          </tr>
        
          <tr>
-           <td>Help clients with custom naming conventions.</td>
+           <td>Measure advertiser and campaign level transparency.</td>
+         </tr>
+       
+         <tr>
+           <td>Determine which dimensions have lowest transparency.</td>
          </tr>
        
        </tbody>
@@ -194,7 +206,7 @@
              <td>Spend Growth</td>
              <td>
                <div class="progress">
-                 <div class="determinate" style="width: 10%"></div>
+                 <div class="determinate" style="width: 0%"></div>
                </div>
              </td>
            </tr>
@@ -203,7 +215,7 @@
              <td>Account Health</td>
              <td>
                <div class="progress">
-                 <div class="determinate" style="width: 60%"></div>
+                 <div class="determinate" style="width: 100%"></div>
                </div>
              </td>
            </tr>
@@ -212,7 +224,7 @@
              <td>Spend Optimization</td>
              <td>
                <div class="progress">
-                 <div class="determinate" style="width: 30%"></div>
+                 <div class="determinate" style="width: 0%"></div>
                </div>
              </td>
            </tr>
@@ -221,7 +233,7 @@
              <td>Time Savings</td>
              <td>
                <div class="progress">
-                 <div class="determinate" style="width: 100%"></div>
+                 <div class="determinate" style="width: 90%"></div>
                </div>
              </td>
            </tr>
@@ -230,7 +242,7 @@
              <td>Csat Improvement</td>
              <td>
                <div class="progress">
-                 <div class="determinate" style="width: 80%"></div>
+                 <div class="determinate" style="width: 100%"></div>
                </div>
              </td>
            </tr>
@@ -256,7 +268,7 @@
 
         <tr>
           <td>Authors</td>
-          <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Audience+Mapper+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Audience+Mapper+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Faudience_mapper%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+          <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Transparency+Dashboard+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Transparency+Dashboard+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Ftransparency%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
           </td>
         </tr>
 
