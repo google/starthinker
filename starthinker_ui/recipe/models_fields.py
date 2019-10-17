@@ -28,10 +28,9 @@ class JsonField(models.TextField):
 
   # python to SQL
   def get_prep_value(self, value):
-    #print 'M: get_prep_value', value
     if value is None:
       return None
-    elif isinstance(value, basestring):
+    elif isinstance(value, str):
       return value
     else:
       try: return json.dumps(value)
@@ -40,16 +39,14 @@ class JsonField(models.TextField):
 
   # SQL to python
   def from_db_value(self, value, expression, connection, context):
-    #print 'M: from_db_value', value, type(value)
     return json.loads(value)
 
 
   # any source to python
   def to_python(self, value):
-    #print 'M: to_python', value, type(value)
     if value is None:
       return None
-    if isinstance(value, basestring):
+    if isinstance(value, str):
       try: return json.loads(value)
       except: raise ValidationError(_("Bad JSON string."))
     else:

@@ -1,4 +1,4 @@
-###########################################################################
+
 #
 #  Copyright 2018 Google Inc.
 #
@@ -36,7 +36,7 @@ import datetime
 import os
 import sys
 import traceback
-from StringIO import StringIO
+from io import StringIO
 
 from starthinker.util.project import project
 from starthinker.util.storage import parse_path, makedirs_safe, object_put, bucket_create
@@ -132,7 +132,7 @@ def get_rows(auth, source):
         yield row[0] if source.get('single_cell', False) else row
 
 
-def put_rows(auth, destination, filename, rows, variant=''):
+def put_rows(auth, destination, rows):
   """Processes standard write JSON block for dynamic export of data.
   
   Allows us to quickly write the results of a script to a destination.  For example
@@ -165,7 +165,7 @@ def put_rows(auth, destination, filename, rows, variant=''):
           "bucket": [ string ],
           "path": [ string ]
         },
-        "directory":[ string - full path to place to write file ]
+        "file":[ string - full path to place to write file ]
       } 
     } 
   
@@ -186,9 +186,7 @@ def put_rows(auth, destination, filename, rows, variant=''):
   Args:
     auth: (string) The type of authentication to use, user or service.
     destination: (json) A json block resembling var_json described above.
-    filename: (string) A unique filename if writing to medium requiring one, Usually gnerated by script.
     rows ( list ) The data being written as a list object.
-    variant ( string ) Appends this to the destination name to create a variant ( for example when downloading multiple tabs in a sheet ).
 
   Returns:
     If single_cell is False: Returns a list of row values [[v1], [v2], ... ]
@@ -202,7 +200,7 @@ def put_rows(auth, destination, filename, rows, variant=''):
         destination['bigquery'].get('auth', auth),
         destination['bigquery'].get('project_id', project.id),
         destination['bigquery']['dataset'],
-        destination['bigquery']['table'] + variant,
+        destination['bigquery']['table'],
         rows,
         destination['bigquery'].get('schema', []),
         destination['bigquery'].get('disposition', 'WRITE_TRUNCATE'),
@@ -213,7 +211,7 @@ def put_rows(auth, destination, filename, rows, variant=''):
         destination['bigquery'].get('auth', auth),
         destination['bigquery'].get('project_id', project.id),
         destination['bigquery']['dataset'],
-        destination['bigquery']['table'] + variant,
+        destination['bigquery']['table'],
         rows,
         destination['bigquery'].get('schema', []),
         destination['bigquery'].get('skip_rows', 1), #0 if 'schema' in destination['bigquery'] else 1),
@@ -226,7 +224,7 @@ def put_rows(auth, destination, filename, rows, variant=''):
         destination['bigquery'].get('auth', auth),
         destination['bigquery'].get('project_id', project.id),
         destination['bigquery']['dataset'],
-        destination['bigquery']['table'] + variant,
+        destination['bigquery']['table'],
         rows,
         destination['bigquery'].get('schema', []),
         destination['bigquery'].get('skip_rows', 1), #0 if 'schema' in destination['bigquery'] else 1),
@@ -235,12 +233,12 @@ def put_rows(auth, destination, filename, rows, variant=''):
 
   if 'sheets' in destination:
     if destination['sheets'].get('delete', False): 
-      sheets_clear(auth, destination['sheets']['tab'] + variant, destination['sheets']['range'], sheet_url=destination['sheets'].get('sheet', None), sheet_name=destination['sheets'].get('sheet_name', None))
-    sheets_write(auth, destination['sheets']['tab'] + variant, destination['sheets']['range'], rows, sheet_url=destination['sheets'].get('sheet', None), sheet_name=destination['sheets'].get('sheet_name', None)) 
+      sheets_clear(auth, destination['sheets']['tab'], destination['sheets']['range'], sheet_url=destination['sheets'].get('sheet', None), sheet_name=destination['sheets'].get('sheet_name', None))
+    sheets_write(auth, destination['sheets']['tab'], destination['sheets']['range'], rows, sheet_url=destination['sheets'].get('sheet', None), sheet_name=destination['sheets'].get('sheet_name', None)) 
 
-  if 'directory' in destination:
-    file_out = destination['directory'] + variant + filename
-    if project.verbose: print 'SAVING', file_out
+  if 'file' in destination:
+    file_out = destination['file']
+    if project.verbose: print('SAVING', file_out)
     makedirs_safe(parse_path(file_out))
     with open(file_out, 'wb') as save_file:
       save_file.write(rows_to_csv(rows).read())
@@ -250,8 +248,8 @@ def put_rows(auth, destination, filename, rows, variant=''):
     bucket_create(auth, project.id, destination['storage']['bucket'])
 
     # put the file
-    file_out = destination['storage']['bucket'] + ':' + destination['storage']['path'] + variant + filename
-    if project.verbose: print 'SAVING', file_out
+    file_out = destination['storage']['bucket'] + ':' + destination['storage']['path']
+    if project.verbose: print('SAVING', file_out)
     object_put(auth, file_out, rows_to_csv(rows))
 
   # deprecated do not use
@@ -294,5 +292,5 @@ def put_rows(auth, destination, filename, rows, variant=''):
 
       sys.stderr = sys.__stderr__;
     except e:
-      print e
+      print(str(e))
       traceback.print_exc()

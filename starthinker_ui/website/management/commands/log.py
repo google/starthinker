@@ -35,4 +35,4 @@ class Command(BaseCommand):
 
   def handle(self, *args, **kwargs):
     log = log_get(kwargs['recipe'])
-    print render_to_string('log.html', { 'log':log })
+    print(render_to_string('log.html', { 'log':log }))

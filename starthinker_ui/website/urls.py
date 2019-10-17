@@ -18,7 +18,7 @@
 
 from django.conf.urls import url
 
-import views
+from starthinker_ui.website import views
 
 urlpatterns = [
   url(r'^stats/$', views.stats, name='website.stats'),

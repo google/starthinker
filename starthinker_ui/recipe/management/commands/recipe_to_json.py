@@ -58,10 +58,10 @@ class Command(BaseCommand):
     for recipe in (Recipe.objects.filter(pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.filter(active=True)):
       try:
         if kwargs['remote']:
-          print 'Dispatch: %s' % recipe.uid()
+          print('Dispatch: %s' % recipe.uid())
           if kwargs['force']: recipe.force()
         elif settings.UI_CRON:
-          print 'Write: %s/recipe_%d.json' % (settings.UI_CRON, recipe.pk)
+          print('Write: %s/recipe_%d.json' % (settings.UI_CRON, recipe.pk))
           with open(settings.UI_CRON + '/recipe_%d.json' % recipe.pk, 'w') as f:
             f.write(json.dumps(recipe.get_json()))
         else:
@@ -70,5 +70,5 @@ class Command(BaseCommand):
       except (KeyboardInterrupt, SystemExit):
         raise
 
-      except Exception, e:
-        print 'DEPLOY ERROR:', str(e)
+      except Exception as e:
+        print('DEPLOY ERROR:', str(e))

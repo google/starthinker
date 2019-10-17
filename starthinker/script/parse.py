@@ -53,7 +53,7 @@ def get_field_value(field, variables):
   value = None
   try:
     value = variables.get(field['name'], field.get('default', ''))
-    if 'prefix' in field: # and isinstance(value, (basestring, int, long)): # why check this? It should never happen.
+    if 'prefix' in field: # and isinstance(value, (str, int)): # why check this? It should never happen.
       value = "%s%s" % (field['prefix'], value)
   except KeyError:
     pass

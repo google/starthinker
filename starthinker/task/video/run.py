@@ -25,7 +25,7 @@ import mimetypes
 
 import moviepy.editor as mp
 from PIL import Image, ImageDraw, ImageFont
-from apiclient.http import MediaFileUpload
+from googleapiclient.http import MediaFileUpload
 
 from starthinker.util.project import project
 from starthinker.util.sheets import sheets_read
@@ -39,10 +39,10 @@ CHUNKSIZE = int(10 * 1024000 * BUFFER_SCALE) # scale is controlled in config.py
 
 def hex_to_rgb(value, alpha=None):
   # if string assume hex format ( supports both #ffffff and #fff notation )
-  if isinstance(value, basestring):
+  if isinstance(value, str):
     value = value.lstrip('#')
     hlen = len(value)
-    rgba = [int(value[i:i+hlen/3], 16) for i in range(0, hlen, hlen/3)]
+    rgba = [int(value[i:i+int(hlen/3)], 16) for i in range(0, hlen, int(hlen/3))]
     if alpha: rgba.append(int(alpha * 255))
   # probably already a tuple just pass the value
   else:
@@ -58,11 +58,13 @@ def get_text_image(effect):
   # determine size of text
   img = Image.new("RGBA", (1,1))
   draw = ImageDraw.Draw(img)
-  size = draw.multiline_textsize(effect['text']['message'], font=fnt, spacing=effect['text']['size'] / 2)
+  size = draw.multiline_textsize(effect['text']['message'], font=fnt, spacing=int(effect['text']['size'] / 2))
 
   # make a blank image for the text and draw the text
+  print('S', size)
   txt = Image.new('RGBA', size, (255,255,255,0))
   d = ImageDraw.Draw(txt)
+  print('S', effect['text']['color'])
   d.text((0,0), effect['text']['message'], font=fnt, fill=hex_to_rgb(effect['text']['color'], effect.get('opacity')), align=effect['text']['align'])
 
   return numpy.array(txt)
@@ -172,8 +174,7 @@ def save_video(out, clip):
     os.remove(temporary_file_name)
 
   if out.get('dcm'):
-    print 'DCM not implemented yet.'
-    pass
+    print('DCM not implemented yet.')
 
   # for youtube, write to temporary file ( no alternative with moviepy ), then upload
   if out.get('youtube', {}).get('title'):
@@ -251,7 +252,7 @@ def videos_from_bigquery(bigquery):
 
 @project.from_parameters
 def video():
-  if project.verbose: print 'Video'
+  if project.verbose: print('Video')
 
   videos = []
 

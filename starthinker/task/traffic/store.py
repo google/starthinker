@@ -70,7 +70,7 @@ class Store(object):
       columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'W', 'X', 'Y', 'Z']
 
       data = json.dumps(self._id_map)
-      data = [data[start:start+49999] for start in xrange(0, len(data), 49999)]
+      data = [data[start:start+49999] for start in range(0, len(data), 49999)]
       sheets_write(self.auth, self.trix_id, 'Store', 'A:' + columns[len(data) + 1], [data])
 
 

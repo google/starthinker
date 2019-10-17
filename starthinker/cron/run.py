@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
 
   for filepath in glob('%s/*.json' % args.path):
-    if args.verbose: print 'RECIPE:', filepath
+    if args.verbose: print('RECIPE:', filepath)
     command = 'python -W ignore %s/starthinker/all/run.py %s %s' % (UI_ROOT, filepath, ' '.join(sys.argv[2:]))
-    if args.verbose: print 'COMMAND:', command
+    if args.verbose: print('COMMAND:', command)
     subprocess.Popen(command, shell=True)

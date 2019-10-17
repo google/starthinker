@@ -44,14 +44,14 @@ from starthinker.util.dcm import report_delete, report_build, report_create, rep
 
 @project.from_parameters
 def dcm():
-  if project.verbose: print 'DCM'
+  if project.verbose: print('DCM')
 
   # stores existing report json
   report = None
 
   # check if report is to be deleted
   if project.task.get('delete', False):
-    if project.verbose: print 'DCM DELETE', project.task['report'].get('name', None) or project.task['report'].get('body', {}).get('name', None) or project.task['report'].get('report_id', None)
+    if project.verbose: print('DCM DELETE', project.task['report'].get('name', None) or project.task['report'].get('body', {}).get('name', None) or project.task['report'].get('report_id', None))
     report_delete(
       project.task['auth'],
       project.task['report']['account'],
@@ -61,7 +61,7 @@ def dcm():
 
   # check if report is to be run
   if project.task.get('report_run_only', False):
-    if project.verbose: print 'DCM REPORT RUN', project.task['report'].get('name', None) or project.task['report'].get('report_id', None)
+    if project.verbose: print('DCM REPORT RUN', project.task['report'].get('name', None) or project.task['report'].get('report_id', None))
     report_run(
       project.task['auth'],
       project.task['report']['account'],
@@ -71,7 +71,7 @@ def dcm():
 
   # check if report is to be created - DEPRECATED
   if 'type' in project.task['report']:
-    if project.verbose: print 'DCM CREATE'
+    if project.verbose: print('DCM CREATE')
     report = report_create(
       project.task['auth'],
       project.task['report']['account'],
@@ -81,7 +81,7 @@ def dcm():
 
   # check if report is to be created
   if 'body' in project.task['report']:
-    if project.verbose: print 'DCM BUILD', project.task['report']['body']['name']
+    if project.verbose: print('DCM BUILD', project.task['report']['body']['name'])
 
     # filters can be passed using special get_rows handler, allows reading values from sheets etc...
     if 'filters' in project.task['report']:
@@ -123,7 +123,7 @@ def dcm():
     )
 
     if report:
-      if project.verbose: print 'DCM FILE', filename
+      if project.verbose: print('DCM FILE', filename)
 
       # clean up the report
       rows = report_to_rows(report)
@@ -132,12 +132,12 @@ def dcm():
       # if bigquery, remove header and determine schema
       schema = None
       if 'bigquery' in project.task['out']:
-        schema = report_schema(rows.next())
+        schema = report_schema(next(rows))
         project.task['out']['bigquery']['schema'] = schema
         project.task['out']['bigquery']['skip_rows'] = 0
 
       # write rows using standard out block in json ( allows customization across all scripts )
-      if rows: put_rows(project.task['auth'], project.task['out'], filename, rows)
+      if rows: put_rows(project.task['auth'], project.task['out'], rows)
 
 if __name__ == "__main__":
   dcm()

@@ -19,12 +19,16 @@
 import re
 import json
 import hashlib
+from urllib.parse import quote_plus
 
-from urllib import quote_plus
 from django import template
 from django.utils.html import mark_safe
 from django.forms.widgets import CheckboxInput
-from django.utils.encoding import force_unicode
+from django.template.loader_tags import do_include
+
+
+try: from django.utils.encoding import force_unicode
+except: from django.utils.encoding import force_text as force_unicode
 
 from starthinker_ui.recipe.forms_json import json_get_fields as json_get_fields_imported
 
@@ -121,3 +125,20 @@ def gapless(parser, token):
   nodelist = parser.parse(('endgapless',))
   parser.delete_first_token()
   return GaplessNode(nodelist)
+
+
+class TryIncludeNode(template.Node):
+  def __init__(self, parser, token):
+    self.include_node = do_include(parser, token)
+
+  def render(self, context):
+    try:
+      return self.include_node.render(context)
+    except template.TemplateDoesNotExist:
+      return ''
+
+
+@register.tag('try_include')
+def try_include(parser, token):
+  return TryIncludeNode(parser, token)
+

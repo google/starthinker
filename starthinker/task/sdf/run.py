@@ -30,7 +30,7 @@ FILTER_ID_CHUNK_SIZE = 5
 
 @project.from_parameters
 def sdf():
-  if project.verbose: print "SDF TO TABLE", project.task['out']['bigquery']['table']
+  if project.verbose: print("SDF TO TABLE", project.task['out']['bigquery']['table'])
   
   # Set is time partition and write disposition
   is_time_partition = project.task['out']['bigquery'].get('is_time_partition', False)
@@ -61,10 +61,9 @@ def sdf():
       rows = sdf_read(project.task['auth'], [file_type], project.task['filter_type'], partial_filter_ids, project.task.get('version', '3.1'))
 
       if rows:
-        schema = _sdf_schema(rows.next())
+        schema = _sdf_schema(next(rows))
         table_suffix = '%s_%s' % (current_filter_id_iteration, file_type.lower())
         table_name = '%s%s' % (project.task['out']['bigquery']['table'], table_suffix)
-        filename = '%s_%s.csv' % (file_type, project.date)
         # Check to see if the table exists, if not create it
         create_table_if_not_exist(
           project.task['auth'],
@@ -78,9 +77,8 @@ def sdf():
 
         put_rows(project.task['auth'], 
           project.task['out'], 
-          filename, 
-          rows, 
-          variant=table_suffix)
+          rows 
+          )
 
         table_names.append(table_name)
 

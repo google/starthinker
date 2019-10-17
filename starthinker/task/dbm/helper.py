@@ -55,7 +55,7 @@ if __name__ == "__main__":
   # get report
   if project.args.report:
     report = API_DBM(auth).queries().getquery(queryId=project.args.report).execute()
-    print json.dumps(report, indent=2, sort_keys=True)
+    print(json.dumps(report, indent=2, sort_keys=True))
 
   # get schema
   elif project.args.schema:
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     rows = report_to_rows(report)
     rows = report_clean(rows)
     rows = rows_to_type(rows)
-    print json.dumps(get_schema(rows)[1], indent=2, sort_keys=True)
+    print(json.dumps(get_schema(rows)[1], indent=2, sort_keys=True))
 
   # get sample
   elif project.args.sample:
@@ -76,5 +76,5 @@ if __name__ == "__main__":
   # get list
   else:
     for report in API_DBM(auth, iterate=True).queries().listqueries().execute():
-      print json.dumps(report, indent=2, sort_keys=True)
+      print(json.dumps(report, indent=2, sort_keys=True))
 

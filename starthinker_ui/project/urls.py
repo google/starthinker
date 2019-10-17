@@ -18,7 +18,7 @@
 
 from django.conf.urls import url
 
-import views
+from starthinker_ui.project import views
 
 urlpatterns = [
   url(r'^project/edit/(?P<pk>\d+)?/?$', views.project_edit, name='project.edit'),

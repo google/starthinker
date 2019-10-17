@@ -25,9 +25,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from io import BytesIO
-from urllib2 import urlopen
-from HTMLParser import HTMLParser
-from apiclient import errors
+from urllib.request import urlopen
+from html.parser import HTMLParser
 from datetime import timedelta
 
 from googleapiclient.errors import HttpError
@@ -75,8 +74,8 @@ def _email_links(service, message, link_regexp, download=False):
         elif part['mimeType'] == 'text/html': 
           links.extend(map(lambda link: html_parser.unescape(link), parse_url(content)))
 
-  except errors.HttpError, error:
-    print 'EMAIL LINK ERROR: %s' % error
+  except HttpError as error:
+    print('EMAIL LINK ERROR: %s' % error)
 
   # remove duplicates
   links = _list_unique(links)
@@ -116,8 +115,8 @@ def _email_attachments(service, message, attachment_regexp):
           file_data = BytesIO(base64.urlsafe_b64decode(data.encode('UTF-8')))
           yield part['filename'], file_data
 
-  except errors.HttpError, e:
-    print 'EMAIL ATTACHMENT ERROR:', str(e)
+  except HttpError as e:
+    print('EMAIL ATTACHMENT ERROR:', str(e))
 
 
 def _email_message(service, message, link_regexp, attachment_regexp, download=False):
@@ -133,15 +132,15 @@ def _email_find(service, email_from, email_to, date_min=None, date_max=None):
   query = 'from:%s AND to:%s' % (email_from, email_to)
   if date_min: query += ' AND after:%s' % date_to_str(date_min)
   if date_max: query += ' AND before:%s' % date_to_str(date_max + timedelta(days=1)) # make it inclusive
-  if project.verbose: print 'EMAIL SEARCH:', query
+  if project.verbose: print('EMAIL SEARCH:', query)
   results = API_Retry(service.users().messages().list(userId='me', q=query))
   messages = results.get('messages', [])
-  if project.verbose: print 'EMAILS FOUND:', len(messages)
+  if project.verbose: print('EMAILS FOUND:', len(messages))
   return messages
 
 
 def get_email_attachments(auth, email_from, email_to, subject_regexp=None, attachment_regexp=None, date_min=None, date_max=None):
-  if project.verbose: print 'GETTING EMAIL ATTACHMENTS'
+  if project.verbose: print('GETTING EMAIL ATTACHMENTS')
   service = get_service('gmail', 'v1', auth)
   messages = _email_find(service, email_from, email_to, date_min, date_max)
   subject_filter = re.compile(r'%s' % subject_regexp) if subject_regexp else None
@@ -152,7 +151,7 @@ def get_email_attachments(auth, email_from, email_to, subject_regexp=None, attac
 
 
 def get_email_links(auth, email_from, email_to, subject_regexp=None, link_regexp=None, download=False, date_min=None, date_max=None):
-  if project.verbose: print 'GETTING EMAIL LINKS'
+  if project.verbose: print('GETTING EMAIL LINKS')
   service = get_service('gmail', 'v1', auth)
   messages = _email_find(service, email_from, email_to, date_min, date_max)
   subject_filter = re.compile(r'%s' % subject_regexp) if subject_regexp else None
@@ -163,7 +162,7 @@ def get_email_links(auth, email_from, email_to, subject_regexp=None, link_regexp
 
 
 def get_email_messages(auth, email_from, email_to,  subject_regexp=None, link_regexp=None, attachment_regexp=None, download=False, date_min=None, date_max=None):
-  if project.verbose: print 'GETTING EMAILS'
+  if project.verbose: print('GETTING EMAILS')
   service = get_service('gmail', 'v1', auth)
   messages = _email_find(service, email_from, email_to, date_min, date_max)
   subject_filter = re.compile(r'%s' % subject_regexp) if subject_regexp else None
@@ -174,7 +173,7 @@ def get_email_messages(auth, email_from, email_to,  subject_regexp=None, link_re
 
 
 def send_email(auth, email_to, email_from, email_cc, subject, text, html=None, attachment_filename=None, attachment_rows=None):
-  if project.verbose: print 'SENDING EMAIL', email_to
+  if project.verbose: print('SENDING EMAIL', email_to)
   
   service = get_service('gmail', 'v1', auth)
   message = MIMEMultipart('alternative')
@@ -198,4 +197,5 @@ def send_email(auth, email_to, email_from, email_cc, subject, text, html=None, a
     encode_base64(attachment)
     message.attach(attachment)
 
-  API_Retry(service.users().messages().send(userId='me', body={'raw': base64.urlsafe_b64encode(message.as_string())}))
+  #API_Retry(service.users().messages().send(userId='me', body={'raw': base64.urlsafe_b64encode(message.as_string())}))
+  API_Retry(service.users().messages().send(userId='me', body={'raw': base64.urlsafe_b64encode(message.as_bytes()).decode()}))

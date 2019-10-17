@@ -19,7 +19,7 @@
 # BigQuery Storage Connector is subject to max file size limits, failing for many DT files ( avoiding BQ to storage connector ).
 
 import zlib
-from io import BytesIO
+from io import StringIO
 
 from starthinker.util.project import project
 from starthinker.util.bigquery import io_to_table
@@ -42,7 +42,7 @@ def dt_schema(header):
 
 @project.from_parameters
 def dt():
-  if project.verbose: print "DT TO TABLE", project.task['to']['table']
+  if project.verbose: print("DT TO TABLE", project.task['to']['table'])
 
   delimiter = '\n'
   disposition = 'WRITE_TRUNCATE'
@@ -61,7 +61,7 @@ def dt():
     # loop all chunks of file, decompress, and find row delimiter
     for data_gz in object_get_chunks(project.task['auth'], dt_file):
 
-      view += gz_handler.decompress(data_gz.read())
+      view += gz_handler.decompress(data_gz.read()).decode()
 
       if first_row:
         end = view.find(delimiter)
@@ -76,7 +76,7 @@ def dt():
         project.id,
         project.task['to']['dataset'],
         project.task['to']['table'],
-        BytesIO(view[:end]),
+        StringIO(view[:end]),
         'CSV',
         schema,
         0,

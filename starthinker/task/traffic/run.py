@@ -104,13 +104,13 @@ def execute_feed(feed, dao, print_field, msg='Processing'):
     for feed_item in feed.feed:
       try:
         value = str(feed_item[print_field])
-        print '%s %s' % (msg, value.encode('utf-8'))
+        print('%s %s' % (msg, value.encode('utf-8')))
         logger.log('%s %s' % (msg, value.encode('utf-8')))
         dao.process(feed_item)
       except Exception as error:
         clean_run = False
         stack = traceback.format_exc()
-        print stack
+        print(stack)
         logger.log(str(error))
 
   finally:
@@ -333,7 +333,7 @@ def traffic():
   """
   global clean_run
   if project.verbose:
-    print 'traffic'
+    print('traffic')
 
   try:
     setup()
@@ -370,13 +370,13 @@ def traffic():
 
   except Exception as error:
     stack = traceback.format_exc()
-    print stack
+    print(stack)
 
     logger.log(str(error))
     logger.flush()
 
   if clean_run:
-    print 'Done: Clean run.'
+    print('Done: Clean run.')
   else:
     raise Exception("Done: Errors happened.")
 

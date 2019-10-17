@@ -32,8 +32,8 @@ from starthinker_ui.recipe.models import Recipe
 
 
 def recipe_list(request):
-  if request.user.is_authenticated():
-    recipes = request.user.recipe_set.all() if request.user.is_authenticated() else []
+  if request.user.is_authenticated:
+    recipes = request.user.recipe_set.all()
   else:
     recipes = []
   return render(request, "recipe/recipe_list.html", { 'recipes':recipes })
@@ -54,7 +54,7 @@ def recipe_edit(request, pk=None, manual=False):
       messages.success(request, 'Recipe updated.')
       return HttpResponseRedirect(form_script.instance.link_edit())
     else:
-      print 'ERRORS', form_script.get_errors()
+      print('ERRORS', form_script.get_errors())
       messages.error(request, 'Recipe Script Errors: %s' % form_script.get_errors())
   else:
     form_script = ScriptForm(manual, recipe, request.user, scripts=request.GET.get('scripts', ''))
@@ -83,7 +83,7 @@ def recipe_run(request, pk):
     else:
       messages.success(request, 'Recipe dispatched, give it a few minutes to start.')
     recipe.force()
-  except Recipe.DoesNotExist, e:
+  except Recipe.DoesNotExist as e:
     messages.error(request, str(e))
   return HttpResponseRedirect('/recipe/edit/%s/' % pk)
 
@@ -97,7 +97,7 @@ def recipe_cancel(request, pk):
     else:
       messages.success(request, 'Recipe cancelled, no tasks are running.')
     recipe.cancel()
-  except Recipe.DoesNotExist, e:
+  except Recipe.DoesNotExist as e:
     messages.error(request, str(e))
   return HttpResponseRedirect('/recipe/edit/%s/' % pk)
 
@@ -107,12 +107,12 @@ def recipe_start(request):
   try:
     recipe = Recipe.objects.get(reference=request.POST.get('reference', 'invalid'))
     if recipe.is_running():
-      response = HttpResponse('RECIPE INTERRUPTED')
+      response = HttpResponse('RECIPE INTERRUPTED', content_type="text/plain")
     else:
-      response = HttpResponse('RECIPE STARTED')
+      response = HttpResponse('RECIPE STARTED', content_type="text/plain")
     recipe.force()
-  except Recipe.DoesNotExist, e:
-    response = HttpResponseNotFound('RECIPE NOT FOUND')
+  except Recipe.DoesNotExist as e:
+    response = HttpResponseNotFound('RECIPE NOT FOUND', content_type="text/plain")
   return response
 
 
@@ -121,12 +121,12 @@ def recipe_stop(request):
   try:
     recipe = Recipe.objects.get(reference=request.POST.get('reference', 'invalid'))
     if recipe.is_running():
-      response = HttpResponse('RECIPE INTERRUPTED')
+      response = HttpResponse('RECIPE INTERRUPTED', content_type="text/plain")
     else:
-      response = HttpResponse('RECIPE STOPPED')
+      response = HttpResponse('RECIPE STOPPED', content_type="text/plain")
     recipe.cancel()
-  except Recipe.DoesNotExist, e:
-    response = HttpResponseNotFound('RECIPE NOT FOUND')
+  except Recipe.DoesNotExist as e:
+    response = HttpResponseNotFound('RECIPE NOT FOUND', content_type="text/plain")
   return response
 
 
@@ -138,6 +138,6 @@ def recipe_download(request, pk):
     response = HttpResponse(json.dumps(data, indent=2), content_type='application/json')
     response['Content-Disposition'] = 'attachment; filename=recipe_%s.json' % recipe.uid()
     return response
-  except Exception, e:
+  except Exception as e:
     messages.error(request, str(e))
   return HttpResponseRedirect('/recipe/edit/%s/' % pk)

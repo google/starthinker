@@ -43,4 +43,4 @@ if __name__ == "__main__":
   auth = 'service' if project.args.service else 'user'
 
   for row in lineitem_read(auth, lineitems=[project.args.lineitem]):
-    print row
+    print(row)

@@ -22,7 +22,7 @@ from __future__ import unicode_literals
 
 import httplib2
 
-from apiclient import discovery
+from googleapiclient import discovery
 
 from django.conf import settings
 from django.contrib import messages
@@ -30,36 +30,30 @@ from django.shortcuts import render
 from django.contrib.auth import login as django_login, logout as django_logout
 from django.http import HttpResponseRedirect
 
-from starthinker.util.auth import get_flow
+from starthinker.util.auth.wrapper import CredentialsFlowWrapper
 from starthinker_ui.account.models import Account
 from starthinker_ui.account.forms import LoginForm
 
 
 def oauth_callback(request):
 
-  #try:
   # get the credentials from the Google redirect
-  flow = get_flow(settings.UI_CLIENT, redirect_uri=settings.CONST_URL + '/oauth_callback/')
-  credentials = flow.step2_exchange(request.GET['code'])
+  flow = CredentialsFlowWrapper(settings.UI_CLIENT, redirect_uri=settings.CONST_URL + '/oauth_callback/')
+  flow.code_verifier = request.session.get('code_verifier')
+  flow.fetch_token(code=request.GET['code'])
 
   # pull user information for account lookup or creation
-  service = discovery.build('oauth2', 'v2', credentials.authorize(httplib2.Http()))
+  service = discovery.build('oauth2', 'v2', credentials=flow.credentials)
   profile = service.userinfo().get().execute()
 
   # get or create the account
-  account = Account.objects.get_or_create_user(profile, credentials)
+  account = Account.objects.get_or_create_user(profile, flow.credentials)
   #authenticate(username = username, password = password)
 
   # log the account in ( set cookie )
   django_login(request, account, backend=settings.AUTHENTICATION_BACKENDS[0])
 
   messages.success(request, 'Welcome To StarThinker')
-
-  #except Exception, e: 
-  #  messages.error(request, 'A Swing And A Miss')
-  #  import traceback
-  #  traceback.print_exc()
-
 
   return HttpResponseRedirect('/')
 
@@ -72,7 +66,7 @@ def logout(request):
 
 def login(request):
 
-  if request.user.is_authenticated():
+  if request.user.is_authenticated:
     messages.success(request, 'You Are Logged In')
     return HttpResponseRedirect('/')
 

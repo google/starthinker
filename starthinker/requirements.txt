@@ -15,17 +15,13 @@
 #  limitations under the License.
 #
 ###########################################################################
-#google-cloud-core
-#google-cloud-bigquery
-#google-cloud-storage
-#google-cloud-pubsub
-#google-auth
-#google-auth-httplib2
+
 google-api-python-client
+google-auth-oauthlib
 oauth2client
 httplib2
 jsonpickle
-django==1.11
+django==2.2.5
 pysftp
 pytz
 tzlocal
@@ -36,3 +32,4 @@ psutil
 moviepy
 py-xlsx
 simple-salesforce
+

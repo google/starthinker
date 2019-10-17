@@ -17,7 +17,6 @@
 ###########################################################################
 
 import re
-from itertools import cycle
 from datetime import datetime
 
 MARKUP_TO_HTML = re.compile( r'\[(.*?)\]\((.*?)\)', flags=re.IGNORECASE)
@@ -159,7 +158,7 @@ class EmailTemplate:
   def image(self, src, link=None):
     # HTML
     if link: self.content_html += '<a href="%s">' % link
-    self.content_html += '<img src="%s" style="width:auto;height:auto;margin:10px auto;padding:0px;border:0px;"/>' % src
+    self.content_html += '<img src="%s" style="max-width:100%%;width:auto;height:auto;margin:10px auto;padding:0px;border:0px;"/>' % src
     if link: self.content_html += '</a>'
 
     # Text
@@ -246,7 +245,7 @@ class EmailTemplate:
       for column, header in enumerate(schema):
         value = row[column]
         # change links into clickable buttons ( do we want to make up our own schema here? for images too? )
-        if isinstance(value, basestring) and value.startswith('http'):
+        if isinstance(value, str) and value.startswith('http'):
           value = '<a href="%s" style="border-radius:50px;padding:1px 12px;%s">&rarr;</a>' % (value, self._button_css())
         self.content_html += '<td style="padding:10px;text-align:%s;border-bottom:1px solid #ccc;%s">%s</td>' % (aligns.get(header['type'], 'left'), self._table_css(), value)
       self.content_html += '</tr>'
@@ -336,5 +335,5 @@ if __name__ == "__main__":
       [ 'Third', 3, True, 3.3, 'http://www.google.com' ],
     ]
   )
-  print t.get_html()
-  print t.get_text()
+  print(t.get_html())
+  print(t.get_text())

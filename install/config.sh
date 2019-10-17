@@ -427,11 +427,11 @@ install_virtualenv_darwin() {
 
   if [ "$(command -v pip)" == "" ]; then
     sudo easy_install pip
-    pip install pip --upgrade --quiet 
+    pip install pip --upgrade --quiet --user
   fi
 
   if [ "$(command -v virtualenv)" == "" ]; then
-    pip2 install virtualenv --quiet
+    pip3 install virtualenv --quiet --user
   fi
 }
 
@@ -460,8 +460,8 @@ install_virtualenv() {
 
   if [ ! -d "${STARTHINKER_ENV}" ]; then
 
-    PYTHON2=$(which python2);
-    virtualenv --python=${PYTHON2} ${STARTHINKER_ENV}
+    PYTHON3=$(which python3);
+    virtualenv --python=${PYTHON3} ${STARTHINKER_ENV}
 
   fi
 
@@ -478,7 +478,7 @@ install_requirements() {
   echo ""
 
   source "${STARTHINKER_ENV}/bin/activate"
-  pip2 install -r ${STARTHINKER_ROOT}/starthinker/requirements.txt --quiet
+  pip3 install -r ${STARTHINKER_ROOT}/starthinker/requirements.txt --quiet
   deactivate
 
   echo "Done"
@@ -494,7 +494,7 @@ install_requirements_ui() {
   echo ""
 
   source "${STARTHINKER_ENV}/bin/activate"
-  pip2 install -r ${STARTHINKER_ROOT}/starthinker_ui/requirements.txt --quiet
+  pip3 install -r ${STARTHINKER_ROOT}/starthinker_ui/requirements.txt --quiet
   deactivate
 
   echo "Done"

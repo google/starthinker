@@ -25,7 +25,7 @@ from starthinker.util.storage import object_list, object_move, object_delete
 
 @project.from_parameters
 def archive():
-  if project.verbose: print 'ARCHIVE'
+  if project.verbose: print('ARCHIVE')
 
   day = project.date - timedelta(days=abs(project.task['days']))
 
@@ -34,10 +34,10 @@ def archive():
       file_day = parse_yyyymmdd(file_name)
       if file_day and file_day <= day:
         if project.task.get('delete', False) == False:
-          if project.verbose: print 'ARCHIVING FILE:', file_name
+          if project.verbose: print('ARCHIVING FILE:', file_name)
           object_move(project.task['auth'], file_name, file_name.replace(':', ':archive/'))
         else:
-          if project.verbose: print 'DELETING FILE:', file_name
+          if project.verbose: print('DELETING FILE:', file_name)
           object_delete(project.task['auth'], file_name)
 
 

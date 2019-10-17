@@ -1,0 +1,397 @@
+{
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2019 Google Inc."
+  },
+  "tasks": [
+    {
+      "dataset": {
+        "auth": "service", 
+        "dataset": "Test"
+      }
+    }, 
+    {
+      "dcm": {
+        "report": {
+          "body": {
+            "criteria": {
+              "dateRange": {
+                "relativeDateRange": "LAST_24_MONTHS"
+              }, 
+              "dimensions": [
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:advertiser"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:advertiserId"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:campaign"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:campaignId"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:site"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:browserPlatform"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:platformType"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:date"
+                }
+              ], 
+              "metricNames": [
+                "dfa:impressions", 
+                "dfa:clicks", 
+                "dfa:activityViewThroughConversions", 
+                "dfa:activityClickThroughConversions"
+              ]
+            }, 
+            "accountId":{"field":{ "name":"dcm_account", "kind":"integer", "default":"" }},
+            "type": "STANDARD", 
+            "name": "CM_Browser_Delivery_Test", 
+            "format": "CSV"
+          }, 
+          "account":{"field":{ "name":"dcm_account", "kind":"integer", "default":"" }},
+          "filters": {
+            "dfa:advertiser": {
+              "values": {"field":{ "name":"dcm_advertisers", "kind":"integer_list", "default":[] }}
+            }
+          }
+        }, 
+        "auth": "user"
+      }
+    }, 
+    {
+      "dcm": {
+        "datastudio": true, 
+        "report": {
+          "account":{"field":{ "name":"dcm_account", "kind":"integer", "default":"" }},
+          "name": "CM_Browser_Delivery_Test"
+        }, 
+        "auth": "user", 
+        "out": {
+          "bigquery": {
+            "table": "CM_Browser_Delivery", 
+            "dataset": "Test"
+          }
+        }
+      }
+    }, 
+    {
+      "dcm": {
+        "report": {
+          "body": {
+            "accountId":{"field":{ "name":"dcm_account", "kind":"integer", "default":"" }},
+            "type": "FLOODLIGHT", 
+            "name": "CM_Browser_Floodlight_Test", 
+            "floodlightCriteria": {
+              "reportProperties": {
+                "includeUnattributedIPConversions": false, 
+                "includeUnattributedCookieConversions": true
+              }, 
+              "dateRange": {
+                "relativeDateRange": "LAST_60_DAYS"
+              }, 
+              "floodlightConfigId": {
+                "dimensionName": "dfa:floodlightConfigId", 
+                "kind": "dfareporting#dimensionValue", 
+                "matchType": "EXACT", 
+                "value":{"field":{ "name":"dcm_floodlight", "kind":"integer", "default":"", "description":"DCM floodlight configuration id." }}
+              }, 
+              "dimensions": [
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:advertiser"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:advertiserId"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:campaign"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:campaignId"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:date"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:browserPlatform"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:platformType"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:activity"
+                }, 
+                {
+                  "kind": "dfareporting#sortedDimension", 
+                  "name": "dfa:activityId"
+                }
+              ], 
+              "metricNames": [
+                "dfa:activityClickThroughConversions", 
+                "dfa:activityViewThroughConversions", 
+                "dfa:totalConversions"
+              ]
+            }, 
+            "format": "CSV"
+          }, 
+          "account":{"field":{ "name":"dcm_account", "kind":"integer", "default":"" }}
+        }, 
+        "auth": "user"
+      }
+    }, 
+    {
+      "dcm": {
+        "datastudio": true, 
+        "report": {
+          "account":{"field":{ "name":"dcm_account", "kind":"integer", "default":"" }},
+          "name": "CM_Browser_Floodlight_Test"
+        }, 
+        "auth": "user", 
+        "out": {
+          "bigquery": {
+            "table": "CM_Browser_Floodlight", 
+            "dataset": "Test"
+          }
+        }
+      }
+    }, 
+    {
+      "dbm": {
+        "report": {
+          "body": {
+            "timezoneCode": "America/Los_Angeles", 
+            "params": {
+              "metrics": [
+                "METRIC_IMPRESSIONS", 
+                "METRIC_CLICKS", 
+                "METRIC_LAST_CLICKS", 
+                "METRIC_LAST_IMPRESSIONS", 
+                "METRIC_REVENUE_ADVERTISER", 
+                "METRIC_MEDIA_COST_ADVERTISER"
+              ], 
+              "type": "TYPE_GENERAL", 
+              "filters": [
+                {
+                  "type": "FILTER_PARTNER", 
+                  "value": {"field":{ "name":"dbm_partner", "kind":"integer", "default":"", "description":"DBM partner id." }} 
+                }, 
+                {
+                  "type": "FILTER_ADVERTISER", 
+                  "value": {"field":{ "name":"dbm_advertisers", "kind":"integer_list", "default":[], "description":"Comma delimited list of DBM advertiser ids." }}
+                }
+              ], 
+              "includeInviteData": true, 
+              "groupBys": [
+                "FILTER_ADVERTISER", 
+                "FILTER_BROWSER", 
+                "FILTER_MEDIA_PLAN", 
+                "FILTER_DATE", 
+                "FILTER_DEVICE_TYPE", 
+                "FILTER_INSERTION_ORDER", 
+                "FILTER_PAGE_LAYOUT"
+              ]
+            }, 
+            "metadata": {
+              "dataRange": "LAST_24_MONTHS", 
+              "title": "DV360_Browser_Delivery_Test"
+            }
+          }, 
+          "name": "DV360_Browser_Delivery_Test"
+        }, 
+        "auth": "user"
+      }
+    }, 
+    {
+      "dbm": {
+        "datastudio": true, 
+        "report": {
+          "name": "DV360_Browser_Delivery_Test"
+        }, 
+        "auth": "user", 
+        "out": {
+          "bigquery": {
+            "table": "DV360_Browser_Delivery", 
+            "schema": [
+              {
+                "type": "STRING", 
+                "name": "Advertiser"
+              }, 
+              {
+                "type": "INTEGER", 
+                "name": "Advertiser_ID"
+              }, 
+              {
+                "type": "STRING", 
+                "name": "Advertiser_Status"
+              }, 
+              {
+                "type": "STRING", 
+                "name": "Advertiser_Integration_Code"
+              }, 
+              {
+                "type": "STRING", 
+                "name": "Browser"
+              }, 
+              {
+                "type": "STRING", 
+                "name": "Campaign"
+              }, 
+              {
+                "type": "INTEGER", 
+                "name": "Campaign_ID"
+              }, 
+              {
+                "type": "DATE", 
+                "name": "Report_Day"
+              }, 
+              {
+                "type": "STRING", 
+                "name": "Device_Type"
+              }, 
+              {
+                "type": "STRING", 
+                "name": "Insertion_Order"
+              }, 
+              {
+                "type": "INTEGER", 
+                "name": "Insertion_Order_ID"
+              }, 
+              {
+                "type": "STRING", 
+                "name": "Insertion_Order_Status"
+              }, 
+              {
+                "type": "STRING", 
+                "name": "Insertion_Order_Integration_Code"
+              }, 
+              {
+                "type": "STRING", 
+                "name": "Environment"
+              }, 
+              {
+                "type": "STRING", 
+                "name": "Advertiser_Currency"
+              }, 
+              {
+                "type": "INTEGER", 
+                "name": "Impressions"
+              }, 
+              {
+                "type": "INTEGER", 
+                "name": "Clicks"
+              }, 
+              {
+                "type": "FLOAT", 
+                "name": "Post_Click_Conversions"
+              }, 
+              {
+                "type": "FLOAT", 
+                "name": "Post_View_Conversions"
+              }, 
+              {
+                "type": "FLOAT", 
+                "name": "Revenue_Adv_Currency"
+              }, 
+              {
+                "type": "FLOAT", 
+                "name": "Media_Cost_Advertiser_Currency"
+              }
+            ], 
+            "dataset": "Test"
+          }
+        }
+      }
+    }, 
+    {
+      "bigquery": {
+        "to": {
+          "table": "Floodlight_Browser_Delivery", 
+          "dataset": "Test"
+        }, 
+        "from": {
+          "query": "WITH\r\nbrowser_clean AS (\r\n  SELECT\r\n    Advertiser,\r\n    Advertiser_Id,\r\n    Campaign,\r\n    Campaign_Id,\r\n    Browser_Platform,\r\n   Activity,\r\n    Activity_ID,\r\n    CASE\r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*Chrome).*\") THEN \"Chrome\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*Firefox).*\") THEN \"Firefox\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*Safari).*\") THEN \"Safari\"\r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*iPad).*\") THEN \"Safari\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*iPad).*\") THEN \"Safari\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*iPhone).*\") THEN \"Safari\" \r\n    ELSE \"Other\"\r\n    END AS Clean_Browser,\r\n    Platform_Type,\r\n    Report_Day,\r\n    View_Through_Conversions,\r\n    Click_Through_Conversions,\r\n    Total_Conversions\r\n  FROM [PARAMETER].CM_Browser_Floodlight\r\n)\r\n\r\n  SELECT\r\n    *,\r\n    CASE WHEN Platform_Type=\"Mobile highend: smartphone\" OR Platform_Type=\"Mobile midrange: feature phone\" OR Platform_Type=\"Tablet\" THEN Total_Conversions ELSE 0 END AS Mobile_Convs,\r\n   CASE WHEN Platform_Type=\"Desktop\" THEN Total_Conversions ELSE 0 END AS Desktop_Convs,\r\n   CASE WHEN Clean_Browser=\"Chrome\" THEN Total_Conversions ELSE 0 END AS Chrome_Convs,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Total_Conversions ELSE 0 END AS Safari_Convs,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Total_Conversions ELSE 0 END AS Firefox_Convs\r\n  FROM browser_clean", 
+          "legacy": false, 
+          "parameters": [
+            "Test"
+          ]
+        }, 
+        "auth": "service"
+      }
+    }, 
+    {
+      "bigquery": {
+        "to": {
+          "table": "CM_Browser_Delivery", 
+          "dataset": "Test"
+        }, 
+        "from": {
+          "query": "WITH\r\nbrowser_clean AS (\r\n  SELECT\r\n    Advertiser,\r\n    Advertiser_Id,\r\n    Campaign,\r\n    Campaign_Id,\r\n    Site_Dcm,\r\n    Browser_Platform,\r\n  CASE\r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*Chrome).*\") THEN \"Chrome\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*Firefox).*\") THEN \"Firefox\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*Safari).*\") THEN \"Safari\"\r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*iPad).*\") THEN \"Safari\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*iPad).*\") THEN \"Safari\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*iPhone).*\") THEN \"Safari\" \r\n    ELSE \"Other\"\r\n    END AS Clean_Browser,\r\n    Platform_Type,\r\n    Report_Day,\r\n    Impressions,\r\n    Clicks,\r\n    View_Through_Conversions,\r\n    Click_Through_Conversions\r\n  FROM [PARAMETER].CM_Browser_Delivery\r\n)\r\n\r\n SELECT\r\n    *,\r\n   CASE WHEN Platform_Type=\"Mobile highend: smartphone\" OR Platform_Type=\"Mobile midrange: feature phone\" OR Platform_Type=\"Tablet\" THEN Impressions ELSE 0 END AS Mobile_Imps,\r\n   CASE WHEN Platform_Type=\"Desktop\" THEN Impressions ELSE 0 END AS Desktop_Imps,\r\n   CASE WHEN Platform_Type=\"Connected TV\" THEN Impressions ELSE 0 END AS CTV_Imps,\r\n   CASE WHEN Clean_Browser=\"Chrome\" THEN Impressions ELSE 0 END AS Chrome_Imps,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Impressions ELSE 0 END AS Safari_Imps,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Impressions ELSE 0 END AS Firefox_Imps\r\n  FROM browser_clean", 
+          "legacy": false, 
+          "parameters": [
+            "Test"
+          ]
+        }, 
+        "auth": "service"
+      }
+    }, 
+    {
+      "bigquery": {
+        "to": {
+          "table": "DV360_Browser_Delivery", 
+          "dataset": "Test"
+        }, 
+        "from": {
+          "query": "WITH\r\nbrowser_cleaned AS (\r\n  SELECT \r\n    Advertiser,\r\n    Advertiser_Id,\r\n    Advertiser_Currency,\r\n    Browser,\r\n    Campaign,\r\n    Campaign_Id,\r\n    Insertion_Order, \r\n    Insertion_Order_Id,\r\n    Report_Day,\r\n    Device_Type,\r\n    Environment,\r\n    Impressions,\r\n    Clicks,\r\n    Post_Click_Conversions,\r\n    Post_View_Conversions,\r\n    Revenue_Adv_Currency as Revenue,\r\n    Media_Cost_Advertiser_Currency,\r\n    CASE\r\n      WHEN REGEXP_CONTAINS(Browser, \"((?i).*Chrome).*\") THEN \"Chrome\" \r\n      WHEN REGEXP_CONTAINS(Browser, \"((?i).*Firefox).*\") THEN \"Firefox\" \r\n      WHEN REGEXP_CONTAINS(Browser, \"((?i).*Safari).*\") THEN \"Safari\"\r\n      ELSE \"Other\"\r\n      END AS Clean_Browser,\r\n    CASE \r\n      WHEN Browser=\"Safari 12\" THEN \"Safari 12\"\r\n      WHEN Browser=\"Safari 11\" THEN \"Safari 11\"\r\n      WHEN REGEXP_CONTAINS(Browser, \"((?i).*Safari).*\") AND Browser!=\"Safari 12\" AND Browser!=\"Safari 11\" THEN \"Safari 10 & Below\"\r\n      ELSE \"Non Safari\"\r\n    END AS ITP_Affected_Browsers\r\n   FROM [PARAMETER].DV360_Browser_Delivery \r\n)\r\n\r\n  SELECT\r\n    *,\r\n    CASE WHEN Device_Type=\"Smart Phone\" OR Device_Type=\"Tablet\" THEN Impressions ELSE 0 END AS Mobile_Imps,\r\n   CASE WHEN Device_Type=\"Desktop\" THEN Impressions ELSE 0 END AS Desktop_Imps,\r\n   CASE WHEN Device_Type=\"Connected TV\" THEN Impressions ELSE 0 END AS CTV_Imps,\r\n   CASE WHEN Clean_Browser=\"Chrome\" THEN Impressions ELSE 0 END AS Chrome_Imps,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Impressions ELSE 0 END AS Safari_Imps,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Impressions ELSE 0 END AS Firefox_Imps,\r\n    CASE WHEN Clean_Browser=\"Chrome\" THEN Revenue ELSE 0 END AS Chrome_Rev,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Revenue ELSE 0 END AS Safari_Rev,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Revenue ELSE 0 END AS Firefox_Rev,\r\n   CASE WHEN Clean_Browser=\"Chrome\" THEN Post_Click_Conversions ELSE 0 END AS Chrome_Click_Convs,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Post_Click_Conversions ELSE 0 END AS Safari_Click_Convs,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Post_Click_Conversions ELSE 0 END AS Firefox_Click_Convs,\r\n   CASE WHEN Clean_Browser=\"Chrome\" THEN Post_View_Conversions ELSE 0 END AS Chrome_View_Convs,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Post_View_Conversions ELSE 0 END AS Safari_View_Convs,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Post_View_Conversions ELSE 0 END AS Firefox_View_Convs,\r\n   CASE WHEN Clean_Browser=\"Chrome\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS Chrome_Convs,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS Safari_Convs,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS Firefox_Convs,\r\n   \r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 12\" THEN Impressions ELSE 0 END AS S12_Imps,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 11\" THEN Impressions ELSE 0 END AS S11_Imps,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 10 & Below\" THEN Impressions ELSE 0 END AS S_Imps,\r\n   CASE WHEN ITP_Affected_Browsers=\"Non Safari\" THEN Impressions ELSE 0 END AS NS_Imps,\r\n   \r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 12\" THEN Post_Click_Conversions ELSE 0 END AS S12_Click_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 11\" THEN Post_Click_Conversions ELSE 0 END AS S11_Click_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 10 & Below\" THEN Post_Click_Conversions ELSE 0 END AS S_Click_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Non Safari\" THEN Post_Click_Conversions ELSE 0 END AS NS_Click_Convs,\r\n   \r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 12\" THEN Post_View_Conversions ELSE 0 END AS S12_View_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 11\" THEN Post_View_Conversions ELSE 0 END AS S11_View_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 10 & Below\" THEN Post_View_Conversions ELSE 0 END AS S_View_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Non Safari\" THEN Post_View_Conversions ELSE 0 END AS NS_View_Convs,\r\n   \r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 12\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS S12_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 11\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS S11_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 10 & Below\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS S_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Non Safari\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS NS_Convs\r\n   \r\n   \r\n  FROM browser_cleaned", 
+          "legacy": false, 
+          "parameters": [
+            "Test"
+          ]
+        }, 
+        "auth": "service"
+      }
+    }, 
+    {
+      "bigquery": {
+        "to": {
+          "table": "Combined_Browser_Delivery", 
+          "dataset": "Test"
+        }, 
+        "from": {
+          "query": "WITH cm AS ( SELECT Report_Day, CASE  WHEN Platform_Type=\"Desktop\" THEN \"Desktop\" WHEN Platform_Type=\"Tablet\" THEN \"Mobile_Tablet\" WHEN Platform_Type=\"Mobile highend: smartphone\" THEN \"Mobile_Tablet\" WHEN Platform_Type=\"Mobile midrange: feature phone\" THEN \"Mobile_Tablet\" WHEN Platform_Type=\"Connected TV\" THEN \"CTV\" END AS Device_Clean, SUM(Impressions) as CM_Impressions FROM `[PARAMETER].CM_Browser_Delivery`  GROUP BY 1,2 ),  dv3 AS ( SELECT Report_Day as RD, CASE  WHEN Device_Type=\"Desktop\" THEN \"Desktop\" WHEN Device_Type=\"Tablet\" THEN \"Mobile_Tablet\" WHEN Device_Type=\"Smart Phone\" THEN \"Mobile_Tablet\" WHEN Device_Type=\"Connected TV\" THEN \"CTV\" END AS Device_Clean_DV360, SUM(Impressions) as DV360_Impressions FROM `[PARAMETER].DV360_Browser_Delivery`  GROUP BY 1,2 )  SELECT Report_Day, Device_Clean, CM_Impressions, DV360_Impressions FROM cm a JOIN dv3 b ON a.Report_Day=b.RD AND a.Device_Clean=b.Device_Clean_DV360", 
+          "legacy": false, 
+          "parameters": [
+            "Test", 
+            "Test"
+          ]
+        }, 
+        "auth": "service"
+      }
+    },
+    { "test": {
+      "assert":"Completed all tasks."
+    }}
+  ]
+}

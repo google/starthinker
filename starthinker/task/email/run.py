@@ -30,12 +30,12 @@ def email_files(email):
 
   # loop attachment, outside it looks like one iteration
   for filename, data in email['attachments']:
-    if project.verbose: print 'EMAIL ATTACHMENT:', filename
+    if project.verbose: print('EMAIL ATTACHMENT:', filename)
     yield filename, data
 
   # loop links, outside it looks like one iteration
   for filename, data in email['links']:
-    if project.verbose: print 'EMAIL LINK:', filename
+    if project.verbose: print('EMAIL LINK:', filename)
     yield filename, data
 
 
@@ -53,18 +53,18 @@ def email_read():
   )
 
   # only take the most recent email
-  try: email = email.next()
+  try: email = next(email)
   except:
     traceback.print_exc()
-    if project.verbose: print 'NO EMAILS FOUND'
+    if project.verbose: print('NO EMAILS FOUND')
     exit()
 
-  if project.verbose: print 'EMAIL:', email['subject']
+  if project.verbose: print('EMAIL:', email['subject'])
 
   # loop all attached files
   for filename, data in email_files(email):
 
-    if project.verbose: print 'EMAIL FILENAME:', filename
+    if project.verbose: print('EMAIL FILENAME:', filename)
 
     # decompress if necessary
     if filename.endswith('.gz'):
@@ -78,23 +78,23 @@ def email_read():
         rows = rows_trim(rows)
         rows = rows_header_sanitize(rows)
 
-        if project.verbose: print 'EMAIL WRITE', filename
-        put_rows(project.task['auth'], project.task['read']['out'], filename, rows, column_header_sanitize(sheet))
+        if project.verbose: print('EMAIL WRITE', filename)
+        put_rows(project.task['auth'], project.task['read']['out'], rows, column_header_sanitize(sheet))
 
     # if csv, save directly
     elif filename.endswith('.csv'):
-      rows = csv_to_rows(data)
+      rows = csv_to_rows(data.read().decode())
       rows = rows_header_sanitize(rows)
 
-      if project.verbose: print 'EMAIL WRITE', filename
-      put_rows(project.task['auth'], project.task['read']['out'], filename, rows)
+      if project.verbose: print('EMAIL WRITE', filename)
+      put_rows(project.task['auth'], project.task['read']['out'], rows)
 
     else:
-      if project.verbose: print 'UNSUPPORTED FILE:', filename
+      if project.verbose: print('UNSUPPORTED FILE:', filename)
 
 
 def email_send():
-  if project.verbose: print 'EMAIL SEND'
+  if project.verbose: print('EMAIL SEND')
 
   send_email(
     'user',

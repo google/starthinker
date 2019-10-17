@@ -124,12 +124,12 @@ def get_metrics():
           metrics['author'][author]['script'].add(s['tag'])
 
   # compute totals
-  for dimension in totals.keys():
+  for dimension in iter(totals.keys()):
     totals[dimension] = len(totals[dimension])
      
   for metric_key, metric in metrics.items():
     for row_key, row in metric.items():
-      for dimension in row.keys():
+      for dimension in iter(row.keys()):
         row[dimension] = len(row[dimension])
         row['%s_percent' % dimension] = (row[dimension] * 100) / (totals[dimension] or 1)
         row[metric_key] = row_key

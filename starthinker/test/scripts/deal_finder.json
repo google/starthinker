@@ -1,0 +1,147 @@
+{
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2019 Google Inc."
+  },
+  "tasks": [
+    {
+      "dataset": {
+        "auth": "service", 
+        "description": "Create a dataset for bigquery tables.", 
+        "dataset": "Test"
+      }
+    }, 
+    {
+      "dbm": {
+        "auth": "user", 
+        "description": "Create a DBM report.",
+        "report": {
+          "partners": {
+            "values":{"field":{ "name":"partner_ids", "kind":"integer_list", "default":[] }}
+          }, 
+          "advertisers": {
+            "values":{"field":{ "name":"advertiser_ids", "kind":"integer_list", "default":[] }}
+          }, 
+          "name": "Deal_Finder_Test", 
+          "data_range": "LAST_30_DAYS", 
+          "metrics": [
+            "METRIC_IMPRESSIONS", 
+            "METRIC_CLICKS", 
+            "METRIC_TOTAL_CONVERSIONS", 
+            "METRIC_TOTAL_MEDIA_COST_ADVERTISER", 
+            "METRIC_REVENUE_ADVERTISER", 
+            "METRIC_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS", 
+            "METRIC_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS"
+          ], 
+          "timezone": "America/Los_Angeles", 
+          "type": "TYPE_CROSS_PARTNER", 
+          "dimensions": [
+            "FILTER_PARTNER", 
+            "FILTER_ADVERTISER", 
+            "FILTER_SITE_ID", 
+            "FILTER_INVENTORY_SOURCE", 
+            "FILTER_INVENTORY_SOURCE_TYPE", 
+            "FILTER_ADVERTISER_CURRENCY", 
+            "FILTER_CREATIVE_SIZE", 
+            "FILTER_CREATIVE_TYPE"
+          ]
+        }
+      }
+    }, 
+    {
+      "dbm": {
+        "auth": "user", 
+        "description": "Copy a DBM report to BigQuery.", 
+        "report": {
+          "name": "Deal_Finder_Test", 
+          "timeout": 10
+        }, 
+        "out": {
+          "bigquery": {
+            "dataset": "Test",
+            "table": "Deal_Finder_DBM_Report", 
+            "schema": [
+              { "type": "STRING", "name": "Partner" }, 
+              { "type": "INTEGER", "name": "Partner_ID" }, 
+              { "type": "STRING", "name": "Partner_Status", "mode": "NULLABLE" }, 
+              { "type": "STRING", "name": "Advertiser" }, 
+              { "type": "INTEGER", "name": "Advertiser_ID" }, 
+              { "type": "STRING", "name": "Advertiser_Status", "mode": "NULLABLE" }, 
+              { "type": "STRING", "name": "Advertiser_Integration_Code", "mode": "NULLABLE" }, 
+              { "type": "STRING", "name": "Site" }, 
+              { "type": "INTEGER", "name": "Site_ID" }, 
+              { "type": "STRING", "name": "Inventory", "mode": "NULLABLE" }, 
+              { "type": "INTEGER", "name": "Inventory_ID", "mode": "NULLABLE" }, 
+              { "type": "STRING", "name": "Inventory_Type" }, 
+              { "type": "STRING", "name": "Advertiser_Currency" }, 
+              { "type": "STRING", "name": "Creative_Width", "mode": "NULLABLE" }, 
+              { "type": "STRING", "name": "Creative_Height", "mode": "NULLABLE" }, 
+              { "type": "STRING", "name": "Creative_Type" }, 
+              { "type": "INTEGER", "name": "Impressions" }, 
+              { "type": "INTEGER", "name": "Clicks" }, 
+              { "type": "FLOAT", "name": "Conversions" }, 
+              { "type": "FLOAT", "name": "Cost" }, 
+              { "type": "FLOAT", "name": "Revenue" }, 
+              { "type": "INTEGER", "name": "AV_Impressions_Measurable" }, 
+              { "type": "INTEGER", "name": "AV_Impressions_Viewable" }
+            ] 
+          }
+        }
+      }
+    }, 
+    {
+      "bigquery": {
+        "from": {
+          "query": "SELECT Partner, Partner_ID, Advertiser, Advertiser_ID, Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Size, Always_On, Deal_Impressions, Open_Impressions, Rank_Impressions, Deal_Clicks, Open_Clicks, Rank_Clicks, Deal_Conversions, Open_Conversions, Rank_Conversions, Deal_Impressions_Viewable, Open_Impressions_Viewable, Rank_Impressions_Viewable, Deal_Impressions_Measurable, Open_Impressions_Measurable, Rank_Impressions_Measurable, Deal_Cost, Open_Cost, Rank_Cost, FROM ( SELECT FIRST(Partner) AS Partner, FIRST(Partner_ID) AS Partner_ID, FIRST(Advertiser) AS Advertiser, Advertiser_ID, First(Site) AS Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Width + ' x ' + Creative_Height AS Creative_Size, IF (LEFT(Inventory, 5) == 'AO - ', True, False) AS Always_On, SUM(Deal_Impressions) AS Deal_Impressions, SUM(Open_Impressions) AS Open_Impressions, SUM(Open_Impressions) + SUM(Deal_Impressions) AS Total_Impressions, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions DESC) AS Rank_Impressions, SUM(Deal_Clicks) AS Deal_Clicks, SUM(Open_Clicks) AS Open_Clicks, SUM(Open_Clicks) + SUM(Deal_Clicks) AS Total_Clicks, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Clicks DESC) AS Rank_Clicks, SUM(Deal_Conversions) AS Deal_Conversions, SUM(Open_Conversions) AS Open_Conversions, SUM(Open_Conversions) + SUM(Deal_Conversions) AS Total_Conversions, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Conversions DESC) AS Rank_Conversions, SUM(Deal_Cost) AS Deal_Cost, SUM(Open_Cost) AS Open_Cost, SUM(Open_Cost) + SUM(Deal_Cost) AS Total_Cost, RANK() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Cost DESC) AS Rank_Cost, SUM(Deal_Impressions_Viewable) AS Deal_Impressions_Viewable, SUM(Open_Impressions_Viewable) AS Open_Impressions_Viewable, SUM(Open_Impressions_Viewable) + SUM(Deal_Impressions_Viewable) AS Total_Impressions_Viewable, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions_Viewable DESC) AS Rank_Impressions_Viewable, SUM(Deal_Impressions_Measurable) AS Deal_Impressions_Measurable, SUM(Open_Impressions_Measurable) AS Open_Impressions_Measurable, SUM(Open_Impressions_Measurable) + SUM(Deal_Impressions_Measurable) AS Total_Impressions_Measurable, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions_Measurable DESC) AS Rank_Impressions_Measurable, FROM ( SELECT Partner, Partner_ID, Advertiser, Advertiser_ID, Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Width, Creative_Height, IF(Inventory_ID IS NULL, Impressions, 0) AS Open_Impressions, IF(Inventory_ID IS NULL, 0, Impressions) AS Deal_Impressions, IF(Inventory_ID IS NULL, Clicks, 0) AS Open_Clicks, IF(Inventory_ID IS NULL, 0, Clicks) AS Deal_Clicks, IF(Inventory_ID IS NULL, Conversions, 0) AS Open_Conversions, IF(Inventory_ID IS NULL, 0, Conversions) AS Deal_Conversions, IF(Inventory_ID IS NULL, Cost, 0) AS Open_Cost, IF(Inventory_ID IS NULL, 0, Cost) AS Deal_Cost, IF(Inventory_ID IS NULL, AV_Impressions_Viewable, 0) AS Open_Impressions_Viewable, IF(Inventory_ID IS NULL, 0, AV_Impressions_Viewable) AS Deal_Impressions_Viewable, IF(Inventory_ID IS NULL, AV_Impressions_Measurable, 0) AS Open_Impressions_Measurable, IF(Inventory_ID IS NULL, 0, AV_Impressions_Measurable) AS Deal_Impressions_Measurable, FROM [[PARAMETER].Deal_Finder_DBM_Report] OMIT RECORD IF Site == 'Low volume inventory') GROUP By Advertiser_ID, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Size, Always_On) WHERE Rank_Impressions < 100 OR Rank_Clicks < 100 OR Rank_Conversions < 100 OR Rank_Cost < 100;", 
+          "parameters": [
+            "Test"
+          ]
+        }, 
+        "auth": "service", 
+        "description": "The logic query for Deal Finder, transforms report into view used by datastudio.", 
+        "to": {
+          "view": "Deal_Finder_Dashboard", 
+          "dataset": "Test"
+        }
+      }
+    },
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":"Test",
+        "table":"Deal_Finder_Dashboard",
+        "schema":[
+          {"mode": "NULLABLE", "name": "Partner", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Partner_ID", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Advertiser", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Advertiser_ID", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Site", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Site_ID", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Inventory", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Inventory_Type", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Creative_Type", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Creative_Size", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Always_On", "type": "BOOLEAN"},
+          {"mode": "NULLABLE", "name": "Deal_Impressions", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Open_Impressions", "type": "INTEGER"},
+          {"mode": "REQUIRED", "name": "Rank_Impressions", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Deal_Clicks", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Open_Clicks", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Rank_Clicks", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Deal_Conversions", "type": "FLOAT"},
+          {"mode": "NULLABLE", "name": "Open_Conversions", "type": "FLOAT"},
+          {"mode": "NULLABLE", "name": "Rank_Conversions", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Deal_Impressions_Viewable", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Open_Impressions_Viewable", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Rank_Impressions_Viewable", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Deal_Impressions_Measurable", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Open_Impressions_Measurable", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Rank_Impressions_Measurable", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Deal_Cost", "type": "FLOAT"},
+          {"mode": "NULLABLE", "name": "Open_Cost", "type": "FLOAT"},
+          {"mode": "NULLABLE", "name": "Rank_Cost", "type": "INTEGER"}
+        ]
+      }
+    }}
+  ] 
+}

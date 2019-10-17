@@ -112,7 +112,7 @@ class Command(BaseCommand):
     for account in Account.objects.all():
       # if account is given only do that one
       if kwargs['email'] is None or account.email == kwargs['email']: 
-        print 'CHECKING: ', account.email
+        print('CHECKING: ', account.email)
 
         status = False
 
@@ -186,9 +186,9 @@ class Command(BaseCommand):
 
           if kwargs['test']:
             # write to STDOUT
-            print email.get_html()
+            print(email.get_html())
           else:
-            print 'EMAILING: ', account.email
+            print('EMAILING: ', account.email)
             # send message via email
             project.initialize()
             send_email('user', account.email, EMAIL_FROM, EMAIL_CC, EMAIL_SUBJECT, email.get_text(), email.get_html())

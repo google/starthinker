@@ -53,11 +53,14 @@ TWITTER_TRENDS_PLACE_SCHEMA = [
 
 
 def twitter_trends_places():
-  if project.verbose: print 'TWITTER TRENDS PLACE'
+  if project.verbose: print('TWITTER TRENDS PLACE')
   for place in get_rows(project.task['auth'], project.task['trends']['places']):
+    if project.verbose: print('PLACE', place)
     results = get_twitter_api().request('trends/place', {'id':int(place)})
     for r in results: 
+      if project.verbose: print('RESULT', r['name'])
       yield [place, r['name'], r['url'], r['promoted_content'], r['query'], r['tweet_volume']]
+    print('.', end='')
     sleep(15 * 60 / 75) # rate limit ( improve to retry )
 
 
@@ -75,7 +78,7 @@ TWITTER_TRENDS_CLOSEST_SCHEMA = [
 ]
 
 def twitter_trends_closest():
-  if project.verbose: print 'TWITTER TRENDS CLOSEST'
+  if project.verbose: print('TWITTER TRENDS CLOSEST')
   for row in get_rows(project.task['auth'], project.task['trends']['closest']):
     lat, lon = row[0], row[1]
     results = api.request('trends/closest', {'lat':lat, 'long':lon})
@@ -86,7 +89,7 @@ def twitter_trends_closest():
 TWITTER_TRENDS_AVAILABLE_SCHEMA = TWITTER_TRENDS_CLOSEST_SCHEMA
 
 def twitter_trends_available():
-  if project.verbose: print 'TWITTER TRENDS CLOSEST'
+  if project.verbose: print('TWITTER TRENDS CLOSEST')
   results = api.request('trends/available', {})
   for r in results: 
     yield [r['country'], r['countryCode'], r['name'], r['parentid'], r['placeType']['code'], r['placeType']['name'], r['url'], r['woeid']]
@@ -94,7 +97,7 @@ def twitter_trends_available():
 
 @project.from_parameters
 def twitter():
-  if project.verbose: print 'TWITTER'
+  if project.verbose: print('TWITTER')
   
   rows = None
 
@@ -112,7 +115,7 @@ def twitter():
       project.task['out']['bigquery']['schema'] = TWITTER_TRENDS_AVAILABLE_SCHEMA
       project.task['out']['bigquery']['skip_rows'] = 0
 
-  if rows: put_rows(project.task['auth'], project.task['out'], 'twitter_%s.csv' % project.date, rows)
+  if rows: put_rows(project.task['auth'], project.task['out'], rows)
 
 if __name__ == "__main__":
   twitter()

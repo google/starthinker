@@ -32,13 +32,13 @@ RE_DATETIME = re.compile(r'\d{4}[-/]\d{2}[-/]\d{2}[ T]\d{2}:\d{2}:\d{2}\.?\d+Z')
 def bigquery_clean(struct):
   if isinstance(struct, dict):
     for key, value in struct.items():
-      if isinstance(value, basestring) and RE_DATETIME.match(value):
+      if isinstance(value, str) and RE_DATETIME.match(value):
         struct[key] =  struct[key].replace('.000Z', '.0000')
       else:
         bigquery_clean(value)
   elif isinstance(struct, list):
     for index, value in enumerate(struct):
-      if isinstance(value, basestring) and RE_DATETIME.match(value):
+      if isinstance(value, str) and RE_DATETIME.match(value):
         struct[index] = struct[index].replace('.000Z', '.0000')
       else:
         bigquery_clean(value)
@@ -50,7 +50,7 @@ def row_clean(structs):
     yield bigquery_clean(struct) 
 
 
-def put_json(kind, schema, row_format='CSV'):
+def put_data(kind, schema, row_format='CSV'):
 
   out = {}
 
@@ -85,7 +85,7 @@ def dcm_api_list(endpoint):
 
 @project.from_parameters
 def dcm_api():
-  if project.verbose: print 'DCM API'
+  if project.verbose: print('DCM API')
 
   for endpoint in project.task['endpoints']:
     schema = DCM_Schema_Lookup[endpoint]
@@ -93,8 +93,7 @@ def dcm_api():
     rows = row_clean(rows)
     put_rows(
       project.task['out']['auth'], 
-      put_json('CM_%s' % endpoint.title(), schema, 'JSON'),
-      "DCM_Accounts.csv",
+      put_data('CM_%s' % endpoint.title(), schema, 'JSON'),
       rows
     )
 

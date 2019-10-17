@@ -24,14 +24,13 @@ from starthinker.util.data import put_rows
 
 @project.from_parameters
 def google_api():
-  if project.verbose: print 'GOOGLE_API', project.task['api'], project.task['version']
+  if project.verbose: print('GOOGLE_API', project.task['api'], project.task['version'])
 
   results = API(project.task).execute()
 
   put_rows(
     project.task['auth'], 
     project.task['out'], 
-    '%s_%s.json' % (project.task['function'].replace('.', '_'), project.date), 
     results
   )
 

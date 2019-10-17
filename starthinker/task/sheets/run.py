@@ -25,11 +25,11 @@ from starthinker.util.data import get_rows
 
 @project.from_parameters
 def sheets():
-  if project.verbose: print 'SHEETS'
+  if project.verbose: print('SHEETS')
 
   # if sheet or tab is missing, don't do anything
   if not project.task.get('sheet') or not project.task.get('tab'):
-    if project.verbose: print 'Missing Sheet and/or Tab, skipping task.'
+    if project.verbose: print('Missing Sheet and/or Tab, skipping task.')
     return
 
   # delete if specified, will delete sheet if no more tabs remain 
@@ -117,12 +117,12 @@ def sheets():
 
       # RECOMMENDED: define schema in json
       if project.task['out']['bigquery'].get('schema'):
-        if project.verbose: print 'SHEETS SCHEMA DEFINED'
+        if project.verbose: print('SHEETS SCHEMA DEFINED')
         schema = project.task['out']['bigquery']['schema']
 
       # NOT RECOMMENDED: determine schema if missing 
       else:
-        if project.verbose: print 'SHEETS SCHEMA DETECT ( Note Recommended - Define Schema In JSON )'
+        if project.verbose: print('SHEETS SCHEMA DETECT ( Note Recommended - Define Schema In JSON )')
         # cast rows to types ( for schema detection )
         rows = rows_to_type(rows)
         rows, schema = get_schema(
@@ -144,7 +144,7 @@ def sheets():
       )
 
     else:
-      print 'SHEET EMPTY'
+      print('SHEET EMPTY')
 
 
 if __name__ == "__main__":

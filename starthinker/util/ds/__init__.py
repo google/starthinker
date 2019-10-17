@@ -23,7 +23,7 @@ import re
 import json
 import sys
 
-from StringIO import StringIO
+from io import StringIO
 from io import BytesIO
 
 from time import sleep, mktime
@@ -39,7 +39,7 @@ from starthinker.util.bigquery import bigquery_date
 
 def report_request(auth, title, template_name, parameters, day=date.today()):
   service = get_service('doubleclicksearch', 'v2', auth)
-  print '.',
+  print('.', end='')
   sys.stdout.flush()
   
   env = Environment(loader=FileSystemLoader('ds/templates'))
@@ -54,8 +54,8 @@ def report_request(auth, title, template_name, parameters, day=date.today()):
   try:
     report = service.reports().request(body=body).execute()
     return report
-  except HttpError, e:
-    print e
+  except HttpError as e:
+    print(e)
     if e.resp.status in [403, 500, 503]: sleep(10)
     elif json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
     else: raise
@@ -70,12 +70,12 @@ def report_ready(service, report_id):
     report = service.reports().get(reportId=report_id).execute()
 
     if report['isReportReady']:
-      if project.verbose: print 'Report Ready' 
+      if project.verbose: print('Report Ready')
       report_running = False
       files = report['files']
     else:
       tries -= 1
-      if project.verbose: print 'Wait For DS Report'
+      if project.verbose: print('Wait For DS Report')
       sleep(60)
   
   return files 
@@ -90,7 +90,7 @@ def report_read_data(auth, report_id, report_fragment):
 def report_fetch(auth, report_id):
   service = get_service('doubleclicksearch', 'v2', auth)
   
-  if project.verbose: print 'Fetching Report', report_id
+  if project.verbose: print('Fetching Report', report_id)
   files = report_ready(service, report_id)
   
   reports = []
@@ -105,7 +105,7 @@ def report_get(auth, title, template_name='standard.json', parameters={}, day=da
   reports = []
   if 'ids' in parameters:
     report_ids = []
-    if isinstance(parameters['ids'], basestring):
+    if isinstance(parameters['ids'], str):
       for line in parameters['ids'].splitlines():
         items = line.split(',')
         parameters['agencyId'] = items[0]
@@ -148,7 +148,7 @@ def report_to_csv(rows):
         row[col] = '0.900001'
    
     try: writer.writerow(row)
-    except Exception, e: print 'Error:', row_number, str(e), row
+    except Exception as e: print('Error:', row_number, str(e), row)
   csv_string.seek(0) # important otherwise contents is zero
   return csv_string
 

@@ -20,6 +20,7 @@
 
 import pytz
 import json
+import functools
 from datetime import date, datetime, timedelta
 
 from django.db import models, connection, transaction
@@ -41,7 +42,7 @@ JOB_RECHECK_MS = 30 * 60 * 1000 # 30 minutes
 def utc_milliseconds(timestamp=None):
   if timestamp is None: timestamp = datetime.utcnow()
   epoch = datetime.utcfromtimestamp(0)
-  return long((timestamp - epoch).total_seconds() * 1000)
+  return int((timestamp - epoch).total_seconds() * 1000)
 
 
 def utc_to_timezone(timestamp, timezone):
@@ -93,7 +94,7 @@ def worker_pull(worker_uid, jobs=1):
     Recipe.objects.filter(active=True, manual=False, worker_utm__lt=worker_recheck).select_for_update(skip_locked=True).update(job_done=False)
 
     #for r in Recipe.objects.all().values():
-    #  print 'R', r
+    #  print('R', r)
  
     # find recipes that are available but have not been pinged recently to this worker
     where = Recipe.objects.filter(
@@ -102,7 +103,7 @@ def worker_pull(worker_uid, jobs=1):
       worker_utm__lt=worker_lookback,
     ).select_for_update(skip_locked=True).order_by('worker_utm').values_list('id', flat=True)[:jobs]
 
-    #print 'W', where
+    #print('W', where)
 
     # mark those recipes as belonging to this worker
     Recipe.objects.filter(id__in=where).update(worker_uid=worker_uid, worker_utm=worker_utm)
@@ -130,12 +131,11 @@ def worker_status(worker_uid, recipe_uid, script, instance, hour, event, stdout,
     job = Recipe.objects.get(worker_uid=worker_uid, id=recipe_uid)
     job.set_task(script, instance, hour, event, stdout, stderr)
   except Recipe.DoesNotExist:
-    print 'Expired Worker Job:', worker_uid, recipe_uid, script, instance, hour, event
+    print('Expired Worker Job:', worker_uid, recipe_uid, script, instance, hour, event)
 
 
 def reference_default():
   return token_generate(Recipe, 'token', 32)
-
 
 class Recipe(models.Model):
   account = models.ForeignKey(Account, on_delete=models.PROTECT, null=True)
@@ -312,7 +312,7 @@ class Recipe(models.Model):
 
     instances = {}
     for order, task in enumerate(recipe.get('tasks', [])):
-      script, task = task.items()[0]
+      script, task = next(iter(task.items()))
       # if force, queue each task in sequence without hours
       if prior_status.get('force', False):
         hours = [hour_tz]
@@ -346,7 +346,7 @@ class Recipe(models.Model):
         elif left['order'] > right['order']: return 1
         else: return 0
 
-    status['tasks'].sort(queue_compare)
+    status['tasks'].sort(key=functools.cmp_to_key(queue_compare))
 
     # merge old status in if it exists at this point
     for task_prior in prior_status.get('tasks', []):
@@ -401,7 +401,7 @@ class Recipe(models.Model):
         task['done'] = (event != 'JOB_START')
 
         self.job_done = all([task['done'] for task in status['tasks']])
-        self.job_status = json.dumps(status)
+        self.job_status = json.dumps(status, default=str)
         self.worker_utm=utc_milliseconds()
         self.save(update_fields=['worker_utm', 'job_status', 'job_done'])
         break
@@ -427,7 +427,7 @@ class Recipe(models.Model):
     if 'utc' not in status: status['utc'] = datetime.utcnow()
     status['utl'] = utc_to_timezone(status['utc'], self.timezone)
     status['ago'] = time_ago(status['utc'])
-    status['percent'] = ( done * 100 ) / ( len(status['tasks']) or 1 )
+    status['percent'] = int(( done * 100 ) / ( len(status['tasks']) or 1 ))
     status['uid'] = self.uid()
 
     if timeout:

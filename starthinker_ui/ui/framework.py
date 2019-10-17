@@ -94,6 +94,8 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = False
 
+DEFAULT_CHARSET = 'utf-8'
+
 # User
 AUTH_USER_MODEL = 'account.Account'
 

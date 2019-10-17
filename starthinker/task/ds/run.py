@@ -27,7 +27,7 @@ from starthinker.util.data import put_rows, rows_to_csv
 from starthinker.util.auth import get_service
 
 def ds_run(day):
-  if project.verbose: print 'DS RUN'
+  if project.verbose: print('DS RUN')
 
   if 'id' in project.task['report']:
     return report_fetch(
@@ -49,21 +49,20 @@ def _one_report(day):
   # if a report exists
   for report in reports:
     for report_frag in report:
-      if project.verbose: print 'DS FILE', report_frag['name']
+      if project.verbose: print('DS FILE', report_frag['name'])
 
       # read data and clean up the report
       # TODO change to fully streaming @jfno
       rows = report_to_rows(report_read_data(project.task['auth'], report_frag['report_id'], report_frag['report_fragment']))
 
       # upload to cloud if data
-      if rows: #put_rows(project.task['auth'], project.task['out'], report_frag['name'], rows)
-
-        put_rows(project.task['auth'], project.task['out'], None, rows)
+      if rows: 
+        put_rows(project.task['auth'], project.task['out'], rows)
 
 
 @project.from_parameters
 def ds():
-  if project.verbose: print 'DS'
+  if project.verbose: print('DS')
 
   if 'report' in project.task:
     day = project.date - timedelta(days=abs(project.task['days']))

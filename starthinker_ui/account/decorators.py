@@ -22,7 +22,7 @@ from functools import wraps
 from django.conf import settings
 from django.http import HttpResponseRedirect
 
-from starthinker.util.auth import get_flow
+from starthinker.util.auth.wrapper import CredentialsFlowWrapper
 
 
 def permission_admin():
@@ -31,18 +31,20 @@ def permission_admin():
     def _wrapper(request, *args, **kwargs):
 
       # user is logged in
-      if request.user.is_authenticated():
+      if request.user.is_authenticated:
         return _view(request, *args, **kwargs)
 
       # multi user mode, log user in using oauth
       elif settings.UI_CLIENT:
-        flow = get_flow(settings.UI_CLIENT, redirect_uri=settings.CONST_URL + '/oauth_callback/')
-        flow.params['response_type'] = 'code'
-        #flow.params['approval_prompt'] = 'auto'
-        flow.params['prompt'] = 'consent'
-        flow.params['access_type'] = 'offline'
-        flow.params['include_granted_scopes'] = 'true'
-        return HttpResponseRedirect(flow.step1_get_authorize_url())
+        flow = CredentialsFlowWrapper(settings.UI_CLIENT, redirect_uri=settings.CONST_URL + '/oauth_callback/')
+        auth_url, _ = flow.authorization_url(
+          prompt='consent',
+          #approval_prompt='auto',
+          access_type='offline',
+          include_granted_scopes='true'
+        ) 
+        request.session['code_verifier'] = flow.code_verifier
+        return HttpResponseRedirect(auth_url)
 
       # single user mode, no oath, use native django user management ( intead of gsuite )
       else:

@@ -69,7 +69,7 @@ instructions for each type of setup, read the [Tutorials](tutorials/README.md) o
 
 To make deployment easy and well documented, StarThinker is packaged with a deploy script to automate
 the process.  The script uses bash commands just like a user would from the command line, making it a
-how to document as well.  The deployment script runs in any UNIX environment and can 
+"how to document" as well. 
 
 ![StarThinker Deploy Script](tutorials/images/deploy.png)
 

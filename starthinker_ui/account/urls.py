@@ -18,7 +18,7 @@
 
 from django.conf.urls import url
 
-import views
+from starthinker_ui.account import views
 
 urlpatterns = [
   url(r'^oauth_callback/$', views.oauth_callback, name='account.oauth.callback'),

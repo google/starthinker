@@ -40,7 +40,7 @@ def query_parameters(query, parameters):
       raise IndexError('BigQuery: Missing PARAMETER values for this query.')
     if isinstance(parameter, list) or isinstance(parameter, tuple): parameter = ', '.join([str(p) for p in parameter])
     query = query.replace('[PARAMETER]', parameter, 1)
-  if project.verbose: print 'QUERY:', query
+  if project.verbose: print('QUERY:', query)
   return query
 
 
@@ -48,7 +48,7 @@ def query_parameters(query, parameters):
 def bigquery():
 
   if 'run' in project.task and 'query' in project.task.get('run', {}):
-    if project.verbose: print "QUERY", project.task['run']['query']
+    if project.verbose: print("QUERY", project.task['run']['query'])
     run_query(
       project.task['auth'],
       project.id,
@@ -72,10 +72,10 @@ def bigquery():
       
   elif 'query' in project.task['from']:
     if 'table' in project.task['to']:
-      if project.verbose: print "QUERY TO TABLE", project.task['to']['table']
+      if project.verbose: print("QUERY TO TABLE", project.task['to']['table'])
 
       if 'pre_process_query' in project.task['to']:
-        print 'executing statement'
+        print('executing statement')
         execute_statement(
             project.task['auth'],
             project.id,
@@ -96,7 +96,7 @@ def bigquery():
     # NOT USED SO RIPPING IT OUT
     # Mauriciod: Yes, it is used, look at project/mauriciod/target_winrate.json
     elif 'storage' in project.task['to']:
-      if project.verbose: print "QUERY TO STORAGE", project.task['to']['storage']
+      if project.verbose: print("QUERY TO STORAGE", project.task['to']['storage'])
       local_file_name = '/tmp/%s' % str(uuid.uuid1())
       rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'])
 
@@ -111,7 +111,7 @@ def bigquery():
 
       os.remove(local_file_name)
     elif 'sheet' in project.task['to']:
-      if project.verbose: print "QUERY TO SHEET", project.task['to']['sheet']
+      if project.verbose: print("QUERY TO SHEET", project.task['to']['sheet'])
       rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'], legacy=project.task['from'].get('legacy', True))
 
       # makes sure types are correct in sheet
@@ -123,10 +123,10 @@ def bigquery():
       rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'], legacy=project.task['from'].get('use_legacy_sql', True))
 
       if rows:
-        if project.verbose: print "QUERY TO SFTP"
-        put_rows(project.task['auth'], project.task['to'], '', rows)
+        if project.verbose: print("QUERY TO SFTP")
+        put_rows(project.task['auth'], project.task['to'], rows)
     else:
-      if project.verbose: print "QUERY TO VIEW", project.task['to']['view']
+      if project.verbose: print("QUERY TO VIEW", project.task['to']['view'])
       query_to_view(
         project.task['auth'],
         project.id,
@@ -137,7 +137,7 @@ def bigquery():
         project.task['to'].get('replace', False)
       )
   else:
-    if project.verbose: print "STORAGE TO TABLE", project.task['to']['table']
+    if project.verbose: print("STORAGE TO TABLE", project.task['to']['table'])
     storage_to_table(
       project.task['auth'],
       project.id,

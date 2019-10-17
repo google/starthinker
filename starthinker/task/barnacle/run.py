@@ -224,7 +224,7 @@ REPORT_DELIVERIES_SCHEMA = [
 
 
 def get_accounts(accounts):
-  if project.verbose: print 'DCM Accounts'
+  if project.verbose: print('DCM Accounts')
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
@@ -245,13 +245,13 @@ def get_accounts(accounts):
 
 
 def get_profiles(accounts):
-  if project.verbose: print 'DCM Profiles'
+  if project.verbose: print('DCM Profiles')
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
     for profile in API_DCM("user", iterate=True, internal=is_superuser).accountUserProfiles().list(**kwargs).execute():
-      if long(profile['accountId']) in accounts:
+      if int(profile['accountId']) in accounts:
 
         for campaign in profile.get('campaignFilter', {}).get('objectIds', []):
           PROFILE_CAMPAIGNS.append([
@@ -302,13 +302,13 @@ def get_profiles(accounts):
 
 def get_subaccounts(accounts):
 
-  if project.verbose: print 'DCM SubAccounts'
+  if project.verbose: print('DCM SubAccounts')
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
     for subaccount in API_DCM("user", iterate=True, internal=is_superuser).subaccounts().list(**kwargs).execute():
-      if long(subaccount['accountId']) in accounts: 
+      if int(subaccount['accountId']) in accounts: 
         yield [
           subaccount['accountId'],
           subaccount['id'],
@@ -318,13 +318,13 @@ def get_subaccounts(accounts):
 
 def get_advertisers(accounts):
 
-  if project.verbose: print 'DCM Advertisers'
+  if project.verbose: print('DCM Advertisers')
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
     for advertiser in API_DCM("user", iterate=True, internal=is_superuser).advertisers().list(**kwargs).execute():
-      if long(advertiser['accountId']) in accounts: 
+      if int(advertiser['accountId']) in accounts: 
         yield [
           advertiser['accountId'],
           advertiser.get('subaccountId'),
@@ -343,13 +343,13 @@ def get_advertisers(accounts):
 
 def get_campaigns(accounts):
 
-  if project.verbose: print 'DCM Campaigns'
+  if project.verbose: print('DCM Campaigns')
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
     for campaign in API_DCM("user", iterate=True, internal=is_superuser).campaigns().list(**kwargs).execute():
-      if long(campaign['accountId']) in accounts: 
+      if int(campaign['accountId']) in accounts: 
 
         yield [
           campaign['accountId'],
@@ -376,15 +376,15 @@ def get_campaigns(accounts):
 
 #def get_changelogs(accounts):
 #
-#  if project.verbose: print 'DCM ChangeLogs'
+#  if project.verbose: print('DCM ChangeLogs')
 #
 #  for account_id in accounts:
 #    is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
 #    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
 #    for changelog in API_DCM("user", iterate=True, internal=is_superuser).changeLogs().list(**kwargs).execute():
-#      if long(changelog['accountId']) in accounts: 
+#      if int(changelog['accountId']) in accounts: 
 #
-#        #print changelog
+#        #print(changelog)
 #        yield [
 #          changelog.get('userProfileId'),
 #          changelog['accountId'],
@@ -403,13 +403,13 @@ def get_campaigns(accounts):
 
 def get_sites(accounts):
 
-  if project.verbose: print 'DCM Sites'
+  if project.verbose: print('DCM Sites')
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
     for site in API_DCM("user", iterate=True, internal=is_superuser).sites().list(**kwargs).execute():
-      if long(site['accountId']) in accounts: 
+      if int(site['accountId']) in accounts: 
 
         for contact in site.get('siteContacts', []):
           SITE_CONTACTS.append([
@@ -449,13 +449,13 @@ def get_sites(accounts):
 
 
 def get_roles(accounts):
-  if project.verbose: print 'DCM Roles'
+  if project.verbose: print('DCM Roles')
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
     for role in API_DCM("user", iterate=True, internal=is_superuser).userRoles().list(**kwargs).execute():
-      if long(role['accountId']) in accounts:
+      if int(role['accountId']) in accounts:
         if 'permissions' in role:
           for permission in role['permissions']:
             yield [
@@ -481,13 +481,13 @@ def get_roles(accounts):
 
 def get_reports(accounts):
 
-  if project.verbose: print 'DCM Reports'
+  if project.verbose: print('DCM Reports')
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'accountId':account_id, 'scope':'ALL' } if is_superuser else { 'profileId':profile_id, 'scope':'ALL' }
     for report in API_DCM("user", iterate=True, internal=is_superuser).reports().list(**kwargs).execute():
-      if long(report['accountId']) in accounts:
+      if int(report['accountId']) in accounts:
   
         for delivery in report.get('delivery', {}).get('recipients', []):
           REPORT_DELIVERIES.append((
@@ -539,7 +539,7 @@ def put_json(kind, schema):
 
 @project.from_parameters
 def barnacle():
-  if project.verbose: print 'BARNACLE'
+  if project.verbose: print('BARNACLE')
 
   accounts = set(get_rows("user", project.task['accounts']))
 
@@ -549,7 +549,6 @@ def barnacle():
     put_rows(
       project.task['out']['auth'], 
       put_json('CM_Accounts', ACCOUNTS_SCHEMA),
-      "DCM_Accounts.csv",
       rows
     )
 
@@ -559,43 +558,38 @@ def barnacle():
     put_rows(
       project.task['out']['auth'], 
       put_json('CM_Profiles', PROFILES_SCHEMA),
-      "DCM_Profiles.csv",
       rows
     )
 
     # Profiles Campaigns
-    if project.verbose: print 'DCM Profile Campaigns'
+    if project.verbose: print('DCM Profile Campaigns')
     put_rows(
       project.task['out']['auth'], 
       put_json('CM_Profile_Campaigns', PROFILE_CAMPAIGNS_SCHEMA),
-      "DCM_Profile_Campaigns.csv",
       PROFILE_CAMPAIGNS
     )
 
     # Profiles Sites
-    if project.verbose: print 'DCM Profile Sites'
+    if project.verbose: print('DCM Profile Sites')
     put_rows(
       project.task['out']['auth'], 
       put_json('CM_Profile_Sites', PROFILE_SITES_SCHEMA),
-      "DCM_Profile_Sites.csv",
       PROFILE_SITES
     )
 
     # Profiles Roles
-    if project.verbose: print 'DCM Profile Roles'
+    if project.verbose: print('DCM Profile Roles')
     put_rows(
       project.task['out']['auth'], 
       put_json('CM_Profile_Roles', PROFILE_ROLES_SCHEMA),
-      "DCM_Profile_Roles.csv",
       PROFILE_ROLES
     )
 
     # Profiles Advertisers
-    if project.verbose: print 'DCM Profile Advertisers'
+    if project.verbose: print('DCM Profile Advertisers')
     put_rows(
       project.task['out']['auth'], 
       put_json('CM_Profile_Advertisers', PROFILE_ADVERTISERS_SCHEMA),
-      "DCM_Profile_Advertisers.csv",
       PROFILE_ADVERTISERS
     )
 
@@ -605,7 +599,6 @@ def barnacle():
     put_rows(
       project.task['out']['auth'],
       put_json('CM_SubAccounts', SUBACCOUNTS_SCHEMA),
-      "DCM_SubAccounts.csv",
       rows
     )
 
@@ -615,7 +608,6 @@ def barnacle():
     put_rows(
       project.task['out']['auth'],
       put_json('CM_Advertisers', ADVERTISERS_SCHEMA),
-      "DCM_Advertisers.csv",
       rows
     )
 
@@ -625,7 +617,6 @@ def barnacle():
   #  put_rows(
   #    project.task['out']['auth'],
   #    put_json('CM_ChangeLogs', CHANGELOGS_SCHEMA),
-  #    "DCM_ChangeLogs.csv",
   #    rows
   #  )
 
@@ -635,7 +626,6 @@ def barnacle():
     put_rows(
       project.task['out']['auth'],
       put_json('CM_Campaigns', CAMPAIGNS_SCHEMA),
-      "DCM_Campaigns.csv",
       rows
     )
 
@@ -645,16 +635,14 @@ def barnacle():
     put_rows(
       project.task['out']['auth'],
       put_json('CM_Sites', SITES_SCHEMA),
-      "DCM_Sites.csv",
       rows
     )
   
     # Sites Contacts
-    if project.verbose: print 'DCM Site Contacts'
+    if project.verbose: print('DCM Site Contacts')
     put_rows(
       project.task['out']['auth'], 
       put_json('CM_Site_Contacts', SITE_CONTACTS_SCHEMA),
-      "DCM_Site_Contacts.csv",
       SITE_CONTACTS
     )
 
@@ -664,7 +652,6 @@ def barnacle():
     put_rows(
       project.task['out']['auth'], 
       put_json('CM_Roles', ROLES_SCHEMA),
-      "DCM_Roles.csv",
       rows
     )
   
@@ -674,16 +661,14 @@ def barnacle():
     put_rows(
       project.task['out']['auth'], 
       put_json('CM_Reports', REPORTS_SCHEMA),
-      "DCM_Reports.csv",
       rows
     )
 
     # Reports Deliveries
-    if project.verbose: print 'DCM Deliveries'
+    if project.verbose: print('DCM Deliveries')
     put_rows(
       project.task['out']['auth'], 
       put_json('CM_Report_Deliveries', REPORT_DELIVERIES_SCHEMA),
-      "DCM_Report_Deliveriess.csv",
       REPORT_DELIVERIES
     )
   

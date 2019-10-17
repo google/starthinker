@@ -96,8 +96,9 @@ if __name__ == "__main__":
   # track per task instance count
   instances = {}
 
+  returncode = 0
   for task in recipe['tasks']:
-    script, task = task.items()[0]
+    script, task = next(iter(task.items()))
 
     # count instance per task
     instances.setdefault(script, 0)
@@ -107,12 +108,15 @@ if __name__ == "__main__":
     command = 'python -W ignore %s/starthinker/task/%s/run.py %s -i %d' % (UI_ROOT, script, ' '.join(sys.argv[1:]), instances[script])
 
     # show command so user can run each task
-    print command
+    print(command)
 
-    # execute command if schedule
+    # execute command if schedule, return code
     if args.force or is_scheduled(recipe, task):
-      subprocess.Popen(command, shell=True).wait()
+      returncode |= subprocess.Popen(command, shell=True).wait()
 
     # skip command if not schedule
     else:
-      print "Schedule Skipping: run command manually or add --force to run all"
+      raise SystemExit("Schedule Skipping: run command manually or add --force to run all")
+
+  # Set lowest return code from all tasks
+  exit(returncode)

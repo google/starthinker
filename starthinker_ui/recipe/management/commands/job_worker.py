@@ -127,7 +127,7 @@ class Workers():
           log_job_cancel(self.jobs[last_job])
           del self.jobs[last_job]
         last_job -= 1
-    except Exception, e:
+    except Exception as e:
       log_manager_error(traceback.format_exc())
     self.lock_thread.release()
 
@@ -137,7 +137,7 @@ class Workers():
     if os.path.exists(filename):
       os.remove(filename)
     else:
-      print "The file does not exist:", filename
+      print("The file does not exist:", filename)
 
 
   def ping(self):
@@ -146,7 +146,7 @@ class Workers():
       self.lock_thread.acquire()
       try:
         worker_ping(self.uid, [job['recipe']['setup']['uuid'] for job in self.jobs])
-      except Exception, e:
+      except Exception as e:
         log_manager_error(traceback.format_exc())
       self.lock_thread.release()
 
@@ -286,7 +286,7 @@ class Command(BaseCommand):
     global MANAGER_ON
     MANAGER_ON = True
 
-    print 'Starting Up...'
+    print('Starting Up...')
 
     if kwargs['verbose']: log_verbose()
 
@@ -312,10 +312,10 @@ class Command(BaseCommand):
 
     except KeyboardInterrupt:
       MANAGER_ON = False
-    except Exception, e:
+    except Exception as e:
       log_manager_error(traceback.format_exc())
 
-    print 'Shutting Down...'
+    print('Shutting Down...')
     workers.shutdown()
 
     log_manager_end()

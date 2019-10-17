@@ -171,7 +171,7 @@ class project:
 
       # access arguments
       auth = 'service' if project.args.service else 'user'
-      print project.args.custom
+      print(project.args.custom)
     ```
 
   Project can also be initialized directly for non-json tasks:
@@ -232,7 +232,7 @@ class project:
 
       # access arguments
       auth = 'service' if project.args.service else 'user'
-      print project.args.custom
+      print(project.args.custom)
     ```
 
     Args:
@@ -291,7 +291,7 @@ class project:
   def get_task_index(cls):
     i = 0
     for c, t in enumerate(cls.recipe.get('tasks', [])):
-      if t.keys()[0] == cls.function:
+      if next(iter(t.keys())) == cls.function:
         i += 1 
         if i == cls.instance:
           return c
@@ -302,7 +302,7 @@ class project:
   def get_task(cls):
     #if cls.task is None: 
     i = cls.get_task_index()
-    cls.task = None if i is None else cls.recipe['tasks'][i].values()[0]
+    cls.task = None if i is None else next(iter(cls.recipe['tasks'][i].values()))
     return cls.task
 
 
@@ -430,9 +430,9 @@ class project:
       cls.hour = datetime.now().hour if _hour == 'NOW' else int(_hour)
 
     if cls.verbose:
-      print 'TASK:', _task 
-      print 'DATE:', cls.date 
-      print 'HOUR:', cls.hour 
+      print('TASK:', _task) 
+      print('DATE:', cls.date) 
+      print('HOUR:', cls.hour) 
 
 
   @classmethod
@@ -494,7 +494,7 @@ class project:
       instances.setdefault(function, 0)
       instances[function] += 1
 
-      print 'Running:', '%s %d' % (function, instances[function])
+      print('Running:', '%s %d' % (function, instances[function]))
 
       python_callable = getattr(import_module('starthinker.task.%s.run' % function), function)
       python_callable(cls.recipe, instances[function])

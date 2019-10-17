@@ -35,7 +35,7 @@ def query_parameters(query, parameters):
     parameter = parameters.pop(0)
     if isinstance(parameter, list) or isinstance(parameter, tuple): parameter = ', '.join([str(p) for p in parameter])
     query = query.replace('[PARAMETER]', parameter, 1)
-  if project.verbose: print 'QUERY:', query
+  if project.verbose: print('QUERY:', query)
   return query
 
 
@@ -73,7 +73,7 @@ def sftp():
     input_file = open(input_file_name, 'rb')
 
     reader = csv.reader(input_file)
-    header = reader.next()
+    header = next(reader)
     input_file.seek(0)
     schema = field_list_to_schema(header)
     output_file_name = '/tmp/%s.csv' % str(uuid.uuid1())

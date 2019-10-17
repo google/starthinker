@@ -18,22 +18,149 @@
 
 import os
 import json
+import shutil
+from time import sleep
+from datetime import datetime, timedelta
 from django.test import TestCase
 
 from starthinker.util.project import project
-from starthinker.util.auth import get_profile, get_credentials
-from starthinker_ui.account.models import  Account
+from starthinker.util.auth import clear_credentials_cache, get_profile, get_credentials, get_service
+from starthinker.config import UI_CLIENT, UI_SERVICE, UI_USER
+from starthinker_ui.account.models import Account
 
 
 def account_create():
-  UI_CLIENT = os.environ.get('STARTHINKER_CLIENT_INSTALLED', 'MISSING RUN deploy.sh TO SET')
-  UI_SERVICE = os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET')
-  UI_USER = os.environ.get('STARTHINKER_USER', 'MISSING RUN deploy.sh TO SET')
 
   project.initialize(_client=UI_CLIENT, _service=UI_SERVICE, _user=UI_USER)
-  credentials = get_credentials()
+  credentials = get_credentials('user')
   profile = get_profile()
 
   account = Account.objects.get_or_create_user(profile, credentials, 'password')
 
   return account
+
+
+class CredentialsTest(TestCase):
+
+  def setUp(self):
+    self.user_file = '/tmp/test_user.json'
+    self.service_file = '/tmp/test_service.json'
+    shutil.copyfile(UI_USER, self.user_file)
+    shutil.copyfile(UI_SERVICE, self.service_file)
+
+
+  def tearDown(self):
+    os.remove(self.user_file)
+    os.remove(self.service_file)
+
+
+  def helper_refresh(self):
+    credentials = get_credentials('user')
+    token = credentials.token
+    expiry = credentials.expiry
+
+    # wait a bit before refreshing token, multiple tests go too fast and same token is returned
+    sleep(1)
+
+    # test refresh ( not expired cache, not expired file )
+    credentials.refresh()
+    self.assertEqual(token, credentials.token)
+    self.assertEqual(expiry, credentials.expiry)
+
+    # wait a bit before refreshing token, multiple tests go too fast and same token is returned
+    sleep(1)
+
+    # test refresh ( expired cache, not expired file )
+    credentials.expiry=(datetime.now() - timedelta(days=5))
+    credentials.refresh()
+    self.assertEqual(token, credentials.token)
+    self.assertEqual(expiry, credentials.expiry)
+
+    # wait a bit before refreshing token, multiple tests go too fast and same token is returned
+    sleep(1)
+
+    # test refresh ( expired cache, expired file )
+    credentials.expiry=(datetime.now() - timedelta(days=5))
+    credentials.save()
+    credentials.refresh()
+    self.assertNotEqual(token, credentials.token)
+    self.assertNotEqual(expiry, credentials.expiry)
+
+
+  def test_file_credentials_user(self):
+    project.initialize(_user=self.user_file)
+
+    service = get_service('oauth2', 'v2', 'user')
+    response = service.userinfo().get().execute()
+
+    self.assertIn('email', response)
+    self.helper_refresh()
+
+
+  def test_file_credentials_service(self):
+    project.initialize(_service=self.service_file)
+
+    service = get_service('cloudresourcemanager', 'v1', 'service')
+    response = service.projects().list().execute()
+
+    self.assertIn('projects', response)
+
+
+  def test_string_credentials_user(self):
+    with open(self.user_file, 'r') as json_file:
+      project.initialize(_user=json_file.read())
+
+    service = get_service('oauth2', 'v2', 'user')
+    response = service.userinfo().get().execute()
+
+    self.assertIn('email', response)
+    self.helper_refresh()
+
+
+  def test_string_credentials_service(self):
+    with open(self.service_file, 'r') as json_file:
+      project.initialize(_service=json_file.read())
+
+    service = get_service('cloudresourcemanager', 'v1', 'service')
+    response = service.projects().list().execute()
+
+    self.assertIn('projects', response)
+
+
+  def test_dictionary_credentials_user(self):
+    with open(self.user_file, 'r') as json_file:
+      project.initialize(_user=json.load(json_file))
+
+    service = get_service('oauth2', 'v2', 'user')
+    response = service.userinfo().get().execute()
+
+    self.assertIn('email', response)
+    self.helper_refresh()
+
+
+  def test_dictionary_credentials_service(self):
+    with open(self.service_file, 'r') as json_file:
+      project.initialize(_service=json.load(json_file))
+
+    service = get_service('cloudresourcemanager', 'v1', 'service')
+    response = service.projects().list().execute()
+
+    self.assertIn('projects', response)
+
+
+  def test_remote_credentials_user(self):
+    project.initialize(_user=self.user_file)
+    credentials = get_credentials('user')
+    profile = get_profile()
+    account = Account.objects.get_or_create_user(profile, credentials, 'password')
+
+    clear_credentials_cache()
+
+    project.initialize(_user=account.get_credentials_path())
+    self.assertEqual(project.recipe['setup']['auth']['user'], account.get_credentials_path())
+
+    service = get_service('oauth2', 'v2', 'user')
+    response = service.userinfo().get().execute()
+
+    self.assertIn('email', response)
+    self.helper_refresh()

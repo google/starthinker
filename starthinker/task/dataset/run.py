@@ -21,7 +21,7 @@ from starthinker.util.bigquery import datasets_create, datasets_access
 
 @project.from_parameters
 def dataset():
-  if project.verbose: print "DATASET", project.id, project.task['dataset']
+  if project.verbose: print("DATASET", project.id, project.task['dataset'])
 
   # create dataset
   datasets_create(project.task['auth'], project.id, project.task['dataset'])

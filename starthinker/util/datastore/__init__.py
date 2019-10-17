@@ -101,7 +101,7 @@ def _datastore_v_to_p(values):
 
   for k, v in values.items():
     if v is None: p[k] = { 'nullValue':v } 
-    elif isinstance(v, basestring): p[k] = { 'stringValue':v, 'excludeFromIndexes':True }
+    elif isinstance(v, str): p[k] = { 'stringValue':v, 'excludeFromIndexes':True }
     elif isinstance(v, int): p[k] = { 'integerValue':v, 'excludeFromIndexes':True }
     elif isinstance(v, float): p[k] = { 'doubleValue':v, 'excludeFromIndexes':True }
     elif isinstance(v, bool): p[k] = { 'booleanValue':v, 'excludeFromIndexes':True }
@@ -177,7 +177,7 @@ def datastore_read(auth, project_id, namespace, kind, key):
   #).execute()
 
   # if single key givem turn it into a list
-  if isinstance(key, basestring): key = [key]
+  if isinstance(key, str): key = [key]
 
   body = {
     "readOptions": {

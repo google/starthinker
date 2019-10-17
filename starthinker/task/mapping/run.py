@@ -29,7 +29,7 @@ RE_SQLINJECT = re.compile(r'[^a-z0-9_\-, ]+', re.UNICODE|re.IGNORECASE)
 
 @project.from_parameters
 def mapping():
-  if project.verbose: print 'MAPPING'
+  if project.verbose: print('MAPPING')
 
   # create the sheet from template if it does not exist
   sheets_tab_copy(project.task['auth'], TEMPLATE_SHEET, TEMPLATE_TAB, project.task['sheet'], project.task['tab'])
@@ -44,9 +44,10 @@ def mapping():
     # sanitize mapping
     # 0 = Dimension, 1 = Tag, 2 = Column, 3 = Keyword
     for row in rows[1:]:
-      if project.verbose: print 'ROW: ', row
+      if project.verbose: print('ROW: ', row)
       # sanitize row
-      row = map(lambda c: RE_SQLINJECT.sub('', c.strip()), row)
+      #row = map(lambda c: RE_SQLINJECT.sub('', c.strip()), row)
+      row = [RE_SQLINJECT.sub('', r.strip()) for r in row]
       if len(row) == 2: # default
         defaults.setdefault(row[0], row[1])
       else: # tag
@@ -70,7 +71,7 @@ def mapping():
     query += '    ELSE "%s"\n  END AS %s,\n' % (defaults.get(dimension, ''), dimension)
   query += 'FROM [%s.%s]' % (project.task['in']['dataset'], project.task['in']['table'])
         
-  if project.verbose: print 'QUERY: ', query
+  if project.verbose: print('QUERY: ', query)
 
   # write to view
   query_to_view(

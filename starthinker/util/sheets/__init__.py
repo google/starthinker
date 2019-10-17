@@ -45,7 +45,7 @@ def sheets_id(auth, url_or_name):
       if m: return m.group(1)
 
   # probably a mangled id or name does not exist
-  if project.verbose: print 'SHEET DOES NOT EXIST', url_or_name
+  if project.verbose: print('SHEET DOES NOT EXIST', url_or_name)
   return None
 
 
@@ -77,7 +77,7 @@ def sheets_tab_id(auth, sheet_url_or_name, sheet_tab):
 
 
 def sheets_read(auth, sheet_url_or_name, sheet_tab, sheet_range, retries=10):
-  if project.verbose: print 'SHEETS READ', sheet_url_or_name, sheet_tab, sheet_range
+  if project.verbose: print('SHEETS READ', sheet_url_or_name, sheet_tab, sheet_range)
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(auth, sheet_url_or_name)
   return API_Retry(service.spreadsheets().values().get(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range)), 'values', retries=retries)
@@ -85,7 +85,7 @@ def sheets_read(auth, sheet_url_or_name, sheet_tab, sheet_range, retries=10):
 
 # TIP: Specify sheet_range as 'Tab!A1' coordinate, the API will figure out length and height based on data
 def sheets_write(auth, sheet_url_or_name, sheet_tab, sheet_range, data, append=False, valueInputOption='RAW'):
-  if project.verbose: print 'SHEETS WRITE', sheet_url_or_name, sheet_tab, sheet_range
+  if project.verbose: print('SHEETS WRITE', sheet_url_or_name, sheet_tab, sheet_range)
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(auth, sheet_url_or_name)
   range = sheets_tab_range(sheet_tab, sheet_range)
@@ -111,14 +111,14 @@ def sheets_write(auth, sheet_url_or_name, sheet_tab, sheet_range, data, append=F
 
 
 def sheets_clear(auth, sheet_url_or_name, sheet_tab, sheet_range):
-  if project.verbose: print 'SHEETS CLEAR', sheet_url_or_name, sheet_tab, sheet_range
+  if project.verbose: print('SHEETS CLEAR', sheet_url_or_name, sheet_tab, sheet_range)
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(auth, sheet_url_or_name)
   API_Retry(service.spreadsheets().values().clear(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range), body={}))
 
 
 def sheets_tab_copy(auth, from_sheet_url_or_name, from_sheet_tab, to_sheet_url_or_name, to_sheet_tab, overwrite=False):
-  if project.verbose: print 'SHEETS COPY', from_sheet_url_or_name, from_sheet_tab, to_sheet_url_or_name, to_sheet_tab
+  if project.verbose: print('SHEETS COPY', from_sheet_url_or_name, from_sheet_tab, to_sheet_url_or_name, to_sheet_tab)
   service = get_service('sheets', 'v4', auth)
 
   # convert human readable to ids
@@ -186,7 +186,7 @@ def sheets_tab_create(auth, sheet_url_or_name, sheet_tab):
 
 
 def sheets_tab_delete(auth, sheet_url_or_name, sheet_tab):
-  if project.verbose: print 'SHEETS DELETE', sheet_url_or_name, sheet_tab
+  if project.verbose: print('SHEETS DELETE', sheet_url_or_name, sheet_tab)
 
   spreadsheet = sheets_get(auth, sheet_url_or_name)
   if spreadsheet:
@@ -246,7 +246,7 @@ def sheets_create(auth, sheet_name, sheet_tab, template_sheet=None, template_tab
 
   # if no sheet create it and the tab
   if sheet_id is None:
-    if project.verbose: print 'SHEET CREATE', sheet_name, sheet_tab
+    if project.verbose: print('SHEET CREATE', sheet_name, sheet_tab)
     body = {
       "properties": {
         "title": sheet_name,
@@ -278,11 +278,11 @@ def sheets_create(auth, sheet_name, sheet_tab, template_sheet=None, template_tab
 
   # if creating a blank tab
   elif tab_id is None:
-    if project.verbose: print 'TAB CREATE', sheet_name, sheet_tab
+    if project.verbose: print('TAB CREATE', sheet_name, sheet_tab)
     sheets_tab_create(auth, sheet_name, sheet_tab)
 
   # if sheet and tab already exist
   else:
-    if project.verbose: print 'SHEET EXISTS', sheet_name, sheet_tab
+    if project.verbose: print('SHEET EXISTS', sheet_name, sheet_tab)
 
   return sheet_id, tab_id, created

@@ -17,11 +17,11 @@
 ###########################################################################
 
 from django import forms
-from forms_json import ScriptJsonForm
 
 from starthinker_ui.recipe.scripts import Script
 from starthinker_ui.recipe.models import Recipe
 from starthinker_ui.recipe.forms import SetupForm
+from starthinker_ui.recipe.forms_json import ScriptJsonForm
 
 
 class ScriptForm(forms.Form):

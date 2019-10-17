@@ -211,7 +211,7 @@ class StatusTest(TestCase):
     hour_tz = utc_to_timezone(datetime.utcnow(), self.recipe.timezone).hour
 
     if hour_tz == 23:
-      print 'SKIPPING test_hour_pulls, need 1 spare hour for test.'
+      print('SKIPPING test_hour_pulls, need 1 spare hour for test.')
     else:
       task = self.recipe.get_task()
       while task != None:
@@ -423,11 +423,11 @@ class RecipeViewTest(TestCase):
   def test_recipe_start(self):
     resp = self.client.post('/recipe/start/', {'reference':'THISREFERENCEISINVALID'})
     self.assertEqual(resp.status_code, 404)
-    self.assertEqual(resp.content, 'RECIPE NOT FOUND')
+    self.assertEqual(resp.content, b'RECIPE NOT FOUND')
 
     resp = self.client.post('/recipe/start/', {'reference':self.recipe_new.reference})
     self.assertEqual(resp.status_code, 200)
-    self.assertEqual(resp.content, 'RECIPE STARTED')
+    self.assertEqual(resp.content, b'RECIPE STARTED')
 
     # start a recipe run to test interrupt
     jobs = worker_pull('SAMPLE_WORKER', 1)
@@ -435,16 +435,16 @@ class RecipeViewTest(TestCase):
 
     resp = self.client.post('/recipe/start/', {'reference':self.recipe_new.reference})
     self.assertEqual(resp.status_code, 200)
-    self.assertEqual(resp.content, 'RECIPE INTERRUPTED')
+    self.assertEqual(resp.content, b'RECIPE INTERRUPTED')
 
   def test_recipe_stop(self):
     resp = self.client.post('/recipe/stop/', {'reference':'THISREFERENCEISINVALID'})
     self.assertEqual(resp.status_code, 404)
-    self.assertEqual(resp.content, 'RECIPE NOT FOUND')
+    self.assertEqual(resp.content, b'RECIPE NOT FOUND')
 
     resp = self.client.post('/recipe/stop/', {'reference':self.recipe_new.reference})
     self.assertEqual(resp.status_code, 200)
-    self.assertEqual(resp.content, 'RECIPE STOPPED')
+    self.assertEqual(resp.content, b'RECIPE STOPPED')
 
     self.recipe_new.refresh_from_db()
     self.assertTrue(self.recipe_new.job_done)
@@ -456,7 +456,7 @@ class RecipeViewTest(TestCase):
     # start a recipe run to test interrupt
     resp = self.client.post('/recipe/start/', {'reference':self.recipe_new.reference})
     self.assertEqual(resp.status_code, 200)
-    self.assertEqual(resp.content, 'RECIPE STARTED')
+    self.assertEqual(resp.content, b'RECIPE STARTED')
 
     self.recipe_new.refresh_from_db()
     self.assertFalse(self.recipe_new.job_done)
@@ -470,7 +470,7 @@ class RecipeViewTest(TestCase):
 
     resp = self.client.post('/recipe/stop/', {'reference':self.recipe_new.reference})
     self.assertEqual(resp.status_code, 200)
-    self.assertEqual(resp.content, 'RECIPE INTERRUPTED')
+    self.assertEqual(resp.content, b'RECIPE INTERRUPTED')
 
     self.recipe_new.refresh_from_db()
     self.assertTrue(self.recipe_new.job_done)

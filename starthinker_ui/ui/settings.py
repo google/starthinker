@@ -20,6 +20,9 @@
 # Load all technical settings
 from starthinker_ui.ui.framework import *
 
+# Replace local auth with web auth
+UI_CLIENT = os.environ.get('STARTHINKER_CLIENT_INSTALLED', '') # blank to deploy single user mode
+
 def domain_to_host(domain):
   return  domain.split('://', 1)[-1].split(':', 1)[0].split('/', 1)[0]
 

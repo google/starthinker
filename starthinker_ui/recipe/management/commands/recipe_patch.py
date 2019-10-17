@@ -62,9 +62,9 @@ class Command(BaseCommand):
   def handle(self, *args, **kwargs):
     for recipe in (Recipe.objects.all()):
 
-      print '---------------------------------------'
-      print 'Name:', recipe.name
-      print 'Account:', recipe.account.email
+      print('---------------------------------------')
+      print('Name:', recipe.name)
+      print('Account:', recipe.account.email)
 
       changed = False
       tasks = json.loads(recipe.tasks)
@@ -82,8 +82,8 @@ class Command(BaseCommand):
               changed = True
 
       if changed:
-        print 'OLD TASK', recipe.tasks
-        print 'NEW TASK', tasks
+        print('OLD TASK', recipe.tasks)
+        print('NEW TASK', tasks)
         if kwargs['write']:
           recipe.set_values(tasks)
           recipe.save(update_fields=['tasks'])

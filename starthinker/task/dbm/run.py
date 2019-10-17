@@ -41,7 +41,7 @@ from starthinker.util.dbm import report_delete, report_create, report_build, rep
 
 @project.from_parameters
 def dbm():
-  if project.verbose: print 'DBM'
+  if project.verbose: print('DBM')
 
   # legacy translations ( changed report title to name )
   if 'title' in project.task['report']:
@@ -49,7 +49,7 @@ def dbm():
 
   # check if report is to be deleted
   if project.task.get('delete', False):
-    if project.verbose: print 'DBM DELETE',
+    if project.verbose: print('DBM DELETE', end='')
     report_delete(
       project.task['auth'],
       project.task['report'].get('report_id', None),
@@ -61,7 +61,7 @@ def dbm():
   #         the new body call simply passes the report json in, leaving flexibility in the JSON recipe
   if 'type' in project.task['report']:
 
-    if project.verbose: print 'DBM CREATE',
+    if project.verbose: print('DBM CREATE', end='')
 
     partners = get_rows(project.task['auth'], project.task['report']['partners']) if 'partners' in project.task['report'] else []
     advertisers = get_rows(project.task['auth'], project.task['report']['advertisers']) if 'advertisers' in project.task['report'] else []
@@ -83,7 +83,7 @@ def dbm():
 
   # check if report is to be created
   if 'body' in project.task['report']:
-    if project.verbose: print 'DBM BUILD', project.task['report']['body']['metadata']['title']
+    if project.verbose: print('DBM BUILD', project.task['report']['body']['metadata']['title'])
 
     # filters can be passed using special get_rows handler, allows reading values from sheets etc...
     if 'filters' in project.task['report']:
@@ -110,16 +110,14 @@ def dbm():
 
     # if a report exists
     if report:
-      if project.verbose: print 'DBM FILE', filename
+      if project.verbose: print('DBM FILE', filename)
 
       # clean up the report
       rows = report_to_rows(report)
       rows = report_clean(rows, datastudio=project.task.get('datastudio', False), nulls=True)
 
       # write rows using standard out block in json ( allows customization across all scripts )
-      if rows: put_rows(project.task['auth'], project.task['out'], filename, rows)
-      #for row in rows:
-      #  print row
+      if rows: put_rows(project.task['auth'], project.task['out'], rows)
 
 if __name__ == "__main__":
   dbm()

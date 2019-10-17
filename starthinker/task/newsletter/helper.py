@@ -57,9 +57,9 @@ if __name__ == "__main__":
 
   # send or print
   if project.args.email_to and project.args.email_from:
-    print 'EMAILING: ', project.args.email_to
+    print('EMAILING: ', project.args.email_to)
     send_email('user', project.args.email_to, project.args.email_from, None, email.get_subject(), email.get_text(), email.get_html())
   else:
     # write to STDOUT
-    print email.get_html()
-    print '<pre style="width:600px;margin:0px auto;">%s</pre>' % email.get_text()
+    print(email.get_html())
+    print('<pre style="width:600px;margin:0px auto;">%s</pre>' % email.get_text())

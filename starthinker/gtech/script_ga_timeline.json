@@ -43,15 +43,10 @@
   "tasks":[{
     "ga_settings_download":{
       "description":"Will create tables with format ga_* to hold each endpoint via a call to the API list function.",
-      "auth":"service",
+      "auth":"user",
+      "accounts": {"field":{ "name":"account_ids", "kind":"integer_list", "order":1, "default":[] }}
       "dataset":{
-        "field":{
-          "name":"dataset",
-          "kind":"string",
-          "order":1,
-          "default":"",
-          "description": "Dataset to be written to in BigQuery."
-        }
+        "field":{ "name":"dataset", "kind":"string", "order":2, "default":"", "description": "Dataset to be written to in BigQuery." }
       }
     }
   }]

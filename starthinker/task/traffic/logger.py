@@ -52,9 +52,9 @@ class Timer(object):
     if timer_name in self._timers:
       elapsed = datetime.datetime.now() - self._timers[timer_name]
 
-      print '%s: %d.%d' % (timer_name, elapsed.seconds, (elapsed.microseconds - (elapsed.seconds * 60 * 1000000)) / 1000)
+      print('%s: %d.%d' % (timer_name, elapsed.seconds, (elapsed.microseconds - (elapsed.seconds * 60 * 1000000)) / 1000))
     else:
-      print 'timer %s not defined' % timer_name
+      print('timer %s not defined' % timer_name)
 
 
 class Logger(object):

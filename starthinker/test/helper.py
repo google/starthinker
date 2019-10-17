@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2018 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -21,291 +21,208 @@
 
 Meant to speed up an automate testing of StarThinker.
 
-To get list: python test/helper.py --list -u [credentials] -s [credentials] -p [project_id]
+To initialize: python test/helper.py --init
+To run all: python test/helper.py
+To run some: python test/helper.py --tests dt entity
 
 """
+
 import os
-import sys
 import re
+import glob
 import argparse
 import subprocess
 import json
-import datetime
-from shutil import copyfile
-
+from time import sleep
 
 from starthinker.config import UI_ROOT, UI_SERVICE, UI_PROJECT
 from starthinker.script.parse import json_get_fields, json_set_fields
 from starthinker.script.run import script_read
-from starthinker.util.sheets import sheets_create
 
-
-UI_CLIENT = os.environ.get('STARTHINKER_CLIENT_INSTALLED', 'MISSING RUN deploy.sh TO SET')
-UI_USER = os.environ.get('STARTHINKER_USER', 'MISSING RUN deploy.sh TO SET')
-CONFIG_FILE_PATH = UI_ROOT + '/starthinker/test/config.json'
-LOG_FILE_PATH = UI_ROOT + '/starthinker/test/log.txt'
-TEST_DIRECTORY_PATH = UI_ROOT + '/starthinker/test/test_recipes/'
-AUTO_GEN_TEST_FILES = UI_ROOT + '/starthinker/test/auto_gen_test_recipes/'
-
+CONFIG_FILE = UI_ROOT + '/starthinker/test/config.json'
+TEST_DIRECTORY = UI_ROOT + '/starthinker/test/scripts/'
+RECIPE_DIRECTORY = UI_ROOT + '/starthinker/test/recipes/'
+LOG_DIRECTORY = UI_ROOT + '/starthinker/test/logs/'
 RE_TEST = re.compile(r'test.*\.json')
+
+
+def load_tests():
+  for root, dirs, files in os.walk(TEST_DIRECTORY):
+    for filename in files:
+      print('LOADING', filename)
+      yield filename, script_read(TEST_DIRECTORY + filename)
+
+
+def initialize_tests():
+  """Initialize all the necessary test files for Starthinker
+  
+  Args:
+    None
+  
+  Returns:
+    None
+
+  """
+
+  # Get old fields from the config file
+
+  print('UPDATE CONFIG')
+
+  old_fields = {}
+  if (os.path.exists(CONFIG_FILE)):
+    with open(CONFIG_FILE, 'r') as f:
+      old_fields = json.load(f)
+
+  # Get new fields from test files and merge in old values
+
+  fields = {}
+  for filename, script in load_tests():
+    script_fields = json_get_fields(script)
+    script_name = filename.split('.')[0]
+
+    for field in script_fields:
+      fields.setdefault(script_name, {})
+      fields[script_name][field["name"]] = old_fields.get(script_name, {}).get(field["name"], field.get("default", ''))
+      fields[script_name]['%s_description' % field["name"]] = '(%s) %s' % (field.get('kind', 'string'), field.get('description', 'No description.'))
+
+      if field["name"] not in old_fields.get(script_name, {}):
+        print('NEW FIELD ADDED', script_name, field["name"])
+
+  # Save field values to config file
+
+  if fields:
+    f = open(CONFIG_FILE,"w")
+    f.write(json.dumps(fields, sort_keys=True, indent=2))
+    f.close()  
+  else:
+    print('WARNING CONFIGURATION IS EMPTY, CHECK YOUR PATHS!')
+
+  # Display instructions
+
+  print("")
+  print("------")
+  print("------------")
+  print("------------------------")
+  print("Some tests require custom values. Update the necessary fields for the tests you wish to run.")
+  print("EDIT: " + CONFIG_FILE)
+  print("------------------------")
+  print("Some tests require external assets.  Join the following group to gain access.")
+  print("VISIT: https://groups.google.com/forum/#!forum/starthinker-assets")
+  print("------------------------")
+  print("------------")
+  print("------")
+  print("")
+  sleep(3)
+
+
+def run_tests(tests):
+
+  # Load values from config file
+
+  fields = {}
+  if (os.path.exists(CONFIG_FILE)):
+    with open(CONFIG_FILE, 'r') as f:
+      fields = json.load(f)
+
+  # Create recipe directory
+
+  print('GENERATE RECIPES')
+  os.makedirs(RECIPE_DIRECTORY, exist_ok=True)
+
+  # Create recipes from scripts
+
+  recipes = []
+  for filename, script in load_tests():
+    name = filename.split('.')[0]
+    if tests and name not in tests: continue
+
+    # Set cal config field values into the script
+    json_set_fields(script, fields.get(name, {}))
+
+    with open(RECIPE_DIRECTORY + filename, 'w') as f:
+      f.write(json.dumps(script, sort_keys=True, indent=2))
+    
+    recipes.append(filename)
+
+  # Create log directory and clear old logs
+
+  os.makedirs(LOG_DIRECTORY, exist_ok=True)
+
+  if not tests:
+    print('CLEAR LOGS')
+    for f in glob.glob(LOG_DIRECTORY + '*.log'):
+      os.remove(f)
+
+  # Create a process for each recipe execution
+
+  jobs = []
+  for recipe in recipes:
+    if tests and recipe.split('.')[0] not in tests: continue
+    command = [
+      '%s/starthinker_virtualenv/bin/python' % UI_ROOT,
+      '-W', 'ignore',
+      '%s/starthinker/all/run.py' % UI_ROOT,
+      RECIPE_DIRECTORY + recipe,
+      '-u $STARTHINKER_USER',
+      '-s $STARTHINKER_SERVICE',
+      '-p $STARTHINKER_PROJECT',
+      '--verbose',
+      '--force',
+    ]
+
+    print('LAUNCHED:', ' '.join(command))
+
+    jobs.append({
+      'recipe':recipe,
+      'process':subprocess.Popen(command, shell=False, cwd=UI_ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    })
+
+  # Monitor each job for completion and write to log
+
+  i = len(jobs)
+  while i:
+    print('.', end='', flush=True)
+    sleep(10)
+
+    i = i - 1
+    poll = jobs[i]['process'].poll()
+    if poll is not None:
+      job = jobs.pop(i)
+
+      print('\nOK:' if poll == 0 else '\nFAILED:', job['recipe'], 'REMAINING:', len(jobs))
+
+      output, errors = job['process'].communicate()
+      with open(LOG_DIRECTORY + ('OK_' if poll == 0 else 'FAILED_') + job['recipe'].replace('.json', '.log'), 'w') as f:
+        f.write(output.decode())
+        f.write(errors.decode())
+
+    # Start checking jobs from end again
+    if i == 0:
+      i = len(jobs)
+
+  print("")
+  print("------")
+  print("------------")
+  print("------------------------")
+  print('TEST RESULTS: ls -1 %s*.log' % LOG_DIRECTORY)
+  print("------------------------")
+  print("------------")
+  print("------")
+  print("")
 
 
 def tests():
   parser = argparse.ArgumentParser()
-  parser.add_argument('--init', '-init', help='Flag for if you want to only initialize tests and not run tests. set = true')
+  parser.add_argument('-i', '--init', help='Initialize test config.json only.', action='store_true')
+  parser.add_argument('-t', '--tests', nargs='*', help='Run only these tests, name of test from scripts without .json part.')
 
   args = parser.parse_args()
 
-  if args.init == 'true':
+  if args.init:
     initialize_tests()
   else:
-    run_tests()
-
-def run_tests():
-  config_fields = initialize_tests()
-  create_auto_gen_test_recipes(config_fields)
-
-  # Write to logging file
-  f = open(LOG_FILE_PATH, "w+")
-  f.write("*\n")
-  f.write("*\n")
-  f.write("*\n")
-  f.write("*\n")
-  f.write("*\n")
-  f.write("*\n")
-  f.write("Testing Run - %s \n" % datetime.datetime.now())
-  f.write("*\n")
-  f.write("*\n")
-  f.write("*\n")
-  f.write("*\n")
-  f.write("*\n")
-  f.write("*\n")
-  f.close()
-
-  for root, dirs, files in os.walk(AUTO_GEN_TEST_FILES):
-    for filename in files:
-      has_test = False
-      script = script_read(AUTO_GEN_TEST_FILES + filename)
-
-      # Check if the script has a test associated with it
-      for tasks in script['tasks']:
-        for key,value in tasks.iteritems():
-          if key == 'test':
-            has_test = True
-            break
-
-      if not has_test:
-        continue
-
-      # Run the test script
-      command = 'python %s/starthinker/all/run.py %s/%s -c %s -u %s -s %s -p %s --force' % (
-        UI_ROOT,
-        root,
-        filename,
-        UI_CLIENT,
-        UI_USER,
-        UI_SERVICE,
-        UI_PROJECT
-      )
-
-      print ''
-      print ''
-      print '----------------------------------------'
-      print ' TEST: ', command
-      print '----------------------------------------'
-      print ''    
-
-      #std_out, std_err = subprocess.call(command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE).communicate()
-
-      std_out, std_err = subprocess.Popen(command, shell=True, cwd=UI_ROOT, stderr=subprocess.PIPE, stdout=subprocess.PIPE).communicate()
-      # Write to log file   
-      f = open(LOG_FILE_PATH, "a")
-      f.write('\n')
-      f.write('\n')
-      f.write('----------------------------------------\n')
-      f.write('Test: %s \n' % filename)
-      f.write('Command: ' + command + '\n')
-      f.write('\n')
-      f.write('Standard Out=======\n')
-      f.write('\n')
-      f.write(std_out)
-      f.write('\n')
-      f.write('Standard Error=======\n')
-      f.write('\n')
-      f.write(std_err)
-      f.write('\n')
-      f.close()
-
-  f = open(LOG_FILE_PATH, "a")
-  f.write('\n')
-  f.write('\n')
-  f.write('\n')
-  f.write('\n')
-  f.write('Testing Completed\n')
-  f.write('\n')
-  f.write('\n')
-  f.close()
-
-
-"""Initialize all the necessary test files for Starthinker
-
-Args:
-
-Returns:
-  * {
-      "script_name": {
-        "field_name": default_value
-      }
-    }
-"""
-def initialize_tests():
-  # Get all necessary fields from Gtech scripts
-  gtech_fields = get_fields_from_gtech_folder()
-
-  # Get fields from the config file
-  config_fields = {}
-  if (os.path.exists(CONFIG_FILE_PATH)):
-    config_fields = get_config_fields()
-
-  # Update the config fields with any new scripts or fields 
-  updated_config_fields,is_updated = update_config_fields(config_fields, gtech_fields)
-
-  # Update the config file with any new values
-  if(is_updated):
-    update_config_file(updated_config_fields)
-
-  print "All Starthinker files successfully updated."
-  print ""
-  print "------"
-  print "------------"
-  print "------------------------"
-  print "Please visit " + CONFIG_FILE_PATH + " to go through and update the necessary fields for the tests you wish to run."
-  print "Please visit the Google Sheet \"Starthinker Test Sheet\" to input values for the necessary tests you would like to run."
-  print "------------------------"
-  print "------------"
-  print "------"
-  print ""
-
-  return updated_config_fields
-
-
-""" Create test recipes to run, this method inputs the settings in config.json into the test recipes
-
-Args:
-  * config_fields -> the json object from config.json
-
-Returns:
-"""
-def create_auto_gen_test_recipes(config_fields):
-  for root, dirs, files in os.walk(TEST_DIRECTORY_PATH):
-    for filename in files:
-      script_json = {}
-      with open(TEST_DIRECTORY_PATH + filename, 'r') as f:
-        script_json = json.load(f)
-
-      # Set cal config field values into the script
-      json_set_fields(script_json, config_fields[filename.split('.')[0]])
-
-      script = json.dumps(script_json, sort_keys=True, indent=2)
-      f = open(AUTO_GEN_TEST_FILES + filename,"w")
-      f.write(script)
-      f.close()  
-
-
-"""Read all the required fields from the gtech folder
-
-Args:
-
-Returns:
-  * {
-      "script_name": {
-        "field_name": default_value
-      }
-    }
-"""
-def get_fields_from_gtech_folder():
-  # Get all the necessary fields from the gtech scripts
-  fields = {}
-  for root, dirs, files in os.walk(TEST_DIRECTORY_PATH):
-    for filename in files:
-      path = TEST_DIRECTORY_PATH + filename
-      script = script_read(path)
-      script_fields = json_get_fields(script)
-      
-      for field in script_fields:
-        script_name = filename.split('.')[0]
-        if script_name not in fields:
-          fields[script_name] = {}
-        fields[script_name][field["name"]] = field["default"] if 'default' in field else ''
-  return fields
-
-
-"""Read the test config file into a json object
-
-Args:
-
-Returns:
-  * Json object representing the current test config settings
-    {
-      "script_name": {
-        "field_name": default_value
-      }
-    }
-"""
-def get_config_fields():
-  with open(CONFIG_FILE_PATH, 'r') as f:
-    fields = json.load(f)
-
-  return fields
-
-
-""" Goes through the current config fields and the gtech fields 
-    adds any missing values to the config fields
-
-Args:
-  * config_fields -> fields object for what is currently in the config file 
-  * gtech_fields -> fields object for what gtech is looking for
-
-Returns:
-  * Json object representing the current test config settings
-    {
-      "script_name": {
-        "field_name": default_value
-      }
-    }
-"""
-def update_config_fields(config_fields, gtech_fields):
-  is_updated = False
-
-  for script_name,fields in gtech_fields.iteritems():
-    for field_name,default_value in fields.iteritems():
-      # Check if the script is in the config fields already
-      if script_name not in config_fields:
-        config_fields[script_name] = {}
-        is_updated = True
-
-      # Check if the field is in the config for the script
-      if field_name not in config_fields[script_name]:
-        config_fields[script_name][field_name] = default_value
-        is_updated = True
-
-  return config_fields,is_updated
-
-
-""" Overwrites the current config file with the new values
-
-Args:
-  * config_fields -> fields object for what needs to be written to the
-      config file
-
-Returns:
-  * None
-"""
-def update_config_file(config_fields):
-  field_json = json.dumps(config_fields, sort_keys=True, indent=2)
-  f = open(CONFIG_FILE_PATH,"w+")
-  f.write(field_json)
-  f.close()  
+    initialize_tests()
+    run_tests(args.tests or [])
 
 
 if __name__ == "__main__":

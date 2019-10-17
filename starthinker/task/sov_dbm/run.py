@@ -43,7 +43,7 @@ def sov_report(dbm_accounts, label):
 
   # make sure name does not collide
   name = "SOV DBM %s %s ( StarThinker )" % (project.task['dataset'], label)
-  if project.verbose: print 'SOV REPORT:', name
+  if project.verbose: print('SOV REPORT:', name)
 
   # legacy fix: split accounts into partners and advertisers
   partners, advertisers = accounts_split(dbm_accounts)
@@ -67,7 +67,7 @@ def sov_report(dbm_accounts, label):
 
 
 def sov_create_reports():
-  if project.verbose: print "CLIENT:", project.task['dataset']
+  if project.verbose: print("CLIENT:", project.task['dataset'])
 
   # make sure tab exists in sheet
   sheets_tab_copy(project.task['auth'], project.task['sheet']['template']['url'], project.task['sheet']['template']['tab'], project.task['sheet']['url'], project.task['sheet']['template']['tab'])
@@ -104,7 +104,7 @@ def sov_process_client(report_name):
 
   # if a report exists
   if report:
-    if project.verbose: print 'CLIENT FILE', filename
+    if project.verbose: print('CLIENT FILE', filename)
 
     # convert report to array
     rows = report_to_rows(report)
@@ -117,7 +117,7 @@ def sov_process_client(report_name):
 
       # if peer is in sov, then just add the impressions
       if key in sov_rows:
-        sov_rows[key][7] += long(row[12])
+        sov_rows[key][7] += int(row[12])
 
       # otherwise, create a new anonymous peer row
       else:
@@ -129,12 +129,12 @@ def sov_process_client(report_name):
           row[7],                  # 4 Creative_Type
           RE_STATE.sub('', row[8]),# 5 State_Region
           row[10],                 # 6 Designated_Market_Area
-          long(row[12]),           # 7 Client_Impressions
+          int(row[12]),           # 7 Client_Impressions
           0                        # 8 Peer_Impressions
         ]
 
   else:
-    if project.verbose: print 'SOV REPORT NOT READY YET'
+    if project.verbose: print('SOV REPORT NOT READY YET')
 
   # return only row values, hash key no longer necessary
   return sov_rows.values()
@@ -159,7 +159,7 @@ def sov_process_peer(report_name):
 
   # if a report exists
   if report:
-    if project.verbose: print 'CLIENT FILE', filename
+    if project.verbose: print('CLIENT FILE', filename)
 
     # convert report to array
     rows = report_to_rows(report)
@@ -170,11 +170,11 @@ def sov_process_peer(report_name):
       key = ''.join(row[4:-1]) # Everything except impressions
 
       # track advertiser level mix
-      sov_mix[row[1]] = sov_mix.get(row[1], 0) + long(row[12])
+      sov_mix[row[1]] = sov_mix.get(row[1], 0) + int(row[12])
 
       # if peer is in sov, then just add the impressions
       if key in sov_rows:
-        sov_rows[key][8] += long(row[12])
+        sov_rows[key][8] += int(row[12])
 
       # otherwise, create a new anonymous peer row
       else:
@@ -187,7 +187,7 @@ def sov_process_peer(report_name):
           RE_STATE.sub('', row[8]),# 5 State_Region
           row[10],                 # 6 Designated_Market_Area
           0,                       # 7 Client_Impressions
-          long(row[12])            # 8 Peer_Impressions
+          int(row[12])            # 8 Peer_Impressions
         ]
 
     # CHECK: Mix must be right, make sure we've got obfuscated data, no peer has more than 50% 
@@ -195,7 +195,7 @@ def sov_process_peer(report_name):
 
     for account, impressions in sov_mix.items():
       percent = (100 * impressions) / mix_total
-      if project.verbose: print 'EXPECTED MIX %d%% ACTUAL MIX: %s %d%%' % (mix_ratio_high, account, percent)
+      if project.verbose: print('EXPECTED MIX %d%% ACTUAL MIX: %s %d%%' % (mix_ratio_high, account, percent))
 
       if impressions == 0: 
         warnings.append('Warning advertiser %s has no impressions.' % account)
@@ -210,7 +210,7 @@ def sov_process_peer(report_name):
     if errors: raise Exception('\n'.join(errors))
   
   else:
-    if project.verbose: print 'SOV REPORT NOT READY YET'
+    if project.verbose: print('SOV REPORT NOT READY YET')
 
   # return only row values, hash key no longer necessary
   return sov_rows.values()

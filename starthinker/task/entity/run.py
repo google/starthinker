@@ -86,7 +86,7 @@ def get_entity(path):
 
   for chunk in object_get_chunks(project.task['auth'], path, CHUNK_SIZE):
     # read the next chunk, remove all newlines, leaving only '\r\r' between records ( clever use of non display characters for parsing )
-    view += chunk.getvalue().replace('\n', '')
+    view += chunk.read().decode().replace('\n', '')
 
     # first time through, scrap the leading bracket
     if first:
@@ -132,7 +132,7 @@ def move_entity(project, path, table, schema, disposition):
 
 @project.from_parameters
 def entity():
-  if project.verbose: print 'ENTITY'
+  if project.verbose: print('ENTITY')
 
   # legacy translations ( changed partners, advertisers to accounts with "partner_id:advertiser_id" )
   if 'partner_id' in project.task:
@@ -140,7 +140,7 @@ def entity():
 
   # create entities
   for entity in project.task['entities']:
-    if project.verbose: print 'ENTITY:', entity
+    if project.verbose: print('ENTITY:', entity)
 
     # write public files only once
     if entity in PUBLIC_FILES:
@@ -156,9 +156,9 @@ def entity():
       #for account in project.task['accounts']:
         # if advertiser given do not run it ( SAFETY )
         if ':' in str(account):
-          print 'WARNING: Skipping advertiser: ', account
+          print('WARNING: Skipping advertiser: ', account)
           continue
-        if project.verbose: print 'PARTNER:', account
+        if project.verbose: print('PARTNER:', account)
         path = 'gdbm-%s:entity/%s.0.%s.json' % (account, project.date.strftime('%Y%m%d'), entity)
         schema = Entity_Schema_Lookup[entity]
         move_entity(project, path, entity, schema, disposition)

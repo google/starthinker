@@ -30,7 +30,7 @@ from starthinker_ui.project.forms import ProjectForm
 
 
 def project_list(request):
-  projects = request.user.project_set.all() if request.user.is_authenticated() else None
+  projects = request.user.project_set.all() if request.user.is_authenticated else None
   return render(request, "project/project_list.html", { 'projects':projects })
 
 
@@ -45,7 +45,7 @@ def project_edit(request, pk=None):
       messages.success(request, 'Project updated.')
       return HttpResponseRedirect(form_project.instance.link_edit())
     else:
-      print 'ERRORS', form_project.get_errors()
+      print('ERRORS', form_project.get_errors())
       messages.error(request, 'Project Errors: %s' % form_project.get_errors())
   else:
     form_project = ProjectForm(request.user, instance=project)

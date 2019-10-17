@@ -21,7 +21,6 @@
 
 import os
 import json
-from apiclient import http
 from io import BytesIO
 
 from starthinker.config import BUFFER_SCALE

@@ -136,9 +136,9 @@ def script_write(script, args, filepath=None):
   if filepath:
     with open(filepath, 'w') as data_file:
       data_file.write(json.dumps(script, indent=2))
-      print 'JSON Written To: ', filepath
+      print('JSON Written To: ', filepath)
   else:
-    print json.dumps(script, indent=2)
+    print(json.dumps(script, indent=2))
 
 
 def script_interactive():
@@ -153,17 +153,17 @@ def script_interactive():
   fields = json_get_fields(script)
 
   if to_json:
-    print '\n(1 of %d) From %s template create recipe: %s\n' % (len(fields), from_json, to_json)
+    print('\n(1 of %d) From %s template create recipe: %s\n' % (len(fields), from_json, to_json))
   else:
-    print '\n(1 of %d) Recipe file to create from %s template.\n' % (len(fields), sys.argv[1])
+    print('\n(1 of %d) Recipe file to create from %s template.\n' % (len(fields), sys.argv[1]))
     to_json = raw_input("Full Path TO JSON File:") 
 
   for count, field in enumerate(fields):
-    print '\n(%d of %d) %s' % (count + 2, len(fields), field['description']),
-    if 'default' in field: print ' ( Default to "%s" if blank. )' % field['default'],
-    print '\n'
+    print('\n(%d of %d) %s' % (count + 2, len(fields), field['description']),)
+    if 'default' in field: print(' ( Default to "%s" if blank. )' % field['default'],)
+    print('\n')
     args[field['name']] = raw_input("%s ( %s ):" % (field['name'], field['kind']))
-    print '\n'
+    print('\n')
 
     # remove blanks ( they should have defaults )
     if not args[field['name']]: del args[field['name']]
@@ -194,7 +194,7 @@ if __name__ == "__main__":
 
   # invalid command line
   if len(sys.argv) < 2:
-    print "USAGE: run.py [json recipe template file path] -h"
+    print("USAGE: run.py [json recipe template file path] -h")
 
   # only script, json and optional destination supplied, assume interactive
   elif len(sys.argv) == 2 or (len(sys.argv) == 3 and sys.argv[2] != '-h'):

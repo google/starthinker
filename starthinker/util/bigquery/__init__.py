@@ -28,11 +28,10 @@ import uuid
 import json
 from datetime import datetime, timedelta
 from time import sleep
-from StringIO import StringIO
-#from io import BytesIO
+from io import StringIO, BytesIO
 
 from googleapiclient.errors import HttpError
-from apiclient.http import MediaIoBaseUpload
+from googleapiclient.http import MediaIoBaseUpload
 
 from starthinker.config import BUFFER_SCALE
 from starthinker.util import flag_last
@@ -46,8 +45,9 @@ BIGQUERY_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200 MB * scale in confi
 BIGQUERY_BUFFERSIZE = min(BIGQUERY_CHUNKSIZE * 4, BIGQUERY_BUFFERMAX) # 1 GB * scale in config.py
 RE_SCHEMA = re.compile('[^0-9a-zA-Z]+')
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# DO NOT USE THIS, SET THE ENCODING AT THE STRING CONVERSION CAUSING THE ISSUE
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
 
 
 # DEPRECATED, USE THE FOLLOWING:
@@ -85,7 +85,7 @@ def bigquery_date(value):
 
 
 def job_wait(service, job):
-  if project.verbose: print 'BIGQUERY JOB WAIT:', job['jobReference']['jobId']
+  if project.verbose: print('BIGQUERY JOB WAIT:', job['jobReference']['jobId'])
 
   request = service.jobs().get(
     projectId=job['jobReference']['projectId'],
@@ -94,19 +94,19 @@ def job_wait(service, job):
 
   while True:
     sleep(5)
-    if project.verbose: print '.',
+    if project.verbose: print('.', end='')
     sys.stdout.flush()
     result = API_Retry(request)
     if 'errorResult' in result['status']: 
       errors = ' '.join([e['message'] for e in result['status']['errors']])
       raise Exception('BigQuery Job Error: %s' % errors)
     elif result['status']['state'] == 'DONE':
-      if project.verbose: print 'JOB COMPLETE:', result['id']
+      if project.verbose: print('JOB COMPLETE:', result['id'])
       break
 
 
 #def job_insert(auth, job_id):
-#  if project.verbose: print 'BIGQUERY JOB RUN:', job_id
+#  if project.verbose: print('BIGQUERY JOB RUN:', job_id)
 #  project_id, job_id = job_id.split(':', 1)
 #  service = get_service('bigquery', 'v2', auth)
 #
@@ -177,7 +177,7 @@ def datasets_create(auth, project_id, dataset_id):
   try:
     job = service.datasets().insert(projectId=project_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
     sleep(1)
-  except HttpError, e:
+  except HttpError as e:
     if e.resp.status in [403, 500, 503]: sleep(5)
     elif json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
     else: raise
@@ -297,8 +297,8 @@ def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='W
   job = service.jobs().insert(projectId=billing_project_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
   job_wait(service, job)
 
-  #print job
-  #except HttpError, e:
+  #print(job)
+  #except HttpError as e:
   #  if e.resp.status in [403, 500, 503]: sleep(5)
   #  #elif json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
   #  else: raise
@@ -335,7 +335,7 @@ def query_to_view(auth, project_id, dataset_id, view_id, query, legacy=True, rep
           tableId=view_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
     else:
       job = service.tables().insert(projectId=project_id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
-  except HttpError, e:
+  except HttpError as e:
     #if e.resp.status in [403, 500, 503]: sleep(5)
     if json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
     else: raise
@@ -344,7 +344,7 @@ def query_to_view(auth, project_id, dataset_id, view_id, query, legacy=True, rep
 #struture = CSV, NEWLINE_DELIMITED_JSON
 #disposition = WRITE_TRUNCATE, WRITE_APPEND, WRITE_EMPTY
 def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], skip_rows=1, structure='CSV', disposition='WRITE_TRUNCATE'):
-  if project.verbose: print 'BIGQUERY STORAGE TO TABLE: ', project_id, dataset_id, table_id
+  if project.verbose: print('BIGQUERY STORAGE TO TABLE: ', project_id, dataset_id, table_id)
 
   service = get_service('bigquery', 'v2', auth)
 
@@ -379,11 +379,11 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
 
   job = service.jobs().insert(projectId=project_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
   try: job_wait(service, job)
-  except Exception, e: print 'BIGQUERY SKIPPING: %s, %s' % (path, str(e))
+  except Exception as e: print('BIGQUERY SKIPPING: %s, %s' % (path, str(e)))
 
 
 #def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_rows=1, disposition='WRITE_TRUNCATE'):
-#  if project.verbose: print 'BIGQUERY CSV TO TABLE: ', project_id, dataset_id, table_id
+#  if project.verbose: print('BIGQUERY CSV TO TABLE: ', project_id, dataset_id, table_id)
 #
 #  service = get_service('bigquery', 'v2', auth)
 #
@@ -422,16 +422,16 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
 #    response = None
 #    while response is None:
 #      status, response = job.next_chunk()
-#      if project.verbose and status: print "Uploaded %d%%." % int(status.progress() * 100)
-#    if project.verbose: print "Uploaded 100%."
+#      if project.verbose and status: print("Uploaded %d%%." % int(status.progress() * 100))
+#    if project.verbose: print("Uploaded 100%.")
 #    job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
 #
 #  else:
 #    try:
 #      service.tables().delete(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute(num_retries=BIGQUERY_RETRIES)
-#      print 'APR table exists. deleting current table...'
+#      print('APR table exists. deleting current table...')
 #    except:
-#      print 'APR table does not exist. creating empty table...'
+#      print('APR table does not exist. creating empty table...')
 #    body = {
 #      "tableReference": {
 #        "projectId": project_id,
@@ -447,7 +447,7 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
 
 
 def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_rows=1, disposition='WRITE_TRUNCATE'):
-  if project.verbose: print 'BIGQUERY ROWS TO TABLE: ', project_id, dataset_id, table_id
+  if project.verbose: print('BIGQUERY ROWS TO TABLE: ', project_id, dataset_id, table_id)
 
   buffer_data = StringIO()
   writer = csv.writer(buffer_data, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -460,7 +460,7 @@ def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_
 
     # write the buffer in chunks
     if is_last or buffer_data.tell() + 1 > BIGQUERY_BUFFERSIZE:
-      if project.verbose: print 'BigQuery Buffer Size', buffer_data.tell()
+      if project.verbose: print('BigQuery Buffer Size', buffer_data.tell())
       buffer_data.seek(0) # reset for read
       io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'CSV', schema, skip_rows, disposition)
 
@@ -473,12 +473,12 @@ def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_
 
   # if no rows, clear table to simulate empty write
   if not has_rows:
-    if project.verbose: print 'BigQuery Zero Rows'
+    if project.verbose: print('BigQuery Zero Rows')
     io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'CSV', schema, skip_rows, disposition)
 
 
 def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None, disposition='WRITE_TRUNCATE'):
-  if project.verbose: print 'BIGQUERY JSON TO TABLE: ', project_id, dataset_id, table_id
+  if project.verbose: print('BIGQUERY JSON TO TABLE: ', project_id, dataset_id, table_id)
 
   buffer_data = StringIO()
   has_rows = False
@@ -486,11 +486,11 @@ def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None
   for is_last, record in flag_last(json_data):
 
     # check if json is already string encoded, and write to buffer
-    buffer_data.write(record if isinstance(record, basestring) else json.dumps(record))
+    buffer_data.write(record if isinstance(record, str) else json.dumps(record))
 
     # write the buffer in chunks
     if is_last or buffer_data.tell() + 1 > BIGQUERY_BUFFERSIZE:
-      if project.verbose: print 'BigQuery Buffer Size', buffer_data.tell()
+      if project.verbose: print('BigQuery Buffer Size', buffer_data.tell())
       buffer_data.seek(0) # reset for read
       io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'NEWLINE_DELIMITED_JSON', schema, 0, disposition)
 
@@ -506,7 +506,7 @@ def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None
 
   # if no rows, clear table to simulate empty write
   if not has_rows:
-    if project.verbose: print 'BigQuery Zero Rows'
+    if project.verbose: print('BigQuery Zero Rows')
     io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'NEWLINE_DELIMITED_JSON', schema, skip_rows, disposition)
 
 
@@ -520,7 +520,7 @@ def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV
     data.seek(0)
 
     media = MediaIoBaseUpload(
-      data,
+      BytesIO(data.read().encode('utf8')),
       mimetype='application/octet-stream',
       resumable=True,
       chunksize=BIGQUERY_CHUNKSIZE
@@ -556,13 +556,13 @@ def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV
     response = None
     while response is None:
       status, response = job.next_chunk()
-      if project.verbose and status: print "Uploaded %d%%." % int(status.progress() * 100)
-    if project.verbose: print "Uploaded 100%"
+      if project.verbose and status: print("Uploaded %d%%." % int(status.progress() * 100))
+    if project.verbose: print("Uploaded 100%")
     if wait: job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
 
   # if it does not exist and write, clear the table
   elif disposition == 'WRITE_TRUNCATE':
-    if project.verbose: print "BIGQUERY: No data, clearing table."
+    if project.verbose: print("BIGQUERY: No data, clearing table.")
 
     body = {
       "tableReference": {
@@ -580,7 +580,7 @@ def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV
 
 
 def incremental_rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_rows=1, disposition='WRITE_APPEND', billing_project_id=None):
-  if project.verbose: print 'BIGQUERY INCREMENTAL ROWS TO TABLE: ', project_id, dataset_id, table_id
+  if project.verbose: print('BIGQUERY INCREMENTAL ROWS TO TABLE: ', project_id, dataset_id, table_id)
 
   #load the data in rows to BQ into a temp table
   table_id_temp = table_id + str(uuid.uuid4()).replace('-','_')
@@ -662,7 +662,7 @@ def check_table_exists(auth, project_id, dataset_id, table_id, is_time_partition
 
     # Get the next page of tables
     if 'nextPageToken' in table_list:
-      print 'next'
+      print('next')
       table_list = service.tables().list(projectId=project_id, datasetId=dataset_id, pageToken=table_list['nextPageToken']).execute()
     else:
       break
@@ -682,7 +682,7 @@ def tables_get(auth, project_id, dataset_id, table_id):
 
 
 def table_to_rows(auth, project_id, dataset_id, table_id, fields=None, row_start=0, row_max=None):
-  if project.verbose: print 'BIGQUERY ROWS:', project_id, dataset_id, table_id
+  if project.verbose: print('BIGQUERY ROWS:', project_id, dataset_id, table_id)
   service = get_service('bigquery', 'v2', auth)
   next_page = None
   while next_page != '':
@@ -691,11 +691,11 @@ def table_to_rows(auth, project_id, dataset_id, table_id, fields=None, row_start
     if 'rows' in response:
       converters = _build_converter_array(table_to_schema(auth, project_id, dataset_id, table_id), fields, len(response['rows'][0].get('f')))
       for row in response['rows']:
-        yield [converters[i](r.values()[0]) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
+        yield [converters[i](next(iter(r.values()))) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
 
 
 def table_to_schema(auth, project_id, dataset_id, table_id):
-  if project.verbose: print 'TABLE SCHEMA:', project_id, dataset_id, table_id
+  if project.verbose: print('TABLE SCHEMA:', project_id, dataset_id, table_id)
   service = get_service('bigquery', 'v2', auth)
   response = API_Retry(service.tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id))
   return response['schema']
@@ -734,34 +734,20 @@ def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True
   while 'rows' in response:
     converters = _build_converter_array(response.get('schema', None), None, len(response['rows'][0].get('f')))
     for row in response['rows']:
-      yield [converters[i](r.values()[0]) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
+      yield [converters[i](next(iter(r.values()))) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
       row_count += 1
 
     if 'PageToken' in response:
       response = API_Retry(service.jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], pageToken=response['PageToken']))
-    elif row_count < response['totalRows']: 
+    elif row_count < int(response['totalRows']): 
       response = API_Retry(service.jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], startIndex=row_count))
-
-
-#def list_jobs(auth, project_id):
-#  service = get_service('bigquery', 'v2', auth)
-#  client = get_client('bigquery')
-#  #return service.jobs().list(projectId=project_id).execute()
-#  return client.list_jobs()
+    else:
+      break
 
 
 def get_job(auth, project_id, job_id):
   service = get_service('bigquery', 'v2', auth)
   return service.jobs().get(projectId=project_id, jobId=job_id).execute()
-
-
-#def get_table(auth, dataset, table_name):
-#  client = get_client('bigquery', auth=auth)
-#
-#  dataset = client.dataset(dataset)
-#  table = dataset.table(table_name)
-#
-#  return table
 
 
 # CAUTION: Memory suck. This function sabotages iteration by iterating thorough the new object and returning a new iterator
@@ -772,7 +758,7 @@ def get_schema(rows, header=True, infer_type=True):
   row_buffer = []
 
   # everything else defaults to STRING
-  type_to_bq = {int:'INTEGER', long:'INTEGER', bool:'BOOLEAN', float:'FLOAT'} if infer_type else {} # empty lookup defaults to STRING below
+  type_to_bq = {int:'INTEGER', bool:'BOOLEAN', float:'FLOAT'} if infer_type else {} # empty lookup defaults to STRING below
 
   # first non null value determines type
   non_null_column = set()
@@ -861,7 +847,7 @@ def _build_converter_array(schema, fields, col_count):
   else: 
     #No schema so simply return the string as string
     converters = [lambda v: v] * col_count
-  #print converters
+  #print(converters)
   return converters
 
 

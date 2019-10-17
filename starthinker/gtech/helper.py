@@ -46,6 +46,6 @@ if __name__ == "__main__":
 
   try:
     project = get_project(args.file, debug=args.debug)
-    print 'JSON OK:', args.file
-  except Exception, e:
-    print 'JSON ERROR:', args.file, str(e)
+    print('JSON OK:', args.file)
+  except Exception as e:
+    print('JSON ERROR:', args.file, str(e))

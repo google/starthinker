@@ -25,7 +25,7 @@ from starthinker.util.dbm.schema import LineItem_Read_Schema
 
 @project.from_parameters
 def lineitem():
-  if project.verbose: print 'LINEITEM'
+  if project.verbose: print('LINEITEM')
 
   if 'read' in project.task:
     advertisers = []
@@ -49,12 +49,11 @@ def lineitem():
     )
 
     if rows: 
-      filename = 'lineitems_%s.csv' % project.date
       if 'bigquery' in project.task['read']['out']: 
         project.task['read']['out']['bigquery']['schema'] = LineItem_Read_Schema
         project.task['read']['out']['bigquery']['skip_rows'] = 0
 
-      put_rows(project.task['auth'], project.task['read']['out'], filename, rows)
+      put_rows(project.task['auth'], project.task['read']['out'], rows)
 
   elif 'write' in project.task:
     rows = get_rows(project.task['auth'], project.task['write'])

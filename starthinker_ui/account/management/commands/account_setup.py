@@ -68,16 +68,11 @@ class Command(BaseCommand):
         print('Enter password for UI account access ( DO NOT USE YOUR GSUITE PASSWORD ):')
         kwargs['password'] = getpass.getpass()
 
-      account = Account.objects.get_or_create_user(get_profile(), get_credentials(), kwargs['password'])
+      account = Account.objects.get_or_create_user(get_profile(), get_credentials('user'), kwargs['password'])
 
-      # move all recipes to this account and remove all other accounts ( there can be ONLY one )
-      #Project.objects.exclude(account=account).update(account=account)
-      #Recipe.objects.exclude(account=account).update(account=account)
-      #Account.objects.exclude(pk=account.pk).delete()
-
-      print 'ACCOUNT SET UP:', account.email 
+      print('ACCOUNT SET UP:', account.email)
 
     else:
-      print '\nDANGER: Use only with the Data Scientist Setup. This will...'
-      print ' - Overwrite the users credentials with local credentials.'
-      print ''
+      print('\nDANGER: Use only with the Data Scientist Setup. This will...')
+      print(' - Overwrite the users credentials with local credentials.')
+      print('')

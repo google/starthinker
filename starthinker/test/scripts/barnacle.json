@@ -1,5 +1,5 @@
 {
- "setup":{
+  "setup":{
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2019 Google Inc."
   },
@@ -9,7 +9,7 @@
       "endpoints":["accounts", "subaccounts", "profiles", "advertisers", "campaigns", "ads", "creatives", "sites", "roles", "reports"],
       "accounts":{
         "single_cell":true,
-        "values":[7480]
+        "values":{"field":{ "name":"account_ids", "kind":"integer_list", "default":[] }}
       },
       "out":{
         "auth":"service",

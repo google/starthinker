@@ -29,7 +29,7 @@ IO_ID = 'Io Id'
 
 @project.from_parameters
 def monthly_budget_mover():
-	if project.verbose: print 'MONTHLY BUDGET MOVER'
+	if project.verbose: print('MONTHLY BUDGET MOVER')
 
 	report = report_to_list(project.task['auth'], project.task['spend_report_id'])
 

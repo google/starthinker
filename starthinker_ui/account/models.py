@@ -23,10 +23,8 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
-from starthinker.util.auth.google_bucket_auth import BucketCredentials
-
-
-BUCKET_PREFIX = settings.UI_PROJECT.split(':', 1)[-1] # remove domain: part
+from starthinker.util.auth.wrapper import CredentialsUserWrapper
+from starthinker_ui.account.apps import USER_BUCKET
 
 
 def fix_picture(picture_url):
@@ -37,7 +35,10 @@ def token_generate(model_class, model_field, length=8):
   token = None
   while not token: 
     token = ''.join([choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') for i in range(length)])
-    if model_class.objects.filter(**{model_field:token}).exists(): token = None
+    try:
+      if model_class.objects.filter(**{model_field:token}).exists(): token = None
+    except Exception:
+      pass
   return token
 
 
@@ -109,14 +110,13 @@ class Account(AbstractBaseUser):
 
   def set_credentials(self, credentials):
     # check if refresh token exists before saving credentials ( only given first time through auth )?
-    if self.identifier: BucketCredentials.from_oauth(self.get_credentials_path(), credentials).to_bucket()
+    if self.identifier:
+      buffer = CredentialsUserWrapper()
+      buffer.from_credentials(credentials)
+      buffer.save(self.get_credentials_path()) 
 
   def get_credentials(self):
-    return BucketCredentials.from_bucket(self.get_credentials_path()) if self.identifier else None
+    return CredentialsUserWrapper(self.get_credentials_path()) if self.identifier else None
 
   def get_credentials_path(self):
-    return '%s:ui/%s.json' % (BUCKET_PREFIX + "-starthinker-users", self.identifier)
-
-  #def get_bucket(self, full_path=True):
-  #  bucket = BUCKET_PREFIX + '-starthinker-recipes-%d' % self.id
-  #  return ('https://pantheon.corp.google.com/storage/browser/%s/' % bucket) if full_path else bucket
+    return '%s:ui/%s.json' % (USER_BUCKET, self.identifier)

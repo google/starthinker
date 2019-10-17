@@ -16,9 +16,11 @@
 #
 ###########################################################################
 
-import json
-from datetime import datetime
 from collections import OrderedDict
+
+from starthinker.util.data import put_rows
+from starthinker.util.google_api import API_Analytics
+from starthinker.util.project import project
 from starthinker.task.ga_settings_download.ga_schemas import CUSTOM_DIMENSION_SCHEMA
 from starthinker.task.ga_settings_download.ga_schemas import CUSTOM_METRIC_SCHEMA
 from starthinker.task.ga_settings_download.ga_schemas import VIEW_SCHEMA
@@ -26,105 +28,71 @@ from starthinker.task.ga_settings_download.ga_schemas import GOAL_SCHEMA
 from starthinker.task.ga_settings_download.ga_schemas import GOOGLE_ADS_LINK_SCHEMA
 from starthinker.task.ga_settings_download.ga_schemas import REMARKETING_AUDIENCE_SCHEMA
 from starthinker.task.ga_settings_download.ga_schemas import ACCOUNT_SUMMARIES_SCHEMA
-from starthinker.util.data import put_rows
-from starthinker.util.google_api import API_Analytics
-from starthinker.util.project import project
-
-
-@project.from_parameters
-def ga_settings_download():
-  if project.verbose:
-    print 'Initiating GA Settings Download'
-
-  accounts = API_Analytics(
-      'service').management().accountSummaries().list().execute()
-
-  current_date = datetime.now().strftime('%Y-%m-%d')
-  custom_dimensions_download(accounts, current_date)
-  custom_metrics_download(accounts, current_date)
-  views_download(accounts, current_date)
-  goals_download(accounts, current_date)
-  google_ads_links_download(accounts, current_date)
-  remarketing_audiences_download(accounts, current_date)
-  account_summaries_download(accounts, current_date)
 
 
 def custom_dimensions_download(accounts, current_date):
-  if project.verbose:
-    print 'Downloading GA Custom Dimensions'
+  if project.verbose: print('Downloading GA Custom Dimensions')
 
-  custom_dimensions_list = []
-  for account in accounts.get('items', []):
+  for account in accounts:
     for web_property in account.get('webProperties', []):
-      current_custom_dimensions = API_Analytics(
-          'service').management().customDimensions().list(
-              accountId=account.get('id'),
-              webPropertyId=web_property.get('id')).execute()
-      for custom_dimension in current_custom_dimensions.get('items', []):
-        clean_custom_dimension = (account.get('name'), account.get('id'),
-                                  web_property.get('name'),
-                                  web_property.get('id'),
-                                  custom_dimension.get('id'),
-                                  custom_dimension.get('name'),
-                                  custom_dimension.get('index'),
-                                  custom_dimension.get('scope'),
-                                  custom_dimension.get('active'),
-                                  custom_dimension.get('created'),
-                                  custom_dimension.get('updated'), current_date,
-                                  custom_dimension.get('selfLink'))
-        custom_dimensions_list.append(clean_custom_dimension)
-  write_to_bigquery('ga_custom_dimension_settings', CUSTOM_DIMENSION_SCHEMA,
-                    'custom_dimensions_settings.csv', custom_dimensions_list)
+      for custom_dimension in API_Analytics(project.task['auth'], iterate=True).management().customDimensions().list(
+        accountId=account.get('id'), 
+        webPropertyId=web_property.get('id')
+      ).execute():
+        yield (
+          account.get('name'), 
+          account.get('id'),
+          web_property.get('name'),
+          web_property.get('id'),
+          custom_dimension.get('id'),
+          custom_dimension.get('name'),
+          custom_dimension.get('index'),
+          custom_dimension.get('scope'),
+          custom_dimension.get('active'),
+          custom_dimension.get('created'),
+          custom_dimension.get('updated'), 
+          current_date,
+          custom_dimension.get('selfLink')
+        )
 
 
 def custom_metrics_download(accounts, current_date):
-  if project.verbose:
-    print 'Downloading GA Custom Metrics'
+  if project.verbose: print('Downloading GA Custom Metrics')
 
-  custom_metrics_list = []
-  for account in accounts.get('items', []):
+  for account in accounts:
     for web_property in account.get('webProperties', []):
-      current_custom_metrics = API_Analytics(
-          'service').management().customMetrics().list(
-              accountId=account.get('id'),
-              webPropertyId=web_property.get('id')).execute()
-      for custom_metric in current_custom_metrics.get('items', []):
-        clean_custom_metric = (account.get('name'), account.get('id'),
-                               web_property.get('name'), web_property.get('id'),
-                               custom_metric.get('id'),
-                               custom_metric.get('name'),
-                               custom_metric.get('index'),
-                               custom_metric.get('scope'),
-                               custom_metric.get('active'),
-                               custom_metric.get('created'),
-                               custom_metric.get('updated'), current_date,
-                               custom_metric.get('selfLink'),
-                               custom_metric.get('type'),
-                               custom_metric.get('min_value'),
-                               custom_metric.get('max_value'))
-        custom_metrics_list.append(clean_custom_metric)
-  write_to_bigquery('ga_custom_metric_settings', CUSTOM_METRIC_SCHEMA,
-                    'custom_metrics_settings.csv', custom_metrics_list)
-
+      for custom_metric in API_Analytics(project.task['auth'], iterate=True).management().customMetrics().list(accountId=account.get('id'), webPropertyId=web_property.get('id')).execute():
+        yield (
+          account.get('name'),
+          account.get('id'),
+          web_property.get('name'),
+          web_property.get('id'),
+          custom_metric.get('id'),
+          custom_metric.get('name'),
+          custom_metric.get('index'),
+          custom_metric.get('scope'),
+          custom_metric.get('active'),
+          custom_metric.get('created'),
+          custom_metric.get('updated'), 
+          current_date,
+          custom_metric.get('selfLink'),
+          custom_metric.get('type'),
+          custom_metric.get('min_value'),
+          custom_metric.get('max_value')
+        )
 
 def goals_download(accounts, current_date):
-  if project.verbose:
-    print 'Downloading GA Goals'
+  if project.verbose: print('Downloading GA Goals')
 
-  all_goals = []
-  goals = API_Analytics('service').management().goals().list(
-      accountId='~all', webPropertyId='~all', profileId='~all').execute()
-  goals_list = goals.get('items', [])
-  accounts_list = accounts.get('items', [])
-  for goal in goals_list:
-    for account in accounts_list:
+  for goal in API_Analytics(project.task['auth'], iterate=True).management().goals().list(accountId='~all', webPropertyId='~all', profileId='~all').execute():
+    for account in accounts:
       if goal.get('accountId') == account.get('id'):
         for prop in account.get('webProperties', []):
           if goal.get('webPropertyId') == prop.get('id'):
             for view in prop.get('profiles', []):
               if goal.get('profileId') == view.get('id'):
                 ordered_goal = OrderedDict()
-                ordered_goal['date'] = current_date
+                ordered_goal['date'] = str(current_date)
                 ordered_goal['id'] = goal.get('id')
                 ordered_goal['accountId'] = goal.get('accountId')
                 ordered_goal['webPropertyId'] = goal.get('webPropertyId')
@@ -195,61 +163,53 @@ def goals_download(accounts, current_date):
                         'comprisonType': conditions.get('comprisonType'),
                         'comparisonValue': conditions.get('comparisonValue')
                     })
-                all_goals.append(ordered_goal)
-  write_to_bigquery('ga_goal_settings', GOAL_SCHEMA, 'goals_settings.json',
-                    all_goals, 'JSON')
+                yield ordered_goal
 
 
 def views_download(accounts, current_date):
-  if project.verbose:
-    print 'Downloading GA views'
+  if project.verbose: print('Downloading GA views')
 
-  all_views = []
-  views = API_Analytics('service').management().profiles().list(
-      accountId='~all', webPropertyId='~all').execute()
-  views_list = views.get('items', [])
-  accounts_list = accounts.get('items', [])
-  for view in views_list:
-    for account in accounts_list:
+  for view in API_Analytics(project.task['auth'], iterate=True).management().profiles().list(accountId='~all', webPropertyId='~all').execute():
+    for account in accounts:
       if view.get('accountId') == account.get('id'):
         for prop in account.get('webProperties', []):
           if view.get('webPropertyId') == prop.get('id'):
-            clean_view = (current_date, view.get('id'), view.get('selfLink'),
-                          view.get('accountId'), view.get('webPropertyId'),
-                          account.get('name'), prop.get('name'),
-                          view.get('name'), view.get('currency'),
-                          view.get('timezone'), view.get('websiteUrl'),
-                          view.get('defaultPage'),
-                          view.get('excludeQueryParameters'),
-                          view.get('siteSearchQueryParameters'),
-                          view.get('stripSiteSearchQueryParameters'),
-                          view.get('siteSearchCategoryParameters'),
-                          view.get('stripSiteSearchCategoryParameters'),
-                          view.get('type'), view.get('created'),
-                          view.get('updated'), view.get('eCommerceTracking'),
-                          view.get('enhancedECommerceTracking'),
-                          view.get('botFilteringEnabled'), view.get('starred'))
-            all_views.append(clean_view)
-  write_to_bigquery('ga_view_settings', VIEW_SCHEMA, 'views_settings.csv',
-                    all_views)
+            yield (
+              current_date,
+              view.get('id'),
+              view.get('selfLink'),
+              view.get('accountId'),
+              view.get('webPropertyId'),
+              account.get('name'),
+              prop.get('name'),
+              view.get('name'),
+              view.get('currency'),
+              view.get('timezone'),
+              view.get('websiteUrl'),
+              view.get('defaultPage'),
+              view.get('excludeQueryParameters'),
+              view.get('siteSearchQueryParameters'),
+              view.get('stripSiteSearchQueryParameters'),
+              view.get('siteSearchCategoryParameters'),
+              view.get('stripSiteSearchCategoryParameters'),
+              view.get('type'),
+              view.get('created'),
+              view.get('updated'),
+              view.get('eCommerceTracking'),
+              view.get('enhancedECommerceTracking'),
+              view.get('botFilteringEnabled'),
+              view.get('starred')
+            )
 
 
 def google_ads_links_download(accounts, current_date):
-  if project.verbose:
-    print 'Downloading GA Google Ads Links'
+  if project.verbose: print('Downloading GA Google Ads Links')
 
-  all_links = []
-  accounts_list = accounts.get('items', [])
-  for account in accounts_list:
+  for account in accounts:
     for prop in account.get('webProperties', []):
-      links = API_Analytics(
-          'service').management().webPropertyAdWordsLinks().list(
-              accountId=account.get('id'),
-              webPropertyId=prop.get('id')).execute()
-      links_list = links.get('items', [])
-      for link in links_list:
+      for link in API_Analytics(project.task['auth'], iterate=True).management().webPropertyAdWordsLinks().list(accountId=account.get('id'), webPropertyId=prop.get('id')).execute():
         ordered_link = OrderedDict()
-        ordered_link['date'] = current_date
+        ordered_link['date'] = str(current_date)
         ordered_link['id'] = link.get('id')
         ordered_link['kind'] = link.get('kind')
         ordered_link['selfLink'] = link.get('selfLink')
@@ -279,29 +239,19 @@ def google_ads_links_download(accounts, current_date):
           })
         ordered_link['name'] = link.get('name')
         ordered_link['profileIds'] = []
-        for profile_id in link.get('profileIds'):
+        for profile_id in link.get('profileIds', []):
           ordered_link['profileIds'].append({'id': profile_id})
-        all_links.append(ordered_link)
-  write_to_bigquery('ga_google_ad_link_settings', GOOGLE_ADS_LINK_SCHEMA,
-                    'google_ad_link_settings.json', all_links, 'JSON')
+        yield ordered_link
 
 
 def remarketing_audiences_download(accounts, current_date):
-  if project.verbose:
-    print 'Downloading GA Google Remarketing Audiences'
+  if project.verbose: print('Downloading GA Google Remarketing Audiences')
 
-  all_audiences = []
-  accounts_list = accounts.get('items', [])
-  for account in accounts_list:
+  for account in accounts:
     for prop in account.get('webProperties', []):
-      audiences = API_Analytics(
-          'service').management().remarketingAudience().list(
-              accountId=account.get('id'),
-              webPropertyId=prop.get('id')).execute()
-      audiences_list = audiences.get('items', [])
-      for audience in audiences_list:
+      for audience in API_Analytics(project.task['auth'], iterate=True).management().remarketingAudience().list(accountId=account.get('id'), webPropertyId=prop.get('id')).execute():
         ordered_audience = OrderedDict()
-        ordered_audience['date'] = current_date
+        ordered_audience['date'] = str(current_date)
         ordered_audience['kind'] = audience.get('kind')
         ordered_audience['id'] = audience.get('id')
         ordered_audience['accountId'] = audience.get('accountId')
@@ -396,21 +346,15 @@ def remarketing_audiences_download(accounts, current_date):
                             'excludeConditions').get('exclusionDuration')
                 }
             }
-        all_audiences.append(ordered_audience)
-  write_to_bigquery('ga_remarketing_audience_settings',
-                    REMARKETING_AUDIENCE_SCHEMA,
-                    'remarketing_audience_settings.json', all_audiences, 'JSON')
+        yield ordered_audience
 
 
 def account_summaries_download(accounts, current_date):
-  if project.verbose:
-    print 'Downloading GA Google Remarketing Audiences'
+  if project.verbose: print('Downloading GA Google Remarketing Audiences')
 
-  all_summaries = []
-  accounts_list = accounts.get('items', [])
-  for account in accounts_list:
+  for account in accounts:
     ordered_summary = OrderedDict()
-    ordered_summary['date'] = current_date
+    ordered_summary['date'] = str(current_date)
     ordered_summary['id'] = account.get('id')
     ordered_summary['kind'] = account.get('kind')
     ordered_summary['name'] = account.get('name')
@@ -435,30 +379,81 @@ def account_summaries_download(accounts, current_date):
             'starred': profile.get('starred'),
         })
       ordered_summary['webProperties'].append(ordered_prop)
-    all_summaries.append(ordered_summary)
-  write_to_bigquery('ga_account_summaries_settings', ACCOUNT_SUMMARIES_SCHEMA,
-                    'account_summaries_settings.json', all_summaries, 'JSON')
+    yield ordered_summary
 
 
-def put_json(table_id, schema, data_format=''):
-
-  out = {}
-
-  out['bigquery'] = {
+def write_to_bigquery(table_id, schema, data, data_format):
+  out = {
+   'bigquery':{
       'format': data_format,
       'dataset': project.task['dataset'],
       'table': table_id,
       'schema': schema,
       'skip_rows': 0,
-      'disposition': 'WRITE_APPEND'
+      'disposition': 'WRITE_TRUNCATE'
+    }
   }
+  put_rows(project.task['auth'], out, data)
 
-  return out
 
+@project.from_parameters
+def ga_settings_download():
+  if project.verbose: print('Initiating GA Settings Download')
 
-def write_to_bigquery(table_id, schema, file_name, data, data_format = ''):
-  put_rows(project.task['auth'], put_json(table_id, schema, data_format),
-           file_name, data)
+  filters = [str(f) for f in project.task.get('accounts', [])] # in case integer list is provided
+  accounts = [a for a in API_Analytics(project.task['auth'], iterate=True).management().accountSummaries().list().execute() if not filters or a['id'] in filters or a['name'] in filters]
+
+  if accounts:
+    current_date = project.date 
+
+    write_to_bigquery(
+      'ga_custom_dimension_settings', 
+      CUSTOM_DIMENSION_SCHEMA,
+      custom_dimensions_download(accounts, current_date),
+      'CSV'
+    )
+  
+    write_to_bigquery(
+      'ga_custom_metric_settings', 
+      CUSTOM_METRIC_SCHEMA,
+      custom_metrics_download(accounts, current_date),
+      'CSV'
+    )
+  
+    write_to_bigquery(
+      'ga_view_settings', 
+      VIEW_SCHEMA, 
+      views_download(accounts, current_date),
+      'CSV'
+    )
+  
+    write_to_bigquery(
+      'ga_goal_settings', 
+      GOAL_SCHEMA,
+      goals_download(accounts, current_date),
+      'JSON'
+    )
+
+    write_to_bigquery(
+      'ga_google_ad_link_settings',
+      GOOGLE_ADS_LINK_SCHEMA,
+      google_ads_links_download(accounts, current_date),
+      'JSON'
+    )
+
+    write_to_bigquery(
+      'ga_remarketing_audience_settings',
+      REMARKETING_AUDIENCE_SCHEMA,
+      remarketing_audiences_download(accounts, current_date),
+      'JSON'
+    )
+  
+    write_to_bigquery(
+      'ga_account_summaries_settings',
+      ACCOUNT_SUMMARIES_SCHEMA,
+      account_summaries_download(accounts, current_date),
+      'JSON'
+    )
 
 
 if __name__ == '__main__':

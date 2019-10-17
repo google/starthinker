@@ -17,7 +17,7 @@
 ###########################################################################
 
 from operator import itemgetter
-from urllib import urlencode
+from urllib.parse import urlencode
 
 from starthinker.util.project import project
 from starthinker.util.csv import rows_to_csv
@@ -60,7 +60,7 @@ OFFER_SCHEMA = [
 
 
 def get_owners():
-  if project.verbose: print 'GETTING OWNERS'
+  if project.verbose: print('GETTING OWNERS')
 
   owners = []
 
@@ -100,16 +100,16 @@ def get_owners():
       if len(owner) > 6 and owner[6]: owners_grouped[owner[2]]['Studio Account ID'].append(str(owner[6]))
       
     except IndexError: 
-      print 'ERROR:', owner
+      print('ERROR:', owner)
       pass
 
-  if project.verbose: print 'GOT OWNERS:', len(owners)
+  if project.verbose: print('GOT OWNERS:', len(owners))
 
   return owners_grouped.values()
 
 
 def get_impacts():
-  if project.verbose: print 'GETTING IMPACTS'
+  if project.verbose: print('GETTING IMPACTS')
 
   impacts = []
 
@@ -131,13 +131,13 @@ def get_impacts():
   # for easy lookup use dictionary
   impacts = dict([(str(i[0]), float(i[1])) for i in impacts])
 
-  if project.verbose: print 'GOT IMPACTS:', len(impacts)
+  if project.verbose: print('GOT IMPACTS:', len(impacts))
 
   return impacts
 
 
 def get_solutions():
-  if project.verbose: print 'GETTING SCORES'
+  if project.verbose: print('GETTING SCORES')
 
   for solution in project.task['solutions']:
     scores = []
@@ -163,7 +163,7 @@ def get_solutions():
       solution['scores'].setdefault(str(score[0]), [])
       solution['scores'][str(score[0])].append({ 'variant_id':str(score[1]), 'variant':score[2], 'score':float(score[3]) })
 
-    if project.verbose: print 'GOT SCORES:', len(solution['scores'])
+    if project.verbose: print('GOT SCORES:', len(solution['scores']))
 
   return project.task['solutions']
 
@@ -173,7 +173,7 @@ def compose_link(link, parameters):
 
 
 def compose_email_solution_centric(owner):
-  if project.verbose: print 'COMPOSING: ', owner['Account Email']
+  if project.verbose: print('COMPOSING: ', owner['Account Email'])
 
   # start an email template
   email = EmailTemplate()
@@ -220,7 +220,7 @@ def compose_email_solution_centric(owner):
 
     email.button('Learn More', project.task['link'], big=True)
 
-  #print email.get_html()
+  #print(email.get_html())
  
   send_email(
     'user', 
@@ -242,7 +242,7 @@ def assemble_offers_solution_centric():
   #   solution - ( detials ) [
   #    [ client - variant, score, impact ] ( sorted by impact )
   
-  if project.verbose: print 'ASSEMBLING OFFERS'
+  if project.verbose: print('ASSEMBLING OFFERS')
 
   count = 0
   for owner in owners:
@@ -274,9 +274,9 @@ def assemble_offers_solution_centric():
         offers = offers[:project.task['offers']]
         owner['Solutions'].append({'Solution':solution, 'Offers':offers})
 
-  if project.verbose: print 'ASSEMBLED OFFERS', count
+  if project.verbose: print('ASSEMBLED OFFERS', count)
 
-  if project.verbose: print 'SENDING OFFERS'
+  if project.verbose: print('SENDING OFFERS')
 
   # send emails
   count = 0
@@ -286,7 +286,7 @@ def assemble_offers_solution_centric():
       count += 1
       if count == 10: exit()
 
-  if project.verbose: print 'SENT OFFERS', count
+  if project.verbose: print('SENT OFFERS', count)
 
 
 @project.from_parameters

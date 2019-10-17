@@ -19,5 +19,5 @@
 wheel
 gunicorn
 uwsgi
-django==1.11
-psycopg2
+django==2.2.5
+psycopg2-binary

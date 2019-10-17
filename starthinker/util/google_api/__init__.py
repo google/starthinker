@@ -31,11 +31,13 @@ This does not change or augment the standard API calls other than the following:
 
 import json
 import traceback
-import httplib
 import httplib2
 from time import sleep
 from googleapiclient.errors import HttpError
 from googleapiclient.discovery import Resource
+
+try: import httplib
+except: import http.client as httplib
 
 from starthinker.config import UI_ROOT
 from starthinker.util.auth import get_service
@@ -84,7 +86,7 @@ def API_Retry(job, key=None, retries=5, wait=61):
     return data if not key else data.get(key, [])
 
   # API errors
-  except HttpError, e:
+  except HttpError as e:
     # errors that can be overcome or re-tried ( 403 is rate limit and others, needs deep dive )
     if e.resp.status in [403, 409, 429, 500, 503]:
       content = json.loads(e.content)
@@ -95,8 +97,8 @@ def API_Retry(job, key=None, retries=5, wait=61):
       elif content['error'].get('status') == 'PERMISSION_DENIED':
         raise
       elif retries > 0:
-        if project.verbose: print 'API ERROR:', str(e)
-        if project.verbose: print 'API RETRY / WAIT:', retries, wait
+        if project.verbose: print('API ERROR:', str(e))
+        if project.verbose: print('API RETRY / WAIT:', retries, wait)
         sleep(wait)
         return API_Retry(job, key, retries - 1, wait * 2)
       # if no retries, raise
@@ -107,10 +109,10 @@ def API_Retry(job, key=None, retries=5, wait=61):
       raise
 
   # HTTP transport errors
-  except RETRIABLE_EXCEPTIONS, e:
+  except RETRIABLE_EXCEPTIONS as e:
     if retries > 0:
-      if project.verbose: print 'HTTP ERROR:', str(e)
-      if project.verbose: print 'HTTP RETRY / WAIT:', retries, wait
+      if project.verbose: print('HTTP ERROR:', str(e))
+      if project.verbose: print('HTTP RETRY / WAIT:', retries, wait)
       sleep(wait)
       return API_Retry(job, key, retries - 1, wait * 2)
     else:
@@ -139,7 +141,7 @@ def API_Iterator(function, kwargs, results = None):
         function = get_service('dfareporting', 'v3.3', 'user').placements().list
         kwargs = { 'profile_id':1234, 'archived':False } 
         for placement in API_Iterator(function, kwargs):
-          print placement 
+          print(placement)
 
       Can be called independently but automatically built into API...execute() so
       use that instead.
@@ -164,7 +166,7 @@ def API_Iterator(function, kwargs, results = None):
     def __find_tag__(self):
       # find the only list item for a paginated response, JOSN will only have list type, so ok to be specific
       if self.results: # None and {} both excluded
-        for tag in self.results.keys():
+        for tag in iter(self.results.keys()):
           if isinstance(self.results[tag], list): 
             self.iterable = tag
             break
@@ -244,7 +246,7 @@ class API():
     self.version = configuration['version']
     self.auth = configuration['auth']
     self.uri = configuration.get('uri', None)
-    self.function_stack = filter(None, configuration.get('function', '').split('.'))
+    self.function_stack = list(filter(None, configuration.get('function', '').split('.')))
     self.function_kwargs = configuration.get('kwargs', {})
     self.iterate = configuration.get('iterate', False)
 
@@ -273,7 +275,7 @@ class API():
     # build calls along stack
     # do not call functions, as the abstract is necessary for iterator page next calls
     for f_n in self.function_stack:
-      #print type(f), isinstance(f, Resource)
+      #print(type(f), isinstance(f, Resource))
       f = getattr(f if isinstance(f, Resource) else f(), f_n)
 
     # for cases where job is handled manually, save the job
@@ -304,30 +306,30 @@ class API():
       error = None
 
       try:
-        print "Uploading file..."
+        print("Uploading file...")
         status, response = job.next_chunk()
         if 'id' in response:
-          print "Object id '%s' was successfully uploaded." % response['id']
+          print("Object id '%s' was successfully uploaded." % response['id'])
         else:
           exit("The upload failed with an unexpected response: %s" % response)
 
-      except HttpError, e:
+      except HttpError as e:
         if retries > 0 and e.resp.status in RETRIABLE_STATUS_CODES:
           error = "A retriable HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
         else:
           raise
 
-      except RETRIABLE_EXCEPTIONS, e:
+      except RETRIABLE_EXCEPTIONS as e:
         if retries > 0:
           error = "A retriable error occurred: %s" % e
         else:
           raise
   
       if error is not None:
-        print error
+        print(error)
         retries -= 1
         wait = wait * 2
-        print "Sleeping %d seconds and then retrying..." % wait
+        print("Sleeping %d seconds and then retrying..." % wait)
         time.sleep(wait)
 
 
@@ -477,6 +479,19 @@ def API_Drive(auth, iterate=False):
   configuration = {
       'api':'drive',
       'version':'v3',
+      'auth':auth,
+      'iterate':iterate
+  }
+  return API(configuration)
+
+
+def API_Cloud(auth, iterate=False):
+  """Cloud project helper configuration Google API. Defines agreed upon version.
+  """
+
+  configuration = {
+      'api':'cloudresourcemanager',
+      'version':'v1',
       'auth':auth,
       'iterate':iterate
   }

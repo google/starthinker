@@ -22,7 +22,7 @@
 import re
 import mimetypes
 from io import BytesIO
-from apiclient.http import MediaIoBaseUpload
+from googleapiclient.http import MediaIoBaseUpload
 from googleapiclient.errors import HttpError
 
 from starthinker.config import BUFFER_SCALE
@@ -74,7 +74,7 @@ def file_id(auth, url_or_name):
       if m: return m.group(1)
 
   # probably a mangled id or name does not exist
-  if project.verbose: print 'DOCUMENT DOES NOT EXIST', url_or_name
+  if project.verbose: print('DOCUMENT DOES NOT EXIST', url_or_name)
   return None
 
 
@@ -97,7 +97,7 @@ def file_find(auth, name, parent = None):
    query = "trashed = false and name = '%s'" % name
    if parent: query = "%s and '%s' in parents" % (query, parent)
 
-   try: return API_Drive(auth, iterate=True).files().list(q=query).execute().next()
+   try: return next(API_Drive(auth, iterate=True).files().list(q=query).execute())
    except StopIteration: return None
  
 
@@ -142,18 +142,18 @@ def file_create(auth, name, filename, data, parent=None):
 
   # if file exists, return it, prevents obliterating user changes
   if drive_file:
-    if project.verbose: print 'Drive: File exists.'
+    if project.verbose: print('Drive: File exists.')
 
   # if file does not exist, create it
   else:
-    if project.verbose: print 'Drive: Creating file.'
+    if project.verbose: print('Drive: Creating file.')
 
     # file mime is used for uplaod / fallback
     # drive mime attempts to map to a native Google format
     file_mime = mimetypes.guess_type(filename, strict=False)[0]
     drive_mime = about('importFormats')['importFormats'].get(file_mime, file_mime)[0]
 
-    if project.verbose: print 'Drive Mimes:', file_mime, drive_mime
+    if project.verbose: print('Drive Mimes:', file_mime, drive_mime)
 
     # construct upload object, and stream upload in chunks
     body = {
@@ -182,7 +182,7 @@ def file_copy(auth, source_name, destination_name):
   destination_id = file_id(auth, destination_name)
 
   if destination_id:
-    if project.verbose: print 'Drive: File exists.'
+    if project.verbose: print('Drive: File exists.')
     return file_get(auth, destination_id)
 
   else:

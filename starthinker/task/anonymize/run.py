@@ -74,7 +74,7 @@ def anonymize_rows(rows, schema):
 
 def anonymize_table(table_id):
 
-  if project.verbose: print 'ANONYMIZE TABLE', project.task['bigquery']['to']['dataset'], table_id
+  if project.verbose: print('ANONYMIZE TABLE', project.task['bigquery']['to']['dataset'], table_id)
 
   schema = API_BigQuery(project.task['auth']).tables().get(
     projectId=project.task['bigquery']['from'].get('project', project.id),
@@ -104,7 +104,7 @@ def anonymize_table(table_id):
 
 
 def copy_view(view_id):
-  if project.verbose: print 'ANONYMIZE VIEW', project.task['bigquery']['to']['dataset'], view_id
+  if project.verbose: print('ANONYMIZE VIEW', project.task['bigquery']['to']['dataset'], view_id)
 
   view = API_BigQuery(project.task['auth']).tables().get(
     projectId=project.id,
@@ -160,7 +160,7 @@ def anonymize():
       try:
         copy_view(view)
         last_copy = True
-      except HttpError, e:
+      except HttpError as e:
         if e.resp.status == 404:
           retry_views.append(view)
         else: 

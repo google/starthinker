@@ -30,12 +30,12 @@ import httplib2
 from time import sleep
 from io import BytesIO
 
-from apiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
+from googleapiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 from googleapiclient.errors import HttpError
 
 from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
-from starthinker.util.auth import get_service, get_client
+from starthinker.util.auth import get_service
 from starthinker.util.google_api import API_Retry
 
 
@@ -64,7 +64,7 @@ def parse_filename(path, url=False):
   return f
 
 
-def media_download(request, chunksize):
+def media_download(request, chunksize, encoding=None):
   data = BytesIO()
   media = MediaIoBaseDownload(data, request, chunksize=chunksize)
 
@@ -74,15 +74,15 @@ def media_download(request, chunksize):
     error = None
     try:
       progress, done = media.next_chunk()
-      if progress: print 'Download %d%%' % int(progress.progress() * 100)
+      if progress: print('Download %d%%' % int(progress.progress() * 100))
       data.seek(0)
-      yield data
+      yield data.read().decode(encoding) if encoding else data
       data.seek(0)
       data.truncate(0)
-    except HttpError, err:
+    except HttpError as err:
       error = err
       if err.resp.status < 500: raise
-    except (httplib2.HttpLib2Error, IOError), err:
+    except (httplib2.HttpLib2Error, IOError) as err:
       error = err
 
     if error:
@@ -92,7 +92,7 @@ def media_download(request, chunksize):
     else:
       retries = 0
 
-  print 'Download 100%'
+  print('Download 100%')
 
 
 def object_exists(auth, path):
@@ -125,15 +125,15 @@ def object_get_chunks(auth, path, chunksize=CHUNKSIZE):
     error = None
     try:
       progress, done = media.next_chunk()
-      if progress: print 'Download %d%%' % int(progress.progress() * 100)
+      if progress: print('Download %d%%' % int(progress.progress() * 100))
       data.seek(0)
       yield data
       data.seek(0)
       data.truncate(0)
-    except HttpError, err:
+    except HttpError as err:
       error = err
       if err.resp.status < 500: raise
-    except (httplib2.HttpLib2Error, IOError), err:
+    except (httplib2.HttpLib2Error, IOError) as err:
       error = err
 
     if error:
@@ -143,7 +143,7 @@ def object_get_chunks(auth, path, chunksize=CHUNKSIZE):
     else:
       retries = 0
 
-  print 'Download End'
+  print('Download End')
 
 
 def object_put(auth, path, data, mimetype='application/octet-stream'):
@@ -159,17 +159,17 @@ def object_put(auth, path, data, mimetype='application/octet-stream'):
     error = None
     try:
       status, response = request.next_chunk()
-      if project.verbose and status: print "Uploaded %d%%." % int(status.progress() * 100)
-    except HttpError, e:
+      if project.verbose and status: print("Uploaded %d%%." % int(status.progress() * 100))
+    except HttpError as e:
       if e.resp.status < 500: raise
       error = e
-    except (httplib2.HttpLib2Error, IOError), e:
+    except (httplib2.HttpLib2Error, IOError) as e:
       error = e
 
     errors = (errors + 1) if error else 0
     if errors > RETRIES: raise error
 
-  if project.verbose: print "Uploaded 100%."
+  if project.verbose: print("Uploaded 100%.")
 
 
 def object_list(auth, path, raw=False, files_only=False):
@@ -213,7 +213,7 @@ def object_move(auth, path_from, path_to):
 def bucket_get(auth, name):
   service = get_service('storage', 'v1', auth)
   try: return service.buckets().get(bucket=name).execute()
-  except HttpError, e:
+  except HttpError as e:
     if e.resp.status == 404: return None
     elif e.resp.status in [403, 500, 503]: sleep(5)
     else: raise
@@ -232,7 +232,7 @@ def bucket_create(auth, project, name, location="us-west1"):
     try:
       return service.buckets().insert(project=project, body=body).execute()
       sleep(1)
-    except HttpError, e:
+    except HttpError as e:
       if e.resp.status in [403, 500, 503]: sleep(5)
       elif json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
       else: raise

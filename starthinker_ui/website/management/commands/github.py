@@ -39,17 +39,17 @@ class Command(BaseCommand):
   def handle(self, *args, **kwargs):
     
     directory = '%s/docs' % kwargs['path']
-    print 'Writing:', directory
+    print('Writing:', directory)
     with open('%s/index.html' % directory, 'w') as index_file:
       index_file.write(solutions(request=None))
 
     directory = '%s/docs/solution' % kwargs['path']
-    print 'Writing:', directory
+    print('Writing:', directory)
     with open('%s/index.html' % directory, 'w') as index_file:
       index_file.write(solutions(request=None))
 
     directory = '%s/docs/code' % kwargs['path']
-    print 'Writing:', directory
+    print('Writing:', directory)
     if not os.path.exists(directory): os.makedirs(directory)
     with open('%s/index.html' % directory, 'w') as code_file:
       code_file.write(code(request=None))
@@ -57,7 +57,7 @@ class Command(BaseCommand):
     for s in Script.get_scripts():
       if s.is_solution() and s.get_open_source():
         directory = '%s/docs/solution/%s' % (kwargs['path'], s.get_tag())
-        print 'Writing:', directory
+        print('Writing:', directory)
         if not os.path.exists(directory): os.makedirs(directory)
         with open('%s/index.html' % directory, 'w') as solution_file:
           solution_file.write(solution(request=None, tag=s.get_tag()))

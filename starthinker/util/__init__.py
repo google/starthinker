@@ -39,10 +39,10 @@ def flag_last(o):
   """
 
   it = o.__iter__()
-  e = it.next()
+  e = next(it)
   while True:
     try:
-      nxt = it.next()
+      nxt = next(it)
       yield (False, e)
       e = nxt
     except StopIteration:

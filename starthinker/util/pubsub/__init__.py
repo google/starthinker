@@ -59,7 +59,7 @@ def topic_publish(auth, project_id, topic, data):
 
 
 def subscription_acknowledge(auth, project_id, subscription, ack_id):
-  if isinstance(ack_id, basestring): 
+  if isinstance(ack_id, str): 
     ack_id = [ack_id] if ack_id else []
 
   if ack_id:

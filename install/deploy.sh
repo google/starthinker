@@ -27,6 +27,7 @@ if [ -d "${PWD}/install" ]; then
   source ${THIS_DIR}/install/developer.sh;
   source ${THIS_DIR}/install/scientist.sh;
   source ${THIS_DIR}/install/enterprise.sh;
+  source ${THIS_DIR}/install/composer.sh;
 
   echo ""
   echo "Welcome To StarThinker ( Google gTech )"
@@ -66,7 +67,7 @@ if [ -d "${PWD}/install" ]; then
       echo ""
     
       main_done=0
-      main_options=("Developer Menu" "Data Scientist Menu" "Enterprise Menu" "Change Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials" "Quit")
+      main_options=("Developer Menu" "Data Scientist Menu" "Enterprise Menu" "Composer Menu" "Change Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials" "Quit")
     
       while (( !main_done ))
       do
@@ -81,11 +82,12 @@ if [ -d "${PWD}/install" ]; then
             1) setup_developer; break ;;
             2) setup_scientist; break ;;
             3) setup_enterprise; break ;;
-            4) setup_project; save_config; break ;;
-            5) setup_credentials_service; save_config; break ;;
-            6) setup_credentials_commandline; setup_credentials_user; save_config; break ;;
-            7) setup_credentials_ui; save_config; break ;;
-            8) main_done=1; break;;
+            4) setup_composer; break ;;
+            5) setup_project; save_config; break ;;
+            6) setup_credentials_service; save_config; break ;;
+            7) setup_credentials_commandline; setup_credentials_user; save_config; break ;;
+            8) setup_credentials_ui; save_config; break ;;
+            9) main_done=1; break;;
             *) echo "What's that?" ;;
           esac
         done
@@ -113,7 +115,3 @@ else
   echo ""
 
 fi
-
-
-
-

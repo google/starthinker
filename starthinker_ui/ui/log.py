@@ -18,7 +18,7 @@
 
 #https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
 
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import json
 
 from starthinker.config import UI_PROJECT, UI_SERVICE
@@ -65,7 +65,7 @@ def get_instance_name(default='UKNOWN'):
   global INSTANCE_NAME
   if INSTANCE_NAME is None:
     try:
-      return urllib2.urlopen(urllib2.Request(
+      return urllib.request.urlopen(urllib.request.Request(
         "http://metadata.google.internal/computeMetadata/v1/instance/name",
         headers={"Metadata-Flavor" : 'Google'}
       )).read()
@@ -102,7 +102,7 @@ def log_put(event, severity, job=None, text=None):
     - text ( string ): Mesaging output form the task. Usual stdout and stderr.
   """
 
-  if VERBOSE: print "LOGGING:", event, severity, text or ''
+  if VERBOSE: print("LOGGING:", event, severity, text or '')
 
   body = {
     "entries": [
@@ -181,7 +181,7 @@ def log_get(recipe_id=[], timezone='America/Los_Angeles', days=1):
   }
 
   if recipe_id:
-    if isinstance(recipe_id, basestring): recipe_id = [recipe_id]
+    if isinstance(recipe_id, str): recipe_id = [recipe_id]
     body['filter'] += ' AND ( %s )' % ' OR '.join('operation.id="%s"' % r for r in recipe_id)
 
   project.initialize(_service=UI_SERVICE, _project=UI_PROJECT)

@@ -22,12 +22,12 @@
 
 import re
 import pprint
-import urllib2
 import csv
 import json
 import time
-from StringIO import StringIO
+from io import StringIO
 from types import GeneratorType
+from urllib.request import urlopen
 
 from googleapiclient.errors import HttpError
 
@@ -63,7 +63,7 @@ def _process_filters(partners, advertisers, filters, project_id, dataset_id, aut
     })
 
   for f in (filters or []):
-    if isinstance(f['value'], basestring) and f['value'].startswith('SELECT '):
+    if isinstance(f['value'], str) and f['value'].startswith('SELECT '):
 
       items = query_to_rows(auth, project_id, dataset_id, f['value'])
 
@@ -92,7 +92,7 @@ def accounts_split(accounts):
   partners = []
   advertisers = []
   for account in accounts:
-    if isinstance(account, (int, long)):
+    if isinstance(account, int):
       partners.append(account)
     else:
       partner_advertiser = account.split(':', 1)
@@ -156,7 +156,7 @@ def report_build(auth, body):
     # add default daily schedule if it does not exist ( convenience )
     if "schedule" not in body:
       body['schedule'] = {
-        "endTimeMs": long((time.time() + (365 * 24 * 60 * 60)) * 1000), # 1 year in future
+        "endTimeMs": int((time.time() + (365 * 24 * 60 * 60)) * 1000), # 1 year in future
         "frequency": "DAILY",
         "nextRunMinuteOfDay": 4 * 60,
         "nextRunTimezoneCode": body['timezoneCode']
@@ -178,7 +178,7 @@ def report_build(auth, body):
     API_Retry(run)
 
   else:
-    if project.verbose: print 'DBM Report Exists:', body['metadata']['title']
+    if project.verbose: print('DBM Report Exists:', body['metadata']['title'])
 
   return report
 
@@ -192,7 +192,7 @@ def report_create(auth, name, typed, partners, advertisers, filters, dimensions,
   filters = _process_filters(partners, advertisers, filters, project_id, dataset_id, auth=auth)
 
   if report is None:
-    if project.verbose: print 'DBM Report Create:', name
+    if project.verbose: print('DBM Report Create:', name)
 
     service = get_service('doubleclickbidmanager', API_VERSION, auth)
 
@@ -221,7 +221,7 @@ def report_create(auth, name, typed, partners, advertisers, filters, dimensions,
         'type': typed
       },
       'schedule': {
-        'endTimeMs': long((time.time() + (365 * 24 * 60 * 60)) * 1000), # 1 year in future
+        'endTimeMs': int((time.time() + (365 * 24 * 60 * 60)) * 1000), # 1 year in future
         'frequency': 'DAILY',
         'nextRunMinuteOfDay': 4 * 60,
         'nextRunTimezoneCode': timezone
@@ -244,7 +244,7 @@ def report_create(auth, name, typed, partners, advertisers, filters, dimensions,
     run = service.queries().runquery(queryId=report['queryId'], body=body)
     API_Retry(run)
   else:
-    if project.verbose: print 'DBM Report Exists:', name
+    if project.verbose: print('DBM Report Exists:', name)
 
   return report
 
@@ -269,7 +269,7 @@ def report_fetch(auth, report_id=None, name=None, timeout = 4):
 
   """
 
-  if project.verbose: print 'DBM Report Download ( timeout ):', report_id or name, timeout
+  if project.verbose: print('DBM Report Download ( timeout ):', report_id or name, timeout)
 
   wait = 256
 
@@ -282,7 +282,7 @@ def report_fetch(auth, report_id=None, name=None, timeout = 4):
     if report:
       # report is running ( return only if timeout is exhausted )
       if report['metadata']['googleCloudStoragePathForLatestReport'] == '':
-        if project.verbose: print 'DBM Still Running'
+        if project.verbose: print('DBM Still Running')
         if timeout < 0: return True
       # file exists ( return it success )
       else:
@@ -290,7 +290,7 @@ def report_fetch(auth, report_id=None, name=None, timeout = 4):
 
     # no report ( break out of loop it will never finish )
     else:
-      if project.verbose: print 'DBM No Report'
+      if project.verbose: print('DBM No Report')
       return False
 
     wait = wait * 2
@@ -300,7 +300,7 @@ def report_fetch(auth, report_id=None, name=None, timeout = 4):
 def report_bigquery(auth, report_id, name, dataset, table, schema=[], timeout=60):
   storage_path = report_fetch(auth, report_id, name, timeout)
   if storage_path not in (True, False):
-    print project.id, dataset, table, storage_path
+    print(project.id, dataset, table, storage_path)
     storage_to_table(auth, project.id, dataset, table, storage_path, schema, 1 if schema else 0)
 
 
@@ -338,14 +338,14 @@ def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = None)
 
     # streaming
     if 0: #if chunksize: BROKEN SO DEFAULTING TO STREAMING
-      #print 'PATH PRE', storage_path
+      #print('PATH PRE', storage_path)
       path = storage_path.split('?', 1)[0].replace('https://storage.googleapis.com/', '').replace('/', ':', 1)
-      #print 'PATH POST', path
+      #print('PATH POST', path)
       return filename, object_get_chunks(auth, path, chunksize)
 
     # single object
     else:
-      return filename, StringIO(urllib2.urlopen(storage_path).read())
+      return filename, StringIO(urlopen(storage_path).read().decode('UTF-8'))
 
 
 def report_delete(auth, report_id=None, name=None):
@@ -363,14 +363,14 @@ def report_delete(auth, report_id=None, name=None):
 
   """
 
-  if project.verbose: print "DBM DELETE:", report_id or name
+  if project.verbose: print("DBM DELETE:", report_id or name)
   report = report_get(auth, report_id, name)
   if report:
     service = get_service('doubleclickbidmanager', API_VERSION, auth)
     job = service.queries().deletequery(queryId=report['queryId'])
     API_Retry(job)
   else:
-    if project.verbose: print 'DBM DELETE: No Report'
+    if project.verbose: print('DBM DELETE: No Report')
 
 
 def report_list(auth):
@@ -475,7 +475,7 @@ def report_clean(rows, datastudio=False, nulls=False):
 
   """
 
-  if project.verbose: print 'DBM Report Clean'
+  if project.verbose: print('DBM Report Clean')
 
   first = True
   last = False
@@ -499,7 +499,7 @@ def report_clean(rows, datastudio=False, nulls=False):
     else:
       # check if data studio formatting is applied reformat the dates
       if datastudio: 
-        row = [cell.replace('/', '-') if isinstance(cell, basestring) and len(cell) == 4 + 1 + 2 + 1 + 2 and cell[4] == '/' and cell[7] == '/'
+        row = [cell.replace('/', '-') if isinstance(cell, str) and len(cell) == 4 + 1 + 2 + 1 + 2 and cell[4] == '/' and cell[7] == '/'
               else cell
               for cell in row
             ] # 5x faster than regexp
@@ -549,7 +549,7 @@ def lineitem_read(auth, advertisers=[], insertion_orders=[], lineitems=[]):
     body['filterType'] = 'LINE_ITEM_ID'
     body['filterIds'] = list(lineitems) # in case its a generator
 
-  #print body
+  #print(body)
 
   result = API_Retry(service.lineitems().downloadlineitems(body=body))
 
@@ -599,8 +599,8 @@ def lineitem_write(auth, rows, dry_run=True):
 
   job = service.lineitems().uploadlineitems(body=body)
   result = API_Retry(job)
-  #print result
-  return result
+  #print(result)
+  return(result)
 
 
 def sdf_read(auth, file_types, filter_type, filter_ids, version='3.1'):

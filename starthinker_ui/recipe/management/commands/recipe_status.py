@@ -36,40 +36,40 @@ class Command(BaseCommand):
 
   def handle(self, *args, **kwargs):
     for recipe in (Recipe.objects.filter(pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.all()):
-      print '---------------------------------------'
-      print 'Name:', recipe.name
-      print 'Account:', recipe.account.email
-      print 'UUID:', recipe.uid()
-      print 'Reference:', recipe.reference
-      print 'Active:', recipe.active
-      print 'Week:', recipe.week
-      print 'Hour:', recipe.hour
-      print 'Timezone:', recipe.timezone
-      print 'Done:', recipe.job_done
+      print('---------------------------------------')
+      print('Name:', recipe.name)
+      print('Account:', recipe.account.email)
+      print('UUID:', recipe.uid())
+      print('Reference:', recipe.reference)
+      print('Active:', recipe.active)
+      print('Week:', recipe.week)
+      print('Hour:', recipe.hour)
+      print('Timezone:', recipe.timezone)
+      print('Done:', recipe.job_done)
 
       log = recipe.get_log()
 
-      print 'Tasks', len(log['tasks'])
-      print 'UTC', log['utc']
-      print 'AGO', log['ago']
-      print 'PK:', recipe.pk
-      print 'Date Timezone', log['date_tz']
-      print 'Forced', log.get('forced', False)
-      print 'Status', log['status']
-      print 'Worker:', recipe.worker_uid
+      print('Tasks', len(log['tasks']))
+      print('UTC', log['utc'])
+      print('AGO', log['ago'])
+      print('PK:', recipe.pk)
+      print('Date Timezone', log['date_tz'])
+      print('Forced', log.get('forced', False))
+      print('Status', log['status'])
+      print('Worker:', recipe.worker_uid)
 
       for task in log['tasks']:
-        print '  ----------------'
-        print '  Utc', task['utc']
-        print '  Ago', task['ago']
-        print '  Script', task['script']
-        print '  Instance', task['instance']
-        print '  Hour', task['hour']
-        print '  Event', task['event']
-        print '  Done', task['done']
-        print '  Output', task['stdout']
-        print '  Error', task['stderr']
-        print ''
+        print('  ----------------')
+        print('  Utc', task['utc'])
+        print('  Ago', task['ago'])
+        print('  Script', task['script'])
+        print('  Instance', task['instance'])
+        print('  Hour', task['hour'])
+        print('  Event', task['event'])
+        print('  Done', task['done'])
+        print('  Output', task['stdout'])
+        print('  Error', task['stderr'])
+        print('')
 
       task = recipe.get_task()
-      print 'Next Task', task
+      print('Next Task', task)

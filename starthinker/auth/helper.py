@@ -61,4 +61,4 @@ if __name__ == "__main__":
   project.from_commandline(parser=parser)
 
   # get profile
-  print 'Profile:', json.dumps(get_profile(), indent=2, sort_keys=True)
+  print('Profile:', json.dumps(get_profile(), indent=2, sort_keys=True))

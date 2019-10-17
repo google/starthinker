@@ -27,7 +27,7 @@ from starthinker_ui.recipe.forms_fields import CommaSeparatedCharField, CommaSep
 
 def load_config_data(config, path, default):
   current = config
-  if isinstance(path, basestring): path = path.split('.') # accept string or list as path
+  if isinstance(path, str): path = path.split('.') # accept string or list as path
   for key in path:
     if not isinstance(key, int) and key.isdigit(): key = int(key) # cast string indexes to int
     try: current = current[key]

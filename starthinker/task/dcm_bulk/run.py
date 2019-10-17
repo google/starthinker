@@ -28,7 +28,7 @@ CHUNKSIZE = 200 * 1024 * 1024
 def dcm(account_id, disposition):
   name = '%s %s ( StarThinker )' % (project.task['name'], account_id)
 
-  if project.verbose: print 'DCM REPORT', name
+  if project.verbose: print('DCM REPORT', name)
 
   # check if report is to be deleted
   if project.task.get('delete', False):
@@ -60,7 +60,7 @@ def dcm(account_id, disposition):
     )
 
     if report:
-      if project.verbose: print 'DCM FILE', filename
+      if project.verbose: print('DCM FILE', filename)
 
       # clean up the report
       rows = report_to_rows(report)
@@ -73,15 +73,15 @@ def dcm(account_id, disposition):
         project.task['out']['bigquery']['disposition'] = disposition 
 
       # write rows using standard out block in json ( allows customization across all scripts )
-      if rows: put_rows(project.task['auth'], project.task['out'], filename, rows)
+      if rows: put_rows(project.task['auth'], project.task['out'], rows)
 
 
 @project.from_parameters
 def dcm_bulk():
-  if project.verbose: print 'DCM BULK'
+  if project.verbose: print('DCM BULK')
   disposition = 'WRITE_TRUNCATE'
   for count, account in enumerate(project.task['accounts']):
-    if project.verbose: print 'DCM BULK %d of %d' % (count, len(project.task['accounts']))
+    if project.verbose: print('DCM BULK %d of %d' % (count, len(project.task['accounts'])))
     dcm(account, disposition)
     disposition = 'WRITE_APPEND'
     sleep(3)

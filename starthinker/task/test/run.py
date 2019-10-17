@@ -18,21 +18,15 @@
 
 import os
 import json
-import pprint
 from difflib import Differ
-from importlib import import_module
 
-from starthinker.config import UI_ROOT
-from starthinker.util.project import project, get_project
+from starthinker.util.project import project
 from starthinker.util.bigquery import table_to_schema, table_to_rows, query_to_rows
 from starthinker.util.sheets import sheets_read
 from starthinker.util.storage import object_exists, object_delete
 from starthinker.util.drive import file_exists, file_delete
 from starthinker.util.csv import rows_to_type
-from starthinker.script.parse import json_set_fields
 from starthinker.task.traffic.test import bulkdozer_test
-
-LOG_FILE_PATH = UI_ROOT + '/starthinker/test/log.txt'
 
 
 def deep_compare(actual, expected):
@@ -60,26 +54,16 @@ def deep_compare(actual, expected):
 
 # display results of list comparison
 def object_compare(actual, expected):
-  f = open(LOG_FILE_PATH, "a")
 
   errors = deep_compare(actual, expected)
 
   if errors:
-    print '\nFAILED *******************************************************\n'
-    print errors
-    print '\n**************************************************************\n'
-
-    # Log File Write
-    f.write('\nFAILED *******************************************************\n')
-    f.write(errors)
-    f.write('\n**************************************************************\n')
-    f.write('\n')
+    print('\nFAILED *******************************************************\n')
+    print(errors)
+    print('\n**************************************************************\n')
 
   else:
-    print 'PASSED'
-    f.write('PASSED\n')
-
-  f.close()
+    print('PASSED')
 
 
 # check if sheet matches given values
@@ -169,36 +153,36 @@ def bigquery():
     object_compare(sorted(rows), sorted(project.task['bigquery']['values']))
 
 def asserts():
-  print project.task['assert']
-  print 'PASSED'
+  print(project.task['assert'])
+  print('PASSED')
 
 
 def path_exists():
   if os.path.exists(project.task['path']): 
     if project.task.get('delete', False):
       os.remove(project.task['path']) 
-    print 'PASSED'
-  else: print 'FAILED'
+    print('PASSED')
+  else: print('FAILED')
 
 
 def storage_exists():
   if object_exists(project.task['auth'], '%s:%s' % (project.task['storage']['bucket'], project.task['storage']['file'])): 
     if project.task.get('delete', False):
       object_delete(project.task['auth'], '%s:%s' % (project.task['storage']['bucket'], project.task['storage']['file']))
-    print 'PASSED'
-  else: print 'FAILED'
+    print('PASSED')
+  else: print('FAILED')
 
 
 def drive_exists():
   if file_exists(project.task['auth'], project.task['drive']['file']): 
     if project.task.get('delete', False):
       file_delete(project.task['auth'], project.task['drive']['file'])
-    print 'PASSED'
-  else: print 'FAILED'
+    print('PASSED')
+  else: print('FAILED')
 
 
 def traffic():
-  print 'running Bulkdozer test'
+  print('running Bulkdozer test')
   bulkdozer_test()
 
 

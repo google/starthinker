@@ -21,7 +21,7 @@ from starthinker.util.storage import bucket_create, bucket_access
 
 @project.from_parameters
 def bucket():
-  if project.verbose: print "BUCKET", project.task['bucket']
+  if project.verbose: print("BUCKET", project.task['bucket'])
 
   # create bucket
   bucket_create(project.task['auth'], project.id, project.task['bucket'])

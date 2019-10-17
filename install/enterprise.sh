@@ -334,7 +334,7 @@ setup_enterprise() {
   echo "- A Cloud SQL Postgres Database will be created for the UI and workers." 
   echo "- You need to manually delete and/or secure worker instances and database."
   echo ""
-  echo "To edit production deployment parameters use this script or from the command line edit:"
+  echo "To edit deployment parameters use this script or from the command line edit:"
   echo "- ${STARTHINKER_CONFIG}"
   echo ""
 

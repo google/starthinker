@@ -23,12 +23,6 @@
 from setuptools import setup, find_packages
 
 REQUIREMENTS = [
-  'google-cloud-core==0.24.1',
-  'google-cloud-bigquery==0.25.0',
-  'google-cloud-storage==1.2.0',
-  'google-cloud-pubsub',
-  'google-auth',
-  'google-auth-httplib2',
   'google-api-python-client',
   'oauth2client',
   'httplib2',
@@ -38,16 +32,18 @@ REQUIREMENTS = [
   'tzlocal',
   'TwitterAPI',
   'python-dateutil',
-  'django==1.11',
   'pandas',
   'psutil',
+  'moviepy',
+  'py-xlsx',
+  'simple-salesforce'
 ]
 
 #TEST_REQUIREMENTS = []
 
 setup(
   name='starthinker',
-  version='0.0.8',
+  version='0.0.9',
   description="StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components.",
   long_description="StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components. To make it easier for partners and clients to work with some of our advertsing solutions, the gTech team has open sourced this framework as a reference implementation.  Our goal is to make managing data workflows using Google Cloud as fast and re-usable as possible, allowing teams to focus on building advertising solutions.",
   author="Paul Kenjora & Mauricio Desidario",
@@ -66,9 +62,7 @@ setup(
       'Intended Audience :: Developers',
       'License :: OSI Approved :: Apache License',
       'Natural Language :: English',
-      "Programming Language :: Python :: 2",
-      'Programming Language :: Python :: 2.6',
-      'Programming Language :: Python :: 2.7',
+      "Programming Language :: Python :: 3",
   ],
   #test_suite='tests',
   #tests_require=TEST_REQUIREMENTS,

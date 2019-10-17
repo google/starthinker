@@ -62,20 +62,20 @@ class Command(BaseCommand):
         else:
           raise Exception('Unexpected exception')
 
-        print '---------------------------------------'
-        print 'Name:', recipe.name
-        print 'Account:', recipe.account.email
-        print 'UUID:', recipe.uid()
-        print 'Reference:', recipe.reference
-        print 'Active:', recipe.active
-        print 'Week:', recipe.week
-        print 'Hour:', recipe.hour
-        print 'Timezone:', recipe.timezone
-        print 'Done:', recipe.job_done
-        print '---------------------------------------'
+        print('---------------------------------------')
+        print('Name:', recipe.name)
+        print('Account:', recipe.account.email)
+        print('UUID:', recipe.uid())
+        print('Reference:', recipe.reference)
+        print('Active:', recipe.active)
+        print('Week:', recipe.week)
+        print('Hour:', recipe.hour)
+        print('Timezone:', recipe.timezone)
+        print('Done:', recipe.job_done)
+        print('---------------------------------------')
 
       except (KeyboardInterrupt, SystemExit):
         raise
 
-      except Exception, e:
-        print 'DEPLOY ERROR:', str(e)
+      except Exception as e:
+        print('DEPLOY ERROR:', str(e))

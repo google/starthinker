@@ -19,7 +19,7 @@
 import re
 import csv
 import sys
-from StringIO import StringIO
+from io import StringIO
 
 from starthinker.util.project import project
 from starthinker.util.bigquery import bigquery_date
@@ -42,7 +42,7 @@ def excel_to_rows(excel_bytes):
 
 def csv_to_rows(csv_string):
   csv.field_size_limit(sys.maxsize)
-  if isinstance(csv_string, basestring): csv_string = StringIO(csv_string)
+  if isinstance(csv_string, str): csv_string = StringIO(csv_string)
   for row in csv.reader(csv_string, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL, skipinitialspace=True, escapechar='\\'):
     yield row
 
@@ -54,10 +54,10 @@ def rows_to_csv(rows):
     try:
       writer.writerow(row)
       count += 1
-    except Exception, e:
-      print 'Error:', row_number, str(e), row
+    except Exception as e:
+      print('Error:', row_number, str(e), row)
   csv_string.seek(0)  # important otherwise contents is zero
-  if project.verbose: print 'CSV Rows Written:', count
+  if project.verbose: print('CSV Rows Written:', count)
   return csv_string
 
 
@@ -166,12 +166,12 @@ def rows_to_type(rows, column=None):
     for index, value in enumerate(row):
       if column is None or column == index:
         # empty values are NULL ( avoid converting zero to null )
-        if isinstance(value, basestring):
+        if isinstance(value, str):
           if value == '':
             row[index] = None
           # all digits less than 64 bytes are integers
           elif value.isdigit():
-            v = long(value)
+            v = int(value)
             if abs(v) <= INT_LIMIT : row[index] = v
           # float probably needs a byte check
           elif '.' in value:
@@ -184,5 +184,5 @@ def rows_to_type(rows, column=None):
 def rows_print(rows, row_min=0, row_max=None):
   for i, row in enumerate(rows):
     if i >= row_min and (row_max is None or i <= row_max):
-      print i, row
+      print(i, row)
     yield row

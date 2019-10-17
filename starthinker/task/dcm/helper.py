@@ -60,20 +60,20 @@ if __name__ == "__main__":
   if project.args.report:
     kwargs['reportId'] = project.args.report
     report = API_DCM(auth, internal=is_superuser).reports().get(**kwargs).execute()
-    print json.dumps(report, indent=2, sort_keys=True)
+    print(json.dumps(report, indent=2, sort_keys=True))
 
   # get report files
   elif project.args.files:
     kwargs['reportId'] = project.args.files
     for report_file in API_DCM(auth, internal=is_superuser).reports().files().list(**kwargs).execute():
-      print json.dumps(report_file, indent=2, sort_keys=True)
+      print(json.dumps(report_file, indent=2, sort_keys=True))
 
   # get schema
   elif project.args.schema:
     filename, report = report_file(auth, project.args.account, project.args.schema, None, 10)
     rows = report_to_rows(report)
     rows = report_clean(rows)
-    print json.dumps(report_schema(rows.next()), indent=2, sort_keys=True)
+    print(json.dumps(report_schema(next(rows)), indent=2, sort_keys=True))
 
   # get sample
   elif project.args.sample:
@@ -86,4 +86,4 @@ if __name__ == "__main__":
   # get list
   else:
     for report in API_DCM(auth, internal=is_superuser).reports().list(**kwargs).execute():
-      print json.dumps(report, indent=2, sort_keys=True)
+      print(json.dumps(report, indent=2, sort_keys=True))

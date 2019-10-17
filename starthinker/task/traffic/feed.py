@@ -313,7 +313,7 @@ class Feed:
     Returns:
       The representation of the value in the correct data type.
     """
-    if type(value) in (unicode, str):
+    if isinstance(value, str):
       if value.upper() == 'TRUE':
         return True
       elif value.upper() == 'FALSE':
@@ -356,7 +356,7 @@ class Feed:
     row = 1
 
     for item in self.feed:
-      for key in item.keys():
+      for key in iter(item.keys()):
         if key in headers:
           column = headers.index(key)
           value = self._parse_value(item[key]) if parse else item[key]

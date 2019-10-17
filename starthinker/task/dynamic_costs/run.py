@@ -19,7 +19,6 @@
 
 from starthinker.util.project import project 
 from starthinker.util.bigquery import rows_to_table, query_to_view
-from starthinker.util.sheets import sheets_tab_copy, sheets_read
 from starthinker.util.dcm import report_build, report_file, report_to_rows, report_clean, report_schema, DCM_CHUNK_SIZE
 
 
@@ -29,11 +28,11 @@ def write_report(report, dataset, table):
   rows = report_clean(rows)
 
   if rows:
-    if project.verbose: print "DYNAMIC COSTS WRITTEN:", table
+    if project.verbose: print("DYNAMIC COSTS WRITTEN:", table)
 
     # pull DCM schema automatically
     try:
-      schema = report_schema(rows.next())
+      schema = report_schema(next(rows))
     except StopIteration: # report is empty
       raise ValueError("REPORT DID NOT RUN")
 
@@ -49,12 +48,12 @@ def write_report(report, dataset, table):
     )
 
   else:
-    if project.verbose: print "DYNAMIC COSTS REPORT NOT READY:", table
+    if project.verbose: print("DYNAMIC COSTS REPORT NOT READY:", table)
 
 
 
 def report_combos(name, dateRange, advertiser, campaign, dynamicProfile):
-  if project.verbose: print "DYNAMIC COSTS COMBOS:", name
+  if project.verbose: print("DYNAMIC COSTS COMBOS:", name)
 
   # basic report schema, with no dynamic elements
   report_schema = {
@@ -132,7 +131,7 @@ def report_combos(name, dateRange, advertiser, campaign, dynamicProfile):
 
 
 def report_main(name, dateRange, advertiser, campaign, shadow=True):
-  if project.verbose: print "DYNAMIC COSTS MAIN:", name
+  if project.verbose: print("DYNAMIC COSTS MAIN:", name)
 
   # base report schema
   report_schema = {
@@ -200,7 +199,7 @@ def report_main(name, dateRange, advertiser, campaign, shadow=True):
 
 
 def report_shadow(name, dateRange, advertiser, campaign):
-  if project.verbose: print "DYNAMIC COSTS SHADOW:", name
+  if project.verbose: print("DYNAMIC COSTS SHADOW:", name)
 
   # create the report if it does not exist
   report = report_build(
@@ -255,7 +254,7 @@ def report_shadow(name, dateRange, advertiser, campaign):
 
 
 def view_combine(name, combos_table, main_table, shadow_table):
-  if project.verbose: print "DYNAMIC COSTS VIEW:", name
+  if project.verbose: print("DYNAMIC COSTS VIEW:", name)
 
   if shadow_table:
     query = """
@@ -302,34 +301,19 @@ def view_combine(name, combos_table, main_table, shadow_table):
 @project.from_parameters
 def dynamic_costs():
 
-  # make sure tab exists in sheet
-  sheets_tab_copy(
-    project.task['auth'],
-    project.task['sheet']['template']['url'],
-    project.task['sheet']['template']['tab'],
-    project.task['sheet']['url'],
-    project.task['sheet']['tab']
-  )
+  # refactor this is legacy
+  inputs = {
+    "Start Date":project.task['date_start'],
+    "End Date":project.task['date_end'],
+    "Relative Date Range":project.task['date_relative'],
+    "Shadow Advertiser ID":project.task['shadow_advertiser_id'],
+    "Main Advertiser ID":project.task['main_advertiser_id'],
+    "Shadow Campaign ID":project.task['shadow_campaign_id'],
+    "Main Campaign ID":project.task['main_campaign_id'],
+    "Dynamic Profile ID":project.task['dynamic_profile_id'],
+  }
 
-  # read configuration from sheet
-  inputs = sheets_read(project.task['auth'],
-    project.task['sheet']['url'],
-    project.task['sheet']['tab'],
-    project.task['sheet']['range']
-  )
-
-  # convert inputs into dictionary
-  def expand_list(lst):
-    if len(lst) == 1: return (lst[0], "")
-    elif len(lst) == 2: return lst
-  inputs = [expand_list(row) for row in inputs]
-  inputs = dict(inputs)
-
-  if project.verbose: print "DYNAMIC COSTS PARAMETERS", inputs
-  
-  if 'Main Advertiser ID' in inputs or not inputs['Main Advertiser ID']:
-    print "Configuration sheet not filled out."
-    return
+  if project.verbose: print("DYNAMIC COSTS PARAMETERS", inputs)
 
   # allows each advertiser to run multiple reports ( somewhat collision avoidance )
   unique_name = inputs['Dynamic Profile ID']
@@ -338,7 +322,7 @@ def dynamic_costs():
   shadow = inputs['Shadow Advertiser ID'] and inputs['Shadow Campaign ID']
 
   # parse date range
-  if inputs['Relative Date Range'] == 'CUSTOM':
+  if inputs.get('Relative Date Range') == 'CUSTOM':
     date_range = {
         "kind": "dfareporting#dateRange",
         "startDate": str(inputs['Start Date']),

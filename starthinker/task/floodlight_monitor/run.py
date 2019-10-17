@@ -44,7 +44,7 @@ def floodlight_report(floodlight_id):
 
   name = 'Floodlight Monitor %s %s ( StarThinker )' % ( account_id, floodlight_id )
 
-  if project.verbose: print "FLOODLIGHT MONITOR REPORT: ", name
+  if project.verbose: print("FLOODLIGHT MONITOR REPORT: ", name)
 
   # create report if it does not exists
   report = report_build(
@@ -133,7 +133,7 @@ def floodlight_analysis(rows):
     outliers = floodlight_outliers(df[['date', 'floodlightConfigId', 'activityId', 'activity', 'impressions']], 'impressions').values.tolist()
     outliers_today = [o for o in outliers if o[0] == last_day]
   except ValueError:
-    print 'No data available.'
+    print('No data available.')
     return None, None
 
   return last_day, outliers_today
@@ -171,7 +171,7 @@ def floodlight_email(day, alerts):
     # either way link to the configuration sheet
     t.button('Floodlight Monitoring Sheet', project.task['sheet']['url'], big=True)
 
-    if project.verbose: print "FLOODLIGHT MONITOR EMAIL ALERTS", email, len(table)
+    if project.verbose: print("FLOODLIGHT MONITOR EMAIL ALERTS", email, len(table))
 
     # send email template
     send_email(
@@ -187,15 +187,16 @@ def floodlight_email(day, alerts):
 
 @project.from_parameters
 def floodlight_monitor():
-  if project.verbose: print "FLOODLIGHT MONITOR"
+  if project.verbose: print("FLOODLIGHT MONITOR")
 
-  # make sure tab exists in sheet
-  sheets_tab_copy(
-    project.task['auth'],
-    project.task['sheet']['template']['url'],
-    project.task['sheet']['template']['tab'],
-    project.task['sheet']['url'],
-    project.task['sheet']['tab'])
+  # make sure tab exists in sheet ( deprecated, use sheet task instead )
+  if 'template' in project.task['sheet']:
+    sheets_tab_copy(
+      project.task['auth'],
+      project.task['sheet']['template']['url'],
+      project.task['sheet']['template']['tab'],
+      project.task['sheet']['url'],
+      project.task['sheet']['tab'])
 
   # read peers from sheet
   triggers = sheets_read(
@@ -207,7 +208,7 @@ def floodlight_monitor():
   # 0 - Floodlight Id
   # 1 - email
 
-  if project.verbose and len(triggers) == 0: print "FLOODLIGHT MONITOR: No floodlight ids specified in sheet."
+  if project.verbose and len(triggers) == 0: print("FLOODLIGHT MONITOR: No floodlight ids specified in sheet.")
 
   alerts = {}
   day = None

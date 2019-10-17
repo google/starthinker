@@ -19,7 +19,7 @@
 import pprint
 import csv
 from time import sleep
-from StringIO import StringIO
+from io import StringIO
 from types import GeneratorType
 from datetime import date, timedelta
 
@@ -256,7 +256,7 @@ def report_delete(auth, account, report_id = None, name=None):
     kwargs['reportId'] = report['id']
     API_DCM(auth, internal=is_superuser).reports().delete(**kwargs).execute()
   else:
-    if project.verbose: print 'DCM DELETE: No Report'
+    if project.verbose: print('DCM DELETE: No Report')
 
 
 def report_build(auth, account, body):
@@ -327,7 +327,7 @@ def report_build(auth, account, body):
     API_DCM(auth, internal=is_superuser).reports().run(**kwargs).execute()
 
   else:
-    if project.verbose: print 'DCM Report Exists:', body['name']
+    if project.verbose: print('DCM Report Exists:', body['name'])
 
   return report
 
@@ -405,7 +405,7 @@ def report_fetch(auth, account, report_id=None, name=None, timeout = 60):
 
   """
 
-  if project.verbose: print 'DCM REPORT FILE', report_id or name
+  if project.verbose: print('DCM REPORT FILE', report_id or name)
 
   if report_id is None:
     report = report_get(auth, account, name=name)
@@ -425,13 +425,13 @@ def report_fetch(auth, account, report_id=None, name=None, timeout = 60):
 
       # still running ( wait for timeout )
       if file_json['status'] == 'PROCESSING':
-        if project.verbose: print 'REPORT PROCESSING WILL WAIT'
+        if project.verbose: print('REPORT PROCESSING WILL WAIT')
         running = True
         if timeout > 0: break # go to outer loop wait
 
       # ready for download ( return file )
       elif file_json['status'] == 'REPORT_AVAILABLE':
-        if project.verbose: print 'REPORT DONE'
+        if project.verbose: print('REPORT DONE')
         return file_json
 
       # cancelled or failed ( go to next file in loop )
@@ -441,14 +441,14 @@ def report_fetch(auth, account, report_id=None, name=None, timeout = 60):
 
     # sleep a minute
     if timeout > 0:
-      if project.verbose: print 'WAITING MINUTES', timeout
+      if project.verbose: print('WAITING MINUTES', timeout)
       sleep(60)
 
     # advance timeout
     timeout -= 1
 
   # if here, no file is ready, return status
-  if project.verbose: print 'NO REPORT FILES'
+  if project.verbose: print('NO REPORT FILES')
   return running
 
 
@@ -473,7 +473,7 @@ def report_run(auth, account, report_id=None, name=None):
   is_superuser, profile_id = get_profile_for_api(auth, account_id)
   kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
 
-  if project.verbose: print 'DCM REPORT RUN INIT', report_id or name
+  if project.verbose: print('DCM REPORT RUN INIT', report_id or name)
   if report_id is None:
     report = report_get(auth, account, name=name)
     if report is None:
@@ -488,10 +488,10 @@ def report_run(auth, account, report_id=None, name=None):
   latest_file_json = next(files, None)
   if latest_file_json == None or latest_file_json['status'] != 'PROCESSING':
     # run report if previously never run or currently not running
-    if project.verbose: print 'RUNNING REPORT', report_id or name
+    if project.verbose: print('RUNNING REPORT', report_id or name)
     API_DCM(auth, internal=is_superuser).reports().run(**kwargs).execute()
     return True
-  if project.verbose: print 'REPORT RUN SKIPPED', report_id or name
+  if project.verbose: print('REPORT RUN SKIPPED', report_id or name)
   return False
 
 
@@ -531,7 +531,7 @@ def report_file(auth, account, report_id=None, name=None, timeout=60, chunksize=
 
     # streaming
     if chunksize:
-      return filename, media_download(API_DCM(auth).files().get_media(reportId=file_json['reportId'], fileId=file_json['id']).execute(False), chunksize)
+      return filename, media_download(API_DCM(auth).files().get_media(reportId=file_json['reportId'], fileId=file_json['id']).execute(False), chunksize, 'utf-8')
 
     # single object
     else:
@@ -604,7 +604,7 @@ def report_to_rows(report):
   if type(report) is GeneratorType:
     leftovers = ''
     for chunk in report:
-      data, extra = chunk.read().rsplit('\n', 1)
+      data, extra = chunk.rsplit('\n', 1)
       for row in csv.reader(StringIO(leftovers + data)):
         yield row
       leftovers = extra
@@ -627,7 +627,7 @@ def report_schema(headers):
   filename, report = report_file(...)
   rows = report_to_rows(report)
   rows = report_clean(rows)
-  schema = report_schema(rows.next())
+  schema = report_schema(next(rows))
   ```
 
   Args:
@@ -689,7 +689,7 @@ def report_clean(rows):
 
   """
 
-  if project.verbose: print 'DCM REPORT CLEAN'
+  if project.verbose: print('DCM REPORT CLEAN')
 
   first = True
   last = False
@@ -756,7 +756,7 @@ def conversions_upload(auth, account, floodlight_activity_id, conversion_type, c
 
     if is_last or len(row_buffer) == DCM_CONVERSION_SIZE:
 
-      if project.verbose: print 'CONVERSION UPLOADING ROWS: %d - %d' % (row_count,  row_count + len(row_buffer))
+      if project.verbose: print('CONVERSION UPLOADING ROWS: %d - %d' % (row_count,  row_count + len(row_buffer)))
 
       body = {
         'conversions': [{

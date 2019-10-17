@@ -25,7 +25,8 @@ import time
 import traceback
 import datetime
 
-from apiclient import http
+from googleapiclient.http import HttpError
+
 from starthinker.util.auth import get_service
 from starthinker.util.google_api import API_Retry
 from starthinker.task.traffic.store import store
@@ -79,7 +80,7 @@ class BaseDAO(object):
       feed_item: Feed item from Bulkdozer feed representing the item to fetch
         from CM.
     """
-    print 'hitting the api to get %s, %s' % (self._entity, feed_item[self._id_field])
+    print('hitting the api to get %s, %s' % (self._entity, feed_item[self._id_field]))
     return self._retry(
         self._service.get(
             profileId=self.profile_id, id=feed_item[self._id_field]))
@@ -118,7 +119,7 @@ class BaseDAO(object):
       if not result and required:
         raise Exception('ERROR: Could not find %s with name %s' % (self._entity, feed_item[self._search_field]))
     elif id_value:
-      if type(id_value) in (str, unicode) and id_value.startswith('ext'):
+      if isinstance(id_value, str) and id_value.startswith('ext'):
         keys.append(id_value)
         id_value = store.translate(self._entity, id_value)
 
@@ -175,7 +176,7 @@ class BaseDAO(object):
 
         key = str(args.get(self._parent_filter_name, '')) + key
 
-      print 'hitting the api to search for %s, %s' % (self._entity, search_string)
+      print('hitting the api to search for %s, %s' % (self._entity, search_string))
       search_result = self._retry(
           self._service.list(**args))
 
@@ -204,7 +205,7 @@ class BaseDAO(object):
     Returns:
       The CM object representing the item inserted.
     """
-    #print 'ITEM', item
+    #print('ITEM', item)
     return self._retry(
         self._service.insert(profileId=self.profile_id, body=item))
 
@@ -216,7 +217,7 @@ class BaseDAO(object):
       feed_item: The feed item from the Bulkdozer feed representing the item to
         update.
     """
-    #print 'ITEM', item
+    #print('ITEM', item)
     self._retry(self._service.update(profileId=self.profile_id, body=item))
 
   def _chunk(self, l, chunk_size):
@@ -238,7 +239,7 @@ class BaseDAO(object):
       feed: List of feed items to retrieve
     """
     if hasattr(self, '_list_name') and self._list_name and self._id_field:
-      print 'pre fetching %s' % self._list_name
+      print('pre fetching %s' % self._list_name)
       ids = [feed_item[self._id_field] for feed_item in feed if isinstance(feed_item[self._id_field], int)]
 
       if ids:
@@ -329,9 +330,9 @@ class BaseDAO(object):
 #    try:
 #      data = job.execute()
 #      return data
-#    except http.HttpError, e:
+#    except HttpError as e:
 #      stack = traceback.format_exc()
-#      print stack
+#      print(stack)
 #
 #      msg = str(e)
 #      match = re.search(r'"(.*)"', msg)
