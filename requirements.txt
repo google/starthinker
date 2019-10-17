@@ -18,9 +18,7 @@
 
 #-r starthinker/requirements.txt
 google-api-python-client
-oauth2client
-httplib2
-jsonpickle
+google-auth-oauthlib
 pysftp
 pytz
 tzlocal
@@ -36,5 +34,6 @@ simple-salesforce
 wheel
 gunicorn
 uwsgi
+jsonpickle
 django==2.2.5
 psycopg2-binary

@@ -16,7 +16,6 @@
 #
 ###########################################################################
 
-import httplib2
 from random import choice
 
 from django.db import models

@@ -168,7 +168,7 @@ entrypoint: gunicorn -b :\$PORT starthinker_ui.ui.wsgi
 threadsafe: yes
 
 runtime_config:
-  python_version: 2
+  python_version: 3
 
 beta_settings:
   cloud_sql_instances: $STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME

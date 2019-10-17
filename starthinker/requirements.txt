@@ -18,10 +18,6 @@
 
 google-api-python-client
 google-auth-oauthlib
-oauth2client
-httplib2
-jsonpickle
-django==2.2.5
 pysftp
 pytz
 tzlocal

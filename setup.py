@@ -24,8 +24,7 @@ from setuptools import setup, find_packages
 
 REQUIREMENTS = [
   'google-api-python-client',
-  'oauth2client',
-  'httplib2',
+  'google-auth-oauthlib',
   'jsonpickle',
   'pysftp',
   'pytz',

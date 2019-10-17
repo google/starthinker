@@ -20,8 +20,6 @@
 
 from __future__ import unicode_literals
 
-import httplib2
-
 from googleapiclient import discovery
 
 from django.conf import settings

@@ -19,5 +19,6 @@
 wheel
 gunicorn
 uwsgi
+jsonpickle
 django==2.2.5
 psycopg2-binary
