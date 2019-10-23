@@ -38,26 +38,29 @@ class AdDAO(BaseDAO):
   updating ads.
   """
 
-  def __init__(self, auth, profile_id):
+  def __init__(self, auth, profile_id, is_admin):
     """Initializes AdDAO with profile id and authentication scheme."""
-    super(AdDAO, self).__init__(auth, profile_id)
+    super(AdDAO, self).__init__(auth, profile_id, is_admin)
 
-    self._service = self.service.ads()
     self._id_field = FieldMap.AD_ID
     self._search_field = FieldMap.AD_NAME
     self._list_name = 'ads'
 
-    self._creative_dao = CreativeDAO(auth, profile_id)
-    self._placement_dao = PlacementDAO(auth, profile_id)
-    self._campaign_dao = CampaignDAO(auth, profile_id)
-    self._event_tag_dao = EventTagDAO(auth, profile_id)
-    self._landing_page_dao = LandingPageDAO(auth, profile_id)
+    self._creative_dao = CreativeDAO(auth, profile_id, is_admin)
+    self._placement_dao = PlacementDAO(auth, profile_id, is_admin)
+    self._campaign_dao = CampaignDAO(auth, profile_id, is_admin)
+    self._event_tag_dao = EventTagDAO(auth, profile_id, is_admin)
+    self._landing_page_dao = LandingPageDAO(auth, profile_id, is_admin)
 
     self._parent_filter_name = 'campaignIds'
     self._parent_dao = self._campaign_dao
     self._parent_filter_field_name = FieldMap.CAMPAIGN_ID
 
     self._entity = 'AD'
+
+  def _api(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return super(AdDAO, self)._api(iterate).ads()
 
   def _wait_creative_activation(self, creative_id, timeout=128):
     """Waits for a creative to become active.
@@ -78,8 +81,7 @@ class AdDAO(BaseDAO):
     # Only wait for creative activation if it is a new creative trafficked by
     # this Bulkdozer session
     if store.get('CREATIVE', creative_id):
-      creative = self._retry(self.service.creatives().get(
-          profileId=self.profile_id, id=creative_id))
+      creative = self._api().creatives().get(profileId=self.profile_id, id=creative_id).execute()
       wait = 2
 
       while not creative['active'] and timeout > 0:
@@ -87,8 +89,7 @@ class AdDAO(BaseDAO):
         time.sleep(wait)
         timeout -= wait
         wait *= 2
-        creative = self._retry(self.service.creatives().get(
-            profileId=self.profile_id, id=creative_id))
+        creative = self._api().creatives().get(profileId=self.profile_id, id=creative_id).execute()
 
       if not creative['active']:
         raise Exception('Creative %s failed to activate within defined timeout'

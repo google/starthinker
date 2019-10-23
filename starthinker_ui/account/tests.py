@@ -62,8 +62,14 @@ class CredentialsTest(TestCase):
     # wait a bit before refreshing token, multiple tests go too fast and same token is returned
     sleep(1)
 
+    print('AA1', token, expiry)
+    print('AA2', credentials.token, credentials.expiry)
+
     # test refresh ( not expired cache, not expired file )
     credentials.refresh()
+    print('CC1', token, expiry)
+    print('CC2', credentials.token, credentials.expiry)
+
     self.assertEqual(token, credentials.token)
     self.assertEqual(expiry, credentials.expiry)
 
@@ -113,6 +119,7 @@ class CredentialsTest(TestCase):
     service = get_service('oauth2', 'v2', 'user')
     response = service.userinfo().get().execute()
 
+    print('STRING')
     self.assertIn('email', response)
     self.helper_refresh()
 
@@ -135,6 +142,7 @@ class CredentialsTest(TestCase):
     response = service.userinfo().get().execute()
 
     self.assertIn('email', response)
+    print('DICT')
     self.helper_refresh()
 
 

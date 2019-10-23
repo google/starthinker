@@ -27,6 +27,9 @@ class Project(models.Model):
   identifier = models.CharField(max_length=255)
   service = models.TextField()
 
+  def __str__(self):
+    return self.identifier
+
   def __unicode__(self):
     return self.identifier
 

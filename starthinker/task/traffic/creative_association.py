@@ -35,18 +35,21 @@ class CreativeAssociationDAO(BaseDAO):
   updating creative association.
   """
 
-  def __init__(self, auth, profile_id):
+  def __init__(self, auth, profile_id, is_admin):
     """Initializes CreativeAssociationDAO with profile id and authentication scheme."""
-    super(CreativeAssociationDAO, self).__init__(auth, profile_id)
+    super(CreativeAssociationDAO, self).__init__(auth, profile_id, is_admin)
 
-    self._service = self.service.campaignCreativeAssociations()
     self._id_field = FieldMap.CAMPAIGN_CREATIVE_ASSOCIATION_ID
 
-    self.campaign_dao = CampaignDAO(auth, profile_id)
-    self.creative_dao = CreativeDAO(auth, profile_id)
+    self.campaign_dao = CampaignDAO(auth, profile_id, is_admin)
+    self.creative_dao = CreativeDAO(auth, profile_id, is_admin)
 
     self._parent_filter_name = None
     self._parent_filter_field_name = None
+
+  def _api(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return super(CreativeAssociationDAO, self)._api(iterate).campaignCreativeAssociations()
 
   def get(self, feed_item):
     """It is not possible to retrieve creative associations from DCM,
@@ -86,11 +89,11 @@ class CreativeAssociationDAO(BaseDAO):
 
         association = {'creativeId': creative['id']}
 
-        result = self._retry(
-            self._service.insert(
-                profileId=self.profile_id,
-                campaignId=campaign['id'],
-                body=association))
+        result = self._api().insert(
+          profileId=self.profile_id,
+          campaignId=campaign['id'],
+          body=association
+        ).execute()
 
         feed_item[FieldMap.CAMPAIGN_CREATIVE_ASSOCIATION_ID] = '%s|%s' % (
             campaign['id'], creative['id'])

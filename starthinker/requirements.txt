@@ -25,7 +25,7 @@ TwitterAPI
 python-dateutil
 pandas
 psutil
-moviepy
+moviepy==1.0.0
 py-xlsx
 simple-salesforce
 

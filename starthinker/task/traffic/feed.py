@@ -24,8 +24,7 @@ Google Sheet that represents the Bulkdozer feed, and
 import json
 import pytz
 
-from starthinker.util.auth import get_service
-from starthinker.util.sheets import sheets_read, sheets_write
+from starthinker.util.sheets import sheets_get, sheets_read, sheets_write
 from dateutil import parser
 
 
@@ -216,7 +215,6 @@ class Feed:
     self.trix_id = trix_id
     self.trix_range = 'A1:AZ'
     self.feed_name = feed_name
-    self._service = get_service('sheets', 'v4', auth)
     self._parse = parse
     self._timezone = timezone or 'America/New_York'
 
@@ -225,8 +223,7 @@ class Feed:
     if spreadsheet:
       self.spreadsheet = spreadsheet
     else:
-      self.spreadsheet = self._service.spreadsheets().get(
-          spreadsheetId=self.trix_id).execute()
+      self.spreadsheet = sheets_get(self.auth, self.trix_id)
 
     self.raw_feed = self._get_feed()
     self.feed = self._feed_to_dict(parse=self._parse)

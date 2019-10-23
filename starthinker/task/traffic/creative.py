@@ -33,22 +33,25 @@ class CreativeDAO(BaseDAO):
   updating creatives.
   """
 
-  def __init__(self, auth, profile_id):
+  def __init__(self, auth, profile_id, is_admin):
     """Initializes CreativeDAO with profile id and authentication scheme."""
-    super(CreativeDAO, self).__init__(auth, profile_id)
+    super(CreativeDAO, self).__init__(auth, profile_id, is_admin)
 
     self._entity = 'CREATIVE'
 
     self._parent_filter_name = 'advertiserId'
     self._parent_filter_field_name = FieldMap.ADVERTISER_ID
 
-    self._service = self.service.creatives()
     self._id_field = FieldMap.CREATIVE_ID
     self._search_field = FieldMap.CREATIVE_NAME
     self._list_name = 'creatives'
     self._parent_dao = None
 
-    self.creative_asset_dao = CreativeAssetDAO(auth, profile_id, None)
+    self.creative_asset_dao = CreativeAssetDAO(auth, profile_id, is_admin, None)
+
+  def _api(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return API_DCM(self.auth)._api(iterate).creatives()
 
   def _assignment_matches(self, item, assignment):
     if item.get(FieldMap.CREATIVE_ID, None) and assignment.get(FieldMap.CREATIVE_ID, None):

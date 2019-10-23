@@ -103,7 +103,6 @@ class CredentialsUserWrapper(CredentialsUser):
   def to_json(self):
     return {
       'access_token': self.token,
-      #'token_expiry': self.expiry.isoformat() if self.expiry else None,
       'token_expiry': self.expiry.strftime('%Y-%m-%dT%H:%M:%SZ') if self.expiry else None,
       'refresh_token': self._refresh_token,
       'id_token':self._id_token,

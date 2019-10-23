@@ -68,7 +68,7 @@ def get_instance_name(default='UKNOWN'):
       return urllib.request.urlopen(urllib.request.Request(
         "http://metadata.google.internal/computeMetadata/v1/instance/name",
         headers={"Metadata-Flavor" : 'Google'}
-      )).read()
+      )).read().decode()
     except:
       INSTANCE_NAME = default
   return INSTANCE_NAME

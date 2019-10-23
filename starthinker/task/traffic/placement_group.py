@@ -32,13 +32,13 @@ class PlacementGroupDAO(BaseDAO):
   updating placement group.
   """
 
-  def __init__(self, auth, profile_id):
+  def __init__(self, auth, profile_id, is_admin):
     """Initializes PlacementGroupDAO with profile id and authentication scheme."""
 
-    super(PlacementGroupDAO, self).__init__(auth, profile_id)
+    super(PlacementGroupDAO, self).__init__(auth, profile_id, is_admin)
 
-    self.campaign_dao = CampaignDAO(auth, profile_id)
-    self._service = self.service.placementGroups()
+    self.campaign_dao = CampaignDAO(auth, profile_id, is_admin)
+
     self._id_field = FieldMap.PLACEMENT_GROUP_ID
     self._search_field = FieldMap.PLACEMENT_GROUP_NAME
     self._list_name = 'placementGroups'
@@ -47,6 +47,10 @@ class PlacementGroupDAO(BaseDAO):
     self._parent_filter_name = 'campaignIds'
     self._parent_filter_field_name = FieldMap.CAMPAIGN_ID
     self._parent_dao = self.campaign_dao
+
+  def _api(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return super(PlacementGroupDAO, self)._api(iterate).placementGroups()
 
   def _process_update(self, item, feed_item):
     """Updates a placement group based on the values from the feed.

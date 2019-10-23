@@ -197,8 +197,8 @@ class Workers():
             job['instance'],
             job['hour'],
             'JOB_ERROR',
-            job['stdout'],
-            job['stderr']
+            job['stdout'].decode(),
+            job['stderr'].decode()
           )
           log_job_error(job)
           job['job']['process'] = None
@@ -212,8 +212,8 @@ class Workers():
             job['instance'],
             job['hour'],
             'JOB_END',
-            job['stdout'],
-            job['stderr']
+            job['stdout'].decode(),
+            job['stderr'].decode()
           )
           log_job_end(job)
           job['job']['process'] = None

@@ -30,12 +30,11 @@ class DynamicTargetingKeyDAO(BaseDAO):
   updating dynamic targeting key.
   """
 
-  def __init__(self, auth, profile_id):
+  def __init__(self, auth, profile_id, is_admin):
     """Initializes DynamicTargetingKeyDAO with profile id and authentication scheme."""
 
-    super(DynamicTargetingKeyDAO, self).__init__(auth, profile_id)
+    super(DynamicTargetingKeyDAO, self).__init__(auth, profile_id, is_admin)
 
-    self._service = self.service.dynamicTargetingKeys()
     self._id_field = None
     self._search_field = None
     self._list_name = 'dynamicTargetingKeys'
@@ -45,15 +44,19 @@ class DynamicTargetingKeyDAO(BaseDAO):
     self._parent_dao = None
     self._key_cache = {}
 
+  def _api(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return super(DynamicTargetingKeyDAO, self)._api(iterate).dynamicTargetingKeys()
+
   def _key_exists(self, advertiser_id, key_name):
     cache_key = str(advertiser_id) + key_name
 
     if not cache_key in self._key_cache:
-      keys = self._retry(
-          self._service.list(
-              profileId=self.profile_id,
-              advertiserId=advertiser_id,
-              names=[key_name]))
+      keys = self._api().list(
+        profileId=self.profile_id,
+        advertiserId=advertiser_id,
+        names=[key_name]
+     ).execute()
 
       self._key_cache[cache_key] = 'dynamicTargetingKeys' in keys and len(
           keys['dynamicTargetingKeys']) > 0
@@ -67,10 +70,10 @@ class DynamicTargetingKeyDAO(BaseDAO):
         'objectType': object_type
     }
 
-    self._retry(
-        self._service.insert(
-            profileId=self.profile_id,
-            body=key))
+    self._api().insert(
+      profileId=self.profile_id,
+      body=key
+    ).execute()
 
     if object_type == 'OBJECT_ADVERTISER':
       cache_key = str(object_id) + key_name

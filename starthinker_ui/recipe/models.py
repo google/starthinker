@@ -160,6 +160,9 @@ class Recipe(models.Model):
   worker_uid = models.CharField(max_length=128, default='')
   worker_utm = models.BigIntegerField(blank=True, default=0)
 
+  def __str__(self):
+    return self.name
+
   def __unicode__(self):
     return self.name
 

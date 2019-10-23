@@ -27,8 +27,7 @@ import datetime
 
 from googleapiclient.http import HttpError
 
-from starthinker.util.auth import get_service
-from starthinker.util.google_api import API_Retry
+from starthinker.util.google_api import API_DCM
 from starthinker.task.traffic.store import store
 from starthinker.task.traffic.logger import logger
 
@@ -40,17 +39,19 @@ class BaseDAO(object):
   entities.
   """
 
-  """Version of the CM API to use."""
-  API_VERSION = 'v3.3'
-
-  def __init__(self, auth, profile_id):
+  def __init__(self, auth, profile_id, is_admin=False):
     """Initializes the object with a specific CM profile ID and an authorization scheme.
 
     """
-    self.service = get_service('dfareporting', self.API_VERSION, auth)
+    self.auth = auth
+    self.is_admin = is_admin
     self.profile_id = profile_id
     self._entity = 'UNDEFINED'
     self._metrics = {}
+
+  def _api(self, iterate=False):
+    """Returns an DCM API instance.  Must be overloaded by one of the derived classes and extended for specific endpoint."""
+    return API_DCM(self.auth, iterate, self.is_admin)
 
   def _clean(self, item):
     """Removes null keys from the item.
@@ -81,9 +82,7 @@ class BaseDAO(object):
         from CM.
     """
     print('hitting the api to get %s, %s' % (self._entity, feed_item[self._id_field]))
-    return self._retry(
-        self._service.get(
-            profileId=self.profile_id, id=feed_item[self._id_field]))
+    self._api().get(profileId=self.profile_id, id=feed_item[self._id_field]).execute()
 
   def get(self, feed_item, required=False):
     """Retrieves an item.
@@ -177,8 +176,7 @@ class BaseDAO(object):
         key = str(args.get(self._parent_filter_name, '')) + key
 
       print('hitting the api to search for %s, %s' % (self._entity, search_string))
-      search_result = self._retry(
-          self._service.list(**args))
+      search_result = self._api().list(**args).execute()
 
       items = search_result[self._list_name]
 
@@ -206,8 +204,7 @@ class BaseDAO(object):
       The CM object representing the item inserted.
     """
     #print('ITEM', item)
-    return self._retry(
-        self._service.insert(profileId=self.profile_id, body=item))
+    return self._api().insert(profileId=self.profile_id, body=item).execute()
 
   def _update(self, item, feed_item):
     """Updates a new item in CM.
@@ -218,7 +215,7 @@ class BaseDAO(object):
         update.
     """
     #print('ITEM', item)
-    self._retry(self._service.update(profileId=self.profile_id, body=item))
+    self._api().update(profileId=self.profile_id, body=item).execute()
 
   def _chunk(self, l, chunk_size):
     result = []
@@ -244,15 +241,15 @@ class BaseDAO(object):
 
       if ids:
         for chunk_ids in self._chunk(ids, 500):
-          result = self._retry(
-              self._service.list(profileId=self.profile_id, ids=chunk_ids))
+          results = self._api(iterate=True).list(profileId=self.profile_id, ids=chunk_ids).execute()
+          for item in results:
+            store.set(self._entity, [item['id']], item)
 
-          while result.get(self._list_name, []):
-            for item in result[self._list_name]:
-              store.set(self._entity, [item['id']], item)
-
-            result = self._retry(
-                self._service.list(profileId=self.profile_id, pageToken=result['nextPageToken']))
+#          while result.get(self._list_name, []):
+#            for item in result[self._list_name]:
+#              store.set(self._entity, [item['id']], item)
+#
+#            result = self._api().list(profileId=self.profile_id, pageToken=result['nextPageToken']).execute()
 
   def process(self, feed_item):
     """Processes a Bulkdozer feed item.
@@ -306,45 +303,3 @@ class BaseDAO(object):
       item: The CM object resulting from the process operation.
     """
     pass
-
-  def _retry(self, job, retries=6, wait=2):
-    """Replaced by core StarThinker retry logic, more resiliant for version 3.3 of the CM API.
-   
-    All timing parameters are ignored, now handled by replacement function.
-    """
-
-    return API_Retry(job)
-
-#    """Handles required logic to ensure robust interactions with the CM API.
-#
-#    Analyzes errors to determine if retries are appropriate, performs retries,
-#    and exponential backoff.
-#
-#    Args:
-#      job: The API function to execute.
-#      retries: Optional, defaults to 10. The number of retries before failing.
-#      wait: Optional, defaults to 30. The number of seconds to wait between
-#        retries. This number is doubled at each retry (a.k.a. exponential
-#        backoff).
-#    """
-#    try:
-#      data = job.execute()
-#      return data
-#    except HttpError as e:
-#      stack = traceback.format_exc()
-#      print(stack)
-#
-#      msg = str(e)
-#      match = re.search(r'"(.*)"', msg)
-#
-#      if e.resp.status in [403, 429, 500, 503]:
-#        if retries > 0:
-#          time.sleep(wait)
-#          return self._retry(job, retries - 1, wait * 2)
-#
-#      if match:
-#        raise Exception('ERROR: %s' % match.group(0))
-#      else:
-#        logger.log(msg)
-#
-#      raise

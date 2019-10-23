@@ -63,17 +63,21 @@ class Command(BaseCommand):
     for account in Account.objects.all():
       print('CONVERTING', account.email)
 
-      # load legacy credentials
-      credentials = legacy_credentails_get(legacy_credentials_path(account.identifier))
+      try:
+        # load legacy credentials
+        credentials = legacy_credentails_get(legacy_credentials_path(account.identifier))
 
-      # convert to new format
-      new_credentials = CredentialsUserWrapper(credentials)
+        # convert to new format
+        new_credentials = CredentialsUserWrapper(credentials)
 
-      # save new credentials
-      account.set_credentials(new_credentials)
+        # save new credentials
+        account.set_credentials(new_credentials)
 
-      if kwargs['test']:
-        project.initialize(_user=account.get_credentials_path())
-        profile = get_profile()
-        print(profile)
-        exit()
+        if kwargs['test']:
+          project.initialize(_user=account.get_credentials_path())
+          profile = get_profile()
+          print(profile)
+          exit()
+
+      except Exception as e:
+        print(str(e))

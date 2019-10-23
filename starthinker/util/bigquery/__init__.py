@@ -179,7 +179,7 @@ def datasets_create(auth, project_id, dataset_id):
     sleep(1)
   except HttpError as e:
     if e.resp.status in [403, 500, 503]: sleep(5)
-    elif json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
+    elif json.loads(e.content.decode())['error']['code'] == 409: pass # already exists ( ignore )
     else: raise
 
 
@@ -300,7 +300,7 @@ def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='W
   #print(job)
   #except HttpError as e:
   #  if e.resp.status in [403, 500, 503]: sleep(5)
-  #  #elif json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
+  #  #elif json.loads(e.content.decode())['error']['code'] == 409: pass # already exists ( ignore )
   #  else: raise
 
 
@@ -337,7 +337,7 @@ def query_to_view(auth, project_id, dataset_id, view_id, query, legacy=True, rep
       job = service.tables().insert(projectId=project_id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
   except HttpError as e:
     #if e.resp.status in [403, 500, 503]: sleep(5)
-    if json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
+    if json.loads(e.content.decode())['error']['code'] == 409: pass # already exists ( ignore )
     else: raise
 
 

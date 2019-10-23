@@ -26,8 +26,7 @@ import traceback
 
 from starthinker.util.dcm import get_profile_for_api
 from starthinker.util.project import project
-from starthinker.util.auth import get_service
-from starthinker.util.sheets import sheets_id
+from starthinker.util.sheets import sheets_get
 from starthinker.task.traffic.feed import Feed
 from starthinker.task.traffic.feed import FieldMap
 from starthinker.task.traffic.ad import AdDAO
@@ -123,10 +122,13 @@ def setup():
   """
 
   if not 'dcm_profile_id' in project.task and 'account_id' in project.task:
-    project.task['dcm_profile_id'] = get_profile_for_api(project.task['auth'], project.task['account_id'])[1]
+    project.task['is_admin'], project.task['dcm_profile_id'] = get_profile_for_api(project.task['auth'], project.task['account_id'])
+
+  if not 'is_admin' in project.task:
+    project.task['is_admin'] = False
 
   if 'sheet_url' in project.task and not 'sheet_id' in project.task:
-    project.task['sheet_id'] = sheets_id(project.task['auth'], project.task['sheet_url'])
+    project.task['sheet_id'] = project.task['sheet_url']
 
   # Setting up required objects and parsing parameters
   config.auth = project.task['auth']
@@ -153,39 +155,24 @@ def init_daos():
   global dynamic_targeting_key_dao
   global spreadsheet
 
-
-  service = get_service('sheets', 'v4', project.task['auth'])
-
-  spreadsheet = service.spreadsheets().get(
-      spreadsheetId=project.task['sheet_id']).execute()
+  spreadsheet = sheets_get(project.task['auth'], project.task['sheet_id'])
 
   store.auth = project.task['auth']
   store.trix_id = project.task.get('store', {}).get('sheet_id',
                                                     project.task['sheet_id'])
   store.load_id_map()
 
-  video_format_dao = VideoFormatDAO(project.task['auth'],
-                                    project.task['dcm_profile_id'])
-  landing_page_dao = LandingPageDAO(project.task['auth'],
-                                    project.task['dcm_profile_id'])
-  placement_group_dao = PlacementGroupDAO(project.task['auth'],
-                                    project.task['dcm_profile_id'])
-  campaign_dao = CampaignDAO(project.task['auth'],
-                             project.task['dcm_profile_id'])
-  creative_association_dao = CreativeAssociationDAO(
-      project.task['auth'], project.task['dcm_profile_id'])
-
-  creative_dao = CreativeDAO(project.task['auth'],
-                             project.task['dcm_profile_id'])
-  placement_dao = PlacementDAO(project.task['auth'],
-                               project.task['dcm_profile_id'])
-  creative_asset_dao = CreativeAssetDAO(
-      project.task['auth'], project.task['dcm_profile_id'], project.id)
-  ad_dao = AdDAO(project.task['auth'], project.task['dcm_profile_id'])
-  event_tag_dao = EventTagDAO(project.task['auth'],
-                              project.task['dcm_profile_id'])
-  dynamic_targeting_key_dao = DynamicTargetingKeyDAO(project.task['auth'],
-                              project.task['dcm_profile_id'])
+  video_format_dao = VideoFormatDAO(project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'])
+  landing_page_dao = LandingPageDAO(project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'])
+  placement_group_dao = PlacementGroupDAO(project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'])
+  campaign_dao = CampaignDAO(project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'])
+  creative_association_dao = CreativeAssociationDAO(project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'])
+  creative_dao = CreativeDAO(project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'])
+  placement_dao = PlacementDAO(project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'])
+  creative_asset_dao = CreativeAssetDAO( project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'], project.id)
+  ad_dao = AdDAO(project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'])
+  event_tag_dao = EventTagDAO(project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'])
+  dynamic_targeting_key_dao = DynamicTargetingKeyDAO(project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'])
 
 
 def assets():

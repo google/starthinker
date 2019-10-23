@@ -1,4 +1,4 @@
-# Airflow Integration
+# Composer Integration
 
 StarThinker can be easily deployed to Cloud Composer / Airflow using a basic factory.
 This allows recipe JSON built in StarThinker to execute on the [Apache Airflow](https://airflow.apache.org/) 
@@ -11,7 +11,7 @@ You must have Airflow installed or deployed on Google Cloud Composer. The
 [airflow.json][../starthinker/gtech/airflow.json] recipe has three tasks in it.
 
 1. Airflow task.
-1. Concerto task 
+1. Airflow/Orchestra task 
 1. Python task.
 
 A single recipe can define a workflow that deploys all three types in one recipe.
@@ -49,16 +49,16 @@ airflow test "starthinker.gtech.say.hello.json" hello_1 2019-05-10
 airflow test "starthinker.gtech.say.hello.json" airflow_1 2019-05-10
 ```
 
-5. Run a Project Concerto Operator as a task from the recipe:
+5. Run an Airflow / Project Orchestra Operator as a task from the recipe:
 ```
 airflow test "starthinker.gtech.say.hello.json" concerto_1 2019-05-10
 ```
 
 ## Development Progress
 
-All Airflow and Concerto operators and parameters are mapped to the offical APIs.
+All Airflow and Orchestra operators and parameters are mapped to the offical APIs.
 
-- [Add A Concerto Operator](../starthinker_airflow/concerto/)
+- [Add A Orchestra Operator](../starthinker_airflow/orchestra/)
 - [Use An Airflow Operator](https://airflow.apache.org/_api/index.html)
 - [Create A Workflow Use Them](task.md)
 - [Integrate With UI](recipe.md)

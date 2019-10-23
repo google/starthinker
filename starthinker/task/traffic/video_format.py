@@ -37,14 +37,17 @@ class VideoFormatDAO(BaseDAO):
   updating video format.
   """
 
-  def __init__(self, auth, profile_id):
+  def __init__(self, auth, profile_id, is_admin):
     """Initializes VideoFormatDAO with profile id and authentication scheme."""
     super(VideoFormatDAO, self).__init__(auth, profile_id)
 
     self.profile_id = profile_id
-    self._service = self.service.videoFormats()
 
     self._video_formats = None
+
+  def _api(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return super(VideoFormatDAO, self)._api(iterate).videoFormats()
 
   def get_video_formats(self):
     """Fetches video formats from CM.
@@ -54,8 +57,7 @@ class VideoFormatDAO(BaseDAO):
     """
 
     if not self._video_formats:
-      self._video_formats = self._retry(self._service.list(
-          profileId=self.profile_id))['videoFormats']
+      self._video_formats = self._api().list(profileId=self.profile_id).execute()['videoFormats']
 
     return self._video_formats
 

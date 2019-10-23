@@ -604,7 +604,7 @@ install_proxy() {
   if [ "$(command -v psql)" == "" ]; then
     case "$(uname -s)" in
       Darwin) brew install postgresql-client;;
-      Linux)  sudo apt-get install gcc python-dev libpq-dev postgresql-client python-psycopg2 -qq;;
+      Linux)  sudo apt-get install gcc python3-dev python3-pip libpq-dev postgresql-client python-psycopg2 -qq;;
       *) echo "ERROR: Unknown Postgres install, visit http://postgresguide.com/setup/install.html" ;;
     esac
   fi

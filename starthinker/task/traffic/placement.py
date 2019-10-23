@@ -39,17 +39,16 @@ class PlacementDAO(BaseDAO):
 
   cache = {}
 
-  def __init__(self, auth, profile_id):
+  def __init__(self, auth, profile_id, is_admin):
     """Initializes PlacementDAO with profile id and authentication scheme."""
-    super(PlacementDAO, self).__init__(auth, profile_id)
+    super(PlacementDAO, self).__init__(auth, profile_id, is_admin)
 
     self._entity = 'PLACEMENT'
 
-    self.campaign_dao = CampaignDAO(auth, profile_id)
-    self.video_format_dao = VideoFormatDAO(auth, profile_id)
-    self.placement_group_dao = PlacementGroupDAO(auth, profile_id)
+    self.campaign_dao = CampaignDAO(auth, profile_id, is_admin)
+    self.video_format_dao = VideoFormatDAO(auth, profile_id, is_admin)
+    self.placement_group_dao = PlacementGroupDAO(auth, profile_id, is_admin)
 
-    self._service = self.service.placements()
     self._id_field = FieldMap.PLACEMENT_ID
     self._search_field = FieldMap.PLACEMENT_NAME
 
@@ -61,6 +60,10 @@ class PlacementDAO(BaseDAO):
     self._list_name = 'placements'
 
     self.cache = PlacementDAO.cache
+
+  def _api(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return super(PlacementDAO, self)._api(iterate).placements()
 
   def _process_skipability(self, feed_item, item):
     """Process skipability settings.
@@ -265,8 +268,7 @@ class PlacementDAO(BaseDAO):
     # but since we don't use it anywhere else it is probably fine.
     # May need to do it in case it becomes necessary for other entities when
     # we implement display
-    return self._retry(self.service.sizes().list(
-        profileId=self.profile_id, height=height, width=width))
+    return self._api().sizes().list(profileId=self.profile_id, height=height, width=width).execute()
 
   def _process_new(self, feed_item):
     """Creates a new placement DCM object from a feed item representing an placement from the Bulkdozer feed.

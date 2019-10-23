@@ -51,11 +51,7 @@ composer_activate() {
   echo " This may take an hour or two, go get some coffee...."
   echo ""
 
-  gcloud composer environments create ${COMPOSER_NAME} \
-      --location=${STARTHINKER_REGION} \
-      --zone=${STARTHINKER_ZONE} \
-      --python-version=${COMPOSER_PYTHON_VERSION} \
-      --node-count=${COMPOSER_NODE_COUNT}
+  gcloud composer environments create ${COMPOSER_NAME} --location=${STARTHINKER_REGION} --zone=${STARTHINKER_ZONE} --python-version=${COMPOSER_PYTHON_VERSION} --node-count=${COMPOSER_NODE_COUNT}
 }
 
 composer_credentials() {
@@ -70,6 +66,13 @@ composer_credentials() {
   setup_credentials_commandline "optional";
   setup_credentials_user;
   save_config;
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Install Kebernetes"
+  echo "----------------------------------------"
+  echo ""
+  gcloud components install kubectl
 
   echo ""
   echo "----------------------------------------"
@@ -106,29 +109,31 @@ composer_credentials() {
   gsutil cp starthinker_assets/user.json ${COMPOSER_GCS_BUCKET_DATA_FOLDER}
 }
 
-composer_config() {
+composer_code() {
   # Install PyPi packages from file and configure environment variables
   echo "Installing pypi packages from requirements.txt and setting up environment variables"
   
-  # Clean up requirements.txt: lowercase and remove comments
-  sed -e "/#/d; s/./\L&/g" \
-  ${THIS_DIR}/starthinker/requirements.txt > /tmp/requirements.txt
+  # Clean up requirements.txt: lowercase and remove comments ( awk is more platform compatible because of lack of regexp )
+  awk '!/^ *#/ && NF {print tolower($0)}' starthinker/requirements.txt > /tmp/requirements.txt
+
   echo "----------------------------------------"
   cat /tmp/requirements.txt
   echo ""
   echo "----------------------------------------"
   
   # Install requirements and clean up
-  gcloud composer environments update ${COMPOSER_NAME} \
-      --location ${STARTHINKER_REGION} \
-      --update-pypi-packages-from-file=/tmp/requirements.txt
+  echo " gcloud composer environments update ${COMPOSER_NAME} --location ${STARTHINKER_REGION} --update-pypi-packages-from-file=/tmp/requirements.txt"
+
+  gcloud composer environments update ${COMPOSER_NAME} --location ${STARTHINKER_REGION} --update-pypi-packages-from-file=/tmp/requirements.txt
   rm -f /tmp/requirements.txt
   
   # Set-up environment variables
   echo "Setting up StarThinker environment variables"
-  gcloud composer environments update ${COMPOSER_NAME} \
-      --location ${STARTHINKER_REGION} \
-      --update-env-variables=\
+  gcloud composer environments update ${COMPOSER_NAME} --location ${STARTHINKER_REGION} --update-env-variables=\
+  STARTHINKER_ROOT=${STARTHINKER_ROOT},\
+  STARTHINKER_ZONE=${STARTHINKER_ZONE},\
+  STARTHINKER_PROJECT=${STARTHINKER_PROJECT},\
+  STARTHINKER_SERVICE=${STARTHINKER_SERVICE}
   
   echo "Creating StarThinker connections"
   gcloud composer environments run ${COMPOSER_NAME} \
@@ -137,6 +142,7 @@ composer_config() {
       --conn_extra <<EXTRA "{\"extra__google_cloud_platform__project\": \"${STARTHINKER_PROJECT}\",
   \"extra__google_cloud_platform__key_path\": \"${COMPOSER_INSTANCE_DATA_FOLDER}/data/service.json\"}"
 EXTRA
+
   gcloud composer environments run ${COMPOSER_NAME} \
       --location ${STARTHINKER_REGION} connections -- --add \
       --conn_id=starthinker_user --conn_type=google_cloud_platform \
@@ -144,10 +150,9 @@ EXTRA
   \"extra__google_cloud_platform__key_path\": \"${COMPOSER_INSTANCE_DATA_FOLDER}/data/user.json\",
   \"extra__google_cloud_platform__scope\": \"https://www.googleapis.com/auth/bigquery,https://www.googleapis.com/auth/cloud-platform\"}"
 EXTRA
+
   echo "Done"
-}
   
-composer_code() {
   echo "Copying StarThinker code to ${COMPOSER_GCS_BUCKET}/plugins"
   # Clean up *.pyc files before uploading to the GCS bucket
   find ${THIS_DIR}/starthinker -type f -name '*.pyc' -delete
@@ -161,9 +166,8 @@ composer_code() {
 
 composer_all() {
   composer_activate;
-  #composer_credentials;
-  #composer_bucket;
-  #composer_code;
+  composer_credentials;
+  composer_code;
 }
 
 setup_composer() {

@@ -17,7 +17,6 @@
 ###########################################################################
 
 import pprint
-import urllib2
 import csv
 import re
 import json
@@ -57,7 +56,7 @@ def report_request(auth, title, template_name, parameters, day=date.today()):
   except HttpError as e:
     print(e)
     if e.resp.status in [403, 500, 503]: sleep(10)
-    elif json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
+    elif json.loads(e.content.decode())['error']['code'] == 409: pass # already exists ( ignore )
     else: raise
 
 

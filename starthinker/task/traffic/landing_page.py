@@ -31,12 +31,11 @@ class LandingPageDAO(BaseDAO):
   updating landing pages.
   """
 
-  def __init__(self, auth, profile_id):
+  def __init__(self, auth, profile_id, is_admin):
     """Initializes LandingPageDAO with profile id and authentication scheme."""
 
-    super(LandingPageDAO, self).__init__(auth, profile_id)
+    super(LandingPageDAO, self).__init__(auth, profile_id, is_admin)
 
-    self._service = self.service.advertiserLandingPages()
     self._id_field = FieldMap.CAMPAIGN_LANDING_PAGE_ID
     self._search_field = FieldMap.CAMPAIGN_LANDING_PAGE_NAME
     self._list_name = 'landingPages'
@@ -44,6 +43,10 @@ class LandingPageDAO(BaseDAO):
     self._parent_filter_name = 'advertiserIds'
     self._parent_filter_field_name = FieldMap.ADVERTISER_ID
     self._parent_dao = None
+
+  def _api(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return super(LandingPageDAO, self)._api(iterate).advertiserLandingPages()
 
   def _process_update(self, item, feed_item):
     """Updates an landing page based on the values from the feed.

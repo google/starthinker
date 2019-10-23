@@ -38,12 +38,11 @@ class CreativeAssetDAO(BaseDAO):
   updating ads.
   """
 
-  def __init__(self, auth, profile_id, gc_project):
+  def __init__(self, auth, profile_id, is_admin, gc_project):
     """Initializes CreativeAssetDAO with profile id and authentication scheme."""
-    super(CreativeAssetDAO, self).__init__(auth, profile_id)
+    super(CreativeAssetDAO, self).__init__(auth, profile_id, is_admin)
 
     self._entity = 'CREATIVE_ASSET'
-    self._service = self.service.creativeAssets()
     self.gc_project = gc_project
     self._list_name = ''
     self._id_field = FieldMap.CREATIVE_ASSET_ID
@@ -52,6 +51,10 @@ class CreativeAssetDAO(BaseDAO):
 
     self._parent_filter_name = None
     self._parent_filter_field_name = None
+
+  def _api(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return super(CreativeAssetDAO, self)._api(iterate).creativeAssets()
 
   def pre_fetch(self, feed):
     """Pre-fetches all required items to be update into the cache.
@@ -93,12 +96,12 @@ class CreativeAssetDAO(BaseDAO):
     file_buffer = object_get('user', '%s:%s' % (feed_item.get(FieldMap.CREATIVE_ASSET_BUCKET_NAME, None), feed_item.get(FieldMap.CREATIVE_ASSET_FILE_NAME, None)))
     media = MediaIoBaseUpload(BytesIO(file_buffer), mimetype='video/mp4', chunksize=CHUNKSIZE, resumable=True)
 
-    result = self._retry(
-        self._service.insert(
-            profileId=self.profile_id,
-            advertiserId=feed_item.get(FieldMap.ADVERTISER_ID, None),
-            media_body=media,
-            body=new_item))
+    result = self._api().insert(
+      profileId=self.profile_id,
+      advertiserId=feed_item.get(FieldMap.ADVERTISER_ID, None),
+      media_body=media,
+      body=new_item
+    ).execute()
 
     return result
 

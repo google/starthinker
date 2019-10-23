@@ -89,7 +89,7 @@ def API_Retry(job, key=None, retries=5, wait=61):
   except HttpError as e:
     # errors that can be overcome or re-tried ( 403 is rate limit and others, needs deep dive )
     if e.resp.status in [403, 409, 429, 500, 503]:
-      content = json.loads(e.content)
+      content = json.loads(e.content.decode())
       # already exists ( ignore benign )
       if content['error']['code'] == 409:
         return
@@ -315,7 +315,7 @@ class API():
 
       except HttpError as e:
         if retries > 0 and e.resp.status in RETRIABLE_STATUS_CODES:
-          error = "A retriable HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
+          error = "A retriable HTTP error %d occurred:\n%s" % (e.resp.status, e.content.decode())
         else:
           raise
 

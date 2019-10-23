@@ -31,9 +31,9 @@ class EventTagDAO(BaseDAO):
   updating Event Tags.
   """
 
-  def __init__(self, auth, profile_id):
+  def __init__(self, auth, profile_id, is_admin):
     """Initializes EventTagDAO with profile id and authentication scheme."""
-    super(EventTagDAO, self).__init__(auth, profile_id)
+    super(EventTagDAO, self).__init__(auth, profile_id, is_admin)
 
     self._id_field = FieldMap.EVENT_TAG_ID
 
@@ -48,8 +48,12 @@ class EventTagDAO(BaseDAO):
     self._parent_filter_name = 'advertiserId'
     self._parent_dao = None
     self._parent_filter_field_name = FieldMap.ADVERTISER_ID
-    self._campaign_dao = CampaignDAO(auth, profile_id)
-    self._service = self.service.eventTags()
+    self._campaign_dao = CampaignDAO(auth, profile_id, is_admin)
+
+  def _api(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return super(EventTagDAO, self)._api(iterate).eventTags()
+
 
   def pre_fetch(self, feed):
     """Pre-fetches all required items to be update into the cache.

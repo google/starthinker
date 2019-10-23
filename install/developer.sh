@@ -42,8 +42,22 @@ test_ui() {
   echo "----------------------------------------"
   echo ""
 
+  echo ""
+  echo "Account "
+  echo ""
+
   python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" test account -v 2;
+
+  echo ""
+  echo "Website "
+  echo ""
+
   python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" test website -v 2;
+
+  echo ""
+  echo "Recipe "
+  echo ""
+
   python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" test recipe -v 2;
 
   deactivate

@@ -61,10 +61,10 @@ def get_text_image(effect):
   size = draw.multiline_textsize(effect['text']['message'], font=fnt, spacing=int(effect['text']['size'] / 2))
 
   # make a blank image for the text and draw the text
-  print('S', size)
+  #print('S', size)
   txt = Image.new('RGBA', size, (255,255,255,0))
   d = ImageDraw.Draw(txt)
-  print('S', effect['text']['color'])
+  #print('S', effect['text']['color'])
   d.text((0,0), effect['text']['message'], font=fnt, fill=hex_to_rgb(effect['text']['color'], effect.get('opacity')), align=effect['text']['align'])
 
   return numpy.array(txt)

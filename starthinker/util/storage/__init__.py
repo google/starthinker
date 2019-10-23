@@ -234,7 +234,7 @@ def bucket_create(auth, project, name, location="us-west1"):
       sleep(1)
     except HttpError as e:
       if e.resp.status in [403, 500, 503]: sleep(5)
-      elif json.loads(e.content)['error']['code'] == 409: pass # already exists ( ignore )
+      elif json.loads(e.content.decode())['error']['code'] == 409: pass # already exists ( ignore )
       else: raise
 
 

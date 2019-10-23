@@ -33,11 +33,11 @@ class CampaignDAO(BaseDAO):
   updating campaigns.
   """
 
-  def __init__(self, auth, profile_id):
+  def __init__(self, auth, profile_id, is_admin):
     """Initializes CampaignDAO with profile id and authentication scheme."""
-    super(CampaignDAO, self).__init__(auth, profile_id)
+    super(CampaignDAO, self).__init__(auth, profile_id, is_admin)
 
-    self.landing_page_dao = LandingPageDAO(auth, profile_id)
+    self.landing_page_dao = LandingPageDAO(auth, profile_id, is_admin)
     self._id_field = FieldMap.CAMPAIGN_ID
     self._search_field = FieldMap.CAMPAIGN_NAME
     self._list_name = 'campaigns'
@@ -46,7 +46,10 @@ class CampaignDAO(BaseDAO):
     self._parent_filter_field_name = None
 
     self._entity = 'CAMPAIGN'
-    self._service = self.service.campaigns()
+
+  def _api(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return super(CampaignDAO, self)._api(iterate).campaigns()
 
   def _process_update(self, item, feed_item):
     """Updates a campaign based on the values from the feed.
