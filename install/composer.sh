@@ -191,7 +191,7 @@ setup_composer() {
   echo ""
 
   composer_done=0
-  composer_options=("Deploy All" "Deploy Credentials" "Deploy Dags" "Deploy Code" "Quit")
+  composer_options=("Deploy All" "Deploy Credentials" "Deploy Dags" "Deploy Code")
 
   while (( !composer_done ))
   do
@@ -200,14 +200,14 @@ setup_composer() {
     echo "----------------------------------------------------------------------"
     echo ""
 
-    PS3='Your Choice: '
+    PS3='Your Choice ( q = Quit ): '
     select composer_option in "${composer_options[@]}"; do
       case $REPLY in
         1) composer_all; break ;;
         2) composer_credentials; break ;;
         3) composer_dags; break ;;
         4) composer_code; break ;;
-        5) composer_done=1; break;;
+        q) composer_done=1; break;;
         *) echo "What's that?" ;;
       esac
     done

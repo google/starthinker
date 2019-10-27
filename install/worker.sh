@@ -257,22 +257,27 @@ setup_worker() {
   echo ""
   echo "This will create Google Cloud Instances in project $STARTHINKER_PROJECT to run jobs."
   echo ""
-  echo "Pricing: https://cloud.google.com/compute/pricing"
+  echo "Up To Date Pricing: https://cloud.google.com/compute/pricing"
+  echo "Worker List: https:/console.cloud.google.com/compute/instances?project=$STARTHINKER_PROJECT"
   echo ""
-  echo "Pick worker size to deploy.  Will overwrite existing workers."
-  echo "Test - 1 x f1-micro > (1 worker x 1 job) = 1 job at a time for testing."
-  echo "Small - 2 x n1-highmem-2 > (2 workers x 2 jobs) = 4 jobs per hour."
-  echo "Medium - 4 x n1-highmem-4 > (4 workers x 4 jobs) = 16 jobs per hour."
-  echo "Large - 5 x n1-highmem-8 > (5 workers x 8 jobs) = 40 jobs per hour."
-  echo ""
-  echo "You will have to manually shutdown and delete any unused workers if you change configuration."
-  echo " - https://pantheon.corp.google.com/compute/instances?project=$STARTHINKER_PROJECT"
-  echo ""
-  echo "StarThinker workers catch shutdown signals and attempt to gracefully finish jobs before shutdown."
+  echo " - Pricing is subject to change, these estimates were roughly valid on Oct 2019 for US Central zone."
+  echo " - StarThinker workers catch shutdown signals and attempt to gracefully finish jobs before shutdown."
+  echo " - Its OK to simply terminate machines from the console."
+  echo " - Deploying workers overwrites existing workers of the same kind."
+  echo " - You will have to manually shutdown and delete any unused workers if you change configuration."
   echo ""
 
   worker_done=0
-  worker_options=("Test - 1 Job" "Small - 4 Jobs" "Medium - 20 Jobs" "Large - 50 Jobs" "Quit")
+  worker_options=(
+    "1   - 50 Recipes  = 1 x n1-highmem-4 x 2 jobs = 48 recipe hours  ( ~ \$37  / month )"
+    "50  - 100 Recipes = 2 x n1-highmem-4 x 2 jobs = 96 recipe hours  ( ~ \$73  / month )"
+    "100 - 200 Recipes = 3 x n1-highmem-4 x 2 jobs = 144 recipe hours ( ~ \$110 / month )"
+    "200 - 300 Recipes = 4 x n1-highmem-4 x 2 jobs = 192 recipe hours ( ~ \$146 / month )"
+    "300 - 400 Recipes = 5 x n1-highmem-4 x 2 jobs = 240 recipe hours ( ~ \$182 / month )"
+    "400 - 500 Recipes = 4 x n1-highmem-8 x 3 jobs = 288 recipe hours ( ~ \$292 / month )"
+    "500 - 600 Recipes = 5 x n1-highmem-8 x 3 jobs = 360 recipe hours ( ~ \$365 / month )"
+    "600 - 700 Recipes = 6 x n1-highmem-8 x 3 jobs = 432 recipe hours ( ~ \$438 / month )"
+  )
 
   while (( !worker_done ))
    do
@@ -281,14 +286,18 @@ setup_worker() {
     echo "----------------------------------------------------------------------"
     echo ""
 
-    PS3='Your Choice: '
+    PS3='Your Choice ( q = Quit ): '
     select worker_option in "${worker_options[@]}"; do
       case $REPLY in
-        1) deploy_worker "test" "f1-micro" 1 1; break ;;
-        2) deploy_worker "small" "n1-highmem-2" 2 2; break ;;
-        3) deploy_worker "medium" "n1-highmem-4" 4 4; break ;;
-        4) deploy_worker "large" "n1-highmem-8" 5 8; break ;;
-        5) worker_done=1; break;;
+        1) deploy_worker "medium" "n1-highmem-4" 1 2; break ;;
+        2) deploy_worker "medium" "n1-highmem-4" 2 2; break ;;
+        3) deploy_worker "medium" "n1-highmem-4" 3 2; break ;;
+        4) deploy_worker "medium" "n1-highmem-4" 4 2; break ;;
+        5) deploy_worker "medium" "n1-highmem-4" 5 2; break ;;
+        6) deploy_worker "large" "n1-highmem-8" 4 3; break ;;
+        7) deploy_worker "large" "n1-highmem-8" 5 3; break ;;
+        8) deploy_worker "large" "n1-highmem-8" 6 3; break ;;
+        q) worker_done=1; break;;
         *) echo "What's that?" ;;
       esac
     done

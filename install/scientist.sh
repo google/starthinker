@@ -42,7 +42,7 @@ setup_scientist() {
   echo ""
 
   scientist_done=0
-  scientist_options=("Deploy Single User UI" "Deploy Job Workers" "Check Job Workers" "Deploy User Credentials" "Change Domain" "Change Database" "Migrate Database" "Quit")
+  scientist_options=("Deploy Single User UI" "Deploy Job Workers" "Check Job Workers" "Deploy User Credentials" "Change Domain" "Change Database" "Migrate Database")
 
   while (( !scientist_done ))
   do
@@ -51,7 +51,7 @@ setup_scientist() {
     echo "----------------------------------------------------------------------"
     echo ""
 
-    PS3='Your Choice: '
+    PS3='Your Choice ( q = Quit ): '
     select scientist_option in "${scientist_options[@]}"; do
       case $REPLY in
         1) setup_appengine "Scientist"; break ;;
@@ -61,7 +61,7 @@ setup_scientist() {
         5) setup_domain; save_config; break ;;
         6) setup_database; save_config; break ;;
         7) migrate_database_enterprise; break ;;
-        8) scientist_done=1; break;;
+        q) scientist_done=1; break;;
         *) echo "What's that?" ;;
       esac
     done

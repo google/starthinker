@@ -208,7 +208,7 @@ setup_developer() {
   echo ""
 
   developer_done=0
-  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Developer Worker - Single" "Developer Worker - Peristent" "Test UI" "Test Tasks" "Quit")
+  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Developer Worker - Single" "Developer Worker - Peristent" "Test UI" "Test Tasks")
  
   while (( !developer_done ))
   do
@@ -217,7 +217,7 @@ setup_developer() {
     echo "----------------------------------------------------------------------"
     echo ""
    
-    PS3='Your Choice: '
+    PS3='Your Choice ( q = Quit ): '
     select developer_option in "${developer_options[@]}"; do
       case $REPLY in
         1) install_developer; break;;
@@ -226,7 +226,7 @@ setup_developer() {
         4) launch_developer_worker ""; break;;
         5) test_ui; break;;
         6) test_tasks; break;;
-        7) developer_done=1; break;;
+        q) developer_done=1; break;;
         *) echo "What's that?";;
       esac
     done

@@ -426,8 +426,8 @@ update_apt() {
 install_virtualenv_darwin() {
 
   if [ "$(command -v pip)" == "" ]; then
-    sudo easy_install pip
-    pip install pip --upgrade --quiet --user
+    sudo easy_install pip3
+    pip3 install pip --upgrade --quiet --user
   fi
 
   if [ "$(command -v virtualenv)" == "" ]; then

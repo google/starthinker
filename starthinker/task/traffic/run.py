@@ -365,7 +365,7 @@ def traffic():
   if clean_run:
     print('Done: Clean run.')
   else:
-    raise Exception("Done: Errors happened.")
+    raise Exception("Done: Errors happened with some of the assets, check your sheet log.")
 
 
 @project.from_parameters

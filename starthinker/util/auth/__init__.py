@@ -16,6 +16,8 @@
 #
 ###########################################################################
 
+import threading
+
 from googleapiclient import discovery
 
 from starthinker.util.project import project
@@ -24,6 +26,7 @@ from starthinker.config import UI_CLIENT
 
 
 CREDENTIALS_USER_CACHE = None # WARNING:  possible issue if switching user credentials mid recipe, not in scope but possible ( need to address using hash? )
+DISCOVERY_CACHE = {} 
 
 
 def clear_credentials_cache():
@@ -50,14 +53,19 @@ def get_credentials(auth):
 
 
 def get_service(api='gmail', version='v1', auth='service', scopes=None, uri_file=None):
-  credentials = get_credentials(auth)
-  if uri_file:
-    with open(uri_file, 'r') as cache_file:
-      service = discovery.build_from_document(cache_file.read(), credentials=credentials)
-  else:
-    service = discovery.build(api, version, credentials=credentials)
+  global DISCOVERY_CACHE 
 
-  return service
+  key = api + version + auth + str(threading.current_thread().ident)
+
+  if key not in DISCOVERY_CACHE:
+    credentials = get_credentials(auth)
+    if uri_file:
+      with open(uri_file, 'r') as cache_file:
+        DISCOVERY_CACHE[key] = discovery.build_from_document(cache_file.read(), credentials=credentials)
+    else:
+      DISCOVERY_CACHE[key] = discovery.build(api, version, credentials=credentials)
+
+  return DISCOVERY_CACHE[key]
 
 
 def get_profile():

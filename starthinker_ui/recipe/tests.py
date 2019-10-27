@@ -27,8 +27,8 @@ from django.test.testcases import TransactionTestCase
 
 from starthinker_ui.account.tests import account_create
 from starthinker_ui.project.tests import project_create
-from starthinker_ui.recipe.models import Recipe, worker_pull, worker_status, worker_check, worker_ping, utc_milliseconds, utc_to_timezone, JOB_INTERVAL_MS, JOB_LOOKBACK_MS, time_ago
-from starthinker_ui.recipe.management.commands.job_worker import Workers
+from starthinker_ui.recipe.models import Recipe, utc_milliseconds, utc_to_timezone, JOB_INTERVAL_MS, JOB_LOOKBACK_MS, time_ago
+from starthinker_ui.recipe.management.commands.job_worker import Workers, worker_pull, worker_status, worker_check, worker_ping
 
 # test recipe done to undone
 

@@ -92,7 +92,7 @@ class CredentialsUserWrapper(CredentialsUser):
 
   def from_json(self, data):
     self.token=data['access_token']
-    self.expiry=datetime.datetime.strptime(data['token_expiry'][:19], '%Y-%m-%dT%H:%M:%S') # this is always UTC
+    self.expiry=datetime.datetime.strptime(data['token_expiry'][:19], '%Y-%m-%dT%H:%M:%S').replace(microsecond=0) # this is always UTC
     self._refresh_token=data['refresh_token']
     self._id_token=data['id_token']
     self._token_uri=data['token_uri']
@@ -179,4 +179,5 @@ class CredentialsUserWrapper(CredentialsUser):
     if not self.valid:
       if request is None: request = Request()
       super(CredentialsUserWrapper, self).refresh(request)
+      self.expiry = self.expiry.replace(microsecond=0) # make parsing more consistent, microseconds are not essential
       self.save()

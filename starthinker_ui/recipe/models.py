@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ###########################################################################
 #
 #  Copyright 2019 Google Inc.
@@ -23,7 +21,7 @@ import json
 import functools
 from datetime import date, datetime, timedelta
 
-from django.db import models, connection, transaction
+from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 
@@ -31,7 +29,6 @@ from starthinker.util.project import project
 from starthinker_ui.account.models import Account, token_generate
 from starthinker_ui.project.models import Project
 from starthinker_ui.recipe.scripts import Script
-from starthinker_ui.ui.log import log_job_update
 
 
 JOB_INTERVAL_MS = float(800) # milliseconds ( must be float for fraction math to work )
@@ -70,68 +67,6 @@ def time_ago(timestamp):
     else: ago += 'Ago'
 
   return ago
-
-
-def worker_pull(worker_uid, jobs=1):
-  '''Atomic reservation of worker in jobs.
-
-  Args:
-    - worker_uid ( string ) - identifies a unique worker, must be same for every call from same worker.
-    - jobs ( integer ) - number of jobs to pull
-  '''
-
-  # if the worker cannot do any work, do nothing
-  if jobs <= 0: return
-
-  tasks = []
-  worker_utm = utc_milliseconds()
-  worker_lookback = worker_utm - JOB_LOOKBACK_MS
-  worker_recheck = worker_utm - JOB_RECHECK_MS
-
-  with transaction.atomic():
-
-    # every half hour put jobs back in rotation so worker can trigger get_status logic, triggers status at 24 hour mark
-    Recipe.objects.filter(active=True, manual=False, worker_utm__lt=worker_recheck).select_for_update(skip_locked=True).update(job_done=False)
-
-    #for r in Recipe.objects.all().values():
-    #  print('R', r)
- 
-    # find recipes that are available but have not been pinged recently to this worker
-    where = Recipe.objects.filter(
-      job_done=False, 
-      active=True, 
-      worker_utm__lt=worker_lookback,
-    ).select_for_update(skip_locked=True).order_by('worker_utm').values_list('id', flat=True)[:jobs]
-
-    #print('W', where)
-
-    # mark those recipes as belonging to this worker
-    Recipe.objects.filter(id__in=where).update(worker_uid=worker_uid, worker_utm=worker_utm)
-
-    # find all recipes that belong to this worker and check if they have tasks
-    for job in Recipe.objects.filter(worker_uid=worker_uid, worker_utm=worker_utm):
-      task = job.get_task()
-      if task: tasks.append(task)
-
-  return tasks
-
-
-def worker_ping(worker_uid, recipe_uids):
-  # update recipes that belong to this worker
-  if recipe_uids:
-    Recipe.objects.filter(worker_uid=worker_uid, id__in=recipe_uids).update(worker_utm=utc_milliseconds())
-
-
-def worker_check(worker_uid):
-  return set(Recipe.objects.filter(worker_uid=worker_uid).values_list('id', flat=True))
-
-
-def worker_status(worker_uid, recipe_uid, script, instance, hour, event, stdout, stderr):
-  try:
-    job = Recipe.objects.get(worker_uid=worker_uid, id=recipe_uid)
-    job.set_task(script, instance, hour, event, stdout, stderr)
-  except Recipe.DoesNotExist:
-    print('Expired Worker Job:', worker_uid, recipe_uid, script, instance, hour, event)
 
 
 def reference_default():

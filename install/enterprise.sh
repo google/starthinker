@@ -339,7 +339,7 @@ setup_enterprise() {
   echo ""
 
   enterprise_done=0
-  enterprise_options=("Deploy Multi User UI" "Deploy Job Workers" "Check Job Workers" "Change Domain" "Change Database" "Migrate Database" "Quit")
+  enterprise_options=("Deploy Multi User UI" "Deploy Job Workers" "Check Job Workers" "Change Domain" "Change Database" "Migrate Database")
 
   while (( !enterprise_done ))
   do
@@ -348,7 +348,7 @@ setup_enterprise() {
     echo "----------------------------------------------------------------------"
     echo ""
 
-    PS3='Your Choice: '
+    PS3='Your Choice ( q = Quit ): '
     select enterprise_option in "${enterprise_options[@]}"; do
       case $REPLY in
         1) setup_appengine "Enterprise"; break ;;
@@ -357,7 +357,7 @@ setup_enterprise() {
         4) setup_domain; save_config; break ;;
         5) setup_database; save_config; break ;;
         6) migrate_database_enterprise; break ;;
-        7) enterprise_done=1; break;;
+        q) enterprise_done=1; break;;
         *) echo "What's that?" ;;
       esac
     done

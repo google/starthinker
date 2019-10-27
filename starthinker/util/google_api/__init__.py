@@ -35,6 +35,7 @@ import httplib2
 from time import sleep
 from googleapiclient.errors import HttpError
 from googleapiclient.discovery import Resource
+from ssl import SSLError
 
 try: import httplib
 except: import http.client as httplib
@@ -117,6 +118,19 @@ def API_Retry(job, key=None, retries=5, wait=61):
       return API_Retry(job, key, retries - 1, wait * 2)
     else:
       raise
+
+  # SSL timeout errors
+  except SSLError as e:
+    # most SSLErrors are not retriable, only timeouts, but
+    # SSLError has no good error type attribute, so we search the message
+    if retries > 0 and 'timed out' in e.message:
+      if project.verbose: print('SSL ERROR:', str(e))
+      if project.verbose: print('SSL RETRY / WAIT:', retries, wait)
+      sleep(wait)
+      return API_Retry(job, key, retries - 1, wait * 2)
+    else:
+      raise
+
 
 
 def API_Iterator(function, kwargs, results = None):

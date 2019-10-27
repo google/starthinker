@@ -7,7 +7,8 @@ end on Google Cloud Instances. Execute the following to stand up the UI:
 
 *__REQUIREMENT__: A [gSuite](https://gsuite.google.com/) is required to deploy and manage a UI like StarThinker
 within Google Cloud.  This requirement deals specifically with authentication and ensuring that user
-credentials are stored and accessed securely.*
+credentials are stored and accessed securely. If you do not have gSuite enabled, please install the 
+[Scientist Deployment](deploy_scientist.md) which runs as a single user without Google Authentication.*
 
 ## Instructions
 ```

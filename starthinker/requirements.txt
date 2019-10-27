@@ -28,4 +28,3 @@ psutil
 moviepy==1.0.0
 py-xlsx
 simple-salesforce
-

@@ -67,7 +67,7 @@ if [ -d "${PWD}/install" ]; then
       echo ""
     
       main_done=0
-      main_options=("Developer Menu" "Data Scientist Menu" "Enterprise Menu" "Composer Menu" "Change Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials" "Quit")
+      main_options=("Developer Menu" "Data Scientist Menu" "Enterprise Menu" "Composer Menu" "Change Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials")
     
       while (( !main_done ))
       do
@@ -76,7 +76,7 @@ if [ -d "${PWD}/install" ]; then
         echo "----------------------------------------------------------------------"
         echo ""
       
-        PS3='Your Choice: '
+        PS3='Your Choice ( q = Quit ): '
         select main_option in "${main_options[@]}"; do
           case $REPLY in
             1) setup_developer; break ;;
@@ -87,7 +87,7 @@ if [ -d "${PWD}/install" ]; then
             6) setup_credentials_service; save_config; break ;;
             7) setup_credentials_commandline; setup_credentials_user; save_config; break ;;
             8) setup_credentials_ui; save_config; break ;;
-            9) main_done=1; break;;
+            q) main_done=1; break;;
             *) echo "What's that?" ;;
           esac
         done
