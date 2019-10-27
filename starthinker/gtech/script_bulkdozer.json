@@ -7,7 +7,7 @@
     "title":"Bulkdozer",
     "description":"Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.",
     "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
-    "sample":"https://docs.google.com/spreadsheets/d/1rcBXjVtz3HgMWImP-G8-ESjCj8VPhFjLca1kCu5KAeM/edit#gid=1151132593",
+    "sample":"https://docs.google.com/spreadsheets/d/1hLrpsapXY5jsbgQRcSpjH04avvdcortufI0OXSJZQH8",
     "documentation":"https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md",
     "categories":["automation", "trafficking"],
     "requirements":[ "cm", "sheets"],
