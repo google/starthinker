@@ -7,6 +7,7 @@
   },
   "tasks":[
     { "airflow":{
+      "__comment__":"Calls a native Airflow operator.",
       "operators":{
         "bash_operator":{
           "BashOperator":{
@@ -16,6 +17,7 @@
       }
     }},
     { "orchestra":{
+      "__comment__":"Calls an Orchestra operator, requires import of library.",
       "operators":{
         "hello":{
           "Hello":{
@@ -25,6 +27,7 @@
       }
     }},
     { "hello":{
+      "__comment__":"Calls a StarThinker task.",
       "auth":"user",
       "say":"Hello World"
     }}

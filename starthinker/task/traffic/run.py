@@ -102,9 +102,9 @@ def execute_feed(feed, dao, print_field, msg='Processing'):
 
     for feed_item in feed.feed:
       try:
-        value = str(feed_item[print_field])
-        print('%s %s' % (msg, value.encode('utf-8')))
-        logger.log('%s %s' % (msg, value.encode('utf-8')))
+        value = feed_item[print_field]
+        print('%s %s' % (msg, value))
+        logger.log('%s %s' % (msg, value))
         dao.process(feed_item)
       except Exception as error:
         clean_run = False

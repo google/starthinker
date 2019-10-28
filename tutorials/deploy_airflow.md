@@ -39,7 +39,7 @@ python starthinker_airflow/helper.py starthinker/gtech/airflow.json > ~/airflow/
 python ~/airflow/dags/say_hello.py
 ```
 
-1. Run a StarThinker native python function as a task fromt he recipe:
+1. Run a StarThinker native python function as a task from the recipe:
 ```
 airflow test "starthinker.gtech.say.hello.json" hello_1 2019-05-10
 ```

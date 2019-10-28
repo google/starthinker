@@ -19,10 +19,9 @@
 
 """
 
-from starthinker.util.project import project
 import datetime
-import json
 
+from starthinker.util.project import project
 from starthinker.util.sheets import sheets_write, sheets_clear
 
 

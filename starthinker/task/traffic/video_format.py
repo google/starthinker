@@ -19,12 +19,8 @@
 
 """
 
-import traceback
 import sys
-import time
-import json
 
-from starthinker.task.traffic.logger import logger
 from starthinker.task.traffic.dao import BaseDAO
 from starthinker.task.traffic.feed import FieldMap
 

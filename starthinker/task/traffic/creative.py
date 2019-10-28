@@ -19,8 +19,6 @@
 
 """
 
-import json
-
 from starthinker.task.traffic.dao import BaseDAO
 from starthinker.task.traffic.feed import FieldMap
 from starthinker.task.traffic.creative_assets import CreativeAssetDAO
@@ -51,7 +49,7 @@ class CreativeDAO(BaseDAO):
 
   def _api(self, iterate=False):
     """Returns an DCM API instance for this DAO."""
-    return API_DCM(self.auth)._api(iterate).creatives()
+    return super(CreativeDAO, self)._api(iterate).creatives()
 
   def _assignment_matches(self, item, assignment):
     if item.get(FieldMap.CREATIVE_ID, None) and assignment.get(FieldMap.CREATIVE_ID, None):

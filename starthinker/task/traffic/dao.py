@@ -19,17 +19,8 @@
 
 """
 
-import json
-import re
-import time
-import traceback
-import datetime
-
-from googleapiclient.http import HttpError
-
 from starthinker.util.google_api import API_DCM
 from starthinker.task.traffic.store import store
-from starthinker.task.traffic.logger import logger
 
 
 class BaseDAO(object):

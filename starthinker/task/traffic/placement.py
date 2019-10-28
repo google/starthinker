@@ -19,14 +19,11 @@
 
 """
 
-import json
-
 from starthinker.task.traffic.dao import BaseDAO
 from starthinker.task.traffic.campaign import CampaignDAO
 from starthinker.task.traffic.video_format import VideoFormatDAO
 from starthinker.task.traffic.feed import FieldMap
 from starthinker.task.traffic.placement_group import PlacementGroupDAO
-from dateutil import parser
 from starthinker.task.traffic.class_extensions import StringExtensions
 
 

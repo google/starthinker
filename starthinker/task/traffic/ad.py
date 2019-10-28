@@ -18,7 +18,6 @@
 """Handles creation and updates of Ads."""
 
 import time
-import json
 
 from starthinker.task.traffic.campaign import CampaignDAO
 from starthinker.task.traffic.class_extensions import StringExtensions
