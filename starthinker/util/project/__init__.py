@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -75,8 +75,11 @@ import json
 import pytz
 import uuid
 import argparse
+
 from datetime import datetime 
 from importlib import import_module
+
+from starthinker.util.debug import starthinker_trace_start
 
 RE_UUID = re.compile(r'(\s*)("setup"\s*:\s*{)')
 
@@ -261,6 +264,9 @@ class project:
     parser.add_argument('--verbose', '-v', help='print all the steps as they happen.', action='store_true')
     parser.add_argument('--force', '-force', help='no-op for compatibility with all.', action='store_true')
 
+    parser.add_argument('--trace_print', '-tp', help='Simplified execution trace of the program written to stdout.', action='store_true')
+    parser.add_argument('--trace_file', '-tf', help='Simplified execution trace of the program written to file.', action='store_true')
+
     cls.args = parser.parse_args()
 
     # initialize the project singleton with passed in parameters
@@ -276,7 +282,9 @@ class project:
       cls.args.date,
       cls.args.hour,
       cls.args.verbose,
-      cls.args.force
+      cls.args.force,
+      cls.args.trace_print,
+      cls.args.trace_file
     )
 
   recipe = None
@@ -356,6 +364,8 @@ class project:
     _hour='NOW',
     _verbose=False,
     _force=False,
+    _trace_print=False,
+    _trace_file=False
   ):
     """Used in StarThinker scripts as programmatic entry point. 
 
@@ -386,10 +396,14 @@ class project:
       - _hour: (integer) See module description.
       - _verbose: (boolean) See module description.
       - _force: (boolean) See module description.
+      - _trace_print: (boolean) True if writing execution trace to stdout.
+      - _trace_file: (boolean) True if writing execution trace to file ( see config.py ).
 
     Returns:
       Nothing, this manipulates a singleton object.  All calls to project.* result in the same object.
     """
+
+    starthinker_trace_start(_trace_print, _trace_file)
 
     cls.recipe = _recipe
     cls.function = _task

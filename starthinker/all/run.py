@@ -35,6 +35,8 @@ To execute a recipe run:
 - --service / -s - path to service credentials json file
 - --client / -c' - path to client credentials json file
 - --verbose / -v - print all the steps as they happen.
+- --trace_print / -tp - print execution trace
+- --trace_file / -tf - write execution trace to file
 - --force - execute all tasks regardless of schedule
 
 ### Notes

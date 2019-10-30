@@ -110,9 +110,10 @@ def worker_pull(worker_uid, jobs=1):
 
 class Workers():
 
-  def __init__(self, uid, jobs_maximum, timeout_seconds):
+  def __init__(self, uid, jobs_maximum, timeout_seconds, trace=False):
     self.uid = uid or get_instance_name(str(uuid.uuid1()))
     self.timeout_seconds = timeout_seconds
+    self.trace = trace
     self.jobs_maximum = jobs_maximum
     self.jobs = []
 
@@ -164,6 +165,8 @@ class Workers():
       '-i', str(job['instance']),
       '--verbose',
     ]
+
+    if self.trace: command.append('--trace_file')
 
     job['job']['process'] = subprocess.Popen(command, shell=False, cwd=settings.UI_ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     worker_status(
@@ -337,6 +340,14 @@ class Command(BaseCommand):
     )
 
     parser.add_argument(
+      '--trace',
+      action='store_true',
+      dest='trace',
+      default=False,
+      help='Create an execution trace in /tmp/starthinker_trace.log.',
+    )
+
+    parser.add_argument(
       '--test',
       action='store_true',
       dest='test',
@@ -358,6 +369,7 @@ class Command(BaseCommand):
       kwargs['worker'], 
       kwargs['jobs'], 
       kwargs['timeout'],
+      kwargs['trace'],
     ) 
 
     try:

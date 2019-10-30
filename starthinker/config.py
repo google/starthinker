@@ -34,6 +34,9 @@ UI_USER = os.environ.get('STARTHINKER_USER', '') # only used in single user mode
 # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
 BUFFER_SCALE = int(os.environ.get('STARTHINKER_SCALE', 1))
 
+# used to write execution trace when debugging
+TRACE_FILE = '/tmp/starthinker_trace.log'
+
 # used for user authentication
 APPLICATION_NAME = 'StarThinker Client'
 APPLICATION_SCOPES = [
