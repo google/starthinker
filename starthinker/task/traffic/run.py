@@ -149,10 +149,9 @@ def init_daos():
 
   spreadsheet = sheets_get(project.task['auth'], project.task['sheet_id'])
 
-  store.auth = project.task['auth']
-  store.trix_id = project.task.get('store', {}).get('sheet_id',
-                                                    project.task['sheet_id'])
-  store.load_id_map()
+  #store.auth = project.task['auth']
+  #store.trix_id = project.task.get('store', {}).get('sheet_id', project.task['sheet_id'])
+  #store.load_id_map()
 
   video_format_dao = VideoFormatDAO(project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'])
   landing_page_dao = LandingPageDAO(project.task['auth'], project.task['dcm_profile_id'], project.task['is_admin'])
@@ -331,8 +330,8 @@ def traffic():
     ads()
     dynamic_targeting_keys()
 
-    if clean_run:
-      store.clear()
+    #if clean_run:
+    #  store.clear()
 
   except Exception as error:
     stack = traceback.format_exc()
@@ -343,7 +342,7 @@ def traffic():
   finally:
     logger.log('Bulkdozer traffic job ended')
     logger.flush()
-    store.save_id_map()
+    #store.save_id_map()
 
   if clean_run:
     print('Done: Clean run.')

@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ class BaseDAO(object):
         from CM.
     """
     print('hitting the api to get %s, %s' % (self._entity, feed_item[self._id_field]))
-    self._api().get(profileId=self.profile_id, id=feed_item[self._id_field]).execute()
+    return self._api().get(profileId=self.profile_id, id=feed_item[self._id_field]).execute()
 
   def get(self, feed_item, required=False):
     """Retrieves an item.
@@ -169,7 +169,7 @@ class BaseDAO(object):
       print('hitting the api to search for %s, %s' % (self._entity, search_string))
       search_result = self._api().list(**args).execute()
 
-      items = search_result[self._list_name]
+      #items = search_result[self._list_name]
 
       if items and len(items) > 0:
         item = items[0]
@@ -208,15 +208,6 @@ class BaseDAO(object):
     #print('ITEM', item)
     self._api().update(profileId=self.profile_id, body=item).execute()
 
-  def _chunk(self, l, chunk_size):
-    result = []
-    start = 0
-
-    while start < len(l):
-      result.append(l[start:start + chunk_size - 1])
-      start += chunk_size
-
-    return result
 
   def pre_fetch(self, feed):
     """Pre-fetches all required items to be update into the cache.
@@ -231,16 +222,11 @@ class BaseDAO(object):
       ids = [feed_item[self._id_field] for feed_item in feed if isinstance(feed_item[self._id_field], int)]
 
       if ids:
-        for chunk_ids in self._chunk(ids, 500):
-          results = self._api(iterate=True).list(profileId=self.profile_id, ids=chunk_ids).execute()
+        for i in range(0, len(ids), 500):
+          results = self._api(iterate=True).list(profileId=self.profile_id, ids=ids[i:i+500]).execute()
           for item in results:
             store.set(self._entity, [item['id']], item)
 
-#          while result.get(self._list_name, []):
-#            for item in result[self._list_name]:
-#              store.set(self._entity, [item['id']], item)
-#
-#            result = self._api().list(profileId=self.profile_id, pageToken=result['nextPageToken']).execute()
 
   def process(self, feed_item):
     """Processes a Bulkdozer feed item.

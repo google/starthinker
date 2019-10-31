@@ -16,6 +16,8 @@
 #
 ###########################################################################
 
+import json
+
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
@@ -34,6 +36,15 @@ class Command(BaseCommand):
       help='Run a specific recipe.',
     )
 
+    parser.add_argument(
+      '--raw',
+      action='store_true',
+      dest='raw',
+      default=False,
+      help='Raw recipe log.',
+    )
+
+
   def handle(self, *args, **kwargs):
     for recipe in (Recipe.objects.filter(pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.all()):
       print('---------------------------------------')
@@ -45,8 +56,14 @@ class Command(BaseCommand):
       print('Week:', recipe.week)
       print('Hour:', recipe.hour)
       print('Timezone:', recipe.timezone)
+      print('Manual:', recipe.manual)
       print('Done:', recipe.job_done)
 
+      if kwargs['raw']:
+        print('Job Status:')
+        print(json.dumps(json.loads(recipe.job_status), indent=2))
+        continue
+      
       log = recipe.get_log()
 
       print('Tasks', len(log['tasks']))

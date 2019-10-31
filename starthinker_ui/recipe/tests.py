@@ -353,6 +353,8 @@ class ManualTest(TestCase):
 
   def test_done(self):
     self.assertIsNone(self.recipe_done.get_task())
+    self.recipe_done.force()
+    self.assertIsNotNone(self.recipe_done.get_task())
 
 
   def test_status(self):

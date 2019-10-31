@@ -25,9 +25,9 @@
   calls to the CM API.
 """
 
-import json
+#import json
 
-from starthinker.util.sheets import sheets_read, sheets_write, sheets_clear
+#from starthinker.util.sheets import sheets_read, sheets_write, sheets_clear
 
 
 class Store(object):
@@ -44,45 +44,45 @@ class Store(object):
     self._store = {}
     self._id_map = {}
 
-    self.trix_id = None
-    self.auth = None
+#    self.trix_id = None
+#    self.auth = None
 
-  def load_id_map(self):
-    """Loads the ID map from the Bulkdozer feed into the object.
+#  def load_id_map(self):
+#    """Loads the ID map from the Bulkdozer feed into the object.
+#
+#    """
+#    if self.trix_id:
+#      data = sheets_read(self.auth, self.trix_id, 'Store', 'A1:Z1')
+#      content = ''
+#      if data and data[0]:
+#        for cell in data[0]:
+#          content += cell
+#
+#        self._id_map = json.loads(content)
+#      else:
+#        self._id_map = {}
 
-    """
-    if self.trix_id:
-      data = sheets_read(self.auth, self.trix_id, 'Store', 'A1:Z1')
-      content = ''
-      if data and data[0]:
-        for cell in data[0]:
-          content += cell
-
-        self._id_map = json.loads(content)
-      else:
-        self._id_map = {}
-
-  def save_id_map(self):
-    """Saves the ID map into the Bulkdozer feed.
-
-    """
-    if self.trix_id:
-      columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'W', 'X', 'Y', 'Z']
-
-      data = json.dumps(self._id_map)
-      data = [data[start:start+49999] for start in range(0, len(data), 49999)]
-      sheets_write(self.auth, self.trix_id, 'Store', 'A:' + columns[len(data) + 1], [data])
+#  def save_id_map(self):
+#    """Saves the ID map into the Bulkdozer feed.
+#
+#    """
+#    if self.trix_id:
+#      columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'W', 'X', 'Y', 'Z']
+#
+#      data = json.dumps(self._id_map)
+#      data = [data[start:start+49999] for start in range(0, len(data), 49999)]
+#      sheets_write(self.auth, self.trix_id, 'Store', 'A:' + columns[len(data) + 1], [data])
 
 
-  def clear(self):
-    """Clears the store in the Bulkdozer feed.
-
-    """
-    if self.trix_id:
-      sheets_clear(self.auth, self.trix_id, 'Store', 'A1:Z1')
-
-    self._store = {}
-    self._id_map = {}
+#  def clear(self):
+#    """Clears the store in the Bulkdozer feed.
+#
+#    """
+#    if self.trix_id:
+#      sheets_clear(self.auth, self.trix_id, 'Store', 'A1:Z1')
+#
+#    self._store = {}
+#    self._id_map = {}
 
   def map(self, entity, ext_id, dcm_id):
     """Maps a CM id and an ext id for an entity.
