@@ -100,7 +100,6 @@ class Logger(object):
 
     """
     if self._buffer:
-      #sheets_write(self.auth, self.trix_id, 'Log', 'A' + str(self._row), self._buffer, append=True)
       sheets_write(self.auth, self.trix_id, 'Log', 'A1', self._buffer, append=True)
 
       self._row += len(self._buffer)

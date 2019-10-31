@@ -165,7 +165,7 @@ class Workers():
 
     command = [
       '%s/starthinker_virtualenv/bin/python' % settings.UI_ROOT,
-      '-W', 'ignore',
+      '-u', '-W', 'ignore',
       '%s/starthinker/task/%s/run.py' % (settings.UI_ROOT, job['script']),
       filename,
       '-i', str(job['instance']),

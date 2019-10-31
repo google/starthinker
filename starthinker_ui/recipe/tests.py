@@ -310,6 +310,50 @@ class ManualTest(TestCase):
       ]),
     )
 
+    now_tz = utc_to_timezone(datetime.utcnow(), self.recipe.timezone)
+
+    self.recipe_done = Recipe.objects.create(
+      account = self.account,
+      project = self.project,
+      name = 'RECIPE_MANUAL',
+      active = True,
+      manual = True,
+      week = [],
+      hour = [],
+      timezone = 'America/Los_Angeles',
+      tasks = json.dumps([
+        { "tag": "manual",
+          "values": {},
+          "sequence": 1
+        },
+      ]),
+      job_done = True,
+      job_status = json.dumps({
+        "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        "date_tz": str(now_tz.date()),
+        "force": True,
+        "tasks": [
+          {
+            "instance": 1,
+            "order": 0,
+            "event": "JOB_END",
+            "utc":str(datetime.utcnow()), 
+            "script": "manual",
+            "hour": 0,
+            "stdout":"",
+            "stderr": "",
+            "done": True
+          }
+        ]
+      }),
+      worker_uid = 'TEST_WORKER',
+      worker_utm = utc_milliseconds() - (JOB_LOOKBACK_MS * 10) # important for test ( jobs older than this get job_done flag reset )
+    )
+
+
+  def test_done(self):
+    self.assertIsNone(self.recipe_done.get_task())
+
 
   def test_status(self):
     # without force manual tasks do not pull
@@ -338,7 +382,7 @@ class ManualTest(TestCase):
     # advance time, since current jobs need to expire, artificially ping to keep out of queue
     sleep((JOB_LOOKBACK_MS * 2) / 1000.0)
 
-    # remove time dependency for this test, force all tasks
+    # remove time dependency for this test, force all tasks in first recipe
     self.recipe.force()
     status = self.recipe.get_status()
 

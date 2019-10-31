@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -19,14 +19,12 @@
 
 """
 
-import datetime
-import json
-import sys
 import traceback
 
 from starthinker.util.dcm import get_profile_for_api
 from starthinker.util.project import project
 from starthinker.util.sheets import sheets_get
+
 from starthinker.task.traffic.feed import Feed
 from starthinker.task.traffic.feed import FieldMap
 from starthinker.task.traffic.ad import AdDAO
@@ -41,7 +39,6 @@ from starthinker.task.traffic.placement import PlacementDAO
 from starthinker.task.traffic.placement_group import PlacementGroupDAO
 from starthinker.task.traffic.video_format import VideoFormatDAO
 from starthinker.task.traffic.store import store
-from starthinker.task.traffic.config import config
 from starthinker.task.traffic.logger import logger
 
 video_format_dao = None
@@ -131,11 +128,6 @@ def setup():
     project.task['sheet_id'] = project.task['sheet_url']
 
   # Setting up required objects and parsing parameters
-  config.auth = project.task['auth']
-  config.trix_id = project.task.get('store', {}).get('sheet_id',
-                                                     project.task['sheet_id'])
-  config.load()
-
   logger.auth = project.task['auth']
   logger.trix_id = project.task.get('logger', {}).get('sheet_id',
                                                       project.task['sheet_id'])
@@ -319,48 +311,39 @@ def traffic():
 
   """
   global clean_run
-  if project.verbose:
-    print('traffic')
+  if project.verbose: print('traffic')
 
   try:
     setup()
 
-    if config.mode in ['ALWAYS', 'ONCE']:
-      try:
-        logger.clear()
-        logger.log('Bulkdozer traffic job starting')
-        logger.log('Execution config is %s' % config.mode)
-        logger.flush()
+    logger.clear()
+    logger.log('Bulkdozer traffic job starting')
+    logger.flush()
 
-        if config.mode == 'ONCE':
-          config.mode = 'OFF'
-          config.update()
+    init_daos()
+    assets()
+    landing_pages()
+    campaigns()
+    event_tags()
+    placement_groups()
+    placements()
+    creatives()
+    ads()
+    dynamic_targeting_keys()
 
-        init_daos()
-        assets()
-        landing_pages()
-        campaigns()
-        event_tags()
-        placement_groups()
-        placements()
-        creatives()
-        ads()
-        dynamic_targeting_keys()
-
-        if clean_run:
-          store.clear()
-
-      finally:
-        logger.log('Bulkdozer traffic job ended')
-        logger.flush()
-        store.save_id_map()
+    if clean_run:
+      store.clear()
 
   except Exception as error:
     stack = traceback.format_exc()
     print(stack)
 
     logger.log(str(error))
+
+  finally:
+    logger.log('Bulkdozer traffic job ended')
     logger.flush()
+    store.save_id_map()
 
   if clean_run:
     print('Done: Clean run.')

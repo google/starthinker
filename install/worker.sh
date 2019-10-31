@@ -94,7 +94,7 @@ instance_copy()
   copy_SOURCE_FILENAME=$2
   copy_DESTINATION_FILENAME=$3
   copy_RECURSIVE=$4
-  instance_command $copy_INSTANCE "rm -rf $copy_DESTINATION_FILENAME"
+  instance_command $copy_INSTANCE "sudo rm -rf $copy_DESTINATION_FILENAME"
   gcloud compute scp $copy_SOURCE_FILENAME $copy_INSTANCE:$copy_DESTINATION_FILENAME --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE $copy_RECURSIVE --compress --scp-flag="-o ServerAliveInterval=30"
 }
 
@@ -235,11 +235,11 @@ deploy_worker() {
     instance_command "$instance_name" "sudo systemctl stop starthinker"
     instance_command "$instance_name" "sudo systemctl stop starthinker_proxy"
 
-    instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_assets" "starthinker_assets/" --recurse
-    instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_ui" "starthinker_ui/" --recurse
-    instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker" "starthinker/" --recurse
-    instance_copy "$instance_name" "${STARTHINKER_ROOT}/install" "install/" --recurse
-    instance_copy "$instance_name" "${STARTHINKER_ROOT}/requirements.txt" "requirements.txt"
+    instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_assets" "~/starthinker_assets/" --recurse
+    instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_ui" "~/starthinker_ui/" --recurse
+    instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker" "~/starthinker/" --recurse
+    instance_copy "$instance_name" "${STARTHINKER_ROOT}/install" "~/install/" --recurse
+    instance_copy "$instance_name" "${STARTHINKER_ROOT}/requirements.txt" "~/requirements.txt"
 
     instance_command "$instance_name" "source install/worker.sh --instance --jobs $instance_Jobs"
   done

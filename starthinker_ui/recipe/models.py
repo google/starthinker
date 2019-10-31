@@ -223,20 +223,30 @@ class Recipe(models.Model):
 
   def get_status(self, force=False):
     recipe = self.get_json()
+    recipe_day = recipe.get('setup', {}).get('day',[]) or ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
     # current 24 hour time zone derived frame to RUN the job
     now_tz = utc_to_timezone(datetime.utcnow(), self.timezone)
-
     date_tz = str(now_tz.date())
     day_tz = now_tz.strftime('%a')
     hour_tz = now_tz.hour
 
     # load prior status
     try: prior_status = json.loads(self.job_status)
-    except ValueError: prior_status = {}
+    except ValueError: 
+      prior_status = {}
 
+    # create default status for new recipes
+    prior_status.setdefault('date_tz', date_tz)
+    prior_status.setdefault('force', False)
+    prior_status.setdefault('day', recipe_day)
+    prior_status.setdefault('tasks', [])
+
+    # for manual recipes DO NOT CHANGE STATUS unless it is forced to run
+    if self.manual and not force: 
+      return prior_status
+     
     # reset prior status if force or scheduled today and new 24 hour block
-    recipe_day = recipe.get('setup', {}).get('day',[]) or ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     if force or date_tz != prior_status.get('date_tz'):
       prior_status = { 'force':force }
 
@@ -248,12 +258,15 @@ class Recipe(models.Model):
       'tasks':[],
     }
 
+    # create task list based on recipe json
     instances = {}
     for order, task in enumerate(recipe.get('tasks', [])):
       script, task = next(iter(task.items()))
+
       # if force, queue each task in sequence without hours
       if prior_status.get('force', False):
         hours = [hour_tz]
+
       # if schedule, take tasks with hours or no hours given defaulted to recipe wide hours
       else:
         hours = task.get('hour', recipe['setup'].get('hour', []))
@@ -303,6 +316,7 @@ class Recipe(models.Model):
       self.job_done = done
       Recipe.objects.filter(pk=self.pk).update(job_done=self.job_done)
 
+    # check if job status changed
     if json.loads(self.job_status).get('force', False) != status.get('force', False):
       self.job_status = json.dumps(status)
       self.save(update_fields=['job_status'])
