@@ -10,6 +10,9 @@ within Google Cloud.  This requirement deals specifically with authentication an
 credentials are stored and accessed securely. If you do not have gSuite enabled, please install the 
 [Scientist Deployment](deploy_scientist.md) which runs as a single user without Google Authentication.*
 
+*__Production Tip__: For teams, deploy this on a micro virtual instance so that multiple members can access and update
+the UI and workers from the same machine.*
+
 ## Instructions
 ```
 git clone https://github.com/google/starthinker
@@ -28,9 +31,8 @@ source install/deploy.sh
      - You will be asked for [Web Client Credentials](cloud_client_web.md).
      - You will be asked for a databse user and password, remember this ( database name is starthinker ).
  1. Option 2) Deploy Job Workers
-     - Option 1) Test - 1 Job ( not recommended for running large jobs )
-     - Option 3) Medium - 20 Jobs ( recommended for enterprise )
-     - Option 5) Quit
+     - Option 1) 1   - 50 Recipes  = 1 x n1-highmem-4 x 2 jobs = 48 recipe hours  ( ~ $37  / month )
+     - ( q = Quit )
  1. Option 3) Check Job Workers
  1. Enable backups for your [Google Cloud SQL](https://console.cloud.google.com/sql).
  1. Enable [Google Cloud IAP](https://console.cloud.google.com/security/iap) to restrict access to the UI.

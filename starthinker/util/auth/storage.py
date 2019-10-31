@@ -41,20 +41,20 @@ def _credentials_storage_service():
   return discovery.build('storage', 'v1', credentials=credentials)
 
 
-def _credenetials_retry(job, retries=3, wait=1):
+def _credentials_retry(job, retries=3, wait=1):
   try:
     return job.execute()
   except HttpError as e:
     if e.resp.status == 429 and retries > 0:
       sleep(wait)
-      return credenetials_retry(job, retries - 1, wait * 2)
+      return _credentials_retry(job, retries - 1, wait * 2)
     else:
       raise
 
 
 def credentials_storage_get(cloud_path):
   bucket, filename = cloud_path.split(':',1)
-  data = _credenetials_retry(_credentials_storage_service().objects().get_media(bucket=bucket, object=filename))
+  data = _credentials_retry(_credentials_storage_service().objects().get_media(bucket=bucket, object=filename))
   return json.loads(base64.b64decode(data.decode()).decode())
 
 
@@ -62,4 +62,4 @@ def credentials_storage_put(cloud_path, credentials):
   bucket, filename = cloud_path.split(':',1)
   data = BytesIO(base64.b64encode(json.dumps(credentials).encode()))
   media = MediaIoBaseUpload(data, mimetype="text/json")
-  _credenetials_retry(_credentials_storage_service().objects().insert(bucket=bucket, name=filename, media_body=media))
+  _credentials_retry(_credentials_storage_service().objects().insert(bucket=bucket, name=filename, media_body=media))

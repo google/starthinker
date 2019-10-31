@@ -22,12 +22,17 @@ import sys
 
 from starthinker.config import TRACE_FILE
 
+
 STARTHINKER_TRACE_TO_FILE=False
 STARTHINKER_TRACE_TO_PRINT=False
 
+
 def is_starthinker_module(frame):
-  module_path = frame.f_globals["__file__"]
-  return 'starthinker' in module_path and 'starthinker_virtualenv' not in module_path
+  if "__file__" in frame.f_globals:
+    module_path = frame.f_globals["__file__"]
+    return 'starthinker' in module_path and 'starthinker_virtualenv' not in module_path
+  else:
+    return False
 
 
 def starthinker_trace_log(entry):
@@ -38,7 +43,7 @@ def starthinker_trace_log(entry):
     print(entry)
 
   if STARTHINKER_TRACE_TO_FILE:
-    with open(TRACE_FILE, "a") as log_file:
+    with open(TRACE_FILE, "a+") as log_file:
       log_file.write('%s\n' % entry)
 
 

@@ -90,6 +90,10 @@ if __name__ == "__main__":
   parser.add_argument('--verbose', '-v', help='print all the steps as they happen.', action='store_true')
   parser.add_argument('--date', '-d', help='YYYY-MM-DD format date for which these reports are to be run, default will be today.', default='TODAY')
   parser.add_argument('--force', '-force', help='execute all scripts once then exit.', action='store_true')
+
+  parser.add_argument('--trace_print', '-tp', help='Simplified execution trace of the program written to stdout.', action='store_true')
+  parser.add_argument('--trace_file', '-tf', help='Simplified execution trace of the program written to file.', action='store_true')
+
   args = parser.parse_args()
 
   # load json to get each task

@@ -3,6 +3,10 @@
 To execute recipes on a regular schedule as a single user, for example moving a report every day. 
 Download the open source code, and execute the following:
 
+*__Production Tip__: For teams, deploy this on a micro virtual instance so that multiple members can access and update
+the UI and workers from the same machine.*
+
+## Instructions
 ```
 git clone https://github.com/google/starthinker
 ```
@@ -21,9 +25,8 @@ source install/deploy.sh
      - You will be asked for [User Client Credentials](cloud_user.md).
      - You will be asked for a UI password, remember this and use it to log into the UI. 
  1. Option 2) Deploy Job Workers
-     - Option 1) Test - 1 Job ( not recommended for running large jobs )
-     - Option 3) Small - 4 Jobs ( recommended for data scientist )
-     - Option 5) Quit
+     - Option 1) 1   - 50 Recipes  = 1 x n1-highmem-4 x 2 jobs = 48 recipe hours  ( ~ $37  / month )
+     - ( q = Quit )
  1. Option 3) Check Job Workers
  1. Enable backups for your [Google Cloud SQL](https://console.cloud.google.com/sql).
  1. Enable [Google Cloud IAP](https://console.cloud.google.com/security/iap) to restrict access to the UI.

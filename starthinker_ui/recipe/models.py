@@ -334,8 +334,8 @@ class Recipe(models.Model):
       if task['script'] == script and task['instance'] == instance and task['hour'] == hour:
         task['utc'] = str(datetime.utcnow())
         task['event'] = event
-        task['stdout'] = stdout
-        task['stderr'] = stderr
+        if stdout: task['stdout'] += stdout
+        if stderr: task['stderr'] += stderr
         task['done'] = (event != 'JOB_START')
 
         self.job_done = all([task['done'] for task in status['tasks']])

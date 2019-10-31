@@ -703,7 +703,7 @@ class JobErrorTest(TransactionTestCase):
       timezone = 'America/Los_Angeles',
       tasks = json.dumps([
         { "tag": "hello",
-          "values": { "error":"Triggered the error mchanic on purspose."},
+          "values": { "error":"Triggered the error mechanic on purpose."},
           "sequence": 1
         },
       ]),
@@ -721,10 +721,15 @@ class JobErrorTest(TransactionTestCase):
     self.assertEqual(status['tasks'][0]['instance'], 1)
     self.assertEqual(status['tasks'][0]['hour'], 0)
     self.assertEqual(status['tasks'][0]['event'], 'JOB_ERROR')
+    self.assertIn('PROJECT TASK SAY: Hello Once', status['tasks'][0]['stdout'])
+    self.assertIn('Exception: Triggered the error mechanic on purpose.', status['tasks'][0]['stderr'])
+
     self.assertEqual(status['tasks'][1]['script'], 'hello')
     self.assertEqual(status['tasks'][1]['instance'], 2)
     self.assertEqual(status['tasks'][1]['hour'], 0)
     self.assertEqual(status['tasks'][1]['event'], 'JOB_PENDING')
+    self.assertEqual('', status['tasks'][1]['stdout'])
+    self.assertEqual('', status['tasks'][1]['stderr'])
 
     # advance time, since current jobs need to expire, artificially ping to keep out of queue
     sleep((JOB_LOOKBACK_MS * 2) / 1000.0)
@@ -740,10 +745,14 @@ class JobErrorTest(TransactionTestCase):
     self.assertEqual(status['tasks'][0]['instance'], 1)
     self.assertEqual(status['tasks'][0]['hour'], 0)
     self.assertEqual(status['tasks'][0]['event'], 'JOB_ERROR')
+    self.assertIn('PROJECT TASK SAY: Hello Once', status['tasks'][0]['stdout'])
+    self.assertIn('Exception: Triggered the error mechanic on purpose.', status['tasks'][0]['stderr'])
     self.assertEqual(status['tasks'][1]['script'], 'hello')
     self.assertEqual(status['tasks'][1]['instance'], 2)
     self.assertEqual(status['tasks'][1]['hour'], 0)
     self.assertEqual(status['tasks'][1]['event'], 'JOB_END')
+    self.assertIn('PROJECT TASK SAY: Hello Twice', status['tasks'][1]['stdout'])
+    self.assertEqual('', status['tasks'][1]['stderr'])
 
     # check if recipe is removed from worker lookup ( job_done=True )
     self.recipe.refresh_from_db()

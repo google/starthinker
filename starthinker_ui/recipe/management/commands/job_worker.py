@@ -17,6 +17,7 @@
 ###########################################################################
 
 import os
+import fcntl
 import json
 import uuid
 import time
@@ -34,7 +35,6 @@ from starthinker_ui.recipe.models import Recipe, utc_milliseconds, JOB_LOOKBACK_
 from starthinker_ui.ui.log import log_manager_start, log_manager_end, log_manager_error
 from starthinker_ui.ui.log import log_job_timeout, log_job_error, log_job_start, log_job_end, log_job_cancel
 from starthinker_ui.ui.log import log_verbose, get_instance_name
-
 
 
 MANAGER_ON = True
@@ -108,6 +108,12 @@ def worker_pull(worker_uid, jobs=1):
   return tasks
 
 
+def make_non_blocking(file_io):
+  fd = file_io.fileno()
+  fl = fcntl.fcntl(fd, fcntl.F_GETFL)
+  fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+
+
 class Workers():
 
   def __init__(self, uid, jobs_maximum, timeout_seconds, trace=False):
@@ -169,6 +175,10 @@ class Workers():
     if self.trace: command.append('--trace_file')
 
     job['job']['process'] = subprocess.Popen(command, shell=False, cwd=settings.UI_ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    make_non_blocking(job['job']['process'].stdout)
+    make_non_blocking(job['job']['process'].stderr)
+
     worker_status(
       job['job']['worker'],
       job['recipe']['setup']['uuid'],
@@ -222,66 +232,59 @@ class Workers():
 
     for job in self.jobs:
 
+      # if job changes state, this is set, then sent to database
+      status = None
+ 
+      # read any incremental data from the process ( made non-blocking at construction )
+      stdout = job['job']['process'].stdout.read()
+      if stdout is not None: stdout = stdout.decode()
+      stderr = job['job']['process'].stderr.read()
+      if stderr is not None: stderr = stderr.decode()
+
       # if process still running, check timeout or ping keep alive 
       poll = job['job']['process'].poll()
       if poll is None:
 
         # check if task is a timeout 
         if (datetime.utcnow() - job['job']['utc']).total_seconds() > job['recipe']['setup']['timeout_seconds']:
+          status = 'JOB_TIMEOUT'
           job['job']['process'].kill()
           self.cleanup(job)
-          worker_status(
-            job['job']['worker'],
-            job['recipe']['setup']['uuid'],
-            job['script'],
-            job['instance'],
-            job['hour'],
-            'JOB_TIMEOUT',
-            '',
-            ''
-          )
           log_job_timeout(job)
           job['job']['process'] = None
 
-        # otherwise task is running, do nothing
-        else:
-          pass
+        # otherwise task is running, update stdout and stderr if present
+        elif stdout or stderr:
+          status = 'JOB_START'
 
       # if process has return code, check if task is complete or error
       else:
-        job['stdout'], job['stderr'] = job['job']['process'].communicate()
         self.cleanup(job)
 
         # if error scrap whole worker and flag error
-        if job['stderr']: # possibly alter this to use poll != 0 ( which indicates errror as well )
-          self.cleanup(job)
-          worker_status(
-            job['job']['worker'],
-            job['recipe']['setup']['uuid'],
-            job['script'],
-            job['instance'],
-            job['hour'],
-            'JOB_ERROR',
-            job['stdout'].decode(),
-            job['stderr'].decode()
-          )
+        if poll != 0: 
+          status = 'JOB_ERROR'
           log_job_error(job)
           job['job']['process'] = None
 
         # if success, pop task off the stack and flag success
         else: 
-          worker_status(
-            job['job']['worker'],
-            job['recipe']['setup']['uuid'],
-            job['script'],
-            job['instance'],
-            job['hour'],
-            'JOB_END',
-            job['stdout'].decode(),
-            job['stderr'].decode()
-          )
+          status = 'JOB_END'
           log_job_end(job)
           job['job']['process'] = None
+
+      # if status is set, send it to the database
+      if status:
+        worker_status(
+          job['job']['worker'],
+          job['recipe']['setup']['uuid'],
+          job['script'],
+          job['instance'],
+          job['hour'],
+          status,
+          stdout,
+          stderr
+        )
 
     # remove all workers without a process, they are done
     self.jobs = [job for job in self.jobs if job['job']['process'] is not None]
