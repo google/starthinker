@@ -156,8 +156,7 @@ class PlacementDAO(BaseDAO):
             'startDate':
                 pricing_schedule.get(FieldMap.PLACEMENT_PERIOD_START, None),
             'rateOrCostNanos':
-                float(pricing_schedule.get(FieldMap.PLACEMENT_PERIOD_RATE)) *
-                1000000000,
+                int(float(pricing_schedule.get(FieldMap.PLACEMENT_PERIOD_RATE)) * 1000000000),
             'units':
                 pricing_schedule.get(FieldMap.PLACEMENT_PERIOD_UNITS),
         })
