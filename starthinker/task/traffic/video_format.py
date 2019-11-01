@@ -53,7 +53,7 @@ class VideoFormatDAO(BaseDAO):
     """
 
     if not self._video_formats:
-      self._video_formats = self._api().list(profileId=self.profile_id).execute()['videoFormats']
+      self._video_formats = list(self._api(iterate=True).list(profileId=self.profile_id).execute())
 
     return self._video_formats
 

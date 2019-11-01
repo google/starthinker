@@ -62,6 +62,10 @@ class PlacementDAO(BaseDAO):
     """Returns an DCM API instance for this DAO."""
     return super(PlacementDAO, self)._api(iterate).placements()
 
+  def _api_sizes(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return super(PlacementDAO, self)._api(iterate).sizes()
+
   def _process_skipability(self, feed_item, item):
     """Process skipability settings.
 
@@ -265,7 +269,7 @@ class PlacementDAO(BaseDAO):
     # but since we don't use it anywhere else it is probably fine.
     # May need to do it in case it becomes necessary for other entities when
     # we implement display
-    return self._api().sizes().list(profileId=self.profile_id, height=height, width=width).execute()
+    return self._api_sizes(iterate=True).list(profileId=self.profile_id, height=height, width=width).execute()
 
   def _process_new(self, feed_item):
     """Creates a new placement DCM object from a feed item representing an placement from the Bulkdozer feed.

@@ -61,6 +61,10 @@ class AdDAO(BaseDAO):
     """Returns an DCM API instance for this DAO."""
     return super(AdDAO, self)._api(iterate).ads()
 
+  def _api_creatives(self, iterate=False):
+    """Returns an DCM API instance for this DAO."""
+    return super(AdDAO, self)._api(iterate).creatives()
+
   def _wait_creative_activation(self, creative_id, timeout=128):
     """Waits for a creative to become active.
 
@@ -80,7 +84,7 @@ class AdDAO(BaseDAO):
     # Only wait for creative activation if it is a new creative trafficked by
     # this Bulkdozer session
     if store.get('CREATIVE', creative_id):
-      creative = self._api().creatives().get(profileId=self.profile_id, id=creative_id).execute()
+      creative = self._api_creatives().get(profileId=self.profile_id, id=creative_id).execute()
       wait = 2
 
       while not creative['active'] and timeout > 0:
@@ -88,7 +92,7 @@ class AdDAO(BaseDAO):
         time.sleep(wait)
         timeout -= wait
         wait *= 2
-        creative = self._api().creatives().get(profileId=self.profile_id, id=creative_id).execute()
+        creative = self._api_creatives().get(profileId=self.profile_id, id=creative_id).execute()
 
       if not creative['active']:
         raise Exception('Creative %s failed to activate within defined timeout'

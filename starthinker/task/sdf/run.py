@@ -40,7 +40,7 @@ def sdf():
 
   # Read Filter Ids
   filter_id_rows = list(get_rows(project.task['auth'], project.task['read']['filter_ids']))
-  filter_ids = [filter_id_rows[i:i + FILTER_ID_CHUNK_SIZE] for i in xrange(0, len(filter_id_rows), FILTER_ID_CHUNK_SIZE)]
+  filter_ids = [filter_id_rows[i:i + FILTER_ID_CHUNK_SIZE] for i in range(0, len(filter_id_rows), FILTER_ID_CHUNK_SIZE)]
   # Loop through requested file types
   for file_type in project.task['file_types']:
     current_filter_id_iteration = 0
