@@ -72,7 +72,7 @@ class BaseDAO(object):
       feed_item: Feed item from Bulkdozer feed representing the item to fetch
         from CM.
     """
-    print('hitting the api to get %s, %s' % (self._entity, feed_item[self._id_field]))
+    #print('hitting the api to get %s, %s' % (self._entity, feed_item[self._id_field]))
     return self._api().get(profileId=self.profile_id, id=feed_item[self._id_field]).execute()
 
   def get(self, feed_item, required=False):

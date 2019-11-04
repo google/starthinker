@@ -247,7 +247,7 @@ class AdDAO(BaseDAO):
     item['eventTagOverrides'] = []
 
     self._process_assignments(
-        feed_item, item['creativeRotation']['creativeAssignments'],
+        feed_item, item['creativeRotation'].get('creativeAssignments', []),
         item['placementAssignments'], item['eventTagOverrides'])
 
     if 'deliverySchedule' in item:

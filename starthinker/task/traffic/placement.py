@@ -268,7 +268,7 @@ class PlacementDAO(BaseDAO):
     # but since we don't use it anywhere else it is probably fine.
     # May need to do it in case it becomes necessary for other entities when
     # we implement display
-    return self._api_sizes(iterate=True).list(profileId=self.profile_id, height=height, width=width).execute()
+    return list(self._api_sizes(iterate=True).list(profileId=self.profile_id, height=height, width=width).execute())
 
   def _process_new(self, feed_item):
     """Creates a new placement DCM object from a feed item representing an placement from the Bulkdozer feed.
@@ -350,7 +350,8 @@ class PlacementDAO(BaseDAO):
       if(raw_size and 'x' in raw_size):
         width, height = raw_size.strip().lower().split('x')
 
-      sizes = self.get_sizes(int(width), int(height))['sizes']
+      sizes = self.get_sizes(int(width), int(height))
+      
       if sizes:
         result['size'] = {'id': sizes[0]['id']}
       else:
