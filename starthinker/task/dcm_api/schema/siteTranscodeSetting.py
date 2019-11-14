@@ -18,14 +18,14 @@
 
 siteTranscodeSetting_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
-  {
-    "type": "INT64", 
-    "name": "enabledVideoFormats", 
+    "name": "enabledVideoFormats",
+    "type": "INT64",
     "mode": "REPEATED"
+  },
+  {
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

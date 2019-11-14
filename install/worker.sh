@@ -202,6 +202,8 @@ deploy_worker() {
   instance_Workers=$3
   instance_Jobs=$4
 
+  setup_gcloud;
+
   setup_project "optional";
   setup_credentials_service "optional";
   setup_credentials_ui "optional";
@@ -212,8 +214,6 @@ deploy_worker() {
   echo "Deploy Worker Instances - $instance_Label: $instance_Type ( $instance_Workers x $instance_Jobs )"
   echo "----------------------------------------"
   echo ""
-
-  setup_gcloud;
 
   gcloud_service;
   gcloud_firewall_ssh;

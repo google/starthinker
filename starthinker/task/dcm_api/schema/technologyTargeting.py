@@ -18,235 +18,235 @@
 
 technologyTargeting_Schema = [
   {
+    "name": "browsers",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "browserVersionId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
+        "description": "",
+        "name": "dartId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "majorVersion",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "minorVersion",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "platformTypes", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
+    "name": "connectionTypes",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "majorVersion"
-      }, 
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      }
+    ]
+  },
+  {
+    "name": "mobileCarriers",
+    "type": "RECORD",
+    "mode": "REPEATED",
+    "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
+        "description": "",
+        "name": "countryCode",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "countryDartId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      }
+    ]
+  },
+  {
+    "name": "operatingSystemVersions",
+    "type": "RECORD",
+    "mode": "REPEATED",
+    "fields": [
+      {
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "majorVersion",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "minorVersion",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       [
         {
-          "type": "BOOLEAN", 
-          "name": "mobile", 
+          "description": "",
+          "name": "dartId",
+          "type": "INT64",
           "mode": "NULLABLE"
-        }, 
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "dartId"
-        }, 
+          "name": "desktop",
+          "type": "BOOLEAN",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
-        }, 
+          "name": "mobile",
+          "type": "BOOLEAN",
+          "mode": "NULLABLE"
+        },
         {
-          "type": "BOOLEAN", 
-          "name": "desktop", 
+          "description": "",
+          "name": "name",
+          "type": "STRING",
           "mode": "NULLABLE"
         }
-      ], 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "minorVersion"
-      }
-    ], 
-    "type": "RECORD", 
-    "name": "operatingSystemVersions", 
-    "mode": "REPEATED"
-  }, 
+      ]
+    ]
+  },
   {
+    "name": "operatingSystems",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "majorVersion"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "browserVersionId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "dartId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "minorVersion"
-      }
-    ], 
-    "type": "RECORD", 
-    "name": "browsers", 
-    "mode": "REPEATED"
-  }, 
-  {
-    "fields": [
-      {
-        "type": "BOOLEAN", 
-        "name": "mobile", 
+        "description": "",
+        "name": "dartId",
+        "type": "INT64",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "dartId"
-      }, 
+        "name": "desktop",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
+        "name": "mobile",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
       {
-        "type": "BOOLEAN", 
-        "name": "desktop", 
+        "description": "",
+        "name": "name",
+        "type": "STRING",
         "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "operatingSystems", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
+    "name": "platformTypes",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "countryDartId"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "countryCode"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "mobileCarriers", 
-    "mode": "REPEATED"
-  }, 
-  {
-    "fields": [
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }
-    ], 
-    "type": "RECORD", 
-    "name": "connectionTypes", 
-    "mode": "REPEATED"
+    ]
   }
 ]

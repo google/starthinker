@@ -18,21 +18,21 @@
 
 recipient_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "ATTACHMENT, LINK",
+    "name": "deliveryType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "ATTACHMENT, LINK", 
-    "name": "deliveryType"
-  }, 
+    "description": "",
+    "name": "email",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "email"
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

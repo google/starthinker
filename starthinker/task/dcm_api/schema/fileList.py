@@ -18,121 +18,121 @@
 
 fileList_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "nextPageToken"
-  }, 
+    "description": "",
+    "name": "etag",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
+    "name": "items",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "CANCELLED, FAILED, PROCESSING, REPORT_AVAILABLE", 
-        "name": "status"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "CSV, EXCEL", 
-        "name": "format"
-      }, 
       [
         {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "startDate"
-        }, 
+          "description": "",
+          "name": "endDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "endDate"
-        }, 
+          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY",
+          "name": "relativeDateRange",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY", 
-          "name": "relativeDateRange"
+          "description": "",
+          "name": "startDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
         }
-      ], 
+      ],
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "fileName"
-      }, 
+        "description": "",
+        "name": "etag",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "etag"
-      }, 
+        "description": "",
+        "name": "fileName",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "reportId"
-      }, 
+        "description": "CSV, EXCEL",
+        "name": "format",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "lastModifiedTime",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "reportId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "CANCELLED, FAILED, PROCESSING, REPORT_AVAILABLE",
+        "name": "status",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "urls",
+        "type": "RECORD",
+        "mode": "NULLABLE",
         "fields": [
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "browserUrl"
-          }, 
+            "description": "",
+            "name": "apiUrl",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "apiUrl"
+            "description": "",
+            "name": "browserUrl",
+            "type": "STRING",
+            "mode": "NULLABLE"
           }
-        ], 
-        "type": "RECORD", 
-        "name": "urls", 
-        "mode": "REQUIRED"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "lastModifiedTime"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
+        ]
       }
-    ], 
-    "type": "RECORD", 
-    "name": "items", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "etag"
+    "description": "",
+    "name": "nextPageToken",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

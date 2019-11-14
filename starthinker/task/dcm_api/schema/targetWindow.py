@@ -18,15 +18,15 @@
 
 targetWindow_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "customHtml"
-  }, 
+    "description": "",
+    "name": "customHtml",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "CURRENT_WINDOW, CUSTOM, NEW_WINDOW", 
-    "name": "targetWindowOption"
+    "description": "CURRENT_WINDOW, CUSTOM, NEW_WINDOW",
+    "name": "targetWindowOption",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

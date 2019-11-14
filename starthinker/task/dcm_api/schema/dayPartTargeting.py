@@ -18,18 +18,18 @@
 
 dayPartTargeting_Schema = [
   {
-    "type": "BOOLEAN", 
-    "name": "userLocalTime", 
+    "name": "daysOfWeek",
+    "type": "STRING",
+    "mode": "REPEATED"
+  },
+  {
+    "name": "hoursOfDay",
+    "type": "INT64",
+    "mode": "REPEATED"
+  },
+  {
+    "name": "userLocalTime",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
-  }, 
-  {
-    "type": "INT64", 
-    "name": "hoursOfDay", 
-    "mode": "REPEATED"
-  }, 
-  {
-    "type": "STRING", 
-    "name": "daysOfWeek", 
-    "mode": "REPEATED"
   }
 ]

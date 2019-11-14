@@ -18,70 +18,70 @@
 
 userProfileList_Schema = [
   {
+    "description": "",
+    "name": "etag",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "items",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "userName"
-      }, 
+        "description": "",
+        "name": "accountId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "accountName",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "subAccountId"
-      }, 
+        "description": "",
+        "name": "etag",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "accountName"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "etag"
-      }, 
+        "description": "",
+        "name": "profileId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "subAccountName"
-      }, 
+        "description": "",
+        "name": "subAccountId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "profileId"
-      }, 
+        "description": "",
+        "name": "subAccountName",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "accountId"
+        "description": "",
+        "name": "userName",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "items", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "etag"
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

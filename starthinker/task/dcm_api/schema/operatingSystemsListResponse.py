@@ -18,44 +18,44 @@
 
 operatingSystemsListResponse_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
+    "name": "operatingSystems",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "type": "BOOLEAN", 
-        "name": "mobile", 
+        "description": "",
+        "name": "dartId",
+        "type": "INT64",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "dartId"
-      }, 
+        "name": "desktop",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
+        "name": "mobile",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
       {
-        "type": "BOOLEAN", 
-        "name": "desktop", 
+        "description": "",
+        "name": "name",
+        "type": "STRING",
         "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "operatingSystems", 
-    "mode": "REPEATED"
+    ]
   }
 ]

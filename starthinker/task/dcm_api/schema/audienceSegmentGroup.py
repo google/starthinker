@@ -18,40 +18,40 @@
 
 audienceSegmentGroup_Schema = [
   {
+    "name": "audienceSegments",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "allocation"
-      }, 
+        "description": "",
+        "name": "allocation",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "audienceSegments", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
-  }, 
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

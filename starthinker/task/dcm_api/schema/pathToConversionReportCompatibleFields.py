@@ -18,85 +18,85 @@
 
 pathToConversionReportCompatibleFields_Schema = [
   {
+    "name": "conversionDimensions",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "metrics", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
+    "name": "customFloodlightVariables",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "perInteractionDimensions", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
+    "name": "metrics",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "conversionDimensions", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
+    "name": "perInteractionDimensions",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "customFloodlightVariables", 
-    "mode": "REPEATED"
+    ]
   }
 ]

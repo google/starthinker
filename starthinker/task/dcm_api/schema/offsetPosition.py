@@ -18,15 +18,15 @@
 
 offsetPosition_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "top"
-  }, 
+    "description": "",
+    "name": "left",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "left"
+    "description": "",
+    "name": "top",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

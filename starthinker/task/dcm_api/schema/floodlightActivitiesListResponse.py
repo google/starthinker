@@ -18,381 +18,381 @@
 
 floodlightActivitiesListResponse_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "nextPageToken"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
-  {
+    "name": "floodlightActivities",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "tagString"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "secure", 
+        "description": "",
+        "name": "accountId",
+        "type": "INT64",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "floodlightActivityGroupName"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "advertiserId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "HTML, XHTML", 
-        "name": "tagFormat"
-      }, 
+        "description": "",
+        "name": "advertiserId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "dimensionName",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "value"
-        }, 
+          "description": "",
+          "name": "etag",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "dimensionName"
-        }, 
+          "description": "",
+          "name": "id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "etag"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-          "name": "matchType"
-        }, 
+          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+          "name": "matchType",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "id"
+          "description": "",
+          "name": "value",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
+      ],
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "floodlightActivityGroupId"
-      }, 
+        "description": "ACTIVE_SERVER_PAGE, COLD_FUSION, JAVASCRIPT, JSP, PHP",
+        "name": "cacheBustingType",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
+        "description": "ITEMS_SOLD_COUNTING, SESSION_COUNTING, STANDARD_COUNTING, TRANSACTIONS_COUNTING, UNIQUE_COUNTING",
+        "name": "countingMethod",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "floodlightActivityGroupTagString"
-      }, 
-      {
+        "name": "defaultTags",
+        "type": "RECORD",
+        "mode": "REPEATED",
         "fields": [
           {
-            "type": "BOOLEAN", 
-            "name": "viewThrough", 
+            "description": "",
+            "name": "id",
+            "type": "INT64",
             "mode": "NULLABLE"
-          }, 
+          },
           {
-            "type": "BOOLEAN", 
-            "name": "clickThrough", 
+            "description": "",
+            "name": "name",
+            "type": "STRING",
             "mode": "NULLABLE"
-          }, 
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "siteId"
-          }, 
-          [
-            {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "tag"
-            }, 
-            {
-              "mode": "NULLABLE", 
-              "type": "INT64", 
-              "description": "", 
-              "name": "id"
-            }, 
-            {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "name"
-            }
-          ], 
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "directorySiteId"
-          }, 
-          [
-            {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "kind"
-            }, 
-            {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "value"
-            }, 
-            {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "dimensionName"
-            }, 
-            {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "etag"
-            }, 
-            {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-              "name": "matchType"
-            }, 
-            {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "id"
-            }
-          ]
-        ], 
-        "type": "RECORD", 
-        "name": "publisherTags", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "sslCompliant", 
-        "mode": "NULLABLE"
-      }, 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "value"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "dimensionName"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "etag"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-          "name": "matchType"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "id"
-        }
-      ], 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "value"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "dimensionName"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "etag"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-          "name": "matchType"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "id"
-        }
-      ], 
-      {
-        "type": "BOOLEAN", 
-        "name": "hidden", 
-        "mode": "NULLABLE"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "accountId"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "sslRequired", 
-        "mode": "NULLABLE"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "GLOBAL_SITE_TAG, IFRAME, IMAGE", 
-        "name": "floodlightTagType"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "expectedUrl"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "ACTIVE_SERVER_PAGE, COLD_FUSION, JAVASCRIPT, JSP, PHP", 
-        "name": "cacheBustingType"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "subaccountId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "notes"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "floodlightConfigurationId"
-      }, 
-      {
-        "type": "STRING", 
-        "name": "userDefinedVariableTypes", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "tag"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "id"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "name"
+            "description": "",
+            "name": "tag",
+            "type": "STRING",
+            "mode": "NULLABLE"
           }
-        ], 
-        "type": "RECORD", 
-        "name": "defaultTags", 
+        ]
+      },
+      {
+        "description": "",
+        "name": "expectedUrl",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "floodlightActivityGroupId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "floodlightActivityGroupName",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "floodlightActivityGroupTagString",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "COUNTER, SALE",
+        "name": "floodlightActivityGroupType",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "floodlightConfigurationId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      [
+        {
+          "description": "",
+          "name": "dimensionName",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "etag",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+          "name": "matchType",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "value",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "description": "GLOBAL_SITE_TAG, IFRAME, IMAGE",
+        "name": "floodlightTagType",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "hidden",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      [
+        {
+          "description": "",
+          "name": "dimensionName",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "etag",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+          "name": "matchType",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "value",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "notes",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "publisherTags",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "name": "clickThrough",
+            "type": "BOOLEAN",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "directorySiteId",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
+          [
+            {
+              "description": "",
+              "name": "id",
+              "type": "INT64",
+              "mode": "NULLABLE"
+            },
+            {
+              "description": "",
+              "name": "name",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
+            {
+              "description": "",
+              "name": "tag",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            }
+          ],
+          {
+            "description": "",
+            "name": "siteId",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
+          [
+            {
+              "description": "",
+              "name": "dimensionName",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
+            {
+              "description": "",
+              "name": "etag",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
+            {
+              "description": "",
+              "name": "id",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
+            {
+              "description": "",
+              "name": "kind",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
+            {
+              "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+              "name": "matchType",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
+            {
+              "description": "",
+              "name": "value",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            }
+          ],
+          {
+            "name": "viewThrough",
+            "type": "BOOLEAN",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "secure",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "sslCompliant",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "sslRequired",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "subaccountId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "HTML, XHTML",
+        "name": "tagFormat",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "tagString",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "userDefinedVariableTypes",
+        "type": "STRING",
         "mode": "REPEATED"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "ITEMS_SOLD_COUNTING, SESSION_COUNTING, STANDARD_COUNTING, TRANSACTIONS_COUNTING, UNIQUE_COUNTING", 
-        "name": "countingMethod"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "COUNTER, SALE", 
-        "name": "floodlightActivityGroupType"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "floodlightActivities", 
-    "mode": "REPEATED"
+    ]
+  },
+  {
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "nextPageToken",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

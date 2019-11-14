@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -26,143 +26,51 @@ import csv
 import pprint
 import uuid
 import json
-from datetime import datetime, timedelta
 from time import sleep
 from io import StringIO, BytesIO
-
+from datetime import datetime, timedelta
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseUpload
 
 from starthinker.config import BUFFER_SCALE
 from starthinker.util import flag_last
 from starthinker.util.project import project
-from starthinker.util.auth import get_service
 from starthinker.util.google_api import API_BigQuery, API_Retry
+from starthinker.util.csv import row_header_sanitize
 
-BIGQUERY_RETRIES = 3
+
 BIGQUERY_BUFFERMAX = 4294967296
 BIGQUERY_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200 MB * scale in config.py
 BIGQUERY_BUFFERSIZE = min(BIGQUERY_CHUNKSIZE * 4, BIGQUERY_BUFFERMAX) # 1 GB * scale in config.py
-RE_SCHEMA = re.compile('[^0-9a-zA-Z]+')
-
-# DO NOT USE THIS, SET THE ENCODING AT THE STRING CONVERSION CAUSING THE ISSUE
-#reload(sys)
-#sys.setdefaultencoding('utf-8')
-
-
-# DEPRECATED, USE THE FOLLOWING:
-# WHY: The other header sanitizes are compatible with DT + DCM fields and defining schema in JSON is safer and more maintainable.
-# 1. Provide Schema in JSON instead of defaulting to string.
-# 2. To detect schema use: from util.bigquery import get_schema(rows, header=True, infer_type=True)
-# 3. To sanitize field names use: from util.csv import row_header_sanitize(field_list)
-def field_list_to_schema(field_list):
-  result = []
-  field_names = []
-
-  for field in field_list:
-    field_name = re.sub(r'[ \=\:\-\/\(\)\+\&\%]', '_', field.strip())
-
-    suffix = ''
-    ct = 0
-    while field_name + suffix in field_names:
-      ct += 1
-      suffix = '_' + str(ct)
-
-    field_name += suffix
-    field_names.append(field_name)
-
-    result.append({
-        'name': field_name,
-        'type': 'STRING',
-        'mode': 'NULLABLE'
-    })
-
-  return result
 
 
 def bigquery_date(value):
   return value.strftime('%Y%m%d')
 
 
-def job_wait(service, job):
-  if project.verbose: print('BIGQUERY JOB WAIT:', job['jobReference']['jobId'])
+def job_wait(auth, job):
+  if job:
+    if project.verbose: print('BIGQUERY JOB WAIT:', job['jobReference']['jobId'])
 
-  request = service.jobs().get(
-    projectId=job['jobReference']['projectId'],
-    jobId=job['jobReference']['jobId']
-  )
-
-  while True:
-    sleep(5)
-    if project.verbose: print('.', end='')
-    sys.stdout.flush()
-    result = API_Retry(request)
-    if 'errorResult' in result['status']: 
-      errors = ' '.join([e['message'] for e in result['status']['errors']])
-      raise Exception('BigQuery Job Error: %s' % errors)
-    elif result['status']['state'] == 'DONE':
-      if project.verbose: print('JOB COMPLETE:', result['id'])
-      break
-
-
-#def job_insert(auth, job_id):
-#  if project.verbose: print('BIGQUERY JOB RUN:', job_id)
-#  project_id, job_id = job_id.split(':', 1)
-#  service = get_service('bigquery', 'v2', auth)
-#
-#  # fetch existing job
-#  request = service.jobs().get(projectId=project_id, jobId=job_id)
-#  job_old = request.execute()
-#
-#  #pprint.PrettyPrinter(depth=20).pprint(job_old)
-#  #exit()
-#
-#  # copy configuration
-#  job_new = {
-#    'jobReference': {
-#      'projectId': project_id,
-#      'jobId': str(uuid.uuid4())
-#    },
-#   'configuration':job_old['configuration'],
-#  }
-#
-#  # execute new job and wait completion
-#  job = service.jobs().insert(projectId=project_id, body=job_new).execute(num_retries=BIGQUERY_RETRIES)
-#  job_wait(service, job)
-
-
-#def jobs_insert(auth, job_ids):
-#  for job_id in job_ids: job_insert(auth, job_id)
-
-def table_copy(auth, from_project, from_dataset, from_table, to_project, to_dataset, to_table):
-
-  body = {
-    "copy": {
-      "sourceTable": {
-        "projectId": from_project,
-        "datasetId": from_dataset,
-        "tableId": from_table
-      },
-      "destinationTable": {
-        "projectId": to_project,
-        "datasetId": to_dataset,
-        "tableId": to_table
-      }
-    }
-  }
-
-  job = service.jobs().insert(projectId=project.id, body=body).execute(num_retries=BIGQUERY_RETRIES)
-  job_wait(service, job)
-
-
-def datasets_get(auth, project_id, name):
-  service = get_service('bigquery', 'v2', auth)
-  return service.datasets().get()
+    request = API_BigQuery(auth).jobs().get(
+      projectId=job['jobReference']['projectId'],
+      jobId=job['jobReference']['jobId']
+    )
+  
+    while True:
+      sleep(5)
+      if project.verbose: print('.', end='')
+      sys.stdout.flush()
+      result = API_Retry(request)
+      if 'errorResult' in result['status']: 
+        errors = ' '.join([e['message'] for e in result['status']['errors']])
+        raise Exception('BigQuery Job Error: %s' % errors)
+      elif result['status']['state'] == 'DONE':
+        if project.verbose: print('JOB COMPLETE:', result['id'])
+        break
 
 
 def datasets_create(auth, project_id, dataset_id):
-
-  service = get_service('bigquery', 'v2', auth)
 
   body = {
     "description":dataset_id,
@@ -174,21 +82,14 @@ def datasets_create(auth, project_id, dataset_id):
     "friendlyName":dataset_id,
   }
 
-  try:
-    job = service.datasets().insert(projectId=project_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
-    sleep(1)
-  except HttpError as e:
-    if e.resp.status in [403, 500, 503]: sleep(5)
-    elif json.loads(e.content.decode())['error']['code'] == 409: pass # already exists ( ignore )
-    else: raise
+  API_BigQuery(auth).datasets().insert(projectId=project_id, body=body).execute()
 
 
 # roles = READER, WRITER, OWNER
 def datasets_access(auth, project_id, dataset_id, role='READER', emails=[], groups=[], views=[]):
-  service = get_service('bigquery', 'v2', auth)
 
   if emails or groups or views:
-    access = service.datasets().get(projectId=project_id, datasetId=dataset_id).execute(num_retries=BIGQUERY_RETRIES)["access"]
+    access = API_BigQuery(auth).datasets().get(projectId=project_id, datasetId=dataset_id).execute()["access"]
 
     # if emails
     for email in emails:
@@ -213,46 +114,11 @@ def datasets_access(auth, project_id, dataset_id, role='READER', emails=[], grou
         }
       })
 
-    job = service.datasets().patch(projectId=project_id, datasetId=dataset_id, body={'access':access}).execute(num_retries=BIGQUERY_RETRIES)
-    sleep(1)
+    API_BigQuery(auth).datasets().patch(projectId=project_id, datasetId=dataset_id, body={'access':access}).execute()
 
-
-# Creator, Viewer, Admin
-#def job_access(auth, project, role=['Creator', 'Viewer', 'Admin'], emails=[], groups=[], services=[], domains=[]):
-#  service = get_service('bigquery', 'v1', auth)
-#
-#  if emails or groups or services or groups:
-#    access = service.jobs().getIamPolicy().execute(num_retries=RETRIES)
-#
-#    access['bindings'] = []
-#    for r in role:
-#      access['bindings'].append({
-#        "role":"roles/bigquery.object%s" % r,
-#        "members": ['user:%s' % m for m in emails] + \
-#                   ['group:%s' % m for m in groups] + \
-#                   ['serviceAccount:%s' % m for m in services] + \
-#                   ['domain:%s' % m for m in domains]
-#      })
-#
-#    job = service.jobs().setIamPolicy(body=access).execute(num_retries=RETRIES)
-#    sleep(1)
-
-
-# NOT USED SO RIPPING IT OUT, use util.sheets.query_to_rows and util.storage.object_put instead
-#def query_to_local_file(auth, sql, local_file_name, use_legacy_sql=True):
-#  result = query(sql, use_legacy_sql)
-#  out_file = open(local_file_name, 'w')
-#  out = csv.writer(out_file)
-#
-#  for row in result:
-#    out.writerow(row)
-#
-#  out_file.close()
 
 # TODO terwilleger: Remove project_id
 def run_query(auth, project_id, query, legacy=True):
-
-  service = get_service('bigquery', 'v2', auth)
 
   body={
     'configuration': {
@@ -263,9 +129,7 @@ def run_query(auth, project_id, query, legacy=True):
     }
   }
 
-  #try:
-  job = service.jobs().insert(projectId=project_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
-  job_wait(service, job)
+  job_wait(auth, API_BigQuery(auth).jobs().insert(projectId=project_id, body=body).execute())
 
 
 def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='WRITE_TRUNCATE', legacy=True, billing_project_id=None, target_project_id=None):
@@ -273,8 +137,6 @@ def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='W
 
   if not billing_project_id:
     billing_project_id = project_id
-
-  service = get_service('bigquery', 'v2', auth)
 
   body={
     'configuration': {
@@ -293,19 +155,10 @@ def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='W
     }
   }
 
-  #try:
-  job = service.jobs().insert(projectId=billing_project_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
-  job_wait(service, job)
-
-  #print(job)
-  #except HttpError as e:
-  #  if e.resp.status in [403, 500, 503]: sleep(5)
-  #  #elif json.loads(e.content.decode())['error']['code'] == 409: pass # already exists ( ignore )
-  #  else: raise
+  job_wait(auth, API_BigQuery(auth).jobs().insert(projectId=billing_project_id, body=body).execute())
 
 
 def query_to_view(auth, project_id, dataset_id, view_id, query, legacy=True, replace=False):
-  service = get_service('bigquery', 'v2', auth)
 
   body={
     'tableReference': {
@@ -319,34 +172,16 @@ def query_to_view(auth, project_id, dataset_id, view_id, query, legacy=True, rep
     }
   }
 
-  try:
-    job = service.tables().list(projectId=project_id, datasetId=dataset_id).execute(num_retries=BIGQUERY_RETRIES)
-
-    table_id = ('%s:%s.%s' % (project_id, dataset_id, view_id))
-    table_exist = False
-    for table in job['tables']:
-      if table_id == table['id']:
-        table_exist = True
-
-    if replace and table_exist:
-      job = service.tables().update(
-          projectId=project_id,
-          datasetId=dataset_id,
-          tableId=view_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
-    else:
-      job = service.tables().insert(projectId=project_id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
-  except HttpError as e:
-    #if e.resp.status in [403, 500, 503]: sleep(5)
-    if json.loads(e.content.decode())['error']['code'] == 409: pass # already exists ( ignore )
-    else: raise
+  response = API_BigQuery(auth).tables().insert(projectId=project_id, datasetId=dataset_id, body=body).execute()
+  if response is None and replace:
+    return API_BigQuery(auth).tables().update(projectId=project_id,datasetId=dataset_id, tableId=view_id, body=body).execute()
+    
 
 
 #struture = CSV, NEWLINE_DELIMITED_JSON
 #disposition = WRITE_TRUNCATE, WRITE_APPEND, WRITE_EMPTY
-def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], skip_rows=1, structure='CSV', disposition='WRITE_TRUNCATE'):
+def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], skip_rows=1, structure='CSV', disposition='WRITE_TRUNCATE', wait=True):
   if project.verbose: print('BIGQUERY STORAGE TO TABLE: ', project_id, dataset_id, table_id)
-
-  service = get_service('bigquery', 'v2', auth)
 
   body = {
     'configuration': {
@@ -377,76 +212,15 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
     body['configuration']['load']['sourceFormat'] = 'CSV'
     body['configuration']['load']['skipLeadingRows'] = skip_rows
 
-  job = service.jobs().insert(projectId=project_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
-  try: job_wait(service, job)
-  except Exception as e: print('BIGQUERY SKIPPING: %s, %s' % (path, str(e)))
+  job = API_BigQuery(auth).jobs().insert(projectId=project_id, body=body).execute()
+  if wait:
+    try: job_wait(auth, job)
+    except Exception as e: print('BIGQUERY SKIPPING: %s, %s' % (path, str(e)))
+  else:
+    return job
 
 
-#def csv_to_table(auth, project_id, dataset_id, table_id, data, schema=[], skip_rows=1, disposition='WRITE_TRUNCATE'):
-#  if project.verbose: print('BIGQUERY CSV TO TABLE: ', project_id, dataset_id, table_id)
-#
-#  service = get_service('bigquery', 'v2', auth)
-#
-#  def getSize(fileObject):
-#    fileObject.seek(0,2)
-#    retVal = fileObject.tell()
-#    return retVal
-#
-#  if(getSize(data) > 0):
-#    media = MediaIoBaseUpload(data, mimetype='application/octet-stream', resumable=True, chunksize=BIGQUERY_CHUNKSIZE)
-#
-#    body = {
-#      'configuration': {
-#        'load': {
-#          'destinationTable': {
-#            'projectId': project_id,
-#            'datasetId': dataset_id,
-#            'tableId': table_id,
-#          },
-#          'sourceFormat': 'CSV',
-#          'skipLeadingRows': skip_rows,
-#          'writeDisposition': disposition,
-#          'autodetect': True,
-#          'allowJaggedRows': True,
-#          'allowQuotedNewlines':True,
-#          'ignoreUnknownValues': True,
-#        }
-#      }
-#    }
-#
-#    if schema:
-#      body['configuration']['load']['schema'] = { 'fields':schema }
-#      body['configuration']['load']['autodetect'] = False
-#
-#    job = service.jobs().insert(projectId=project.id, body=body, media_body=media)
-#    response = None
-#    while response is None:
-#      status, response = job.next_chunk()
-#      if project.verbose and status: print("Uploaded %d%%." % int(status.progress() * 100))
-#    if project.verbose: print("Uploaded 100%.")
-#    job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
-#
-#  else:
-#    try:
-#      service.tables().delete(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute(num_retries=BIGQUERY_RETRIES)
-#      print('APR table exists. deleting current table...')
-#    except:
-#      print('APR table does not exist. creating empty table...')
-#    body = {
-#      "tableReference": {
-#        "projectId": project_id,
-#        "datasetId": dataset_id,
-#        "tableId": table_id
-#      },
-#      "schema": {
-#        "fields": schema
-#      }
-#    }
-#    # change project_id to be project.id, better yet project.cloud_id from JSON
-#    service.tables().insert(projectId=project.id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
-
-
-def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_rows=1, disposition='WRITE_TRUNCATE'):
+def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_rows=1, disposition='WRITE_TRUNCATE', wait=True):
   if project.verbose: print('BIGQUERY ROWS TO TABLE: ', project_id, dataset_id, table_id)
 
   buffer_data = StringIO()
@@ -474,10 +248,10 @@ def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_
   # if no rows, clear table to simulate empty write
   if not has_rows:
     if project.verbose: print('BigQuery Zero Rows')
-    io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'CSV', schema, skip_rows, disposition)
+    return io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'CSV', schema, skip_rows, disposition, wait)
 
 
-def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None, disposition='WRITE_TRUNCATE'):
+def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None, disposition='WRITE_TRUNCATE', wait=True):
   if project.verbose: print('BIGQUERY JSON TO TABLE: ', project_id, dataset_id, table_id)
 
   buffer_data = StringIO()
@@ -507,12 +281,11 @@ def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None
   # if no rows, clear table to simulate empty write
   if not has_rows:
     if project.verbose: print('BigQuery Zero Rows')
-    io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'NEWLINE_DELIMITED_JSON', schema, skip_rows, disposition)
+    return io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'NEWLINE_DELIMITED_JSON', schema, skip_rows, disposition, wait)
 
 
 # NEWLINE_DELIMITED_JSON, CSV
 def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV', schema=None, skip_rows=0, disposition='WRITE_TRUNCATE', wait=True):
-  service = get_service('bigquery', 'v2', auth)
 
   # if data exists, write data to table
   data.seek(0, 2)
@@ -552,13 +325,15 @@ def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV
       body['configuration']['load']['skipLeadingRows'] = skip_rows
 
     job = API_BigQuery(auth).jobs().insert(projectId=project.id, body=body, media_body=media).execute(run=False)
+    execution = job.execute()
 
     response = None
     while response is None:
       status, response = job.next_chunk()
       if project.verbose and status: print("Uploaded %d%%." % int(status.progress() * 100))
     if project.verbose: print("Uploaded 100%")
-    if wait: job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
+    if wait: job_wait(auth, job.execute())
+    else: return job
 
   # if it does not exist and write, clear the table
   elif disposition == 'WRITE_TRUNCATE':
@@ -575,7 +350,6 @@ def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV
       }
     }
     # change project_id to be project.id, better yet project.cloud_id from JSON
-    #service.tables().insert(projectId=project.id, datasetId=dataset_id, body=body).execute(num_retries=BIGQUERY_RETRIES)
     API_BigQuery(auth).tables().insert(projectId=project.id, datasetId=dataset_id, body=body).execute()
 
 
@@ -591,8 +365,8 @@ def incremental_rows_to_table(auth, project_id, dataset_id, table_id, rows, sche
   end_date = _get_max_date_from_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
 
   #check if master table exists: if not create it, if so clear old data
-  if not check_table_exists(auth, project_id, dataset_id, table_id):
-    create_table(auth, project_id, dataset_id, table_id)
+  if not table_exists(auth, project_id, dataset_id, table_id):
+    table_create(auth, project_id, dataset_id, table_id)
   else:
     _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id, start_date, end_date, billing_project_id=billing_project_id)
 
@@ -605,24 +379,7 @@ def incremental_rows_to_table(auth, project_id, dataset_id, table_id, rows, sche
   drop_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
 
 
-def create_table_if_not_exist(auth, project_id, dataset_id, table_id, is_time_partition=False):
-  service = get_service('bigquery', 'v2', auth)
-
-  if not check_table_exists(auth, 
-    project_id, 
-    dataset_id, 
-    table_id,
-    is_time_partition):
-
-    create_table(auth,
-      project_id,
-      dataset_id,
-      table_id,
-      is_time_partition)
-
-
-def create_table(auth, project_id, dataset_id, table_id, is_time_partition=False):
-  service = get_service('bigquery', 'v2', auth)
+def table_create(auth, project_id, dataset_id, table_id, is_time_partition=False):
 
   body = {
     "tableReference": {
@@ -637,73 +394,68 @@ def create_table(auth, project_id, dataset_id, table_id, is_time_partition=False
       "type": "DAY"
     }
 
-  service.tables().insert(projectId=project_id, datasetId=dataset_id, body=body).execute()
+  API_BigQuery(auth).tables().insert(projectId=project_id, datasetId=dataset_id, body=body).execute()
 
 
-def check_table_exists(auth, project_id, dataset_id, table_id, is_time_partition=False):
-  service = get_service('bigquery', 'v2', auth)
-
-  table_list = service.tables().list(projectId=project_id, datasetId=dataset_id).execute()
-
-  while table_list and table_list['tables']:
-    for table in table_list['tables']:
-      if table_id == table['tableReference']['tableId']:
-        # Check if the found table is time partitioned
-        is_table_time_partition = False
-        if 'timePartitioning' in table and 'type' in table['timePartitioning'] and table['timePartitioning']['type'] == 'DAY':
-          is_table_time_partition = True
-
-        if is_time_partition and not is_table_time_partition:
-          raise Exception('BigQuery Error:  Table %s is not a time partitioned database.', table_id)
-        elif not is_time_partition and is_table_time_partition:
-          raise Exception('BigQuery Error:  Table %s is a time partitioned database.', table_id)
-          
-        return True
-
-    # Get the next page of tables
-    if 'nextPageToken' in table_list:
-      print('next')
-      table_list = service.tables().list(projectId=project_id, datasetId=dataset_id, pageToken=table_list['nextPageToken']).execute()
-    else:
-      break
-
-  return False
+def table_get(auth, project_id, dataset_id, table_id):
+  return API_BigQuery(auth).tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()
 
 
-def tables_get(auth, project_id, name):
-  dataset_id, table_id = name.split(':', 1)
-  service = get_service('bigquery', 'v2', auth)
-  return service.tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()
+def table_exists(auth, project_id, dataset_id, table_id):
+  try:
+    table_get(auth, project_id, dataset_id, table_id)
+    return True
+  except HttpError as e:
+    if e.resp.status != 404: raise
+    return False
 
 
-def tables_get(auth, project_id, dataset_id, table_id):
-  service = get_service('bigquery', 'v2', auth)
-  return service.tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()
+def table_copy(auth, from_project, from_dataset, from_table, to_project, to_dataset, to_table):
+
+  body = {
+    "copy": {
+      "sourceTable": {
+        "projectId": from_project,
+        "datasetId": from_dataset,
+        "tableId": from_table
+      },
+      "destinationTable": {
+        "projectId": to_project,
+        "datasetId": to_dataset,
+        "tableId": to_table
+      }
+    }
+  }
+
+  job_wait(auth, API_BigQuery(auth).jobs().insert(projectId=project.id, body=body).execute())
 
 
 def table_to_rows(auth, project_id, dataset_id, table_id, fields=None, row_start=0, row_max=None):
   if project.verbose: print('BIGQUERY ROWS:', project_id, dataset_id, table_id)
-  service = get_service('bigquery', 'v2', auth)
-  next_page = None
-  while next_page != '':
-    response = service.tabledata().list(projectId=project_id, datasetId=dataset_id, tableId=table_id, selectedFields=fields, startIndex=row_start, maxResults=row_max, pageToken=next_page).execute()
-    next_page = response.get('PageToken', '')
-    if 'rows' in response:
-      converters = _build_converter_array(table_to_schema(auth, project_id, dataset_id, table_id), fields, len(response['rows'][0].get('f')))
-      for row in response['rows']:
-        yield [converters[i](next(iter(r.values()))) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
+
+  schema = table_to_schema(auth, project_id, dataset_id, table_id)
+  converter = None
+
+  for row in API_BigQuery(auth, iterate=True).tabledata().list(
+    projectId=project_id,
+    datasetId=dataset_id,
+    tableId=table_id,
+    selectedFields=fields,
+    startIndex=row_start,
+    maxResults=row_max,
+  ).execute():
+    if converter is None:
+      converter = _build_converter_array(schema, fields, len(row.get('f')))
+    yield [converter[i](next(iter(r.values()))) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
 
 
 def table_to_schema(auth, project_id, dataset_id, table_id):
   if project.verbose: print('TABLE SCHEMA:', project_id, dataset_id, table_id)
-  service = get_service('bigquery', 'v2', auth)
-  response = API_Retry(service.tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id))
-  return response['schema']
+  return API_BigQuery(auth).tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()['schema']
 
 
 # https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query
 def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True):
-  service = get_service('bigquery', 'v2', auth)
 
   # Create the query 
   body = {
@@ -723,36 +475,44 @@ def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True
       "datasetId": dataset_id
     }
 
-  response = API_Retry(service.jobs().query(projectId=project_id, body=body))
+  # wait for query to complete
 
+  response = API_BigQuery(auth).jobs().query(projectId=project_id, body=body).execute()
   while not response['jobComplete']:
     sleep(5)
-    response = API_Retry(service.jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId']))
+    response = API_BigQuery(auth).jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId']).execute(iterate=False)
 
-  # Fetch all results
+  # fetch query results
+
   row_count = 0
   while 'rows' in response:
     converters = _build_converter_array(response.get('schema', None), None, len(response['rows'][0].get('f')))
+
     for row in response['rows']:
       yield [converters[i](next(iter(r.values()))) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
       row_count += 1
 
     if 'PageToken' in response:
-      response = API_Retry(service.jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], pageToken=response['PageToken']))
+      response = API_BigQuery(auth).jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], pageToken=response['PageToken']).execute(iterate=False)
     elif row_count < int(response['totalRows']): 
-      response = API_Retry(service.jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], startIndex=row_count))
+      response = API_BigQuery(auth).jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], startIndex=row_count).execute(iterate=False)
     else:
       break
 
 
-def get_job(auth, project_id, job_id):
-  service = get_service('bigquery', 'v2', auth)
-  return service.jobs().get(projectId=project_id, jobId=job_id).execute()
+def make_schema(header):
+  return [{
+    'name': name,
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+  } for name in row_header_sanitize(header)]
 
 
-# CAUTION: Memory suck. This function sabotages iteration by iterating thorough the new object and returning a new iterator
-# RECOMMEND: Define the schema yourself, it will also ensure data integrity downstream.
 def get_schema(rows, header=True, infer_type=True):
+  '''
+  CAUTION: Memory suck. This function sabotages iteration by iterating thorough the new object and returning a new iterator
+  RECOMMEND: Define the schema yourself, it will also ensure data integrity downstream.
+  '''
 
   schema = []
   row_buffer = []
@@ -775,8 +535,8 @@ def get_schema(rows, header=True, infer_type=True):
     # define schema field names and set defaults ( if no header enumerate fields )
     if first:
       ct_columns = len(row)
-      for index, value in enumerate(row):
-        schema.append({ "name":RE_SCHEMA.sub('_', value).strip('_') if header else 'Field_%d' % index, "type":"STRING" })
+      for index, value in enumerate(row_header_sanitize(row)):
+        schema.append({ "name":value if header else 'Field_%d' % index, "type":"STRING" })
 
     # then determine type of each column
     if not first and header:
@@ -855,7 +615,6 @@ def drop_table(auth, project_id, dataset_id, table_id, billing_project_id=None):
   if not billing_project_id:
     billing_project_id = project_id
 
-  service = get_service('bigquery', 'v2', auth)
   query = ('DROP TABLE `' 
     + project_id + '.' + dataset_id + '.' + table_id + '` ')
 
@@ -868,16 +627,13 @@ def drop_table(auth, project_id, dataset_id, table_id, billing_project_id=None):
     'useLegacySql': False,
   }
 
-  job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute(run=False)
-  
-  max_date = job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
+  job_wait(auth, API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute())
 
 
 def _get_max_date_from_table(auth, project_id, dataset_id, table_id, billing_project_id=None):
   if not billing_project_id:
     billing_project_id = project_id
 
-  service = get_service('bigquery', 'v2', auth)
   query = ('SELECT MAX(Report_Day) FROM `' 
     + project_id + '.' + dataset_id + '.' + table_id + '` ')
 
@@ -891,7 +647,6 @@ def _get_max_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
   }
 
   job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute()
-  
   return job['rows'][0]['f'][0]['v']
 
 
@@ -899,7 +654,6 @@ def _get_min_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
   if not billing_project_id:
     billing_project_id = project_id
 
-  service = get_service('bigquery', 'v2', auth)
   query = ('SELECT MIN(Report_Day) FROM `' 
     + project_id + '.' + dataset_id + '.' + table_id + '` ')
 
@@ -916,11 +670,10 @@ def _get_min_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
   
   return job['rows'][0]['f'][0]['v']
 
+
 def execute_statement(auth, project_id, dataset_id, statement, billing_project_id=None, use_legacy_sql=False):
   if not billing_project_id:
     billing_project_id = project_id
-
-  service = get_service('bigquery', 'v2', auth)
 
   body = {
     "kind": "bigquery#queryRequest",
@@ -931,15 +684,14 @@ def execute_statement(auth, project_id, dataset_id, statement, billing_project_i
     'useLegacySql': use_legacy_sql,
   }
 
-  job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute(run=False)
-  job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
+  job_wait(auth, API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute())
+
 
 #start and end date must be in format YYYY-MM-DD
 def _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id, start_date, end_date, billing_project_id=None):
+
   if not billing_project_id:
     billing_project_id = project_id
-
-  service = get_service('bigquery', 'v2', auth)
 
   query = ('DELETE FROM `' 
     + project_id + '.' + dataset_id + '.' + table_id + '` '
@@ -955,6 +707,4 @@ def _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id,
     'useLegacySql': False,
   }
 
-  job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute(run=False)
-  job_wait(service, job.execute(num_retries=BIGQUERY_RETRIES))
-
+  job_wait(auth, API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute())

@@ -180,12 +180,17 @@ read_multiline() {
 
 
 setup_gcloud() {
-  gcloud --version
 
-  if [ ! $? -eq 0 ]
+  if [ "$(command -v gcloud)" == "" ]; then
   then
     echo ""
-    echo "\e[31m[ERROR] \e[0mIt looks like gcloud isn't installed, please go to https://cloud.google.com/sdk/install to install it"
+    echo "----------------------------------------"
+    echo "MISSING gcloud"
+    echo "----------------------------------------"
+    echo ""
+    echo "Please go to: https://cloud.google.com/sdk/install"
+    echo "Then run the install again."
+    echo ""
     exit 1
   else
     gcloud config get-value account
@@ -279,6 +284,7 @@ setup_project() {
     echo "Using Existing Project ID"
   fi
 
+  setup_gcloud;
   gcloud config set project "${STARTHINKER_PROJECT}";
 
   echo "Done"
@@ -425,19 +431,41 @@ update_apt() {
 
 install_virtualenv_darwin() {
 
-  if [ "$(command -v pip)" == "" ]; then
-    sudo easy_install pip3
+  if [ "$(command -v python3)" == "" ]; then
+    echo ""
+    echo "----------------------------------------"
+    echo "MISSING python3
+    echo "----------------------------------------"
+    echo ""
+    echo "Please install: https://www.python.org/downloads/release/python-380/"
+    echo "Then run the install again."
+    echo ""
+    exit 1
+  fi
+
+  if [ "$(command -v pip3)" == "" ]; then
+    echo ""
+    echo "----------------------------------------"
+    echo "MISSING pip3
+    echo "----------------------------------------"
+    echo ""
+    echo "Please install: https://evansdianga.com/install-pip-osx/"
+    echo "Then run the install again."
+    echo ""
+    exit 1
+  else
     pip3 install pip --upgrade --quiet --user
   fi
 
   if [ "$(command -v virtualenv)" == "" ]; then
     pip3 install virtualenv --quiet --user
   fi
+
 }
 
 
 install_virtualenv_linux() {
-
+  sudo apt-get install gcc python3-dev python3-pip -qq;;
   if [ "$(command -v virtualenv)" == "" ]; then
     sudo apt-get install virtualenv -qq 
   fi

@@ -18,234 +18,234 @@
 
 geoTargeting_Schema = [
   {
+    "name": "cities",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "dartId"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "sslEnabled", 
+        "description": "",
+        "name": "countryCode",
+        "type": "STRING",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "countryDartId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "countryCode"
-      }, 
+        "description": "",
+        "name": "dartId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "metroCode",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "metroDmaId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "regionCode",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "regionDartId",
+        "type": "INT64",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "countries", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
-    "type": "BOOLEAN", 
-    "name": "excludeCountries", 
+    "name": "countries",
+    "type": "RECORD",
+    "mode": "REPEATED",
+    "fields": [
+      {
+        "description": "",
+        "name": "countryCode",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "dartId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "sslEnabled",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      }
+    ]
+  },
+  {
+    "name": "excludeCountries",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
-  }, 
+  },
   {
+    "name": "metros",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "countryDartId"
-      }, 
+        "description": "",
+        "name": "countryCode",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "countryDartId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "code"
-      }, 
+        "description": "",
+        "name": "dartId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "id"
-      }, 
+        "description": "",
+        "name": "dmaId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "countryCode"
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "metroCode",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "postalCodes", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
+    "name": "postalCodes",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "code",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "countryDartId"
-      }, 
+        "description": "",
+        "name": "countryCode",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
+        "description": "",
+        "name": "countryDartId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "countryCode"
-      }, 
+        "description": "",
+        "name": "id",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "regionCode"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "dartId"
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "regions", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
+    "name": "regions",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "countryCode",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "countryDartId"
-      }, 
+        "description": "",
+        "name": "countryDartId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
+        "description": "",
+        "name": "dartId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "countryCode"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "metroCode"
-      }, 
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "regionCode"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "metroDmaId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "dartId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "regionDartId"
+        "description": "",
+        "name": "regionCode",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "cities", 
-    "mode": "REPEATED"
-  }, 
-  {
-    "fields": [
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "countryDartId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "countryCode"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "metroCode"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "dmaId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "dartId"
-      }
-    ], 
-    "type": "RECORD", 
-    "name": "metros", 
-    "mode": "REPEATED"
+    ]
   }
 ]

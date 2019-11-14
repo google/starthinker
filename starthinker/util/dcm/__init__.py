@@ -335,6 +335,7 @@ def report_build(auth, account, body):
 # DEPRECATED DO NOT USE
 def report_create(auth, account, name, config):
   account_id, advertiser_ids = parse_account(auth, account)
+  is_superuser, profile_id = get_profile_for_api(auth, account_id)
   report = report_get(auth, account_id, name=name)
 
   if report is None:

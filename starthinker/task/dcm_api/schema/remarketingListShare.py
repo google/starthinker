@@ -18,25 +18,25 @@
 
 remarketingListShare_Schema = [
   {
-    "type": "INT64", 
-    "name": "sharedAdvertiserIds", 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "remarketingListId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "sharedAccountIds",
+    "type": "INT64",
     "mode": "REPEATED"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "remarketingListId"
-  }, 
-  {
-    "type": "INT64", 
-    "name": "sharedAccountIds", 
+    "name": "sharedAdvertiserIds",
+    "type": "INT64",
     "mode": "REPEATED"
   }
 ]

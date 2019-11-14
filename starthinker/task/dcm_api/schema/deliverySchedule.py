@@ -17,35 +17,35 @@
 ###########################################################################
 
 deliverySchedule_Schema = [
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "AD_PRIORITY_01, AD_PRIORITY_02, AD_PRIORITY_03, AD_PRIORITY_04, AD_PRIORITY_05, AD_PRIORITY_06, AD_PRIORITY_07, AD_PRIORITY_08, AD_PRIORITY_09, AD_PRIORITY_10, AD_PRIORITY_11, AD_PRIORITY_12, AD_PRIORITY_13, AD_PRIORITY_14, AD_PRIORITY_15, AD_PRIORITY_16", 
-    "name": "priority"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "hardCutoff", 
-    "mode": "NULLABLE"
-  }, 
   [
     {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "duration"
-    }, 
+      "description": "",
+      "name": "duration",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "impressions"
+      "description": "",
+      "name": "impressions",
+      "type": "INT64",
+      "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "impressionRatio"
+    "name": "hardCutoff",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "impressionRatio",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "AD_PRIORITY_01, AD_PRIORITY_02, AD_PRIORITY_03, AD_PRIORITY_04, AD_PRIORITY_05, AD_PRIORITY_06, AD_PRIORITY_07, AD_PRIORITY_08, AD_PRIORITY_09, AD_PRIORITY_10, AD_PRIORITY_11, AD_PRIORITY_12, AD_PRIORITY_13, AD_PRIORITY_14, AD_PRIORITY_15, AD_PRIORITY_16",
+    "name": "priority",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

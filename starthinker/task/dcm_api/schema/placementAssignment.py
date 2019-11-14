@@ -18,57 +18,57 @@
 
 placementAssignment_Schema = [
   {
-    "type": "BOOLEAN", 
-    "name": "active", 
+    "name": "active",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
-  }, 
+  },
+  {
+    "description": "",
+    "name": "placementId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   [
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "placementId"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "sslRequired", 
+    "name": "sslRequired",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
   }
 ]

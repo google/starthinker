@@ -18,716 +18,716 @@
 
 placement_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "comment"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "videoActiveViewOptOut", 
+    "description": "",
+    "name": "accountId",
+    "type": "INT64",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "campaignId"
-  }, 
+    "name": "adBlockingOptOut",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "PLACEMENT_AGENCY_PAID, PLACEMENT_PUBLISHER_PAID", 
-    "name": "paymentSource"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "advertiserId"
-  }, 
-  {
+    "name": "additionalSizes",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "width"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "iab", 
+        "description": "",
+        "name": "height",
+        "type": "INT64",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "height"
-      }
-    ], 
-    "type": "RECORD", 
-    "name": "additionalSizes", 
-    "mode": "REPEATED"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "keyName"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "directorySiteId"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "accountId"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "archived", 
-    "mode": "NULLABLE"
-  }, 
-  [
-    [
-      {
-        "type": "BOOLEAN", 
-        "name": "skippable", 
+        "name": "iab",
+        "type": "BOOLEAN",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "offsetPercentage"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "offsetSeconds"
-        }
-      ], 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "offsetPercentage"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "offsetSeconds"
-        }
-      ]
-    ], 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    [
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "companionsDisabled", 
+        "description": "",
+        "name": "id",
+        "type": "INT64",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "type": "BOOLEAN", 
-        "name": "imageOnly", 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "width"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "type": "BOOLEAN", 
-            "name": "iab", 
-            "mode": "NULLABLE"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "id"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "height"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "enabledSizes", 
-        "mode": "REPEATED"
-      }
-    ], 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "ANY, LANDSCAPE, PORTRAIT", 
-      "name": "orientation"
-    }, 
-    [
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "type": "INT64", 
-        "name": "enabledVideoFormats", 
-        "mode": "REPEATED"
+        "description": "",
+        "name": "width",
+        "type": "INT64",
+        "mode": "NULLABLE"
       }
     ]
-  ], 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "time"
-    }
-  ], 
+  },
   {
-    "type": "STRING", 
-    "name": "tagFormats", 
-    "mode": "REPEATED"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "paymentApproved", 
+    "description": "",
+    "name": "advertiserId",
+    "type": "INT64",
     "mode": "NULLABLE"
-  }, 
+  },
   [
     {
-      "type": "BOOLEAN", 
-      "name": "includeClickThroughUrls", 
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
       "mode": "NULLABLE"
-    }, 
+    },
     {
-      "type": "BOOLEAN", 
-      "name": "includeClickTracking", 
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
       "mode": "NULLABLE"
-    }, 
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "additionalKeyValues"
-    }, 
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "GENERATE_SEPARATE_TAG_FOR_EACH_KEYWORD, IGNORE, PLACEHOLDER_WITH_LIST_OF_KEYWORDS", 
-      "name": "keywordOption"
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "contentCategoryId"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "adBlockingOptOut", 
+    "name": "archived",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "externalId"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
-    }
-  ], 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "width"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "type": "BOOLEAN", 
-      "name": "iab", 
-      "mode": "NULLABLE"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "id"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "height"
-    }
-  ], 
-  {
-    "type": "BOOLEAN", 
-    "name": "sslRequired", 
+    "description": "",
+    "name": "campaignId",
+    "type": "INT64",
     "mode": "NULLABLE"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "ACKNOWLEDGE_ACCEPTANCE, ACKNOWLEDGE_REJECTION, DRAFT, PAYMENT_ACCEPTED, PAYMENT_REJECTED, PENDING_REVIEW", 
-    "name": "status"
-  }, 
+  },
   [
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
-    "type": "BOOLEAN", 
-    "name": "primary", 
+    "description": "",
+    "name": "comment",
+    "type": "STRING",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "placementGroupId"
-  }, 
+    "description": "APP, APP_INTERSTITIAL, DISPLAY, DISPLAY_INTERSTITIAL, IN_STREAM_AUDIO, IN_STREAM_VIDEO",
+    "name": "compatibility",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "contentCategoryId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   [
     {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "time"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "siteId"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "APP, APP_INTERSTITIAL, DISPLAY, DISPLAY_INTERSTITIAL, IN_STREAM_AUDIO, IN_STREAM_VIDEO", 
-    "name": "compatibility"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "placementStrategyId"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "subaccountId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "clickDuration"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "postImpressionActivitiesDuration"
-    }
-  ], 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "time"
-    }
-  ], 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "DATE", 
-      "description": "", 
-      "name": "startDate"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "DATE", 
-      "description": "", 
-      "name": "endDate"
-    }, 
-    {
-      "type": "BOOLEAN", 
-      "name": "flighted", 
+      "description": "",
+      "name": "time",
+      "type": "INT64",
       "mode": "NULLABLE"
-    }, 
+    }
+  ],
+  {
+    "description": "",
+    "name": "directorySiteId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
     {
-      "type": "BOOLEAN", 
-      "name": "disregardOverdelivery", 
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
       "mode": "NULLABLE"
-    }, 
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "CAP_COST_CUMULATIVE, CAP_COST_MONTHLY, CAP_COST_NONE", 
-      "name": "capCostOption"
-    }, 
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "externalId",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "keyName",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "time",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    }
+  ],
+  [
+    {
+      "description": "",
+      "name": "clickDuration",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "postImpressionActivitiesDuration",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "paymentApproved",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "PLACEMENT_AGENCY_PAID, PLACEMENT_PUBLISHER_PAID",
+    "name": "paymentSource",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "placementGroupId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "placementStrategyId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "CAP_COST_CUMULATIVE, CAP_COST_MONTHLY, CAP_COST_NONE",
+      "name": "capCostOption",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "disregardOverdelivery",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "endDate",
+      "type": "DATE",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "flighted",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "floodlightActivityId",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "pricingPeriods",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "units"
-        }, 
+          "description": "",
+          "name": "endDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "rateOrCostNanos"
-        }, 
+          "description": "",
+          "name": "pricingComment",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "startDate"
-        }, 
+          "description": "",
+          "name": "rateOrCostNanos",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "endDate"
-        }, 
+          "description": "",
+          "name": "startDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "pricingComment"
+          "description": "",
+          "name": "units",
+          "type": "INT64",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "pricingPeriods", 
-      "mode": "REPEATED"
-    }, 
+      ]
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "PRICING_TYPE_CPA, PRICING_TYPE_CPC, PRICING_TYPE_CPM, PRICING_TYPE_CPM_ACTIVEVIEW, PRICING_TYPE_FLAT_RATE_CLICKS, PRICING_TYPE_FLAT_RATE_IMPRESSIONS", 
-      "name": "pricingType"
-    }, 
+      "description": "PRICING_TYPE_CPA, PRICING_TYPE_CPC, PRICING_TYPE_CPM, PRICING_TYPE_CPM_ACTIVEVIEW, PRICING_TYPE_FLAT_RATE_CLICKS, PRICING_TYPE_FLAT_RATE_IMPRESSIONS",
+      "name": "pricingType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "DATE", 
-      "description": "", 
-      "name": "testingStartDate"
-    }, 
+      "description": "",
+      "name": "startDate",
+      "type": "DATE",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "floodlightActivityId"
+      "description": "",
+      "name": "testingStartDate",
+      "type": "DATE",
+      "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "BOTH, DEFAULT, FLASH, HTML5", 
-    "name": "vpaidAdapterChoice"
+    "name": "primary",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "time",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "siteId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  [
+    {
+      "description": "",
+      "name": "height",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "iab",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "width",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "name": "sslRequired",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "ACKNOWLEDGE_ACCEPTANCE, ACKNOWLEDGE_REJECTION, DRAFT, PAYMENT_ACCEPTED, PAYMENT_REJECTED, PENDING_REVIEW",
+    "name": "status",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "subaccountId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "tagFormats",
+    "type": "STRING",
+    "mode": "REPEATED"
+  },
+  [
+    {
+      "description": "",
+      "name": "additionalKeyValues",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "includeClickThroughUrls",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "includeClickTracking",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "GENERATE_SEPARATE_TAG_FOR_EACH_KEYWORD, IGNORE, PLACEHOLDER_WITH_LIST_OF_KEYWORDS",
+      "name": "keywordOption",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "name": "videoActiveViewOptOut",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  [
+    [
+      {
+        "name": "companionsDisabled",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "enabledSizes",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "height",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "iab",
+            "type": "BOOLEAN",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "id",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "width",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "imageOnly",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      }
+    ],
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "ANY, LANDSCAPE, PORTRAIT",
+      "name": "orientation",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    [
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      [
+        {
+          "description": "",
+          "name": "offsetPercentage",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "offsetSeconds",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        }
+      ],
+      [
+        {
+          "description": "",
+          "name": "offsetPercentage",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "offsetSeconds",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "name": "skippable",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      }
+    ],
+    [
+      {
+        "name": "enabledVideoFormats",
+        "type": "INT64",
+        "mode": "REPEATED"
+      },
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      }
+    ]
+  ],
+  {
+    "description": "BOTH, DEFAULT, FLASH, HTML5",
+    "name": "vpaidAdapterChoice",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

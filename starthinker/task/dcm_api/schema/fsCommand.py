@@ -18,33 +18,33 @@
 
 fsCommand_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "windowHeight"
-  }, 
+    "description": "",
+    "name": "left",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "top"
-  }, 
+    "description": "CENTERED, DISTANCE_FROM_TOP_LEFT_CORNER",
+    "name": "positionOption",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "windowWidth"
-  }, 
+    "description": "",
+    "name": "top",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "CENTERED, DISTANCE_FROM_TOP_LEFT_CORNER", 
-    "name": "positionOption"
-  }, 
+    "description": "",
+    "name": "windowHeight",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "left"
+    "description": "",
+    "name": "windowWidth",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

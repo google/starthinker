@@ -18,100 +18,100 @@
 
 userRolesListResponse_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "nextPageToken"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "nextPageToken",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
+    "name": "userRoles",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "type": "BOOLEAN", 
-        "name": "defaultUserRole", 
+        "description": "",
+        "name": "accountId",
+        "type": "INT64",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "name": "defaultUserRole",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "subaccountId"
-      }, 
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "parentUserRoleId"
-      }, 
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
+        "description": "",
+        "name": "parentUserRoleId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "permissions",
+        "type": "RECORD",
+        "mode": "REPEATED",
         "fields": [
           {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "permissionGroupId"
-          }, 
+            "description": "ACCOUNT_ALWAYS, ACCOUNT_BY_DEFAULT, NOT_AVAILABLE_BY_DEFAULT, SUBACCOUNT_AND_ACCOUNT_ALWAYS, SUBACCOUNT_AND_ACCOUNT_BY_DEFAULT",
+            "name": "availability",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
+            "description": "",
+            "name": "id",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "ACCOUNT_ALWAYS, ACCOUNT_BY_DEFAULT, NOT_AVAILABLE_BY_DEFAULT, SUBACCOUNT_AND_ACCOUNT_ALWAYS, SUBACCOUNT_AND_ACCOUNT_BY_DEFAULT", 
-            "name": "availability"
-          }, 
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "name"
-          }, 
+            "description": "",
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "id"
+            "description": "",
+            "name": "permissionGroupId",
+            "type": "INT64",
+            "mode": "NULLABLE"
           }
-        ], 
-        "type": "RECORD", 
-        "name": "permissions", 
-        "mode": "REPEATED"
-      }, 
+        ]
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "accountId"
+        "description": "",
+        "name": "subaccountId",
+        "type": "INT64",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "userRoles", 
-    "mode": "REPEATED"
+    ]
   }
 ]

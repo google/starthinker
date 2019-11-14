@@ -258,8 +258,6 @@ class project:
     parser.add_argument('--client', '-c', help='path to client credentials json file, defaults None', default=None)
 
     parser.add_argument('--instance', '-i', help='the instance of the task to run ( for tasks with same name ), default is 1.', default=1, type=int)
-    parser.add_argument('--date', '-d', help='YYYY-MM-DD format date for which these reports are to be run, default will be today.', default='TODAY')
-    parser.add_argument('--hour', '-t', help='0 - 23 hour for which tasks will be executed', default='NOW')
 
     parser.add_argument('--verbose', '-v', help='print all the steps as they happen.', action='store_true')
     parser.add_argument('--force', '-force', help='no-op for compatibility with all.', action='store_true')
@@ -279,8 +277,6 @@ class project:
       cls.args.service,
       cls.args.client,
       cls.args.json,
-      cls.args.date,
-      cls.args.hour,
       cls.args.verbose,
       cls.args.force,
       cls.args.trace_print,
@@ -360,8 +356,6 @@ class project:
     _service=None,
     _client=None,
     _filepath=None,
-    _date='TODAY',
-    _hour='NOW',
     _verbose=False,
     _force=False,
     _trace_print=False,
@@ -392,8 +386,6 @@ class project:
       - _user: (string) See module description.
       - _service: (string) See module description.
       - _client: (string) See module description.
-      - _date: (date) See module description.
-      - _hour: (integer) See module description.
       - _verbose: (boolean) See module description.
       - _force: (boolean) See module description.
       - _trace_print: (boolean) True if writing execution trace to stdout.
@@ -432,21 +424,15 @@ class project:
     cls.uuid = cls.recipe['setup'].get('uuid')
 
     # find date based on timezone
-    if _date == 'TODAY':
-      tz = pytz.timezone(cls.recipe['setup'].get('timezone', 'America/Los_Angeles'))
-      tz_datetime = datetime.now(tz)
-      cls.date = tz_datetime.date()
-      cls.hour = tz_datetime.hour if _hour == 'NOW' else int(_hour)
-
-    # or if provided use local time
-    else:
-      cls.date = datetime.strptime(_date.replace('/', '-').replace('_', '-'), '%Y-%m-%d').date()
-      cls.hour = datetime.now().hour if _hour == 'NOW' else int(_hour)
+    cls.timezone = pytz.timezone(cls.recipe['setup'].get('timezone', 'America/Los_Angeles'))
+    cls.now = datetime.now(cls.timezone)
+    cls.date = cls.now.date()
+    cls.hour = cls.now.hour
 
     if cls.verbose:
       print('TASK:', _task) 
-      print('DATE:', cls.date) 
-      print('HOUR:', cls.hour) 
+      print('DATE:', cls.now.date()) 
+      print('HOUR:', cls.now.hour) 
 
 
   @classmethod

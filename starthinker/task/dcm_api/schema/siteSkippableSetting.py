@@ -18,42 +18,42 @@
 
 siteSkippableSetting_Schema = [
   {
-    "type": "BOOLEAN", 
-    "name": "skippable", 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
     "mode": "NULLABLE"
-  }, 
+  },
+  [
+    {
+      "description": "",
+      "name": "offsetPercentage",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "offsetSeconds",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    }
+  ],
+  [
+    {
+      "description": "",
+      "name": "offsetPercentage",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "offsetSeconds",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    }
+  ],
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "offsetPercentage"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "offsetSeconds"
-    }
-  ], 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "offsetPercentage"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "offsetSeconds"
-    }
-  ]
+    "name": "skippable",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  }
 ]

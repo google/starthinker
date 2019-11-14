@@ -18,14 +18,14 @@
 
 clickThroughUrlSuffixProperties_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "clickThroughUrlSuffix"
-  }, 
+    "description": "",
+    "name": "clickThroughUrlSuffix",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "type": "BOOLEAN", 
-    "name": "overrideInheritedSuffix", 
+    "name": "overrideInheritedSuffix",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
   }
 ]

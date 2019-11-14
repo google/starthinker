@@ -18,64 +18,64 @@
 
 dimensionValueList_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "nextPageToken"
-  }, 
+    "description": "",
+    "name": "etag",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
+    "name": "items",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "dimensionName",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "value"
-      }, 
+        "description": "",
+        "name": "etag",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "dimensionName"
-      }, 
+        "description": "",
+        "name": "id",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "etag"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-        "name": "matchType"
-      }, 
+        "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+        "name": "matchType",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "id"
+        "description": "",
+        "name": "value",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "items", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "etag"
+    "description": "",
+    "name": "nextPageToken",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

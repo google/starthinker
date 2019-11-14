@@ -18,21 +18,21 @@
 
 creativeClickThroughUrl_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "computedClickThroughUrl"
-  }, 
+    "description": "",
+    "name": "computedClickThroughUrl",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "customClickThroughUrl"
-  }, 
+    "description": "",
+    "name": "customClickThroughUrl",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "landingPageId"
+    "description": "",
+    "name": "landingPageId",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

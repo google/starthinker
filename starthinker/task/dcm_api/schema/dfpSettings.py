@@ -18,30 +18,30 @@
 
 dfpSettings_Schema = [
   {
-    "type": "BOOLEAN", 
-    "name": "publisherPortalOnly", 
+    "description": "",
+    "name": "dfpNetworkCode",
+    "type": "STRING",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "dfpNetworkCode"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "pubPaidPlacementAccepted", 
+    "description": "",
+    "name": "dfpNetworkName",
+    "type": "STRING",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "type": "BOOLEAN", 
-    "name": "programmaticPlacementAccepted", 
+    "name": "programmaticPlacementAccepted",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "dfpNetworkName"
+    "name": "pubPaidPlacementAccepted",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "publisherPortalOnly",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
   }
 ]

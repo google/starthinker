@@ -18,33 +18,33 @@
 
 mobileApp_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "APPLE_APP_STORE, GOOGLE_PLAY_STORE, UNKNOWN", 
-    "name": "directory"
-  }, 
+    "description": "APPLE_APP_STORE, GOOGLE_PLAY_STORE, UNKNOWN",
+    "name": "directory",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "id",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "publisherName"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "id"
-  }, 
+    "description": "",
+    "name": "publisherName",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "title"
+    "description": "",
+    "name": "title",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

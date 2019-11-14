@@ -18,33 +18,33 @@
 
 orderContact_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "signatureUserProfileId"
-  }, 
+    "description": "",
+    "name": "contactInfo",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "contactTitle"
-  }, 
+    "description": "",
+    "name": "contactName",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "contactInfo"
-  }, 
+    "description": "",
+    "name": "contactTitle",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "contactName"
-  }, 
+    "description": "PLANNING_ORDER_CONTACT_BUYER_BILLING_CONTACT, PLANNING_ORDER_CONTACT_BUYER_CONTACT, PLANNING_ORDER_CONTACT_SELLER_CONTACT",
+    "name": "contactType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "PLANNING_ORDER_CONTACT_BUYER_BILLING_CONTACT, PLANNING_ORDER_CONTACT_BUYER_CONTACT, PLANNING_ORDER_CONTACT_SELLER_CONTACT", 
-    "name": "contactType"
+    "description": "",
+    "name": "signatureUserProfileId",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

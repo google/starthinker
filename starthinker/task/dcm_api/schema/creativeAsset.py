@@ -18,599 +18,599 @@
 
 creativeAsset_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "mimeType"
-  }, 
+    "name": "actionScript3",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "ARTWORK_TYPE_FLASH, ARTWORK_TYPE_HTML5, ARTWORK_TYPE_IMAGE, ARTWORK_TYPE_MIXED", 
-    "name": "artworkType"
-  }, 
+    "name": "active",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "OFFSET_UNIT_PERCENT, OFFSET_UNIT_PIXEL, OFFSET_UNIT_PIXEL_FROM_CENTER", 
-    "name": "positionLeftUnit"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "width"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "type": "BOOLEAN", 
-      "name": "iab", 
-      "mode": "NULLABLE"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "id"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "height"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "audioSampleRate"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "FLOAT64", 
-    "description": "", 
-    "name": "frameRate"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "flashVersion"
-  }, 
-  {
+    "name": "additionalSizes",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "width"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "iab", 
+        "description": "",
+        "name": "height",
+        "type": "INT64",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
+        "name": "iab",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "height"
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "width",
+        "type": "INT64",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "additionalSizes", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
-    "type": "BOOLEAN", 
-    "name": "hideFlashObjects", 
+    "description": "ALIGNMENT_BOTTOM, ALIGNMENT_LEFT, ALIGNMENT_RIGHT, ALIGNMENT_TOP",
+    "name": "alignment",
+    "type": "STRING",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "type": "STRING", 
-    "name": "detectedFeatures", 
-    "mode": "REPEATED"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "originalBackup", 
+    "description": "ARTWORK_TYPE_FLASH, ARTWORK_TYPE_HTML5, ARTWORK_TYPE_IMAGE, ARTWORK_TYPE_MIXED",
+    "name": "artworkType",
+    "type": "STRING",
     "mode": "NULLABLE"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "duration"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "OFFSET_UNIT_PERCENT, OFFSET_UNIT_PIXEL, OFFSET_UNIT_PIXEL_FROM_CENTER", 
-    "name": "positionTopUnit"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "ALIGNMENT_BOTTOM, ALIGNMENT_LEFT, ALIGNMENT_RIGHT, ALIGNMENT_TOP", 
-    "name": "alignment"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "LANDSCAPE, PORTRAIT, SQUARE", 
-    "name": "orientation"
-  }, 
+  },
   [
     {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "top"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "left"
-    }
-  ], 
-  {
-    "type": "BOOLEAN", 
-    "name": "politeLoad", 
-    "mode": "NULLABLE"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "horizontallyLocked", 
-    "mode": "NULLABLE"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "ASSET_START_TIME_TYPE_CUSTOM, ASSET_START_TIME_TYPE_NONE", 
-    "name": "startTimeType"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "ASSET_DISPLAY_TYPE_BACKDROP, ASSET_DISPLAY_TYPE_EXPANDING, ASSET_DISPLAY_TYPE_FLASH_IN_FLASH, ASSET_DISPLAY_TYPE_FLASH_IN_FLASH_EXPANDING, ASSET_DISPLAY_TYPE_FLOATING, ASSET_DISPLAY_TYPE_INPAGE, ASSET_DISPLAY_TYPE_OVERLAY, ASSET_DISPLAY_TYPE_PEEL_DOWN, ASSET_DISPLAY_TYPE_VPAID_LINEAR, ASSET_DISPLAY_TYPE_VPAID_NON_LINEAR", 
-    "name": "displayType"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "width"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "type": "BOOLEAN", 
-      "name": "iab", 
+      "description": "",
+      "name": "name",
+      "type": "STRING",
       "mode": "NULLABLE"
-    }, 
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "id"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "height"
-    }
-  ], 
-  {
-    "type": "BOOLEAN", 
-    "name": "verticallyLocked", 
-    "mode": "NULLABLE"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "ADDITIONAL_FLASH, ADDITIONAL_IMAGE, ALTERNATE_VIDEO, BACKUP_IMAGE, OTHER, PARENT_AUDIO, PARENT_VIDEO, PRIMARY, TRANSCODED_AUDIO, TRANSCODED_VIDEO", 
-    "name": "role"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "width"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "type": "BOOLEAN", 
-      "name": "iab", 
+      "description": "AUDIO, FLASH, HTML, HTML_IMAGE, IMAGE, VIDEO",
+      "name": "type",
+      "type": "STRING",
       "mode": "NULLABLE"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "id"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "height"
     }
-  ], 
+  ],
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "bitRate"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "OPAQUE, TRANSPARENT, WINDOW", 
-    "name": "windowMode"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "audioBitRate"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "pushdown", 
+    "description": "",
+    "name": "audioBitRate",
+    "type": "INT64",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "progressiveServingUrl"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "ASSET_DURATION_TYPE_AUTO, ASSET_DURATION_TYPE_CUSTOM, ASSET_DURATION_TYPE_NONE", 
-    "name": "durationType"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "zIndex"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "fileSize"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "zipFilename"
-  }, 
+    "description": "",
+    "name": "audioSampleRate",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   [
     {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "top"
-    }, 
+      "description": "",
+      "name": "advertiserCustomEventId",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "left"
-    }
-  ], 
-  {
-    "type": "BOOLEAN", 
-    "name": "active", 
-    "mode": "NULLABLE"
-  }, 
-  {
-    "type": "INT64", 
-    "name": "companionCreativeIds", 
-    "mode": "REPEATED"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "hideSelectionBoxes", 
-    "mode": "NULLABLE"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "streamingServingUrl"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "zipFilesize"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "CHILD_ASSET_TYPE_DATA, CHILD_ASSET_TYPE_FLASH, CHILD_ASSET_TYPE_IMAGE, CHILD_ASSET_TYPE_VIDEO", 
-    "name": "childAssetType"
-  }, 
-  [
+      "description": "",
+      "name": "advertiserCustomEventName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "TARGET_BLANK, TARGET_PARENT, TARGET_POPUP, TARGET_SELF, TARGET_TOP", 
-      "name": "targetType"
-    }, 
+      "description": "ADVERTISER_EVENT_COUNTER, ADVERTISER_EVENT_EXIT, ADVERTISER_EVENT_TIMER",
+      "name": "advertiserCustomEventType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "ARTWORK_TYPE_FLASH, ARTWORK_TYPE_HTML5, ARTWORK_TYPE_IMAGE, ARTWORK_TYPE_MIXED", 
-      "name": "artworkType"
-    }, 
+      "description": "",
+      "name": "artworkLabel",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "ARTWORK_TYPE_FLASH, ARTWORK_TYPE_HTML5, ARTWORK_TYPE_IMAGE, ARTWORK_TYPE_MIXED",
+      "name": "artworkType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "computedClickThroughUrl"
-      }, 
+        "description": "",
+        "name": "computedClickThroughUrl",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "customClickThroughUrl"
-      }, 
+        "description": "",
+        "name": "customClickThroughUrl",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "landingPageId"
+        "description": "",
+        "name": "landingPageId",
+        "type": "INT64",
+        "mode": "NULLABLE"
       }
-    ], 
+    ],
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "videoReportingId"
-    }, 
+      "description": "",
+      "name": "id",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
     [
-      {
-        "type": "BOOLEAN", 
-        "name": "showStatusBar", 
-        "mode": "NULLABLE"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "showScrollBar", 
-        "mode": "NULLABLE"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "showAddressBar", 
-        "mode": "NULLABLE"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "showMenuBar", 
-        "mode": "NULLABLE"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "title"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "showToolBar", 
-        "mode": "NULLABLE"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "CENTER, COORDINATES", 
-        "name": "positionType"
-      }, 
       [
         {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "top"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "left"
-        }
-      ], 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "width"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "type": "BOOLEAN", 
-          "name": "iab", 
+          "description": "",
+          "name": "height",
+          "type": "INT64",
           "mode": "NULLABLE"
-        }, 
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "id"
-        }, 
+          "name": "iab",
+          "type": "BOOLEAN",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "height"
+          "description": "",
+          "name": "id",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "width",
+          "type": "INT64",
+          "mode": "NULLABLE"
         }
-      ]
-    ], 
+      ],
+      [
+        {
+          "description": "",
+          "name": "left",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "top",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "description": "CENTER, COORDINATES",
+        "name": "positionType",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "showAddressBar",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "showMenuBar",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "showScrollBar",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "showStatusBar",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "showToolBar",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "title",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      }
+    ],
     {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "advertiserCustomEventId"
-    }, 
+      "description": "TARGET_BLANK, TARGET_PARENT, TARGET_POPUP, TARGET_SELF, TARGET_TOP",
+      "name": "targetType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "artworkLabel"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "ADVERTISER_EVENT_COUNTER, ADVERTISER_EVENT_EXIT, ADVERTISER_EVENT_TIMER", 
-      "name": "advertiserCustomEventType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "id"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "advertiserCustomEventName"
+      "description": "",
+      "name": "videoReportingId",
+      "type": "STRING",
+      "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
-    "type": "BOOLEAN", 
-    "name": "actionScript3", 
+    "description": "",
+    "name": "bitRate",
+    "type": "INT64",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "FLOAT64", 
-    "description": "", 
-    "name": "pushdownDuration"
-  }, 
+    "description": "CHILD_ASSET_TYPE_DATA, CHILD_ASSET_TYPE_FLASH, CHILD_ASSET_TYPE_IMAGE, CHILD_ASSET_TYPE_VIDEO",
+    "name": "childAssetType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   [
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "AUDIO, FLASH, HTML, HTML_IMAGE, IMAGE, VIDEO", 
-      "name": "type"
-    }, 
+      "description": "",
+      "name": "height",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "name"
+      "name": "iab",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "width",
+      "type": "INT64",
+      "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
-    "type": "BOOLEAN", 
-    "name": "transparency", 
+    "name": "companionCreativeIds",
+    "type": "INT64",
+    "mode": "REPEATED"
+  },
+  {
+    "description": "",
+    "name": "customStartTimeValue",
+    "type": "INT64",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "type": "BOOLEAN", 
-    "name": "sslCompliant", 
+    "name": "detectedFeatures",
+    "type": "STRING",
+    "mode": "REPEATED"
+  },
+  {
+    "description": "ASSET_DISPLAY_TYPE_BACKDROP, ASSET_DISPLAY_TYPE_EXPANDING, ASSET_DISPLAY_TYPE_FLASH_IN_FLASH, ASSET_DISPLAY_TYPE_FLASH_IN_FLASH_EXPANDING, ASSET_DISPLAY_TYPE_FLOATING, ASSET_DISPLAY_TYPE_INPAGE, ASSET_DISPLAY_TYPE_OVERLAY, ASSET_DISPLAY_TYPE_PEEL_DOWN, ASSET_DISPLAY_TYPE_VPAID_LINEAR, ASSET_DISPLAY_TYPE_VPAID_NON_LINEAR",
+    "name": "displayType",
+    "type": "STRING",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "FLOAT64", 
-    "description": "", 
-    "name": "mediaDuration"
-  }, 
+    "description": "",
+    "name": "duration",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "customStartTimeValue"
+    "description": "ASSET_DURATION_TYPE_AUTO, ASSET_DURATION_TYPE_CUSTOM, ASSET_DURATION_TYPE_NONE",
+    "name": "durationType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "height",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "iab",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "width",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "fileSize",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "flashVersion",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "frameRate",
+    "type": "FLOAT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "hideFlashObjects",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "hideSelectionBoxes",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "horizontallyLocked",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "mediaDuration",
+    "type": "FLOAT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "mimeType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "left",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "top",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "LANDSCAPE, PORTRAIT, SQUARE",
+    "name": "orientation",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "originalBackup",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "politeLoad",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "left",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "top",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "OFFSET_UNIT_PERCENT, OFFSET_UNIT_PIXEL, OFFSET_UNIT_PIXEL_FROM_CENTER",
+    "name": "positionLeftUnit",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "OFFSET_UNIT_PERCENT, OFFSET_UNIT_PIXEL, OFFSET_UNIT_PIXEL_FROM_CENTER",
+    "name": "positionTopUnit",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "progressiveServingUrl",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "pushdown",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "pushdownDuration",
+    "type": "FLOAT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "ADDITIONAL_FLASH, ADDITIONAL_IMAGE, ALTERNATE_VIDEO, BACKUP_IMAGE, OTHER, PARENT_AUDIO, PARENT_VIDEO, PRIMARY, TRANSCODED_AUDIO, TRANSCODED_VIDEO",
+    "name": "role",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "height",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "iab",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "width",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "name": "sslCompliant",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "ASSET_START_TIME_TYPE_CUSTOM, ASSET_START_TIME_TYPE_NONE",
+    "name": "startTimeType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "streamingServingUrl",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "transparency",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "verticallyLocked",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "OPAQUE, TRANSPARENT, WINDOW",
+    "name": "windowMode",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "zIndex",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "zipFilename",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "zipFilesize",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

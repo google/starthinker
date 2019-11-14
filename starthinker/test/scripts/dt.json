@@ -6,21 +6,20 @@
   "tasks":[
     { "dt": {
       "auth": "user",
-      "from": {
-        "path": {"field":{ "name":"path_activity", "kind":"string", "default":"dcm_account*account_id*_activity_" }},
-        "bucket": {"field":{ "name":"bucket", "kind":"string", "default":"dcdt_-dcm_account*account_id*" }}
-      },
+      "bucket":{"field":{ "name":"bucket", "kind":"string", "order":1, "default":"", "description":"Name of bucket where DT files are stored."}},
+      "paths":{"field":{ "name":"paths", "kind":"string_list", "order":2, "default":[], "description":"List of prefixes to pull specific DT files."}},
+      "days":{"field":{ "name":"days", "kind":"integer", "order":3, "default":60, "description":"Number of days back to synchronize."}},
+      "hours":{"field":{ "name":"hours", "kind":"integer", "order":3, "default":60, "description":"Number of hours back to synchronize."}},
       "to": {
         "auth": "service",
-        "dataset":"Test",
-        "table": "DT_Activity"
+        "dataset":"Test"
       }
     }},
     { "test": {
         "auth":"user",
         "bigquery":{
           "dataset":"Test",
-          "table":"DT_Activity",
+          "table":{"field":{ "name":"table", "kind":"string", "order":2, "default":"", "description":"Wildcard table name for checking schema."}},
           "schema":[
             {"mode":"NULLABLE", "name": "Event_Time", "type": "INTEGER"},
             {"mode":"NULLABLE", "name": "User_Id", "type": "STRING"},
@@ -128,32 +127,6 @@
             {"mode":"NULLABLE", "name": "Dbm_Billable_Cost_Advertiser_Currency", "type": "INTEGER"}
           ]
         }
-    }},
-    { "dt": {
-      "auth": "user",
-      "from": {
-        "path": {"field":{ "name":"path_advertisers", "kind":"string", "default":"dcm_account*account_id*_advertisers_" }},
-        "bucket": {"field":{ "name":"bucket", "kind":"string", "default":"dcdt_-dcm_account*account_id*" }}
-      },
-      "to": {
-        "auth": "service",
-        "dataset": "Test",
-        "table": "DT_Advertisers"
-      }
-    }},
-    { "test": {
-      "auth":"user",
-      "bigquery":{
-        "dataset":"Test",
-        "table":"DT_Advertisers",
-        "schema":[
-            {"mode":"NULLABLE", "name": "Floodlight_Configuration", "type": "INTEGER"},
-            {"mode":"NULLABLE", "name": "Advertiser_Id", "type": "INTEGER"},
-            {"mode":"NULLABLE", "name": "Advertiser", "type": "STRING"},
-            {"mode":"NULLABLE", "name": "Advertiser_Group_Id", "type": "INTEGER"},
-            {"mode":"NULLABLE", "name": "Advertiser_Group", "type": "STRING"}
-        ]
-      }
     }}
   ]
 }

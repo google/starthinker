@@ -22,12 +22,15 @@ import sys
 from io import StringIO
 
 from starthinker.util.project import project
-from starthinker.util.bigquery import bigquery_date
 from xlsx import Workbook
 
 
 RE_HUMAN = re.compile('[^0-9a-zA-Z]+')
 INT_LIMIT = 9223372036854775807 # defined by BigQuery 64 bit mostly ( not system )
+
+
+def bigquery_date(value):
+  return value.strftime('%Y%m%d')
 
 
 def excel_to_rows(excel_bytes):

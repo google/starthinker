@@ -18,21 +18,21 @@
 
 floodlightActivitiesGenerateTagResponse_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "globalSiteTagGlobalSnippet"
-  }, 
+    "description": "",
+    "name": "floodlightActivityTag",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "floodlightActivityTag"
-  }, 
+    "description": "",
+    "name": "globalSiteTagGlobalSnippet",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

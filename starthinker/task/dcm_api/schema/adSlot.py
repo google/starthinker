@@ -18,50 +18,50 @@
 
 adSlot_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "comment"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "linkedPlacementId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "primary", 
+    "description": "",
+    "name": "comment",
+    "type": "STRING",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "height"
-  }, 
+    "description": "APP, APP_INTERSTITIAL, DISPLAY, DISPLAY_INTERSTITIAL, IN_STREAM_AUDIO, IN_STREAM_VIDEO",
+    "name": "compatibility",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "width"
-  }, 
+    "description": "",
+    "name": "height",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "PLANNING_PAYMENT_SOURCE_TYPE_AGENCY_PAID, PLANNING_PAYMENT_SOURCE_TYPE_PUBLISHER_PAID", 
-    "name": "paymentSourceType"
-  }, 
+    "description": "",
+    "name": "linkedPlacementId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "APP, APP_INTERSTITIAL, DISPLAY, DISPLAY_INTERSTITIAL, IN_STREAM_AUDIO, IN_STREAM_VIDEO", 
-    "name": "compatibility"
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "PLANNING_PAYMENT_SOURCE_TYPE_AGENCY_PAID, PLANNING_PAYMENT_SOURCE_TYPE_PUBLISHER_PAID",
+    "name": "paymentSourceType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "primary",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "width",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

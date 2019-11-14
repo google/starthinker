@@ -17,117 +17,117 @@
 ###########################################################################
 
 creativeAssetMetadata_Schema = [
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
-  {
-    "type": "STRING", 
-    "name": "detectedFeatures", 
-    "mode": "REPEATED"
-  }, 
-  {
-    "type": "STRING", 
-    "name": "warnedValidationRules", 
-    "mode": "REPEATED"
-  }, 
   [
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "AUDIO, FLASH, HTML, HTML_IMAGE, IMAGE, VIDEO", 
-      "name": "type"
-    }, 
+      "description": "",
+      "name": "name",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "name"
+      "description": "AUDIO, FLASH, HTML, HTML_IMAGE, IMAGE, VIDEO",
+      "name": "type",
+      "type": "STRING",
+      "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
+    "name": "clickTags",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "eventName"
-      }, 
       [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "computedClickThroughUrl"
-        }, 
+          "description": "",
+          "name": "computedClickThroughUrl",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "customClickThroughUrl"
-        }, 
+          "description": "",
+          "name": "customClickThroughUrl",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "landingPageId"
+          "description": "",
+          "name": "landingPageId",
+          "type": "INT64",
+          "mode": "NULLABLE"
         }
-      ], 
+      ],
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
+        "description": "",
+        "name": "eventName",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "clickTags", 
+    ]
+  },
+  {
+    "name": "detectedFeatures",
+    "type": "STRING",
     "mode": "REPEATED"
-  }, 
+  },
+  {
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   [
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "warnedValidationRules",
+    "type": "STRING",
+    "mode": "REPEATED"
   }
 ]

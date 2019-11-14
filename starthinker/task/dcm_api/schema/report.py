@@ -18,1226 +18,1226 @@
 
 report_Schema = [
   {
-    "fields": [
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "name"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "ASCENDING, DESCENDING", 
-            "name": "sortOrder"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "conversionDimensions", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "type": "STRING", 
-        "name": "metricNames", 
-        "mode": "REPEATED"
-      }, 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "startDate"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "endDate"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY", 
-          "name": "relativeDateRange"
-        }
-      ], 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "clicksLookbackWindow"
-          }, 
-          {
-            "type": "BOOLEAN", 
-            "name": "pivotOnInteractionPath", 
-            "mode": "NULLABLE"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "impressionsLookbackWindow"
-          }, 
-          {
-            "type": "BOOLEAN", 
-            "name": "includeUnattributedIPConversions", 
-            "mode": "NULLABLE"
-          }, 
-          {
-            "type": "BOOLEAN", 
-            "name": "includeUnattributedCookieConversions", 
-            "mode": "NULLABLE"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "maximumInteractionGap"
-          }, 
-          {
-            "type": "BOOLEAN", 
-            "name": "includeAttributedIPConversions", 
-            "mode": "NULLABLE"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "maximumClickInteractions"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "maximumImpressionInteractions"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "reportProperties", 
-        "mode": "REQUIRED"
-      }, 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "name"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "ASCENDING, DESCENDING", 
-            "name": "sortOrder"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "perInteractionDimensions", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "value"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "dimensionName"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "etag"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-            "name": "matchType"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "id"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "activityFilters", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "value"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "dimensionName"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "etag"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-            "name": "matchType"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "id"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "customRichMediaEvents", 
-        "mode": "REPEATED"
-      }, 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "value"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "dimensionName"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "etag"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-          "name": "matchType"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "id"
-        }
-      ], 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "name"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "ASCENDING, DESCENDING", 
-            "name": "sortOrder"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "customFloodlightVariables", 
-        "mode": "REPEATED"
-      }
-    ], 
-    "type": "RECORD", 
-    "name": "pathToConversionCriteria", 
-    "mode": "REQUIRED"
-  }, 
+    "description": "",
+    "name": "accountId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "subAccountId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
-  }, 
-  {
-    "fields": [
-      {
-        "mode": "NULLABLE", 
-        "type": "DATE", 
-        "description": "", 
-        "name": "startDate"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "DAY_OF_MONTH, WEEK_OF_MONTH", 
-        "name": "runsOnDayOfMonth"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "every"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "DATE", 
-        "description": "", 
-        "name": "expirationDate"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "active", 
-        "mode": "NULLABLE"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "repeats"
-      }, 
-      {
-        "type": "STRING", 
-        "name": "repeatsOnWeekDays", 
-        "mode": "REPEATED"
-      }
-    ], 
-    "type": "RECORD", 
-    "name": "schedule", 
-    "mode": "REQUIRED"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "CSV, EXCEL", 
-    "name": "format"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "ownerProfileId"
-  }, 
-  {
+    "name": "criteria",
+    "type": "RECORD",
+    "mode": "NULLABLE",
     "fields": [
       [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
+          "name": "filters",
+          "type": "RECORD",
+          "mode": "REPEATED",
           "fields": [
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "kind"
-            }, 
+              "description": "",
+              "name": "dimensionName",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "value"
-            }, 
+              "description": "",
+              "name": "etag",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "dimensionName"
-            }, 
+              "description": "",
+              "name": "id",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "etag"
-            }, 
+              "description": "",
+              "name": "kind",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-              "name": "matchType"
-            }, 
+              "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+              "name": "matchType",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "id"
+              "description": "",
+              "name": "value",
+              "type": "STRING",
+              "mode": "NULLABLE"
             }
-          ], 
-          "type": "RECORD", 
-          "name": "filters", 
-          "mode": "REPEATED"
-        }, 
+          ]
+        },
         {
-          "type": "STRING", 
-          "name": "metricNames", 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "metricNames",
+          "type": "STRING",
           "mode": "REPEATED"
         }
-      ], 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "name"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "ASCENDING, DESCENDING", 
-            "name": "sortOrder"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "dimensions", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "type": "STRING", 
-        "name": "metricNames", 
-        "mode": "REPEATED"
-      }, 
+      ],
       [
         {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "startDate"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "endDate"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY", 
-          "name": "relativeDateRange"
-        }
-      ], 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "value"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "dimensionName"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "etag"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-            "name": "matchType"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "id"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "dimensionFilters", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "type": "STRING", 
-        "name": "reachByFrequencyMetricNames", 
-        "mode": "REPEATED"
-      }, 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
+          "name": "filteredEventIds",
+          "type": "RECORD",
+          "mode": "REPEATED",
           "fields": [
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "kind"
-            }, 
+              "description": "",
+              "name": "dimensionName",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "value"
-            }, 
+              "description": "",
+              "name": "etag",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "dimensionName"
-            }, 
+              "description": "",
+              "name": "id",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "etag"
-            }, 
+              "description": "",
+              "name": "kind",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-              "name": "matchType"
-            }, 
+              "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+              "name": "matchType",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "id"
+              "description": "",
+              "name": "value",
+              "type": "STRING",
+              "mode": "NULLABLE"
             }
-          ], 
-          "type": "RECORD", 
-          "name": "filteredEventIds", 
-          "mode": "REPEATED"
+          ]
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
+      ],
+      [
+        {
+          "description": "",
+          "name": "endDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY",
+          "name": "relativeDateRange",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "startDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        }
+      ],
       {
-        "type": "BOOLEAN", 
-        "name": "enableAllDimensionCombinations", 
+        "name": "dimensionFilters",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "dimensionName",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "etag",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "id",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+            "name": "matchType",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "value",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "dimensions",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "ASCENDING, DESCENDING",
+            "name": "sortOrder",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "metricNames",
+        "type": "STRING",
+        "mode": "REPEATED"
+      }
+    ]
+  },
+  {
+    "name": "crossDimensionReachCriteria",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      {
+        "name": "breakdown",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "ASCENDING, DESCENDING",
+            "name": "sortOrder",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      [
+        {
+          "description": "",
+          "name": "endDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY",
+          "name": "relativeDateRange",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "startDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "description": "ADVERTISER, CAMPAIGN, SITE_BY_ADVERTISER, SITE_BY_CAMPAIGN",
+        "name": "dimension",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "dimensionFilters",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "dimensionName",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "etag",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "id",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+            "name": "matchType",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "value",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "metricNames",
+        "type": "STRING",
+        "mode": "REPEATED"
+      },
+      {
+        "name": "overlapMetricNames",
+        "type": "STRING",
+        "mode": "REPEATED"
+      },
+      {
+        "name": "pivoted",
+        "type": "BOOLEAN",
         "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "reachCriteria", 
-    "mode": "REQUIRED"
-  }, 
+    ]
+  },
   {
+    "name": "delivery",
+    "type": "RECORD",
+    "mode": "NULLABLE",
     "fields": [
       {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "name"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "ASCENDING, DESCENDING", 
-            "name": "sortOrder"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "dimensions", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "type": "STRING", 
-        "name": "metricNames", 
-        "mode": "REPEATED"
-      }, 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "startDate"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "endDate"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY", 
-          "name": "relativeDateRange"
-        }
-      ], 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "value"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "dimensionName"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "etag"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-            "name": "matchType"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "id"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "dimensionFilters", 
-        "mode": "REPEATED"
-      }, 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "value"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "dimensionName"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "etag"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-          "name": "matchType"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "id"
-        }
-      ], 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "value"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "dimensionName"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "etag"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-            "name": "matchType"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "id"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "customRichMediaEvents", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "fields": [
-          {
-            "type": "BOOLEAN", 
-            "name": "includeUnattributedIPConversions", 
-            "mode": "NULLABLE"
-          }, 
-          {
-            "type": "BOOLEAN", 
-            "name": "includeUnattributedCookieConversions", 
-            "mode": "NULLABLE"
-          }, 
-          {
-            "type": "BOOLEAN", 
-            "name": "includeAttributedIPConversions", 
-            "mode": "NULLABLE"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "reportProperties", 
-        "mode": "REQUIRED"
-      }
-    ], 
-    "type": "RECORD", 
-    "name": "floodlightCriteria", 
-    "mode": "REQUIRED"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "fileName"
-  }, 
-  {
-    "fields": [
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "message"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "ATTACHMENT, LINK", 
-        "name": "emailOwnerDeliveryType"
-      }, 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "ATTACHMENT, LINK", 
-            "name": "deliveryType"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "email"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "recipients", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "emailOwner", 
+        "name": "emailOwner",
+        "type": "BOOLEAN",
         "mode": "NULLABLE"
+      },
+      {
+        "description": "ATTACHMENT, LINK",
+        "name": "emailOwnerDeliveryType",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "message",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "recipients",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "ATTACHMENT, LINK",
+            "name": "deliveryType",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "email",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
       }
-    ], 
-    "type": "RECORD", 
-    "name": "delivery", 
-    "mode": "REQUIRED"
-  }, 
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "etag"
-  }, 
+    "description": "",
+    "name": "etag",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
+    "description": "",
+    "name": "fileName",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "floodlightCriteria",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      {
+        "name": "customRichMediaEvents",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "dimensionName",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "etag",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "id",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+            "name": "matchType",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "value",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      [
+        {
+          "description": "",
+          "name": "endDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY",
+          "name": "relativeDateRange",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "startDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "name": "dimensionFilters",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "dimensionName",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "etag",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "id",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+            "name": "matchType",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "value",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "dimensions",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "ASCENDING, DESCENDING",
+            "name": "sortOrder",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      [
+        {
+          "description": "",
+          "name": "dimensionName",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "etag",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+          "name": "matchType",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "value",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "name": "metricNames",
+        "type": "STRING",
+        "mode": "REPEATED"
+      },
+      {
+        "name": "reportProperties",
+        "type": "RECORD",
+        "mode": "NULLABLE",
+        "fields": [
+          {
+            "name": "includeAttributedIPConversions",
+            "type": "BOOLEAN",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "includeUnattributedCookieConversions",
+            "type": "BOOLEAN",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "includeUnattributedIPConversions",
+            "type": "BOOLEAN",
+            "mode": "NULLABLE"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "CSV, EXCEL",
+    "name": "format",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "lastModifiedTime",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "ownerProfileId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "pathToConversionCriteria",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      {
+        "name": "activityFilters",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "dimensionName",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "etag",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "id",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+            "name": "matchType",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "value",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "conversionDimensions",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "ASCENDING, DESCENDING",
+            "name": "sortOrder",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "customFloodlightVariables",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "ASCENDING, DESCENDING",
+            "name": "sortOrder",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "customRichMediaEvents",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "dimensionName",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "etag",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "id",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+            "name": "matchType",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "value",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      [
+        {
+          "description": "",
+          "name": "endDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY",
+          "name": "relativeDateRange",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "startDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        }
+      ],
+      [
+        {
+          "description": "",
+          "name": "dimensionName",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "etag",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+          "name": "matchType",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "value",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "name": "metricNames",
+        "type": "STRING",
+        "mode": "REPEATED"
+      },
+      {
+        "name": "perInteractionDimensions",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "ASCENDING, DESCENDING",
+            "name": "sortOrder",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "reportProperties",
+        "type": "RECORD",
+        "mode": "NULLABLE",
+        "fields": [
+          {
+            "description": "",
+            "name": "clicksLookbackWindow",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "impressionsLookbackWindow",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "includeAttributedIPConversions",
+            "type": "BOOLEAN",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "includeUnattributedCookieConversions",
+            "type": "BOOLEAN",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "includeUnattributedIPConversions",
+            "type": "BOOLEAN",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "maximumClickInteractions",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "maximumImpressionInteractions",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "maximumInteractionGap",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "pivotOnInteractionPath",
+            "type": "BOOLEAN",
+            "mode": "NULLABLE"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "reachCriteria",
+    "type": "RECORD",
+    "mode": "NULLABLE",
     "fields": [
       [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
+          "name": "filters",
+          "type": "RECORD",
+          "mode": "REPEATED",
           "fields": [
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "kind"
-            }, 
+              "description": "",
+              "name": "dimensionName",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "value"
-            }, 
+              "description": "",
+              "name": "etag",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "dimensionName"
-            }, 
+              "description": "",
+              "name": "id",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "etag"
-            }, 
+              "description": "",
+              "name": "kind",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-              "name": "matchType"
-            }, 
+              "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+              "name": "matchType",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "id"
+              "description": "",
+              "name": "value",
+              "type": "STRING",
+              "mode": "NULLABLE"
             }
-          ], 
-          "type": "RECORD", 
-          "name": "filters", 
-          "mode": "REPEATED"
-        }, 
+          ]
+        },
         {
-          "type": "STRING", 
-          "name": "metricNames", 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "metricNames",
+          "type": "STRING",
           "mode": "REPEATED"
         }
-      ], 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "name"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "ASCENDING, DESCENDING", 
-            "name": "sortOrder"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "dimensions", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "type": "STRING", 
-        "name": "metricNames", 
-        "mode": "REPEATED"
-      }, 
+      ],
       [
         {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "startDate"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "endDate"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY", 
-          "name": "relativeDateRange"
-        }
-      ], 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "value"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "dimensionName"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "etag"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-            "name": "matchType"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "id"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "dimensionFilters", 
-        "mode": "REPEATED"
-      }, 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
+          "name": "filteredEventIds",
+          "type": "RECORD",
+          "mode": "REPEATED",
           "fields": [
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "kind"
-            }, 
+              "description": "",
+              "name": "dimensionName",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "value"
-            }, 
+              "description": "",
+              "name": "etag",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "dimensionName"
-            }, 
+              "description": "",
+              "name": "id",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "etag"
-            }, 
+              "description": "",
+              "name": "kind",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-              "name": "matchType"
-            }, 
+              "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+              "name": "matchType",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
             {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "id"
+              "description": "",
+              "name": "value",
+              "type": "STRING",
+              "mode": "NULLABLE"
             }
-          ], 
-          "type": "RECORD", 
-          "name": "filteredEventIds", 
-          "mode": "REPEATED"
+          ]
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ]
-    ], 
-    "type": "RECORD", 
-    "name": "criteria", 
-    "mode": "REQUIRED"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "lastModifiedTime"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "CROSS_DIMENSION_REACH, FLOODLIGHT, PATH_TO_CONVERSION, REACH, STANDARD", 
-    "name": "type"
-  }, 
-  {
-    "fields": [
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "name"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "ASCENDING, DESCENDING", 
-            "name": "sortOrder"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "breakdown", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "type": "STRING", 
-        "name": "overlapMetricNames", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "type": "STRING", 
-        "name": "metricNames", 
-        "mode": "REPEATED"
-      }, 
+      ],
       [
         {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "startDate"
-        }, 
+          "description": "",
+          "name": "endDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "endDate"
-        }, 
+          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY",
+          "name": "relativeDateRange",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY", 
-          "name": "relativeDateRange"
+          "description": "",
+          "name": "startDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
         }
-      ], 
+      ],
       {
+        "name": "dimensionFilters",
+        "type": "RECORD",
+        "mode": "REPEATED",
         "fields": [
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "kind"
-          }, 
+            "description": "",
+            "name": "dimensionName",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "value"
-          }, 
+            "description": "",
+            "name": "etag",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "dimensionName"
-          }, 
+            "description": "",
+            "name": "id",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "etag"
-          }, 
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-            "name": "matchType"
-          }, 
+            "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+            "name": "matchType",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "id"
+            "description": "",
+            "name": "value",
+            "type": "STRING",
+            "mode": "NULLABLE"
           }
-        ], 
-        "type": "RECORD", 
-        "name": "dimensionFilters", 
-        "mode": "REPEATED"
-      }, 
+        ]
+      },
       {
-        "type": "BOOLEAN", 
-        "name": "pivoted", 
+        "name": "dimensions",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "kind",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "ASCENDING, DESCENDING",
+            "name": "sortOrder",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "enableAllDimensionCombinations",
+        "type": "BOOLEAN",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "ADVERTISER, CAMPAIGN, SITE_BY_ADVERTISER, SITE_BY_CAMPAIGN", 
-        "name": "dimension"
+        "name": "metricNames",
+        "type": "STRING",
+        "mode": "REPEATED"
+      },
+      {
+        "name": "reachByFrequencyMetricNames",
+        "type": "STRING",
+        "mode": "REPEATED"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "crossDimensionReachCriteria", 
-    "mode": "REQUIRED"
-  }, 
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "accountId"
+    "name": "schedule",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      {
+        "name": "active",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "every",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "expirationDate",
+        "type": "DATE",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "repeats",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "repeatsOnWeekDays",
+        "type": "STRING",
+        "mode": "REPEATED"
+      },
+      {
+        "description": "DAY_OF_MONTH, WEEK_OF_MONTH",
+        "name": "runsOnDayOfMonth",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "startDate",
+        "type": "DATE",
+        "mode": "NULLABLE"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "name": "subAccountId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "CROSS_DIMENSION_REACH, FLOODLIGHT, PATH_TO_CONVERSION, REACH, STANDARD",
+    "name": "type",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

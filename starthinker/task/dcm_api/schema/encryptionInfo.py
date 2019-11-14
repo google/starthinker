@@ -18,27 +18,27 @@
 
 encryptionInfo_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "encryptionEntityId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "encryptionEntityId"
-  }, 
+    "description": "ADWORDS_CUSTOMER, DBM_ADVERTISER, DBM_PARTNER, DCM_ACCOUNT, DCM_ADVERTISER, DFP_NETWORK_CODE, ENCRYPTION_ENTITY_TYPE_UNKNOWN",
+    "name": "encryptionEntityType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "AD_SERVING, DATA_TRANSFER, ENCRYPTION_SCOPE_UNKNOWN", 
-    "name": "encryptionSource"
-  }, 
+    "description": "AD_SERVING, DATA_TRANSFER, ENCRYPTION_SCOPE_UNKNOWN",
+    "name": "encryptionSource",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "ADWORDS_CUSTOMER, DBM_ADVERTISER, DBM_PARTNER, DCM_ACCOUNT, DCM_ADVERTISER, DFP_NETWORK_CODE, ENCRYPTION_ENTITY_TYPE_UNKNOWN", 
-    "name": "encryptionEntityType"
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

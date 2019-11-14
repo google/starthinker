@@ -18,100 +18,100 @@
 
 landingPage_Schema = [
   {
-    "type": "BOOLEAN", 
-    "name": "archived", 
+    "description": "",
+    "name": "advertiserId",
+    "type": "INT64",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
-  }, 
+    "name": "archived",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "url"
-  }, 
-  {
+    "name": "deepLinks",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
+      {
+        "description": "",
+        "name": "appUrl",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "fallbackUrl",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "APPLE_APP_STORE, GOOGLE_PLAY_STORE, UNKNOWN", 
-          "name": "directory"
-        }, 
+          "description": "APPLE_APP_STORE, GOOGLE_PLAY_STORE, UNKNOWN",
+          "name": "directory",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "publisherName"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "id"
-        }, 
+          "description": "",
+          "name": "publisherName",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "title"
+          "description": "",
+          "name": "title",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
+      ],
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "appUrl"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "fallbackUrl"
-      }, 
-      {
-        "type": "INT64", 
-        "name": "remarketingListIds", 
+        "name": "remarketingListIds",
+        "type": "INT64",
         "mode": "REPEATED"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "deepLinks", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "advertiserId"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "url",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

@@ -18,15 +18,15 @@
 
 creativeAssetId_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "AUDIO, FLASH, HTML, HTML_IMAGE, IMAGE, VIDEO", 
-    "name": "type"
-  }, 
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
+    "description": "AUDIO, FLASH, HTML, HTML_IMAGE, IMAGE, VIDEO",
+    "name": "type",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

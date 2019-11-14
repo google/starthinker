@@ -18,150 +18,150 @@
 
 accountUserProfile_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "subaccountId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
-  }, 
-  [
-    {
-      "type": "INT64", 
-      "name": "objectIds", 
-      "mode": "REPEATED"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "ALL, ASSIGNED, NONE", 
-      "name": "status"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "locale"
-  }, 
-  [
-    {
-      "type": "INT64", 
-      "name": "objectIds", 
-      "mode": "REPEATED"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "ALL, ASSIGNED, NONE", 
-      "name": "status"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "comments"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
-  }, 
-  [
-    {
-      "type": "INT64", 
-      "name": "objectIds", 
-      "mode": "REPEATED"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "ALL, ASSIGNED, NONE", 
-      "name": "status"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }
-  ], 
-  [
-    {
-      "type": "INT64", 
-      "name": "objectIds", 
-      "mode": "REPEATED"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "ALL, ASSIGNED, NONE", 
-      "name": "status"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "userRoleId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "INTERNAL_ADMINISTRATOR, NORMAL_USER, READ_ONLY_SUPER_USER, SUPER_USER", 
-    "name": "userAccessType"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "EXTERNAL_TRAFFICKER, INTERNAL_NON_TRAFFICKER, INTERNAL_TRAFFICKER", 
-    "name": "traffickerType"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "active", 
+    "description": "",
+    "name": "accountId",
+    "type": "INT64",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "email"
-  }, 
+    "name": "active",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "objectIds",
+      "type": "INT64",
+      "mode": "REPEATED"
+    },
+    {
+      "description": "ALL, ASSIGNED, NONE",
+      "name": "status",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  [
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "objectIds",
+      "type": "INT64",
+      "mode": "REPEATED"
+    },
+    {
+      "description": "ALL, ASSIGNED, NONE",
+      "name": "status",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "accountId"
+    "description": "",
+    "name": "comments",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "email",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "locale",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "objectIds",
+      "type": "INT64",
+      "mode": "REPEATED"
+    },
+    {
+      "description": "ALL, ASSIGNED, NONE",
+      "name": "status",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "subaccountId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "EXTERNAL_TRAFFICKER, INTERNAL_NON_TRAFFICKER, INTERNAL_TRAFFICKER",
+    "name": "traffickerType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "INTERNAL_ADMINISTRATOR, NORMAL_USER, READ_ONLY_SUPER_USER, SUPER_USER",
+    "name": "userAccessType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "objectIds",
+      "type": "INT64",
+      "mode": "REPEATED"
+    },
+    {
+      "description": "ALL, ASSIGNED, NONE",
+      "name": "status",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "userRoleId",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

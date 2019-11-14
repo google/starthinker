@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 #
 ###########################################################################
 
+import json
 
 from starthinker.util.project import project 
 from starthinker.util.bigquery import rows_to_table, query_to_view
@@ -52,14 +53,15 @@ def write_report(report, dataset, table):
 
 
 
-def report_combos(name, dateRange, advertiser, campaign, dynamicProfile):
+def report_combos(name, dateRange, schedule, advertiser, campaign, dynamicProfile):
   if project.verbose: print("DYNAMIC COSTS COMBOS:", name)
 
   # basic report schema, with no dynamic elements
-  report_schema = {
+  schema = {
     "kind": "dfareporting#report",
     "type": "STANDARD",
     "name": "Dynamic Costs %s - Dynamic Combos ( StarThinker )" % name,
+    "schedule": schedule,
     "criteria": {
       "dateRange": dateRange,
       "dimensionFilters": [
@@ -98,15 +100,17 @@ def report_combos(name, dateRange, advertiser, campaign, dynamicProfile):
   # add in all reasonable dynamic elements
   for i in range(1, 5 + 1): # 5 elements/feeds
     for j in range(1, 6 + 1): # 6 fields per element
-      report_schema["criteria"]["dimensions"].append(
+      schema["criteria"]["dimensions"].append(
         {"kind": "dfareporting#sortedDimension", "name": "dfa:dynamicElement%iField%iValue" % (i, j)}
       )
+
+  print(json.dumps(schema, indent=2))
 
   # create the report if it does not exist
   report = report_build(
     project.task["auth"],
     project.task["account"],
-    report_schema
+    schema
   )
 
   # fetch report file if it exists ( timeout = 0 means grab most reent ready )
@@ -130,14 +134,15 @@ def report_combos(name, dateRange, advertiser, campaign, dynamicProfile):
   return table_name
 
 
-def report_main(name, dateRange, advertiser, campaign, shadow=True):
+def report_main(name, dateRange, schedule, advertiser, campaign, shadow=True):
   if project.verbose: print("DYNAMIC COSTS MAIN:", name)
 
   # base report schema
-  report_schema = {
+  schema = {
     "kind": "dfareporting#report",
     "type": "STANDARD",
     "name": "Dynamic Costs %s - Main Advertiser ( StarThinker )" % name,
+    "schedule": schedule,
     "criteria": {
       "dateRange": dateRange,
       "dimensionFilters": [
@@ -167,13 +172,13 @@ def report_main(name, dateRange, advertiser, campaign, shadow=True):
   
   # if not using shadow advertiser, pull DBM cost here
   if not shadow:
-    report_schema["criteria"]["metricNames"].append("dfa:dbmCost")
+    schema["criteria"]["metricNames"].append("dfa:dbmCost")
 
   # create the report if it does not exist
   report = report_build(
     project.task["auth"],
     project.task["account"],
-    report_schema
+    schema
   )
   
 
@@ -198,7 +203,7 @@ def report_main(name, dateRange, advertiser, campaign, shadow=True):
   return table_name
 
 
-def report_shadow(name, dateRange, advertiser, campaign):
+def report_shadow(name, dateRange, schedule, advertiser, campaign):
   if project.verbose: print("DYNAMIC COSTS SHADOW:", name)
 
   # create the report if it does not exist
@@ -209,6 +214,7 @@ def report_shadow(name, dateRange, advertiser, campaign):
       "kind": "dfareporting#report",
       "type": "STANDARD",
       "name": "Dynamic Costs %s - Shadow Advertiser ( StarThinker )" % name,
+      "schedule": schedule,
       "criteria": {
         "dateRange": dateRange,
         "dimensionFilters": [
@@ -301,52 +307,52 @@ def view_combine(name, combos_table, main_table, shadow_table):
 @project.from_parameters
 def dynamic_costs():
 
-  # refactor this is legacy
-  inputs = {
-    "Start Date":project.task['date_start'],
-    "End Date":project.task['date_end'],
-    "Relative Date Range":project.task['date_relative'],
-    "Shadow Advertiser ID":project.task['shadow_advertiser_id'],
-    "Main Advertiser ID":project.task['main_advertiser_id'],
-    "Shadow Campaign ID":project.task['shadow_campaign_id'],
-    "Main Campaign ID":project.task['main_campaign_id'],
-    "Dynamic Profile ID":project.task['dynamic_profile_id'],
-  }
-
-  if project.verbose: print("DYNAMIC COSTS PARAMETERS", inputs)
+  if project.verbose: print("DYNAMIC COSTS PARAMETERS", project.task)
 
   # allows each advertiser to run multiple reports ( somewhat collision avoidance )
-  unique_name = inputs['Dynamic Profile ID']
+  unique_name = project.task['dynamic_profile_id']
 
   # check if using wrapped tags
-  shadow = inputs['Shadow Advertiser ID'] and inputs['Shadow Campaign ID']
+  shadow = project.task['shadow_advertiser_id'] and project.task['shadow_campaign_id']
 
   # parse date range
-  if inputs.get('Relative Date Range') == 'CUSTOM':
+  if project.task.get('date_start') and project.task.get('date_end'):
     date_range = {
         "kind": "dfareporting#dateRange",
-        "startDate": str(inputs['Start Date']),
-        "endDate": str(inputs['End Date']),
+        "startDate": project.task['date_start'],
+        "endDate": project.task['date_end'],
+    }
+    schedule = {
+      'active':False,
+      'repeats':'DAILY',
+      'every': 1
     }
   else:
     date_range = {
         "kind": "dfareporting#dateRange",
-        "relativeDateRange": str(inputs['Relative Date Range'])
+        "relativeDateRange": project.task.get('date_relative', 'YESTERDAY')
+    }
+    schedule = {
+      'active':True,
+      'repeats':'DAILY',
+      'every': 1
     }
 
   combos_table = report_combos(
     unique_name,
     date_range,
-    inputs['Main Advertiser ID'],
-    inputs['Main Campaign ID'],
-    inputs['Dynamic Profile ID']
+    schedule,
+    project.task['main_advertiser_id'],
+    project.task['main_campaign_id'],
+    project.task['dynamic_profile_id']
   )
 
   main_table = report_main(
     unique_name,
     date_range,
-    inputs['Main Advertiser ID'],
-    inputs['Main Campaign ID'],
+    schedule,
+    project.task['main_advertiser_id'],
+    project.task['main_campaign_id'],
     shadow
   )
   
@@ -354,8 +360,8 @@ def dynamic_costs():
     shadow_table = report_shadow(
       unique_name,
       date_range,
-      inputs['Shadow Advertiser ID'],
-      inputs['Shadow Campaign ID']
+      project.task['shadow_advertiser_id'],
+      project.task['shadow_campaign_id'],
     )
   else:
     shadow_table = None

@@ -18,155 +18,155 @@
 
 creativeCustomEvent_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "TARGET_BLANK, TARGET_PARENT, TARGET_POPUP, TARGET_SELF, TARGET_TOP", 
-    "name": "targetType"
-  }, 
+    "description": "",
+    "name": "advertiserCustomEventId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "ARTWORK_TYPE_FLASH, ARTWORK_TYPE_HTML5, ARTWORK_TYPE_IMAGE, ARTWORK_TYPE_MIXED", 
-    "name": "artworkType"
-  }, 
+    "description": "",
+    "name": "advertiserCustomEventName",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "ADVERTISER_EVENT_COUNTER, ADVERTISER_EVENT_EXIT, ADVERTISER_EVENT_TIMER",
+    "name": "advertiserCustomEventType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "artworkLabel",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "ARTWORK_TYPE_FLASH, ARTWORK_TYPE_HTML5, ARTWORK_TYPE_IMAGE, ARTWORK_TYPE_MIXED",
+    "name": "artworkType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   [
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "computedClickThroughUrl"
-    }, 
+      "description": "",
+      "name": "computedClickThroughUrl",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "customClickThroughUrl"
-    }, 
+      "description": "",
+      "name": "customClickThroughUrl",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "landingPageId"
+      "description": "",
+      "name": "landingPageId",
+      "type": "INT64",
+      "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "videoReportingId"
-  }, 
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   [
-    {
-      "type": "BOOLEAN", 
-      "name": "showStatusBar", 
-      "mode": "NULLABLE"
-    }, 
-    {
-      "type": "BOOLEAN", 
-      "name": "showScrollBar", 
-      "mode": "NULLABLE"
-    }, 
-    {
-      "type": "BOOLEAN", 
-      "name": "showAddressBar", 
-      "mode": "NULLABLE"
-    }, 
-    {
-      "type": "BOOLEAN", 
-      "name": "showMenuBar", 
-      "mode": "NULLABLE"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "title"
-    }, 
-    {
-      "type": "BOOLEAN", 
-      "name": "showToolBar", 
-      "mode": "NULLABLE"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "CENTER, COORDINATES", 
-      "name": "positionType"
-    }, 
     [
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "top"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "left"
-      }
-    ], 
-    [
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "width"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "iab", 
+        "description": "",
+        "name": "height",
+        "type": "INT64",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
+        "name": "iab",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "height"
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "width",
+        "type": "INT64",
+        "mode": "NULLABLE"
       }
-    ]
-  ], 
+    ],
+    [
+      {
+        "description": "",
+        "name": "left",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "top",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      }
+    ],
+    {
+      "description": "CENTER, COORDINATES",
+      "name": "positionType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "showAddressBar",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "showMenuBar",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "showScrollBar",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "showStatusBar",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "showToolBar",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "title",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "advertiserCustomEventId"
-  }, 
+    "description": "TARGET_BLANK, TARGET_PARENT, TARGET_POPUP, TARGET_SELF, TARGET_TOP",
+    "name": "targetType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "artworkLabel"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "ADVERTISER_EVENT_COUNTER, ADVERTISER_EVENT_EXIT, ADVERTISER_EVENT_TIMER", 
-    "name": "advertiserCustomEventType"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "advertiserCustomEventName"
+    "description": "",
+    "name": "videoReportingId",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

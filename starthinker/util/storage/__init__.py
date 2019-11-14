@@ -36,7 +36,7 @@ from googleapiclient.errors import HttpError
 from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
 from starthinker.util.auth import get_service
-from starthinker.util.google_api import API_Retry
+from starthinker.util.google_api import API_Storage, API_Retry
 
 
 CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # scale is controlled in config.py
@@ -174,14 +174,9 @@ def object_put(auth, path, data, mimetype='application/octet-stream'):
 
 def object_list(auth, path, raw=False, files_only=False):
   bucket, prefix = path.split(':', 1)
-  service = get_service('storage', 'v1', auth)
-  next_page = None
-  while next_page != '':
-    response = service.objects().list(bucket=bucket, prefix=prefix).execute()
-    next_page = response.get('nextPageToken', '')
-    for item in response.get('items', []): 
-      if files_only and item['name'].endswith('/'): continue
-      yield item if raw else '%s:%s' % (bucket, item['name']) 
+  for item in API_Storage(auth, iterate=True).objects().list(bucket=bucket, prefix=prefix).execute():
+    if files_only and item['name'].endswith('/'): continue
+    yield item if raw else '%s:%s' % (bucket, item['name']) 
 
 
 def object_copy(auth, path_from, path_to):

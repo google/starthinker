@@ -18,21 +18,21 @@
 
 dimensionFilter_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "dimensionName"
-  }, 
+    "description": "",
+    "name": "dimensionName",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "value"
+    "description": "",
+    "name": "value",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

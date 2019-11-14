@@ -18,184 +18,184 @@
 
 eventTagsListResponse_Schema = [
   {
+    "name": "eventTags",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "DISABLED, ENABLED", 
-        "name": "status"
-      }, 
+        "description": "",
+        "name": "accountId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "advertiserId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "dimensionName",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "value"
-        }, 
+          "description": "",
+          "name": "etag",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "dimensionName"
-        }, 
+          "description": "",
+          "name": "id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "etag"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-          "name": "matchType"
-        }, 
+          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+          "name": "matchType",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "id"
+          "description": "",
+          "name": "value",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
+      ],
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "subaccountId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "campaignId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "url"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "sslCompliant", 
+        "description": "",
+        "name": "campaignId",
+        "type": "INT64",
         "mode": "NULLABLE"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "urlEscapeLevels"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "enabledByDefault", 
-        "mode": "NULLABLE"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "advertiserId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "BLACKLIST, WHITELIST", 
-        "name": "siteFilterType"
-      }, 
+      },
       [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "dimensionName",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "value"
-        }, 
+          "description": "",
+          "name": "etag",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "dimensionName"
-        }, 
+          "description": "",
+          "name": "id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "etag"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-          "name": "matchType"
-        }, 
+          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+          "name": "matchType",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "id"
+          "description": "",
+          "name": "value",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
+      ],
       {
-        "type": "INT64", 
-        "name": "siteIds", 
+        "name": "enabledByDefault",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "excludeFromAdxRequests",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "BLACKLIST, WHITELIST",
+        "name": "siteFilterType",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "siteIds",
+        "type": "INT64",
         "mode": "REPEATED"
-      }, 
+      },
       {
-        "type": "BOOLEAN", 
-        "name": "excludeFromAdxRequests", 
+        "name": "sslCompliant",
+        "type": "BOOLEAN",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "CLICK_THROUGH_EVENT_TAG, IMPRESSION_IMAGE_EVENT_TAG, IMPRESSION_JAVASCRIPT_EVENT_TAG", 
-        "name": "type"
-      }, 
+        "description": "DISABLED, ENABLED",
+        "name": "status",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
+        "description": "",
+        "name": "subaccountId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "accountId"
+        "description": "CLICK_THROUGH_EVENT_TAG, IMPRESSION_IMAGE_EVENT_TAG, IMPRESSION_JAVASCRIPT_EVENT_TAG",
+        "name": "type",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "url",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "urlEscapeLevels",
+        "type": "INT64",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "eventTags", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

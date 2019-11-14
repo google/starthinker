@@ -6,7 +6,7 @@
   "tasks":[
     { "dcm_api":{
       "auth":"user",
-      "endpoints":["accounts", "subaccounts", "accountUserProfiles", "advertisers", "campaigns", "sites", "userRoles", "reports"],
+      "endpoints":["accounts", "subaccounts", "accountUserProfiles", "advertisers", "campaigns", "sites", "userRoles"],
       "accounts":{
         "single_cell":true,
         "values":{"field":{ "name":"account_ids", "kind":"integer_list", "default":[] }}

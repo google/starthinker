@@ -18,7 +18,7 @@
 
 DCM_Field_Lookup = {
   "Video_Unmutes":"INTEGER",
-  "Zip_Postal_Code":"INTEGER",
+  "Zip_Postal_Code":"STRING",
   "Path_Length":"INTEGER",
   "Measurable_Impressions_For_Audio":"INTEGER",
   "Average_Interaction_Time":"FLOAT",

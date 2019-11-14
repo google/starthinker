@@ -18,432 +18,432 @@
 
 placementGroup_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "comment"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "primaryPlacementId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "campaignId"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "advertiserId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "directorySiteId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "PLACEMENT_PACKAGE, PLACEMENT_ROADBLOCK", 
-    "name": "placementGroupType"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "accountId"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "archived", 
+    "description": "",
+    "name": "accountId",
+    "type": "INT64",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "type": "INT64", 
-    "name": "childPlacementIds", 
+    "description": "",
+    "name": "advertiserId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "name": "archived",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "campaignId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "name": "childPlacementIds",
+    "type": "INT64",
     "mode": "REPEATED"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "contentCategoryId"
-  }, 
+    "description": "",
+    "name": "comment",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "externalId"
-  }, 
+    "description": "",
+    "name": "contentCategoryId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   [
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
-    }
-  ], 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
-    }
-  ], 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
-    }
-  ], 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "time"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "siteId"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "placementStrategyId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "subaccountId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "time"
-    }
-  ], 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "DATE", 
-      "description": "", 
-      "name": "startDate"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "DATE", 
-      "description": "", 
-      "name": "endDate"
-    }, 
-    {
-      "type": "BOOLEAN", 
-      "name": "flighted", 
+      "description": "",
+      "name": "time",
+      "type": "INT64",
       "mode": "NULLABLE"
-    }, 
+    }
+  ],
+  {
+    "description": "",
+    "name": "directorySiteId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
     {
-      "type": "BOOLEAN", 
-      "name": "disregardOverdelivery", 
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
       "mode": "NULLABLE"
-    }, 
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "CAP_COST_CUMULATIVE, CAP_COST_MONTHLY, CAP_COST_NONE", 
-      "name": "capCostOption"
-    }, 
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "externalId",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "time",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "PLACEMENT_PACKAGE, PLACEMENT_ROADBLOCK",
+    "name": "placementGroupType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "placementStrategyId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "CAP_COST_CUMULATIVE, CAP_COST_MONTHLY, CAP_COST_NONE",
+      "name": "capCostOption",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "disregardOverdelivery",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "endDate",
+      "type": "DATE",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "flighted",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "floodlightActivityId",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "pricingPeriods",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "units"
-        }, 
+          "description": "",
+          "name": "endDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "rateOrCostNanos"
-        }, 
+          "description": "",
+          "name": "pricingComment",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "startDate"
-        }, 
+          "description": "",
+          "name": "rateOrCostNanos",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "endDate"
-        }, 
+          "description": "",
+          "name": "startDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "pricingComment"
+          "description": "",
+          "name": "units",
+          "type": "INT64",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "pricingPeriods", 
-      "mode": "REPEATED"
-    }, 
+      ]
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "PRICING_TYPE_CPA, PRICING_TYPE_CPC, PRICING_TYPE_CPM, PRICING_TYPE_CPM_ACTIVEVIEW, PRICING_TYPE_FLAT_RATE_CLICKS, PRICING_TYPE_FLAT_RATE_IMPRESSIONS", 
-      "name": "pricingType"
-    }, 
+      "description": "PRICING_TYPE_CPA, PRICING_TYPE_CPC, PRICING_TYPE_CPM, PRICING_TYPE_CPM_ACTIVEVIEW, PRICING_TYPE_FLAT_RATE_CLICKS, PRICING_TYPE_FLAT_RATE_IMPRESSIONS",
+      "name": "pricingType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "DATE", 
-      "description": "", 
-      "name": "testingStartDate"
-    }, 
+      "description": "",
+      "name": "startDate",
+      "type": "DATE",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "floodlightActivityId"
+      "description": "",
+      "name": "testingStartDate",
+      "type": "DATE",
+      "mode": "NULLABLE"
     }
-  ]
+  ],
+  {
+    "description": "",
+    "name": "primaryPlacementId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "siteId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "subaccountId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  }
 ]

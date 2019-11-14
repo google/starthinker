@@ -18,15 +18,15 @@
 
 frequencyCap_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "duration"
-  }, 
+    "description": "",
+    "name": "duration",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "impressions"
+    "description": "",
+    "name": "impressions",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

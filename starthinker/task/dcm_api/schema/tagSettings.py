@@ -18,13 +18,13 @@
 
 tagSettings_Schema = [
   {
-    "type": "BOOLEAN", 
-    "name": "dynamicTagEnabled", 
+    "name": "dynamicTagEnabled",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "type": "BOOLEAN", 
-    "name": "imageTagEnabled", 
+    "name": "imageTagEnabled",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
   }
 ]

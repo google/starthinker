@@ -18,483 +18,483 @@
 
 campaignsListResponse_Schema = [
   {
+    "name": "campaigns",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "comment"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "DATE", 
-        "description": "", 
-        "name": "startDate"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "DATE", 
-        "description": "", 
-        "name": "endDate"
-      }, 
+        "description": "",
+        "name": "accountId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "clickThroughUrlSuffix"
-        }, 
+          "description": "",
+          "name": "clickThroughUrl",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "type": "BOOLEAN", 
-          "name": "overrideInheritedSuffix", 
+          "description": "",
+          "name": "creativeBundleId",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "enabled",
+          "type": "BOOLEAN",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "overrideClickThroughUrl",
+          "type": "BOOLEAN",
           "mode": "NULLABLE"
         }
-      ], 
+      ],
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "advertiserId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "defaultLandingPageId"
-      }, 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "value"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "dimensionName"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "etag"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-          "name": "matchType"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "id"
-        }
-      ], 
-      {
+        "name": "additionalCreativeOptimizationConfigurations",
+        "type": "RECORD",
+        "mode": "REPEATED",
         "fields": [
           {
-            "type": "BOOLEAN", 
-            "name": "enabled", 
+            "description": "",
+            "name": "id",
+            "type": "INT64",
             "mode": "NULLABLE"
-          }, 
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "id"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "eventTagOverrides", 
-        "mode": "REPEATED"
-      }, 
-      [
-        {
-          "fields": [
-            {
-              "mode": "NULLABLE", 
-              "type": "INT64", 
-              "description": "", 
-              "name": "floodlightActivityId"
-            }, 
-            [
-              {
-                "mode": "NULLABLE", 
-                "type": "STRING", 
-                "description": "", 
-                "name": "kind"
-              }, 
-              {
-                "mode": "NULLABLE", 
-                "type": "STRING", 
-                "description": "", 
-                "name": "value"
-              }, 
-              {
-                "mode": "NULLABLE", 
-                "type": "STRING", 
-                "description": "", 
-                "name": "dimensionName"
-              }, 
-              {
-                "mode": "NULLABLE", 
-                "type": "STRING", 
-                "description": "", 
-                "name": "etag"
-              }, 
-              {
-                "mode": "NULLABLE", 
-                "type": "STRING", 
-                "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-                "name": "matchType"
-              }, 
-              {
-                "mode": "NULLABLE", 
-                "type": "STRING", 
-                "description": "", 
-                "name": "id"
-              }
-            ], 
-            {
-              "mode": "NULLABLE", 
-              "type": "INT64", 
-              "description": "", 
-              "name": "weight"
-            }
-          ], 
-          "type": "RECORD", 
-          "name": "optimizationActivitys", 
-          "mode": "REPEATED"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "CLICK, POST_CLICK, POST_CLICK_AND_IMPRESSION, POST_IMPRESSION, VIDEO_COMPLETION", 
-          "name": "optimizationModel"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "id"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
-        }
-      ], 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "accountId"
-      }, 
-      {
-        "type": "STRING", 
-        "name": "traffickerEmails", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "archived", 
-        "mode": "NULLABLE"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "externalId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "advertiserGroupId"
-      }, 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "value"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "dimensionName"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "etag"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-          "name": "matchType"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "id"
-        }
-      ], 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "billingInvoiceCode"
-      }, 
-      {
-        "type": "INT64", 
-        "name": "creativeGroupIds", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "fields": [
+            "description": "",
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
           {
+            "name": "optimizationActivitys",
+            "type": "RECORD",
+            "mode": "REPEATED",
             "fields": [
               {
-                "mode": "NULLABLE", 
-                "type": "INT64", 
-                "description": "", 
-                "name": "floodlightActivityId"
-              }, 
+                "description": "",
+                "name": "floodlightActivityId",
+                "type": "INT64",
+                "mode": "NULLABLE"
+              },
               [
                 {
-                  "mode": "NULLABLE", 
-                  "type": "STRING", 
-                  "description": "", 
-                  "name": "kind"
-                }, 
+                  "description": "",
+                  "name": "dimensionName",
+                  "type": "STRING",
+                  "mode": "NULLABLE"
+                },
                 {
-                  "mode": "NULLABLE", 
-                  "type": "STRING", 
-                  "description": "", 
-                  "name": "value"
-                }, 
+                  "description": "",
+                  "name": "etag",
+                  "type": "STRING",
+                  "mode": "NULLABLE"
+                },
                 {
-                  "mode": "NULLABLE", 
-                  "type": "STRING", 
-                  "description": "", 
-                  "name": "dimensionName"
-                }, 
+                  "description": "",
+                  "name": "id",
+                  "type": "STRING",
+                  "mode": "NULLABLE"
+                },
                 {
-                  "mode": "NULLABLE", 
-                  "type": "STRING", 
-                  "description": "", 
-                  "name": "etag"
-                }, 
+                  "description": "",
+                  "name": "kind",
+                  "type": "STRING",
+                  "mode": "NULLABLE"
+                },
                 {
-                  "mode": "NULLABLE", 
-                  "type": "STRING", 
-                  "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-                  "name": "matchType"
-                }, 
+                  "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+                  "name": "matchType",
+                  "type": "STRING",
+                  "mode": "NULLABLE"
+                },
                 {
-                  "mode": "NULLABLE", 
-                  "type": "STRING", 
-                  "description": "", 
-                  "name": "id"
+                  "description": "",
+                  "name": "value",
+                  "type": "STRING",
+                  "mode": "NULLABLE"
                 }
-              ], 
+              ],
               {
-                "mode": "NULLABLE", 
-                "type": "INT64", 
-                "description": "", 
-                "name": "weight"
+                "description": "",
+                "name": "weight",
+                "type": "INT64",
+                "mode": "NULLABLE"
               }
-            ], 
-            "type": "RECORD", 
-            "name": "optimizationActivitys", 
-            "mode": "REPEATED"
-          }, 
+            ]
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "CLICK, POST_CLICK, POST_CLICK_AND_IMPRESSION, POST_IMPRESSION, VIDEO_COMPLETION", 
-            "name": "optimizationModel"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "id"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "name"
+            "description": "CLICK, POST_CLICK, POST_CLICK_AND_IMPRESSION, POST_IMPRESSION, VIDEO_COMPLETION",
+            "name": "optimizationModel",
+            "type": "STRING",
+            "mode": "NULLABLE"
           }
-        ], 
-        "type": "RECORD", 
-        "name": "additionalCreativeOptimizationConfigurations", 
-        "mode": "REPEATED"
-      }, 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "time"
-        }
-      ], 
-      [
-        {
-          "type": "BOOLEAN", 
-          "name": "overrideInheritedEventTag", 
-          "mode": "NULLABLE"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "defaultClickThroughEventTagId"
-        }
-      ], 
-      [
-        {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "creativeBundleId"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "clickThroughUrl"
-        }, 
-        {
-          "type": "BOOLEAN", 
-          "name": "enabled", 
-          "mode": "NULLABLE"
-        }, 
-        {
-          "type": "BOOLEAN", 
-          "name": "overrideClickThroughUrl", 
-          "mode": "NULLABLE"
-        }
-      ], 
+        ]
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "subaccountId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "nielsenOcrEnabled", 
+        "description": "",
+        "name": "advertiserGroupId",
+        "type": "INT64",
         "mode": "NULLABLE"
-      }, 
+      },
+      {
+        "description": "",
+        "name": "advertiserId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       [
         {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "time"
+          "description": "",
+          "name": "dimensionName",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "etag",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+          "name": "matchType",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "value",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
+      ],
       {
+        "name": "archived",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "audienceSegmentGroups",
+        "type": "RECORD",
+        "mode": "REPEATED",
         "fields": [
           {
+            "name": "audienceSegments",
+            "type": "RECORD",
+            "mode": "REPEATED",
             "fields": [
               {
-                "mode": "NULLABLE", 
-                "type": "INT64", 
-                "description": "", 
-                "name": "allocation"
-              }, 
+                "description": "",
+                "name": "allocation",
+                "type": "INT64",
+                "mode": "NULLABLE"
+              },
               {
-                "mode": "NULLABLE", 
-                "type": "INT64", 
-                "description": "", 
-                "name": "id"
-              }, 
+                "description": "",
+                "name": "id",
+                "type": "INT64",
+                "mode": "NULLABLE"
+              },
               {
-                "mode": "NULLABLE", 
-                "type": "STRING", 
-                "description": "", 
-                "name": "name"
+                "description": "",
+                "name": "name",
+                "type": "STRING",
+                "mode": "NULLABLE"
               }
-            ], 
-            "type": "RECORD", 
-            "name": "audienceSegments", 
-            "mode": "REPEATED"
-          }, 
+            ]
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "id"
-          }, 
+            "description": "",
+            "name": "id",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "name"
+            "description": "",
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
           }
-        ], 
-        "type": "RECORD", 
-        "name": "audienceSegmentGroups", 
+        ]
+      },
+      {
+        "description": "",
+        "name": "billingInvoiceCode",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      [
+        {
+          "description": "",
+          "name": "clickThroughUrlSuffix",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "overrideInheritedSuffix",
+          "type": "BOOLEAN",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "description": "",
+        "name": "comment",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      [
+        {
+          "description": "",
+          "name": "time",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "name": "creativeGroupIds",
+        "type": "INT64",
+        "mode": "REPEATED"
+      },
+      [
+        {
+          "description": "",
+          "name": "id",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "optimizationActivitys",
+          "type": "RECORD",
+          "mode": "REPEATED",
+          "fields": [
+            {
+              "description": "",
+              "name": "floodlightActivityId",
+              "type": "INT64",
+              "mode": "NULLABLE"
+            },
+            [
+              {
+                "description": "",
+                "name": "dimensionName",
+                "type": "STRING",
+                "mode": "NULLABLE"
+              },
+              {
+                "description": "",
+                "name": "etag",
+                "type": "STRING",
+                "mode": "NULLABLE"
+              },
+              {
+                "description": "",
+                "name": "id",
+                "type": "STRING",
+                "mode": "NULLABLE"
+              },
+              {
+                "description": "",
+                "name": "kind",
+                "type": "STRING",
+                "mode": "NULLABLE"
+              },
+              {
+                "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+                "name": "matchType",
+                "type": "STRING",
+                "mode": "NULLABLE"
+              },
+              {
+                "description": "",
+                "name": "value",
+                "type": "STRING",
+                "mode": "NULLABLE"
+              }
+            ],
+            {
+              "description": "",
+              "name": "weight",
+              "type": "INT64",
+              "mode": "NULLABLE"
+            }
+          ]
+        },
+        {
+          "description": "CLICK, POST_CLICK, POST_CLICK_AND_IMPRESSION, POST_IMPRESSION, VIDEO_COMPLETION",
+          "name": "optimizationModel",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ],
+      [
+        {
+          "description": "",
+          "name": "defaultClickThroughEventTagId",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "overrideInheritedEventTag",
+          "type": "BOOLEAN",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "description": "",
+        "name": "defaultLandingPageId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "endDate",
+        "type": "DATE",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "eventTagOverrides",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "name": "enabled",
+            "type": "BOOLEAN",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "id",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "description": "",
+        "name": "externalId",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      [
+        {
+          "description": "",
+          "name": "dimensionName",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "etag",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+          "name": "matchType",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "value",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      [
+        {
+          "description": "",
+          "name": "time",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        }
+      ],
+      {
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "nielsenOcrEnabled",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "startDate",
+        "type": "DATE",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "subaccountId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "traffickerEmails",
+        "type": "STRING",
         "mode": "REPEATED"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "campaigns", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "nextPageToken"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
+    "description": "",
+    "name": "nextPageToken",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

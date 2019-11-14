@@ -18,86 +18,86 @@
 
 pricingSchedule_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "DATE", 
-    "description": "", 
-    "name": "startDate"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "DATE", 
-    "description": "", 
-    "name": "endDate"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "flighted", 
+    "description": "CAP_COST_CUMULATIVE, CAP_COST_MONTHLY, CAP_COST_NONE",
+    "name": "capCostOption",
+    "type": "STRING",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "type": "BOOLEAN", 
-    "name": "disregardOverdelivery", 
+    "name": "disregardOverdelivery",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "CAP_COST_CUMULATIVE, CAP_COST_MONTHLY, CAP_COST_NONE", 
-    "name": "capCostOption"
-  }, 
+    "description": "",
+    "name": "endDate",
+    "type": "DATE",
+    "mode": "NULLABLE"
+  },
   {
+    "name": "flighted",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "floodlightActivityId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "pricingPeriods",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "units"
-      }, 
+        "description": "",
+        "name": "endDate",
+        "type": "DATE",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "rateOrCostNanos"
-      }, 
+        "description": "",
+        "name": "pricingComment",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "DATE", 
-        "description": "", 
-        "name": "startDate"
-      }, 
+        "description": "",
+        "name": "rateOrCostNanos",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "DATE", 
-        "description": "", 
-        "name": "endDate"
-      }, 
+        "description": "",
+        "name": "startDate",
+        "type": "DATE",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "pricingComment"
+        "description": "",
+        "name": "units",
+        "type": "INT64",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "pricingPeriods", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "PRICING_TYPE_CPA, PRICING_TYPE_CPC, PRICING_TYPE_CPM, PRICING_TYPE_CPM_ACTIVEVIEW, PRICING_TYPE_FLAT_RATE_CLICKS, PRICING_TYPE_FLAT_RATE_IMPRESSIONS", 
-    "name": "pricingType"
-  }, 
+    "description": "PRICING_TYPE_CPA, PRICING_TYPE_CPC, PRICING_TYPE_CPM, PRICING_TYPE_CPM_ACTIVEVIEW, PRICING_TYPE_FLAT_RATE_CLICKS, PRICING_TYPE_FLAT_RATE_IMPRESSIONS",
+    "name": "pricingType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "DATE", 
-    "description": "", 
-    "name": "testingStartDate"
-  }, 
+    "description": "",
+    "name": "startDate",
+    "type": "DATE",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "floodlightActivityId"
+    "description": "",
+    "name": "testingStartDate",
+    "type": "DATE",
+    "mode": "NULLABLE"
   }
 ]

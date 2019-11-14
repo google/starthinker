@@ -19,38 +19,38 @@
 richMediaExitOverride_Schema = [
   [
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "computedClickThroughUrl"
-    }, 
+      "description": "",
+      "name": "computedClickThroughUrl",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "customClickThroughUrl"
-    }, 
+      "description": "",
+      "name": "customClickThroughUrl",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "landingPageId"
-    }, 
+      "name": "defaultLandingPage",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
     {
-      "type": "BOOLEAN", 
-      "name": "defaultLandingPage", 
+      "description": "",
+      "name": "landingPageId",
+      "type": "INT64",
       "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
-    "type": "BOOLEAN", 
-    "name": "enabled", 
+    "name": "enabled",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "exitId"
+    "description": "",
+    "name": "exitId",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

@@ -21,7 +21,7 @@ from datetime import datetime
 
 from starthinker.util.project import project
 from starthinker.util.dbm import report_file, report_clean, report_to_rows, DBM_CHUNKSIZE, sdf_read, report_to_list
-from starthinker.util.bigquery import rows_to_table, field_list_to_schema
+from starthinker.util.bigquery import rows_to_table, make_schema
 
 BUDGET_SEGMENTS = 'Budget Segments'
 IO_ID = 'Io Id'
@@ -46,8 +46,8 @@ def monthly_budget_mover():
 	new_sdf,changes = apply_category_budgets(sdf, category_budget_deltas, categories)
 
 	# Set Schemas for BQ tables
-	schema = field_list_to_schema(new_sdf[0])
-	schema_changes = field_list_to_schema(['Io Id','Category','Old Value','Delta','New Value'])
+	schema = make_schema(new_sdf[0])
+	schema_changes = make_schema(['Io Id','Category','Old Value','Delta','New Value'])
 	
 	# Write old sdf to table
 	rows_to_table(project.task['auth'], project.id, project.task['out']['dataset'], project.task['out']['old_sdf_table_name'], sdf, schema, skip_rows=1, disposition='WRITE_TRUNCATE')

@@ -17,430 +17,430 @@
 ###########################################################################
 
 compatibleFields_Schema = [
+  [
+    {
+      "name": "breakdown",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "fields": [
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ]
+    },
+    {
+      "name": "dimensionFilters",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "fields": [
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "metrics",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "fields": [
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ]
+    },
+    {
+      "name": "overlapMetrics",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "fields": [
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "dimensionFilters",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "fields": [
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ]
+    },
+    {
+      "name": "dimensions",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "fields": [
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "metrics",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "fields": [
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ]
+    }
+  ],
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   [
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
+      "name": "conversionDimensions",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "dimensions", 
-      "mode": "REPEATED"
-    }, 
+      ]
+    },
     {
+      "name": "customFloodlightVariables",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "reachByFrequencyMetrics", 
-      "mode": "REPEATED"
-    }, 
+      ]
+    },
     {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "metrics",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "pivotedActivityMetrics", 
-      "mode": "REPEATED"
-    }, 
+      ]
+    },
     {
+      "name": "perInteractionDimensions",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "dimensionFilters", 
-      "mode": "REPEATED"
-    }, 
-    {
-      "fields": [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
-        }
-      ], 
-      "type": "RECORD", 
-      "name": "metrics", 
-      "mode": "REPEATED"
+      ]
     }
-  ], 
+  ],
   [
     {
+      "name": "dimensionFilters",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "metrics", 
-      "mode": "REPEATED"
-    }, 
+      ]
+    },
     {
+      "name": "dimensions",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "perInteractionDimensions", 
-      "mode": "REPEATED"
-    }, 
+      ]
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
+      "name": "metrics",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "conversionDimensions", 
-      "mode": "REPEATED"
-    }, 
+      ]
+    },
     {
+      "name": "pivotedActivityMetrics",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "customFloodlightVariables", 
-      "mode": "REPEATED"
+      ]
+    },
+    {
+      "name": "reachByFrequencyMetrics",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "fields": [
+        {
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ]
     }
-  ], 
+  ],
   [
     {
+      "name": "dimensionFilters",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "breakdown", 
-      "mode": "REPEATED"
-    }, 
+      ]
+    },
     {
+      "name": "dimensions",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "metrics", 
-      "mode": "REPEATED"
-    }, 
+      ]
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
     {
+      "name": "metrics",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "overlapMetrics", 
-      "mode": "REPEATED"
-    }, 
+      ]
+    },
     {
+      "name": "pivotedActivityMetrics",
+      "type": "RECORD",
+      "mode": "REPEATED",
       "fields": [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
+          "description": "",
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ], 
-      "type": "RECORD", 
-      "name": "dimensionFilters", 
-      "mode": "REPEATED"
-    }
-  ], 
-  [
-    {
-      "fields": [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
-        }
-      ], 
-      "type": "RECORD", 
-      "name": "metrics", 
-      "mode": "REPEATED"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "fields": [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
-        }
-      ], 
-      "type": "RECORD", 
-      "name": "dimensionFilters", 
-      "mode": "REPEATED"
-    }, 
-    {
-      "fields": [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
-        }
-      ], 
-      "type": "RECORD", 
-      "name": "dimensions", 
-      "mode": "REPEATED"
-    }
-  ], 
-  [
-    {
-      "fields": [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
-        }
-      ], 
-      "type": "RECORD", 
-      "name": "metrics", 
-      "mode": "REPEATED"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
-    {
-      "fields": [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
-        }
-      ], 
-      "type": "RECORD", 
-      "name": "pivotedActivityMetrics", 
-      "mode": "REPEATED"
-    }, 
-    {
-      "fields": [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
-        }
-      ], 
-      "type": "RECORD", 
-      "name": "dimensionFilters", 
-      "mode": "REPEATED"
-    }, 
-    {
-      "fields": [
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
-        }
-      ], 
-      "type": "RECORD", 
-      "name": "dimensions", 
-      "mode": "REPEATED"
+      ]
     }
   ]
 ]

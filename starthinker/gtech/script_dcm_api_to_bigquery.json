@@ -17,14 +17,65 @@
   "tasks":[
     { "dcm_api":{
       "auth":"user",
-      "endpoints":["accounts", "subaccounts", "profiles", "advertisers", "campaigns", "sites", "roles", "reports"],
+      "endpoints":{"field":{ "name":"endpoint", "kind":"choice", "choices":[
+        "accountPermissionGroups",
+        "accountPermissions",
+        "accountUserProfiles",
+        "accounts",
+        "ads",
+        "advertiserGroups",
+        "advertiserLandingPages",
+        "advertisers",
+        "browsers",
+        "campaigns",
+        "changeLogs",
+        "cities",
+        "connectionTypes",
+        "contentCategories",
+        "countries",
+        "creativeFields",
+        "creativeGroups",
+        "creatives",
+        "directorySites",
+        "dynamicTargetingKeys",
+        "eventTags",
+        "files",
+        "floodlightActivities",
+        "floodlightActivityGroups",
+        "floodlightConfigurations",
+        "languages",
+        "metros",
+        "mobileApps",
+        "mobileCarriers",
+        "operatingSystemVersions",
+        "operatingSystems",
+        "placementGroups",
+        "placementStrategies",
+        "placements",
+        "platformTypes",
+        "postalCodes",
+        "projects",
+        "regions",
+        "remarketingLists",
+        "reports",
+        "sites",
+        "sizes",
+        "subaccounts",
+        "targetableRemarketingLists",
+        "targetingTemplates",
+        "userprofiles",
+        "userRolePermissionGroups",
+        "userRolePermissions",
+        "userRoles",
+        "videoFormats"
+      ], "default":"" }},
       "accounts":{
         "single_cell":true,
-        "values":{"field":{ "name":"cm_accounts", "kind":"integer_list", "order":2, "default":"", "description":"Comma separated DCM account ids." }}
+        "values":{"field":{ "name":"accounts", "kind":"integer_list", "order":2, "default":"", "description":"Comma separated DCM account ids." }}
       },
       "out":{
         "auth":"service",
-        "dataset":{"field":{ "name":"dataset_dataset", "kind":"string", "order":1, "default":"", "description":"Google BigQuery dataset to create tables in." }}
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Google BigQuery dataset to create tables in." }}
       }
     }}
   ]

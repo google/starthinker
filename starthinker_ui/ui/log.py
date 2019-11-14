@@ -147,8 +147,8 @@ def log_put(event, severity, job=None, text=None):
     body['entries'][0]["jsonPayload"] = job_buffer
 
   project.initialize(_service=UI_SERVICE, _project=UI_PROJECT)
-  API_StackDriver("service").entries().write(body=body).execute()
-
+  try: API_StackDriver("service").entries().write(body=body).execute()
+  except: print('LOG EVENT ERROR')
 
 def log_get(recipe_id=[], timezone='America/Los_Angeles', days=1):
   """Returns last actionable job run for a specific recipe or all recipes.

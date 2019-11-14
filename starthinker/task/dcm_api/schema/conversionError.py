@@ -18,21 +18,21 @@
 
 conversionError_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "INTERNAL, INVALID_ARGUMENT, NOT_FOUND, PERMISSION_DENIED",
+    "name": "code",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "INTERNAL, INVALID_ARGUMENT, NOT_FOUND, PERMISSION_DENIED", 
-    "name": "code"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "message"
+    "description": "",
+    "name": "message",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

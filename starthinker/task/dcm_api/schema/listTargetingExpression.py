@@ -18,9 +18,9 @@
 
 listTargetingExpression_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "expression"
+    "description": "",
+    "name": "expression",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

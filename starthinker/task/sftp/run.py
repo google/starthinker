@@ -24,10 +24,27 @@ import os
 import csv
 
 from starthinker.util.project import project
-from starthinker.util.bigquery import io_to_table, field_list_to_schema
-from starthinker.util.bigquery.file_processor import FileProcessor
+from starthinker.util.bigquery import io_to_table, make_schema
 
-processor = FileProcessor()
+def clean_csv(input_file, output_file_name, num_fields, header=True, append_to_lines=''):
+  if os.path.isfile(output_file_name):
+    os.remove(output_file_name)
+
+  output_file = open(output_file_name, 'w')
+
+  for line in input_file:
+    if header:
+      header = False
+    elif len(line) > 1:
+      line = line.strip()
+      while line.count(',') < (num_fields - 1):
+        line += ','
+      output_file.write(line + append_to_lines + '\n')
+    else:
+      break
+
+  output_file.close()
+
 
 # loop all parameters and replace with values, for lists turn them into strings
 def query_parameters(query, parameters):
@@ -75,9 +92,9 @@ def sftp():
     reader = csv.reader(input_file)
     header = next(reader)
     input_file.seek(0)
-    schema = field_list_to_schema(header)
+    schema = make_schema(header)
     output_file_name = '/tmp/%s.csv' % str(uuid.uuid1())
-    processor.clean_csv(input_file, output_file_name, len(header), header=True)
+    clean_csv(input_file, output_file_name, len(header), header=True)
     input_file.close()
 
     output_file = open(output_file_name, 'rb')

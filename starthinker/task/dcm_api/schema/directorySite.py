@@ -18,126 +18,126 @@
 
 directorySite_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "name": "active",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
-  }, 
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   [
     {
-      "type": "BOOLEAN", 
-      "name": "interstitialPlacementAccepted", 
+      "description": "",
+      "name": "dimensionName",
+      "type": "STRING",
       "mode": "NULLABLE"
-    }, 
+    },
     {
-      "type": "BOOLEAN", 
-      "name": "activeViewOptOut", 
+      "description": "",
+      "name": "etag",
+      "type": "STRING",
       "mode": "NULLABLE"
-    }, 
+    },
     {
-      "type": "BOOLEAN", 
-      "name": "instreamVideoPlacementAccepted", 
+      "description": "",
+      "name": "id",
+      "type": "STRING",
       "mode": "NULLABLE"
-    }, 
+    },
+    {
+      "description": "",
+      "name": "kind",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+      "name": "matchType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "value",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "name": "inpageTagFormats",
+    "type": "STRING",
+    "mode": "REPEATED"
+  },
+  {
+    "name": "interstitialTagFormats",
+    "type": "STRING",
+    "mode": "REPEATED"
+  },
+  {
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "name": "activeViewOptOut",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
     [
       {
-        "type": "BOOLEAN", 
-        "name": "publisherPortalOnly", 
+        "description": "",
+        "name": "dfpNetworkCode",
+        "type": "STRING",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "dfpNetworkCode"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "pubPaidPlacementAccepted", 
+        "description": "",
+        "name": "dfpNetworkName",
+        "type": "STRING",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "type": "BOOLEAN", 
-        "name": "programmaticPlacementAccepted", 
+        "name": "programmaticPlacementAccepted",
+        "type": "BOOLEAN",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "dfpNetworkName"
+        "name": "pubPaidPlacementAccepted",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "publisherPortalOnly",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
       }
-    ]
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "url"
-  }, 
-  {
-    "type": "STRING", 
-    "name": "inpageTagFormats", 
-    "mode": "REPEATED"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
-  }, 
-  [
+    ],
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "kind"
-    }, 
+      "name": "instreamVideoPlacementAccepted",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "value"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "dimensionName"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "etag"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-      "name": "matchType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "id"
+      "name": "interstitialPlacementAccepted",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
-    "type": "BOOLEAN", 
-    "name": "active", 
+    "description": "",
+    "name": "url",
+    "type": "STRING",
     "mode": "NULLABLE"
-  }, 
-  {
-    "type": "STRING", 
-    "name": "interstitialTagFormats", 
-    "mode": "REPEATED"
   }
 ]

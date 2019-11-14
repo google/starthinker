@@ -18,236 +18,236 @@
 
 creativeRotation_Schema = [
   {
+    "name": "creativeAssignments",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "weight"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "sequence"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "applyEventTags", 
+        "name": "active",
+        "type": "BOOLEAN",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "fields": [
-          [
-            {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "computedClickThroughUrl"
-            }, 
-            {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "customClickThroughUrl"
-            }, 
-            {
-              "mode": "NULLABLE", 
-              "type": "INT64", 
-              "description": "", 
-              "name": "landingPageId"
-            }, 
-            {
-              "type": "BOOLEAN", 
-              "name": "defaultLandingPage", 
-              "mode": "NULLABLE"
-            }
-          ], 
-          {
-            "type": "BOOLEAN", 
-            "name": "enabled", 
-            "mode": "NULLABLE"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "exitId"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "richMediaExitOverrides", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "sslCompliant", 
+        "name": "applyEventTags",
+        "type": "BOOLEAN",
         "mode": "NULLABLE"
-      }, 
-      {
-        "fields": [
-          {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "CREATIVE_GROUP_ONE, CREATIVE_GROUP_TWO", 
-            "name": "creativeGroupNumber"
-          }, 
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "creativeGroupId"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "creativeGroupAssignments", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "fields": [
-          [
-            {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "computedClickThroughUrl"
-            }, 
-            {
-              "mode": "NULLABLE", 
-              "type": "STRING", 
-              "description": "", 
-              "name": "customClickThroughUrl"
-            }, 
-            {
-              "mode": "NULLABLE", 
-              "type": "INT64", 
-              "description": "", 
-              "name": "landingPageId"
-            }, 
-            {
-              "type": "BOOLEAN", 
-              "name": "defaultLandingPage", 
-              "mode": "NULLABLE"
-            }
-          ], 
-          {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "creativeId"
-          }
-        ], 
-        "type": "RECORD", 
-        "name": "companionCreativeOverrides", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "DATETIME", 
-        "description": "", 
-        "name": "startTime"
-      }, 
+      },
       [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "computedClickThroughUrl"
-        }, 
+          "description": "",
+          "name": "computedClickThroughUrl",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "customClickThroughUrl"
-        }, 
+          "description": "",
+          "name": "customClickThroughUrl",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "landingPageId"
-        }, 
+          "name": "defaultLandingPage",
+          "type": "BOOLEAN",
+          "mode": "NULLABLE"
+        },
         {
-          "type": "BOOLEAN", 
-          "name": "defaultLandingPage", 
+          "description": "",
+          "name": "landingPageId",
+          "type": "INT64",
           "mode": "NULLABLE"
         }
-      ], 
+      ],
       {
-        "type": "BOOLEAN", 
-        "name": "active", 
+        "name": "companionCreativeOverrides",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          [
+            {
+              "description": "",
+              "name": "computedClickThroughUrl",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
+            {
+              "description": "",
+              "name": "customClickThroughUrl",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
+            {
+              "name": "defaultLandingPage",
+              "type": "BOOLEAN",
+              "mode": "NULLABLE"
+            },
+            {
+              "description": "",
+              "name": "landingPageId",
+              "type": "INT64",
+              "mode": "NULLABLE"
+            }
+          ],
+          {
+            "description": "",
+            "name": "creativeId",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "creativeGroupAssignments",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "description": "",
+            "name": "creativeGroupId",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "CREATIVE_GROUP_ONE, CREATIVE_GROUP_TWO",
+            "name": "creativeGroupNumber",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "description": "",
+        "name": "creativeId",
+        "type": "INT64",
         "mode": "NULLABLE"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "creativeId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "DATETIME", 
-        "description": "", 
-        "name": "endTime"
-      }, 
+      },
       [
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "dimensionName",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "value"
-        }, 
+          "description": "",
+          "name": "etag",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "dimensionName"
-        }, 
+          "description": "",
+          "name": "id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "etag"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION", 
-          "name": "matchType"
-        }, 
+          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
+          "name": "matchType",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "id"
+          "description": "",
+          "name": "value",
+          "type": "STRING",
+          "mode": "NULLABLE"
         }
-      ]
-    ], 
-    "type": "RECORD", 
-    "name": "creativeAssignments", 
-    "mode": "REPEATED"
-  }, 
+      ],
+      {
+        "description": "",
+        "name": "endTime",
+        "type": "DATETIME",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "richMediaExitOverrides",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          [
+            {
+              "description": "",
+              "name": "computedClickThroughUrl",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
+            {
+              "description": "",
+              "name": "customClickThroughUrl",
+              "type": "STRING",
+              "mode": "NULLABLE"
+            },
+            {
+              "name": "defaultLandingPage",
+              "type": "BOOLEAN",
+              "mode": "NULLABLE"
+            },
+            {
+              "description": "",
+              "name": "landingPageId",
+              "type": "INT64",
+              "mode": "NULLABLE"
+            }
+          ],
+          {
+            "name": "enabled",
+            "type": "BOOLEAN",
+            "mode": "NULLABLE"
+          },
+          {
+            "description": "",
+            "name": "exitId",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "description": "",
+        "name": "sequence",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "sslCompliant",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "startTime",
+        "type": "DATETIME",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "weight",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      }
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "WEIGHT_STRATEGY_CUSTOM, WEIGHT_STRATEGY_EQUAL, WEIGHT_STRATEGY_HIGHEST_CTR, WEIGHT_STRATEGY_OPTIMIZED", 
-    "name": "weightCalculationStrategy"
-  }, 
+    "description": "",
+    "name": "creativeOptimizationConfigurationId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "creativeOptimizationConfigurationId"
-  }, 
+    "description": "CREATIVE_ROTATION_TYPE_RANDOM, CREATIVE_ROTATION_TYPE_SEQUENTIAL",
+    "name": "type",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "CREATIVE_ROTATION_TYPE_RANDOM, CREATIVE_ROTATION_TYPE_SEQUENTIAL", 
-    "name": "type"
+    "description": "WEIGHT_STRATEGY_CUSTOM, WEIGHT_STRATEGY_EQUAL, WEIGHT_STRATEGY_HIGHEST_CTR, WEIGHT_STRATEGY_OPTIMIZED",
+    "name": "weightCalculationStrategy",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

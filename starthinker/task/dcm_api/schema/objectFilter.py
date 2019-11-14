@@ -18,20 +18,20 @@
 
 objectFilter_Schema = [
   {
-    "type": "INT64", 
-    "name": "objectIds", 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "objectIds",
+    "type": "INT64",
     "mode": "REPEATED"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "ALL, ASSIGNED, NONE", 
-    "name": "status"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
+    "description": "ALL, ASSIGNED, NONE",
+    "name": "status",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

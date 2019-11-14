@@ -18,59 +18,59 @@
 
 placementsGenerateTagsResponse_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
+    "name": "placementTags",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
+        "description": "",
+        "name": "placementId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "tagDatas",
+        "type": "RECORD",
+        "mode": "REPEATED",
         "fields": [
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "clickTag"
-          }, 
+            "description": "",
+            "name": "adId",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "", 
-            "name": "impressionTag"
-          }, 
+            "description": "",
+            "name": "clickTag",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "creativeId"
-          }, 
+            "description": "",
+            "name": "creativeId",
+            "type": "INT64",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "INT64", 
-            "description": "", 
-            "name": "adId"
-          }, 
+            "description": "PLACEMENT_TAG_CLICK_COMMANDS, PLACEMENT_TAG_IFRAME_ILAYER, PLACEMENT_TAG_IFRAME_JAVASCRIPT, PLACEMENT_TAG_IFRAME_JAVASCRIPT_LEGACY, PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH, PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH_VAST_3, PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH_VAST_4, PLACEMENT_TAG_INTERNAL_REDIRECT, PLACEMENT_TAG_INTERSTITIAL_IFRAME_JAVASCRIPT, PLACEMENT_TAG_INTERSTITIAL_IFRAME_JAVASCRIPT_LEGACY, PLACEMENT_TAG_INTERSTITIAL_INTERNAL_REDIRECT, PLACEMENT_TAG_INTERSTITIAL_JAVASCRIPT, PLACEMENT_TAG_INTERSTITIAL_JAVASCRIPT_LEGACY, PLACEMENT_TAG_JAVASCRIPT, PLACEMENT_TAG_JAVASCRIPT_LEGACY, PLACEMENT_TAG_STANDARD, PLACEMENT_TAG_TRACKING, PLACEMENT_TAG_TRACKING_IFRAME, PLACEMENT_TAG_TRACKING_JAVASCRIPT",
+            "name": "format",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
           {
-            "mode": "NULLABLE", 
-            "type": "STRING", 
-            "description": "PLACEMENT_TAG_CLICK_COMMANDS, PLACEMENT_TAG_IFRAME_ILAYER, PLACEMENT_TAG_IFRAME_JAVASCRIPT, PLACEMENT_TAG_IFRAME_JAVASCRIPT_LEGACY, PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH, PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH_VAST_3, PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH_VAST_4, PLACEMENT_TAG_INTERNAL_REDIRECT, PLACEMENT_TAG_INTERSTITIAL_IFRAME_JAVASCRIPT, PLACEMENT_TAG_INTERSTITIAL_IFRAME_JAVASCRIPT_LEGACY, PLACEMENT_TAG_INTERSTITIAL_INTERNAL_REDIRECT, PLACEMENT_TAG_INTERSTITIAL_JAVASCRIPT, PLACEMENT_TAG_INTERSTITIAL_JAVASCRIPT_LEGACY, PLACEMENT_TAG_JAVASCRIPT, PLACEMENT_TAG_JAVASCRIPT_LEGACY, PLACEMENT_TAG_STANDARD, PLACEMENT_TAG_TRACKING, PLACEMENT_TAG_TRACKING_IFRAME, PLACEMENT_TAG_TRACKING_JAVASCRIPT", 
-            "name": "format"
+            "description": "",
+            "name": "impressionTag",
+            "type": "STRING",
+            "mode": "NULLABLE"
           }
-        ], 
-        "type": "RECORD", 
-        "name": "tagDatas", 
-        "mode": "REPEATED"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "placementId"
+        ]
       }
-    ], 
-    "type": "RECORD", 
-    "name": "placementTags", 
-    "mode": "REPEATED"
+    ]
   }
 ]

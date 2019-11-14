@@ -64,5 +64,5 @@ Conversion_Dimensions_Schema = [
   { "name":"State_Region", "type":"STRING", "mode":"NULLABLE" },
   { "name":"Tran_Value", "type":"STRING", "mode":"NULLABLE" },
   { "name":"U_Value", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Zip_Postal_Code", "type":"INTEGER", "mode":"NULLABLE" }
+  { "name":"Zip_Postal_Code", "type":"STRING", "mode":"NULLABLE" }
 ]

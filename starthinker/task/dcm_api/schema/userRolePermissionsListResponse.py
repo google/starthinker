@@ -18,46 +18,46 @@
 
 userRolePermissionsListResponse_Schema = [
   {
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "userRolePermissions",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "permissionGroupId"
-      }, 
+        "description": "ACCOUNT_ALWAYS, ACCOUNT_BY_DEFAULT, NOT_AVAILABLE_BY_DEFAULT, SUBACCOUNT_AND_ACCOUNT_ALWAYS, SUBACCOUNT_AND_ACCOUNT_BY_DEFAULT",
+        "name": "availability",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "ACCOUNT_ALWAYS, ACCOUNT_BY_DEFAULT, NOT_AVAILABLE_BY_DEFAULT, SUBACCOUNT_AND_ACCOUNT_ALWAYS, SUBACCOUNT_AND_ACCOUNT_BY_DEFAULT", 
-        "name": "availability"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
+        "description": "",
+        "name": "permissionGroupId",
+        "type": "INT64",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "userRolePermissions", 
-    "mode": "REPEATED"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
+    ]
   }
 ]

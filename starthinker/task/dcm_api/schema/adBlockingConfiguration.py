@@ -18,25 +18,25 @@
 
 adBlockingConfiguration_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "creativeBundleId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "clickThroughUrl"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "enabled", 
+    "description": "",
+    "name": "clickThroughUrl",
+    "type": "STRING",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "type": "BOOLEAN", 
-    "name": "overrideClickThroughUrl", 
+    "description": "",
+    "name": "creativeBundleId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "enabled",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "overrideClickThroughUrl",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
   }
 ]

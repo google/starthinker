@@ -18,26 +18,26 @@
 
 customViewabilityMetricConfiguration_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "timePercent"
-  }, 
+    "name": "audible",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "timeMillis"
-  }, 
+    "description": "",
+    "name": "timeMillis",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "viewabilityPercent"
-  }, 
+    "description": "",
+    "name": "timePercent",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "type": "BOOLEAN", 
-    "name": "audible", 
+    "description": "",
+    "name": "viewabilityPercent",
+    "type": "INT64",
     "mode": "NULLABLE"
   }
 ]

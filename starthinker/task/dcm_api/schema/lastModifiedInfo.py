@@ -18,9 +18,9 @@
 
 lastModifiedInfo_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "time"
+    "description": "",
+    "name": "time",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

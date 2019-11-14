@@ -18,14 +18,14 @@
 
 defaultClickThroughEventTagProperties_Schema = [
   {
-    "type": "BOOLEAN", 
-    "name": "overrideInheritedEventTag", 
+    "description": "",
+    "name": "defaultClickThroughEventTagId",
+    "type": "INT64",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "defaultClickThroughEventTagId"
+    "name": "overrideInheritedEventTag",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
   }
 ]

@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2018 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ def API_Retry(job, key=None, retries=5, wait=61):
       content = json.loads(e.content.decode())
       # already exists ( ignore benign )
       if content['error']['code'] == 409:
-        return
+        return None
       # permission denied ( won't change on retry so raise )
       elif content['error'].get('status') == 'PERMISSION_DENIED':
         raise
@@ -264,6 +264,10 @@ class API():
     self.function_kwargs = configuration.get('kwargs', {})
     self.iterate = configuration.get('iterate', False)
 
+    self.function = None
+    self.job = None
+    self.response = None
+
   # for debug purposes
   def __str__(self):
     return '%s.%s.%s' % (self.api, self.version, '.'.join(self.function_stack))
@@ -277,39 +281,38 @@ class API():
     return function_call
 
   # for calling function via string
-  def function(self, function_name):
+  def call(self, function_name):
     self.function_stack.append(function_name)
     return self
 
   # matches API execute with built in iteration and retry handlers
-  def execute(self, run=True):
+  def execute(self, run=True, iterate=True):
     # start building call sequence with service object
-    f = get_service(self.api, self.version, self.auth, uri_file=self.uri)
+    self.function = get_service(self.api, self.version, self.auth, uri_file=self.uri)
 
     # build calls along stack
     # do not call functions, as the abstract is necessary for iterator page next calls
     for f_n in self.function_stack:
-      #print(type(f), isinstance(f, Resource))
-      f = getattr(f if isinstance(f, Resource) else f(), f_n)
+      #print(type(self.function), isinstance(self.function, Resource))
+      self.function = getattr(self.function if isinstance(self.function, Resource) else self.function(), f_n)
 
     # for cases where job is handled manually, save the job
-    job = f(**self.function_kwargs)
+    self.job = self.function(**self.function_kwargs)
 
-    if run == True:
-      # pass arguments to the last function in the call chain
-      results = API_Retry(job)
+    if run:
+      self.response = API_Retry(self.job)
 
       # if paginated, automatically iterate
-      if ( self.iterate or (isinstance(results, dict) and 'nextPageToken' in results)):
-        return API_Iterator(f, self.function_kwargs, results)
+      if (iterate and (self.iterate or (isinstance(self.response, dict) and 'nextPageToken' in self.response))):
+        return API_Iterator(self.function, self.function_kwargs, self.response)
 
       # if not paginated, return object as is
       else:
-        return results
+        return self.response
 
     # if not run, just return job object ( for chunked upload for example )
     else:
-      return job
+      return self.job
 
 
   def upload(self, retries=5, wait=61):
@@ -505,6 +508,19 @@ def API_Cloud(auth, iterate=False):
 
   configuration = {
       'api':'cloudresourcemanager',
+      'version':'v1',
+      'auth':auth,
+      'iterate':iterate
+  }
+  return API(configuration)
+
+
+def API_Storage(auth, iterate=False):
+  """Cloud storage helper configuration Google API. Defines agreed upon version.
+  """
+
+  configuration = {
+      'api':'storage',
       'version':'v1',
       'auth':auth,
       'iterate':iterate

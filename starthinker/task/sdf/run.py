@@ -19,7 +19,7 @@
 
 from starthinker.util.project import project 
 from starthinker.util.dbm import sdf_read
-from starthinker.util.bigquery import create_table_if_not_exist, query_to_table, drop_table
+from starthinker.util.bigquery import table_create, query_to_table, drop_table
 from starthinker.task.sdf.schema.Lookup import SDF_Field_Lookup
 from starthinker.util.csv import column_header_sanitize, csv_to_rows
 from starthinker.util.data import put_rows, get_rows
@@ -49,7 +49,7 @@ def sdf():
 
     # Create the destination table
     destination_table = '%s_%s' % (project.task['out']['bigquery']['table'], file_type.lower())
-    create_table_if_not_exist(
+    table_create(
       project.task['auth'],
       project.id,
       project.task['out']['bigquery']['dataset'],
@@ -65,7 +65,7 @@ def sdf():
         table_suffix = '%s_%s' % (current_filter_id_iteration, file_type.lower())
         table_name = '%s%s' % (project.task['out']['bigquery']['table'], table_suffix)
         # Check to see if the table exists, if not create it
-        create_table_if_not_exist(
+        table_create(
           project.task['auth'],
           project.id,
           project.task['out']['bigquery']['dataset'],

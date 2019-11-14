@@ -52,10 +52,6 @@ def worker_ping(worker_uid, recipe_uids):
     Recipe.objects.filter(worker_uid=worker_uid, id__in=recipe_uids).update(worker_utm=utc_milliseconds())
 
 
-def worker_check(worker_uid):
-  return set(Recipe.objects.filter(worker_uid=worker_uid).values_list('id', flat=True))
-
-
 def worker_status(worker_uid, recipe_uid, script, instance, hour, event, stdout, stderr):
   try:
     job = Recipe.objects.get(worker_uid=worker_uid, id=recipe_uid)
@@ -72,40 +68,38 @@ def worker_pull(worker_uid, jobs=1):
     - jobs ( integer ) - number of jobs to pull
   '''
 
-  # if the worker cannot do any work, do nothing
-  if jobs <= 0: return
+  jobs_all = []
+  jobs_new = []
 
-  tasks = []
   worker_utm = utc_milliseconds()
   worker_lookback = worker_utm - JOB_LOOKBACK_MS
   worker_recheck = worker_utm - JOB_RECHECK_MS
 
-  with transaction.atomic():
+  if jobs:
 
-    # every half hour put jobs back in rotation so worker can trigger get_status logic, triggers status at 24 hour mark
-    Recipe.objects.filter(active=True, manual=False, worker_utm__lt=worker_recheck).select_for_update(skip_locked=True).update(job_done=False)
+    with transaction.atomic():
 
-    #for r in Recipe.objects.all().values():
-    #  print('R', r)
+      # every half hour put jobs back in rotation so worker can trigger get_status logic, triggers status at 24 hour mark
+      Recipe.objects.filter(active=True, manual=False, worker_utm__lt=worker_recheck).select_for_update(skip_locked=True).update(job_done=False)
 
-    # find recipes that are available but have not been pinged recently to this worker
-    where = Recipe.objects.filter(
-      job_done=False,
-      active=True,
-      worker_utm__lt=worker_lookback,
-    ).select_for_update(skip_locked=True).order_by('worker_utm').values_list('id', flat=True)[:jobs]
+      # find recipes that are available but have not been pinged recently from all workers ( pulls from pool )
+      where = Recipe.objects.filter(
+        job_done=False,
+        active=True,
+        worker_utm__lt=worker_lookback,
+      ).select_for_update(skip_locked=True).order_by('worker_utm').values_list('id', flat=True)[:jobs]
 
-    #print('W', where)
+      # mark those recipes as belonging to this worker
+      Recipe.objects.filter(id__in=where).update(worker_uid=worker_uid, worker_utm=worker_utm)
 
-    # mark those recipes as belonging to this worker
-    Recipe.objects.filter(id__in=where).update(worker_uid=worker_uid, worker_utm=worker_utm)
+  # find all recipes that belong to this worker and check if they have new tasks
+  for job in Recipe.objects.filter(job_done=False, active=True, worker_uid=worker_uid): 
+    jobs_all.append(job.id)
+    task = job.get_task() # also checks if job is done
+    if job.worker_utm == worker_utm and task: # jobs with current timestamp are new ( odds of a ping matching this worker_utm? ), isolate evens and odds?
+      jobs_new.append(task)
 
-    # find all recipes that belong to this worker and check if they have tasks
-    for job in Recipe.objects.filter(worker_uid=worker_uid, worker_utm=worker_utm):
-      task = job.get_task()
-      if task: tasks.append(task)
-
-  return tasks
+  return jobs_all, jobs_new
 
 
 def make_non_blocking(file_io):
@@ -135,20 +129,37 @@ class Workers():
 
   def pull(self):
     self.lock_thread.acquire()
-    jobs = worker_pull(self.uid, jobs=self.available())
+
+    # get jobs for this worker
+    jobs_all, jobs_new = worker_pull(self.uid, jobs=self.available())
+
+    # remove all lost jobs from ping
+    jobs_remove = []
+    last_job = len(self.jobs) 
+    while last_job > 0:
+      last_job -= 1
+      if self.jobs[last_job]['recipe']['setup']['uuid'] not in jobs_all:
+        jobs_remove.append(self.jobs[last_job])
+        del self.jobs[last_job]
+
+    # add all new jobs to ping
+    self.jobs.extend(jobs_new)
+
+    # allow pings to resume with up to date list
     self.lock_thread.release()
 
-    if jobs:
-      for job in jobs: 
-        self.run(job)
-    
+    # shut down all removed jobs
+    try:
+      for job in jobs_remove:
+        if job.get('job', {}).get('process'): job['job']['process'].kill()
+        self.cleanup(job)
+        log_job_cancel(job)
+    except Exception as e:
+      log_manager_error(traceback.format_exc())
+
 
   def run(self, job, force=False):
    
-    self.lock_thread.acquire()
-    self.jobs.append(job)
-    self.lock_thread.release()
-
     job['recipe']['setup'].setdefault('timeout_seconds', self.timeout_seconds)
 
     job['job'] = {
@@ -179,35 +190,6 @@ class Workers():
     make_non_blocking(job['job']['process'].stdout)
     make_non_blocking(job['job']['process'].stderr)
 
-    worker_status(
-      job['job']['worker'],
-      job['recipe']['setup']['uuid'],
-      job['script'],
-      job['instance'],
-      job['hour'],
-      'JOB_START',
-      "",
-      ""
-    )
-    log_job_start(job)
-
-
-  def check(self):
-    self.lock_thread.acquire()
-    try:
-      recipes = worker_check(self.uid)
-      last_job = len(self.jobs) - 1
-      while last_job >= 0:
-        if self.jobs[last_job]['recipe']['setup']['uuid'] not in recipes:
-          self.jobs[last_job]['job']['process'].kill()
-          self.cleanup(self.jobs[last_job])
-          log_job_cancel(self.jobs[last_job])
-          del self.jobs[last_job]
-        last_job -= 1
-    except Exception as e:
-      log_manager_error(traceback.format_exc())
-    self.lock_thread.release()
-
 
   def cleanup(self, job):
     filename = '%s/%s.json' % (settings.UI_CRON, job['job']['id'])
@@ -228,50 +210,60 @@ class Workers():
 
   def poll(self):
 
-    self.lock_thread.acquire()
-
     for job in self.jobs:
 
       # if job changes state, this is set, then sent to database
       status = None
  
-      # read any incremental data from the process ( made non-blocking at construction )
-      stdout = job['job']['process'].stdout.read()
-      if stdout is not None: stdout = stdout.decode()
-      stderr = job['job']['process'].stderr.read()
-      if stderr is not None: stderr = stderr.decode()
+      # start job if it is not already running
+      if 'job' not in job: 
 
-      # if process still running, check timeout or ping keep alive 
-      poll = job['job']['process'].poll()
-      if poll is None:
+        self.run(job)
+        log_job_start(job)
+        status = 'JOB_START'
+        stdout = None
+        stderr = None
 
-        # check if task is a timeout 
-        if (datetime.utcnow() - job['job']['utc']).total_seconds() > job['recipe']['setup']['timeout_seconds']:
-          status = 'JOB_TIMEOUT'
-          job['job']['process'].kill()
-          self.cleanup(job)
-          log_job_timeout(job)
-          job['job']['process'] = None
-
-        # otherwise task is running, update stdout and stderr if present
-        elif stdout or stderr:
-          status = 'JOB_START'
-
-      # if process has return code, check if task is complete or error
+      # if already running check status
       else:
-        self.cleanup(job)
 
-        # if error scrap whole worker and flag error
-        if poll != 0: 
-          status = 'JOB_ERROR'
-          log_job_error(job)
-          job['job']['process'] = None
+        # read any incremental data from the process ( made non-blocking at construction )
+        stdout = job['job']['process'].stdout.read()
+        if stdout is not None: stdout = stdout.decode()
+        stderr = job['job']['process'].stderr.read()
+        if stderr is not None: stderr = stderr.decode()
 
-        # if success, pop task off the stack and flag success
-        else: 
-          status = 'JOB_END'
-          log_job_end(job)
-          job['job']['process'] = None
+        # if process still running, check timeout or ping keep alive 
+        poll = job['job']['process'].poll()
+        if poll is None:
+
+          # check if task is a timeout 
+          if (datetime.utcnow() - job['job']['utc']).total_seconds() > job['recipe']['setup']['timeout_seconds']:
+            status = 'JOB_TIMEOUT'
+            job['job']['process'].kill()
+            self.cleanup(job)
+            log_job_timeout(job)
+            job['job']['process'] = None
+
+          # otherwise task is running, update stdout and stderr if present
+          elif stdout or stderr:
+            status = 'JOB_START'
+
+        # if process has return code, check if task is complete or error
+        else:
+          self.cleanup(job)
+
+          # if error scrap whole worker and flag error
+          if poll != 0: 
+            status = 'JOB_ERROR'
+            log_job_error(job)
+            job['job']['process'] = None
+
+          # if success, pop task off the stack and flag success
+          else: 
+            status = 'JOB_END'
+            log_job_end(job)
+            job['job']['process'] = None
 
       # if status is set, send it to the database
       if status:
@@ -287,9 +279,10 @@ class Workers():
         )
 
     # remove all workers without a process, they are done
-    self.jobs = [job for job in self.jobs if job['job']['process'] is not None]
-
-    self.lock_thread.release()
+    if self.jobs:
+      self.lock_thread.acquire()
+      self.jobs = [job for job in self.jobs if job['job']['process'] is not None]
+      self.lock_thread.release()
 
     # if workers remain, return True
     return bool(self.jobs)
@@ -320,7 +313,7 @@ class Command(BaseCommand):
       '--jobs',
       action='store',
       dest='jobs',
-      default=5,
+      default=3,
       type=int,
       help='Maximum number of jobs simlutanelous processes to start within this worker.',
     )
@@ -379,11 +372,9 @@ class Command(BaseCommand):
 
       while MANAGER_ON:
         workers.pull()
-        time.sleep(1)
-        workers.check()
-        time.sleep(1)
+        time.sleep(JOB_INTERVAL_MS / 1000)
         workers.poll()
-        time.sleep(1)
+        time.sleep(JOB_INTERVAL_MS / 1000)
         if kwargs['test']: 
           MANAGER_ON = False
 

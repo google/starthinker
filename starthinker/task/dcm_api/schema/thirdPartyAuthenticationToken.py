@@ -18,15 +18,15 @@
 
 thirdPartyAuthenticationToken_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
-  }, 
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "value"
+    "description": "",
+    "name": "value",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

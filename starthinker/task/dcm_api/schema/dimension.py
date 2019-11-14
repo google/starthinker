@@ -18,15 +18,15 @@
 
 dimension_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

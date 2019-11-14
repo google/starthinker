@@ -239,5 +239,5 @@ Standard_Report_Dimensions_Schema = [
   { "name":"Video_Player_Size", "type":"STRING", "mode":"NULLABLE" },
   { "name":"Video_Prominence_Score", "type":"STRING", "mode":"NULLABLE" },
   { "name":"Week", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Zip_Postal_Code", "type":"INTEGER", "mode":"NULLABLE" }
+  { "name":"Zip_Postal_Code", "type":"STRING", "mode":"NULLABLE" }
 ]

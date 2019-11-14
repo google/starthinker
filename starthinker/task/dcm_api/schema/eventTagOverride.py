@@ -18,14 +18,14 @@
 
 eventTagOverride_Schema = [
   {
-    "type": "BOOLEAN", 
-    "name": "enabled", 
+    "name": "enabled",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

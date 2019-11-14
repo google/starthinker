@@ -18,15 +18,15 @@
 
 lookbackConfiguration_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "clickDuration"
-  }, 
+    "description": "",
+    "name": "clickDuration",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "postImpressionActivitiesDuration"
+    "description": "",
+    "name": "postImpressionActivitiesDuration",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

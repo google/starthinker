@@ -33,7 +33,7 @@ from jinja2 import Environment, FileSystemLoader
 from starthinker.util.project import project
 from starthinker.util.auth import get_service
 from starthinker.util.regexp import parse_dbm_report_id
-from starthinker.util.bigquery import bigquery_date
+from starthinker.util.csv import bigquery_date
 
 
 def report_request(auth, title, template_name, parameters, day=date.today()):

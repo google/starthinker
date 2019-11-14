@@ -18,76 +18,76 @@
 
 operatingSystemVersionsListResponse_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
+    "name": "operatingSystemVersions",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "majorVersion"
-      }, 
+        "description": "",
+        "name": "id",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "kind"
-      }, 
+        "description": "",
+        "name": "kind",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
+        "description": "",
+        "name": "majorVersion",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "id"
-      }, 
+        "description": "",
+        "name": "minorVersion",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       [
         {
-          "type": "BOOLEAN", 
-          "name": "mobile", 
+          "description": "",
+          "name": "dartId",
+          "type": "INT64",
           "mode": "NULLABLE"
-        }, 
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "dartId"
-        }, 
+          "name": "desktop",
+          "type": "BOOLEAN",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "kind"
-        }, 
+          "description": "",
+          "name": "kind",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
         {
-          "mode": "NULLABLE", 
-          "type": "STRING", 
-          "description": "", 
-          "name": "name"
-        }, 
+          "name": "mobile",
+          "type": "BOOLEAN",
+          "mode": "NULLABLE"
+        },
         {
-          "type": "BOOLEAN", 
-          "name": "desktop", 
+          "description": "",
+          "name": "name",
+          "type": "STRING",
           "mode": "NULLABLE"
         }
-      ], 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "minorVersion"
-      }
-    ], 
-    "type": "RECORD", 
-    "name": "operatingSystemVersions", 
-    "mode": "REPEATED"
+      ]
+    ]
   }
 ]

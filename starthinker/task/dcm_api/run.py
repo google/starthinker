@@ -79,13 +79,15 @@ def dcm_api_list(endpoint):
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
-    for item in API_DCM(project.task['auth'], iterate=True, internal=is_superuser).function(endpoint).list(**kwargs).execute():
+    for item in API_DCM(project.task['auth'], iterate=True, internal=is_superuser).call(endpoint).list(**kwargs).execute():
       yield item
 
 
 @project.from_parameters
 def dcm_api():
   if project.verbose: print('DCM API')
+
+  if isinstance(project.task['endpoints'], str): project.task['endpoints'] = [project.task['endpoints']]
 
   for endpoint in project.task['endpoints']:
     schema = DCM_Schema_Lookup[endpoint]

@@ -18,27 +18,27 @@
 
 flight_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "rateOrCost"
-  }, 
+    "description": "",
+    "name": "endDate",
+    "type": "DATE",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "DATE", 
-    "description": "", 
-    "name": "startDate"
-  }, 
+    "description": "",
+    "name": "rateOrCost",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "units"
-  }, 
+    "description": "",
+    "name": "startDate",
+    "type": "DATE",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "DATE", 
-    "description": "", 
-    "name": "endDate"
+    "description": "",
+    "name": "units",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

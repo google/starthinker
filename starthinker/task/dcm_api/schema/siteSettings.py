@@ -18,53 +18,53 @@
 
 siteSettings_Schema = [
   {
-    "type": "BOOLEAN", 
-    "name": "activeViewOptOut", 
+    "name": "activeViewOptOut",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "type": "BOOLEAN", 
-    "name": "videoActiveViewOptOutTemplate", 
+    "name": "adBlockingOptOut",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "type": "BOOLEAN", 
-    "name": "disableNewCookie", 
+    "name": "disableNewCookie",
+    "type": "BOOLEAN",
     "mode": "NULLABLE"
-  }, 
+  },
   [
     {
-      "type": "BOOLEAN", 
-      "name": "includeClickThroughUrls", 
+      "description": "",
+      "name": "additionalKeyValues",
+      "type": "STRING",
       "mode": "NULLABLE"
-    }, 
+    },
     {
-      "type": "BOOLEAN", 
-      "name": "includeClickTracking", 
+      "name": "includeClickThroughUrls",
+      "type": "BOOLEAN",
       "mode": "NULLABLE"
-    }, 
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "", 
-      "name": "additionalKeyValues"
-    }, 
+      "name": "includeClickTracking",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE"
+    },
     {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "GENERATE_SEPARATE_TAG_FOR_EACH_KEYWORD, IGNORE, PLACEHOLDER_WITH_LIST_OF_KEYWORDS", 
-      "name": "keywordOption"
+      "description": "GENERATE_SEPARATE_TAG_FOR_EACH_KEYWORD, IGNORE, PLACEHOLDER_WITH_LIST_OF_KEYWORDS",
+      "name": "keywordOption",
+      "type": "STRING",
+      "mode": "NULLABLE"
     }
-  ], 
+  ],
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "BOTH, DEFAULT, FLASH, HTML5", 
-    "name": "vpaidAdapterChoiceTemplate"
-  }, 
+    "name": "videoActiveViewOptOutTemplate",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
   {
-    "type": "BOOLEAN", 
-    "name": "adBlockingOptOut", 
+    "description": "BOTH, DEFAULT, FLASH, HTML5",
+    "name": "vpaidAdapterChoiceTemplate",
+    "type": "STRING",
     "mode": "NULLABLE"
   }
 ]

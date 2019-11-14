@@ -18,229 +18,229 @@
 
 inventoryItem_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "orderId"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "PLANNING_PLACEMENT_GROUP_TYPE_PACKAGE, PLANNING_PLACEMENT_GROUP_TYPE_ROADBLOCK", 
-      "name": "groupType"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "DATE", 
-      "description": "", 
-      "name": "startDate"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "DATE", 
-      "description": "", 
-      "name": "endDate"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "PLANNING_PLACEMENT_PRICING_TYPE_CLICKS, PLANNING_PLACEMENT_PRICING_TYPE_CPA, PLANNING_PLACEMENT_PRICING_TYPE_CPC, PLANNING_PLACEMENT_PRICING_TYPE_CPM, PLANNING_PLACEMENT_PRICING_TYPE_CPM_ACTIVEVIEW, PLANNING_PLACEMENT_PRICING_TYPE_FLAT_RATE_CLICKS, PLANNING_PLACEMENT_PRICING_TYPE_FLAT_RATE_IMPRESSIONS, PLANNING_PLACEMENT_PRICING_TYPE_IMPRESSIONS", 
-      "name": "pricingType"
-    }, 
-    {
-      "fields": [
-        {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "rateOrCost"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "startDate"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "INT64", 
-          "description": "", 
-          "name": "units"
-        }, 
-        {
-          "mode": "NULLABLE", 
-          "type": "DATE", 
-          "description": "", 
-          "name": "endDate"
-        }
-      ], 
-      "type": "RECORD", 
-      "name": "flights", 
-      "mode": "REPEATED"
-    }, 
-    {
-      "mode": "NULLABLE", 
-      "type": "STRING", 
-      "description": "PLANNING_PLACEMENT_CAP_COST_TYPE_CUMULATIVE, PLANNING_PLACEMENT_CAP_COST_TYPE_MONTHLY, PLANNING_PLACEMENT_CAP_COST_TYPE_NONE", 
-      "name": "capCostType"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "negotiationChannelId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "subaccountId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "estimatedClickThroughRate"
-  }, 
-  [
-    {
-      "mode": "NULLABLE", 
-      "type": "INT64", 
-      "description": "", 
-      "name": "time"
-    }
-  ], 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "estimatedConversionRate"
-  }, 
-  {
-    "type": "BOOLEAN", 
-    "name": "inPlan", 
+    "description": "",
+    "name": "accountId",
+    "type": "INT64",
     "mode": "NULLABLE"
-  }, 
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "advertiserId"
-  }, 
-  {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "siteId"
-  }, 
-  {
+    "name": "adSlots",
+    "type": "RECORD",
+    "mode": "REPEATED",
     "fields": [
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "comment"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "linkedPlacementId"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "", 
-        "name": "name"
-      }, 
-      {
-        "type": "BOOLEAN", 
-        "name": "primary", 
+        "description": "",
+        "name": "comment",
+        "type": "STRING",
         "mode": "NULLABLE"
-      }, 
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "height"
-      }, 
+        "description": "APP, APP_INTERSTITIAL, DISPLAY, DISPLAY_INTERSTITIAL, IN_STREAM_AUDIO, IN_STREAM_VIDEO",
+        "name": "compatibility",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "INT64", 
-        "description": "", 
-        "name": "width"
-      }, 
+        "description": "",
+        "name": "height",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "PLANNING_PAYMENT_SOURCE_TYPE_AGENCY_PAID, PLANNING_PAYMENT_SOURCE_TYPE_PUBLISHER_PAID", 
-        "name": "paymentSourceType"
-      }, 
+        "description": "",
+        "name": "linkedPlacementId",
+        "type": "INT64",
+        "mode": "NULLABLE"
+      },
       {
-        "mode": "NULLABLE", 
-        "type": "STRING", 
-        "description": "APP, APP_INTERSTITIAL, DISPLAY, DISPLAY_INTERSTITIAL, IN_STREAM_AUDIO, IN_STREAM_VIDEO", 
-        "name": "compatibility"
+        "description": "",
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "PLANNING_PAYMENT_SOURCE_TYPE_AGENCY_PAID, PLANNING_PAYMENT_SOURCE_TYPE_PUBLISHER_PAID",
+        "name": "paymentSourceType",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "primary",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "description": "",
+        "name": "width",
+        "type": "INT64",
+        "mode": "NULLABLE"
       }
-    ], 
-    "type": "RECORD", 
-    "name": "adSlots", 
-    "mode": "REPEATED"
-  }, 
+    ]
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "projectId"
-  }, 
+    "description": "",
+    "name": "advertiserId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "rfpId"
-  }, 
+    "description": "",
+    "name": "contentCategoryId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "PLANNING_PLACEMENT_TYPE_CREDIT, PLANNING_PLACEMENT_TYPE_REGULAR", 
-    "name": "type"
-  }, 
+    "description": "",
+    "name": "estimatedClickThroughRate",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "contentCategoryId"
-  }, 
+    "description": "",
+    "name": "estimatedConversionRate",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "placementStrategyId"
-  }, 
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "accountId"
+    "name": "inPlan",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "",
+      "name": "time",
+      "type": "INT64",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "negotiationChannelId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "orderId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "placementStrategyId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  [
+    {
+      "description": "PLANNING_PLACEMENT_CAP_COST_TYPE_CUMULATIVE, PLANNING_PLACEMENT_CAP_COST_TYPE_MONTHLY, PLANNING_PLACEMENT_CAP_COST_TYPE_NONE",
+      "name": "capCostType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "endDate",
+      "type": "DATE",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "flights",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "fields": [
+        {
+          "description": "",
+          "name": "endDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "rateOrCost",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "startDate",
+          "type": "DATE",
+          "mode": "NULLABLE"
+        },
+        {
+          "description": "",
+          "name": "units",
+          "type": "INT64",
+          "mode": "NULLABLE"
+        }
+      ]
+    },
+    {
+      "description": "PLANNING_PLACEMENT_GROUP_TYPE_PACKAGE, PLANNING_PLACEMENT_GROUP_TYPE_ROADBLOCK",
+      "name": "groupType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "PLANNING_PLACEMENT_PRICING_TYPE_CLICKS, PLANNING_PLACEMENT_PRICING_TYPE_CPA, PLANNING_PLACEMENT_PRICING_TYPE_CPC, PLANNING_PLACEMENT_PRICING_TYPE_CPM, PLANNING_PLACEMENT_PRICING_TYPE_CPM_ACTIVEVIEW, PLANNING_PLACEMENT_PRICING_TYPE_FLAT_RATE_CLICKS, PLANNING_PLACEMENT_PRICING_TYPE_FLAT_RATE_IMPRESSIONS, PLANNING_PLACEMENT_PRICING_TYPE_IMPRESSIONS",
+      "name": "pricingType",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "description": "",
+      "name": "startDate",
+      "type": "DATE",
+      "mode": "NULLABLE"
+    }
+  ],
+  {
+    "description": "",
+    "name": "projectId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "rfpId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "siteId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "",
+    "name": "subaccountId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "PLANNING_PLACEMENT_TYPE_CREDIT, PLANNING_PLACEMENT_TYPE_REGULAR",
+    "name": "type",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

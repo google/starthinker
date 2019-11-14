@@ -18,51 +18,51 @@
 
 siteContact_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "firstName"
-  }, 
+    "description": "",
+    "name": "address",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "title"
-  }, 
+    "description": "SALES_PERSON, TRAFFICKER",
+    "name": "contactType",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "lastName"
-  }, 
+    "description": "",
+    "name": "email",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "address"
-  }, 
+    "description": "",
+    "name": "firstName",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "email"
-  }, 
+    "description": "",
+    "name": "id",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "phone"
-  }, 
+    "description": "",
+    "name": "lastName",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "SALES_PERSON, TRAFFICKER", 
-    "name": "contactType"
-  }, 
+    "description": "",
+    "name": "phone",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "id"
+    "description": "",
+    "name": "title",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

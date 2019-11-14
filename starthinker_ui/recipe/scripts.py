@@ -97,10 +97,10 @@ class Script:
     return self.script.get('script', {}).get('product', 'Other')
 
   def get_description(self, variables = {}):
-    return text_set_fields(self.script['script'].get('description', ''), variables)
+    return text_set_fields(self.script.get('script', {}).get('description', ''), variables)
 
   def get_instructions(self, variables = {}):
-    return [text_set_fields(instruction, variables) for instruction in self.script['script'].get('instructions', [])]
+    return [text_set_fields(instruction, variables) for instruction in self.script.get('script', {}).get('instructions', [])]
 
   def get_authors(self):
     return set(deepcopy(self.script.get('script', {}).get('authors', [])))

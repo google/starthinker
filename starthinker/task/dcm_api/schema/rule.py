@@ -18,21 +18,21 @@
 
 rule_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "assetId"
-  }, 
+    "description": "",
+    "name": "assetId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "targetingTemplateId"
-  }, 
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
+    "description": "",
+    "name": "targetingTemplateId",
+    "type": "INT64",
+    "mode": "NULLABLE"
   }
 ]

@@ -18,27 +18,27 @@
 
 dynamicTargetingKey_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "kind"
-  }, 
+    "description": "",
+    "name": "kind",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "", 
-    "name": "name"
-  }, 
+    "description": "",
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "objectId"
-  }, 
+    "description": "",
+    "name": "objectId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "OBJECT_AD, OBJECT_ADVERTISER, OBJECT_CREATIVE, OBJECT_PLACEMENT", 
-    "name": "objectType"
+    "description": "OBJECT_AD, OBJECT_ADVERTISER, OBJECT_CREATIVE, OBJECT_PLACEMENT",
+    "name": "objectType",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

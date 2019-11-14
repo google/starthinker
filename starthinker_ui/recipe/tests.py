@@ -28,7 +28,7 @@ from django.test.testcases import TransactionTestCase
 from starthinker_ui.account.tests import account_create
 from starthinker_ui.project.tests import project_create
 from starthinker_ui.recipe.models import Recipe, utc_milliseconds, utc_to_timezone, JOB_INTERVAL_MS, JOB_LOOKBACK_MS, time_ago
-from starthinker_ui.recipe.management.commands.job_worker import Workers, worker_pull, worker_status, worker_check, worker_ping
+from starthinker_ui.recipe.management.commands.job_worker import Workers, worker_pull, worker_status, worker_ping
 
 # test recipe done to undone
 
@@ -236,7 +236,7 @@ class StatusTest(TestCase):
 
     for task in status['tasks']:
 
-      job = worker_pull('SAMPLE_WORKER', jobs=1)
+      ignore, job = worker_pull('SAMPLE_WORKER', jobs=1)
       self.assertEqual(len(job), 1)
       job = job[0]
 
@@ -377,8 +377,13 @@ class ManualTest(TestCase):
 
 
   def test_worker(self):
+
+    # no jobs
+    ignore, job = worker_pull('SAMPLE_WORKER', jobs=0)
+    self.assertEqual(len(job), 0)
+
     # manual mode ( without force always returns no tasks )
-    job = worker_pull('SAMPLE_WORKER', jobs=1)
+    ignore, job = worker_pull('SAMPLE_WORKER', jobs=1)
     self.assertEqual(len(job), 0)
     
     # advance time, since current jobs need to expire, artificially ping to keep out of queue
@@ -390,7 +395,7 @@ class ManualTest(TestCase):
 
     for task in status['tasks']:
 
-      job = worker_pull('SAMPLE_WORKER', jobs=1)
+      ignore, job = worker_pull('SAMPLE_WORKER', jobs=1)
       self.assertEqual(len(job), 1)
       job = job[0]
 
@@ -476,7 +481,7 @@ class RecipeViewTest(TestCase):
     self.assertEqual(resp.content, b'RECIPE STARTED')
 
     # start a recipe run to test interrupt
-    jobs = worker_pull('SAMPLE_WORKER', 1)
+    ignore, jobs = worker_pull('SAMPLE_WORKER', 1)
     self.assertEqual(len(jobs), 1)
 
     resp = self.client.post('/recipe/start/', {'reference':self.recipe_new.reference})
@@ -496,7 +501,7 @@ class RecipeViewTest(TestCase):
     self.assertTrue(self.recipe_new.job_done)
 
     # recipe is stopped and cannot be pulled
-    jobs = worker_pull('SAMPLE_WORKER', 1)
+    ignore, jobs = worker_pull('SAMPLE_WORKER', 1)
     self.assertEqual(len(jobs), 0)
 
     # start a recipe run to test interrupt
@@ -511,7 +516,7 @@ class RecipeViewTest(TestCase):
     sleep((JOB_LOOKBACK_MS * 2) / 1000.0)
 
     # recipe is started and can be pulled
-    jobs = worker_pull('SAMPLE_WORKER', 1)
+    ignore, jobs = worker_pull('SAMPLE_WORKER', 1)
     self.assertEqual(len(jobs), 1)
 
     resp = self.client.post('/recipe/stop/', {'reference':self.recipe_new.reference})
@@ -525,7 +530,7 @@ class RecipeViewTest(TestCase):
     sleep((JOB_LOOKBACK_MS * 2) / 1000.0)
 
     # recipe is stopped and cannot be pulled
-    jobs = worker_pull('SAMPLE_WORKER', 1)
+    ignore, jobs = worker_pull('SAMPLE_WORKER', 1)
     self.assertEqual(len(jobs), 0)
 
 
@@ -637,21 +642,21 @@ class JobTest(TransactionTestCase):
   def test_single_pulls(self):
 
     # first pull new task 1
-    jobs = worker_pull('SAMPLE_WORKER', 1)
+    ignore, jobs = worker_pull('SAMPLE_WORKER', 1)
     self.assertEqual(jobs[0]['recipe']['setup']['uuid'], self.RECIPE_NEW)
     self.assertEqual(jobs[0]['script'], 'hello')
     self.assertEqual(jobs[0]['instance'], 1)
     self.assertEqual(jobs[0]['hour'], 0)
 
     # second pull expired task 1
-    jobs = worker_pull('SAMPLE_WORKER', 1)
+    ignore, jobs = worker_pull('SAMPLE_WORKER', 1)
     self.assertEqual(jobs[0]['recipe']['setup']['uuid'], self.RECIPE_EXPIRED)
     self.assertEqual(jobs[0]['script'], 'hello')
     self.assertEqual(jobs[0]['instance'], 1)
     self.assertEqual(jobs[0]['hour'], 0)
 
     # third pull is blank since all recipes have been pulled from
-    jobs = worker_pull('SAMPLE_WORKER', 1)
+    ignore, jobs = worker_pull('SAMPLE_WORKER', 1)
     self.assertEqual(len(jobs), 0)
 
     # expire all workers except OTHER_WORKER / RECIPE_RUNNING
@@ -659,7 +664,7 @@ class JobTest(TransactionTestCase):
     worker_ping('OTHER_WORKER', [self.RECIPE_RUNNING])
 
     # get oldest expired job first ( redo task since it never completes )
-    jobs = worker_pull('SAMPLE_WORKER', 1)
+    ignore, jobs = worker_pull('SAMPLE_WORKER', 1)
     self.assertEqual(jobs[0]['recipe']['setup']['uuid'], self.RECIPE_NEW)
     self.assertEqual(jobs[0]['script'], 'hello')
     self.assertEqual(jobs[0]['instance'], 1)
@@ -669,7 +674,7 @@ class JobTest(TransactionTestCase):
   def test_multiple_pulls(self):
 
     # pull all jobs at once
-    jobs = worker_pull('TEST_WORKER', 5)
+    ignore, jobs = worker_pull('TEST_WORKER', 5)
     self.assertEqual(len(jobs), 2)
 
     self.assertEqual(jobs[0]['recipe']['setup']['uuid'], self.RECIPE_NEW)
@@ -729,7 +734,7 @@ class JobTest(TransactionTestCase):
     worker_ping('OTHER_WORKER', [self.RECIPE_RUNNING])
 
     # all jobs either run by other workers or done
-    jobs = worker_pull('TEST_WORKER', 5)
+    ignore, jobs = worker_pull('TEST_WORKER', 5)
     self.assertEqual(len(jobs), 0)
 
 
@@ -947,21 +952,24 @@ class JobCancelTest(TransactionTestCase):
       timezone = 'America/Los_Angeles',
       tasks = json.dumps([
         { "tag": "hello",
-          "values": { "sleep":15 }, # seconds
+          "values": { "sleep":10 }, # seconds
           "sequence": 1
         },
       ]),
     )
 
-    self.workers = Workers('TEST_WORKER', 5, 15)
+    self.workers = Workers('TEST_WORKER', 5, 60)
 
   def tearDown(self):
+    # if your threads are locking in the test, comment out the line below, that will allow the error to be printed before deadlocking
     self.workers.shutdown()
 
   def test_job_cancel(self):
 
     self.workers.pull()
     self.assertEqual(len(self.workers.jobs), 1)
+
+    self.workers.poll()
     job = self.workers.jobs[0]
     self.assertEqual(job['job']['worker'], 'TEST_WORKER')
     self.assertEqual(job['recipe']['setup']['uuid'], self.recipe.uid())
@@ -969,16 +977,10 @@ class JobCancelTest(TransactionTestCase):
     self.assertEqual(job['instance'], 1)
     self.assertIsNone(job['job']['process'].poll())
 
-    self.workers.poll()
-
-    self.assertEqual(worker_check('TEST_WORKER'), set([self.recipe.id]))
-    self.workers.check()
-    self.assertEqual(worker_check('TEST_WORKER'), set([self.recipe.id]))
-
     self.recipe.cancel()
 
-    self.assertEqual(worker_check('TEST_WORKER'), set([]))
-    self.workers.check()
+    self.assertEqual(len(self.workers.jobs), 1)
+    self.workers.pull()
     self.assertEqual(len(self.workers.jobs), 0)
 
     self.recipe.refresh_from_db()
@@ -987,3 +989,92 @@ class JobCancelTest(TransactionTestCase):
     status = self.recipe.get_status()
     self.assertTrue(status['tasks'][0]['done'])
     self.assertEqual(status['tasks'][0]['event'], 'JOB_CANCEL')
+
+
+  def test_job_cancel_early(self):
+
+    self.workers.pull()
+    self.assertEqual(len(self.workers.jobs), 1)
+
+    self.recipe.cancel()
+
+    self.assertEqual(len(self.workers.jobs), 1)
+    self.workers.pull()
+    self.assertEqual(len(self.workers.jobs), 0)
+
+    self.recipe.refresh_from_db()
+    self.assertTrue(self.recipe.job_done)
+
+    status = self.recipe.get_status()
+    self.assertTrue(status['tasks'][0]['done'])
+    self.assertEqual(status['tasks'][0]['event'], 'JOB_CANCEL')
+
+
+class WorkerTest(TransactionTestCase):
+
+  def setUp(self):
+    self.account = account_create()
+    self.project = project_create()
+
+    now_tz = utc_to_timezone(datetime.utcnow(), 'America/Los_Angeles')
+
+    self.job_done = Recipe.objects.create(
+      account = self.account,
+      project = self.project,
+      name = 'RECIPE_DONE',
+      active = True,
+      week = json.dumps(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']),
+      hour = json.dumps([0]),
+      timezone = 'America/Los_Angeles',
+      tasks = json.dumps([
+        { "tag": "hello", 
+          "values": {"say_first":"Hi Once", "say_second":"Hi Twice", "sleep":0},
+          "sequence": 1
+        },
+      ]),
+      job_status = json.dumps({
+        "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        "date_tz": str(now_tz.date()),
+        "force": True,
+        "tasks": [
+          {
+            "instance": 1,
+            "order": 0,
+            "event": "JOB_END",
+            "utc":str(datetime.utcnow()),
+            "script": "hello",
+            "hour": now_tz.hour,
+            "stdout":"",
+            "stderr": "",
+            "done": True
+          }, {
+            "instance": 2,
+            "order": 0,
+            "event": "JOB_END",
+            "utc":str(datetime.utcnow()),
+            "script": "hello",
+            "hour": now_tz.hour,
+            "stdout":"",
+            "stderr": "",
+            "done": True
+          }
+        ]
+      }),
+
+      job_done = False,
+      worker_uid = "SAMPLE_WORKER",
+      worker_utm = utc_milliseconds() - (JOB_LOOKBACK_MS * 2)
+    )
+    self.RECIPE_DONE = self.job_done.uid()
+
+  def test_half_done(self):
+
+    jobs_all, jobs_new = worker_pull('SAMPLE_WORKER', 1)
+    self.assertEqual(jobs_new, [])
+    self.assertEqual(jobs_all, [self.RECIPE_DONE])
+
+    # first pull marked job as done, now it wont show up
+
+    jobs_all, jobs_new = worker_pull('SAMPLE_WORKER', 1)
+    self.assertEqual(jobs_new, [])
+    self.assertEqual(jobs_all, [])

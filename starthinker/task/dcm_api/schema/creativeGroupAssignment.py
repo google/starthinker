@@ -18,15 +18,15 @@
 
 creativeGroupAssignment_Schema = [
   {
-    "mode": "NULLABLE", 
-    "type": "STRING", 
-    "description": "CREATIVE_GROUP_ONE, CREATIVE_GROUP_TWO", 
-    "name": "creativeGroupNumber"
-  }, 
+    "description": "",
+    "name": "creativeGroupId",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
   {
-    "mode": "NULLABLE", 
-    "type": "INT64", 
-    "description": "", 
-    "name": "creativeGroupId"
+    "description": "CREATIVE_GROUP_ONE, CREATIVE_GROUP_TWO",
+    "name": "creativeGroupNumber",
+    "type": "STRING",
+    "mode": "NULLABLE"
   }
 ]

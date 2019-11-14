@@ -31,8 +31,8 @@ from starthinker_ui.project.models import Project
 from starthinker_ui.recipe.scripts import Script
 
 
-JOB_INTERVAL_MS = float(800) # milliseconds ( must be float for fraction math to work )
-JOB_LOOKBACK_MS = 3 * JOB_INTERVAL_MS #  2.4 seconds
+JOB_INTERVAL_MS = float(800) # milliseconds 
+JOB_LOOKBACK_MS = 5 * JOB_INTERVAL_MS # 4 seconds ( must guarantee to span several pings )
 JOB_RECHECK_MS = 30 * 60 * 1000 # 30 minutes
 
 
