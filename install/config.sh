@@ -182,7 +182,6 @@ read_multiline() {
 setup_gcloud() {
 
   if [ "$(command -v gcloud)" == "" ]; then
-  then
     echo ""
     echo "----------------------------------------"
     echo "MISSING gcloud"
@@ -284,7 +283,6 @@ setup_project() {
     echo "Using Existing Project ID"
   fi
 
-  setup_gcloud;
   gcloud config set project "${STARTHINKER_PROJECT}";
 
   echo "Done"
@@ -434,7 +432,7 @@ install_virtualenv_darwin() {
   if [ "$(command -v python3)" == "" ]; then
     echo ""
     echo "----------------------------------------"
-    echo "MISSING python3
+    echo "MISSING python3"
     echo "----------------------------------------"
     echo ""
     echo "Please install: https://www.python.org/downloads/release/python-380/"
@@ -446,7 +444,7 @@ install_virtualenv_darwin() {
   if [ "$(command -v pip3)" == "" ]; then
     echo ""
     echo "----------------------------------------"
-    echo "MISSING pip3
+    echo "MISSING pip3"
     echo "----------------------------------------"
     echo ""
     echo "Please install: https://evansdianga.com/install-pip-osx/"
@@ -454,18 +452,18 @@ install_virtualenv_darwin() {
     echo ""
     exit 1
   else
-    pip3 install pip --upgrade --quiet --user
+    pip3 install pip --upgrade --quiet --user;
   fi
 
   if [ "$(command -v virtualenv)" == "" ]; then
-    pip3 install virtualenv --quiet --user
+    pip3 install virtualenv --quiet --user;
   fi
 
 }
 
 
 install_virtualenv_linux() {
-  sudo apt-get install gcc python3-dev python3-pip -qq;;
+  sudo apt-get install gcc python3-dev python3-pip -qq;
   if [ "$(command -v virtualenv)" == "" ]; then
     sudo apt-get install virtualenv -qq 
   fi
