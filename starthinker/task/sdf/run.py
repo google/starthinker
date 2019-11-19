@@ -71,14 +71,16 @@ def sdf():
           project.task['out']['bigquery']['dataset'],
           table_name)
 
-        if 'bigquery' in project.task['out']:
-          project.task['out']['bigquery']['schema'] = schema
-          project.task['out']['bigquery']['skip_rows'] = 0
+        out_obj = project.task['out']
+
+        if 'bigquery' in out_obj:
+          out_obj['bigquery']['schema'] = schema
+          out_obj['bigquery']['skip_rows'] = 0
+          out_obj['bigquery']['table'] = table_name
 
         put_rows(project.task['auth'], 
-          project.task['out'], 
-          rows 
-          )
+          out_obj, 
+          rows)
 
         table_names.append(table_name)
 

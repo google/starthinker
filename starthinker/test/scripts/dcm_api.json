@@ -214,51 +214,6 @@
           { "name":"contactType", "type":"STRING" }
         ]
       }
-    }},
-    { "test": {
-      "auth":"user",
-      "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Reports",
-        "schema":[
-          { "name":"profileId", "type":"INTEGER" },
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"subaccountId", "type":"INTEGER" },
-          { "name":"reportId", "type":"INTEGER" },
-          { "name":"name", "type":"STRING" },
-          { "name":"type", "type":"STRING" },
-          { "name":"format", "type":"STRING" },
-          { "name":"lastModifiedTime", "type":"TIMESTAMP" },
-          { "name":"criteria_startDate", "type":"DATE" },
-          { "name":"criteria_endDate", "type":"DATE" },
-          { "name":"criteria_relativeDateRange", "type":"STRING" },
-          { "name":"schedule_active", "type":"BOOLEAN" },
-          { "name":"schedule_startDate", "type":"DATE" },
-          { "name":"schedule_expirationDate", "type":"DATE" },
-          { "name":"schedule_runsOnDayOfMonth", "type":"STRING" },
-          { "name":"schedule_repeats", "type":"STRING" },
-          { "name":"schedule_every", "type":"STRING" },
-          { "name":"schedule_repeatsOnWeekDays", "type":"STRING" }
-        ]
-      }
-    }},
-    { "test": {
-      "auth":"user",
-      "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Report_Deliveries",
-        "schema":[
-          { "name":"profileId", "type":"INTEGER" },
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"subaccountId", "type":"INTEGER" },
-          { "name":"reportId", "type":"INTEGER" },
-          { "name":"emailOwner", "type":"STRING" },
-          { "name":"emailOwnerDeliveryType", "type":"STRING" },
-          { "name":"message", "type":"STRING" },
-          { "name":"email", "type":"STRING" },
-          { "name":"deliveryType", "type":"STRING" }
-        ]
-      }
     }}
   ]
 }

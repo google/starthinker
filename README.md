@@ -26,6 +26,7 @@ building advertising solutions.
 ## Where Is The Documentation?
 
 Most directories contain a README.me file. These are instructions for how to use the code in that directory.
+For getting started with and [tutorials/README.md](deploying StarThinker solutions see the tutorials).
 General structure of the code is:
 
 - [/install](install/) - Scripts for installing and deploying StarThinker.
