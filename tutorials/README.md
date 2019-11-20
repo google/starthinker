@@ -7,9 +7,10 @@ a StarThinker instance.
 
 - [Enterprise](deploy_enterprise.md) - Full browser based UI with multiple user login.
 - [Scientist](deploy_scientist.md) - Single user, fast setup, long running job scheduler.
+- [Colab](deploy_colab.md) - For Workshops, Data Pill deployment using Google Collaboratory.
 - [Developer](deploy_developer.md) - Command line recipe creation, editing, and testing.
 - [AirFlow](deploy_airflow.md) - Run recipes usng cloud compoer / airflow framework.
-- [Package](deploy_package.md) - Workshop import and run instantly.
+- [Package](deploy_package.md) - Use StarThinker as a library.
 
 ## UI
 

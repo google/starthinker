@@ -64,7 +64,7 @@ class Script:
 
   @staticmethod
   def get_scripts(account_email=None):
-    for tag in iter(SCRIPTS.keys()):
+    for tag in sorted(iter(SCRIPTS.keys())):
       if account_email in SCRIPTS[tag]['script'].get('private', (account_email,)):
         yield Script(tag)
 
@@ -83,6 +83,9 @@ class Script:
       return 'https://google.github.io/starthinker/solution/%s/' % self.tag
     else:
       return ''
+
+  def get_link_colab(self):
+    return 'https://colab.research.google.com/github/google/starthinker/blob/master/colab/%s.ipynb' % self.get_tag()
 
   def get_tag(self):
     return self.tag

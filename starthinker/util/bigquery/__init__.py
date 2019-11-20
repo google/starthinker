@@ -227,6 +227,10 @@ def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_
   writer = csv.writer(buffer_data, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
   has_rows = False
 
+  if rows == []:
+    if project.verbose: print('BigQuery Zero Rows')
+    return io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'CSV', schema, skip_rows, disposition, wait)
+
   for is_last, row in flag_last(rows):
 
     # write row to csv buffer
