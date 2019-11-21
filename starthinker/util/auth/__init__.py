@@ -22,7 +22,6 @@ from googleapiclient import discovery
 
 from starthinker.util.project import project
 from starthinker.util.auth.wrapper import CredentialsUserWrapper, CredentialsServiceWrapper
-from starthinker.config import UI_CLIENT
 
 
 CREDENTIALS_USER_CACHE = None # WARNING:  possible issue if switching user credentials mid recipe, not in scope but possible ( need to address using hash? )
@@ -40,7 +39,7 @@ def get_credentials(auth):
   if auth == 'user':
     if CREDENTIALS_USER_CACHE is None:
       try:
-        CREDENTIALS_USER_CACHE = CredentialsUserWrapper(project.recipe['setup']['auth']['user'], UI_CLIENT)
+        CREDENTIALS_USER_CACHE = CredentialsUserWrapper(project.recipe['setup']['auth']['user'], project.recipe['setup']['auth'].get('client'))
       except (KeyError, ValueError): 
         raise KeyError("Either specify a -u [user credentials path] parameter on the command line or include setup->auth->user->[JSON OR PATH] in the recipe.")
     return CREDENTIALS_USER_CACHE

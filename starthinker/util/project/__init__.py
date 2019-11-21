@@ -489,7 +489,6 @@ class project:
     instances = {}
     for task in cls.recipe['tasks']:
       function = next(iter(task.keys()))
-      #function = task.items()[0][0]
 
       # count instance per task
       instances.setdefault(function, 0)
