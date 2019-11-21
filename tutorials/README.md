@@ -29,6 +29,7 @@ a StarThinker instance.
 
 ## Credentials
 
+- [Cloud Project ID](cloud_project.md) - How to get cloud project ID.
 - [Service Credentials](cloud_service.md) - How to get service credentials.
 - [Client UI Credentials](cloud_client_web.md) - How to get client credentials ( web ).
 - [Client Command Line Credentials And User Credentials](cloud_client_installed.md) - How to get client credentials, and user credentials ( other ).

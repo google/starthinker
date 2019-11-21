@@ -139,8 +139,8 @@ class Command(BaseCommand):
         colab.code("!pip install git+https://github.com/google/starthinker")
 
         colab.header("2. Get Cloud Project ID")
-        colab.paragraph("To run this recipe [requires a Google Cloud Project](https://github.com/google/starthinker/blob/master/tutorials/cloud_client_installed.md), this only needs to be done once, then click play.")
-        #colab.image('Client Project ID', 'https://github.com/google/starthinker/raw/master/tutorials/images/cloud_client_installed.png')
+        colab.paragraph("To run this recipe [requires a Google Cloud Project](https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md), this only needs to be done once, then click play.")
+        #colab.image('Client Project ID', 'https://github.com/google/starthinker/raw/master/tutorials/images/cloud_project.png')
         colab.code('CLOUD_PROJECT = \'PASTE PROJECT ID HERE\'')
         colab.code('\nprint("Cloud Project Set To: %s" % CLOUD_PROJECT)')
 

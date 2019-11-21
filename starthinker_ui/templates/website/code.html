@@ -143,7 +143,6 @@
         <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">{{ script.get_icon }}</i></td>
           <td style="vertical-align: top;">
-            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_{{ script.get_tag }}">JSON</span>
             <h4>{{ script.get_name }}</h4>
             <p>TASK: {{ script.get_tag }}</p>
             <p>{{ script.get_description }}</p>
@@ -151,7 +150,14 @@
               {% for instruction in script.get_instructions %}<li>{{ instruction|safe }}</li>{% endfor %}
             </ol>
             <pre class="view_code" id="view_code_{{ script.get_tag }}" style="display:none;">{{ script.get_tasks|json_pretty }}</pre>
-          <td>
+          </td>
+          <td style="vertical-align:top; width:150px;">
+            {% if script.get_open_source %}
+              <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="{{ script.get_open_source }}" target="_blank">GitHub&nbsp;<i class="material-icons">list</i></a>
+              <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="{{ script.get_link_colab }}" target="_blank">Colab&nbsp;<i class="material-icons">exit_to_app</i></a>
+            {% endif %}
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_{{ script.get_tag }}">JSON&nbsp;<i class="material-icons">expand_more</i></span>
+          </td>
         </tr>
       {% endfor %}
       </tbody>
