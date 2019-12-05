@@ -21,29 +21,26 @@ import re
 RE_TEXT_FIELD = re.compile(r'\{(.*?:.*?)\}')
 
 
-def json_set_auths(struct, auth, path=[]):
+def json_set_auths(struct, auth):
   """Recusrsively finds auth in script JSON and sets them.
 
     Args:
       struct: (dict) A dictionary representation fo the JSON script.
       auth: (string) Either 'service' or 'user'.
-      path: (list) Stack that keeps track of recursion depth. Not used externally.
 
     Returns:
       (struct) same structure but with all auth fields replaced.
 
   """
 
-  path = path[:]
   if isinstance(struct, dict):
     if 'auth' in struct:
       struct['auth'] = auth
-    else:
-      for key, value in struct.items():
-        json_set_auths(value, auth, path + [key])
+    for key, value in struct.items():
+      json_set_auths(value, auth)
   elif isinstance(struct, list) or isinstance(struct, tuple):
     for index, value in enumerate(struct):
-      json_set_auths(value, auth, path + [index])
+      json_set_auths(value, auth)
 
   return struct
 

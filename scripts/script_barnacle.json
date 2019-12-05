@@ -61,7 +61,7 @@
       "endpoints":["accounts", "subaccounts", "profiles", "advertisers", "campaigns", "sites", "roles"],
       "accounts":{
         "single_cell":true,
-        "values":{"field":{ "name":"accounts", "kind":"integer_list", "order":2, "default":"", "description":"Comma separated DCM account ids." }}
+        "values":{"field":{ "name":"accounts", "kind":"integer_list", "order":2, "default":[], "description":"Comma separated DCM account ids." }}
       },
       "out":{
         "auth":"service",
@@ -75,7 +75,7 @@
       "endpoints":["reports"],
       "accounts":{
         "single_cell":true,
-        "values":{"field":{ "name":"accounts", "kind":"integer_list", "order":2, "default":"", "description":"Comma separated DCM account ids." }}
+        "values":{"field":{ "name":"accounts", "kind":"integer_list", "order":2, "default":[], "description":"Comma separated DCM account ids." }}
       },
       "out":{
         "auth":"service",

@@ -40,10 +40,8 @@ from ssl import SSLError
 try: import httplib
 except: import http.client as httplib
 
-from starthinker.config import UI_ROOT
 from starthinker.util.auth import get_service
 from starthinker.util.project import project
-
 
 RETRIABLE_EXCEPTIONS = (
   httplib2.HttpLib2Error, IOError, httplib.NotConnected,
@@ -401,9 +399,9 @@ def API_DCM(auth, iterate=False, internal=False):
   }
 
   if internal:
-    # https://cs.corp.google.com/piper///depot/google3/apiserving/discoverydata/dfareporting/dfareporting.internalv3_3.rest.json?g=0
+    from starthinker.util.dcm.internalv33_uri import URI as DCM_URI
     configuration['version'] = 'internalv3.3'
-    configuration['uri'] = '%s/starthinker/util/dcm/internalv33_uri.json' % UI_ROOT
+    configuration['uri'] = DCM_URI
 
   return API(configuration)
 
@@ -412,13 +410,16 @@ def API_SNIPPETS(auth, iterate=False):
   """Snippets helper configuration for Google API. Defines agreed upon version.
   """
 
+  from starthinker.util.snippets.snippets_v1 import URI as SNIPPETS_URI
+
+
   # fetch discovery uri using: wget https://snippets-hrdb.googleplex.com/_ah/api/discovery/v1/apis/snippets/v1/rest
   configuration = {
     'api':'snippets',
     'version':'v1',
     'auth':auth,
     'iterate':iterate,
-    'uri':'%s/startninker/util/snippets/snippets_v1.json' % UI_ROOT
+    'uri': SNIPPETS_URI
   }
 
   return API(configuration)

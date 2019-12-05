@@ -17,6 +17,7 @@
 ###########################################################################
 
 import json
+import pprint
 from random import choice
 
 from starthinker.util.colab import Colab
@@ -82,7 +83,7 @@ def script_to_colab(name, description, instructions, tasks, parameters={}):
   colab.code('')
   colab.code("USER_CREDENTIALS = '/content/user.json'")
   colab.code('')
-  colab.code('TASKS = %s' % json.dumps(json_set_auths(tasks, 'user'), indent=2))
+  colab.code('TASKS = %s' % pprint.pformat(json_set_auths(tasks, 'user'), width=1, indent=2))
   colab.code('')
 
   if fields: colab.code('json_set_fields(TASKS, FIELDS)')
