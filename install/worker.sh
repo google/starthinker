@@ -237,6 +237,7 @@ deploy_worker() {
 
     instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_assets" "~/starthinker_assets/" --recurse
     instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_ui" "~/starthinker_ui/" --recurse
+    instance_copy "$instance_name" "${STARTHINKER_ROOT}/scripts" "~/scripts/" --recurse
     instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker" "~/starthinker/" --recurse
     instance_copy "$instance_name" "${STARTHINKER_ROOT}/install" "~/install/" --recurse
     instance_copy "$instance_name" "${STARTHINKER_ROOT}/requirements.txt" "~/requirements.txt"

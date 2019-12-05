@@ -29,7 +29,7 @@ and produce a specific recipe as STDOUT.  Which can be piped to a file.
 
 Example:
 
-  `python starthinker/script/run.py starthinker/gtech/script_dcm_to_bigquery.json`
+  `python starthinker/script/run.py scripts/script_dcm_to_bigquery.json`
 
   Will produce the following because it expects the arguments in the json script.
 
@@ -41,7 +41,7 @@ Example:
   To see a detailed list of arguments run with the -h option:
 
   ```
-  python starthinker/script/run.py starthinker/gtech/script_dcm_to_bigquery.json -h
+  python starthinker/script/run.py scripts/script_dcm_to_bigquery.json -h
   usage: run.py [-h] json account report_id report_name dataset table
   
   positional arguments:
@@ -60,7 +60,7 @@ Example:
 
   Then to turn the script into a recipe run:
 
-  `python starthinker/script/run.py starthinker/gtech/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" --datastudio > test_recipe.json`
+  `python starthinker/script/run.py scripts/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" --datastudio > test_recipe.json`
 
   To perform the work of the script for the now filled in recipe:
  

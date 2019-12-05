@@ -36,7 +36,7 @@ SCRIPTS = {}
 
 def load_scripts():
   if not SCRIPTS:
-    for root, dirs, files in os.walk(UI_ROOT + '/starthinker/'):
+    for root, dirs, files in os.walk(UI_ROOT):
       for filename in files:
         if RE_SCRIPT.match(filename):
           try:

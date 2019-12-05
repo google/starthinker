@@ -1,72 +1,59 @@
 # Composer Integration
 
-StarThinker can be easily deployed to Cloud Composer / Airflow using a basic factory.
-This allows recipe JSON built in StarThinker to execute on the [Apache Airflow](https://airflow.apache.org/) 
-stack and [Google Cloud Composer](https://cloud.google.com/composer/).
+StarThinker can be easily deployed to [Apache Airflow](https://airflow.apache.org/) stack and [Google Cloud Composer](https://cloud.google.com/composer/).
 
+## All Scripts Available As Airflow Dags
 
-## Setup
+Airflow can wrap any Python function in a [PythonOerator](https://airflow.apache.org/howto/operator/python.html).  Because
+[StarThinker tasks](../starthinker/task/) are just python functions with [JSON parameters](../scripts/), they can be quickly
+[deployed to Airflow](../starthinker_airflow/operators/) using a simple [DAG factory](../starthinker_airflow/factory.py).
 
-You must have Airflow installed or deployed on Google Cloud Composer. The 
-[airflow.json][../starthinker/gtech/airflow.json] recipe has three tasks in it.
+## Instructions
 
-1. Airflow task.
-1. Airflow/Orchestra task 
-1. Python task.
+1. First install al the libraries.
 
-A single recipe can define a workflow that deploys all three types in one recipe.
-If a recipe uses an Airflow or Composer task, it must be deployed to Airflow.
+```
+pip install apache-airflow
+pip install git+https://github.com/google/starthinker
+```
 
+1. Copy a [StarThinker DAG](../starthinker_airflow/dags/) to your airflow folder or bucket.
+1. Modify the copied file.
+1. Execute the DAG like any other airflow DAG.
 
-## Example 
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_enterprise.md)
 
-StarThinker has a helper used to generate an AirFlow Dag from a StarThinker JSON recipe.
+## Sample DAG Recipe
 
-Use this script to generate an Python script AirFlow uses to deploy a Dag. A
-python module will be streamed to STDOUT, redirect output to a file in your 
-Airflow folder. 
-
+The [airflow.json](../scripts/airflow.json) recipe has three tasks in it.
 You can edit the underlying JSON recipe without re-generating the connector, 
 this connector generates the DAG in real time whenever AirFlow calls it.
 
-1. Generate the factory powered DAG:
-```
-python starthinker_airflow/helper.py starthinker/gtech/airflow.json > ~/airflow/dags/say_hello.py
-```
-
-1. The factory adds a helper that shows Airflow commands when you try to run it directly:
 ```
 python ~/airflow/dags/say_hello.py
 ```
 
 1. Run a StarThinker native python function as a task from the recipe:
 ```
-airflow test "starthinker.gtech.say.hello.json" hello_1 2019-05-10
+airflow test "scripts.say.hello.json" hello_1 2019-05-10
 ```
 
 1. Run a native Airflow Operator as a task from the recipe:
 ```
-airflow test "starthinker.gtech.say.hello.json" airflow_1 2019-05-10
+airflow test "scripts.say.hello.json" airflow_1 2019-05-10
 ```
 
-5. Run an Airflow / Project Orchestra Operator as a task from the recipe:
+5. Run a custom Airflow Operator as a task from the recipe:
 ```
-airflow test "starthinker.gtech.say.hello.json" concerto_1 2019-05-10
+airflow test "scripts.say.hello.json" concerto_1 2019-05-10
 ```
 
-## Development Progress
+## Cloud Resources
 
-All Airflow and Orchestra operators and parameters are mapped to the offical APIs.
-
-- [Add A Orchestra Operator](../starthinker_airflow/orchestra/)
-- [Use An Airflow Operator](https://airflow.apache.org/_api/index.html)
-- [Create A Workflow Use Them](task.md)
-- [Integrate With UI](recipe.md)
-
-
-## Notes
-
-The generated dag has a helper built in, if you execute it directly it will print the proper airflow command instead of erroring.
+  - [Google Cloud Composer](https://console.cloud.google.com/composer) - where your instance will deploy.
+  - [Google Cloud Storage](https://console.cloud.google.com/storage/browser) - where your user credentials will be stored ( keep this secure ).
+  - [Google Cloud Credentials](https://console.cloud.google.com/apis/credentials) - where you manage your credentials.
+  - [Google Cloud Billing](https://console.cloud.google.com/billing/linkedaccount) - examine costs in real time.
 
 ---
 &copy; 2019 Google Inc. - Apache License, Version 2.0

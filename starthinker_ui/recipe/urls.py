@@ -26,7 +26,12 @@ urlpatterns = [
   url(r'^recipe/delete/(?P<pk>\d+)/$', views.recipe_delete, name='recipe.delete'),
   url(r'^recipe/run/(?P<pk>\d+)/$', views.recipe_run, name='recipe.run'),
   url(r'^recipe/cancel/(?P<pk>\d+)/$', views.recipe_cancel, name='recipe.cancel'),
-  url(r'^recipe/download/(?P<pk>\d+)/$', views.recipe_download, name='recipe.download'),
+
+  url(r'^recipe/download/(?P<pk>\d+)?/?$', views.recipe_download, name='recipe.download'),
+  url(r'^recipe/download/json/(?P<pk>\d+)/$', views.recipe_json, name='recipe.json'),
+  url(r'^recipe/download/colab/(?P<pk>\d+)/$', views.recipe_colab, name='recipe.colab'),
+  url(r'^recipe/download/airflow/(?P<pk>\d+)/$', views.recipe_airflow, name='recipe.airflow'),
+
   url(r'^recipe/start/$', views.recipe_start, name='recipe.start'),
   url(r'^recipe/stop/$', views.recipe_stop, name='recipe.stop'),
   url(r'^$', views.recipe_list, name='recipe.list'),

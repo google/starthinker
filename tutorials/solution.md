@@ -5,7 +5,7 @@ from a recipe adds the workflow to the UI and allows users to execute it with th
 It also adds the solution to the [Solution Gallery](https://google.github.io/starthinker/).
 
 ### 1. Continuing from the [recipe tutorial](recipe.md)...
-starthinker/gtech/script_hello.json
+scripts/script_hello.json
 ```
 { 
   "script":{
@@ -31,7 +31,7 @@ starthinker/gtech/script_hello.json
 ```
 
 ### 2. Create a solution file ( replace hello with your recipe script name ):
-starthinker/gtech/script_hello.json
+scripts/script_hello.json
 ```
 { 
   "script":{
@@ -128,8 +128,8 @@ starthinker/gtech/script_hello.json
 ### Notes 
 - You will need to re-start the UI to pick up new scripts.
 - The UI on load will print 'OK' next to your script.
-- Validate your JSON using [json helper](../starthinker/gtech/helper.py).
-- Always check [starthinker/gtech](../starthinker/gtech/) folder for solution samples.
+- Validate your JSON using [json helper](../scripts/helper.py).
+- Always check [scripts](../scripts/) folder for solution samples.
 - It is best practice to provide a test with each solution.
 
 ---

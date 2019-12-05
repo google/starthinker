@@ -26,12 +26,12 @@ source install/deploy.sh
 source starthinker_assets/development.sh
 ```
 ```
-python starthinker/all/run.py starthinker/gtech/say_hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT --verbose 
+python starthinker/all/run.py scripts/say_hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT --verbose 
 ```
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
 
-Next, learn how to [create a recipe](../starthinker/gtech/README.md) or look at the [cheat sheet of commands](cheat_sheet.md). 
+Next, learn how to [create a recipe](recipe.md) or look at the [cheat sheet of commands](cheat_sheet.md). 
 
 ## UI For Development Deploy
 
@@ -55,7 +55,7 @@ source install/deploy.sh
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_developer.md)
 
-Next, learn how to [create a recipe](../starthinker/gtech/README.md) or look at the [cheat sheet of commands](cheat_sheet.md). 
+Next, learn how to [create a recipe](recipe.md) or look at the [cheat sheet of commands](cheat_sheet.md). 
 
 ## Cloud Resources
 

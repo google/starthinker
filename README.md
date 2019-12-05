@@ -1,9 +1,9 @@
 This is not an officially supported Google product.  It is a reference implementation.
 There is absolutley NO WARRANTY provided for using this code.
 
-# gTech StarThinker Workflow Framework For Externalizing Solutions
+# StarThinker Workflow Framework For Externalizing Solutions
 
-StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components on
+StarThinker is a Google built python framework for creating and sharing re-usable workflow components on
 Google Cloud infrastructure. To make it easier for partners and clients to work with some of our advertsing 
 solutions, the gTech team has open sourced this framework as a reference implementation.  Our goal is to make 
 managing data workflows using Google Cloud as fast and re-usable as possible, allowing teams to focus on 
@@ -25,15 +25,14 @@ building advertising solutions.
 
 ## Where Is The Documentation?
 
-Most directories contain a README.me file. These are instructions for how to use the code in that directory.
-For getting started with and [tutorials/README.md](deploying StarThinker solutions see the tutorials).
-General structure of the code is:
+All documenbtation is within the code or the [tutorials README](tutorials/README.md) folder. General structure of the code is:
 
 - [/install](install/) - Scripts for installing and deploying StarThinker.
 - [/tutorials](tutorials/) - Tutorials for using StarThinker code base.
+- [/scripts](scripts/) - Complete solution templates provided by Google that you can deploy.
+- [/colabs](colabs/) - Deploy an siolution using Googles Collaboratory.
 - [/starthinker/util](starthinker/util/) - Low level library wrappers around Google API with helpers to handle common errors.
 - [/starthinker/task](starthinker/task/) - Handlers for each task specified in a JSON recipe.
-- [/starthinker/gtech](starthinker/gtech/) - Complete solution templates provided by Google gTech that you can deploy.
 - [/starthinker/script](starthinker/script/) - Command line for converting a recipe template into a client specific executable recipe.
 - [/starthinker/all](starthinker/all/) - Developer command line for executing a recipe in its entirety.
 - [/starthinker/cron](starthinker/cron/) - Quick command line for executing recipes on a schedule.
@@ -94,9 +93,9 @@ Or Email: starthinker-help@google.com
 
 ## Authors 
 
-- Paul Kenjora ( kenjora@google.com ) - Google gTech
-- Mauricio Desiderio ( mauriciod@google.com ) - Google gTech
-- John Terwilleger ( terwilleger@google.com ) - Google gTech
+- Paul Kenjora ( kenjora@google.com ) - Technical Project Lead 
+- Mauricio Desiderio ( mauriciod@google.com ) - Software Engineer
+- John Terwilleger ( terwilleger@google.com ) - Software Engineer
 
 Additional contributors to individual handlers and recipes are listed in each file.
 

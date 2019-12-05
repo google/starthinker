@@ -1,0 +1,31 @@
+{
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "open":true,
+    "icon":"notifications",
+    "product":"Test",
+    "title":"Say Hello",
+    "description":"Recipe template for say hello.",
+    "instructions":[
+      "This should be called for testing only."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+  },
+  "tasks":[
+    { "hello":{
+      "auth":"user",
+      "say":{"field":{ "name":"say_first", "kind":"string", "order":1, "default":"Hello Once", "description":"Type in a greeting." }},
+      "error":{"field":{ "name":"error", "kind":"string", "order":3, "default":"", "description":"Optional error for testing." }},
+      "sleep":{"field":{ "name":"sleep", "kind":"integer", "order":4, "default":0, "description":"Seconds to sleep." }}
+    }},
+    { "hello":{
+      "auth":"user",
+      "say":{"field":{ "name":"say_second", "kind":"string", "order":1, "default":"Hello Twice", "description":"Type in a greeting." }},
+      "sleep":{"field":{ "name":"sleep", "kind":"integer", "order":4, "default":0, "description":"Seconds to sleep." }}
+    }}
+  ]
+}

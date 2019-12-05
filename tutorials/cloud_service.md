@@ -11,7 +11,7 @@ Retrieve Service Account Key Credentials from: https://console.cloud.google.com/
 
  1. Google Cloud Project -> APIs & Services -> Credentials -> Create Credentials -> Service Account Key.
  1. New Service Account.
-   1. Role is Project Editor.
+   1. Role is Project Owner.
    1. Service Account Name is starthinker.
    1. Key Type is JSON.
  1. Click Create and open the downloaded file.

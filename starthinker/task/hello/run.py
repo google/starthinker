@@ -26,7 +26,7 @@ this recipe handler.
 
 Call from the command line using:
 
-  - `python all/run.py gtech/say_hello.json`
+  - `python all/run.py scripts/say_hello.json`
 
 Call from code using:
 

@@ -7,9 +7,6 @@ example will execute two tasks in sequence in a single process.
 pip install git+https://github.com/google/starthinker
 ```
 ```
-python
-```
-```
 from starthinker.util.project import project
   
 if __name__ == "__main__":
@@ -43,7 +40,7 @@ if __name__ == "__main__":
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_package.md)
 
-Next, review list of available tasks in the [Recipe Gallery](https://google.github.io/starthinker/code/#code-tasks) or [GIT gtech Folder](../starthinker/gtech/).
+Next, review list of available tasks in the [Recipe Gallery](https://google.github.io/starthinker/code/#code-tasks) or [GIT Scripts Folder](../scripts/).
 
 ---
 &copy; 2019 Google Inc. - Apache License, Version 2.0

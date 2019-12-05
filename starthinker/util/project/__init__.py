@@ -482,7 +482,7 @@ class project:
       project.execute()
     ```
 
-    For a full list of tasks see: starthinker/gtech/script_*.json
+    For a full list of tasks see: scripts/script_*.json
 
     '''
 

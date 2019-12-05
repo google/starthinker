@@ -29,7 +29,7 @@ from starthinker.util.project import project
 from starthinker_ui.account.models import Account, token_generate
 from starthinker_ui.project.models import Project
 from starthinker_ui.recipe.scripts import Script
-
+from django.template.defaultfilters import slugify
 
 JOB_INTERVAL_MS = float(800) # milliseconds 
 JOB_LOOKBACK_MS = 5 * JOB_INTERVAL_MS # 4 seconds ( must guarantee to span several pings )
@@ -101,6 +101,9 @@ class Recipe(models.Model):
   def __unicode__(self):
     return self.name
 
+  def slug(self):
+    return slugify(self.name)
+
   def save(self, *args, **kwargs):
     self.get_token()
     self.get_reference()
@@ -122,8 +125,14 @@ class Recipe(models.Model):
   def link_cancel(self):
     return '/recipe/cancel/%d/' % self.pk if self.pk else ''
 
-  def link_download(self):
-    return '/recipe/download/%d/' % self.pk if self.pk else ''
+  def link_json(self):
+    return '/recipe/json/%d/' % self.pk if self.pk else ''
+
+  def link_colab(self):
+    return '/recipe/colab/%d/' % self.pk if self.pk else ''
+
+  def link_airflow(self):
+    return '/recipe/airflow/%d/' % self.pk if self.pk else ''
 
   def link_start(self):
     return '%s/recipe/start/' % settings.CONST_URL

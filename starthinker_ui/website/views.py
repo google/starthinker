@@ -129,7 +129,7 @@ def get_metrics():
      
   for metric_key, metric in metrics.items():
     for row_key, row in metric.items():
-      for dimension in iter(row.keys()):
+      for dimension in list(row.keys()):
         row[dimension] = len(row[dimension])
         row['%s_percent' % dimension] = (row[dimension] * 100) / (totals[dimension] or 1)
         row[metric_key] = row_key

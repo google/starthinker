@@ -29,6 +29,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from starthinker_ui.account.decorators import permission_admin
 from starthinker_ui.recipe.forms_script import ScriptForm
 from starthinker_ui.recipe.models import Recipe
+from starthinker_ui.recipe.colab import script_to_colab
 
 
 def recipe_list(request):
@@ -132,12 +133,50 @@ def recipe_stop(request):
 
 @permission_admin()
 def recipe_download(request, pk):
+  return render(request, "recipe/download.html", { 'recipe':pk })
+
+
+@permission_admin()
+def recipe_json(request, pk):
   try:
     recipe = request.user.recipe_set.get(pk=pk)
     data = recipe.get_json(credentials=False)
     response = HttpResponse(json.dumps(data, indent=2), content_type='application/json')
-    response['Content-Disposition'] = 'attachment; filename=recipe_%s.json' % recipe.uid()
+    response['Content-Disposition'] = 'attachment; filename=recipe_%s.json' % recipe.slug()
+    return response
+  except Exception as e:
+    recipe = None
+    messages.error(request, str(e))
+
+  return HttpResponseRedirect('/recipe/download/%s/' % pk)
+
+
+@permission_admin()
+def recipe_colab(request, pk):
+  try:
+    recipe = request.user.recipe_set.get(pk=pk)
+    data = script_to_colab(
+      recipe.slug(),
+      '',
+      '',
+      recipe.get_json()['tasks']
+    )
+    response = HttpResponse(data, content_type='application/vnd.jupyter')
+    response['Content-Disposition'] = 'attachment; filename=colab_%s.ipynb' % recipe.slug()
     return response
   except Exception as e:
     messages.error(request, str(e))
-  return HttpResponseRedirect('/recipe/edit/%s/' % pk)
+    raise(e)
+  return HttpResponseRedirect('/recipe/download/%s/' % pk)
+
+
+@permission_admin()
+def recipe_airflow(request, pk):
+  try:
+    recipe = request.user.recipe_set.get(pk=pk)
+    response = HttpResponse(json.dumps(data, indent=2), content_type='application/python')
+    response['Content-Disposition'] = 'attachment; filename=dag_%s.py' % recipe.slug()
+    return response
+  except Exception as e:
+    messages.error(request, str(e))
+  return HttpResponseRedirect('/recipe/download/%s/' % pk)

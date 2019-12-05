@@ -29,16 +29,18 @@ set to '.', to mimic python dot notation.
 
 """
 
+
 import re
 from datetime import datetime, date
 from importlib import import_module
 
+
 from airflow import DAG
+from airflow.hooks.base_hook import BaseHook
 from airflow.operators.python_operator import PythonOperator
 
-from starthinker.util.project import get_project
+from starthinker.script.parse import json_set_fields
 
-RE_DAG_NAME = re.compile('([^\s\w]|_)+')
 
 class DAG_Factory():
   """A class factory that generates AirFlow Dag definitions from StarThinker JSON recipes.
@@ -51,21 +53,52 @@ class DAG_Factory():
   Sample calling wrapper, save this in your AirFlow dag directory:
 
     ```
-    from starthinker.util.airflow import DAG_Factory
+    from starthinker_airflow.factory import DAG_Factory
     dag = DAG_Factory('[path to a StarThinker JSON recipe]').execute()
     ```
   
   """
 
-
-  def __init__(self, _recipe_path):
-    self.recipe_path = _recipe_path
-    self.recipe = get_project(_recipe_path)
+  def __init__(self, _dag_name, _script, _script_parameters=None):
+    self.dag_name = _dag_name
+    self.recipe = _script
+    if _script_parameters: json_set_fields(self.recipe, _script_parameters)
     self.dag = None
 
 
-  def dag_id(self):
-    return RE_DAG_NAME.sub('.', self.recipe_path)
+  def apply_credentails(user_conn_id=None, gcp_conn_id="google_cloud_default"):
+    '''
+       user_conn_id: The connection to use for user authentication.
+       gcp_conn_id: The connection to use for service authentication.
+    '''
+
+    # If supplied, load "user" auth information into the recipe
+    if user_conn_id:
+      user_connection_extra = BaseHook.get_connection(user_conn_id).extra_dejson
+      if user_connection_extra["extra__google_cloud_platform__key_path"]:
+        self.recipe["setup"]["auth"]["user"] = user_connection_extra["extra__google_cloud_platform__key_path"]
+      elif user_connection_extra["extra__google_cloud_platform__keyfile_dict"]:
+        self.recipe["setup"]["auth"]["user"] = user_connection_extra["extra__google_cloud_platform__keyfile_dict"]
+      if user_connection_extra["extra__google_cloud_platform__project"]:
+        self.recipe["setup"]["id"] = user_connection_extra["extra__google_cloud_platform__project"]
+
+    # Load "service" auth information into the recipe
+    if gcp_conn_id:
+      service_connection_extra = BaseHook.get_connection(
+          gcp_conn_id).extra_dejson
+      if service_connection_extra["extra__google_cloud_platform__key_path"]:
+        self.recipe["setup"]["auth"]["service"] = service_connection_extra["extra__google_cloud_platform__key_path"]
+      elif service_connection_extra["extra__google_cloud_platform__keyfile_dict"]:
+        self.recipe["setup"]["auth"]["service"] = service_connection_extra["extra__google_cloud_platform__keyfile_dict"]
+        try:
+          keyfile_dict_json = json.loads(service_connection_extra["extra__google_cloud_platform__keyfile_dict"])
+          if keyfile_dict_json and keyfile_dict_json["project_id"]:
+            self.recipe["setup"]["id"] = keyfile_dict_json["project_id"]
+        except Exception as e:
+          self.log.error("Failed parsing the Keyfile JSON for gcp_conn_id=%s", self.gcp_conn_id)
+          raise e
+      if service_connection_extra["extra__google_cloud_platform__project"]:
+        self.recipe["setup"]["id"] = service_connection_extra["extra__google_cloud_platform__project"]
 
 
   def python_task(self, function, instance):
@@ -78,15 +111,14 @@ class DAG_Factory():
 
 
   def airflow_task(self, function, instance, parameters):
-    af_source, af_package = parameters.items()[0]
-    af_package, af_module = af_package.items()[0]
+    af_source, af_module = parameters.items()[0]
     af_module, af_operator = af_module.items()[0]
     af_operator, af_parameters = af_operator.items()[0]
 
-    if af_source == 'orchestra':
-      af_source = 'starthinker_airflow.orchestra'
+    if af_source == 'operator':
+      af_source = 'starthinker_airflow.operators'
 
-    operator = getattr(import_module('%s.%s.%s' % (af_source, af_package, af_module)), af_operator)
+    operator = getattr(import_module('%s.%s' % (af_source, af_module)), af_operator)
     
     af_parameters['dag'] = self.dag 
     af_parameters['task_id'] = '%s_%d' % (function, instance)
@@ -96,7 +128,7 @@ class DAG_Factory():
 
   def execute(self):
     self.dag = DAG(
-      dag_id = self.dag_id(),
+      dag_id = self.dag_name,
       default_args = {
         'owner': 'airflow',
         'start_date': datetime.now()
@@ -107,14 +139,14 @@ class DAG_Factory():
 
     instances = {}
     for task in self.recipe['tasks']:
-      function = task.keys()[0]
+      function = next(iter(task.keys()))
 
       # count instance per task
       instances.setdefault(function, 0)
       instances[function] += 1
 
       # if airflow operator
-      if function in ('airflow', 'orchestra'):
+      if function in ('airflow', 'operator'):
         self.airflow_task(function, instances[function], task)
 
       # if native python operator
@@ -125,23 +157,23 @@ class DAG_Factory():
 
 
   def schedule(self):
-    # for now simplest case is to execute all directories locally
+    # for now simplest case is to execute all tsks sequentially
     pass
 
 
   def print_commandline(self):
 
-    print ''
-    print 'DAG: %s' % self.dag_id()
-    print ''
+    print('')
+    print('DAG: %s' % self.dag_name)
+    print('')
  
     instances = {}
     for task in self.recipe['tasks']:
-      function = task.keys()[0]
+      function = next(iter(task.keys()))
 
       # count instance per task
       instances.setdefault(function, 0)
       instances[function] += 1
 
-      print 'airflow test "%s" %s_%d %s' % (self.dag_id(), function, instances[function], str(date.today()))
-      print ''
+      print('airflow test "%s" %s_%d %s' % (self.dag_name, function, instances[function], str(date.today())))
+      print('')

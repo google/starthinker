@@ -48,7 +48,7 @@ python starthinker/all/run.py hello.json -u $STARTHINKER_USER -s $STARTHINKER_SE
 - The [@project.from_parameters](../starthinker/util/project/__init__.py)  decorator is StarThinker.  Everything else is just python.
 - Using the [util library](../starthinker/util/) is optional but convenient. 
 - Always check [starthinker/task](../starthinker/task/) folder for task samples.
-- Always check [starthinker/gtech](../starthinker/gtech/) folder for recipe samples.
+- Always check [scripts](../scripts/) folder for recipe samples.
 - New scopes for user authentication can be added at [starthinker/config.py](../starthinker/config.py).
 - You can remove scopes if you are not planning to use the tasks requiring them.
 - The Google API helper can be extended by adding an endpoint at [starthinker/util/google_api/\_\_init\_\_.py](../starthinker/util/google_api/__init__.py).

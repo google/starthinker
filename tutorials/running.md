@@ -12,13 +12,13 @@ source starthinker_assets/development.sh
 ### Run All Tasks In Recipe
 
 ```
-python starthinker/all/run.py starthinker/gtech/say_hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT 
+python starthinker/all/run.py scripts/say_hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT 
 ```
 
 ### Run A Specific Task In A Recipe
 
 ```
-python starthinker/tasks/hello/run.py starthinker/gtech/say_hello.json -i 1 -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT 
+python starthinker/tasks/hello/run.py scripts/say_hello.json -i 1 -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT 
 ```
 
 ## Converting A Script To A Recipe
@@ -29,9 +29,9 @@ you must first convert the fields to values using the [script helper](../starthi
 ### Interactive Conversion
 
 ```
-python starthinker/script/run.py starthinker/gtech/script_hello.json
+python starthinker/script/run.py scripts/script_hello.json
 
-(1 of 4) Recipe file to create from starthinker/gtech/script_hello.json template.
+(1 of 4) Recipe file to create from scripts/script_hello.json template.
 
 Full Path TO JSON File:hello.json
 
@@ -56,7 +56,7 @@ JSON Written To:  hello.json
 
 ### Shell Script Conversion
 ```
-python starthinker/script/run.py starthinker/gtech/script_hello.json -h
+python starthinker/script/run.py scripts/script_hello.json -h
 usage: run.py [-h] [--say_second SAY_SECOND] [--say_first SAY_FIRST]
               [--error ERROR] [--sleep SLEEP]
               json
@@ -73,7 +73,7 @@ optional arguments:
   --error ERROR         Optional error for testing.
   --sleep SLEEP         Seconds to sleep.
 
-python starthinker/script/run.py starthinker/gtech/script_hello.json --say_second "Two" --say_first "One" --error "" > hello.json
+python starthinker/script/run.py scripts/script_hello.json --say_second "Two" --say_first "One" --error "" > hello.json
 ```
 
 Now the script is converted to a recipe with values, the recipe can be executed:

@@ -92,7 +92,7 @@ optimization points.
     - Group By: Recipe
     - Aggregator: sum
 
-Next, learn how to [create a recipe](../starthinker/gtech/README.md) or look at the [cheat sheet of commands](cheat_sheet.md). 
+Next, learn how to [create a recipe](recipe.md) or look at the [cheat sheet of commands](cheat_sheet.md). 
 
 ## Recipe Status In UI
 

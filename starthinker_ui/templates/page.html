@@ -87,7 +87,7 @@
   </head>
 
   {% block nav %}
-  <nav>
+  <nav class="green lighten-0">
     <div class="nav-wrapper">
       <a href="{% if not external %}/{% else %}/starthinker/{% endif %}" class="brand-logo">
         <img src="{% static 'StarThinker.png' %}"/>&nbsp;StarThinker
@@ -109,7 +109,7 @@
           </li>
         {% endif %}
       </ul>
-      <ul class="side-nav red lighten-2" id="mobile-demo">
+      <ul class="side-nav red lighten-1" id="mobile-demo">
         {% if request.user.is_authenticated %}
           <li>
             <div class="chip" style="margin: 0px 30px;">
@@ -139,12 +139,12 @@
     {% if messages %}
       {% for message in messages %}
         {% if message.tags == 'success' %}
-          <div id="message" class="card-panel teal darken-2 white-text valign-wrapper center-align">
+          <div id="message" class="card-panel green darken-1 white-text valign-wrapper center-align">
             <i class="material-icons">check</i>
             {{ message|safe }}
           </div>
         {% else %}
-          <div id="message" class="card-panel red darken-2 white-text valign-wrapper center-align">
+          <div id="message" class="card-panel red darken-1 white-text valign-wrapper center-align">
             <i class="material-icons">error</i>
             {{ message|safe }}
           </div>

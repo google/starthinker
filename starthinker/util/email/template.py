@@ -48,6 +48,7 @@ class EmailTemplate:
   def template(self, template):
 
     if 'body' in template: self.template(template['body'])
+    if 'greeting' in template: self.greeting(**template['greeting'])
     if 'header' in template: self.header(template['header'])
     if 'image' in template: self.image(**template['image'])
     if 'paragraph' in template: self.paragraph(template['paragraph'])
@@ -72,7 +73,7 @@ class EmailTemplate:
 
 
   def _header_css(self):
-    return 'width:100%%;margin:10px 0px 20px 0px;padding:0px;border:0px;text-align:%(align)s;color:%(text)s;font-family:%(font)s;font-size:28px;line-height:36px;font-weight:500;letter-spacing:-0.31px;border:0px;' % self.style
+    return 'width:100%%;margin:10px 0px 20px 0px;padding:0px;border:0px;text-align:%(align)s;color:%(text)s;font-family:%(font)s;font-size:22px;line-height:30px;font-weight:500;letter-spacing:-0.31px;border:0px;' % self.style
 
 
   def _text_css(self):
@@ -120,14 +121,14 @@ class EmailTemplate:
   def greeting(self, name='', salutation='Hi'):
     if name:
       # HTML
-      self.content_html += '<p style="width:100%%;margin:0px;padding:0px;border:0px;%s">%s %s,<p>' % (self._text_css(), salutation, name)
+      self.content_html += '<p style="%s">%s %s,<p>' % (self._text_css(), salutation, name)
 
       # Text
       self.content_text += '%s %s,\n\n' % (salutation, name)
 
     else:
       # HTML
-      self.content_html += '<p style="width:100%%;margin:0px;padding:0px;border:0px;%s">%s,<p>' % (self._text_css(), salutation)
+      self.content_html += '<p style="%s">%s,<p>' % (self._text_css(), salutation)
 
       # Text
       self.content_text += '%s,\n\n' % salutation

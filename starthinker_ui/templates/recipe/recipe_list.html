@@ -23,8 +23,8 @@
 {% block content %}
 
   <h1>Recipes 
-    <a href="/recipe/edit/"><i class="material-icons teal-text">add_alarm</i></a>
-    <a href="/recipe/manual/"><i class="material-icons teal-text">add_box</i></a>
+    <a href="/recipe/edit/"><i class="material-icons blue-text">add_alarm</i></a>
+    <a href="/recipe/manual/"><i class="material-icons blue-text">add_box</i></a>
   </h1>
   <p class="flow-text">Assemble recipes that run on a schedule or are triggered manually.</p>
 
@@ -41,7 +41,7 @@
        {% with log=recipe.get_log %}
          <tr>
            <td style="width:90px;">
-             <a href="{{ recipe.link_edit }}"><i class="material-icons medium teal-text">{% if recipe.active %}play_arrow{% else %}pause{% endif %}</i></a>
+             <a href="{{ recipe.link_edit }}"><i class="material-icons medium blue-text">{% if recipe.active %}play_arrow{% else %}pause{% endif %}</i></a>
            </td>
            <td>
              <a href="{{ recipe.link_edit }}">{{ recipe.name }}</a>
@@ -77,7 +77,7 @@
      </thead>
      <tbody>
        <tr>
-         <td><i class="material-icons medium teal-text">face</i></td>
+         <td><i class="material-icons medium blue-text">face</i></td>
          <td><strong>Run Your Own Recipes</strong></td>
          <td>
            <ol>
@@ -91,7 +91,7 @@
          </td>
        </tr>
        <tr>
-         <td><i class="material-icons medium teal-text">business</i></td>
+         <td><i class="material-icons medium blue-text">business</i></td>
          <td><strong>Run Recipes For The Client</strong></td>
          <td>
            <ol>
@@ -105,7 +105,7 @@
          </td>
        </tr>
        <tr>
-         <td><i class="material-icons medium teal-text">sd_storage</i></td>
+         <td><i class="material-icons medium blue-text">sd_storage</i></td>
          <td><strong>Give Recipe To Client To Run</strong></td>
          <td>
            <ol>

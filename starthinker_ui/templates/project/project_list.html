@@ -22,7 +22,7 @@
 
 {% block content %}
 
-  <h1>Projects <a href="/project/edit/"><i class="material-icons teal-text">add_circle</i></a></h1>
+  <h1>Projects <a href="/project/edit/"><i class="material-icons blue-text">add_circle</i></a></h1>
   <p class="flow-text">Create a project and use it to deploy recipes.</p>
 
   <table class="bordered highlight list">
@@ -36,7 +36,7 @@
      <tbody>
        {% for project in projects %}
          <tr>
-           <td class="center"><a href="{{ project.link_edit }}"><i class="material-icons medium teal-text">cloud</i></a></td>
+           <td class="center"><a href="{{ project.link_edit }}"><i class="material-icons medium blue-text">cloud</i></a></td>
            <td><a href="{{ project.link_edit }}">{{ project.identifier }}</a><br/>{{ project.get_project_id }}</td>
            <td class="center">{{ project.recipe_set.count }}</td>
          </tr>

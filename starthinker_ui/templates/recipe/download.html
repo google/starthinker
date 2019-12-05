@@ -1,0 +1,93 @@
+{% extends "page.html" %}
+
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% load website_app %}
+
+{% block css %}
+  #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
+  div.deploy { width: 80%; max-width: 400px; display: inline-table; margin: 5vh auto; padding: 0px 3%; }
+  #solution_button { margin: 1vh 1vw; } 
+{% endblock %}
+
+{% block content %}
+
+  <h1>Script Download
+    <a href="/recipe/edit/{{ recipe }}/"><i class="material-icons blue-text">arrow_back</i></a>
+  </h1>
+  <p class="flow-text">Share your recipe with anyone outside of your organization using Google Cloud...</p>
+
+  <div class="deploy">
+    <h3>JSON</h3>
+    <h4>Raw Script</h4>
+    <p>
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="/recipe/download/json/{{ recipe }}/">
+        Download <i class="material-icons right">file_download</i>
+      </a>
+    </p>
+    <p>Then follow <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_developer.md" target="_blank"> developer deploy</a> or <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_package.md" target="_blank">package deploy</a> instructions to execute.</p>
+    <hr/>
+    <ul>
+      <li>Best for <strong>developer / operations / modification</strong>.</li>
+      <li>Access to a <a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project</a>.</li>
+      <li>Ability to install, troubleshoot, and run Python.</li>
+    </ul>
+  </div>
+  
+  <div class="deploy">
+    <h3>Collaboratory</h3>
+    <h4>Data Pill</h4>
+    <p>
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="/recipe/download/colab/{{ recipe }}/">
+        Download <i class="material-icons right">file_download</i>
+      </a>
+    </p>
+    <p>Then visit <a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a> and open the downloaded notebook.</p>
+    <hr/>
+    <ul>
+      <li>Best for <strong>trade desk / analyst / workshop</strong>.</li>
+      <li>Access to a <a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project</a>.</li>
+      <li>Access to <a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a>.</li>
+    </ul>
+  </div> 
+
+  {% comment %}
+  <div class="deploy">
+    <h3>Composer</h3>
+    <h4>Airflow DAG</h4>
+    <p>
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="/recipe/download/airflow/{{ recipe }}/">
+        Download <i class="material-icons right">file_download</i>
+      </a>
+    <p>For exection as a DAG using Apache Airflow and Google Cloud Composer. Follow StarThinker <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_airflow.md" target="_blank"> airflow deploy</a> instructions.</p>
+    <hr/>
+    <ul>
+      <li>Best for <strong>developer / partner / production</strong>.</h4>
+      <li>Access to a <a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project</a>.</li>
+      <li>Access to <a href="https://cloud.google.com/composer/" target="_blank">Google Cloud Composer</a>.</li>
+    </ul>
+  </div>
+  {% endcomment %}
+
+  <h3 id="code-tasks">More Documentation On GitHub</h3>
+  <p class="flow-text">See <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md">StarThinker Tutorials</a> for complete documentation.</p>
+
+{% endblock %}

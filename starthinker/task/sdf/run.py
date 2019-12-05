@@ -16,6 +16,7 @@
 #
 ###########################################################################
 
+import copy
 
 from starthinker.util.project import project 
 from starthinker.util.dbm import sdf_read
@@ -55,11 +56,10 @@ def sdf():
       project.task['out']['bigquery']['dataset'],
       destination_table,
       is_time_partition)
-
+    if project.verbose: print("SDF TO DOWNLOAD", file_type)
     # Request 5 filter ids at a time so the API doesn't timeout
     for partial_filter_ids in filter_ids:
       rows = sdf_read(project.task['auth'], [file_type], project.task['filter_type'], partial_filter_ids, project.task.get('version', '3.1'))
-
       if rows:
         schema = _sdf_schema(next(rows))
         table_suffix = '%s_%s' % (current_filter_id_iteration, file_type.lower())
@@ -70,8 +70,7 @@ def sdf():
           project.id,
           project.task['out']['bigquery']['dataset'],
           table_name)
-
-        out_obj = project.task['out']
+        out_obj = copy.deepcopy(project.task['out'])
 
         if 'bigquery' in out_obj:
           out_obj['bigquery']['schema'] = schema
@@ -81,7 +80,6 @@ def sdf():
         put_rows(project.task['auth'], 
           out_obj, 
           rows)
-
         table_names.append(table_name)
 
       current_filter_id_iteration= current_filter_id_iteration + 1
@@ -92,7 +90,6 @@ def sdf():
       project.id,
       project.task['out']['bigquery']['dataset'],
       destination_table)
-
     query_to_table(project.task['auth'], 
       project.id, 
       project.task['out']['bigquery']['dataset'], 
@@ -100,14 +97,12 @@ def sdf():
       query, 
       disposition=disposition,
       legacy=False)
-
     # Delete all the temporary tables that were created
     for table_name in table_names:
       drop_table(project.task['auth'], 
         project.id, 
         project.task['out']['bigquery']['dataset'], 
         table_name)
-
 
 def _construct_combine_query(file_type, table_names, project_id, dataset, dest_table_name):
   query = 'SELECT * FROM ('

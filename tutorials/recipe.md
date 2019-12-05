@@ -25,7 +25,7 @@ hello.json
   ```
 
 ### 2. Create a script file ( replace hello with your recipe script name ):
-starthinker/gtech/script_hello.json
+scripts/script_hello.json
 ```
 {
   "tasks":[
@@ -77,7 +77,7 @@ converted to a recipe on the command line, it only applies to the UI.
 
 
 ### 3. Connect the script to the UI so non-coding users can use it in a recipe:
-starthinker/gtech/script_hello.json
+scripts/script_hello.json
 ```
 {
   "script":{
@@ -126,8 +126,8 @@ parameters in a task and prefix is a string value that gets appended to the valu
 ## Notes
 - You will need to re-start the UI to pick up new scripts.
 - The UI on load will print 'OK' next to your script.
-- Validate your JSON using [json helper](../starthinker/gtech/helper.py).
-- Always check [starthinker/gtech](../starthinker/gtech/) folder for script samples.
+- Validate your JSON using [json helper](../scripts/helper.py).
+- Always check [scripts](../scripts/) folder for script samples.
 - It is best practice to provide at least one or more [reference recipe scripts](recipe.md) for a task.
 - Overloaded tasks can have more than one recipe or script defining more than one input configuration.
 
