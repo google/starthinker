@@ -85,7 +85,7 @@ class Script:
       return ''
 
   def get_link_colab(self):
-    return 'https://colab.research.google.com/github/google/starthinker/blob/master/colab/%s.ipynb' % self.get_tag()
+    return 'https://colab.research.google.com/github/google/starthinker/blob/master/colabs/%s.ipynb' % self.get_tag()
 
   def get_tag(self):
     return self.tag
