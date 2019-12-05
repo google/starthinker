@@ -35,5 +35,5 @@ wheel
 gunicorn
 uwsgi
 jsonpickle
-django==2.2.8
+django==3.0
 psycopg2-binary
