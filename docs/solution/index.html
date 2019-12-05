@@ -69,7 +69,7 @@
   </head>
 
   
-  <nav>
+  <nav class="green lighten-0">
     <div class="nav-wrapper">
       <a href="/starthinker/" class="brand-logo">
         <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
@@ -83,7 +83,7 @@
         
         
       </ul>
-      <ul class="side-nav red lighten-2" id="mobile-demo">
+      <ul class="side-nav red lighten-1" id="mobile-demo">
         
         
         
@@ -132,11 +132,21 @@
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_datastudio">datastudio</span>
   
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_dbm">dbm</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_dcm">dcm</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_ds">ds</span>
+  
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_dv360">dv360</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_email">email</span>
   
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_ga">ga</span>
+  
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_sheets">sheets</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_trix">trix</span>
   
 
   <br/><br/>
@@ -209,11 +219,27 @@
         </td>
       </tr>
     
+      <tr class="category_all category_reporting category_dbm category_dcm category_ds category_trix category_datastudio category_bigquery category_ga">
+        <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">timeline</i></td>
+        <td style="vertical-align:top;">
+          <a href="/starthinker/solution/ga_timeline/"><h4>Google Analytics Timeline</h4></a>
+          <p>Download Google Analytics settings to a BigQuery table.</p>
+        </td>
+      </tr>
+    
       <tr class="category_all category_reporting category_insights category_data category_acquisition category_dv360 category_cm category_datastudio category_bigquery">
         <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">language</i></td>
         <td style="vertical-align:top;">
           <a href="/starthinker/solution/itp/"><h4>Browser Activity Dashboard</h4></a>
           <p>Visualizes a client's Campaign Manager and DV360 activity by browser and device</p>
+        </td>
+      </tr>
+    
+      <tr class="category_all category_automation category_trafficking category_automation category_cm category_sheets">
+        <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">policy</i></td>
+        <td style="vertical-align:top;">
+          <a href="/starthinker/solution/kv_uploader/"><h4>Tag Key Value Uploader</h4></a>
+          <p>A tool for bulk editing key value pairs for DCM pllacements.</p>
         </td>
       </tr>
     
@@ -266,7 +292,7 @@
 
   
 
-<footer class="page-footer">
+<footer class="page-footer red lighten-1">
   <div class="footer-copyright">
     <div class="container center">
     &copy; 2019 Google, Inc
