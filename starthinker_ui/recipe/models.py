@@ -129,7 +129,7 @@ class Recipe(models.Model):
     return '/recipe/json/%d/' % self.pk if self.pk else ''
 
   def link_colab(self):
-    return '/recipe/colab/%d/' % self.pk if self.pk else ''
+    return '/recipe/colabs/%d/' % self.pk if self.pk else ''
 
   def link_airflow(self):
     return '/recipe/airflow/%d/' % self.pk if self.pk else ''

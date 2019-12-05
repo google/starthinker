@@ -35,11 +35,13 @@ Click the link below or visit the [Solution Gallery](https://google.github.io/st
 * [Email Fetch](https://colab.research.google.com/github/google/starthinker/blob/master/colab/email_to_bigquery.ipynb) - Import emailed csv or excel into a BigQuery table.
 * [Entity Read Files](https://colab.research.google.com/github/google/starthinker/blob/master/colab/entity.ipynb) - Import public and private <a href='https://developers.google.com/bid-manager/guides/entity-read/format-v2' target='_blank'>Entity Read Files</a> into a BigQuery dataset.<br/>CAUTION: PARTNER ONLY, ADVERTISER FILTER IS NOT APPLIED.
 * [Floodlight Monitor](https://colab.research.google.com/github/google/starthinker/blob/master/colab/floodlight_monitor.ipynb) - Monitor floodlight impressions specified in sheet and send email alerts.
+* [Google Analytics Timeline](https://colab.research.google.com/github/google/starthinker/blob/master/colab/ga_timeline.ipynb) - Download Google Analytics settings to a BigQuery table.
 * [API To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colab/google_api_to_bigquery.ipynb) - Execute a Google API function and store results to BigQuery.
 * [Say Hello](https://colab.research.google.com/github/google/starthinker/blob/master/colab/hello.ipynb) - Recipe template for say hello.
 * [Project IAM](https://colab.research.google.com/github/google/starthinker/blob/master/colab/iam.ipynb) - Sets project permissions for an email.
 * [Browser Activity Dashboard](https://colab.research.google.com/github/google/starthinker/blob/master/colab/itp.ipynb) - Visualizes a client's Campaign Manager and DV360 activity by browser and device
 * [ITP Audit Dashboard](https://colab.research.google.com/github/google/starthinker/blob/master/colab/itp_audit.ipynb) - Dashboard that shows performance metrics across browser to see the impact of ITP.
+* [Tag Key Value Uploader](https://colab.research.google.com/github/google/starthinker/blob/master/colab/kv_uploader.ipynb) - A tool for bulk editing key value pairs for DCM pllacements.
 * [Line Item To BigQuery Via Query](https://colab.research.google.com/github/google/starthinker/blob/master/colab/lineitem_read_to_bigquery_via_query.ipynb) - Move using an Id query.
 * [Line Item To BigQuery Via Values](https://colab.research.google.com/github/google/starthinker/blob/master/colab/lineitem_read_to_bigquery_via_value.ipynb) - Move using hard coded Id values.
 * [Line Item From BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colab/lineitem_write_from_bigquery.ipynb) - Upload Line Items From BigQuery To DBM.

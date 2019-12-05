@@ -52,33 +52,28 @@
   {% if script.get_image %}<img id="solution_image" src="{{ script.get_image }}"/>{% endif %}
 
   <div class="buttons">
-  {% comment %}
-    <a id="solution_button" class="btn-large waves-effect waves-light" href="{% request_solution script %}" target="_blank">
-      <i class="material-icons right">send</i> Request Deployemt
-    </a>
-  {% endcomment %}
 
-    <a id="solution_button" class="btn-large waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
+    <a id="solution_button" class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
       <i class="material-icons right">lock_open</i>Get Access
     </a>
 
     {% if script.get_sample %}
-      <a id="solution_button" class="btn-large waves-effect waves-light" href="{{ script.get_sample }}" target="_blank">
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="{{ script.get_sample }}" target="_blank">
         <i class="material-icons right">directions_bike</i>Sample
       </a>
     {% endif %}
 
     {% if script.get_documentation %}
-      <a id="solution_button" class="btn-large waves-effect waves-light" href="{{ script.get_documentation }}" target="_blank">
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="{{ script.get_documentation }}" target="_blank">
         <i class="material-icons right">list</i>Documentation
       </a>
     {% endif %}
 
     {% if script.get_open_source %}
-      <a id="solution_button" class="btn-large waves-effect waves-light" href="{{ script.get_open_source }}" target="_blank">
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="{{ script.get_open_source }}" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
-      <a id="solution_button" class="btn-large waves-effect waves-light" href="{{ script.get_link_colab }}" target="_blank">
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="{{ script.get_link_colab }}" target="_blank">
         <i class="material-icons right">copyright</i>Data Pill Colab
       </a>
     {% endif %}
