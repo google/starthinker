@@ -1,0 +1,232 @@
+{
+  "setup": {
+    "copyright": "Copyright 2019 Google Inc.",
+    "license": "Apache License, Version 2.0"
+  },
+  "tasks": [
+    {
+      "video": {
+        "__comment__": "Add image using transparency to video. Video is 640 x 360. Image is 400 x 400.",
+        "auth": "user",
+        "effects": [
+          {
+            "duration": {
+              "end": 5,
+              "start": 1
+            },
+            "fade": {
+              "in": 1,
+              "out": 1
+            },
+            "image": {
+              "file_or_url": "https://storage.googleapis.com/starthinker-test/video_sample.png"
+            },
+            "opacity": 1,
+            "position": {
+              "angle": 0,
+              "height": 0,
+              "width": 120
+            }
+          },
+          {
+            "duration": {
+              "end": 7,
+              "start": 4.5
+            },
+            "fade": {
+              "in": 0,
+              "out": 0
+            },
+            "opacity": 0.8,
+            "position": {
+              "angle": 0,
+              "height": 30,
+              "width": 200
+            },
+            "text": {
+              "align": "center",
+              "color": "#ffffff",
+              "font": "Arial",
+              "kerning": 1,
+              "message": "Video Text.\nAnd A Second Line",
+              "size": 24
+            }
+          }
+        ],
+        "file_or_url": "https://storage.googleapis.com/starthinker-test/video_sample.mp4",
+        "out": {
+          "file": "test_ran.mp4"
+        }
+      }
+    },
+    {
+      "test": {
+        "delete": true,
+        "path": "test_ran.mp4"
+      }
+    },
+    {
+      "video": {
+        "__comment__": "Read video effects from sheet and write to storage.",
+        "auth": "user",
+        "sheet": {
+          "tab": "Video",
+          "url": "https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit?usp=sharing"
+        }
+      }
+    },
+    {
+      "test": {
+        "auth": "service",
+        "storage": {
+          "bucket": "kenjora-test",
+          "delete": true,
+          "file": "test_ran.mp4"
+        }
+      }
+    },
+    {
+      "dataset": {
+        "auth": "user",
+        "dataset": "Test"
+      }
+    },
+    {
+      "sheets": {
+        "__comment__": "Move sheet data to bigquery table.",
+        "auth": "user",
+        "header": false,
+        "out": {
+          "bigquery": {
+            "dataset": "Test",
+            "schema": [
+              {
+                "name": "Video_URL",
+                "type": "STRING"
+              },
+              {
+                "name": "Duration_Start",
+                "type": "FLOAT"
+              },
+              {
+                "name": "Duration_End",
+                "type": "FLOAT"
+              },
+              {
+                "name": "Fade_In",
+                "type": "FLOAT"
+              },
+              {
+                "name": "Fade_Out",
+                "type": "FLOAT"
+              },
+              {
+                "name": "Opacity",
+                "type": "FLOAT"
+              },
+              {
+                "name": "Position_Height",
+                "type": "INTEGER"
+              },
+              {
+                "name": "Position_Width",
+                "type": "INTEGER"
+              },
+              {
+                "name": "Position_Angle",
+                "type": "INTEGER"
+              },
+              {
+                "name": "Image_URL",
+                "type": "STRING"
+              },
+              {
+                "name": "Text_Color",
+                "type": "STRING"
+              },
+              {
+                "name": "Text_Font",
+                "type": "STRING"
+              },
+              {
+                "name": "Text_Size",
+                "type": "INTEGER"
+              },
+              {
+                "name": "Text_Align",
+                "type": "STRING"
+              },
+              {
+                "name": "Text_Kerning",
+                "type": "INTEGER"
+              },
+              {
+                "name": "Text_Message",
+                "type": "STRING"
+              },
+              {
+                "name": "Audio_URL",
+                "type": "STRING"
+              },
+              {
+                "name": "Out_YouTube_Title",
+                "type": "STRING"
+              },
+              {
+                "name": "Out_YouTube_Description",
+                "type": "STRING"
+              },
+              {
+                "name": "Out_YouTube_Category",
+                "type": "INTEGER"
+              },
+              {
+                "name": "Out_YouTube_Keywords",
+                "type": "STRING"
+              },
+              {
+                "name": "Out_YouTube_Private",
+                "type": "STRING"
+              },
+              {
+                "name": "Out_DCM",
+                "type": "STRING"
+              },
+              {
+                "name": "Out_Storage_Bucket",
+                "type": "STRING"
+              },
+              {
+                "name": "Out_Storage_File",
+                "type": "STRING"
+              }
+            ],
+            "table": "Video"
+          }
+        },
+        "range": "A3:Y",
+        "sheet": "https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit?usp=sharing",
+        "tab": "Video"
+      }
+    },
+    {
+      "video": {
+        "auth": "service",
+        "bigquery": {
+          "dataset": "Test",
+          "table": "Video"
+        }
+      }
+    },
+    {
+      "test": {
+        "auth": "service",
+        "storage": {
+          "bucket": "kenjora-test",
+          "delete": true,
+          "file": "test_ran.mp4"
+        }
+      }
+    }
+  ]
+}

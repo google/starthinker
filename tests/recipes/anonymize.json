@@ -1,0 +1,173 @@
+{
+  "setup": {
+    "copyright": "Copyright 2019 Google Inc.",
+    "license": "Apache License, Version 2.0"
+  },
+  "tasks": [
+    {
+      "dataset": {
+        "auth": "user",
+        "dataset": "Test_Anonymize_From"
+      }
+    },
+    {
+      "dataset": {
+        "auth": "user",
+        "dataset": "Test_Anonymize_To"
+      }
+    },
+    {
+      "bigquery": {
+        "auth": "user",
+        "from": {
+          "values": [
+            [
+              "2018-02-27",
+              "dog",
+              7,
+              67
+            ],
+            [
+              "2018-03-01",
+              "cat",
+              5,
+              1.5
+            ],
+            [
+              "2018-03-02",
+              "bird",
+              12,
+              0.44
+            ],
+            [
+              "2018-03-03",
+              "lizard",
+              22,
+              1
+            ],
+            [
+              "2018-03-04",
+              "dinosaur",
+              1600,
+              273.97
+            ]
+          ]
+        },
+        "schema": [
+          {
+            "mode": "NULLABLE",
+            "name": "Date_Column",
+            "type": "DATE"
+          },
+          {
+            "mode": "NULLABLE",
+            "name": "String_Column",
+            "type": "STRING"
+          },
+          {
+            "mode": "NULLABLE",
+            "name": "Integer_Column",
+            "type": "INTEGER"
+          },
+          {
+            "mode": "NULLABLE",
+            "name": "Float_Column",
+            "type": "FLOAT"
+          }
+        ],
+        "to": {
+          "dataset": "Test_Anonymize_From",
+          "table": "Anonymize_Table"
+        }
+      }
+    },
+    {
+      "bigquery": {
+        "auth": "user",
+        "from": {
+          "dataset": "Test_Anonymize_From",
+          "query": "SELECT * FROM Test_Anonymize_From.Anonymize_Table;"
+        },
+        "to": {
+          "dataset": "Test_Anonymize_From",
+          "view": "Anonymize_View"
+        }
+      }
+    },
+    {
+      "anonymize": {
+        "auth": "user",
+        "bigquery": {
+          "from": {
+            "dataset": "Test_Anonymize_From"
+          },
+          "to": {
+            "dataset": "Test_Anonymize_To"
+          }
+        }
+      }
+    },
+    {
+      "test": {
+        "auth": "user",
+        "bigquery": {
+          "dataset": "Test_Anonymize_To",
+          "schema": [
+            {
+              "mode": "NULLABLE",
+              "name": "Date_Column",
+              "type": "DATE"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "String_Column",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Integer_Column",
+              "type": "INTEGER"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Float_Column",
+              "type": "FLOAT"
+            }
+          ],
+          "table": "Anonymize_Table"
+        }
+      }
+    },
+    {
+      "test": {
+        "auth": "user",
+        "bigquery": {
+          "dataset": "Test_Anonymize_From",
+          "schema": [
+            {
+              "mode": "NULLABLE",
+              "name": "Date_Column",
+              "type": "DATE"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "String_Column",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Integer_Column",
+              "type": "INTEGER"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Float_Column",
+              "type": "FLOAT"
+            }
+          ],
+          "table": "Anonymize_View"
+        }
+      }
+    }
+  ]
+}

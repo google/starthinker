@@ -35,7 +35,6 @@ INPUTS = {
   "dataset":"ITP_Audit_Dashboard", # BigQuery dataset for store dashboard tables.
   "sheet_url":"", # Sheet URL for the Segments sheet.
   "cm_account_id":"", # Campaign Manager Account Id.
-  "segment_level":Advertiser_Id, # Level at which the custom segments will be applied.
   "advertiser_ids":"", # Comma separated list of Campaign Manager Advertiser Ids.  Leave blank for no advertiser filtering.
   "floodlight_configuration_id":, # Floodlight Configuration Id for the Campaign Manager floodlight report.
   "floodlight_report_name":"ITP_Audit_Dashboard_Floodlight", # Campaign Manager Floodlight report name.
@@ -61,7 +60,7 @@ TASKS = [
   {
     "dcm": {
       "auth": "user",
-      "timeout": 30,
+      "timeout": 60,
       "report": {
         "account": {
           "field": {
@@ -389,20 +388,6 @@ TASKS = [
           "description": "Campaign Manager Account Id."
         }
       },
-      "segment_level": {
-        "field": {
-          "name": "segment_level",
-          "kind": "choice",
-          "order": 4,
-          "default": "Advertiser_Id",
-          "description": "Level at which the custom segments will be applied.",
-          "choices": [
-            "Advertiser_Id",
-            "Insertion_Order_Id",
-            "Line_Item_Id"
-          ]
-        }
-      },
       "dataset": {
         "field": {
           "name": "dataset",
@@ -439,7 +424,7 @@ TASKS = [
           "description": "Comma separated list of Campaign Manager Advertiser Ids.  Leave blank for no advertiser filtering."
         }
       },
-      "timeout": 30
+      "timeout": 60
     }
   }
 ]

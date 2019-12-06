@@ -1,0 +1,289 @@
+{
+  "script": {
+    "authors": [
+      "terwilleger@google.com",
+      "aallamang@google.com"
+    ],
+    "catalysts": [
+      "insights",
+      "experience"
+    ],
+    "categories": [
+      "itp",
+      "reporting"
+    ],
+    "copyright": "Copyright 2018 Google Inc.",
+    "description": "Dashboard that shows performance metrics across browser to see the impact of ITP.",
+    "icon": "donut_small",
+    "instructions": [
+      "Follow the steps in the below document",
+      "https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/edit?usp=sharing"
+    ],
+    "license": "Apache License, Version 2.0",
+    "pitches": [
+      "See drilled down metrics of your accounts performance as ITP changes"
+    ],
+    "product": "gTech",
+    "requirements": [
+      "cm",
+      "dv360",
+      "datastudio",
+      "bigquery"
+    ],
+    "title": "ITP Audit Dashboard"
+  },
+  "setup": {
+    "auth": {
+      "client": "/usr/local/google/home/terwilleger/starthinker/starthinker_assets/client.json",
+      "service": "/usr/local/google/home/terwilleger/starthinker/starthinker_assets/service.json",
+      "user": "/usr/local/google/home/terwilleger/starthinker/starthinker_assets/user.json"
+    },
+    "day": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun"
+    ],
+    "hour": [
+      3
+    ],
+    "id": "terwilleger-216216",
+    "timezone": "America/Los_Angeles"
+  },
+  "tasks": [
+    {
+      "dataset": {
+        "auth": "service",
+        "dataset": "Test"
+      }
+    },
+    {
+      "dcm": {
+        "auth": "user",
+        "delete": false,
+        "out": {
+          "bigquery": {
+            "dataset": "Test",
+            "is_incremental_load": false,
+            "table": "Floodlight_CM_Report"
+          }
+        },
+        "report": {
+          "account": "",
+          "body": {
+            "delivery": {
+              "emailOwner": false
+            },
+            "fileName": "ITP_Audit_Dashboard_Floodlight",
+            "floodlightCriteria": {
+              "dateRange": {
+                "kind": "dfareporting#dateRange",
+                "relativeDateRange": "LAST_30_DAYS"
+              },
+              "dimensions": [
+                {
+                  "kind": "dfareporting#sortedDimension",
+                  "name": "dfa:site"
+                },
+                {
+                  "kind": "dfareporting#sortedDimension",
+                  "name": "dfa:floodlightAttributionType"
+                },
+                {
+                  "kind": "dfareporting#sortedDimension",
+                  "name": "dfa:interactionType"
+                },
+                {
+                  "kind": "dfareporting#sortedDimension",
+                  "name": "dfa:pathType"
+                },
+                {
+                  "kind": "dfareporting#sortedDimension",
+                  "name": "dfa:browserPlatform"
+                },
+                {
+                  "kind": "dfareporting#sortedDimension",
+                  "name": "dfa:platformType"
+                },
+                {
+                  "kind": "dfareporting#sortedDimension",
+                  "name": "dfa:week"
+                }
+              ],
+              "floodlightConfigId": {
+                "dimensionName": "dfa:floodlightConfigId",
+                "kind": "dfareporting#dimensionValue",
+                "matchType": "EXACT",
+                "value": ""
+              },
+              "metricNames": [
+                "dfa:activityClickThroughConversions",
+                "dfa:activityViewThroughConversions",
+                "dfa:totalConversions",
+                "dfa:totalConversionsRevenue"
+              ],
+              "reportProperties": {
+                "includeUnattributedCookieConversions": true,
+                "includeUnattributedIPConversions": false
+              }
+            },
+            "format": "CSV",
+            "kind": "dfareporting#report",
+            "name": "ITP_Audit_Dashboard_Floodlight",
+            "schedule": {
+              "active": true,
+              "every": 1,
+              "expirationDate": "2029-12-10",
+              "repeats": "DAILY",
+              "startDate": "2019-09-11"
+            },
+            "type": "FLOODLIGHT"
+          }
+        },
+        "timeout": 30
+      }
+    },
+    {
+      "dbm": {
+        "auth": "user",
+        "datastudio": true,
+        "out": {
+          "bigquery": {
+            "autodetect_schema": true,
+            "dataset": "Test",
+            "is_incremental_load": false,
+            "table": "Dv360_Browser_Report_Dirty"
+          }
+        },
+        "report": {
+          "name": "ITP_Audit_Browser_Report"
+        }
+      }
+    },
+    {
+      "sheets": {
+        "auth": "user",
+        "header": true,
+        "out": {
+          "auth": "service",
+          "bigquery": {
+            "dataset": "Test",
+            "table": "Environment"
+          }
+        },
+        "range": "A:B",
+        "sheet": "",
+        "tab": "Enviroment"
+      }
+    },
+    {
+      "sheets": {
+        "auth": "user",
+        "header": true,
+        "out": {
+          "auth": "service",
+          "bigquery": {
+            "dataset": "Test",
+            "table": "Browser"
+          }
+        },
+        "range": "A:C",
+        "sheet": "",
+        "tab": "Browser"
+      }
+    },
+    {
+      "sheets": {
+        "auth": "user",
+        "header": true,
+        "out": {
+          "auth": "service",
+          "bigquery": {
+            "dataset": "Test",
+            "table": "CM_Browser_lookup"
+          }
+        },
+        "range": "A:C",
+        "sheet": "",
+        "tab": "CM_Site_Segments"
+      }
+    },
+    {
+      "sheets": {
+        "auth": "user",
+        "header": true,
+        "out": {
+          "auth": "service",
+          "bigquery": {
+            "dataset": "Test",
+            "table": "Device_Type"
+          }
+        },
+        "range": "A:B",
+        "sheet": "",
+        "tab": "Device_Type"
+      }
+    },
+    {
+      "sheets": {
+        "auth": "user",
+        "header": true,
+        "out": {
+          "auth": "service",
+          "bigquery": {
+            "dataset": "Test",
+            "table": "Floodlight_Attribution"
+          }
+        },
+        "range": "A:B",
+        "sheet": "",
+        "tab": "Floodlight_Attribution"
+      }
+    },
+    {
+      "itp_audit": {
+        "account": "",
+        "advertiser_ids": "",
+        "auth": "service",
+        "cm_browser_report_name": "ITP_Audit_Dashboard_Browser",
+        "dataset": "ITP_Audit_Dashboard",
+        "sheet": "",
+        "timeout": 60
+      }
+    },
+    {
+      "test": {
+        "auth": "user",
+        "bigquery": {
+          "dataset": "Test",
+          "schema": [
+            {
+              "mode": "NULLABLE",
+              "name": "browser_platform",
+              "type": "FLOAT"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "percent_attributed",
+              "type": "FLOAT"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "percent_unattributed",
+              "type": "FLOAT"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "share_of_floodlight_conversions",
+              "type": "FLOAT"
+            }
+          ],
+          "table": "CM_Floodlight_Multichart"
+        }
+      }
+    }
+  ]
+}

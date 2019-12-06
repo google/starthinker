@@ -59,8 +59,12 @@ def get_service(api='gmail', version='v1', auth='service', scopes=None, uri_file
   if key not in DISCOVERY_CACHE:
     credentials = get_credentials(auth)
     if uri_file:
-      with open(uri_file, 'r') as cache_file:
-        DISCOVERY_CACHE[key] = discovery.build_from_document(cache_file.read(), credentials=credentials)
+      uri_file = uri_file.strip()
+      if uri_file.startswith('{'):
+        DISCOVERY_CACHE[key] = discovery.build_from_document(uri_file, credentials=credentials)
+      else:
+        with open(uri_file, 'r') as cache_file:
+          DISCOVERY_CACHE[key] = discovery.build_from_document(cache_file.read(), credentials=credentials)
     else:
       DISCOVERY_CACHE[key] = discovery.build(api, version, credentials=credentials)
 

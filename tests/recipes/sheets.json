@@ -1,0 +1,467 @@
+{
+  "setup": {
+    "copyright": "Copyright 2019 Google Inc.",
+    "license": "Apache License, Version 2.0"
+  },
+  "tasks": [
+    {
+      "test": {
+        "__comment__": "Check if template accessible, in case version changes. Access by membership: starthinker-assets@googlegroups.com",
+        "auth": "user",
+        "sheets": {
+          "range": "A1:C",
+          "tab": "Sheet_Template",
+          "url": "https://docs.google.com/spreadsheets/d/1DhOoCOC7hf3lUckXWG4ELfZhH28Rsxr74sfhc713T3A/",
+          "values": [
+            [
+              "Animal",
+              "Age",
+              "Weight ( lbs )"
+            ],
+            [
+              "dog",
+              7,
+              67
+            ],
+            [
+              "cat",
+              5,
+              1.5
+            ],
+            [
+              "bird",
+              12,
+              0.44
+            ],
+            [
+              "lizard",
+              22,
+              1
+            ],
+            [
+              "dinosaur",
+              1600,
+              273.97
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "sheets": {
+        "__comment__": "Copy the tamplate sheet to the users test sheet. The tab is deleted if exists and re-created.",
+        "auth": "user",
+        "delete": true,
+        "range": "A1:C",
+        "sheet": "StarThinker Sheet Test",
+        "tab": "Sheet_Test",
+        "template": {
+          "sheet": "https://docs.google.com/spreadsheets/d/1DhOoCOC7hf3lUckXWG4ELfZhH28Rsxr74sfhc713T3A/",
+          "tab": "Sheet_Template"
+        }
+      }
+    },
+    {
+      "test": {
+        "__comment__": "Verify that the copy worked by checking values in the users sheet.",
+        "auth": "user",
+        "sheets": {
+          "range": "A1:C",
+          "tab": "Sheet_Test",
+          "url": "StarThinker Sheet Test",
+          "values": [
+            [
+              "Animal",
+              "Age",
+              "Weight ( lbs )"
+            ],
+            [
+              "dog",
+              7,
+              67
+            ],
+            [
+              "cat",
+              5,
+              1.5
+            ],
+            [
+              "bird",
+              12,
+              0.44
+            ],
+            [
+              "lizard",
+              22,
+              1
+            ],
+            [
+              "dinosaur",
+              1600,
+              273.97
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "sheets": {
+        "__comment__": "Clear a section of the users sheet.",
+        "auth": "user",
+        "clear": true,
+        "range": "A2:B",
+        "sheet": "StarThinker Sheet Test",
+        "tab": "Sheet_Test"
+      }
+    },
+    {
+      "test": {
+        "__comment__": "Verify users sheet was cleared.",
+        "auth": "user",
+        "sheets": {
+          "range": "A1:C",
+          "tab": "Sheet_Test",
+          "url": "StarThinker Sheet Test",
+          "values": [
+            [
+              "Animal",
+              "Age",
+              "Weight ( lbs )"
+            ],
+            [
+              null,
+              null,
+              67
+            ],
+            [
+              null,
+              null,
+              1.5
+            ],
+            [
+              null,
+              null,
+              0.44
+            ],
+            [
+              null,
+              null,
+              1
+            ],
+            [
+              null,
+              null,
+              273.97
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "sheets": {
+        "__comment__": "Write new values to the sheet.",
+        "auth": "user",
+        "range": "A2:B",
+        "sheet": "StarThinker Sheet Test",
+        "tab": "Sheet_Test",
+        "write": {
+          "values": [
+            [
+              "whale",
+              1
+            ],
+            [
+              "zebra",
+              2
+            ],
+            [
+              "fish",
+              3
+            ],
+            [
+              "crab",
+              4
+            ],
+            [
+              "lion",
+              5
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "test": {
+        "__comment__": "Verify that the write worked by checking values in the users sheet.",
+        "auth": "user",
+        "sheets": {
+          "range": "A1:C",
+          "tab": "Sheet_Test",
+          "url": "StarThinker Sheet Test",
+          "values": [
+            [
+              "Animal",
+              "Age",
+              "Weight ( lbs )"
+            ],
+            [
+              "whale",
+              1,
+              67
+            ],
+            [
+              "zebra",
+              2,
+              1.5
+            ],
+            [
+              "fish",
+              3,
+              0.44
+            ],
+            [
+              "crab",
+              4,
+              1
+            ],
+            [
+              "lion",
+              5,
+              273.97
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "sheets": {
+        "__comment__": "Write over values in the sheet.",
+        "auth": "user",
+        "range": "A2:C",
+        "sheet": "StarThinker Sheet Test",
+        "tab": "Sheet_Test",
+        "write": {
+          "values": [
+            [
+              "horse",
+              6,
+              22
+            ],
+            [
+              "monkey",
+              7,
+              55.5
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "test": {
+        "__comment__": "Verify that the write worked by checking values in the users sheet.",
+        "auth": "user",
+        "sheets": {
+          "range": "A1:C",
+          "tab": "Sheet_Test",
+          "url": "StarThinker Sheet Test",
+          "values": [
+            [
+              "Animal",
+              "Age",
+              "Weight ( lbs )"
+            ],
+            [
+              "horse",
+              6,
+              22
+            ],
+            [
+              "monkey",
+              7,
+              55.5
+            ],
+            [
+              "fish",
+              3,
+              0.44
+            ],
+            [
+              "crab",
+              4,
+              1
+            ],
+            [
+              "lion",
+              5,
+              273.97
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "sheets": {
+        "__comment__": "Append values to the sheet.",
+        "append": {
+          "values": [
+            [
+              "mouse",
+              1,
+              1
+            ],
+            [
+              "bat",
+              2,
+              2.5
+            ]
+          ]
+        },
+        "auth": "user",
+        "range": "A2:C",
+        "sheet": "StarThinker Sheet Test",
+        "tab": "Sheet_Test"
+      }
+    },
+    {
+      "test": {
+        "__comment__": "Verify that the append worked by checking values in the users sheet.",
+        "auth": "user",
+        "sheets": {
+          "range": "A1:C",
+          "tab": "Sheet_Test",
+          "url": "StarThinker Sheet Test",
+          "values": [
+            [
+              "Animal",
+              "Age",
+              "Weight ( lbs )"
+            ],
+            [
+              "horse",
+              6,
+              22
+            ],
+            [
+              "monkey",
+              7,
+              55.5
+            ],
+            [
+              "fish",
+              3,
+              0.44
+            ],
+            [
+              "crab",
+              4,
+              1
+            ],
+            [
+              "lion",
+              5,
+              273.97
+            ],
+            [
+              "mouse",
+              1,
+              1
+            ],
+            [
+              "bat",
+              2,
+              2.5
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "dataset": {
+        "__comment__": "Create a dataset for testing.",
+        "auth": "user",
+        "dataset": "Test"
+      }
+    },
+    {
+      "sheets": {
+        "__comment__": "Move sheet data to bigquery table.",
+        "auth": "user",
+        "header": true,
+        "out": {
+          "bigquery": {
+            "dataset": "Test",
+            "schema": [
+              {
+                "name": "Animal",
+                "type": "STRING"
+              },
+              {
+                "name": "Age",
+                "type": "INTEGER"
+              },
+              {
+                "name": "Weight_lbs",
+                "type": "FLOAT"
+              }
+            ],
+            "table": "Sheet_To_BigQuery"
+          }
+        },
+        "range": "A1:C",
+        "sheet": "https://docs.google.com/spreadsheets/d/1DhOoCOC7hf3lUckXWG4ELfZhH28Rsxr74sfhc713T3A/",
+        "tab": "Sheet_Template"
+      }
+    },
+    {
+      "test": {
+        "__comment__": "Verify that the data was moved with the proper schema and values.",
+        "auth": "user",
+        "bigquery": {
+          "dataset": "Test",
+          "schema": [
+            {
+              "name": "Animal",
+              "type": "STRING"
+            },
+            {
+              "name": "Age",
+              "type": "INTEGER"
+            },
+            {
+              "name": "Weight_lbs",
+              "type": "FLOAT"
+            }
+          ],
+          "table": "Sheet_To_BigQuery",
+          "values": [
+            [
+              "dog",
+              7,
+              67.0
+            ],
+            [
+              "cat",
+              5,
+              1.5
+            ],
+            [
+              "bird",
+              12,
+              0.44
+            ],
+            [
+              "lizard",
+              22,
+              1.0
+            ],
+            [
+              "dinosaur",
+              1600,
+              273.97
+            ]
+          ]
+        }
+      }
+    }
+  ]
+}

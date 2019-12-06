@@ -1,0 +1,137 @@
+{
+  "setup": {
+    "copyright": "Copyright 2019 Google Inc.",
+    "license": "Apache License, Version 2.0"
+  },
+  "tasks": [
+    {
+      "email": {
+        "auth": "user",
+        "send": {
+          "attachment": {
+            "filename": "test_data.csv",
+            "single_cell": true,
+            "values": [
+              [
+                "Animal",
+                "Age",
+                "Weight_lbs"
+              ],
+              [
+                "dog",
+                7,
+                67.0
+              ],
+              [
+                "cat",
+                5,
+                1.5
+              ],
+              [
+                "bird",
+                12,
+                0.44
+              ],
+              [
+                "lizard",
+                22,
+                1.0
+              ],
+              [
+                "dinosaur",
+                1600,
+                273.97
+              ]
+            ]
+          },
+          "from": "kenjora@google.com",
+          "html": "Attached is a CSV with test data in it...",
+          "subject": "Testing Email Attachment",
+          "text": "Attached is a CSV with test data in it...",
+          "to": "kenjora@google.com"
+        }
+      }
+    },
+    {
+      "email": {
+        "auth": "user",
+        "read": {
+          "attachment": "test_data.csv",
+          "from": "kenjora@google.com",
+          "out": {
+            "bigquery": {
+              "dataset": "Test",
+              "schema": [
+                {
+                  "name": "Animal",
+                  "type": "STRING"
+                },
+                {
+                  "name": "Age",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "Weight_lbs",
+                  "type": "FLOAT"
+                }
+              ],
+              "table": "Email_Attachment"
+            }
+          },
+          "subject": "Testing Email Attachment",
+          "to": "kenjora@google.com"
+        }
+      }
+    },
+    {
+      "test": {
+        "auth": "user",
+        "bigquery": {
+          "dataset": "Test",
+          "schema": [
+            {
+              "name": "Animal",
+              "type": "STRING"
+            },
+            {
+              "name": "Age",
+              "type": "INTEGER"
+            },
+            {
+              "name": "Weight_lbs",
+              "type": "FLOAT"
+            }
+          ],
+          "table": "Email_Attachment",
+          "values": [
+            [
+              "dog",
+              7,
+              67.0
+            ],
+            [
+              "cat",
+              5,
+              1.5
+            ],
+            [
+              "bird",
+              12,
+              0.44
+            ],
+            [
+              "lizard",
+              22,
+              1.0
+            ],
+            [
+              "dinosaur",
+              1600,
+              273.97
+            ]
+          ]
+        }
+      }
+    }
+  ]
+}

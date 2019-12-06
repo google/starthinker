@@ -21,9 +21,9 @@
 
 Meant to speed up an automate testing of StarThinker.
 
-To initialize: python test/helper.py --init
-To run all: python test/helper.py
-To run some: python test/helper.py --tests dt entity
+To initialize: python tests/helper.py --init
+To run all: python tests/helper.py
+To run some: python tests/helper.py --tests dt entity
 
 """
 
@@ -39,10 +39,10 @@ from starthinker.config import UI_ROOT, UI_SERVICE, UI_PROJECT
 from starthinker.script.parse import json_get_fields, json_set_fields
 from starthinker.script.run import script_read
 
-CONFIG_FILE = UI_ROOT + '/starthinker/test/config.json'
-TEST_DIRECTORY = UI_ROOT + '/starthinker/test/scripts/'
-RECIPE_DIRECTORY = UI_ROOT + '/starthinker/test/recipes/'
-LOG_DIRECTORY = UI_ROOT + '/starthinker/test/logs/'
+CONFIG_FILE = UI_ROOT + '/tests/config.json'
+TEST_DIRECTORY = UI_ROOT + '/tests/scripts/'
+RECIPE_DIRECTORY = UI_ROOT + '/tests/recipes/'
+LOG_DIRECTORY = UI_ROOT + '/tests/logs/'
 RE_TEST = re.compile(r'test.*\.json')
 
 
@@ -189,7 +189,7 @@ def run_tests(tests):
     if poll is not None:
       job = jobs.pop(i)
 
-      print('\nOK:' if poll == 0 else '\nFAILED:', job['recipe'], 'REMAINING:', len(jobs))
+      print('\nOK:' if poll == 0 else '\nFAILED:', job['recipe'], 'REMAINING:', len(jobs), [j['recipe'].replace('.json', '') for j in jobs])
 
       output, errors = job['process'].communicate()
       with open(LOG_DIRECTORY + ('OK_' if poll == 0 else 'FAILED_') + job['recipe'].replace('.json', '.log'), 'w') as f:

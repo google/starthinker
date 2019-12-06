@@ -47,7 +47,7 @@ GCP_CONN_ID = "" # The connection to use for service authentication.
 INPUTS = {
   "dataset":"", # Place where tables will be written in BigQuery.
   "project":"", # Project where BigQuery dataset will be created.
-  "accounts":, # Comma separated DCM account ids.
+  "accounts":[], # Comma separated DCM account ids.
 }
 
 TASKS = [
@@ -92,7 +92,7 @@ TASKS = [
             "name": "accounts",
             "kind": "integer_list",
             "order": 2,
-            "default": "",
+            "default": [],
             "description": "Comma separated DCM account ids."
           }
         }
@@ -128,7 +128,7 @@ TASKS = [
             "name": "accounts",
             "kind": "integer_list",
             "order": 2,
-            "default": "",
+            "default": [],
             "description": "Comma separated DCM account ids."
           }
         }

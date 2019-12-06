@@ -1,0 +1,58 @@
+{
+  "setup": {
+    "copyright": "Copyright 2019 Google Inc.",
+    "license": "Apache License, Version 2.0"
+  },
+  "tasks": [
+    {
+      "google_api": {
+        "api": "gmail",
+        "auth": "user",
+        "function": "users.getProfile",
+        "iterate": false,
+        "kwargs": {
+          "userId": "me"
+        },
+        "out": {
+          "bigquery": {
+            "dataset": "Test",
+            "format": "CSV",
+            "table": "User_Profile"
+          }
+        },
+        "version": "v1"
+      }
+    },
+    {
+      "test": {
+        "auth": "user",
+        "bigquery": {
+          "dataset": "Test",
+          "schema": [
+            {
+              "mode": "NULLABLE",
+              "name": "emailAddress",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "messagesTotal",
+              "type": "INTEGER"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "threadsTotal",
+              "type": "INTEGER"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "historyId",
+              "type": "STRING"
+            }
+          ],
+          "table": "User_Profile"
+        }
+      }
+    }
+  ]
+}
