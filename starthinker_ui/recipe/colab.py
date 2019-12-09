@@ -16,12 +16,8 @@
 #
 ###########################################################################
 
-import json
-import pprint
-from random import choice
-
 from starthinker.util.colab import Colab
-from starthinker.script.parse import json_get_fields, json_set_auths
+from starthinker.script.parse import json_get_fields, json_set_auths, dict_to_string, fields_to_string
 
 def script_to_colab(name, description, instructions, tasks, parameters={}):
   colab = Colab(name)
@@ -48,31 +44,7 @@ def script_to_colab(name, description, instructions, tasks, parameters={}):
     colab.paragraph(description)
     colab.list(instructions)
     colab.paragraph('Modify the values below for your use case, can be done multiple times, then click play.')
-
-    fields = json_get_fields(tasks)
-    colab.code('FIELDS = {')
-    for field in fields:
-
-      if field['kind'] in ('string', 'email', 'text'):
-        value = '"%s"' % parameters.get(field['name'], field.get('default', ''))
-      elif field['kind'] in ('integer', 'boolean'):
-        value = parameters.get(field['name'], field.get('default', 'None'))
-      elif field['kind'] in ('choice', 'integer_list', 'string_list'):
-        value = parameters.get(field['name'], field.get('default', '[]'))
-      elif field['kind'] in ('json'):
-        value = parameters.get(field['name'], field.get('default', '{}'))
-      elif field['kind'] == 'timezone':
-        value = '"%s"' % parameters.get(field['name'], field.get('default', 'America/Phoenix'))
-        field['description'] = '%s https://github.com/google/starthinker/blob/master/starthinker_ui/ui/timezones.py' % field.get('description', '')
-      else:
-        raise NotImplementedError("%s is not a suported field type" % field)
-  
-      if 'description' in field: 
-        colab.code('  "%s":%s, # %s' % (field['name'], value, field['description']))
-      else:
-        colab.code('  "%s":%s,' % (field['name'], value))
-
-    colab.code('}')
+    colab.code('FIELDS = %s' % fields_to_string(fields, parameters))
     colab.code('\nprint("Parameters Set To: %s" % FIELDS)')
 
   colab.header('%d. Execute %s' % (5 if fields else 4, name))
@@ -83,7 +55,7 @@ def script_to_colab(name, description, instructions, tasks, parameters={}):
   colab.code('')
   colab.code("USER_CREDENTIALS = '/content/user.json'")
   colab.code('')
-  colab.code('TASKS = %s' % pprint.pformat(json_set_auths(tasks, 'user'), width=1, indent=2))
+  colab.code('TASKS = %s' % dict_to_string(json_set_auths(tasks, 'user'), skip=('field',)))
   colab.code('')
 
   if fields: colab.code('json_set_fields(TASKS, FIELDS)')

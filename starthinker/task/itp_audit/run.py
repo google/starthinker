@@ -113,9 +113,9 @@ def run_dv_360_queries(project):
     project.id, project.task['dataset'], BROWSER_PERFORMANCE_2YEARS_TABLE)
 
   # Safari Distribution 90 days
-  if project.verbose: print('RUN Safari Distribution 90 days Query')
-  run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + SAFARI_DISTRIBUTION_90DAYS_FILENAME), 
-    project.id, project.task['dataset'], SAFARI_DISTRIBUTION_90DAYS_TABLE)
+  # if project.verbose: print('RUN Safari Distribution 90 days Query')
+  # run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + SAFARI_DISTRIBUTION_90DAYS_FILENAME), 
+  #   project.id, project.task['dataset'], SAFARI_DISTRIBUTION_90DAYS_TABLE)
 
   # Browser Shares Multichart
   if project.verbose: print('RUN Dv360 Browser Share Multichart')

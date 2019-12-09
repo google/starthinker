@@ -21,6 +21,36 @@ import re
 RE_TEXT_FIELD = re.compile(r'\{(.*?:.*?)\}')
 
 
+def fields_to_string(fields, values={}):
+  items = [repr(field['name']) + ': ' + repr(values.get(field['name'], field.get('default', ''))) + ',' + ('  # %s' % field['description'] if 'description' in field else '') for field in fields]
+  return '{\n  %s\n}' % ('\n  '.join(items)) 
+
+
+def dict_to_string(value, char_indent='  ', char_line='\n', skip=(), indent=0):
+  nlch = char_line + char_indent * (indent + 1)
+  if type(value) is dict:
+    is_skip = any(k in value for k in skip)
+    items = [
+      ('' if is_skip else nlch) + repr(key) + ': ' + dict_to_string(value[key], '' if is_skip else char_indent, '' if is_skip else char_line, skip, indent + 1)
+      for key in value
+    ]
+    return '{%s}' % (','.join(items) + ('' if is_skip else char_line + char_indent * indent))
+  elif type(value) is list:
+    items = [
+      nlch + dict_to_string(item, char_indent, char_line, skip, indent + 1)
+      for item in value
+    ]
+    return '[%s]' % (','.join(items) + char_line + char_indent * indent)
+  elif type(value) is tuple:
+    items = [
+      nlch + dict_to_string(item, char_indent, char_line, skip, indent + 1)
+      for item in value
+    ]
+    return '(%s)' % (','.join(items) + char_line + char_indent * indent)
+  else:
+    return repr(value)
+
+
 def json_set_auths(struct, auth):
   """Recusrsively finds auth in script JSON and sets them.
 

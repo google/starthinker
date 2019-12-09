@@ -21,10 +21,289 @@ DBM Report
 
 Create a DBM report.
 
-Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DBM API</a> to build a report.
-Copy and paste the JSON definition of a report.
-The report is only created, use a move script to move it.
-To reset a report, delete it from DBM reporting.
+R
+e
+f
+e
+r
+e
+n
+c
+e
+ 
+f
+i
+e
+l
+d
+ 
+v
+a
+l
+u
+e
+s
+ 
+f
+r
+o
+m
+ 
+t
+h
+e
+ 
+<
+a
+ 
+h
+r
+e
+f
+=
+'
+h
+t
+t
+p
+s
+:
+/
+/
+d
+e
+v
+e
+l
+o
+p
+e
+r
+s
+.
+g
+o
+o
+g
+l
+e
+.
+c
+o
+m
+/
+b
+i
+d
+-
+m
+a
+n
+a
+g
+e
+r
+/
+v
+1
+/
+r
+e
+p
+o
+r
+t
+s
+'
+>
+D
+B
+M
+ 
+A
+P
+I
+<
+/
+a
+>
+ 
+t
+o
+ 
+b
+u
+i
+l
+d
+ 
+a
+ 
+r
+e
+p
+o
+r
+t
+.
+
+
+C
+o
+p
+y
+ 
+a
+n
+d
+ 
+p
+a
+s
+t
+e
+ 
+t
+h
+e
+ 
+J
+S
+O
+N
+ 
+d
+e
+f
+i
+n
+i
+t
+i
+o
+n
+ 
+o
+f
+ 
+a
+ 
+r
+e
+p
+o
+r
+t
+.
+
+
+T
+h
+e
+ 
+r
+e
+p
+o
+r
+t
+ 
+i
+s
+ 
+o
+n
+l
+y
+ 
+c
+r
+e
+a
+t
+e
+d
+,
+ 
+u
+s
+e
+ 
+a
+ 
+m
+o
+v
+e
+ 
+s
+c
+r
+i
+p
+t
+ 
+t
+o
+ 
+m
+o
+v
+e
+ 
+i
+t
+.
+
+
+T
+o
+ 
+r
+e
+s
+e
+t
+ 
+a
+ 
+r
+e
+p
+o
+r
+t
+,
+ 
+d
+e
+l
+e
+t
+e
+ 
+i
+t
+ 
+f
+r
+o
+m
+ 
+D
+B
+M
+ 
+r
+e
+p
+o
+r
+t
+i
+n
+g
+.
 
 '''
 
@@ -34,30 +313,30 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "body":{},
-  "delete":False,
+  'body': '{}',
+  'delete': False,
 }
 
 TASKS = [
   {
-    "dbm": {
-      "auth": "user",
-      "report": {
-        "body": {
-          "field": {
-            "name": "body",
-            "kind": "json",
-            "order": 1,
-            "default": "{}"
+    'dbm': {
+      'auth': 'user',
+      'report': {
+        'body': {
+          'field': {
+            'name': 'body',
+            'kind': 'json',
+            'order': 1,
+            'default': '{}'
           }
         }
       },
-      "delete": {
-        "field": {
-          "name": "delete",
-          "kind": "boolean",
-          "order": 3,
-          "default": false
+      'delete': {
+        'field': {
+          'name': 'delete',
+          'kind': 'boolean',
+          'order': 3,
+          'default': False
         }
       }
     }

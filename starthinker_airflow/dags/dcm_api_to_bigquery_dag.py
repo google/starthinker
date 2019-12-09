@@ -21,9 +21,169 @@ DCM API To BigQuery
 
 Write the current state of accounts, subaccounts, profiles, advertisers, campaigns, sites, roles, and reports to BigQuery for a given list of DCM accounts.
 
-Specify the name of the dataset, several tables will be created here.
-If dataset exists, it is inchanged.
-Add DCM account ids for the accounts to pull data from.
+S
+p
+e
+c
+i
+f
+y
+ 
+t
+h
+e
+ 
+n
+a
+m
+e
+ 
+o
+f
+ 
+t
+h
+e
+ 
+d
+a
+t
+a
+s
+e
+t
+,
+ 
+s
+e
+v
+e
+r
+a
+l
+ 
+t
+a
+b
+l
+e
+s
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+c
+r
+e
+a
+t
+e
+d
+ 
+h
+e
+r
+e
+.
+
+
+I
+f
+ 
+d
+a
+t
+a
+s
+e
+t
+ 
+e
+x
+i
+s
+t
+s
+,
+ 
+i
+t
+ 
+i
+s
+ 
+i
+n
+c
+h
+a
+n
+g
+e
+d
+.
+
+
+A
+d
+d
+ 
+D
+C
+M
+ 
+a
+c
+c
+o
+u
+n
+t
+ 
+i
+d
+s
+ 
+f
+o
+r
+ 
+t
+h
+e
+ 
+a
+c
+c
+o
+u
+n
+t
+s
+ 
+t
+o
+ 
+p
+u
+l
+l
+ 
+d
+a
+t
+a
+ 
+f
+r
+o
+m
+.
 
 '''
 
@@ -33,95 +193,95 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "endpoint":,
-  "dataset":"", # Google BigQuery dataset to create tables in.
-  "accounts":, # Comma separated DCM account ids.
+  'endpoint': '',
+  'dataset': '',  # Google BigQuery dataset to create tables in.
+  'accounts': '',  # Comma separated DCM account ids.
 }
 
 TASKS = [
   {
-    "dcm_api": {
-      "auth": "user",
-      "endpoints": {
-        "field": {
-          "name": "endpoint",
-          "kind": "choice",
-          "choices": [
-            "accountPermissionGroups",
-            "accountPermissions",
-            "accountUserProfiles",
-            "accounts",
-            "ads",
-            "advertiserGroups",
-            "advertiserLandingPages",
-            "advertisers",
-            "browsers",
-            "campaigns",
-            "changeLogs",
-            "cities",
-            "connectionTypes",
-            "contentCategories",
-            "countries",
-            "creativeFields",
-            "creativeGroups",
-            "creatives",
-            "directorySites",
-            "dynamicTargetingKeys",
-            "eventTags",
-            "files",
-            "floodlightActivities",
-            "floodlightActivityGroups",
-            "floodlightConfigurations",
-            "languages",
-            "metros",
-            "mobileApps",
-            "mobileCarriers",
-            "operatingSystemVersions",
-            "operatingSystems",
-            "placementGroups",
-            "placementStrategies",
-            "placements",
-            "platformTypes",
-            "postalCodes",
-            "projects",
-            "regions",
-            "remarketingLists",
-            "reports",
-            "sites",
-            "sizes",
-            "subaccounts",
-            "targetableRemarketingLists",
-            "targetingTemplates",
-            "userprofiles",
-            "userRolePermissionGroups",
-            "userRolePermissions",
-            "userRoles",
-            "videoFormats"
+    'dcm_api': {
+      'auth': 'user',
+      'endpoints': {
+        'field': {
+          'name': 'endpoint',
+          'kind': 'choice',
+          'choices': [
+            'accountPermissionGroups',
+            'accountPermissions',
+            'accountUserProfiles',
+            'accounts',
+            'ads',
+            'advertiserGroups',
+            'advertiserLandingPages',
+            'advertisers',
+            'browsers',
+            'campaigns',
+            'changeLogs',
+            'cities',
+            'connectionTypes',
+            'contentCategories',
+            'countries',
+            'creativeFields',
+            'creativeGroups',
+            'creatives',
+            'directorySites',
+            'dynamicTargetingKeys',
+            'eventTags',
+            'files',
+            'floodlightActivities',
+            'floodlightActivityGroups',
+            'floodlightConfigurations',
+            'languages',
+            'metros',
+            'mobileApps',
+            'mobileCarriers',
+            'operatingSystemVersions',
+            'operatingSystems',
+            'placementGroups',
+            'placementStrategies',
+            'placements',
+            'platformTypes',
+            'postalCodes',
+            'projects',
+            'regions',
+            'remarketingLists',
+            'reports',
+            'sites',
+            'sizes',
+            'subaccounts',
+            'targetableRemarketingLists',
+            'targetingTemplates',
+            'userprofiles',
+            'userRolePermissionGroups',
+            'userRolePermissions',
+            'userRoles',
+            'videoFormats'
           ],
-          "default": ""
+          'default': ''
         }
       },
-      "accounts": {
-        "single_cell": true,
-        "values": {
-          "field": {
-            "name": "accounts",
-            "kind": "integer_list",
-            "order": 2,
-            "default": "",
-            "description": "Comma separated DCM account ids."
+      'accounts': {
+        'single_cell': True,
+        'values': {
+          'field': {
+            'name': 'accounts',
+            'kind': 'integer_list',
+            'order': 2,
+            'default': '',
+            'description': 'Comma separated DCM account ids.'
           }
         }
       },
-      "out": {
-        "auth": "service",
-        "dataset": {
-          "field": {
-            "name": "dataset",
-            "kind": "string",
-            "order": 1,
-            "default": "",
-            "description": "Google BigQuery dataset to create tables in."
+      'out': {
+        'auth': 'service',
+        'dataset': {
+          'field': {
+            'name': 'dataset',
+            'kind': 'string',
+            'order': 1,
+            'default': '',
+            'description': 'Google BigQuery dataset to create tables in.'
           }
         }
       }

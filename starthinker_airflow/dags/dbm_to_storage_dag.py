@@ -21,8 +21,120 @@ DBM To Storage
 
 Move existing DBM report into a Storage bucket.
 
-Specify either report name or report id to move a report.
-The most recent valid file will be moved to the bucket.
+S
+p
+e
+c
+i
+f
+y
+ 
+e
+i
+t
+h
+e
+r
+ 
+r
+e
+p
+o
+r
+t
+ 
+n
+a
+m
+e
+ 
+o
+r
+ 
+r
+e
+p
+o
+r
+t
+ 
+i
+d
+ 
+t
+o
+ 
+m
+o
+v
+e
+ 
+a
+ 
+r
+e
+p
+o
+r
+t
+.
+
+
+T
+h
+e
+ 
+m
+o
+s
+t
+ 
+r
+e
+c
+e
+n
+t
+ 
+v
+a
+l
+i
+d
+ 
+f
+i
+l
+e
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+m
+o
+v
+e
+d
+ 
+t
+o
+ 
+t
+h
+e
+ 
+b
+u
+c
+k
+e
+t
+.
 
 '''
 
@@ -32,66 +144,66 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "dbm_report_id":, # DBM report ID given in UI, not needed if name used.
-  "dbm_report_name":"", # Name of report, not needed if ID used.
-  "dbm_bucket":"", # Google cloud bucket.
-  "dbm_path":"", # Path and filename to write to.
-  "dbm_datastudio":True, # Format date and column nulls for DataStudio?
+  'dbm_report_id': '',  # DBM report ID given in UI, not needed if name used.
+  'dbm_report_name': '',  # Name of report, not needed if ID used.
+  'dbm_bucket': '',  # Google cloud bucket.
+  'dbm_path': '',  # Path and filename to write to.
+  'dbm_datastudio': True,  # Format date and column nulls for DataStudio?
 }
 
 TASKS = [
   {
-    "dbm": {
-      "auth": "user",
-      "report": {
-        "report_id": {
-          "field": {
-            "name": "dbm_report_id",
-            "kind": "integer",
-            "order": 1,
-            "default": "",
-            "description": "DBM report ID given in UI, not needed if name used."
+    'dbm': {
+      'auth': 'user',
+      'report': {
+        'report_id': {
+          'field': {
+            'name': 'dbm_report_id',
+            'kind': 'integer',
+            'order': 1,
+            'default': '',
+            'description': 'DBM report ID given in UI, not needed if name used.'
           }
         },
-        "name": {
-          "field": {
-            "name": "dbm_report_name",
-            "kind": "string",
-            "order": 2,
-            "default": "",
-            "description": "Name of report, not needed if ID used."
+        'name': {
+          'field': {
+            'name': 'dbm_report_name',
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Name of report, not needed if ID used.'
           }
         }
       },
-      "out": {
-        "storage": {
-          "bucket": {
-            "field": {
-              "name": "dbm_bucket",
-              "kind": "string",
-              "order": 3,
-              "default": "",
-              "description": "Google cloud bucket."
+      'out': {
+        'storage': {
+          'bucket': {
+            'field': {
+              'name': 'dbm_bucket',
+              'kind': 'string',
+              'order': 3,
+              'default': '',
+              'description': 'Google cloud bucket.'
             }
           },
-          "path": {
-            "field": {
-              "name": "dbm_path",
-              "kind": "string",
-              "order": 4,
-              "default": "",
-              "description": "Path and filename to write to."
+          'path': {
+            'field': {
+              'name': 'dbm_path',
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'Path and filename to write to.'
             }
           }
         }
       },
-      "datastudio": {
-        "field": {
-          "name": "dbm_datastudio",
-          "kind": "boolean",
-          "order": 5,
-          "default": true,
-          "description": "Format date and column nulls for DataStudio?"
+      'datastudio': {
+        'field': {
+          'name': 'dbm_datastudio',
+          'kind': 'boolean',
+          'order': 5,
+          'default': True,
+          'description': 'Format date and column nulls for DataStudio?'
         }
       }
     }

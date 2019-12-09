@@ -21,9 +21,279 @@ Line Item To BigQuery Via Query
 
 Move using an Id query.
 
-Specify the query that will pull the lineitem ids to download.
-Specify the dataset and table where the lineitems will be written.
-The schema will match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>.
+S
+p
+e
+c
+i
+f
+y
+ 
+t
+h
+e
+ 
+q
+u
+e
+r
+y
+ 
+t
+h
+a
+t
+ 
+w
+i
+l
+l
+ 
+p
+u
+l
+l
+ 
+t
+h
+e
+ 
+l
+i
+n
+e
+i
+t
+e
+m
+ 
+i
+d
+s
+ 
+t
+o
+ 
+d
+o
+w
+n
+l
+o
+a
+d
+.
+
+
+S
+p
+e
+c
+i
+f
+y
+ 
+t
+h
+e
+ 
+d
+a
+t
+a
+s
+e
+t
+ 
+a
+n
+d
+ 
+t
+a
+b
+l
+e
+ 
+w
+h
+e
+r
+e
+ 
+t
+h
+e
+ 
+l
+i
+n
+e
+i
+t
+e
+m
+s
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+w
+r
+i
+t
+t
+e
+n
+.
+
+
+T
+h
+e
+ 
+s
+c
+h
+e
+m
+a
+ 
+w
+i
+l
+l
+ 
+m
+a
+t
+c
+h
+ 
+<
+a
+ 
+h
+r
+e
+f
+=
+'
+h
+t
+t
+p
+s
+:
+/
+/
+d
+e
+v
+e
+l
+o
+p
+e
+r
+s
+.
+g
+o
+o
+g
+l
+e
+.
+c
+o
+m
+/
+b
+i
+d
+-
+m
+a
+n
+a
+g
+e
+r
+/
+g
+u
+i
+d
+e
+s
+/
+e
+n
+t
+i
+t
+y
+-
+w
+r
+i
+t
+e
+/
+f
+o
+r
+m
+a
+t
+'
+ 
+t
+a
+r
+g
+e
+t
+=
+'
+_
+b
+l
+a
+n
+k
+'
+>
+E
+n
+t
+i
+t
+y
+ 
+W
+r
+i
+t
+e
+ 
+F
+o
+r
+m
+a
+t
+<
+/
+a
+>
+.
 
 '''
 
@@ -33,63 +303,63 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "id_dataset":"",
-  "id_query":"SELECT * FROM `Dataset.Table`;",
-  "id_legacy":False,
-  "destination_dataset":"",
-  "destination_table":"",
+  'id_dataset': '',
+  'id_query': 'SELECT * FROM `Dataset.Table`;',
+  'id_legacy': False,
+  'destination_dataset': '',
+  'destination_table': '',
 }
 
 TASKS = [
   {
-    "lineitem": {
-      "auth": "user",
-      "read": {
-        "line_items": {
-          "single_cell": true,
-          "bigquery": {
-            "dataset": {
-              "field": {
-                "name": "id_dataset",
-                "kind": "string",
-                "order": 1,
-                "default": ""
+    'lineitem': {
+      'auth': 'user',
+      'read': {
+        'line_items': {
+          'single_cell': True,
+          'bigquery': {
+            'dataset': {
+              'field': {
+                'name': 'id_dataset',
+                'kind': 'string',
+                'order': 1,
+                'default': ''
               }
             },
-            "query": {
-              "field": {
-                "name": "id_query",
-                "kind": "string",
-                "order": 2,
-                "default": "SELECT * FROM `Dataset.Table`;"
+            'query': {
+              'field': {
+                'name': 'id_query',
+                'kind': 'string',
+                'order': 2,
+                'default': 'SELECT * FROM `Dataset.Table`;'
               }
             },
-            "legacy": {
-              "field": {
-                "name": "id_legacy",
-                "kind": "boolean",
-                "order": 3,
-                "default": false
+            'legacy': {
+              'field': {
+                'name': 'id_legacy',
+                'kind': 'boolean',
+                'order': 3,
+                'default': False
               }
             }
           }
         },
-        "out": {
-          "bigquery": {
-            "dataset": {
-              "field": {
-                "name": "destination_dataset",
-                "kind": "string",
-                "order": 4,
-                "default": ""
+        'out': {
+          'bigquery': {
+            'dataset': {
+              'field': {
+                'name': 'destination_dataset',
+                'kind': 'string',
+                'order': 4,
+                'default': ''
               }
             },
-            "table": {
-              "field": {
-                "name": "destination_table",
-                "kind": "string",
-                "order": 5,
-                "default": ""
+            'table': {
+              'field': {
+                'name': 'destination_table',
+                'kind': 'string',
+                'order': 5,
+                'default': ''
               }
             }
           }

@@ -21,9 +21,181 @@ DBM To BigQuery
 
 Move existing DBM reports into a BigQuery table.
 
-Specify either report name or report id to move a report.
-A schema is recommended, if not provided it will be guessed.
-The most recent valid file will be moved to the table.
+S
+p
+e
+c
+i
+f
+y
+ 
+e
+i
+t
+h
+e
+r
+ 
+r
+e
+p
+o
+r
+t
+ 
+n
+a
+m
+e
+ 
+o
+r
+ 
+r
+e
+p
+o
+r
+t
+ 
+i
+d
+ 
+t
+o
+ 
+m
+o
+v
+e
+ 
+a
+ 
+r
+e
+p
+o
+r
+t
+.
+
+
+A
+ 
+s
+c
+h
+e
+m
+a
+ 
+i
+s
+ 
+r
+e
+c
+o
+m
+m
+e
+n
+d
+e
+d
+,
+ 
+i
+f
+ 
+n
+o
+t
+ 
+p
+r
+o
+v
+i
+d
+e
+d
+ 
+i
+t
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+g
+u
+e
+s
+s
+e
+d
+.
+
+
+T
+h
+e
+ 
+m
+o
+s
+t
+ 
+r
+e
+c
+e
+n
+t
+ 
+v
+a
+l
+i
+d
+ 
+f
+i
+l
+e
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+m
+o
+v
+e
+d
+ 
+t
+o
+ 
+t
+h
+e
+ 
+t
+a
+b
+l
+e
+.
 
 '''
 
@@ -33,79 +205,79 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "dbm_report_id":, # DBM report ID given in UI, not needed if name used.
-  "dbm_report_name":"", # Name of report, not needed if ID used.
-  "dbm_dataset":"", # Existing BigQuery dataset.
-  "dbm_table":"", # Table to create from this report.
-  "dbm_schema":[], # Schema provided in JSON list format or empty list.
-  "is_incremental_load":False, # Clear data in destination table during this report's time period, then append report data to destination table.
+  'dbm_report_id': '',  # DBM report ID given in UI, not needed if name used.
+  'dbm_report_name': '',  # Name of report, not needed if ID used.
+  'dbm_dataset': '',  # Existing BigQuery dataset.
+  'dbm_table': '',  # Table to create from this report.
+  'dbm_schema': '[]',  # Schema provided in JSON list format or empty list.
+  'is_incremental_load': False,  # Clear data in destination table during this report's time period, then append report data to destination table.
 }
 
 TASKS = [
   {
-    "dbm": {
-      "auth": "user",
-      "report": {
-        "report_id": {
-          "field": {
-            "name": "dbm_report_id",
-            "kind": "integer",
-            "order": 1,
-            "default": "",
-            "description": "DBM report ID given in UI, not needed if name used."
+    'dbm': {
+      'auth': 'user',
+      'report': {
+        'report_id': {
+          'field': {
+            'name': 'dbm_report_id',
+            'kind': 'integer',
+            'order': 1,
+            'default': '',
+            'description': 'DBM report ID given in UI, not needed if name used.'
           }
         },
-        "name": {
-          "field": {
-            "name": "dbm_report_name",
-            "kind": "string",
-            "order": 2,
-            "default": "",
-            "description": "Name of report, not needed if ID used."
+        'name': {
+          'field': {
+            'name': 'dbm_report_name',
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Name of report, not needed if ID used.'
           }
         }
       },
-      "out": {
-        "bigquery": {
-          "dataset": {
-            "field": {
-              "name": "dbm_dataset",
-              "kind": "string",
-              "order": 3,
-              "default": "",
-              "description": "Existing BigQuery dataset."
+      'out': {
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dbm_dataset',
+              'kind': 'string',
+              'order': 3,
+              'default': '',
+              'description': 'Existing BigQuery dataset.'
             }
           },
-          "table": {
-            "field": {
-              "name": "dbm_table",
-              "kind": "string",
-              "order": 4,
-              "default": "",
-              "description": "Table to create from this report."
+          'table': {
+            'field': {
+              'name': 'dbm_table',
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'Table to create from this report.'
             }
           },
-          "schema": {
-            "field": {
-              "name": "dbm_schema",
-              "kind": "json",
-              "order": 5,
-              "default": "[]",
-              "description": "Schema provided in JSON list format or empty list."
+          'schema': {
+            'field': {
+              'name': 'dbm_schema',
+              'kind': 'json',
+              'order': 5,
+              'default': '[]',
+              'description': 'Schema provided in JSON list format or empty list.'
             }
           },
-          "is_incremental_load": {
-            "field": {
-              "name": "is_incremental_load",
-              "kind": "boolean",
-              "order": 6,
-              "default": false,
-              "description": "Clear data in destination table during this report's time period, then append report data to destination table."
+          'is_incremental_load': {
+            'field': {
+              'name': 'is_incremental_load',
+              'kind': 'boolean',
+              'order': 6,
+              'default': False,
+              'description': "Clear data in destination table during this report's time period, then append report data to destination table."
             }
           }
         }
       },
-      "datastudio": true
+      'datastudio': True
     }
   }
 ]

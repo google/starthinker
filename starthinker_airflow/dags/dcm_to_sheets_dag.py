@@ -21,10 +21,198 @@ DCM To Sheets
 
 Move existing DCM report into a Sheet tab.
 
-Specify an account id.
-Specify either report name or report id to move a report.
-The most recent valid file will be moved to the sheet.
-Schema is pulled from the official DCM specification.
+S
+p
+e
+c
+i
+f
+y
+ 
+a
+n
+ 
+a
+c
+c
+o
+u
+n
+t
+ 
+i
+d
+.
+
+
+S
+p
+e
+c
+i
+f
+y
+ 
+e
+i
+t
+h
+e
+r
+ 
+r
+e
+p
+o
+r
+t
+ 
+n
+a
+m
+e
+ 
+o
+r
+ 
+r
+e
+p
+o
+r
+t
+ 
+i
+d
+ 
+t
+o
+ 
+m
+o
+v
+e
+ 
+a
+ 
+r
+e
+p
+o
+r
+t
+.
+
+
+T
+h
+e
+ 
+m
+o
+s
+t
+ 
+r
+e
+c
+e
+n
+t
+ 
+v
+a
+l
+i
+d
+ 
+f
+i
+l
+e
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+m
+o
+v
+e
+d
+ 
+t
+o
+ 
+t
+h
+e
+ 
+s
+h
+e
+e
+t
+.
+
+
+S
+c
+h
+e
+m
+a
+ 
+i
+s
+ 
+p
+u
+l
+l
+e
+d
+ 
+f
+r
+o
+m
+ 
+t
+h
+e
+ 
+o
+f
+f
+i
+c
+i
+a
+l
+ 
+D
+C
+M
+ 
+s
+p
+e
+c
+i
+f
+i
+c
+a
+t
+i
+o
+n
+.
 
 '''
 
@@ -34,62 +222,62 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "account":,
-  "report_id":,
-  "report_name":"",
-  "sheet":"",
-  "tab":"",
+  'account': '',
+  'report_id': '',
+  'report_name': '',
+  'sheet': '',
+  'tab': '',
 }
 
 TASKS = [
   {
-    "dcm": {
-      "auth": "user",
-      "report": {
-        "account": {
-          "field": {
-            "name": "account",
-            "kind": "integer",
-            "order": 2,
-            "default": ""
+    'dcm': {
+      'auth': 'user',
+      'report': {
+        'account': {
+          'field': {
+            'name': 'account',
+            'kind': 'integer',
+            'order': 2,
+            'default': ''
           }
         },
-        "report_id": {
-          "field": {
-            "name": "report_id",
-            "kind": "integer",
-            "order": 3,
-            "default": ""
+        'report_id': {
+          'field': {
+            'name': 'report_id',
+            'kind': 'integer',
+            'order': 3,
+            'default': ''
           }
         },
-        "name": {
-          "field": {
-            "name": "report_name",
-            "kind": "string",
-            "order": 4,
-            "default": ""
+        'name': {
+          'field': {
+            'name': 'report_name',
+            'kind': 'string',
+            'order': 4,
+            'default': ''
           }
         }
       },
-      "out": {
-        "sheets": {
-          "sheet": {
-            "field": {
-              "name": "sheet",
-              "kind": "string",
-              "order": 5,
-              "default": ""
+      'out': {
+        'sheets': {
+          'sheet': {
+            'field': {
+              'name': 'sheet',
+              'kind': 'string',
+              'order': 5,
+              'default': ''
             }
           },
-          "tab": {
-            "field": {
-              "name": "tab",
-              "kind": "string",
-              "order": 6,
-              "default": ""
+          'tab': {
+            'field': {
+              'name': 'tab',
+              'kind': 'string',
+              'order': 6,
+              'default': ''
             }
           },
-          "range": "A1"
+          'range': 'A1'
         }
       }
     }

@@ -21,8 +21,142 @@ ITP Audit Dashboard
 
 Dashboard that shows performance metrics across browser to see the impact of ITP.
 
-Follow the steps in the below document
-https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/edit?usp=sharing
+F
+o
+l
+l
+o
+w
+ 
+t
+h
+e
+ 
+s
+t
+e
+p
+s
+ 
+i
+n
+ 
+t
+h
+e
+ 
+b
+e
+l
+o
+w
+ 
+d
+o
+c
+u
+m
+e
+n
+t
+
+
+h
+t
+t
+p
+s
+:
+/
+/
+d
+o
+c
+s
+.
+g
+o
+o
+g
+l
+e
+.
+c
+o
+m
+/
+d
+o
+c
+u
+m
+e
+n
+t
+/
+d
+/
+1
+H
+a
+R
+C
+M
+a
+B
+B
+E
+o
+0
+t
+S
+K
+w
+n
+o
+f
+W
+N
+t
+a
+P
+j
+l
+W
+0
+O
+R
+c
+V
+H
+V
+w
+I
+R
+a
+b
+c
+t
+4
+f
+Y
+/
+e
+d
+i
+t
+?
+u
+s
+p
+=
+s
+h
+a
+r
+i
+n
+g
 
 '''
 
@@ -32,399 +166,399 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "dataset":"ITP_Audit_Dashboard", # BigQuery dataset for store dashboard tables.
-  "sheet_url":"", # Sheet URL for the Segments sheet.
-  "cm_account_id":"", # Campaign Manager Account Id.
-  "advertiser_ids":"", # Comma separated list of Campaign Manager Advertiser Ids.  Leave blank for no advertiser filtering.
-  "floodlight_configuration_id":, # Floodlight Configuration Id for the Campaign Manager floodlight report.
-  "floodlight_report_name":"ITP_Audit_Dashboard_Floodlight", # Campaign Manager Floodlight report name.
-  "dv360_report_name":"ITP_Audit_Browser_Report", # DV360 Browser report name.
-  "cm_browser_report_name":"ITP_Audit_Dashboard_Browser", # Name of the Campaign Manager browser report.
+  'dataset': 'ITP_Audit_Dashboard',  # BigQuery dataset for store dashboard tables.
+  'sheet_url': '',  # Sheet URL for the Segments sheet.
+  'cm_account_id': '',  # Campaign Manager Account Id.
+  'advertiser_ids': '',  # Comma separated list of Campaign Manager Advertiser Ids.  Leave blank for no advertiser filtering.
+  'floodlight_configuration_id': '',  # Floodlight Configuration Id for the Campaign Manager floodlight report.
+  'floodlight_report_name': 'ITP_Audit_Dashboard_Floodlight',  # Campaign Manager Floodlight report name.
+  'dv360_report_name': 'ITP_Audit_Browser_Report',  # DV360 Browser report name.
+  'cm_browser_report_name': 'ITP_Audit_Dashboard_Browser',  # Name of the Campaign Manager browser report.
 }
 
 TASKS = [
   {
-    "dataset": {
-      "auth": "service",
-      "dataset": {
-        "field": {
-          "name": "dataset",
-          "kind": "string",
-          "order": 1,
-          "default": "ITP_Audit_Dashboard",
-          "description": "BigQuery dataset for store dashboard tables."
+    'dataset': {
+      'auth': 'service',
+      'dataset': {
+        'field': {
+          'name': 'dataset',
+          'kind': 'string',
+          'order': 1,
+          'default': 'ITP_Audit_Dashboard',
+          'description': 'BigQuery dataset for store dashboard tables.'
         }
       }
     }
   },
   {
-    "dcm": {
-      "auth": "user",
-      "timeout": 60,
-      "report": {
-        "account": {
-          "field": {
-            "name": "cm_account_id",
-            "kind": "string",
-            "order": 3,
-            "default": "",
-            "description": "Campaign Manager Account Id."
+    'dcm': {
+      'auth': 'user',
+      'timeout': 60,
+      'report': {
+        'account': {
+          'field': {
+            'name': 'cm_account_id',
+            'kind': 'string',
+            'order': 3,
+            'default': '',
+            'description': 'Campaign Manager Account Id.'
           }
         },
-        "body": {
-          "kind": "dfareporting#report",
-          "name": {
-            "field": {
-              "name": "floodlight_report_name",
-              "kind": "string",
-              "order": 8,
-              "default": "ITP_Audit_Dashboard_Floodlight",
-              "description": "Campaign Manager Floodlight report name."
+        'body': {
+          'kind': 'dfareporting#report',
+          'name': {
+            'field': {
+              'name': 'floodlight_report_name',
+              'kind': 'string',
+              'order': 8,
+              'default': 'ITP_Audit_Dashboard_Floodlight',
+              'description': 'Campaign Manager Floodlight report name.'
             }
           },
-          "fileName": {
-            "field": {
-              "name": "floodlight_report_name",
-              "kind": "string",
-              "order": 8,
-              "default": "ITP_Audit_Dashboard_Floodlight",
-              "description": "Campaign Manager Floodlight report name."
+          'fileName': {
+            'field': {
+              'name': 'floodlight_report_name',
+              'kind': 'string',
+              'order': 8,
+              'default': 'ITP_Audit_Dashboard_Floodlight',
+              'description': 'Campaign Manager Floodlight report name.'
             }
           },
-          "format": "CSV",
-          "type": "FLOODLIGHT",
-          "floodlightCriteria": {
-            "dateRange": {
-              "kind": "dfareporting#dateRange",
-              "relativeDateRange": "LAST_30_DAYS"
+          'format': 'CSV',
+          'type': 'FLOODLIGHT',
+          'floodlightCriteria': {
+            'dateRange': {
+              'kind': 'dfareporting#dateRange',
+              'relativeDateRange': 'LAST_30_DAYS'
             },
-            "floodlightConfigId": {
-              "kind": "dfareporting#dimensionValue",
-              "dimensionName": "dfa:floodlightConfigId",
-              "value": {
-                "field": {
-                  "name": "floodlight_configuration_id",
-                  "kind": "integer",
-                  "order": 7,
-                  "default": "",
-                  "description": "Floodlight Configuration Id for the Campaign Manager floodlight report."
+            'floodlightConfigId': {
+              'kind': 'dfareporting#dimensionValue',
+              'dimensionName': 'dfa:floodlightConfigId',
+              'value': {
+                'field': {
+                  'name': 'floodlight_configuration_id',
+                  'kind': 'integer',
+                  'order': 7,
+                  'default': '',
+                  'description': 'Floodlight Configuration Id for the Campaign Manager floodlight report.'
                 }
               },
-              "matchType": "EXACT"
+              'matchType': 'EXACT'
             },
-            "reportProperties": {
-              "includeUnattributedIPConversions": false,
-              "includeUnattributedCookieConversions": true
+            'reportProperties': {
+              'includeUnattributedIPConversions': False,
+              'includeUnattributedCookieConversions': True
             },
-            "dimensions": [
+            'dimensions': [
               {
-                "kind": "dfareporting#sortedDimension",
-                "name": "dfa:site"
+                'kind': 'dfareporting#sortedDimension',
+                'name': 'dfa:site'
               },
               {
-                "kind": "dfareporting#sortedDimension",
-                "name": "dfa:floodlightAttributionType"
+                'kind': 'dfareporting#sortedDimension',
+                'name': 'dfa:floodlightAttributionType'
               },
               {
-                "kind": "dfareporting#sortedDimension",
-                "name": "dfa:interactionType"
+                'kind': 'dfareporting#sortedDimension',
+                'name': 'dfa:interactionType'
               },
               {
-                "kind": "dfareporting#sortedDimension",
-                "name": "dfa:pathType"
+                'kind': 'dfareporting#sortedDimension',
+                'name': 'dfa:pathType'
               },
               {
-                "kind": "dfareporting#sortedDimension",
-                "name": "dfa:browserPlatform"
+                'kind': 'dfareporting#sortedDimension',
+                'name': 'dfa:browserPlatform'
               },
               {
-                "kind": "dfareporting#sortedDimension",
-                "name": "dfa:platformType"
+                'kind': 'dfareporting#sortedDimension',
+                'name': 'dfa:platformType'
               },
               {
-                "kind": "dfareporting#sortedDimension",
-                "name": "dfa:week"
+                'kind': 'dfareporting#sortedDimension',
+                'name': 'dfa:week'
               }
             ],
-            "metricNames": [
-              "dfa:activityClickThroughConversions",
-              "dfa:activityViewThroughConversions",
-              "dfa:totalConversions",
-              "dfa:totalConversionsRevenue"
+            'metricNames': [
+              'dfa:activityClickThroughConversions',
+              'dfa:activityViewThroughConversions',
+              'dfa:totalConversions',
+              'dfa:totalConversionsRevenue'
             ]
           },
-          "schedule": {
-            "active": true,
-            "repeats": "DAILY",
-            "every": 1,
-            "startDate": "2019-09-11",
-            "expirationDate": "2029-12-10"
+          'schedule': {
+            'active': True,
+            'repeats': 'DAILY',
+            'every': 1,
+            'startDate': '2019-09-11',
+            'expirationDate': '2029-12-10'
           },
-          "delivery": {
-            "emailOwner": false
+          'delivery': {
+            'emailOwner': False
           }
         }
       },
-      "out": {
-        "bigquery": {
-          "dataset": {
-            "field": {
-              "name": "dataset",
-              "kind": "string",
-              "order": 1,
-              "default": "ITP_Audit_Dashboard",
-              "description": "BigQuery dataset for store dashboard tables."
+      'out': {
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 1,
+              'default': 'ITP_Audit_Dashboard',
+              'description': 'BigQuery dataset for store dashboard tables.'
             }
           },
-          "table": "Floodlight_CM_Report",
-          "is_incremental_load": false
+          'table': 'Floodlight_CM_Report',
+          'is_incremental_load': False
         }
       },
-      "delete": false
+      'delete': False
     }
   },
   {
-    "dbm": {
-      "auth": "user",
-      "datastudio": true,
-      "report": {
-        "name": {
-          "field": {
-            "name": "dv360_report_name",
-            "kind": "string",
-            "order": 8,
-            "default": "ITP_Audit_Browser_Report",
-            "description": "DV360 Browser report name."
+    'dbm': {
+      'auth': 'user',
+      'datastudio': True,
+      'report': {
+        'name': {
+          'field': {
+            'name': 'dv360_report_name',
+            'kind': 'string',
+            'order': 8,
+            'default': 'ITP_Audit_Browser_Report',
+            'description': 'DV360 Browser report name.'
           }
         }
       },
-      "out": {
-        "bigquery": {
-          "dataset": {
-            "field": {
-              "name": "dataset",
-              "kind": "string",
-              "order": 1,
-              "default": "ITP_Audit_Dashboard",
-              "description": "BigQuery dataset for store dashboard tables."
+      'out': {
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 1,
+              'default': 'ITP_Audit_Dashboard',
+              'description': 'BigQuery dataset for store dashboard tables.'
             }
           },
-          "table": "Dv360_Browser_Report_Dirty",
-          "autodetect_schema": true,
-          "is_incremental_load": false
+          'table': 'Dv360_Browser_Report_Dirty',
+          'autodetect_schema': True,
+          'is_incremental_load': False
         }
       }
     }
   },
   {
-    "sheets": {
-      "auth": "user",
-      "sheet": {
-        "field": {
-          "name": "sheet_url",
-          "kind": "string",
-          "order": 2,
-          "default": "",
-          "description": "Sheet URL for the Segments sheet."
+    'sheets': {
+      'auth': 'user',
+      'sheet': {
+        'field': {
+          'name': 'sheet_url',
+          'kind': 'string',
+          'order': 2,
+          'default': '',
+          'description': 'Sheet URL for the Segments sheet.'
         }
       },
-      "tab": "Enviroment",
-      "range": "A:B",
-      "header": true,
-      "out": {
-        "auth": "service",
-        "bigquery": {
-          "dataset": {
-            "field": {
-              "name": "dataset",
-              "kind": "string",
-              "order": 1,
-              "default": "ITP_Audit_Dashboard",
-              "description": "BigQuery dataset for store dashboard tables."
+      'tab': 'Enviroment',
+      'range': 'A:B',
+      'header': True,
+      'out': {
+        'auth': 'service',
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 1,
+              'default': 'ITP_Audit_Dashboard',
+              'description': 'BigQuery dataset for store dashboard tables.'
             }
           },
-          "table": "Environment"
+          'table': 'Environment'
         }
       }
     }
   },
   {
-    "sheets": {
-      "auth": "user",
-      "sheet": {
-        "field": {
-          "name": "sheet_url",
-          "kind": "string",
-          "order": 2,
-          "default": "",
-          "description": "Sheet URL for the Segments sheet."
+    'sheets': {
+      'auth': 'user',
+      'sheet': {
+        'field': {
+          'name': 'sheet_url',
+          'kind': 'string',
+          'order': 2,
+          'default': '',
+          'description': 'Sheet URL for the Segments sheet.'
         }
       },
-      "tab": "Browser",
-      "range": "A:C",
-      "header": true,
-      "out": {
-        "auth": "service",
-        "bigquery": {
-          "dataset": {
-            "field": {
-              "name": "dataset",
-              "kind": "string",
-              "order": 1,
-              "default": "ITP_Audit_Dashboard",
-              "description": "BigQuery dataset for store dashboard tables."
+      'tab': 'Browser',
+      'range': 'A:C',
+      'header': True,
+      'out': {
+        'auth': 'service',
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 1,
+              'default': 'ITP_Audit_Dashboard',
+              'description': 'BigQuery dataset for store dashboard tables.'
             }
           },
-          "table": "Browser"
+          'table': 'Browser'
         }
       }
     }
   },
   {
-    "sheets": {
-      "auth": "user",
-      "sheet": {
-        "field": {
-          "name": "sheet_url",
-          "kind": "string",
-          "order": 2,
-          "default": "",
-          "description": "Sheet URL for the Segments sheet."
+    'sheets': {
+      'auth': 'user',
+      'sheet': {
+        'field': {
+          'name': 'sheet_url',
+          'kind': 'string',
+          'order': 2,
+          'default': '',
+          'description': 'Sheet URL for the Segments sheet.'
         }
       },
-      "tab": "CM_Site_Segments",
-      "range": "A:C",
-      "header": true,
-      "out": {
-        "auth": "service",
-        "bigquery": {
-          "dataset": {
-            "field": {
-              "name": "dataset",
-              "kind": "string",
-              "order": 1,
-              "default": "ITP_Audit_Dashboard",
-              "description": "BigQuery dataset for store dashboard tables."
+      'tab': 'CM_Site_Segments',
+      'range': 'A:C',
+      'header': True,
+      'out': {
+        'auth': 'service',
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 1,
+              'default': 'ITP_Audit_Dashboard',
+              'description': 'BigQuery dataset for store dashboard tables.'
             }
           },
-          "table": "CM_Browser_lookup"
+          'table': 'CM_Browser_lookup'
         }
       }
     }
   },
   {
-    "sheets": {
-      "auth": "user",
-      "sheet": {
-        "field": {
-          "name": "sheet_url",
-          "kind": "string",
-          "order": 2,
-          "default": "",
-          "description": "Sheet URL for the Segments sheet."
+    'sheets': {
+      'auth': 'user',
+      'sheet': {
+        'field': {
+          'name': 'sheet_url',
+          'kind': 'string',
+          'order': 2,
+          'default': '',
+          'description': 'Sheet URL for the Segments sheet.'
         }
       },
-      "tab": "Device_Type",
-      "range": "A:B",
-      "header": true,
-      "out": {
-        "auth": "service",
-        "bigquery": {
-          "dataset": {
-            "field": {
-              "name": "dataset",
-              "kind": "string",
-              "order": 1,
-              "default": "ITP_Audit_Dashboard",
-              "description": "BigQuery dataset for store dashboard tables."
+      'tab': 'Device_Type',
+      'range': 'A:B',
+      'header': True,
+      'out': {
+        'auth': 'service',
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 1,
+              'default': 'ITP_Audit_Dashboard',
+              'description': 'BigQuery dataset for store dashboard tables.'
             }
           },
-          "table": "Device_Type"
+          'table': 'Device_Type'
         }
       }
     }
   },
   {
-    "sheets": {
-      "auth": "user",
-      "sheet": {
-        "field": {
-          "name": "sheet_url",
-          "kind": "string",
-          "order": 2,
-          "default": "",
-          "description": "Sheet URL for the Segments sheet."
+    'sheets': {
+      'auth': 'user',
+      'sheet': {
+        'field': {
+          'name': 'sheet_url',
+          'kind': 'string',
+          'order': 2,
+          'default': '',
+          'description': 'Sheet URL for the Segments sheet.'
         }
       },
-      "tab": "Floodlight_Attribution",
-      "range": "A:B",
-      "header": true,
-      "out": {
-        "auth": "service",
-        "bigquery": {
-          "dataset": {
-            "field": {
-              "name": "dataset",
-              "kind": "string",
-              "order": 1,
-              "default": "ITP_Audit_Dashboard",
-              "description": "BigQuery dataset for store dashboard tables."
+      'tab': 'Floodlight_Attribution',
+      'range': 'A:B',
+      'header': True,
+      'out': {
+        'auth': 'service',
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 1,
+              'default': 'ITP_Audit_Dashboard',
+              'description': 'BigQuery dataset for store dashboard tables.'
             }
           },
-          "table": "Floodlight_Attribution"
+          'table': 'Floodlight_Attribution'
         }
       }
     }
   },
   {
-    "itp_audit": {
-      "auth": "service",
-      "account": {
-        "field": {
-          "name": "cm_account_id",
-          "kind": "string",
-          "order": 3,
-          "default": "",
-          "description": "Campaign Manager Account Id."
+    'itp_audit': {
+      'auth': 'service',
+      'account': {
+        'field': {
+          'name': 'cm_account_id',
+          'kind': 'string',
+          'order': 3,
+          'default': '',
+          'description': 'Campaign Manager Account Id.'
         }
       },
-      "dataset": {
-        "field": {
-          "name": "dataset",
-          "kind": "string",
-          "order": 1,
-          "default": "ITP_Audit_Dashboard",
-          "description": "BigQuery dataset for store dashboard tables."
+      'dataset': {
+        'field': {
+          'name': 'dataset',
+          'kind': 'string',
+          'order': 1,
+          'default': 'ITP_Audit_Dashboard',
+          'description': 'BigQuery dataset for store dashboard tables.'
         }
       },
-      "sheet": {
-        "field": {
-          "name": "sheet_url",
-          "kind": "string",
-          "order": 2,
-          "default": "",
-          "description": "Sheet URL for the Segments sheet."
+      'sheet': {
+        'field': {
+          'name': 'sheet_url',
+          'kind': 'string',
+          'order': 2,
+          'default': '',
+          'description': 'Sheet URL for the Segments sheet.'
         }
       },
-      "cm_browser_report_name": {
-        "field": {
-          "name": "cm_browser_report_name",
-          "kind": "string",
-          "order": 9,
-          "default": "ITP_Audit_Dashboard_Browser",
-          "description": "Name of the Campaign Manager browser report."
+      'cm_browser_report_name': {
+        'field': {
+          'name': 'cm_browser_report_name',
+          'kind': 'string',
+          'order': 9,
+          'default': 'ITP_Audit_Dashboard_Browser',
+          'description': 'Name of the Campaign Manager browser report.'
         }
       },
-      "advertiser_ids": {
-        "field": {
-          "name": "advertiser_ids",
-          "kind": "string",
-          "order": 5,
-          "default": "",
-          "description": "Comma separated list of Campaign Manager Advertiser Ids.  Leave blank for no advertiser filtering."
+      'advertiser_ids': {
+        'field': {
+          'name': 'advertiser_ids',
+          'kind': 'string',
+          'order': 5,
+          'default': '',
+          'description': 'Comma separated list of Campaign Manager Advertiser Ids.  Leave blank for no advertiser filtering.'
         }
       },
-      "timeout": 60
+      'timeout': 60
     }
   }
 ]

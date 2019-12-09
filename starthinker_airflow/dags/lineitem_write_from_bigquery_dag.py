@@ -21,8 +21,212 @@ Line Item From BigQuery
 
 Upload Line Items From BigQuery To DBM.
 
-Specify the table or view where the lineitem data is defined.
-The schema should match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>.
+S
+p
+e
+c
+i
+f
+y
+ 
+t
+h
+e
+ 
+t
+a
+b
+l
+e
+ 
+o
+r
+ 
+v
+i
+e
+w
+ 
+w
+h
+e
+r
+e
+ 
+t
+h
+e
+ 
+l
+i
+n
+e
+i
+t
+e
+m
+ 
+d
+a
+t
+a
+ 
+i
+s
+ 
+d
+e
+f
+i
+n
+e
+d
+.
+
+
+T
+h
+e
+ 
+s
+c
+h
+e
+m
+a
+ 
+s
+h
+o
+u
+l
+d
+ 
+m
+a
+t
+c
+h
+ 
+<
+a
+ 
+h
+r
+e
+f
+=
+'
+h
+t
+t
+p
+s
+:
+/
+/
+d
+e
+v
+e
+l
+o
+p
+e
+r
+s
+.
+g
+o
+o
+g
+l
+e
+.
+c
+o
+m
+/
+b
+i
+d
+-
+m
+a
+n
+a
+g
+e
+r
+/
+g
+u
+i
+d
+e
+s
+/
+e
+n
+t
+i
+t
+y
+-
+w
+r
+i
+t
+e
+/
+f
+o
+r
+m
+a
+t
+'
+ 
+t
+a
+r
+g
+e
+t
+=
+'
+_
+b
+l
+a
+n
+k
+'
+>
+E
+n
+t
+i
+t
+y
+ 
+W
+r
+i
+t
+e
+ 
+F
+o
+r
+m
+a
+t
+<
+/
+a
+>
+.
 
 '''
 
@@ -32,40 +236,40 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "dataset":"",
-  "query":"SELECT * FROM `Dataset.Table`;",
-  "legacy":False,
+  'dataset': '',
+  'query': 'SELECT * FROM `Dataset.Table`;',
+  'legacy': False,
 }
 
 TASKS = [
   {
-    "lineitem": {
-      "auth": "user",
-      "write": {
-        "dry_run": false,
-        "bigquery": {
-          "dataset": {
-            "field": {
-              "name": "dataset",
-              "kind": "string",
-              "order": 1,
-              "default": ""
+    'lineitem': {
+      'auth': 'user',
+      'write': {
+        'dry_run': False,
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 1,
+              'default': ''
             }
           },
-          "query": {
-            "field": {
-              "name": "query",
-              "kind": "string",
-              "order": 2,
-              "default": "SELECT * FROM `Dataset.Table`;"
+          'query': {
+            'field': {
+              'name': 'query',
+              'kind': 'string',
+              'order': 2,
+              'default': 'SELECT * FROM `Dataset.Table`;'
             }
           },
-          "legacy": {
-            "field": {
-              "name": "legacy",
-              "kind": "boolean",
-              "order": 3,
-              "default": false
+          'legacy': {
+            'field': {
+              'name': 'legacy',
+              'kind': 'boolean',
+              'order': 3,
+              'default': False
             }
           }
         }

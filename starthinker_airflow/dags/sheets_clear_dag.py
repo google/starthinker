@@ -21,7 +21,47 @@ Sheet Clear
 
 Clear data from a sheet.
 
-For the sheet, provide the full edit URL.
+F
+o
+r
+ 
+t
+h
+e
+ 
+s
+h
+e
+e
+t
+,
+ 
+p
+r
+o
+v
+i
+d
+e
+ 
+t
+h
+e
+ 
+f
+u
+l
+l
+ 
+e
+d
+i
+t
+ 
+U
+R
+L
+.
 
 '''
 
@@ -31,40 +71,40 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "sheets_sheet":"",
-  "sheets_tab":"",
-  "sheets_range":"",
+  'sheets_sheet': '',
+  'sheets_tab': '',
+  'sheets_range': '',
 }
 
 TASKS = [
   {
-    "sheets": {
-      "auth": "user",
-      "sheet": {
-        "field": {
-          "name": "sheets_sheet",
-          "kind": "string",
-          "order": 1,
-          "default": ""
+    'sheets': {
+      'auth': 'user',
+      'sheet': {
+        'field': {
+          'name': 'sheets_sheet',
+          'kind': 'string',
+          'order': 1,
+          'default': ''
         }
       },
-      "tab": {
-        "field": {
-          "name": "sheets_tab",
-          "kind": "string",
-          "order": 2,
-          "default": ""
+      'tab': {
+        'field': {
+          'name': 'sheets_tab',
+          'kind': 'string',
+          'order': 2,
+          'default': ''
         }
       },
-      "range": {
-        "field": {
-          "name": "sheets_range",
-          "kind": "string",
-          "order": 3,
-          "default": ""
+      'range': {
+        'field': {
+          'name': 'sheets_range',
+          'kind': 'string',
+          'order': 3,
+          'default': ''
         }
       },
-      "clear": true
+      'clear': True
     }
   }
 ]

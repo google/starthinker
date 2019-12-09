@@ -21,7 +21,45 @@ Say Hello
 
 Recipe template for say hello.
 
-This should be called for testing only.
+T
+h
+i
+s
+ 
+s
+h
+o
+u
+l
+d
+ 
+b
+e
+ 
+c
+a
+l
+l
+e
+d
+ 
+f
+o
+r
+ 
+t
+e
+s
+t
+i
+n
+g
+ 
+o
+n
+l
+y
+.
 
 '''
 
@@ -31,64 +69,64 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "say_first":"Hello Once", # Type in a greeting.
-  "say_second":"Hello Twice", # Type in a greeting.
-  "error":"", # Optional error for testing.
-  "sleep":0, # Seconds to sleep.
+  'say_first': 'Hello Once',  # Type in a greeting.
+  'say_second': 'Hello Twice',  # Type in a greeting.
+  'error': '',  # Optional error for testing.
+  'sleep': 0,  # Seconds to sleep.
 }
 
 TASKS = [
   {
-    "hello": {
-      "auth": "user",
-      "say": {
-        "field": {
-          "name": "say_first",
-          "kind": "string",
-          "order": 1,
-          "default": "Hello Once",
-          "description": "Type in a greeting."
+    'hello': {
+      'auth': 'user',
+      'say': {
+        'field': {
+          'name': 'say_first',
+          'kind': 'string',
+          'order': 1,
+          'default': 'Hello Once',
+          'description': 'Type in a greeting.'
         }
       },
-      "error": {
-        "field": {
-          "name": "error",
-          "kind": "string",
-          "order": 3,
-          "default": "",
-          "description": "Optional error for testing."
+      'error': {
+        'field': {
+          'name': 'error',
+          'kind': 'string',
+          'order': 3,
+          'default': '',
+          'description': 'Optional error for testing.'
         }
       },
-      "sleep": {
-        "field": {
-          "name": "sleep",
-          "kind": "integer",
-          "order": 4,
-          "default": 0,
-          "description": "Seconds to sleep."
+      'sleep': {
+        'field': {
+          'name': 'sleep',
+          'kind': 'integer',
+          'order': 4,
+          'default': 0,
+          'description': 'Seconds to sleep.'
         }
       }
     }
   },
   {
-    "hello": {
-      "auth": "user",
-      "say": {
-        "field": {
-          "name": "say_second",
-          "kind": "string",
-          "order": 1,
-          "default": "Hello Twice",
-          "description": "Type in a greeting."
+    'hello': {
+      'auth': 'user',
+      'say': {
+        'field': {
+          'name': 'say_second',
+          'kind': 'string',
+          'order': 1,
+          'default': 'Hello Twice',
+          'description': 'Type in a greeting.'
         }
       },
-      "sleep": {
-        "field": {
-          "name": "sleep",
-          "kind": "integer",
-          "order": 4,
-          "default": 0,
-          "description": "Seconds to sleep."
+      'sleep': {
+        'field': {
+          'name': 'sleep',
+          'kind': 'integer',
+          'order': 4,
+          'default': 0,
+          'description': 'Seconds to sleep.'
         }
       }
     }

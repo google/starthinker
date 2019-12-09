@@ -21,10 +21,310 @@ DCM Standard Bulk
 
 Aggregate multiple standard DCM reports into one BigQuery or Sheet.
 
-See API docs for <a href='https://developers.google.com/doubleclick-advertisers/v3.2/dimensions' target='_blank'>Metrics</a>.
-DCM report name format '[Report Name] [Account ID] ( StarThinker )'.
-Specify either bucket and path or dataset and table.
-Schema is pulled from the official DCM specification.
+S
+e
+e
+ 
+A
+P
+I
+ 
+d
+o
+c
+s
+ 
+f
+o
+r
+ 
+<
+a
+ 
+h
+r
+e
+f
+=
+'
+h
+t
+t
+p
+s
+:
+/
+/
+d
+e
+v
+e
+l
+o
+p
+e
+r
+s
+.
+g
+o
+o
+g
+l
+e
+.
+c
+o
+m
+/
+d
+o
+u
+b
+l
+e
+c
+l
+i
+c
+k
+-
+a
+d
+v
+e
+r
+t
+i
+s
+e
+r
+s
+/
+v
+3
+.
+2
+/
+d
+i
+m
+e
+n
+s
+i
+o
+n
+s
+'
+ 
+t
+a
+r
+g
+e
+t
+=
+'
+_
+b
+l
+a
+n
+k
+'
+>
+M
+e
+t
+r
+i
+c
+s
+<
+/
+a
+>
+.
+
+
+D
+C
+M
+ 
+r
+e
+p
+o
+r
+t
+ 
+n
+a
+m
+e
+ 
+f
+o
+r
+m
+a
+t
+ 
+'
+[
+R
+e
+p
+o
+r
+t
+ 
+N
+a
+m
+e
+]
+ 
+[
+A
+c
+c
+o
+u
+n
+t
+ 
+I
+D
+]
+ 
+(
+ 
+S
+t
+a
+r
+T
+h
+i
+n
+k
+e
+r
+ 
+)
+'
+.
+
+
+S
+p
+e
+c
+i
+f
+y
+ 
+e
+i
+t
+h
+e
+r
+ 
+b
+u
+c
+k
+e
+t
+ 
+a
+n
+d
+ 
+p
+a
+t
+h
+ 
+o
+r
+ 
+d
+a
+t
+a
+s
+e
+t
+ 
+a
+n
+d
+ 
+t
+a
+b
+l
+e
+.
+
+
+S
+c
+h
+e
+m
+a
+ 
+i
+s
+ 
+p
+u
+l
+l
+e
+d
+ 
+f
+r
+o
+m
+ 
+t
+h
+e
+ 
+o
+f
+f
+i
+c
+i
+a
+l
+ 
+D
+C
+M
+ 
+s
+p
+e
+c
+i
+f
+i
+c
+a
+t
+i
+o
+n
+.
 
 '''
 
@@ -34,144 +334,144 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "accounts":,
-  "name":"",
-  "range":LAST_7_DAYS,
-  "dcm_dimensions":['date', 'platformType', 'creativeType', 'state', 'dmaRegion'],
-  "dcm_metrics":['impressions'],
-  "dataset":"",
-  "table":"",
-  "bucket":"",
-  "path":"DCM_Report",
-  "delete":False,
-  "datastudio":True,
+  'accounts': '',
+  'name': '',
+  'range': 'LAST_7_DAYS',
+  'dcm_dimensions': ['date', 'platformType', 'creativeType', 'state', 'dmaRegion'],
+  'dcm_metrics': ['impressions'],
+  'dataset': '',
+  'table': '',
+  'bucket': '',
+  'path': 'DCM_Report',
+  'delete': False,
+  'datastudio': True,
 }
 
 TASKS = [
   {
-    "dcm_bulk": {
-      "auth": "user",
-      "accounts": {
-        "field": {
-          "name": "accounts",
-          "kind": "integer_list",
-          "order": 1,
-          "default": ""
+    'dcm_bulk': {
+      'auth': 'user',
+      'accounts': {
+        'field': {
+          'name': 'accounts',
+          'kind': 'integer_list',
+          'order': 1,
+          'default': ''
         }
       },
-      "name": {
-        "field": {
-          "name": "name",
-          "kind": "string",
-          "order": 2,
-          "default": ""
+      'name': {
+        'field': {
+          'name': 'name',
+          'kind': 'string',
+          'order': 2,
+          'default': ''
         }
       },
-      "report": {
-        "type": "STANDARD",
-        "timeout": 0,
-        "relativeDateRange": {
-          "field": {
-            "name": "range",
-            "kind": "choice",
-            "order": 3,
-            "default": "LAST_7_DAYS",
-            "choices": [
-              "LAST_24_MONTHS",
-              "LAST_30_DAYS",
-              "LAST_365_DAYS",
-              "LAST_7_DAYS",
-              "LAST_90_DAYS",
-              "MONTH_TO_DATE",
-              "PREVIOUS_MONTH",
-              "PREVIOUS_QUARTER",
-              "PREVIOUS_WEEK",
-              "PREVIOUS_YEAR",
-              "QUARTER_TO_DATE",
-              "TODAY",
-              "WEEK_TO_DATE",
-              "YEAR_TO_DATE",
-              "YESTERDAY"
+      'report': {
+        'type': 'STANDARD',
+        'timeout': 0,
+        'relativeDateRange': {
+          'field': {
+            'name': 'range',
+            'kind': 'choice',
+            'order': 3,
+            'default': 'LAST_7_DAYS',
+            'choices': [
+              'LAST_24_MONTHS',
+              'LAST_30_DAYS',
+              'LAST_365_DAYS',
+              'LAST_7_DAYS',
+              'LAST_90_DAYS',
+              'MONTH_TO_DATE',
+              'PREVIOUS_MONTH',
+              'PREVIOUS_QUARTER',
+              'PREVIOUS_WEEK',
+              'PREVIOUS_YEAR',
+              'QUARTER_TO_DATE',
+              'TODAY',
+              'WEEK_TO_DATE',
+              'YEAR_TO_DATE',
+              'YESTERDAY'
             ]
           }
         },
-        "dimensions": {
-          "field": {
-            "name": "dcm_dimensions",
-            "kind": "string_list",
-            "order": 4,
-            "default": [
-              "date",
-              "platformType",
-              "creativeType",
-              "state",
-              "dmaRegion"
+        'dimensions': {
+          'field': {
+            'name': 'dcm_dimensions',
+            'kind': 'string_list',
+            'order': 4,
+            'default': [
+              'date',
+              'platformType',
+              'creativeType',
+              'state',
+              'dmaRegion'
             ]
           }
         },
-        "metrics": {
-          "field": {
-            "name": "dcm_metrics",
-            "kind": "string_list",
-            "order": 5,
-            "default": [
-              "impressions"
+        'metrics': {
+          'field': {
+            'name': 'dcm_metrics',
+            'kind': 'string_list',
+            'order': 5,
+            'default': [
+              'impressions'
             ]
           }
         }
       },
-      "out": {
-        "bigquery": {
-          "dataset": {
-            "field": {
-              "name": "dataset",
-              "kind": "string",
-              "order": 5,
-              "default": ""
+      'out': {
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 5,
+              'default': ''
             }
           },
-          "table": {
-            "field": {
-              "name": "table",
-              "kind": "string",
-              "order": 6,
-              "default": ""
+          'table': {
+            'field': {
+              'name': 'table',
+              'kind': 'string',
+              'order': 6,
+              'default': ''
             }
           }
         },
-        "storage": {
-          "bucket": {
-            "field": {
-              "name": "bucket",
-              "kind": "string",
-              "order": 7,
-              "default": ""
+        'storage': {
+          'bucket': {
+            'field': {
+              'name': 'bucket',
+              'kind': 'string',
+              'order': 7,
+              'default': ''
             }
           },
-          "path": {
-            "field": {
-              "name": "path",
-              "kind": "string",
-              "order": 8,
-              "default": "DCM_Report"
+          'path': {
+            'field': {
+              'name': 'path',
+              'kind': 'string',
+              'order': 8,
+              'default': 'DCM_Report'
             }
           }
         }
       },
-      "delete": {
-        "field": {
-          "name": "delete",
-          "kind": "boolean",
-          "order": 10,
-          "default": false
+      'delete': {
+        'field': {
+          'name': 'delete',
+          'kind': 'boolean',
+          'order': 10,
+          'default': False
         }
       },
-      "datastudio": {
-        "field": {
-          "name": "datastudio",
-          "kind": "boolean",
-          "order": 11,
-          "default": true
+      'datastudio': {
+        'field': {
+          'name': 'datastudio',
+          'kind': 'boolean',
+          'order': 11,
+          'default': True
         }
       }
     }

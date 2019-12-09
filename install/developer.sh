@@ -85,11 +85,11 @@ test_tasks() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Run Task Tests - python ${STARTHINKER_ROOT}/starthinker/test/helper.py"
+  echo "Run Task Tests - python ${STARTHINKER_ROOT}/tests/helper.py"
   echo "----------------------------------------"
   echo ""
 
-  python "${STARTHINKER_ROOT}/starthinker/test/helper.py";
+  python "${STARTHINKER_ROOT}/tests/helper.py";
 
   deactivate
 

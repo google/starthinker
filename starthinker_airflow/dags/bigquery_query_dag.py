@@ -21,9 +21,190 @@ Query To Table
 
 Save query results into a BigQuery table.
 
-Specify a single query and choose legacy or standard mode.
-For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
-Every time the query runs it will overwrite the table.
+S
+p
+e
+c
+i
+f
+y
+ 
+a
+ 
+s
+i
+n
+g
+l
+e
+ 
+q
+u
+e
+r
+y
+ 
+a
+n
+d
+ 
+c
+h
+o
+o
+s
+e
+ 
+l
+e
+g
+a
+c
+y
+ 
+o
+r
+ 
+s
+t
+a
+n
+d
+a
+r
+d
+ 
+m
+o
+d
+e
+.
+
+
+F
+o
+r
+ 
+P
+L
+X
+ 
+u
+s
+e
+:
+ 
+S
+E
+L
+E
+C
+T
+ 
+*
+ 
+F
+R
+O
+M
+ 
+[
+p
+l
+x
+.
+g
+o
+o
+g
+l
+e
+:
+F
+U
+L
+L
+_
+T
+A
+B
+L
+E
+_
+N
+A
+M
+E
+.
+a
+l
+l
+]
+ 
+W
+H
+E
+R
+E
+.
+.
+.
+
+
+E
+v
+e
+r
+y
+ 
+t
+i
+m
+e
+ 
+t
+h
+e
+ 
+q
+u
+e
+r
+y
+ 
+r
+u
+n
+s
+ 
+i
+t
+ 
+w
+i
+l
+l
+ 
+o
+v
+e
+r
+w
+r
+i
+t
+e
+ 
+t
+h
+e
+ 
+t
+a
+b
+l
+e
+.
 
 '''
 
@@ -33,53 +214,53 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "query":"", # SQL with newlines and all.
-  "dataset":"", # Existing BigQuery dataset.
-  "table":"", # Table to create from this query.
-  "legacy":True, # Query type must match source tables.
+  'query': '',  # SQL with newlines and all.
+  'dataset': '',  # Existing BigQuery dataset.
+  'table': '',  # Table to create from this query.
+  'legacy': True,  # Query type must match source tables.
 }
 
 TASKS = [
   {
-    "bigquery": {
-      "auth": "service",
-      "from": {
-        "query": {
-          "field": {
-            "name": "query",
-            "kind": "text",
-            "order": 1,
-            "default": "",
-            "description": "SQL with newlines and all."
+    'bigquery': {
+      'auth': 'service',
+      'from': {
+        'query': {
+          'field': {
+            'name': 'query',
+            'kind': 'text',
+            'order': 1,
+            'default': '',
+            'description': 'SQL with newlines and all.'
           }
         },
-        "legacy": {
-          "field": {
-            "name": "legacy",
-            "kind": "boolean",
-            "order": 4,
-            "default": true,
-            "description": "Query type must match source tables."
+        'legacy': {
+          'field': {
+            'name': 'legacy',
+            'kind': 'boolean',
+            'order': 4,
+            'default': True,
+            'description': 'Query type must match source tables.'
           }
         }
       },
-      "to": {
-        "dataset": {
-          "field": {
-            "name": "dataset",
-            "kind": "string",
-            "order": 2,
-            "default": "",
-            "description": "Existing BigQuery dataset."
+      'to': {
+        'dataset': {
+          'field': {
+            'name': 'dataset',
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Existing BigQuery dataset.'
           }
         },
-        "table": {
-          "field": {
-            "name": "table",
-            "kind": "string",
-            "order": 3,
-            "default": "",
-            "description": "Table to create from this query."
+        'table': {
+          'field': {
+            'name': 'table',
+            'kind': 'string',
+            'order': 3,
+            'default': '',
+            'description': 'Table to create from this query.'
           }
         }
       }

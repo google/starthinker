@@ -21,9 +21,196 @@ Run Query
 
 Run query on a project.
 
-Specify a single query and choose legacy or standard mode.
-For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
-For non legacy use: SELECT * `project.datset.table` WHERE...
+S
+p
+e
+c
+i
+f
+y
+ 
+a
+ 
+s
+i
+n
+g
+l
+e
+ 
+q
+u
+e
+r
+y
+ 
+a
+n
+d
+ 
+c
+h
+o
+o
+s
+e
+ 
+l
+e
+g
+a
+c
+y
+ 
+o
+r
+ 
+s
+t
+a
+n
+d
+a
+r
+d
+ 
+m
+o
+d
+e
+.
+
+
+F
+o
+r
+ 
+P
+L
+X
+ 
+u
+s
+e
+:
+ 
+S
+E
+L
+E
+C
+T
+ 
+*
+ 
+F
+R
+O
+M
+ 
+[
+p
+l
+x
+.
+g
+o
+o
+g
+l
+e
+:
+F
+U
+L
+L
+_
+T
+A
+B
+L
+E
+_
+N
+A
+M
+E
+.
+a
+l
+l
+]
+ 
+W
+H
+E
+R
+E
+.
+.
+.
+
+
+F
+o
+r
+ 
+n
+o
+n
+ 
+l
+e
+g
+a
+c
+y
+ 
+u
+s
+e
+:
+ 
+S
+E
+L
+E
+C
+T
+ 
+*
+ 
+`
+p
+r
+o
+j
+e
+c
+t
+.
+d
+a
+t
+s
+e
+t
+.
+t
+a
+b
+l
+e
+`
+ 
+W
+H
+E
+R
+E
+.
+.
+.
 
 '''
 
@@ -33,31 +220,31 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "query":"", # SQL with newlines and all.
-  "legacy":True, # Query type must match table and query format.
+  'query': '',  # SQL with newlines and all.
+  'legacy': True,  # Query type must match table and query format.
 }
 
 TASKS = [
   {
-    "bigquery": {
-      "auth": "service",
-      "run": {
-        "query": {
-          "field": {
-            "name": "query",
-            "kind": "text",
-            "order": 1,
-            "default": "",
-            "description": "SQL with newlines and all."
+    'bigquery': {
+      'auth': 'service',
+      'run': {
+        'query': {
+          'field': {
+            'name': 'query',
+            'kind': 'text',
+            'order': 1,
+            'default': '',
+            'description': 'SQL with newlines and all.'
           }
         },
-        "legacy": {
-          "field": {
-            "name": "legacy",
-            "kind": "boolean",
-            "order": 2,
-            "default": true,
-            "description": "Query type must match table and query format."
+        'legacy': {
+          'field': {
+            'name': 'legacy',
+            'kind': 'boolean',
+            'order': 2,
+            'default': True,
+            'description': 'Query type must match table and query format.'
           }
         }
       }

@@ -30,6 +30,7 @@ from starthinker_ui.account.decorators import permission_admin
 from starthinker_ui.recipe.forms_script import ScriptForm
 from starthinker_ui.recipe.models import Recipe
 from starthinker_ui.recipe.colab import script_to_colab
+from starthinker_ui.recipe.dag import script_to_dag
 
 
 def recipe_list(request):
@@ -158,7 +159,7 @@ def recipe_colab(request, pk):
     data = script_to_colab(
       recipe.slug(),
       '',
-      '',
+      [],
       recipe.get_json()['tasks']
     )
     response = HttpResponse(data, content_type='application/vnd.jupyter')
@@ -174,9 +175,19 @@ def recipe_colab(request, pk):
 def recipe_airflow(request, pk):
   try:
     recipe = request.user.recipe_set.get(pk=pk)
-    response = HttpResponse(json.dumps(data, indent=2), content_type='application/python')
-    response['Content-Disposition'] = 'attachment; filename=dag_%s.py' % recipe.slug()
+    data = script_to_dag(
+      recipe.slug(),
+      recipe.name,
+      '',
+      [],
+      recipe.get_json()['tasks']
+    )
+    response = HttpResponse(data, content_type='application/vnd.jupyter')
+    response['Content-Disposition'] = 'attachment; filename=airflow_%s.py' % recipe.slug()
     return response
   except Exception as e:
     messages.error(request, str(e))
+    raise(e)
   return HttpResponseRedirect('/recipe/download/%s/' % pk)
+
+

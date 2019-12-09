@@ -21,8 +21,95 @@ Test Script
 
 Used by tests.
 
-This should be called by the tests scripts only.
-When run will generate a say hello log.
+T
+h
+i
+s
+ 
+s
+h
+o
+u
+l
+d
+ 
+b
+e
+ 
+c
+a
+l
+l
+e
+d
+ 
+b
+y
+ 
+t
+h
+e
+ 
+t
+e
+s
+t
+s
+ 
+s
+c
+r
+i
+p
+t
+s
+ 
+o
+n
+l
+y
+.
+
+
+W
+h
+e
+n
+ 
+r
+u
+n
+ 
+w
+i
+l
+l
+ 
+g
+e
+n
+e
+r
+a
+t
+e
+ 
+a
+ 
+s
+a
+y
+ 
+h
+e
+l
+l
+o
+ 
+l
+o
+g
+.
 
 '''
 
@@ -32,15 +119,17 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
+  
 }
 
 TASKS = [
   {
-    "hello": {
-      "auth": "user",
-      "hour": [],
-      "say": "Hello Manual",
-      "sleep": 0
+    'hello': {
+      'auth': 'user',
+      'hour': [
+      ],
+      'say': 'Hello Manual',
+      'sleep': 0
     }
   }
 ]

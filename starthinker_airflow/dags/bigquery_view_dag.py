@@ -21,9 +21,205 @@ Query To View
 
 Create a BigQuery view.
 
-Specify a single query and choose legacy or standard mode.
-For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
-If the view exists, it is unchanged, delete it manually to re-create.
+S
+p
+e
+c
+i
+f
+y
+ 
+a
+ 
+s
+i
+n
+g
+l
+e
+ 
+q
+u
+e
+r
+y
+ 
+a
+n
+d
+ 
+c
+h
+o
+o
+s
+e
+ 
+l
+e
+g
+a
+c
+y
+ 
+o
+r
+ 
+s
+t
+a
+n
+d
+a
+r
+d
+ 
+m
+o
+d
+e
+.
+
+
+F
+o
+r
+ 
+P
+L
+X
+ 
+u
+s
+e
+:
+ 
+S
+E
+L
+E
+C
+T
+ 
+*
+ 
+F
+R
+O
+M
+ 
+[
+p
+l
+x
+.
+g
+o
+o
+g
+l
+e
+:
+F
+U
+L
+L
+_
+T
+A
+B
+L
+E
+_
+N
+A
+M
+E
+.
+a
+l
+l
+]
+ 
+W
+H
+E
+R
+E
+.
+.
+.
+
+
+I
+f
+ 
+t
+h
+e
+ 
+v
+i
+e
+w
+ 
+e
+x
+i
+s
+t
+s
+,
+ 
+i
+t
+ 
+i
+s
+ 
+u
+n
+c
+h
+a
+n
+g
+e
+d
+,
+ 
+d
+e
+l
+e
+t
+e
+ 
+i
+t
+ 
+m
+a
+n
+u
+a
+l
+l
+y
+ 
+t
+o
+ 
+r
+e
+-
+c
+r
+e
+a
+t
+e
+.
 
 '''
 
@@ -33,53 +229,53 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "query":"", # SQL with newlines and all.
-  "dataset":"", # Existing BigQuery dataset.
-  "view":"", # View to create from this query.
-  "legacy":True, # Query type must match source tables.
+  'query': '',  # SQL with newlines and all.
+  'dataset': '',  # Existing BigQuery dataset.
+  'view': '',  # View to create from this query.
+  'legacy': True,  # Query type must match source tables.
 }
 
 TASKS = [
   {
-    "bigquery": {
-      "auth": "user",
-      "from": {
-        "query": {
-          "field": {
-            "name": "query",
-            "kind": "text",
-            "order": 1,
-            "default": "",
-            "description": "SQL with newlines and all."
+    'bigquery': {
+      'auth': 'user',
+      'from': {
+        'query': {
+          'field': {
+            'name': 'query',
+            'kind': 'text',
+            'order': 1,
+            'default': '',
+            'description': 'SQL with newlines and all.'
           }
         },
-        "legacy": {
-          "field": {
-            "name": "legacy",
-            "kind": "boolean",
-            "order": 4,
-            "default": true,
-            "description": "Query type must match source tables."
+        'legacy': {
+          'field': {
+            'name': 'legacy',
+            'kind': 'boolean',
+            'order': 4,
+            'default': True,
+            'description': 'Query type must match source tables.'
           }
         }
       },
-      "to": {
-        "dataset": {
-          "field": {
-            "name": "dataset",
-            "kind": "string",
-            "order": 2,
-            "default": "",
-            "description": "Existing BigQuery dataset."
+      'to': {
+        'dataset': {
+          'field': {
+            'name': 'dataset',
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Existing BigQuery dataset.'
           }
         },
-        "view": {
-          "field": {
-            "name": "view",
-            "kind": "string",
-            "order": 3,
-            "default": "",
-            "description": "View to create from this query."
+        'view': {
+          'field': {
+            'name': 'view',
+            'kind': 'string',
+            'order': 3,
+            'default': '',
+            'description': 'View to create from this query.'
           }
         }
       }

@@ -21,9 +21,265 @@ Line Item To BigQuery Via Values
 
 Move using hard coded Id values.
 
-Provide a comma delimited list of line item ids.
-Specify the dataset and table where the lineitems will be written.
-The schema will match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>.
+P
+r
+o
+v
+i
+d
+e
+ 
+a
+ 
+c
+o
+m
+m
+a
+ 
+d
+e
+l
+i
+m
+i
+t
+e
+d
+ 
+l
+i
+s
+t
+ 
+o
+f
+ 
+l
+i
+n
+e
+ 
+i
+t
+e
+m
+ 
+i
+d
+s
+.
+
+
+S
+p
+e
+c
+i
+f
+y
+ 
+t
+h
+e
+ 
+d
+a
+t
+a
+s
+e
+t
+ 
+a
+n
+d
+ 
+t
+a
+b
+l
+e
+ 
+w
+h
+e
+r
+e
+ 
+t
+h
+e
+ 
+l
+i
+n
+e
+i
+t
+e
+m
+s
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+w
+r
+i
+t
+t
+e
+n
+.
+
+
+T
+h
+e
+ 
+s
+c
+h
+e
+m
+a
+ 
+w
+i
+l
+l
+ 
+m
+a
+t
+c
+h
+ 
+<
+a
+ 
+h
+r
+e
+f
+=
+'
+h
+t
+t
+p
+s
+:
+/
+/
+d
+e
+v
+e
+l
+o
+p
+e
+r
+s
+.
+g
+o
+o
+g
+l
+e
+.
+c
+o
+m
+/
+b
+i
+d
+-
+m
+a
+n
+a
+g
+e
+r
+/
+g
+u
+i
+d
+e
+s
+/
+e
+n
+t
+i
+t
+y
+-
+w
+r
+i
+t
+e
+/
+f
+o
+r
+m
+a
+t
+'
+ 
+t
+a
+r
+g
+e
+t
+=
+'
+_
+b
+l
+a
+n
+k
+'
+>
+E
+n
+t
+i
+t
+y
+ 
+W
+r
+i
+t
+e
+ 
+F
+o
+r
+m
+a
+t
+<
+/
+a
+>
+.
 
 '''
 
@@ -33,43 +289,44 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "ids":[],
-  "destination_dataset":"",
-  "destination_table":"",
+  'ids': [],
+  'destination_dataset': '',
+  'destination_table': '',
 }
 
 TASKS = [
   {
-    "lineitem": {
-      "auth": "user",
-      "read": {
-        "line_items": {
-          "single_cell": true,
-          "values": {
-            "field": {
-              "name": "ids",
-              "kind": "integer_list",
-              "order": 1,
-              "default": []
+    'lineitem': {
+      'auth': 'user',
+      'read': {
+        'line_items': {
+          'single_cell': True,
+          'values': {
+            'field': {
+              'name': 'ids',
+              'kind': 'integer_list',
+              'order': 1,
+              'default': [
+              ]
             }
           }
         },
-        "out": {
-          "bigquery": {
-            "dataset": {
-              "field": {
-                "name": "destination_dataset",
-                "kind": "string",
-                "order": 2,
-                "default": ""
+        'out': {
+          'bigquery': {
+            'dataset': {
+              'field': {
+                'name': 'destination_dataset',
+                'kind': 'string',
+                'order': 2,
+                'default': ''
               }
             },
-            "table": {
-              "field": {
-                "name": "destination_table",
-                "kind": "string",
-                "order": 3,
-                "default": ""
+            'table': {
+              'field': {
+                'name': 'destination_table',
+                'kind': 'string',
+                'order': 3,
+                'default': ''
               }
             }
           }

@@ -21,8 +21,95 @@ Test Script
 
 Used by tests.
 
-This should be called by the tests scripts only.
-When run will generate a say hello log.
+T
+h
+i
+s
+ 
+s
+h
+o
+u
+l
+d
+ 
+b
+e
+ 
+c
+a
+l
+l
+e
+d
+ 
+b
+y
+ 
+t
+h
+e
+ 
+t
+e
+s
+t
+s
+ 
+s
+c
+r
+i
+p
+t
+s
+ 
+o
+n
+l
+y
+.
+
+
+W
+h
+e
+n
+ 
+r
+u
+n
+ 
+w
+i
+l
+l
+ 
+g
+e
+n
+e
+r
+a
+t
+e
+ 
+a
+ 
+s
+a
+y
+ 
+h
+e
+l
+l
+o
+ 
+l
+o
+g
+.
 
 '''
 
@@ -32,74 +119,76 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
+  
 }
 
 TASKS = [
   {
-    "hello": {
-      "auth": "user",
-      "hour": [
+    'hello': {
+      'auth': 'user',
+      'hour': [
         1
       ],
-      "say": "Hello At 1",
-      "sleep": 0
+      'say': 'Hello At 1',
+      'sleep': 0
     }
   },
   {
-    "hello": {
-      "auth": "user",
-      "hour": [
+    'hello': {
+      'auth': 'user',
+      'hour': [
         3
       ],
-      "say": "Hello At 3",
-      "sleep": 0
+      'say': 'Hello At 3',
+      'sleep': 0
     }
   },
   {
-    "hello": {
-      "auth": "user",
-      "hour": [],
-      "say": "Hello Manual",
-      "sleep": 0
+    'hello': {
+      'auth': 'user',
+      'hour': [
+      ],
+      'say': 'Hello Manual',
+      'sleep': 0
     }
   },
   {
-    "hello": {
-      "auth": "user",
-      "hour": [
+    'hello': {
+      'auth': 'user',
+      'hour': [
         23
       ],
-      "say": "Hello At 23 Sleep",
-      "sleep": 30
+      'say': 'Hello At 23 Sleep',
+      'sleep': 30
     }
   },
   {
-    "hello": {
-      "auth": "user",
-      "say": "Hello At Anytime",
-      "sleep": 0
+    'hello': {
+      'auth': 'user',
+      'say': 'Hello At Anytime',
+      'sleep': 0
     }
   },
   {
-    "hello": {
-      "auth": "user",
-      "hour": [
+    'hello': {
+      'auth': 'user',
+      'hour': [
         1,
         3,
         23
       ],
-      "say": "Hello At 1, 3, 23",
-      "sleep": 0
+      'say': 'Hello At 1, 3, 23',
+      'sleep': 0
     }
   },
   {
-    "hello": {
-      "auth": "user",
-      "hour": [
+    'hello': {
+      'auth': 'user',
+      'hour': [
         3
       ],
-      "say": "Hello At 3 Reordered",
-      "sleep": 0
+      'say': 'Hello At 3 Reordered',
+      'sleep': 0
     }
   }
 ]

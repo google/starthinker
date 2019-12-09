@@ -21,9 +21,229 @@ Google Analytics Timeline
 
 Download Google Analytics settings to a BigQuery table.
 
-Enter the dateset to which the Google Analytics settings will be downloaded.
-Add the starthinker service account email to the Google Analytics account(s) in which you are interested.
-Schedule the recipe to run once a day.
+E
+n
+t
+e
+r
+ 
+t
+h
+e
+ 
+d
+a
+t
+e
+s
+e
+t
+ 
+t
+o
+ 
+w
+h
+i
+c
+h
+ 
+t
+h
+e
+ 
+G
+o
+o
+g
+l
+e
+ 
+A
+n
+a
+l
+y
+t
+i
+c
+s
+ 
+s
+e
+t
+t
+i
+n
+g
+s
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+d
+o
+w
+n
+l
+o
+a
+d
+e
+d
+.
+
+
+A
+d
+d
+ 
+t
+h
+e
+ 
+s
+t
+a
+r
+t
+h
+i
+n
+k
+e
+r
+ 
+s
+e
+r
+v
+i
+c
+e
+ 
+a
+c
+c
+o
+u
+n
+t
+ 
+e
+m
+a
+i
+l
+ 
+t
+o
+ 
+t
+h
+e
+ 
+G
+o
+o
+g
+l
+e
+ 
+A
+n
+a
+l
+y
+t
+i
+c
+s
+ 
+a
+c
+c
+o
+u
+n
+t
+(
+s
+)
+ 
+i
+n
+ 
+w
+h
+i
+c
+h
+ 
+y
+o
+u
+ 
+a
+r
+e
+ 
+i
+n
+t
+e
+r
+e
+s
+t
+e
+d
+.
+
+
+S
+c
+h
+e
+d
+u
+l
+e
+ 
+t
+h
+e
+ 
+r
+e
+c
+i
+p
+e
+ 
+t
+o
+ 
+r
+u
+n
+ 
+o
+n
+c
+e
+ 
+a
+ 
+d
+a
+y
+.
 
 '''
 
@@ -33,30 +253,31 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "account_ids":[],
-  "dataset":"", # Dataset to be written to in BigQuery.
+  'account_ids': [],
+  'dataset': '',  # Dataset to be written to in BigQuery.
 }
 
 TASKS = [
   {
-    "ga_settings_download": {
-      "description": "Will create tables with format ga_* to hold each endpoint via a call to the API list function.",
-      "auth": "user",
-      "accounts": {
-        "field": {
-          "name": "account_ids",
-          "kind": "integer_list",
-          "order": 1,
-          "default": []
+    'ga_settings_download': {
+      'description': 'Will create tables with format ga_* to hold each endpoint via a call to the API list function.',
+      'auth': 'user',
+      'accounts': {
+        'field': {
+          'name': 'account_ids',
+          'kind': 'integer_list',
+          'order': 1,
+          'default': [
+          ]
         }
       },
-      "dataset": {
-        "field": {
-          "name": "dataset",
-          "kind": "string",
-          "order": 2,
-          "default": "",
-          "description": "Dataset to be written to in BigQuery."
+      'dataset': {
+        'field': {
+          'name': 'dataset',
+          'kind': 'string',
+          'order': 2,
+          'default': '',
+          'description': 'Dataset to be written to in BigQuery.'
         }
       }
     }

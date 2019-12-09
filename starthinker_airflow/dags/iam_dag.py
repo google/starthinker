@@ -21,9 +21,189 @@ Project IAM
 
 Sets project permissions for an email.
 
-Provide a role in the form of projects/[project name]/roles/[role name]
-Enter an email to grant that role to.
-This only grants roles, you must remove them from the project manually.
+P
+r
+o
+v
+i
+d
+e
+ 
+a
+ 
+r
+o
+l
+e
+ 
+i
+n
+ 
+t
+h
+e
+ 
+f
+o
+r
+m
+ 
+o
+f
+ 
+p
+r
+o
+j
+e
+c
+t
+s
+/
+[
+p
+r
+o
+j
+e
+c
+t
+ 
+n
+a
+m
+e
+]
+/
+r
+o
+l
+e
+s
+/
+[
+r
+o
+l
+e
+ 
+n
+a
+m
+e
+]
+
+
+E
+n
+t
+e
+r
+ 
+a
+n
+ 
+e
+m
+a
+i
+l
+ 
+t
+o
+ 
+g
+r
+a
+n
+t
+ 
+t
+h
+a
+t
+ 
+r
+o
+l
+e
+ 
+t
+o
+.
+
+
+T
+h
+i
+s
+ 
+o
+n
+l
+y
+ 
+g
+r
+a
+n
+t
+s
+ 
+r
+o
+l
+e
+s
+,
+ 
+y
+o
+u
+ 
+m
+u
+s
+t
+ 
+r
+e
+m
+o
+v
+e
+ 
+t
+h
+e
+m
+ 
+f
+r
+o
+m
+ 
+t
+h
+e
+ 
+p
+r
+o
+j
+e
+c
+t
+ 
+m
+a
+n
+u
+a
+l
+l
+y
+.
 
 '''
 
@@ -33,30 +213,30 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "role":"", # projects/[project name]/roles/[role name]
-  "email":"", # Email address to grant role to.
+  'role': '',  # projects/[project name]/roles/[role name]
+  'email': '',  # Email address to grant role to.
 }
 
 TASKS = [
   {
-    "iam": {
-      "auth": "service",
-      "role": {
-        "field": {
-          "name": "role",
-          "kind": "string",
-          "order": 1,
-          "default": "",
-          "description": "projects/[project name]/roles/[role name]"
+    'iam': {
+      'auth': 'service',
+      'role': {
+        'field': {
+          'name': 'role',
+          'kind': 'string',
+          'order': 1,
+          'default': '',
+          'description': 'projects/[project name]/roles/[role name]'
         }
       },
-      "email": {
-        "field": {
-          "name": "email",
-          "kind": "string",
-          "order": 2,
-          "default": "",
-          "description": "Email address to grant role to."
+      'email': {
+        'field': {
+          'name': 'email',
+          'kind': 'string',
+          'order': 2,
+          'default': '',
+          'description': 'Email address to grant role to.'
         }
       }
     }

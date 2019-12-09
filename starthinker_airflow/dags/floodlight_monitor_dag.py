@@ -21,10 +21,293 @@ Floodlight Monitor
 
 Monitor floodlight impressions specified in sheet and send email alerts.
 
-Specify an account_id or account_id:subaccount_id.
-Will copy <a href='https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing'>Floodlight Monitor Sheet</a> to the sheet you specify.
-Follow instructions on sheet.
-Emails are sent once a day.
+S
+p
+e
+c
+i
+f
+y
+ 
+a
+n
+ 
+a
+c
+c
+o
+u
+n
+t
+_
+i
+d
+ 
+o
+r
+ 
+a
+c
+c
+o
+u
+n
+t
+_
+i
+d
+:
+s
+u
+b
+a
+c
+c
+o
+u
+n
+t
+_
+i
+d
+.
+
+
+W
+i
+l
+l
+ 
+c
+o
+p
+y
+ 
+<
+a
+ 
+h
+r
+e
+f
+=
+'
+h
+t
+t
+p
+s
+:
+/
+/
+d
+o
+c
+s
+.
+g
+o
+o
+g
+l
+e
+.
+c
+o
+m
+/
+s
+p
+r
+e
+a
+d
+s
+h
+e
+e
+t
+s
+/
+d
+/
+1
+t
+j
+F
+5
+s
+t
+y
+x
+M
+v
+F
+J
+s
+N
+E
+T
+E
+a
+5
+x
+2
+F
+5
+D
+S
+m
+q
+l
+e
+G
+l
+7
+1
+c
+m
+u
+j
+B
+7
+I
+e
+r
+8
+/
+e
+d
+i
+t
+?
+u
+s
+p
+=
+s
+h
+a
+r
+i
+n
+g
+'
+>
+F
+l
+o
+o
+d
+l
+i
+g
+h
+t
+ 
+M
+o
+n
+i
+t
+o
+r
+ 
+S
+h
+e
+e
+t
+<
+/
+a
+>
+ 
+t
+o
+ 
+t
+h
+e
+ 
+s
+h
+e
+e
+t
+ 
+y
+o
+u
+ 
+s
+p
+e
+c
+i
+f
+y
+.
+
+
+F
+o
+l
+l
+o
+w
+ 
+i
+n
+s
+t
+r
+u
+c
+t
+i
+o
+n
+s
+ 
+o
+n
+ 
+s
+h
+e
+e
+t
+.
+
+
+E
+m
+a
+i
+l
+s
+ 
+a
+r
+e
+ 
+s
+e
+n
+t
+ 
+o
+n
+c
+e
+ 
+a
+ 
+d
+a
+y
+.
 
 '''
 
@@ -34,41 +317,41 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "dcm_account":"", # Specify an account_id or account_id:subaccount_id.
-  "sheet_url":"", # Full URL to Google Sheet, Floodlight Monitor tab will be added.
+  'dcm_account': '',  # Specify an account_id or account_id:subaccount_id.
+  'sheet_url': '',  # Full URL to Google Sheet, Floodlight Monitor tab will be added.
 }
 
 TASKS = [
   {
-    "floodlight_monitor": {
-      "auth": "user",
-      "account": {
-        "field": {
-          "name": "dcm_account",
-          "kind": "string",
-          "order": 1,
-          "default": "",
-          "description": "Specify an account_id or account_id:subaccount_id."
+    'floodlight_monitor': {
+      'auth': 'user',
+      'account': {
+        'field': {
+          'name': 'dcm_account',
+          'kind': 'string',
+          'order': 1,
+          'default': '',
+          'description': 'Specify an account_id or account_id:subaccount_id.'
         }
       },
-      "template": {
-        "template": {
-          "sheet": "https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing",
-          "tab": "Floodlight Monitor",
-          "range": "A1"
+      'template': {
+        'template': {
+          'sheet': 'https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing',
+          'tab': 'Floodlight Monitor',
+          'range': 'A1'
         }
       },
-      "sheet": {
-        "field": {
-          "name": "sheet_url",
-          "kind": "string",
-          "order": 2,
-          "default": "",
-          "description": "Full URL to Google Sheet, Floodlight Monitor tab will be added."
+      'sheet': {
+        'field': {
+          'name': 'sheet_url',
+          'kind': 'string',
+          'order': 2,
+          'default': '',
+          'description': 'Full URL to Google Sheet, Floodlight Monitor tab will be added.'
         }
       },
-      "tab": "Floodlight Monitor",
-      "range": "A2:C"
+      'tab': 'Floodlight Monitor',
+      'range': 'A2:C'
     }
   }
 ]

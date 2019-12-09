@@ -21,9 +21,174 @@ DCM Report
 
 Create a DCM report from a JSON definition.
 
-Add a an account as [account_id]@[profile_id]
-Fetch the report JSON definition. Arguably could be better.
-The account is automatically added to the report definition.
+A
+d
+d
+ 
+a
+ 
+a
+n
+ 
+a
+c
+c
+o
+u
+n
+t
+ 
+a
+s
+ 
+[
+a
+c
+c
+o
+u
+n
+t
+_
+i
+d
+]
+@
+[
+p
+r
+o
+f
+i
+l
+e
+_
+i
+d
+]
+
+
+F
+e
+t
+c
+h
+ 
+t
+h
+e
+ 
+r
+e
+p
+o
+r
+t
+ 
+J
+S
+O
+N
+ 
+d
+e
+f
+i
+n
+i
+t
+i
+o
+n
+.
+ 
+A
+r
+g
+u
+a
+b
+l
+y
+ 
+c
+o
+u
+l
+d
+ 
+b
+e
+ 
+b
+e
+t
+t
+e
+r
+.
+
+
+T
+h
+e
+ 
+a
+c
+c
+o
+u
+n
+t
+ 
+i
+s
+ 
+a
+u
+t
+o
+m
+a
+t
+i
+c
+a
+l
+l
+y
+ 
+a
+d
+d
+e
+d
+ 
+t
+o
+ 
+t
+h
+e
+ 
+r
+e
+p
+o
+r
+t
+ 
+d
+e
+f
+i
+n
+i
+t
+i
+o
+n
+.
 
 '''
 
@@ -33,39 +198,39 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "account":"",
-  "body":{},
-  "delete":False,
+  'account': '',
+  'body': '{}',
+  'delete': False,
 }
 
 TASKS = [
   {
-    "dcm": {
-      "auth": "user",
-      "report": {
-        "account": {
-          "field": {
-            "name": "account",
-            "kind": "string",
-            "order": 1,
-            "default": ""
+    'dcm': {
+      'auth': 'user',
+      'report': {
+        'account': {
+          'field': {
+            'name': 'account',
+            'kind': 'string',
+            'order': 1,
+            'default': ''
           }
         },
-        "body": {
-          "field": {
-            "name": "body",
-            "kind": "json",
-            "order": 2,
-            "default": "{}"
+        'body': {
+          'field': {
+            'name': 'body',
+            'kind': 'json',
+            'order': 2,
+            'default': '{}'
           }
         }
       },
-      "delete": {
-        "field": {
-          "name": "delete",
-          "kind": "boolean",
-          "order": 3,
-          "default": false
+      'delete': {
+        'field': {
+          'name': 'delete',
+          'kind': 'boolean',
+          'order': 3,
+          'default': False
         }
       }
     }

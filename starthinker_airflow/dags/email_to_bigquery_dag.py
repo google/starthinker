@@ -21,10 +21,263 @@ Email Fetch
 
 Import emailed csv or excel into a BigQuery table.
 
-The person executing this recipe must be the recipient of the email.
-Schedule a CSV or Excel to be sent to <b>UNDEFINED</b>.
-Give a regular expression to match the email subject, link or attachment.
-The data downloaded will overwrite the table specified.
+T
+h
+e
+ 
+p
+e
+r
+s
+o
+n
+ 
+e
+x
+e
+c
+u
+t
+i
+n
+g
+ 
+t
+h
+i
+s
+ 
+r
+e
+c
+i
+p
+e
+ 
+m
+u
+s
+t
+ 
+b
+e
+ 
+t
+h
+e
+ 
+r
+e
+c
+i
+p
+i
+e
+n
+t
+ 
+o
+f
+ 
+t
+h
+e
+ 
+e
+m
+a
+i
+l
+.
+
+
+S
+c
+h
+e
+d
+u
+l
+e
+ 
+a
+ 
+C
+S
+V
+ 
+o
+r
+ 
+E
+x
+c
+e
+l
+ 
+t
+o
+ 
+b
+e
+ 
+s
+e
+n
+t
+ 
+t
+o
+ 
+<
+b
+>
+U
+N
+D
+E
+F
+I
+N
+E
+D
+<
+/
+b
+>
+.
+
+
+G
+i
+v
+e
+ 
+a
+ 
+r
+e
+g
+u
+l
+a
+r
+ 
+e
+x
+p
+r
+e
+s
+s
+i
+o
+n
+ 
+t
+o
+ 
+m
+a
+t
+c
+h
+ 
+t
+h
+e
+ 
+e
+m
+a
+i
+l
+ 
+s
+u
+b
+j
+e
+c
+t
+,
+ 
+l
+i
+n
+k
+ 
+o
+r
+ 
+a
+t
+t
+a
+c
+h
+m
+e
+n
+t
+.
+
+
+T
+h
+e
+ 
+d
+a
+t
+a
+ 
+d
+o
+w
+n
+l
+o
+a
+d
+e
+d
+ 
+w
+i
+l
+l
+ 
+o
+v
+e
+r
+w
+r
+i
+t
+e
+ 
+t
+h
+e
+ 
+t
+a
+b
+l
+e
+ 
+s
+p
+e
+c
+i
+f
+i
+e
+d
+.
 
 '''
 
@@ -34,86 +287,86 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "email_from":"", # Must match from field.
-  "email_to":"", # Must match to field.
-  "subject":"", # Regular expression to match subject.
-  "link":"", # Regular expression to match email.
-  "attachment":"", # Regular expression to match atttachment.
-  "dataset":"", # Existing dataset in BigQuery.
-  "table":"", # Name of table to be written to.
+  'email_from': '',  # Must match from field.
+  'email_to': '',  # Must match to field.
+  'subject': '',  # Regular expression to match subject.
+  'link': '',  # Regular expression to match email.
+  'attachment': '',  # Regular expression to match atttachment.
+  'dataset': '',  # Existing dataset in BigQuery.
+  'table': '',  # Name of table to be written to.
 }
 
 TASKS = [
   {
-    "email": {
-      "auth": "user",
-      "in": {
-        "email": {
-          "from": {
-            "field": {
-              "name": "email_from",
-              "kind": "string",
-              "order": 1,
-              "default": "",
-              "description": "Must match from field."
+    'email': {
+      'auth': 'user',
+      'in': {
+        'email': {
+          'from': {
+            'field': {
+              'name': 'email_from',
+              'kind': 'string',
+              'order': 1,
+              'default': '',
+              'description': 'Must match from field.'
             }
           },
-          "to": {
-            "field": {
-              "name": "email_to",
-              "kind": "string",
-              "order": 2,
-              "default": "",
-              "description": "Must match to field."
+          'to': {
+            'field': {
+              'name': 'email_to',
+              'kind': 'string',
+              'order': 2,
+              'default': '',
+              'description': 'Must match to field.'
             }
           },
-          "subject": {
-            "field": {
-              "name": "subject",
-              "kind": "string",
-              "order": 3,
-              "default": "",
-              "description": "Regular expression to match subject."
+          'subject': {
+            'field': {
+              'name': 'subject',
+              'kind': 'string',
+              'order': 3,
+              'default': '',
+              'description': 'Regular expression to match subject.'
             }
           },
-          "link": {
-            "field": {
-              "name": "link",
-              "kind": "string",
-              "order": 4,
-              "default": "",
-              "description": "Regular expression to match email."
+          'link': {
+            'field': {
+              'name': 'link',
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'Regular expression to match email.'
             }
           },
-          "attachment": {
-            "field": {
-              "name": "attachment",
-              "kind": "string",
-              "order": 5,
-              "default": "",
-              "description": "Regular expression to match atttachment."
+          'attachment': {
+            'field': {
+              'name': 'attachment',
+              'kind': 'string',
+              'order': 5,
+              'default': '',
+              'description': 'Regular expression to match atttachment.'
             }
           }
         }
       },
-      "out": {
-        "bigquery": {
-          "dataset": {
-            "field": {
-              "name": "dataset",
-              "kind": "string",
-              "order": 6,
-              "default": "",
-              "description": "Existing dataset in BigQuery."
+      'out': {
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 6,
+              'default': '',
+              'description': 'Existing dataset in BigQuery.'
             }
           },
-          "table": {
-            "field": {
-              "name": "table",
-              "kind": "string",
-              "order": 7,
-              "default": "",
-              "description": "Name of table to be written to."
+          'table': {
+            'field': {
+              'name': 'table',
+              'kind': 'string',
+              'order': 7,
+              'default': '',
+              'description': 'Name of table to be written to.'
             }
           }
         }

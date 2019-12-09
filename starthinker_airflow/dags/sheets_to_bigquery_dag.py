@@ -21,10 +21,180 @@ Sheet To Table
 
 Import data from a sheet and move it to a BigQuery table.
 
-For the sheet, provide the full edit URL.
-If the tab does not exist it will be created.
-Empty cells in the range will be NULL.
-Check Sheets header if first row is a header
+F
+o
+r
+ 
+t
+h
+e
+ 
+s
+h
+e
+e
+t
+,
+ 
+p
+r
+o
+v
+i
+d
+e
+ 
+t
+h
+e
+ 
+f
+u
+l
+l
+ 
+e
+d
+i
+t
+ 
+U
+R
+L
+.
+
+
+I
+f
+ 
+t
+h
+e
+ 
+t
+a
+b
+ 
+d
+o
+e
+s
+ 
+n
+o
+t
+ 
+e
+x
+i
+s
+t
+ 
+i
+t
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+c
+r
+e
+a
+t
+e
+d
+.
+
+
+E
+m
+p
+t
+y
+ 
+c
+e
+l
+l
+s
+ 
+i
+n
+ 
+t
+h
+e
+ 
+r
+a
+n
+g
+e
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+N
+U
+L
+L
+.
+
+
+C
+h
+e
+c
+k
+ 
+S
+h
+e
+e
+t
+s
+ 
+h
+e
+a
+d
+e
+r
+ 
+i
+f
+ 
+f
+i
+r
+s
+t
+ 
+r
+o
+w
+ 
+i
+s
+ 
+a
+ 
+h
+e
+a
+d
+e
+r
 
 '''
 
@@ -34,67 +204,67 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "sheets_url":"",
-  "sheets_tab":"",
-  "sheets_range":"",
-  "dataset":"",
-  "table":"",
-  "sheets_header":True,
+  'sheets_url': '',
+  'sheets_tab': '',
+  'sheets_range': '',
+  'dataset': '',
+  'table': '',
+  'sheets_header': True,
 }
 
 TASKS = [
   {
-    "sheets": {
-      "auth": "user",
-      "sheet": {
-        "field": {
-          "name": "sheets_url",
-          "kind": "string",
-          "order": 1,
-          "default": ""
+    'sheets': {
+      'auth': 'user',
+      'sheet': {
+        'field': {
+          'name': 'sheets_url',
+          'kind': 'string',
+          'order': 1,
+          'default': ''
         }
       },
-      "tab": {
-        "field": {
-          "name": "sheets_tab",
-          "kind": "string",
-          "order": 2,
-          "default": ""
+      'tab': {
+        'field': {
+          'name': 'sheets_tab',
+          'kind': 'string',
+          'order': 2,
+          'default': ''
         }
       },
-      "range": {
-        "field": {
-          "name": "sheets_range",
-          "kind": "string",
-          "order": 3,
-          "default": ""
+      'range': {
+        'field': {
+          'name': 'sheets_range',
+          'kind': 'string',
+          'order': 3,
+          'default': ''
         }
       },
-      "header": {
-        "field": {
-          "name": "sheets_header",
-          "kind": "boolean",
-          "order": 9,
-          "default": true
+      'header': {
+        'field': {
+          'name': 'sheets_header',
+          'kind': 'boolean',
+          'order': 9,
+          'default': True
         }
       },
-      "out": {
-        "auth": "service",
-        "bigquery": {
-          "dataset": {
-            "field": {
-              "name": "dataset",
-              "kind": "string",
-              "order": 7,
-              "default": ""
+      'out': {
+        'auth': 'service',
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 7,
+              'default': ''
             }
           },
-          "table": {
-            "field": {
-              "name": "table",
-              "kind": "string",
-              "order": 8,
-              "default": ""
+          'table': {
+            'field': {
+              'name': 'table',
+              'kind': 'string',
+              'order': 8,
+              'default': ''
             }
           }
         }

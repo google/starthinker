@@ -21,9 +21,141 @@ Tag Key Value Uploader
 
 A tool for bulk editing key value pairs for DCM pllacements.
 
-Add this card to a recipe and save it.
-Then click <strong>Run Now</strong> to deploy.
-Follow the instructuons in the sheet for setup.
+A
+d
+d
+ 
+t
+h
+i
+s
+ 
+c
+a
+r
+d
+ 
+t
+o
+ 
+a
+ 
+r
+e
+c
+i
+p
+e
+ 
+a
+n
+d
+ 
+s
+a
+v
+e
+ 
+i
+t
+.
+
+
+T
+h
+e
+n
+ 
+c
+l
+i
+c
+k
+ 
+<
+s
+t
+r
+o
+n
+g
+>
+R
+u
+n
+ 
+N
+o
+w
+<
+/
+s
+t
+r
+o
+n
+g
+>
+ 
+t
+o
+ 
+d
+e
+p
+l
+o
+y
+.
+
+
+F
+o
+l
+l
+o
+w
+ 
+t
+h
+e
+ 
+i
+n
+s
+t
+r
+u
+c
+t
+u
+o
+n
+s
+ 
+i
+n
+ 
+t
+h
+e
+ 
+s
+h
+e
+e
+t
+ 
+f
+o
+r
+ 
+s
+e
+t
+u
+p
+.
 
 '''
 
@@ -33,24 +165,25 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "recipe_name":"", # Name of document to deploy to.
+  'recipe_name': '',  # Name of document to deploy to.
 }
 
 TASKS = [
   {
-    "drive": {
-      "auth": "user",
-      "hour": [],
-      "copy": {
-        "source": "https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/",
-        "destination": {
-          "field": {
-            "name": "recipe_name",
-            "prefix": "Key Value Uploader For ",
-            "kind": "string",
-            "order": 1,
-            "description": "Name of document to deploy to.",
-            "default": ""
+    'drive': {
+      'auth': 'user',
+      'hour': [
+      ],
+      'copy': {
+        'source': 'https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/',
+        'destination': {
+          'field': {
+            'name': 'recipe_name',
+            'prefix': 'Key Value Uploader For ',
+            'kind': 'string',
+            'order': 1,
+            'description': 'Name of document to deploy to.',
+            'default': ''
           }
         }
       }

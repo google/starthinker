@@ -21,9 +21,138 @@ Anonymize Dataset
 
 Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.
 
-Ensure you have user access to both datasets.
-Provide the source project and dataset.
-Provide the destination project and dataset.
+E
+n
+s
+u
+r
+e
+ 
+y
+o
+u
+ 
+h
+a
+v
+e
+ 
+u
+s
+e
+r
+ 
+a
+c
+c
+e
+s
+s
+ 
+t
+o
+ 
+b
+o
+t
+h
+ 
+d
+a
+t
+a
+s
+e
+t
+s
+.
+
+
+P
+r
+o
+v
+i
+d
+e
+ 
+t
+h
+e
+ 
+s
+o
+u
+r
+c
+e
+ 
+p
+r
+o
+j
+e
+c
+t
+ 
+a
+n
+d
+ 
+d
+a
+t
+a
+s
+e
+t
+.
+
+
+P
+r
+o
+v
+i
+d
+e
+ 
+t
+h
+e
+ 
+d
+e
+s
+t
+i
+n
+a
+t
+i
+o
+n
+ 
+p
+r
+o
+j
+e
+c
+t
+ 
+a
+n
+d
+ 
+d
+a
+t
+a
+s
+e
+t
+.
 
 '''
 
@@ -33,50 +162,50 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "from_project":"", # Original project to copy from.
-  "from_dataset":"", # Original dataset to copy from.
-  "to_project":"", # Anonymous data will be writen to.
-  "to_dataset":"", # Anonymous data will be writen to.
+  'from_project': '',  # Original project to copy from.
+  'from_dataset': '',  # Original dataset to copy from.
+  'to_project': '',  # Anonymous data will be writen to.
+  'to_dataset': '',  # Anonymous data will be writen to.
 }
 
 TASKS = [
   {
-    "anonymize": {
-      "auth": "user",
-      "bigquery": {
-        "from": {
-          "project": {
-            "field": {
-              "name": "from_project",
-              "kind": "string",
-              "order": 1,
-              "description": "Original project to copy from."
+    'anonymize': {
+      'auth': 'user',
+      'bigquery': {
+        'from': {
+          'project': {
+            'field': {
+              'name': 'from_project',
+              'kind': 'string',
+              'order': 1,
+              'description': 'Original project to copy from.'
             }
           },
-          "dataset": {
-            "field": {
-              "name": "from_dataset",
-              "kind": "string",
-              "order": 2,
-              "description": "Original dataset to copy from."
+          'dataset': {
+            'field': {
+              'name': 'from_dataset',
+              'kind': 'string',
+              'order': 2,
+              'description': 'Original dataset to copy from.'
             }
           }
         },
-        "to": {
-          "project": {
-            "field": {
-              "name": "to_project",
-              "kind": "string",
-              "order": 3,
-              "description": "Anonymous data will be writen to."
+        'to': {
+          'project': {
+            'field': {
+              'name': 'to_project',
+              'kind': 'string',
+              'order': 3,
+              'description': 'Anonymous data will be writen to.'
             }
           },
-          "dataset": {
-            "field": {
-              "name": "to_dataset",
-              "kind": "string",
-              "order": 4,
-              "description": "Anonymous data will be writen to."
+          'dataset': {
+            'field': {
+              'name': 'to_dataset',
+              'kind': 'string',
+              'order': 4,
+              'description': 'Anonymous data will be writen to.'
             }
           }
         }

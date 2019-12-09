@@ -21,9 +21,128 @@ Copy
 
 Copy a drive document.
 
-Specify a source URL or document name.
-Specify a destination name.
-If destination does not exist, source will be copied.
+S
+p
+e
+c
+i
+f
+y
+ 
+a
+ 
+s
+o
+u
+r
+c
+e
+ 
+U
+R
+L
+ 
+o
+r
+ 
+d
+o
+c
+u
+m
+e
+n
+t
+ 
+n
+a
+m
+e
+.
+
+
+S
+p
+e
+c
+i
+f
+y
+ 
+a
+ 
+d
+e
+s
+t
+i
+n
+a
+t
+i
+o
+n
+ 
+n
+a
+m
+e
+.
+
+
+I
+f
+ 
+d
+e
+s
+t
+i
+n
+a
+t
+i
+o
+n
+ 
+d
+o
+e
+s
+ 
+n
+o
+t
+ 
+e
+x
+i
+s
+t
+,
+ 
+s
+o
+u
+r
+c
+e
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+c
+o
+p
+i
+e
+d
+.
 
 '''
 
@@ -33,31 +152,31 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "source":"", # Name or URL of document to copy from.
-  "destination":"", # Name document to copy to.
+  'source': '',  # Name or URL of document to copy from.
+  'destination': '',  # Name document to copy to.
 }
 
 TASKS = [
   {
-    "drive": {
-      "auth": "user",
-      "copy": {
-        "source": {
-          "field": {
-            "name": "source",
-            "kind": "string",
-            "order": 1,
-            "default": "",
-            "description": "Name or URL of document to copy from."
+    'drive': {
+      'auth': 'user',
+      'copy': {
+        'source': {
+          'field': {
+            'name': 'source',
+            'kind': 'string',
+            'order': 1,
+            'default': '',
+            'description': 'Name or URL of document to copy from.'
           }
         },
-        "destination": {
-          "field": {
-            "name": "destination",
-            "kind": "string",
-            "order": 2,
-            "default": "",
-            "description": "Name document to copy to."
+        'destination': {
+          'field': {
+            'name': 'destination',
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Name document to copy to.'
           }
         }
       }

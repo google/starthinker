@@ -21,8 +21,77 @@ DCM Report Run
 
 Trigger a DCM report run
 
-Specify an account id.
-Specify either report name or report id to run.
+S
+p
+e
+c
+i
+f
+y
+ 
+a
+n
+ 
+a
+c
+c
+o
+u
+n
+t
+ 
+i
+d
+.
+
+
+S
+p
+e
+c
+i
+f
+y
+ 
+e
+i
+t
+h
+e
+r
+ 
+r
+e
+p
+o
+r
+t
+ 
+n
+a
+m
+e
+ 
+o
+r
+ 
+r
+e
+p
+o
+r
+t
+ 
+i
+d
+ 
+t
+o
+ 
+r
+u
+n
+.
 
 '''
 
@@ -32,42 +101,42 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  "account":, # DCM network id.
-  "report_id":, # DCM report id, empty if using name.
-  "report_name":"", # DCM report name, empty if using id instead.
+  'account': '',  # DCM network id.
+  'report_id': '',  # DCM report id, empty if using name.
+  'report_name': '',  # DCM report name, empty if using id instead.
 }
 
 TASKS = [
   {
-    "dcm": {
-      "auth": "user",
-      "report_run_only": true,
-      "report": {
-        "account": {
-          "field": {
-            "name": "account",
-            "kind": "integer",
-            "order": 1,
-            "default": "",
-            "description": "DCM network id."
+    'dcm': {
+      'auth': 'user',
+      'report_run_only': True,
+      'report': {
+        'account': {
+          'field': {
+            'name': 'account',
+            'kind': 'integer',
+            'order': 1,
+            'default': '',
+            'description': 'DCM network id.'
           }
         },
-        "report_id": {
-          "field": {
-            "name": "report_id",
-            "kind": "integer",
-            "order": 2,
-            "default": "",
-            "description": "DCM report id, empty if using name."
+        'report_id': {
+          'field': {
+            'name': 'report_id',
+            'kind': 'integer',
+            'order': 2,
+            'default': '',
+            'description': 'DCM report id, empty if using name.'
           }
         },
-        "name": {
-          "field": {
-            "name": "report_name",
-            "kind": "string",
-            "order": 3,
-            "default": "",
-            "description": "DCM report name, empty if using id instead."
+        'name': {
+          'field': {
+            'name': 'report_name',
+            'kind': 'string',
+            'order': 3,
+            'default': '',
+            'description': 'DCM report name, empty if using id instead.'
           }
         }
       }
