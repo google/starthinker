@@ -1,7 +1,6 @@
 # Using Scripts As A Colab Notebook
 
-All StarThinker recipes and solutions can be run from Google's Collaboratory.
-Click the link below or visit the [Solution Gallery](https://google.github.io/starthinker/) to deploy a notebook.
+All StarThinker recipes and solutions can be run from [Google Collaboratory](https://colab.research.google.com/github/google/starthinker/blob/master).Also visit the [Solution Gallery](google.github.io/starthinker/) or click a link below to deploy a notebook.
 
 ## List Of Notebooks
 * [Anonymize Dataset](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/anonymize.ipynb) - Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.
