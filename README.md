@@ -1,7 +1,7 @@
 This is not an officially supported Google product.  It is a reference implementation.
 There is absolutley NO WARRANTY provided for using this code.
 
-# StarThinker Workflow Framework For Trading Desks
+# StarThinker Workflow Automation Framework For Programmatic Media Teams
 
 StarThinker is a Google built python framework for creating and running re-usable workflow components on
 Google Cloud infrastructure. To make it easier for partners and clients to work with some of our advertsing 

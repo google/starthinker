@@ -20,7 +20,7 @@ contract is the JSON/Python script task combination.
 
 ### [UI](../starthinker_ui) 
 
-Light weight open source [Django Framework](https://www.djangoproject.com/) using open source [Materialize CSS](https://materializecss.com/) for the interface. Manages recipes and authentication using a browser interface.  Ideal for [deploying](deploy_enterprise.md) in a multiuser enterprise trade desk.
+Light weight open source [Django Framework](https://www.djangoproject.com/) using open source [Materialize CSS](https://materializecss.com/) for the interface. Manages recipes and authentication using a browser interface.  Ideal for [deploying](deploy_enterprise.md) in a multiuser enterprise programmatic media teams.
 
    1. [User Account](cloud_client_web.md) - Google oAuth allows recipes to execute with user's permissions.
    1. [Project Service](cloud_service.md) - Google Cloud Project Service Credentials allow recipes to access cloud resources.
