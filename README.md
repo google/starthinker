@@ -1,7 +1,7 @@
 This is not an officially supported Google product.  It is a reference implementation.
 There is absolutley NO WARRANTY provided for using this code.
 
-# StarThinker Workflow Framework For Trade Desks
+# StarThinker Workflow Framework For Trading Desks
 
 StarThinker is a Google built python framework for creating and running re-usable workflow components on
 Google Cloud infrastructure. To make it easier for partners and clients to work with some of our advertsing 
@@ -30,7 +30,8 @@ All documenbtation is within the code or the [tutorials README](tutorials/README
 - [/install](install/) - Scripts for installing and deploying StarThinker.
 - [/tutorials](tutorials/) - Tutorials for using StarThinker code base.
 - [/scripts](scripts/) - Complete solution templates provided by Google that you can deploy.
-- [/colabs](colabs/) - Deploy an siolution using Googles Collaboratory.
+- [/tests](tests/) - Complete testing harness for all solutions provided by Google that you can use.
+- [/colabs](colabs/) - Deploy an solution using Googles Collaboratory.
 - [/starthinker/util](starthinker/util/) - Low level library wrappers around Google API with helpers to handle common errors.
 - [/starthinker/task](starthinker/task/) - Handlers for each task specified in a JSON recipe.
 - [/starthinker/script](starthinker/script/) - Command line for converting a recipe template into a client specific executable recipe.

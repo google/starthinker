@@ -17,7 +17,7 @@
 ###########################################################################
 
 import json
-from random import choice
+#from random import choice
 
 class Colab:
 
@@ -50,7 +50,7 @@ class Colab:
       self.colab['cells'].append({
         "cell_type": "code",
         "metadata": {
-          "id": ''.join([choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') for i in range(12)]),
+          #"id": ''.join([choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') for i in range(12)]),
           "colab_type": "code"
         },
         "source": self.code_lines
@@ -63,7 +63,7 @@ class Colab:
       self.colab['cells'].append({
         "cell_type": "markdown",
         "metadata": {
-          "id": ''.join([choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') for i in range(12)]),
+          #"id": ''.join([choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') for i in range(12)]),
           "colab_type": "text"
         },
         "source": self.markdown_lines

@@ -124,7 +124,7 @@
           {"mode": "NULLABLE", "name": "Always_On", "type": "BOOLEAN"},
           {"mode": "NULLABLE", "name": "Deal_Impressions", "type": "INTEGER"},
           {"mode": "NULLABLE", "name": "Open_Impressions", "type": "INTEGER"},
-          {"mode": "REQUIRED", "name": "Rank_Impressions", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Rank_Impressions", "type": "INTEGER"},
           {"mode": "NULLABLE", "name": "Deal_Clicks", "type": "INTEGER"},
           {"mode": "NULLABLE", "name": "Open_Clicks", "type": "INTEGER"},
           {"mode": "NULLABLE", "name": "Rank_Clicks", "type": "INTEGER"},

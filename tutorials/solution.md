@@ -47,6 +47,7 @@ scripts/script_hello.json
     "authors":["kenjora@google.com"],
     "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
     "sample":"https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT",
+    "document":"https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/",
     "requirements":[ "dcm", "datastudio", "bigquery" ],
     "catalysts":["security", "reporting"],
     "categories":["security", "reporting"],
@@ -63,10 +64,6 @@ scripts/script_hello.json
       "account health":100,
       "csat improvement":90
     },
-    "instructions":[
-      "Activate the recipe and wait for data sources to become avaialbe.",
-      "Copy data studio dashboard."
-    ]
   },
   "setup":{
     "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -90,8 +87,15 @@ scripts/script_hello.json
 ```
 
 ### Solution Parameters
+  - impacts - Required, level of impact for each metric, metrics are fixed ( 0 to 100  scale ), always list all even if 0.
+    - spend optimization - How well does it help the client optimize budget.
+    - spend growth - How well does it help the client grow their client base or account size.
+    - time savings - How well does it reduce time for client performing specific tasks.
+    - account health - How well does it reduce risk for the account.
+    - csat improvement - How well does it improve client perception of Googles products and services.
   - image - Optional, public screen shot or diagram of solution.
   - sample - Optional, link to public sample with anonymized data.
+  - document - Optional, link to public communications deocument.
   - requirements - Required, technical dependencies.
   - catalysts - Optional, list of gTech catalysts.
     - Acquisition - How do I reach growth by acquiring and reaching new customers? 
@@ -109,14 +113,8 @@ scripts/script_hello.json
     - Managed Services
     - Automation
     - Site Testing & Personalization
-  - pitches - Optional, short sentences describing value propositions.
-  - impacts - Optional, level of impact for each metric, metrics are fixed ( 0 to 100  scale ), always list all even if 0.
-    - spend optimization - How well does it help the client optimize budget.
-    - spend growth - How well does it help the client grow their client base or account size.
-    - time savings - How well does it reduce time for client performing specific tasks.
-    - account health - How well does it reduce risk for the account.
-    - csat improvement - How well does it improve client perception of Googles products and services.
-  - instructions - Required, instructions for manual steps, supports HTML and links.
+  - pitches - Optional, list of short sentences describing value propositions.
+  - instructions - Required, instructions for manual steps, supports embedded HTML and links.
   - setup
     - day - Day of week to run recipe, setting to [] means its a manual task only run on user trigger. Leaving blank means run every day.
     - hour - Hour of day to run recipe, setting to [] means its a manual task only run on user trigger. Leaving blank means run every hour.

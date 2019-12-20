@@ -53,6 +53,16 @@ class Command(BaseCommand):
       default=None,
       help='Email to send to ( if not givem sends to all ).',
     )
+
+    parser.add_argument(
+      '--ignore',
+      action='store',
+      nargs='+',
+      dest='ignore',
+      default=[],
+      help='Email to send to ( if not givem sends to all ).',
+    )
+
     parser.add_argument(
       '--test',
       action='store_true',
@@ -85,12 +95,15 @@ class Command(BaseCommand):
       for account in accounts: 
         # if account is given only do that one
         if kwargs['email_to'] is None or account.email == kwargs['email_to']: 
-          print('EMAILING: ', account.email)
-
-          if kwargs['test']:
-            # write to STDOUT
-            print(email.get_html())
+          if account.email in kwargs['ignore']:
+            print('IGNORING: ', account.email)
           else:
-            # send message via email
-            send_email('user', account.email, kwargs['email_from'], None, email.get_subject(), email.get_text(), email.get_html())
-            sleep(3)
+            print('EMAILING: ', account.email)
+
+            if kwargs['test']:
+              # write to STDOUT
+              print(email.get_html())
+            else:
+              # send message via email
+              send_email('user', account.email, kwargs['email_from'], None, email.get_subject(), email.get_text(), email.get_html())
+              sleep(1)

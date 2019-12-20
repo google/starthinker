@@ -109,8 +109,6 @@ def report_get(auth, report_id=None, name=None):
 
   Args:
     * auth: (string) Either user or service.
-    * account: (string) [account:advertiser@profile] token.
-    * account: (string) [account:advertiser@profile] token.
     * report_id: (int) ID of DCm report to fetch ( either or name ).
     * name: (string) Name of report to fetch ( either or report_id ).
 

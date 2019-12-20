@@ -9,17 +9,20 @@
     "description":"Download SDF reports into a BigQuery table.",
     "instructions":[
       "Select your filter types and the filter ideas.",
-      "Select the file types you want from the sdf.",
-      "The job will grab the entire sdf and upload to your table.",
-      "The job will append an underscore and the file type to the provided table name for the result table."
+      "Enter the <a href='https://developers.google.com/bid-manager/v1.1/sdf/download' target='_blank'>file types</a> using commas.",
+      "SDF_ will be prefixed to all tables and date appended to daily tables."
     ],
     "authors":["terwilleger@google.com"]
   },
   "tasks":[
     { "sdf":{
         "auth": "user",
-        "version":{"field":{ "name":"version", "kind":"string", "order":4, "default":"3.1", "description":"The sdf version to be returned."}},
-        "file_types":{"field":{ "name":"file_types", "kind":"string_list", "order":1, "default":"", "description":"The sdf file types to be returned."}},
+        "version":{"field":{ "name":"version", "kind":"choice", "order":4, "default":"5", "description":"The sdf version to be returned.",
+          "choices": [
+            "3.1",
+            "5"
+          ]}},
+        "file_types":{"field":{ "name":"file_types", "kind":"string_list", "order":1, "default":[], "description":"The sdf file types."}},
         "filter_type":{"field":{ "name":"filter_type", "kind":"choice", "order":2, "default":"", "description":"The filter type for the filter ids.", 
           "choices": [
             "ADVERTISER_ID",
@@ -37,11 +40,10 @@
             }
           }
         },
+        "daily":{"field":{ "name":"daily", "kind":"boolean", "order":6, "default":false, "description":"Also create a unique record for each day the data is pulled." }},
         "out":{
           "bigquery":{
-            "dataset":{"field":{ "name":"dataset", "kind":"string", "order":5, "default":"", "description":"Dataset to be written to in BigQuery." }},
-            "table":{"field":{ "name":"table", "kind":"string", "order":6, "default":"", "description":"Table to be written to in BigQuery." }},
-            "is_time_partition":{"field":{ "name":"is_time_partition", "kind":"boolean", "order":7, "default":false, "description":"Whether the end table is time partitioned." }}          
+            "dataset":{"field":{ "name":"dataset", "kind":"string", "order":5, "default":"", "description":"Dataset to be written to in BigQuery." }}
           }
         }
       }}

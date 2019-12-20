@@ -4,7 +4,7 @@
     "copyright":"Copyright 2018 Google Inc.",
     "open":true,
     "icon":"timeline",
-    "product":"gTech",
+    "product":"Google Analytics",
     "title":"Google Analytics Timeline",
     "description":"Download Google Analytics settings to a BigQuery table.",
     "image":"",

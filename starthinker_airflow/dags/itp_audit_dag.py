@@ -21,142 +21,386 @@ ITP Audit Dashboard
 
 Dashboard that shows performance metrics across browser to see the impact of ITP.
 
-F
-o
-l
-l
-o
-w
+A
  
-t
+G
+o
+o
+g
+l
+e
+ 
+S
 h
 e
- 
-s
-t
 e
-p
-s
+t
  
+c
+a
+l
+l
+e
+d
+ 
+<
+b
+>
+I
+T
+P
+ 
+A
+u
+d
 i
-n
- 
 t
-h
-e
+ 
+U
+N
+D
+E
+F
+I
+N
+E
+D
+<
+/
+b
+>
+ 
+w
+i
+l
+l
  
 b
 e
-l
-o
-w
  
-d
-o
 c
-u
-m
+r
 e
-n
-t
-
-
-h
-t
-t
-p
-s
-:
-/
-/
-d
-o
-c
-s
-.
-g
-o
-o
-g
-l
-e
-.
-c
-o
-m
-/
-d
-o
-c
-u
-m
-e
-n
-t
-/
-d
-/
-1
-H
 a
-R
+t
+e
+d
+ 
+f
+o
+r
+ 
+y
+o
+u
+.
+
+
+A
+ 
 C
 M
-a
-B
-B
-E
-o
-0
-t
-S
-K
-w
-n
-o
-f
-W
-N
-t
-a
-P
-j
-l
-W
-0
-O
+ 
 R
-c
-V
-H
-V
-w
-I
-R
-a
-b
-c
-t
-4
-f
-Y
-/
 e
+p
+o
+r
+t
+ 
+c
+a
+l
+l
+e
+d
+ 
+<
+b
+>
+I
+T
+P
+ 
+A
+u
 d
 i
 t
-?
-u
-s
-p
-=
-s
-h
-a
-r
+ 
+U
+N
+D
+E
+F
+I
+N
+E
+D
+<
+/
+b
+>
+ 
+w
 i
+l
+l
+ 
+b
+e
+ 
+c
+r
+e
+a
+t
+e
+d
+ 
+f
+o
+r
+ 
+y
+o
+u
+.
+
+
+A
+ 
+D
+V
+3
+6
+0
+ 
+R
+e
+p
+o
+r
+t
+ 
+c
+a
+l
+l
+e
+d
+ 
+<
+b
+>
+I
+T
+P
+ 
+A
+u
+d
+i
+t
+ 
+U
+N
+D
+E
+F
+I
+N
+E
+D
+<
+/
+b
+>
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+c
+r
+e
+a
+t
+e
+d
+ 
+f
+o
+r
+ 
+y
+o
+u
+.
+
+
+E
+d
+i
+t
+ 
+t
+h
+e
+ 
+D
+V
+3
+6
+0
+ 
+<
+b
+>
+I
+T
+P
+ 
+A
+u
+d
+i
+t
+ 
+U
+N
+D
+E
+F
+I
+N
+E
+D
+<
+/
+b
+>
+ 
+r
+e
+p
+o
+r
+t
+ 
+a
 n
+d
+ 
+a
+d
+d
+ 
+t
+h
+e
+ 
+f
+i
+e
+l
+d
+ 
+<
+b
+>
+M
+I
+S
+S
+I
+N
+G
+ 
+M
+E
+T
+R
+I
+C
+<
+/
+b
+>
+
+
+R
+u
+n
+ 
+t
+h
+i
+s
+ 
+r
+e
+c
+i
+p
+e
+.
+
+
+W
+a
+i
+t
+ 
+f
+o
+r
+ 
+<
+b
+>
+B
+i
 g
+Q
+u
+e
+r
+y
+-
+>
+U
+N
+D
+E
+F
+I
+N
+E
+D
+<
+/
+b
+>
+ 
+t
+o
+ 
+b
+e
+ 
+c
+r
+e
+a
+t
+e
+d
+.
 
 '''
 
@@ -166,23 +410,39 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  'dataset': 'ITP_Audit_Dashboard',  # BigQuery dataset for store dashboard tables.
-  'sheet_url': '',  # Sheet URL for the Segments sheet.
   'cm_account_id': '',  # Campaign Manager Account Id.
-  'advertiser_ids': '',  # Comma separated list of Campaign Manager Advertiser Ids.  Leave blank for no advertiser filtering.
+  'advertiser_ids': '',  # Optional, comma separated list of Campaign Manager Advertiser Ids.
   'floodlight_configuration_id': '',  # Floodlight Configuration Id for the Campaign Manager floodlight report.
-  'floodlight_report_name': 'ITP_Audit_Dashboard_Floodlight',  # Campaign Manager Floodlight report name.
-  'dv360_report_name': 'ITP_Audit_Browser_Report',  # DV360 Browser report name.
-  'cm_browser_report_name': 'ITP_Audit_Dashboard_Browser',  # Name of the Campaign Manager browser report.
+  'recipe_name': 'ITP_Audit_Dashboard_Browser',  # Name of the Campaign Manager browser report.
 }
 
 TASKS = [
+  {
+    'drive': {
+      'auth': 'user',
+      'hour': [
+      ],
+      'copy': {
+        'source': 'https://docs.google.com/spreadsheets/d/1rH_PGXOYW2mVdmAYnKbv6kcaB6lQihAyMsGtFfinnqg/',
+        'destination': {
+          'field': {
+            'name': 'recipe_name',
+            'prefix': 'ITP Audit',
+            'kind': 'string',
+            'order': 1,
+            'description': 'Name of document to deploy to.',
+            'default': ''
+          }
+        }
+      }
+    }
+  },
   {
     'dataset': {
       'auth': 'service',
       'dataset': {
         'field': {
-          'name': 'dataset',
+          'name': 'recipe_name',
           'kind': 'string',
           'order': 1,
           'default': 'ITP_Audit_Dashboard',
@@ -209,20 +469,10 @@ TASKS = [
           'kind': 'dfareporting#report',
           'name': {
             'field': {
-              'name': 'floodlight_report_name',
+              'name': 'recipe_name',
               'kind': 'string',
-              'order': 8,
-              'default': 'ITP_Audit_Dashboard_Floodlight',
-              'description': 'Campaign Manager Floodlight report name.'
-            }
-          },
-          'fileName': {
-            'field': {
-              'name': 'floodlight_report_name',
-              'kind': 'string',
-              'order': 8,
-              'default': 'ITP_Audit_Dashboard_Floodlight',
-              'description': 'Campaign Manager Floodlight report name.'
+              'prefix': 'ITP_Audit_Floodlight_',
+              'description': 'Name of report in DBM, should be unique.'
             }
           },
           'format': 'CSV',
@@ -303,7 +553,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_name',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -324,11 +574,10 @@ TASKS = [
       'report': {
         'name': {
           'field': {
-            'name': 'dv360_report_name',
+            'name': 'recipe_name',
             'kind': 'string',
-            'order': 8,
-            'default': 'ITP_Audit_Browser_Report',
-            'description': 'DV360 Browser report name.'
+            'prefix': 'ITP_Audit_',
+            'description': 'Name of report in DBM, should be unique.'
           }
         }
       },
@@ -336,7 +585,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_name',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -355,11 +604,12 @@ TASKS = [
       'auth': 'user',
       'sheet': {
         'field': {
-          'name': 'sheet_url',
+          'name': 'recipe_name',
+          'prefix': 'ITP Audit',
           'kind': 'string',
-          'order': 2,
-          'default': '',
-          'description': 'Sheet URL for the Segments sheet.'
+          'order': 1,
+          'description': 'Name of document to deploy to.',
+          'default': ''
         }
       },
       'tab': 'Enviroment',
@@ -370,7 +620,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_name',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -387,11 +637,12 @@ TASKS = [
       'auth': 'user',
       'sheet': {
         'field': {
-          'name': 'sheet_url',
+          'name': 'recipe_name',
+          'prefix': 'ITP Audit',
           'kind': 'string',
-          'order': 2,
-          'default': '',
-          'description': 'Sheet URL for the Segments sheet.'
+          'order': 1,
+          'description': 'Name of document to deploy to.',
+          'default': ''
         }
       },
       'tab': 'Browser',
@@ -402,7 +653,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_name',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -419,11 +670,12 @@ TASKS = [
       'auth': 'user',
       'sheet': {
         'field': {
-          'name': 'sheet_url',
+          'name': 'recipe_name',
+          'prefix': 'ITP Audit',
           'kind': 'string',
-          'order': 2,
-          'default': '',
-          'description': 'Sheet URL for the Segments sheet.'
+          'order': 1,
+          'description': 'Name of document to deploy to.',
+          'default': ''
         }
       },
       'tab': 'CM_Site_Segments',
@@ -434,7 +686,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_name',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -451,11 +703,12 @@ TASKS = [
       'auth': 'user',
       'sheet': {
         'field': {
-          'name': 'sheet_url',
+          'name': 'recipe_name',
+          'prefix': 'ITP Audit',
           'kind': 'string',
-          'order': 2,
-          'default': '',
-          'description': 'Sheet URL for the Segments sheet.'
+          'order': 1,
+          'description': 'Name of document to deploy to.',
+          'default': ''
         }
       },
       'tab': 'Device_Type',
@@ -466,7 +719,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_name',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -483,11 +736,12 @@ TASKS = [
       'auth': 'user',
       'sheet': {
         'field': {
-          'name': 'sheet_url',
+          'name': 'recipe_name',
+          'prefix': 'ITP Audit',
           'kind': 'string',
-          'order': 2,
-          'default': '',
-          'description': 'Sheet URL for the Segments sheet.'
+          'order': 1,
+          'description': 'Name of document to deploy to.',
+          'default': ''
         }
       },
       'tab': 'Floodlight_Attribution',
@@ -498,7 +752,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_name',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -524,7 +778,7 @@ TASKS = [
       },
       'dataset': {
         'field': {
-          'name': 'dataset',
+          'name': 'recipe_name',
           'kind': 'string',
           'order': 1,
           'default': 'ITP_Audit_Dashboard',
@@ -533,18 +787,20 @@ TASKS = [
       },
       'sheet': {
         'field': {
-          'name': 'sheet_url',
+          'name': 'recipe_name',
+          'prefix': 'ITP Audit',
           'kind': 'string',
-          'order': 2,
-          'default': '',
-          'description': 'Sheet URL for the Segments sheet.'
+          'order': 1,
+          'description': 'Name of document to deploy to.',
+          'default': ''
         }
       },
       'cm_browser_report_name': {
         'field': {
-          'name': 'cm_browser_report_name',
+          'name': 'recipe_name',
           'kind': 'string',
           'order': 9,
+          'prefix': 'ITP_Audit_Browser_',
           'default': 'ITP_Audit_Dashboard_Browser',
           'description': 'Name of the Campaign Manager browser report.'
         }
@@ -555,7 +811,7 @@ TASKS = [
           'kind': 'string',
           'order': 5,
           'default': '',
-          'description': 'Comma separated list of Campaign Manager Advertiser Ids.  Leave blank for no advertiser filtering.'
+          'description': 'Optional, comma separated list of Campaign Manager Advertiser Ids.'
         }
       },
       'timeout': 60

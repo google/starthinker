@@ -77,7 +77,7 @@ class EmailTemplate:
 
 
   def _text_css(self):
-    return 'width:100%%;margin:10px 0px;padding:0px;border:0px;font-weight:normal;text-align:%(align)s;color:%(text)s;font-family:%(font)s;font-size:15px;line-height:24px;' % self.style
+    return 'width:100%%;margin:10px 0px;padding:0px;border:0px;font-weight:normal;text-align:%(align)s;color:%(text)s;font-family:%(font)s;font-size:15px;line-height:26px;' % self.style
 
 
   def _link_css(self):

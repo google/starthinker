@@ -30,8 +30,8 @@ class Command(BaseCommand):
     with open('%s/tutorials/deploy_colab.md' % settings.UI_ROOT, 'w') as readme_file:
       readme_file.write('# Using Scripts As A Colab Notebook\n')
       readme_file.write('\n')
-      readme_file.write('All StarThinker recipes and solutions can be run from Google\'s Collaboratory.\n')
-      readme_file.write('Click the link below or visit the [Solution Gallery](https://google.github.io/starthinker/) to deploy a notebook.\n')
+      readme_file.write('All StarThinker recipes and solutions can be run from [Google Collaboratory](https://colab.research.google.com/github/google/starthinker/blob/master). ')
+      readme_file.write('Also visit the [Solution Gallery](google.github.io/starthinker/) or click a link below to deploy a notebook.\n')
       readme_file.write('\n')
       readme_file.write('## List Of Notebooks\n')
 

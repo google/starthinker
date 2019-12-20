@@ -67,6 +67,7 @@ class VideoFormatDAO(BaseDAO):
       All trancode objects from Campaign Manager that match the transcode configuration specified.
     """
     result = []
+    REALLY_BIG_INT = 9223372036854775807
 
     try:
       for video_format in self.get_video_formats():
@@ -75,9 +76,9 @@ class VideoFormatDAO(BaseDAO):
           min_height = int(transcode_config.get(FieldMap.TRANSCODE_MIN_HEIGHT, 0))
           min_bitrate = int(transcode_config.get(FieldMap.TRANSCODE_MIN_BITRATE, 0))
 
-          max_width = int(transcode_config.get(FieldMap.TRANSCODE_MAX_WIDTH, sys.maxint))
-          max_height = int(transcode_config.get(FieldMap.TRANSCODE_MAX_HEIGHT, sys.maxint))
-          max_bitrate = int(transcode_config.get(FieldMap.TRANSCODE_MAX_BITRATE, sys.maxint))
+          max_width = int(transcode_config.get(FieldMap.TRANSCODE_MAX_WIDTH, REALLY_BIG_INT))
+          max_height = int(transcode_config.get(FieldMap.TRANSCODE_MAX_HEIGHT, REALLY_BIG_INT))
+          max_bitrate = int(transcode_config.get(FieldMap.TRANSCODE_MAX_BITRATE, REALLY_BIG_INT))
 
           file_format = transcode_config.get(FieldMap.TRANSCODE_FORMAT, '')
 

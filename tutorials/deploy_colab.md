@@ -1,6 +1,6 @@
 # Using Scripts As A Colab Notebook
 
-All StarThinker recipes and solutions can be run from [Google Collaboratory](https://colab.research.google.com/github/google/starthinker/blob/master).Also visit the [Solution Gallery](google.github.io/starthinker/) or click a link below to deploy a notebook.
+All StarThinker recipes and solutions can be run from [Google Collaboratory](https://colab.research.google.com/github/google/starthinker/blob/master). Also visit the [Solution Gallery](google.github.io/starthinker/) or click a link below to deploy a notebook.
 
 ## List Of Notebooks
 * [Anonymize Dataset](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/anonymize.ipynb) - Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.
@@ -38,8 +38,8 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [API To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/google_api_to_bigquery.ipynb) - Execute a Google API function and store results to BigQuery.
 * [Say Hello](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/hello.ipynb) - Recipe template for say hello.
 * [Project IAM](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/iam.ipynb) - Sets project permissions for an email.
-* [Browser Activity Dashboard](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/itp.ipynb) - Visualizes a client's Campaign Manager and DV360 activity by browser and device
-* [ITP Audit Dashboard](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/itp_audit.ipynb) - Dashboard that shows performance metrics across browser to see the impact of ITP.
+* [Browser Activity Dashboard ( 2019 )](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/itp.ipynb) - Visualizes a client's Campaign Manager and DV360 activity by browser and device
+* [ITP Audit Dashboard ( 2020 )](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/itp_audit.ipynb) - Dashboard that shows performance metrics across browser to see the impact of ITP.
 * [Tag Key Value Uploader](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/kv_uploader.ipynb) - A tool for bulk editing key value pairs for DCM pllacements.
 * [Line Item To BigQuery Via Query](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/lineitem_read_to_bigquery_via_query.ipynb) - Move using an Id query.
 * [Line Item To BigQuery Via Values](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/lineitem_read_to_bigquery_via_value.ipynb) - Move using hard coded Id values.

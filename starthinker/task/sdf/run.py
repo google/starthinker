@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,112 +16,15 @@
 #
 ###########################################################################
 
-import copy
-
 from starthinker.util.project import project 
 from starthinker.util.dbm import sdf_read
-from starthinker.util.bigquery import table_create, query_to_table, drop_table
+from starthinker.util.bigquery import query_to_table
 from starthinker.task.sdf.schema.Lookup import SDF_Field_Lookup
-from starthinker.util.csv import column_header_sanitize, csv_to_rows
+from starthinker.util.csv import column_header_sanitize
 from starthinker.util.data import put_rows, get_rows
 
-API_VERSION = 'v1'
-FILTER_ID_CHUNK_SIZE = 5
 
-
-@project.from_parameters
-def sdf():
-  if project.verbose: print("SDF TO TABLE", project.task['out']['bigquery']['table'])
-  
-  # Set is time partition and write disposition
-  is_time_partition = project.task['out']['bigquery'].get('is_time_partition', False)
-  disposition = 'WRITE_TRUNCATE'
-  if is_time_partition:
-    disposition = 'WRITE_APPEND'
-
-  # Read Filter Ids
-  filter_id_rows = list(get_rows(project.task['auth'], project.task['read']['filter_ids']))
-  filter_ids = [filter_id_rows[i:i + FILTER_ID_CHUNK_SIZE] for i in range(0, len(filter_id_rows), FILTER_ID_CHUNK_SIZE)]
-  # Loop through requested file types
-  for file_type in project.task['file_types']:
-    current_filter_id_iteration = 0
-    i = 0
-    table_names = []
-
-    # Create the destination table
-    destination_table = '%s_%s' % (project.task['out']['bigquery']['table'], file_type.lower())
-    table_create(
-      project.task['auth'],
-      project.id,
-      project.task['out']['bigquery']['dataset'],
-      destination_table,
-      is_time_partition)
-    if project.verbose: print("SDF TO DOWNLOAD", file_type)
-    # Request 5 filter ids at a time so the API doesn't timeout
-    for partial_filter_ids in filter_ids:
-      rows = sdf_read(project.task['auth'], [file_type], project.task['filter_type'], partial_filter_ids, project.task.get('version', '3.1'))
-      if rows:
-        schema = _sdf_schema(next(rows))
-        table_suffix = '%s_%s' % (current_filter_id_iteration, file_type.lower())
-        table_name = '%s%s' % (project.task['out']['bigquery']['table'], table_suffix)
-        # Check to see if the table exists, if not create it
-        table_create(
-          project.task['auth'],
-          project.id,
-          project.task['out']['bigquery']['dataset'],
-          table_name)
-        out_obj = copy.deepcopy(project.task['out'])
-
-        if 'bigquery' in out_obj:
-          out_obj['bigquery']['schema'] = schema
-          out_obj['bigquery']['skip_rows'] = 0
-          out_obj['bigquery']['table'] = table_name
-
-        put_rows(project.task['auth'], 
-          out_obj, 
-          rows)
-        table_names.append(table_name)
-
-      current_filter_id_iteration= current_filter_id_iteration + 1
-
-    query = _construct_combine_query(
-      file_type,
-      table_names,
-      project.id,
-      project.task['out']['bigquery']['dataset'],
-      destination_table)
-    query_to_table(project.task['auth'], 
-      project.id, 
-      project.task['out']['bigquery']['dataset'], 
-      destination_table, 
-      query, 
-      disposition=disposition,
-      legacy=False)
-    # Delete all the temporary tables that were created
-    for table_name in table_names:
-      drop_table(project.task['auth'], 
-        project.id, 
-        project.task['out']['bigquery']['dataset'], 
-        table_name)
-
-def _construct_combine_query(file_type, table_names, project_id, dataset, dest_table_name):
-  query = 'SELECT * FROM ('
-
-  for i,table in enumerate(table_names):
-    sub_table_path = '`%s.%s.%s` ' % (project_id, dataset, table)
-    sub_query = 'SELECT * FROM ' + sub_table_path
-
-    if i != (len(table_names)-1):
-      sub_query = sub_query + 'UNION ALL '
-
-    query = query + sub_query
-
-  query = query + ')'
-
-  return query
-
-
-def _sdf_schema(header):
+def sdf_schema(header):
   schema = []
 
   for h in header:
@@ -132,6 +35,53 @@ def _sdf_schema(header):
     }) 
 
   return schema 
+
+
+@project.from_parameters
+def sdf():
+
+  # Read Filter Ids
+  filter_ids = list(get_rows(project.task['auth'], project.task['read']['filter_ids']))
+
+  # Loop through requested file types
+  for file_type in project.task['file_types']:
+    disposition = 'WRITE_TRUNCATE'
+
+    # if daily then create a seperate table for each day else accumulate all in one table
+    table = ('SDF_%s_%s' % (file_type, str(project.date).replace('-', '_'))) if project.task['daily'] else ('SDF_%s' % file_type)
+
+    # do one filter id at a time to avoid response too large error ( product knows )
+    for filter_id in filter_ids:
+
+      if project.verbose: print("SDF DOWNLOAD", project.task['filter_type'], file_type, filter_id)
+      rows = sdf_read(project.task['auth'], [file_type], project.task['filter_type'], [filter_id], project.task.get('version', '3.1'))
+
+      if rows:
+        schema = sdf_schema(next(rows))
+        if 'bigquery' in project.task['out']:
+          project.task['out']['bigquery']['schema'] = schema
+          project.task['out']['bigquery']['skip_rows'] = 0
+          project.task['out']['bigquery']['table'] = table
+
+        put_rows(project.task['auth'], project.task['out'], rows)
+
+      else:
+        if project.verbose: print("NO DATA")
+
+    disposition = 'WRITE_APPEND'
+
+    if project.task['daily']:
+
+      if project.verbose: print("SDF COMBINE DAYS", file_type)
+
+      query_to_table(project.task['auth'], 
+        project.id, 
+        project.task['out']['bigquery']['dataset'], 
+        'SDF_%s' % file_type,
+        "SELECT PARSE_DATE('%%Y_%%m_%%d',_TABLE_SUFFIX) as SDF_Day, * FROM `%s.%s.SDF_%s_*`" % (project.id, project.task['out']['bigquery']['dataset'], file_type), 
+        disposition='WRITE_TRUNCATE',
+        legacy=False
+      )
 
 
 if __name__ == "__main__":

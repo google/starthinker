@@ -69,211 +69,201 @@ s
 .
 
 
-S
-e
-l
-e
-c
+E
+n
 t
+e
+r
  
 t
 h
 e
  
-f
-i
-l
-e
+<
+a
  
-t
-y
-p
+h
+r
 e
+f
+=
+'
+h
+t
+t
+p
 s
- 
-y
-o
-u
- 
-w
-a
-n
-t
- 
-f
-r
-o
-m
- 
-t
-h
-e
- 
-s
-d
-f
-.
-
-
-T
-h
-e
- 
-j
-o
-b
- 
-w
-i
-l
-l
- 
-g
-r
-a
-b
- 
-t
-h
-e
- 
-e
-n
-t
-i
-r
-e
- 
-s
-d
-f
- 
-a
-n
-d
- 
-u
-p
-l
-o
-a
-d
- 
-t
-o
- 
-y
-o
-u
-r
- 
-t
-a
-b
-l
-e
-.
-
-
-T
-h
-e
- 
-j
-o
-b
- 
-w
-i
-l
-l
- 
-a
-p
-p
-e
-n
-d
- 
-a
-n
- 
-u
-n
+:
+/
+/
 d
 e
-r
-s
-c
-o
-r
-e
- 
-a
-n
-d
- 
-t
-h
-e
- 
-f
-i
-l
-e
- 
-t
-y
-p
-e
- 
-t
-o
- 
-t
-h
-e
- 
-p
-r
-o
 v
+e
+l
+o
+p
+e
+r
+s
+.
+g
+o
+o
+g
+l
+e
+.
+c
+o
+m
+/
+b
 i
 d
+-
+m
+a
+n
+a
+g
+e
+r
+/
+v
+1
+.
+1
+/
+s
+d
+f
+/
+d
+o
+w
+n
+l
+o
+a
+d
+'
+ 
+t
+a
+r
+g
+e
+t
+=
+'
+_
+b
+l
+a
+n
+k
+'
+>
+f
+i
+l
+e
+ 
+t
+y
+p
+e
+s
+<
+/
+a
+>
+ 
+u
+s
+i
+n
+g
+ 
+c
+o
+m
+m
+a
+s
+.
+
+
+S
+D
+F
+_
+ 
+w
+i
+l
+l
+ 
+b
+e
+ 
+p
+r
+e
+f
+i
+x
 e
 d
  
 t
+o
+ 
+a
+l
+l
+ 
+t
 a
 b
 l
-e
- 
-n
-a
-m
-e
- 
-f
-o
-r
- 
-t
-h
-e
- 
-r
 e
 s
-u
-l
+ 
+a
+n
+d
+ 
+d
+a
 t
+e
+ 
+a
+p
+p
+e
+n
+d
+e
+d
+ 
+t
+o
+ 
+d
+a
+i
+l
+y
  
 t
 a
 b
 l
 e
+s
 .
 
 '''
@@ -284,13 +274,12 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  'file_types': '',  # The sdf file types to be returned.
+  'file_types': [],  # The sdf file types.
   'filter_type': '',  # The filter type for the filter ids.
   'filter_ids': '',  # The filter ids for the request.
-  'version': '3.1',  # The sdf version to be returned.
+  'version': '5',  # The sdf version to be returned.
   'dataset': '',  # Dataset to be written to in BigQuery.
-  'table': '',  # Table to be written to in BigQuery.
-  'is_time_partition': False,  # Whether the end table is time partitioned.
+  'daily': False,  # Also create a unique record for each day the data is pulled.
 }
 
 TASKS = [
@@ -300,10 +289,14 @@ TASKS = [
       'version': {
         'field': {
           'name': 'version',
-          'kind': 'string',
+          'kind': 'choice',
           'order': 4,
-          'default': '3.1',
-          'description': 'The sdf version to be returned.'
+          'default': '5',
+          'description': 'The sdf version to be returned.',
+          'choices': [
+            '3.1',
+            '5'
+          ]
         }
       },
       'file_types': {
@@ -311,8 +304,9 @@ TASKS = [
           'name': 'file_types',
           'kind': 'string_list',
           'order': 1,
-          'default': '',
-          'description': 'The sdf file types to be returned.'
+          'default': [
+          ],
+          'description': 'The sdf file types.'
         }
       },
       'filter_type': {
@@ -346,6 +340,15 @@ TASKS = [
           }
         }
       },
+      'daily': {
+        'field': {
+          'name': 'daily',
+          'kind': 'boolean',
+          'order': 6,
+          'default': False,
+          'description': 'Also create a unique record for each day the data is pulled.'
+        }
+      },
       'out': {
         'bigquery': {
           'dataset': {
@@ -355,24 +358,6 @@ TASKS = [
               'order': 5,
               'default': '',
               'description': 'Dataset to be written to in BigQuery.'
-            }
-          },
-          'table': {
-            'field': {
-              'name': 'table',
-              'kind': 'string',
-              'order': 6,
-              'default': '',
-              'description': 'Table to be written to in BigQuery.'
-            }
-          },
-          'is_time_partition': {
-            'field': {
-              'name': 'is_time_partition',
-              'kind': 'boolean',
-              'order': 7,
-              'default': False,
-              'description': 'Whether the end table is time partitioned.'
             }
           }
         }
