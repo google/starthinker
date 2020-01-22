@@ -1,21 +1,21 @@
 # Operating Costs For StarThinker UI and Workers At Scale 
 
 StarThinker UI and Job Workers use Google Cloud resources in the form a database, virtual machines, and appengine.
-Althought we cannot provide specific guranteed pricing due to pricing variations in your specific Google contract,
+Although we cannot provide specific guaranteed pricing due to pricing variations in your specific Google contract,
 the rough cost of StarThinker UI and Job workers scales as follows...
 
 ## Data Costs
 
 StarThinker runs jobs that transfer data.  Those jobs are connected to service accounts from Google Cloud Projects and are billed
-for all data transfer independently of the Google CLoud Project where StarThinker is deployed.  We strongly discourage using the
-Google Project running StarThinker as the project hosting recipe data for security and confusing cost reasosns.
+for all data transfer independently of the Google Cloud Project where StarThinker is deployed.  We strongly discourage using the
+Google Project running StarThinker as the project hosting recipe data for security and confusing cost reasons.
 
 = **$0 - All data costs are billed to recipe owner.**
 
 ## Fixed Costs 
 
 The UI web server and database are roughly fixed in cost, for most trading desks or client deployments, these costs will be minimal.
-If your databse grows or you request increased availability, your costs will vary...
+If your database grows or you request increased availability, your costs will vary...
 
 $85 [App Engine UI](https://cloud.google.com/appengine/pricing) - Monthly cost of scaled web server.  
 $95 [Cloud SQL](https://cloud.google.com/appengine/pricing) - Monthly cost of backed up database.
@@ -50,7 +50,7 @@ the instances chosen, thats 2 jobs on the n1-highmem-4 ( 26 GB ) machines, and 4
 
 ### Time Scaling
 
-Conservitvely, if the average job takes 6 minutes, and the average recipe has 10 jobs, then each job handler on a machine can execute 24 recipes in a day.
+Conservatively, if the average job takes 6 minutes, and the average recipe has 10 jobs, then each job handler on a machine can execute 24 recipes in a day.
 Thus, a machine with two job handlers can execute 48 recipes, and so on. Your pricing for [Google Virtual Machines](https://cloud.google.com/compute/docs/machine-types) may vary...
 
 $37 / month at 1   - 50 Recipes  = 1 x n1-highmem-4 x 2 jobs = 48 recipe hours  
