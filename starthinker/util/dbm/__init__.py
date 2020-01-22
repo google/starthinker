@@ -29,13 +29,10 @@ from io import StringIO
 from types import GeneratorType
 from urllib.request import urlopen
 
-from googleapiclient.errors import HttpError
-
 from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
 from starthinker.util.auth import get_service
 from starthinker.util.google_api import API_Retry
-from starthinker.util.bigquery import query_to_rows, storage_to_table
 from starthinker.util.storage import object_get_chunks
 from starthinker.util.csv import column_header_sanitize, csv_to_rows, rows_to_csv
 from starthinker.util.dbm.schema import LineItem_Write_Schema
@@ -44,62 +41,6 @@ from starthinker.util.dbm.schema import LineItem_Write_Schema
 API_VERSION = 'v1'
 DBM_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200MB recommended by docs * scale in config.py
 RE_FILENAME = re.compile(r'.*/(.*)\?GoogleAccess')
-
-
-# DEPRECATED DO NOT USE
-def _process_filters(partners, advertisers, filters, project_id, dataset_id, auth='user'):
-  structures = []
-
-  for p in (partners or []):
-    structures.append({
-      'type':'FILTER_PARTNER',
-      'value':int(p)
-    })
-
-  for a in (advertisers or []):
-    structures.append({
-      'type':'FILTER_ADVERTISER',
-      'value':int(a)
-    })
-
-  for f in (filters or []):
-    if isinstance(f['value'], str) and f['value'].startswith('SELECT '):
-
-      items = query_to_rows(auth, project_id, dataset_id, f['value'])
-
-      filtered = False
-      for item in items:
-        if item and len(item) != 0:
-          filtered = True
-          structures.append({
-            'type':f['type'],
-            'value':item[0]
-          })
-        else: break
-
-      if not filtered:
-        raise Exception('Select filter did not return any values: %s' % f['value'])
-    else:
-      structures.append({
-        'type':f['type'],
-        'value':f['value']
-      })
-
-  return structures
-
-# DEPRECATED DO NOT USE
-def accounts_split(accounts):
-  partners = []
-  advertisers = []
-  for account in accounts:
-    if isinstance(account, int):
-      partners.append(account)
-    else:
-      partner_advertiser = account.split(':', 1)
-      partners.append(int(partner_advertiser[0]))
-      if len (partner_advertiser) == 2:
-        advertisers.append(int(partner_advertiser[1]))
-  return partners, advertisers
 
 
 def report_get(auth, report_id=None, name=None):
@@ -181,72 +122,6 @@ def report_build(auth, body):
   return report
 
 
-# DEPRECATED DO NOT USE
-def report_create(auth, name, typed, partners, advertisers, filters, dimensions, metrics, data_range, timezone, project_id=None, dataset_id=None):
-  report = report_get(auth, name=name)
-  #pprint.PrettyPrinter().pprint(report)
-
-  # transform filters into DBM structures
-  filters = _process_filters(partners, advertisers, filters, project_id, dataset_id, auth=auth)
-
-  if report is None:
-    if project.verbose: print('DBM Report Create:', name)
-
-    service = get_service('doubleclickbidmanager', API_VERSION, auth)
-
-    body = {
-      'kind': 'doubleclickbidmanager#query',
-      'timezoneCode': timezone,
-      'metadata': {
-        'title': name,
-        'dataRange': data_range,
-        'format': 'CSV',
-        'sendNotification': False,
-      },
-      'params': {
-        'filters': filters,
-        'groupBys': dimensions or [
-            'FILTER_DATE',
-            'FILTER_ADVERTISER',
-            'FILTER_LINE_ITEM',
-            'FILTER_INSERTION_ORDER',
-            'FILTER_CREATIVE_ID',
-            'FILTER_ADVERTISER_CURRENCY'
-            'FILTER_MOBILE_DEVICE_TYPE'
-          ],
-        'includeInviteData': False,
-        'metrics': metrics or ['METRIC_REVENUE_ADVERTISER'],
-        'type': typed
-      },
-      'schedule': {
-        'endTimeMs': int((time.time() + (365 * 24 * 60 * 60)) * 1000), # 1 year in future
-        'frequency': 'DAILY',
-        'nextRunMinuteOfDay': 4 * 60,
-        'nextRunTimezoneCode': timezone
-      }
-    }
-
-    #pprint.PrettyPrinter().pprint(body)
-
-    # create the job
-    job = service.queries().createquery(body=body)
-    report = API_Retry(job)
-
-    #pprint.PrettyPrinter().pprint(report)
-
-    # run job ( first time )
-    body = {
-     "dataRange":report['metadata']['dataRange'],
-     "timezoneCode":report['schedule']['nextRunTimezoneCode']
-    }
-    run = service.queries().runquery(queryId=report['queryId'], body=body)
-    API_Retry(run)
-  else:
-    if project.verbose: print('DBM Report Exists:', name)
-
-  return report
-
-
 def report_fetch(auth, report_id=None, name=None, timeout = 4):
   """ Retrieves most recent DBM file JSON by name or ID, if in progress, waits for it to complete.
 
@@ -295,13 +170,6 @@ def report_fetch(auth, report_id=None, name=None, timeout = 4):
     time.sleep(wait)
 
 
-def report_bigquery(auth, report_id, name, dataset, table, schema=[], timeout=60):
-  storage_path = report_fetch(auth, report_id, name, timeout)
-  if storage_path not in (True, False):
-    print(project.id, dataset, table, storage_path)
-    storage_to_table(auth, project.id, dataset, table, storage_path, schema, 1 if schema else 0)
-
-
 def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = None):
   """ Retrieves most recent DBM file by name or ID, if in progress, waits for it to complete.
 
@@ -343,6 +211,7 @@ def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = None)
 
     # single object
     else:
+      print('SP', storage_path)
       return filename, StringIO(urlopen(storage_path).read().decode('UTF-8'))
 
 
@@ -448,7 +317,7 @@ def report_to_rows(report):
       yield row
 
 
-def report_clean(rows, datastudio=False, nulls=False):
+def report_clean(rows, nulls=False):
   """ Helper to fix DBM report issues for BigQuery and ensure schema compliance.
 
   Memory efficiently cleans each row by fixing:
@@ -462,7 +331,7 @@ def report_clean(rows, datastudio=False, nulls=False):
   ```
   filename, report = report_file(...)
   rows = report_to_rows(report)
-  rows = report_clean(rows,  project.task.get('datastudio', False))
+  rows = report_clean(rows)
   ```
 
   Args:
@@ -491,16 +360,15 @@ def report_clean(rows, datastudio=False, nulls=False):
         date_column = row.index('Date')
         row[date_column] = 'Report_Day'
       except ValueError: pass
-      if datastudio: row = [column_header_sanitize(cell) for cell in row]
+      row = [column_header_sanitize(cell) for cell in row]
 
     # for all data rows clean up cells
     else:
       # check if data studio formatting is applied reformat the dates
-      if datastudio: 
-        row = [cell.replace('/', '-') if isinstance(cell, str) and len(cell) == 4 + 1 + 2 + 1 + 2 and cell[4] == '/' and cell[7] == '/'
-              else cell
-              for cell in row
-            ] # 5x faster than regexp
+      row = [cell.replace('/', '-') if isinstance(cell, str) and len(cell) == 4 + 1 + 2 + 1 + 2 and cell[4] == '/' and cell[7] == '/'
+            else cell
+            for cell in row
+          ] # 5x faster than regexp
 
     # remove unknown columns ( which throw off schema on import types )
     if nulls: row = ['' if cell.strip() == 'Unknown' else cell for cell in row]

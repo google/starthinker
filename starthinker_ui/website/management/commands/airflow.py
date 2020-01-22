@@ -37,6 +37,6 @@ class Command(BaseCommand):
             script.get_tag(),
             script.get_name(),
             script.get_description(),
-            '\n'.join(script.get_instructions()),
+            script.get_instructions(),
             script.get_tasks()
           ))

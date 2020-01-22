@@ -53,10 +53,10 @@
       "report":{
         "filters": {
           "FILTER_ADVERTISER": {
-            "values":{"field":{ "name":"dv360_advertiser_ids", "kind":"integer_list", "order":5, "default":[], "description":"Optional: Comma delimited list of DV360 Advertiser ids to filter DV360 Browser Report." }}
+            "values":{"field":{ "name":"dv360_advertiser_ids", "kind":"integer_list", "order":5, "default":"", "description":"Optional: Comma delimited list of DV360 Advertiser ids." }}
           },
           "FILTER_PARTNER": {
-            "values":{"field":{ "name":"dv360_partner_ids", "kind":"integer_list", "order":4, "default":[], "description":"Comma delimited list of DV360 Partner Ids to filter DV360 Browser Report." }}
+            "values":{"field":{ "name":"dv360_partner_ids", "kind":"integer_list", "order":4, "default":"", "description":"Comma delimited list of DV360 Partner ids." }}
           }
         },
         "body":{
@@ -102,7 +102,7 @@
       "auth":"user",
       "timeout": 60,
       "report":{
-        "account": {"field":{ "name":"cm_account_id", "kind":"integer", "order":1, "default":"", "description":"Campaign Manager Account Id." }},
+        "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":1, "default": "", "description":"Campaign Manager Account Id." }},
         "body":{
          "kind": "dfareporting#report",
          "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Floodlight_", "order":7, "description":"Name of report in DBM, should be unique." }},
@@ -174,7 +174,8 @@
       "out":{
         "bigquery":{
           "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
-          "table":"z_Floodlight_CM_Report"
+          "table":"z_Floodlight_CM_Report",
+          "is_incremental_load":false
         }
       },      
       "delete":false
@@ -186,7 +187,7 @@
         "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":1, "default": "", "description":"Campaign Manager Account Id." }},
         "filters": {
           "dfa:advertiser": {
-            "values":{"field":{ "name":"cm_advertiser_ids", "kind":"integer_list", "order":3, "default":[], "description":"Optional: Comma delimited list of DCM advertiser ids to filter CM Floodlight Report." }}
+            "values":{"field":{ "name":"cm_advertiser_ids", "kind":"integer_list", "order":3, "default":"", "description":"Optional: Comma delimited list of DCM advertiser ids." }}
           }
         },
         "body":{
@@ -260,7 +261,8 @@
       "out":{
         "bigquery":{
           "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
-          "table":"z_CM_Browser_Report_Dirty"
+          "table":"z_CM_Browser_Report_Dirty",
+          "is_incremental_load":false
         }
       },      
       "delete":false
@@ -342,7 +344,7 @@
       },
       "out":{
         "bigquery":{
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default":"ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table": "z_Dv360_Browser_Report_Dirty"
         }
       }
@@ -358,7 +360,7 @@
     { "test": {
       "auth":"user",
       "bigquery":{
-        "dataset":"test",
+        "dataset":"Test",
         "table":"CM_Floodlight_Multichart",
         "schema":[
           { "name":"browser_platform", "type":"STRING", "mode":"NULLABLE" },

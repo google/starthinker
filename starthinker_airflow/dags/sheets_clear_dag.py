@@ -17,51 +17,27 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 Sheet Clear
 
 Clear data from a sheet.
 
-F
-o
-r
- 
-t
-h
-e
- 
-s
-h
-e
-e
-t
-,
- 
-p
-r
-o
-v
-i
-d
-e
- 
-t
-h
-e
- 
-f
-u
-l
-l
- 
-e
-d
-i
-t
- 
-U
-R
-L
-.
+For the sheet, provide the full edit URL.
 
 '''
 

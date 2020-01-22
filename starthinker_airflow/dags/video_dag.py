@@ -17,108 +17,28 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 Video Overlay
 
 Add images, text, and audio to videos.
 
-P
-r
-o
-v
-i
-d
-e
- 
-e
-i
-t
-h
-e
-r
- 
-a
- 
-s
-h
-e
-e
-t
- 
-o
-r
- 
-a
- 
-B
-i
-g
-Q
-u
-e
-r
-y
- 
-t
-a
-b
-l
-e
-.
-
-
-E
-a
-c
-h
- 
-v
-i
-d
-e
-o
- 
-e
-d
-i
-t
- 
-w
-i
-l
-l
- 
-b
-e
- 
-r
-e
-a
-d
- 
-f
-r
-o
-m
- 
-t
-h
-e
- 
-s
-h
-e
-e
-t
- 
-o
-r
- 
-t
-a
-b
-l
-e
-.
+Provide either a sheet or a BigQuery table.
+Each video edit will be read from the sheet or table.
 
 '''
 

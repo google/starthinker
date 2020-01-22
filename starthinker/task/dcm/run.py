@@ -99,7 +99,7 @@ def dcm():
             })
           # all other filters go in the same place
           else:
-            project.task['report']['body']['criteria'].setdefault('dimensionFilters', []).append({
+            project.task['report']['body'].setdefault('criteria', {}).setdefault('dimensionFilters', []).append({
               "kind":"dfareporting#dimensionValue",
               "dimensionName": f,
               "id": v,

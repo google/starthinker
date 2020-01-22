@@ -2,7 +2,6 @@
   "script":{
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
-    "open":true,
     "icon":"donut_large",
     "product":"DBM",
     "title":"DBM To BigQuery",
@@ -28,8 +27,7 @@
           "schema":{"field":{ "name":"dbm_schema", "kind":"json", "order":5, "default":"[]", "description":"Schema provided in JSON list format or empty list." }},
           "is_incremental_load":{"field":{ "name":"is_incremental_load", "kind":"boolean", "order":6, "default":false, "description":"Clear data in destination table during this report's time period, then append report data to destination table." }}  
         }
-      },
-      "datastudio":true
+      }
     }}
   ]
 }

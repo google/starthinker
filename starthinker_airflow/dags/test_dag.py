@@ -17,99 +17,28 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 Test Script
 
 Used by tests.
 
-T
-h
-i
-s
- 
-s
-h
-o
-u
-l
-d
- 
-b
-e
- 
-c
-a
-l
-l
-e
-d
- 
-b
-y
- 
-t
-h
-e
- 
-t
-e
-s
-t
-s
- 
-s
-c
-r
-i
-p
-t
-s
- 
-o
-n
-l
-y
-.
-
-
-W
-h
-e
-n
- 
-r
-u
-n
- 
-w
-i
-l
-l
- 
-g
-e
-n
-e
-r
-a
-t
-e
- 
-a
- 
-s
-a
-y
- 
-h
-e
-l
-l
-o
- 
-l
-o
-g
-.
+This should be called by the tests scripts only.
+When run will generate a say hello log.
 
 '''
 

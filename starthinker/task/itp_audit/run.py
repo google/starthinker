@@ -29,7 +29,6 @@ SQL_DIRECTORY = 'sql/'
 
 # Queries
 CLEAN_BROWSER_REPORT_FILENAME = 'clean_browser_report.sql'
-BROWSER_ENV_90DAYS_FILENAME = 'browser_env_90days.sql'
 BROWSER_PERFORMANCE_2YEARS_FILENAME = 'browser_performance_2years.sql'
 SAFARI_DISTRIBUTION_90DAYS_FILENAME = 'safari_distribution_90days.sql'
 DV360_BROWSER_SHARES_MULTICHART_FILENAME = 'browser_share_multichart.sql'
@@ -40,33 +39,28 @@ CM_FLOODLIGHT_MULTICHART_FILENAME = 'CM_Floodlight_Multichart.sql'
 SDF_JOIN_FILENAME = 'sdf_join.sql'
 DV360_CUSTOM_SEGMENTS_FILENAME = 'DV360_Custom_Segments.sql'
 
-# Tables
-CLEAN_BROWSER_REPORT_TABLE = 'Dv360_Browser_Report_Clean'
-BROWSER_ENV_90DAYS_TABLE = 'Dv360_Browser_Environment_90_Days'
-BROWSER_PERFORMANCE_2YEARS_TABLE = 'Dv360_Browser_Performance_2_Years'
-SAFARI_DISTRIBUTION_90DAYS_TABLE = 'Dv360_Safari_Distribution_90_Days'
-DV360_BROWSER_SHARES_MULTICHART_TABLE = 'Dv360_Browser_Shares_MultiChart'
-DV360_CUSTOM_SEGMENTS_TABLE = 'Custom_Segments'
-DV360_CUSTOM_SEGMENTS_SHEET_TABLE = 'Custom_Segments_Sheet'
-
-CM_BROWSER_REPORT_CLEAN_TABLE = 'CM_Browser_Report_Clean'
-CM_SITE_SEGMENTATION_SHEET_TABLE = 'CM_Site_Segmentation_Sheet'
-CM_SITE_SEGMENTATION_TABLE = 'CM_Site_Segmentation'
-CM_BROWSER_REPORT_DIRTY_TABLE = 'CM_Browser_Report'
-CM_FLOODLIGHT_TABLE = 'CM_Floodlight'
+# Output Tables
+BROWSER_PERFORMANCE_2YEARS_TABLE = 'DV3_Browser'
+SAFARI_DISTRIBUTION_90DAYS_TABLE = 'DV3_Safari'
+DV360_BROWSER_SHARES_MULTICHART_TABLE = 'DV3_MultiChart'
+CM_BROWSER_REPORT_CLEAN_TABLE = 'CM_Browser'
 CM_FLOODLIGHT_MULTICHART_TABLE = 'CM_Floodlight_Multichart'
-SDF_JOIN_TABLE = 'SDF'
+
+# Tables
+CLEAN_BROWSER_REPORT_TABLE = 'z_DV360_Browser_Report_Clean'
+DV360_CUSTOM_SEGMENTS_TABLE = 'z_Custom_Segments'
+DV360_CUSTOM_SEGMENTS_SHEET_TABLE = 'z_Custom_Segments_Sheet'
+CM_SITE_SEGMENTATION_SHEET_TABLE = 'z_CM_Site_Segmentation_Sheet'
+CM_SITE_SEGMENTATION_TABLE = 'z_CM_Site_Segmentation'
+CM_BROWSER_REPORT_DIRTY_TABLE = 'z_CM_Browser_Report_Dirty'
+CM_FLOODLIGHT_TABLE = 'z_CM_Floodlight'
 
 @project.from_parameters
 def itp_audit():
   if project.verbose: print('ITP Audit Run Queries')
+
   # Run DV360 related queries
   run_dv_360_queries(project)
-
-  # CM Browser Report, create and move to bigquery
-  create_and_move_cm_browser_report(project)
-
-
 
   # Create CM Site Segmentation Table and Sheet
   create_cm_site_segmentation(project)
@@ -76,10 +70,6 @@ def itp_audit():
   run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + CM_SEGMENTATION_FILENAME), project.id, project.task['dataset'], CM_BROWSER_REPORT_CLEAN_TABLE)
 
   run_cm_queries(project)
-
-  #TODO Terwilleger: SDF is part of phase two
-  # Join SDF files
-  #run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + SDF_JOIN_FILENAME), project.id, project.task['dataset'], SDF_JOIN_TABLE)
 
 
 def run_cm_queries(project):
@@ -101,21 +91,16 @@ def run_dv_360_queries(project):
 
   # Clean DV360 Browser Report
   run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + CLEAN_BROWSER_REPORT_FILENAME), project.id, project.task['dataset'], CLEAN_BROWSER_REPORT_TABLE)
- 
-  # Browser Env 90 days
-  if project.verbose: print('RUN Browser Env 90 Days Query')
-  run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + BROWSER_ENV_90DAYS_FILENAME), 
-    project.id, project.task['dataset'], BROWSER_ENV_90DAYS_TABLE)
 
   # Browser Performance 2 years
   if project.verbose: print('RUN Browser Performance 2 years Query')
   run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + BROWSER_PERFORMANCE_2YEARS_FILENAME), 
     project.id, project.task['dataset'], BROWSER_PERFORMANCE_2YEARS_TABLE)
 
-  # Safari Distribution 90 days
-  # if project.verbose: print('RUN Safari Distribution 90 days Query')
-  # run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + SAFARI_DISTRIBUTION_90DAYS_FILENAME), 
-  #   project.id, project.task['dataset'], SAFARI_DISTRIBUTION_90DAYS_TABLE)
+  #Safari Distribution 90 days
+  if project.verbose: print('RUN Safari Distribution 90 days Query')
+  run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + SAFARI_DISTRIBUTION_90DAYS_FILENAME), 
+    project.id, project.task['dataset'], SAFARI_DISTRIBUTION_90DAYS_TABLE)
 
   # Browser Shares Multichart
   if project.verbose: print('RUN Dv360 Browser Share Multichart')
@@ -241,129 +226,6 @@ def run_query_from_file(path, project_id, dataset, table_name):
     query,
     legacy=False
   )  
-
-
-def create_and_move_cm_browser_report(project):
-  browser_report_body = {
-    "kind": "dfareporting#report",
-    "name": project.task['cm_browser_report_name'],
-    "fileName": project.task['cm_browser_report_name'],
-    "format": "CSV",
-    "type": "STANDARD",
-    "criteria": {
-      "dateRange": {
-       "kind": "dfareporting#dateRange",
-       "relativeDateRange": "LAST_24_MONTHS"
-      },
-      "dimensions": [
-       {
-        "kind": "dfareporting#sortedDimension",
-        "name": "dfa:campaign"
-       },
-       {
-        "kind": "dfareporting#sortedDimension",
-        "name": "dfa:campaignId"
-       },
-       {
-        "kind": "dfareporting#sortedDimension",
-        "name": "dfa:site"
-       },
-       {
-        "kind": "dfareporting#sortedDimension",
-        "name": "dfa:advertiser"
-       },
-       {
-        "kind": "dfareporting#sortedDimension",
-        "name": "dfa:advertiserId"
-       },
-       {
-        "kind": "dfareporting#sortedDimension",
-        "name": "dfa:browserPlatform"
-       },
-       {
-        "kind": "dfareporting#sortedDimension",
-        "name": "dfa:platformType"
-       },
-       {
-        "kind": "dfareporting#sortedDimension",
-        "name": "dfa:month"
-       },
-       {
-        "kind": "dfareporting#sortedDimension",
-        "name": "dfa:week"
-       }
-      ],
-      "metricNames": [
-       "dfa:impressions",
-       "dfa:clicks",
-       "dfa:totalConversions",
-       "dfa:activityViewThroughConversions",
-       "dfa:activityClickThroughConversions"
-      ],
-      "dimensionFilters": []
-    },
-    "schedule": {
-      "active": False,
-      "repeats": "DAILY",
-      "every": 1,
-      "startDate": "2019-09-10",
-      "expirationDate": "2029-12-09"
-    },
-    "delivery": {
-      "emailOwner": False
-  }}
-
-  # Remove any duplicate entries from the advertiser ids
-  advertiser_ids = project.task['advertiser_ids'].split(',')
-
-  # Update body with all the advertiser filters
-  for advertiser in advertiser_ids:
-    if advertiser:
-      browser_report_body["criteria"]["dimensionFilters"].append({
-        "kind": "dfareporting#dimensionValue",
-        "dimensionName": "dfa:advertiser",
-        "id": advertiser,
-        "matchType": "EXACT"
-        })
-
-  # Create report
-  report = report_build(
-    'user',
-    project.task['account'],
-    browser_report_body
-  )
-
-  # moving a report
-  filename, report = report_file(
-    'user',
-    project.task['account'],
-    None,
-    project.task['cm_browser_report_name'],
-    project.task.get('timeout', 60),
-  )
-
-  if report:
-    if project.verbose: print('DCM FILE: ' + filename)
-
-    # clean up the report
-    rows = report_to_rows(report)
-    rows = report_clean(rows)
-
-    # if bigquery, remove header and determine schema
-    schema = report_schema(rows.__next__())
-    bigquery_out = {}
-    bigquery_out["bigquery"] = {
-      "dataset": project.task["dataset"], #todo update to reac from project
-      "table": CM_BROWSER_REPORT_DIRTY_TABLE, 
-      "is_incremental_load": False,
-      "datastudio": True,
-      "schema": schema,
-      "skip_rows": 0
-    }
-
-    # write rows using standard out block in json ( allows customization across all scripts )
-    if rows: put_rows(project.task['auth'], bigquery_out, rows)  
-
 
 
 if __name__ == "__main__":

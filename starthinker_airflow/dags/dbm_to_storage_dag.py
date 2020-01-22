@@ -17,124 +17,28 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 DBM To Storage
 
 Move existing DBM report into a Storage bucket.
 
-S
-p
-e
-c
-i
-f
-y
- 
-e
-i
-t
-h
-e
-r
- 
-r
-e
-p
-o
-r
-t
- 
-n
-a
-m
-e
- 
-o
-r
- 
-r
-e
-p
-o
-r
-t
- 
-i
-d
- 
-t
-o
- 
-m
-o
-v
-e
- 
-a
- 
-r
-e
-p
-o
-r
-t
-.
-
-
-T
-h
-e
- 
-m
-o
-s
-t
- 
-r
-e
-c
-e
-n
-t
- 
-v
-a
-l
-i
-d
- 
-f
-i
-l
-e
- 
-w
-i
-l
-l
- 
-b
-e
- 
-m
-o
-v
-e
-d
- 
-t
-o
- 
-t
-h
-e
- 
-b
-u
-c
-k
-e
-t
-.
+Specify either report name or report id to move a report.
+The most recent valid file will be moved to the bucket.
 
 '''
 
@@ -148,7 +52,6 @@ INPUTS = {
   'dbm_report_name': '',  # Name of report, not needed if ID used.
   'dbm_bucket': '',  # Google cloud bucket.
   'dbm_path': '',  # Path and filename to write to.
-  'dbm_datastudio': True,  # Format date and column nulls for DataStudio?
 }
 
 TASKS = [
@@ -195,15 +98,6 @@ TASKS = [
               'description': 'Path and filename to write to.'
             }
           }
-        }
-      },
-      'datastudio': {
-        'field': {
-          'name': 'dbm_datastudio',
-          'kind': 'boolean',
-          'order': 5,
-          'default': True,
-          'description': 'Format date and column nulls for DataStudio?'
         }
       }
     }

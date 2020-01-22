@@ -17,150 +17,29 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 Sheet Copy
 
 Copy tab from a sheet to a sheet.
 
-P
-r
-o
-v
-i
-d
-e
- 
-t
-h
-e
- 
-f
-u
-l
-l
- 
-e
-d
-i
-t
- 
-U
-R
-L
- 
-f
-o
-r
- 
-b
-o
-t
-h
- 
-s
-h
-e
-e
-t
-s
-.
-
-
-P
-r
-o
-v
-i
-d
-e
- 
-t
-h
-e
- 
-t
-a
-b
- 
-n
-a
-m
-e
- 
-f
-o
-r
- 
-b
-o
-t
-h
- 
-s
-h
-e
-e
-t
-s
-.
-
-
-T
-h
-e
- 
-t
-a
-b
- 
-w
-i
-l
-l
- 
-o
-n
-l
-y
- 
-b
-e
- 
-c
-o
-p
-i
-e
-d
- 
-i
-f
- 
-i
-t
- 
-d
-o
-e
-s
- 
-n
-o
-t
- 
-a
-l
-r
-e
-a
-d
-y
- 
-e
-x
-i
-s
-t
-.
+Provide the full edit URL for both sheets.
+Provide the tab name for both sheets.
+The tab will only be copied if it does not already exist.
 
 '''
 

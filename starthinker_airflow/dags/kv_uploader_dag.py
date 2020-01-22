@@ -17,145 +17,29 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 Tag Key Value Uploader
 
 A tool for bulk editing key value pairs for DCM pllacements.
 
-A
-d
-d
- 
-t
-h
-i
-s
- 
-c
-a
-r
-d
- 
-t
-o
- 
-a
- 
-r
-e
-c
-i
-p
-e
- 
-a
-n
-d
- 
-s
-a
-v
-e
- 
-i
-t
-.
-
-
-T
-h
-e
-n
- 
-c
-l
-i
-c
-k
- 
-<
-s
-t
-r
-o
-n
-g
->
-R
-u
-n
- 
-N
-o
-w
-<
-/
-s
-t
-r
-o
-n
-g
->
- 
-t
-o
- 
-d
-e
-p
-l
-o
-y
-.
-
-
-F
-o
-l
-l
-o
-w
- 
-t
-h
-e
- 
-i
-n
-s
-t
-r
-u
-c
-t
-u
-o
-n
-s
- 
-i
-n
- 
-t
-h
-e
- 
-s
-h
-e
-e
-t
- 
-f
-o
-r
- 
-s
-e
-t
-u
-p
-.
+Add this card to a recipe and save it.
+Then click <strong>Run Now</strong> to deploy.
+Follow the instructuons in the sheet for setup.
 
 '''
 

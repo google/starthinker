@@ -17,142 +17,29 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 Anonymize Dataset
 
 Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.
 
-E
-n
-s
-u
-r
-e
- 
-y
-o
-u
- 
-h
-a
-v
-e
- 
-u
-s
-e
-r
- 
-a
-c
-c
-e
-s
-s
- 
-t
-o
- 
-b
-o
-t
-h
- 
-d
-a
-t
-a
-s
-e
-t
-s
-.
-
-
-P
-r
-o
-v
-i
-d
-e
- 
-t
-h
-e
- 
-s
-o
-u
-r
-c
-e
- 
-p
-r
-o
-j
-e
-c
-t
- 
-a
-n
-d
- 
-d
-a
-t
-a
-s
-e
-t
-.
-
-
-P
-r
-o
-v
-i
-d
-e
- 
-t
-h
-e
- 
-d
-e
-s
-t
-i
-n
-a
-t
-i
-o
-n
- 
-p
-r
-o
-j
-e
-c
-t
- 
-a
-n
-d
- 
-d
-a
-t
-a
-s
-e
-t
-.
+Ensure you have user access to both datasets.
+Provide the source project and dataset.
+Provide the destination project and dataset.
 
 '''
 

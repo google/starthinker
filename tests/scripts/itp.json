@@ -181,9 +181,18 @@
     {
       "dbm": {
         "report": {
+          "filters": {
+            "FILTER_PARTNER": {
+              "values": {"field":{ "name":"dbm_partners", "kind":"integer_list", "default":[], "description":"DBM partner ids." }}
+            },
+            "FILTER_ADVERTISER": {
+              "values":  {"field":{ "name":"dbm_advertisers", "kind":"integer_list", "default":[], "description":"Comma delimited list of DBM advertiser ids." }}
+            }
+          },
           "body": {
             "timezoneCode": "America/Los_Angeles", 
             "params": {
+              "type": "TYPE_GENERAL", 
               "metrics": [
                 "METRIC_IMPRESSIONS", 
                 "METRIC_CLICKS", 
@@ -192,18 +201,6 @@
                 "METRIC_REVENUE_ADVERTISER", 
                 "METRIC_MEDIA_COST_ADVERTISER"
               ], 
-              "type": "TYPE_GENERAL", 
-              "filters": [
-                {
-                  "type": "FILTER_PARTNER", 
-                  "value": {"field":{ "name":"dbm_partner", "kind":"integer", "default":"", "description":"DBM partner id." }} 
-                }, 
-                {
-                  "type": "FILTER_ADVERTISER", 
-                  "value": {"field":{ "name":"dbm_advertisers", "kind":"integer_list", "default":[], "description":"Comma delimited list of DBM advertiser ids." }}
-                }
-              ], 
-              "includeInviteData": true, 
               "groupBys": [
                 "FILTER_ADVERTISER", 
                 "FILTER_BROWSER", 
@@ -215,11 +212,11 @@
               ]
             }, 
             "metadata": {
-              "dataRange": "LAST_24_MONTHS", 
-              "title": "DV360_Browser_Delivery_Test"
+              "dataRange": "LAST_365_DAYS", 
+              "title": "DV360_Browser_Delivery_Test",
+              "format": "CSV"
             }
-          }, 
-          "name": "DV360_Browser_Delivery_Test"
+          } 
         }, 
         "auth": "user"
       }

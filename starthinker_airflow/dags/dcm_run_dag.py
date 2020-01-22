@@ -17,81 +17,28 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 DCM Report Run
 
 Trigger a DCM report run
 
-S
-p
-e
-c
-i
-f
-y
- 
-a
-n
- 
-a
-c
-c
-o
-u
-n
-t
- 
-i
-d
-.
-
-
-S
-p
-e
-c
-i
-f
-y
- 
-e
-i
-t
-h
-e
-r
- 
-r
-e
-p
-o
-r
-t
- 
-n
-a
-m
-e
- 
-o
-r
- 
-r
-e
-p
-o
-r
-t
- 
-i
-d
- 
-t
-o
- 
-r
-u
-n
-.
+Specify an account id.
+Specify either report name or report id to run.
 
 '''
 

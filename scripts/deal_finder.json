@@ -53,35 +53,44 @@
       "hour":[3], 
       "auth":"user",
       "report":{
-        "name":{"field":{ "name":"recipe_name", "kind":"string", "prefix":"Deal_Finder_", "description":"Name of report in DBM, should be unique." }}, 
-        "timezone":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Los_Angeles" }},
-        "type":"TYPE_CROSS_PARTNER",
-        "data_range":"LAST_30_DAYS",
-        "partners": { 
-          "values":{"field":{ "name":"partners", "kind":"integer_list", "order":1, "default":"", "description":"Comma separated DBM partner ids." }}
+        "filters": {
+           "FILTER_PARTNER": {
+             "values": {"field":{ "name":"partners", "kind":"integer_list", "order":5, "default":[], "description":"DBM partner id." }}
+           },
+           "FILTER_ADVERTISER": {
+             "values": {"field":{ "name":"advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DBM advertiser ids." }}
+           }
         },
-        "advertisers": { 
-          "values":{"field":{ "name":"advertisers", "kind":"integer_list", "order":2, "default":"", "description":"Comma separated DBM advertiser ids." }}
-        },
-        "dimensions":[
-          "FILTER_PARTNER",
-          "FILTER_ADVERTISER",
-          "FILTER_SITE_ID",
-          "FILTER_INVENTORY_SOURCE",
-          "FILTER_INVENTORY_SOURCE_TYPE",
-          "FILTER_ADVERTISER_CURRENCY",
-          "FILTER_CREATIVE_SIZE",
-          "FILTER_CREATIVE_TYPE"
-        ],
-        "metrics":[
-          "METRIC_IMPRESSIONS",
-          "METRIC_CLICKS",
-          "METRIC_TOTAL_CONVERSIONS",
-          "METRIC_TOTAL_MEDIA_COST_ADVERTISER",
-          "METRIC_REVENUE_ADVERTISER",
-          "METRIC_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS",
-          "METRIC_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS"
-        ]
+        "body": {
+          "timezoneCode":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Los_Angeles" }},
+          "metadata":{
+            "title":{"field":{ "name":"recipe_name", "kind":"string", "prefix":"Deal_Finder_", "description":"Name of report in DBM, should be unique." }},
+            "dataRange":"LAST_30_DAYS",
+            "format": "CSV"
+          },
+          "params": {
+            "type":"TYPE_CROSS_PARTNER",
+            "groupBys":[
+              "FILTER_PARTNER",
+              "FILTER_ADVERTISER",
+              "FILTER_SITE_ID",
+              "FILTER_INVENTORY_SOURCE",
+              "FILTER_INVENTORY_SOURCE_TYPE",
+              "FILTER_ADVERTISER_CURRENCY",
+              "FILTER_CREATIVE_SIZE",
+              "FILTER_CREATIVE_TYPE"
+            ],
+            "metrics":[
+              "METRIC_IMPRESSIONS",
+              "METRIC_CLICKS",
+              "METRIC_TOTAL_CONVERSIONS",
+              "METRIC_TOTAL_MEDIA_COST_ADVERTISER",
+              "METRIC_REVENUE_ADVERTISER",
+              "METRIC_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS",
+              "METRIC_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS"
+            ]
+          }
+        }
       }
     }},
     { "dbm":{

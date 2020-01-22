@@ -17,185 +17,29 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 DBM To BigQuery
 
 Move existing DBM reports into a BigQuery table.
 
-S
-p
-e
-c
-i
-f
-y
- 
-e
-i
-t
-h
-e
-r
- 
-r
-e
-p
-o
-r
-t
- 
-n
-a
-m
-e
- 
-o
-r
- 
-r
-e
-p
-o
-r
-t
- 
-i
-d
- 
-t
-o
- 
-m
-o
-v
-e
- 
-a
- 
-r
-e
-p
-o
-r
-t
-.
-
-
-A
- 
-s
-c
-h
-e
-m
-a
- 
-i
-s
- 
-r
-e
-c
-o
-m
-m
-e
-n
-d
-e
-d
-,
- 
-i
-f
- 
-n
-o
-t
- 
-p
-r
-o
-v
-i
-d
-e
-d
- 
-i
-t
- 
-w
-i
-l
-l
- 
-b
-e
- 
-g
-u
-e
-s
-s
-e
-d
-.
-
-
-T
-h
-e
- 
-m
-o
-s
-t
- 
-r
-e
-c
-e
-n
-t
- 
-v
-a
-l
-i
-d
- 
-f
-i
-l
-e
- 
-w
-i
-l
-l
- 
-b
-e
- 
-m
-o
-v
-e
-d
- 
-t
-o
- 
-t
-h
-e
- 
-t
-a
-b
-l
-e
-.
+Specify either report name or report id to move a report.
+A schema is recommended, if not provided it will be guessed.
+The most recent valid file will be moved to the table.
 
 '''
 
@@ -276,8 +120,7 @@ TASKS = [
             }
           }
         }
-      },
-      'datastudio': True
+      }
     }
   }
 ]

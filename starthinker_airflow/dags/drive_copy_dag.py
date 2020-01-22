@@ -17,132 +17,29 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 Copy
 
 Copy a drive document.
 
-S
-p
-e
-c
-i
-f
-y
- 
-a
- 
-s
-o
-u
-r
-c
-e
- 
-U
-R
-L
- 
-o
-r
- 
-d
-o
-c
-u
-m
-e
-n
-t
- 
-n
-a
-m
-e
-.
-
-
-S
-p
-e
-c
-i
-f
-y
- 
-a
- 
-d
-e
-s
-t
-i
-n
-a
-t
-i
-o
-n
- 
-n
-a
-m
-e
-.
-
-
-I
-f
- 
-d
-e
-s
-t
-i
-n
-a
-t
-i
-o
-n
- 
-d
-o
-e
-s
- 
-n
-o
-t
- 
-e
-x
-i
-s
-t
-,
- 
-s
-o
-u
-r
-c
-e
- 
-w
-i
-l
-l
- 
-b
-e
- 
-c
-o
-p
-i
-e
-d
-.
+Specify a source URL or document name.
+Specify a destination name.
+If destination does not exist, source will be copied.
 
 '''
 

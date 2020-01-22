@@ -17,154 +17,29 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 Entity Read Files
 
 Import public and private <a href='https://developers.google.com/bid-manager/guides/entity-read/format-v2' target='_blank'>Entity Read Files</a> into a BigQuery dataset.<br/>CAUTION: PARTNER ONLY, ADVERTISER FILTER IS NOT APPLIED.
 
-E
-n
-t
-i
-t
-y
- 
-R
-e
-a
-d
- 
-F
-i
-l
-e
-s
- 
-O
-N
-L
-Y
- 
-w
-o
-r
-k
- 
-a
-t
- 
-t
-h
-e
- 
-p
-a
-r
-t
-n
-e
-r
- 
-l
-e
-v
-e
-l
-.
-
-
-A
-d
-v
-e
-r
-t
-i
-s
-e
-r
- 
-f
-i
-l
-t
-e
-r
- 
-i
-s
- 
-N
-O
-T
- 
-A
-P
-P
-L
-I
-E
-D
-.
-
-
-S
-p
-e
-c
-i
-f
-y
- 
-o
-n
-e
- 
-o
-r
- 
-m
-o
-r
-e
- 
-p
-a
-r
-t
-n
-e
-r
-s
- 
-t
-o
- 
-b
-e
- 
-m
-o
-v
-e
-d
- 
-i
-n
-t
-o
- 
-t
-h
-e
- 
-d
-a
-t
-a
-s
-e
-t
-.
+Entity Read Files ONLY work at the partner level.
+Advertiser filter is NOT APPLIED.
+Specify one or more partners to be moved into the dataset.
 
 '''
 

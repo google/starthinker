@@ -17,49 +17,27 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 Say Hello
 
 Recipe template for say hello.
 
-T
-h
-i
-s
- 
-s
-h
-o
-u
-l
-d
- 
-b
-e
- 
-c
-a
-l
-l
-e
-d
- 
-f
-o
-r
- 
-t
-e
-s
-t
-i
-n
-g
- 
-o
-n
-l
-y
-.
+This should be called for testing only.
 
 '''
 

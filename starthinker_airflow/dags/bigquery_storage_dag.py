@@ -17,123 +17,28 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 Storage To Table
 
 Move using bucket and path prefix.
 
-S
-p
-e
-c
-i
-f
-y
- 
-a
- 
-b
-u
-c
-k
-e
-t
- 
-a
-n
-d
- 
-p
-a
-t
-h
- 
-p
-r
-e
-f
-i
-x
-,
- 
-*
- 
-s
-u
-f
-f
-i
-x
- 
-i
-s
- 
-N
-O
-T
- 
-r
-e
-q
-u
-i
-r
-e
-d
-.
-
-
-E
-v
-e
-r
-y
- 
-t
-i
-m
-e
- 
-t
-h
-e
- 
-j
-o
-b
- 
-r
-u
-n
-s
- 
-i
-t
- 
-w
-i
-l
-l
- 
-o
-v
-e
-r
-w
-r
-i
-t
-e
- 
-t
-h
-e
- 
-t
-a
-b
-l
-e
-.
+Specify a bucket and path prefix, * suffix is NOT required.
+Every time the job runs it will overwrite the table.
 
 '''
 

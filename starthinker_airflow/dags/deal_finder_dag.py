@@ -17,730 +17,33 @@
 ###########################################################################
 
 '''
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 Deal Finder
 
 Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.
 
-W
-a
-i
-t
- 
-f
-o
-r
- 
-<
-b
->
-B
-i
-g
-Q
-u
-e
-r
-y
--
->
-S
-t
-a
-r
-T
-h
-i
-n
-k
-e
-r
- 
-D
-a
-t
-a
--
->
-U
-N
-D
-E
-F
-I
-N
-E
-D
--
->
-D
-e
-a
-l
-_
-F
-i
-n
-d
-e
-r
-_
-D
-a
-s
-h
-b
-o
-a
-r
-d
-<
-/
-b
->
- 
-t
-o
- 
-b
-e
- 
-c
-r
-e
-a
-t
-e
-d
-.
-
-
-J
-o
-i
-n
- 
-t
-h
-e
- 
-<
-a
- 
-h
-r
-e
-=
-'
-h
-t
-t
-p
-s
-:
-/
-/
-g
-r
-o
-u
-p
-s
-.
-g
-o
-o
-g
-l
-e
-.
-c
-o
-m
-/
-d
-/
-f
-o
-r
-u
-m
-/
-s
-t
-a
-r
-t
-h
-i
-n
-k
-e
-r
--
-a
-s
-s
-e
-t
-s
-'
- 
-t
-a
-r
-g
-e
-t
-=
-'
-_
-b
-l
-a
-n
-k
-'
->
-S
-t
-a
-r
-T
-h
-i
-n
-k
-e
-r
- 
-A
-s
-s
-e
-t
-s
- 
-G
-r
-o
-u
-p
-<
-/
-a
->
- 
-t
-o
- 
-a
-c
-c
-e
-s
-s
- 
-t
-h
-e
- 
-f
-o
-l
-l
-o
-w
-i
-n
-g
- 
-a
-s
-s
-e
-t
-s
-
-
-C
-o
-p
-y
- 
-<
-a
- 
-h
-r
-e
-f
-=
-'
-h
-t
-t
-p
-s
-:
-/
-/
-d
-a
-t
-a
-s
-t
-u
-d
-i
-o
-.
-g
-o
-o
-g
-l
-e
-.
-c
-o
-m
-/
-o
-p
-e
-n
-/
-1
-Q
-r
-W
-N
-T
-u
-r
-v
-Q
-T
-6
-n
-x
-2
-0
-v
-n
-z
-d
-D
-v
-e
-S
-z
-S
-m
-R
-j
-q
-H
-x
-Q
-'
- 
-t
-a
-r
-g
-e
-t
-=
-'
-_
-b
-l
-a
-n
-k
-'
->
-D
-e
-a
-l
- 
-F
-i
-n
-d
-e
-r
- 
-S
-a
-m
-p
-l
-e
- 
-D
-a
-t
-a
-<
-/
-a
->
-.
-
-
-C
-l
-i
-c
-k
- 
-E
-d
-i
-t
- 
-C
-o
-n
-n
-e
-c
-t
-i
-o
-n
-,
- 
-a
-n
-d
- 
-c
-h
-a
-n
-g
-e
- 
-t
-o
- 
-<
-b
->
-B
-i
-g
-Q
-u
-e
-r
-y
--
->
-S
-t
-a
-r
-T
-h
-i
-n
-k
-e
-r
- 
-D
-a
-t
-a
--
->
-(
-f
-i
-e
-l
-d
-:
-r
-e
-c
-i
-p
-e
-_
-n
-a
-m
-e
-}
--
->
-D
-e
-a
-l
-_
-F
-i
-n
-d
-e
-r
-_
-D
-a
-s
-h
-b
-o
-a
-r
-d
-<
-/
-b
->
-.
-
-
-C
-o
-p
-y
- 
-<
-a
- 
-h
-r
-e
-f
-=
-'
-h
-t
-t
-p
-s
-:
-/
-/
-d
-a
-t
-a
-s
-t
-u
-d
-i
-o
-.
-g
-o
-o
-g
-l
-e
-.
-c
-o
-m
-/
-o
-p
-e
-n
-/
-1
-f
-j
-R
-I
-5
-A
-I
-K
-T
-Y
-T
-A
-4
-f
-W
-s
--
-p
-Y
-k
-J
-b
-I
-M
-g
-C
-u
-m
-l
-M
-y
-O
-'
- 
-t
-a
-r
-g
-e
-t
-=
-'
-_
-b
-l
-a
-n
-k
-'
->
-D
-e
-a
-l
- 
-F
-i
-n
-d
-e
-r
- 
-S
-a
-m
-p
-l
-e
- 
-R
-e
-p
-o
-r
-t
-<
-/
-a
->
-.
-
-
-W
-h
-e
-n
- 
-p
-r
-o
-m
-p
-t
-e
-d
- 
-c
-h
-o
-o
-s
-e
- 
-t
-h
-e
- 
-n
-e
-w
- 
-d
-a
-t
-a
- 
-s
-o
-u
-r
-c
-e
- 
-y
-o
-u
- 
-j
-u
-s
-t
- 
-c
-r
-e
-a
-t
-e
-d
-.
-
-
-O
-r
- 
-g
-i
-v
-e
- 
-t
-h
-e
-s
-e
- 
-i
-n
-t
-r
-u
-c
-t
-i
-o
-n
-s
- 
-t
-o
- 
-t
-h
-e
- 
-c
-l
-i
-e
-n
-t
-.
+Wait for <b>BigQuery->StarThinker Data->UNDEFINED->Deal_Finder_Dashboard</b> to be created.
+Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
+Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Deal Finder Sample Data</a>.
+Click Edit Connection, and change to <b>BigQuery->StarThinker Data->(field:recipe_name}->Deal_Finder_Dashboard</b>.
+Copy <a href='https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO' target='_blank'>Deal Finder Sample Report</a>.
+When prompted choose the new data source you just created.
+Or give these intructions to the client.
 
 '''
 
@@ -751,10 +54,10 @@ GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
   'dataset': '',  # Place where tables will be written in BigQuery.
-  'recipe_name': '',  # Name of report in DBM, should be unique.
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
-  'partners': '',  # Comma separated DBM partner ids.
-  'advertisers': '',  # Comma separated DBM advertiser ids.
+  'recipe_name': '',  # Name of report in DBM, should be unique.
+  'partners': [],  # DBM partner id.
+  'advertisers': [],  # Comma delimited list of DBM advertiser ids.
 }
 
 TASKS = [
@@ -782,65 +85,76 @@ TASKS = [
       ],
       'auth': 'user',
       'report': {
-        'name': {
-          'field': {
-            'name': 'recipe_name',
-            'kind': 'string',
-            'prefix': 'Deal_Finder_',
-            'description': 'Name of report in DBM, should be unique.'
-          }
-        },
-        'timezone': {
-          'field': {
-            'name': 'recipe_timezone',
-            'kind': 'timezone',
-            'description': 'Timezone for report dates.',
-            'default': 'America/Los_Angeles'
-          }
-        },
-        'type': 'TYPE_CROSS_PARTNER',
-        'data_range': 'LAST_30_DAYS',
-        'partners': {
-          'values': {
-            'field': {
-              'name': 'partners',
-              'kind': 'integer_list',
-              'order': 1,
-              'default': '',
-              'description': 'Comma separated DBM partner ids.'
+        'filters': {
+          'FILTER_PARTNER': {
+            'values': {
+              'field': {
+                'name': 'partners',
+                'kind': 'integer_list',
+                'order': 5,
+                'default': [
+                ],
+                'description': 'DBM partner id.'
+              }
+            }
+          },
+          'FILTER_ADVERTISER': {
+            'values': {
+              'field': {
+                'name': 'advertisers',
+                'kind': 'integer_list',
+                'order': 6,
+                'default': [
+                ],
+                'description': 'Comma delimited list of DBM advertiser ids.'
+              }
             }
           }
         },
-        'advertisers': {
-          'values': {
+        'body': {
+          'timezoneCode': {
             'field': {
-              'name': 'advertisers',
-              'kind': 'integer_list',
-              'order': 2,
-              'default': '',
-              'description': 'Comma separated DBM advertiser ids.'
+              'name': 'recipe_timezone',
+              'kind': 'timezone',
+              'description': 'Timezone for report dates.',
+              'default': 'America/Los_Angeles'
             }
+          },
+          'metadata': {
+            'title': {
+              'field': {
+                'name': 'recipe_name',
+                'kind': 'string',
+                'prefix': 'Deal_Finder_',
+                'description': 'Name of report in DBM, should be unique.'
+              }
+            },
+            'dataRange': 'LAST_30_DAYS',
+            'format': 'CSV'
+          },
+          'params': {
+            'type': 'TYPE_CROSS_PARTNER',
+            'groupBys': [
+              'FILTER_PARTNER',
+              'FILTER_ADVERTISER',
+              'FILTER_SITE_ID',
+              'FILTER_INVENTORY_SOURCE',
+              'FILTER_INVENTORY_SOURCE_TYPE',
+              'FILTER_ADVERTISER_CURRENCY',
+              'FILTER_CREATIVE_SIZE',
+              'FILTER_CREATIVE_TYPE'
+            ],
+            'metrics': [
+              'METRIC_IMPRESSIONS',
+              'METRIC_CLICKS',
+              'METRIC_TOTAL_CONVERSIONS',
+              'METRIC_TOTAL_MEDIA_COST_ADVERTISER',
+              'METRIC_REVENUE_ADVERTISER',
+              'METRIC_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS',
+              'METRIC_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS'
+            ]
           }
-        },
-        'dimensions': [
-          'FILTER_PARTNER',
-          'FILTER_ADVERTISER',
-          'FILTER_SITE_ID',
-          'FILTER_INVENTORY_SOURCE',
-          'FILTER_INVENTORY_SOURCE_TYPE',
-          'FILTER_ADVERTISER_CURRENCY',
-          'FILTER_CREATIVE_SIZE',
-          'FILTER_CREATIVE_TYPE'
-        ],
-        'metrics': [
-          'METRIC_IMPRESSIONS',
-          'METRIC_CLICKS',
-          'METRIC_TOTAL_CONVERSIONS',
-          'METRIC_TOTAL_MEDIA_COST_ADVERTISER',
-          'METRIC_REVENUE_ADVERTISER',
-          'METRIC_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS',
-          'METRIC_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS'
-        ]
+        }
       }
     }
   },

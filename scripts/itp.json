@@ -54,7 +54,7 @@
         "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
         "filters": {
           "dfa:advertiser": {
-            "values":{"field":{ "name":"dcm_advertisers", "kind":"integer_list", "order":3, "default":"", "description":"Comma delimited list of DCM advertiser ids." }}
+            "values":{"field":{ "name":"dcm_advertisers", "kind":"integer_list", "order":3, "default":[], "description":"Comma delimited list of DCM advertiser ids." }}
           }
         },
         "body": {
@@ -158,26 +158,23 @@
     { "dbm": {
       "auth": "user", 
       "report": {
-        "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"DV360_Browser_Delivery_", "description":"DBM report name, should be unique." }},
+        "filters": {
+           "FILTER_PARTNER": {
+             "values": {"field":{ "name":"dbm_partners", "kind":"integer_list", "order":5, "default":[], "description":"DBM partner id." }}
+           },
+           "FILTER_ADVERTISER": {
+             "values": {"field":{ "name":"dbm_advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DBM advertiser ids." }} 
+           }
+        },
         "body": {
           "timezoneCode":"America/Los_Angeles",
           "metadata":{
             "title":{"field":{ "name":"dataset", "kind":"string", "prefix":"DV360_Browser_Delivery_", "description":"Name of report in DBM, should be unique." }},
-            "dataRange":"LAST_365_DAYS"
+            "dataRange":"LAST_365_DAYS",
+            "format": "CSV"
           },
           "params": {
             "type": "TYPE_GENERAL",
-            "includeInviteData": true, 
-            "filters": [
-              {
-                "type": "FILTER_PARTNER", 
-                "value": {"field":{ "name":"dbm_partner", "kind":"integer", "order":5, "default":"", "description":"DBM partner id." }}
-              }, 
-              {
-                "type": "FILTER_ADVERTISER", 
-                "value":{"field":{ "name":"dbm_advertisers", "kind":"integer_list", "order":6, "default":"", "description":"Comma delimited list of DBM advertiser ids." }} 
-              }
-            ], 
             "groupBys": [
               "FILTER_ADVERTISER", 
               "FILTER_BROWSER", 
@@ -201,7 +198,6 @@
     }},
     { "dbm": {
       "auth": "user", 
-      "datastudio": true,
       "report": {
         "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"DV360_Browser_Delivery_", "description":"DBM report name, should be unique." }}
       },

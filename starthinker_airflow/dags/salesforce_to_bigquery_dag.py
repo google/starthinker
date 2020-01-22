@@ -33,14 +33,13 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-API To BigQuery
+Query To BigQuery
 
-Execute a Google API function and store results to BigQuery.
+Move query results into a BigQuery table.
 
-Enter an api name and version.
-Specify the function using dot notation and arguments using json.
-If nextPageToken can be in response check iterate.
-Give BigQuery dataset and table where response will be written.
+Specify <a href='https://developer.salesforce.com/' target='_blank'>Salesforce</a> credentials.
+Specify the query youd like to execute.
+Specify a <a href='https://cloud.google.com/bigquery/docs/schemas#creating_a_json_schema_file' target='_blank'>SCHEMA</a> for that query ( optional ).
 
 '''
 
@@ -50,67 +49,58 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  'api': 'doubleclickbidmanager',  # See developer guide.
-  'version': 'v1',  # Must be supported version.
-  'function': 'reports.files.list',  # Full function dot notation path.
-  'kwargs': {'accountId': 7480, 'profileId': 2782211, 'reportId': 132847265},  # Dictionray object of name value pairs.
-  'iterate': False,  # Is the result a list?
-  'dataset': '',  # Existing dataset in BigQuery.
-  'table': '',  # Table to write API call results to.
-  'schema': [],  # Schema provided in JSON list format or empty list.
+  'client': '',  # Retrieve from a Salesforce App.
+  'secret': '',  # Retrieve from a Salesforce App.
+  'username': '',  # Your Salesforce user email.
+  'password': '',  # Your Salesforce login password.
+  'query': '',  # The query to run in Salesforce.
+  'dataset': '',  # Existing BigQuery dataset.
+  'table': '',  # Table to create from this report.
+  'schema': '[]',  # Schema provided in JSON list format or empty list.
 }
 
 TASKS = [
   {
-    'google_api': {
+    'salesforce': {
       'auth': 'user',
-      'api': {
+      'client': {
         'field': {
-          'name': 'api',
+          'name': 'client',
           'kind': 'string',
-          'order': 1,
-          'default': 'doubleclickbidmanager',
-          'description': 'See developer guide.'
+          'default': '',
+          'description': 'Retrieve from a Salesforce App.'
         }
       },
-      'version': {
+      'secret': {
         'field': {
-          'name': 'version',
+          'name': 'secret',
           'kind': 'string',
-          'order': 2,
-          'default': 'v1',
-          'description': 'Must be supported version.'
+          'default': '',
+          'description': 'Retrieve from a Salesforce App.'
         }
       },
-      'function': {
+      'username': {
         'field': {
-          'name': 'function',
+          'name': 'username',
+          'kind': 'email',
+          'default': '',
+          'description': 'Your Salesforce user email.'
+        }
+      },
+      'password': {
+        'field': {
+          'name': 'password',
+          'kind': 'password',
+          'default': '',
+          'description': 'Your Salesforce login password.'
+        }
+      },
+      'query': {
+        'field': {
+          'name': 'query',
           'kind': 'string',
-          'order': 3,
-          'default': 'reports.files.list',
-          'description': 'Full function dot notation path.'
-        }
-      },
-      'kwargs': {
-        'field': {
-          'name': 'kwargs',
-          'kind': 'json',
-          'order': 4,
-          'default': {
-            'accountId': 7480,
-            'profileId': 2782211,
-            'reportId': 132847265
-          },
-          'description': 'Dictionray object of name value pairs.'
-        }
-      },
-      'iterate': {
-        'field': {
-          'name': 'iterate',
-          'kind': 'boolean',
-          'order': 5,
-          'default': False,
-          'description': 'Is the result a list?'
+          'default': '',
+          'description': 'The query to run in Salesforce.'
         }
       },
       'out': {
@@ -119,38 +109,36 @@ TASKS = [
             'field': {
               'name': 'dataset',
               'kind': 'string',
-              'order': 6,
+              'order': 3,
               'default': '',
-              'description': 'Existing dataset in BigQuery.'
+              'description': 'Existing BigQuery dataset.'
             }
           },
           'table': {
             'field': {
               'name': 'table',
               'kind': 'string',
-              'order': 7,
+              'order': 4,
               'default': '',
-              'description': 'Table to write API call results to.'
+              'description': 'Table to create from this report.'
             }
           },
           'schema': {
             'field': {
               'name': 'schema',
               'kind': 'json',
-              'order': 9,
-              'default': [
-              ],
+              'order': 5,
+              'default': '[]',
               'description': 'Schema provided in JSON list format or empty list.'
             }
-          },
-          'format': 'JSON'
+          }
         }
       }
     }
   }
 ]
 
-DAG_FACTORY = DAG_Factory('google_api_to_bigquery', { 'tasks':TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('salesforce_to_bigquery', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 

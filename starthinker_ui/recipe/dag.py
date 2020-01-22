@@ -38,6 +38,22 @@ AIRFLOW_TEMPLATE = '''##########################################################
 ###########################################################################
 
 \'\'\'
+--------------------------------------------------------------
+
+Before running this Airflow module...
+
+  Install StarThinker in cloud composer from open source: 
+
+    pip install git+https://github.com/google/starthinker
+
+  Or push local code to the cloud composer plugins directory:
+
+    source install/deploy.sh
+    4) Composer Menu	   
+    l) Install All
+
+--------------------------------------------------------------
+
 %s
 
 %s

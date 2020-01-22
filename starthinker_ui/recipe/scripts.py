@@ -30,15 +30,14 @@ from starthinker.util.project import get_project
 
 
 # cache scripts in memory
-RE_SCRIPT = re.compile(r'^script_.*\.json$')
 SCRIPTS = {}
 
 
 def load_scripts():
   if not SCRIPTS:
-    for root, dirs, files in os.walk(UI_ROOT):
+    for root, dirs, files in os.walk(UI_ROOT + '/scripts/'):
       for filename in files:
-        if RE_SCRIPT.match(filename):
+        if filename.endswith('.json'):
           try:
             script = get_project(root + '/' + filename)
             if not 'script' in script: continue

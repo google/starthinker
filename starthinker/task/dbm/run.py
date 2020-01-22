@@ -36,16 +36,16 @@ Buffers are controlled in config.py.
 
 from starthinker.util.project import project
 from starthinker.util.data import put_rows, get_rows
-from starthinker.util.dbm import report_delete, report_create, report_build, report_file, report_to_rows, report_clean, DBM_CHUNKSIZE
+from starthinker.util.dbm import report_delete, report_build, report_file, report_to_rows, report_clean, DBM_CHUNKSIZE
 
 
 @project.from_parameters
 def dbm():
   if project.verbose: print('DBM')
 
-  # legacy translations ( changed report title to name )
-  if 'title' in project.task['report']:
-    project.task['report']['name'] = project.task['report']['title']
+  # name is redundant if title is given, allow skipping use of name for creating reports
+  if 'body' in project.task['report'] and 'name' not in project.task['report']:
+    project.task['report']['name'] = project.task['report']['body']['metadata']['title']
 
   # check if report is to be deleted
   if project.task.get('delete', False):
@@ -54,31 +54,6 @@ def dbm():
       project.task['auth'],
       project.task['report'].get('report_id', None),
       project.task['report'].get('name', None)
-    )
-
-  # check if report is to be created ( LEGACY, DO NOT USE, SEE body format below )
-  # REASON: this call tried to pass all parts of the json as parameters, this does not scale
-  #         the new body call simply passes the report json in, leaving flexibility in the JSON recipe
-  if 'type' in project.task['report']:
-
-    if project.verbose: print('DBM CREATE', end='')
-
-    partners = get_rows(project.task['auth'], project.task['report']['partners']) if 'partners' in project.task['report'] else []
-    advertisers = get_rows(project.task['auth'], project.task['report']['advertisers']) if 'advertisers' in project.task['report'] else []
-
-    report_create(
-      project.task['auth'],
-      project.task['report']['name'],
-      project.task['report']['type'],
-      partners,
-      advertisers,
-      project.task['report'].get('filters'),
-      project.task['report'].get('dimensions'),
-      project.task['report'].get('metrics'),
-      project.task['report'].get('data_range'),
-      project.task['report'].get('timezone', 'America/Los Angeles'),
-      project.id,
-      project.task['report'].get('dataset_id', None)
     )
 
   # check if report is to be created
@@ -114,7 +89,7 @@ def dbm():
 
       # clean up the report
       rows = report_to_rows(report)
-      rows = report_clean(rows, datastudio=project.task.get('datastudio', False), nulls=True)
+      rows = report_clean(rows, nulls=True)
 
       # write rows using standard out block in json ( allows customization across all scripts )
       if rows: put_rows(project.task['auth'], project.task['out'], rows)

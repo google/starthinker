@@ -48,6 +48,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Column Mapping](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/mapping.ipynb) - Use sheet to define keyword to column mappings.
 * [Monthly Budget Mover](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/monthly_budget_mover.ipynb) - Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.
 * [PoliceBot](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/policebot.ipynb) - A tool that helps enforce CM object name conventions by checking names against a set of client-defined patterns, and emailing violations to appropriate agency teams on a daily basis.
+* [Query To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/salesforce_to_bigquery.ipynb) - Move query results into a BigQuery table.
 * [SDF Download](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sdf_to_bigquery.ipynb) - Download SDF reports into a BigQuery table.
 * [Sheet Clear](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_clear.ipynb) - Clear data from a sheet.
 * [Sheet Copy](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_copy.ipynb) - Copy tab from a sheet to a sheet.
