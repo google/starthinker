@@ -7,7 +7,7 @@
     "product":"DBM",
     "description":"Adjusts line item settings based on Twitter hashtags and locations specified in a sheet.",
     "image":"https://storage.googleapis.com/starthinker-ui/twitter_targeting.png",
-    "sample":"https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO",
+    "sample":"https://docs.google.com/spreadsheets/d/1iYCGa2NKOZiL2mdT4yiDfV_SWV9C7SUosXdIr4NAEXE/edit?usp=sharing",
     "open_source":"https://github.com/google/starthinker/blob/master/gtech/twitter.json",
     "categories":["budget", "3P"],
     "requirements":[ "dv360", "sheets", "bigquery" ],
