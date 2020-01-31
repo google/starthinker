@@ -22,6 +22,7 @@
 from starthinker.task.traffic.dao import BaseDAO
 from starthinker.task.traffic.feed import FieldMap
 from starthinker.task.traffic.creative_assets import CreativeAssetDAO
+from starthinker.task.traffic.landing_page import LandingPageDAO
 
 
 class CreativeDAO(BaseDAO):
@@ -46,6 +47,7 @@ class CreativeDAO(BaseDAO):
     self._parent_dao = None
 
     self.creative_asset_dao = CreativeAssetDAO(auth, profile_id, is_admin, None)
+    self.landing_page_dao = LandingPageDAO(auth, profile_id, is_admin) 
 
   def _api(self, iterate=False):
     """Returns an DCM API instance for this DAO."""
@@ -76,6 +78,27 @@ class CreativeDAO(BaseDAO):
           if self._assignment_matches(creative, third_party_url)
       ]
 
+
+  def map_creative_click_tag_feeds(self, creative_feed,
+                                         click_tag_feed):
+    """Maps click tag feed to the corresponding creative.
+
+    Click Tag is a child object to the creative, and there is a 1 creative
+    to many click tags relationship. In Bulkdozer they are represented by
+    two separate tab in the feed, and this method maps the creatives to their
+    respective click tags based on the creative ID.
+
+    Args:
+      creative_feed: Creative feed.
+      click_tag_feed: Click tag feed.
+    """
+    for creative in creative_feed:
+      creative['click_tags'] = [
+          click_tag for click_tag in click_tag_feed
+          if self._assignment_matches(creative, click_tag)
+      ]
+
+
   def map_creative_and_association_feeds(self, creative_feed,
                                          creative_association_feed):
     """Maps creative association feed to the corresponding creative.
@@ -94,6 +117,8 @@ class CreativeDAO(BaseDAO):
           association for association in creative_association_feed
           if self._assignment_matches(creative, association)
       ]
+
+
 
   def _associate_third_party_urls(self, feed_item, creative):
     """Associate third party urls with the respective creative DCM object.
@@ -118,6 +143,33 @@ class CreativeDAO(BaseDAO):
     if third_party_urls:
       creative['thirdPartyUrls'] = third_party_urls
 
+
+  def _associate_click_tags(self, feed_item, creative):
+    """Associate click tags with the respective creative DCM object.
+
+    This method transforms all child feed mapped earlier into DCM formatted
+    associations within the creative object so it can be pushed to the API.
+
+    Args:
+      feed_item: Feed item representing the creative.
+      creative: DCM creative object being created or updated.
+    """
+    click_tags = []
+    for click_tag in feed_item.get('click_tags', []):
+      lp = self.landing_page_dao.get(click_tag, column_name=FieldMap.CLICK_TAG_LANDING_PAGE_ID)
+
+      click_tags.append({
+          'eventName': click_tag.get(FieldMap.CLICK_TAG_EVENT, None),
+          'name': click_tag.get(FieldMap.CLICK_TAG_NAME, None),
+          'clickThroughUrl': {
+            'landingPageId': click_tag.get(FieldMap.CLICK_TAG_LANDING_PAGE_ID) if not lp else lp['id']
+          }
+      })
+
+    if click_tags:
+      creative['clickTags'] = click_tags
+
+
   def _process_update(self, item, feed_item):
     """Updates a creative based on the values from the feed.
 
@@ -127,7 +179,10 @@ class CreativeDAO(BaseDAO):
       feed_item: Feed item representing creative values from the Bulkdozer feed.
     """
     item['name'] = feed_item.get(FieldMap.CREATIVE_NAME, None)
+
     self._associate_third_party_urls(feed_item, item)
+
+    self._associate_click_tags(feed_item, item)
 
   def _process_new(self, feed_item):
     """Creates a new creative DCM object from a feed item representing an creative from the Bulkdozer feed.
@@ -149,21 +204,74 @@ class CreativeDAO(BaseDAO):
     }
 
     self._associate_third_party_urls(feed_item, creative)
+    self._associate_click_tags(feed_item, creative)
 
+    # Video Creatives
     if feed_item.get(FieldMap.CREATIVE_TYPE, None) == 'VIDEO':
       creative['type'] = 'INSTREAM_VIDEO'
 
       for association in feed_item.get('associations', []):
         identifier = self.creative_asset_dao.get_identifier(association, self._creative_asset_feed)
-
         creative['creativeAssets'] = [{
             'assetIdentifier': identifier,
             'role': 'PARENT_VIDEO'
         }]
 
       del creative['active']
+    
+    #Display Creatives
+    elif feed_item.get(FieldMap.CREATIVE_TYPE, None) == 'DISPLAY':
+      creative['type'] = 'DISPLAY'
+
+      # Creative Size
+      if feed_item.get(FieldMap.CREATIVE_WIDTH, None) and feed_item.get(FieldMap.CREATIVE_HEIGHT, None):
+        creative['size'] = {
+          'kind': 'dfareporting#size',
+          'width': feed_item.get(FieldMap.CREATIVE_WIDTH, None),
+          'height': feed_item.get(FieldMap.CREATIVE_HEIGHT, None)
+        }
+
+      # Add Creative Assets
+      for association in feed_item.get('associations', []):
+        identifier = self.creative_asset_dao.get_identifier(association, self._creative_asset_feed)
+        creative['creativeAssets'] = [{
+              'assetIdentifier': identifier,
+              'role': 'PRIMARY'
+          }
+        ]
+
+        # Backup Asset
+        if feed_item.get(FieldMap.CREATIVE_BACKUP_ASSET_ID, None) and feed_item.get(FieldMap.CREATIVE_BACKUP_ASSET_ID, None) != '':
+          backup_identifier = self.creative_asset_dao.get_backup_identifier(association, self._creative_asset_feed)
+          
+          creative['backupImageReportingLabel'] = feed_item.get(FieldMap.CREATIVE_BACKUP_NAME, None)
+
+          # Parse Features
+          backup_features = feed_item.get(FieldMap.BACKUP_IMAGE_FEATURES, None)
+          if backup_features != None or backup_features != '':
+            features = backup_features.split(',')
+            creative['backupImageFeatures'] = features
+
+          creative['backupImageTargetWindow'] = {
+            'targetWindowOption': feed_item.get(FieldMap.BACKUP_IMAGE_TARGET_WINDOW_OPTION, None),
+            'customHtml': feed_item.get(FieldMap.BACKUP_IMAGE_CUSTOM_HTML, None)
+          }
+
+          lp = self.landing_page_dao.get(feed_item, column_name=FieldMap.BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_ID)
+          creative['backupImageClickThroughUrl'] = {
+            'landingPageId': feed_item.get(FieldMap.BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_ID) if not lp else lp['id']
+          }
+
+          # Backup Image
+          creative['creativeAssets'].append({
+            'assetIdentifier': backup_identifier,
+            'role': 'BACKUP_IMAGE'        
+          })
+
+      del creative['active']
+
     else:
-      raise Exception('Only video is supported at the moment!')
+      raise Exception('Only video and display are supported at the moment!')
     # (mauriciod@): I didn't pull the display creative stuff from jeltz in here,
     # because I am splitting things up differently, and the backup image will
     # have to be uploaded in the creative_assets dao
@@ -172,6 +280,7 @@ class CreativeDAO(BaseDAO):
 
   def map_assets_feed(self, creative_asset_feed):
     self._creative_asset_feed = creative_asset_feed
+
 
   def _post_process(self, feed_item, new_item):
     """Maps ids and names of related entities so they can be updated in the Bulkdozer feed.
@@ -191,8 +300,50 @@ class CreativeDAO(BaseDAO):
 
     for association in feed_item.get('associations', []):
       association[FieldMap.CREATIVE_ID] = self.get(association)['id']
+      association[FieldMap.CREATIVE_NAME] = self.get(association)['name']
+
 
       dcm_association = self.creative_asset_dao.get(association, required=True)
       if dcm_association:
         association[FieldMap.CREATIVE_ASSET_ID] = dcm_association.get(
             'id', None)
+        association[FieldMap.CREATIVE_ASSET_NAME] = dcm_association.get(
+            'name', None)
+        backup_lp = self.landing_page_dao.get(feed_item, column_name=FieldMap.BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_ID)
+        if backup_lp:
+          association[FieldMap.BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_ID] = backup_lp['id']
+          association[FieldMap.BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_NAME] = backup_lp['name']
+        # Backup Asset Id
+        backup_asset = self.creative_asset_dao.get(association, column_name=FieldMap.CREATIVE_BACKUP_ASSET_ID)
+
+        if backup_asset:
+          association[FieldMap.CREATIVE_BACKUP_ASSET_ID] = backup_asset['id']
+
+
+
+        # association[FieldMap.BACKUP_ASSET_ID] = dcm_association.get(
+        #     'id', None)
+
+    # Update Click Tags
+    for click_tag in feed_item.get('click_tags', []):
+      #Update Creative info
+      click_tag[FieldMap.CREATIVE_ID] = new_item['id']
+      click_tag[FieldMap.CREATIVE_NAME] = new_item['name']
+
+      # Update Landing Page
+      click_tag_lp = self.landing_page_dao.get(click_tag, column_name=FieldMap.CLICK_TAG_LANDING_PAGE_ID)
+      if click_tag_lp:
+        click_tag[FieldMap.CLICK_TAG_LANDING_PAGE_ID] = click_tag_lp['id']
+        click_tag[FieldMap.CLICK_TAG_LANDING_PAGE_NAME] = click_tag_lp['name']
+
+    # Backup Asset Id
+    backup_asset = self.creative_asset_dao.get(feed_item, column_name=FieldMap.CREATIVE_BACKUP_ASSET_ID)
+
+    if backup_asset:
+      feed_item[FieldMap.CREATIVE_BACKUP_ASSET_ID] = backup_asset['id']
+
+    # Backup Landing Page Id
+    backup_lp = self.landing_page_dao.get(feed_item, column_name=FieldMap.BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_ID)      
+    if backup_lp:
+      feed_item[FieldMap.BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_ID] = backup_lp['id']
+      feed_item[FieldMap.BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_NAME] = backup_lp['name']

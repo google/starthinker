@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2017 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -15,26 +15,3 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-#-r starthinker/requirements.txt
-google-api-python-client
-google-auth-oauthlib
-pysftp
-pytz
-tzlocal
-TwitterAPI
-python-dateutil
-pandas
-psutil
-moviepy==1.0.0
-py-xlsx
-simple-salesforce
-smartsheet-python-sdk
-
-#-r starthinker_ui/requirements.txt
-wheel
-gunicorn
-uwsgi
-jsonpickle
-django==2.2.8
-psycopg2-binary

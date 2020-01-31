@@ -351,7 +351,7 @@ class PlacementDAO(BaseDAO):
         width, height = raw_size.strip().lower().split('x')
 
       sizes = self.get_sizes(int(width), int(height))
-      
+
       if sizes:
         result['size'] = {'id': sizes[0]['id']}
       else:

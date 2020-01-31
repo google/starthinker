@@ -89,6 +89,22 @@ class FieldMap:
   CREATIVE_ROTATION = 'Creative Rotation'
   CREATIVE_ROTATION_SEQUENCE = 'Creative Rotation Sequence'
   CREATIVE_ROTATION_WEIGHT = 'Creative Rotation Weight'
+  CREATIVE_WIDTH = 'Width (Display Only)'
+  CREATIVE_HEIGHT = 'Height (Display Only)'
+  
+  CREATIVE_BACKUP_ASSET_ID = 'Backup Asset ID'
+  CREATIVE_BACKUP_NAME = 'Creative Backup Name'
+  BACKUP_IMAGE_FEATURES = 'Backup Image Features'
+  BACKUP_IMAGE_TARGET_WINDOW_OPTION = 'Backup Image Target Window Option'
+  BACKUP_IMAGE_CUSTOM_HTML = 'Backup Image Custom HTML'
+  BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_ID = 'Backup Image Click Through Landing Page ID'
+  BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_NAME = 'Backup Image Click Through Landing Page Name'
+  CLICK_TAGS = 'clickTags'
+  CLICK_TAG_NAME = 'Click Tag Name'
+  CLICK_TAG_EVENT = 'Click Tag Event'
+  CLICK_TAG_LANDING_PAGE_ID = 'Click Tag Landing Page ID'
+  CLICK_TAG_LANDING_PAGE_NAME = 'Click Tag Landing Page Name'
+
 
   PLACEMENT_GROUP_ID = 'Placement Group ID'
   PLACEMENT_GROUP_NAME = 'Placement Group Name'
@@ -189,6 +205,7 @@ class Feed:
       'creative_campaign_association_feed': [
           'Campaign Creative Assignment', 'Creative'
       ],
+      'click_tag_feed': ['Click Tag'],
       'transcode_configs_feed': ['Transcode Configuration'],
       'event_tag_profile_feed': ['Event Tag Profile'],
       'lp_dawn': ['Form Responses 1'],

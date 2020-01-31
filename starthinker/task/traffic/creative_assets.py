@@ -21,7 +21,9 @@
 
 import os
 import json
+import filetype
 from io import BytesIO
+
 
 from starthinker.config import BUFFER_SCALE
 from starthinker.util.storage import object_get, object_get_chunks, MediaIoBaseUpload
@@ -56,6 +58,7 @@ class CreativeAssetDAO(BaseDAO):
     """Returns an DCM API instance for this DAO."""
     return super(CreativeAssetDAO, self)._api(iterate).creativeAssets()
 
+
   def pre_fetch(self, feed):
     """Pre-fetches all required items to be update into the cache.
 
@@ -65,6 +68,7 @@ class CreativeAssetDAO(BaseDAO):
       feed: List of feed items to retrieve
     """
     pass
+
 
   def _process_update(self, item, feed_item):
     """Handles updates to the creative asset object.
@@ -79,6 +83,7 @@ class CreativeAssetDAO(BaseDAO):
     """
     pass
 
+
   def _insert(self, new_item, feed_item):
     """Handles the upload of creative assets to DCM and the creation of the associated entity.
 
@@ -92,9 +97,10 @@ class CreativeAssetDAO(BaseDAO):
     Returns:
       The newly created item in DCM.
     """
-
     file_buffer = object_get('user', '%s:%s' % (feed_item.get(FieldMap.CREATIVE_ASSET_BUCKET_NAME, None), feed_item.get(FieldMap.CREATIVE_ASSET_FILE_NAME, None)))
-    media = MediaIoBaseUpload(BytesIO(file_buffer), mimetype='video/mp4', chunksize=CHUNKSIZE, resumable=True)
+    
+    kind = filetype.guess(file_buffer)
+    media = MediaIoBaseUpload(BytesIO(file_buffer), mimetype=kind.mime, chunksize=CHUNKSIZE, resumable=True)
 
     result = self._api().insert(
       profileId=self.profile_id,
@@ -104,6 +110,7 @@ class CreativeAssetDAO(BaseDAO):
     ).execute()
 
     return result
+
 
   def _get(self, feed_item):
     """Retrieves an item from DCM or the local cache.
@@ -130,6 +137,7 @@ class CreativeAssetDAO(BaseDAO):
 
     return result
 
+
   def _update(self, item, feed_item):
     """Performs an update in DCM.
 
@@ -143,6 +151,7 @@ class CreativeAssetDAO(BaseDAO):
         feed.
     """
     pass
+
 
   def _process_new(self, feed_item):
     """Creates a new creative asset DCM object from a feed item representing a creative asset from the Bulkdozer feed.
@@ -165,6 +174,7 @@ class CreativeAssetDAO(BaseDAO):
         }
     }
 
+
   def _post_process(self, feed_item, item):
     """Maps ids and names of related entities so they can be updated in the Bulkdozer feed.
 
@@ -184,7 +194,20 @@ class CreativeAssetDAO(BaseDAO):
     asset_ids = (association.get(FieldMap.CREATIVE_ASSET_ID, None), store.translate(self._entity, association[FieldMap.CREATIVE_ASSET_ID]))
 
     for creative_asset in feed.feed:
-      if str(creative_asset[FieldMap.CREATIVE_ASSET_ID]) in asset_ids:
+      if creative_asset[FieldMap.CREATIVE_ASSET_ID] in asset_ids or str(creative_asset[FieldMap.CREATIVE_ASSET_ID]) in asset_ids:
+        return {
+            'name': creative_asset.get(FieldMap.CREATIVE_ASSET_NAME, None),
+            'type': creative_asset.get(FieldMap.CREATIVE_TYPE, None)
+        }
+
+    return None
+
+  def get_backup_identifier(self, association, feed):
+
+    asset_ids = (association.get(FieldMap.CREATIVE_BACKUP_ASSET_ID, None), store.translate(self._entity, association[FieldMap.CREATIVE_BACKUP_ASSET_ID]))
+
+    for creative_asset in feed.feed:
+      if creative_asset[FieldMap.CREATIVE_ASSET_ID] in asset_ids or str(creative_asset[FieldMap.CREATIVE_ASSET_ID]) in asset_ids:
         return {
             'name': creative_asset.get(FieldMap.CREATIVE_ASSET_NAME, None),
             'type': creative_asset.get(FieldMap.CREATIVE_TYPE, None)

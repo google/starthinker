@@ -242,13 +242,19 @@ def creatives():
   third_party_url_feed = Feed(project.task['auth'], project.task['sheet_id'],
                               'third_party_url_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
 
-
   creative_association_feed = Feed(project.task['auth'],
                                    project.task['sheet_id'],
                                    'creative_asset_association_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
 
+  click_tag_feed = Feed(project.task['auth'],
+                                   project.task['sheet_id'],
+                                   'click_tag_feed', spreadsheet=spreadsheet, timezone=project.task.get('timezone', None))
+
   creative_dao.map_creative_third_party_url_feeds(creative_feed.feed,
                                                   third_party_url_feed.feed)
+
+  creative_dao.map_creative_click_tag_feeds(creative_feed.feed, click_tag_feed.feed)
+
   third_party_url_feed.update()
 
   creative_dao.map_creative_and_association_feeds(
@@ -263,6 +269,8 @@ def creatives():
                'Associating with campaign, creative id')
 
   creative_association_feed.update()
+
+  click_tag_feed.update()
 
 
 def ads():

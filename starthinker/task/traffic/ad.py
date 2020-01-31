@@ -17,7 +17,7 @@
 ###########################################################################
 """Handles creation and updates of Ads."""
 
-import time
+import time, json
 
 from starthinker.task.traffic.campaign import CampaignDAO
 from starthinker.task.traffic.class_extensions import StringExtensions
@@ -334,12 +334,14 @@ class AdDAO(BaseDAO):
 
         lp = self._landing_page_dao.get(assignment, required=True)
 
-        creative_assignments.append({
-            'active': True,
-            'sequence': sequence,
-            'weight': weight,
-            'creativeId': assignment.get(FieldMap.CREATIVE_ID, None),
-            'clickThroughUrl': {
+        creative_assignment = {
+              'active': True,
+              'sequence': sequence,
+              'weight': weight,
+              'creativeId': assignment.get(FieldMap.CREATIVE_ID, None),
+              'startTime': startTime,
+              'endTime': endTime,
+              'clickThroughUrl': {
                 'defaultLandingPage':
                     False if assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') or assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')
                     else True,
@@ -347,10 +349,26 @@ class AdDAO(BaseDAO):
                     lp.get('id', None) if lp else None,
                 'customClickThroughUrl':
                     assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')
-            },
-            'startTime': startTime,
-            'endTime': endTime
-        })
+              }
+          }
+
+        if creative.get('type', '').startswith('RICH_MEDIA'):
+          creative_assignment['richMediaExitOverrides'] = []
+
+          if assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') or assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, ''):
+            for exit_custom_event in creative.get('exitCustomEvents', []):
+              creative_assignment['richMediaExitOverrides'].append({
+                  "exitId": exit_custom_event['id'],
+                  "enabled": True,
+                  "clickThroughUrl": {
+                      "defaultLandingPage": False if assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') or assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')
+                        else True,
+                      "landingPageId": lp.get('id', None) if lp else None,
+                      "customClickThroughUrl": assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')
+              }
+            })
+
+        creative_assignments.append(creative_assignment)
 
     for assignment in feed_item['placement_assignment']:
       placement = self._placement_dao.get(assignment, required=True)

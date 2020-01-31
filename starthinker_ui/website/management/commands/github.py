@@ -18,6 +18,7 @@
 
 import os
 
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 from starthinker_ui.recipe.scripts import Script
@@ -27,28 +28,19 @@ from website.views import code, solutions, solution
 class Command(BaseCommand):
   help = 'Generate HTML For GitHub'
 
-  def add_arguments(self, parser):
-    parser.add_argument(
-      '--path',
-      action='store',
-      dest='path',
-      required=True,
-      help='Open Source Directory',
-    )
-
   def handle(self, *args, **kwargs):
     
-    directory = '%s/docs' % kwargs['path']
+    directory = '%s/docs' % settings.UI_ROOT
     print('Writing:', directory)
     with open('%s/index.html' % directory, 'w') as index_file:
       index_file.write(solutions(request=None))
 
-    directory = '%s/docs/solution' % kwargs['path']
+    directory = '%s/docs/solution' % settings.UI_ROOT
     print('Writing:', directory)
     with open('%s/index.html' % directory, 'w') as index_file:
       index_file.write(solutions(request=None))
 
-    directory = '%s/docs/code' % kwargs['path']
+    directory = '%s/docs/code' % settings.UI_ROOT
     print('Writing:', directory)
     if not os.path.exists(directory): os.makedirs(directory)
     with open('%s/index.html' % directory, 'w') as code_file:
@@ -56,7 +48,7 @@ class Command(BaseCommand):
 
     for s in Script.get_scripts():
       if s.is_solution() and s.get_open_source():
-        directory = '%s/docs/solution/%s' % (kwargs['path'], s.get_tag())
+        directory = '%s/docs/solution/%s' % (settings.UI_ROOT, s.get_tag())
         print('Writing:', directory)
         if not os.path.exists(directory): os.makedirs(directory)
         with open('%s/index.html' % directory, 'w') as solution_file:

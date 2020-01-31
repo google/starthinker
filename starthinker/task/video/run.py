@@ -240,8 +240,8 @@ def rows_to_videos(rows):
   return videos.values()
 
 
-def videos_from_sheet(sheet):
-  rows = sheets_read(project.task['auth'], sheet['url'], sheet['tab'], "A3:Y")
+def videos_from_sheets(sheets):
+  rows = sheets_read(project.task['auth'], sheets['sheet'], sheets['tab'], "A3:Y")
   return rows_to_videos(rows)
 
 
@@ -256,8 +256,8 @@ def video():
 
   videos = []
 
-  if project.task.get('sheet', {}).get('tab'):
-    videos.extend(videos_from_sheet(project.task['sheet']))
+  if project.task.get('sheets', {}).get('tab'):
+    videos.extend(videos_from_sheets(project.task['sheets']))
 
   if project.task.get('bigquery', {}).get('table'):
     videos.extend(videos_from_bigquery(project.task['bigquery']))

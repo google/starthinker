@@ -93,7 +93,7 @@ def API_Retry(job, key=None, retries=5, wait=61):
       if content['error']['code'] == 409:
         return None
       # permission denied ( won't change on retry so raise )
-      elif content['error'].get('status') == 'PERMISSION_DENIED':
+      elif content.get('error', {}).get('status') == 'PERMISSION_DENIED' or content.get('error', {}).get('errors', [{}])[0].get('reason') == 'forbidden':
         raise
       elif retries > 0:
         if project.verbose: print('API ERROR:', str(e))

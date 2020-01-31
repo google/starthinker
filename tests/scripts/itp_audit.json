@@ -60,6 +60,7 @@
           }
         },
         "body":{
+          "timezoneCode":"America/Los_Angeles",
           "metadata": {
             "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Browser_", "order":7, "description":"Name of report in DBM, should be unique." }},
             "dataRange": "LAST_365_DAYS",

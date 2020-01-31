@@ -29,7 +29,6 @@
     "hour": [
       3   
     ],  
-    "timezone": "America/Los_Angeles", 
     "day": [
       "Mon"
     ]   
@@ -49,8 +48,8 @@
     }},
     { "dbm":{
       "auth":"user",
-      "timeout": 60,
       "report":{
+        "timeout": 90,
         "filters": {
           "FILTER_ADVERTISER": {
             "values":{"field":{ "name":"dv360_advertiser_ids", "kind":"integer_list", "order":5, "default":"", "description":"Optional: Comma delimited list of DV360 Advertiser ids." }}
@@ -60,6 +59,7 @@
           }
         },
         "body":{
+          "timezoneCode":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Los_Angeles" }},
           "metadata": {
             "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Browser_", "order":7, "description":"Name of report in DBM, should be unique." }},
             "dataRange": "LAST_365_DAYS",
@@ -100,8 +100,8 @@
     }},
     { "dcm":{
       "auth":"user",
-      "timeout": 60,
       "report":{
+        "timeout": 90,
         "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":1, "default": "", "description":"Campaign Manager Account Id." }},
         "body":{
          "kind": "dfareporting#report",
@@ -182,8 +182,8 @@
     }},
     { "dcm":{
       "auth":"user",
-      "timeout": 60,
       "report":{
+        "timeout": 90,
         "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":1, "default": "", "description":"Campaign Manager Account Id." }},
         "filters": {
           "dfa:advertiser": {
@@ -356,19 +356,6 @@
         "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":7, "description":"Name of document to deploy to.", "default":"" }},
         "timeout": 60
-    }},
-    { "test": {
-      "auth":"user",
-      "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Floodlight_Multichart",
-        "schema":[
-          { "name":"browser_platform", "type":"STRING", "mode":"NULLABLE" },
-          { "name":"percent_attributed", "type":"FLOAT", "mode":"NULLABLE" },
-          { "name":"percent_unattributed", "type":"FLOAT", "mode":"NULLABLE" },
-          { "name":"share_of_floodlight_conversions", "type":"FLOAT", "mode":"NULLABLE" }
-        ]
-      }
     }}
   ]
 }

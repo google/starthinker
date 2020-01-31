@@ -70,7 +70,7 @@ def object_compare(actual, expected):
 #    { "test": {
 #      "auth":"user",
 #      "sheets": {
-#        "url":"https://docs.google.com/spreadsheets/d/1h-Ic-DlCv-Ct8-k-VJnpo_BAkqsS70rNe0KKeXKJNx0/edit?usp=sharing",
+#        "sheet":"https://docs.google.com/spreadsheets/d/1h-Ic-DlCv-Ct8-k-VJnpo_BAkqsS70rNe0KKeXKJNx0/edit?usp=sharing",
 #        "tab":"Sheet_Clear",
 #        "range":"A1:C",
 #        "values":[
@@ -88,7 +88,7 @@ def sheets():
 
   rows = sheets_read(
     project.task['auth'], 
-    project.task['sheets']['url'], 
+    project.task['sheets']['sheet'], 
     project.task['sheets']['tab'], 
     project.task['sheets']['range']
   )

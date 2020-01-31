@@ -49,11 +49,12 @@ RE_TEST = re.compile(r'test.*\.json')
 def load_tests():
   for root, dirs, files in os.walk(TEST_DIRECTORY):
     for filename in files:
-      print('LOADING', filename)
-      yield filename, script_read(TEST_DIRECTORY + filename)
+      if filename.endswith('.json'):
+        print('LOADING', filename)
+        yield filename, script_read(TEST_DIRECTORY + filename)
 
 
-def initialize_tests():
+def initialize_tests(scripts, tests):
   """Initialize all the necessary test files for Starthinker
   
   Args:
@@ -76,7 +77,7 @@ def initialize_tests():
   # Get new fields from test files and merge in old values
 
   fields = {}
-  for filename, script in load_tests():
+  for filename, script in scripts:
     script_fields = json_get_fields(script)
     script_name = filename.split('.')[0]
 
@@ -97,6 +98,30 @@ def initialize_tests():
   else:
     print('WARNING CONFIGURATION IS EMPTY, CHECK YOUR PATHS!')
 
+  # Create recipe directory
+
+  print('GENERATE RECIPES')
+  os.makedirs(RECIPE_DIRECTORY, exist_ok=True)
+
+  # Create recipes from scripts
+
+  recipes = []
+  for filename, script in scripts:
+    name = filename.split('.')[0]
+    if tests and name not in tests: continue
+
+    # Set cal config field values into the script
+    json_set_fields(script, fields.get(name, {}))
+
+    with open(RECIPE_DIRECTORY + filename, 'w') as f:
+      f.write(json.dumps(script, sort_keys=True, indent=2))
+    
+    recipes.append(filename)
+
+  # Create log directory and clear old logs
+
+  os.makedirs(LOG_DIRECTORY, exist_ok=True)
+
   # Display instructions
 
   print("")
@@ -114,39 +139,9 @@ def initialize_tests():
   print("")
   sleep(3)
 
+  return recipes
 
-def run_tests(tests):
-
-  # Load values from config file
-
-  fields = {}
-  if (os.path.exists(CONFIG_FILE)):
-    with open(CONFIG_FILE, 'r') as f:
-      fields = json.load(f)
-
-  # Create recipe directory
-
-  print('GENERATE RECIPES')
-  os.makedirs(RECIPE_DIRECTORY, exist_ok=True)
-
-  # Create recipes from scripts
-
-  recipes = []
-  for filename, script in load_tests():
-    name = filename.split('.')[0]
-    if tests and name not in tests: continue
-
-    # Set cal config field values into the script
-    json_set_fields(script, fields.get(name, {}))
-
-    with open(RECIPE_DIRECTORY + filename, 'w') as f:
-      f.write(json.dumps(script, sort_keys=True, indent=2))
-    
-    recipes.append(filename)
-
-  # Create log directory and clear old logs
-
-  os.makedirs(LOG_DIRECTORY, exist_ok=True)
+def run_tests(scripts, recipes, tests):
 
   if not tests:
     print('CLEAR LOGS')
@@ -217,12 +212,15 @@ def tests():
   parser.add_argument('-t', '--tests', nargs='*', help='Run only these tests, name of test from scripts without .json part.')
 
   args = parser.parse_args()
+  scripts = list(load_tests())
+
+  print("")
 
   if args.init:
-    initialize_tests()
+    initialize_tests(scripts, args.tests or [])
   else:
-    initialize_tests()
-    run_tests(args.tests or [])
+    recipes = initialize_tests(scripts, args.tests or [])
+    run_tests(scripts, recipes, args.tests or [])
 
 
 if __name__ == "__main__":

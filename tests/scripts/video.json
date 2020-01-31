@@ -64,8 +64,8 @@
     { "video":{
       "__comment__":"Read video effects from sheet and write to storage.",
       "auth":"user",
-      "sheet":{
-        "url":"https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit?usp=sharing",
+      "sheets":{
+        "sheet":"https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit?usp=sharing",
         "tab":"Video"
       }
     }},

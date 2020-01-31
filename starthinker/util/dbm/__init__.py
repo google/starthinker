@@ -122,7 +122,7 @@ def report_build(auth, body):
   return report
 
 
-def report_fetch(auth, report_id=None, name=None, timeout = 4):
+def report_fetch(auth, report_id=None, name=None, timeout = 60):
   """ Retrieves most recent DBM file JSON by name or ID, if in progress, waits for it to complete.
 
   Bulletproofing: https://developers.google.com/bid-manager/v1/queries/getquery
@@ -144,8 +144,6 @@ def report_fetch(auth, report_id=None, name=None, timeout = 4):
 
   if project.verbose: print('DBM Report Download ( timeout ):', report_id or name, timeout)
 
-  wait = 256
-
   while timeout >= 0: # allow zero to execute at least once
     # advance timeout first ( if = 0 then exit condition met but already in loop, if > 0 then will run into sleep )
     timeout -= 1
@@ -166,8 +164,10 @@ def report_fetch(auth, report_id=None, name=None, timeout = 4):
       if project.verbose: print('DBM No Report')
       return False
 
-    wait = wait * 2
-    time.sleep(wait)
+    # sleep a minute
+    if timeout > 0:
+      if project.verbose: print('WAITING MINUTES', timeout)
+      time.sleep(60)
 
 
 def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = None):

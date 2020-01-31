@@ -8,7 +8,7 @@
       "__comment__":"Check if template accessible, in case version changes. Access by membership: starthinker-assets@googlegroups.com",
       "auth":"user",
       "sheets": {
-        "url":"https://docs.google.com/spreadsheets/d/1DhOoCOC7hf3lUckXWG4ELfZhH28Rsxr74sfhc713T3A/",
+        "sheet":"https://docs.google.com/spreadsheets/d/1DhOoCOC7hf3lUckXWG4ELfZhH28Rsxr74sfhc713T3A/",
         "tab":"Sheet_Template",
         "range":"A1:C",
         "values":[
@@ -22,7 +22,7 @@
       }
     }},
     { "sheets":{
-      "__comment__":"Copy the tamplate sheet to the users test sheet. The tab is deleted if exists and re-created.",
+      "__comment__":"Copy the template sheet to the users test sheet. The tab is deleted if exists and re-created.",
       "auth":"user",
       "template":{
         "sheet":"https://docs.google.com/spreadsheets/d/1DhOoCOC7hf3lUckXWG4ELfZhH28Rsxr74sfhc713T3A/",
@@ -37,7 +37,7 @@
       "__comment__":"Verify that the copy worked by checking values in the users sheet.",
       "auth":"user",
       "sheets": {
-        "url":"StarThinker Sheet Test",
+        "sheet":"StarThinker Sheet Test",
         "tab":"Sheet_Test",
         "range":"A1:C",
         "values":[
@@ -62,7 +62,7 @@
       "__comment__":"Verify users sheet was cleared.",
       "auth":"user",
       "sheets": {
-        "url":"StarThinker Sheet Test",
+        "sheet":"StarThinker Sheet Test",
         "tab":"Sheet_Test",
         "range":"A1:C",
         "values":[
@@ -95,7 +95,7 @@
       "__comment__":"Verify that the write worked by checking values in the users sheet.",
       "auth":"user",
       "sheets": {
-        "url":"StarThinker Sheet Test",
+        "sheet":"StarThinker Sheet Test",
         "tab":"Sheet_Test",
         "range":"A1:C",
         "values":[
@@ -125,7 +125,7 @@
       "__comment__":"Verify that the write worked by checking values in the users sheet.",
       "auth":"user",
       "sheets": {
-        "url":"StarThinker Sheet Test",
+        "sheet":"StarThinker Sheet Test",
         "tab":"Sheet_Test",
         "range":"A1:C",
         "values":[
@@ -155,7 +155,7 @@
       "__comment__":"Verify that the append worked by checking values in the users sheet.",
       "auth":"user",
       "sheets": {
-        "url":"StarThinker Sheet Test",
+        "sheet":"StarThinker Sheet Test",
         "tab":"Sheet_Test",
         "range":"A1:C",
         "values":[

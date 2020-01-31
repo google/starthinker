@@ -133,7 +133,7 @@
     { "test": {
       "auth":"user",
       "sheets": {
-        "url":"StarThinker BigQuery Test",
+        "sheet":"StarThinker BigQuery Test",
         "tab":"BigQuery_Test",
         "range":"A1:C",
         "values":[

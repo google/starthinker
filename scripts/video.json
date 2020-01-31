@@ -31,8 +31,8 @@
     { "video":{
       "__comment__":"Read video effects and values from sheet and/or bigquery.",
       "auth":"user",
-      "sheet":{
-        "url":{"field":{ "name":"sheet", "kind":"string", "order":1, "default":"", "description":"Name or URL of sheet." }},
+      "sheets":{
+        "sheet":{"field":{ "name":"sheet", "kind":"string", "order":1, "default":"", "description":"Name or URL of sheet." }},
         "tab":{"field":{ "name":"tab", "kind":"string", "order":2, "default":"", "description":"Name of sheet tab." }}
       },
       "bigquery":{

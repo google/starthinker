@@ -4,7 +4,7 @@
     "copyright":"Copyright 2020 Google Inc.",
     "icon":"donut_large",
     "product":"Salesforce",
-    "title":"Query To BigQuery",
+    "title":"Salesforce To BigQuery",
     "description":"Move query results into a BigQuery table.",
     "instructions":[
       "Specify <a href='https://developer.salesforce.com/' target='_blank'>Salesforce</a> credentials.",

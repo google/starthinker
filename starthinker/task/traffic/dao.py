@@ -75,7 +75,7 @@ class BaseDAO(object):
     #print('hitting the api to get %s, %s' % (self._entity, feed_item[self._id_field]))
     return self._api().get(profileId=self.profile_id, id=feed_item[self._id_field]).execute()
 
-  def get(self, feed_item, required=False):
+  def get(self, feed_item, required=False, column_name=None):
     """Retrieves an item.
 
     Items could be retrieved from a in memory cache in case it has already been
@@ -91,7 +91,7 @@ class BaseDAO(object):
     """
     result = None
     keys = []
-    id_value = feed_item.get(self._id_field, None)
+    id_value = feed_item.get(self._id_field, None) if column_name == None else feed_item.get(column_name, None)
 
     if not id_value and self._search_field and feed_item.get(self._search_field, None):
       store_key = feed_item[self._search_field]
@@ -113,8 +113,11 @@ class BaseDAO(object):
         keys.append(id_value)
         id_value = store.translate(self._entity, id_value)
 
-        if id_value:
+        if id_value and not column_name:
           feed_item[self._id_field] = id_value
+
+        elif id_value and column_name:
+          feed_item[column_name] = id_value
 
       if id_value:
         keys.append(id_value)
@@ -169,7 +172,7 @@ class BaseDAO(object):
       print('hitting the api to search for %s, %s' % (self._entity, search_string))
       search_result = self._api().list(**args).execute()
 
-      #items = search_result[self._list_name]
+      items = search_result[self._list_name]
 
       if items and len(items) > 0:
         item = items[0]

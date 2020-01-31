@@ -1,0 +1,30 @@
+{
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google Inc.",
+    "icon":"donut_large",
+    "product":"SmartSheet",
+    "title":"Sheet To BigQuery",
+    "description":"Move sheet data into a BigQuery table.",
+    "instructions":[
+      "Specify <a href='https://smartsheet-platform.github.io/api-docs/' target='_blank'>SmartSheet</a> token.",
+      "Locate the ID of a sheet by viewing its properties.",
+      "Provide a BigQuery dataset ( must exist ) and table to write the data into.",
+      "StarThinker will automatically map the correct schema."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "smartsheet": {
+      "auth":"service",
+      "token":{"field":{ "name":"token", "kind":"string", "default":"", "description":"Retrieve from SmartSheet account settings." }},
+      "sheet":{"field":{ "name":"sheet", "kind":"string", "default":"", "description":"Retrieve from sheet properties." }},
+      "out":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "default":"", "description":"Existing BigQuery dataset." }},
+          "table":{"field":{ "name":"table", "kind":"string", "order":4, "default":"", "description":"Table to create from this report." }}
+        }
+      }
+    }}
+  ]
+}

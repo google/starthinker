@@ -69,16 +69,6 @@ def dcm():
       project.task['report'].get('name', None),
     )
 
-  # check if report is to be created - DEPRECATED
-  if 'type' in project.task['report']:
-    if project.verbose: print('DCM CREATE')
-    report = report_create(
-      project.task['auth'],
-      project.task['report']['account'],
-      project.task['report']['name'],
-      project.task['report']
-    )
-
   # check if report is to be created
   if 'body' in project.task['report']:
     if project.verbose: print('DCM BUILD', project.task['report']['body']['name'])
