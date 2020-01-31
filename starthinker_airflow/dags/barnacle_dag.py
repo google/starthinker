@@ -33,7 +33,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Barnacle
+CM User Audit
 
 Gives DCM clients ability to see which profiles have access to which parts of an account. Loads DCM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.
 

@@ -55,7 +55,6 @@ INPUTS = {
   'report_name': '',
   'bucket': '',
   'path': 'DCM_Report',
-  'datastudio': True,
 }
 
 TASKS = [
@@ -106,14 +105,6 @@ TASKS = [
               'default': 'DCM_Report'
             }
           }
-        }
-      },
-      'datastudio': {
-        'field': {
-          'name': 'datastudio',
-          'kind': 'boolean',
-          'order': 7,
-          'default': True
         }
       }
     }

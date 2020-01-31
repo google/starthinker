@@ -140,62 +140,6 @@ def parse_account(auth, account):
   return network_id, advertiser_ids
 
 
-# DEPRECATED DO NOT USE
-def get_body_floodlight(report, advertiser=None):
-  return {
-    "floodlightCriteria": {
-      "dateRange": {
-        "kind": "dfareporting#dateRange",
-        "relativeDateRange": report.get('relativeDateRange', 'LAST_7_DAYS'),
-      },
-      "dimensions": [
-        {
-          "kind": "dfareporting#sortedDimension",
-          "name": "dfa:" + d
-        }
-        for d in report.get('dimensions', [''])
-      ],
-      "metricNames": [
-        "dfa:" + m
-        for m in report.get('metrics', ['impressions', 'clicks'])
-      ],
-      "floodlightConfigId": {
-        "kind": "dfareporting#dimensionValue",
-        "dimensionName": "dfa:floodlightConfigId",
-        "matchType": "EXACT",
-        "value": report['floodlightConfigId']
-      },
-      "reportProperties": {
-        "includeUnattributedCookieConversions": report.get('UnattributedCookieConversions', False),
-        "includeUnattributedIPConversions": report.get('UnattributedIPConversions', False)
-      }
-    }
-  }
-
-
-# DEPRECATED DO NOT USE
-def get_body_standard(report, advertiser=None):
-  return {
-    "criteria": {
-      "dateRange": {
-        "kind": "dfareporting#dateRange",
-        "relativeDateRange": report.get('relativeDateRange', 'LAST_7_DAYS'),
-      },
-      "dimensions": [
-        {
-          "kind": "dfareporting#sortedDimension",
-          "name": "dfa:" + d
-        }
-        for d in report.get('dimensions', [''])
-      ],
-      "metricNames": [
-        "dfa:" + m
-        for m in report.get('metrics', ['impressions', 'clicks'])
-      ]
-    }
-  }
-
-
 def report_get(auth, account, report_id = None, name=None):
   """ Returns the DCM JSON definition of a report based on name or ID.
 
@@ -328,59 +272,6 @@ def report_build(auth, account, body):
 
   else:
     if project.verbose: print('DCM Report Exists:', body['name'])
-
-  return report
-
-
-# DEPRECATED DO NOT USE
-def report_create(auth, account, name, config):
-  account_id, advertiser_ids = parse_account(auth, account)
-  is_superuser, profile_id = get_profile_for_api(auth, account_id)
-  report = report_get(auth, account_id, name=name)
-
-  if report is None:
-
-    body = {
-      'kind':'dfareporting#report',
-      'type':config.get('type', 'STANDARD').upper(),
-      'name':name,
-      'format':config.get('format', 'CSV'),
-      'accountId':account_id,
-      'delivery': {
-        'emailOwner':False,
-        'emailOwnerDeliveryType':'LINK'
-      },
-      'schedule': {
-        'active':True,
-        'repeats':'DAILY',
-        'every': 1,
-        'startDate':str(date.today()),
-        'expirationDate':str((date.today() + timedelta(days=365))),
-      }
-    }
-
-    if body['type'] == 'STANDARD': body.update(get_body_standard(config))
-    elif body['type'] == 'FLOODLIGHT': body.update(get_body_floodlight(config))
-
-    if advertiser_ids:
-       body['criteria']['dimensionFilters'] = body['criteria'].get('dimensionFilters', []) + [{
-         'kind':'dfareporting#dimensionValue',
-         'dimensionName':'dfa:advertiser',
-         'id':advertiser_id,
-         'matchType':'EXACT'
-       } for advertiser_id in advertiser_ids]
-
-    #pprint.PrettyPrinter().pprint(body)
-
-    # create the report
-    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
-    kwargs['body'] = body
-    report = API_DCM(auth, internal=is_superuser).reports().insert(**kwargs).execute()
-
-    # run the report
-    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
-    kwargs['reportId'] = report['id']
-    API_DCM(auth, internal=is_superuser).reports().insert(**kwargs).execute()
 
   return report
 

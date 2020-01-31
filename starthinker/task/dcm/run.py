@@ -39,7 +39,7 @@ proto files.
 
 from starthinker.util.project import project
 from starthinker.util.data import get_rows, put_rows
-from starthinker.util.dcm import report_delete, report_build, report_create, report_file, report_to_rows, report_clean, report_schema, report_run
+from starthinker.util.dcm import report_delete, report_build, report_file, report_to_rows, report_clean, report_schema, report_run
 
 
 @project.from_parameters

@@ -88,8 +88,8 @@ TASKS = [
     'video': {
       '__comment__': 'Read video effects and values from sheet and/or bigquery.',
       'auth': 'user',
-      'sheet': {
-        'url': {
+      'sheets': {
+        'sheet': {
           'field': {
             'name': 'sheet',
             'kind': 'string',

@@ -5,7 +5,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 ## List Of Notebooks
 * [Anonymize Dataset](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/anonymize.ipynb) - Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.
 * [Archive](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/archive.ipynb) - Wipe old information from a Storage bucket.
-* [Barnacle](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/barnacle.ipynb) - Gives DCM clients ability to see which profiles have access to which parts of an account. Loads DCM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.
+* [CM User Audit](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/barnacle.ipynb) - Gives DCM clients ability to see which profiles have access to which parts of an account. Loads DCM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.
 * [Query To Table](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_query.ipynb) - Save query results into a BigQuery table.
 * [Run Query](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_run_query.ipynb) - Run query on a project.
 * [Storage To Table](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_storage.ipynb) - Move using bucket and path prefix.
@@ -48,11 +48,12 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Column Mapping](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/mapping.ipynb) - Use sheet to define keyword to column mappings.
 * [Monthly Budget Mover](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/monthly_budget_mover.ipynb) - Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.
 * [PoliceBot](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/policebot.ipynb) - A tool that helps enforce CM object name conventions by checking names against a set of client-defined patterns, and emailing violations to appropriate agency teams on a daily basis.
-* [Query To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/salesforce_to_bigquery.ipynb) - Move query results into a BigQuery table.
+* [Salesforce To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/salesforce_to_bigquery.ipynb) - Move query results into a BigQuery table.
 * [SDF Download](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sdf_to_bigquery.ipynb) - Download SDF reports into a BigQuery table.
 * [Sheet Clear](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_clear.ipynb) - Clear data from a sheet.
 * [Sheet Copy](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_copy.ipynb) - Copy tab from a sheet to a sheet.
 * [Sheet To Table](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_to_bigquery.ipynb) - Import data from a sheet and move it to a BigQuery table.
+* [Sheet To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/smartsheet_to_bigquery.ipynb) - Move sheet data into a BigQuery table.
 * [Test Script](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/test.ipynb) - Used by tests.
 * [Transparency Dashboard](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/transparency.ipynb) - Reports the percentage of DCM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.
 * [Trends Places To BigQuery Via Query](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/trends_places_to_bigquery_via_query.ipynb) - Move using a WOEID query.

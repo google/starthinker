@@ -21,7 +21,7 @@
 
 import os
 import json
-import filetype
+import mimetypes
 from io import BytesIO
 
 
@@ -99,8 +99,8 @@ class CreativeAssetDAO(BaseDAO):
     """
     file_buffer = object_get('user', '%s:%s' % (feed_item.get(FieldMap.CREATIVE_ASSET_BUCKET_NAME, None), feed_item.get(FieldMap.CREATIVE_ASSET_FILE_NAME, None)))
     
-    kind = filetype.guess(file_buffer)
-    media = MediaIoBaseUpload(BytesIO(file_buffer), mimetype=kind.mime, chunksize=CHUNKSIZE, resumable=True)
+    file_mime = mimetypes.guess_type(filename, strict=False)[0]
+    media = MediaIoBaseUpload(BytesIO(file_buffer), mimetype=file_mime, chunksize=CHUNKSIZE, resumable=True)
 
     result = self._api().insert(
       profileId=self.profile_id,

@@ -21,7 +21,7 @@ from starthinker.util.project import project
 from starthinker.util.bigquery import query_to_table, query_to_rows, run_query, table_to_rows, get_schema, rows_to_table, table_create
 from starthinker.util.csv import rows_to_type
 from starthinker.util.data import get_rows, put_rows
-from starthinker.util.dcm import report_delete, report_build, report_create, report_file, report_to_rows, report_clean, report_schema, report_run
+from starthinker.util.dcm import report_delete, report_build, report_file, report_to_rows, report_clean, report_schema, report_run
 from starthinker.util.sheets import sheets_read, sheets_clear, sheets_write
 from starthinker.task.sdf.run import sdf
 

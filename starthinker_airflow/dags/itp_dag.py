@@ -57,6 +57,7 @@ GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
   'dataset': '',  # Place where tables will be written in BigQuery.
+  'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
   'dcm_account': '',  # DCM account id of client.
   'dcm_advertisers': [],  # Comma delimited list of DCM advertiser ids.
   'dcm_floodlight': '',  # DCM floodlight configuration id.
@@ -385,7 +386,14 @@ TASKS = [
           }
         },
         'body': {
-          'timezoneCode': 'America/Los_Angeles',
+          'timezoneCode': {
+            'field': {
+              'name': 'recipe_timezone',
+              'kind': 'timezone',
+              'description': 'Timezone for report dates.',
+              'default': 'America/Los_Angeles'
+            }
+          },
           'metadata': {
             'title': {
               'field': {

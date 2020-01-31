@@ -33,13 +33,14 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Salesforce To BigQuery
+Sheet To BigQuery
 
-Move query results into a BigQuery table.
+Move sheet data into a BigQuery table.
 
-Specify <a href='https://developer.salesforce.com/' target='_blank'>Salesforce</a> credentials.
-Specify the query youd like to execute.
-Specify a <a href='https://cloud.google.com/bigquery/docs/schemas#creating_a_json_schema_file' target='_blank'>SCHEMA</a> for that query ( optional ).
+Specify <a href='https://smartsheet-platform.github.io/api-docs/' target='_blank'>SmartSheet</a> token.
+Locate the ID of a sheet by viewing its properties.
+Provide a BigQuery dataset ( must exist ) and table to write the data into.
+StarThinker will automatically map the correct schema.
 
 '''
 
@@ -49,58 +50,30 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
-  'client': '',  # Retrieve from a Salesforce App.
-  'secret': '',  # Retrieve from a Salesforce App.
-  'username': '',  # Your Salesforce user email.
-  'password': '',  # Your Salesforce login password.
-  'query': '',  # The query to run in Salesforce.
+  'token': '',  # Retrieve from SmartSheet account settings.
+  'sheet': '',  # Retrieve from sheet properties.
   'dataset': '',  # Existing BigQuery dataset.
   'table': '',  # Table to create from this report.
-  'schema': '[]',  # Schema provided in JSON list format or empty list.
 }
 
 TASKS = [
   {
-    'salesforce': {
-      'auth': 'user',
-      'client': {
+    'smartsheet': {
+      'auth': 'service',
+      'token': {
         'field': {
-          'name': 'client',
+          'name': 'token',
           'kind': 'string',
           'default': '',
-          'description': 'Retrieve from a Salesforce App.'
+          'description': 'Retrieve from SmartSheet account settings.'
         }
       },
-      'secret': {
+      'sheet': {
         'field': {
-          'name': 'secret',
+          'name': 'sheet',
           'kind': 'string',
           'default': '',
-          'description': 'Retrieve from a Salesforce App.'
-        }
-      },
-      'username': {
-        'field': {
-          'name': 'username',
-          'kind': 'email',
-          'default': '',
-          'description': 'Your Salesforce user email.'
-        }
-      },
-      'password': {
-        'field': {
-          'name': 'password',
-          'kind': 'password',
-          'default': '',
-          'description': 'Your Salesforce login password.'
-        }
-      },
-      'query': {
-        'field': {
-          'name': 'query',
-          'kind': 'string',
-          'default': '',
-          'description': 'The query to run in Salesforce.'
+          'description': 'Retrieve from sheet properties.'
         }
       },
       'out': {
@@ -122,15 +95,6 @@ TASKS = [
               'default': '',
               'description': 'Table to create from this report.'
             }
-          },
-          'schema': {
-            'field': {
-              'name': 'schema',
-              'kind': 'json',
-              'order': 5,
-              'default': '[]',
-              'description': 'Schema provided in JSON list format or empty list.'
-            }
           }
         }
       }
@@ -138,7 +102,7 @@ TASKS = [
   }
 ]
 
-DAG_FACTORY = DAG_Factory('salesforce_to_bigquery', { 'tasks':TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('smartsheet_to_bigquery', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 

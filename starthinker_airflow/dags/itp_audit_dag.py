@@ -47,6 +47,7 @@ USER_CONN_ID = "google_cloud_default" # The connection to use for user authentic
 GCP_CONN_ID = "" # The connection to use for service authentication.
 
 INPUTS = {
+  'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
   'cm_account_id': '',  # Campaign Manager Account Id.
   'floodlight_configuration_id': '',  # Floodlight Configuration Id for the Campaign Manager floodlight report.
   'cm_advertiser_ids': '',  # Optional: Comma delimited list of DCM advertiser ids.
@@ -93,8 +94,8 @@ TASKS = [
   {
     'dbm': {
       'auth': 'user',
-      'timeout': 60,
       'report': {
+        'timeout': 90,
         'filters': {
           'FILTER_ADVERTISER': {
             'values': {
@@ -120,6 +121,14 @@ TASKS = [
           }
         },
         'body': {
+          'timezoneCode': {
+            'field': {
+              'name': 'recipe_timezone',
+              'kind': 'timezone',
+              'description': 'Timezone for report dates.',
+              'default': 'America/Los_Angeles'
+            }
+          },
           'metadata': {
             'title': {
               'field': {
@@ -170,8 +179,8 @@ TASKS = [
   {
     'dcm': {
       'auth': 'user',
-      'timeout': 60,
       'report': {
+        'timeout': 90,
         'account': {
           'field': {
             'name': 'cm_account_id',
@@ -288,8 +297,8 @@ TASKS = [
   {
     'dcm': {
       'auth': 'user',
-      'timeout': 60,
       'report': {
+        'timeout': 90,
         'account': {
           'field': {
             'name': 'cm_account_id',
@@ -647,37 +656,6 @@ TASKS = [
         }
       },
       'timeout': 60
-    }
-  },
-  {
-    'test': {
-      'auth': 'user',
-      'bigquery': {
-        'dataset': 'Test',
-        'table': 'CM_Floodlight_Multichart',
-        'schema': [
-          {
-            'name': 'browser_platform',
-            'type': 'STRING',
-            'mode': 'NULLABLE'
-          },
-          {
-            'name': 'percent_attributed',
-            'type': 'FLOAT',
-            'mode': 'NULLABLE'
-          },
-          {
-            'name': 'percent_unattributed',
-            'type': 'FLOAT',
-            'mode': 'NULLABLE'
-          },
-          {
-            'name': 'share_of_floodlight_conversions',
-            'type': 'FLOAT',
-            'mode': 'NULLABLE'
-          }
-        ]
-      }
     }
   }
 ]
