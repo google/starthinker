@@ -39,9 +39,9 @@ def load_scripts():
       for filename in files:
         if filename.endswith('.json'):
           try:
-            script = get_project(root + '/' + filename)
+            script = get_project(root + filename)
             if not 'script' in script: continue
-            script['path'] = root + '/' + filename
+            script['path'] = root + filename
             SCRIPTS[filename.replace('script_', '', 1).replace('.json', '', 1)] = script
             print('OK', filename)
           except Exception as e:
@@ -118,7 +118,7 @@ class Script:
 
   def get_open_source(self):
     if self.script.get('script', {}).get('license', '') == 'Apache License, Version 2.0':
-      return 'https://github.com/google/starthinker/blob/master/' + self.script['path'].replace(UI_ROOT, '', 1)
+      return 'https://github.com/google/starthinker/blob/master' + self.script['path'].replace(UI_ROOT, '', 1)
     else:
       return ''
 
