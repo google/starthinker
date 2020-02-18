@@ -4,16 +4,13 @@
     "copyright":"Copyright 2019 Google Inc."
   },
   "tasks":[
-    { "barnacle":{
-      "auth":"user",
-      "endpoints":["accounts", "subaccounts", "profiles", "advertisers", "campaigns", "ads", "creatives", "sites", "roles", "reports"],
-      "accounts":{
-        "single_cell":true,
-        "values":{"field":{ "name":"account_ids", "kind":"integer_list", "default":[] }}
-      },
-      "out":{
-        "auth":"service",
-        "dataset":"Test"
+   { "include":{
+      "script":"scripts/barnacle.json",
+      "parameters":{
+        "dataset":"Test",
+        "recipe_project":{"field":{ "name":"recipe_project", "kind":"string", "description":"Project where BigQuery dataset will be created." }},
+        "accounts":{"field":{ "name":"accounts", "kind":"integer_list", "description":"Comma separated DCM account ids." }},
+        "reports":true
       }
     }},
     { "test": {

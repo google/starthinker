@@ -364,23 +364,28 @@ def incremental_rows_to_table(auth, project_id, dataset_id, table_id, rows, sche
   table_id_temp = table_id + str(uuid.uuid4()).replace('-','_')
   rows_to_table(auth, project_id, dataset_id, table_id_temp, rows, schema, skip_rows, disposition)
 
-  #query the temp table to find the max and min date
-  start_date = _get_min_date_from_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
-  end_date = _get_max_date_from_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
+  try:
+    #query the temp table to find the max and min date
+    start_date = _get_min_date_from_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
+    end_date = _get_max_date_from_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
 
-  #check if master table exists: if not create it, if so clear old data
-  if not table_exists(auth, project_id, dataset_id, table_id):
-    table_create(auth, project_id, dataset_id, table_id)
-  else:
-    _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id, start_date, end_date, billing_project_id=billing_project_id)
+    #check if master table exists: if not create it, if so clear old data
+    if not table_exists(auth, project_id, dataset_id, table_id):
+      table_create(auth, project_id, dataset_id, table_id)
+    else:
+      _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id, start_date, end_date, billing_project_id=billing_project_id)
 
-  #append temp table to master
-  query = ('SELECT * FROM `' 
-    + project_id + '.' + dataset_id + '.' + table_id_temp + '` ')
-  query_to_table(auth, project_id, dataset_id, table_id, query, disposition, False, billing_project_id=billing_project_id)
+    #append temp table to master
+    query = ('SELECT * FROM `' 
+      + project_id + '.' + dataset_id + '.' + table_id_temp + '` ')
+    query_to_table(auth, project_id, dataset_id, table_id, query, disposition, False, billing_project_id=billing_project_id)
 
-  #delete temp table
-  drop_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
+    #delete temp table
+    drop_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
+
+  except:
+    #delete temp table
+    drop_table(auth, project_id, dataset_id, table_id_temp, billing_project_id=billing_project_id)
 
 
 def table_create(auth, project_id, dataset_id, table_id, is_time_partition=False):

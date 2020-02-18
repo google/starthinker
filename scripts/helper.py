@@ -33,6 +33,7 @@ Example
 
 
 import argparse
+from json import JSONDecodeError
 
 from starthinker.util.project import get_project
 
@@ -41,11 +42,10 @@ if __name__ == "__main__":
 
   parser = argparse.ArgumentParser()
   parser.add_argument('file', help='A JSON file.')
-  parser.add_argument('--debug', '-d', help='Debug mode, do not scrub newlines.', action='store_true')
   args = parser.parse_args()
 
   try:
-    project = get_project(args.file, debug=args.debug)
+    project = get_project(args.file)
     print('JSON OK:', args.file)
-  except Exception as e:
-    print('JSON ERROR:', args.file, str(e))
+  except JSONDecodeError as e:
+    print(str(e))

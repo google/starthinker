@@ -54,13 +54,12 @@ Example:
   
   optional arguments:
     -h, --help   show this help message and exit
-    --datastudio  Alter columns for datastudio, fixes nulls and date format.
     --output JSON file to write resulting recipe.
   ```
 
   Then to turn the script into a recipe run:
 
-  `python starthinker/script/run.py scripts/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" --datastudio > test_recipe.json`
+  `python starthinker/script/run.py scripts/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" > test_recipe.json`
 
   To perform the work of the script for the now filled in recipe:
  
@@ -72,6 +71,7 @@ import sys
 import json
 import argparse
 
+from starthinker.util.project import get_project
 from starthinker.script.parse import json_get_fields, json_set_fields, json_set_instructions, json_set_description
 
 
@@ -114,14 +114,6 @@ def parser_add_field(parser, field):
     raise NotImplementedError("%s is not a suported field type" % field)
 
 
-def script_read(path):
-  # load recipe json template
-  with open(path) as data_file:
-    data = data_file.read()
-    data = data.replace('\n', ' ')
-    return json.loads(data)
-
-
 def script_write(script, args, filepath=None):
   # insert fields into json
   json_set_fields(script, args)
@@ -147,7 +139,7 @@ def script_interactive():
   from_json = sys.argv[1]
   to_json = sys.argv[2] if len(sys.argv) == 3 else ''
 
-  script = script_read(sys.argv[1])
+  script = get_project(sys.argv[1])
 
   # parse fields and constants into parameters
   fields = json_get_fields(script)
@@ -156,13 +148,13 @@ def script_interactive():
     print('\n(1 of %d) From %s template create recipe: %s\n' % (len(fields), from_json, to_json))
   else:
     print('\n(1 of %d) Recipe file to create from %s template.\n' % (len(fields), sys.argv[1]))
-    to_json = raw_input("Full Path TO JSON File:") 
+    to_json = input("Full Path TO JSON File:") 
 
   for count, field in enumerate(fields):
     print('\n(%d of %d) %s' % (count + 2, len(fields), field['description']),)
     if 'default' in field: print(' ( Default to "%s" if blank. )' % field['default'],)
     print('\n')
-    args[field['name']] = raw_input("%s ( %s ):" % (field['name'], field['kind']))
+    args[field['name']] = input("%s ( %s ):" % (field['name'], field['kind']))
     print('\n')
 
     # remove blanks ( they should have defaults )
@@ -173,7 +165,7 @@ def script_interactive():
 
 def script_commandline():
 
-  script = script_read(sys.argv[1])
+  script = get_project(sys.argv[1])
 
   # assemble parameters
   parser = argparse.ArgumentParser()
@@ -190,11 +182,26 @@ def script_commandline():
   script_write(script, args)
 
 
+def script_test_include():
+  script = get_project(sys.argv[1])
+
+  # parse fields and constants into parameters
+  print('    { "include":{')
+  print('      "script":"%s",' % sys.argv[1])
+  print('      "parameters":{')
+  print(',\n'.join(['        "%s":{"field":{ "name":"%s", "kind":"%s", "description":"%s" }}' % (field['name'], field['name'], field['kind'], field.get('description', '')) for field in json_get_fields(script)]))
+  print('      }')
+  print('    }}')
+
 if __name__ == "__main__":
 
   # invalid command line
   if len(sys.argv) < 2:
     print("USAGE: run.py [json recipe template file path] -h")
+
+  # print test include block
+  elif len(sys.argv) == 3 and sys.argv[2] == '-t':
+    script_test_include()
 
   # only script, json and optional destination supplied, assume interactive
   elif len(sys.argv) == 2 or (len(sys.argv) == 3 and sys.argv[2] != '-h'):

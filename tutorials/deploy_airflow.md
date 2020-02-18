@@ -10,14 +10,14 @@ Airflow can wrap any Python function in a [PythonOerator](https://airflow.apache
 
 ## Instructions
 
-1. First install al the libraries.
+1. Second install airflow and the StarThinker libraries.
 
 ```
 pip install apache-airflow
 pip install git+https://github.com/google/starthinker
 ```
 
-1. Copy a [StarThinker DAG](../starthinker_airflow/dags/) to your airflow folder or bucket.
+1. Copy a [StarThinker DAG](../dags/) to your airflow folder or bucket.
 1. Modify the copied file.
 1. Execute the DAG like any other airflow DAG.
 
@@ -30,6 +30,7 @@ You can edit the underlying JSON recipe without re-generating the connector,
 this connector generates the DAG in real time whenever AirFlow calls it.
 
 ```
+cp startinker/dags/say_hello.py ~/airflow/dags/say_hello.py
 python ~/airflow/dags/say_hello.py
 ```
 

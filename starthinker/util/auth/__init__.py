@@ -21,7 +21,7 @@ import threading
 from googleapiclient import discovery
 
 from starthinker.util.project import project
-from starthinker.util.auth.wrapper import CredentialsUserWrapper, CredentialsServiceWrapper
+from starthinker.util.auth.wrapper import CredentialsUserWrapper, CredentialsServiceWrapper, CredentialsFlowWrapper
 
 
 CREDENTIALS_USER_CACHE = None # WARNING:  possible issue if switching user credentials mid recipe, not in scope but possible ( need to address using hash? )
@@ -70,6 +70,10 @@ def get_service(api='gmail', version='v1', auth='service', scopes=None, uri_file
 
   return DISCOVERY_CACHE[key]
 
+def get_client_type(credentials):
+  client_json = CredentialsFlowWrapper(credentials, credentials_only=True)
+  return next(iter(client_json.keys()))
+  
 
 def get_profile():
   service = get_service('oauth2', 'v2', 'user')

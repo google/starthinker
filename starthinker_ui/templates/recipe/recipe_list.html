@@ -22,11 +22,18 @@
 
 {% block content %}
 
-  <h1>Recipes 
-    <a href="/recipe/edit/"><i class="material-icons blue-text">add_alarm</i></a>
-    <a href="/recipe/manual/"><i class="material-icons blue-text">add_box</i></a>
-  </h1>
+  <h1>Recipes</h1>
   <p class="flow-text">Assemble recipes that run on a schedule or are triggered manually.</p>
+
+  <p>
+    <a href="/recipe/edit/" class="waves-effect waves-light btn blue form_button modal-trigger">
+      Scheduled <i class="material-icons right">access_time</i>
+    </a>
+    <a href="/recipe/manual/" class="waves-effect waves-light btn blue form_button modal-trigger">
+      Manual <i class="material-icons right">build</i>
+    </a>
+  </p>
+
 
   <table class="bordered highlight list">
     <thead>

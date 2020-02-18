@@ -18,6 +18,9 @@
 
 import re
 
+from starthinker.util.project import get_project
+from starthinker.config import UI_ROOT
+
 RE_TEXT_FIELD = re.compile(r'\{(.*?:.*?)\}')
 
 
@@ -120,6 +123,9 @@ def json_set_fields(struct, variables):
   """Recusrsively replaces fields in script JSON with values provided.
      Field has format: { "field":{ "name":"???", "kind":"???", "default":???, "description":"???" }}
 
+     If field value is empty and field default is null, the value is removed from JSON as a parameter,
+     allowing the python task to pick a default value. Allows optional parameters to exist.
+
     Args:
       struct: (dict) A dictionary representation of the JSON script.
       variables: (dict) A lookup table of all values to be replaced, key is name of field.
@@ -130,9 +136,13 @@ def json_set_fields(struct, variables):
   """
 
   if isinstance(struct, dict):
-    for key, value in struct.items():
+    for key, value in list(struct.items()):
       if isinstance(value, dict) and 'field' in value:
-        struct[key] = get_field_value(value['field'], variables)
+        variable_value = get_field_value(value['field'], variables)
+        if variable_value is None and value.get('default') is None:
+          del struct[key]
+        else:
+          struct[key] = get_field_value(value['field'], variables)
       else:
         json_set_fields(value, variables)
   elif isinstance(struct, list) or isinstance(struct, tuple):
@@ -202,3 +212,23 @@ def json_set_description(struct, variables):
     if 'description' in struct['script']:
       try: struct['script']['description'] = text_set_fields(struct['script']['description'], variables)
       except KeyError: pass
+
+
+def json_expand_includes(script):
+  expanded_tasks = []
+  for task in script['tasks']:
+    function, parameters = next(iter(task.items()))
+
+    if function == 'include':
+      tasks = get_project(UI_ROOT + '/' + parameters['script'])['tasks']
+      json_set_fields(tasks, parameters['parameters'])
+      for t in tasks:
+        function, parameters = next(iter(t.items()))
+        expanded_tasks.append({function:parameters})
+
+    else:
+      expanded_tasks.append({function:parameters})
+
+  script['tasks'] = expanded_tasks
+
+  return script

@@ -36,8 +36,8 @@ import json
 from time import sleep
 
 from starthinker.config import UI_ROOT, UI_SERVICE, UI_PROJECT
-from starthinker.script.parse import json_get_fields, json_set_fields
-from starthinker.script.run import script_read
+from starthinker.script.parse import json_get_fields, json_set_fields, json_expand_includes
+from starthinker.util.project import get_project
 
 CONFIG_FILE = UI_ROOT + '/tests/config.json'
 TEST_DIRECTORY = UI_ROOT + '/tests/scripts/'
@@ -51,7 +51,7 @@ def load_tests():
     for filename in files:
       if filename.endswith('.json'):
         print('LOADING', filename)
-        yield filename, script_read(TEST_DIRECTORY + filename)
+        yield filename, get_project(TEST_DIRECTORY + filename)
 
 
 def initialize_tests(scripts, tests):
@@ -110,8 +110,11 @@ def initialize_tests(scripts, tests):
     name = filename.split('.')[0]
     if tests and name not in tests: continue
 
-    # Set cal config field values into the script
+    # Set config field values into the script
     json_set_fields(script, fields.get(name, {}))
+
+    # Expand all includes to full recipe
+    json_expand_includes(script)
 
     with open(RECIPE_DIRECTORY + filename, 'w') as f:
       f.write(json.dumps(script, sort_keys=True, indent=2))

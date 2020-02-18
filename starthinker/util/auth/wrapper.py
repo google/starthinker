@@ -34,30 +34,29 @@ RE_CREDENTIALS_BUCKET = re.compile(r'[a-z0-9_\-\.]+:.+\.json')
 RE_CREDENTIALS_JSON = re.compile(r'^\s*\{.*\}\s*$', re.DOTALL)
 
 
-def CredentialsFlowWrapper(client, **kwargs):
+def CredentialsFlowWrapper(client, credentials_only=False, **kwargs):
 
   # relax scope comparison, order and default scopes are not critical
-
   os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
   # parse credentials from file or json
-
   if RE_CREDENTIALS_JSON.match(client):
     client_json = json.loads(client)
   else:
     with open(client, 'r') as json_file:
       client_json = json.load(json_file)
 
-  # construct flow
-
-  if 'installed' in client_json:
-    flow = InstalledAppFlow.from_client_config(client_json, APPLICATION_SCOPES, **kwargs)
+  if credentials_only:
+    return client_json
   else:
-    flow = Flow.from_client_config(client_json, APPLICATION_SCOPES, **kwargs)
+    if 'installed' in client_json:
+      flow = InstalledAppFlow.from_client_config(client_json, APPLICATION_SCOPES, **kwargs)
+    else:
+      flow = Flow.from_client_config(client_json, APPLICATION_SCOPES, **kwargs)
 
-  flow.user_agent = APPLICATION_NAME
+    flow.user_agent = APPLICATION_NAME
 
-  return flow
+    return flow
 
 
 def CredentialsServiceWrapper(service):

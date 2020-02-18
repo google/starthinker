@@ -77,6 +77,7 @@ import uuid
 import argparse
 
 from datetime import datetime 
+from json import JSONDecodeError
 from importlib import import_module
 
 from starthinker.util.debug import starthinker_trace_start
@@ -84,23 +85,34 @@ from starthinker.util.debug import starthinker_trace_start
 RE_UUID = re.compile(r'(\s*)("setup"\s*:\s*{)')
 
 
-def get_project(filepath, debug=False):
+def get_project(filepath):
   """Loads json for Project Class.  Intended for this module only. Available as helper.
 
      Able to load JSON with newlines ( strips all newlines before load ).
 
      Args:
       - filepath: (string) The local file path to the recipe json file to load.
-      - debug: (boolean) If true, newlines are not stripped to correctly identify error line numbers.
 
      Returns:
       Json of recipe file.
   """
 
   with open(filepath) as data_file:
-    data = data_file.read()
-    if not debug: data = data.replace('\n', ' ')
-    return json.loads(data)
+    data = data_file.read().replace('\n', ' ')
+
+    try:
+      return json.loads(data)
+
+    except JSONDecodeError as e:
+      with open(filepath) as data_file:
+        pos = 0
+        for count, line in enumerate(data_file.readlines(), 1):
+          pos += len(line) # do not add newlines, e.pos was run on a version wher enewlines were removed
+          if pos >= e.pos:
+            e.lineno = count
+            e.pos = pos
+            e.args = ('JSON ERROR: %s LINE: %s CHARACTER: %s ERROR: %s LINE: %s' % (filepath, count, pos - e.pos, str(e.msg), line.strip()),)
+            raise
 
 
 def utc_to_timezone(timestamp, timezone):

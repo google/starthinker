@@ -88,21 +88,7 @@ composer_credentials() {
   COMPOSER_GCS_BUCKET_PLUGINS_FOLDER=${COMPOSER_GCS_BUCKET}plugins
   echo "Data folder is ${COMPOSER_GCS_BUCKET_PLUGINS_FOLDER}"
   
-#  # Set-up a StarThinker service account
-#  echo "Setting up the StarThinker service account (${COMPOSER_SERVICE_ACCOUNT})"
-#  gcloud alpha iam service-accounts create ${COMPOSER_SERVICE_ACCOUNT} \
-#  --display-name="StarThinker on Composer (Service Account)" \
-#  --description="This service account is used by the StarThinker on Composer environment."
-#  gcloud projects add-iam-policy-binding ${STARTHINKER_PROJECT} \
-#  --member=serviceAccount:${COMPOSER_SERVICE_ACCOUNT}@${STARTHINKER_PROJECT}.iam.gserviceaccount.com \
-#  --role='roles/editor'
-  
-#  # Store the StarThinker Service Account credentials in the cloud bucket
-#  echo "Creating service account keys and storing them in the Composer environment"
-#  gcloud iam service-accounts keys create ${THIS_DIR}/starthinker_assets/service.json \
-#  --iam-account=${COMPOSER_SERVICE_ACCOUNT}@${STARTHINKER_PROJECT}.iam.gserviceaccount.com \
-#  --key-file-type=json
-
+  # Store the StarThinker Service credentials in the cloud bucket
   gsutil cp ${THIS_DIR}/starthinker_assets/service.json ${COMPOSER_GCS_BUCKET_DATA_FOLDER}
   
   # Store the StarThinker User credentials in the cloud bucket

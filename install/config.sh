@@ -283,6 +283,7 @@ setup_project() {
     echo "Using Existing Project ID"
   fi
 
+  gcloud init --console-only 
   gcloud config set project "${STARTHINKER_PROJECT}";
 
   echo "Done"
@@ -367,26 +368,19 @@ setup_credentials_service() {
 
     echo "Retrieve Service Account Key Credentials from: https://console.cloud.google.com/apis/credentials"
     echo ""
-    echo "IMPORTANT SETUP NOTES"
-    echo ""
-    echo " * In Google Cloud Console -> Services & APIs -> Create Credentials -> Service Credentials."
-    echo " * Choose JSON format."
-    echo " * Name the service 'starthinker' for ease of tracking later."
-    echo " * Assign project editor role or restrict roles to BigQuery / Storage editors."
-    echo " * Credentials will automatically download, open file and copy contents."
-    echo ""
 
-    echo "Paste credentials JSON here: ( CTRL+D to skip )"
+    gcloud alpha iam service-accounts create "starthinker" \
+    --display-name="StarThinker (Service Account)" \
+    --description="This service account is used by the StarThinker framework."
 
-    read_multiline "}"
+    gcloud projects add-iam-policy-binding "starthinker" \
+    --member=serviceAccount:starthinker@${STARTHINKER_PROJECT}.iam.gserviceaccount.com \
+    --role='roles/editor'
 
-    if [ "${read_multiline_return}" ];then
-      printf "%s" "$read_multiline_return" > "${STARTHINKER_SERVICE}"
-    fi
+    gcloud iam service-accounts keys create ${STARTHINKER_ROOT}/starthinker_assets/service.json \
+    --iam-account=starthinker@${STARTHINKER_PROJECT}.iam.gserviceaccount.com \
+    --key-file-type=json
 
-    if [ "${read_multiline_return}" ];then
-      printf "%s" "$read_multiline_return" > "${STARTHINKER_SERVICE}"
-    fi
   else
     echo "Using Existing Service Credentials"
   fi

@@ -655,7 +655,7 @@ def barnacle():
       rows
     )
   
-  if 'reports' in project.task['endpoints']:
+  if 'reports' in project.task['endpoints'] or project.task.get('reports') == True:
     # Reports
     rows = get_reports(accounts)
     put_rows(

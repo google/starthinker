@@ -211,7 +211,7 @@ def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = None)
 
     # single object
     else:
-      print('SP', storage_path)
+      #print('SP', storage_path)
       return filename, StringIO(urlopen(storage_path).read().decode('UTF-8'))
 
 

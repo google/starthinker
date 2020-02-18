@@ -17,12 +17,14 @@
   "tasks":[
     { "smartsheet": {
       "auth":"service",
-      "token":{"field":{ "name":"token", "kind":"string", "default":"", "description":"Retrieve from SmartSheet account settings." }},
-      "sheet":{"field":{ "name":"sheet", "kind":"string", "default":"", "description":"Retrieve from sheet properties." }},
+      "token":{"field":{ "name":"token", "kind":"string", "order":1, "default":"", "description":"Retrieve from SmartSheet account settings." }},
+      "sheet":{"field":{ "name":"sheet", "kind":"string", "order":2, "default":"", "description":"Retrieve from sheet properties." }},
+      "link":{ "field":{ "name":"link", "kind":"boolean", "order":6, "default":true, "description":"Add a link to each row as the first column." }},
       "out":{
         "bigquery":{
           "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "default":"", "description":"Existing BigQuery dataset." }},
-          "table":{"field":{ "name":"table", "kind":"string", "order":4, "default":"", "description":"Table to create from this report." }}
+          "table":{"field":{ "name":"table", "kind":"string", "order":4, "default":"", "description":"Table to create from this report." }},
+          "schema":{"field":{ "name":"schema", "kind":"json", "order":5, "default":"[]", "description":"Schema provided in JSON list format or empty list." }}
         }
       }
     }}

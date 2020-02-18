@@ -74,6 +74,9 @@ class Script:
   def exists(self):
     return self.script != {}
 
+  def get_tag(self):
+    return self.tag
+
   def get_link(self):
     return '%s/solution/%s/' % (settings.CONST_URL, self.tag, )
 
@@ -86,8 +89,8 @@ class Script:
   def get_link_colab(self):
     return 'https://colab.research.google.com/github/google/starthinker/blob/master/colabs/%s.ipynb' % self.get_tag()
 
-  def get_tag(self):
-    return self.tag
+  def get_link_airflow(self):
+    return 'https://github.com/google/starthinker/blob/master/dags/%s_dag.py' % self.get_tag()
 
   def get_name(self):
     return self.script.get('script', {}).get('title', '')

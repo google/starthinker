@@ -45,11 +45,11 @@
         "view":"Anonymize_View"
       }
     }},
-    { "anonymize":{
-      "auth":"user",
-      "bigquery":{
-        "from":{ "dataset":"Test_Anonymize_From" },
-        "to":{ "dataset":"Test_Anonymize_To" }
+    { "include":{
+      "script":"scripts/anonymize.json",
+      "parameters":{
+        "from_dataset":"Test_Anonymize_From",
+        "to_dataset":"Test_Anonymize_To"
       }
     }},
     { "test": {

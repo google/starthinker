@@ -7,7 +7,7 @@
     "title":"Bulkdozer",
     "description":"Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/bulkdozer.png",
-    "sample":"https://docs.google.com/spreadsheets/d/1E1uuxXqGbMq54BIWCLU0EXpM5OWmgN-JPH63OZ25ito",
+    "sample":"https://docs.google.com/spreadsheets/d/1YMpI3EceAy-rHtAv0Q5cg9atbroaPpL2-o0mau_XlXo",
     "documentation":"https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md",
     "categories":["automation", "trafficking"],
     "requirements":[ "cm", "sheets"],
@@ -26,7 +26,7 @@
       "csat improvement":90
     },
     "instructions":[
-      "Open the <a href='https://docs.google.com/spreadsheets/d/1E1uuxXqGbMq54BIWCLU0EXpM5OWmgN-JPH63OZ25ito/edit#gid=1037489387' target='_blank'>Bulkdozer 0.24</a> feed.",
+      "Open the <a href='https://docs.google.com/spreadsheets/d/1YMpI3EceAy-rHtAv0Q5cg9atbroaPpL2-o0mau_XlXo/edit' target='_blank'>Bulkdozer 0.25</a> feed.",
       "Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed.",
       "Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version.",
       "Under the Account ID field below, enter the your Campaign Manager Network ID.",

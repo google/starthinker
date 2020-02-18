@@ -66,11 +66,13 @@ class DAG_Factory():
     self.dag = None
 
 
-  def apply_credentails(user_conn_id=None, gcp_conn_id="google_cloud_default"):
+  def apply_credentails(self, user_conn_id=None, gcp_conn_id="google_cloud_default"):
     '''
        user_conn_id: The connection to use for user authentication.
        gcp_conn_id: The connection to use for service authentication.
     '''
+
+    self.recipe.setdefault('setup', {}).setdefault('auth', {})
 
     # If supplied, load "user" auth information into the recipe
     if user_conn_id:

@@ -23,6 +23,7 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 
 from starthinker.util.auth.wrapper import CredentialsFlowWrapper
+from starthinker.util.auth import get_client_type
 
 
 def permission_admin():

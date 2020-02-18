@@ -64,8 +64,9 @@ Before running this Airflow module...
 
 from starthinker_airflow.factory import DAG_Factory
  
-USER_CONN_ID = "google_cloud_default" # The connection to use for user authentication.
-GCP_CONN_ID = "" # The connection to use for service authentication.
+# Add the following credentials to your Airflow configuration.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = %s
 

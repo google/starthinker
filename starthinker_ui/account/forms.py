@@ -17,10 +17,10 @@
 ###########################################################################
 
 from django import forms
+from django.conf import settings
 from django.contrib.auth import authenticate, login
 
 from starthinker_ui.account.models import Account
-
 
 class LoginForm(forms.Form):
   email = forms.EmailField(required=True)

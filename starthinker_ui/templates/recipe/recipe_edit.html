@@ -103,6 +103,12 @@
         <a href="/recipe/download/{{ recipe.pk }}/" class="waves-effect waves-light btn blue form_button modal-trigger">
           Download <i class="material-icons right">file_download</i>
         </a>
+    
+        {% if form_script.instance.pk %}
+          <a class="btn waves-effect waves-light red darken-2" href="{{ form_script.instance.link_delete }}">
+            Delete <i class="material-icons right">delete</i>
+          </a>
+        {% endif %}
 
         {% comment %}
         <a href="{{ recipe.link_json }}" class="waves-effect waves-light btn blue form_button modal-trigger">
@@ -158,10 +164,12 @@
         </div>
 
         {% if manual %}
-          <p><br/>For scheduled recipes click &nbsp;<a href="/recipe/edit/"><i class="material-icons green-text">add_alarm</i></a></p>
+          <p><br/>For scheduled recipes click &nbsp;<a href="/recipe/edit/"><i class="material-icons blue-text">access_time</i></a></p>
         {% else %}
-          <p><br/>For manual recipes click &nbsp;<a href="/recipe/manual/"><i class="material-icons green-text">add_box</i></a></p>
+          <p><br/>For manual recipes click &nbsp;<a href="/recipe/manual/"><i class="material-icons blue-text">build</i></a></p>
         {% endif %}
+          <p><br/>To move a step click <i class="material-icons blue-text">drag_handle</i> to select a card.<br/>Then click another <i class="material-icons blue-text">drag_handle</i> to place it above that card.</a></p>
+          <p><br/>To delete a step click <i class="material-icons blue-text">delete</i> to mark a step for deletion. <br/>Then click save to commit the delete.</p>
 
       </div>
 
@@ -178,8 +186,8 @@
   
           {% for form in form_script.forms %}
             <div class="card-panel">
-              <i class="right material-icons form_move">drag_handle</i>
-              <i class="right material-icons form_delete" id="{{ form.prefix }}-script_delete">delete</i>
+              <i class="right material-icons form_move blue-text">drag_handle</i>
+              <i class="right material-icons form_delete blue-text" id="{{ form.prefix }}-script_delete">delete</i>
               <h3>{{ form.script.get_name }}</h3>
               <p class="flow-text">{{ form.get_description|safe }}</p>
               <ol>
@@ -195,12 +203,6 @@
           {% endfor %}
     
           <div id="insert_here"></div>
-    
-          {% if form_script.instance.pk %}
-            <a class="btn waves-effect waves-light red darken-2 right" href="{{ form_script.instance.link_delete }}">
-              Delete <i class="material-icons right">delete</i>
-            </a>
-          {% endif %}
     
           <button id="form_submit" class="btn blue waves-effect waves-light" type="submit" name="action">
             Save <i class="material-icons right">save</i>

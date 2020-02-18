@@ -32,7 +32,7 @@ class Command(BaseCommand):
 
         print('Writing: %s_dag.py' % script.get_tag())
 
-        with open('%s/starthinker_airflow/dags/%s_dag.py' % (settings.UI_ROOT, script.get_tag()), 'w') as dag_file:
+        with open('%s/dags/%s_dag.py' % (settings.UI_ROOT, script.get_tag()), 'w') as dag_file:
           dag_file.write(script_to_dag(
             script.get_tag(),
             script.get_name(),

@@ -43,7 +43,7 @@
           "dataset":{"field":{ "name":"from_dataset", "kind":"string", "order":2, "description":"Original dataset to copy from." }}
         },
         "to":{
-          "project":{"field":{ "name":"to_project", "kind":"string", "order":3, "description":"Anonymous data will be writen to." }},
+          "project":{"field":{ "name":"to_project", "kind":"string", "order":3, "default":null, "description":"Anonymous data will be writen to." }},
           "dataset":{"field":{ "name":"to_dataset", "kind":"string", "order":4, "description":"Anonymous data will be writen to." }}
         }
       }

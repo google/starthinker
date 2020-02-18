@@ -41,6 +41,7 @@ a StarThinker instance.
 - [Cheat Sheet](cheat_sheet.md) - List of common development and production commands.
 - [Cost Sheet](cost_sheet.md) - Operating expense estimates for StarThinker UI and Workers.
 - [Data Schemas](data_schemas.md) - Schemas used by various tasks.
+- [Command Line Helpers](helpers.md) - Utilities that speed up development at the command line.
 
 ---
 &copy; 2019 Google Inc. - Apache License, Version 2.0

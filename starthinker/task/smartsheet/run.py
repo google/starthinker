@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2020 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -36,11 +36,11 @@ SMARTSHEET_TYPES = {
   'CREATED_DATE':'DATE',
   'MODIFIED_BY':'STRING',
   'MODIFIED_DATE':'DATE',
-  'ABSTRACT_DATETIME':'DATETIME',
+  'ABSTRACT_DATETIME':'TIMESTAMP',
   'CHECKBOX':'STRING',
   'CONTACT_LIST':'STRING',
   'DATE':'DATE',
-  'DATETIME':'DATETIME',
+  'DATETIME':'TIMESTAMP',
   'DURATION':'STRING',
   'MULTI_CONTACT_LIST':'STRING',
   'MULTI_PICKLIST':'STRING',
@@ -53,14 +53,17 @@ def get_schema(sheet):
   return [{ "name":column_header_sanitize(column.title), "type":SMARTSHEET_TYPES.get(str(column.type), "STRING"), "mode":"NULLABLE" } for column in sheet.columns]
 
 
-def get_rows(sheet, header=True):
+def get_rows(sheet, header=True, link=True):
   columns = [{'title':column.title, 'id':column.id} for column in sheet.columns]
 
   if header:
-    yield [column['title'] for column in columns]
+    cells = [column['title'] for column in columns]
+    if link: cells.insert(0, 'rowPermalink')
+    yield cells
 
   for row in sheet.rows:
-    cells =  [row.get_column(column['id']).display_value for column in columns]
+    cells =  [row.get_column(column['id']).value for column in columns]
+    if link: cells.insert(0, row.permalink)
     yield cells  
 
     
@@ -68,16 +71,18 @@ def get_rows(sheet, header=True):
 def smartsheet():
   if project.verbose: print('Smartsheet')
 
+  link = project.task.get('link', True)
+
   smart = Smartsheet(access_token=project.task['token'])
-
   smart.errors_as_exceptions(True)
-  sheet = smart.Sheets.get_sheet(project.task['sheet'])
 
-  default_schema = get_schema(sheet)
-  print('DEFAULT_SCHEMA = %s' % json.dumps(default_schema, indent=2))
-  project.task.setdefault('out', {}).setdefault('bigquery', {}).setdefault('schema', default_schema)
+  sheet = smart.Sheets.get_sheet(project.task['sheet'], include=("rowPermalink" if link else ''))
+  rows = get_rows(sheet, False, link) 
 
-  rows = get_rows(sheet, False) 
+  project.task['out'].setdefault('bigquery', {}).setdefault('schema', get_schema(sheet))
+  print('SCHEMA = %s' % json.dumps(project.task['out']['bigquery']['schema'], indent=2))
+
+  if link: project.task['out']['bigquery']['schema'].insert(0, { "name":"rowPermalink", "type":"STRING", "mode":"NULLABLE" })
 
   if rows: put_rows(project.task['auth'], project.task['out'], rows)
 
