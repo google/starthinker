@@ -35,7 +35,7 @@ Before running this Airflow module...
 
 CM User Audit
 
-Gives DCM clients ability to see which profiles have access to which parts of an account. Loads DCM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.
+Gives CM clients ability to see which profiles have access to which parts of an account. Loads CM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.
 
 Wait for <b>BigQuery->UNDEFINED->UNDEFINED->CM_*</b> to be created.
 Wait for <b>BigQuery->UNDEFINED->UNDEFINED->Barnacle_*</b> to be created, then copy and connect the following data sources.
@@ -64,7 +64,7 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 INPUTS = {
   'dataset': '',  # Place where tables will be written in BigQuery.
   'recipe_project': '',  # Project where BigQuery dataset will be created.
-  'accounts': [],  # Comma separated DCM account ids.
+  'accounts': [],  # Comma separated CM account ids.
   'reports': False,  # Include report audit, consumes significant API and data.
 }
 
@@ -113,7 +113,7 @@ TASKS = [
             'order': 2,
             'default': [
             ],
-            'description': 'Comma separated DCM account ids.'
+            'description': 'Comma separated CM account ids.'
           }
         }
       },
@@ -158,7 +158,7 @@ TASKS = [
             'order': 2,
             'default': [
             ],
-            'description': 'Comma separated DCM account ids.'
+            'description': 'Comma separated CM account ids.'
           }
         }
       },

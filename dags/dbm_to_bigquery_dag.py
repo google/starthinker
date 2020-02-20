@@ -33,9 +33,9 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DBM To BigQuery
+DV360 To BigQuery
 
-Move existing DBM reports into a BigQuery table.
+Move existing DV360 reports into a BigQuery table.
 
 Specify either report name or report id to move a report.
 A schema is recommended, if not provided it will be guessed.
@@ -50,7 +50,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'dbm_report_id': '',  # DBM report ID given in UI, not needed if name used.
+  'dbm_report_id': '',  # DV360 report ID given in UI, not needed if name used.
   'dbm_report_name': '',  # Name of report, not needed if ID used.
   'dbm_dataset': '',  # Existing BigQuery dataset.
   'dbm_table': '',  # Table to create from this report.
@@ -69,7 +69,7 @@ TASKS = [
             'kind': 'integer',
             'order': 1,
             'default': '',
-            'description': 'DBM report ID given in UI, not needed if name used.'
+            'description': 'DV360 report ID given in UI, not needed if name used.'
           }
         },
         'name': {

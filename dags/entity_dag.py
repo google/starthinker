@@ -50,7 +50,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'partners': '[]',  # Comma sparated list of DBM partners.
+  'partners': '[]',  # Comma sparated list of DV360 partners.
   'dataset': '',  # BigQuery dataset to write tables for each entity.
 }
 
@@ -102,7 +102,7 @@ TASKS = [
             'kind': 'integer_list',
             'order': 1,
             'default': '[]',
-            'description': 'Comma sparated list of DBM partners.'
+            'description': 'Comma sparated list of DV360 partners.'
           }
         }
       },

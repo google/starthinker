@@ -35,7 +35,7 @@ Before running this Airflow module...
 
 Transparency Dashboard
 
-Reports the percentage of DCM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.
+Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.
 
 Wait for <a href='https://console.cloud.google.com/bigquery?project=UNDEFINED&d=UNDEFINED' target='_blank'>BigQuery : UNDEFINED</a> : UNDEFINED : UNDEFINED</a> to be created.
 Copy DataStudio <a href='https://datastudio.google.com/c/u/0/datasources/1Az6d9loAHo69GSIyKUfusrtyf_IDqTVs' target='_blank'>Transparency Combined KPI</a> and connect.
@@ -55,8 +55,8 @@ INPUTS = {
   'dataset': '',  # Place where tables will be written in BigQuery.
   'recipe_name': '',  # Name of report in CM, should be unique.
   'recipe_project': '',  # Project where BigQuery dataset will be created.
-  'dcm_account': '',  # DCM account id of client.
-  'dcm_advertisers': '',  # Comma delimited list of DCM advertiser ids.
+  'dcm_account': '',  # CM account id of client.
+  'dcm_advertisers': '',  # Comma delimited list of CM advertiser ids.
 }
 
 TASKS = [
@@ -90,7 +90,7 @@ TASKS = [
             'kind': 'integer',
             'order': 2,
             'default': '',
-            'description': 'DCM account id of client.'
+            'description': 'CM account id of client.'
           }
         },
         'filters': {
@@ -101,7 +101,7 @@ TASKS = [
                 'kind': 'integer_list',
                 'order': 3,
                 'default': '',
-                'description': 'Comma delimited list of DCM advertiser ids.'
+                'description': 'Comma delimited list of CM advertiser ids.'
               }
             }
           }
@@ -180,7 +180,7 @@ TASKS = [
             'kind': 'integer',
             'order': 2,
             'default': '',
-            'description': 'DCM account id of client.'
+            'description': 'CM account id of client.'
           }
         },
         'filters': {
@@ -191,7 +191,7 @@ TASKS = [
                 'kind': 'integer_list',
                 'order': 3,
                 'default': '',
-                'description': 'Comma delimited list of DCM advertiser ids.'
+                'description': 'Comma delimited list of CM advertiser ids.'
               }
             }
           }
@@ -264,7 +264,7 @@ TASKS = [
             'kind': 'integer',
             'order': 2,
             'default': '',
-            'description': 'DCM account id of client.'
+            'description': 'CM account id of client.'
           }
         },
         'name': {
@@ -306,7 +306,7 @@ TASKS = [
             'kind': 'integer',
             'order': 2,
             'default': '',
-            'description': 'DCM account id of client.'
+            'description': 'CM account id of client.'
           }
         },
         'name': {

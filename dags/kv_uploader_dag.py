@@ -35,7 +35,7 @@ Before running this Airflow module...
 
 Tag Key Value Uploader
 
-A tool for bulk editing key value pairs for DCM pllacements.
+A tool for bulk editing key value pairs for CM pllacements.
 
 Add this card to a recipe and save it.
 Then click <strong>Run Now</strong> to deploy.

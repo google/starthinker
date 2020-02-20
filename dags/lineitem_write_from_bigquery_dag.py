@@ -35,7 +35,7 @@ Before running this Airflow module...
 
 Line Item From BigQuery
 
-Upload Line Items From BigQuery To DBM.
+Upload Line Items From BigQuery To DV360.
 
 Specify the table or view where the lineitem data is defined.
 The schema should match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>.

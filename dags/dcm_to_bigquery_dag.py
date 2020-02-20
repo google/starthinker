@@ -33,14 +33,14 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DCM To BigQuery
+CM To BigQuery
 
-Move existing DCM report into a BigQuery table.
+Move existing CM report into a BigQuery table.
 
 Specify an account id.
 Specify either report name or report id to move a report.
 The most recent valid file will overwrite the table.
-Schema is pulled from the official DCM specification.
+Schema is pulled from the official CM specification.
 
 '''
 
@@ -51,9 +51,9 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'account': '',  # DCM network id.
-  'report_id': '',  # DCM report id, empty if using name .
-  'report_name': '',  # DCM report name, empty if using id instead.
+  'account': '',  # CM network id.
+  'report_id': '',  # CM report id, empty if using name .
+  'report_name': '',  # CM report name, empty if using id instead.
   'dataset': '',  # Dataset to be written to in BigQuery.
   'table': '',  # Table to be written to in BigQuery.
   'is_incremental_load': False,  # Clear data in destination table during this report's time period, then append report data to existing table.
@@ -70,7 +70,7 @@ TASKS = [
             'kind': 'integer',
             'order': 2,
             'default': '',
-            'description': 'DCM network id.'
+            'description': 'CM network id.'
           }
         },
         'report_id': {
@@ -79,7 +79,7 @@ TASKS = [
             'kind': 'integer',
             'order': 3,
             'default': '',
-            'description': 'DCM report id, empty if using name .'
+            'description': 'CM report id, empty if using name .'
           }
         },
         'name': {
@@ -88,7 +88,7 @@ TASKS = [
             'kind': 'string',
             'order': 4,
             'default': '',
-            'description': 'DCM report name, empty if using id instead.'
+            'description': 'CM report name, empty if using id instead.'
           }
         }
       },

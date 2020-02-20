@@ -33,9 +33,9 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DCM Report
+CM Report
 
-Create a DCM report from a JSON definition.
+Create a CM report from a JSON definition.
 
 Add a an account as [account_id]@[profile_id]
 Fetch the report JSON definition. Arguably could be better.

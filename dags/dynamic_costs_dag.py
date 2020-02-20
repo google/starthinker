@@ -35,13 +35,13 @@ Before running this Airflow module...
 
 Dynamic Costs Reporting
 
-Calculate DBM cost at the dynamic creative combination level.
+Calculate DV360 cost at the dynamic creative combination level.
 
 Add a sheet URL. This is where you will enter advertiser and campaign level details.
-Specify the DCM network ID.
+Specify the CM network ID.
 Click run now once, and a tab called <strong>Dynamic Costs</strong> will be added to the sheet with instructions.
 Follow the instructions on the sheet; this will be your configuration.
-StarThinker will create two or three (depending on the case) reports in DCM named <strong>Dynamic Costs - ...</strong>.
+StarThinker will create two or three (depending on the case) reports in CM named <strong>Dynamic Costs - ...</strong>.
 Wait for <b>BigQuery->UNDEFINED->UNDEFINED->Dynamic_Costs_Analysis</b> to be created or click Run Now.
 Copy <a href='https://datastudio.google.com/open/1vBvBEiMbqCbBuJTsBGpeg8vCLtg6ztqA' target='_blank'>Dynamic Costs Sample Data ( Copy From This )</a>.
 Click Edit Connection, and Change to <b>BigQuery->UNDEFINED->UNDEFINED->Dynamic_Costs_Analysis</b>.

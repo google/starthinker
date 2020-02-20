@@ -59,11 +59,11 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 INPUTS = {
   'dataset': '',  # Place where tables will be written in BigQuery.
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
-  'dcm_account': '',  # DCM account id of client.
-  'dcm_advertisers': [],  # Comma delimited list of DCM advertiser ids.
-  'dcm_floodlight': '',  # DCM floodlight configuration id.
-  'dbm_partners': [],  # DBM partner id.
-  'dbm_advertisers': [],  # Comma delimited list of DBM advertiser ids.
+  'dcm_account': '',  # CM account id of client.
+  'dcm_advertisers': [],  # Comma delimited list of CM advertiser ids.
+  'dcm_floodlight': '',  # CM floodlight configuration id.
+  'dbm_partners': [],  # DV360 partner id.
+  'dbm_advertisers': [],  # Comma delimited list of DV360 advertiser ids.
 }
 
 TASKS = [
@@ -91,7 +91,7 @@ TASKS = [
             'kind': 'integer',
             'order': 2,
             'default': '',
-            'description': 'DCM account id of client.'
+            'description': 'CM account id of client.'
           }
         },
         'filters': {
@@ -103,7 +103,7 @@ TASKS = [
                 'order': 3,
                 'default': [
                 ],
-                'description': 'Comma delimited list of DCM advertiser ids.'
+                'description': 'Comma delimited list of CM advertiser ids.'
               }
             }
           }
@@ -116,7 +116,7 @@ TASKS = [
               'name': 'dataset',
               'kind': 'string',
               'prefix': 'CM_Browser_Delivery_',
-              'description': 'Report in DCM, should be unique.'
+              'description': 'Report in CM, should be unique.'
             }
           },
           'accountId': {
@@ -125,7 +125,7 @@ TASKS = [
               'kind': 'integer',
               'order': 2,
               'default': '',
-              'description': 'DCM account id of client.'
+              'description': 'CM account id of client.'
             }
           },
           'criteria': {
@@ -187,7 +187,7 @@ TASKS = [
             'kind': 'integer',
             'order': 2,
             'default': '',
-            'description': 'DCM account id of client.'
+            'description': 'CM account id of client.'
           }
         },
         'name': {
@@ -195,7 +195,7 @@ TASKS = [
             'name': 'dataset',
             'kind': 'string',
             'prefix': 'CM_Browser_Delivery_',
-            'description': 'Report in DCM, should be unique.'
+            'description': 'Report in CM, should be unique.'
           }
         }
       },
@@ -225,7 +225,7 @@ TASKS = [
             'kind': 'integer',
             'order': 2,
             'default': '',
-            'description': 'DCM account id of client.'
+            'description': 'CM account id of client.'
           }
         },
         'body': {
@@ -234,7 +234,7 @@ TASKS = [
               'name': 'dataset',
               'kind': 'string',
               'prefix': 'CM_Browser_Floodlight_',
-              'description': 'Report in DCM, should be unique.'
+              'description': 'Report in CM, should be unique.'
             }
           },
           'type': 'FLOODLIGHT',
@@ -245,7 +245,7 @@ TASKS = [
               'kind': 'integer',
               'order': 2,
               'default': '',
-              'description': 'DCM account id of client.'
+              'description': 'CM account id of client.'
             }
           },
           'floodlightCriteria': {
@@ -300,7 +300,7 @@ TASKS = [
                   'kind': 'integer',
                   'order': 4,
                   'default': '',
-                  'description': 'DCM floodlight configuration id.'
+                  'description': 'CM floodlight configuration id.'
                 }
               }
             },
@@ -328,7 +328,7 @@ TASKS = [
             'kind': 'integer',
             'order': 2,
             'default': '',
-            'description': 'DCM account id of client.'
+            'description': 'CM account id of client.'
           }
         },
         'name': {
@@ -336,7 +336,7 @@ TASKS = [
             'name': 'dataset',
             'kind': 'string',
             'prefix': 'CM_Browser_Floodlight_',
-            'description': 'Report in DCM, should be unique.'
+            'description': 'Report in CM, should be unique.'
           }
         }
       },
@@ -369,7 +369,7 @@ TASKS = [
                 'order': 5,
                 'default': [
                 ],
-                'description': 'DBM partner id.'
+                'description': 'DV360 partner id.'
               }
             }
           },
@@ -381,7 +381,7 @@ TASKS = [
                 'order': 6,
                 'default': [
                 ],
-                'description': 'Comma delimited list of DBM advertiser ids.'
+                'description': 'Comma delimited list of DV360 advertiser ids.'
               }
             }
           }
@@ -401,7 +401,7 @@ TASKS = [
                 'name': 'dataset',
                 'kind': 'string',
                 'prefix': 'DV360_Browser_Delivery_',
-                'description': 'Name of report in DBM, should be unique.'
+                'description': 'Name of report in DV360, should be unique.'
               }
             },
             'dataRange': 'LAST_365_DAYS',
@@ -440,7 +440,7 @@ TASKS = [
             'name': 'dataset',
             'kind': 'string',
             'prefix': 'DV360_Browser_Delivery_',
-            'description': 'DBM report name, should be unique.'
+            'description': 'DV360 report name, should be unique.'
           }
         }
       },

@@ -33,9 +33,9 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DBM To Sheets
+DV360 To Sheets
 
-Move existing DBM report into a Sheets tab.
+Move existing DV360 report into a Sheets tab.
 
 Specify either report name or report id to move a report.
 The most recent valid file will be moved to the sheet.
@@ -49,7 +49,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'report_id': '',  # DBM report ID given in UI, not needed if name used.
+  'report_id': '',  # DV360 report ID given in UI, not needed if name used.
   'report_name': '',  # Name of report, not needed if ID used.
   'sheet': '',  # Full URL to sheet being written to.
   'tab': '',  # Existing tab in sheet to write to.
@@ -66,7 +66,7 @@ TASKS = [
             'kind': 'integer',
             'order': 1,
             'default': '',
-            'description': 'DBM report ID given in UI, not needed if name used.'
+            'description': 'DV360 report ID given in UI, not needed if name used.'
           }
         },
         'name': {

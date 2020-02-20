@@ -33,14 +33,14 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DCM Standard Bulk
+CM Standard Bulk
 
-Aggregate multiple standard DCM reports into one BigQuery or Sheet.
+Aggregate multiple standard CM reports into one BigQuery or Sheet.
 
 See API docs for <a href='https://developers.google.com/doubleclick-advertisers/v3.2/dimensions' target='_blank'>Metrics</a>.
-DCM report name format '[Report Name] [Account ID] ( StarThinker )'.
+CM report name format '[Report Name] [Account ID] ( StarThinker )'.
 Specify either bucket and path or dataset and table.
-Schema is pulled from the official DCM specification.
+Schema is pulled from the official CM specification.
 
 '''
 
@@ -59,7 +59,7 @@ INPUTS = {
   'dataset': '',
   'table': '',
   'bucket': '',
-  'path': 'DCM_Report',
+  'path': 'CM_Report',
   'delete': False,
   'datastudio': True,
 }
@@ -170,7 +170,7 @@ TASKS = [
               'name': 'path',
               'kind': 'string',
               'order': 8,
-              'default': 'DCM_Report'
+              'default': 'CM_Report'
             }
           }
         }

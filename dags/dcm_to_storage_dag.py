@@ -33,14 +33,14 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DCM To Storage
+CM To Storage
 
-Move existing DCM report into a Storage bucket.
+Move existing CM report into a Storage bucket.
 
 Specify an account id.
 Specify either report name or report id to move a report.
 The most recent file will be moved to the bucket.
-Schema is pulled from the official DCM specification.
+Schema is pulled from the official CM specification.
 
 '''
 
@@ -55,7 +55,7 @@ INPUTS = {
   'report_id': '',
   'report_name': '',
   'bucket': '',
-  'path': 'DCM_Report',
+  'path': 'CM_Report',
 }
 
 TASKS = [
@@ -103,7 +103,7 @@ TASKS = [
               'name': 'path',
               'kind': 'string',
               'order': 6,
-              'default': 'DCM_Report'
+              'default': 'CM_Report'
             }
           }
         }

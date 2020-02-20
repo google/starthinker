@@ -33,14 +33,14 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DCM To Sheets
+CM To Sheets
 
-Move existing DCM report into a Sheet tab.
+Move existing CM report into a Sheet tab.
 
 Specify an account id.
 Specify either report name or report id to move a report.
 The most recent valid file will be moved to the sheet.
-Schema is pulled from the official DCM specification.
+Schema is pulled from the official CM specification.
 
 '''
 

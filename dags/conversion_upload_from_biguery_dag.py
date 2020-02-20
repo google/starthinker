@@ -35,9 +35,9 @@ Before running this Airflow module...
 
 Conversion Upload BigQuery
 
-Move from BigQuery to DCM.
+Move from BigQuery to CM.
 
-Specify a DCM Account ID, Floodligh Activity ID and Conversion Type.
+Specify a CM Account ID, Floodligh Activity ID and Conversion Type.
 Include BigQuery dataset and table.
 Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId
 Include encryption information if using encryptedUserId or encryptedUserIdCandidates.

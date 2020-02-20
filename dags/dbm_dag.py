@@ -33,14 +33,14 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DBM Report
+DV360 Report
 
-Create a DBM report.
+Create a DV360 report.
 
-Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DBM API</a> to build a report.
+Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DV360 API</a> to build a report.
 Copy and paste the JSON definition of a report.
 The report is only created, use a move script to move it.
-To reset a report, delete it from DBM reporting.
+To reset a report, delete it from DV360 reporting.
 
 '''
 

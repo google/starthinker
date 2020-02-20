@@ -33,13 +33,13 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DCM API To BigQuery
+CM API To BigQuery
 
-Write the current state of accounts, subaccounts, profiles, advertisers, campaigns, sites, roles, and reports to BigQuery for a given list of DCM accounts.
+Write the current state of accounts, subaccounts, profiles, advertisers, campaigns, sites, roles, and reports to BigQuery for a given list of CM accounts.
 
 Specify the name of the dataset, several tables will be created here.
 If dataset exists, it is inchanged.
-Add DCM account ids for the accounts to pull data from.
+Add CM account ids for the accounts to pull data from.
 
 '''
 
@@ -52,7 +52,7 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 INPUTS = {
   'endpoint': '',
   'dataset': '',  # Google BigQuery dataset to create tables in.
-  'accounts': '',  # Comma separated DCM account ids.
+  'accounts': '',  # Comma separated CM account ids.
 }
 
 TASKS = [
@@ -126,7 +126,7 @@ TASKS = [
             'kind': 'integer_list',
             'order': 2,
             'default': '',
-            'description': 'Comma separated DCM account ids.'
+            'description': 'Comma separated CM account ids.'
           }
         }
       },

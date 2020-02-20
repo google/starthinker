@@ -37,7 +37,7 @@ Next, learn how to [deploy a recipe](ui_recipe.md).
 
 ## Verification Warning
 
-If you are not running gSuite, when you log into the UI you will be prompted with a [verification warning](https://github.com/google/starthinker/raw/master/tutorials/images/dv360_feature_adoption.png).
+If you are not running gSuite, when you log into the UI you will be prompted with a [verification warning](https://github.com/google/starthinker/raw/master/tutorials/images/verification.png).
 If you are running gSuite, you can select Internal Deployment and avoid the warning.
 
 

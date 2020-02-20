@@ -33,9 +33,9 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DCM Report Run
+CM Report Run
 
-Trigger a DCM report run
+Trigger a CM report run
 
 Specify an account id.
 Specify either report name or report id to run.
@@ -49,9 +49,9 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'account': '',  # DCM network id.
-  'report_id': '',  # DCM report id, empty if using name.
-  'report_name': '',  # DCM report name, empty if using id instead.
+  'account': '',  # CM network id.
+  'report_id': '',  # CM report id, empty if using name.
+  'report_name': '',  # CM report name, empty if using id instead.
 }
 
 TASKS = [
@@ -66,7 +66,7 @@ TASKS = [
             'kind': 'integer',
             'order': 1,
             'default': '',
-            'description': 'DCM network id.'
+            'description': 'CM network id.'
           }
         },
         'report_id': {
@@ -75,7 +75,7 @@ TASKS = [
             'kind': 'integer',
             'order': 2,
             'default': '',
-            'description': 'DCM report id, empty if using name.'
+            'description': 'CM report id, empty if using name.'
           }
         },
         'name': {
@@ -84,7 +84,7 @@ TASKS = [
             'kind': 'string',
             'order': 3,
             'default': '',
-            'description': 'DCM report name, empty if using id instead.'
+            'description': 'CM report name, empty if using id instead.'
           }
         }
       }
