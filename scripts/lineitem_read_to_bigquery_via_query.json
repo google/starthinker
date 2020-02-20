@@ -4,7 +4,7 @@
     "copyright":"Copyright 2018 Google Inc.",
     "open":true,
     "icon":"arrow_downward",
-    "product":"DBM",
+    "product":"DV360",
     "title":"Line Item To BigQuery Via Query",
     "description":"Move using an Id query.",
     "instructions":[

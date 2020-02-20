@@ -2,7 +2,7 @@
 
 ---
 ### Is gSuite needed to deploy StarThinker?
-No, only the [Enterprise Deployment](deploy_enterprise.md), with multiple users, requires gSuite or a verified domain.  StarThinker can also be deployed with [Data Scientist Deployment](deploy_scientist.md), with a single user, which will have the full UI but limited to a single authenticated user.
+No, but without it users logging in will have to click past a [verification warning](https://github.com/google/starthinker/raw/master/tutorials/images/dv360_feature_adoption.png).
 
 ---
 ### Worker jobs are timing out, what do I do?
@@ -56,7 +56,7 @@ xcode-select --install
 ```
 
 ### I'm getting an admin_policy_enforced error.
-Odds are you need to active [gSuite](https://gsuite.google.com) for your Google Cloud Project, this error can ONLY be cleared with a gSuite setup . The error may also occur if the [StarThinker Scopes](../starthinker/config.py) do not match the [oAuth Consent Screen](https://console.cloud.google.com/apis/credentials/consent). This errro ONLY occurs in the [Enterprise Deployment](deploy_enterprise.md), try the [Data Scientist Deployment](deploy_scientist.md) instead.
+The error may occur if the [StarThinker Scopes](../starthinker/config.py) do not match the [oAuth Consent Screen](https://console.cloud.google.com/apis/credentials/consent). 
 
 ### I'm getting an SSH Connection Timeout error.
 Odds are your firewall settings are not up to date for the machine you're on.  To enable ssh access to other machines, add the current machines IP to the firewall rules by running...
@@ -65,4 +65,4 @@ gcloud compute firewall-rules create default-allow-ssh --allow tcp:22
 ```
 
 --- 
-&copy; 2019 Google Inc. - Apache License, Version 2.0
+&copy; 2020 Google LLC - Apache License, Version 2.0

@@ -4,7 +4,7 @@
     "copyright":"Copyright 2018 Google Inc.",
     "open":true,
     "icon":"donut_large",
-    "product":"DBM",
+    "product":"DV360",
     "title":"SDF Download",
     "description":"Download SDF reports into a BigQuery table.",
     "instructions":[

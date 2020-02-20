@@ -551,7 +551,7 @@ def get_schema(rows, header=True, infer_type=True):
     if not first and header:
       for index, value in enumerate(row):
         # if null, set only mode
-        if value == '':
+        if value is None or value == '':
           schema[index]['mode'] = 'NULLABLE'
         else:
           column_type = type_to_bq.get(type(value), 'STRING')

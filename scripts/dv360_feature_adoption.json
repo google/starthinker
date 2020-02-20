@@ -2,7 +2,7 @@
   "script":{
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
-    "product":"DBM",
+    "product":"DV360",
     "icon":"cloud_queue",
     "title":"DV360 Feature Adoption Dashboard",
     "description":"Tracks revenue spent on various DV360 features and compares to performance metrics.",
@@ -26,12 +26,13 @@
       "csat improvement":30
     },
     "instructions":[
-      "Wait for <b>BigQuery->StarThinker Data->{field:recipe_name}->DV360_Feature_Analysis</b> to be created.",
+      "IMPORTANT: You must add Advertiser IDS, we're still working on a partner level report.",
+      "Wait for <b>BigQuery->{field:recipe_project}->{field:recipe_name}->DV360_Feature_Analysis</b> dataset to be created.",
       "Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets",
       "Copy <a href='https://datastudio.google.com/c/u/0/datasources/1IPh_zqjFeZTemq6iTUvc3JvZqD0Frneo' target='_blank'>Sample DV360 Feature Adoption Analysis</a>.",
-      "Click Edit Connection, and change to <b>BigQuery->StarThinker Data->(field:recipe_name}->Sample DV360 Feature Adoption Analysis</b>.",
+      "Click Edit Connection, find above dataset, and choose <b>Sample DV360 Feature Adoption Analysis</b>.",
       "Copy <a href='https://datastudio.google.com/c/u/0/datasources/1vQMz7O05gaXRX_8ZF7kKXmfaBLjVv07H' target='_blank'>Sample DV360 Feature Adoption Environment</a>.",
-      "Click Edit Connection, and change to <b>BigQuery->StarThinker Data->(field:recipe_name}->Sample DV360 Feature Adoption Analysis</b>.",
+      "Click Edit Connection, find above dataset, and choose <b>Sample DV360 Feature Adoption Environment</b>.  This report takes a long time to run, on your first setup you may have to wait a few hours for this step to complete.",
       "Copy <a href='https://datastudio.google.com/open/1uZ4WtxiRsBu54gxFdYAzPfW2yGRZlWn0?usp=sharing' target='_blank'>Sample DV360 Feature Adoption Report</a>.",
       "When prompted choose the new data source you just created.",
       "Or give these intructions to the client."
@@ -55,18 +56,18 @@
       "report": {
         "filters": {
            "FILTER_PARTNER": {
-             "values": {"field":{ "name":"partners", "kind":"integer_list", "order":5, "default":[], "description":"DBM partner id." }}
+             "values": {"field":{ "name":"partners", "kind":"integer_list", "order":5, "default":[], "description":"DV360 partner id." }}
            },
            "FILTER_ADVERTISER": {
-             "values": {"field":{ "name":"advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DBM advertiser ids." }}
+             "values": {"field":{ "name":"advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DV360 advertiser ids." }}
            }
         },
         "body": {
           "timezoneCode":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Los_Angeles" }},
           "metadata": {
-            "dataRange": "LAST_365_DAYS",
+            "dataRange": "LAST_30_DAYS",
             "format": "CSV",
-            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"DV360_Feature_Spend_", "description":"Name of report in DBM, should be unique." }}
+            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"DV360_Feature_Spend_", "description":"Name of report in DV360, should be unique." }}
           },
           "params": {
             "type": "TYPE_GENERAL",
@@ -97,10 +98,54 @@
       }
     }},
     { "dbm": {
+      "hour":[2],
+      "auth": "user",
+      "report": {
+        "filters": {
+           "FILTER_PARTNER": {
+             "values": {"field":{ "name":"partners", "kind":"integer_list", "order":5, "default":[], "description":"DV360 partner id." }}
+           },
+           "FILTER_ADVERTISER": {
+             "values": {"field":{ "name":"advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DV360 advertiser ids." }}
+           }
+        },
+        "body": {
+          "timezoneCode":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Los_Angeles" }},
+          "metadata": {
+            "dataRange": "LAST_30_DAYS",
+            "format": "CSV",
+            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"DV360_Feature_Environment_", "description":"Name of report in DV360, should be unique." }}
+          },
+          "params": {
+            "type": "TYPE_GENERAL",
+            "groupBys": [
+              "FILTER_ADVERTISER",
+              "FILTER_ADVERTISER_CURRENCY",
+              "FILTER_INSERTION_ORDER",
+              "FILTER_LINE_ITEM",
+              "FILTER_DEVICE_TYPE",
+              "FILTER_PAGE_LAYOUT",
+              "FILTER_DATE"
+            ],
+            "metrics": [
+              "METRIC_IMPRESSIONS",
+              "METRIC_BILLABLE_IMPRESSIONS",
+              "METRIC_CLICKS",
+              "METRIC_TOTAL_CONVERSIONS",
+              "METRIC_LAST_CLICKS",
+              "METRIC_LAST_IMPRESSIONS",
+              "METRIC_REVENUE_ADVERTISER",
+              "METRIC_MEDIA_COST_ADVERTISER"
+            ]
+          }
+        }
+      }
+    }},
+    { "dbm": {
       "hour":[6],
       "auth": "user", 
       "report": {
-        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"DV360_Feature_Spend_", "description":"Name of report in DBM, should be unique." }}
+        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"DV360_Feature_Spend_", "description":"Name of report in DV360, should be unique." }}
       },
       "out": {
         "bigquery": {
@@ -140,54 +185,10 @@
       }
     }},
     { "dbm": {
-      "hour":[2],
-      "auth": "user",
-      "report": {
-        "filters": {
-           "FILTER_PARTNER": {
-             "values": {"field":{ "name":"partners", "kind":"integer_list", "order":5, "default":[], "description":"DBM partner id." }}
-           },
-           "FILTER_ADVERTISER": {
-             "values": {"field":{ "name":"advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DBM advertiser ids." }}
-           }
-        },
-        "body": {
-          "timezoneCode":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Los_Angeles" }},
-          "metadata": {
-            "dataRange": "LAST_365_DAYS",
-            "format": "CSV",
-            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"DV360_Feature_Environment_", "description":"Name of report in DBM, should be unique." }}
-          },
-          "params": {
-            "type": "TYPE_GENERAL",
-            "groupBys": [
-              "FILTER_ADVERTISER",
-              "FILTER_ADVERTISER_CURRENCY",
-              "FILTER_INSERTION_ORDER",
-              "FILTER_LINE_ITEM",
-              "FILTER_DEVICE_TYPE",
-              "FILTER_PAGE_LAYOUT",
-              "FILTER_DATE"
-            ],
-            "metrics": [
-              "METRIC_IMPRESSIONS",
-              "METRIC_BILLABLE_IMPRESSIONS",
-              "METRIC_CLICKS",
-              "METRIC_TOTAL_CONVERSIONS",
-              "METRIC_LAST_CLICKS",
-              "METRIC_LAST_IMPRESSIONS",
-              "METRIC_REVENUE_ADVERTISER",
-              "METRIC_MEDIA_COST_ADVERTISER"
-            ]
-          }
-        }
-      }
-    }},
-    { "dbm": {
       "hour":[6],
       "auth": "user", 
       "report": {
-        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"DV360_Feature_Environment_", "description":"Name of report in DBM, should be unique." }}
+        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"DV360_Feature_Environment_", "description":"Name of report in DV360, should be unique." }}
       },
       "out": {
         "bigquery": {
@@ -231,7 +232,7 @@
       "file_types": ["LINE_ITEM"],
       "filter_type": "ADVERTISER_ID",
       "read": {
-        "filter_ids": {"values": {"field":{ "name":"advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DBM advertiser ids." }} }
+        "filter_ids": {"values": {"field":{ "name":"advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DV360 advertiser ids." }} }
       },
       "daily": true,
       "out": {
@@ -247,7 +248,7 @@
       "file_types": ["INSERTION_ORDER"],
       "filter_type": "ADVERTISER_ID",
         "read": { 
-          "filter_ids": {"values": {"field":{ "name":"advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DBM advertiser ids." }} 
+          "filter_ids": {"values": {"field":{ "name":"advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DV360 advertiser ids." }} 
         }
       },
       "daily": true,

@@ -26,7 +26,7 @@ COMPOSER_NODE_COUNT=3
 
 composer_activate() {
 
-  setup_project "optional";
+  setup_project;
   save_config;
 
   echo ""
@@ -59,11 +59,11 @@ composer_credentials() {
   install_virtualenv;
   install_requirements;
 
-  setup_project "optional";
+  setup_project;
   save_config;
 
-  setup_credentials_service "optional";
-  setup_credentials_commandline "optional";
+  setup_credentials_service;
+  setup_credentials_commandline;
   setup_credentials_user;
   save_config;
 

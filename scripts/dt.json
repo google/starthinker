@@ -3,7 +3,7 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
     "icon":"assignment_returned",
-    "product":"DCM",
+    "product":"CM",
     "title":"DT To Table",
     "description":"Move data from a DT bucket into a BigQuery table.",
     "instructions":[

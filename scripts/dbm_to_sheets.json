@@ -4,9 +4,9 @@
     "copyright":"Copyright 2018 Google Inc.",
     "open":true,
     "icon":"donut_large",
-    "product":"DBM",
-    "title":"DBM To Sheets",
-    "description":"Move existing DBM report into a Sheets tab.",
+    "product":"DV360",
+    "title":"DV360 To Sheets",
+    "description":"Move existing DV360 report into a Sheets tab.",
     "instructions":[
       "Specify either report name or report id to move a report.",
       "The most recent valid file will be moved to the sheet."
@@ -17,7 +17,7 @@
     { "dbm":{
       "auth":"user",
       "report":{
-        "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":1, "default":"", "description":"DBM report ID given in UI, not needed if name used." }},
+        "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":1, "default":"", "description":"DV360 report ID given in UI, not needed if name used." }},
         "name":{"field":{ "name":"report_name", "kind":"string", "order":2, "default":"", "description":"Name of report, not needed if ID used." }}
       },
       "out":{

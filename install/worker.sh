@@ -204,9 +204,9 @@ deploy_worker() {
 
   setup_gcloud;
 
-  setup_project "optional";
-  setup_credentials_service "optional";
-  setup_credentials_ui "optional";
+  setup_project;
+  setup_credentials_service;
+  setup_credentials_ui;
   save_config;
 
   echo ""

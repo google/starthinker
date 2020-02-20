@@ -3,9 +3,9 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
     "icon":"donut_large",
-    "product":"DBM",
-    "title":"DBM To BigQuery",
-    "description":"Move existing DBM reports into a BigQuery table.",
+    "product":"DV360",
+    "title":"DV360 To BigQuery",
+    "description":"Move existing DV360 reports into a BigQuery table.",
     "instructions":[
       "Specify either report name or report id to move a report.",
       "A schema is recommended, if not provided it will be guessed.",
@@ -17,7 +17,7 @@
     { "dbm":{
       "auth":"user",
       "report":{
-        "report_id":{"field":{ "name":"dbm_report_id", "kind":"integer", "order":1, "default":"", "description":"DBM report ID given in UI, not needed if name used." }},
+        "report_id":{"field":{ "name":"dbm_report_id", "kind":"integer", "order":1, "default":"", "description":"DV360 report ID given in UI, not needed if name used." }},
         "name":{"field":{ "name":"dbm_report_name", "kind":"string", "order":2, "default":"", "description":"Name of report, not needed if ID used." }}
       },
       "out":{

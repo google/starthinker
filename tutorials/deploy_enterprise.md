@@ -5,14 +5,6 @@ The UI allows each user to authenticate and manage solutions leaving the develop
 and maintain the technical recipe scripts.  The UI deploys on AppEngine with a distributed worker back 
 end on Google Cloud Instances. Execute the following to stand up the UI:
 
-*__REQUIREMENT__: A [gSuite](https://gsuite.google.com/) is required to deploy and manage a UI like StarThinker
-within Google Cloud.  This requirement deals specifically with authentication and ensuring that user
-credentials are stored and accessed securely. If you do not have gSuite enabled, please install the 
-[Scientist Deployment](deploy_scientist.md) which runs as a single user without Google Authentication.*
-
-*__Production Tip__: For teams, deploy this on a micro virtual instance so that multiple members can access and update
-the UI and workers from the same machine.*
-
 ## Instructions
 ```
 git clone https://github.com/google/starthinker
@@ -41,6 +33,13 @@ source install/deploy.sh
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_enterprise.md)
 
 Next, learn how to [deploy a recipe](ui_recipe.md).
+
+
+## Verification Warning
+
+If you are not running gSuite, when you log into the UI you will be prompted with a [verification warning](https://github.com/google/starthinker/raw/master/tutorials/images/dv360_feature_adoption.png).
+If you are running gSuite, you can select Internal Deployment and avoid the warning.
+
 
 ## Notes
 

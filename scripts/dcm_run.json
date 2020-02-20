@@ -4,9 +4,9 @@
     "copyright":"Copyright 2019 Google Inc.",
     "open":true,
     "icon":"donut_small",
-    "product":"DCM",
-    "title":"DCM Report Run",
-    "description":"Trigger a DCM report run",
+    "product":"CM",
+    "title":"CM Report Run",
+    "description":"Trigger a CM report run",
     "instructions":[
       "Specify an account id.",
       "Specify either report name or report id to run."
@@ -18,9 +18,9 @@
       "auth":"user",
       "report_run_only":true,
       "report":{
-        "account":{"field":{ "name":"account", "kind":"integer", "order":1, "default":"", "description":"DCM network id." }},
-        "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":2, "default":"", "description":"DCM report id, empty if using name." }},
-        "name":{"field":{ "name":"report_name", "kind":"string", "order":3, "default":"", "description":"DCM report name, empty if using id instead." }}
+        "account":{"field":{ "name":"account", "kind":"integer", "order":1, "default":"", "description":"CM network id." }},
+        "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":2, "default":"", "description":"CM report id, empty if using name." }},
+        "name":{"field":{ "name":"report_name", "kind":"string", "order":3, "default":"", "description":"CM report name, empty if using id instead." }}
       }
     }}
   ]

@@ -3,9 +3,9 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
     "icon":"fingerprint",
-    "product":"DCM",
+    "product":"CM",
     "title":"Transparency Dashboard",
-    "description":"Reports the percentage of DCM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.",
+    "description":"Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.",
     "image":"https://storage.googleapis.com/starthinker-ui/transparency.png",
     "sample":"https://datastudio.google.com/c/u/0/reporting/1foircGRxgYCL_PR8gfdmYOleBacnPKwB/page/QCXj",
     "categories":["audit", "reporting"],
@@ -43,10 +43,10 @@
       "hour":[2],
       "auth": "user", 
       "report": {
-        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
+        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"CM account id of client." }},
         "filters": {
           "dfa:advertiser": {
-            "values":{"field":{ "name":"dcm_advertisers", "kind":"integer_list", "order":3, "default":"", "description":"Comma delimited list of DCM advertiser ids." }}
+            "values":{"field":{ "name":"dcm_advertisers", "kind":"integer_list", "order":3, "default":"", "description":"Comma delimited list of CM advertiser ids." }}
           }
         },
         "body":{
@@ -82,10 +82,10 @@
       "hour":[2],
       "auth": "user", 
       "report": {
-        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
+        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"CM account id of client." }},
         "filters": {
           "dfa:advertiser": {
-            "values":{"field":{ "name":"dcm_advertisers", "kind":"integer_list", "order":3, "default":"", "description":"Comma delimited list of DCM advertiser ids." }}
+            "values":{"field":{ "name":"dcm_advertisers", "kind":"integer_list", "order":3, "default":"", "description":"Comma delimited list of CM advertiser ids." }}
           }
         },
         "body": {
@@ -121,7 +121,7 @@
       "hour":[4],
       "auth": "user", 
       "report": {
-        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
+        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"CM account id of client." }},
         "name":{"field":{ "name":"recipe_name", "kind":"string", "prefix":"Transparency_Domain_", "description":"Name of report in CM, should be unique." }}
       }, 
       "out": {
@@ -136,7 +136,7 @@
       "hour":[4],
       "auth": "user", 
       "report": {
-        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
+        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"CM account id of client." }},
         "name":{"field":{ "name":"recipe_name", "kind":"string", "prefix":"Transparency_App_", "description":"Name of report in CM, should be unique." }}
       }, 
       "out": {

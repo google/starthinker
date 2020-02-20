@@ -4,9 +4,9 @@
     "copyright":"Copyright 2018 Google Inc.",
     "open":true,
     "icon":"arrow_upward",
-    "product":"DBM",
+    "product":"DV360",
     "title":"Line Item From BigQuery",
-    "description":"Upload Line Items From BigQuery To DBM.",
+    "description":"Upload Line Items From BigQuery To DV360.",
     "instructions":[
       "Specify the table or view where the lineitem data is defined.",
       "The schema should match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>."

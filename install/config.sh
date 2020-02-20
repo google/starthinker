@@ -21,10 +21,11 @@
 
 ################################################################################
 #
-# constats used by all the debian scripts
+# constats used by all the scripts
 #
 STARTHINKER_SCALE=1
 STARTHINKER_DEVELOPMENT=0
+STARTHINKER_GSUITE=0
 
 STARTHINKER_PROJECT=""
 STARTHINKER_ZONE="us-west1-b"
@@ -46,6 +47,22 @@ STARTHINKER_UI_DEVELOPMENT_DATABASE_PORT="";
 STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME="${STARTHINKER_ROOT}/starthinker_database/database.sqlite";
 STARTHINKER_UI_DEVELOPMENT_DATABASE_USER="";
 STARTHINKER_UI_DEVELOPMENT_DATABASE_PASSWORD="";
+
+check_billing() {
+  if [[ $(gcloud alpha billing projects describe testingstarthinker  --format='value(billingEnabled)') == "True" ]]; then
+    STARTHINKER_BILLING=1
+  else
+    STARTHINKER_BILLING=0
+  fi
+}
+
+check_gsuite() {
+  if [[ $(curl -s -X GET https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="$(gcloud auth print-identity-token)") == *"\"hd\": "* ]]; then
+    STARTHINKER_GSUITE=1
+  else
+    STARTHINKER_GSUITE=0
+  fi
+}
 
 derive_config() {
 
@@ -69,6 +86,7 @@ derive_config() {
     STARTHINKER_UI_PRODUCTION_SECRET=$(openssl rand -base64 48)
   fi
 
+  check_gsuite;
 }
 
 
@@ -190,23 +208,21 @@ setup_gcloud() {
     echo "Please go to: https://cloud.google.com/sdk/install"
     echo "Then run the install again."
     echo ""
-    exit 1
+    return
   else
     gcloud config get-value account
     if [[ $? == *"ERROR"* ]]
     then
       echo ""
-      echo "GCloud installed, authenticating"
-      gcloud auth login
+      echo "GCloud installed"
+      #gcloud auth login
     fi
   fi
 }
 
 
 setup_database() {
-  optional_name=$1
-  optional_user=$2
-  optional_password=$3
+  forced=$1
 
   echo ""
   echo "----------------------------------------"
@@ -214,7 +230,7 @@ setup_database() {
   echo "----------------------------------------"
   echo ""
 
-  if [ "$optional_name" != "optional" ] || [ "${STARTHINKER_UI_PRODUCTION_DATABASE_NAME}" == "" ]; then
+  if [ "$forced" == "forced" ] || [ "${STARTHINKER_UI_PRODUCTION_DATABASE_NAME}" == "" ]; then
     read -p "Database Name - ${STARTHINKER_UI_PRODUCTION_DATABASE_NAME} ( blank to skip ): " database_name
     if [ "${database_name}" ]; then
       STARTHINKER_UI_PRODUCTION_DATABASE_NAME="${database_name}"
@@ -225,7 +241,7 @@ setup_database() {
     echo "Using Existing Database Name"
   fi
 
-  if [ "$optional_user" != "optional" ] || [ "${STARTHINKER_UI_PRODUCTION_DATABASE_USER}" == "" ]; then
+  if [ "$forced" == "forced" ] || [ "${STARTHINKER_UI_PRODUCTION_DATABASE_USER}" == "" ]; then
     read -p "Database User - ${STARTHINKER_UI_PRODUCTION_DATABASE_USER} ( blank to skip ): " database_user
     if [ "${database_user}" ]; then
       STARTHINKER_UI_PRODUCTION_DATABASE_USER="${database_user}"
@@ -236,7 +252,7 @@ setup_database() {
     echo "Using Existing Database User"
   fi
 
-  if [ "$optional_password" != "optional" ] || [ "${STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD}" == "" ]; then
+  if [ "$forced" == "forced" ] || [ "${STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD}" == "" ]; then
     read -p "Database Password - ${STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD} ( blank to skip ): " database_password
     if [ "${database_password}" ]; then
       STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD="${database_password}"
@@ -247,13 +263,14 @@ setup_database() {
     echo "Using Existing Database Password"
   fi
 
+  echo ""
   echo "Done"
   echo ""
 }
 
 
 setup_project() {
-  optional_project=$1
+  forced=$1
 
   echo ""
   echo "----------------------------------------"
@@ -261,7 +278,7 @@ setup_project() {
   echo "----------------------------------------"
   echo ""
 
-  if [ "$optional_project" != "optional" ] || [ "${STARTHINKER_PROJECT}" == "" ]; then
+  if [ "$forced" == "forced" ] || [ "${STARTHINKER_PROJECT}" == "" ]; then
 
     echo "Retrieve Project ID from: https://console.cloud.google.com"
     echo ""
@@ -283,7 +300,6 @@ setup_project() {
     echo "Using Existing Project ID"
   fi
 
-  gcloud init --console-only 
   gcloud config set project "${STARTHINKER_PROJECT}";
 
   echo "Done"
@@ -292,7 +308,7 @@ setup_project() {
 
 
 setup_credentials_commandline() {
-  optional_credentials=$1
+  forced=$1
 
   echo ""
   echo "----------------------------------------"
@@ -300,14 +316,35 @@ setup_credentials_commandline() {
   echo "----------------------------------------"
   echo ""
 
-  if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_CLIENT_INSTALLED" ]; then
+  if [ "$forced" == "forced" ] || [ ! -f "$STARTHINKER_CLIENT_INSTALLED" ]; then
 
-    # client OTHER
-    echo "Retrieve \"Other\" OAuth Client ID Credentials from: https://console.cloud.google.com/apis/credentials"
-    echo "Google Cloud Console -> Services & APIs -> Create Credentials -> oAuth Credentials."
+    echo "Step 1: Configure Consent Screen ( do only once )"
+    echo "----------------------------------------"
+    echo "  A. Visit: https://console.developers.google.com/apis/credentials/consent"
+
+    if [[ $STARTHINKER_GSUITE == 1 ]]; then
+      echo "  B. Choose Internal."
+    else
+      echo "  B. Choose External."
+    fi
+
+    echo "  C. For Application Name enter: StarThinker"
+    echo "  D. All other fields are optional, click Save."
     echo ""
 
-    echo "Paste credentials JSON here: ( CTRL+D to skip )"
+    echo "Step 2: Setup Credentials ( do only once )"
+    echo "----------------------------------------"
+    echo "  A. Visit: https://console.developers.google.com/apis/credentials/oauthclient"
+    echo "  B. Choose Other."
+    echo "  C. For Name enter: StarThinker."
+    echo "  D. Click Create and ignore the confirmation pop-up."
+    echo ""
+
+    echo "Step 3: Enter Credentials ( do only once )"
+    echo "----------------------------------------"
+    echo "  A. Find your key under OAuth 2.0 Client IDs and click download arrow."
+    echo "  B. Paste credentials JSON below, then press return ( if return does not work press CTRL + D ):"
+    echo ""
 
     read_multiline "}}"
 
@@ -324,7 +361,7 @@ setup_credentials_commandline() {
 
 
 setup_credentials_ui() {
-  optional_credentials=$1
+  forced=$1
 
   echo ""
   echo "----------------------------------------"
@@ -332,15 +369,38 @@ setup_credentials_ui() {
   echo "----------------------------------------"
   echo ""
 
-  if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_CLIENT_WEB" ]; then
+  if [ "$forced" == "forced" ] || [ ! -f "$STARTHINKER_CLIENT_WEB" ]; then
 
-    # client OTHER
-    echo "Retrieve \"Web\" OAuth Client ID Credentials from: https://console.cloud.google.com/apis/credentials"
-    echo "Set up the \"Internal\" OAuth Consent Screen: https://pantheon.corp.google.com/apis/credentials/consent"
-    echo "Google Cloud Console -> Services & APIs -> Create Credentials -> oAuth Credentials."
+    echo "Step 1: Configure Consent Screen ( do only once )"
+    echo "----------------------------------------"
+    echo "  A. Visit: https://console.developers.google.com/apis/credentials/consent"
+
+    if [[ $STARTHINKER_GSUITE == 1 ]]; then
+      echo "  B. Choose Internal."
+    else
+      echo "  B. Choose External."
+    fi
+
+    echo "  C. For Application Name enter: StarThinker"
+    echo "  D. All other fields are optional, click Save."
     echo ""
 
-    echo "Paste credentials JSON here: ( CTRL+D to skip )"
+    echo "Step 2: Setup Credentials ( do only once )"
+    echo "----------------------------------------"
+    echo "  A. Visit: https://console.developers.google.com/apis/credentials/oauthclient"
+    echo "  B. Choose Web Application."
+    echo "  C. For Name enter: StarThinker."
+    echo "  D. For Authorized redirect URIs enter:"
+    echo "       http://localhost:8000/oauth_callback/"
+    echo "       https://$STARTHINKER_PROJECT.appspot.com/oauth_callback/"
+    echo "  F. Click Create and ignore the confirmation pop-up."
+    echo ""
+
+    echo "Step 3: Enter Credentials ( do only once )"
+    echo "----------------------------------------"
+    echo "  A. Find your key under OAuth 2.0 Client IDs and click download arrow."
+    echo "  B. Paste credentials JSON below, then press return ( if return does not work press CTRL + D ):"
+    echo ""
 
     read_multiline "}}"
 
@@ -356,7 +416,7 @@ setup_credentials_ui() {
 }
 
 setup_credentials_service() {
-  optional_credentials=$1
+  forced=$1
 
   echo ""
   echo "----------------------------------------"
@@ -364,27 +424,48 @@ setup_credentials_service() {
   echo "----------------------------------------"
   echo ""
 
-  if [ "$optional_credentials" != "optional" ] || [ ! -f "$STARTHINKER_SERVICE" ]; then
+  if [ "$forced" == "forced" ] || [ ! -f "$STARTHINKER_SERVICE" ]; then
 
     echo "Retrieve Service Account Key Credentials from: https://console.cloud.google.com/apis/credentials"
     echo ""
 
     gcloud alpha iam service-accounts create "starthinker" \
     --display-name="StarThinker (Service Account)" \
-    --description="This service account is used by the StarThinker framework."
+    --description="This service account is used by the StarThinker framework." \
+    --verbosity=critical
 
-    gcloud projects add-iam-policy-binding "starthinker" \
-    --member=serviceAccount:starthinker@${STARTHINKER_PROJECT}.iam.gserviceaccount.com \
-    --role='roles/editor'
+    return_code=$?
+    if [ !$return_code ]; then
 
-    gcloud iam service-accounts keys create ${STARTHINKER_ROOT}/starthinker_assets/service.json \
-    --iam-account=starthinker@${STARTHINKER_PROJECT}.iam.gserviceaccount.com \
-    --key-file-type=json
+      gcloud projects add-iam-policy-binding "${STARTHINKER_PROJECT}" \
+      --member=serviceAccount:starthinker@${STARTHINKER_PROJECT}.iam.gserviceaccount.com \
+      --role='roles/editor'
+
+      return_code=$?
+      if [ !$return_code ]; then
+
+        gcloud iam service-accounts keys create ${STARTHINKER_ROOT}/starthinker_assets/service.json \
+        --iam-account=starthinker@${STARTHINKER_PROJECT}.iam.gserviceaccount.com \
+        --key-file-type=json
+
+      else
+
+        echo "Failed to create keys."
+        return
+
+      fi
+
+    else
+      echo "Failed to create file."
+      return
+
+    fi
 
   else
     echo "Using Existing Service Credentials"
   fi
 
+  echo ""
   echo "Done"
   echo ""
 }
@@ -400,6 +481,7 @@ setup_credentials_user() {
   python "${THIS_DIR}/starthinker/auth/helper.py" -c "${STARTHINKER_CLIENT_INSTALLED}" -u "${STARTHINKER_USER}"
   deactivate
 
+  echo ""
   echo "Done"
   echo ""
 }
@@ -416,6 +498,7 @@ update_apt() {
     sudo apt-get update -qq > /dev/null
   fi
 
+  echo ""
   echo "Done"
   echo ""
 }
@@ -432,7 +515,7 @@ install_virtualenv_darwin() {
     echo "Please install: https://www.python.org/downloads/release/python-380/"
     echo "Then run the install again."
     echo ""
-    exit 1
+    return
   fi
 
   if [ "$(command -v pip3)" == "" ]; then
@@ -444,9 +527,11 @@ install_virtualenv_darwin() {
     echo "Please install: https://evansdianga.com/install-pip-osx/"
     echo "Then run the install again."
     echo ""
-    exit 1
+    return
   else
-    pip3 install pip --upgrade --quiet --user;
+    if [[ -z $VIRTUAL_ENV ]]; then
+      pip3 install pip --upgrade --quiet --user;
+    fi
   fi
 
   if [ "$(command -v virtualenv)" == "" ]; then
@@ -485,6 +570,7 @@ install_virtualenv() {
 
   fi
 
+  echo ""
   echo "Done"
   echo ""
 }
@@ -501,6 +587,7 @@ install_requirements() {
   pip3 install -r ${STARTHINKER_ROOT}/starthinker/requirements.txt --quiet
   deactivate
 
+  echo ""
   echo "Done"
   echo ""
 }
@@ -517,6 +604,7 @@ install_requirements_ui() {
   pip3 install -r ${STARTHINKER_ROOT}/starthinker_ui/requirements.txt --quiet
   deactivate
 
+  echo ""
   echo "Done"
   echo ""
 }
@@ -541,13 +629,13 @@ setup_swap() {
   sudo swapon /swapfile;
   echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab;
 
+  echo ""
   echo "Done"
   echo ""
 }
 
 
 setup_domain() {
-  optional_domain=$1
 
   echo ""
   echo "----------------------------------------"
@@ -555,10 +643,10 @@ setup_domain() {
   echo "----------------------------------------"
   echo ""
   echo "If you DO NOT HAVE A DOMAIN then LEAVE IT BLANK."
-  echo "The script will use whatever defaults necessay to get things working."
+  echo "The script will use whatever defaults necessary to get things working."
   echo ""
 
-  if [ "$optional_domain" != "optional" ] || [ "${STARTHINKER_UI_PRODUCTION_DOMAIN}" == "" ]; then
+  if [ "${STARTHINKER_UI_PRODUCTION_DOMAIN}" == "" ]; then
 
     read -p "Domain Name ( blank to skip ): " domain_name
 
@@ -571,6 +659,7 @@ setup_domain() {
     echo "Using Existing Domain"
   fi
 
+  echo ""
   echo "Done"
   echo ""
 }
@@ -642,6 +731,7 @@ install_proxy() {
     chmod +x "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy";
   fi
 
+  echo ""
   echo "Done"
   echo ""
 }

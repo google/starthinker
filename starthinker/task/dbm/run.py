@@ -89,7 +89,7 @@ def dbm():
 
       # clean up the report
       rows = report_to_rows(report)
-      rows = report_clean(rows, nulls=True)
+      rows = report_clean(rows)
 
       # write rows using standard out block in json ( allows customization across all scripts )
       if rows: put_rows(project.task['auth'], project.task['out'], rows)

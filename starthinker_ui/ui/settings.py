@@ -17,14 +17,17 @@
 ###########################################################################
 
 
+# General StarThinker constants that can also be used from the command line interface
+from starthinker.config import UI_ROOT, UI_PROJECT, UI_CLIENT, UI_SERVICE, UI_CRON, UI_ZONE, DEVELOPMENT_MODE
+
 # Load all technical settings
 from starthinker_ui.ui.framework import *
 
-# Replace local auth with web auth
-UI_CLIENT = os.environ.get('STARTHINKER_CLIENT_WEB', '') # blank to deploy single user mode
+# Replace local auth with web auth if it exists ( it exists in app engine deployment )
+if os.environ.get('STARTHINKER_CLIENT_WEB'): UI_CLIENT = os.environ['STARTHINKER_CLIENT_WEB']
 
-def domain_to_host(domain):
-  return  domain.split('://', 1)[-1].split(':', 1)[0].split('/', 1)[0]
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = DEVELOPMENT_MODE
 
 # Currently StarThinker is in English, internationalization TBD
 LANGUAGE_CODE = 'en-us'
@@ -37,6 +40,9 @@ ADMINS = [('User Name', 'email@domain.com')]
 
 # Store your logo and front end website graphics here.
 STATIC_URL = 'https://storage.googleapis.com/starthinker-ui/'
+
+def domain_to_host(domain):
+  return  domain.split('://', 1)[-1].split(':', 1)[0].split('/', 1)[0]
 
 CONST_URL = os.environ.get('STARTHINKER_UI_DOMAIN') or 'http://localhost:8000'
 SECRET_KEY = os.environ.get('STARTHINKER_UI_SECRET') or 'safetyandcivilreassuranceadministrationofficials'

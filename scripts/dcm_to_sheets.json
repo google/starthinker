@@ -4,14 +4,14 @@
     "copyright":"Copyright 2018 Google Inc.",
     "open":true,
     "icon":"donut_small",
-    "product":"DCM",
-    "title":"DCM To Sheets",
-    "description":"Move existing DCM report into a Sheet tab.",
+    "product":"CM",
+    "title":"CM To Sheets",
+    "description":"Move existing CM report into a Sheet tab.",
     "instructions":[
       "Specify an account id.",
       "Specify either report name or report id to move a report.",
       "The most recent valid file will be moved to the sheet.",
-      "Schema is pulled from the official DCM specification."
+      "Schema is pulled from the official CM specification."
     ],
     "authors":["kenjora@google.com"]
   },

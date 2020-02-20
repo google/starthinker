@@ -3,9 +3,9 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
     "icon":"donut_small",
-    "product":"DCM",
+    "product":"CM",
     "title":"CM User Audit",
-    "description":"Gives DCM clients ability to see which profiles have access to which parts of an account. Loads DCM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.",
+    "description":"Gives CM clients ability to see which profiles have access to which parts of an account. Loads CM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.",
     "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
     "sample":"https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT",
     "categories":["security", "reporting"],
@@ -13,8 +13,8 @@
     "catalysts":["insights", "experience"],
     "pitches":[
       "Meet contractual access reporting information.",
-      "Reduce unauthorized use of DCM accounts and assets.",
-      "Audit user access within DCM.",
+      "Reduce unauthorized use of CM accounts and assets.",
+      "Audit user access within CM.",
       "Prevent malicious user access / behavior."
     ],
     "impacts":{
@@ -62,7 +62,7 @@
       "reports":false,
       "accounts":{
         "single_cell":true,
-        "values":{"field":{ "name":"accounts", "kind":"integer_list", "order":2, "default":[], "description":"Comma separated DCM account ids." }}
+        "values":{"field":{ "name":"accounts", "kind":"integer_list", "order":2, "default":[], "description":"Comma separated CM account ids." }}
       },
       "out":{
         "auth":"service",
@@ -77,7 +77,7 @@
       "reports":{"field":{ "name":"reports", "kind":"boolean", "order":3, "default":false, "description":"Include report audit, consumes significant API and data." }},
       "accounts":{
         "single_cell":true,
-        "values":{"field":{ "name":"accounts", "kind":"integer_list", "order":2, "default":[], "description":"Comma separated DCM account ids." }}
+        "values":{"field":{ "name":"accounts", "kind":"integer_list", "order":2, "default":[], "description":"Comma separated CM account ids." }}
       },
       "out":{
         "auth":"service",

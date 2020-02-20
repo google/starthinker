@@ -3,7 +3,7 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
     "icon":"add_alert",
-    "product":"DBM",
+    "product":"DV360",
     "title":"Floodlight Monitor",
     "description":"Monitor floodlight impressions specified in sheet and send email alerts.",
     "image":"https://storage.googleapis.com/starthinker-ui/floodlight_monitor.png",

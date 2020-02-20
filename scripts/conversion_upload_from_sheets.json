@@ -4,11 +4,11 @@
     "copyright":"Copyright 2018 Google Inc.",
     "open":true,
     "icon":"file_upload",
-    "product":"DCM",
+    "product":"CM",
     "title":"Conversion Upload Sheets",
-    "description":"Move form Sheets to DCM.",
+    "description":"Move form Sheets to CM.",
     "instructions":[
-      "Specify a DCM Account ID, Floodligh Activity ID and Conversion Type.",
+      "Specify a CM Account ID, Floodligh Activity ID and Conversion Type.",
       "Include Sheets url, tab, and range, omit headers in range.",
       "Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId",
       "Include encryption information if using encryptedUserId or encryptedUserIdCandidates."

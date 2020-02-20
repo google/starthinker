@@ -3,7 +3,7 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
     "icon":"storage",
-    "product":"DBM",
+    "product":"DV360",
     "title":"Entity Read Files",
     "image":"https://storage.googleapis.com/starthinker-ui/entity_read_files.png",
     "open_surce":"https://github.com/google/starthinker/blob/master/gtech/script_entity.json",
@@ -47,7 +47,7 @@
       "entities":["Campaign", "LineItem", "Creative", "UserList", "Partner", "Advertiser", "InsertionOrder", "Pixel", "InventorySource", "CustomAffinity", "UniversalChannel", "UniversalSite", "SupportedExchange", "DataPartner", "GeoLocation", "Language", "DeviceCriteria", "Browser", "Isp"],
       "partners": {
         "single_cell":true,
-        "values":{ "field":{ "name":"partners", "kind":"integer_list", "order":1, "default":"[]", "description":"Comma sparated list of DBM partners." }}
+        "values":{ "field":{ "name":"partners", "kind":"integer_list", "order":1, "default":"[]", "description":"Comma sparated list of DV360 partners." }}
       },
       "out":{
         "bigquery":{

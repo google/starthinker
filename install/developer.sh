@@ -23,9 +23,9 @@ test_ui() {
 
   install_virtualenv; 
   install_requirements; 
-  setup_project "optional"; 
-  setup_credentials_service "optional"; 
-  setup_credentials_commandline "optional"; 
+  setup_project; 
+  setup_credentials_service;
+  setup_credentials_commandline;
   save_config;
 
   echo ""
@@ -70,9 +70,9 @@ test_tasks() {
 
   install_virtualenv; 
   install_requirements; 
-  setup_project "optional"; 
-  setup_credentials_service "optional"; 
-  setup_credentials_commandline "optional"; 
+  setup_project;
+  setup_credentials_service;
+  setup_credentials_commandline;
   save_config;
 
   echo ""
@@ -102,9 +102,9 @@ launch_developer_ui() {
 
   install_virtualenv; 
   install_requirements; 
-  setup_project "optional"; 
-  setup_credentials_service "optional"; 
-  setup_credentials_ui "optional"; 
+  setup_project;
+  setup_credentials_service;
+  setup_credentials_commandline;
   save_config;
   make_cron;
 
@@ -160,9 +160,9 @@ launch_developer_worker() {
 install_developer() {
   install_virtualenv; 
   install_requirements; 
-  setup_project "optional"; 
-  setup_credentials_service "optional"; 
-  setup_credentials_commandline "optional"; 
+  setup_project;
+  setup_credentials_service;
+  setup_credentials_commandline;
   setup_credentials_user; 
   save_config;
   make_cron;

@@ -64,7 +64,7 @@ def dcm(account_id, disposition):
 
       # clean up the report
       rows = report_to_rows(report)
-      rows = report_clean(rows,  project.task.get('datastudio', False))
+      rows = report_clean(rows)
       rows = rows_column_add(rows, 'Account_Id', account_id)
       rows = rows_column_add(rows, 'Account_Name', get_account_name(project.task['auth'], account_id))
 

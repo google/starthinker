@@ -4,14 +4,14 @@
     "copyright":"Copyright 2018 Google Inc.",
     "open":true,
     "icon":"donut_small",
-    "product":"DCM",
-    "title":"DCM Standard Bulk",
-    "description":"Aggregate multiple standard DCM reports into one BigQuery or Sheet.",
+    "product":"CM",
+    "title":"CM Standard Bulk",
+    "description":"Aggregate multiple standard CM reports into one BigQuery or Sheet.",
     "instructions":[
       "See API docs for <a href='https://developers.google.com/doubleclick-advertisers/v3.2/dimensions' target='_blank'>Metrics</a>.",
-      "DCM report name format '[Report Name] [Account ID] ( StarThinker )'.",
+      "CM report name format '[Report Name] [Account ID] ( StarThinker )'.",
       "Specify either bucket and path or dataset and table.",
-      "Schema is pulled from the official DCM specification."
+      "Schema is pulled from the official CM specification."
     ],
     "authors":["kenjora@google.com"]
   },
@@ -54,7 +54,7 @@
         },
         "storage":{
           "bucket":{"field":{ "name":"bucket", "kind":"string", "order":7, "default":"" }},
-          "path":{"field":{ "name":"path", "kind":"string", "order":8, "default":"DCM_Report" }}
+          "path":{"field":{ "name":"path", "kind":"string", "order":8, "default":"CM_Report" }}
         }
       },
       "delete":{"field":{ "name":"delete", "kind":"boolean", "order":10, "default":false }},

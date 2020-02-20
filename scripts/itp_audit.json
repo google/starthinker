@@ -61,7 +61,7 @@
         "body":{
           "timezoneCode":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Los_Angeles" }},
           "metadata": {
-            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Browser_", "order":1, "description":"Name of report in DBM, should be unique." }},
+            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Browser_", "order":1, "description":"Name of report in DV360, should be unique." }},
             "dataRange": "LAST_365_DAYS",
             "format": "CSV"
           },
@@ -105,7 +105,7 @@
         "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default": "", "description":"Campaign Manager Account Id." }},
         "body":{
          "kind": "dfareporting#report",
-         "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Floodlight_", "order":1, "description":"Name of report in DBM, should be unique." }},
+         "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Floodlight_", "order":1, "description":"Name of report in DV360, should be unique." }},
          "format": "CSV",
          "type": "FLOODLIGHT",
          "floodlightCriteria": {
@@ -187,7 +187,7 @@
         "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default": "", "description":"Campaign Manager Account Id." }},
         "filters": {
           "dfa:advertiser": {
-            "values":{"field":{ "name":"cm_advertiser_ids", "kind":"integer_list", "order":3, "default":"", "description":"Optional: Comma delimited list of DCM advertiser ids." }}
+            "values":{"field":{ "name":"cm_advertiser_ids", "kind":"integer_list", "order":3, "default":"", "description":"Optional: Comma delimited list of CM advertiser ids." }}
           }
         },
         "body":{
@@ -340,7 +340,7 @@
     { "dbm":{
       "auth":"user",
       "report":{
-        "name":{"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Browser_", "order":1, "description":"Name of report in DBM, should be unique." }}
+        "name":{"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Browser_", "order":1, "description":"Name of report in DV360, should be unique." }}
       },
       "out":{
         "bigquery":{

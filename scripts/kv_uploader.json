@@ -3,9 +3,9 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
     "icon":"policy",
-    "product":"DCM",
+    "product":"CM",
     "title":"Tag Key Value Uploader",
-    "description":"A tool for bulk editing key value pairs for DCM pllacements.",
+    "description":"A tool for bulk editing key value pairs for CM pllacements.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/kv_uploader.png",
     "sample":"https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/edit?usp=sharing",
     "documentation":"https://github.com/google/starthinker/blob/master/tutorials/appscript_troubleshooting.md",
@@ -13,7 +13,7 @@
     "requirements":[ "cm", "sheets"],
     "catalysts":["automation"],
     "pitches":[
-      "Update DCM Placement key value pairs in bulk.",
+      "Update CM Placement key value pairs in bulk.",
       "Speed up tag editing.",
       "Ensure more consistent tagging."
     ],

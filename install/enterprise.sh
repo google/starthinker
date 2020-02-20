@@ -221,10 +221,10 @@ setup_appengine() {
   echo ""
   
   if [[ $REPLY =~ ^[Yy]$ ]]; then
-    setup_project "optional";
-    setup_credentials_service "optional";
+    setup_project;
+    setup_credentials_service;
 
-    setup_database "optional" "optional" "optional";
+    setup_database;
     save_config;
 
     gcloud services enable doubleclickbidmanager.googleapis.com
@@ -245,12 +245,12 @@ setup_appengine() {
     migrate_database_proxy; 
 
     if [[ $deploy_Type == 'Scientist' ]]; then
-      setup_credentials_commandline "optional";
-      setup_credentials_user "optional";
+      setup_credentials_commandline;
+      setup_credentials_user;
       save_config;
       setup_ui_account;
     else
-      setup_credentials_ui "optional";
+      setup_credentials_ui;
       save_config;
     fi
 
@@ -260,29 +260,33 @@ setup_appengine() {
   fi
 
   echo ""
+  echo "----------------------------------------"
+  echo ""
   echo "Access Your StarThinker UI At: https://${STARTHINKER_PROJECT}.appspot.com"
   echo ""
 
+
+  if [[ !$STARTHINKER_GSUITE ]]; then
+    echo ""
+    echo "----------------------------------------"
+    echo "The application may show a security warning: https://github.com/google/starthinker/raw/master/tutorials/images/dv360_feature_adoption.png"
+    echo "The warning is only showed when logging in."
+    echo "Bypass it by clicking Advnaced and Go To StarThinker."
+    echo ""
+    echo "To remove the above warning:"
+    echo "  A. Verify your domian and switch to internal application."
+    echo "  B. Enroll in gSuite and switch to internal application."
+    echo "  C. Submit your application for verification to Google ( 6+ weeks )."
+    echo ""
+  fi
+
   echo ""
-  echo ""
-  echo ""
-  echo "--"
-  echo "-----------"
-  echo "--------------------"
   echo "----------------------------------------"
-  echo ""
-  echo "HIGHY SUGGESTED IAP SECURITY (WITH GSUITE): https://console.cloud.google.com/security/iap?project=$STARTHINKER_PROJECT"
-  echo ""
-  echo "AND / OR"
-  echo ""
-  echo "HIGHLY SUGGESTED FIREWALL SECURITY (WITHOUT GSUITE): https://cloud.google.com/appengine/docs/standard/python/application-security"
-  echo ""
-  echo "----------------------------------------"
-  echo "--------------------"
-  echo "-----------"
-  echo "--"
-  echo ""
-  echo ""
+  echo "HIGHY SUGGESTED IAP SECURITY: https://console.cloud.google.com/security/iap?project=$STARTHINKER_PROJECT"
+  echo "This allows you to conrol access to the UI on a per user basis."
+  echo " 1. Enable IAP."
+  echo " 2. Add members with access to the role: Cloud IAP > IAP-secured Web App User"
+  echo " 3. Or use a firewall: https://cloud.google.com/appengine/docs/standard/python/application-security"
   echo ""
 
   echo ""
@@ -297,9 +301,9 @@ migrate_database_enterprise() {
   echo "----------------------------------------"
   echo ""
 
-  setup_project "optional";
-  setup_credentials_service "optional";
-  setup_database "optional" "optional" "optional";
+  setup_project;
+  setup_credentials_service;
+  setup_database;
   save_config;
 
   install_proxy; # first so it install dependencies

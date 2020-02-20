@@ -29,7 +29,6 @@ UI_PROJECT = os.environ.get('STARTHINKER_PROJECT', 'MISSING RUN deploy.sh TO SET
 UI_SERVICE = os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET')
 
 UI_CLIENT = os.environ.get('STARTHINKER_CLIENT_INSTALLED', '')
-UI_USER = os.environ.get('STARTHINKER_USER', '') # only used in single user mode
 
 # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
 BUFFER_SCALE = int(os.environ.get('STARTHINKER_SCALE', 1))

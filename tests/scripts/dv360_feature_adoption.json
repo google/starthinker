@@ -7,7 +7,6 @@
     { "include": {
       "script": "scripts/dv360_feature_adoption.json",
       "parameters":{
-        "dataset": "Test",
         "recipe_timezone": "America/Los_Angeles",
         "recipe_name": "Test",
         "recipe_project": {"field":{ "name":"recipe_project", "kind":"string", "order":1, "default":"", "description":"Google Cloud Project Id" }},

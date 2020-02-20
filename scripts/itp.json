@@ -50,17 +50,17 @@
     { "dcm": {
       "auth": "user", 
       "report": {
-        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
+        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"CM account id of client." }},
         "filters": {
           "dfa:advertiser": {
-            "values":{"field":{ "name":"dcm_advertisers", "kind":"integer_list", "order":3, "default":[], "description":"Comma delimited list of DCM advertiser ids." }}
+            "values":{"field":{ "name":"dcm_advertisers", "kind":"integer_list", "order":3, "default":[], "description":"Comma delimited list of CM advertiser ids." }}
           }
         },
         "body": {
           "type": "STANDARD",
           "format": "CSV", 
-          "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"CM_Browser_Delivery_", "description":"Report in DCM, should be unique." }},
-          "accountId":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
+          "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"CM_Browser_Delivery_", "description":"Report in CM, should be unique." }},
+          "accountId":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"CM account id of client." }},
           "criteria": {
             "dateRange": {
               "relativeDateRange": "LAST_365_DAYS"
@@ -88,8 +88,8 @@
     { "dcm": {
       "auth": "user", 
       "report": {
-        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
-        "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"CM_Browser_Delivery_", "description":"Report in DCM, should be unique." }}
+        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"CM account id of client." }},
+        "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"CM_Browser_Delivery_", "description":"Report in CM, should be unique." }}
       },
       "out": {
         "bigquery": {
@@ -101,12 +101,12 @@
     { "dcm": {
       "auth": "user", 
       "report": {
-        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
+        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"CM account id of client." }},
         "body":{ 
-          "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"CM_Browser_Floodlight_", "description":"Report in DCM, should be unique." }},
+          "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"CM_Browser_Floodlight_", "description":"Report in CM, should be unique." }},
           "type": "FLOODLIGHT",
           "format": "CSV", 
-          "accountId":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
+          "accountId":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"CM account id of client." }},
           "floodlightCriteria": {
             "dateRange": {
               "relativeDateRange": "LAST_60_DAYS"
@@ -126,7 +126,7 @@
               "dimensionName": "dfa:floodlightConfigId", 
               "kind": "dfareporting#dimensionValue", 
               "matchType": "EXACT", 
-              "value":{"field":{ "name":"dcm_floodlight", "kind":"integer", "order":4, "default":"", "description":"DCM floodlight configuration id." }}
+              "value":{"field":{ "name":"dcm_floodlight", "kind":"integer", "order":4, "default":"", "description":"CM floodlight configuration id." }}
             }, 
             "metricNames": [
               "dfa:activityClickThroughConversions", 
@@ -144,8 +144,8 @@
     { "dcm": {
       "auth": "user", 
       "report": {
-        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"DCM account id of client." }},
-        "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"CM_Browser_Floodlight_", "description":"Report in DCM, should be unique." }}
+        "account":{"field":{ "name":"dcm_account", "kind":"integer", "order":2, "default":"", "description":"CM account id of client." }},
+        "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"CM_Browser_Floodlight_", "description":"Report in CM, should be unique." }}
       },
       "out": {
         "bigquery": {
@@ -159,16 +159,16 @@
       "report": {
         "filters": {
            "FILTER_PARTNER": {
-             "values": {"field":{ "name":"dbm_partners", "kind":"integer_list", "order":5, "default":[], "description":"DBM partner id." }}
+             "values": {"field":{ "name":"dbm_partners", "kind":"integer_list", "order":5, "default":[], "description":"DV360 partner id." }}
            },
            "FILTER_ADVERTISER": {
-             "values": {"field":{ "name":"dbm_advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DBM advertiser ids." }} 
+             "values": {"field":{ "name":"dbm_advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DV360 advertiser ids." }} 
            }
         },
         "body": {
           "timezoneCode":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Los_Angeles" }},
           "metadata":{
-            "title":{"field":{ "name":"dataset", "kind":"string", "prefix":"DV360_Browser_Delivery_", "description":"Name of report in DBM, should be unique." }},
+            "title":{"field":{ "name":"dataset", "kind":"string", "prefix":"DV360_Browser_Delivery_", "description":"Name of report in DV360, should be unique." }},
             "dataRange":"LAST_365_DAYS",
             "format": "CSV"
           },
@@ -198,7 +198,7 @@
     { "dbm": {
       "auth": "user", 
       "report": {
-        "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"DV360_Browser_Delivery_", "description":"DBM report name, should be unique." }}
+        "name":{"field":{ "name":"dataset", "kind":"string", "prefix":"DV360_Browser_Delivery_", "description":"DV360 report name, should be unique." }}
       },
       "out": {
         "bigquery": {

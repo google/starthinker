@@ -279,7 +279,7 @@ def report_to_list(auth, report_id):
 
   if report:
     rows = report_to_rows(report)
-    rows = report_clean(rows, False, False)
+    rows = report_clean(rows)
 
   return list(rows)  
 
@@ -317,14 +317,13 @@ def report_to_rows(report):
       yield row
 
 
-def report_clean(rows, nulls=False):
+def report_clean(rows):
   """ Helper to fix DBM report issues for BigQuery and ensure schema compliance.
 
   Memory efficiently cleans each row by fixing:
   * Strips header and footer to preserve only data rows.
   * Changes 'Date' to 'Report_Day' to avoid using reserved name in BigQuery.
   * Changes date values to use '-' instead of '/' for BigQuery compatibility.
-  * Changes cell string Unknown to blank ( None ) if nulls=True.
 
   Usage example:
 
@@ -371,7 +370,7 @@ def report_clean(rows, nulls=False):
           ] # 5x faster than regexp
 
     # remove unknown columns ( which throw off schema on import types )
-    if nulls: row = ['' if cell.strip() == 'Unknown' else cell for cell in row]
+    row = ['' if cell.strip() in ('Unknown', '-',) else cell for cell in row]
 
     # return the row
     yield row

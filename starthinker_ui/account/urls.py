@@ -22,6 +22,5 @@ from starthinker_ui.account import views
 
 urlpatterns = [
   url(r'^oauth_callback/$', views.oauth_callback, name='account.oauth.callback'),
-  url(r'^login/$', views.login, name='account.login'),
   url(r'^logout/$', views.logout, name='account.logout'),
 ]

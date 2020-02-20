@@ -4,9 +4,9 @@
     "copyright":"Copyright 2018 Google Inc.",
     "open":true,
     "icon":"donut_small",
-    "product":"DCM",
-    "title":"DCM Report",
-    "description":"Create a DCM report from a JSON definition.",
+    "product":"CM",
+    "title":"CM Report",
+    "description":"Create a CM report from a JSON definition.",
     "instructions":[
       "Add a an account as [account_id]@[profile_id]",
       "Fetch the report JSON definition. Arguably could be better.",

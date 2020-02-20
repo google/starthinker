@@ -3,7 +3,7 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
     "icon":"donut_small",
-    "product":"DCM",
+    "product":"CM",
     "title":"Bulkdozer",
     "description":"Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/bulkdozer.png",

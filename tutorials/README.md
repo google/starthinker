@@ -6,10 +6,9 @@ a StarThinker instance.
 ## Deployment
 
 - [Enterprise](deploy_enterprise.md) - Full browser based UI with multiple user login.
-- [Scientist](deploy_scientist.md) - Single user, fast setup, long running job scheduler.
+- [AirFlow](deploy_airflow.md) - Run recipes usng cloud compoer / airflow framework.
 - [Colab](deploy_colab.md) - For Workshops, Data Pill deployment using Google Collaboratory.
 - [Developer](deploy_developer.md) - Command line recipe creation, editing, and testing.
-- [AirFlow](deploy_airflow.md) - Run recipes usng cloud compoer / airflow framework.
 - [Package](deploy_package.md) - Use StarThinker as a library.
 
 ## UI
@@ -35,6 +34,7 @@ a StarThinker instance.
 - [Client Command Line Credentials And User Credentials](cloud_client_installed.md) - How to get client and user credentials ( other ).
 
 ## General
+
 - [Solution Gallery](https://google.github.io/starthinker/) - List of packaged solutions ( Also available in enterprise UI ).
 - [Recipe Gallery](https://google.github.io/starthinker/code/) - Available recipe components ( Also available in enterprise UI ).
 - [Frequently Asked Questions](faq.md) - Common Google Cloud and StarThinker questions.
@@ -44,4 +44,4 @@ a StarThinker instance.
 - [Command Line Helpers](helpers.md) - Utilities that speed up development at the command line.
 
 ---
-&copy; 2019 Google Inc. - Apache License, Version 2.0
+&copy; 2020 Google LLC - Apache License, Version 2.0

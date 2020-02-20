@@ -16,6 +16,7 @@
 #
 ###########################################################################
 
+import re
 import pytz
 import json
 import functools
@@ -23,18 +24,17 @@ from datetime import date, datetime, timedelta
 
 from django.db import models
 from django.conf import settings
-from django.utils.text import slugify
 
 from starthinker.util.project import project
 from starthinker_ui.account.models import Account, token_generate
 from starthinker_ui.project.models import Project
 from starthinker_ui.recipe.scripts import Script
-from django.template.defaultfilters import slugify
 
 JOB_INTERVAL_MS = float(800) # milliseconds 
 JOB_LOOKBACK_MS = 5 * JOB_INTERVAL_MS # 4 seconds ( must guarantee to span several pings )
 JOB_RECHECK_MS = 30 * 60 * 1000 # 30 minutes
 
+RE_SLUG = re.compile(r'[^\w]')
 
 def utc_milliseconds(timestamp=None):
   if timestamp is None: timestamp = datetime.utcnow()
@@ -102,7 +102,7 @@ class Recipe(models.Model):
     return self.name
 
   def slug(self):
-    return slugify(self.name)
+    return RE_SLUG.sub('_', self.name)
 
   def save(self, *args, **kwargs):
     self.get_token()
@@ -151,10 +151,11 @@ class Recipe(models.Model):
     if not self.reference: self.reference = token_generate(Recipe, 'reference', 32)
     return self.reference
 
+
   def get_values(self):
     constants = {
       'recipe_project':self.get_project_identifier(),
-      'recipe_name':slugify(self.name),
+      'recipe_name':self.slug(),
       'recipe_token':self.get_token(),
       'recipe_timezone':self.timezone,
       'recipe_email':self.account.email if self.account else None,
