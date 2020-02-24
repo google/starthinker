@@ -25,9 +25,10 @@ from django.test import TestCase
 
 from starthinker.util.project import project
 from starthinker.util.auth import clear_credentials_cache, get_profile, get_credentials, get_service
-from starthinker.config import UI_CLIENT, UI_SERVICE, UI_USER
+from starthinker.config import UI_CLIENT, UI_SERVICE
 from starthinker_ui.account.models import Account
 
+UI_USER = os.environ.get('STARTHINKER_USER', '')
 
 def account_create():
 

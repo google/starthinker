@@ -324,6 +324,8 @@ def report_clean(rows):
   * Strips header and footer to preserve only data rows.
   * Changes 'Date' to 'Report_Day' to avoid using reserved name in BigQuery.
   * Changes date values to use '-' instead of '/' for BigQuery compatibility.
+  * Changes columns '-' and 'Unknown' to NULL
+  * Changes '< 1000' to 1000
 
   Usage example:
 
@@ -370,7 +372,7 @@ def report_clean(rows):
           ] # 5x faster than regexp
 
     # remove unknown columns ( which throw off schema on import types )
-    row = ['' if cell.strip() in ('Unknown', '-',) else cell for cell in row]
+    row = ['' if cell.strip() in ('Unknown', '-',) else ('1000' if cell == '< 1000' else cell) for cell in row]
 
     # return the row
     yield row

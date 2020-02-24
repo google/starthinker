@@ -69,6 +69,14 @@
       </a>
     {% endif %}
 
+    <br/>
+
+    {% if not external %}
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="{{ script.get_link_ui }}" target="_blank">
+        <i class="material-icons right">play_circle_outline</i>Run Now
+      </a>
+    {% endif %}
+
     {% if script.get_open_source %}
       <a id="solution_button" class="btn-large blue waves-effect waves-light" href="{{ script.get_open_source }}" target="_blank">
         <i class="material-icons right">list</i>Git Hub

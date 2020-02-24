@@ -86,6 +86,9 @@ class Script:
     else:
       return ''
 
+  def get_link_ui(self):
+    return '/recipe/edit/?script=%s' % self.get_tag()
+
   def get_link_colab(self):
     return 'https://colab.research.google.com/github/google/starthinker/blob/master/colabs/%s.ipynb' % self.get_tag()
 

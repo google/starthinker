@@ -39,91 +39,20 @@
 {% block content %}
 
   <h1 id="recipe-scripts">Creating A Workflow Recipe</h1>
+
   <p class="flow-text">StarThinker will get your custom solutions prototyped and scaled quickly.<br/>Using the <a href="https://github.com/google/starthinker" target="_blank">open source code</a>, each JSON task can be combined to form custom recipes.</p>  
 
-  <br/><br/>
-  <h3 id="code_start">Quick Start</h3>
-  <p class="flow-text">Run your first recipe in 5 minutes.</p>
-
-  <table class="bordered highlight list">
-    <thead>
-      <tr>
-        <th class="center" style="width:90px;"></th>
-        <th>Instructions</th>
-        <th class="center-align" style="width:90px;">Minutes</th>
-      </tr>
-     </thead>
-     <tbody>
-
-       <tr>
-         <td><i class="material-icons medium teal-text">file_download</i></td>
-         <td>
-           <strong>Get the open source code:</strong>
-           <br/>git clone https://github.com/google/starthinker
-           <br/>cd starthinker
-         </td>
-         <td class="center-align">1</td>
-       </tr>
-
-       <tr>
-         <td><i class="material-icons medium teal-text">build</i></td>
-         <td>
-           <strong>Set up and run using deploy script:</strong>
-           <br/>source install/deploy.sh
-           <br/>Choose 2) Scientist Setup
-           <br/>Then Choose 1) Install All
-           <br/>Then Choose 8) Add Recipe
-           <br/>Then Choose 10) Run Recipe
-         </td>
-         <td class="center-align">3</td>
-       </tr>
-       <tr>
-         <td style="vertical-align:top;"><i class="material-icons medium teal-text">settings</i></td>
-         <td>
-           <strong>For more detailed instructions see the open source documentations.</strong>
-           <br/><a href="https://github.com/google/starthinker/blob/master/README.md">https://github.com/google/starthinker/blob/master/tutorials/README.md</a>
-         </td>
-       </tr>
-
-     </tbody>
-  </table>
-
-  <br/><br/>
-  <h3 id="recipe_code">Creating A Custom Recipe</h3>
-  <p class="flow-text">Create a recipe by assembling from scratch or using templates.</p>
-
-  <table class="bordered highlight list">
-    <tbody>
-      <tr>
-        <td style="vertical-align:top;width:90px;"><i class="material-icons medium teal-text">content_paste</i></td>
-        <td>
-          <strong>Copy the Say Hello recipe and start building a workflow using JSON samples below.</strong>
-          <br/>cp gtech/say_hello.json [project_name].json
-          <br/>vi [project_name].json
-          <br/>python all/run.py [project_name].json --verbose
-        </td>
-      </tr>
-      <tr>
-        <td style="vertical-align:top;"><i class="material-icons medium teal-text">list</i></td>
-        <td>
-           <strong>Create a recipe from a template by running the following and following screen prompts.</strong>
-           <br/>python script/run.py gtech/script_dcm_to_bigquery.json
-           <br/>python all/run.py [JSON file in step above].json --verbose
-        </td>
-      </tr>
-      <tr>
-        <td style="vertical-align:top;"><i class="material-icons medium teal-text">settings</i></td>
-        <td>
-           <strong>For more detailed instructions see the open source documentations.</strong>
-           <br/><a href="https://github.com/google/starthinker/blob/master/tutorials/README.md">https://github.com/google/starthinker/blob/master/tutorials/README.md</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <br/><br/>
-  <h3 id="code-tasks">Available Recipe Tasks</h3>
-  <p class="flow-text">Copy and paste the JSON to add tasks to your recipe. Replace <i>{ "field": ... }</i> with your values.</p>
+  <p>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#deployment" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      Deployment Steps<i class="material-icons right">launch</i>
+    </a>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      Developer Guide<i class="material-icons right">build</i>
+    </a>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/ui_recipe.md" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      UI How To<i class="material-icons right">laptop</i>
+    </a>
+  </p>
 
   {% for product in products %}
      <span class="trigger_product menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_product_{{ forloop.counter }}">{{ product.name }}</span>
@@ -132,12 +61,6 @@
   <br/><br/>
   {% for product in products %}
     <table class="view_product bordered highlight list" id="view_product_{{ forloop.counter }}"{% if not forloop.first %} style="display:none;"{% endif %}>
-      <thead>
-        <tr>
-          <th class="center" style="width:90px;"></th>
-          <th>{{ product.name }}</th>
-        </tr>
-      </thead>
       <tbody>
       {% for script in product.scripts %}
         <tr>
@@ -151,9 +74,13 @@
             </ol>
             <pre class="view_code" id="view_code_{{ script.get_tag }}" style="display:none;">{{ script.get_tasks|json_pretty }}</pre>
           </td>
-          <td style="vertical-align:top; width:150px;">
+          <td style="vertical-align:top; width:160px;">
+           {% if not external %}
+             <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="{{ script.get_link_ui }}" target="_blank">Run&nbsp;<i class="material-icons">play_circle_outline</i></a>
+            {% endif %}
             {% if script.get_open_source %}
               <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="{{ script.get_open_source }}" target="_blank">GitHub&nbsp;<i class="material-icons">list</i></a>
+              <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="{{ script.get_link_airflow }}" target="_blank">Airflow&nbsp;<i class="material-icons">copyright</i></a>
               <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="{{ script.get_link_colab }}" target="_blank">Colab&nbsp;<i class="material-icons">exit_to_app</i></a>
             {% endif %}
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_{{ script.get_tag }}">JSON&nbsp;<i class="material-icons">expand_more</i></span>

@@ -422,15 +422,20 @@ class project:
     # add setup to json if not provided and loads command line credentials if given
     if 'setup' not in cls.recipe: cls.recipe['setup'] = {}
     if 'auth' not in cls.recipe['setup']: cls.recipe['setup']['auth'] = {}
-    if _project: cls.recipe['setup']['id'] = _project
     if _service: cls.recipe['setup']['auth']['service'] = _service
     if _client: cls.recipe['setup']['auth']['client'] = _client
     # if user explicity specified by command line
-    if _user: 
-      cls.recipe['setup']['auth']['user'] = _user
-    # or if user not give, then try default credentials ( disabled security risk to assume on behalf of recipe )
+    if _user: cls.recipe['setup']['auth']['user'] = _user
+    # or if user not given, then try default credentials ( disabled security risk to assume on behalf of recipe )
     #elif not cls.recipe['setup']['auth'].get('user'): 
     #  cls.recipe['setup']['auth']['user'] = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', None)
+
+    # if project id given, use it
+    if _project: cls.recipe['setup']['id'] = _project
+    # TBD: if project id not given, use service credentials
+    #elif not cls.recipe['setup'].get('id') and cls.recipe['setup']['auth'].get('service'):
+    # TBD: if project id not given, use client credentials
+    #elif not cls.recipe['setup'].get('id') and cls.recipe['setup']['auth'].get('client'):
 
     cls.id = cls.recipe['setup'].get('id')
     cls.uuid = cls.recipe['setup'].get('uuid')

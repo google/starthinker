@@ -48,7 +48,9 @@
     { "include":{
       "script":"scripts/anonymize.json",
       "parameters":{
+        "from_project":{"field":{ "name":"project", "kind":"string", "description":"Project where BigQuery dataset is read from." }},
         "from_dataset":"Test_Anonymize_From",
+        "to_project":{"field":{ "name":"project", "kind":"string", "description":"Project where BigQuery dataset is created." }},
         "to_dataset":"Test_Anonymize_To"
       }
     }},

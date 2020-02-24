@@ -33,7 +33,25 @@
 {% block js %}
   <script type="text/javascript">
     var forms = {{ form_script.forms|length }};
+    function getQueryVariable(variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+      }
+      return null;
+    }
     $(document).ready(function() {
+      var script = getQueryVariable('script');
+      if (script) {
+        forms += 1;
+        var repeat_blank = $('#form_blank_' + script);
+        $('#insert_here').before(repeat_blank.html().replace(/\[BLANK\]/g, forms));
+        $('select').material_select();
+      }
       $('a.form_button').on('click tap', function() {
         forms += 1;
         var repeat_blank = $('#' + this.id.replace('button', 'blank'));
