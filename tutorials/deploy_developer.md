@@ -12,7 +12,7 @@ git clone https://github.com/google/starthinker
 cd starthinker
 ```
 ```
-source install/deploy.sh 
+bash install/deploy.sh 
 ```
 
 1. Option 1) Developer Menu
@@ -42,7 +42,7 @@ git clone https://github.com/google/starthinker
 cd starthinker
 ```
 ```
-source install/deploy.sh 
+bash install/deploy.sh 
 ```
 
 1. Option 1) Developer Menu

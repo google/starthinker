@@ -10,7 +10,7 @@ Airflow can wrap any Python function in a [PythonOperator](https://airflow.apach
 
 ## Instructions
 
-1. Second install airflow and the StarThinker libraries.
+1. First install airflow and the StarThinker libraries.
 
 ```
 pip install apache-airflow

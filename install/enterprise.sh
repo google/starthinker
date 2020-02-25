@@ -30,8 +30,20 @@ setup_sql() {
   gcloud services enable sql-component.googleapis.com
   gcloud services enable serviceusage.googleapis.com
 
-  gcloud sql instances create $STARTHINKER_UI_PRODUCTION_DATABASE_NAME --database-version=POSTGRES_9_6 --cpu=2 --memory=7680MiB --region=$STARTHINKER_REGION
-  gcloud sql databases create $STARTHINKER_UI_PRODUCTION_DATABASE_NAME --instance=$STARTHINKER_UI_PRODUCTION_DATABASE_NAME 
+  values=$(gcloud sql instances list --filter="name=$STARTHINKER_UI_PRODUCTION_DATABASE_NAME" --format="value(name)" --verbosity=none)
+  if [ -z "${values}" ]; then
+    gcloud sql instances create $STARTHINKER_UI_PRODUCTION_DATABASE_NAME --database-version=POSTGRES_9_6 --cpu=2 --memory=7680MiB --region=$STARTHINKER_REGION
+  else
+    echo "Instance already exists."
+  fi
+
+  values=$(gcloud sql databases list --instance=starthinker --filter="name=$STARTHINKER_UI_PRODUCTION_DATABASE_NAME" --format="value(name)" --verbosity=none)
+  if [ -z "${values}" ]; then
+    gcloud sql databases create $STARTHINKER_UI_PRODUCTION_DATABASE_NAME --instance=$STARTHINKER_UI_PRODUCTION_DATABASE_NAME
+  else
+    echo "Database already exists."
+  fi
+
   gcloud sql users create $STARTHINKER_UI_PRODUCTION_DATABASE_USER --host=% --instance=$STARTHINKER_UI_PRODUCTION_DATABASE_NAME --password=$STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD
 
   echo "Done"
@@ -89,26 +101,6 @@ migrate_database_proxy() {
 }
 
 
-setup_ui_account() {
-  echo ""
-  echo "----------------------------------------"
-  echo "Setup UI Account"
-  echo "----------------------------------------"
-  echo ""
-
-  (
-    start_proxy;
-    source "${STARTHINKER_ROOT}/starthinker_assets/production.sh";
-    python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" account_setup --user "${STARTHINKER_USER}" --write;
-    deactivate
-    stop_proxy;
-  )
-  
-  echo "Done"
-  echo ""
-}
-
-
 deploy_appengine() {
   echo ""
   echo "----------------------------------------"
@@ -127,7 +119,7 @@ deploy_appengine() {
   gcloud app deploy app.yaml --stop-previous-version
 
   # delete the recipe scripts python file for App Engine ( easy to forget and waste time debugging )
-  rm "${STARTHINKER_ROOT}/starthinker_ui/recipe/scripts_lookup.py*" 
+  rm "${STARTHINKER_ROOT}/starthinker_ui/recipe/scripts_lookup.py"* 
 
   echo "Done"
   echo ""
@@ -208,56 +200,42 @@ EOL
 
 
 setup_appengine() {
-  deploy_Type=$1
 
   echo ""
   echo "----------------------------------------"
-  echo "Setup ${deploy_Type} UI Instance On App Engine"
+  echo "Setup Enterprise UI Instance On App Engine"
   echo "----------------------------------------"
+  echo ""
   echo "This will create a StarThinker UI instances in Google Cloud project $STARTHINKER_PROJECT."
   echo ""
-  read -p "Do you wish to proceed (y/n)? " -n 1 -r
-  echo ""
-  echo ""
   
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
-    setup_project;
-    setup_credentials_service;
+  setup_credentials_service;
+  setup_database;
+  save_config;
 
-    setup_database;
-    save_config;
+  gcloud services enable doubleclickbidmanager.googleapis.com
+  gcloud services enable storage-api.googleapis.com
+  gcloud services enable bigquery-json.googleapis.com
+  gcloud services enable dfareporting.googleapis.com
+  gcloud services enable drive.googleapis.com
+  gcloud services enable sheets.googleapis.com
+  gcloud services enable doubleclicksearch.googleapis.com
 
-    gcloud services enable doubleclickbidmanager.googleapis.com
-    gcloud services enable storage-api.googleapis.com
-    gcloud services enable bigquery-json.googleapis.com
-    gcloud services enable dfareporting.googleapis.com
-    gcloud services enable drive.googleapis.com
-    gcloud services enable sheets.googleapis.com
-    gcloud services enable doubleclicksearch.googleapis.com
+  install_proxy; # first so it install dependencies
+  install_virtualenv; # second because pip is here
 
-    install_proxy; # first so it install dependencies
-    install_virtualenv; # second because pip is here
+  install_requirements; # second because pip is here
+  install_requirements_ui; # second because pip is here
 
-    install_requirements; # second because pip is here
-    install_requirements_ui; # second because pip is here
+  setup_sql;
+  migrate_database_proxy; 
 
-    setup_sql;
-    migrate_database_proxy; 
+  setup_credentials_ui;
+  save_config;
 
-    if [[ $deploy_Type == 'Scientist' ]]; then
-      setup_credentials_commandline;
-      setup_credentials_user;
-      save_config;
-      setup_ui_account;
-    else
-      setup_credentials_ui;
-      save_config;
-    fi
+  configure_yaml $deploy_Type; 
 
-    configure_yaml $deploy_Type; 
-
-    deploy_appengine; 
-  fi
+  deploy_appengine; 
 
   echo ""
   echo "----------------------------------------"
@@ -301,7 +279,6 @@ migrate_database_enterprise() {
   echo "----------------------------------------"
   echo ""
 
-  setup_project;
   setup_credentials_service;
   setup_database;
   save_config;
@@ -355,7 +332,7 @@ setup_enterprise() {
     PS3='Your Choice ( q = Quit ): '
     select enterprise_option in "${enterprise_options[@]}"; do
       case $REPLY in
-        1) setup_appengine "Enterprise"; break ;;
+        1) setup_appengine; break ;;
         2) setup_worker; break ;;
         3) check_worker; break ;;
         4) setup_domain; save_config; break ;;

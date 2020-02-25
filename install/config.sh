@@ -85,8 +85,6 @@ derive_config() {
   if [ -z "${STARTHINKER_UI_PRODUCTION_SECRET}" ]; then
     STARTHINKER_UI_PRODUCTION_SECRET=$(openssl rand -base64 48)
   fi
-
-  check_gsuite;
 }
 
 
@@ -198,24 +196,49 @@ read_multiline() {
 
 
 setup_gcloud() {
+  forced=$1
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Set gCloud User"
+  echo "----------------------------------------"
+  echo ""
+  echo "This command line is used to administer your Google Cloud Project."
+  echo ""
 
   if [ "$(command -v gcloud)" == "" ]; then
+
+    echo "Please install gcloud command using: https://cloud.google.com/sdk/install"
+    echo "Then run the StarThinker deployment again."
     echo ""
-    echo "----------------------------------------"
-    echo "MISSING gcloud"
-    echo "----------------------------------------"
-    echo ""
-    echo "Please go to: https://cloud.google.com/sdk/install"
-    echo "Then run the install again."
-    echo ""
-    return
+    exit 1;
+
   else
-    gcloud config get-value account
-    if [[ $? == *"ERROR"* ]]
-    then
+
+    if [ "$forced" == "forced" ]; then
+
+      echo "Changing gcloud account, please log in."
+      gcloud auth login --no-launch-browser --brief
       echo ""
-      echo "GCloud installed"
-      #gcloud auth login
+
+     else
+
+       error=$(gcloud auth print-identity-token 2>&1 > /dev/null)
+
+       if [[ ! -z $error ]]; then
+    
+         echo "No gcloud account detected, please log in."
+         echo ""
+         gcloud auth login --no-launch-browser --brief
+         echo ""
+
+       else
+
+         account=$(gcloud auth list --filter=status:ACTIVE --format="value(account)")
+         echo "Using gCloud Account: $account"
+         echo ""
+
+       fi
     fi
   fi
 }
@@ -272,38 +295,48 @@ setup_database() {
 setup_project() {
   forced=$1
 
-  echo ""
-  echo "----------------------------------------"
-  echo "Set Cloud Project - ${STARTHINKER_PROJECT}"
-  echo "----------------------------------------"
-  echo ""
+  if [ "$(command -v gcloud)" == "" ]; then
 
-  if [ "$forced" == "forced" ] || [ "${STARTHINKER_PROJECT}" == "" ]; then
-
-    echo "Retrieve Project ID from: https://console.cloud.google.com"
+    echo "Please install gcloud command using: https://cloud.google.com/sdk/install"
+    echo "Then run the StarThinker deployment again."
     echo ""
-    echo "IMPORTANT SETUP NOTES"
-    echo ""
-    echo " * The Project ID is in a drop down at the top of your Google Cloud Console."
-    echo " * Use the Project ID not the Name."
-    echo " * Include the organization if it is part of the Project ID."
-    echo ""
+    exit 1;
 
-    read -p "Cloud Project ID ( blank to keep existing ): " cloud_id
-
-    if [ "${cloud_id}" ]; then
-      STARTHINKER_PROJECT="${cloud_id}"
-    else
-      echo "Project ID Unchanged"
-    fi
   else
-    echo "Using Existing Project ID"
+
+    echo ""
+    echo "----------------------------------------"
+    echo "Set gCloud Project - ${STARTHINKER_PROJECT}"
+    echo "----------------------------------------"
+    echo ""
+  
+    if [ "$forced" == "forced" ] || [ "${STARTHINKER_PROJECT}" == "" ]; then
+  
+      echo "Retrieve Project ID from: https://console.cloud.google.com"
+      echo ""
+      echo "IMPORTANT SETUP NOTES"
+      echo ""
+      echo " * The Project ID is in a drop down at the top of your Google Cloud Console."
+      echo " * Use the Project ID not the Name."
+      echo " * Include the organization if it is part of the Project ID."
+      echo ""
+  
+      read -p "Cloud Project ID ( blank to keep existing ): " cloud_id
+  
+      if [ "${cloud_id}" ]; then
+        STARTHINKER_PROJECT="${cloud_id}"
+        save_config;
+      else
+        echo "Project ID Unchanged"
+        echo ""
+      fi
+    else
+      echo "Using Existing Project ID"
+      echo ""
+    fi
+  
+    gcloud config set project "${STARTHINKER_PROJECT}" --no-user-output-enabled;
   fi
-
-  gcloud config set project "${STARTHINKER_PROJECT}";
-
-  echo "Done"
-  echo ""
 }
 
 
@@ -570,7 +603,6 @@ install_virtualenv() {
 
   fi
 
-  echo ""
   echo "Done"
   echo ""
 }
@@ -712,7 +744,7 @@ install_proxy() {
 
   if [ "$(command -v psql)" == "" ]; then
     case "$(uname -s)" in
-      Darwin) brew install postgresql-client;;
+      Darwin) echo "Skipping Postgres, not required for local development: https://www.postgresql.org/download/macosx/";;
       Linux)  sudo apt-get install gcc python3-dev python3-pip libpq-dev postgresql-client python-psycopg2 -qq;;
       *) echo "ERROR: Unknown Postgres install, visit http://postgresguide.com/setup/install.html" ;;
     esac
@@ -742,3 +774,12 @@ install_proxy() {
 #  load variables or reset paths - when copying assets paths need to be realigned to new destination
 #
 load_config;
+
+if [ "$1" = "--no_user" ];then
+  shift
+  setup_project;
+else
+  setup_gcloud;
+  setup_project;
+  check_gsuite;
+fi

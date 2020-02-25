@@ -22,13 +22,6 @@
 if [ -d "${PWD}/install" ]; then
   THIS_DIR=$PWD
 
-  source ${THIS_DIR}/install/config.sh;
-  source ${THIS_DIR}/install/worker.sh;
-  source ${THIS_DIR}/install/developer.sh;
-  source ${THIS_DIR}/install/enterprise.sh;
-  source ${THIS_DIR}/install/composer.sh;
-
-  echo ""
   echo "Welcome To StarThinker ( Google gTech )"
   echo ""
   echo "This utility will help you set up and manage long running recipes."
@@ -44,10 +37,16 @@ if [ -d "${PWD}/install" ]; then
   
     read -p "Do you acknowledge and wish to proceed (y/n)? " -n 1 -r
     echo ""
-    echo ""
   
     if [[ $REPLY =~ ^[Yy]$ ]]; then
 
+      source ${THIS_DIR}/install/config.sh;
+      source ${THIS_DIR}/install/worker.sh;
+      source ${THIS_DIR}/install/developer.sh;
+      source ${THIS_DIR}/install/enterprise.sh;
+      source ${THIS_DIR}/install/composer.sh;
+
+      echo ""
       echo "----------------------------------------------------------------------"
       echo "gTech StarThinker"
       echo "----------------------------------------------------------------------"
@@ -66,7 +65,7 @@ if [ -d "${PWD}/install" ]; then
       echo ""
     
       main_done=0
-      main_options=("Developer Menu" "Enterprise Menu" "Composer Setup Menu" "Change Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials")
+      main_options=("Developer Menu" "Enterprise Menu" "Composer Setup Menu" "Change gCloud User" "Change gCloud Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials")
     
       while (( !main_done ))
       do
@@ -81,10 +80,11 @@ if [ -d "${PWD}/install" ]; then
             1) setup_developer; break ;;
             2) setup_enterprise; break ;;
             3) setup_composer; break ;;
-            4) setup_project "forced"; save_config; break ;;
-            5) setup_credentials_service "forced"; save_config; break ;;
-            6) setup_credentials_commandline "forced"; setup_credentials_user "forced"; save_config; break ;;
-            7) setup_credentials_ui "forced"; save_config; break ;;
+            4) setup_gcloud "forced"; save_config; break ;;
+            5) setup_project "forced"; save_config; break ;;
+            6) setup_credentials_service "forced"; save_config; break ;;
+            7) setup_credentials_commandline "forced"; setup_credentials_user "forced"; save_config; break ;;
+            8) setup_credentials_ui "forced"; save_config; break ;;
             q) main_done=1; break;;
             *) echo "What's that?" ;;
           esac

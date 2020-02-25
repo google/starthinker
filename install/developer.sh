@@ -23,7 +23,6 @@ test_ui() {
 
   install_virtualenv; 
   install_requirements; 
-  setup_project; 
   setup_credentials_service;
   setup_credentials_commandline;
   save_config;
@@ -70,7 +69,6 @@ test_tasks() {
 
   install_virtualenv; 
   install_requirements; 
-  setup_project;
   setup_credentials_service;
   setup_credentials_commandline;
   save_config;
@@ -102,7 +100,6 @@ launch_developer_ui() {
 
   install_virtualenv; 
   install_requirements; 
-  setup_project;
   setup_credentials_service;
   setup_credentials_commandline;
   save_config;
@@ -160,7 +157,6 @@ launch_developer_worker() {
 install_developer() {
   install_virtualenv; 
   install_requirements; 
-  setup_project;
   setup_credentials_service;
   setup_credentials_commandline;
   setup_credentials_user; 

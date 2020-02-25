@@ -26,9 +26,6 @@ COMPOSER_NODE_COUNT=3
 
 composer_activate() {
 
-  setup_project;
-  save_config;
-
   echo ""
   echo "----------------------------------------"
   echo "Enabling GCP APIs"
@@ -58,9 +55,6 @@ composer_credentials() {
 
   install_virtualenv;
   install_requirements;
-
-  setup_project;
-  save_config;
 
   setup_credentials_service;
   setup_credentials_commandline;

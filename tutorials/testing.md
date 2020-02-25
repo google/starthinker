@@ -12,7 +12,7 @@ or [starthinker_assets/production.sh](../starthinker_assets/production.sh).
 
 ## Steps
 ```
-source install/deploy.sh
+bash install/deploy.sh
 ```
 
 1. Option 1) Developer Menu

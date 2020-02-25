@@ -13,7 +13,7 @@ git clone https://github.com/google/starthinker
 cd starthinker
 ```
 ```
-source install/deploy.sh
+bash install/deploy.sh
 ```
 
  1. Option 3) Enterprise Setup Menu 

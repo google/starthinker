@@ -23,23 +23,15 @@ gcloud_service() {
   gcloud auth activate-service-account --project=$STARTHINKER_PROJECT --key-file=$STARTHINKER_SERVICE
 }
 
-
-gcloud_topic() {
-  topic_Name=$1
-  gcloud pubsub topics create $topic_Name --project=$STARTHINKER_PROJECT
-}
-
-
-gcloud_subscription() {
-  subscription_Topic=$1
-  subscription_Name=$2
-  gcloud pubsub subscriptions create $subscription_Name --project=$STARTHINKER_PROJECT --topic=$subscription_Topic --topic-project=$STARTHINKER_PROJECT --message-retention-duration=24h
-}
-
-
 gcloud_firewall_ssh()
 {
-  gcloud compute firewall-rules create default-allow-ssh --allow tcp:22
+
+  values=$(gcloud compute firewall-rules list --filter="name=default-allow-ssh" --format="value(name)" --verbosity=none)
+  if [ -z "${values}" ]; then
+    gcloud compute firewall-rules create default-allow-ssh --allow tcp:22
+  else
+    echo "Firewall rule already exists."
+  fi
 }
 
 
@@ -53,30 +45,25 @@ instance_create()
 {
   create_INSTANCE=$1
   create_MACHINE=$2
-  gcloud compute instances create $create_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE --machine-type=$create_MACHINE --boot-disk-size=200GB --scopes https://www.googleapis.com/auth/cloud-platform
+
+  values=$(gcloud compute instances list --filter="name=$create_INSTANCE" --format="value(name)" --verbosity=none)
+  if [ -z "${values}" ]; then
+    gcloud compute instances create $create_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE --machine-type=$create_MACHINE --boot-disk-size=200GB --scopes https://www.googleapis.com/auth/cloud-platform
+  else
+    echo "Instance already exists."
+  fi
 }
 
 
 instance_start()
 {
   start_INSTANCE=$1
-  gcloud compute instances start $start_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE
-}
-
-
-instance_describe()
-{
-  describe_INSTANCE=$1
-  gcloud compute instances describe $describe_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE --format=list
-}
-
-
-instance_metadata()
-{
-  metadata_INSTANCE=$1
-  metadata_KEY=$2
-  metadata_VALUE=$3
-  gcloud compute instances add-metadata $metadata_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE --metadata=$metadata_KEY=$metadata_VALUE
+  values=$(gcloud compute instances list --filter="status=RUNNING name=$start_INSTANCE" --verbosity=none)
+  if [ -z "${values}" ]; then
+    gcloud compute instances start $start_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE
+  else
+    echo "Instance already running."
+  fi
 }
 
 
@@ -202,9 +189,6 @@ deploy_worker() {
   instance_Workers=$3
   instance_Jobs=$4
 
-  setup_gcloud;
-
-  setup_project;
   setup_credentials_service;
   setup_credentials_ui;
   save_config;
@@ -266,6 +250,8 @@ setup_worker() {
   echo " - Its OK to simply terminate machines from the console."
   echo " - Deploying workers overwrites existing workers of the same kind."
   echo " - You will have to manually shutdown and delete any unused workers if you change configuration."
+  echo ""
+  echo "WARNING: Your zone is set to $STARTHINKER_ZONE, you must delete any StarThinker workers outside this zone before launching new ones."
   echo ""
 
   worker_done=0
@@ -342,7 +328,7 @@ if [ "$1" = "--instance" ];then
   if [ -d "${PWD}/install" ]; then
 
     THIS_DIR=$PWD
-    source ${THIS_DIR}/install/config.sh
+    source ${THIS_DIR}/install/config.sh --no_user
 
     export STARTHINKER_SCALE=5
     export STARTHINKER_DEVELOPMENT=0

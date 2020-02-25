@@ -6,7 +6,7 @@ be excuted per Django instructons or via the helper bash script:
 
 ## Steps
 ```
-source install/deploy.sh 
+bash install/deploy.sh 
 ```
 
 1. Option 1) Developer Menu
