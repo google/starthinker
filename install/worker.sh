@@ -19,10 +19,6 @@
 ###########################################################################
 
 
-gcloud_service() {
-  gcloud auth activate-service-account --project=$STARTHINKER_PROJECT --key-file=$STARTHINKER_SERVICE
-}
-
 gcloud_firewall_ssh()
 {
 
@@ -32,12 +28,6 @@ gcloud_firewall_ssh()
   else
     echo "Firewall rule already exists."
   fi
-}
-
-
-gcloud_firewall_https()
-{
-  gcloud compute firewall-rules create default-allow-https --allow tcp:443
 }
 
 
@@ -183,6 +173,7 @@ EOL
   echo ""
 }
 
+
 deploy_worker() {
   instance_Label=$1
   instance_Type=$2
@@ -199,7 +190,6 @@ deploy_worker() {
   echo "----------------------------------------"
   echo ""
 
-  gcloud_service;
   gcloud_firewall_ssh;
 
   for ((instance=1;instance<=instance_Workers;instance++)); do
