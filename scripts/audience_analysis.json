@@ -6,7 +6,7 @@
     "icon":"people",
     "title":"DV360 Audience Analysis",
     "description":"The Audience Wizard Dashboard helps you to track the audience performance across all audiences on Display.",
-    "image":"https://github.com/google/starthinker/raw/master/tutorials/images/dv360_audience_analysis.png",
+    "image":"https://github.com/google/starthinker/raw/master/tutorials/images/audience_analysis.png",
     "sample":"https://datastudio.google.com/open/1Ij_RluqolElm7Nny9fBrIAPRB9ObUl0M",
     "categories":["audience", "reporting", "audit"],
     "requirements":[ "dv360", "datastudio", "bigquery" ],
