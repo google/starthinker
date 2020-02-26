@@ -77,14 +77,14 @@ def anonymize_table(table_id):
   if project.verbose: print('ANONYMIZE TABLE', project.task['bigquery']['to']['dataset'], table_id)
 
   schema = API_BigQuery(project.task['auth']).tables().get(
-    projectId=project.task['bigquery']['from'].get('project', project.id),
+    projectId=project.task['bigquery']['from']['project'],
     datasetId=project.task['bigquery']['from']['dataset'],
     tableId=table_id
   ).execute()['schema']['fields']
 
   rows = table_to_rows(
     project.task['auth'],
-    project.task['bigquery']['from'].get('project', project.id),
+    project.task['bigquery']['from']['project'],
     project.task['bigquery']['from']['dataset'],
     table_id
    )
@@ -93,7 +93,7 @@ def anonymize_table(table_id):
 
   rows_to_table(
      project.task['auth'],
-     project.task['bigquery']['to'].get('project', project.id),
+     project.task['bigquery']['to']['project'],
      project.task['bigquery']['to']['dataset'],
      table_id,
      rows,
@@ -107,7 +107,7 @@ def copy_view(view_id):
   if project.verbose: print('ANONYMIZE VIEW', project.task['bigquery']['to']['dataset'], view_id)
 
   view = API_BigQuery(project.task['auth']).tables().get(
-    projectId=project.id,
+    projectId=project.task['bigquery']['from']['project'],
     datasetId=project.task['bigquery']['from']['dataset'],
     tableId=view_id
   ).execute()['view']
@@ -116,18 +116,18 @@ def copy_view(view_id):
 
   query = view['query'].replace(
     project_dataset_template % ( 
-      project.task['bigquery']['from'].get('project', project.id),
+      project.task['bigquery']['from']['project'],
       project.task['bigquery']['from']['dataset']
     ),
     project_dataset_template % ( 
-      project.task['bigquery']['to'].get('project', project.id),
+      project.task['bigquery']['to']['project'],
       project.task['bigquery']['to']['dataset']
     ),
   )
 
   query_to_view(
     project.task['auth'],
-    project.task['bigquery']['to'].get('project', project.id),
+    project.task['bigquery']['to']['project'],
     project.task['bigquery']['to']['dataset'],
     view_id,
     query,
@@ -142,7 +142,7 @@ def anonymize():
   views = []
 
   for table in API_BigQuery(project.task['auth'], iterate=True).tables().list(
-    projectId=project.id,
+    projectId=[project.task['bigquery']['from']['project'],
     datasetId=project.task['bigquery']['from']['dataset']
   ).execute():
     if table['type'] == 'VIEW': 
