@@ -42,6 +42,7 @@
        textarea { margin-top: 7px; height: 10rem; }
        table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
        a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
+       a.btn { margin: 2px; }
 
        div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
        div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
@@ -147,6 +148,10 @@
 
     
 
+    <br/>
+
+    
+
     
       <a id="solution_button" class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/monthly_budget_mover.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
@@ -154,7 +159,11 @@
       <a id="solution_button" class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/monthly_budget_mover.ipynb" target="_blank">
         <i class="material-icons right">copyright</i>Data Pill Colab
       </a>
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/monthly_budget_mover_dag.py" target="_blank">
+        <i class="material-icons right">copyright</i>Airflow DAG
+      </a>
     
+
   </div>
 
   <div class="solution">
@@ -278,9 +287,6 @@
 
     </div>
 
-    
-
-    
   </body>
 
   
@@ -301,6 +307,7 @@
       $('.modal').modal();
     });
   </script>
+
   
 
 </html>

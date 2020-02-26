@@ -42,6 +42,7 @@
        textarea { margin-top: 7px; height: 10rem; }
        table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
        a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
+       a.btn { margin: 2px; }
 
        div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
        div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
@@ -112,7 +113,7 @@
 
   <br/>
   <h1><i class="medium material-icons">fingerprint</i>&nbsp; Transparency Dashboard</h1>
-  <p class="flow-text">Reports the percentage of DCM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.</p>
+  <p class="flow-text">Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
@@ -155,6 +156,10 @@
 
     
 
+    <br/>
+
+    
+
     
       <a id="solution_button" class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/transparency.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
@@ -162,7 +167,11 @@
       <a id="solution_button" class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/transparency.ipynb" target="_blank">
         <i class="material-icons right">copyright</i>Data Pill Colab
       </a>
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/transparency_dag.py" target="_blank">
+        <i class="material-icons right">copyright</i>Airflow DAG
+      </a>
     
+
   </div>
 
   <div class="solution">
@@ -285,9 +294,6 @@
 
     </div>
 
-    
-
-    
   </body>
 
   
@@ -308,6 +314,7 @@
       $('.modal').modal();
     });
   </script>
+
   
 
 </html>

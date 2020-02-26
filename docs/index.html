@@ -42,6 +42,7 @@
        textarea { margin-top: 7px; height: 10rem; }
        table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
        a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
+       a.btn { margin: 2px; }
 
        div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
        div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
@@ -155,6 +156,8 @@
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_alerts">alerts</span>
   
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_audience">audience</span>
+  
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_audit">audit</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_automation">automation</span>
@@ -179,11 +182,19 @@
         </td>
       </tr>
     
+      <tr class="category_all category_audience category_reporting category_audit category_experience category_insights category_dv360 category_datastudio category_bigquery">
+        <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">people</i></td>
+        <td style="vertical-align:top;">
+          <a href="/starthinker/solution/audience_analysis/"><h4>DV360 Audience Analysis</h4></a>
+          <p>The Audience Wizard Dashboard helps you to track the audience performance across all audiences on Display.</p>
+        </td>
+      </tr>
+    
       <tr class="category_all category_security category_reporting category_insights category_experience category_cm category_datastudio category_bigquery">
         <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">donut_small</i></td>
         <td style="vertical-align:top;">
           <a href="/starthinker/solution/barnacle/"><h4>CM User Audit</h4></a>
-          <p>Gives DCM clients ability to see which profiles have access to which parts of an account. Loads DCM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.</p>
+          <p>Gives CM clients ability to see which profiles have access to which parts of an account. Loads CM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.</p>
         </td>
       </tr>
     
@@ -200,6 +211,14 @@
         <td style="vertical-align:top;">
           <a href="/starthinker/solution/deal_finder/"><h4>Deal Finder</h4></a>
           <p>Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.</p>
+        </td>
+      </tr>
+    
+      <tr class="category_all category_budget category_reporting category_experience category_data category_monetization category_insights category_dv360 category_datastudio category_bigquery">
+        <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">cloud_queue</i></td>
+        <td style="vertical-align:top;">
+          <a href="/starthinker/solution/dv360_feature_adoption/"><h4>DV360 Feature Adoption Dashboard</h4></a>
+          <p>Tracks revenue spent on various DV360 features and compares to performance metrics.</p>
         </td>
       </tr>
     
@@ -239,7 +258,7 @@
         <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">policy</i></td>
         <td style="vertical-align:top;">
           <a href="/starthinker/solution/kv_uploader/"><h4>Tag Key Value Uploader</h4></a>
-          <p>A tool for bulk editing key value pairs for DCM pllacements.</p>
+          <p>A tool for bulk editing key value pairs for CM pllacements.</p>
         </td>
       </tr>
     
@@ -263,7 +282,7 @@
         <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">fingerprint</i></td>
         <td style="vertical-align:top;">
           <a href="/starthinker/solution/transparency/"><h4>Transparency Dashboard</h4></a>
-          <p>Reports the percentage of DCM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.</p>
+          <p>Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.</p>
         </td>
       </tr>
     
@@ -285,9 +304,6 @@
 
     </div>
 
-    
-
-    
   </body>
 
   
@@ -308,6 +324,7 @@
       $('.modal').modal();
     });
   </script>
+
   
   <script type="text/javascript">
     var category = 'category_all';
