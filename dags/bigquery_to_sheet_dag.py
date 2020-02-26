@@ -77,7 +77,7 @@ TASKS = [
         'query': {
           'field': {
             'name': 'query',
-            'kind': 'string',
+            'kind': 'text',
             'order': 5,
             'default': '',
             'description': 'Query to pull data from the table.'
