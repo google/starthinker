@@ -30,8 +30,9 @@ All documenbtation is within the code or the [tutorials README](tutorials/README
 - [/install](install/) - Scripts for installing and deploying StarThinker.
 - [/tutorials](tutorials/) - Tutorials for using StarThinker code base.
 - [/scripts](scripts/) - Complete solution templates provided by Google that you can deploy.
+- [/dags](dags/) - Deploy solutions using Cloud Composer and Airflow.
+- [/colabs](colabs/) - Deploy solutions using Googles Collaboratory.
 - [/tests](tests/) - Complete testing harness for all solutions provided by Google that you can use.
-- [/colabs](colabs/) - Deploy an solution using Googles Collaboratory.
 - [/starthinker/util](starthinker/util/) - Low level library wrappers around Google API with helpers to handle common errors.
 - [/starthinker/task](starthinker/task/) - Handlers for each task specified in a JSON recipe.
 - [/starthinker/script](starthinker/script/) - Command line for converting a recipe template into a client specific executable recipe.
@@ -40,7 +41,7 @@ All documenbtation is within the code or the [tutorials README](tutorials/README
 - [/starthinker/auth](starthinker/auth/) - Developer command line for testing user credential setup.
 - [/starthinker_ui](starthinker_ui/) - UI code deployed on AppEngine powered by Django.
 - [/starthinker_assets](starthinker_assets/) - Holds all configuration files when you launch StarThinker.
-- [/starthinker_airflow](starthinker_airflow/) - Deploys recipes as AirFlow DAGs, optional.
+- [/starthinker_airflow](starthinker_airflow/) - Factory for airflow.
 - starthinker_virtualenv/ - After deploy, holds virtual environment libraries on setup.
 - starthinker_database/ - After deploy, holds local development database on setup.
 - starthinker_cron/ - After deploy, holds recipes executing using local cron on setup.
@@ -64,7 +65,8 @@ StarThinker can be deployed four different ways depending on the organization re
 instructions for each type of setup, read the [Tutorials](tutorials/README.md) or specific instructions:
 
 - [Enterprise](tutorials/deploy_enterprise.md) - Full browser based UI with multiple user login.
-- [Scientist](tutorials/deploy_scientist.md) - Single user, fast setup, long running job scheduler.
+- [Airflow](tutorials/deploy_airflow.md) - Cloud composer and airflow deployment.
+- [Colab](tutorials/deploy_colab.md) - Google colaboratory deployment.
 - [Developer](tutorials/deploy_developer.md) - Command line recipe creation, editing, and testing.
 - [Package](tutorials/deploy_package.md) - Workshop import and run instantly.
 
@@ -101,4 +103,4 @@ Or Email: starthinker-help@google.com
 Additional contributors to individual handlers and recipes are listed in each file.
 
 ---
-&copy; 2019 Google Inc. - Apache License, Version 2.0
+&copy; 2020 Google LLC - Apache License, Version 2.0
