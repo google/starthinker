@@ -44,7 +44,7 @@ STARTHINKER_UI_DEVELOPMENT_SECRET="fordevelomentthisisokbutproductionneedsa50cha
 STARTHINKER_UI_DEVELOPMENT_DATABASE_ENGINE="django.db.backends.sqlite3";
 STARTHINKER_UI_DEVELOPMENT_DATABASE_HOST="";
 STARTHINKER_UI_DEVELOPMENT_DATABASE_PORT="";
-STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME="${STARTHINKER_ROOT}/starthinker_database/database.sqlite";
+STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME="";
 STARTHINKER_UI_DEVELOPMENT_DATABASE_USER="";
 STARTHINKER_UI_DEVELOPMENT_DATABASE_PASSWORD="";
 
@@ -75,15 +75,16 @@ derive_config() {
   STARTHINKER_SERVICE="${THIS_DIR}/starthinker_assets/service.json"
   STARTHINKER_USER="${THIS_DIR}/starthinker_assets/user.json"
   STARTHINKER_CONFIG="${THIS_DIR}/starthinker_assets/config.sh"
-  STARTHINKER_CRT="${THIS_DIR}/starthinker_assets/ssl.crt"
-  STARTHINKER_KEY="${THIS_DIR}/starthinker_assets/ssl.key"
-  STARTHINKER_CSR="${THIS_DIR}/starthinker_assets/ssl.csr"
 
   STARTHINKER_CRON="${THIS_DIR}/starthinker_cron"
   STARTHINKER_ENV="${THIS_DIR}/starthinker_virtualenv"
 
   if [ -z "${STARTHINKER_UI_PRODUCTION_SECRET}" ]; then
     STARTHINKER_UI_PRODUCTION_SECRET=$(openssl rand -base64 48)
+  fi
+
+  if [ -z "${STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME}" ]; then
+    STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME="${STARTHINKER_ROOT}/starthinker_database/database.sqlite";
   fi
 }
 

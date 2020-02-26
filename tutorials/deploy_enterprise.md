@@ -19,15 +19,13 @@ bash install/deploy.sh
  1. Option 3) Enterprise Setup Menu 
  1. Option 1) Deploy Multi User UI
      - You will be asked for a Cloud Project ID ( use the ID, not the Name, not the Number )
-     - You will be asked for [Service Credentials](cloud_service.md).
-     - You will be asked for [Web Client Credentials](cloud_client_web.md).
-     - You will be asked for a databse user and password, remember this ( database name is starthinker ).
+     - You will be asked for Web Client Credentials. [See instructions.](cloud_client_web.md)
  1. Option 2) Deploy Job Workers
      - Option 1) 1   - 50 Recipes  = 1 x n1-highmem-4 x 2 jobs = 48 recipe hours  ( ~ $37  / month )
      - ( q = Quit )
  1. Option 3) Check Job Workers
- 1. Enable backups for your [Google Cloud SQL](https://console.cloud.google.com/sql).
- 1. Enable [Google Cloud IAP](https://console.cloud.google.com/security/iap) to restrict access to the UI.
+ 1. Enable backups for your Google Cloud SQL. [See instructions.](https://console.cloud.google.com/sql).
+ 1. Enable Google Cloud IAP to restrict access to the UI. [See instructions](https://console.cloud.google.com/security/iap) 
  1. Start using the UI to create and deploy jobs.
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_enterprise.md)
