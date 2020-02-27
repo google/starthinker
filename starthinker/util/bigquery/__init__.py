@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -46,6 +46,32 @@ BIGQUERY_BUFFERSIZE = min(BIGQUERY_CHUNKSIZE * 4, BIGQUERY_BUFFERMAX) # 1 GB * s
 
 def bigquery_date(value):
   return value.strftime('%Y%m%d')
+
+
+def query_parameters(query, parameters):
+  '''
+  Replace variables in a query string with values.
+  CAUTION: Possible SQL injection, please check up stream.
+
+  query = "SELECT * FROM {project}.{dataset}.Some_Table"
+  parameters = {'project': 'Test_Project', 'dataset':'Test_dataset'}
+  print query_parameters(query, parameters)
+  '''
+
+  if not parameters:
+    return query
+  elif isinstance(parameters, dict):
+    return query.format(**parameters)
+  else:
+    while '[PARAMETER]' in query:
+      try:
+        parameter = parameters.pop(0)
+      except IndexError:
+        raise IndexError('BigQuery: Missing PARAMETER values for this query.')
+      if isinstance(parameter, list) or isinstance(parameter, tuple): parameter = ', '.join([str(p) for p in parameter])
+      query = query.replace('[PARAMETER]', parameter, 1)
+    if project.verbose: print('QUERY:', query)
+    return query
 
 
 def job_wait(auth, job):

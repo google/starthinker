@@ -197,7 +197,7 @@ if __name__ == "__main__":
 
   # invalid command line
   if len(sys.argv) < 2:
-    print("USAGE: run.py [json recipe template file path] -h")
+    print("USAGE: run.py [json recipe template file path] [-h] [-t]")
 
   # print test include block
   elif len(sys.argv) == 3 and sys.argv[2] == '-t':

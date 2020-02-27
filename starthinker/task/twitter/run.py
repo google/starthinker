@@ -54,6 +54,8 @@ TWITTER_TRENDS_PLACE_SCHEMA = [
 
 def twitter_trends_places():
   if project.verbose: print('TWITTER TRENDS PLACE')
+  print("PL", list(get_rows(project.task['auth'], project.task['trends']['places'])))
+
   for place in get_rows(project.task['auth'], project.task['trends']['places']):
     if project.verbose: print('PLACE', place)
     results = get_twitter_api().request('trends/place', {'id':int(place)})

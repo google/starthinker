@@ -29,7 +29,6 @@ Key benfits include:
 
 """
 
-
 import json
 import pysftp
 import datetime
@@ -40,7 +39,7 @@ from io import StringIO
 
 from starthinker.util.project import project
 from starthinker.util.storage import parse_path, makedirs_safe, object_put, bucket_create
-from starthinker.util.bigquery import query_to_rows, rows_to_table, json_to_table, incremental_rows_to_table
+from starthinker.util.bigquery import query_to_rows, rows_to_table, json_to_table, incremental_rows_to_table, query_parameters
 from starthinker.util.sheets import sheets_read, sheets_write, sheets_clear
 from starthinker.util.csv import rows_to_csv
 
@@ -130,7 +129,7 @@ def get_rows(auth, source):
         source['bigquery'].get('auth', auth),
         project.id,
         source['bigquery']['dataset'],
-        source['bigquery']['query'],
+        query_parameters(source['bigquery']['query'], source['bigquery'].get('parameters', {})),
         legacy=source['bigquery'].get('legacy', False)
       )
       for row in rows:

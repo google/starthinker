@@ -39,7 +39,8 @@ def lineitem():
       insertion_orders = get_rows(project.task['auth'], project.task['read']['insertion_orders'])
 
     elif 'line_items' in project.task['read']:
-      line_items = get_rows(project.task['auth'], project.task['read']['line_items'])
+      line_items = list(get_rows(project.task['auth'], project.task['read']['line_items']))
+      print('LI', line_items)
 
     rows = lineitem_read(
       project.task['auth'],
