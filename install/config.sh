@@ -49,7 +49,7 @@ STARTHINKER_UI_DEVELOPMENT_DATABASE_USER="";
 STARTHINKER_UI_DEVELOPMENT_DATABASE_PASSWORD="";
 
 check_billing() {
-  if [[ $(gcloud alpha billing projects describe testingstarthinker  --format='value(billingEnabled)') == "True" ]]; then
+  if [[ $(gcloud alpha billing projects describe "$STARTHINKER_PROJECT" --format='value(billingEnabled)') == "True" ]]; then
     STARTHINKER_BILLING=1
   else
     STARTHINKER_BILLING=0

@@ -142,7 +142,7 @@ def anonymize():
   views = []
 
   for table in API_BigQuery(project.task['auth'], iterate=True).tables().list(
-    projectId=[project.task['bigquery']['from']['project'],
+    projectId=project.task['bigquery']['from']['project'],
     datasetId=project.task['bigquery']['from']['dataset']
   ).execute():
     if table['type'] == 'VIEW': 

@@ -109,7 +109,6 @@ deploy_appengine() {
   echo ""
 
   gcloud services enable appengine.googleapis.com
-  gcloud services enable appengineflex.googleapis.com
 
   # create recipe scripts python file for App Engine ( buffers scripts avoiding complex disk lookup )
   source "${STARTHINKER_ROOT}/starthinker_assets/production.sh";
@@ -147,38 +146,25 @@ configure_yaml() {
 
   appengine_service=$(cat "$STARTHINKER_SERVICE" | tr '\n' ' ')
 
-  appengine_development="0"
   appengine_domain="https://$STARTHINKER_PROJECT.appspot.com"
   appengine_database_engine="${STARTHINKER_UI_PRODUCTION_DATABASE_ENGINE}"
   appengine_database_host="/cloudsql/$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"
   appengine_database_port="${STARTHINKER_UI_PRODUCTION_DATABASE_PORT}"
 
   bash -c "cat > $STARTHINKER_ROOT/app.yaml" << EOL
-runtime: python
-env: flex
+runtime: python37
+env: standard
 entrypoint: gunicorn -b :\$PORT starthinker_ui.ui.wsgi
-threadsafe: yes
 
 runtime_config:
-  python_version: 3
+  python_version: 37
 
 beta_settings:
   cloud_sql_instances: $STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME
 
-skip_files:
-- ^(.*/)?.*~$
-- ^(.*/)?.*\.pyc$
-- ^(.*/)?\..*$
-- ^starthinker_cron/.*$
-- ^starthinker_assets/.*$
-- ^starthinker_airflow/.*$
-- ^starthinker_database/.*$
-- ^starthinker_virtualenv/.*$
-- ^.git/.*$
-
 env_variables:
   STARTHINKER_SCALE: '1'
-  STARTHINKER_DEVELOPMENT: '$appengine_development'
+  STARTHINKER_DEVELOPMENT: '0'
   STARTHINKER_PROJECT: '$STARTHINKER_PROJECT'
   STARTHINKER_ZONE: '$STARTHINKER_ZONE'
   STARTHINKER_CLIENT_WEB: '$appengine_client_web'

@@ -67,7 +67,7 @@
           "metadata": {
             "dataRange": "LAST_30_DAYS",
             "format": "CSV",
-            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"DV360_Feature_Spend_", "description":"Name of report in DV360, should be unique." }}
+            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature_Adoption_Spend_", "description":"Name of report in DV360, should be unique." }}
           },
           "params": {
             "type": "TYPE_GENERAL",
@@ -114,7 +114,7 @@
           "metadata": {
             "dataRange": "LAST_30_DAYS",
             "format": "CSV",
-            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"DV360_Feature_Environment_", "description":"Name of report in DV360, should be unique." }}
+            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature_Adoption_Environment_", "description":"Name of report in DV360, should be unique." }}
           },
           "params": {
             "type": "TYPE_GENERAL",
@@ -145,12 +145,13 @@
       "hour":[6],
       "auth": "user", 
       "report": {
-        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"DV360_Feature_Spend_", "description":"Name of report in DV360, should be unique." }}
+        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature_Adoption_Spend_", "description":"Name of report in DV360, should be unique." }}
       },
       "out": {
         "bigquery": {
           "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Feature_Spend",
+          "is_incremental_load":true,
           "schema": [
             { "name": "Advertiser", "type": "STRING" },
             { "name": "Advertiser_Id", "type": "INTEGER" },
@@ -188,12 +189,13 @@
       "hour":[6],
       "auth": "user", 
       "report": {
-        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"DV360_Feature_Environment_", "description":"Name of report in DV360, should be unique." }}
+        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature_Adoption_Environment_", "description":"Name of report in DV360, should be unique." }}
       },
       "out": {
         "bigquery": {
           "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Feature_Environment",
+          "is_incremental_load":true,
           "schema": [
             { "name": "Advertiser", "type": "STRING" },
             { "name": "Advertiser_Id", "type": "INTEGER" },
@@ -316,7 +318,7 @@ SELECT
   IF ((STRPOS(Environment_Targeting, 'Desktop')>0), Revenue_Adv_Currency, 0) AS Desktop_Rev
   FROM `[PARAMETER].[PARAMETER].SDF_LINE_ITEM` AS a 
   LEFT JOIN `[PARAMETER].[PARAMETER].DV360_Feature_Spend` AS b 
-    ON a.SDF_Day = b.Report_Day
+    ON DATE_SUB(a.SDF_Day, INTERVAL 1 DAY) = b.Report_Day
     AND a.Line_Item_Id = b.Line_Item_Id 
   WHERE b.Report_Day IS NOT NULL
 ",
