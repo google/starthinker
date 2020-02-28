@@ -97,6 +97,7 @@ test_tasks() {
 
 
 launch_developer_ui() {
+  cloud_shell=$1
 
   install_virtualenv; 
   install_requirements; 
@@ -123,12 +124,47 @@ launch_developer_ui() {
   python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" makemigrations;
   python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" migrate;
 
-  echo "----------------------------------------"
-  echo "Launch Developer UI - python ${STARTHINKER_ROOT}/starthinker_ui/manage.py runserver localhost:8000"
-  echo "----------------------------------------"
-  echo ""
+  if [ $cloud_shell == "--cloud_shell" ]; then
 
-  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" runserver localhost:8000;
+    echo "----------------------------------------"
+    echo "Launch Cloud Shell UI - python ${STARTHINKER_ROOT}/starthinker_ui/manage.py runserver 0.0.0.0:8000"
+    echo "----------------------------------------"
+    echo ""
+
+    echo "Step 1: Launch Web Preview"
+    echo "----------------------------------------"
+    echo "  A. Open Web Preview in upper right of this window, [<>] icon."
+    echo "  B. Ensure the PORT is set to 8080 ( default)."
+    echo "  C. Click Preview on Port 8080. The server is not running yet, you will get an error."
+    echo "  D. Copy the URL and paste it below...."
+    echo ""
+
+    read -p "Cloud Shell URL: " url
+    
+    STARTHINKER_UI_DOMAIN=$(awk -F/ '{print $3}' <<< $url)
+
+    echo "" 
+    echo "Step 2: Configure oAuth Callback"
+    echo "----------------------------------------"echo
+    echo "  A. Visit: https://console.developers.google.com/apis/credentials" 
+    echo "  B. Edit the client credentials uploaded in an earlier step." 
+    echo "  C. Under Authorized redirect URIs add: https://$STARTHINKER_UI_DOMAIN/oauth_callback/" 
+    echo "  D. Click Save." 
+    echo ""
+
+    read -p "Press enter to continue, then visit the browser at: https://$STARTHINKER_UI_DOMAIN"
+
+  else
+
+    echo "----------------------------------------"
+    echo "Launch Developer UI - python ${STARTHINKER_ROOT}/starthinker_ui/manage.py runserver localhost:8000"
+    echo "----------------------------------------"
+    echo ""
+
+
+  fi
+
+  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" runserver localhost:8000
   deactivate
 
   echo ""
@@ -204,7 +240,7 @@ setup_developer() {
   echo ""
 
   developer_done=0
-  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Developer Worker - Single" "Developer Worker - Peristent" "Test UI" "Test Tasks")
+  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Launch Cloud Shell UI" "Developer Worker - Single" "Developer Worker - Peristent" "Test UI" "Test Tasks")
  
   while (( !developer_done ))
   do
@@ -218,10 +254,11 @@ setup_developer() {
       case $REPLY in
         1) install_developer; break;;
         2) launch_developer_ui; break;;
-        3) launch_developer_worker "--test"; break;;
-        4) launch_developer_worker ""; break;;
-        5) test_ui; break;;
-        6) test_tasks; break;;
+        3) launch_developer_ui "--cloud_shell"; break;;
+        4) launch_developer_worker "--test"; break;;
+        5) launch_developer_worker ""; break;;
+        6) test_ui; break;;
+        7) test_tasks; break;;
         q) developer_done=1; break;;
         *) echo "What's that?";;
       esac
