@@ -39,7 +39,12 @@ def flag_last(o):
   """
 
   it = o.__iter__()
-  e = next(it)
+
+  try:
+    e = next(it)
+  except StopIteration:
+    return
+
   while True:
     try:
       nxt = next(it)

@@ -91,7 +91,7 @@ class FieldMap:
   CREATIVE_ROTATION_WEIGHT = 'Creative Rotation Weight'
   CREATIVE_WIDTH = 'Width (Display Only)'
   CREATIVE_HEIGHT = 'Height (Display Only)'
-  
+
   CREATIVE_BACKUP_ASSET_ID = 'Backup Asset ID'
   CREATIVE_BACKUP_NAME = 'Creative Backup Name'
   BACKUP_IMAGE_FEATURES = 'Backup Image Features'
@@ -104,7 +104,7 @@ class FieldMap:
   CLICK_TAG_EVENT = 'Click Tag Event'
   CLICK_TAG_LANDING_PAGE_ID = 'Click Tag Landing Page ID'
   CLICK_TAG_LANDING_PAGE_NAME = 'Click Tag Landing Page Name'
-
+  CLICK_TAG_CUSTOM_CLICK_THROUGH_URL = 'Custom Click Through URL'
 
   PLACEMENT_GROUP_ID = 'Placement Group ID'
   PLACEMENT_GROUP_NAME = 'Placement Group Name'

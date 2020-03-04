@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ Buffers are controlled in config.py.
 
 from starthinker.util.project import project
 from starthinker.util.data import put_rows, get_rows
-from starthinker.util.dbm import report_delete, report_build, report_file, report_to_rows, report_clean, DBM_CHUNKSIZE
+from starthinker.util.dbm import report_delete, report_filter, report_build, report_file, report_to_rows, report_clean, DBM_CHUNKSIZE
 
 
 @project.from_parameters
@@ -60,11 +60,13 @@ def dbm():
   if 'body' in project.task['report']:
     if project.verbose: print('DBM BUILD', project.task['report']['body']['metadata']['title'])
 
-    # filters can be passed using special get_rows handler, allows reading values from sheets etc...
+    # ceck if filters given ( returns new body )
     if 'filters' in project.task['report']:
-      for f, d in project.task['report']['filters'].items():
-        for v in get_rows(project.task['auth'], d):
-          project.task['report']['body']['params'].setdefault('filters', []).append({"type": f, "value": v})
+      project.task['report']['body'] = report_filter(
+        project.task['auth'],
+        project.task['report']['body'],
+        project.task['report']['filters']
+      )
 
     # create the report
     report = report_build(

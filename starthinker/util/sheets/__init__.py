@@ -76,7 +76,7 @@ def sheets_tab_id(auth, sheet_url_or_name, sheet_tab):
   return sheet_id, tab_id
 
 
-def sheets_read(auth, sheet_url_or_name, sheet_tab, sheet_range, retries=10):
+def sheets_read(auth, sheet_url_or_name, sheet_tab, sheet_range='', retries=10):
   if project.verbose: print('SHEETS READ', sheet_url_or_name, sheet_tab, sheet_range)
   service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(auth, sheet_url_or_name)

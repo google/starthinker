@@ -189,3 +189,17 @@ def rows_print(rows, row_min=0, row_max=None):
     if i >= row_min and (row_max is None or i <= row_max):
       print(i, row)
     yield row
+
+
+def pivot_column_to_row(rows, discard_blanks=True):
+  pivot = []
+
+  for row in rows:
+    for column, cell in enumerate(row):
+      if len(pivot) == column: pivot.append([])
+      if not discard_blanks or cell: pivot[column].append(cell)
+
+  return pivot
+
+def rows_to_dict(rows):
+  return dict([(row[0], row[1:]) for row in rows])

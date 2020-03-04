@@ -722,7 +722,7 @@
             <p>TASK: bulkdozer</p>
             <p>Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.</p>
             <ol>
-              <li>Open the <a href='https://docs.google.com/spreadsheets/d/1YMpI3EceAy-rHtAv0Q5cg9atbroaPpL2-o0mau_XlXo/edit' target='_blank'>Bulkdozer 0.25</a> feed.</li><li>Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed.</li><li>Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version.</li><li>Under the Account ID field below, enter the your Campaign Manager Network ID.</li><li>Under Sheet URL, enter the URL of your copy of the feed that you just created in the steps above.</li><li>Go to the Store tab of your new feed, and enter your profile ID in the profileId field (cell B2). Your profile ID is visible in Campaign Manager by clicking your avatar on the top right corner.</li><li>Click the 'Save' button below.</li><li>After clicking 'Save', copy this page's URL from your browser address bar, and paste it in the Store tab for the recipe_url field (cell B5) your sheet.</li><li>Bulkdozer is ready for use</li><li>Stay up to date on new releases and other general anouncements by joining <a href='https://groups.google.com/forum/#!forum/bulkdozer-announcements' target='_blank'>Bulkdozer announcements</a>.</li><li>Review the <a href='https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md' target='_blank'>Bulkdozer documentation</a>.</li>
+              <li>Open the <a href='https://docs.google.com/spreadsheets/d/1wy9I8mJa9rIE7MVEWSClV2Wen3qL8w5wpi3NMGj6w8E' target='_blank'>Bulkdozer 0.26</a> feed.</li><li>Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed.</li><li>Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version.</li><li>Under the Account ID field below, enter the your Campaign Manager Network ID.</li><li>Under Sheet URL, enter the URL of your copy of the feed that you just created in the steps above.</li><li>Go to the Store tab of your new feed, and enter your profile ID in the profileId field (cell B2). Your profile ID is visible in Campaign Manager by clicking your avatar on the top right corner.</li><li>Click the 'Save' button below.</li><li>After clicking 'Save', copy this page's URL from your browser address bar, and paste it in the Store tab for the recipe_url field (cell B5) your sheet.</li><li>Bulkdozer is ready for use</li><li>Stay up to date on new releases and other general anouncements by joining <a href='https://groups.google.com/forum/#!forum/bulkdozer-announcements' target='_blank'>Bulkdozer announcements</a>.</li><li>Review the <a href='https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md' target='_blank'>Bulkdozer documentation</a>.</li>
             </ol>
             <pre class="view_code" id="view_code_bulkdozer" style="display:none;">[
     {
@@ -947,6 +947,124 @@
         <tr>
           <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_small</i></td>
           <td style="vertical-align: top;">
+            <h4>CM Report Replicate</h4>
+            <p>TASK: dcm_replicate_to_bigquery</p>
+            <p>Replicate a report across multiple networks and advertisers.</p>
+            <ol>
+              <li>Provide the name or ID of an existing report.</li><li>Run the recipe once to generate the input sheet called UNDEFINED.</li><li>Enter network and adverrtiser ids to replicate the report.</li><li>Data will be written to BigQuery &gt; UNDEFINED &gt; UNDEFINED &gt; [REPORT NAME]_All</li>
+            </ol>
+            <pre class="view_code" id="view_code_dcm_replicate_to_bigquery" style="display:none;">[
+    {
+        &quot;drive&quot;: {
+            &quot;auth&quot;: &quot;user&quot;,
+            &quot;copy&quot;: {
+                &quot;source&quot;: &quot;https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/&quot;,
+                &quot;destination&quot;: {
+                    &quot;field&quot;: {
+                        &quot;name&quot;: &quot;recipe_name&quot;,
+                        &quot;prefix&quot;: &quot;CM Replicate &quot;,
+                        &quot;kind&quot;: &quot;string&quot;,
+                        &quot;order&quot;: 1,
+                        &quot;description&quot;: &quot;Name of document to deploy to.&quot;,
+                        &quot;default&quot;: &quot;&quot;
+                    }
+                }
+            }
+        }
+    },
+    {
+        &quot;dcm_replicate&quot;: {
+            &quot;auth&quot;: &quot;user&quot;,
+            &quot;report&quot;: {
+                &quot;account&quot;: {
+                    &quot;field&quot;: {
+                        &quot;name&quot;: &quot;account&quot;,
+                        &quot;kind&quot;: &quot;integer&quot;,
+                        &quot;order&quot;: 1,
+                        &quot;default&quot;: &quot;&quot;,
+                        &quot;description&quot;: &quot;CM network id.&quot;
+                    }
+                },
+                &quot;id&quot;: {
+                    &quot;field&quot;: {
+                        &quot;name&quot;: &quot;report_id&quot;,
+                        &quot;kind&quot;: &quot;integer&quot;,
+                        &quot;order&quot;: 2,
+                        &quot;default&quot;: &quot;&quot;,
+                        &quot;description&quot;: &quot;CM template report id, for template&quot;
+                    }
+                },
+                &quot;name&quot;: {
+                    &quot;field&quot;: {
+                        &quot;name&quot;: &quot;report_name&quot;,
+                        &quot;kind&quot;: &quot;string&quot;,
+                        &quot;order&quot;: 3,
+                        &quot;default&quot;: &quot;&quot;,
+                        &quot;description&quot;: &quot;CM template report name, empty if using id instead.&quot;
+                    }
+                },
+                &quot;delete&quot;: {
+                    &quot;field&quot;: {
+                        &quot;name&quot;: &quot;delete&quot;,
+                        &quot;kind&quot;: &quot;boolean&quot;,
+                        &quot;order&quot;: 6,
+                        &quot;default&quot;: false,
+                        &quot;description&quot;: &quot;Use only to reset the reports if setup changes.&quot;
+                    }
+                }
+            },
+            &quot;in&quot;: {
+                &quot;sheet&quot;: {
+                    &quot;field&quot;: {
+                        &quot;name&quot;: &quot;recipe_name&quot;,
+                        &quot;prefix&quot;: &quot;CM Replicate &quot;,
+                        &quot;kind&quot;: &quot;string&quot;,
+                        &quot;order&quot;: 1,
+                        &quot;default&quot;: &quot;&quot;,
+                        &quot;description&quot;: &quot;Sheet to read ids from.&quot;
+                    }
+                },
+                &quot;tab&quot;: &quot;Accounts&quot;
+            },
+            &quot;out&quot;: {
+                &quot;bigquery&quot;: {
+                    &quot;dataset&quot;: {
+                        &quot;field&quot;: {
+                            &quot;name&quot;: &quot;recipe_name&quot;,
+                            &quot;kind&quot;: &quot;string&quot;,
+                            &quot;order&quot;: 4,
+                            &quot;default&quot;: &quot;&quot;
+                        }
+                    },
+                    &quot;is_incremental_load&quot;: {
+                        &quot;field&quot;: {
+                            &quot;name&quot;: &quot;Aggregate&quot;,
+                            &quot;kind&quot;: &quot;boolean&quot;,
+                            &quot;order&quot;: 5,
+                            &quot;default&quot;: false,
+                            &quot;description&quot;: &quot;Append report data to existing table, requires Date column.&quot;
+                        }
+                    }
+                }
+            }
+        }
+    }
+]</pre>
+          </td>
+          <td style="vertical-align:top; width:160px;">
+           
+            
+              <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="https://github.com/google/starthinker/blob/master/scripts/dcm_replicate_to_bigquery.json" target="_blank">GitHub&nbsp;<i class="material-icons">list</i></a>
+              <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="https://github.com/google/starthinker/blob/master/dags/dcm_replicate_to_bigquery_dag.py" target="_blank">Airflow&nbsp;<i class="material-icons">copyright</i></a>
+              <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_replicate_to_bigquery.ipynb" target="_blank">Colab&nbsp;<i class="material-icons">exit_to_app</i></a>
+            
+            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_replicate_to_bigquery">JSON&nbsp;<i class="material-icons">expand_more</i></span>
+          </td>
+        </tr>
+      
+        <tr>
+          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_small</i></td>
+          <td style="vertical-align: top;">
             <h4>CM Report Run</h4>
             <p>TASK: dcm_run</p>
             <p>Trigger a CM report run</p>
@@ -999,157 +1117,6 @@
               <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_run.ipynb" target="_blank">Colab&nbsp;<i class="material-icons">exit_to_app</i></a>
             
             <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_run">JSON&nbsp;<i class="material-icons">expand_more</i></span>
-          </td>
-        </tr>
-      
-        <tr>
-          <td style="vertical-align: top;"><i class="material-icons medium teal-text">donut_small</i></td>
-          <td style="vertical-align: top;">
-            <h4>CM Standard Bulk</h4>
-            <p>TASK: dcm_bulk_standard</p>
-            <p>Aggregate multiple standard CM reports into one BigQuery or Sheet.</p>
-            <ol>
-              <li>See API docs for <a href='https://developers.google.com/doubleclick-advertisers/v3.2/dimensions' target='_blank'>Metrics</a>.</li><li>CM report name format '[Report Name] [Account ID] ( StarThinker )'.</li><li>Specify either bucket and path or dataset and table.</li><li>Schema is pulled from the official CM specification.</li>
-            </ol>
-            <pre class="view_code" id="view_code_dcm_bulk_standard" style="display:none;">[
-    {
-        &quot;dcm_bulk&quot;: {
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;accounts&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;accounts&quot;,
-                    &quot;kind&quot;: &quot;integer_list&quot;,
-                    &quot;order&quot;: 1,
-                    &quot;default&quot;: &quot;&quot;
-                }
-            },
-            &quot;name&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;name&quot;,
-                    &quot;kind&quot;: &quot;string&quot;,
-                    &quot;order&quot;: 2,
-                    &quot;default&quot;: &quot;&quot;
-                }
-            },
-            &quot;report&quot;: {
-                &quot;type&quot;: &quot;STANDARD&quot;,
-                &quot;timeout&quot;: 0,
-                &quot;relativeDateRange&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;range&quot;,
-                        &quot;kind&quot;: &quot;choice&quot;,
-                        &quot;order&quot;: 3,
-                        &quot;default&quot;: &quot;LAST_7_DAYS&quot;,
-                        &quot;choices&quot;: [
-                            &quot;LAST_24_MONTHS&quot;,
-                            &quot;LAST_30_DAYS&quot;,
-                            &quot;LAST_365_DAYS&quot;,
-                            &quot;LAST_7_DAYS&quot;,
-                            &quot;LAST_90_DAYS&quot;,
-                            &quot;MONTH_TO_DATE&quot;,
-                            &quot;PREVIOUS_MONTH&quot;,
-                            &quot;PREVIOUS_QUARTER&quot;,
-                            &quot;PREVIOUS_WEEK&quot;,
-                            &quot;PREVIOUS_YEAR&quot;,
-                            &quot;QUARTER_TO_DATE&quot;,
-                            &quot;TODAY&quot;,
-                            &quot;WEEK_TO_DATE&quot;,
-                            &quot;YEAR_TO_DATE&quot;,
-                            &quot;YESTERDAY&quot;
-                        ]
-                    }
-                },
-                &quot;dimensions&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dcm_dimensions&quot;,
-                        &quot;kind&quot;: &quot;string_list&quot;,
-                        &quot;order&quot;: 4,
-                        &quot;default&quot;: [
-                            &quot;date&quot;,
-                            &quot;platformType&quot;,
-                            &quot;creativeType&quot;,
-                            &quot;state&quot;,
-                            &quot;dmaRegion&quot;
-                        ]
-                    }
-                },
-                &quot;metrics&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dcm_metrics&quot;,
-                        &quot;kind&quot;: &quot;string_list&quot;,
-                        &quot;order&quot;: 5,
-                        &quot;default&quot;: [
-                            &quot;impressions&quot;
-                        ]
-                    }
-                }
-            },
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 5,
-                            &quot;default&quot;: &quot;&quot;
-                        }
-                    },
-                    &quot;table&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;table&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 6,
-                            &quot;default&quot;: &quot;&quot;
-                        }
-                    }
-                },
-                &quot;storage&quot;: {
-                    &quot;bucket&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;bucket&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 7,
-                            &quot;default&quot;: &quot;&quot;
-                        }
-                    },
-                    &quot;path&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;path&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 8,
-                            &quot;default&quot;: &quot;CM_Report&quot;
-                        }
-                    }
-                }
-            },
-            &quot;delete&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;delete&quot;,
-                    &quot;kind&quot;: &quot;boolean&quot;,
-                    &quot;order&quot;: 10,
-                    &quot;default&quot;: false
-                }
-            },
-            &quot;datastudio&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;datastudio&quot;,
-                    &quot;kind&quot;: &quot;boolean&quot;,
-                    &quot;order&quot;: 11,
-                    &quot;default&quot;: true
-                }
-            }
-        }
-    }
-]</pre>
-          </td>
-          <td style="vertical-align:top; width:160px;">
-           
-            
-              <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="https://github.com/google/starthinker/blob/master/scripts/dcm_bulk_standard.json" target="_blank">GitHub&nbsp;<i class="material-icons">list</i></a>
-              <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="https://github.com/google/starthinker/blob/master/dags/dcm_bulk_standard_dag.py" target="_blank">Airflow&nbsp;<i class="material-icons">copyright</i></a>
-              <a class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_bulk_standard.ipynb" target="_blank">Colab&nbsp;<i class="material-icons">exit_to_app</i></a>
-            
-            <span class="trigger_code menu_link waves-effect waves-dark btn-flat grey lighten-3 right" id="trigger_code_dcm_bulk_standard">JSON&nbsp;<i class="material-icons">expand_more</i></span>
           </td>
         </tr>
       
@@ -4572,7 +4539,7 @@
                             &quot;field&quot;: {
                                 &quot;name&quot;: &quot;recipe_name&quot;,
                                 &quot;kind&quot;: &quot;string&quot;,
-                                &quot;prefix&quot;: &quot;DV360_Feature_Spend_&quot;,
+                                &quot;prefix&quot;: &quot;Feature_Adoption_Spend_&quot;,
                                 &quot;description&quot;: &quot;Name of report in DV360, should be unique.&quot;
                             }
                         }
@@ -4653,7 +4620,7 @@
                             &quot;field&quot;: {
                                 &quot;name&quot;: &quot;recipe_name&quot;,
                                 &quot;kind&quot;: &quot;string&quot;,
-                                &quot;prefix&quot;: &quot;DV360_Feature_Environment_&quot;,
+                                &quot;prefix&quot;: &quot;Feature_Adoption_Environment_&quot;,
                                 &quot;description&quot;: &quot;Name of report in DV360, should be unique.&quot;
                             }
                         }
@@ -4695,7 +4662,7 @@
                     &quot;field&quot;: {
                         &quot;name&quot;: &quot;recipe_name&quot;,
                         &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;DV360_Feature_Spend_&quot;,
+                        &quot;prefix&quot;: &quot;Feature_Adoption_Spend_&quot;,
                         &quot;description&quot;: &quot;Name of report in DV360, should be unique.&quot;
                     }
                 }
@@ -4710,6 +4677,7 @@
                         }
                     },
                     &quot;table&quot;: &quot;DV360_Feature_Spend&quot;,
+                    &quot;is_incremental_load&quot;: true,
                     &quot;schema&quot;: [
                         {
                             &quot;name&quot;: &quot;Advertiser&quot;,
@@ -4839,7 +4807,7 @@
                     &quot;field&quot;: {
                         &quot;name&quot;: &quot;recipe_name&quot;,
                         &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;DV360_Feature_Environment_&quot;,
+                        &quot;prefix&quot;: &quot;Feature_Adoption_Environment_&quot;,
                         &quot;description&quot;: &quot;Name of report in DV360, should be unique.&quot;
                     }
                 }
@@ -4854,6 +4822,7 @@
                         }
                     },
                     &quot;table&quot;: &quot;DV360_Feature_Environment&quot;,
+                    &quot;is_incremental_load&quot;: true,
                     &quot;schema&quot;: [
                         {
                             &quot;name&quot;: &quot;Advertiser&quot;,
@@ -5043,7 +5012,7 @@
             ],
             &quot;auth&quot;: &quot;service&quot;,
             &quot;from&quot;: {
-                &quot;query&quot;: &quot; SELECT   Report_Day,   Advertiser,   Advertiser_Id,   Advertiser_Currency,   Insertion_Order AS Insertion_Order_Name,   Insertion_Order_Id AS Insertion_Order_ID,   CONCAT(Insertion_Order,&#39; (&#39;,CAST(Insertion_Order_ID AS STRING),&#39;)&#39;) AS Insertion_Order,   Line_Item AS LI_Name,   b.Line_Item_Id AS LI_ID,   CONCAT(Line_Item,&#39; (&#39;,CAST(b.Line_Item_Id AS STRING),&#39;)&#39;) AS Line_Item,   IF(MAX(SDF_Day) OVER () = SDF_Day, &#39;True&#39;, &#39;False&#39;) AS Max_Date,   a.*,   IF(Bid_Strategy_Type = &#39;Fixed&#39;, &#39;Fixed&#39;, CONCAT(Bid_Strategy_Type, &#39; &#39;, Bid_Strategy_Unit)) AS Bid_Strategy,   IF(Bid_Strategy_Type = &#39;Fixed&#39;, &#39;Fixed&#39;, &#39;Autobidding&#39;) AS Autobidding_Overall,   CONCAT(Pacing, &#39; &#39;, Pacing_Rate) AS Pacing_Overall,   IF(Affinity_In_Market_Targeting_Include IS NULL, &#39;False&#39;, &#39;True&#39;) AS Affinity_In_Market_TF,   IF(Affinity_In_Market_Targeting_Exclude IS NULL, &#39;False&#39;, &#39;True&#39;) AS Affinity_In_Market_Exclude_TF,   IF(Custom_List_Targeting IS NULL, &#39;False&#39;, &#39;True&#39;) AS Custom_List_TF,   IF(Audience_Targeting_Include IS NULL      AND Affinity_In_Market_Targeting_Include IS NULL      AND Custom_List_Targeting IS NULL      AND Audience_Targeting_Similar_Audiences = &#39;False&#39; , &#39;False&#39;, &#39;True&#39;) AS Audience_Targeting_TF,   IF(Keyword_Targeting_Exclude IS NULL     AND Keyword_List_Targeting_Exclude IS NULL, &#39;False&#39;, &#39;True&#39;) AS Keyword_Exclusions_TF,   IF(Position_Targeting_On_Screen IS NULL     AND Position_Targeting_Display_Position_In_Content IS NULL     AND Position_Targeting_Video_Position_In_Content IS NULL     AND Position_Targeting_Audio_Position_In_Content IS NULL, &#39;False&#39;, &#39;True&#39;) AS Position_Targeting_TF,   IF((Geography_Targeting_Include IS NULL       AND Geography_Regional_Location_List_Targeting_Include IS NULL), &#39;False&#39;, &#39;True&#39;) AS Geography_Targeting_TF,   IF(Language_Targeting_Include IS NULL, &#39;False&#39;, &#39;True&#39;) AS Language_Targeting_TF,   IF(Site_Targeting_Exclude IS NULL     AND Site_Targeting_Include IS NULL, &#39;False&#39;, &#39;True&#39;) AS Site_List_TF,   Impressions AS Impressions,   Billable_Impressions AS Billable_Impressions,   Clicks AS Clicks,   Total_Conversions AS Total_Conversions,   Post_Click_Conversions AS Post_Click_Conversions,   Post_View_Conversions AS Post_View_Conversions,   Revenue_Adv_Currency AS Rev_Adv_Currency,   Media_Cost_Advertiser_Currency AS Media_Cost_Adv_Currency,   Cm_Post_Click_Revenue AS CM_Post_Click_Revenue,   Cm_Post_View_Revenue AS CM_Post_View_Revenue,   (Cm_Post_Click_Revenue+Cm_Post_View_Revenue) AS CM_Total_Revenue,   IF (Bid_Strategy_Type = &#39;Fixed&#39;, 0, Revenue_Adv_Currency) AS Autobid_Rev,   IF (Type = &#39;Display&#39;, Revenue_Adv_Currency, 0) AS Display_Rev,   IF (Type = &#39;Video&#39;, Revenue_Adv_Currency, 0) AS Video_Rev,   IF (Type = &#39;TrueView&#39;, Revenue_Adv_Currency, 0) AS TrueView_Rev,   IF (Type = &#39;Audio&#39;, Revenue_Adv_Currency, 0) AS Audio_Rev,   IF ((STRPOS(Environment_Targeting, &#39;Desktop&#39;)&gt;0), Revenue_Adv_Currency, 0) AS Desktop_Rev   FROM `[PARAMETER].[PARAMETER].SDF_LINE_ITEM` AS a    LEFT JOIN `[PARAMETER].[PARAMETER].DV360_Feature_Spend` AS b      ON a.SDF_Day = b.Report_Day     AND a.Line_Item_Id = b.Line_Item_Id    WHERE b.Report_Day IS NOT NULL &quot;,
+                &quot;query&quot;: &quot; SELECT   Report_Day,   Advertiser,   Advertiser_Id,   Advertiser_Currency,   Insertion_Order AS Insertion_Order_Name,   Insertion_Order_Id AS Insertion_Order_ID,   CONCAT(Insertion_Order,&#39; (&#39;,CAST(Insertion_Order_ID AS STRING),&#39;)&#39;) AS Insertion_Order,   Line_Item AS LI_Name,   b.Line_Item_Id AS LI_ID,   CONCAT(Line_Item,&#39; (&#39;,CAST(b.Line_Item_Id AS STRING),&#39;)&#39;) AS Line_Item,   IF(MAX(SDF_Day) OVER () = SDF_Day, &#39;True&#39;, &#39;False&#39;) AS Max_Date,   a.*,   IF(Bid_Strategy_Type = &#39;Fixed&#39;, &#39;Fixed&#39;, CONCAT(Bid_Strategy_Type, &#39; &#39;, Bid_Strategy_Unit)) AS Bid_Strategy,   IF(Bid_Strategy_Type = &#39;Fixed&#39;, &#39;Fixed&#39;, &#39;Autobidding&#39;) AS Autobidding_Overall,   CONCAT(Pacing, &#39; &#39;, Pacing_Rate) AS Pacing_Overall,   IF(Affinity_In_Market_Targeting_Include IS NULL, &#39;False&#39;, &#39;True&#39;) AS Affinity_In_Market_TF,   IF(Affinity_In_Market_Targeting_Exclude IS NULL, &#39;False&#39;, &#39;True&#39;) AS Affinity_In_Market_Exclude_TF,   IF(Custom_List_Targeting IS NULL, &#39;False&#39;, &#39;True&#39;) AS Custom_List_TF,   IF(Audience_Targeting_Include IS NULL      AND Affinity_In_Market_Targeting_Include IS NULL      AND Custom_List_Targeting IS NULL      AND Audience_Targeting_Similar_Audiences = &#39;False&#39; , &#39;False&#39;, &#39;True&#39;) AS Audience_Targeting_TF,   IF(Keyword_Targeting_Exclude IS NULL     AND Keyword_List_Targeting_Exclude IS NULL, &#39;False&#39;, &#39;True&#39;) AS Keyword_Exclusions_TF,   IF(Position_Targeting_On_Screen IS NULL     AND Position_Targeting_Display_Position_In_Content IS NULL     AND Position_Targeting_Video_Position_In_Content IS NULL     AND Position_Targeting_Audio_Position_In_Content IS NULL, &#39;False&#39;, &#39;True&#39;) AS Position_Targeting_TF,   IF((Geography_Targeting_Include IS NULL       AND Geography_Regional_Location_List_Targeting_Include IS NULL), &#39;False&#39;, &#39;True&#39;) AS Geography_Targeting_TF,   IF(Language_Targeting_Include IS NULL, &#39;False&#39;, &#39;True&#39;) AS Language_Targeting_TF,   IF(Site_Targeting_Exclude IS NULL     AND Site_Targeting_Include IS NULL, &#39;False&#39;, &#39;True&#39;) AS Site_List_TF,   Impressions AS Impressions,   Billable_Impressions AS Billable_Impressions,   Clicks AS Clicks,   Total_Conversions AS Total_Conversions,   Post_Click_Conversions AS Post_Click_Conversions,   Post_View_Conversions AS Post_View_Conversions,   Revenue_Adv_Currency AS Rev_Adv_Currency,   Media_Cost_Advertiser_Currency AS Media_Cost_Adv_Currency,   Cm_Post_Click_Revenue AS CM_Post_Click_Revenue,   Cm_Post_View_Revenue AS CM_Post_View_Revenue,   (Cm_Post_Click_Revenue+Cm_Post_View_Revenue) AS CM_Total_Revenue,   IF (Bid_Strategy_Type = &#39;Fixed&#39;, 0, Revenue_Adv_Currency) AS Autobid_Rev,   IF (Type = &#39;Display&#39;, Revenue_Adv_Currency, 0) AS Display_Rev,   IF (Type = &#39;Video&#39;, Revenue_Adv_Currency, 0) AS Video_Rev,   IF (Type = &#39;TrueView&#39;, Revenue_Adv_Currency, 0) AS TrueView_Rev,   IF (Type = &#39;Audio&#39;, Revenue_Adv_Currency, 0) AS Audio_Rev,   IF ((STRPOS(Environment_Targeting, &#39;Desktop&#39;)&gt;0), Revenue_Adv_Currency, 0) AS Desktop_Rev   FROM `[PARAMETER].[PARAMETER].SDF_LINE_ITEM` AS a    LEFT JOIN `[PARAMETER].[PARAMETER].DV360_Feature_Spend` AS b      ON DATE_SUB(a.SDF_Day, INTERVAL 1 DAY) = b.Report_Day     AND a.Line_Item_Id = b.Line_Item_Id    WHERE b.Report_Day IS NOT NULL &quot;,
                 &quot;parameters&quot;: [
                     {
                         &quot;field&quot;: {
@@ -6423,6 +6392,7 @@
             },
             &quot;trends&quot;: {
                 &quot;places&quot;: {
+                    &quot;single_cell&quot;: true,
                     &quot;bigquery&quot;: {
                         &quot;dataset&quot;: {
                             &quot;field&quot;: {
@@ -6431,10 +6401,17 @@
                                 &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
                             }
                         },
-                        &quot;table&quot;: &quot;Twitter_Triggers&quot;,
-                        &quot;columns&quot;: [
-                            &quot;WOEID&quot;
-                        ]
+                        &quot;query&quot;: &quot;SELECT WOEID FROM {dataset}.Twitter_Triggers&quot;,
+                        &quot;legacy&quot;: false,
+                        &quot;parameters&quot;: {
+                            &quot;dataset&quot;: {
+                                &quot;field&quot;: {
+                                    &quot;name&quot;: &quot;dataset&quot;,
+                                    &quot;kind&quot;: &quot;string&quot;,
+                                    &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -6457,11 +6434,28 @@
             &quot;description&quot;: &quot;Read current lineitem settings from DV360 into BigQuery, so it can be joined with Twitter analysis.&quot;,
             &quot;auth&quot;: &quot;user&quot;,
             &quot;read&quot;: {
-                &quot;advertisers&quot;: [],
-                &quot;insertionorders&quot;: [],
-                &quot;lineitems&quot;: [
-                    9915840
-                ],
+                &quot;line_items&quot;: {
+                    &quot;single_cell&quot;: true,
+                    &quot;bigquery&quot;: {
+                        &quot;dataset&quot;: {
+                            &quot;field&quot;: {
+                                &quot;name&quot;: &quot;dataset&quot;,
+                                &quot;kind&quot;: &quot;string&quot;,
+                                &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+                            }
+                        },
+                        &quot;query&quot;: &quot;SELECT Line_Item_Id FROM {dataset}.Twitter_Triggers&quot;,
+                        &quot;parameters&quot;: {
+                            &quot;dataset&quot;: {
+                                &quot;field&quot;: {
+                                    &quot;name&quot;: &quot;dataset&quot;,
+                                    &quot;kind&quot;: &quot;string&quot;,
+                                    &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+                                }
+                            }
+                        }
+                    }
+                },
                 &quot;out&quot;: {
                     &quot;bigquery&quot;: {
                         &quot;dataset&quot;: {
@@ -6482,30 +6476,23 @@
             &quot;description&quot;: &quot;Get all triggered lineitmes from sheet, if they have a keyword match in twitter, take the triger values, else take the default values (default&gt;trigger).  Take all non-null values from trigger and overlay over current DV360 values. Will be used to upload to DV360.&quot;,
             &quot;auth&quot;: &quot;service&quot;,
             &quot;from&quot;: {
-                &quot;query&quot;: &quot;SELECT o.Line_Item_Id AS Line_Item_Id, o.Partner_Name AS Partner_Name, o.Partner_Id AS Partner_Id, o.Advertiser_Name AS Advertiser_Name, o.IO_Name AS IO_Name, IFNULL(t.Line_Item_Name, o.Line_Item_Name) AS Line_Item_Name, o.Line_Item_Timestamp AS Line_Item_Timestamp , IFNULL(t.Line_Item_Status, o.Line_Item_Status) AS Line_Item_Status, o.IO_Start_Date AS IO_Start_Date, o.IO_End_Date AS IO_End_Date, o.IO_Budget_Type AS IO_Budget_Type, o.IO_Budget_Amount AS IO_Budget_Amount, o.IO_Pacing AS IO_Pacing, o.IO_Pacing_Rate AS IO_Pacing_Rate, o.IO_Pacing_Amount AS IO_Pacing_Amount, IFNULL(t.Line_Item_Start_Date, o.Line_Item_Start_Date) AS Line_Item_Start_Date, IFNULL(t.Line_Item_End_Date, o.Line_Item_End_Date) AS Line_Item_End_Date, IFNULL(t.Line_Item_Budget_Type, o.Line_Item_Budget_Type) AS Line_Item_Budget_Type, IFNULL(t.Line_Item_Budget_Amount, o.Line_Item_Budget_Amount) AS Line_Item_Budget_Amount, IFNULL(t.Line_Item_Pacing, o.Line_Item_Pacing) AS Line_Item_Pacing, IFNULL(t.Line_Item_Pacing_Rate, o.Line_Item_Pacing_Rate) AS Line_Item_Pacing_Rate, IFNULL(t.Line_Item_Pacing_Amount, o.Line_Item_Pacing_Amount) AS Line_Item_Pacing_Amount, IFNULL(t.Line_Item_Frequency_Enabled, o.Line_Item_Frequency_Enabled) AS Line_Item_Frequency_Enabled, IFNULL(t.Line_Item_Frequency_Exposures, o.Line_Item_Frequency_Exposures) AS Line_Item_Frequency_Exposures, IFNULL(t.Line_Item_Frequency_Period, o.Line_Item_Frequency_Period) AS Line_Item_Frequency_Period, IFNULL(t.Line_Item_Frequency_Amount, o.Line_Item_Frequency_Amount) AS Line_Item_Frequency_Amount, IFNULL(t.Bid_Price, o.Bid_Price) AS Bid_Price, IFNULL(t.Partner_Revenue_Model, o.Partner_Revenue_Model) AS Partner_Revenue_Model, IFNULL(t.Partner_Revenue_Amount, o.Partner_Revenue_Amount) AS Partner_Revenue_Amount, o.Current_Audience_Targeting_Ids AS Current_Audience_Targeting_Ids , o.Current_Audience_Targeting_Names AS Current_Audience_Targeting_Names FROM `[PARAMETER].LineItem_Reads` AS o LEFT JOIN ( SELECT Line_Item_Id, ANY_VALUE(SPLIT(Line_Item_Name, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Name, ANY_VALUE(SPLIT(Line_Item_Status, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Status, ANY_VALUE(SPLIT(Line_Item_Start_Date, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Start_Date, ANY_VALUE(SPLIT(Line_Item_End_Date, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_End_Date, ANY_VALUE(SPLIT(Line_Item_Budget_Type, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Budget_Type, ANY_VALUE(CAST(SPLIT(Line_Item_Budget_Amount, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Line_Item_Budget_Amount, ANY_VALUE(SPLIT(Line_Item_Pacing, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Pacing, ANY_VALUE(SPLIT(Line_Item_Pacing_Rate, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Pacing_Rate, ANY_VALUE(CAST(SPLIT(Line_Item_Pacing_Amount, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Line_Item_Pacing_Amount, ANY_VALUE(CAST(SPLIT(Line_Item_Frequency_Enabled, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))] AS BOOL)) AS Line_Item_Frequency_Enabled, ANY_VALUE(SPLIT(Line_Item_Frequency_Exposures, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Frequency_Exposures, ANY_VALUE(SPLIT(Line_Item_Frequency_Period, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Frequency_Period, ANY_VALUE(CAST(SPLIT(Line_Item_Frequency_Amount, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))] AS INT64)) AS Line_Item_Frequency_Amount, ANY_VALUE(CAST(SPLIT(Bid_Price, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Bid_Price, ANY_VALUE(SPLIT(Partner_Revenue_Model, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Partner_Revenue_Model, ANY_VALUE(CAST(SPLIT(Partner_Revenue_Amount, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Partner_Revenue_Amount FROM ( SELECT WOEID, Hashtag, Line_Item_Id, Line_Item_Name, Line_Item_Status, Line_Item_Start_Date, Line_Item_End_Date, Line_Item_Budget_Type, Line_Item_Budget_Amount, Line_Item_Pacing, Line_Item_Pacing_Rate, Line_Item_Pacing_Amount, Line_Item_Frequency_Enabled, Line_Item_Frequency_Exposures, Line_Item_Frequency_Period, Line_Item_Frequency_Amount, Bid_Price, Partner_Revenue_Model, Partner_Revenue_Amount, CONCAT(CAST(WOEID AS STRING), LOWER(Hashtag)) IN (SELECT CONCAT(CAST(WOEID AS STRING), LOWER(REPLACE(name, &#39;#&#39;, &#39;&#39;))) FROM `[PARAMETER].Twitter_Trends_Place` GROUP BY 1) AS Triggered FROM `[PARAMETER].Twitter_Triggers`) GROUP BY 1) AS t ON o.Line_Item_Id=t.Line_Item_Id;&quot;,
-                &quot;parameters&quot;: [
-                    {
+                &quot;query&quot;: &quot;SELECT o.Line_Item_Id AS Line_Item_Id, o.Partner_Name AS Partner_Name, o.Partner_Id AS Partner_Id, o.Advertiser_Name AS Advertiser_Name, o.IO_Name AS IO_Name, IFNULL(t.Line_Item_Name, o.Line_Item_Name) AS Line_Item_Name, o.Line_Item_Timestamp AS Line_Item_Timestamp , IFNULL(t.Line_Item_Status, o.Line_Item_Status) AS Line_Item_Status, o.IO_Start_Date AS IO_Start_Date, o.IO_End_Date AS IO_End_Date, o.IO_Budget_Type AS IO_Budget_Type, o.IO_Budget_Amount AS IO_Budget_Amount, o.IO_Pacing AS IO_Pacing, o.IO_Pacing_Rate AS IO_Pacing_Rate, o.IO_Pacing_Amount AS IO_Pacing_Amount, IFNULL(t.Line_Item_Start_Date, o.Line_Item_Start_Date) AS Line_Item_Start_Date, IFNULL(t.Line_Item_End_Date, o.Line_Item_End_Date) AS Line_Item_End_Date, IFNULL(t.Line_Item_Budget_Type, o.Line_Item_Budget_Type) AS Line_Item_Budget_Type, IFNULL(t.Line_Item_Budget_Amount, o.Line_Item_Budget_Amount) AS Line_Item_Budget_Amount, IFNULL(t.Line_Item_Pacing, o.Line_Item_Pacing) AS Line_Item_Pacing, IFNULL(t.Line_Item_Pacing_Rate, o.Line_Item_Pacing_Rate) AS Line_Item_Pacing_Rate, IFNULL(t.Line_Item_Pacing_Amount, o.Line_Item_Pacing_Amount) AS Line_Item_Pacing_Amount, IFNULL(t.Line_Item_Frequency_Enabled, o.Line_Item_Frequency_Enabled) AS Line_Item_Frequency_Enabled, IFNULL(t.Line_Item_Frequency_Exposures, o.Line_Item_Frequency_Exposures) AS Line_Item_Frequency_Exposures, IFNULL(t.Line_Item_Frequency_Period, o.Line_Item_Frequency_Period) AS Line_Item_Frequency_Period, IFNULL(t.Line_Item_Frequency_Amount, o.Line_Item_Frequency_Amount) AS Line_Item_Frequency_Amount, IFNULL(t.Bid_Price, o.Bid_Price) AS Bid_Price, IFNULL(t.Partner_Revenue_Model, o.Partner_Revenue_Model) AS Partner_Revenue_Model, IFNULL(t.Partner_Revenue_Amount, o.Partner_Revenue_Amount) AS Partner_Revenue_Amount, o.Current_Audience_Targeting_Ids AS Current_Audience_Targeting_Ids , o.Current_Audience_Targeting_Names AS Current_Audience_Targeting_Names FROM `{project}.{dataset}.LineItem_Reads` AS o LEFT JOIN ( SELECT Line_Item_Id, ANY_VALUE(SPLIT(Line_Item_Name, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Name, ANY_VALUE(SPLIT(Line_Item_Status, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Status, ANY_VALUE(SPLIT(Line_Item_Start_Date, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Start_Date, ANY_VALUE(SPLIT(Line_Item_End_Date, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_End_Date, ANY_VALUE(SPLIT(Line_Item_Budget_Type, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Budget_Type, ANY_VALUE(CAST(SPLIT(Line_Item_Budget_Amount, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Line_Item_Budget_Amount, ANY_VALUE(SPLIT(Line_Item_Pacing, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Pacing, ANY_VALUE(SPLIT(Line_Item_Pacing_Rate, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Pacing_Rate, ANY_VALUE(CAST(SPLIT(Line_Item_Pacing_Amount, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Line_Item_Pacing_Amount, ANY_VALUE(CAST(SPLIT(Line_Item_Frequency_Enabled, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))] AS BOOL)) AS Line_Item_Frequency_Enabled, ANY_VALUE(SPLIT(Line_Item_Frequency_Exposures, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Frequency_Exposures, ANY_VALUE(SPLIT(Line_Item_Frequency_Period, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Frequency_Period, ANY_VALUE(CAST(SPLIT(Line_Item_Frequency_Amount, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))] AS INT64)) AS Line_Item_Frequency_Amount, ANY_VALUE(CAST(SPLIT(Bid_Price, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Bid_Price, ANY_VALUE(SPLIT(Partner_Revenue_Model, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Partner_Revenue_Model, ANY_VALUE(CAST(SPLIT(Partner_Revenue_Amount, &#39;&gt;&#39;)[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Partner_Revenue_Amount FROM ( SELECT WOEID, Hashtag, Line_Item_Id, Line_Item_Name, Line_Item_Status, Line_Item_Start_Date, Line_Item_End_Date, Line_Item_Budget_Type, Line_Item_Budget_Amount, Line_Item_Pacing, Line_Item_Pacing_Rate, Line_Item_Pacing_Amount, Line_Item_Frequency_Enabled, Line_Item_Frequency_Exposures, Line_Item_Frequency_Period, Line_Item_Frequency_Amount, Bid_Price, Partner_Revenue_Model, Partner_Revenue_Amount, CONCAT(CAST(WOEID AS STRING), LOWER(Hashtag)) IN (SELECT CONCAT(CAST(WOEID AS STRING), LOWER(REPLACE(name, &#39;#&#39;, &#39;&#39;))) FROM `{project}.{dataset}.Twitter_Trends_Place` GROUP BY 1) AS Triggered FROM `{project}.{dataset}.Twitter_Triggers`) GROUP BY 1) AS t ON o.Line_Item_Id=t.Line_Item_Id;&quot;,
+                &quot;parameters&quot;: {
+                    &quot;project&quot;: {
                         &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
+                            &quot;name&quot;: &quot;recipe_project&quot;,
                             &quot;kind&quot;: &quot;string&quot;,
                             &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
                         }
                     },
-                    {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
-                        }
-                    },
-                    {
+                    &quot;dataset&quot;: {
                         &quot;field&quot;: {
                             &quot;name&quot;: &quot;dataset&quot;,
                             &quot;kind&quot;: &quot;string&quot;,
                             &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
                         }
                     }
-                ],
+                },
                 &quot;legacy&quot;: false
             },
             &quot;to&quot;: {
@@ -6534,7 +6521,17 @@
                             &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
                         }
                     },
-                    &quot;table&quot;: &quot;LineItem_Writes&quot;
+                    &quot;query&quot;: &quot;Select * FROM {dataset}.LineItem_Writes&quot;,
+                    &quot;legacy&quot;: false,
+                    &quot;parameters&quot;: {
+                        &quot;dataset&quot;: {
+                            &quot;field&quot;: {
+                                &quot;name&quot;: &quot;dataset&quot;,
+                                &quot;kind&quot;: &quot;string&quot;,
+                                &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -7296,7 +7293,7 @@
                             &quot;name&quot;: &quot;schema&quot;,
                             &quot;kind&quot;: &quot;json&quot;,
                             &quot;order&quot;: 5,
-                            &quot;default&quot;: &quot;[]&quot;,
+                            &quot;default&quot;: [],
                             &quot;description&quot;: &quot;Schema provided in JSON list format or empty list.&quot;
                         }
                     }

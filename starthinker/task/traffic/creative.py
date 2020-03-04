@@ -19,6 +19,8 @@
 
 """
 
+import json
+
 from starthinker.task.traffic.dao import BaseDAO
 from starthinker.task.traffic.feed import FieldMap
 from starthinker.task.traffic.creative_assets import CreativeAssetDAO
@@ -158,13 +160,19 @@ class CreativeDAO(BaseDAO):
     for click_tag in feed_item.get('click_tags', []):
       lp = self.landing_page_dao.get(click_tag, column_name=FieldMap.CLICK_TAG_LANDING_PAGE_ID)
 
-      click_tags.append({
+      ct = {
           'eventName': click_tag.get(FieldMap.CLICK_TAG_EVENT, None),
           'name': click_tag.get(FieldMap.CLICK_TAG_NAME, None),
           'clickThroughUrl': {
-            'landingPageId': click_tag.get(FieldMap.CLICK_TAG_LANDING_PAGE_ID) if not lp else lp['id']
           }
-      })
+      }
+
+      if(click_tag.get(FieldMap.CLICK_TAG_LANDING_PAGE_ID)):
+        ct['clickThroughUrl']['landingPageId'] = click_tag.get(FieldMap.CLICK_TAG_LANDING_PAGE_ID) if not lp else lp['id']
+      elif(click_tag.get(FieldMap.CLICK_TAG_CUSTOM_CLICK_THROUGH_URL)):
+        ct['clickThroughUrl']['customClickThroughUrl'] = click_tag.get(FieldMap.CLICK_TAG_CUSTOM_CLICK_THROUGH_URL)
+
+      click_tags.append(ct)
 
     if click_tags:
       creative['clickTags'] = click_tags

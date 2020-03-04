@@ -31,6 +31,7 @@ from urllib.request import urlopen
 
 from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
+from starthinker.util.data import get_rows
 from starthinker.util.auth import get_service
 from starthinker.util.google_api import API_Retry
 from starthinker.util.storage import object_get_chunks
@@ -66,6 +67,44 @@ def report_get(auth, report_id=None, name=None):
   else:
     job = service.queries().getquery(queryId=report_id)
     return API_Retry(job)
+
+
+def report_filter(auth, body, filters):
+  """ Adds filters to a report body
+
+  Filters cannot be easily added to the reports without templateing, this allows filters to be passed as lists.
+  Values are specified using get_rows(...) helper, see starthinker/util/data/__init__.py.
+  To specify a filter, use the official filter name and a list of values.
+
+  For exmaple:
+
+  ```
+  filters = {
+    "FILTER_PARTNER": {
+      "values":789
+    },
+    "FILTER_ADVERTISER": {
+      "values":[1234, 5678, 91011]
+    }
+  }
+  ```
+
+  Args:
+    * auth: (string) Either user or service.
+    * body: (json) the report body ( with or without filters )
+    * filters: (json) a dictionary of filters to apply ( see above examples )
+
+  Returns:
+    * body: ( json ) modified report body
+  """
+
+  new_body = body.copy()
+
+  for f, d in filters.items():
+    for v in get_rows(project.task['auth'], d):
+      new_body['params'].setdefault('filters', []).append({"type": f, "value": v})
+
+  return new_body
 
 
 def report_build(auth, body):

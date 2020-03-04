@@ -39,7 +39,7 @@ proto files.
 
 from starthinker.util.project import project
 from starthinker.util.data import get_rows, put_rows
-from starthinker.util.dcm import report_delete, report_build, report_file, report_to_rows, report_clean, report_schema, report_run
+from starthinker.util.dcm import report_delete, report_filter, report_build, report_file, report_to_rows, report_clean, report_schema, report_run
 
 
 @project.from_parameters
@@ -73,28 +73,12 @@ def dcm():
   if 'body' in project.task['report']:
     if project.verbose: print('DCM BUILD', project.task['report']['body']['name'])
 
-    # filters can be passed using special get_rows handler, allows reading values from sheets etc...
     if 'filters' in project.task['report']:
-      for f, d in project.task['report']['filters'].items():
-        for v in get_rows(project.task['auth'], d):
-          # accounts are specified in a unique part of the report json
-          if f in 'accountId':
-            project.task['report']['body']['accountId'] = v
-          # activities are specified in a unique part of the report json
-          elif f in 'dfa:activity':
-            project.task['report']['body']['reachCriteria']['activities'].setdefault('filters', []).append({
-              "kind":"dfareporting#dimensionValue",
-              "dimensionName": f,
-              "id": v
-            })
-          # all other filters go in the same place
-          else:
-            project.task['report']['body'].setdefault('criteria', {}).setdefault('dimensionFilters', []).append({
-              "kind":"dfareporting#dimensionValue",
-              "dimensionName": f,
-              "id": v,
-              "matchType": "EXACT"
-            })
+      project.task['report']['body'] = report_filter(
+        project.task['auth'],
+        project.task['report']['body'],
+        project.task['report']['filters']
+      )
 
     report = report_build(
       project.task['auth'],

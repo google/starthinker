@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -30,7 +30,6 @@ from starthinker_ui.ui.timezones import TIMEZONES
 class CommaSeparatedCharField(forms.CharField):
   def prepare_value(self, value):
     return ', '.join(value or [])
-    #return ', '.join(json.loads(value or '[]') if isinstance(value, str) else (value or []))
 
   def clean(self, value):
     try:

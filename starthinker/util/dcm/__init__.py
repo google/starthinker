@@ -25,6 +25,7 @@ from datetime import date, timedelta
 
 from starthinker.config import BUFFER_SCALE
 from starthinker.util import flag_last
+from starthinker.util.data import get_rows
 from starthinker.util.project import project
 from starthinker.util.google_api import API_DCM
 from starthinker.util.storage import media_download
@@ -148,7 +149,6 @@ def report_get(auth, account, report_id = None, name=None):
   Args:
     * auth: (string) Either user or service.
     * account: (string) [account:advertiser@profile] token.
-    * account: (string) [account:advertiser@profile] token.
     * report_id: (int) ID of DCm report to fetch ( either or name ).
     * name: (string) Name of report to fetch ( either or report_id ).
 
@@ -201,6 +201,64 @@ def report_delete(auth, account, report_id = None, name=None):
     API_DCM(auth, internal=is_superuser).reports().delete(**kwargs).execute()
   else:
     if project.verbose: print('DCM DELETE: No Report')
+
+
+def report_filter(auth, body, filters):
+  """ Adds filters to a report body
+
+  Filters cannot be easily added to the reports without templateing, this allows filters to be passed as lists.
+  Values are specified using get_rows(...) helper, see starthinker/util/data/__init__.py.
+  To specify a filter, use the official filter name and a list of values.
+
+  For exmaple:
+
+  ```
+  filters = {
+    "accountId": {
+      "values": 789
+    },
+    "dfa:advertiser": {
+      "values":[1234, 5678, 91011]
+    }
+  }
+  ```
+
+  Args:
+    * auth: (string) Either user or service.
+    * body: (json) the report body ( with or without filters )
+    * filters: (json) a dictionary of filters to apply ( see above examples )
+
+  Returns:
+    * body: ( json ) modified report body
+  """
+
+  new_body = body.copy()
+
+  for f, d in filters.items():
+    for v in get_rows(auth, d):
+
+      # accounts are specified in a unique part of the report json
+      if f == 'accountId':
+        new_body['accountId'] = v
+
+      # activities are specified in a unique part of the report json
+      elif f == 'dfa:activity':
+        new_body['reachCriteria']['activities'].setdefault('filters', []).append({
+          "kind":"dfareporting#dimensionValue",
+          "dimensionName": f,
+          "id": v
+        })
+
+      # all other filters go in the same place
+      else:
+        new_body.setdefault('criteria', {}).setdefault('dimensionFilters', []).append({
+          "kind":"dfareporting#dimensionValue",
+          "dimensionName": f,
+          "id": v,
+          "matchType": "EXACT"
+        })
+
+  return new_body
 
 
 def report_build(auth, account, body):

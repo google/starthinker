@@ -55,7 +55,7 @@ INPUTS = {
   'sheet': '',  # Retrieve from sheet properties.
   'dataset': '',  # Existing BigQuery dataset.
   'table': '',  # Table to create from this report.
-  'schema': '[]',  # Schema provided in JSON list format or empty list.
+  'schema': [],  # Schema provided in JSON list format or empty list.
   'link': True,  # Add a link to each row as the first column.
 }
 
@@ -115,7 +115,8 @@ TASKS = [
               'name': 'schema',
               'kind': 'json',
               'order': 5,
-              'default': '[]',
+              'default': [
+              ],
               'description': 'Schema provided in JSON list format or empty list.'
             }
           }

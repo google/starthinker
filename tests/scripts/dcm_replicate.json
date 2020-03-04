@@ -1,0 +1,74 @@
+{
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dcm":{
+      "__comment__":"Create a basic report template.",
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account_id", "kind":"integer", "default":"" }},
+        "body":{
+          "criteria": {
+            "dateRange": {"kind": "dfareporting#dateRange", "relativeDateRange": "LAST_7_DAYS"},
+            "dimensions": [
+              {"kind": "dfareporting#sortedDimension", "name": "dfa:date"},
+              {"kind": "dfareporting#sortedDimension", "name": "dfa:platformType"}],
+            "metricNames": ["dfa:impressions"]
+          },
+          "type": "STANDARD",
+          "delivery": {"emailOwner": false},
+          "format": "CSV",
+          "kind": "dfareporting#report",
+          "name": "CM Replicate Test"
+        }
+      },
+      "delete":true
+    }},
+    { "drive": {
+      "__comment__":"Create the test sheet ahead of time and populate the test accounts.",
+      "auth": "user",
+      "copy":{
+        "source":"https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/",
+        "destination":"CM Replicate Test"
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write account values to the sheet.",
+      "auth":"user",
+      "sheet":"CM Replicate Test",
+      "tab":"Accounts",
+      "range":"B1:C",
+      "write": {
+        "values": [
+          [{"field":{ "name":"test_account_1", "kind":"integer", "default":"" }}, {"field":{ "name":"test_account_2", "kind":"integer", "default":"" }}],
+          [{"field":{ "name":"test_advertiser_1a", "kind":"integer", "default":"" }}, {"field":{ "name":"test_advertiser_2a", "kind":"integer", "default":"" }}],
+          [{"field":{ "name":"test_advertiser_1b", "kind":"integer", "default":"" }}, {"field":{ "name":"test_advertiser_2b", "kind":"integer", "default":"" }}]
+        ]
+      }
+    }},
+    { "include":{
+      "script":"scripts/dcm_replicate_to_bigquery.json",
+      "parameters":{
+        "recipe_name":"Test",
+        "report_name":"CM Replicate Test",
+        "account":{"field":{ "name":"account_id", "kind":"integer", "default":"" }},
+        "delete":true
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":"Test",
+        "table":"CM_Replicate_Test_All",
+        "schema":[
+          { "name":"Account_Id", "type":"INTEGER" },
+          { "name":"Report_Day", "type":"DATE" },
+          { "name":"Platform_Type", "type":"STRING" },
+          { "name":"Impressions", "type":"INTEGER" }
+        ]
+      }
+    }}
+  ]
+}

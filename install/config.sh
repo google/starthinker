@@ -576,9 +576,13 @@ install_virtualenv_darwin() {
 
 
 install_virtualenv_linux() {
-  sudo apt-get install gcc python3-dev python3-pip -qq;
-  if [ "$(command -v virtualenv)" == "" ]; then
-    sudo apt-get install virtualenv -qq 
+  if [ "$(command -v lsb_release)" == "" ]; then
+    echo "Install not supported.  Please use a Debian based Linux instance."
+  else
+    sudo apt-get install gcc python3-dev python3-pip -qq;
+    if [ "$(command -v virtualenv)" == "" ]; then
+      sudo apt-get install virtualenv -qq 
+    fi
   fi
 }
 

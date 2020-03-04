@@ -130,7 +130,7 @@ TASKS = [
               'field': {
                 'name': 'recipe_name',
                 'kind': 'string',
-                'prefix': 'DV360_Feature_Spend_',
+                'prefix': 'Feature_Adoption_Spend_',
                 'description': 'Name of report in DV360, should be unique.'
               }
             }
@@ -213,7 +213,7 @@ TASKS = [
               'field': {
                 'name': 'recipe_name',
                 'kind': 'string',
-                'prefix': 'DV360_Feature_Environment_',
+                'prefix': 'Feature_Adoption_Environment_',
                 'description': 'Name of report in DV360, should be unique.'
               }
             }
@@ -255,7 +255,7 @@ TASKS = [
           'field': {
             'name': 'recipe_name',
             'kind': 'string',
-            'prefix': 'DV360_Feature_Spend_',
+            'prefix': 'Feature_Adoption_Spend_',
             'description': 'Name of report in DV360, should be unique.'
           }
         }
@@ -270,6 +270,7 @@ TASKS = [
             }
           },
           'table': 'DV360_Feature_Spend',
+          'is_incremental_load': True,
           'schema': [
             {
               'name': 'Advertiser',
@@ -399,7 +400,7 @@ TASKS = [
           'field': {
             'name': 'recipe_name',
             'kind': 'string',
-            'prefix': 'DV360_Feature_Environment_',
+            'prefix': 'Feature_Adoption_Environment_',
             'description': 'Name of report in DV360, should be unique.'
           }
         }
@@ -414,6 +415,7 @@ TASKS = [
             }
           },
           'table': 'DV360_Feature_Environment',
+          'is_incremental_load': True,
           'schema': [
             {
               'name': 'Advertiser',
@@ -605,7 +607,7 @@ TASKS = [
       ],
       'auth': 'service',
       'from': {
-        'query': " SELECT   Report_Day,   Advertiser,   Advertiser_Id,   Advertiser_Currency,   Insertion_Order AS Insertion_Order_Name,   Insertion_Order_Id AS Insertion_Order_ID,   CONCAT(Insertion_Order,' (',CAST(Insertion_Order_ID AS STRING),')') AS Insertion_Order,   Line_Item AS LI_Name,   b.Line_Item_Id AS LI_ID,   CONCAT(Line_Item,' (',CAST(b.Line_Item_Id AS STRING),')') AS Line_Item,   IF(MAX(SDF_Day) OVER () = SDF_Day, 'True', 'False') AS Max_Date,   a.*,   IF(Bid_Strategy_Type = 'Fixed', 'Fixed', CONCAT(Bid_Strategy_Type, ' ', Bid_Strategy_Unit)) AS Bid_Strategy,   IF(Bid_Strategy_Type = 'Fixed', 'Fixed', 'Autobidding') AS Autobidding_Overall,   CONCAT(Pacing, ' ', Pacing_Rate) AS Pacing_Overall,   IF(Affinity_In_Market_Targeting_Include IS NULL, 'False', 'True') AS Affinity_In_Market_TF,   IF(Affinity_In_Market_Targeting_Exclude IS NULL, 'False', 'True') AS Affinity_In_Market_Exclude_TF,   IF(Custom_List_Targeting IS NULL, 'False', 'True') AS Custom_List_TF,   IF(Audience_Targeting_Include IS NULL      AND Affinity_In_Market_Targeting_Include IS NULL      AND Custom_List_Targeting IS NULL      AND Audience_Targeting_Similar_Audiences = 'False' , 'False', 'True') AS Audience_Targeting_TF,   IF(Keyword_Targeting_Exclude IS NULL     AND Keyword_List_Targeting_Exclude IS NULL, 'False', 'True') AS Keyword_Exclusions_TF,   IF(Position_Targeting_On_Screen IS NULL     AND Position_Targeting_Display_Position_In_Content IS NULL     AND Position_Targeting_Video_Position_In_Content IS NULL     AND Position_Targeting_Audio_Position_In_Content IS NULL, 'False', 'True') AS Position_Targeting_TF,   IF((Geography_Targeting_Include IS NULL       AND Geography_Regional_Location_List_Targeting_Include IS NULL), 'False', 'True') AS Geography_Targeting_TF,   IF(Language_Targeting_Include IS NULL, 'False', 'True') AS Language_Targeting_TF,   IF(Site_Targeting_Exclude IS NULL     AND Site_Targeting_Include IS NULL, 'False', 'True') AS Site_List_TF,   Impressions AS Impressions,   Billable_Impressions AS Billable_Impressions,   Clicks AS Clicks,   Total_Conversions AS Total_Conversions,   Post_Click_Conversions AS Post_Click_Conversions,   Post_View_Conversions AS Post_View_Conversions,   Revenue_Adv_Currency AS Rev_Adv_Currency,   Media_Cost_Advertiser_Currency AS Media_Cost_Adv_Currency,   Cm_Post_Click_Revenue AS CM_Post_Click_Revenue,   Cm_Post_View_Revenue AS CM_Post_View_Revenue,   (Cm_Post_Click_Revenue+Cm_Post_View_Revenue) AS CM_Total_Revenue,   IF (Bid_Strategy_Type = 'Fixed', 0, Revenue_Adv_Currency) AS Autobid_Rev,   IF (Type = 'Display', Revenue_Adv_Currency, 0) AS Display_Rev,   IF (Type = 'Video', Revenue_Adv_Currency, 0) AS Video_Rev,   IF (Type = 'TrueView', Revenue_Adv_Currency, 0) AS TrueView_Rev,   IF (Type = 'Audio', Revenue_Adv_Currency, 0) AS Audio_Rev,   IF ((STRPOS(Environment_Targeting, 'Desktop')>0), Revenue_Adv_Currency, 0) AS Desktop_Rev   FROM `[PARAMETER].[PARAMETER].SDF_LINE_ITEM` AS a    LEFT JOIN `[PARAMETER].[PARAMETER].DV360_Feature_Spend` AS b      ON a.SDF_Day = b.Report_Day     AND a.Line_Item_Id = b.Line_Item_Id    WHERE b.Report_Day IS NOT NULL ",
+        'query': " SELECT   Report_Day,   Advertiser,   Advertiser_Id,   Advertiser_Currency,   Insertion_Order AS Insertion_Order_Name,   Insertion_Order_Id AS Insertion_Order_ID,   CONCAT(Insertion_Order,' (',CAST(Insertion_Order_ID AS STRING),')') AS Insertion_Order,   Line_Item AS LI_Name,   b.Line_Item_Id AS LI_ID,   CONCAT(Line_Item,' (',CAST(b.Line_Item_Id AS STRING),')') AS Line_Item,   IF(MAX(SDF_Day) OVER () = SDF_Day, 'True', 'False') AS Max_Date,   a.*,   IF(Bid_Strategy_Type = 'Fixed', 'Fixed', CONCAT(Bid_Strategy_Type, ' ', Bid_Strategy_Unit)) AS Bid_Strategy,   IF(Bid_Strategy_Type = 'Fixed', 'Fixed', 'Autobidding') AS Autobidding_Overall,   CONCAT(Pacing, ' ', Pacing_Rate) AS Pacing_Overall,   IF(Affinity_In_Market_Targeting_Include IS NULL, 'False', 'True') AS Affinity_In_Market_TF,   IF(Affinity_In_Market_Targeting_Exclude IS NULL, 'False', 'True') AS Affinity_In_Market_Exclude_TF,   IF(Custom_List_Targeting IS NULL, 'False', 'True') AS Custom_List_TF,   IF(Audience_Targeting_Include IS NULL      AND Affinity_In_Market_Targeting_Include IS NULL      AND Custom_List_Targeting IS NULL      AND Audience_Targeting_Similar_Audiences = 'False' , 'False', 'True') AS Audience_Targeting_TF,   IF(Keyword_Targeting_Exclude IS NULL     AND Keyword_List_Targeting_Exclude IS NULL, 'False', 'True') AS Keyword_Exclusions_TF,   IF(Position_Targeting_On_Screen IS NULL     AND Position_Targeting_Display_Position_In_Content IS NULL     AND Position_Targeting_Video_Position_In_Content IS NULL     AND Position_Targeting_Audio_Position_In_Content IS NULL, 'False', 'True') AS Position_Targeting_TF,   IF((Geography_Targeting_Include IS NULL       AND Geography_Regional_Location_List_Targeting_Include IS NULL), 'False', 'True') AS Geography_Targeting_TF,   IF(Language_Targeting_Include IS NULL, 'False', 'True') AS Language_Targeting_TF,   IF(Site_Targeting_Exclude IS NULL     AND Site_Targeting_Include IS NULL, 'False', 'True') AS Site_List_TF,   Impressions AS Impressions,   Billable_Impressions AS Billable_Impressions,   Clicks AS Clicks,   Total_Conversions AS Total_Conversions,   Post_Click_Conversions AS Post_Click_Conversions,   Post_View_Conversions AS Post_View_Conversions,   Revenue_Adv_Currency AS Rev_Adv_Currency,   Media_Cost_Advertiser_Currency AS Media_Cost_Adv_Currency,   Cm_Post_Click_Revenue AS CM_Post_Click_Revenue,   Cm_Post_View_Revenue AS CM_Post_View_Revenue,   (Cm_Post_Click_Revenue+Cm_Post_View_Revenue) AS CM_Total_Revenue,   IF (Bid_Strategy_Type = 'Fixed', 0, Revenue_Adv_Currency) AS Autobid_Rev,   IF (Type = 'Display', Revenue_Adv_Currency, 0) AS Display_Rev,   IF (Type = 'Video', Revenue_Adv_Currency, 0) AS Video_Rev,   IF (Type = 'TrueView', Revenue_Adv_Currency, 0) AS TrueView_Rev,   IF (Type = 'Audio', Revenue_Adv_Currency, 0) AS Audio_Rev,   IF ((STRPOS(Environment_Targeting, 'Desktop')>0), Revenue_Adv_Currency, 0) AS Desktop_Rev   FROM `[PARAMETER].[PARAMETER].SDF_LINE_ITEM` AS a    LEFT JOIN `[PARAMETER].[PARAMETER].DV360_Feature_Spend` AS b      ON DATE_SUB(a.SDF_Day, INTERVAL 1 DAY) = b.Report_Day     AND a.Line_Item_Id = b.Line_Item_Id    WHERE b.Report_Day IS NOT NULL ",
         'parameters': [
           {
             'field': {

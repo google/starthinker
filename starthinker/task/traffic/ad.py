@@ -84,19 +84,23 @@ class AdDAO(BaseDAO):
     # Only wait for creative activation if it is a new creative trafficked by
     # this Bulkdozer session
     if store.get('CREATIVE', creative_id):
-      creative = self._api_creatives().get(profileId=self.profile_id, id=creative_id).execute()
+      creative = self._api_creatives().get(
+          profileId=self.profile_id, id=creative_id).execute()
       wait = 2
 
       while not creative['active'] and timeout > 0:
-        print("Waiting %s seconds for creative %s activation..." % (wait, creative_id))
+        print('Waiting %s seconds for creative %s activation...' %
+              (wait, creative_id))
         time.sleep(wait)
         timeout -= wait
         wait *= 2
-        creative = self._api_creatives().get(profileId=self.profile_id, id=creative_id).execute()
+        creative = self._api_creatives().get(
+            profileId=self.profile_id, id=creative_id).execute()
 
       if not creative['active']:
-        raise Exception('Creative %s failed to activate within defined timeout'
-                        % creative['id'])
+        raise Exception(
+            'Creative %s failed to activate within defined timeout' %
+            creative['id'])
 
   def _wait_all_creative_activation(self, feed_item, timeout=128):
     """Waits for activation of all creatives that should be associated to the feed item that represents an ad.
@@ -117,11 +121,11 @@ class AdDAO(BaseDAO):
 
   def _assignment_matches(self, item, assignment):
     if item.get(FieldMap.AD_ID, None) and assignment.get(FieldMap.AD_ID, None):
-      return item.get(FieldMap.AD_ID, None) == assignment.get(
-          FieldMap.AD_ID, None)
+      return item.get(FieldMap.AD_ID,
+                      None) == assignment.get(FieldMap.AD_ID, None)
     else:
-      return item.get(FieldMap.AD_NAME, '1') == assignment.get(
-          FieldMap.AD_NAME, '2')
+      return item.get(FieldMap.AD_NAME,
+                      '1') == assignment.get(FieldMap.AD_NAME, '2')
 
   def map_feeds(self, ad_feed, ad_creative_assignment, ad_placement_assignment,
                 ad_event_tag_assignment, placement_feed,
@@ -233,6 +237,8 @@ class AdDAO(BaseDAO):
         directly.
       feed_item: Feed item representing ad values from the Bulkdozer feed.
     """
+    campaign = self._campaign_dao.get(feed_item, required=True)
+
     item['active'] = feed_item.get(FieldMap.AD_ACTIVE, True)
 
     if item['active']:
@@ -248,7 +254,7 @@ class AdDAO(BaseDAO):
 
     self._process_assignments(
         feed_item, item['creativeRotation'].get('creativeAssignments', []),
-        item['placementAssignments'], item['eventTagOverrides'])
+        item['placementAssignments'], item['eventTagOverrides'], campaign)
 
     if 'deliverySchedule' in item:
       item['deliverySchedule']['priority'] = feed_item.get(
@@ -280,7 +286,7 @@ class AdDAO(BaseDAO):
     self._process_landing_page(item, feed_item)
 
   def _process_assignments(self, feed_item, creative_assignments,
-                           placement_assignments, event_tag_assignments):
+                           placement_assignments, event_tag_assignments, campaign):
     """Updates the ad by setting the values of child objects based on secondary feeds.
 
     Args:
@@ -332,41 +338,57 @@ class AdDAO(BaseDAO):
         else:
           endTime = None
 
-        lp = self._landing_page_dao.get(assignment, required=True)
+        lp = None
+        if assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') != 'CAMPAIGN_DEFAULT':
+          lp = self._landing_page_dao.get(assignment, required=True)
+        else:
+          lp = self._landing_page_dao.get({
+              FieldMap.AD_LANDING_PAGE_ID: campaign['defaultLandingPageId']
+          }, required=True)
 
         creative_assignment = {
-              'active': True,
-              'sequence': sequence,
-              'weight': weight,
-              'creativeId': assignment.get(FieldMap.CREATIVE_ID, None),
-              'startTime': startTime,
-              'endTime': endTime,
-              'clickThroughUrl': {
+            'active': True,
+            'sequence': sequence,
+            'weight': weight,
+            'creativeId': assignment.get(FieldMap.CREATIVE_ID, None),
+            'startTime': startTime,
+            'endTime': endTime,
+            'clickThroughUrl': {
                 'defaultLandingPage':
-                    False if assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') or assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')
-                    else True,
+                    False if
+                    (assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') or
+                     assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')) and
+                    assignment.get(FieldMap.AD_LANDING_PAGE_ID,
+                                   '') != 'CAMPAIGN_DEFAULT' else True,
                 'landingPageId':
                     lp.get('id', None) if lp else None,
                 'customClickThroughUrl':
                     assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')
-              }
-          }
+            }
+        }
 
-        if creative.get('type', '').startswith('RICH_MEDIA'):
+        if creative.get('exitCustomEvents'):
           creative_assignment['richMediaExitOverrides'] = []
 
-          if assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') or assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, ''):
+          if assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') or assignment.get(
+              FieldMap.CUSTOM_CLICK_THROUGH_URL, ''):
             for exit_custom_event in creative.get('exitCustomEvents', []):
               creative_assignment['richMediaExitOverrides'].append({
-                  "exitId": exit_custom_event['id'],
-                  "enabled": True,
-                  "clickThroughUrl": {
-                      "defaultLandingPage": False if assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') or assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')
-                        else True,
-                      "landingPageId": lp.get('id', None) if lp else None,
-                      "customClickThroughUrl": assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')
-              }
-            })
+                  'exitId': exit_custom_event['id'],
+                  'enabled': True,
+                  'clickThroughUrl': {
+                      'defaultLandingPage':
+                          False if
+                          (assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') or
+                           assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')) and
+                          assignment.get(FieldMap.AD_LANDING_PAGE_ID,
+                                         '') != 'CAMPAIGN_DEFAULT' else True,
+                      'landingPageId':
+                          lp.get('id', None) if lp else None,
+                      'customClickThroughUrl':
+                          assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')
+                  }
+              })
 
         creative_assignments.append(creative_assignment)
 
@@ -383,15 +405,15 @@ class AdDAO(BaseDAO):
               'placementId': assignment.get(FieldMap.PLACEMENT_ID, None),
           })
 
-    event_tags = [
-        {'assignment': item, 'event_tag': self._event_tag_dao.get(item, required=True)}
-        for item in feed_item['event_tag_assignment']
-    ]
+    event_tags = [{
+        'assignment': item,
+        'event_tag': self._event_tag_dao.get(item, required=True)
+    } for item in feed_item['event_tag_assignment']]
 
-    event_tags += [
-        {'assignment': item, 'event_tag': self._event_tag_dao.get(item, required=True)}
-        for item in feed_item['placement_event_tag_profile']
-    ]
+    event_tags += [{
+        'assignment': item,
+        'event_tag': self._event_tag_dao.get(item, required=True)
+    } for item in feed_item['placement_event_tag_profile']]
 
     for item in event_tags:
       assignment = item['assignment']
@@ -430,7 +452,7 @@ class AdDAO(BaseDAO):
     placement_assignments = []
     event_tag_assignments = []
     self._process_assignments(feed_item, creative_assignments,
-                              placement_assignments, event_tag_assignments)
+                              placement_assignments, event_tag_assignments, campaign)
 
     creative_rotation = {'creativeAssignments': creative_assignments}
 
@@ -505,7 +527,10 @@ class AdDAO(BaseDAO):
       placement = self._placement_dao.get(assignment, required=True)
       event_tag = self._event_tag_dao.get(assignment, required=True)
       creative = self._creative_dao.get(assignment, required=True)
-      landing_page = self._landing_page_dao.get(assignment, required=True)
+
+      landing_page = None
+      if assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') != 'CAMPAIGN_DEFAULT':
+        landing_page = self._landing_page_dao.get(assignment, required=True)
 
       if landing_page:
         assignment[FieldMap.AD_LANDING_PAGE_ID] = landing_page['id']

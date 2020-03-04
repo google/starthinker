@@ -43,9 +43,15 @@ BIGQUERY_BUFFERMAX = 4294967296
 BIGQUERY_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200 MB * scale in config.py
 BIGQUERY_BUFFERSIZE = min(BIGQUERY_CHUNKSIZE * 4, BIGQUERY_BUFFERMAX) # 1 GB * scale in config.py
 
+RE_TABLE_NAME = re.compile(r'[^\w]+')
+
 
 def bigquery_date(value):
   return value.strftime('%Y%m%d')
+
+
+def table_name_sanitize(name):
+  return RE_TABLE_NAME.sub('_', name)
 
 
 def query_parameters(query, parameters):

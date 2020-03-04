@@ -110,8 +110,11 @@ def get_rows(auth, source):
   # if handler is an endpoint, fetch data
   else:
     if 'values' in source:
-      for value in source['values']:
-        yield value 
+      if isinstance(source['values'], list):  
+        for value in source['values']:
+          yield value 
+      else:
+        yield source['values']
 
     if 'sheet' in source:
       rows = sheets_read(

@@ -37,7 +37,7 @@ Bulkdozer
 
 Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.
 
-Open the <a href='https://docs.google.com/spreadsheets/d/1YMpI3EceAy-rHtAv0Q5cg9atbroaPpL2-o0mau_XlXo/edit' target='_blank'>Bulkdozer 0.25</a> feed.
+Open the <a href='https://docs.google.com/spreadsheets/d/1wy9I8mJa9rIE7MVEWSClV2Wen3qL8w5wpi3NMGj6w8E' target='_blank'>Bulkdozer 0.26</a> feed.
 Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed.
 Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version.
 Under the Account ID field below, enter the your Campaign Manager Network ID.

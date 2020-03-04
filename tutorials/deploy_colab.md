@@ -23,7 +23,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [DV360 To Storage](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dbm_to_storage.ipynb) - Move existing DV360 report into a Storage bucket.
 * [CM Report](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm.ipynb) - Create a CM report from a JSON definition.
 * [CM API To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_api_to_bigquery.ipynb) - Write the current state of accounts, subaccounts, profiles, advertisers, campaigns, sites, roles, and reports to BigQuery for a given list of CM accounts.
-* [CM Standard Bulk](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_bulk_standard.ipynb) - Aggregate multiple standard CM reports into one BigQuery or Sheet.
+* [CM Report Replicate](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_replicate_to_bigquery.ipynb) - Replicate a report across multiple networks and advertisers.
 * [CM Report Run](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_run.ipynb) - Trigger a CM report run
 * [CM To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_to_bigquery.ipynb) - Move existing CM report into a BigQuery table.
 * [CM To Sheets](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_to_sheets.ipynb) - Move existing CM report into a Sheet tab.

@@ -53,11 +53,11 @@ RETRIABLE_EXCEPTIONS = (
 RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
 
 
-def API_Retry(job, key=None, retries=5, wait=61):
+def API_Retry(job, key=None, retries=3, wait=61):
   """ API retry that includes back off and some common error handling.
 
   For critical but recoverable errors, the back off executes [retry] times.  Each time the [wait] is doubled.
-  By default retries are: 1:01 + 2:02 + 4:04 + 8:08 + 16:16 = 31:31 ( minutes )
+  By default retries are: 1:01 + 2:02 + 4:04 = 7:07 ( minutes )
   The recommended minimum wait is 60 seconds for most APIs.
 
   * Errors retried: 429, 500, 503
