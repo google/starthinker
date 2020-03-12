@@ -9,15 +9,7 @@
     "description":"Download Google Analytics settings to a BigQuery table.",
     "image":"",
     "sample":"",
-    "requirements":{
-      "dbm":false,
-      "dcm":false,
-      "ds":false,
-      "trix":false,
-      "datastudio":true,
-      "bigquery":true,
-      "ga":true
-    },
+    "requirements":[ "datastudio", "bigquery", "ga" ],
     "categories":["reporting"],
     "pitches":[
       "Store, visualize, and compare Google Analytics settings over time."

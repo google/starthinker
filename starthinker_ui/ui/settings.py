@@ -23,9 +23,6 @@ from starthinker.config import UI_ROOT, UI_PROJECT, UI_CLIENT, UI_SERVICE, UI_CR
 # Load all technical settings
 from starthinker_ui.ui.framework import *
 
-# Replace local auth with web auth if it exists ( it exists in app engine deployment )
-if os.environ.get('STARTHINKER_CLIENT_WEB'): UI_CLIENT = os.environ['STARTHINKER_CLIENT_WEB']
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = DEVELOPMENT_MODE
 

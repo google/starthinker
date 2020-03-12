@@ -1,15 +1,13 @@
 { 
   "script":{
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google Inc.",
-    "open":true,
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"file_download",
     "product":"Google API",
     "title":"Email Fetch",
-    "description":"Import emailed csv or excel into a BigQuery table.",
+    "description":"Import emailed CM report, Dv360 report, csv, or excel into a BigQuery table.",
     "instructions":[
       "The person executing this recipe must be the recipient of the email.",
-      "Schedule a CSV or Excel to be sent to <b>{field:receipe_email}</b>.",
       "Give a regular expression to match the email subject, link or attachment.",
       "The data downloaded will overwrite the table specified."
     ],
@@ -18,7 +16,7 @@
   "tasks":[
     { "email":{
       "auth":"user",
-      "in":{
+      "read":{
         "email":{
           "from":{"field":{ "name":"email_from", "kind":"string", "order":1, "default":"", "description":"Must match from field." }},
           "to":{"field":{ "name":"email_to", "kind":"string", "order":2, "default":"", "description":"Must match to field." }},
@@ -30,7 +28,9 @@
       "out":{
         "bigquery":{
           "dataset":{"field":{ "name":"dataset", "kind":"string", "order":6, "default":"", "description":"Existing dataset in BigQuery." }},
-          "table":{"field":{ "name":"table", "kind":"string", "order":7, "default":"", "description":"Name of table to be written to." }}
+          "table":{"field":{ "name":"table", "kind":"string", "order":7, "default":"", "description":"Name of table to be written to." }},
+          "schema":{"field":{ "name":"dbm_schema", "kind":"json", "order":8, "default":"[]", "description":"Schema provided in JSON list format or empty list." }},
+          "is_incremental_load":{"field":{ "name":"is_incremental_load", "kind":"boolean", "order":9, "default":false, "description":"Append report data to table based on date column, de-duplicates." }}
         }
       }
     }}

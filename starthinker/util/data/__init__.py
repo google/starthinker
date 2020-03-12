@@ -1,6 +1,6 @@
-
+###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -29,13 +29,8 @@ Key benfits include:
 
 """
 
-import json
 import pysftp
-import datetime
-import os
-import sys
 import traceback
-from io import StringIO
 
 from starthinker.util.project import project
 from starthinker.util.storage import parse_path, makedirs_safe, object_put, bucket_create
@@ -139,7 +134,7 @@ def get_rows(auth, source):
         yield row[0] if source.get('single_cell', False) else row
 
 
-def put_rows(auth, destination, rows):
+def put_rows(auth, destination, rows, variant=''):
   """Processes standard write JSON block for dynamic export of data.
   
   Allows us to quickly write the results of a script to a destination.  For example
@@ -194,6 +189,7 @@ def put_rows(auth, destination, rows):
     auth: (string) The type of authentication to use, user or service.
     destination: (json) A json block resembling var_json described above.
     rows ( list ) The data being written as a list object.
+    variant (string) Appended to destination to differentieate multiple objects
 
   Returns:
     If single_cell is False: Returns a list of row values [[v1], [v2], ... ]
@@ -207,7 +203,7 @@ def put_rows(auth, destination, rows):
         destination['bigquery'].get('auth', auth),
         destination['bigquery'].get('project_id', project.id),
         destination['bigquery']['dataset'],
-        destination['bigquery']['table'],
+        destination['bigquery']['table'] + variant,
         rows,
         destination['bigquery'].get('schema', []),
         destination['bigquery'].get('disposition', 'WRITE_TRUNCATE'),
@@ -218,7 +214,7 @@ def put_rows(auth, destination, rows):
         destination['bigquery'].get('auth', auth),
         destination['bigquery'].get('project_id', project.id),
         destination['bigquery']['dataset'],
-        destination['bigquery']['table'],
+        destination['bigquery']['table'] + variant,
         rows,
         destination['bigquery'].get('schema', []),
         destination['bigquery'].get('skip_rows', 1), #0 if 'schema' in destination['bigquery'] else 1),
@@ -231,7 +227,7 @@ def put_rows(auth, destination, rows):
         destination['bigquery'].get('auth', auth),
         destination['bigquery'].get('project_id', project.id),
         destination['bigquery']['dataset'],
-        destination['bigquery']['table'],
+        destination['bigquery']['table'] + variant,
         rows,
         destination['bigquery'].get('schema', []),
         destination['bigquery'].get('skip_rows', 1), #0 if 'schema' in destination['bigquery'] else 1),
@@ -243,20 +239,21 @@ def put_rows(auth, destination, rows):
       sheets_clear(
         auth,
         destination['sheets']['sheet'],
-        destination['sheets']['tab'],
+        destination['sheets']['tab'] + variant,
         destination['sheets']['range'],
       )
 
     sheets_write(
       auth,
       destination['sheets']['sheet'],
-      destination['sheets']['tab'],
+      destination['sheets']['tab'] + variant,
       destination['sheets']['range'],
       rows
     ) 
 
   if 'file' in destination:
-    file_out = destination['file']
+    path_out, file_out = destination['file'].rsplit('.', 1)
+    file_out = path_out + variant + file_out
     if project.verbose: print('SAVING', file_out)
     makedirs_safe(parse_path(file_out))
     with open(file_out, 'wb') as save_file:
@@ -267,49 +264,26 @@ def put_rows(auth, destination, rows):
     bucket_create(auth, project.id, destination['storage']['bucket'])
 
     # put the file
-    file_out = destination['storage']['bucket'] + ':' + destination['storage']['path']
+    file_out = destination['storage']['bucket'] + ':' + destination['storage']['path'] + variant
     if project.verbose: print('SAVING', file_out)
     object_put(auth, file_out, rows_to_csv(rows))
 
-  # deprecated do not use
-  if 'trix' in destination:
-    trix_update(auth, destination['trix']['sheet_id'], destination['trix']['sheet_range'], rows_to_csv(rows), destination['trix']['clear'])
-
-  if 'email' in destination:
-    pass
-
   if 'sftp' in destination:
     try:
-      sys.stderr = StringIO();
-
       cnopts = pysftp.CnOpts()
       cnopts.hostkeys = None
 
-      file_prefix = 'report'
-      if 'file_prefix' in destination['sftp']:
-        file_prefix = destination['sftp'].get('file_prefix')
-        del destination['sftp']['file_prefix']
-
-      #sftp_configs = destination['sftp']
-      #sftp_configs['cnopts'] = cnopts
-      #sftp = pysftp.Connection(**sftp_configs)
+      path_out, file_out = destination['sftp']['file'].rsplit('.', 1)
+      file_out = path_out + variant + file_out
 
       sftp = pysftp.Connection(host=destination['sftp']['host'], username=destination['sftp']['username'], password=destination['sftp']['password'], port=destination['sftp']['port'], cnopts=cnopts)
 
-      if 'directory' in destination['sftp']:
-        sftp.cwd(destination['sftp']['directory'])
+      if '/' in file_out:
+        dir_out, file_out = file_out.rsplit('/', 1)
+        sftp.cwd(dir_out)
 
-      tmp_file_name = '/tmp/%s_%s.csv' % (file_prefix, datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S'))
+      sftp.putfo(rows_to_csv(rows), file_out)
 
-      tmp_file = open(tmp_file_name, 'wb')
-      tmp_file.write(rows_to_csv(rows).read())
-      tmp_file.close()
-
-      sftp.put(tmp_file_name)
-
-      os.remove(tmp_file_name)
-
-      sys.stderr = sys.__stderr__;
     except e:
       print(str(e))
       traceback.print_exc()

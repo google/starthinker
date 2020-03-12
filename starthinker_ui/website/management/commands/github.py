@@ -22,7 +22,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 from starthinker_ui.recipe.scripts import Script
-from website.views import code, solutions, solution
+from website.views import solutions, solution
 
 
 class Command(BaseCommand):
@@ -40,14 +40,8 @@ class Command(BaseCommand):
     with open('%s/index.html' % directory, 'w') as index_file:
       index_file.write(solutions(request=None))
 
-    directory = '%s/docs/code' % settings.UI_ROOT
-    print('Writing:', directory)
-    if not os.path.exists(directory): os.makedirs(directory)
-    with open('%s/index.html' % directory, 'w') as code_file:
-      code_file.write(code(request=None))
-
     for s in Script.get_scripts():
-      if s.is_solution() and s.get_open_source():
+      if s.get_open_source():
         directory = '%s/docs/solution/%s' % (settings.UI_ROOT, s.get_tag())
         print('Writing:', directory)
         if not os.path.exists(directory): os.makedirs(directory)

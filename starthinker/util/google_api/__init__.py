@@ -527,3 +527,16 @@ def API_Storage(auth, iterate=False):
       'iterate':iterate
   }
   return API(configuration)
+
+
+def API_Gmail(auth, iterate=False):
+  """Gmail helper configuration Google API. Defines agreed upon version.
+  """
+
+  configuration = {
+      'api':'gmail',
+      'version':'v1',
+      'auth':auth,
+      'iterate':iterate
+  }
+  return API(configuration)

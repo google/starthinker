@@ -56,10 +56,10 @@ def parse_path(path):
 
 
 def parse_filename(path, url=False):
-  f = ''
+  f = path
   try: 
-    f = path.rsplit('/', 1)[1]
     if url: f = f.split('?', 1)[0]
+    f = f.rsplit('/', 1)[1]
   except: pass
   return f
 

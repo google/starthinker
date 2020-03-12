@@ -54,7 +54,7 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 INPUTS = {
   'dataset': '',  # Place where tables will be created in BigQuery.
   'recipe_project': '',  # Place where tables will be created in BigQuery.
-  'sheet_url': '',  # URL to sheet where Line Item settings will be read from.
+  'recipe_name': '',  # Name of sheet where Line Item settings will be read from.
   'twitter_secret': '',  # Twitter API secret token.
   'twitter_key': '',  # Twitter API key token.
 }
@@ -84,10 +84,11 @@ TASKS = [
       },
       'sheet': {
         'field': {
-          'name': 'sheet_url',
+          'name': 'recipe_name',
           'kind': 'string',
+          'prefix': 'Twitter Targeting ',
           'order': 2,
-          'description': 'URL to sheet where Line Item settings will be read from.',
+          'description': 'Name of sheet where Line Item settings will be read from.',
           'default': ''
         }
       },

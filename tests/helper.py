@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -163,6 +163,7 @@ def run_tests(scripts, recipes, tests):
       RECIPE_DIRECTORY + recipe,
       '-u $STARTHINKER_USER',
       '-s $STARTHINKER_SERVICE',
+      '-c $STARTHINKER_CLIENT',
       '-p $STARTHINKER_PROJECT',
       '--verbose',
       '--force',

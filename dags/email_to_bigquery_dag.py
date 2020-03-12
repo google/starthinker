@@ -35,10 +35,9 @@ Before running this Airflow module...
 
 Email Fetch
 
-Import emailed csv or excel into a BigQuery table.
+Import emailed CM report, Dv360 report, csv, or excel into a BigQuery table.
 
 The person executing this recipe must be the recipient of the email.
-Schedule a CSV or Excel to be sent to <b>UNDEFINED</b>.
 Give a regular expression to match the email subject, link or attachment.
 The data downloaded will overwrite the table specified.
 
@@ -58,13 +57,15 @@ INPUTS = {
   'attachment': '',  # Regular expression to match atttachment.
   'dataset': '',  # Existing dataset in BigQuery.
   'table': '',  # Name of table to be written to.
+  'dbm_schema': '[]',  # Schema provided in JSON list format or empty list.
+  'is_incremental_load': False,  # Append report data to table based on date column, de-duplicates.
 }
 
 TASKS = [
   {
     'email': {
       'auth': 'user',
-      'in': {
+      'read': {
         'email': {
           'from': {
             'field': {
@@ -131,6 +132,24 @@ TASKS = [
               'order': 7,
               'default': '',
               'description': 'Name of table to be written to.'
+            }
+          },
+          'schema': {
+            'field': {
+              'name': 'dbm_schema',
+              'kind': 'json',
+              'order': 8,
+              'default': '[]',
+              'description': 'Schema provided in JSON list format or empty list.'
+            }
+          },
+          'is_incremental_load': {
+            'field': {
+              'name': 'is_incremental_load',
+              'kind': 'boolean',
+              'order': 9,
+              'default': False,
+              'description': 'Append report data to table based on date column, de-duplicates.'
             }
           }
         }

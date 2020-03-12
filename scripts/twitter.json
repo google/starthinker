@@ -52,7 +52,7 @@
         "url":"https://docs.google.com/spreadsheets/d/1iYCGa2NKOZiL2mdT4yiDfV_SWV9C7SUosXdIr4NAEXE/edit?usp=sharing",
         "tab":"Twitter Triggers"
       },
-      "sheet":{"field":{ "name":"sheet_url", "kind":"string", "order":2, "description":"URL to sheet where Line Item settings will be read from.", "default":"" }},
+      "sheet":{"field":{ "name":"recipe_name", "kind":"string", "prefix":"Twitter Targeting ", "order":2, "description":"Name of sheet where Line Item settings will be read from.", "default":"" }},
       "tab":"Twitter Triggers",
       "range":"A8:T",
       "out":{

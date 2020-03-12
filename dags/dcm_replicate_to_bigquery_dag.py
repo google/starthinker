@@ -39,7 +39,7 @@ Replicate a report across multiple networks and advertisers.
 
 Provide the name or ID of an existing report.
 Run the recipe once to generate the input sheet called UNDEFINED.
-Enter network and adverrtiser ids to replicate the report.
+Enter network and advertiser ids to replicate the report.
 Data will be written to BigQuery &gt; UNDEFINED &gt; UNDEFINED &gt; [REPORT NAME]_All
 
 '''
@@ -74,6 +74,20 @@ TASKS = [
             'description': 'Name of document to deploy to.',
             'default': ''
           }
+        }
+      }
+    }
+  },
+  {
+    'dataset': {
+      'auth': 'service',
+      'dataset': {
+        'field': {
+          'name': 'recipe_name',
+          'kind': 'string',
+          'order': 1,
+          'default': '',
+          'description': 'Name of Google BigQuery dataset to create.'
         }
       }
     }

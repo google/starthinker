@@ -98,7 +98,6 @@
         {% if not external %}<li><a href="/">Recipes</a></li>{% endif %}
         {% if not external %}<li><a href="/project/">Projects</a></li>{% endif %}
         <li><a href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
-        <li><a href="{% if external %}/starthinker{% endif %}/code/">Coding</a></li>
         {% if not external %}<li><a href="/stats/">Stats</a></li>{% endif %}
         {% if request.user.is_authenticated %}
           <li><a href="/logout/">Logout</a></li>
@@ -122,7 +121,6 @@
         {% if not external %}<li><a class="white-text" href="/">Recipes</a></li>{% endif %}
         {% if not external %}<li><a class="white-text" href="/project/">Project</a></li>{% endif %}
         <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
-        <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/code/">Code</a></li>
         {% if not external %}<li><a class="white-text" href="/stats/">Stats</a></li>{% endif %}
         {% if request.user.is_authenticated %}
           <li><a class="white-text" href="/logout/">Logout</a></li>
@@ -136,6 +134,8 @@
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
+
+    {% include "floodlight.html" %}
 
     {% if messages %}
       {% for message in messages %}

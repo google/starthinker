@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,52 +17,40 @@
 ###########################################################################
 
 import gzip
-import traceback
 
-from starthinker.util import flag_last
 from starthinker.util.project import project 
-from starthinker.util.csv import excel_to_rows, csv_to_rows, rows_trim, rows_header_sanitize, column_header_sanitize
-from starthinker.util.email import get_email_messages, send_email
 from starthinker.util.data import put_rows, get_rows
-
-
-def email_files(email):
-
-  # loop attachment, outside it looks like one iteration
-  for filename, data in email['attachments']:
-    if project.verbose: print('EMAIL ATTACHMENT:', filename)
-    yield filename, data
-
-  # loop links, outside it looks like one iteration
-  for filename, data in email['links']:
-    if project.verbose: print('EMAIL LINK:', filename)
-    yield filename, data
+from starthinker.util.csv import excel_to_rows, csv_to_rows, rows_trim, rows_header_sanitize, column_header_sanitize
+from starthinker.util.email import get_email_messages, get_email_links, get_email_attachments, get_subject, send_email
+from starthinker.util.dbm import report_to_rows as dv360_report_to_rows, report_clean as dv360_report_clean
+from starthinker.util.dcm import report_to_rows as cm_report_to_rows, report_clean as cm_report_clean, report_schema as cm_report_schema
 
 
 def email_read():
 
   # process only most recent message
-  email = get_email_messages(
-    project.task['auth'],
-    project.task['read']['from'],
-    project.task['read']['to'],
-    project.task['read'].get('subject', None),
-    project.task['read'].get('link', None),
-    project.task['read'].get('attachment', None),
-    download=True
-  )
-
-  # only take the most recent email
-  try: email = next(email)
-  except:
-    traceback.print_exc()
+  try: 
+    message = next(get_email_messages(
+      project.task['auth'],
+      project.task['read']['from'],
+      project.task['read']['to'],
+      project.task['read'].get('subject', None)
+    ))
+  except StopIteration as e:
     if project.verbose: print('NO EMAILS FOUND')
     exit()
 
-  if project.verbose: print('EMAIL:', email['subject'])
+  if project.verbose: print('EMAIL:', get_subject(message))
 
-  # loop all attached files
-  for filename, data in email_files(email):
+  files = []
+
+  if project.task['read'].get('attachment'):
+    files.extend(get_email_attachments(project.task['auth'], message, project.task['read']['attachment']))
+
+  if project.task['read'].get('link'):
+    files.extend(get_email_links(project.task['auth'], message, project.task['read']['link'], download=True))
+
+  for filename, data in files:
 
     if project.verbose: print('EMAIL FILENAME:', filename)
 
@@ -77,16 +65,32 @@ def email_read():
       for sheet, rows in excel_to_rows(data):
         rows = rows_trim(rows)
         rows = rows_header_sanitize(rows)
+        put_rows(project.task['auth'], project.task['read']['out'], rows, sheet)
 
-        if project.verbose: print('EMAIL WRITE', filename)
-        put_rows(project.task['auth'], project.task['read']['out'], rows, column_header_sanitize(sheet))
+    # if CM report
+    elif project.task['read']['from'] == 'noreply-cm@google.com':
+      rows = cm_report_to_rows(data.read().decode())
+      rows = cm_report_clean(rows)
 
-    # if csv, save directly
+      # if bigquery, remove header and determine schema
+      schema = None
+      if 'bigquery' in project.task['read']['out']:
+        schema = cm_report_schema(next(rows))
+        project.task['read']['out']['bigquery']['schema'] = schema
+        project.task['read']['out']['bigquery']['skip_rows'] = 1
+
+      put_rows(project.task['auth'], project.task['read']['out'], rows)
+
+    # if dv360 report
+    elif project.task['read']['from'] == 'noreply-dv360@google.com':
+      rows = dv360_report_to_rows(data.getvalue().decode())
+      rows = dv360_report_clean(rows)
+      put_rows(project.task['auth'], project.task['read']['out'], rows)
+
+    # if csv
     elif filename.endswith('.csv'):
       rows = csv_to_rows(data.read().decode())
       rows = rows_header_sanitize(rows)
-
-      if project.verbose: print('EMAIL WRITE', filename)
       put_rows(project.task['auth'], project.task['read']['out'], rows)
 
     else:

@@ -13,6 +13,7 @@
        "Provide the destination project and dataset."
     ],
     "image":"https://storage.googleapis.com/starthinker-ui/anonymize_dataset.png",
+    "test":"https://github.com/google/starthinker/blob/master/tests/scripts/anonymize.json",
     "categories":[],
     "requirements":[ "bigquery" ],
     "catalysts":["automation", "data", "experience"],

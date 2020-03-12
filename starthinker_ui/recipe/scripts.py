@@ -119,6 +119,9 @@ class Script:
   def get_sample(self):
     return self.script.get('script', {}).get('sample', None)
 
+  def get_test(self):
+    return self.script.get('script', {}).get('test', None)
+
   def get_documentation(self):
     return self.script.get('script', {}).get('documentation', None)
 
@@ -145,9 +148,6 @@ class Script:
 
   def get_tasks(self):
     return deepcopy(self.script.get('tasks', []))
-
-  def is_solution(self):
-    return 'impacts' in self.script.get('script', {})
 
   def is_manual(self):
     #return self.is_solution() and self.script.get('setup', {}).get('day', None) == []

@@ -17,7 +17,6 @@
 ###########################################################################
 
 import pprint
-import csv
 from time import sleep
 from io import StringIO
 from types import GeneratorType
@@ -29,7 +28,7 @@ from starthinker.util.data import get_rows
 from starthinker.util.project import project
 from starthinker.util.google_api import API_DCM
 from starthinker.util.storage import media_download
-from starthinker.util.csv import column_header_sanitize
+from starthinker.util.csv import column_header_sanitize, csv_to_rows
 from starthinker.util.dcm.schema.Lookup import DCM_Field_Lookup
 
 
@@ -555,13 +554,13 @@ def report_to_rows(report):
     leftovers = ''
     for chunk in report:
       data, extra = chunk.rsplit('\n', 1)
-      for row in csv.reader(StringIO(leftovers + data)):
+      for row in csv_to_rows(leftovers + data):
         yield row
       leftovers = extra
 
   # if reading from buffer
   else:
-    for row in csv.reader(report) if report else []:
+    for row in csv_to_rows(report):
       yield row
 
 

@@ -23,6 +23,7 @@ test_ui() {
 
   install_virtualenv; 
   install_requirements; 
+  install_requirements_ui; 
   setup_credentials_service;
   setup_credentials_commandline;
   save_config;
@@ -69,6 +70,7 @@ test_tasks() {
 
   install_virtualenv; 
   install_requirements; 
+  install_requirements_ui; 
   setup_credentials_service;
   setup_credentials_commandline;
   save_config;
@@ -101,6 +103,7 @@ launch_developer_ui() {
 
   install_virtualenv; 
   install_requirements; 
+  install_requirements_ui; 
   setup_credentials_service;
   setup_credentials_commandline;
   save_config;
@@ -193,6 +196,7 @@ launch_developer_worker() {
 install_developer() {
   install_virtualenv; 
   install_requirements; 
+  install_requirements_ui; 
   setup_credentials_service;
   setup_credentials_commandline;
   setup_credentials_user; 
@@ -214,12 +218,7 @@ setup_developer() {
   echo " - $STARTHINKER_CONFIG"
   echo ""
   echo "This script or you may create or modify:"
-  echo "  - $STARTHINKER_CONFIG"
-  echo "  - $STARTHINKER_CLIENT_INSTALLED"
-  echo "  - $STARTHINKER_CLIENT_WEB"
-  echo "  - $STARTHINKER_SERVICE"
-  echo "  - $STARTHINKER_USER"
-  echo "  - $STARTHINKER_ENV"
+  echo "  - $STARTHINKER_ROOT/starthinker_assets/config.sh"
   echo "  - $STARTHINKER_ROOT/starthinker_database/database.sqlite"
   echo ""
   echo "After running this script once, activate StarThinker development settings from the command line:"

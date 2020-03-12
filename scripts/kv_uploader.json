@@ -5,7 +5,7 @@
     "icon":"policy",
     "product":"CM",
     "title":"Tag Key Value Uploader",
-    "description":"A tool for bulk editing key value pairs for CM pllacements.",
+    "description":"A tool for bulk editing key value pairs for CM placements.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/kv_uploader.png",
     "sample":"https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/edit?usp=sharing",
     "documentation":"https://github.com/google/starthinker/blob/master/tutorials/appscript_troubleshooting.md",

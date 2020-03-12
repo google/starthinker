@@ -36,7 +36,7 @@ Buffers are controlled in config.py.
 
 from starthinker.util.project import project
 from starthinker.util.data import put_rows, get_rows
-from starthinker.util.dbm import report_delete, report_filter, report_build, report_file, report_to_rows, report_clean, DBM_CHUNKSIZE
+from starthinker.util.dbm import report_delete, report_filter, report_build, report_file, report_to_rows, report_clean
 
 
 @project.from_parameters
@@ -49,7 +49,7 @@ def dbm():
 
   # check if report is to be deleted
   if project.task.get('delete', False):
-    if project.verbose: print('DBM DELETE', end='')
+    if project.verbose: print('DBM DELETE')
     report_delete(
       project.task['auth'],
       project.task['report'].get('report_id', None),
@@ -81,8 +81,7 @@ def dbm():
       project.task['auth'],
       project.task['report'].get('report_id', None),
       project.task['report'].get('name', None),
-      project.task['report'].get('timeout', 10),
-      DBM_CHUNKSIZE
+      project.task['report'].get('timeout', 10)
     )
 
     # if a report exists

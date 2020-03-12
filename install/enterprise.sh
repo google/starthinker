@@ -136,14 +136,7 @@ configure_yaml() {
   echo "Copy settings from $STARTHINKER_CONFIG and adjust for App Engine deployment."
   echo ""
 
-  if [[ $deploy_Type == 'Scientist' ]]; then
-    appengine_client_web=""
-    appengine_user=$(cat "$STARTHINKER_USER" | tr '\n' ' ')
-  else
-    appengine_client_web=$(cat "$STARTHINKER_CLIENT_WEB" | tr '\n' ' ')
-    appengine_user=""
-  fi
-
+  appengine_client=$(cat "$STARTHINKER_CLIENT_WEB" | tr '\n' ' ')
   appengine_service=$(cat "$STARTHINKER_SERVICE" | tr '\n' ' ')
 
   appengine_domain="https://$STARTHINKER_PROJECT.appspot.com"
@@ -167,8 +160,7 @@ env_variables:
   STARTHINKER_DEVELOPMENT: '0'
   STARTHINKER_PROJECT: '$STARTHINKER_PROJECT'
   STARTHINKER_ZONE: '$STARTHINKER_ZONE'
-  STARTHINKER_CLIENT_WEB: '$appengine_client_web'
-  STARTHINKER_USER: '$appengine_user'
+  STARTHINKER_CLIENT: '$appengine_client'
   STARTHINKER_SERVICE: '$appengine_service'
   STARTHINKER_UI_DOMAIN: '$appengine_domain' 
   STARTHINKER_UI_SECRET: '$STARTHINKER_UI_PRODUCTION_SECRET'

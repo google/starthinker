@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ from starthinker_ui.website import views
 
 urlpatterns = [
   url(r'^stats/$', views.stats, name='website.stats'),
-  url(r'^code/$', views.code, name='website.code'),
   url(r'^solution/$', views.solutions, name='website.solutions'),
   url(r'^solution/(?P<tag>\w+)/$', views.solution, name='website.solution'),
 ]

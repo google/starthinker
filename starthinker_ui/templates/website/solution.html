@@ -24,8 +24,21 @@
 
 {% block css %}
   #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
-  div.solution { width: 80%; max-width: 400px; display: inline-table; margin: 5vh auto; padding: 0px 3%; }
-  #solution_button { margin: 1vh 1vw; } 
+  .btn-large { margin: 1vh 1vw; } 
+  .col { margin-right: auto; }
+  pre.expand_code { height: 70vh; }
+  pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
+{% endblock %}
+
+{% block js %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('span.expand_code').on('click tap', function() {
+        $('pre.expand_code').css('height', 'auto');
+        $(this).hide();
+      });
+    });
+  </script>
 {% endblock %}
 
 {% block content %}
@@ -53,18 +66,24 @@
 
   <div class="buttons">
 
-    <a id="solution_button" class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
+    <a class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
       <i class="material-icons right">lock_open</i>Get Access
     </a>
 
     {% if script.get_sample %}
-      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="{{ script.get_sample }}" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_sample }}" target="_blank">
         <i class="material-icons right">directions_bike</i>Sample
       </a>
     {% endif %}
 
+    {% if script.get_test %}
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_test }}" target="_blank">
+        <i class="material-icons right">thumb_up</i>Example Test
+      </a>
+    {% endif %}
+
     {% if script.get_documentation %}
-      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="{{ script.get_documentation }}" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_documentation }}" target="_blank">
         <i class="material-icons right">list</i>Documentation
       </a>
     {% endif %}
@@ -72,92 +91,147 @@
     <br/>
 
     {% if not external %}
-      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="{{ script.get_link_ui }}" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_ui }}" target="_blank">
         <i class="material-icons right">play_circle_outline</i>Run Now
       </a>
     {% endif %}
 
     {% if script.get_open_source %}
-      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="{{ script.get_open_source }}" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_open_source }}" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
-      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="{{ script.get_link_colab }}" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_colab }}" target="_blank">
         <i class="material-icons right">copyright</i>Data Pill Colab
       </a>
-      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="{{ script.get_link_airflow }}" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_airflow }}" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
       </a>
     {% endif %}
 
   </div>
 
-  <div class="solution">
-    <table class="bordered">
-      <thead>
-        <tr>
-          <th>Value Proposition</th>
-        </tr>
-       </thead>
-       <tbody>
-       {% for pitch in script.get_pitches %}
-         <tr>
-           <td>{{ pitch }}</td>
-         </tr>
-       {% endfor %}
-       </tbody>
-    </table>
-  </div>
+  <br/><br/>
+
+  <div class="row">
+    {% if script.get_pitches %}
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <table class="bordered">
+            <thead>
+              <tr>
+                <th>Value Proposition</th>
+              </tr>
+             </thead>
+             <tbody>
+             {% for pitch in script.get_pitches %}
+               <tr>
+                 <td>{{ pitch }}</td>
+               </tr>
+             {% endfor %}
+             </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
   
-  <div class="solution">
-    <table class="bordered">
-      <thead>
-        <tr>
-          <th>Impact</th>
-          <th>Level</th>
-        </tr>
-       </thead>
-       <tbody>
-         {% for impact, value in script.get_impacts.items %}
-           <tr>
-             <td>{{ impact|title }}</td>
-             <td>
-               <div class="progress">
-                 <div class="determinate" style="width: {{ value }}%"></div>
-               </div>
-             </td>
-           </tr>
-         {% endfor %}
-       </tbody>
-    </table>
-  </div> 
+    {% if script.get_impacts %}
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <table class="bordered">
+            <thead>
+              <tr>
+                <th>Impact</th>
+                <th>Level</th>
+              </tr>
+             </thead>
+               <tbody>
+               {% for impact, value in script.get_impacts.items %}
+                 <tr>
+                   <td>{{ impact|title }}</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: {{ value }}%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               {% endfor %}
+             </tbody>
+          </table>
+        </div> 
+      </div> 
+    {% endif %}
 
-  <div class="solution">
-    <table class="bordered">
-      <thead>
-        <tr>
-          <th colspan="2">Details</th>
-        </tr>
-       </thead>
-      <tbody>
+    <div class="col s12 m6 l4">
+      <div class="card">
+        <table class="bordered">
+          <thead>
+            <tr>
+              <th colspan="2">Details</th>
+            </tr>
+           </thead>
+          <tbody>
+    
+            {% if script.get_open_source %}
+            <tr>
+              <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
+            </tr>
+            {% endif %}
+    
+            <tr>
+              <td>Authors</td>
+              <td><a href="{% request_solution script %}" target="_blank">{{ script.get_authors|join:"<br/>" }}</a>
+              </td>
+            </tr>
+    
+              </tbody>
+        </table>
+      </div>
+    </div>
+    
+   {% if script.get_instructions %}
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <table class="bordered">
+          <thead>
+              <tr>
+                <th>Instructions</th>
+              </tr>
+             </thead>
+             <tbody>
+             {% for instruction in script.get_instructions %}
+               <tr>
+                 <td>{{ instruction|safe }}</td>
+               </tr>
+             {% endfor %}
+             </tbody>
+          </table>
+        </div>
+       </div>
+     {% endif %}
 
-        {% if script.get_open_source %}
-        <tr>
-          <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
-        </tr>
-        {% endif %}
+    <div class="col s12 m12 l8">
+      <pre class="card expand_code left-align">
+        <span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span>
+        {{ script.get_tasks|json_pretty }}
+      </pre>
+    </div>
 
-        <tr>
-          <td>Authors</td>
-          <td><a href="{% request_solution script %}" target="_blank">{{ script.get_authors|join:"<br/>" }}</a>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
   </div>
 
   <br/><br/>
-  <h3 id="code-tasks">You Can Always Write Your Own Recipe</h3>
-  <p class="flow-text">See <a href="{% if external %}/starthinker{% endif %}/code/#recipe_code">StarThinker HowTo</a> for creating a json task anyone can use.</p>
+  <h3 id="code-tasks">Run This Workflow In Minutes On Google Cloud</h3>
+  <p class="flow-text">Everything from a quick Google Cloud UI to reference developer code for your team in one GitHub repository.</p>
+  <p>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#deployment" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      Deployment Steps<i class="material-icons right">launch</i>
+    </a>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      Developer Guide<i class="material-icons right">build</i>
+    </a>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/ui_recipe.md" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      UI How To<i class="material-icons right">laptop</i>
+    </a>
+  </p>
+
 
 {% endblock %}

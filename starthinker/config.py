@@ -27,8 +27,7 @@ DEVELOPMENT_MODE = bool(os.environ.get('STARTHINKER_DEVELOPMENT', '0') == '1')
 UI_ZONE = os.environ.get('STARTHINKER_ZONE', 'MISSING RUN deploy.sh TO SET')
 UI_PROJECT = os.environ.get('STARTHINKER_PROJECT', 'MISSING RUN deploy.sh TO SET')
 UI_SERVICE = os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET')
-
-UI_CLIENT = os.environ.get('STARTHINKER_CLIENT_INSTALLED', '')
+UI_CLIENT = os.environ.get('STARTHINKER_CLIENT', 'MISSING RUN deploy.sh TO SET')
 
 # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
 BUFFER_SCALE = int(os.environ.get('STARTHINKER_SCALE', 1))

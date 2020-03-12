@@ -22,7 +22,6 @@
 
 import re
 import pprint
-import csv
 import json
 import time
 from io import StringIO
@@ -149,7 +148,7 @@ def report_build(auth, body):
     # run report first time
     body = {
      "dataRange":report['metadata']['dataRange'],
-     "timezoneCode":report['schedule']['nextRunTimezoneCode']
+     "timezoneCode":body['timezoneCode']
     }
 
     run = service.queries().runquery(queryId=report['queryId'], body=body)
@@ -346,13 +345,13 @@ def report_to_rows(report):
     leftovers = ''
     for chunk in report:
       data, extra = chunk.read().rsplit('\n', 1)
-      for row in csv.reader(StringIO(leftovers + data)):
+      for row in csv_to_rows(leftovers + data): 
         yield row
       leftovers = extra
 
   # if reading from buffer
   else:
-    for row in csv.reader(report) if report else []:
+    for row in csv_to_rows(report):
       yield row
 
 

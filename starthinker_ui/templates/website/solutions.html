@@ -22,16 +22,23 @@
 
 {% load website_app %}
 
+{% block css %}
+  i.right { float: none; margin-left: 0; position: absolute; right: 0px; margin-right: 15px; }
+  i.right:hover { cursor: pointer; }
+  .col { margin-right: auto; }
+  .card { min-height: 30vh; }
+{% endblock %}
+
 {% block js %}
   <script type="text/javascript">
     var category = 'category_all';
 
     function render() {
-      $("#solutions tbody tr").each(function() {
+      $("#scripts div.col").each(function() {
         var show = false;
         if ($(this).attr("class").includes(category)) { show = true; }
-        if (show) { $(this).show(); } 
-        else { $(this).hide(); }
+        if (show) { $(this).css( "display", "block" ); } 
+        else { $(this).css( "display", "none" ); }
       });
     }
 
@@ -66,19 +73,41 @@
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
   {% endfor %}
 
-  <table id="solutions" class="view_product bordered highlight list">
-    <tbody>
+  <br/><br/>
+  <div id="scripts" class="row">
     {% for script in scripts %}
-      <tr class="category_all{% for c in script.get_categories %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_catalysts %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_requirements %} category_{{ c|slugify }}{% endfor %}">
-        <td style="vertical-align:top;width:90px;padding-top:30px;"><i class="material-icons medium teal-text">{{ script.get_icon }}</i></td>
-        <td style="vertical-align:top;">
-          <a href="{% if external %}/starthinker{% endif %}/solution/{{ script.get_tag }}/"><h4>{{ script.get_name }}</h4></a>
-          <p>{{ script.get_description|safe }}</p>
-        </td>
-      </tr>
+      <div class="col s6 m4 l3 category_all{% for c in script.get_categories %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_catalysts %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_requirements %} category_{{ c|slugify }}{% endfor %}">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              {% if script.get_pitches %}
+              <i class="activator material-icons right">more_vert</i>
+              {% endif %}
+              <a href="{% if external %}/starthinker{% endif %}/solution/{{ script.get_tag }}/"> 
+                <i class="material-icons medium">{{ script.get_icon }}</i><br/><br/>
+                {{ script.get_name }}
+              </a>
+            </span>
+            <p>{{ script.get_description|safe }}</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 {% for pitch in script.get_pitches %}
+                   <tr>
+                     <td>{{ pitch }}</td>
+                   </tr>
+                 {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     {% endfor %}
-    </tbody>
-  </table>
+  </div>
 
   <br/><br/>
   <h3 id="code-tasks">You Can Always Write Your Own Recipe</h3>

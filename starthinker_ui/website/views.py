@@ -2,7 +2,7 @@
 
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -34,7 +34,8 @@ from starthinker_ui.recipe.models import Recipe
 
 
 def solutions(request):
-  scripts = [s for s in Script.get_scripts() if s.is_solution()]
+  scripts = list(Script.get_scripts())
+  scripts.sort(key=lambda x: x.get_name())
 
   # if open source then request will be null
   if not request: 
@@ -61,24 +62,6 @@ def solution(request, tag):
     return render(request, "website/solution.html", { 'script':script })
   else: 
     return render_to_string('website/solution.html', { 'script':script, "external":True })
-
-
-# also called by website/management/commands/code.py without request to render open source doc
-def code(request):
-  scripts = sorted(Script.get_scripts(), key=lambda s: s.get_name()) 
-  products = {}
-
-  for s in scripts: 
-    if s.get_open_source(): 
-      products.setdefault(s.get_product(), [])
-      products[s.get_product()].append(s)
-    
-  products = sorted([{ 'name':k, 'scripts':v } for k,v in products.items()], key=lambda p: p['name'])
-
-  if request:
-    return render(request, "website/code.html", { 'products':products })
-  else:
-    return render_to_string('website/code.html', { 'products':products, "external":True })
 
 
 def get_metrics():

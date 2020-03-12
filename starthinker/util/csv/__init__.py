@@ -44,10 +44,11 @@ def excel_to_rows(excel_bytes):
 
 
 def csv_to_rows(csv_string):
-  csv.field_size_limit(sys.maxsize)
-  if isinstance(csv_string, str): csv_string = StringIO(csv_string)
-  for row in csv.reader(csv_string, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL, skipinitialspace=True, escapechar='\\'):
-    yield row
+  if csv_string:
+    csv.field_size_limit(sys.maxsize)
+    if isinstance(csv_string, str): csv_string = StringIO(csv_string)
+    for row in csv.reader(csv_string, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL, skipinitialspace=True, escapechar='\\'):
+      yield row
 
 def rows_to_csv(rows):
   csv_string = StringIO()

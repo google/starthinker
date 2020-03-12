@@ -33,7 +33,9 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [DT To Table](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dt.ipynb) - Move data from a DT bucket into a BigQuery table.
 * [DV360 Feature Adoption Dashboard](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv360_feature_adoption.ipynb) - Tracks revenue spent on various DV360 features and compares to performance metrics.
 * [Dynamic Costs Reporting](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dynamic_costs.ipynb) - Calculate DV360 cost at the dynamic creative combination level.
-* [Email Fetch](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/email_to_bigquery.ipynb) - Import emailed csv or excel into a BigQuery table.
+* [CM Report Emailed To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/email_cm_to_bigquery.ipynb) - Pulls a CM Report from a gMail powered email account into BigQuery.
+* [DV360 Report Emailed To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/email_dv360_to_bigquery.ipynb) - Pulls a DV360 Report from a gMail email into BigQuery.
+* [Email Fetch](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/email_to_bigquery.ipynb) - Import emailed CM report, Dv360 report, csv, or excel into a BigQuery table.
 * [Entity Read Files](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/entity.ipynb) - Import public and private <a href='https://developers.google.com/bid-manager/guides/entity-read/format-v2' target='_blank'>Entity Read Files</a> into a BigQuery dataset.<br/>CAUTION: PARTNER ONLY, ADVERTISER FILTER IS NOT APPLIED.
 * [Floodlight Monitor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/floodlight_monitor.ipynb) - Monitor floodlight impressions specified in sheet and send email alerts.
 * [Google Analytics Timeline](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/ga_timeline.ipynb) - Download Google Analytics settings to a BigQuery table.
@@ -41,7 +43,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Say Hello](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/hello.ipynb) - Recipe template for say hello.
 * [Project IAM](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/iam.ipynb) - Sets project permissions for an email.
 * [Browser Activity Dashboard ( 2019 )](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/itp.ipynb) - Visualizes a client's Campaign Manager and DV360 activity by browser and device
-* [Tag Key Value Uploader](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/kv_uploader.ipynb) - A tool for bulk editing key value pairs for CM pllacements.
+* [Tag Key Value Uploader](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/kv_uploader.ipynb) - A tool for bulk editing key value pairs for CM placements.
 * [Line Item To BigQuery Via Query](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/lineitem_read_to_bigquery_via_query.ipynb) - Move using an Id query.
 * [Line Item To BigQuery Via Values](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/lineitem_read_to_bigquery_via_value.ipynb) - Move using hard coded Id values.
 * [Line Item From BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/lineitem_write_from_bigquery.ipynb) - Upload Line Items From BigQuery To DV360.
