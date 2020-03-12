@@ -132,27 +132,35 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       
 
   <br/>
-  <h1><i class="medium material-icons">waves</i>&nbsp; Anonymize Dataset</h1>
-  <p class="flow-text">Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.</p>
+  <h1><i class="medium material-icons">email</i>&nbsp; DV360 Report Emailed To BigQuery</h1>
+  <p class="flow-text">Pulls a DV360 Report from a gMail email into BigQuery.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=acquisition">acquisition</a>
   
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=automation">automation</a>
   
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=data">data</a>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=experience">experience</a>
-  
 
   <br/><br/>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=gmail">gmail</a>
   
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=bigquery">bigquery</a>
   
 
   <br/><br/>
   
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=automation">automation</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=reporting">reporting</a>
+  
 
-  <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/anonymize_dataset.png"/>
+  <img id="solution_image" src="https://github.com/google/starthinker/raw/master/tutorials/images/email_dv360.png"/>
 
   <div class="buttons">
 
@@ -163,7 +171,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
 
     
-      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/tests/scripts/anonymize.json" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/tests/scripts/email_dv360.json" target="_blank">
         <i class="material-icons right">thumb_up</i>Example Test
       </a>
     
@@ -175,13 +183,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
 
     
-      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/anonymize.json" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/email_dv360_to_bigquery.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
-      <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/anonymize.ipynb" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/email_dv360_to_bigquery.ipynb" target="_blank">
         <i class="material-icons right">copyright</i>Data Pill Colab
       </a>
-      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/anonymize_dag.py" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/email_dv360_to_bigquery_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
       </a>
     
@@ -203,11 +211,23 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
              <tbody>
              
                <tr>
-                 <td>Create anonymous data sets for demos.</td>
+                 <td>Acquire client DV360 data without having an account.</td>
                </tr>
              
                <tr>
-                 <td>Anonymize dashboard data.</td>
+                 <td>Build new data ingestion service for clients.</td>
+               </tr>
+             
+               <tr>
+                 <td>Consolidate client data in a central data warehouse.</td>
+               </tr>
+             
+               <tr>
+                 <td>Automate emailed report downloading.</td>
+               </tr>
+             
+               <tr>
+                 <td>Build dashboards from emailed reports.</td>
                </tr>
              
              </tbody>
@@ -241,7 +261,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                    <td>Spend Growth</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
+                       <div class="determinate" style="width: 70%"></div>
                      </div>
                    </td>
                  </tr>
@@ -259,7 +279,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                    <td>Account Health</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
+                       <div class="determinate" style="width: 80%"></div>
                      </div>
                    </td>
                  </tr>
@@ -268,7 +288,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                    <td>Csat Improvement</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 100%"></div>
+                       <div class="determinate" style="width: 80%"></div>
                      </div>
                    </td>
                  </tr>
@@ -297,7 +317,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Anonymize+Dataset+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Anonymize+Dataset+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fanonymize%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+DV360+Report+Emailed+To+BigQuery+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+DV360+Report+Emailed+To+BigQuery+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Femail_dv360_to_bigquery%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
     
@@ -318,15 +338,31 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
              <tbody>
              
                <tr>
-                 <td>Ensure you have user access to both datasets.</td>
+                 <td>The person executing this recipe must be the recipient of the email.</td>
                </tr>
              
                <tr>
-                 <td>Provide the source project and dataset.</td>
+                 <td>Schedule a DV360 report to be sent to an email like <b>UNDEFINED</b>.</td>
                </tr>
              
                <tr>
-                 <td>Provide the destination project and dataset.</td>
+                 <td>Or set up a redirect rule to forward a report you already receive.</td>
+               </tr>
+             
+               <tr>
+                 <td>The report can be sent as an attachment or a link.</td>
+               </tr>
+             
+               <tr>
+                 <td>Ensure this recipe runs after the report is email daily.</td>
+               </tr>
+             
+               <tr>
+                 <td>Give a regular expression to match the email subject.</td>
+               </tr>
+             
+               <tr>
+                 <td>Configure the destination in BigQuery to write the data.</td>
                </tr>
              
              </tbody>
@@ -340,43 +376,67 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         <span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span>
         [
     {
-        &quot;anonymize&quot;: {
+        &quot;email&quot;: {
             &quot;auth&quot;: &quot;user&quot;,
-            &quot;bigquery&quot;: {
-                &quot;from&quot;: {
-                    &quot;project&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;from_project&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 1,
-                            &quot;description&quot;: &quot;Original project to copy from.&quot;
-                        }
-                    },
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;from_dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 2,
-                            &quot;description&quot;: &quot;Original dataset to copy from.&quot;
-                        }
+            &quot;read&quot;: {
+                &quot;from&quot;: &quot;noreply-dv360@google.com&quot;,
+                &quot;to&quot;: {
+                    &quot;field&quot;: {
+                        &quot;name&quot;: &quot;email&quot;,
+                        &quot;kind&quot;: &quot;string&quot;,
+                        &quot;order&quot;: 1,
+                        &quot;default&quot;: &quot;&quot;,
+                        &quot;description&quot;: &quot;Email address report was sent to.&quot;
                     }
                 },
-                &quot;to&quot;: {
-                    &quot;project&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;to_project&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 3,
-                            &quot;default&quot;: null,
-                            &quot;description&quot;: &quot;Anonymous data will be writen to.&quot;
-                        }
-                    },
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;to_dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 4,
-                            &quot;description&quot;: &quot;Anonymous data will be writen to.&quot;
+                &quot;subject&quot;: {
+                    &quot;field&quot;: {
+                        &quot;name&quot;: &quot;subject&quot;,
+                        &quot;kind&quot;: &quot;string&quot;,
+                        &quot;order&quot;: 2,
+                        &quot;default&quot;: &quot;.*&quot;,
+                        &quot;description&quot;: &quot;Regular expression to match subject. Double escape backslashes.&quot;
+                    }
+                },
+                &quot;link&quot;: &quot;https://storage.googleapis.com/.*&quot;,
+                &quot;attachment&quot;: &quot;.*&quot;,
+                &quot;out&quot;: {
+                    &quot;bigquery&quot;: {
+                        &quot;dataset&quot;: {
+                            &quot;field&quot;: {
+                                &quot;name&quot;: &quot;dataset&quot;,
+                                &quot;kind&quot;: &quot;string&quot;,
+                                &quot;order&quot;: 3,
+                                &quot;default&quot;: &quot;&quot;,
+                                &quot;description&quot;: &quot;Existing dataset in BigQuery.&quot;
+                            }
+                        },
+                        &quot;table&quot;: {
+                            &quot;field&quot;: {
+                                &quot;name&quot;: &quot;table&quot;,
+                                &quot;kind&quot;: &quot;string&quot;,
+                                &quot;order&quot;: 4,
+                                &quot;default&quot;: &quot;&quot;,
+                                &quot;description&quot;: &quot;Name of table to be written to.&quot;
+                            }
+                        },
+                        &quot;schema&quot;: {
+                            &quot;field&quot;: {
+                                &quot;name&quot;: &quot;dbm_schema&quot;,
+                                &quot;kind&quot;: &quot;json&quot;,
+                                &quot;order&quot;: 5,
+                                &quot;default&quot;: &quot;[]&quot;,
+                                &quot;description&quot;: &quot;Schema provided in JSON list format or empty list.&quot;
+                            }
+                        },
+                        &quot;is_incremental_load&quot;: {
+                            &quot;field&quot;: {
+                                &quot;name&quot;: &quot;is_incremental_load&quot;,
+                                &quot;kind&quot;: &quot;boolean&quot;,
+                                &quot;order&quot;: 6,
+                                &quot;default&quot;: false,
+                                &quot;description&quot;: &quot;Append report data to table based on date column, de-duplicates.&quot;
+                            }
                         }
                     }
                 }
