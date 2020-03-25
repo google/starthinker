@@ -148,8 +148,6 @@ def datasets_access(auth, project_id, dataset_id, role='READER', emails=[], grou
 
     API_BigQuery(auth).datasets().patch(projectId=project_id, datasetId=dataset_id, body={'access':access}).execute()
 
-
-# TODO terwilleger: Remove project_id
 def run_query(auth, project_id, query, legacy=True):
 
   body={

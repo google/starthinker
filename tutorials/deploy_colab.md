@@ -14,6 +14,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Query To View](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_view.ipynb) - Create a BigQuery view.
 * [Bucket](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bucket.ipynb) - Create and permission a bucket in Storage.
 * [Bulkdozer](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bulkdozer.ipynb) - Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.
+* [CM User Editor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm_user_editor.ipynb) - A tool for rapidly bulk editing Campaign Manager profiles, roles, and sub accounts.
 * [Conversion Upload BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/conversion_upload_from_biguery.ipynb) - Move from BigQuery to CM.
 * [Conversion Upload Sheets](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/conversion_upload_from_sheets.ipynb) - Move form Sheets to CM.
 * [Dataset](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dataset.ipynb) - Create and permission a dataset in BigQuery.

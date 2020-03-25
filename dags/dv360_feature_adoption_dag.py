@@ -523,7 +523,7 @@ TASKS = [
     }
   },
   {
-    'sdf': {
+    'sdf_legacy': {
       'hour': [
         4
       ],
@@ -562,7 +562,7 @@ TASKS = [
     }
   },
   {
-    'sdf': {
+    'sdf_legacy': {
       'hour': [
         4
       ],

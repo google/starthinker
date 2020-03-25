@@ -40,6 +40,7 @@ Download SDF reports into a BigQuery table.
 Select your filter types and the filter ideas.
 Enter the <a href='https://developers.google.com/bid-manager/v1.1/sdf/download' target='_blank'>file types</a> using commas.
 SDF_ will be prefixed to all tables and date appended to daily tables.
+File types take the following format: FILE_TYPE_CAMPAIGN, FILE_TYPE_AD_GROUP,...
 
 '''
 
@@ -50,15 +51,31 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'partner_id': '',  # The sdf file types.
   'file_types': [],  # The sdf file types.
   'filter_type': '',  # The filter type for the filter ids.
-  'filter_ids': '',  # The filter ids for the request.
-  'version': '5',  # The sdf version to be returned.
+  'filter_ids': [],  # Comma separated list of filter ids for the request.
   'dataset': '',  # Dataset to be written to in BigQuery.
-  'daily': False,  # Also create a unique record for each day the data is pulled.
+  'version': '5',  # The sdf version to be returned.
+  'time_partitioned_table': False,  # Is the end table a time partitioned
+  'create_single_day_table': False,  # Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF.
 }
 
 TASKS = [
+  {
+    'dataset': {
+      'auth': 'service',
+      'dataset': {
+        'field': {
+          'name': 'dataset',
+          'kind': 'string',
+          'order': 6,
+          'default': '',
+          'description': 'Dataset to be written to in BigQuery.'
+        }
+      }
+    }
+  },
   {
     'sdf': {
       'auth': 'user',
@@ -66,20 +83,28 @@ TASKS = [
         'field': {
           'name': 'version',
           'kind': 'choice',
-          'order': 4,
+          'order': 6,
           'default': '5',
           'description': 'The sdf version to be returned.',
           'choices': [
-            '3.1',
-            '5'
+            'SDF_VERSION_5',
+            'SDF_VERSION_5_1'
           ]
+        }
+      },
+      'partner_id': {
+        'field': {
+          'name': 'partner_id',
+          'kind': 'integer',
+          'order': 1,
+          'description': 'The sdf file types.'
         }
       },
       'file_types': {
         'field': {
           'name': 'file_types',
           'kind': 'string_list',
-          'order': 1,
+          'order': 2,
           'default': [
           ],
           'description': 'The sdf file types.'
@@ -89,16 +114,15 @@ TASKS = [
         'field': {
           'name': 'filter_type',
           'kind': 'choice',
-          'order': 2,
+          'order': 3,
           'default': '',
           'description': 'The filter type for the filter ids.',
           'choices': [
-            'ADVERTISER_ID',
-            'CAMPAIGN_ID',
-            'INSERTION_ORDER_ID',
-            'INVENTORY_SOURCE_ID',
-            'LINE_ITEM_ID',
-            'PARTNER_ID'
+            'FILTER_TYPE_ADVERTISER_ID',
+            'FILTER_TYPE_CAMPAIGN_ID',
+            'FILTER_TYPE_INSERTION_ORDER_ID',
+            'FILTER_TYPE_MEDIA_PRODUCT_ID',
+            'FILTER_TYPE_LINE_ITEM_ID'
           ]
         }
       },
@@ -109,33 +133,39 @@ TASKS = [
             'field': {
               'name': 'filter_ids',
               'kind': 'integer_list',
-              'order': 3,
-              'default': '',
-              'description': 'The filter ids for the request.'
+              'order': 4,
+              'default': [
+              ],
+              'description': 'Comma separated list of filter ids for the request.'
             }
           }
         }
       },
-      'daily': {
+      'time_partitioned_table': {
         'field': {
-          'name': 'daily',
+          'name': 'time_partitioned_table',
           'kind': 'boolean',
-          'order': 6,
+          'order': 7,
           'default': False,
-          'description': 'Also create a unique record for each day the data is pulled.'
+          'description': 'Is the end table a time partitioned'
         }
       },
-      'out': {
-        'bigquery': {
-          'dataset': {
-            'field': {
-              'name': 'dataset',
-              'kind': 'string',
-              'order': 5,
-              'default': '',
-              'description': 'Dataset to be written to in BigQuery.'
-            }
-          }
+      'create_single_day_table': {
+        'field': {
+          'name': 'create_single_day_table',
+          'kind': 'boolean',
+          'order': 8,
+          'default': False,
+          'description': 'Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF.'
+        }
+      },
+      'dataset': {
+        'field': {
+          'name': 'dataset',
+          'kind': 'string',
+          'order': 6,
+          'default': '',
+          'description': 'Dataset to be written to in BigQuery.'
         }
       }
     }

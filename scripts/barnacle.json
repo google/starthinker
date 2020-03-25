@@ -2,7 +2,7 @@
   "script":{
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google Inc.",
-    "icon":"donut_small",
+    "icon":"security",
     "product":"CM",
     "title":"CM User Audit",
     "description":"Gives CM clients ability to see which profiles have access to which parts of an account. Loads CM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.",

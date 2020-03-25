@@ -233,6 +233,10 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  <td>SDF_ will be prefixed to all tables and date appended to daily tables.</td>
                </tr>
              
+               <tr>
+                 <td>File types take the following format: FILE_TYPE_CAMPAIGN, FILE_TYPE_AD_GROUP,...</td>
+               </tr>
+             
              </tbody>
           </table>
         </div>
@@ -240,9 +244,21 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
      
 
     <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align">
-        <span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span>
-        [
+      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span>[
+    {
+        &quot;dataset&quot;: {
+            &quot;auth&quot;: &quot;service&quot;,
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;name&quot;: &quot;dataset&quot;,
+                    &quot;kind&quot;: &quot;string&quot;,
+                    &quot;order&quot;: 6,
+                    &quot;default&quot;: &quot;&quot;,
+                    &quot;description&quot;: &quot;Dataset to be written to in BigQuery.&quot;
+                }
+            }
+        }
+    },
     {
         &quot;sdf&quot;: {
             &quot;auth&quot;: &quot;user&quot;,
@@ -250,20 +266,28 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 &quot;field&quot;: {
                     &quot;name&quot;: &quot;version&quot;,
                     &quot;kind&quot;: &quot;choice&quot;,
-                    &quot;order&quot;: 4,
+                    &quot;order&quot;: 6,
                     &quot;default&quot;: &quot;5&quot;,
                     &quot;description&quot;: &quot;The sdf version to be returned.&quot;,
                     &quot;choices&quot;: [
-                        &quot;3.1&quot;,
-                        &quot;5&quot;
+                        &quot;SDF_VERSION_5&quot;,
+                        &quot;SDF_VERSION_5_1&quot;
                     ]
+                }
+            },
+            &quot;partner_id&quot;: {
+                &quot;field&quot;: {
+                    &quot;name&quot;: &quot;partner_id&quot;,
+                    &quot;kind&quot;: &quot;integer&quot;,
+                    &quot;order&quot;: 1,
+                    &quot;description&quot;: &quot;The sdf file types.&quot;
                 }
             },
             &quot;file_types&quot;: {
                 &quot;field&quot;: {
                     &quot;name&quot;: &quot;file_types&quot;,
                     &quot;kind&quot;: &quot;string_list&quot;,
-                    &quot;order&quot;: 1,
+                    &quot;order&quot;: 2,
                     &quot;default&quot;: [],
                     &quot;description&quot;: &quot;The sdf file types.&quot;
                 }
@@ -272,16 +296,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 &quot;field&quot;: {
                     &quot;name&quot;: &quot;filter_type&quot;,
                     &quot;kind&quot;: &quot;choice&quot;,
-                    &quot;order&quot;: 2,
+                    &quot;order&quot;: 3,
                     &quot;default&quot;: &quot;&quot;,
                     &quot;description&quot;: &quot;The filter type for the filter ids.&quot;,
                     &quot;choices&quot;: [
-                        &quot;ADVERTISER_ID&quot;,
-                        &quot;CAMPAIGN_ID&quot;,
-                        &quot;INSERTION_ORDER_ID&quot;,
-                        &quot;INVENTORY_SOURCE_ID&quot;,
-                        &quot;LINE_ITEM_ID&quot;,
-                        &quot;PARTNER_ID&quot;
+                        &quot;FILTER_TYPE_ADVERTISER_ID&quot;,
+                        &quot;FILTER_TYPE_CAMPAIGN_ID&quot;,
+                        &quot;FILTER_TYPE_INSERTION_ORDER_ID&quot;,
+                        &quot;FILTER_TYPE_MEDIA_PRODUCT_ID&quot;,
+                        &quot;FILTER_TYPE_LINE_ITEM_ID&quot;
                     ]
                 }
             },
@@ -292,39 +315,43 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         &quot;field&quot;: {
                             &quot;name&quot;: &quot;filter_ids&quot;,
                             &quot;kind&quot;: &quot;integer_list&quot;,
-                            &quot;order&quot;: 3,
-                            &quot;default&quot;: &quot;&quot;,
-                            &quot;description&quot;: &quot;The filter ids for the request.&quot;
+                            &quot;order&quot;: 4,
+                            &quot;default&quot;: [],
+                            &quot;description&quot;: &quot;Comma separated list of filter ids for the request.&quot;
                         }
                     }
                 }
             },
-            &quot;daily&quot;: {
+            &quot;time_partitioned_table&quot;: {
                 &quot;field&quot;: {
-                    &quot;name&quot;: &quot;daily&quot;,
+                    &quot;name&quot;: &quot;time_partitioned_table&quot;,
                     &quot;kind&quot;: &quot;boolean&quot;,
-                    &quot;order&quot;: 6,
+                    &quot;order&quot;: 7,
                     &quot;default&quot;: false,
-                    &quot;description&quot;: &quot;Also create a unique record for each day the data is pulled.&quot;
+                    &quot;description&quot;: &quot;Is the end table a time partitioned&quot;
                 }
             },
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 5,
-                            &quot;default&quot;: &quot;&quot;,
-                            &quot;description&quot;: &quot;Dataset to be written to in BigQuery.&quot;
-                        }
-                    }
+            &quot;create_single_day_table&quot;: {
+                &quot;field&quot;: {
+                    &quot;name&quot;: &quot;create_single_day_table&quot;,
+                    &quot;kind&quot;: &quot;boolean&quot;,
+                    &quot;order&quot;: 8,
+                    &quot;default&quot;: false,
+                    &quot;description&quot;: &quot;Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF.&quot;
+                }
+            },
+            &quot;dataset&quot;: {
+                &quot;field&quot;: {
+                    &quot;name&quot;: &quot;dataset&quot;,
+                    &quot;kind&quot;: &quot;string&quot;,
+                    &quot;order&quot;: 6,
+                    &quot;default&quot;: &quot;&quot;,
+                    &quot;description&quot;: &quot;Dataset to be written to in BigQuery.&quot;
                 }
             }
         }
     }
-]
-      </pre>
+]</pre>
     </div>
 
   </div>

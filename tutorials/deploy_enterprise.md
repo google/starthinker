@@ -16,7 +16,7 @@ cd starthinker
 bash install/deploy.sh
 ```
 
- 1. Option 3) Enterprise Setup Menu 
+ 1. Option 2) Enterprise Setup Menu 
  1. Option 1) Deploy Multi User UI
      - You will be asked for a Cloud Project ID ( use the ID, not the Name, not the Number )
      - You will be asked for Web Client Credentials. [See instructions.](cloud_client_web.md)

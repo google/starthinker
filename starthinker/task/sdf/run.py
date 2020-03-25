@@ -16,72 +16,25 @@
 #
 ###########################################################################
 
-from starthinker.util.project import project 
-from starthinker.util.dbm import sdf_read
-from starthinker.util.bigquery import query_to_table
-from starthinker.task.sdf.schema.Lookup import SDF_Field_Lookup
-from starthinker.util.csv import column_header_sanitize
-from starthinker.util.data import put_rows, get_rows
-
-
-def sdf_schema(header):
-  schema = []
-
-  for h in header:
-    schema.append({ 
-      'name':column_header_sanitize(h), 
-      'type':SDF_Field_Lookup.get(h, 'STRING'), 
-      'mode':'NULLABLE' 
-    }) 
-
-  return schema 
+from starthinker.util.project import project
+from starthinker.util.sdf import sdf_download, sdf_to_bigquery
 
 
 @project.from_parameters
 def sdf():
+  if project.verbose: print('SDF')
 
-  # Read Filter Ids
-  filter_ids = list(get_rows(project.task['auth'], project.task['read']['filter_ids']))
+  # Download sdf files
+  sdf_zip_file = sdf_download(
+    project.task['auth'], 
+    project.task['version'], 
+    project.task['partner_id'], 
+    project.task['file_types'], 
+    project.task['filter_type'], 
+    project.task['read']['filter_ids'])
 
-  # Loop through requested file types
-  for file_type in project.task['file_types']:
-    disposition = 'WRITE_TRUNCATE'
-
-    # if daily then create a seperate table for each day else accumulate all in one table
-    table = ('SDF_%s_%s' % (file_type, str(project.date).replace('-', '_'))) if project.task['daily'] else ('SDF_%s' % file_type)
-
-    # do one filter id at a time to avoid response too large error ( product knows )
-    for filter_id in filter_ids:
-
-      if project.verbose: print("SDF DOWNLOAD", project.task['filter_type'], file_type, filter_id)
-      rows = sdf_read(project.task['auth'], [file_type], project.task['filter_type'], [filter_id], project.task.get('version', '3.1'))
-
-      if rows:
-        schema = sdf_schema(next(rows))
-        if 'bigquery' in project.task['out']:
-          project.task['out']['bigquery']['schema'] = schema
-          project.task['out']['bigquery']['skip_rows'] = 0
-          project.task['out']['bigquery']['table'] = table
-
-        put_rows(project.task['auth'], project.task['out'], rows)
-
-      else:
-        if project.verbose: print("NO DATA")
-
-    disposition = 'WRITE_APPEND'
-
-    if project.task['daily']:
-
-      if project.verbose: print("SDF COMBINE DAYS", file_type)
-
-      query_to_table(project.task['auth'], 
-        project.id, 
-        project.task['out']['bigquery']['dataset'], 
-        'SDF_%s' % file_type,
-        "SELECT PARSE_DATE('%%Y_%%m_%%d',_TABLE_SUFFIX) as SDF_Day, * FROM `%s.%s.SDF_%s_*`" % (project.id, project.task['out']['bigquery']['dataset'], file_type), 
-        disposition='WRITE_TRUNCATE',
-        legacy=False
-      )
+  # Load data into BigQuery
+  sdf_to_bigquery(sdf_zip_file, project.id, project.task['dataset'], project.task['time_partitioned_table'], project.task['create_single_day_table'])
 
 
 if __name__ == "__main__":

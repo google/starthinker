@@ -515,6 +515,18 @@ def API_Cloud(auth, iterate=False):
   }
   return API(configuration)
 
+def API_DV360_Beta(auth, iterate=False):
+  """Cloud project helper configuration Google API. Defines agreed upon version.
+  """
+
+  configuration = {
+      'api':'displayvideo',
+      'version':'v1',
+      'auth':auth,
+      'iterate':iterate
+  }
+  return API(configuration)
+
 
 def API_Storage(auth, iterate=False):
   """Cloud storage helper configuration Google API. Defines agreed upon version.

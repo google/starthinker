@@ -10,7 +10,7 @@
     "sample":"https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/edit?usp=sharing",
     "documentation":"https://github.com/google/starthinker/blob/master/tutorials/appscript_troubleshooting.md",
     "categories":["automation", "trafficking"],
-    "requirements":[ "cm", "sheets"],
+    "requirements":[ "cm", "sheets", "apps script"],
     "catalysts":["automation"],
     "pitches":[
       "Update CM Placement key value pairs in bulk.",
@@ -27,7 +27,7 @@
     "instructions":[
       "Add this card to a recipe and save it.",
       "Then click <strong>Run Now</strong> to deploy.",
-      "Follow the instructuons in the sheet for setup."
+      "Follow the instructions in the sheet for setup."
     ],
     "authors":["kenjora@google.com"]
   },

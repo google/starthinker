@@ -10,7 +10,7 @@
     "sample":"https://docs.google.com/spreadsheets/d/1dkESiK2s8YvdC03F3t4Jk_wvxJ0NMNk8CTGxO0HQk6I",
     "documentation":"https://docs.google.com/document/d/1euSZt5VFmaMfV-vShb6NH6LWfA7a5KSPpSl1hYeNlAA/",
     "categories":["automation", "trafficking"],
-    "requirements":[ "cm", "sheets"],
+    "requirements":[ "cm", "sheets", "apps script"],
     "catalysts":["automation"],
     "pitches":[
       "Time savings of 5+ hours per manual review.",
@@ -29,7 +29,7 @@
     "instructions":[
       "Add this card to a recipe and save it.",
       "Then click <strong>Run Now</strong> to deploy.",
-      "Follow the <a href=\"https://docs.google.com/document/d/1euSZt5VFmaMfV-vShb6NH6LWfA7a5KSPpSl1hYeNlAA\">instructuons</a> for setup."
+      "Follow the <a href=\"https://docs.google.com/document/d/1euSZt5VFmaMfV-vShb6NH6LWfA7a5KSPpSl1hYeNlAA\">instructions</a> for setup."
     ],
     "authors":["cbian@google.com"]
   },

@@ -33,13 +33,13 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Tag Key Value Uploader
+CM User Editor
 
-A tool for bulk editing key value pairs for CM placements.
+A tool for rapidly bulk editing Campaign Manager profiles, roles, and sub accounts.
 
 Add this card to a recipe and save it.
 Then click <strong>Run Now</strong> to deploy.
-Follow the instructions in the sheet for setup.
+Follow the <a href="https://docs.google.com/spreadsheets/d/1zQDqm3owQMNsx0lvcN1SQWVGOhwfgsWSmirBK54qVL0/">instructions</a> for setup.
 
 '''
 
@@ -60,11 +60,11 @@ TASKS = [
       'hour': [
       ],
       'copy': {
-        'source': 'https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/',
+        'source': 'https://docs.google.com/spreadsheets/d/1zQDqm3owQMNsx0lvcN1SQWVGOhwfgsWSmirBK54qVL0/',
         'destination': {
           'field': {
             'name': 'recipe_name',
-            'prefix': 'Key Value Uploader For ',
+            'prefix': 'CM User Editor For ',
             'kind': 'string',
             'order': 1,
             'description': 'Name of document to deploy to.',
@@ -76,7 +76,7 @@ TASKS = [
   }
 ]
 
-DAG_FACTORY = DAG_Factory('kv_uploader', { 'tasks':TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('cm_user_editor', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 

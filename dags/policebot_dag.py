@@ -39,7 +39,7 @@ A tool that helps enforce CM object name conventions by checking names against a
 
 Add this card to a recipe and save it.
 Then click <strong>Run Now</strong> to deploy.
-Follow the <a href="https://docs.google.com/document/d/1euSZt5VFmaMfV-vShb6NH6LWfA7a5KSPpSl1hYeNlAA">instructuons</a> for setup.
+Follow the <a href="https://docs.google.com/document/d/1euSZt5VFmaMfV-vShb6NH6LWfA7a5KSPpSl1hYeNlAA">instructions</a> for setup.
 
 '''
 
