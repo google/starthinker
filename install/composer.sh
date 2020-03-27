@@ -89,7 +89,7 @@ composer_credentials() {
   gsutil cp starthinker_assets/user.json ${COMPOSER_GCS_BUCKET_DATA_FOLDER}
 }
 
-composer_code() {
+composer_environment() {
   # Install PyPi packages from file and configure environment variables
   echo "Installing pypi packages from requirements.txt and setting up environment variables"
   
@@ -132,7 +132,9 @@ EXTRA
 EXTRA
 
   echo "Done"
+}
   
+composer_code() {
   echo "Copying StarThinker code to ${COMPOSER_GCS_BUCKET}/plugins"
   # Clean up *.pyc files before uploading to the GCS bucket
   find ${THIS_DIR}/starthinker -type f -name '*.pyc' -delete
@@ -141,13 +143,16 @@ EXTRA
   gsutil -m cp -r ${THIS_DIR}/starthinker/script ${COMPOSER_GCS_BUCKET_PLUGINS_FOLDER}/starthinker
   gsutil -m cp -r ${THIS_DIR}/starthinker/task ${COMPOSER_GCS_BUCKET_PLUGINS_FOLDER}/starthinker
   gsutil -m cp -r ${THIS_DIR}/starthinker/util ${COMPOSER_GCS_BUCKET_PLUGINS_FOLDER}/starthinker
-  gsutil -m cp -r ${THIS_DIR}/starthinker_airflow/starthinker ${COMPOSER_GCS_BUCKET_PLUGINS_FOLDER}
+  gsutil -m cp -r ${THIS_DIR}/starthinker_airflow ${COMPOSER_GCS_BUCKET_PLUGINS_FOLDER}
+
+  echo "Done"
 }
 
 composer_all() {
   composer_activate;
   composer_credentials;
   composer_code;
+  composer_environment;
 }
 
 setup_composer() {
@@ -171,7 +176,7 @@ setup_composer() {
   echo ""
 
   composer_done=0
-  composer_options=("Deploy All" "Deploy Credentials" "Deploy Dags" "Deploy Code")
+  composer_options=("Deploy All" "Deploy Credentials" "Deploy Dags" "Deploy Code" "Deploy Environment")
 
   while (( !composer_done ))
   do
@@ -187,6 +192,7 @@ setup_composer() {
         2) composer_credentials; break ;;
         3) composer_dags; break ;;
         4) composer_code; break ;;
+        5) composer_environment; break ;;
         q) composer_done=1; break;;
         *) echo "What's that?" ;;
       esac
