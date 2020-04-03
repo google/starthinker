@@ -52,9 +52,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'dataset': '',  # Place where tables will be created in BigQuery.
+  'recipe_name': '',  # Place where tables will be created in BigQuery.
   'recipe_project': '',  # Place where tables will be created in BigQuery.
-  'recipe_name': '',  # Name of sheet where Line Item settings will be read from.
   'twitter_secret': '',  # Twitter API secret token.
   'twitter_key': '',  # Twitter API key token.
 }
@@ -66,7 +65,7 @@ TASKS = [
       'auth': 'service',
       'dataset': {
         'field': {
-          'name': 'dataset',
+          'name': 'recipe_name',
           'kind': 'string',
           'order': 1,
           'description': 'Place where tables will be created in BigQuery.'
@@ -79,7 +78,7 @@ TASKS = [
       'description': 'Read mapping of hash tags to line item toggles from sheets.',
       'auth': 'user',
       'template': {
-        'url': 'https://docs.google.com/spreadsheets/d/1iYCGa2NKOZiL2mdT4yiDfV_SWV9C7SUosXdIr4NAEXE/edit?usp=sharing',
+        'sheet': 'https://docs.google.com/spreadsheets/d/1iYCGa2NKOZiL2mdT4yiDfV_SWV9C7SUosXdIr4NAEXE/edit?usp=sharing',
         'tab': 'Twitter Triggers'
       },
       'sheet': {
@@ -98,7 +97,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_name',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -238,7 +237,7 @@ TASKS = [
           'bigquery': {
             'dataset': {
               'field': {
-                'name': 'dataset',
+                'name': 'recipe_name',
                 'kind': 'string',
                 'description': 'Place where tables will be created in BigQuery.'
               }
@@ -248,7 +247,7 @@ TASKS = [
             'parameters': {
               'dataset': {
                 'field': {
-                  'name': 'dataset',
+                  'name': 'recipe_name',
                   'kind': 'string',
                   'description': 'Place where tables will be created in BigQuery.'
                 }
@@ -261,7 +260,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_name',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -281,7 +280,7 @@ TASKS = [
           'bigquery': {
             'dataset': {
               'field': {
-                'name': 'dataset',
+                'name': 'recipe_name',
                 'kind': 'string',
                 'description': 'Place where tables will be created in BigQuery.'
               }
@@ -290,7 +289,7 @@ TASKS = [
             'parameters': {
               'dataset': {
                 'field': {
-                  'name': 'dataset',
+                  'name': 'recipe_name',
                   'kind': 'string',
                   'description': 'Place where tables will be created in BigQuery.'
                 }
@@ -302,7 +301,7 @@ TASKS = [
           'bigquery': {
             'dataset': {
               'field': {
-                'name': 'dataset',
+                'name': 'recipe_name',
                 'kind': 'string',
                 'description': 'Place where tables will be created in BigQuery.'
               }
@@ -329,7 +328,7 @@ TASKS = [
           },
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_name',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -340,7 +339,7 @@ TASKS = [
       'to': {
         'dataset': {
           'field': {
-            'name': 'dataset',
+            'name': 'recipe_name',
             'kind': 'string',
             'description': 'Place where tables will be created in BigQuery.'
           }
@@ -358,22 +357,22 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_name',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
           },
           'query': 'Select * FROM {dataset}.LineItem_Writes',
-          'legacy': False,
           'parameters': {
             'dataset': {
               'field': {
-                'name': 'dataset',
+                'name': 'recipe_name',
                 'kind': 'string',
                 'description': 'Place where tables will be created in BigQuery.'
               }
             }
-          }
+          },
+          'legacy': False
         }
       }
     }
