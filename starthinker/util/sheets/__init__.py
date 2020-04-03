@@ -266,7 +266,9 @@ def sheets_create(auth, sheet_name, sheet_tab, template_sheet=None, template_tab
     created = True
 
   # if creating tab from template
+  print(created, template_sheet, template_tab)
   if (created or tab_id is None) and template_sheet and template_tab:
+    if project.verbose: print('SHEET TAB COPY', sheet_tab)
     sheets_tab_copy(
       auth,
       template_sheet,
@@ -278,7 +280,7 @@ def sheets_create(auth, sheet_name, sheet_tab, template_sheet=None, template_tab
 
   # if creating a blank tab
   elif tab_id is None:
-    if project.verbose: print('TAB CREATE', sheet_name, sheet_tab)
+    if project.verbose: print('SHEET TAB CREATE', sheet_name, sheet_tab)
     sheets_tab_create(auth, sheet_name, sheet_tab)
 
   # if sheet and tab already exist

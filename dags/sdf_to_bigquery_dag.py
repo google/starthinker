@@ -57,6 +57,7 @@ INPUTS = {
   'filter_ids': [],  # Comma separated list of filter ids for the request.
   'dataset': '',  # Dataset to be written to in BigQuery.
   'version': '5',  # The sdf version to be returned.
+  'table_suffix': '',  # Optional: Suffix string to put at the end of the table name (Must contain alphanumeric or underscores)
   'time_partitioned_table': False,  # Is the end table a time partitioned
   'create_single_day_table': False,  # Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF.
 }
@@ -166,6 +167,15 @@ TASKS = [
           'order': 6,
           'default': '',
           'description': 'Dataset to be written to in BigQuery.'
+        }
+      },
+      'table_suffix': {
+        'field': {
+          'name': 'table_suffix',
+          'kind': 'string',
+          'order': 6,
+          'default': '',
+          'description': 'Optional: Suffix string to put at the end of the table name (Must contain alphanumeric or underscores)'
         }
       }
     }

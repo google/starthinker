@@ -23,11 +23,12 @@ import zipfile
 import io
 from datetime import date
 
+from starthinker.util.project import project
 from starthinker.util.auth import get_service
 from googleapiclient.http import MediaIoBaseDownload
 from starthinker.util.data import get_rows
-from starthinker.util.csv import column_header_sanitize
-from starthinker.util.bigquery import io_to_table, table_create, table_exists
+from starthinker.util.csv import column_header_sanitize, csv_to_rows
+from starthinker.util.bigquery import rows_to_table, table_create, table_exists
 from starthinker.util.sdf.schema.Lookup import SDF_Field_Lookup
 from starthinker.util.google_api import API_DV360_Beta
 
@@ -67,15 +68,23 @@ def sdf_download(auth, version, partner_id, file_types, filter_type, filter_ids_
   return download_media('user', response['response']['resourceName']) 
 
 
-def sdf_to_bigquery(sdf_zip_file, project_id, dataset, time_partitioned_table, create_single_day_table):
-  with zipfile.ZipFile(sdf_zip_file) as d: 
+def add_seekable_to_file(f):
+  if not hasattr(f, "seekable"):
+    f.seekable = lambda: True
+
+
+def sdf_to_bigquery(sdf_zip_file, project_id, dataset, time_partitioned_table, create_single_day_table, table_suffix=''):
+  with zipfile.ZipFile(sdf_zip_file, 'r', zipfile.ZIP_DEFLATED) as d: 
     file_names = d.namelist()
     for file_name  in file_names:
-      with d.open(file_name) as file:
-        header = file.read().split(b'\n')[0]
-        schema = sdf_schema(header.decode('utf-8').split(','))
-        wrapper = io.TextIOWrapper(file, encoding='utf-8')
-        table_name = file_name.split('.')[0].replace('-','_')
+      if project.verbose: print('SDF: Loading: ' + file_name)
+      with d.open(file_name) as sdf_file:
+        rows = csv_to_rows(sdf_file.read().decode('utf-8'))
+        if not rows: 
+          if project.verbose: print('SDF: Empty file ' + file_name)
+          continue
+        table_name = file_name.split('.')[0].replace('-','_') + table_suffix
+        schema = sdf_schema(next(rows))
 
         # Check if each SDF should have a dated table
         if create_single_day_table:
@@ -83,7 +92,7 @@ def sdf_to_bigquery(sdf_zip_file, project_id, dataset, time_partitioned_table, c
           
           # Create table and upload data
           table_create('service', project_id, dataset, table_name_dated)    
-          io_to_table('service', project_id, dataset, table_name_dated, wrapper, 
+          rows_to_table('service', project_id, dataset, table_name_dated, rows, 
             schema=schema, 
             skip_rows=1, 
             disposition='WRITE_TRUNCATE')
@@ -92,7 +101,7 @@ def sdf_to_bigquery(sdf_zip_file, project_id, dataset, time_partitioned_table, c
         if not table_exists('service', project_id, dataset, table_name):
           table_create('service', project_id, dataset, table_name, is_time_partition=time_partitioned_table)
 
-        io_to_table('service', project_id, dataset, table_name, wrapper, 
+        rows_to_table('service', project_id, dataset, table_name, rows, 
           schema=schema, 
           skip_rows=1, 
           disposition='WRITE_APPEND' if time_partitioned_table else 'WRITE_TRUNCATE')
@@ -112,6 +121,8 @@ def sdf_schema(header):
 
 
 def download_media(auth, resource_name):
+  if project.verbose: print('SDF: Start Download');
+
   downloadRequest = API_DV360_Beta(auth).media().download_media(resourceName=resource_name).execute(run=False)
 
   # Create output stream for downloaded file
@@ -124,5 +135,7 @@ def download_media(auth, resource_name):
   download_finished = False
   while download_finished is False:
     _, download_finished = downloader.next_chunk()
+
+  if project.verbose: print('SDF: End Download');
 
   return outStream

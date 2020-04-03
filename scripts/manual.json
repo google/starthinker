@@ -1,7 +1,8 @@
 {
   "script":{
+    "released":"2019-07-17",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google Inc.",
+    "copyright":"Copyright 2018 Google LLC",
     "open":true,
     "icon":"notifications",
     "product":"Test",

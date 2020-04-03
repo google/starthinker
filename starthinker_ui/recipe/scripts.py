@@ -21,6 +21,7 @@ import re
 import json
 import pprint
 from copy import deepcopy
+from datetime import datetime
 
 from django.conf import settings
 
@@ -94,6 +95,10 @@ class Script:
 
   def get_link_airflow(self):
     return 'https://github.com/google/starthinker/blob/master/dags/%s_dag.py' % self.get_tag()
+
+  def get_released(self):
+    try: return datetime.strptime(self.script.get('script', {}).get('released', ''), "%Y-%m-%d").date()
+    except: return None
 
   def get_name(self):
     return self.script.get('script', {}).get('title', '')

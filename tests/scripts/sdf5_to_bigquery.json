@@ -31,7 +31,8 @@
       },
       "time_partitioned_table":{"field":{ "name":"time_partitioned_table", "kind":"boolean", "order":7, "default":false, "description":"Is the end table a time partitioned" }},
       "create_single_day_table":{"field":{ "name":"create_single_day_table", "kind":"boolean", "order":8, "default":false, "description":"Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF." }},
-      "dataset":{"field":{ "name":"dataset", "kind":"string", "order":6, "default":"", "description":"Dataset to be written to in BigQuery." }}
+      "dataset":{"field":{ "name":"dataset", "kind":"string", "order":6, "default":"", "description":"Dataset to be written to in BigQuery." }},
+      "table_suffix":{"field":{ "name":"table_suffix", "kind":"string", "order":6, "default":"", "description":"Optional: Suffix string to put at the end of the table name (Must containe alphanumeric or underscores)" }}
     }},
     {
       "test": {

@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -136,10 +136,10 @@ class EmailTemplate:
 
   def header(self, text):
     # HTML
-    self.content_html += '<p style="%s">%s</p>' % (self._header_css(), text)
+    self.content_html += '<p style="%s">%s</p>' % (self._header_css(), self.markup_to_html(text))
 
     # Text
-    self.content_text += '\n--------------------------------------------------\n\n%s\n\n' % text
+    self.content_text += '\n--------------------------------------------------\n\n%s\n\n' % self.markup_to_text(text)
 
 
   def paragraph(self, text):
@@ -176,7 +176,7 @@ class EmailTemplate:
 
 
   def grid(self, on=False):
-    if on: self.content_html += '<table style="width:100%;margin:20px 0px;padding:0px;border:0px">'
+    if on: self.content_html += '<table style="width:100%;margin:20px 0px;padding:0px;border:0px;border-spacing:0px 20px;">'
     else: self.content_html += '</table>' 
 
 

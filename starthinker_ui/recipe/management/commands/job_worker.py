@@ -38,6 +38,8 @@ from starthinker_ui.ui.log import log_verbose, get_instance_name
 
 
 MANAGER_ON = True
+MANAGER_HEALTHY = True
+
 def signal_exit(self, signum):
   global MANAGER_ON
   MANAGER_ON = False
@@ -198,13 +200,14 @@ class Workers():
 
 
   def ping(self):
-    # update all jobs belonging to worker
-    while not self.ping_event.wait(JOB_INTERVAL_MS / 1000):
+    global MANAGER_HEALTHY
+    while MANAGER_HEALTHY and not self.ping_event.wait(JOB_INTERVAL_MS / 1000):
       self.lock_thread.acquire()
       try:
         worker_ping(self.uid, [job['recipe']['setup']['uuid'] for job in self.jobs])
       except Exception as e:
         log_manager_error(traceback.format_exc())
+        MANAGER_HEALTHY = False
       self.lock_thread.release()
 
 
@@ -353,7 +356,10 @@ class Command(BaseCommand):
 
   def handle(self, *args, **kwargs):
     global MANAGER_ON
+    global MANAGER_HEALTHY
+
     MANAGER_ON = True
+    MANAGER_HEALTHY = True
 
     print('Starting Up...')
 
@@ -370,7 +376,7 @@ class Command(BaseCommand):
 
     try:
 
-      while MANAGER_ON:
+      while MANAGER_HEALTHY and MANAGER_ON:
         workers.pull()
         time.sleep(JOB_INTERVAL_MS / 1000)
         workers.poll()
@@ -383,7 +389,8 @@ class Command(BaseCommand):
     except Exception as e:
       log_manager_error(traceback.format_exc())
 
-    print('Shutting Down...')
-    workers.shutdown()
+    if MANAGER_HEALTHY:
+      print('Shutting Down...')
+      workers.shutdown()
 
     log_manager_end()

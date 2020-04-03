@@ -34,7 +34,7 @@ def sdf():
     project.task['read']['filter_ids'])
 
   # Load data into BigQuery
-  sdf_to_bigquery(sdf_zip_file, project.id, project.task['dataset'], project.task['time_partitioned_table'], project.task['create_single_day_table'])
+  sdf_to_bigquery(sdf_zip_file, project.id, project.task['dataset'], project.task['time_partitioned_table'], project.task['create_single_day_table'], project.task.get('table_suffix', ''))
 
 
 if __name__ == "__main__":

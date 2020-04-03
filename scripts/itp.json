@@ -1,7 +1,8 @@
 {
   "script": {
+    "released":"2019-03-14",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2019 Google Inc.",
+    "copyright":"Copyright 2019 Google LLC",
     "product":"Cross Product",
     "icon":"language",
     "title":"Browser Activity Dashboard ( 2019 )",

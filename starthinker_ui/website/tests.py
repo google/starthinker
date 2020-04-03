@@ -20,10 +20,6 @@ from django.test import TestCase
 
 class WebsiteTest(TestCase):
 
-  def test_code(self):
-    resp = self.client.get('/code/')
-    self.assertEqual(resp.status_code, 200)
-
   def test_solution(self):
     resp = self.client.get('/solution/')
     self.assertEqual(resp.status_code, 200)

@@ -77,11 +77,15 @@ class AccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
   identifier = models.CharField(max_length=64, unique=True, db_index=True)
+
   email = models.EmailField(max_length=255, unique=True)
   name = models.CharField(max_length=255, blank=True, default='')
   picture = models.CharField(max_length=255, blank=True, default='')
+
   is_active = models.BooleanField(default=True)
   is_admin = models.BooleanField(default=False)
+
+  birthday = models.DateField(auto_now_add=True)
 
   objects = AccountManager()
 

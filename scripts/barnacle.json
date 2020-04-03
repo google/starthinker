@@ -1,7 +1,8 @@
 {
   "script":{
+    "released":"2019-02-27",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google Inc.",
+    "copyright":"Copyright 2018 Google LLC",
     "icon":"security",
     "product":"CM",
     "title":"CM User Audit",

@@ -30,6 +30,6 @@ class Hello(models.BaseOperator):
     super(Hello, self).__init__(**kwargs)
 
   def execute(self, context):
-    print self.say
+    print(self.say)
     if self.sleep:
       time.sleep(self.sleep)

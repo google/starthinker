@@ -1,7 +1,8 @@
 {
   "script":{
+    "released":"2018-04-03",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google Inc.",
+    "copyright":"Copyright 2018 Google LLC",
     "icon":"donut_small",
     "product":"CM",
     "title":"Bulkdozer",

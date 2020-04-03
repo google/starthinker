@@ -30,8 +30,8 @@ from starthinker_ui.account.models import Account, token_generate
 from starthinker_ui.project.models import Project
 from starthinker_ui.recipe.scripts import Script
 
-JOB_INTERVAL_MS = float(800) # milliseconds 
-JOB_LOOKBACK_MS = 5 * JOB_INTERVAL_MS # 4 seconds ( must guarantee to span several pings )
+JOB_INTERVAL_MS = float(1600) # milliseconds 
+JOB_LOOKBACK_MS = 5 * JOB_INTERVAL_MS # 8 seconds ( must guarantee to span several pings )
 JOB_RECHECK_MS = 30 * 60 * 1000 # 30 minutes
 
 RE_SLUG = re.compile(r'[^\w]')
@@ -94,6 +94,8 @@ class Recipe(models.Model):
   job_status = models.TextField(default='{}')
   worker_uid = models.CharField(max_length=128, default='')
   worker_utm = models.BigIntegerField(blank=True, default=0)
+
+  birthday = models.DateField(auto_now_add=True)
 
   def __str__(self):
     return self.name
