@@ -225,7 +225,7 @@ setup_appengine() {
   if [[ !$STARTHINKER_GSUITE ]]; then
     echo ""
     echo "----------------------------------------"
-    echo "The application may show a security warning: https://github.com/google/starthinker/raw/master/tutorials/images/dv360_feature_adoption.png"
+    echo "The application may show a security warning: https://github.com/google/starthinker/raw/master/tutorials/images/verification.png"
     echo "The warning is only showed when logging in."
     echo "Bypass it by clicking Advnaced and Go To StarThinker."
     echo ""
