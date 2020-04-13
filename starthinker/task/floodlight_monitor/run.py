@@ -169,7 +169,7 @@ def floodlight_email(day, alerts):
       t.paragraph('Impressions all look within statistically expected range.')
 
     # either way link to the configuration sheet
-    t.button('Floodlight Monitoring Sheet', project.task['sheet']['url'], big=True)
+    t.button('Floodlight Monitoring Sheet', project.task['sheet']['sheet'], big=True)
 
     if project.verbose: print("FLOODLIGHT MONITOR EMAIL ALERTS", email, len(table))
 
@@ -193,15 +193,15 @@ def floodlight_monitor():
   if 'template' in project.task['sheet']:
     sheets_tab_copy(
       project.task['auth'],
-      project.task['sheet']['template']['url'],
+      project.task['sheet']['template']['sheet'],
       project.task['sheet']['template']['tab'],
-      project.task['sheet']['url'],
+      project.task['sheet']['sheet'],
       project.task['sheet']['tab'])
 
   # read peers from sheet
   triggers = sheets_read(
     project.task['auth'],
-    project.task['sheet']['url'],
+    project.task['sheet']['sheet'],
     project.task['sheet']['tab'],
     project.task['sheet']['range']
   )

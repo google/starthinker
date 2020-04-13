@@ -3,9 +3,8 @@
     "released":"2020-03-03",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
-    "open":true,
     "icon":"donut_small",
-    "product":"CM",
+    "requirements":["cm", "sheets", "bigquery"],
     "title":"CM Report Replicate",
     "description":"Replicate a report across multiple networks and advertisers.",
     "instructions":[

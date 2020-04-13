@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 import re
 import json
 import hashlib
+from itertools import chain
 from urllib.parse import quote_plus
 
 from django import template
@@ -31,8 +32,37 @@ try: from django.utils.encoding import force_unicode
 except: from django.utils.encoding import force_text as force_unicode
 
 from starthinker_ui.recipe.forms_json import json_get_fields as json_get_fields_imported
+from starthinker_ui.recipe.scripts import Script
 
 register = template.Library()
+
+
+class SearchScriptsTag(template.Node):
+
+  def __init__(self, filter):
+    self.filter = filter
+
+  def render(self, context):
+    scripts = sorted(Script.get_scripts(ui=True), key=lambda x: x.get_name())
+
+    if self.filter == 'SOME':
+      scripts = [s for s in scripts if s.is_manual() == context.get('manual', False)]
+      if context.get('external', False):
+        scripts = [s for s in scripts if s.get_open_source()]
+
+    context['scripts'] = scripts
+    context['categories'] = sorted(set(chain.from_iterable([s.get_categories() for s in scripts])))
+    context['catalysts'] = sorted(set(chain.from_iterable([s.get_catalysts() for s in scripts])))
+    context['requirements'] = sorted(set(chain.from_iterable([s.get_requirements() for s in scripts])))
+    context['agos'] = sorted(set(chain.from_iterable([s.get_released_ago() for s in scripts])))
+
+    return ''
+
+
+@register.tag('search_scripts')
+def search_scripts(parser, token):
+  tag, filter = token.split_contents()
+  return SearchScriptsTag(filter)
 
 
 @register.filter
@@ -69,7 +99,8 @@ def mailto(emails, subject='', body=''):
 
 @register.filter
 def json_pretty(data):
-  return json.dumps(data, indent=4)
+  x = json.dumps(data, indent=4)
+  return x
 
 
 @register.filter

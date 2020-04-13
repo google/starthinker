@@ -25,35 +25,16 @@
        #message ul, #message li { display: inline; margin-left: 10px; }
        #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       span.square_box {
-         display: inline-block;
-         width: 40px;
-         height: 40px;
-         border: 2px solid #fff;
-         text-align: center;
-         line-height: 40px;
-         margin: 5px;
-       }
-
        div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
        h1 a i.material-icons { font-size: 3.28rem; }
        a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
        ol li { line-height: 1.8em; }
        textarea { margin-top: 7px; height: 10rem; }
        table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
-       a.btn { margin: 2px; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
-       div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
-       div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
-
-       div.service_card { min-height: 250px; width: 300px; margin: 10px;}
-       div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
-       div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
        div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; }
        #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
        div.card h4 { width 100%; padding: 20px;}
        div.card h4 i.material-icons { font-size: 2.28rem; }
@@ -63,8 +44,8 @@
        div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
 
        
-  i.right { float: none; margin-left: 0; position: absolute; right: 0px; margin-right: 15px; }
-  i.right:hover { cursor: pointer; }
+  i.expand { position: absolute; right: 15px; top: 15px; }
+  i.expand:hover { cursor: pointer; }
   .col { margin-right: auto; }
   .card { min-height: 30vh; }
 
@@ -85,15 +66,15 @@
         
         
         <li><a href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a href="/starthinker/help/">Help</a></li>
         
       </ul>
-      <ul class="side-nav red lighten-1" id="mobile-demo">
+      <ul class="side-nav green lighten-1" id="mobile-demo">
         
         
         
         <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
         
       </ul>
     </div>
@@ -132,12 +113,33 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <div id="page" class="center">
       
 
-  <h1 id="solutions">Packaged Solutions</h1>
+  
+
+  <h1>
+    Packaged Solutions
+    <a id="category_link" href="?catgegory=all"><i class="material-icons blue-text">link</i></a>
+  </h1>
   <p class="flow-text">These recipes are entire workflows that deploy end to end solutions for clients.</p>
 
-  <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_all">All</span>
+  <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_all">All</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_7-days">7 days</span>
+  
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_30-days">30 days</span>
+  
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_90-days">90 days</span>
+  
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_older">older</span>
+  
+
+  <br/>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_acquisition">acquisition</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_audit">audit</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_automation">automation</span>
   
@@ -150,7 +152,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_monetization">monetization</span>
   
 
-  <br/><br/>
+  <br/>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_apps-script">apps script</span>
   
@@ -160,18 +162,30 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_datastudio">datastudio</span>
   
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_dv360">dv360</span>
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_drive">drive</span>
   
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_email">email</span>
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_dv360">dv360</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_ga">ga</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_gmail">gmail</span>
   
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_google-api">google api</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_plx">plx</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_salesforce">salesforce</span>
+  
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_sheets">sheets</span>
   
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_smartsheet">smartsheet</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_storage">storage</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_video">video</span>
+  
 
-  <br/><br/>
+  <br/>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_3p">3P</span>
   
@@ -179,11 +193,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_audience">audience</span>
   
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_audit">audit</span>
-  
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_automation">automation</span>
-  
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_budget">budget</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_bulk">bulk</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_covid">covid</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_itp">itp</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_reporting">reporting</span>
   
@@ -195,7 +211,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   <br/><br/>
   <div id="scripts" class="row">
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_google-api category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -220,12 +236,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_automation category_data category_experience category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_data category_experience category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/anonymize/"> 
                 <i class="material-icons medium">waves</i><br/><br/>
@@ -255,7 +271,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_storage">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -280,12 +296,37 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_reporting category_insights category_data category_acquisition category_dv360 category_cm category_datastudio category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <a href="/starthinker/solution/dataset/"> 
+                <i class="material-icons medium">folder</i><br/><br/>
+                BigQuery Dataset
+              </a>
+            </span>
+            <p>Create and permission a dataset in BigQuery.</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col s6 m4 l3 category_all  category_older category_reporting category_insights category_data category_acquisition category_dv360 category_cm category_datastudio category_bigquery">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/itp/"> 
                 <i class="material-icons medium">language</i><br/><br/>
@@ -319,37 +360,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_trafficking category_bulk category_automation category_cm category_sheets">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <a href="/starthinker/solution/bucket/"> 
-                <i class="material-icons medium">storage</i><br/><br/>
-                Bucket
-              </a>
-            </span>
-            <p>Create and permission a bucket in Storage.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all category_automation category_trafficking category_automation category_cm category_sheets">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/bulkdozer/"> 
                 <i class="material-icons medium">donut_small</i><br/><br/>
@@ -387,7 +403,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_cm category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -412,7 +428,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_cm">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -437,12 +453,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_automation category_reporting category_acquisition category_automation category_data category_cm category_gmail category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_90-days category_reporting category_automation category_acquisition category_data category_cm category_gmail category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/email_cm_to_bigquery/"> 
                 <i class="material-icons medium">email</i><br/><br/>
@@ -484,7 +500,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_90-days category_cm category_sheets category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -509,7 +525,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_cm">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -534,7 +550,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_cm category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -559,7 +575,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_cm category_sheets">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -584,7 +600,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_cm category_storage">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -609,12 +625,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_security category_reporting category_insights category_experience category_cm category_datastudio category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_security category_reporting category_covid category_insights category_experience category_cm category_datastudio category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/barnacle/"> 
                 <i class="material-icons medium">security</i><br/><br/>
@@ -652,12 +668,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_automation category_security category_automation category_cm category_sheets category_apps-script">
+      <div class="col s6 m4 l3 category_all  category_30-days category_90-days category_bulk category_covid category_security category_automation category_cm category_sheets category_apps-script">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/cm_user_editor/"> 
                 <i class="material-icons medium">security</i><br/><br/>
@@ -699,7 +715,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_bigquery category_sheets">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -724,7 +740,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_cm category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -749,7 +765,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_cm category_sheets">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -774,32 +790,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <a href="/starthinker/solution/drive_copy/"> 
-                <i class="material-icons medium">file_copy</i><br/><br/>
-                Copy
-              </a>
-            </span>
-            <p>Copy a drive document.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_cm category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -824,12 +815,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_audience category_reporting category_audit category_experience category_insights category_dv360 category_datastudio category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_90-days category_audience category_reporting category_experience category_insights category_audit category_dv360 category_datastudio category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/audience_analysis/"> 
                 <i class="material-icons medium">people</i><br/><br/>
@@ -863,12 +854,37 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_budget category_reporting category_experience category_data category_monetization category_insights category_dv360 category_datastudio category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_dv360 category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <a href="/starthinker/solution/dbm_authorize/"> 
+                <i class="material-icons medium">filter_list</i><br/><br/>
+                DV360 Authorize
+              </a>
+            </span>
+            <p>Authorize access to a table based on DV360 permissions.</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col s6 m4 l3 category_all  category_90-days category_budget category_reporting category_covid category_experience category_data category_monetization category_insights category_dv360 category_datastudio category_bigquery">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/dv360_feature_adoption/"> 
                 <i class="material-icons medium">cloud_queue</i><br/><br/>
@@ -910,7 +926,50 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_budget category_reporting category_automation category_monetization category_insights category_dv360 category_sheets category_datastudio category_bigquery">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <i class="activator material-icons expand">more_vert</i>
+              
+              <a href="/starthinker/solution/pacing/"> 
+                <i class="material-icons medium">directions_run</i><br/><br/>
+                DV360 Pacing
+              </a>
+            </span>
+            <p>Pace the spend of DV360 campaigns to hit targets.</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                   <tr>
+                     <td>Optimize spend to prevent under spend.</td>
+                   </tr>
+                 
+                   <tr>
+                     <td>Optimize spend to prevent over spend.</td>
+                   </tr>
+                 
+                   <tr>
+                     <td>Allow client traders to enter budgets.</td>
+                   </tr>
+                 
+                   <tr>
+                     <td>Allow client traders to categorize spend.</td>
+                   </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col s6 m4 l3 category_all  category_older category_dv360">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -935,12 +994,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_automation category_reporting category_acquisition category_automation category_data category_dv360 category_gmail category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_90-days category_reporting category_acquisition category_automation category_data category_dv360 category_gmail category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/email_dv360_to_bigquery/"> 
                 <i class="material-icons medium">email</i><br/><br/>
@@ -982,7 +1041,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_dv360 category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1007,7 +1066,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_dv360 category_sheets">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1032,7 +1091,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_dv360 category_storage">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1057,37 +1116,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_budget category_reporting category_experience category_monetization category_insights category_dv360 category_datastudio category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <a href="/starthinker/solution/dataset/"> 
-                <i class="material-icons medium">folder</i><br/><br/>
-                Dataset
-              </a>
-            </span>
-            <p>Create and permission a dataset in BigQuery.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all category_budget category_reporting category_experience category_monetization category_insights category_dv360 category_datastudio category_bigquery">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/deal_finder/"> 
                 <i class="material-icons medium">whatshot</i><br/><br/>
@@ -1129,7 +1163,71 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_reporting category_insights category_experience category_acquisition category_dv360 category_cm category_datastudio category_bigquery">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <i class="activator material-icons expand">more_vert</i>
+              
+              <a href="/starthinker/solution/digitx/"> 
+                <i class="material-icons medium">whatshot</i><br/><br/>
+                Digit X
+              </a>
+            </span>
+            <p>Combines DV360 and CM reports into a single audience reach report.</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                   <tr>
+                     <td>Provide audience reach report.</td>
+                   </tr>
+                 
+                   <tr>
+                     <td>Help client decide which inventory to invest in.</td>
+                   </tr>
+                 
+                   <tr>
+                     <td>Identify poorly performing audiences.</td>
+                   </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col s6 m4 l3 category_all  category_older category_drive">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <a href="/starthinker/solution/drive_copy/"> 
+                <i class="material-icons medium">file_copy</i><br/><br/>
+                Drive Copy
+              </a>
+            </span>
+            <p>Copy a drive document.</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col s6 m4 l3 category_all  category_older category_cm category_sheets category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1154,7 +1252,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_google-api">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1179,12 +1277,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_automation category_data category_dv360 category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_automation category_data category_dv360 category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/entity/"> 
                 <i class="material-icons medium">storage</i><br/><br/>
@@ -1226,12 +1324,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_alerts category_experience category_insights category_dv360 category_email">
+      <div class="col s6 m4 l3 category_all  category_older category_alerts category_covid category_audit category_experience category_insights category_dv360 category_gmail">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/floodlight_monitor/"> 
                 <i class="material-icons medium">add_alert</i><br/><br/>
@@ -1273,12 +1371,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_reporting category_datastudio category_bigquery category_ga">
+      <div class="col s6 m4 l3 category_all  category_older category_reporting category_datastudio category_bigquery category_ga">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/ga_timeline/"> 
                 <i class="material-icons medium">timeline</i><br/><br/>
@@ -1304,7 +1402,38 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_itp category_reporting category_insights category_experience category_cm category_dv360 category_datastudio category_bigquery">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <i class="activator material-icons expand">more_vert</i>
+              
+              <a href="/starthinker/solution/itp_audit/"> 
+                <i class="material-icons medium">donut_small</i><br/><br/>
+                ITP Audit Dashboard ( 2020 )
+              </a>
+            </span>
+            <p>Dashboard that shows performance metrics across browser to see the impact of ITP.</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                   <tr>
+                     <td>See drilled down metrics of your accounts performance as ITP changes</td>
+                   </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col s6 m4 l3 category_all  category_older category_dv360">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1329,7 +1458,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_dv360 category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1354,7 +1483,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_dv360 category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1379,12 +1508,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_budget category_monetization category_automation category_experience category_dv360 category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_budget category_monetization category_automation category_experience category_dv360 category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/monthly_budget_mover/"> 
                 <i class="material-icons medium">perm_phone_msg</i><br/><br/>
@@ -1414,12 +1543,37 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_automation category_trafficking category_automation category_cm category_sheets category_apps-script">
+      <div class="col s6 m4 l3 category_all  category_older category_plx">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <a href="/starthinker/solution/plx_to_bigquery/"> 
+                <i class="material-icons medium">account_balance</i><br/><br/>
+                PLX To BigQuery
+              </a>
+            </span>
+            <p>Save PLX query results into a BigQuery table.</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col s6 m4 l3 category_all  category_older category_trafficking category_automation category_audit category_cm category_sheets category_apps-script">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/policebot/"> 
                 <i class="material-icons medium">policy</i><br/><br/>
@@ -1461,7 +1615,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_google-api">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1486,7 +1640,32 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_bigquery">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <a href="/starthinker/solution/bigquery_run_query/"> 
+                <i class="material-icons medium">arrow_forward</i><br/><br/>
+                Query Run
+              </a>
+            </span>
+            <p>Run query on a project.</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col s6 m4 l3 category_all  category_older category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1511,7 +1690,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1536,7 +1715,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_bigquery category_sheets">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1561,32 +1740,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <a href="/starthinker/solution/bigquery_run_query/"> 
-                <i class="material-icons medium">arrow_forward</i><br/><br/>
-                Run Query
-              </a>
-            </span>
-            <p>Run query on a project.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_dv360 category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1611,7 +1765,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_90-days category_salesforce category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1636,32 +1790,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <a href="/starthinker/solution/hello/"> 
-                <i class="material-icons medium">notifications</i><br/><br/>
-                Say Hello
-              </a>
-            </span>
-            <p>Recipe template for say hello.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_sheets">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1686,7 +1815,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_sheets">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1711,39 +1840,14 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <a href="/starthinker/solution/smartsheet_to_bigquery/"> 
-                <i class="material-icons medium">donut_large</i><br/><br/>
-                Sheet To BigQuery
-              </a>
-            </span>
-            <p>Move sheet data into a BigQuery table.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_sheets category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
               <a href="/starthinker/solution/sheets_to_bigquery/"> 
                 <i class="material-icons medium">view_column</i><br/><br/>
-                Sheet To Table
+                Sheet To BigQuery
               </a>
             </span>
             <p>Import data from a sheet and move it to a BigQuery table.</p>
@@ -1761,7 +1865,57 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_90-days category_smartsheet category_bigquery">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <a href="/starthinker/solution/smartsheet_to_bigquery/"> 
+                <i class="material-icons medium">donut_large</i><br/><br/>
+                SmartSheet To BigQuery
+              </a>
+            </span>
+            <p>Move sheet data into a BigQuery table.</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col s6 m4 l3 category_all  category_older category_storage">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <a href="/starthinker/solution/bucket/"> 
+                <i class="material-icons medium">storage</i><br/><br/>
+                Storage Bucket
+              </a>
+            </span>
+            <p>Create and permission a bucket in Storage.</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col s6 m4 l3 category_all  category_older category_bigquery category_storage">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1786,12 +1940,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all category_automation category_trafficking category_automation category_cm category_sheets category_apps-script">
+      <div class="col s6 m4 l3 category_all  category_older category_bulk category_trafficking category_automation category_cm category_sheets category_apps-script">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/kv_uploader/"> 
                 <i class="material-icons medium">policy</i><br/><br/>
@@ -1825,69 +1979,19 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_reporting category_audit category_insights category_experience category_data category_cm category_datastudio category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <a href="/starthinker/solution/manual/"> 
-                <i class="material-icons medium">notifications</i><br/><br/>
-                Test Script
-              </a>
-            </span>
-            <p>Used by tests.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <a href="/starthinker/solution/test/"> 
-                <i class="material-icons medium">notifications</i><br/><br/>
-                Test Script
-              </a>
-            </span>
-            <p>Used by tests.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all category_audit category_reporting category_insights category_experience category_data category_cm category_datastudio category_bigquery">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/transparency/"> 
                 <i class="material-icons medium">fingerprint</i><br/><br/>
                 Transparency Dashboard
               </a>
             </span>
-            <p>Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.</p>
+            <p>Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domains and apps are misconfigured by publisher resulting in underreporting.</p>
           </div>
           <div class="card-reveal">
             <i class="card-title material-icons right">close</i>
@@ -1918,112 +2022,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_budget category_3p category_automation category_monetization category_insights category_dv360 category_sheets category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               
-              <a href="/starthinker/solution/trends_places_to_bigquery_via_query/"> 
-                <i class="material-icons medium">perm_phone_msg</i><br/><br/>
-                Trends Places To BigQuery Via Query
-              </a>
-            </span>
-            <p>Move using a WOEID query.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <a href="/starthinker/solution/trends_places_to_bigquery_via_value/"> 
-                <i class="material-icons medium">perm_phone_msg</i><br/><br/>
-                Trends Places To BigQuery Via Values
-              </a>
-            </span>
-            <p>Move using hard coded WOEID values.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <a href="/starthinker/solution/trends_places_to_sheets_via_query/"> 
-                <i class="material-icons medium">perm_phone_msg</i><br/><br/>
-                Trends Places To Sheets Via Query
-              </a>
-            </span>
-            <p>Move using a WOEID query.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <a href="/starthinker/solution/trends_places_to_sheets_via_value/"> 
-                <i class="material-icons medium">perm_phone_msg</i><br/><br/>
-                Trends Places To Sheets Via Values
-              </a>
-            </span>
-            <p>Move using hard coded WOEID values.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all category_budget category_3p category_automation category_monetization category_insights category_dv360 category_sheets category_bigquery">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               
               <a href="/starthinker/solution/twitter/"> 
                 <i class="material-icons medium">perm_phone_msg</i><br/><br/>
@@ -2061,7 +2065,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all">
+      <div class="col s6 m4 l3 category_all  category_older category_video category_sheets category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -2086,6 +2090,37 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
+      <div class="col s6 m4 l3 category_all  category_7-days category_30-days category_90-days category_audience category_data category_monetization category_insights category_dv360 category_datastudio category_bigquery">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <i class="activator material-icons expand">more_vert</i>
+              
+              <a href="/starthinker/solution/ctv_audience_affinity/"> 
+                <i class="material-icons medium">donut_large</i><br/><br/>
+                cTV Inventory Availability Dashboard
+              </a>
+            </span>
+            <p>The cTV Audience Affinity dashboard is designed to give clients insights into which cTV apps their audiences have a high affinity for using.  The goal of this dashboard is to provide some assistance with the lack of audience targeting for cTV within DV360.</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                   <tr>
+                     <td>Identify cTV apps to potentially reach desired audiences</td>
+                   </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
   </div>
 
   <br/><br/>
@@ -2099,7 +2134,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       Developer Guide<i class="material-icons right">build</i>
     </a>
-    <a href="https://github.com/google/starthinker/blob/master/tutorials/ui_recipe.md" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+    <a href="https://google.github.io/starthinker/help/" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       UI How To<i class="material-icons right">laptop</i>
     </a>
   </p>
@@ -2114,7 +2149,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google, Inc
+    &copy; 2019 Google LLC
     </div>
   </div>
 </footer>
@@ -2130,23 +2165,34 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   
   <script type="text/javascript">
-    var category = 'category_all';
 
-    function render() {
-      $("#scripts div.col").each(function() {
-        var show = false;
-        if ($(this).attr("class").includes(category)) { show = true; }
-        if (show) { $(this).css( "display", "block" ); } 
-        else { $(this).css( "display", "none" ); }
-      });
+    function getQueryVariable(variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+      }
+      return null;
     }
 
     $(document).ready(function() {
 
       $('span.trigger_category').on('click tap', function() {
         category = this.id.replace('trigger_', '');
-        render();
+        $("#scripts div.col").hide();
+        $("#scripts div.col." + category).show();
+        $("#category_link").attr('href', '?category=' + category.replace('category_', ''));
       });
+
+      var category = getQueryVariable('category');
+      if ( category ) { 
+        $("#scripts div.col").hide();
+        $("#scripts div.col.category_" + category).show();
+        $("#category_link").attr('href', '?category=' + category.replace('category_', ''));
+      }
 
     });
   </script>

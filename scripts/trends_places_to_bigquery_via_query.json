@@ -3,9 +3,9 @@
     "released":"2018-06-06",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
+    "ui":false,
     "icon":"perm_phone_msg",
-    "product":"Twitter",
+    "requirements":["twitter", "bigquery"],
     "title":"Trends Places To BigQuery Via Query",
     "description":"Move using a WOEID query.",
     "instructions":[

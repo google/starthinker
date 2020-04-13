@@ -24,7 +24,7 @@ Light weight open source [Django Framework](https://www.djangoproject.com/) usin
 
    1. [User Account](cloud_client_web.md) - Google oAuth allows recipes to execute with user's permissions.
    1. [Project Service](cloud_service.md) - Google Cloud Project Service Credentials allow recipes to access cloud resources.
-   1. [Recipe](ui_recipe.md) - Assemble scripts into scheduled recipes without coding.
+   1. [Recipes](https://google.github.io/starthinker/help/) - Assemble scripts into scheduled recipes without coding.
    1. [Tasks](recipe.md) - Each recipe is a collection of tasks, parameters are parsed and stored in a database by the UI.
    1. [Database](cheat_sheet.md#production) - Databse used to store user created recipes for execution by job worker.
 

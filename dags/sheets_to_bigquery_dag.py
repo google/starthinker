@@ -33,7 +33,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Sheet To Table
+Sheet To BigQuery
 
 Import data from a sheet and move it to a BigQuery table.
 

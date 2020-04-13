@@ -3,9 +3,7 @@
     "released":"2019-02-27",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "product":"BigQuery",
     "icon":"waves",
-    "product":"BigQuery",
     "title":"Anonymize Dataset",
     "description":"Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.",
     "instructions":[
@@ -17,7 +15,7 @@
     "test":"https://github.com/google/starthinker/blob/master/tests/scripts/anonymize.json",
     "categories":[],
     "requirements":[ "bigquery" ],
-    "catalysts":["automation", "data", "experience"],
+    "catalysts":["data", "experience"],
     "pitches":[
       "Create anonymous data sets for demos.",
       "Anonymize dashboard data."

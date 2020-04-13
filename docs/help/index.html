@@ -1,0 +1,409 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <link rel="shortcut icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize.min.css">
+
+    <style>
+       html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
+ 
+       .material-icons { line-height: normal; vertical-align: middle; }
+
+       #message { justify-content: center; font-size: 2em;}
+       #message i { font-size: 2em; margin: 10px; }
+       #message ul, #message li { display: inline; margin-left: 10px; }
+       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
+
+       div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+       h1 a i.material-icons { font-size: 3.28rem; }
+       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+       ol li { line-height: 1.8em; }
+       textarea { margin-top: 7px; height: 10rem; }
+       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
+
+       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+
+       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
+       div.card h4 { width 100%; padding: 20px;}
+       div.card h4 i.material-icons { font-size: 2.28rem; }
+       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+
+       .card .card-content .card-title { word-wrap: break-word; }
+       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
+
+       
+  #help_menu a { display: block; margin: 10px 0px; width: 100%;}
+
+    </style>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  
+  <nav class="green lighten-0">
+    <div class="nav-wrapper">
+      <a href="/starthinker/" class="brand-logo">
+        <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+      </a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        
+        
+        <li><a href="/starthinker/solution/">Solutions</a></li>
+        <li><a href="/starthinker/help/">Help</a></li>
+        
+      </ul>
+      <ul class="side-nav green lighten-1" id="mobile-demo">
+        
+        
+        
+        <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
+        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
+        
+      </ul>
+    </div>
+  </nav>
+  
+
+  <body>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize.min.js"></script>
+
+    
+
+
+<!--
+Start of Floodlight Tag: Please do not remove
+Activity name of this tag: Gallery Conversions
+URL of the webpage where the tag is expected to be placed: https://google.github.io/starthinker/
+This tag must be placed between the <body> and </body> tags, as close as possible to the opening tag.
+Creation Date: 03/09/2020
+-->
+<script type="text/javascript">
+var axel = Math.random() + "";
+var a = axel * 10000000000000;
+document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;type=github;cat=galle0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=' + a + '?" width="1" height="1" alt=""/>');
+</script>
+<noscript>
+<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;type=github;cat=galle0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=1?" width="1" height="1" alt=""/>
+</noscript>
+<!-- End of Floodlight Tag: Please do not remove -->
+
+
+
+    
+
+    <div id="page" class="center">
+      
+
+  <br/>
+  <div class="row">
+
+    <div id="help_menu" class="col s12 m3 l2 right-align">
+
+      <a href="#help_setup" class="recipe_link waves-effect waves-light btn blue topic_select">
+        Setup<i class="material-icons right">build</i>
+      </a>
+
+      <a href="#help_recipe" class="recipe_link waves-effect waves-light btn blue topic_select">
+        Recipe<i class="material-icons right">view_list</i>
+      </a>
+
+      <a href="#help_share" class="recipe_link waves-effect waves-light btn blue topic_select">
+        Sharing<i class="material-icons right">share</i>
+      </a>
+
+      <a href="#help_status" class="recipe_link waves-effect waves-light btn blue topic_select">
+        Status<i class="material-icons right">network_check</i>
+      </a>
+
+      <a href="#help_warnings" class="recipe_link waves-effect waves-light btn blue topic_select">
+        Warnings<i class="material-icons right">report_problem</i>
+      </a>
+
+      <a href="#help_debug" class="recipe_link waves-effect waves-light btn blue topic_select">
+        Debugging<i class="material-icons right">help</i>
+      </a>
+
+    </div>
+
+    <div id="help_setup" class="col s12 m9 l10 left-align">
+      <h1><i class="material-icons large">build</i> Setup Project</h1>
+      <p class="flow-text">Almost every recipe in StarThinker uses a <a href="http://cloud.google.com" target="_blank">Google Cloud Project</a> to store data.  ALL DATA COSTS ARE BILLED TO THE GOOGLE CLOUD SERVICE CREDENTIALS SPECIFIED IN EACH RECIPE.  To add a Google Cloud Project for billing and permissions, create a <a href="https://console.cloud.google.com/iam-admin/serviceaccounts/create" target="_blank">Service Credentials</a>, download it, and enter the JSON into the <a href="/project/edit/">StarThinker Project page</a>.</p>
+      <div class="row">
+        <div class="col s12 m6 l6 right-align">
+          <img src="https://github.com/google/starthinker/raw/master/tutorials/images/cloud_service.png" style="width:100%;"/>
+          <br/>
+          <br/>
+          <img src="https://github.com/google/starthinker/raw/master/tutorials/images/ui_project.png" style="width:100%;"/>
+        </div>
+        <div class="col s12 m6 l6 left-align">
+          <h5>Getting Service Credentials</h5>
+          <p>Each user should have their own Google Cloud Project to avoid accidental data sharing and allow easier auditing.</p>
+          <ol>
+            <li><a href="https://console.cloud.google.com/iam-admin/serviceaccounts/create" target="_blank">Visit Google Cloud Project &gt; APIs & Services &gt; Credentials &gt; Create Credentials &gt; Service Account Key &gt; New Service Account</a>.</li>
+            <li>Service Account Name is starthinker.</li>
+            <li>Click Create.</li>
+            <li>The most robust role is Project Editor, review your role choice with your security team.</li>
+            <li>Click Continue.</li>
+            <li>Click Create Key.</li>
+            <li>Key Type is JSON.</li>
+            <li>Click Create and open the downloaded JSON file.</li>
+            <li>Copy the contents and paste into the <a href="/project/edit/">StarThinker Project page Service field</a>.</li>
+            <li>Click save.</li>
+            <li>The new project will become a dropdown option on <a href="/recipe/edit/">StarThinker Recipe pages</a>.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div id="help_recipe" class="col s12 m9 l10 left-align">
+      <h1><i class="material-icons large">view_list</i> Run Recipe</h1>
+      <p class="flow-text">All recipes run as the logged in user and leverage the selected <a href="#help_setup">Service Account</a> to write to Google Cloud endpoints. StarThinker DOES NOT grant any additional permissions or access to any products or endpoints used in the recipe.</p>
+      <div class="row">
+        <div class="col s12 m6 l6 right-align">
+          <img src="https://github.com/google/starthinker/raw/master/tutorials/images/ui_recipe.png" style="width:100%;"/>
+        </div>
+        <div class="col s12 m6 l6 left-align">
+          <h5>Creating A Recipe Workflow</h5>
+          <p>Recipes can be manual, initiated by the user and run only once, or scheduled, running at set times on set days. Other than the schedule, all steps are the same.</p>
+          <ol>
+            <li>Visit the <a href="/recipe/edit/">scheduled</a> or <a href="/recipe/manual/">manual</a> recipe page.</li>
+            <li>Name the recipe, the name is often used to create assets such as Sheets and Dataset by some recipes, choose the name to reflect an account or client. If changed, already created assets may become disconnected.</li>
+            <li>If the recipe writes to Google Cloud, select the Google Cloud Project Service Account, <a href="#help_setup">set up earlier</a>.</li>
+            <li>For scheduled recipes, choose the timezone, days, and hours to run every task in the recipe.  All task times and assets created by the recipe will use the timezone selected as a refrence.</li>
+            <hr/>
+            <li>Click <strong>Add</strong>.</a>
+            <li>Use the left side filters to search for the specific task to be added to the recipe. The filters scroll up and down. Most tasks provide a description, samples, and links to assets for review on this page. Click <i class="material-icons blue-text small">add_circle</i> to add the task to the end of the recipe. A <i class="material-icons green-text small">check_circle</i> will appear with a count of this task in the recipe. Continue adding tasks, or close the task filter window.</li>
+            <li>Each task has a card with its own instructions, inputs, and fields.  Fields are marked optional or required.  Some have default values. All values are derived from the API endpoints for that product.</li>
+            <li>Click <strong>Save</strong>, the recipe is now ready to run, and will run on schedule.</li>
+            <hr/>
+            <li>Click <strong>Run</strong> to execute the recipe immediately, if workers are busy there may be a delay. The <a href="#help_status">Job Status</a> and log update every 10 seconds.</a></li>
+            <li>Click <strong>Log</strong> to view recipe task events including errors and completes.</li>
+            <li>Click <strong>Download</strong> to <a href="#help_share">share the recipe</a> with a client.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div id="help_status" class="col s12 m9 l10 left-align">
+      <h1><i class="material-icons large">network_check</i> Job Status</h1>
+      <p class="flow-text left-align">Each task in a recipe workflow is executed in sequence one at a time.  Some recipes have tasks executing at different times, and some tasks executing multiple times a day.  Job status is updated automatically by workers as the job is processed.  The UI updates the log and status every 10 seconds.</p>
+      <table class="striped">
+        <thead>
+          <tr>
+              <th>Status</th>
+              <th>Definition</th>
+              <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Queued</th>
+            <td>The recipe is waiting for workers to pick up the next task.</td>
+            <td>Wait for the next scheduled task to execute.  If workers are busy, the next taks may be executed after its scheduled time.</td>
+          </tr>
+          <tr>
+            <th>Running</th>
+            <td>A task in the recipe is currently executing.</td>
+            <td>Wait for the task to execute or cancel a running recipe. Check the logs to see which task is running and see real time task updates.</td>
+          </tr>
+          <tr>
+            <th>Finished</th>
+            <td>All tasks in the recipe completed without error.</td>
+            <td>The task will resume again the next day as controlled by its timezone setting.</td>
+          </tr>
+          <tr>
+            <th>Paused</th>
+            <td>No tasks in the recipe will be run.</td>
+            <td>Unpause the recipe to resume execution.</td>
+          </tr>
+          <tr>
+            <th>Timeout</th>
+            <td>The task exceeded its 8 hour limit for execution and was terminated.</td>
+            <td>Check the logs, Edit the task to process less data and complete sooner.  Some timeouts may be acceptable, for example a report was not ready, typically these tasks are scheduled multiple times in a workflow and eventually work.</td>
+          </tr>
+          <tr>
+            <th>Error</th>
+            <td>The task failed to execute.  The error will be printed in the log, usually near the bottom  for that task.</td>
+            <td>Correct the error, and click Run Now to re-execute the recipe.  Alternatively some errors may be acceptable, for example an error prone endpoint may be pulled from multiple times a day in a task, eventually one works.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="help_share" class="col s12 m9 l10 left-align">
+      <h1><i class="material-icons large">share</i> Share Recipe</h1>
+      <p class="flow-text">Why share instructions when you can share a working workflow.  Every custom recipe created in the StarThinker UI can be shared with clients.  Create a recipe then click the Download button. DO NOT INCLUDE PASSWORDS OR CONFIDENTIAL INFORMATION IN SHARED RECIPES.  Shared recipes can be executed via <a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a>, <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_airflow.md" target="_blank">Airflow/Composer</a>, <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_package.md" target="_blank">Python</a>, or <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_enterprise.md" target="_blank">UI</a>.</p>
+      <div class="center-align">
+        <br/>
+        <img src="https://github.com/google/starthinker/raw/master/tutorials/images/ui_download.png" style="max-width: 400px;width:100%;height:auto;"/>
+        <br/>
+        <br/>
+      </div>
+
+      <div class="row">
+        <div class="col s12 m6 l6 left-align">
+          <h5><a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a></h5>
+          <p>Ideal for non-technical clients who want to execute the recipe on demand.</p>
+          <ol>
+            <li>Use for demos and workshops.</li>
+            <li>Allows customization.</li>
+            <li>No coding necessary.</li>
+            <li>Requires a free Google Cloud Project for credentials.</li>
+          </ol>
+        </div>
+        <div class="col s12 m6 l6 left-align">
+          <h5><a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_airflow.md" target="_blank">Airflow/Composer</a></h5>
+          <p>Ideal for highly technical clients with engineering teams already using Airflow/Composer.</p>
+          <ol>
+            <li>Use for long running jobs using Airflow.</li>
+            <li>Allows customization.</li>
+            <li>Extensive coding required.</li>
+            <li>Requires a paid Google Cloud Composer instance.</li>
+          </ol>
+        </div>
+        <div class="col s12 m6 l6 left-align">
+          <h5><a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_package.md" target="_blank">Python</a></h5>
+          <p>Ideal for highly technical clients who want a minimal deployment footprint.</p>
+          <ol>
+            <li>Use for custom infrastructure integration.</li>
+            <li>Allows minimal customization.</li>
+            <li>Extensive coding required.</li>
+            <li>Requires a free Google Cloud Project for credentials.</li>
+          </ol>
+        </div>
+        <div class="col s12 m6 l6 left-align">
+          <h5><a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_enterprise.md" target="_blank">UI</a></h5>
+          <p>Ideal for teams wanting to build recipes at scale for multiple accounts.</p>
+          <ol>
+            <li>Use for entire teams ( same UI as this one ).</li>
+            <li>Support no-coding UI recipe builder.</li>
+            <li>Operations and support required.</li>
+            <li>Requires a paid Google Cloud Project.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div id="help_warnings" class="col s12 m9 l10 left-align">
+      <h1><i class="material-icons large">report_problem</i> Warnings</h1>
+      <p class="flow-text left-align">StarThinker will do what you tell it to.  IT RUNS AS YOU, if you have access it will do it, be careful about overwriting, creating, sharing, or deleting data. Double check everything before running tasks.  Undo is not a feature.</p>
+
+      <div class="row">
+        <ul class="col s6 m6 l6 left-align">
+          <li><strong>DATASETS ARE NOT DELETED when a recipe is deleted.</strong>
+            <ol>
+              <li>You will have to manually delete the dataset.</li>
+              <li>You will have to verify dataset contains what you want before sharing.</li>
+            </ol>
+          </li>
+        </ul>
+  
+        <ul class="col s6 m6 l6 left-align">
+          <li><strong>Changing DBM / DCM report definition requires delete of report.</strong>
+            <ol>
+              <li>You will have to go into DBM / DCM and delete the report.</li>
+              <li>StarThinker will then create the new report definition.</li>
+            </ol>
+          </li>
+        </ul>
+  
+        <ul class="col s6 m6 l6 left-align">
+          <li><strong>BigQuery views are not modified by StarThinker if they exist.</strong>
+            <ol>
+              <li>This is to protect any customizations you may have added.</li>
+              <li>You will have to delete the view for StarThinker to recreate it.</li>
+            </ol>
+          </li>
+        </ul>
+  
+        <ul class="col s6 m6 l6 left-align">
+          <li><strong>All tasks in a recipe are executed, even if ones prior fail.</strong>
+            <ol>
+              <li>This allows retries of the same task later in the day.</li>
+              <li>For mission critical data flows, check your data before acting on it.</li>
+            </ol>
+          </li>
+        </ul>
+  
+        <ul class="col s6 m6 l6 left-align">
+          <li><strong>All errors and fields come from the API documentation.</strong>
+            <ol>
+              <li>When looking for field values or formats consult the approriate API documentation.</li>
+              <li>When errors are thrown, the log shows them, consult the API documents to resolve the error.</li>
+            </ol>
+          </li>
+        </ul>
+  
+        <ul class="col s6 m6 l6 left-align">
+          <li><strong>StarThinker does not gurantee exact task execution time.</strong>
+            <ol>
+              <li>All tasks are executed in sequence.</li>
+              <li>Tasks run at or after the scheduled hour, depending on worker load.</li>
+              <li>If a task fails, remianing tasks are still executed.</li>
+            </ol>
+          </li>
+        </ul>
+
+      </div>
+
+    </div>
+
+    <div id="help_debug" class="col s12 m9 l10 left-align">
+      <h1><i class="material-icons large">help</i> Debugging</h1>
+      <p class="flow-text">Errors in StarThinker can range from a misconfigured field value to a bug in the code.  To promptly resolve most issues please follow these debugging steps.</p>
+      <p>When working with StarThinker administrators, please include the recipe number ( found in the recipe edit URL ) in all communications.</p>
+      <ol>
+        <li>Consult the log and reference the error in the API documentation relevant to the product used in the task.</li> 
+        <li>Ensure the service account used in the recipe exists and is valid.</li>
+        <li>Try logging out and logging back in to refresh user credentials and access to APIs.</li>
+        <li>Contact the administrator of the StarThinker UI where the recipe was deployed.</li>
+        <li>Contact the owner of the solution listed on the <a href="https://google.github.io/starthinker/" target="_blank">Solution Gallery Page</a>.</li>
+        <li>Contact <a href="mailto:starthinker-help@google.com">starthinker-help@google.com</a>.</li>
+      </ol>
+    </div>
+
+  </div>
+
+
+    </div>
+
+  </body>
+
+  
+
+<footer class="page-footer red lighten-1">
+  <div class="footer-copyright">
+    <div class="container center">
+    &copy; 2019 Google LLC
+    </div>
+  </div>
+</footer>
+
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".button-collapse").sideNav();
+      $('select').material_select();
+      $('.modal').modal();
+    });
+  </script>
+
+  
+
+</html>

@@ -3,9 +3,8 @@
     "released":"2018-10-02",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
     "icon":"view_column",
-    "product":"Sheets",
+    "requirements":["sheets"],
     "title":"Sheet Copy",
     "description":"Copy tab from a sheet to a sheet.",
     "instructions":[

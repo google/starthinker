@@ -367,7 +367,7 @@ def API_DBM(auth, iterate=False):
 
   configuration = {
     'api':'doubleclickbidmanager',
-    'version':'v1',
+    'version':'v1.1',
     'auth':auth,
     'iterate':iterate
   }

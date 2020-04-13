@@ -3,10 +3,9 @@
     "released":"2019-08-28",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2019 Google LLC",
-    "open":true,
     "icon":"file_copy",
-    "product":"Drive",
-    "title":"Copy",
+    "requirements":["drive"],
+    "title":"Drive Copy",
     "description":"Copy a drive document.",
     "instructions":[
       "Specify a source URL or document name.",

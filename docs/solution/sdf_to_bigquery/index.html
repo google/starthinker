@@ -25,35 +25,16 @@
        #message ul, #message li { display: inline; margin-left: 10px; }
        #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       span.square_box {
-         display: inline-block;
-         width: 40px;
-         height: 40px;
-         border: 2px solid #fff;
-         text-align: center;
-         line-height: 40px;
-         margin: 5px;
-       }
-
        div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
        h1 a i.material-icons { font-size: 3.28rem; }
        a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
        ol li { line-height: 1.8em; }
        textarea { margin-top: 7px; height: 10rem; }
        table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
-       a.btn { margin: 2px; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
-       div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
-       div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
-
-       div.service_card { min-height: 250px; width: 300px; margin: 10px;}
-       div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
-       div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
        div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; }
        #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
        div.card h4 { width 100%; padding: 20px;}
        div.card h4 i.material-icons { font-size: 2.28rem; }
@@ -86,15 +67,15 @@
         
         
         <li><a href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a href="/starthinker/help/">Help</a></li>
         
       </ul>
-      <ul class="side-nav red lighten-1" id="mobile-demo">
+      <ul class="side-nav green lighten-1" id="mobile-demo">
         
         
         
         <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
         
       </ul>
     </div>
@@ -141,6 +122,10 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   
 
   <br/><br/>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=bigquery">bigquery</a>
   
 
   <br/><br/>
@@ -202,12 +187,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             
     
             <tr>
+              <td>Age</td>
+              <td>March 8, 2019 (1 year, 1 month)</td>
+            </tr>
+    
+            <tr>
               <td>Authors</td>
               <td><a href="mailto:terwilleger@google.com?subject=Request+For+A+SDF+Download+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+SDF+Download+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fsdf_to_bigquery%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">terwilleger@google.com</a>
               </td>
             </tr>
-    
-              </tbody>
+
+          </tbody>
         </table>
       </div>
     </div>
@@ -246,123 +236,123 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
      
 
     <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span>[
+      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
-        &quot;dataset&quot;: {
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;dataset&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;dataset&quot;,
-                    &quot;kind&quot;: &quot;string&quot;,
-                    &quot;order&quot;: 6,
-                    &quot;default&quot;: &quot;&quot;,
-                    &quot;description&quot;: &quot;Dataset to be written to in BigQuery.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
+            "auth": "service",
+            "dataset": {
+                "field": {
+                    "name": "dataset",
+                    "kind": "string",
+                    "order": 6,
+                    "default": "",
+                    "description": "Dataset to be written to in BigQuery."
                 }
             }
         }
     },
     {
-        &quot;sdf&quot;: {
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;version&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;version&quot;,
-                    &quot;kind&quot;: &quot;choice&quot;,
-                    &quot;order&quot;: 6,
-                    &quot;default&quot;: &quot;5&quot;,
-                    &quot;description&quot;: &quot;The sdf version to be returned.&quot;,
-                    &quot;choices&quot;: [
-                        &quot;SDF_VERSION_5&quot;,
-                        &quot;SDF_VERSION_5_1&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sdf/run.py" target="_blank">sdf</a>": {
+            "auth": "user",
+            "version": {
+                "field": {
+                    "name": "version",
+                    "kind": "choice",
+                    "order": 6,
+                    "default": "5",
+                    "description": "The sdf version to be returned.",
+                    "choices": [
+                        "SDF_VERSION_5",
+                        "SDF_VERSION_5_1"
                     ]
                 }
             },
-            &quot;partner_id&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;partner_id&quot;,
-                    &quot;kind&quot;: &quot;integer&quot;,
-                    &quot;order&quot;: 1,
-                    &quot;description&quot;: &quot;The sdf file types.&quot;
+            "partner_id": {
+                "field": {
+                    "name": "partner_id",
+                    "kind": "integer",
+                    "order": 1,
+                    "description": "The sdf file types."
                 }
             },
-            &quot;file_types&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;file_types&quot;,
-                    &quot;kind&quot;: &quot;string_list&quot;,
-                    &quot;order&quot;: 2,
-                    &quot;default&quot;: [],
-                    &quot;description&quot;: &quot;The sdf file types.&quot;
+            "file_types": {
+                "field": {
+                    "name": "file_types",
+                    "kind": "string_list",
+                    "order": 2,
+                    "default": [],
+                    "description": "The sdf file types."
                 }
             },
-            &quot;filter_type&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;filter_type&quot;,
-                    &quot;kind&quot;: &quot;choice&quot;,
-                    &quot;order&quot;: 3,
-                    &quot;default&quot;: &quot;&quot;,
-                    &quot;description&quot;: &quot;The filter type for the filter ids.&quot;,
-                    &quot;choices&quot;: [
-                        &quot;FILTER_TYPE_ADVERTISER_ID&quot;,
-                        &quot;FILTER_TYPE_CAMPAIGN_ID&quot;,
-                        &quot;FILTER_TYPE_INSERTION_ORDER_ID&quot;,
-                        &quot;FILTER_TYPE_MEDIA_PRODUCT_ID&quot;,
-                        &quot;FILTER_TYPE_LINE_ITEM_ID&quot;
+            "filter_type": {
+                "field": {
+                    "name": "filter_type",
+                    "kind": "choice",
+                    "order": 3,
+                    "default": "",
+                    "description": "The filter type for the filter ids.",
+                    "choices": [
+                        "FILTER_TYPE_ADVERTISER_ID",
+                        "FILTER_TYPE_CAMPAIGN_ID",
+                        "FILTER_TYPE_INSERTION_ORDER_ID",
+                        "FILTER_TYPE_MEDIA_PRODUCT_ID",
+                        "FILTER_TYPE_LINE_ITEM_ID"
                     ]
                 }
             },
-            &quot;read&quot;: {
-                &quot;filter_ids&quot;: {
-                    &quot;single_cell&quot;: true,
-                    &quot;values&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;filter_ids&quot;,
-                            &quot;kind&quot;: &quot;integer_list&quot;,
-                            &quot;order&quot;: 4,
-                            &quot;default&quot;: [],
-                            &quot;description&quot;: &quot;Comma separated list of filter ids for the request.&quot;
+            "read": {
+                "filter_ids": {
+                    "single_cell": true,
+                    "values": {
+                        "field": {
+                            "name": "filter_ids",
+                            "kind": "integer_list",
+                            "order": 4,
+                            "default": [],
+                            "description": "Comma separated list of filter ids for the request."
                         }
                     }
                 }
             },
-            &quot;time_partitioned_table&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;time_partitioned_table&quot;,
-                    &quot;kind&quot;: &quot;boolean&quot;,
-                    &quot;order&quot;: 7,
-                    &quot;default&quot;: false,
-                    &quot;description&quot;: &quot;Is the end table a time partitioned&quot;
+            "time_partitioned_table": {
+                "field": {
+                    "name": "time_partitioned_table",
+                    "kind": "boolean",
+                    "order": 7,
+                    "default": false,
+                    "description": "Is the end table a time partitioned"
                 }
             },
-            &quot;create_single_day_table&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;create_single_day_table&quot;,
-                    &quot;kind&quot;: &quot;boolean&quot;,
-                    &quot;order&quot;: 8,
-                    &quot;default&quot;: false,
-                    &quot;description&quot;: &quot;Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF.&quot;
+            "create_single_day_table": {
+                "field": {
+                    "name": "create_single_day_table",
+                    "kind": "boolean",
+                    "order": 8,
+                    "default": false,
+                    "description": "Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF."
                 }
             },
-            &quot;dataset&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;dataset&quot;,
-                    &quot;kind&quot;: &quot;string&quot;,
-                    &quot;order&quot;: 6,
-                    &quot;default&quot;: &quot;&quot;,
-                    &quot;description&quot;: &quot;Dataset to be written to in BigQuery.&quot;
+            "dataset": {
+                "field": {
+                    "name": "dataset",
+                    "kind": "string",
+                    "order": 6,
+                    "default": "",
+                    "description": "Dataset to be written to in BigQuery."
                 }
             },
-            &quot;table_suffix&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;table_suffix&quot;,
-                    &quot;kind&quot;: &quot;string&quot;,
-                    &quot;order&quot;: 6,
-                    &quot;default&quot;: &quot;&quot;,
-                    &quot;description&quot;: &quot;Optional: Suffix string to put at the end of the table name (Must contain alphanumeric or underscores)&quot;
+            "table_suffix": {
+                "field": {
+                    "name": "table_suffix",
+                    "kind": "string",
+                    "order": 6,
+                    "default": "",
+                    "description": "Optional: Suffix string to put at the end of the table name (Must contain alphanumeric or underscores)"
                 }
             }
         }
     }
-]</pre>
+]</code></pre>
     </div>
 
   </div>
@@ -377,7 +367,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       Developer Guide<i class="material-icons right">build</i>
     </a>
-    <a href="https://github.com/google/starthinker/blob/master/tutorials/ui_recipe.md" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+    <a href="https://google.github.io/starthinker/help/" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       UI How To<i class="material-icons right">laptop</i>
     </a>
   </p>
@@ -393,7 +383,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google, Inc
+    &copy; 2019 Google LLC
     </div>
   </div>
 </footer>

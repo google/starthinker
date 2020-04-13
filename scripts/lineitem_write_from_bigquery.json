@@ -3,9 +3,8 @@
     "released":"2018-06-06",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
     "icon":"arrow_upward",
-    "product":"DV360",
+    "requirements":["dv360"],
     "title":"Line Item From BigQuery",
     "description":"Upload Line Items From BigQuery To DV360.",
     "instructions":[

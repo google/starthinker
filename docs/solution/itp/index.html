@@ -25,35 +25,16 @@
        #message ul, #message li { display: inline; margin-left: 10px; }
        #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       span.square_box {
-         display: inline-block;
-         width: 40px;
-         height: 40px;
-         border: 2px solid #fff;
-         text-align: center;
-         line-height: 40px;
-         margin: 5px;
-       }
-
        div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
        h1 a i.material-icons { font-size: 3.28rem; }
        a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
        ol li { line-height: 1.8em; }
        textarea { margin-top: 7px; height: 10rem; }
        table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
-       a.btn { margin: 2px; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
-       div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
-       div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
-
-       div.service_card { min-height: 250px; width: 300px; margin: 10px;}
-       div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
-       div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
        div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; }
        #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
        div.card h4 { width 100%; padding: 20px;}
        div.card h4 i.material-icons { font-size: 2.28rem; }
@@ -86,15 +67,15 @@
         
         
         <li><a href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a href="/starthinker/help/">Help</a></li>
         
       </ul>
-      <ul class="side-nav red lighten-1" id="mobile-demo">
+      <ul class="side-nav green lighten-1" id="mobile-demo">
         
         
         
         <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
         
       </ul>
     </div>
@@ -314,12 +295,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             
     
             <tr>
+              <td>Age</td>
+              <td>March 14, 2019 (1 year, 1 month)</td>
+            </tr>
+    
+            <tr>
               <td>Authors</td>
               <td><a href="mailto:adamfer@google.com?subject=Request+For+A+Browser+Activity+Dashboard+%28+2019+%29+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Browser+Activity+Dashboard+%28+2019+%29+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fitp%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">adamfer@google.com</a>
               </td>
             </tr>
-    
-              </tbody>
+
+          </tbody>
         </table>
       </div>
     </div>
@@ -382,110 +368,110 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
      
 
     <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span>[
+      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
-        &quot;dataset&quot;: {
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;dataset&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;dataset&quot;,
-                    &quot;kind&quot;: &quot;string&quot;,
-                    &quot;order&quot;: 1,
-                    &quot;default&quot;: &quot;&quot;,
-                    &quot;description&quot;: &quot;Report suffix and BigQuery dataset to contain data.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
+            "auth": "service",
+            "dataset": {
+                "field": {
+                    "name": "dataset",
+                    "kind": "string",
+                    "order": 1,
+                    "default": "",
+                    "description": "Report suffix and BigQuery dataset to contain data."
                 }
             }
         }
     },
     {
-        &quot;dcm&quot;: {
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;account&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dcm_account&quot;,
-                        &quot;kind&quot;: &quot;integer&quot;,
-                        &quot;order&quot;: 2,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;CM account id of client.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
+            "auth": "user",
+            "report": {
+                "account": {
+                    "field": {
+                        "name": "dcm_account",
+                        "kind": "integer",
+                        "order": 2,
+                        "default": "",
+                        "description": "CM account id of client."
                     }
                 },
-                &quot;filters&quot;: {
-                    &quot;dfa:advertiser&quot;: {
-                        &quot;values&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;dcm_advertisers&quot;,
-                                &quot;kind&quot;: &quot;integer_list&quot;,
-                                &quot;order&quot;: 3,
-                                &quot;default&quot;: [],
-                                &quot;description&quot;: &quot;Comma delimited list of CM advertiser ids.&quot;
+                "filters": {
+                    "dfa:advertiser": {
+                        "values": {
+                            "field": {
+                                "name": "dcm_advertisers",
+                                "kind": "integer_list",
+                                "order": 3,
+                                "default": [],
+                                "description": "Comma delimited list of CM advertiser ids."
                             }
                         }
                     }
                 },
-                &quot;body&quot;: {
-                    &quot;type&quot;: &quot;STANDARD&quot;,
-                    &quot;format&quot;: &quot;CSV&quot;,
-                    &quot;name&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;prefix&quot;: &quot;CM_Browser_Delivery_&quot;,
-                            &quot;description&quot;: &quot;Report in CM, should be unique.&quot;
+                "body": {
+                    "type": "STANDARD",
+                    "format": "CSV",
+                    "name": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "prefix": "CM_Browser_Delivery_",
+                            "description": "Report in CM, should be unique."
                         }
                     },
-                    &quot;accountId&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dcm_account&quot;,
-                            &quot;kind&quot;: &quot;integer&quot;,
-                            &quot;order&quot;: 2,
-                            &quot;default&quot;: &quot;&quot;,
-                            &quot;description&quot;: &quot;CM account id of client.&quot;
+                    "accountId": {
+                        "field": {
+                            "name": "dcm_account",
+                            "kind": "integer",
+                            "order": 2,
+                            "default": "",
+                            "description": "CM account id of client."
                         }
                     },
-                    &quot;criteria&quot;: {
-                        &quot;dateRange&quot;: {
-                            &quot;relativeDateRange&quot;: &quot;LAST_365_DAYS&quot;
+                    "criteria": {
+                        "dateRange": {
+                            "relativeDateRange": "LAST_365_DAYS"
                         },
-                        &quot;dimensions&quot;: [
+                        "dimensions": [
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:advertiser&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:advertiser"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:advertiserId&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:advertiserId"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:campaign&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:campaign"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:campaignId&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:campaignId"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:site&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:site"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:browserPlatform&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:browserPlatform"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:platformType&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:platformType"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:date&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:date"
                             }
                         ],
-                        &quot;metricNames&quot;: [
-                            &quot;dfa:impressions&quot;,
-                            &quot;dfa:clicks&quot;,
-                            &quot;dfa:activityViewThroughConversions&quot;,
-                            &quot;dfa:activityClickThroughConversions&quot;
+                        "metricNames": [
+                            "dfa:impressions",
+                            "dfa:clicks",
+                            "dfa:activityViewThroughConversions",
+                            "dfa:activityClickThroughConversions"
                         ]
                     }
                 }
@@ -493,37 +479,37 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;dcm&quot;: {
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;account&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dcm_account&quot;,
-                        &quot;kind&quot;: &quot;integer&quot;,
-                        &quot;order&quot;: 2,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;CM account id of client.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
+            "auth": "user",
+            "report": {
+                "account": {
+                    "field": {
+                        "name": "dcm_account",
+                        "kind": "integer",
+                        "order": 2,
+                        "default": "",
+                        "description": "CM account id of client."
                     }
                 },
-                &quot;name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dataset&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;CM_Browser_Delivery_&quot;,
-                        &quot;description&quot;: &quot;Report in CM, should be unique.&quot;
+                "name": {
+                    "field": {
+                        "name": "dataset",
+                        "kind": "string",
+                        "prefix": "CM_Browser_Delivery_",
+                        "description": "Report in CM, should be unique."
                     }
                 }
             },
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;table&quot;: &quot;CM_Browser_Delivery&quot;,
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 1,
-                            &quot;default&quot;: &quot;&quot;,
-                            &quot;description&quot;: &quot;BigQuery dataset to contain data.&quot;
+            "out": {
+                "bigquery": {
+                    "table": "CM_Browser_Delivery",
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "order": 1,
+                            "default": "",
+                            "description": "BigQuery dataset to contain data."
                         }
                     }
                 }
@@ -531,102 +517,102 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;dcm&quot;: {
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;account&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dcm_account&quot;,
-                        &quot;kind&quot;: &quot;integer&quot;,
-                        &quot;order&quot;: 2,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;CM account id of client.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
+            "auth": "user",
+            "report": {
+                "account": {
+                    "field": {
+                        "name": "dcm_account",
+                        "kind": "integer",
+                        "order": 2,
+                        "default": "",
+                        "description": "CM account id of client."
                     }
                 },
-                &quot;body&quot;: {
-                    &quot;name&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;prefix&quot;: &quot;CM_Browser_Floodlight_&quot;,
-                            &quot;description&quot;: &quot;Report in CM, should be unique.&quot;
+                "body": {
+                    "name": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "prefix": "CM_Browser_Floodlight_",
+                            "description": "Report in CM, should be unique."
                         }
                     },
-                    &quot;type&quot;: &quot;FLOODLIGHT&quot;,
-                    &quot;format&quot;: &quot;CSV&quot;,
-                    &quot;accountId&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dcm_account&quot;,
-                            &quot;kind&quot;: &quot;integer&quot;,
-                            &quot;order&quot;: 2,
-                            &quot;default&quot;: &quot;&quot;,
-                            &quot;description&quot;: &quot;CM account id of client.&quot;
+                    "type": "FLOODLIGHT",
+                    "format": "CSV",
+                    "accountId": {
+                        "field": {
+                            "name": "dcm_account",
+                            "kind": "integer",
+                            "order": 2,
+                            "default": "",
+                            "description": "CM account id of client."
                         }
                     },
-                    &quot;floodlightCriteria&quot;: {
-                        &quot;dateRange&quot;: {
-                            &quot;relativeDateRange&quot;: &quot;LAST_60_DAYS&quot;
+                    "floodlightCriteria": {
+                        "dateRange": {
+                            "relativeDateRange": "LAST_60_DAYS"
                         },
-                        &quot;dimensions&quot;: [
+                        "dimensions": [
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:advertiser&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:advertiser"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:advertiserId&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:advertiserId"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:campaign&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:campaign"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:campaignId&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:campaignId"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:date&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:date"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:browserPlatform&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:browserPlatform"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:platformType&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:platformType"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:activity&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:activity"
                             },
                             {
-                                &quot;kind&quot;: &quot;dfareporting#sortedDimension&quot;,
-                                &quot;name&quot;: &quot;dfa:activityId&quot;
+                                "kind": "dfareporting#sortedDimension",
+                                "name": "dfa:activityId"
                             }
                         ],
-                        &quot;floodlightConfigId&quot;: {
-                            &quot;dimensionName&quot;: &quot;dfa:floodlightConfigId&quot;,
-                            &quot;kind&quot;: &quot;dfareporting#dimensionValue&quot;,
-                            &quot;matchType&quot;: &quot;EXACT&quot;,
-                            &quot;value&quot;: {
-                                &quot;field&quot;: {
-                                    &quot;name&quot;: &quot;dcm_floodlight&quot;,
-                                    &quot;kind&quot;: &quot;integer&quot;,
-                                    &quot;order&quot;: 4,
-                                    &quot;default&quot;: &quot;&quot;,
-                                    &quot;description&quot;: &quot;CM floodlight configuration id.&quot;
+                        "floodlightConfigId": {
+                            "dimensionName": "dfa:floodlightConfigId",
+                            "kind": "dfareporting#dimensionValue",
+                            "matchType": "EXACT",
+                            "value": {
+                                "field": {
+                                    "name": "dcm_floodlight",
+                                    "kind": "integer",
+                                    "order": 4,
+                                    "default": "",
+                                    "description": "CM floodlight configuration id."
                                 }
                             }
                         },
-                        &quot;metricNames&quot;: [
-                            &quot;dfa:activityClickThroughConversions&quot;,
-                            &quot;dfa:activityViewThroughConversions&quot;,
-                            &quot;dfa:totalConversions&quot;
+                        "metricNames": [
+                            "dfa:activityClickThroughConversions",
+                            "dfa:activityViewThroughConversions",
+                            "dfa:totalConversions"
                         ],
-                        &quot;reportProperties&quot;: {
-                            &quot;includeUnattributedCookieConversions&quot;: true,
-                            &quot;includeUnattributedIPConversions&quot;: false
+                        "reportProperties": {
+                            "includeUnattributedCookieConversions": true,
+                            "includeUnattributedIPConversions": false
                         }
                     }
                 }
@@ -634,37 +620,37 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;dcm&quot;: {
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;account&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dcm_account&quot;,
-                        &quot;kind&quot;: &quot;integer&quot;,
-                        &quot;order&quot;: 2,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;CM account id of client.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
+            "auth": "user",
+            "report": {
+                "account": {
+                    "field": {
+                        "name": "dcm_account",
+                        "kind": "integer",
+                        "order": 2,
+                        "default": "",
+                        "description": "CM account id of client."
                     }
                 },
-                &quot;name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dataset&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;CM_Browser_Floodlight_&quot;,
-                        &quot;description&quot;: &quot;Report in CM, should be unique.&quot;
+                "name": {
+                    "field": {
+                        "name": "dataset",
+                        "kind": "string",
+                        "prefix": "CM_Browser_Floodlight_",
+                        "description": "Report in CM, should be unique."
                     }
                 }
             },
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;table&quot;: &quot;CM_Browser_Floodlight&quot;,
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 1,
-                            &quot;default&quot;: &quot;&quot;,
-                            &quot;description&quot;: &quot;BigQuery dataset to contain data.&quot;
+            "out": {
+                "bigquery": {
+                    "table": "CM_Browser_Floodlight",
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "order": 1,
+                            "default": "",
+                            "description": "BigQuery dataset to contain data."
                         }
                     }
                 }
@@ -672,72 +658,72 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;dbm&quot;: {
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;filters&quot;: {
-                    &quot;FILTER_PARTNER&quot;: {
-                        &quot;values&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;dbm_partners&quot;,
-                                &quot;kind&quot;: &quot;integer_list&quot;,
-                                &quot;order&quot;: 5,
-                                &quot;default&quot;: [],
-                                &quot;description&quot;: &quot;DV360 partner id.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "auth": "user",
+            "report": {
+                "filters": {
+                    "FILTER_PARTNER": {
+                        "values": {
+                            "field": {
+                                "name": "dbm_partners",
+                                "kind": "integer_list",
+                                "order": 5,
+                                "default": [],
+                                "description": "DV360 partner id."
                             }
                         }
                     },
-                    &quot;FILTER_ADVERTISER&quot;: {
-                        &quot;values&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;dbm_advertisers&quot;,
-                                &quot;kind&quot;: &quot;integer_list&quot;,
-                                &quot;order&quot;: 6,
-                                &quot;default&quot;: [],
-                                &quot;description&quot;: &quot;Comma delimited list of DV360 advertiser ids.&quot;
+                    "FILTER_ADVERTISER": {
+                        "values": {
+                            "field": {
+                                "name": "dbm_advertisers",
+                                "kind": "integer_list",
+                                "order": 6,
+                                "default": [],
+                                "description": "Comma delimited list of DV360 advertiser ids."
                             }
                         }
                     }
                 },
-                &quot;body&quot;: {
-                    &quot;timezoneCode&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_timezone&quot;,
-                            &quot;kind&quot;: &quot;timezone&quot;,
-                            &quot;description&quot;: &quot;Timezone for report dates.&quot;,
-                            &quot;default&quot;: &quot;America/Los_Angeles&quot;
+                "body": {
+                    "timezoneCode": {
+                        "field": {
+                            "name": "recipe_timezone",
+                            "kind": "timezone",
+                            "description": "Timezone for report dates.",
+                            "default": "America/Los_Angeles"
                         }
                     },
-                    &quot;metadata&quot;: {
-                        &quot;title&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;dataset&quot;,
-                                &quot;kind&quot;: &quot;string&quot;,
-                                &quot;prefix&quot;: &quot;DV360_Browser_Delivery_&quot;,
-                                &quot;description&quot;: &quot;Name of report in DV360, should be unique.&quot;
+                    "metadata": {
+                        "title": {
+                            "field": {
+                                "name": "dataset",
+                                "kind": "string",
+                                "prefix": "DV360_Browser_Delivery_",
+                                "description": "Name of report in DV360, should be unique."
                             }
                         },
-                        &quot;dataRange&quot;: &quot;LAST_365_DAYS&quot;,
-                        &quot;format&quot;: &quot;CSV&quot;
+                        "dataRange": "LAST_365_DAYS",
+                        "format": "CSV"
                     },
-                    &quot;params&quot;: {
-                        &quot;type&quot;: &quot;TYPE_GENERAL&quot;,
-                        &quot;groupBys&quot;: [
-                            &quot;FILTER_ADVERTISER&quot;,
-                            &quot;FILTER_BROWSER&quot;,
-                            &quot;FILTER_MEDIA_PLAN&quot;,
-                            &quot;FILTER_DATE&quot;,
-                            &quot;FILTER_DEVICE_TYPE&quot;,
-                            &quot;FILTER_INSERTION_ORDER&quot;,
-                            &quot;FILTER_PAGE_LAYOUT&quot;
+                    "params": {
+                        "type": "TYPE_GENERAL",
+                        "groupBys": [
+                            "FILTER_ADVERTISER",
+                            "FILTER_BROWSER",
+                            "FILTER_MEDIA_PLAN",
+                            "FILTER_DATE",
+                            "FILTER_DEVICE_TYPE",
+                            "FILTER_INSERTION_ORDER",
+                            "FILTER_PAGE_LAYOUT"
                         ],
-                        &quot;metrics&quot;: [
-                            &quot;METRIC_IMPRESSIONS&quot;,
-                            &quot;METRIC_CLICKS&quot;,
-                            &quot;METRIC_LAST_CLICKS&quot;,
-                            &quot;METRIC_LAST_IMPRESSIONS&quot;,
-                            &quot;METRIC_REVENUE_ADVERTISER&quot;,
-                            &quot;METRIC_MEDIA_COST_ADVERTISER&quot;
+                        "metrics": [
+                            "METRIC_IMPRESSIONS",
+                            "METRIC_CLICKS",
+                            "METRIC_LAST_CLICKS",
+                            "METRIC_LAST_IMPRESSIONS",
+                            "METRIC_REVENUE_ADVERTISER",
+                            "METRIC_MEDIA_COST_ADVERTISER"
                         ]
                     }
                 }
@@ -745,114 +731,114 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;dbm&quot;: {
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dataset&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;DV360_Browser_Delivery_&quot;,
-                        &quot;description&quot;: &quot;DV360 report name, should be unique.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "auth": "user",
+            "report": {
+                "name": {
+                    "field": {
+                        "name": "dataset",
+                        "kind": "string",
+                        "prefix": "DV360_Browser_Delivery_",
+                        "description": "DV360 report name, should be unique."
                     }
                 }
             },
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;table&quot;: &quot;DV360_Browser_Delivery&quot;,
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 1,
-                            &quot;default&quot;: &quot;&quot;,
-                            &quot;description&quot;: &quot;BigQuery dataset to contain data.&quot;
+            "out": {
+                "bigquery": {
+                    "table": "DV360_Browser_Delivery",
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "order": 1,
+                            "default": "",
+                            "description": "BigQuery dataset to contain data."
                         }
                     },
-                    &quot;schema&quot;: [
+                    "schema": [
                         {
-                            &quot;name&quot;: &quot;Advertiser&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_ID&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Advertiser_ID",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Status&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser_Status",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Integration_Code&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser_Integration_Code",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Browser&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Browser",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Campaign&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Campaign",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Campaign_ID&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Campaign_ID",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Report_Day&quot;,
-                            &quot;type&quot;: &quot;DATE&quot;
+                            "name": "Report_Day",
+                            "type": "DATE"
                         },
                         {
-                            &quot;name&quot;: &quot;Device_Type&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Device_Type",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Insertion_Order&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Insertion_Order",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Insertion_Order_ID&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Insertion_Order_ID",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Insertion_Order_Status&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Insertion_Order_Status",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Insertion_Order_Integration_Code&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Insertion_Order_Integration_Code",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Environment&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Environment",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Currency&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser_Currency",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Impressions&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Impressions",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Clicks&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Clicks",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Post_Click_Conversions&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Post_Click_Conversions",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Post_View_Conversions&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Post_View_Conversions",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Revenue_Adv_Currency&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Revenue_Adv_Currency",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Media_Cost_Advertiser_Currency&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Media_Cost_Advertiser_Currency",
+                            "type": "FLOAT"
                         }
                     ]
                 }
@@ -860,29 +846,29 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;bigquery&quot;: {
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;to&quot;: {
-                &quot;table&quot;: &quot;Floodlight_Browser_Delivery&quot;,
-                &quot;dataset&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dataset&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;order&quot;: 1,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;BigQuery dataset to contain data.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
+            "auth": "service",
+            "to": {
+                "table": "Floodlight_Browser_Delivery",
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "kind": "string",
+                        "order": 1,
+                        "default": "",
+                        "description": "BigQuery dataset to contain data."
                     }
                 }
             },
-            &quot;from&quot;: {
-                &quot;query&quot;: &quot;WITH\r\nbrowser_clean AS (\r\n  SELECT\r\n    Advertiser,\r\n    Advertiser_Id,\r\n    Campaign,\r\n    Campaign_Id,\r\n    Browser_Platform,\r\n   Activity,\r\n    Activity_ID,\r\n    CASE\r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \&quot;((?i).*Chrome).*\&quot;) THEN \&quot;Chrome\&quot; \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \&quot;((?i).*Firefox).*\&quot;) THEN \&quot;Firefox\&quot; \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \&quot;((?i).*Safari).*\&quot;) THEN \&quot;Safari\&quot;\r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \&quot;((?i).*iPad).*\&quot;) THEN \&quot;Safari\&quot; \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \&quot;((?i).*iPad).*\&quot;) THEN \&quot;Safari\&quot; \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \&quot;((?i).*iPhone).*\&quot;) THEN \&quot;Safari\&quot; \r\n    ELSE \&quot;Other\&quot;\r\n    END AS Clean_Browser,\r\n    Platform_Type,\r\n    Report_Day,\r\n    View_Through_Conversions,\r\n    Click_Through_Conversions,\r\n    Total_Conversions\r\n  FROM [PARAMETER].CM_Browser_Floodlight\r\n)\r\n\r\n  SELECT\r\n    *,\r\n    CASE WHEN Platform_Type=\&quot;Mobile highend: smartphone\&quot; OR Platform_Type=\&quot;Mobile midrange: feature phone\&quot; OR Platform_Type=\&quot;Tablet\&quot; THEN Total_Conversions ELSE 0 END AS Mobile_Convs,\r\n   CASE WHEN Platform_Type=\&quot;Desktop\&quot; THEN Total_Conversions ELSE 0 END AS Desktop_Convs,\r\n   CASE WHEN Clean_Browser=\&quot;Chrome\&quot; THEN Total_Conversions ELSE 0 END AS Chrome_Convs,\r\n   CASE WHEN Clean_Browser=\&quot;Safari\&quot; THEN Total_Conversions ELSE 0 END AS Safari_Convs,\r\n   CASE WHEN Clean_Browser=\&quot;Firefox\&quot; THEN Total_Conversions ELSE 0 END AS Firefox_Convs\r\n  FROM browser_clean&quot;,
-                &quot;legacy&quot;: false,
-                &quot;parameters&quot;: [
+            "from": {
+                "query": "WITH\r\nbrowser_clean AS (\r\n  SELECT\r\n    Advertiser,\r\n    Advertiser_Id,\r\n    Campaign,\r\n    Campaign_Id,\r\n    Browser_Platform,\r\n   Activity,\r\n    Activity_ID,\r\n    CASE\r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*Chrome).*\") THEN \"Chrome\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*Firefox).*\") THEN \"Firefox\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*Safari).*\") THEN \"Safari\"\r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*iPad).*\") THEN \"Safari\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*iPad).*\") THEN \"Safari\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*iPhone).*\") THEN \"Safari\" \r\n    ELSE \"Other\"\r\n    END AS Clean_Browser,\r\n    Platform_Type,\r\n    Report_Day,\r\n    View_Through_Conversions,\r\n    Click_Through_Conversions,\r\n    Total_Conversions\r\n  FROM [PARAMETER].CM_Browser_Floodlight\r\n)\r\n\r\n  SELECT\r\n    *,\r\n    CASE WHEN Platform_Type=\"Mobile highend: smartphone\" OR Platform_Type=\"Mobile midrange: feature phone\" OR Platform_Type=\"Tablet\" THEN Total_Conversions ELSE 0 END AS Mobile_Convs,\r\n   CASE WHEN Platform_Type=\"Desktop\" THEN Total_Conversions ELSE 0 END AS Desktop_Convs,\r\n   CASE WHEN Clean_Browser=\"Chrome\" THEN Total_Conversions ELSE 0 END AS Chrome_Convs,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Total_Conversions ELSE 0 END AS Safari_Convs,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Total_Conversions ELSE 0 END AS Firefox_Convs\r\n  FROM browser_clean",
+                "legacy": false,
+                "parameters": [
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Bigquery container for data.&quot;
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Bigquery container for data."
                         }
                     }
                 ]
@@ -890,29 +876,29 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;bigquery&quot;: {
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;to&quot;: {
-                &quot;table&quot;: &quot;CM_Browser_Delivery&quot;,
-                &quot;dataset&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dataset&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;order&quot;: 1,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;BigQuery dataset to contain data.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
+            "auth": "service",
+            "to": {
+                "table": "CM_Browser_Delivery",
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "kind": "string",
+                        "order": 1,
+                        "default": "",
+                        "description": "BigQuery dataset to contain data."
                     }
                 }
             },
-            &quot;from&quot;: {
-                &quot;query&quot;: &quot;WITH\r\nbrowser_clean AS (\r\n  SELECT\r\n    Advertiser,\r\n    Advertiser_Id,\r\n    Campaign,\r\n    Campaign_Id,\r\n    Site_Dcm,\r\n    Browser_Platform,\r\n  CASE\r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \&quot;((?i).*Chrome).*\&quot;) THEN \&quot;Chrome\&quot; \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \&quot;((?i).*Firefox).*\&quot;) THEN \&quot;Firefox\&quot; \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \&quot;((?i).*Safari).*\&quot;) THEN \&quot;Safari\&quot;\r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \&quot;((?i).*iPad).*\&quot;) THEN \&quot;Safari\&quot; \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \&quot;((?i).*iPad).*\&quot;) THEN \&quot;Safari\&quot; \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \&quot;((?i).*iPhone).*\&quot;) THEN \&quot;Safari\&quot; \r\n    ELSE \&quot;Other\&quot;\r\n    END AS Clean_Browser,\r\n    Platform_Type,\r\n    Report_Day,\r\n    Impressions,\r\n    Clicks,\r\n    View_Through_Conversions,\r\n    Click_Through_Conversions\r\n  FROM [PARAMETER].CM_Browser_Delivery\r\n)\r\n\r\n SELECT\r\n    *,\r\n   CASE WHEN Platform_Type=\&quot;Mobile highend: smartphone\&quot; OR Platform_Type=\&quot;Mobile midrange: feature phone\&quot; OR Platform_Type=\&quot;Tablet\&quot; THEN Impressions ELSE 0 END AS Mobile_Imps,\r\n   CASE WHEN Platform_Type=\&quot;Desktop\&quot; THEN Impressions ELSE 0 END AS Desktop_Imps,\r\n   CASE WHEN Platform_Type=\&quot;Connected TV\&quot; THEN Impressions ELSE 0 END AS CTV_Imps,\r\n   CASE WHEN Clean_Browser=\&quot;Chrome\&quot; THEN Impressions ELSE 0 END AS Chrome_Imps,\r\n   CASE WHEN Clean_Browser=\&quot;Safari\&quot; THEN Impressions ELSE 0 END AS Safari_Imps,\r\n   CASE WHEN Clean_Browser=\&quot;Firefox\&quot; THEN Impressions ELSE 0 END AS Firefox_Imps\r\n  FROM browser_clean&quot;,
-                &quot;legacy&quot;: false,
-                &quot;parameters&quot;: [
+            "from": {
+                "query": "WITH\r\nbrowser_clean AS (\r\n  SELECT\r\n    Advertiser,\r\n    Advertiser_Id,\r\n    Campaign,\r\n    Campaign_Id,\r\n    Site_Dcm,\r\n    Browser_Platform,\r\n  CASE\r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*Chrome).*\") THEN \"Chrome\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*Firefox).*\") THEN \"Firefox\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*Safari).*\") THEN \"Safari\"\r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*iPad).*\") THEN \"Safari\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*iPad).*\") THEN \"Safari\" \r\n    WHEN REGEXP_CONTAINS(Browser_Platform, \"((?i).*iPhone).*\") THEN \"Safari\" \r\n    ELSE \"Other\"\r\n    END AS Clean_Browser,\r\n    Platform_Type,\r\n    Report_Day,\r\n    Impressions,\r\n    Clicks,\r\n    View_Through_Conversions,\r\n    Click_Through_Conversions\r\n  FROM [PARAMETER].CM_Browser_Delivery\r\n)\r\n\r\n SELECT\r\n    *,\r\n   CASE WHEN Platform_Type=\"Mobile highend: smartphone\" OR Platform_Type=\"Mobile midrange: feature phone\" OR Platform_Type=\"Tablet\" THEN Impressions ELSE 0 END AS Mobile_Imps,\r\n   CASE WHEN Platform_Type=\"Desktop\" THEN Impressions ELSE 0 END AS Desktop_Imps,\r\n   CASE WHEN Platform_Type=\"Connected TV\" THEN Impressions ELSE 0 END AS CTV_Imps,\r\n   CASE WHEN Clean_Browser=\"Chrome\" THEN Impressions ELSE 0 END AS Chrome_Imps,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Impressions ELSE 0 END AS Safari_Imps,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Impressions ELSE 0 END AS Firefox_Imps\r\n  FROM browser_clean",
+                "legacy": false,
+                "parameters": [
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Bigquery container for data.&quot;
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Bigquery container for data."
                         }
                     }
                 ]
@@ -920,29 +906,29 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;bigquery&quot;: {
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;to&quot;: {
-                &quot;table&quot;: &quot;DV360_Browser_Delivery&quot;,
-                &quot;dataset&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dataset&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;order&quot;: 1,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;BigQuery dataset to contain data.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
+            "auth": "service",
+            "to": {
+                "table": "DV360_Browser_Delivery",
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "kind": "string",
+                        "order": 1,
+                        "default": "",
+                        "description": "BigQuery dataset to contain data."
                     }
                 }
             },
-            &quot;from&quot;: {
-                &quot;query&quot;: &quot;WITH\r\nbrowser_cleaned AS (\r\n  SELECT \r\n    Advertiser,\r\n    Advertiser_Id,\r\n    Advertiser_Currency,\r\n    Browser,\r\n    Campaign,\r\n    Campaign_Id,\r\n    Insertion_Order, \r\n    Insertion_Order_Id,\r\n    Report_Day,\r\n    Device_Type,\r\n    Environment,\r\n    Impressions,\r\n    Clicks,\r\n    Post_Click_Conversions,\r\n    Post_View_Conversions,\r\n    Revenue_Adv_Currency as Revenue,\r\n    Media_Cost_Advertiser_Currency,\r\n    CASE\r\n      WHEN REGEXP_CONTAINS(Browser, \&quot;((?i).*Chrome).*\&quot;) THEN \&quot;Chrome\&quot; \r\n      WHEN REGEXP_CONTAINS(Browser, \&quot;((?i).*Firefox).*\&quot;) THEN \&quot;Firefox\&quot; \r\n      WHEN REGEXP_CONTAINS(Browser, \&quot;((?i).*Safari).*\&quot;) THEN \&quot;Safari\&quot;\r\n      ELSE \&quot;Other\&quot;\r\n      END AS Clean_Browser,\r\n    CASE \r\n      WHEN Browser=\&quot;Safari 12\&quot; THEN \&quot;Safari 12\&quot;\r\n      WHEN Browser=\&quot;Safari 11\&quot; THEN \&quot;Safari 11\&quot;\r\n      WHEN REGEXP_CONTAINS(Browser, \&quot;((?i).*Safari).*\&quot;) AND Browser!=\&quot;Safari 12\&quot; AND Browser!=\&quot;Safari 11\&quot; THEN \&quot;Safari 10 &amp; Below\&quot;\r\n      ELSE \&quot;Non Safari\&quot;\r\n    END AS ITP_Affected_Browsers\r\n   FROM [PARAMETER].DV360_Browser_Delivery \r\n)\r\n\r\n  SELECT\r\n    *,\r\n    CASE WHEN Device_Type=\&quot;Smart Phone\&quot; OR Device_Type=\&quot;Tablet\&quot; THEN Impressions ELSE 0 END AS Mobile_Imps,\r\n   CASE WHEN Device_Type=\&quot;Desktop\&quot; THEN Impressions ELSE 0 END AS Desktop_Imps,\r\n   CASE WHEN Device_Type=\&quot;Connected TV\&quot; THEN Impressions ELSE 0 END AS CTV_Imps,\r\n   CASE WHEN Clean_Browser=\&quot;Chrome\&quot; THEN Impressions ELSE 0 END AS Chrome_Imps,\r\n   CASE WHEN Clean_Browser=\&quot;Safari\&quot; THEN Impressions ELSE 0 END AS Safari_Imps,\r\n   CASE WHEN Clean_Browser=\&quot;Firefox\&quot; THEN Impressions ELSE 0 END AS Firefox_Imps,\r\n    CASE WHEN Clean_Browser=\&quot;Chrome\&quot; THEN Revenue ELSE 0 END AS Chrome_Rev,\r\n   CASE WHEN Clean_Browser=\&quot;Safari\&quot; THEN Revenue ELSE 0 END AS Safari_Rev,\r\n   CASE WHEN Clean_Browser=\&quot;Firefox\&quot; THEN Revenue ELSE 0 END AS Firefox_Rev,\r\n   CASE WHEN Clean_Browser=\&quot;Chrome\&quot; THEN Post_Click_Conversions ELSE 0 END AS Chrome_Click_Convs,\r\n   CASE WHEN Clean_Browser=\&quot;Safari\&quot; THEN Post_Click_Conversions ELSE 0 END AS Safari_Click_Convs,\r\n   CASE WHEN Clean_Browser=\&quot;Firefox\&quot; THEN Post_Click_Conversions ELSE 0 END AS Firefox_Click_Convs,\r\n   CASE WHEN Clean_Browser=\&quot;Chrome\&quot; THEN Post_View_Conversions ELSE 0 END AS Chrome_View_Convs,\r\n   CASE WHEN Clean_Browser=\&quot;Safari\&quot; THEN Post_View_Conversions ELSE 0 END AS Safari_View_Convs,\r\n   CASE WHEN Clean_Browser=\&quot;Firefox\&quot; THEN Post_View_Conversions ELSE 0 END AS Firefox_View_Convs,\r\n   CASE WHEN Clean_Browser=\&quot;Chrome\&quot; THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS Chrome_Convs,\r\n   CASE WHEN Clean_Browser=\&quot;Safari\&quot; THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS Safari_Convs,\r\n   CASE WHEN Clean_Browser=\&quot;Firefox\&quot; THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS Firefox_Convs,\r\n   \r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Safari 12\&quot; THEN Impressions ELSE 0 END AS S12_Imps,\r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Safari 11\&quot; THEN Impressions ELSE 0 END AS S11_Imps,\r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Safari 10 &amp; Below\&quot; THEN Impressions ELSE 0 END AS S_Imps,\r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Non Safari\&quot; THEN Impressions ELSE 0 END AS NS_Imps,\r\n   \r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Safari 12\&quot; THEN Post_Click_Conversions ELSE 0 END AS S12_Click_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Safari 11\&quot; THEN Post_Click_Conversions ELSE 0 END AS S11_Click_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Safari 10 &amp; Below\&quot; THEN Post_Click_Conversions ELSE 0 END AS S_Click_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Non Safari\&quot; THEN Post_Click_Conversions ELSE 0 END AS NS_Click_Convs,\r\n   \r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Safari 12\&quot; THEN Post_View_Conversions ELSE 0 END AS S12_View_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Safari 11\&quot; THEN Post_View_Conversions ELSE 0 END AS S11_View_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Safari 10 &amp; Below\&quot; THEN Post_View_Conversions ELSE 0 END AS S_View_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Non Safari\&quot; THEN Post_View_Conversions ELSE 0 END AS NS_View_Convs,\r\n   \r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Safari 12\&quot; THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS S12_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Safari 11\&quot; THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS S11_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Safari 10 &amp; Below\&quot; THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS S_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\&quot;Non Safari\&quot; THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS NS_Convs\r\n   \r\n   \r\n  FROM browser_cleaned&quot;,
-                &quot;legacy&quot;: false,
-                &quot;parameters&quot;: [
+            "from": {
+                "query": "WITH\r\nbrowser_cleaned AS (\r\n  SELECT \r\n    Advertiser,\r\n    Advertiser_Id,\r\n    Advertiser_Currency,\r\n    Browser,\r\n    Campaign,\r\n    Campaign_Id,\r\n    Insertion_Order, \r\n    Insertion_Order_Id,\r\n    Report_Day,\r\n    Device_Type,\r\n    Environment,\r\n    Impressions,\r\n    Clicks,\r\n    Post_Click_Conversions,\r\n    Post_View_Conversions,\r\n    Revenue_Adv_Currency as Revenue,\r\n    Media_Cost_Advertiser_Currency,\r\n    CASE\r\n      WHEN REGEXP_CONTAINS(Browser, \"((?i).*Chrome).*\") THEN \"Chrome\" \r\n      WHEN REGEXP_CONTAINS(Browser, \"((?i).*Firefox).*\") THEN \"Firefox\" \r\n      WHEN REGEXP_CONTAINS(Browser, \"((?i).*Safari).*\") THEN \"Safari\"\r\n      ELSE \"Other\"\r\n      END AS Clean_Browser,\r\n    CASE \r\n      WHEN Browser=\"Safari 12\" THEN \"Safari 12\"\r\n      WHEN Browser=\"Safari 11\" THEN \"Safari 11\"\r\n      WHEN REGEXP_CONTAINS(Browser, \"((?i).*Safari).*\") AND Browser!=\"Safari 12\" AND Browser!=\"Safari 11\" THEN \"Safari 10 & Below\"\r\n      ELSE \"Non Safari\"\r\n    END AS ITP_Affected_Browsers\r\n   FROM [PARAMETER].DV360_Browser_Delivery \r\n)\r\n\r\n  SELECT\r\n    *,\r\n    CASE WHEN Device_Type=\"Smart Phone\" OR Device_Type=\"Tablet\" THEN Impressions ELSE 0 END AS Mobile_Imps,\r\n   CASE WHEN Device_Type=\"Desktop\" THEN Impressions ELSE 0 END AS Desktop_Imps,\r\n   CASE WHEN Device_Type=\"Connected TV\" THEN Impressions ELSE 0 END AS CTV_Imps,\r\n   CASE WHEN Clean_Browser=\"Chrome\" THEN Impressions ELSE 0 END AS Chrome_Imps,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Impressions ELSE 0 END AS Safari_Imps,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Impressions ELSE 0 END AS Firefox_Imps,\r\n    CASE WHEN Clean_Browser=\"Chrome\" THEN Revenue ELSE 0 END AS Chrome_Rev,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Revenue ELSE 0 END AS Safari_Rev,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Revenue ELSE 0 END AS Firefox_Rev,\r\n   CASE WHEN Clean_Browser=\"Chrome\" THEN Post_Click_Conversions ELSE 0 END AS Chrome_Click_Convs,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Post_Click_Conversions ELSE 0 END AS Safari_Click_Convs,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Post_Click_Conversions ELSE 0 END AS Firefox_Click_Convs,\r\n   CASE WHEN Clean_Browser=\"Chrome\" THEN Post_View_Conversions ELSE 0 END AS Chrome_View_Convs,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Post_View_Conversions ELSE 0 END AS Safari_View_Convs,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Post_View_Conversions ELSE 0 END AS Firefox_View_Convs,\r\n   CASE WHEN Clean_Browser=\"Chrome\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS Chrome_Convs,\r\n   CASE WHEN Clean_Browser=\"Safari\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS Safari_Convs,\r\n   CASE WHEN Clean_Browser=\"Firefox\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS Firefox_Convs,\r\n   \r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 12\" THEN Impressions ELSE 0 END AS S12_Imps,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 11\" THEN Impressions ELSE 0 END AS S11_Imps,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 10 & Below\" THEN Impressions ELSE 0 END AS S_Imps,\r\n   CASE WHEN ITP_Affected_Browsers=\"Non Safari\" THEN Impressions ELSE 0 END AS NS_Imps,\r\n   \r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 12\" THEN Post_Click_Conversions ELSE 0 END AS S12_Click_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 11\" THEN Post_Click_Conversions ELSE 0 END AS S11_Click_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 10 & Below\" THEN Post_Click_Conversions ELSE 0 END AS S_Click_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Non Safari\" THEN Post_Click_Conversions ELSE 0 END AS NS_Click_Convs,\r\n   \r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 12\" THEN Post_View_Conversions ELSE 0 END AS S12_View_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 11\" THEN Post_View_Conversions ELSE 0 END AS S11_View_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 10 & Below\" THEN Post_View_Conversions ELSE 0 END AS S_View_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Non Safari\" THEN Post_View_Conversions ELSE 0 END AS NS_View_Convs,\r\n   \r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 12\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS S12_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 11\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS S11_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Safari 10 & Below\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS S_Convs,\r\n   CASE WHEN ITP_Affected_Browsers=\"Non Safari\" THEN Post_Click_Conversions+Post_View_Conversions ELSE 0 END AS NS_Convs\r\n   \r\n   \r\n  FROM browser_cleaned",
+                "legacy": false,
+                "parameters": [
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
                         }
                     }
                 ]
@@ -950,43 +936,43 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;bigquery&quot;: {
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;to&quot;: {
-                &quot;table&quot;: &quot;Combined_Browser_Delivery&quot;,
-                &quot;dataset&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dataset&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;order&quot;: 1,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;BigQuery dataset to contain data.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
+            "auth": "service",
+            "to": {
+                "table": "Combined_Browser_Delivery",
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "kind": "string",
+                        "order": 1,
+                        "default": "",
+                        "description": "BigQuery dataset to contain data."
                     }
                 }
             },
-            &quot;from&quot;: {
-                &quot;query&quot;: &quot;WITH cm AS ( SELECT Report_Day, CASE  WHEN Platform_Type=\&quot;Desktop\&quot; THEN \&quot;Desktop\&quot; WHEN Platform_Type=\&quot;Tablet\&quot; THEN \&quot;Mobile_Tablet\&quot; WHEN Platform_Type=\&quot;Mobile highend: smartphone\&quot; THEN \&quot;Mobile_Tablet\&quot; WHEN Platform_Type=\&quot;Mobile midrange: feature phone\&quot; THEN \&quot;Mobile_Tablet\&quot; WHEN Platform_Type=\&quot;Connected TV\&quot; THEN \&quot;CTV\&quot; END AS Device_Clean, SUM(Impressions) as CM_Impressions FROM `[PARAMETER].CM_Browser_Delivery`  GROUP BY 1,2 ),  dv3 AS ( SELECT Report_Day as RD, CASE  WHEN Device_Type=\&quot;Desktop\&quot; THEN \&quot;Desktop\&quot; WHEN Device_Type=\&quot;Tablet\&quot; THEN \&quot;Mobile_Tablet\&quot; WHEN Device_Type=\&quot;Smart Phone\&quot; THEN \&quot;Mobile_Tablet\&quot; WHEN Device_Type=\&quot;Connected TV\&quot; THEN \&quot;CTV\&quot; END AS Device_Clean_DV360, SUM(Impressions) as DV360_Impressions FROM `[PARAMETER].DV360_Browser_Delivery`  GROUP BY 1,2 )  SELECT Report_Day, Device_Clean, CM_Impressions, DV360_Impressions FROM cm a JOIN dv3 b ON a.Report_Day=b.RD AND a.Device_Clean=b.Device_Clean_DV360&quot;,
-                &quot;legacy&quot;: false,
-                &quot;parameters&quot;: [
+            "from": {
+                "query": "WITH cm AS ( SELECT Report_Day, CASE  WHEN Platform_Type=\"Desktop\" THEN \"Desktop\" WHEN Platform_Type=\"Tablet\" THEN \"Mobile_Tablet\" WHEN Platform_Type=\"Mobile highend: smartphone\" THEN \"Mobile_Tablet\" WHEN Platform_Type=\"Mobile midrange: feature phone\" THEN \"Mobile_Tablet\" WHEN Platform_Type=\"Connected TV\" THEN \"CTV\" END AS Device_Clean, SUM(Impressions) as CM_Impressions FROM `[PARAMETER].CM_Browser_Delivery`  GROUP BY 1,2 ),  dv3 AS ( SELECT Report_Day as RD, CASE  WHEN Device_Type=\"Desktop\" THEN \"Desktop\" WHEN Device_Type=\"Tablet\" THEN \"Mobile_Tablet\" WHEN Device_Type=\"Smart Phone\" THEN \"Mobile_Tablet\" WHEN Device_Type=\"Connected TV\" THEN \"CTV\" END AS Device_Clean_DV360, SUM(Impressions) as DV360_Impressions FROM `[PARAMETER].DV360_Browser_Delivery`  GROUP BY 1,2 )  SELECT Report_Day, Device_Clean, CM_Impressions, DV360_Impressions FROM cm a JOIN dv3 b ON a.Report_Day=b.RD AND a.Device_Clean=b.Device_Clean_DV360",
+                "legacy": false,
+                "parameters": [
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
                         }
                     },
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
                         }
                     }
                 ]
             }
         }
     }
-]</pre>
+]</code></pre>
     </div>
 
   </div>
@@ -1001,7 +987,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       Developer Guide<i class="material-icons right">build</i>
     </a>
-    <a href="https://github.com/google/starthinker/blob/master/tutorials/ui_recipe.md" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+    <a href="https://google.github.io/starthinker/help/" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       UI How To<i class="material-icons right">laptop</i>
     </a>
   </p>
@@ -1017,7 +1003,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google, Inc
+    &copy; 2019 Google LLC
     </div>
   </div>
 </footer>

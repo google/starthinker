@@ -5,8 +5,8 @@
     "copyright":"Copyright 2018 Google LLC",
     "open":true,
     "icon":"view_column",
-    "product":"Sheets",
-    "title":"Sheet To Table",
+    "requirements":["sheets", "bigquery"],
+    "title":"Sheet To BigQuery",
     "description":"Import data from a sheet and move it to a BigQuery table.",
     "instructions":[
       "For the sheet, provide the full edit URL.",

@@ -363,7 +363,8 @@ setup_credentials_commandline() {
     fi
 
     echo "  C. For Application Name enter: StarThinker"
-    echo "  D. All other fields are optional, click Save."
+    echo "  D. In Authorised domains, type $STARTHINKER_PROJECT.appspot.com and press Enter"
+    echo "  E. All other fields are optional, click Save."
     echo ""
 
     echo "Step 2: Setup Credentials ( do only once )"
@@ -416,7 +417,8 @@ setup_credentials_ui() {
     fi
 
     echo "  C. For Application Name enter: StarThinker"
-    echo "  D. All other fields are optional, click Save."
+    echo "  D. In Authorised domains, type $STARTHINKER_PROJECT.appspot.com and press Enter"
+    echo "  E. All other fields are optional, click Save."
     echo ""
 
     echo "Step 2: Setup Credentials ( do only once )"

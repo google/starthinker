@@ -3,9 +3,8 @@
     "released":"2018-01-07",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
     "icon":"device_hub",
-    "product":"BigQuery",
+    "requirements":["bigquery", "sheets"],
     "title":"Column Mapping",
     "description":"Use sheet to define keyword to column mappings.",
     "instructions":[

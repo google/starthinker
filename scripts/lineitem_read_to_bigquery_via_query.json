@@ -5,7 +5,7 @@
     "copyright":"Copyright 2018 Google LLC",
     "open":true,
     "icon":"arrow_downward",
-    "product":"DV360",
+    "requirements":["dv360", "bigquery"],
     "title":"Line Item To BigQuery Via Query",
     "description":"Move using an Id query.",
     "instructions":[

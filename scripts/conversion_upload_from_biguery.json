@@ -3,9 +3,8 @@
     "released":"2018-03-16",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
     "icon":"file_upload",
-    "product":"CM",
+    "requirements":["cm", "bigquery"],
     "title":"Conversion Upload BigQuery",
     "description":"Move from BigQuery to CM.",
     "instructions":[

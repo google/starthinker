@@ -4,7 +4,6 @@
     "license_off":"Apache License, Version 2.0",
     "copyright":"Copyright 2019 Google LLC",
     "icon":"donut_small",
-    "product":"Cross Product",
     "title":"ITP Audit Dashboard ( 2020 )",
     "description":"Dashboard that shows performance metrics across browser to see the impact of ITP.",
     "document":"https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/",

@@ -3,9 +3,8 @@
     "released":"2019-08-07",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
     "icon":"arrow_forward",
-    "product":"BigQuery",
+    "requirements":["bigquery", "sheets"],
     "title":"Query to Sheet",
     "description":"Copy the contents of a query into a Google Sheet.",
     "instructions":[

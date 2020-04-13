@@ -3,9 +3,8 @@
     "released":"2018-06-11",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
     "icon":"arrow_downward",
-    "product":"DV360",
+    "requirements":["dv360", "bigquery"],
     "title":"Line Item To BigQuery Via Values",
     "description":"Move using hard coded Id values.",
     "instructions":[

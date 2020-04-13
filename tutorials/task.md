@@ -20,7 +20,7 @@ if __name__ == "__main__":
   hello()
 ```
 
-### 2. Thats it, the python code is integrated, now create a recipe to pass parameters to  your task:
+### 2. Thats it, the python code is integrated, now create a script to pass parameters to  your task:
 hello.json
 ```
 {
@@ -41,23 +41,23 @@ source starthinker_assets/development.sh
 python starthinker/all/run.py hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT --verbose
 ```
 
-### 5. Continue to the [script  tutorial](recipe.md)...
+### 5. Continue to the [recipe  tutorial](recipe.md)...
 
 ## Notes
 
 - The [@project.from_parameters](../starthinker/util/project/__init__.py)  decorator is StarThinker.  Everything else is just python.
 - Using the [util library](../starthinker/util/) is optional but convenient. 
 - Always check [starthinker/task](../starthinker/task/) folder for task samples.
-- Always check [scripts](../scripts/) folder for recipe samples.
+- Always check [scripts](../scripts/) folder for script samples.
 - New scopes for user authentication can be added at [starthinker/config.py](../starthinker/config.py).
 - You can remove scopes if you are not planning to use the tasks requiring them.
 - The Google API helper can be extended by adding an endpoint at [starthinker/util/google_api/\_\_init\_\_.py](../starthinker/util/google_api/__init__.py).
-- It is best practice to provide at least one or more [reference recipe scripts](recipe.md) for a task.
-- When develoing a new task, the first recipe should be a [test recipe](testing.md).
-- Event he credentials are optional, each recipe is pure python not tied to any Cloud Service.
-- A recipe may call the same task multiple times with the same or different parameters.
-- A recipe may call multiple tasks.
+- It is best practice to provide at least one or more [reference recipes](recipe.md) for a task.
+- When develoing a new task, the first script should be a [test script](testing.md).
+- Even the credentials are optional, each script is pure python parameters not tied to any Cloud Service.
+- A script may call the same task multiple times with the same or different parameters.
+- A script may call multiple tasks.
 - Each task must have a unique name.
 
 ---
-&copy; 2019 Google Inc. - Apache License, Version 2.0
+&copy; 2019 Google LLC - Apache License, Version 2.0

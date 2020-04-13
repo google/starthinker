@@ -76,25 +76,20 @@ converted to a recipe on the command line, it only applies to the UI.
   - recipe_email_token - the email with the token appended using + to join.
 
 
-### 3. Connect the script to the UI so non-coding users can use it in a recipe:
+### 3. Add Schedule ( Optional )
+This will force the recipe or task to run at a specific time of day ( as defined by timezone ) regardless of what the user selects.
+
 scripts/script_hello.json
 ```
 {
-  "script":{
-    "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google Inc.",
-    "icon":"notifications",
-    "product":"gTech",
-    "title":"Say Hello",
-    "description":"Recipe template for {field:recipe_name}.",
-    "instructions":[
-      "This should be called for testing only."
-      "It will print {field:say_first}."
-    ],
-    "authors":["kenjora@google.com"]
+  "setup":{
+    "timezone": "America/Los_Angeles",
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "hour":[1, 3, 8]
   },
   "tasks":[
     { "hello":{
+        "hour":[0,1,2],
         "auth":"user",
         "say":{"field":{ "name":"say_first", "kind":"string", "order":1, "default":"Hello Once", "description":"Type in a greeting." }},
       }
@@ -103,15 +98,13 @@ scripts/script_hello.json
 }
 ```
 
-#### Script Parameters
-  - license - Optional, include to open source.
-  - copyright - Required, always include.
-  - icon - Get from: https://material.io/tools/icons/
-  - product - Required, UI Menu to list under.
-  - title - Required, unique name of recipe shown in UI.
-  - description - - Required, informative description shown in UI.
-  - instructions - Optional, additional instructions for this task.
-  - authors - - Required, list of people maintaining this task, show in UI.
+#### Setup Parameters
+  - setup - Optional for recipes that mus run at a specific time regardless of user settings.
+    - timezone - Affects hour of the day, [see Timezones](https://github.com/google/starthinker/blob/master/starthinker_ui/ui/timezones.py)
+    - day - Day of week to run recipe, setting to [] means its a manual task only run on user trigger. Leaving blank means run every day.
+    - hour - Hour of day to run recipe, setting to [] means its a manual task only run on user trigger. Leaving blank means run every hour.
+  - task
+    - hour - Optional, hour of day to run this task, if not set runs at global recipe schedule.
 
 #### Using Fields In Text
 
@@ -121,15 +114,101 @@ Text fields are {field:[string]} or {field:[string], prefix:[string]} where fiel
 parameters in a task and prefix is a string value that gets appended to the value from variables.
 
 
-### 4. Continue to the [solution tutorial](solution.md)...
+### 4. Add meta data to the script to it can be found in the Solution Gallery:
+scripts/script_hello.json
+```
+{
+  "script":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google Inc.",
+    "icon":"notifications",
+    "title":"Say Hello",
+    "description":"Recipe template for say hello.",
+    "instructions":[
+      "This should be called for testing only."
+    ],
+    "authors":["kenjora@google.com"],
+    "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
+    "sample":"https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT",
+    "document":"https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/",
+    "requirements":[ "dcm", "datastudio", "bigquery" ],
+    "catalysts":["security", "reporting"],
+    "categories":["security", "reporting"],
+    "pitches":[
+      "Meet contractual access reporting information.",
+      "Reduce unauthorized use of DCM accounts and assets.",
+      "Audit user access within DCM.",
+      "Prevent malicious user access / behavior."
+    ],
+    "impacts":{
+      "spend optimization":0,
+      "spend growth":0,
+      "time savings":90,
+      "account health":100,
+      "csat improvement":90
+    },
+  },
+  "tasks":[
+    { "hello":{
+        "auth":"user",
+        "say":{"field":{ "name":"say_first", "kind":"string", "order":1, "default":"Hello Once", "description":"Type in a greeting." }},
+      }
+    }
+    { "bye":{
+        "hour":[21,22,23],
+        "auth":"user",
+        "say":{"field":{ "name":"say_second", "kind":"string", "order":1, "default":"Bye Once", "description":"Type in a farewwll." }},
+      }
+    }
+  ]
+}
+```
 
-## Notes
+### Solution Parameters
+  - license - Optional, include to open source.
+  - copyright - Required, always include.
+  - icon - Get from: https://material.io/tools/icons/
+  - title - Required, unique name of recipe shown in UI.
+  - description - - Required, informative description shown in UI.
+  - instructions - Optional, additional instructions for this task.
+  - authors - - Required, list of people maintaining this task, show in UI.
+  - impacts - Required, level of impact for each metric, metrics are fixed ( 0 to 100  scale ), always list all even if 0.
+    - spend optimization - How well does it help the client optimize budget.
+    - spend growth - How well does it help the client grow their client base or account size.
+    - time savings - How well does it reduce time for client performing specific tasks.
+    - account health - How well does it reduce risk for the account.
+    - csat improvement - How well does it improve client perception of Googles products and services.
+  - image - Optional, public screen shot or diagram of solution.
+  - sample - Optional, link to public sample with anonymized data.
+  - document - Optional, link to public communications deocument.
+  - requirements - Required, technical product dependencies.
+  - catalysts - Optional, list of gTech catalysts.
+    - Acquisition - How do I reach growth by acquiring and reaching new customers?
+    - Monetization - How do I deliver the most value to my consumers and reach higher average revenue per order?
+    - Experience - How do I provide frictionless consumer experience to enable deeper engagement and loyalty to my brand?
+    - Automation - How do I scale, optimize and automate processes to increase my proficiency?
+    - Insights - How do I get deeper consumer and brand insights to make better decisions?
+    - Data - How do I make my data usable and structured to measure and attribute my marketing efforts?
+  - categories - Optional, arbitrary categories, suggest including one of the following.
+    - Strategy, Organization & Operations
+    - Implementation, Onboarding & Data Architecture
+    - Audience, Attribution & Advanced Analytics
+    - Creative Services
+    - Training
+    - Managed Services
+    - Automation
+    - Site Testing & Personalization
+  - pitches - Optional, list of short sentences describing value propositions.
+  - instructions - Required, instructions for manual steps, supports embedded HTML and links.
+
+### 5. Continue to the [testing tutorial](testing.md)...
+
+### Notes
 - You will need to re-start the UI to pick up new scripts.
 - The UI on load will print 'OK' next to your script.
 - Validate your JSON using [json helper](../scripts/helper.py).
-- Always check [scripts](../scripts/) folder for script samples.
-- It is best practice to provide at least one or more [reference recipe scripts](recipe.md) for a task.
-- Overloaded tasks can have more than one recipe or script defining more than one input configuration.
+- Always check [scripts](../scripts/) folder for solution samples.
+- It is best practice to provide a test with each solution.
 
 ---
-&copy; 2019 Google Inc. - Apache License, Version 2.0
+&copy; 2019 Google LLC - Apache License, Version 2.0

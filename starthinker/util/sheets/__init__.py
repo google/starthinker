@@ -79,7 +79,9 @@ def sheets_tab_id(auth, sheet_url_or_name, sheet_tab):
 def sheets_read(auth, sheet_url_or_name, sheet_tab, sheet_range='', retries=10):
   if project.verbose: print('SHEETS READ', sheet_url_or_name, sheet_tab, sheet_range)
   service = get_service('sheets', 'v4', auth)
+  print(sheet_url_or_name)
   sheet_id = sheets_id(auth, sheet_url_or_name)
+  print(sheet_id)
   return API_Retry(service.spreadsheets().values().get(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range)), 'values', retries=retries)
 
 

@@ -21,7 +21,7 @@ from django.conf.urls import url
 from starthinker_ui.website import views
 
 urlpatterns = [
-  url(r'^stats/$', views.stats, name='website.stats'),
+  url(r'^help/$', views.help, name='website.help'),
   url(r'^solution/$', views.solutions, name='website.solutions'),
   url(r'^solution/(?P<tag>\w+)/$', views.solution, name='website.solution'),
 ]

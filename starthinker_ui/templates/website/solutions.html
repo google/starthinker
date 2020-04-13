@@ -3,7 +3,7 @@
 {% comment %}
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -23,31 +23,42 @@
 {% load website_app %}
 
 {% block css %}
-  i.right { float: none; margin-left: 0; position: absolute; right: 0px; margin-right: 15px; }
-  i.right:hover { cursor: pointer; }
+  i.expand { position: absolute; right: 15px; top: 15px; }
+  i.expand:hover { cursor: pointer; }
   .col { margin-right: auto; }
   .card { min-height: 30vh; }
 {% endblock %}
 
 {% block js %}
   <script type="text/javascript">
-    var category = 'category_all';
 
-    function render() {
-      $("#scripts div.col").each(function() {
-        var show = false;
-        if ($(this).attr("class").includes(category)) { show = true; }
-        if (show) { $(this).css( "display", "block" ); } 
-        else { $(this).css( "display", "none" ); }
-      });
+    function getQueryVariable(variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+      }
+      return null;
     }
 
     $(document).ready(function() {
 
       $('span.trigger_category').on('click tap', function() {
         category = this.id.replace('trigger_', '');
-        render();
+        $("#scripts div.col").hide();
+        $("#scripts div.col." + category).show();
+        $("#category_link").attr('href', '?category=' + category.replace('category_', ''));
       });
+
+      var category = getQueryVariable('category');
+      if ( category ) { 
+        $("#scripts div.col").hide();
+        $("#scripts div.col.category_" + category).show();
+        $("#category_link").attr('href', '?category=' + category.replace('category_', ''));
+      }
 
     });
   </script>
@@ -55,20 +66,39 @@
 
 {% block content %}
 
-  <h1 id="solutions">Packaged Solutions</h1>
+  {% search_scripts ALL %}
+
+  <h1>
+    Packaged Solutions
+    <a id="category_link" href="?catgegory=all"><i class="material-icons blue-text">link</i></a>
+  </h1>
   <p class="flow-text">These recipes are entire workflows that deploy end to end solutions for clients.</p>
 
-  <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_all">All</span>
+  <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_all">All</span>
+  {% if '7 days' in agos %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_7-days">7 days</span>
+  {% endif %}
+  {% if '30 days' in agos %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_30-days">30 days</span>
+  {% endif %}
+  {% if '90 days' in agos %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_90-days">90 days</span>
+  {% endif %}
+  {% if 'older' in agos %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_older">older</span>
+  {% endif %}
+
+  <br/>
   {% for c in catalysts %}
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
   {% endfor %}
 
-  <br/><br/>
+  <br/>
   {% for c in requirements %}
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
   {% endfor %}
 
-  <br/><br/>
+  <br/>
   {% for c in categories %}
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
   {% endfor %}
@@ -76,12 +106,12 @@
   <br/><br/>
   <div id="scripts" class="row">
     {% for script in scripts %}
-      <div class="col s6 m4 l3 category_all{% for c in script.get_categories %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_catalysts %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_requirements %} category_{{ c|slugify }}{% endfor %}">
+      <div class="col s6 m4 l3 category_all {% for c in script.get_released_ago %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_categories %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_catalysts %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_requirements %} category_{{ c|slugify }}{% endfor %}">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
               {% if script.get_pitches %}
-              <i class="activator material-icons right">more_vert</i>
+              <i class="activator material-icons expand">more_vert</i>
               {% endif %}
               <a href="{% if external %}/starthinker{% endif %}/solution/{{ script.get_tag }}/"> 
                 <i class="material-icons medium">{{ script.get_icon }}</i><br/><br/>
@@ -120,7 +150,7 @@
     <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       Developer Guide<i class="material-icons right">build</i>
     </a>
-    <a href="https://github.com/google/starthinker/blob/master/tutorials/ui_recipe.md" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+    <a href="{% if external %}https://google.github.io/starthinker/help/{% else %}/help/{% endif %}" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       UI How To<i class="material-icons right">laptop</i>
     </a>
   </p>

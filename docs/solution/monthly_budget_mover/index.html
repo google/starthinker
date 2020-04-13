@@ -25,35 +25,16 @@
        #message ul, #message li { display: inline; margin-left: 10px; }
        #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       span.square_box {
-         display: inline-block;
-         width: 40px;
-         height: 40px;
-         border: 2px solid #fff;
-         text-align: center;
-         line-height: 40px;
-         margin: 5px;
-       }
-
        div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
        h1 a i.material-icons { font-size: 3.28rem; }
        a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
        ol li { line-height: 1.8em; }
        textarea { margin-top: 7px; height: 10rem; }
        table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
-       a.btn { margin: 2px; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
-       div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
-       div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
-
-       div.service_card { min-height: 250px; width: 300px; margin: 10px;}
-       div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
-       div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
        div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; }
        #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
        div.card h4 { width 100%; padding: 20px;}
        div.card h4 i.material-icons { font-size: 2.28rem; }
@@ -86,15 +67,15 @@
         
         
         <li><a href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a href="/starthinker/help/">Help</a></li>
         
       </ul>
-      <ul class="side-nav red lighten-1" id="mobile-demo">
+      <ul class="side-nav green lighten-1" id="mobile-demo">
         
         
         
         <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
         
       </ul>
     </div>
@@ -307,12 +288,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             
     
             <tr>
+              <td>Age</td>
+              <td>May 23, 2019 (10 months, 3 weeks)</td>
+            </tr>
+    
+            <tr>
               <td>Authors</td>
               <td><a href="mailto:terwilleger@google.com?subject=Request+For+A+Monthly+Budget+Mover+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Monthly+Budget+Mover+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fmonthly_budget_mover%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">terwilleger@google.com</a>
               </td>
             </tr>
-    
-              </tbody>
+
+          </tbody>
         </table>
       </div>
     </div>
@@ -375,118 +361,118 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
      
 
     <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span>[
+      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
-        &quot;dataset&quot;: {
-            &quot;description&quot;: &quot;Create a dataset where data will be combined and transfored for upload.&quot;,
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;dataset&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;dataset&quot;,
-                    &quot;kind&quot;: &quot;string&quot;,
-                    &quot;order&quot;: 1,
-                    &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
+            "description": "Create a dataset where data will be combined and transfored for upload.",
+            "auth": "service",
+            "dataset": {
+                "field": {
+                    "name": "dataset",
+                    "kind": "string",
+                    "order": 1,
+                    "description": "Place where tables will be created in BigQuery."
                 }
             }
         }
     },
     {
-        &quot;monthly_budget_mover&quot;: {
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;spend_report_id&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;spend_report_id&quot;,
-                    &quot;kind&quot;: &quot;string&quot;,
-                    &quot;order&quot;: 2,
-                    &quot;default&quot;: &quot;&quot;,
-                    &quot;description&quot;: &quot;The report Id for the DV360 spend report.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/monthly_budget_mover/run.py" target="_blank">monthly_budget_mover</a>": {
+            "auth": "user",
+            "spend_report_id": {
+                "field": {
+                    "name": "spend_report_id",
+                    "kind": "string",
+                    "order": 2,
+                    "default": "",
+                    "description": "The report Id for the DV360 spend report."
                 }
             },
-            &quot;budget_categories&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;budget_categories&quot;,
-                    &quot;kind&quot;: &quot;json&quot;,
-                    &quot;order&quot;: 3,
-                    &quot;default&quot;: &quot;{\&quot;CATEGORY1\&quot;:[12345,12345,12345], \&quot;CATEGORY2\&quot;:[12345,12345]}&quot;,
-                    &quot;description&quot;: &quot;A dictionary to show which IO Ids go under which Category. Please view the solutions page for information on format.&quot;
+            "budget_categories": {
+                "field": {
+                    "name": "budget_categories",
+                    "kind": "json",
+                    "order": 3,
+                    "default": "{\"CATEGORY1\":[12345,12345,12345], \"CATEGORY2\":[12345,12345]}",
+                    "description": "A dictionary to show which IO Ids go under which Category. Please view the solutions page for information on format."
                 }
             },
-            &quot;excluded_ios&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;excluded_ios&quot;,
-                    &quot;kind&quot;: &quot;integer_list&quot;,
-                    &quot;order&quot;: 4,
-                    &quot;description&quot;: &quot;A comma separated list of Inserion Order Ids that should be exluded from the budget calculations&quot;
+            "excluded_ios": {
+                "field": {
+                    "name": "excluded_ios",
+                    "kind": "integer_list",
+                    "order": 4,
+                    "description": "A comma separated list of Inserion Order Ids that should be exluded from the budget calculations"
                 }
             },
-            &quot;sdf&quot;: {
-                &quot;auth&quot;: &quot;user&quot;,
-                &quot;file_types&quot;: &quot;INSERTION_ORDER&quot;,
-                &quot;filter_type&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;filter_type&quot;,
-                        &quot;kind&quot;: &quot;choice&quot;,
-                        &quot;order&quot;: 6,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;The filter type for the filter ids.&quot;,
-                        &quot;choices&quot;: [
-                            &quot;ADVERTISER_ID&quot;,
-                            &quot;CAMPAIGN_ID&quot;,
-                            &quot;INSERTION_ORDER_ID&quot;,
-                            &quot;INVENTORY_SOURCE_ID&quot;,
-                            &quot;LINE_ITEM_ID&quot;,
-                            &quot;PARTNER_ID&quot;
+            "sdf": {
+                "auth": "user",
+                "file_types": "INSERTION_ORDER",
+                "filter_type": {
+                    "field": {
+                        "name": "filter_type",
+                        "kind": "choice",
+                        "order": 6,
+                        "default": "",
+                        "description": "The filter type for the filter ids.",
+                        "choices": [
+                            "ADVERTISER_ID",
+                            "CAMPAIGN_ID",
+                            "INSERTION_ORDER_ID",
+                            "INVENTORY_SOURCE_ID",
+                            "LINE_ITEM_ID",
+                            "PARTNER_ID"
                         ]
                     }
                 },
-                &quot;filter_ids&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;filter_ids&quot;,
-                        &quot;kind&quot;: &quot;integer_list&quot;,
-                        &quot;order&quot;: 7,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;The filter ids for the request.&quot;
+                "filter_ids": {
+                    "field": {
+                        "name": "filter_ids",
+                        "kind": "integer_list",
+                        "order": 7,
+                        "default": "",
+                        "description": "The filter ids for the request."
                     }
                 }
             },
-            &quot;out&quot;: {
-                &quot;dataset&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dataset&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;order&quot;: 8,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;Dataset that you would like your output tables to be produced in.&quot;
+            "out": {
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "kind": "string",
+                        "order": 8,
+                        "default": "",
+                        "description": "Dataset that you would like your output tables to be produced in."
                     }
                 },
-                &quot;old_sdf_table_name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;recipe_name&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;SDF_OLD_&quot;,
-                        &quot;description&quot;: &quot;&quot;
+                "old_sdf_table_name": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "prefix": "SDF_OLD_",
+                        "description": ""
                     }
                 },
-                &quot;new_sdf_table_name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;recipe_name&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;SDF_NEW_&quot;,
-                        &quot;description&quot;: &quot;&quot;
+                "new_sdf_table_name": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "prefix": "SDF_NEW_",
+                        "description": ""
                     }
                 },
-                &quot;changes_table_name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;recipe_name&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;SDF_BUDGET_MOVER_LOG_&quot;,
-                        &quot;description&quot;: &quot;&quot;
+                "changes_table_name": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "prefix": "SDF_BUDGET_MOVER_LOG_",
+                        "description": ""
                     }
                 }
             }
         }
     }
-]</pre>
+]</code></pre>
     </div>
 
   </div>
@@ -501,7 +487,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       Developer Guide<i class="material-icons right">build</i>
     </a>
-    <a href="https://github.com/google/starthinker/blob/master/tutorials/ui_recipe.md" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+    <a href="https://google.github.io/starthinker/help/" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       UI How To<i class="material-icons right">laptop</i>
     </a>
   </p>
@@ -517,7 +503,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google, Inc
+    &copy; 2019 Google LLC
     </div>
   </div>
 </footer>

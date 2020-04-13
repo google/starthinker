@@ -3,9 +3,8 @@
     "released":"2019-05-03",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
+    "ui":false,
     "icon":"notifications",
-    "product":"Test",
     "title":"Say Hello",
     "description":"Recipe template for say hello.",
     "instructions":[

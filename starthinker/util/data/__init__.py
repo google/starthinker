@@ -66,7 +66,7 @@ def get_rows(auth, source):
           "legacy":[ boolean ]
         },
         "sheet":{
-          "url":[ string - full URL, suggest using share link ],
+          "sheet":[ string - full URL, suggest using share link ],
           "tab":[ string ],
           "range":[ string - A1:A notation ]
         }
@@ -114,7 +114,7 @@ def get_rows(auth, source):
     if 'sheet' in source:
       rows = sheets_read(
         project.task['auth'],
-        project.task['sheet']['sheet'],
+        source['sheet']['sheet'],
         source['sheet']['tab'],
         source['sheet']['range'],
       )

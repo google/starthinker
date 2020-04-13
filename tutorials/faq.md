@@ -2,7 +2,7 @@
 
 ---
 ### Is gSuite needed to deploy StarThinker?
-No, but without it users logging in will have to click past a [verification warning](https://github.com/google/starthinker/raw/master/tutorials/images/dv360_feature_adoption.png).
+No, but without it users logging in will have to click past a [verification warning](https://github.com/google/starthinker/raw/master/tutorials/images/verification.png).
 
 ---
 ### Worker jobs are timing out, what do I do?
@@ -38,7 +38,7 @@ Delete the starthinker_assets/production.sh, service.json, user.json, client_web
 
 ---
 ### Can I run multiple StarThinker instances on the same machine?
-Yes, however each StarThinker will need to run under a different user with distinct environmental variables..  
+Yes, however each StarThinker will need to run under a different user with distinct environmental variables.  
 
 ---
 ### Can StarThinker settings in Google Cloud Console be shared?
@@ -48,16 +48,18 @@ No, The Google Cloud Console is tied to your user and cannot be shared.  To shar
 ### Service cannot be reached when trying to enable it, the Google Cloud UI is timing out.
 There may be an issue internally with that service.  Wait a few hours and try again at a later time.
 
-
+---
 ### I'm getting an error on Mac OS X.
 You may have to install developer tools, specifically Command Line Tools using the command:
 ```
 xcode-select --install
 ```
 
+---
 ### I'm getting an admin_policy_enforced error.
 The error may occur if the [StarThinker Scopes](../starthinker/config.py) do not match the [oAuth Consent Screen](https://console.cloud.google.com/apis/credentials/consent). 
 
+---
 ### I'm getting an SSH Connection Timeout error.
 Odds are your firewall settings are not up to date for the machine you're on.  To enable ssh access to other machines, add the current machines IP to the firewall rules by running...
 ```

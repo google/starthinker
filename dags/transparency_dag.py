@@ -35,7 +35,7 @@ Before running this Airflow module...
 
 Transparency Dashboard
 
-Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.
+Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domains and apps are misconfigured by publisher resulting in underreporting.
 
 Wait for <a href='https://console.cloud.google.com/bigquery?project=UNDEFINED&d=UNDEFINED' target='_blank'>BigQuery : UNDEFINED</a> : UNDEFINED : UNDEFINED</a> to be created.
 Copy DataStudio <a href='https://datastudio.google.com/c/u/0/datasources/1Az6d9loAHo69GSIyKUfusrtyf_IDqTVs' target='_blank'>Transparency Combined KPI</a> and connect.

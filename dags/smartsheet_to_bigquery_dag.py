@@ -33,7 +33,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Sheet To BigQuery
+SmartSheet To BigQuery
 
 Move sheet data into a BigQuery table.
 

@@ -3,7 +3,6 @@
     "released":"2019-03-14",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2019 Google LLC",
-    "product":"Cross Product",
     "icon":"language",
     "title":"Browser Activity Dashboard ( 2019 )",
     "description":"Visualizes a client's Campaign Manager and DV360 activity by browser and device",

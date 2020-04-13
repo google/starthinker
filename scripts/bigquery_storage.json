@@ -5,7 +5,7 @@
     "copyright":"Copyright 2018 Google LLC",
     "open":true,
     "icon":"arrow_forward",
-    "product":"BigQuery",
+    "requirements":["bigquery", "storage"],
     "title":"Storage To Table",
     "description":"Move using bucket and path prefix.",
     "instructions":[

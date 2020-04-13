@@ -33,7 +33,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Run Query
+Query Run
 
 Run query on a project.
 

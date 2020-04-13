@@ -1,7 +1,7 @@
 {% comment %}
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -43,35 +43,16 @@
        #message ul, #message li { display: inline; margin-left: 10px; }
        #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       span.square_box {
-         display: inline-block;
-         width: 40px;
-         height: 40px;
-         border: 2px solid #fff;
-         text-align: center;
-         line-height: 40px;
-         margin: 5px;
-       }
-
        div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
        h1 a i.material-icons { font-size: 3.28rem; }
        a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
        ol li { line-height: 1.8em; }
        textarea { margin-top: 7px; height: 10rem; }
        table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
-       a.btn { margin: 2px; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
-       div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
-       div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
-
-       div.service_card { min-height: 250px; width: 300px; margin: 10px;}
-       div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
-       div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
        div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; }
        #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
        div.card h4 { width 100%; padding: 20px;}
        div.card h4 i.material-icons { font-size: 2.28rem; }
@@ -98,7 +79,7 @@
         {% if not external %}<li><a href="/">Recipes</a></li>{% endif %}
         {% if not external %}<li><a href="/project/">Projects</a></li>{% endif %}
         <li><a href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
-        {% if not external %}<li><a href="/stats/">Stats</a></li>{% endif %}
+        <li><a href="{% if external %}/starthinker{% endif %}/help/">Help</a></li>
         {% if request.user.is_authenticated %}
           <li><a href="/logout/">Logout</a></li>
           <li>
@@ -109,7 +90,7 @@
           </li>
         {% endif %}
       </ul>
-      <ul class="side-nav red lighten-1" id="mobile-demo">
+      <ul class="side-nav green lighten-1" id="mobile-demo">
         {% if request.user.is_authenticated %}
           <li>
             <div class="chip" style="margin: 0px 30px;">
@@ -121,7 +102,7 @@
         {% if not external %}<li><a class="white-text" href="/">Recipes</a></li>{% endif %}
         {% if not external %}<li><a class="white-text" href="/project/">Project</a></li>{% endif %}
         <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
-        {% if not external %}<li><a class="white-text" href="/stats/">Stats</a></li>{% endif %}
+        <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/help/">Help</a></li>
         {% if request.user.is_authenticated %}
           <li><a class="white-text" href="/logout/">Logout</a></li>
         {% endif %}

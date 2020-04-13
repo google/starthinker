@@ -29,7 +29,7 @@ def fields_to_string(fields, values={}):
   return '{\n  %s\n}' % ('\n  '.join(items)) 
 
 
-def dict_to_string(value, char_indent='  ', char_line='\n', skip=(), indent=0):
+def dict_to_string(value, char_indent='  ', char_line='\n', skip=[], indent=0):
   nlch = char_line + char_indent * (indent + 1)
   if type(value) is dict:
     is_skip = any(k in value for k in skip)

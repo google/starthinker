@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ###########################################################################
 # 
 #  Copyright 2020 Google LLC
@@ -18,108 +16,30 @@
 #
 ###########################################################################
 
-from __future__ import unicode_literals
-
-from itertools import chain
-
 from django.shortcuts import render
 from django.template.loader import render_to_string
-from django.core.management import call_command
-from django.http import HttpResponse
 
-from starthinker_ui.account.decorators import permission_admin
-from starthinker_ui.account.models import Account
 from starthinker_ui.recipe.scripts import Script
-from starthinker_ui.recipe.models import Recipe
 
+def help(request):
+  # if open source then request will be null
+  if request: 
+    return render(request, "website/help.html", {})
+  else:
+    return render_to_string("website/help.html", { 'external':True })
 
 def solutions(request):
-  scripts = list(Script.get_scripts())
-  scripts.sort(key=lambda x: x.get_name())
-
   # if open source then request will be null
-  if not request: 
-    scripts = [s for s in scripts if s.get_open_source()]
-  
-  context = {
-    'scripts':scripts,
-    'categories':sorted(set(chain.from_iterable([s.get_categories() for s in scripts]))),
-    'catalysts':sorted(set(chain.from_iterable([s.get_catalysts() for s in scripts]))),
-    'requirements':sorted(set(chain.from_iterable([s.get_requirements() for s in scripts]))),
-    'external':(request is None)
-  }
-
-  # if open source then request will be null
-  if not request: 
-    return render_to_string("website/solutions.html", context)
+  if request: 
+    return render(request, "website/solutions.html", {})
   else:
-    return render(request, "website/solutions.html", context)
+    return render_to_string("website/solutions.html", { 'external':True })
 
 
 def solution(request, tag):
   script = Script(tag)
+  # if open source then request will be null
   if request: 
     return render(request, "website/solution.html", { 'script':script })
   else: 
     return render_to_string('website/solution.html', { 'script':script, "external":True })
-
-
-def get_metrics():
-
-  metrics = {
-    'account':{} , #'account':{ 'recipe':'', 'script':'', 'author':'' }
-    'script':{}, # 'script':{ 'account':'', 'recipe':'' }
-    'author':{}, # 'author':{ 'account':'', 'recipe':'', 'script' }
-  }
-
-  totals = {
-    'account':set(),
-    'author':set(),
-    'script':set(),
-    'recipe':set(),
-  }
-
-  for account in Account.objects.all():
-    totals['account'].add(account.name)
-
-    for recipe in account.recipe_set.all():
-      totals['recipe'].add(recipe.pk)
-
-      for s in recipe.get_values():
-        script = Script(s['tag'])
-        authors = script.get_authors()
-
-        metrics['account'].setdefault(account.name, {'recipe':set(), 'script':set(), 'author':set()})
-        metrics['account'][account.name]['recipe'].add(recipe.pk)
-        metrics['account'][account.name]['script'].add(s['tag'])
-        metrics['account'][account.name]['author'].update(authors)
-
-        totals['script'].add(s['tag'])
-        metrics['script'].setdefault(s['tag'], {'account':set(), 'recipe':set()})
-        metrics['script'][s['tag']]['recipe'].add(recipe.pk)
-        metrics['script'][s['tag']]['account'].add(account.name)
-
-        for author in authors:
-          totals['author'].add(author)
-          metrics['author'].setdefault(author, {'account':set(), 'recipe':set(), 'script':set()})
-          metrics['author'][author]['account'].add(account.name)
-          metrics['author'][author]['recipe'].add(recipe.pk)
-          metrics['author'][author]['script'].add(s['tag'])
-
-  # compute totals
-  for dimension in iter(totals.keys()):
-    totals[dimension] = len(totals[dimension])
-     
-  for metric_key, metric in metrics.items():
-    for row_key, row in metric.items():
-      for dimension in list(row.keys()):
-        row[dimension] = len(row[dimension])
-        row['%s_percent' % dimension] = int((row[dimension] * 100) / (totals[dimension] or 1))
-        row[metric_key] = row_key
-    metrics[metric_key] = metrics[metric_key].values()
-
-  return metrics
-       
-@permission_admin()
-def stats(request):
-  return render(request, "website/stats.html", { 'metrics':get_metrics() })

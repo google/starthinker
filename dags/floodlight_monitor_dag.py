@@ -52,7 +52,7 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'dcm_account': '',  # Specify an account_id or account_id:subaccount_id.
-  'sheet_url': '',  # Full URL to Google Sheet, Floodlight Monitor tab will be added.
+  'sheet': '',  # Full Name or URL to Google Sheet, Floodlight Monitor tab will be added.
 }
 
 TASKS = [
@@ -76,16 +76,18 @@ TASKS = [
         }
       },
       'sheet': {
-        'field': {
-          'name': 'sheet_url',
-          'kind': 'string',
-          'order': 2,
-          'default': '',
-          'description': 'Full URL to Google Sheet, Floodlight Monitor tab will be added.'
-        }
-      },
-      'tab': 'Floodlight Monitor',
-      'range': 'A2:C'
+        'sheet': {
+          'field': {
+            'name': 'sheet',
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Full Name or URL to Google Sheet, Floodlight Monitor tab will be added.'
+          }
+        },
+        'tab': 'Floodlight Monitor',
+        'range': 'A2:C'
+      }
     }
   }
 ]

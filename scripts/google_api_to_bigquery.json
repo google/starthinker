@@ -5,7 +5,7 @@
     "copyright":"Copyright 2018 Google LLC",
     "open":true,
     "icon":"settings_input_component",
-    "product":"Google API",
+    "requirements":["google api", "bigquery"],
     "title":"API To BigQuery",
     "description":"Execute a Google API function and store results to BigQuery.",
     "instructions":[

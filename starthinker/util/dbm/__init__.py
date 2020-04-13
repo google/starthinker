@@ -38,7 +38,7 @@ from starthinker.util.csv import column_header_sanitize, csv_to_rows, rows_to_cs
 from starthinker.util.dbm.schema import LineItem_Write_Schema
 
 
-API_VERSION = 'v1'
+API_VERSION = 'v1.1'
 DBM_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200MB recommended by docs * scale in config.py
 RE_FILENAME = re.compile(r'.*/(.*)\?GoogleAccess')
 
@@ -190,7 +190,8 @@ def report_fetch(auth, report_id=None, name=None, timeout = 60):
     #pprint.PrettyPrinter().pprint(report)
     if report:
       # report is running ( return only if timeout is exhausted )
-      if report['metadata']['googleCloudStoragePathForLatestReport'] == '':
+      print(report)
+      if report['metadata'].get('googleCloudStoragePathForLatestReport', '') == '':
         if project.verbose: print('DBM Still Running')
         if timeout < 0: return True
       # file exists ( return it success )

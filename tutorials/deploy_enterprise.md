@@ -30,7 +30,7 @@ bash install/deploy.sh
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_enterprise.md)
 
-Next, learn how to [deploy a recipe](ui_recipe.md).
+Next, learn how to [deploy a recipe](https://google.github.io/starthinker/help/).
 
 
 ## Verification Warning

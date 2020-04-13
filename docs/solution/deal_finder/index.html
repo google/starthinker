@@ -25,35 +25,16 @@
        #message ul, #message li { display: inline; margin-left: 10px; }
        #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       span.square_box {
-         display: inline-block;
-         width: 40px;
-         height: 40px;
-         border: 2px solid #fff;
-         text-align: center;
-         line-height: 40px;
-         margin: 5px;
-       }
-
        div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
        h1 a i.material-icons { font-size: 3.28rem; }
        a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
        ol li { line-height: 1.8em; }
        textarea { margin-top: 7px; height: 10rem; }
        table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
-       a.btn { margin: 2px; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
-       div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
-       div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
-
-       div.service_card { min-height: 250px; width: 300px; margin: 10px;}
-       div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
-       div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
        div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; }
        #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
        div.card h4 { width 100%; padding: 20px;}
        div.card h4 i.material-icons { font-size: 2.28rem; }
@@ -86,15 +67,15 @@
         
         
         <li><a href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a href="/starthinker/help/">Help</a></li>
         
       </ul>
-      <ul class="side-nav red lighten-1" id="mobile-demo">
+      <ul class="side-nav green lighten-1" id="mobile-demo">
         
         
         
         <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
         
       </ul>
     </div>
@@ -318,12 +299,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             
     
             <tr>
+              <td>Age</td>
+              <td>Nov. 22, 2017 (2 years, 4 months)</td>
+            </tr>
+    
+            <tr>
               <td>Authors</td>
               <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Deal+Finder+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Deal+Finder+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fdeal_finder%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
-    
-              </tbody>
+
+          </tbody>
         </table>
       </div>
     </div>
@@ -374,96 +360,96 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
      
 
     <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span>[
+      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
-        &quot;dataset&quot;: {
-            &quot;description&quot;: &quot;Create a dataset for bigquery tables.&quot;,
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
+            "description": "Create a dataset for bigquery tables.",
+            "hour": [
                 4
             ],
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;dataset&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;dataset&quot;,
-                    &quot;kind&quot;: &quot;string&quot;,
-                    &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+            "auth": "service",
+            "dataset": {
+                "field": {
+                    "name": "dataset",
+                    "kind": "string",
+                    "description": "Place where tables will be created in BigQuery."
                 }
             }
         }
     },
     {
-        &quot;dbm&quot;: {
-            &quot;description&quot;: &quot;Create a DV360 report.&quot;,
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "description": "Create a DV360 report.",
+            "hour": [
                 3
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;filters&quot;: {
-                    &quot;FILTER_PARTNER&quot;: {
-                        &quot;values&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;partners&quot;,
-                                &quot;kind&quot;: &quot;integer_list&quot;,
-                                &quot;order&quot;: 5,
-                                &quot;default&quot;: [],
-                                &quot;description&quot;: &quot;DV360 partner id.&quot;
+            "auth": "user",
+            "report": {
+                "filters": {
+                    "FILTER_PARTNER": {
+                        "values": {
+                            "field": {
+                                "name": "partners",
+                                "kind": "integer_list",
+                                "order": 5,
+                                "default": [],
+                                "description": "DV360 partner id."
                             }
                         }
                     },
-                    &quot;FILTER_ADVERTISER&quot;: {
-                        &quot;values&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;advertisers&quot;,
-                                &quot;kind&quot;: &quot;integer_list&quot;,
-                                &quot;order&quot;: 6,
-                                &quot;default&quot;: [],
-                                &quot;description&quot;: &quot;Comma delimited list of DV360 advertiser ids.&quot;
+                    "FILTER_ADVERTISER": {
+                        "values": {
+                            "field": {
+                                "name": "advertisers",
+                                "kind": "integer_list",
+                                "order": 6,
+                                "default": [],
+                                "description": "Comma delimited list of DV360 advertiser ids."
                             }
                         }
                     }
                 },
-                &quot;body&quot;: {
-                    &quot;timezoneCode&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_timezone&quot;,
-                            &quot;kind&quot;: &quot;timezone&quot;,
-                            &quot;description&quot;: &quot;Timezone for report dates.&quot;,
-                            &quot;default&quot;: &quot;America/Los_Angeles&quot;
+                "body": {
+                    "timezoneCode": {
+                        "field": {
+                            "name": "recipe_timezone",
+                            "kind": "timezone",
+                            "description": "Timezone for report dates.",
+                            "default": "America/Los_Angeles"
                         }
                     },
-                    &quot;metadata&quot;: {
-                        &quot;title&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;recipe_name&quot;,
-                                &quot;kind&quot;: &quot;string&quot;,
-                                &quot;prefix&quot;: &quot;Deal_Finder_&quot;,
-                                &quot;description&quot;: &quot;Name of report in DV360, should be unique.&quot;
+                    "metadata": {
+                        "title": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "prefix": "Deal_Finder_",
+                                "description": "Name of report in DV360, should be unique."
                             }
                         },
-                        &quot;dataRange&quot;: &quot;LAST_30_DAYS&quot;,
-                        &quot;format&quot;: &quot;CSV&quot;
+                        "dataRange": "LAST_30_DAYS",
+                        "format": "CSV"
                     },
-                    &quot;params&quot;: {
-                        &quot;type&quot;: &quot;TYPE_CROSS_PARTNER&quot;,
-                        &quot;groupBys&quot;: [
-                            &quot;FILTER_PARTNER&quot;,
-                            &quot;FILTER_ADVERTISER&quot;,
-                            &quot;FILTER_SITE_ID&quot;,
-                            &quot;FILTER_INVENTORY_SOURCE&quot;,
-                            &quot;FILTER_INVENTORY_SOURCE_TYPE&quot;,
-                            &quot;FILTER_ADVERTISER_CURRENCY&quot;,
-                            &quot;FILTER_CREATIVE_SIZE&quot;,
-                            &quot;FILTER_CREATIVE_TYPE&quot;
+                    "params": {
+                        "type": "TYPE_CROSS_PARTNER",
+                        "groupBys": [
+                            "FILTER_PARTNER",
+                            "FILTER_ADVERTISER",
+                            "FILTER_SITE_ID",
+                            "FILTER_INVENTORY_SOURCE",
+                            "FILTER_INVENTORY_SOURCE_TYPE",
+                            "FILTER_ADVERTISER_CURRENCY",
+                            "FILTER_CREATIVE_SIZE",
+                            "FILTER_CREATIVE_TYPE"
                         ],
-                        &quot;metrics&quot;: [
-                            &quot;METRIC_IMPRESSIONS&quot;,
-                            &quot;METRIC_CLICKS&quot;,
-                            &quot;METRIC_TOTAL_CONVERSIONS&quot;,
-                            &quot;METRIC_TOTAL_MEDIA_COST_ADVERTISER&quot;,
-                            &quot;METRIC_REVENUE_ADVERTISER&quot;,
-                            &quot;METRIC_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS&quot;,
-                            &quot;METRIC_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS&quot;
+                        "metrics": [
+                            "METRIC_IMPRESSIONS",
+                            "METRIC_CLICKS",
+                            "METRIC_TOTAL_CONVERSIONS",
+                            "METRIC_TOTAL_MEDIA_COST_ADVERTISER",
+                            "METRIC_REVENUE_ADVERTISER",
+                            "METRIC_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS",
+                            "METRIC_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS"
                         ]
                     }
                 }
@@ -471,132 +457,132 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;dbm&quot;: {
-            &quot;description&quot;: &quot;Copy a DV360 report to BigQuery.&quot;,
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "description": "Copy a DV360 report to BigQuery.",
+            "hour": [
                 4
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;recipe_name&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;Deal_Finder_&quot;,
-                        &quot;description&quot;: &quot;Name of report in DV360, should be unique.&quot;
+            "auth": "user",
+            "report": {
+                "name": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "prefix": "Deal_Finder_",
+                        "description": "Name of report in DV360, should be unique."
                     }
                 },
-                &quot;timeout&quot;: 10
+                "timeout": 10
             },
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
                         }
                     },
-                    &quot;table&quot;: &quot;Deal_Finder_DV360_Report&quot;,
-                    &quot;schema&quot;: [
+                    "table": "Deal_Finder_DV360_Report",
+                    "schema": [
                         {
-                            &quot;name&quot;: &quot;Partner&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Partner",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Partner_ID&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Partner_ID",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Partner_Status&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;,
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
+                            "name": "Partner_Status",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_ID&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Advertiser_ID",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Status&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;,
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
+                            "name": "Advertiser_Status",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Integration_Code&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;,
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
+                            "name": "Advertiser_Integration_Code",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
                         },
                         {
-                            &quot;name&quot;: &quot;Site&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Site",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Site_ID&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Site_ID",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Inventory&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;,
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
+                            "name": "Inventory",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
                         },
                         {
-                            &quot;name&quot;: &quot;Inventory_ID&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;,
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
+                            "name": "Inventory_ID",
+                            "type": "INTEGER",
+                            "mode": "NULLABLE"
                         },
                         {
-                            &quot;name&quot;: &quot;Inventory_Type&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Inventory_Type",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Currency&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser_Currency",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Creative_Width&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;,
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
+                            "name": "Creative_Width",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
                         },
                         {
-                            &quot;name&quot;: &quot;Creative_Height&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;,
-                            &quot;mode&quot;: &quot;NULLABLE&quot;
+                            "name": "Creative_Height",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
                         },
                         {
-                            &quot;name&quot;: &quot;Creative_Type&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Creative_Type",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Impressions&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Impressions",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Clicks&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Clicks",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Conversions&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Conversions",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Cost&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Cost",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Revenue&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Revenue",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;AV_Impressions_Measurable&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "AV_Impressions_Measurable",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;AV_Impressions_Viewable&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "AV_Impressions_Viewable",
+                            "type": "INTEGER"
                         }
                     ]
                 }
@@ -604,37 +590,37 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;bigquery&quot;: {
-            &quot;description&quot;: &quot;The logic query for Deal Finder, transforms report into view used by datastudio.&quot;,
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
+            "description": "The logic query for Deal Finder, transforms report into view used by datastudio.",
+            "hour": [
                 4
             ],
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;from&quot;: {
-                &quot;query&quot;: &quot;SELECT Partner, Partner_ID, Advertiser, Advertiser_ID, Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Size, Always_On, Deal_Impressions, Open_Impressions, Rank_Impressions, Deal_Clicks, Open_Clicks, Rank_Clicks, Deal_Conversions, Open_Conversions, Rank_Conversions, Deal_Impressions_Viewable, Open_Impressions_Viewable, Rank_Impressions_Viewable, Deal_Impressions_Measurable, Open_Impressions_Measurable, Rank_Impressions_Measurable, Deal_Cost, Open_Cost, Rank_Cost, FROM ( SELECT FIRST(Partner) AS Partner, FIRST(Partner_ID) AS Partner_ID, FIRST(Advertiser) AS Advertiser, Advertiser_ID, First(Site) AS Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Width + &#39; x &#39; + Creative_Height AS Creative_Size, IF (LEFT(Inventory, 5) == &#39;AO - &#39;, True, False) AS Always_On, SUM(Deal_Impressions) AS Deal_Impressions, SUM(Open_Impressions) AS Open_Impressions, SUM(Open_Impressions) + SUM(Deal_Impressions) AS Total_Impressions, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions DESC) AS Rank_Impressions, SUM(Deal_Clicks) AS Deal_Clicks, SUM(Open_Clicks) AS Open_Clicks, SUM(Open_Clicks) + SUM(Deal_Clicks) AS Total_Clicks, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Clicks DESC) AS Rank_Clicks, SUM(Deal_Conversions) AS Deal_Conversions, SUM(Open_Conversions) AS Open_Conversions, SUM(Open_Conversions) + SUM(Deal_Conversions) AS Total_Conversions, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Conversions DESC) AS Rank_Conversions, SUM(Deal_Cost) AS Deal_Cost, SUM(Open_Cost) AS Open_Cost, SUM(Open_Cost) + SUM(Deal_Cost) AS Total_Cost, RANK() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Cost DESC) AS Rank_Cost, SUM(Deal_Impressions_Viewable) AS Deal_Impressions_Viewable, SUM(Open_Impressions_Viewable) AS Open_Impressions_Viewable, SUM(Open_Impressions_Viewable) + SUM(Deal_Impressions_Viewable) AS Total_Impressions_Viewable, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions_Viewable DESC) AS Rank_Impressions_Viewable, SUM(Deal_Impressions_Measurable) AS Deal_Impressions_Measurable, SUM(Open_Impressions_Measurable) AS Open_Impressions_Measurable, SUM(Open_Impressions_Measurable) + SUM(Deal_Impressions_Measurable) AS Total_Impressions_Measurable, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions_Measurable DESC) AS Rank_Impressions_Measurable, FROM ( SELECT Partner, Partner_ID, Advertiser, Advertiser_ID, Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Width, Creative_Height, IF(Inventory_ID IS NULL, Impressions, 0) AS Open_Impressions, IF(Inventory_ID IS NULL, 0, Impressions) AS Deal_Impressions, IF(Inventory_ID IS NULL, Clicks, 0) AS Open_Clicks, IF(Inventory_ID IS NULL, 0, Clicks) AS Deal_Clicks, IF(Inventory_ID IS NULL, Conversions, 0) AS Open_Conversions, IF(Inventory_ID IS NULL, 0, Conversions) AS Deal_Conversions, IF(Inventory_ID IS NULL, Cost, 0) AS Open_Cost, IF(Inventory_ID IS NULL, 0, Cost) AS Deal_Cost, IF(Inventory_ID IS NULL, AV_Impressions_Viewable, 0) AS Open_Impressions_Viewable, IF(Inventory_ID IS NULL, 0, AV_Impressions_Viewable) AS Deal_Impressions_Viewable, IF(Inventory_ID IS NULL, AV_Impressions_Measurable, 0) AS Open_Impressions_Measurable, IF(Inventory_ID IS NULL, 0, AV_Impressions_Measurable) AS Deal_Impressions_Measurable, FROM [[PARAMETER].Deal_Finder_DV360_Report] OMIT RECORD IF Site == &#39;Low volume inventory&#39;) GROUP By Advertiser_ID, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Size, Always_On) WHERE Rank_Impressions &lt; 100 OR Rank_Clicks &lt; 100 OR Rank_Conversions &lt; 100 OR Rank_Cost &lt; 100;&quot;,
-                &quot;parameters&quot;: [
+            "auth": "service",
+            "from": {
+                "query": "SELECT Partner, Partner_ID, Advertiser, Advertiser_ID, Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Size, Always_On, Deal_Impressions, Open_Impressions, Rank_Impressions, Deal_Clicks, Open_Clicks, Rank_Clicks, Deal_Conversions, Open_Conversions, Rank_Conversions, Deal_Impressions_Viewable, Open_Impressions_Viewable, Rank_Impressions_Viewable, Deal_Impressions_Measurable, Open_Impressions_Measurable, Rank_Impressions_Measurable, Deal_Cost, Open_Cost, Rank_Cost, FROM ( SELECT FIRST(Partner) AS Partner, FIRST(Partner_ID) AS Partner_ID, FIRST(Advertiser) AS Advertiser, Advertiser_ID, First(Site) AS Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Width + ' x ' + Creative_Height AS Creative_Size, IF (LEFT(Inventory, 5) == 'AO - ', True, False) AS Always_On, SUM(Deal_Impressions) AS Deal_Impressions, SUM(Open_Impressions) AS Open_Impressions, SUM(Open_Impressions) + SUM(Deal_Impressions) AS Total_Impressions, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions DESC) AS Rank_Impressions, SUM(Deal_Clicks) AS Deal_Clicks, SUM(Open_Clicks) AS Open_Clicks, SUM(Open_Clicks) + SUM(Deal_Clicks) AS Total_Clicks, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Clicks DESC) AS Rank_Clicks, SUM(Deal_Conversions) AS Deal_Conversions, SUM(Open_Conversions) AS Open_Conversions, SUM(Open_Conversions) + SUM(Deal_Conversions) AS Total_Conversions, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Conversions DESC) AS Rank_Conversions, SUM(Deal_Cost) AS Deal_Cost, SUM(Open_Cost) AS Open_Cost, SUM(Open_Cost) + SUM(Deal_Cost) AS Total_Cost, RANK() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Cost DESC) AS Rank_Cost, SUM(Deal_Impressions_Viewable) AS Deal_Impressions_Viewable, SUM(Open_Impressions_Viewable) AS Open_Impressions_Viewable, SUM(Open_Impressions_Viewable) + SUM(Deal_Impressions_Viewable) AS Total_Impressions_Viewable, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions_Viewable DESC) AS Rank_Impressions_Viewable, SUM(Deal_Impressions_Measurable) AS Deal_Impressions_Measurable, SUM(Open_Impressions_Measurable) AS Open_Impressions_Measurable, SUM(Open_Impressions_Measurable) + SUM(Deal_Impressions_Measurable) AS Total_Impressions_Measurable, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions_Measurable DESC) AS Rank_Impressions_Measurable, FROM ( SELECT Partner, Partner_ID, Advertiser, Advertiser_ID, Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Width, Creative_Height, IF(Inventory_ID IS NULL, Impressions, 0) AS Open_Impressions, IF(Inventory_ID IS NULL, 0, Impressions) AS Deal_Impressions, IF(Inventory_ID IS NULL, Clicks, 0) AS Open_Clicks, IF(Inventory_ID IS NULL, 0, Clicks) AS Deal_Clicks, IF(Inventory_ID IS NULL, Conversions, 0) AS Open_Conversions, IF(Inventory_ID IS NULL, 0, Conversions) AS Deal_Conversions, IF(Inventory_ID IS NULL, Cost, 0) AS Open_Cost, IF(Inventory_ID IS NULL, 0, Cost) AS Deal_Cost, IF(Inventory_ID IS NULL, AV_Impressions_Viewable, 0) AS Open_Impressions_Viewable, IF(Inventory_ID IS NULL, 0, AV_Impressions_Viewable) AS Deal_Impressions_Viewable, IF(Inventory_ID IS NULL, AV_Impressions_Measurable, 0) AS Open_Impressions_Measurable, IF(Inventory_ID IS NULL, 0, AV_Impressions_Measurable) AS Deal_Impressions_Measurable, FROM [[PARAMETER].Deal_Finder_DV360_Report] OMIT RECORD IF Site == 'Low volume inventory') GROUP By Advertiser_ID, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Size, Always_On) WHERE Rank_Impressions < 100 OR Rank_Clicks < 100 OR Rank_Conversions < 100 OR Rank_Cost < 100;",
+                "parameters": [
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
                         }
                     }
                 ]
             },
-            &quot;to&quot;: {
-                &quot;dataset&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dataset&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+            "to": {
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "kind": "string",
+                        "description": "Place where tables will be written in BigQuery."
                     }
                 },
-                &quot;view&quot;: &quot;Deal_Finder_Dashboard&quot;
+                "view": "Deal_Finder_Dashboard"
             }
         }
     }
-]</pre>
+]</code></pre>
     </div>
 
   </div>
@@ -649,7 +635,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       Developer Guide<i class="material-icons right">build</i>
     </a>
-    <a href="https://github.com/google/starthinker/blob/master/tutorials/ui_recipe.md" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+    <a href="https://google.github.io/starthinker/help/" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       UI How To<i class="material-icons right">laptop</i>
     </a>
   </p>
@@ -665,7 +651,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google, Inc
+    &copy; 2019 Google LLC
     </div>
   </div>
 </footer>

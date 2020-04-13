@@ -4,8 +4,8 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_large",
-    "product":"SmartSheet",
-    "title":"Sheet To BigQuery",
+    "requirements":["smartsheet", "bigquery"],
+    "title":"SmartSheet To BigQuery",
     "description":"Move sheet data into a BigQuery table.",
     "instructions":[
       "Specify <a href='https://smartsheet-platform.github.io/api-docs/' target='_blank'>SmartSheet</a> token.",

@@ -3,9 +3,8 @@
     "released":"2017-08-14",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
     "icon":"arrow_forward",
-    "product":"BigQuery",
+    "requirements":["bigquery"],
     "title":"Query To Table",
     "description":"Save query results into a BigQuery table.",
     "instructions":[

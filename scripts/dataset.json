@@ -3,10 +3,9 @@
     "released":"2017-08-14",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
     "icon":"folder",
-    "product":"BigQuery",
-    "title":"Dataset",
+    "requirements":["bigquery"],
+    "title":"BigQuery Dataset",
     "description":"Create and permission a dataset in BigQuery.",
     "instructions":[
       "Specify the name of the dataset.",

@@ -15,14 +15,11 @@
       "tab":"Floodlight Monitor",
       "range":"A1:D"
     }},
-    { "floodlight_monitor":{
-      "description":"Monitor floodlights and send email alert if significant change.",
-      "auth":"user",
-      "account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
-      "sheet":{
-        "url":"StarThinker Sheet Test",
-        "tab":"Floodlight Monitor",
-        "range":"A2:C"
+    { "include":{
+      "script":"scripts/floodlight_monitor.json",
+      "parameters":{
+        "dcm_account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
+        "sheet":"StarThinker Sheet Test"
       }
     }},
     {

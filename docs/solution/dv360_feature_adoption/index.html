@@ -25,35 +25,16 @@
        #message ul, #message li { display: inline; margin-left: 10px; }
        #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       span.square_box {
-         display: inline-block;
-         width: 40px;
-         height: 40px;
-         border: 2px solid #fff;
-         text-align: center;
-         line-height: 40px;
-         margin: 5px;
-       }
-
        div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
        h1 a i.material-icons { font-size: 3.28rem; }
        a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
        ol li { line-height: 1.8em; }
        textarea { margin-top: 7px; height: 10rem; }
        table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
-       a.btn { margin: 2px; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
-       div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
-       div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
-
-       div.service_card { min-height: 250px; width: 300px; margin: 10px;}
-       div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
-       div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
        div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; }
        #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
        div.card h4 { width 100%; padding: 20px;}
        div.card h4 i.material-icons { font-size: 2.28rem; }
@@ -86,15 +67,15 @@
         
         
         <li><a href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a href="/starthinker/help/">Help</a></li>
         
       </ul>
-      <ul class="side-nav red lighten-1" id="mobile-demo">
+      <ul class="side-nav green lighten-1" id="mobile-demo">
         
         
         
         <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
         
       </ul>
     </div>
@@ -162,6 +143,8 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=budget">budget</a>
   
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=reporting">reporting</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=covid">covid</a>
   
 
   <img id="solution_image" src="https://github.com/google/starthinker/raw/master/tutorials/images/dv360_feature_adoption.png"/>
@@ -320,12 +303,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             
     
             <tr>
+              <td>Age</td>
+              <td>Feb. 6, 2020 (2 months, 1 week)</td>
+            </tr>
+    
+            <tr>
               <td>Authors</td>
               <td><a href="mailto:brynhastings@google.com?subject=Request+For+A+DV360+Feature+Adoption+Dashboard+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+DV360+Feature+Adoption+Dashboard+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fdv360_feature_adoption%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">brynhastings@google.com</a>
               </td>
             </tr>
-    
-              </tbody>
+
+          </tbody>
         </table>
       </div>
     </div>
@@ -388,98 +376,98 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
      
 
     <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span>[
+      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
-        &quot;dataset&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
+            "hour": [
                 1
             ],
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;description&quot;: &quot;Create a dataset for bigquery tables.&quot;,
-            &quot;dataset&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;recipe_name&quot;,
-                    &quot;kind&quot;: &quot;string&quot;,
-                    &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+            "auth": "service",
+            "description": "Create a dataset for bigquery tables.",
+            "dataset": {
+                "field": {
+                    "name": "recipe_name",
+                    "kind": "string",
+                    "description": "Place where tables will be created in BigQuery."
                 }
             }
         }
     },
     {
-        &quot;dbm&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "hour": [
                 2
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;filters&quot;: {
-                    &quot;FILTER_PARTNER&quot;: {
-                        &quot;values&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;partners&quot;,
-                                &quot;kind&quot;: &quot;integer_list&quot;,
-                                &quot;order&quot;: 5,
-                                &quot;default&quot;: [],
-                                &quot;description&quot;: &quot;DV360 partner id.&quot;
+            "auth": "user",
+            "report": {
+                "filters": {
+                    "FILTER_PARTNER": {
+                        "values": {
+                            "field": {
+                                "name": "partners",
+                                "kind": "integer_list",
+                                "order": 5,
+                                "default": [],
+                                "description": "DV360 partner id."
                             }
                         }
                     },
-                    &quot;FILTER_ADVERTISER&quot;: {
-                        &quot;values&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;advertisers&quot;,
-                                &quot;kind&quot;: &quot;integer_list&quot;,
-                                &quot;order&quot;: 6,
-                                &quot;default&quot;: [],
-                                &quot;description&quot;: &quot;Comma delimited list of DV360 advertiser ids.&quot;
+                    "FILTER_ADVERTISER": {
+                        "values": {
+                            "field": {
+                                "name": "advertisers",
+                                "kind": "integer_list",
+                                "order": 6,
+                                "default": [],
+                                "description": "Comma delimited list of DV360 advertiser ids."
                             }
                         }
                     }
                 },
-                &quot;body&quot;: {
-                    &quot;timezoneCode&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_timezone&quot;,
-                            &quot;kind&quot;: &quot;timezone&quot;,
-                            &quot;description&quot;: &quot;Timezone for report dates.&quot;,
-                            &quot;default&quot;: &quot;America/Los_Angeles&quot;
+                "body": {
+                    "timezoneCode": {
+                        "field": {
+                            "name": "recipe_timezone",
+                            "kind": "timezone",
+                            "description": "Timezone for report dates.",
+                            "default": "America/Los_Angeles"
                         }
                     },
-                    &quot;metadata&quot;: {
-                        &quot;dataRange&quot;: &quot;LAST_30_DAYS&quot;,
-                        &quot;format&quot;: &quot;CSV&quot;,
-                        &quot;title&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;recipe_name&quot;,
-                                &quot;kind&quot;: &quot;string&quot;,
-                                &quot;prefix&quot;: &quot;Feature_Adoption_Spend_&quot;,
-                                &quot;description&quot;: &quot;Name of report in DV360, should be unique.&quot;
+                    "metadata": {
+                        "dataRange": "LAST_30_DAYS",
+                        "format": "CSV",
+                        "title": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "prefix": "Feature_Adoption_Spend_",
+                                "description": "Name of report in DV360, should be unique."
                             }
                         }
                     },
-                    &quot;params&quot;: {
-                        &quot;type&quot;: &quot;TYPE_GENERAL&quot;,
-                        &quot;groupBys&quot;: [
-                            &quot;FILTER_ADVERTISER&quot;,
-                            &quot;FILTER_ADVERTISER_CURRENCY&quot;,
-                            &quot;FILTER_INSERTION_ORDER&quot;,
-                            &quot;FILTER_LINE_ITEM&quot;,
-                            &quot;FILTER_DATE&quot;
+                    "params": {
+                        "type": "TYPE_GENERAL",
+                        "groupBys": [
+                            "FILTER_ADVERTISER",
+                            "FILTER_ADVERTISER_CURRENCY",
+                            "FILTER_INSERTION_ORDER",
+                            "FILTER_LINE_ITEM",
+                            "FILTER_DATE"
                         ],
-                        &quot;metrics&quot;: [
-                            &quot;METRIC_IMPRESSIONS&quot;,
-                            &quot;METRIC_BILLABLE_IMPRESSIONS&quot;,
-                            &quot;METRIC_CLICKS&quot;,
-                            &quot;METRIC_CTR&quot;,
-                            &quot;METRIC_TOTAL_CONVERSIONS&quot;,
-                            &quot;METRIC_LAST_CLICKS&quot;,
-                            &quot;METRIC_LAST_IMPRESSIONS&quot;,
-                            &quot;METRIC_REVENUE_ADVERTISER&quot;,
-                            &quot;METRIC_MEDIA_COST_ADVERTISER&quot;,
-                            &quot;METRIC_RICH_MEDIA_VIDEO_COMPLETIONS&quot;,
-                            &quot;METRIC_RICH_MEDIA_VIDEO_PLAYS&quot;,
-                            &quot;METRIC_CM_POST_CLICK_REVENUE&quot;,
-                            &quot;METRIC_CM_POST_VIEW_REVENUE&quot;
+                        "metrics": [
+                            "METRIC_IMPRESSIONS",
+                            "METRIC_BILLABLE_IMPRESSIONS",
+                            "METRIC_CLICKS",
+                            "METRIC_CTR",
+                            "METRIC_TOTAL_CONVERSIONS",
+                            "METRIC_LAST_CLICKS",
+                            "METRIC_LAST_IMPRESSIONS",
+                            "METRIC_REVENUE_ADVERTISER",
+                            "METRIC_MEDIA_COST_ADVERTISER",
+                            "METRIC_RICH_MEDIA_VIDEO_COMPLETIONS",
+                            "METRIC_RICH_MEDIA_VIDEO_PLAYS",
+                            "METRIC_CM_POST_CLICK_REVENUE",
+                            "METRIC_CM_POST_VIEW_REVENUE"
                         ]
                     }
                 }
@@ -487,77 +475,77 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;dbm&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "hour": [
                 2
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;filters&quot;: {
-                    &quot;FILTER_PARTNER&quot;: {
-                        &quot;values&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;partners&quot;,
-                                &quot;kind&quot;: &quot;integer_list&quot;,
-                                &quot;order&quot;: 5,
-                                &quot;default&quot;: [],
-                                &quot;description&quot;: &quot;DV360 partner id.&quot;
+            "auth": "user",
+            "report": {
+                "filters": {
+                    "FILTER_PARTNER": {
+                        "values": {
+                            "field": {
+                                "name": "partners",
+                                "kind": "integer_list",
+                                "order": 5,
+                                "default": [],
+                                "description": "DV360 partner id."
                             }
                         }
                     },
-                    &quot;FILTER_ADVERTISER&quot;: {
-                        &quot;values&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;advertisers&quot;,
-                                &quot;kind&quot;: &quot;integer_list&quot;,
-                                &quot;order&quot;: 6,
-                                &quot;default&quot;: [],
-                                &quot;description&quot;: &quot;Comma delimited list of DV360 advertiser ids.&quot;
+                    "FILTER_ADVERTISER": {
+                        "values": {
+                            "field": {
+                                "name": "advertisers",
+                                "kind": "integer_list",
+                                "order": 6,
+                                "default": [],
+                                "description": "Comma delimited list of DV360 advertiser ids."
                             }
                         }
                     }
                 },
-                &quot;body&quot;: {
-                    &quot;timezoneCode&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_timezone&quot;,
-                            &quot;kind&quot;: &quot;timezone&quot;,
-                            &quot;description&quot;: &quot;Timezone for report dates.&quot;,
-                            &quot;default&quot;: &quot;America/Los_Angeles&quot;
+                "body": {
+                    "timezoneCode": {
+                        "field": {
+                            "name": "recipe_timezone",
+                            "kind": "timezone",
+                            "description": "Timezone for report dates.",
+                            "default": "America/Los_Angeles"
                         }
                     },
-                    &quot;metadata&quot;: {
-                        &quot;dataRange&quot;: &quot;LAST_30_DAYS&quot;,
-                        &quot;format&quot;: &quot;CSV&quot;,
-                        &quot;title&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;recipe_name&quot;,
-                                &quot;kind&quot;: &quot;string&quot;,
-                                &quot;prefix&quot;: &quot;Feature_Adoption_Environment_&quot;,
-                                &quot;description&quot;: &quot;Name of report in DV360, should be unique.&quot;
+                    "metadata": {
+                        "dataRange": "LAST_30_DAYS",
+                        "format": "CSV",
+                        "title": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "prefix": "Feature_Adoption_Environment_",
+                                "description": "Name of report in DV360, should be unique."
                             }
                         }
                     },
-                    &quot;params&quot;: {
-                        &quot;type&quot;: &quot;TYPE_GENERAL&quot;,
-                        &quot;groupBys&quot;: [
-                            &quot;FILTER_ADVERTISER&quot;,
-                            &quot;FILTER_ADVERTISER_CURRENCY&quot;,
-                            &quot;FILTER_INSERTION_ORDER&quot;,
-                            &quot;FILTER_LINE_ITEM&quot;,
-                            &quot;FILTER_DEVICE_TYPE&quot;,
-                            &quot;FILTER_PAGE_LAYOUT&quot;,
-                            &quot;FILTER_DATE&quot;
+                    "params": {
+                        "type": "TYPE_GENERAL",
+                        "groupBys": [
+                            "FILTER_ADVERTISER",
+                            "FILTER_ADVERTISER_CURRENCY",
+                            "FILTER_INSERTION_ORDER",
+                            "FILTER_LINE_ITEM",
+                            "FILTER_DEVICE_TYPE",
+                            "FILTER_PAGE_LAYOUT",
+                            "FILTER_DATE"
                         ],
-                        &quot;metrics&quot;: [
-                            &quot;METRIC_IMPRESSIONS&quot;,
-                            &quot;METRIC_BILLABLE_IMPRESSIONS&quot;,
-                            &quot;METRIC_CLICKS&quot;,
-                            &quot;METRIC_TOTAL_CONVERSIONS&quot;,
-                            &quot;METRIC_LAST_CLICKS&quot;,
-                            &quot;METRIC_LAST_IMPRESSIONS&quot;,
-                            &quot;METRIC_REVENUE_ADVERTISER&quot;,
-                            &quot;METRIC_MEDIA_COST_ADVERTISER&quot;
+                        "metrics": [
+                            "METRIC_IMPRESSIONS",
+                            "METRIC_BILLABLE_IMPRESSIONS",
+                            "METRIC_CLICKS",
+                            "METRIC_TOTAL_CONVERSIONS",
+                            "METRIC_LAST_CLICKS",
+                            "METRIC_LAST_IMPRESSIONS",
+                            "METRIC_REVENUE_ADVERTISER",
+                            "METRIC_MEDIA_COST_ADVERTISER"
                         ]
                     }
                 }
@@ -565,144 +553,144 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;dbm&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "hour": [
                 6
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;recipe_name&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;Feature_Adoption_Spend_&quot;,
-                        &quot;description&quot;: &quot;Name of report in DV360, should be unique.&quot;
+            "auth": "user",
+            "report": {
+                "name": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "prefix": "Feature_Adoption_Spend_",
+                        "description": "Name of report in DV360, should be unique."
                     }
                 }
             },
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_name&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
                         }
                     },
-                    &quot;table&quot;: &quot;DV360_Feature_Spend&quot;,
-                    &quot;is_incremental_load&quot;: true,
-                    &quot;schema&quot;: [
+                    "table": "DV360_Feature_Spend",
+                    "is_incremental_load": true,
+                    "schema": [
                         {
-                            &quot;name&quot;: &quot;Advertiser&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Id&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Advertiser_Id",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Status&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser_Status",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Integration_Code&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser_Integration_Code",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Currency&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser_Currency",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Insertion_Order&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Insertion_Order",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Insertion_Order_Id&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Insertion_Order_Id",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Insertion_Order_Status&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Insertion_Order_Status",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Insertion_Order_Integration_Code&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Insertion_Order_Integration_Code",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Line_Item&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Line_Item",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Line_Item_Id&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Line_Item_Id",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Line_Item_Status&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Line_Item_Status",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Line_Item_Integration_Code&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Line_Item_Integration_Code",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Targeted_Data_Providers&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Targeted_Data_Providers",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Report_Day&quot;,
-                            &quot;type&quot;: &quot;DATE&quot;
+                            "name": "Report_Day",
+                            "type": "DATE"
                         },
                         {
-                            &quot;name&quot;: &quot;Impressions&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Impressions",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Billable_Impressions&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Billable_Impressions",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Clicks&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Clicks",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Click_Rate_Ctr&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Click_Rate_Ctr",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Total_Conversions&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Total_Conversions",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Post_Click_Conversions&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Post_Click_Conversions",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Post_View_Conversions&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Post_View_Conversions",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Revenue_Adv_Currency&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Revenue_Adv_Currency",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Media_Cost_Advertiser_Currency&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Media_Cost_Advertiser_Currency",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Complete_Views_Video&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Complete_Views_Video",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Starts_Video&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Starts_Video",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Cm_Post_Click_Revenue&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Cm_Post_Click_Revenue",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Cm_Post_View_Revenue&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Cm_Post_View_Revenue",
+                            "type": "FLOAT"
                         }
                     ]
                 }
@@ -710,132 +698,132 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;dbm&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "hour": [
                 6
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;recipe_name&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;Feature_Adoption_Environment_&quot;,
-                        &quot;description&quot;: &quot;Name of report in DV360, should be unique.&quot;
+            "auth": "user",
+            "report": {
+                "name": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "prefix": "Feature_Adoption_Environment_",
+                        "description": "Name of report in DV360, should be unique."
                     }
                 }
             },
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_name&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
                         }
                     },
-                    &quot;table&quot;: &quot;DV360_Feature_Environment&quot;,
-                    &quot;is_incremental_load&quot;: true,
-                    &quot;schema&quot;: [
+                    "table": "DV360_Feature_Environment",
+                    "is_incremental_load": true,
+                    "schema": [
                         {
-                            &quot;name&quot;: &quot;Advertiser&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Id&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Advertiser_Id",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Status&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser_Status",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Integration_Code&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser_Integration_Code",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Advertiser_Currency&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Advertiser_Currency",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Insertion_Order&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Insertion_Order",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Insertion_Order_Id&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Insertion_Order_Id",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Insertion_Order_Status&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Insertion_Order_Status",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Insertion_Order_Integration_Code&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Insertion_Order_Integration_Code",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Line_Item&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Line_Item",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Line_Item_Id&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Line_Item_Id",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Line_Item_Status&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Line_Item_Status",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Line_Item_Integration_Code&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Line_Item_Integration_Code",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Targeted_Data_Providers&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Targeted_Data_Providers",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Device_Type&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Device_Type",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Environment&quot;,
-                            &quot;type&quot;: &quot;STRING&quot;
+                            "name": "Environment",
+                            "type": "STRING"
                         },
                         {
-                            &quot;name&quot;: &quot;Report_Day&quot;,
-                            &quot;type&quot;: &quot;DATE&quot;
+                            "name": "Report_Day",
+                            "type": "DATE"
                         },
                         {
-                            &quot;name&quot;: &quot;Impressions&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Impressions",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Billable_Impressions&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Billable_Impressions",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Clicks&quot;,
-                            &quot;type&quot;: &quot;INTEGER&quot;
+                            "name": "Clicks",
+                            "type": "INTEGER"
                         },
                         {
-                            &quot;name&quot;: &quot;Total_Conversions&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Total_Conversions",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Post_Click_Conversions&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Post_Click_Conversions",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Post_View_Conversions&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Post_View_Conversions",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Revenue_Adv_Currency&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Revenue_Adv_Currency",
+                            "type": "FLOAT"
                         },
                         {
-                            &quot;name&quot;: &quot;Media_Cost_Advertiser_Currency&quot;,
-                            &quot;type&quot;: &quot;FLOAT&quot;
+                            "name": "Media_Cost_Advertiser_Currency",
+                            "type": "FLOAT"
                         }
                     ]
                 }
@@ -843,37 +831,37 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;sdf_legacy&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sdf_legacy/run.py" target="_blank">sdf_legacy</a>": {
+            "hour": [
                 4
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;version&quot;: &quot;5&quot;,
-            &quot;file_types&quot;: [
-                &quot;LINE_ITEM&quot;
+            "auth": "user",
+            "version": "5",
+            "file_types": [
+                "LINE_ITEM"
             ],
-            &quot;filter_type&quot;: &quot;ADVERTISER_ID&quot;,
-            &quot;read&quot;: {
-                &quot;filter_ids&quot;: {
-                    &quot;values&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;advertisers&quot;,
-                            &quot;kind&quot;: &quot;integer_list&quot;,
-                            &quot;order&quot;: 6,
-                            &quot;default&quot;: [],
-                            &quot;description&quot;: &quot;Comma delimited list of DV360 advertiser ids.&quot;
+            "filter_type": "ADVERTISER_ID",
+            "read": {
+                "filter_ids": {
+                    "values": {
+                        "field": {
+                            "name": "advertisers",
+                            "kind": "integer_list",
+                            "order": 6,
+                            "default": [],
+                            "description": "Comma delimited list of DV360 advertiser ids."
                         }
                     }
                 }
             },
-            &quot;daily&quot;: true,
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_name&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+            "daily": true,
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
                         }
                     }
                 }
@@ -881,37 +869,37 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;sdf_legacy&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sdf_legacy/run.py" target="_blank">sdf_legacy</a>": {
+            "hour": [
                 4
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;version&quot;: &quot;5&quot;,
-            &quot;file_types&quot;: [
-                &quot;INSERTION_ORDER&quot;
+            "auth": "user",
+            "version": "5",
+            "file_types": [
+                "INSERTION_ORDER"
             ],
-            &quot;filter_type&quot;: &quot;ADVERTISER_ID&quot;,
-            &quot;read&quot;: {
-                &quot;filter_ids&quot;: {
-                    &quot;values&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;advertisers&quot;,
-                            &quot;kind&quot;: &quot;integer_list&quot;,
-                            &quot;order&quot;: 6,
-                            &quot;default&quot;: [],
-                            &quot;description&quot;: &quot;Comma delimited list of DV360 advertiser ids.&quot;
+            "filter_type": "ADVERTISER_ID",
+            "read": {
+                "filter_ids": {
+                    "values": {
+                        "field": {
+                            "name": "advertisers",
+                            "kind": "integer_list",
+                            "order": 6,
+                            "default": [],
+                            "description": "Comma delimited list of DV360 advertiser ids."
                         }
                     }
                 }
             },
-            &quot;daily&quot;: true,
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_name&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+            "daily": true,
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
                         }
                     }
                 }
@@ -919,62 +907,62 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         }
     },
     {
-        &quot;bigquery&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
+            "hour": [
                 6
             ],
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;from&quot;: {
-                &quot;query&quot;: &quot; SELECT   Report_Day,   Advertiser,   Advertiser_Id,   Advertiser_Currency,   Insertion_Order AS Insertion_Order_Name,   Insertion_Order_Id AS Insertion_Order_ID,   CONCAT(Insertion_Order,&#39; (&#39;,CAST(Insertion_Order_ID AS STRING),&#39;)&#39;) AS Insertion_Order,   Line_Item AS LI_Name,   b.Line_Item_Id AS LI_ID,   CONCAT(Line_Item,&#39; (&#39;,CAST(b.Line_Item_Id AS STRING),&#39;)&#39;) AS Line_Item,   IF(MAX(SDF_Day) OVER () = SDF_Day, &#39;True&#39;, &#39;False&#39;) AS Max_Date,   a.*,   IF(Bid_Strategy_Type = &#39;Fixed&#39;, &#39;Fixed&#39;, CONCAT(Bid_Strategy_Type, &#39; &#39;, Bid_Strategy_Unit)) AS Bid_Strategy,   IF(Bid_Strategy_Type = &#39;Fixed&#39;, &#39;Fixed&#39;, &#39;Autobidding&#39;) AS Autobidding_Overall,   CONCAT(Pacing, &#39; &#39;, Pacing_Rate) AS Pacing_Overall,   IF(Affinity_In_Market_Targeting_Include IS NULL, &#39;False&#39;, &#39;True&#39;) AS Affinity_In_Market_TF,   IF(Affinity_In_Market_Targeting_Exclude IS NULL, &#39;False&#39;, &#39;True&#39;) AS Affinity_In_Market_Exclude_TF,   IF(Custom_List_Targeting IS NULL, &#39;False&#39;, &#39;True&#39;) AS Custom_List_TF,   IF(Audience_Targeting_Include IS NULL      AND Affinity_In_Market_Targeting_Include IS NULL      AND Custom_List_Targeting IS NULL      AND Audience_Targeting_Similar_Audiences = &#39;False&#39; , &#39;False&#39;, &#39;True&#39;) AS Audience_Targeting_TF,   IF(Keyword_Targeting_Exclude IS NULL     AND Keyword_List_Targeting_Exclude IS NULL, &#39;False&#39;, &#39;True&#39;) AS Keyword_Exclusions_TF,   IF(Position_Targeting_On_Screen IS NULL     AND Position_Targeting_Display_Position_In_Content IS NULL     AND Position_Targeting_Video_Position_In_Content IS NULL     AND Position_Targeting_Audio_Position_In_Content IS NULL, &#39;False&#39;, &#39;True&#39;) AS Position_Targeting_TF,   IF((Geography_Targeting_Include IS NULL       AND Geography_Regional_Location_List_Targeting_Include IS NULL), &#39;False&#39;, &#39;True&#39;) AS Geography_Targeting_TF,   IF(Language_Targeting_Include IS NULL, &#39;False&#39;, &#39;True&#39;) AS Language_Targeting_TF,   IF(Site_Targeting_Exclude IS NULL     AND Site_Targeting_Include IS NULL, &#39;False&#39;, &#39;True&#39;) AS Site_List_TF,   Impressions AS Impressions,   Billable_Impressions AS Billable_Impressions,   Clicks AS Clicks,   Total_Conversions AS Total_Conversions,   Post_Click_Conversions AS Post_Click_Conversions,   Post_View_Conversions AS Post_View_Conversions,   Revenue_Adv_Currency AS Rev_Adv_Currency,   Media_Cost_Advertiser_Currency AS Media_Cost_Adv_Currency,   Cm_Post_Click_Revenue AS CM_Post_Click_Revenue,   Cm_Post_View_Revenue AS CM_Post_View_Revenue,   (Cm_Post_Click_Revenue+Cm_Post_View_Revenue) AS CM_Total_Revenue,   IF (Bid_Strategy_Type = &#39;Fixed&#39;, 0, Revenue_Adv_Currency) AS Autobid_Rev,   IF (Type = &#39;Display&#39;, Revenue_Adv_Currency, 0) AS Display_Rev,   IF (Type = &#39;Video&#39;, Revenue_Adv_Currency, 0) AS Video_Rev,   IF (Type = &#39;TrueView&#39;, Revenue_Adv_Currency, 0) AS TrueView_Rev,   IF (Type = &#39;Audio&#39;, Revenue_Adv_Currency, 0) AS Audio_Rev,   IF ((STRPOS(Environment_Targeting, &#39;Desktop&#39;)&gt;0), Revenue_Adv_Currency, 0) AS Desktop_Rev   FROM `[PARAMETER].[PARAMETER].SDF_LINE_ITEM` AS a    LEFT JOIN `[PARAMETER].[PARAMETER].DV360_Feature_Spend` AS b      ON DATE_SUB(a.SDF_Day, INTERVAL 1 DAY) = b.Report_Day     AND a.Line_Item_Id = b.Line_Item_Id    WHERE b.Report_Day IS NOT NULL &quot;,
-                &quot;parameters&quot;: [
+            "auth": "service",
+            "from": {
+                "query": " SELECT   Report_Day,   Advertiser,   Advertiser_Id,   Advertiser_Currency,   Insertion_Order AS Insertion_Order_Name,   Insertion_Order_Id AS Insertion_Order_ID,   CONCAT(Insertion_Order,' (',CAST(Insertion_Order_ID AS STRING),')') AS Insertion_Order,   Line_Item AS LI_Name,   b.Line_Item_Id AS LI_ID,   CONCAT(Line_Item,' (',CAST(b.Line_Item_Id AS STRING),')') AS Line_Item,   IF(MAX(SDF_Day) OVER () = SDF_Day, 'True', 'False') AS Max_Date,   a.*,   IF(Bid_Strategy_Type = 'Fixed', 'Fixed', CONCAT(Bid_Strategy_Type, ' ', Bid_Strategy_Unit)) AS Bid_Strategy,   IF(Bid_Strategy_Type = 'Fixed', 'Fixed', 'Autobidding') AS Autobidding_Overall,   CONCAT(Pacing, ' ', Pacing_Rate) AS Pacing_Overall,   IF(Affinity_In_Market_Targeting_Include IS NULL, 'False', 'True') AS Affinity_In_Market_TF,   IF(Affinity_In_Market_Targeting_Exclude IS NULL, 'False', 'True') AS Affinity_In_Market_Exclude_TF,   IF(Custom_List_Targeting IS NULL, 'False', 'True') AS Custom_List_TF,   IF(Audience_Targeting_Include IS NULL      AND Affinity_In_Market_Targeting_Include IS NULL      AND Custom_List_Targeting IS NULL      AND Audience_Targeting_Similar_Audiences = 'False' , 'False', 'True') AS Audience_Targeting_TF,   IF(Keyword_Targeting_Exclude IS NULL     AND Keyword_List_Targeting_Exclude IS NULL, 'False', 'True') AS Keyword_Exclusions_TF,   IF(Position_Targeting_On_Screen IS NULL     AND Position_Targeting_Display_Position_In_Content IS NULL     AND Position_Targeting_Video_Position_In_Content IS NULL     AND Position_Targeting_Audio_Position_In_Content IS NULL, 'False', 'True') AS Position_Targeting_TF,   IF((Geography_Targeting_Include IS NULL       AND Geography_Regional_Location_List_Targeting_Include IS NULL), 'False', 'True') AS Geography_Targeting_TF,   IF(Language_Targeting_Include IS NULL, 'False', 'True') AS Language_Targeting_TF,   IF(Site_Targeting_Exclude IS NULL     AND Site_Targeting_Include IS NULL, 'False', 'True') AS Site_List_TF,   Impressions AS Impressions,   Billable_Impressions AS Billable_Impressions,   Clicks AS Clicks,   Total_Conversions AS Total_Conversions,   Post_Click_Conversions AS Post_Click_Conversions,   Post_View_Conversions AS Post_View_Conversions,   Revenue_Adv_Currency AS Rev_Adv_Currency,   Media_Cost_Advertiser_Currency AS Media_Cost_Adv_Currency,   Cm_Post_Click_Revenue AS CM_Post_Click_Revenue,   Cm_Post_View_Revenue AS CM_Post_View_Revenue,   (Cm_Post_Click_Revenue+Cm_Post_View_Revenue) AS CM_Total_Revenue,   IF (Bid_Strategy_Type = 'Fixed', 0, Revenue_Adv_Currency) AS Autobid_Rev,   IF (Type = 'Display', Revenue_Adv_Currency, 0) AS Display_Rev,   IF (Type = 'Video', Revenue_Adv_Currency, 0) AS Video_Rev,   IF (Type = 'TrueView', Revenue_Adv_Currency, 0) AS TrueView_Rev,   IF (Type = 'Audio', Revenue_Adv_Currency, 0) AS Audio_Rev,   IF ((STRPOS(Environment_Targeting, 'Desktop')>0), Revenue_Adv_Currency, 0) AS Desktop_Rev   FROM `[PARAMETER].[PARAMETER].SDF_LINE_ITEM` AS a    LEFT JOIN `[PARAMETER].[PARAMETER].DV360_Feature_Spend` AS b      ON DATE_SUB(a.SDF_Day, INTERVAL 1 DAY) = b.Report_Day     AND a.Line_Item_Id = b.Line_Item_Id    WHERE b.Report_Day IS NOT NULL ",
+                "parameters": [
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_project&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 6,
-                            &quot;default&quot;: &quot;&quot;,
-                            &quot;description&quot;: &quot;Google Cloud Project Id.&quot;
+                        "field": {
+                            "name": "recipe_project",
+                            "kind": "string",
+                            "order": 6,
+                            "default": "",
+                            "description": "Google Cloud Project Id."
                         }
                     },
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_name&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
                         }
                     },
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_project&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 6,
-                            &quot;default&quot;: &quot;&quot;,
-                            &quot;description&quot;: &quot;Google Cloud Project Id.&quot;
+                        "field": {
+                            "name": "recipe_project",
+                            "kind": "string",
+                            "order": 6,
+                            "default": "",
+                            "description": "Google Cloud Project Id."
                         }
                     },
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_name&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
                         }
                     }
                 ],
-                &quot;legacy&quot;: false
+                "legacy": false
             },
-            &quot;to&quot;: {
-                &quot;dataset&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;recipe_name&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;description&quot;: &quot;Place where tables will be created in BigQuery.&quot;
+            "to": {
+                "dataset": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "description": "Place where tables will be created in BigQuery."
                     }
                 },
-                &quot;view&quot;: &quot;DV360_Feature_Adoption_Analysis&quot;
+                "view": "DV360_Feature_Adoption_Analysis"
             }
         }
     }
-]</pre>
+]</code></pre>
     </div>
 
   </div>
@@ -989,7 +977,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       Developer Guide<i class="material-icons right">build</i>
     </a>
-    <a href="https://github.com/google/starthinker/blob/master/tutorials/ui_recipe.md" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+    <a href="https://google.github.io/starthinker/help/" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       UI How To<i class="material-icons right">laptop</i>
     </a>
   </p>
@@ -1005,7 +993,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google, Inc
+    &copy; 2019 Google LLC
     </div>
   </div>
 </footer>

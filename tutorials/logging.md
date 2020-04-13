@@ -8,8 +8,8 @@ can be used to create dashboards and monitor the status of all StarThinker jobs.
 ![StackDriver Logs](images/logging_logs.png)
 [View StackDriver Logs Larger](images/logging_logs.png)
 
-StarThinker logs embed parts of the recipe in the jsonPayload filed of StackDriver logs. This allows
-logs to be filtered by values within each recipe.  Logging is used primarily by the job runner.
+StarThinker logs embed parts of the script in the jsonPayload filed of StackDriver logs. This allows
+logs to be filtered by values within each script.  Logging is used primarily by the job runner.
 
 1. Logging structure is defined in: [starthinker_ui/ui/log.py](../starthinker_ui/ui/log.py).
 1. Most logging occurs in: [starthinker_ui/recipe/management/commands/job_worker.py](../starthinker_ui/recipe/management/commands/job_worker.py)
@@ -19,7 +19,7 @@ logs to be filtered by values within each recipe.  Logging is used primarily by 
     - Add field to summary line: labels.event
     - Add field to summary line: jsonPayload.recipe.setup.uuid
     - Add field to summary line: jsonPayload.recipe.setup.script
-1. Tips for debugging recipes:
+1. Tips for debugging scripts:
   - Filter by a specific jsonPayload.recipe.setup.uuid to view a single recipe timeline.
   - Remember to us Jomp to now button to move log window to current time.
 

@@ -22,63 +22,65 @@
 
 {% block content %}
 
-  <div class="split">
-    <div class="split_left right-align">
+  <form action="." method="post">
+    {% csrf_token %}
 
-      <div class="card blue left-align">
-        <div class="card-content white-text">
-          <i class="right large material-icons">cloud</i>
-          <span class="card-title">Manage Project</span>
-          <p>Store your Cloud Project credentials here and use them to deploy recipes.</p>
-        </div>
-      </div>
-      <br/>
-
-      <p><a href="https://cloud.google.com/resource-manager/docs/creating-managing-projects" target="_blank" class="waves-effect waves-light btn blue form_button">
-          Create Cloud Project <i class="material-icons right">build</i>
-      </a></p>
-      <p><a href="https://cloud.google.com/storage/docs/authentication#generating-a-private-key" target="_blank" class="waves-effect waves-light btn blue form_button">
-          Create Service Key <i class="material-icons right">vpn_key</i>
-      </a></p>
-      <br/>
-
-      <p><strong>Roles we recommend:</strong>
-        <br/>bigquery.jobs.create
-        <br/>bigquery.jobs.get
-        <br/>bigquery.tables.create
-        <br/>bigquery.tables.update
-        <br/>bigquery.tables.updateData
-      </p>
-
-    </div>
-
-    <div class="split_right left-align">
-      <form action="." method="post">
-        {% csrf_token %}
-
-        <div class="card-panel">
-          <h3>Edit Project</h3>
-          <p class="flow-text">Copy and paste the JSON service credentials here.</p>
-          <br/>
-          {% with fields=form_project %}
-            {% include "form_fields.html" %}
-          {% endwith %}
-        </div>
-           
-  
-        {% if form_project.instance.pk %}
-          <a class="btn waves-effect waves-light red darken-2 right" href="{{ form_project.instance.link_delete }}">
-            Delete <i class="material-icons right">delete</i>
+    <div class="row">
+      <div class="col s12 m4 l3 right-align">
+        <br/>
+        <p class="right-align">
+          <a href="https://cloud.google.com/" target="_blank" class="waves-effect waves-light btn blue form_button">
+            Create Cloud Project <i class="material-icons right">build</i>
           </a>
-        {% endif %}
+        </p>
+        <p class="right-align">
+          <a href="https://console.cloud.google.com/iam-admin/serviceaccounts/create" target="_blank" class="waves-effect waves-light btn blue form_button">
+            Create Service JSON <i class="material-icons right">android</i>
+          </a>
+        </p>
+        <p class="right-align">
+          <a href="https://console.cloud.google.com/iam-admin/iam" target="_blank" class="waves-effect waves-light btn blue form_button">
+            Permission Service<i class="material-icons right">security</i>
+          </a>
+        </p>
+        <p class="right-align">
+          <button class="btn blue waves-effect waves-light" type="submit" name="action">
+            Save <i class="material-icons right">save</i>
+          </button>
+        </p>
   
-        <button class="btn blue waves-effect waves-light" type="submit" name="action">
-          Save <i class="material-icons right">save</i>
-        </button>
+        <br/>
+        <p class="right-align"><strong>Roles we recommend:</strong>
+          <br/>bigquery.jobs.create
+          <br/>bigquery.jobs.get
+          <br/>bigquery.tables.create
+          <br/>bigquery.tables.update
+          <br/>bigquery.tables.updateData
+        </p>
   
-      </form>
+      </div>
+  
+      <div class="col s12 m8 l9 left-align">
+  
+          <div class="card-panel">
+            <h3>Edit Project</h3>
+            <p class="flow-text">Copy and paste the JSON service credentials here.  You will be able to select this project for each recipe that requires Google Cloud resources.</p>
+            <br/>
+            {% with fields=form_project %}
+              {% include "form_fields.html" %}
+            {% endwith %}
+          </div>
+             
+    
+          {% if form_project.instance.pk %}
+            <a class="btn waves-effect waves-light red darken-2 right" href="{{ form_project.instance.link_delete }}">
+              Delete <i class="material-icons right">delete</i>
+            </a>
+          {% endif %}
+    
+      </div>
     </div>
-
-  </div>
+  
+  </form>
 
 {% endblock %}

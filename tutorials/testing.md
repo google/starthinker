@@ -33,13 +33,13 @@ bash install/deploy.sh
 
   - For existing tests, keep a backup of your configuration file, its reusable.
   - Teams can share configuration files, keep any account login credentails seperate.
-  - The best place to start a new script is the UI, prototype your workflow there.
+  - The best place to start a new recipe is the UI, prototype your workflow there.
   - Then download the JSON and create a test using the include block to connect to the script.
-  - Test that the script runs with hard coded values as it did in the UI before adding fields.
+  - Test that the recipe runs with hard coded values as it did in the UI before adding fields.
   - When adding fields to the script, hard code the values in the test, do not use the config at this point.
-  - Once the script is working, add optional test blocks to verify data.
-  - Last, move the parameters from the test file to the config script by adding fields to the test file.
-  - If the script is configured correctly, it will show up in the development UI.
+  - Once the recipe is working, add optional test blocks to verify data.
+  - Last, move the parameters from the test file to the config recipe by adding fields to the test file.
+  - If the recipe is configured correctly, it will show up in the development UI.
   - Use the other tests as examples for how to structure yours.
 
 ## Important Testing Setup
@@ -80,9 +80,9 @@ All tests run are logged to **tests/logs/OK_[test].log** and **tests/logs/FAILED
 
 A test is a [script](recipe.md) with additional [test tasks](../task/test/run.py), to create a test:
 
-1. Follow the instructions for creating a script [script](recipe.md).
-1. Add [test tasks](../task/test/run.py) to the script to verify execution ( see sample test tasks below ).
-1. Save the test script in the [tests/scripts/[test].json](../tests/scripts/) folder.
+1. Follow the instructions for creating a [recipe](recipe.md).
+1. Add [test tasks](../task/test/run.py) to the recipe to verify execution ( see sample test tasks below ).
+1. Save the test recipe in the [tests/scripts/[test].json](../tests/scripts/) folder.
 
 ### Test Task Samples
 
@@ -90,7 +90,7 @@ A test is a [script](recipe.md) with additional [test tasks](../task/test/run.py
 ```
 python starthinker/script/run.py scripts/deal_finder.json -t
 ```
-1. inlcude a script in the test with parameters
+1. inlcude another recipe in the test with parameters
 ```
 { "include": {
   "script": "scripts/deal_finder.json",

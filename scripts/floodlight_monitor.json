@@ -4,14 +4,13 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"add_alert",
-    "product":"DV360",
     "title":"Floodlight Monitor",
     "description":"Monitor floodlight impressions specified in sheet and send email alerts.",
     "image":"https://storage.googleapis.com/starthinker-ui/floodlight_monitor.png",
     "sample":"https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing",
-    "categories":["alerts"],
-    "requirements":[ "dv360", "email" ],
-    "catalysts":["experience", "insights"],
+    "categories":["alerts", "covid"],
+    "requirements":[ "dv360", "gmail" ],
+    "catalysts":["audit", "experience", "insights"],
     "pitches":[
       "Reduce floodlight outages.",
       "Verify configuration issues faster.",
@@ -45,9 +44,11 @@
           "range":"A1"
         }
       },
-      "sheet":{"field":{ "name":"sheet_url", "kind":"string", "order":2, "default":"", "description":"Full URL to Google Sheet, Floodlight Monitor tab will be added." }},
-      "tab":"Floodlight Monitor",
-      "range":"A2:C"
+      "sheet":{
+        "sheet":{"field":{ "name":"sheet", "kind":"string", "order":2, "default":"", "description":"Full Name or URL to Google Sheet, Floodlight Monitor tab will be added." }},
+        "tab":"Floodlight Monitor",
+        "range":"A2:C"
+      }
     }}
   ]
 }

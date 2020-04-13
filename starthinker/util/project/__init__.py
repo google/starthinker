@@ -73,11 +73,9 @@ import os
 import re
 import json
 import pytz
-import uuid
 import argparse
 
 from datetime import datetime 
-from json import JSONDecodeError
 from importlib import import_module
 
 from starthinker.util.debug import starthinker_trace_start
@@ -103,7 +101,7 @@ def get_project(filepath):
     try:
       return json.loads(data)
 
-    except JSONDecodeError as e:
+    except ValueError as e:
       with open(filepath) as data_file:
         pos = 0
         for count, line in enumerate(data_file.readlines(), 1):
@@ -438,7 +436,6 @@ class project:
     #elif not cls.recipe['setup'].get('id') and cls.recipe['setup']['auth'].get('client'):
 
     cls.id = cls.recipe['setup'].get('id')
-    cls.uuid = cls.recipe['setup'].get('uuid')
 
     # find date based on timezone
     cls.timezone = pytz.timezone(cls.recipe['setup'].get('timezone', 'America/Los_Angeles'))
@@ -450,30 +447,6 @@ class project:
       print('TASK:', _task) 
       print('DATE:', cls.now.date()) 
       print('HOUR:', cls.now.hour) 
-
-
-  @classmethod
-  def get_uuid(cls):
-    """Helper for deploying to pub/sub.  Injects a UUID into the current project's json file.
-
-    The project's underlying recipe json file is modified by this call and needs to be read / write.
-
-    Returns:
-      UUID, and changes underlying json recipe file.
-    """
-
-    # set uid
-    if not cls.uuid: 
-      cls.uuid = str(uuid.uuid4())
-
-      # write to file if path defined
-      if cls.filepath:
-        with open(cls.filepath, 'r') as json_file: filedata = json_file.read()
-        filedata = RE_UUID.sub(r'\1\2\1  "uuid":"%s",' % cls.uuid, filedata)
-        with open(cls.filepath, 'w') as json_file: json_file.write(filedata)
-        cls.recipe = get_project(cls.filepath)
-
-    return cls.uuid 
 
 
   @classmethod

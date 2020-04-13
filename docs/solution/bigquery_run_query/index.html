@@ -25,35 +25,16 @@
        #message ul, #message li { display: inline; margin-left: 10px; }
        #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       span.square_box {
-         display: inline-block;
-         width: 40px;
-         height: 40px;
-         border: 2px solid #fff;
-         text-align: center;
-         line-height: 40px;
-         margin: 5px;
-       }
-
        div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
        h1 a i.material-icons { font-size: 3.28rem; }
        a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
        ol li { line-height: 1.8em; }
        textarea { margin-top: 7px; height: 10rem; }
        table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
-       a.btn { margin: 2px; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
-       div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
-       div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
-
-       div.service_card { min-height: 250px; width: 300px; margin: 10px;}
-       div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
-       div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
        div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; }
        #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
        div.card h4 { width 100%; padding: 20px;}
        div.card h4 i.material-icons { font-size: 2.28rem; }
@@ -86,15 +67,15 @@
         
         
         <li><a href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a href="/starthinker/help/">Help</a></li>
         
       </ul>
-      <ul class="side-nav red lighten-1" id="mobile-demo">
+      <ul class="side-nav green lighten-1" id="mobile-demo">
         
         
         
         <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
         
       </ul>
     </div>
@@ -134,13 +115,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       
 
   <br/>
-  <h1><i class="medium material-icons">arrow_forward</i>&nbsp; Run Query</h1>
+  <h1><i class="medium material-icons">arrow_forward</i>&nbsp; Query Run</h1>
   <p class="flow-text">Run query on a project.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
 
   <br/><br/>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=bigquery">bigquery</a>
   
 
   <br/><br/>
@@ -202,12 +185,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             
     
             <tr>
-              <td>Authors</td>
-              <td><a href="mailto:terwilleger@google.com?subject=Request+For+A+Run+Query+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Run+Query+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fbigquery_run_query%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">terwilleger@google.com</a>
-              </td>
+              <td>Age</td>
+              <td>Aug. 14, 2017 (2 years, 8 months)</td>
             </tr>
     
-              </tbody>
+            <tr>
+              <td>Authors</td>
+              <td><a href="mailto:terwilleger@google.com?subject=Request+For+A+Query+Run+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Query+Run+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fbigquery_run_query%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">terwilleger@google.com</a>
+              </td>
+            </tr>
+
+          </tbody>
         </table>
       </div>
     </div>
@@ -242,33 +230,33 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
      
 
     <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span>[
+      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
-        &quot;bigquery&quot;: {
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;run&quot;: {
-                &quot;query&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;query&quot;,
-                        &quot;kind&quot;: &quot;text&quot;,
-                        &quot;order&quot;: 1,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;SQL with newlines and all.&quot;
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
+            "auth": "service",
+            "run": {
+                "query": {
+                    "field": {
+                        "name": "query",
+                        "kind": "text",
+                        "order": 1,
+                        "default": "",
+                        "description": "SQL with newlines and all."
                     }
                 },
-                &quot;legacy&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;legacy&quot;,
-                        &quot;kind&quot;: &quot;boolean&quot;,
-                        &quot;order&quot;: 2,
-                        &quot;default&quot;: true,
-                        &quot;description&quot;: &quot;Query type must match table and query format.&quot;
+                "legacy": {
+                    "field": {
+                        "name": "legacy",
+                        "kind": "boolean",
+                        "order": 2,
+                        "default": true,
+                        "description": "Query type must match table and query format."
                     }
                 }
             }
         }
     }
-]</pre>
+]</code></pre>
     </div>
 
   </div>
@@ -283,7 +271,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       Developer Guide<i class="material-icons right">build</i>
     </a>
-    <a href="https://github.com/google/starthinker/blob/master/tutorials/ui_recipe.md" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+    <a href="https://google.github.io/starthinker/help/" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       UI How To<i class="material-icons right">laptop</i>
     </a>
   </p>
@@ -299,7 +287,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google, Inc
+    &copy; 2019 Google LLC
     </div>
   </div>
 </footer>

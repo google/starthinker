@@ -21,7 +21,7 @@ import re
 import json
 import pprint
 from copy import deepcopy
-from datetime import datetime
+from datetime import datetime, date
 
 from django.conf import settings
 
@@ -63,10 +63,11 @@ except ImportError as e:
 class Script:
 
   @staticmethod
-  def get_scripts(account_email=None):
+  def get_scripts(account_email=None, ui=False):
     for tag in sorted(iter(SCRIPTS.keys())):
       if account_email in SCRIPTS[tag]['script'].get('private', (account_email,)):
-        yield Script(tag)
+        if not ui or SCRIPTS[tag]['script'].get('ui', True):
+          yield Script(tag)
 
   def __init__(self, tag):
     self.tag = tag
@@ -88,7 +89,7 @@ class Script:
       return ''
 
   def get_link_ui(self):
-    return '/recipe/edit/?script=%s' % self.get_tag()
+    return '/recipe/%s/?script=%s' % ('manual' if self.is_manual() else 'edit', self.get_tag())
 
   def get_link_colab(self):
     return 'https://colab.research.google.com/github/google/starthinker/blob/master/colabs/%s.ipynb' % self.get_tag()
@@ -100,14 +101,23 @@ class Script:
     try: return datetime.strptime(self.script.get('script', {}).get('released', ''), "%Y-%m-%d").date()
     except: return None
 
+  def get_released_ago(self):
+    agos = []
+    days = (date.today() - self.get_released()).days
+
+    if days <= 7: agos.append('7 days')
+    if days <= 30: agos.append('30 days')
+    if days <= 90: agos.append('90 days')
+    if days > 90: agos.append('older')
+
+    return agos
+
+
   def get_name(self):
     return self.script.get('script', {}).get('title', '')
 
   def get_icon(self):
     return self.script.get('script', {}).get('icon', '')
-
-  def get_product(self):
-    return self.script.get('script', {}).get('product', 'Other')
 
   def get_description(self, variables = {}):
     return text_set_fields(self.script.get('script', {}).get('description', ''), variables)
@@ -153,6 +163,17 @@ class Script:
 
   def get_tasks(self):
     return deepcopy(self.script.get('tasks', []))
+
+  def get_tasks_linked(self):
+    tasks = self.get_tasks()
+    data = json.dumps(tasks, indent=4)
+    for task in set([next(iter(task.keys())) for task in tasks]):
+      data = re.sub(
+        r'\n {8}"%s": {' % task,
+        '\n        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/%s/run.py" target="_blank">%s</a>": {' % (task, task),
+        data
+      )
+    return data
 
   def is_manual(self):
     #return self.is_solution() and self.script.get('setup', {}).get('day', None) == []

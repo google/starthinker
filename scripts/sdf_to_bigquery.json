@@ -3,9 +3,8 @@
     "released":"2019-03-08",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
     "icon":"donut_large",
-    "product":"DV360",
+    "requirements":["dv360", "bigquery"],
     "title":"SDF Download",
     "description":"Download SDF reports into a BigQuery table.",
     "instructions":[

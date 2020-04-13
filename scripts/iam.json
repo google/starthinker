@@ -4,7 +4,7 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"file_download",
-    "product":"Google API",
+    "requirements":["google api"],
     "title":"Project IAM",
     "description":"Sets project permissions for an email.",
     "instructions":[

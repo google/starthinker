@@ -3,9 +3,8 @@
     "released":"2018-07-13",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
     "icon":"monetization_on",
-    "product":"CM",
+    "requirements":["cm", "sheets", "bigquery"],
     "title":"Dynamic Costs Reporting",
     "description":"Calculate DV360 cost at the dynamic creative combination level.",
     "instructions":[

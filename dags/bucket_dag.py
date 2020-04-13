@@ -33,7 +33,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Bucket
+Storage Bucket
 
 Create and permission a bucket in Storage.
 

@@ -4,7 +4,7 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_large",
-    "product":"Salesforce",
+    "requirements":["salesforce", "bigquery"],
     "title":"Salesforce To BigQuery",
     "description":"Move query results into a BigQuery table.",
     "instructions":[

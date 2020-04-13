@@ -3,9 +3,8 @@
     "released":"2017-08-14",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
     "icon":"donut_large",
-    "product":"DV360",
+    "requirements":["dv360", "storage"],
     "title":"DV360 To Storage",
     "description":"Move existing DV360 report into a Storage bucket.",
     "instructions":[

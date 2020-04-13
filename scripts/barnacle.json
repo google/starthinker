@@ -4,12 +4,11 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"security",
-    "product":"CM",
     "title":"CM User Audit",
     "description":"Gives CM clients ability to see which profiles have access to which parts of an account. Loads CM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.",
     "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
     "sample":"https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT",
-    "categories":["security", "reporting"],
+    "categories":["security", "reporting", "covid"],
     "requirements":[ "cm", "datastudio", "bigquery" ],
     "catalysts":["insights", "experience"],
     "pitches":[

@@ -3,9 +3,8 @@
     "released":"2019-02-20",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2019 Google LLC",
-    "open":true,
     "icon":"donut_small",
-    "product":"CM",
+    "requirements":["cm", "bigquery"],
     "title":"CM API To BigQuery",
     "description":"Write the current state of accounts, subaccounts, profiles, advertisers, campaigns, sites, roles, and reports to BigQuery for a given list of CM accounts.",
     "instructions":[

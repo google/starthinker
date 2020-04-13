@@ -34,18 +34,16 @@ class ScriptForm(forms.Form):
     if 'scripts' in kwargs: scripts = [s for s in kwargs.pop('scripts').split(',') if s]
     else: scripts = []
 
-    # fetch the instance and load intial data
+    # fetch the instance and load initial data
     self.instance = recipe or Recipe()
     self.setup = SetupForm(manual, account, post, instance=self.instance)
     super(ScriptForm, self).__init__(*args, **kwargs)
     
-    # group blanks by product
-    self.products = {}
-    for s in sorted(Script.get_scripts(account.email), key=lambda s: s.get_tag()):
+    # create blank forms 
+    self.blanks = []
+    for s in Script.get_scripts(account.email):
       if s.is_manual() == manual:
-        self.products.setdefault(s.get_product(), [])
-        self.products[s.get_product()].append(ScriptJsonForm('[BLANK]', s, {}, prefix='%s_[BLANK]' % s.get_tag()))
-    self.products = sorted([{ 'name':k, 'blanks':v } for k,v in self.products.items()], key=lambda p: p['name'])
+        self.blanks.append(ScriptJsonForm('[BLANK]', s, {}, prefix='%s_[BLANK]' % s.get_tag()))
 
     # processing incoming form
     self.forms = []

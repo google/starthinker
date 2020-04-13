@@ -25,35 +25,16 @@
        #message ul, #message li { display: inline; margin-left: 10px; }
        #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       span.square_box {
-         display: inline-block;
-         width: 40px;
-         height: 40px;
-         border: 2px solid #fff;
-         text-align: center;
-         line-height: 40px;
-         margin: 5px;
-       }
-
        div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
        h1 a i.material-icons { font-size: 3.28rem; }
        a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
        ol li { line-height: 1.8em; }
        textarea { margin-top: 7px; height: 10rem; }
        table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 2px; }
-       a.btn { margin: 2px; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.split { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; margin: 20px auto; }
-       div.split_left { flex-grow: 1; flex-basis: 0; min-width: 300px; border-right: 1px solid #eee; padding: 20px; }
-       div.split_right { flex-grow: 2; flex-basis: 0; min-width: 300px; padding: 20px; }
-
-       div.service_card { min-height: 250px; width: 300px; margin: 10px;}
-       div.service_callouts { display: flex; align-items: flex-start; justify-content: left; flex-wrap: wrap; width: 100%; }
-       div.service_callout { min-width: 48%; margin-right: 2%; line-height: 2.4em;}
        div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: 100%; }
        #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
        div.card h4 { width 100%; padding: 20px;}
        div.card h4 i.material-icons { font-size: 2.28rem; }
@@ -86,15 +67,15 @@
         
         
         <li><a href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a href="/starthinker/help/">Help</a></li>
         
       </ul>
-      <ul class="side-nav red lighten-1" id="mobile-demo">
+      <ul class="side-nav green lighten-1" id="mobile-demo">
         
         
         
         <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
-        
+        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
         
       </ul>
     </div>
@@ -135,9 +116,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <br/>
   <h1><i class="medium material-icons">fingerprint</i>&nbsp; Transparency Dashboard</h1>
-  <p class="flow-text">Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domans and apps are misconfigured by publisher resulting in underreporting.</p>
+  <p class="flow-text">Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domains and apps are misconfigured by publisher resulting in underreporting.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=audit">audit</a>
   
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=insights">insights</a>
   
@@ -156,8 +139,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   
 
   <br/><br/>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=audit">audit</a>
   
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=reporting">reporting</a>
   
@@ -314,12 +295,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             
     
             <tr>
+              <td>Age</td>
+              <td>Aug. 19, 2019 (7 months, 4 weeks)</td>
+            </tr>
+    
+            <tr>
               <td>Authors</td>
               <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Transparency+Dashboard+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Transparency+Dashboard+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Ftransparency%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
-    
-              </tbody>
+
+          </tbody>
         </table>
       </div>
     </div>
@@ -362,337 +348,337 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
      
 
     <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span>[
+      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
-        &quot;dataset&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
+            "hour": [
                 1
             ],
-            &quot;auth&quot;: &quot;service&quot;,
-            &quot;dataset&quot;: {
-                &quot;field&quot;: {
-                    &quot;name&quot;: &quot;dataset&quot;,
-                    &quot;kind&quot;: &quot;string&quot;,
-                    &quot;order&quot;: 1,
-                    &quot;default&quot;: &quot;&quot;,
-                    &quot;description&quot;: &quot;Name of Google BigQuery dataset to create.&quot;
+            "auth": "service",
+            "dataset": {
+                "field": {
+                    "name": "dataset",
+                    "kind": "string",
+                    "order": 1,
+                    "default": "",
+                    "description": "Name of Google BigQuery dataset to create."
                 }
             }
         }
     },
     {
-        &quot;dcm&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
+            "hour": [
                 2
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;account&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dcm_account&quot;,
-                        &quot;kind&quot;: &quot;integer&quot;,
-                        &quot;order&quot;: 2,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;CM account id of client.&quot;
+            "auth": "user",
+            "report": {
+                "account": {
+                    "field": {
+                        "name": "dcm_account",
+                        "kind": "integer",
+                        "order": 2,
+                        "default": "",
+                        "description": "CM account id of client."
                     }
                 },
-                &quot;filters&quot;: {
-                    &quot;dfa:advertiser&quot;: {
-                        &quot;values&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;dcm_advertisers&quot;,
-                                &quot;kind&quot;: &quot;integer_list&quot;,
-                                &quot;order&quot;: 3,
-                                &quot;default&quot;: &quot;&quot;,
-                                &quot;description&quot;: &quot;Comma delimited list of CM advertiser ids.&quot;
+                "filters": {
+                    "dfa:advertiser": {
+                        "values": {
+                            "field": {
+                                "name": "dcm_advertisers",
+                                "kind": "integer_list",
+                                "order": 3,
+                                "default": "",
+                                "description": "Comma delimited list of CM advertiser ids."
                             }
                         }
                     }
                 },
-                &quot;body&quot;: {
-                    &quot;type&quot;: &quot;STANDARD&quot;,
-                    &quot;format&quot;: &quot;CSV&quot;,
-                    &quot;name&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_name&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;prefix&quot;: &quot;Transparency_App_&quot;,
-                            &quot;description&quot;: &quot;Name of report in CM, unique.&quot;
+                "body": {
+                    "type": "STANDARD",
+                    "format": "CSV",
+                    "name": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "prefix": "Transparency_App_",
+                            "description": "Name of report in CM, unique."
                         }
                     },
-                    &quot;criteria&quot;: {
-                        &quot;dateRange&quot;: {
-                            &quot;relativeDateRange&quot;: &quot;PREVIOUS_MONTH&quot;
+                    "criteria": {
+                        "dateRange": {
+                            "relativeDateRange": "PREVIOUS_MONTH"
                         },
-                        &quot;dimensions&quot;: [
+                        "dimensions": [
                             {
-                                &quot;name&quot;: &quot;dfa:advertiser&quot;
+                                "name": "dfa:advertiser"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:advertiserId&quot;
+                                "name": "dfa:advertiserId"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:campaign&quot;
+                                "name": "dfa:campaign"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:campaignId&quot;
+                                "name": "dfa:campaignId"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:siteId&quot;
+                                "name": "dfa:siteId"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:site&quot;
+                                "name": "dfa:site"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:adType&quot;
+                                "name": "dfa:adType"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:environment&quot;
+                                "name": "dfa:environment"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:appId&quot;
+                                "name": "dfa:appId"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:app&quot;
+                                "name": "dfa:app"
                             }
                         ],
-                        &quot;metricNames&quot;: [
-                            &quot;dfa:impressions&quot;
+                        "metricNames": [
+                            "dfa:impressions"
                         ]
                     },
-                    &quot;schedule&quot;: {
-                        &quot;active&quot;: true,
-                        &quot;every&quot;: 1,
-                        &quot;repeats&quot;: &quot;MONTHLY&quot;,
-                        &quot;runsOnDayOfMonth&quot;: &quot;DAY_OF_MONTH&quot;
+                    "schedule": {
+                        "active": true,
+                        "every": 1,
+                        "repeats": "MONTHLY",
+                        "runsOnDayOfMonth": "DAY_OF_MONTH"
                     }
                 }
             }
         }
     },
     {
-        &quot;dcm&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
+            "hour": [
                 2
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;account&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dcm_account&quot;,
-                        &quot;kind&quot;: &quot;integer&quot;,
-                        &quot;order&quot;: 2,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;CM account id of client.&quot;
+            "auth": "user",
+            "report": {
+                "account": {
+                    "field": {
+                        "name": "dcm_account",
+                        "kind": "integer",
+                        "order": 2,
+                        "default": "",
+                        "description": "CM account id of client."
                     }
                 },
-                &quot;filters&quot;: {
-                    &quot;dfa:advertiser&quot;: {
-                        &quot;values&quot;: {
-                            &quot;field&quot;: {
-                                &quot;name&quot;: &quot;dcm_advertisers&quot;,
-                                &quot;kind&quot;: &quot;integer_list&quot;,
-                                &quot;order&quot;: 3,
-                                &quot;default&quot;: &quot;&quot;,
-                                &quot;description&quot;: &quot;Comma delimited list of CM advertiser ids.&quot;
+                "filters": {
+                    "dfa:advertiser": {
+                        "values": {
+                            "field": {
+                                "name": "dcm_advertisers",
+                                "kind": "integer_list",
+                                "order": 3,
+                                "default": "",
+                                "description": "Comma delimited list of CM advertiser ids."
                             }
                         }
                     }
                 },
-                &quot;body&quot;: {
-                    &quot;type&quot;: &quot;STANDARD&quot;,
-                    &quot;format&quot;: &quot;CSV&quot;,
-                    &quot;name&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_name&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;prefix&quot;: &quot;Transparency_Domain_&quot;,
-                            &quot;description&quot;: &quot;Name of report in CM, unique.&quot;
+                "body": {
+                    "type": "STANDARD",
+                    "format": "CSV",
+                    "name": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "prefix": "Transparency_Domain_",
+                            "description": "Name of report in CM, unique."
                         }
                     },
-                    &quot;criteria&quot;: {
-                        &quot;dateRange&quot;: {
-                            &quot;relativeDateRange&quot;: &quot;PREVIOUS_MONTH&quot;
+                    "criteria": {
+                        "dateRange": {
+                            "relativeDateRange": "PREVIOUS_MONTH"
                         },
-                        &quot;dimensions&quot;: [
+                        "dimensions": [
                             {
-                                &quot;name&quot;: &quot;dfa:advertiser&quot;
+                                "name": "dfa:advertiser"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:advertiserId&quot;
+                                "name": "dfa:advertiserId"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:campaign&quot;
+                                "name": "dfa:campaign"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:campaignId&quot;
+                                "name": "dfa:campaignId"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:site&quot;
+                                "name": "dfa:site"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:siteId&quot;
+                                "name": "dfa:siteId"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:adType&quot;
+                                "name": "dfa:adType"
                             },
                             {
-                                &quot;name&quot;: &quot;dfa:domain&quot;
+                                "name": "dfa:domain"
                             }
                         ],
-                        &quot;metricNames&quot;: [
-                            &quot;dfa:verificationVerifiableImpressions&quot;
+                        "metricNames": [
+                            "dfa:verificationVerifiableImpressions"
                         ]
                     },
-                    &quot;schedule&quot;: {
-                        &quot;active&quot;: true,
-                        &quot;every&quot;: 1,
-                        &quot;repeats&quot;: &quot;MONTHLY&quot;,
-                        &quot;runsOnDayOfMonth&quot;: &quot;DAY_OF_MONTH&quot;
+                    "schedule": {
+                        "active": true,
+                        "every": 1,
+                        "repeats": "MONTHLY",
+                        "runsOnDayOfMonth": "DAY_OF_MONTH"
                     }
                 }
             }
         }
     },
     {
-        &quot;dcm&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
+            "hour": [
                 4
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;account&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dcm_account&quot;,
-                        &quot;kind&quot;: &quot;integer&quot;,
-                        &quot;order&quot;: 2,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;CM account id of client.&quot;
+            "auth": "user",
+            "report": {
+                "account": {
+                    "field": {
+                        "name": "dcm_account",
+                        "kind": "integer",
+                        "order": 2,
+                        "default": "",
+                        "description": "CM account id of client."
                     }
                 },
-                &quot;name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;recipe_name&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;Transparency_Domain_&quot;,
-                        &quot;description&quot;: &quot;Name of report in CM, should be unique.&quot;
+                "name": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "prefix": "Transparency_Domain_",
+                        "description": "Name of report in CM, should be unique."
                     }
                 }
             },
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;auth&quot;: &quot;service&quot;,
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 1,
-                            &quot;default&quot;: &quot;&quot;,
-                            &quot;description&quot;: &quot;Name of Google BigQuery dataset to create.&quot;
+            "out": {
+                "bigquery": {
+                    "auth": "service",
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "order": 1,
+                            "default": "",
+                            "description": "Name of Google BigQuery dataset to create."
                         }
                     },
-                    &quot;table&quot;: &quot;Transparency_Domain_KPI&quot;
+                    "table": "Transparency_Domain_KPI"
                 }
             }
         }
     },
     {
-        &quot;dcm&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
+            "hour": [
                 4
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;report&quot;: {
-                &quot;account&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dcm_account&quot;,
-                        &quot;kind&quot;: &quot;integer&quot;,
-                        &quot;order&quot;: 2,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;CM account id of client.&quot;
+            "auth": "user",
+            "report": {
+                "account": {
+                    "field": {
+                        "name": "dcm_account",
+                        "kind": "integer",
+                        "order": 2,
+                        "default": "",
+                        "description": "CM account id of client."
                     }
                 },
-                &quot;name&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;recipe_name&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;prefix&quot;: &quot;Transparency_App_&quot;,
-                        &quot;description&quot;: &quot;Name of report in CM, should be unique.&quot;
+                "name": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "prefix": "Transparency_App_",
+                        "description": "Name of report in CM, should be unique."
                     }
                 }
             },
-            &quot;out&quot;: {
-                &quot;bigquery&quot;: {
-                    &quot;auth&quot;: &quot;service&quot;,
-                    &quot;dataset&quot;: {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;order&quot;: 1,
-                            &quot;default&quot;: &quot;&quot;,
-                            &quot;description&quot;: &quot;Name of Google BigQuery dataset to create.&quot;
+            "out": {
+                "bigquery": {
+                    "auth": "service",
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "order": 1,
+                            "default": "",
+                            "description": "Name of Google BigQuery dataset to create."
                         }
                     },
-                    &quot;table&quot;: &quot;Transparency_App_KPI&quot;
+                    "table": "Transparency_App_KPI"
                 }
             }
         }
     },
     {
-        &quot;bigquery&quot;: {
-            &quot;hour&quot;: [
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
+            "hour": [
                 5
             ],
-            &quot;auth&quot;: &quot;user&quot;,
-            &quot;to&quot;: {
-                &quot;dataset&quot;: {
-                    &quot;field&quot;: {
-                        &quot;name&quot;: &quot;dataset&quot;,
-                        &quot;kind&quot;: &quot;string&quot;,
-                        &quot;order&quot;: 1,
-                        &quot;default&quot;: &quot;&quot;,
-                        &quot;description&quot;: &quot;Name of Google BigQuery dataset to create.&quot;
+            "auth": "user",
+            "to": {
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "kind": "string",
+                        "order": 1,
+                        "default": "",
+                        "description": "Name of Google BigQuery dataset to create."
                     }
                 },
-                &quot;view&quot;: &quot;Transparency_Combined_KPI&quot;
+                "view": "Transparency_Combined_KPI"
             },
-            &quot;from&quot;: {
-                &quot;query&quot;: &quot;With \r\nTransparent_Domains AS ( \r\n  SELECT\r\n    CONCAT(Advertiser, &#39; - &#39;, CAST(Advertiser_Id AS STRING)) AS Advertiser,\r\n    CONCAT(Campaign, &#39; - &#39;, CAST(Campaign_Id AS STRING)) AS Campaign,\r\n    CONCAT(Site_Dcm, &#39; - &#39;, CAST(Site_Id_Dcm AS STRING)) AS Site,\r\n    Domain,\r\n    Ad_Type,\r\n    Verifiable_Impressions AS Impressions,\r\n    IF(Domain IS NOT NULL, Verifiable_Impressions, 0) AS Visible_Impressions,\r\n    IF(Domain IS NULL, Verifiable_Impressions, 0) AS Null_Impressions\r\n  FROM `[PARAMETER].[PARAMETER].Transparency_Domain_KPI`\r\n),\r\nTransparent_Apps AS ( \r\n  SELECT\r\n    CONCAT(Advertiser, &#39; - &#39;, CAST(Advertiser_Id AS STRING)) AS Advertiser,\r\n    CONCAT(Campaign, &#39; - &#39;, CAST(Campaign_Id AS STRING)) AS Campaign,\r\n    CONCAT(Site_Dcm, &#39; - &#39;, CAST(Site_Id_Dcm AS STRING)) AS Site,\r\n    /*If(App IS NOT NULL, CONCAT(App, &#39; - &#39;, CAST(App_Id AS STRING)), App_Id) AS App, */\r\n    CASE \r\n      WHEN App IS NOT NULL THEN CONCAT(App, &#39; - &#39;, CAST(App_Id AS STRING))\r\n      WHEN App_Id IS NOT NULL THEN App_Id\r\n      ELSE NULL\r\n    END AS App,\r\n    Ad_Type,\r\n    Impressions,\r\n    IF(App IS NOT NULL OR App_ID IS NOT NULL, Impressions, 0) AS Visible_Impressions,\r\n    IF(App IS NULL AND App_Id IS NULL, Impressions, 0) AS Null_Impressions\r\n  FROM `[PARAMETER].[PARAMETER].Transparency_App_KPI`\r\n  WHERE Environment = &#39;App&#39;\r\n),\r\nDomains_And_Apps AS (\r\n  SELECT \r\n    TD.Advertiser,\r\n    TD.Campaign,\r\n    TD.Site,\r\n    TD.Ad_Type,\r\n    TD.Domain,\r\n    TD.Impressions AS Domain_Impressions,\r\n    TD.Visible_Impressions AS Domain_Visible_Impressions,\r\n    TD.Null_Impressions AS Domain_Null_Impressions,\r\n    NULL AS App,\r\n    0 AS App_Impressions,\r\n    0 AS App_Visible_Impressions,\r\n    0 AS App_Null_Impressions\r\n  FROM Transparent_Domains AS TD\r\n  UNION ALL\r\n  SELECT \r\n    TA.Advertiser,\r\n    TA.Campaign,\r\n    TA.Site,\r\n    TA.Ad_Type,\r\n    NULL AS Domain,\r\n    0 AS Domain_Impressions,\r\n    0 AS Domain_Visible_Impressions,\r\n    0 AS Domain_Null_Impressions,\r\n    TA.App,\r\n    TA.Impressions AS App_Impressions,\r\n    TA.Visible_Impressions AS App_Visible_Impressions,\r\n    TA.Null_Impressions AS App_Null_Impressions\r\n  FROM Transparent_Apps AS TA\r\n)\r\n\r\n  SELECT\r\n    Advertiser,\r\n    Campaign,\r\n    Site,\r\n    COALESCE(Domain, App, &#39;&#39;) AS Domain_Or_App,\r\n    Ad_Type,\r\n    CASE\r\n      WHEN App IS NOT NULL AND Domain IS NOT NULL THEN &#39;Both&#39; /* SHOULD NOT HAPPEN */\r\n      WHEN App IS NOT NULL THEN &#39;App&#39;\r\n      WHEN Domain IS NOT NULL Then &#39;Domain&#39;\r\n      ELSE &#39;Neither&#39;\r\n    END AS Category,\r\n\r\n    SUM(Domain_Impressions) AS Domain_Impressions,\r\n    SUM(Domain_Visible_Impressions) AS Domain_Visible_Impressions,\r\n    SUM(Domain_Null_Impressions) AS Domain_Null_Impressions,\r\n\r\n    SUM(App_Impressions) AS App_Impressions,\r\n    SUM(App_Visible_Impressions) AS App_Visible_Impressions,\r\n    SUM(App_Null_Impressions) AS App_Null_Impressions,\r\n\r\n    SUM(App_Impressions + Domain_Impressions) AS Impressions /* Could also be MAX as its always one or the other*/\r\n\r\n  FROM Domains_And_Apps\r\n  GROUP By 1,2,3,4,5,6&quot;,
-                &quot;parameters&quot;: [
+            "from": {
+                "query": "With \r\nTransparent_Domains AS ( \r\n  SELECT\r\n    CONCAT(Advertiser, ' - ', CAST(Advertiser_Id AS STRING)) AS Advertiser,\r\n    CONCAT(Campaign, ' - ', CAST(Campaign_Id AS STRING)) AS Campaign,\r\n    CONCAT(Site_Dcm, ' - ', CAST(Site_Id_Dcm AS STRING)) AS Site,\r\n    Domain,\r\n    Ad_Type,\r\n    Verifiable_Impressions AS Impressions,\r\n    IF(Domain IS NOT NULL, Verifiable_Impressions, 0) AS Visible_Impressions,\r\n    IF(Domain IS NULL, Verifiable_Impressions, 0) AS Null_Impressions\r\n  FROM `[PARAMETER].[PARAMETER].Transparency_Domain_KPI`\r\n),\r\nTransparent_Apps AS ( \r\n  SELECT\r\n    CONCAT(Advertiser, ' - ', CAST(Advertiser_Id AS STRING)) AS Advertiser,\r\n    CONCAT(Campaign, ' - ', CAST(Campaign_Id AS STRING)) AS Campaign,\r\n    CONCAT(Site_Dcm, ' - ', CAST(Site_Id_Dcm AS STRING)) AS Site,\r\n    /*If(App IS NOT NULL, CONCAT(App, ' - ', CAST(App_Id AS STRING)), App_Id) AS App, */\r\n    CASE \r\n      WHEN App IS NOT NULL THEN CONCAT(App, ' - ', CAST(App_Id AS STRING))\r\n      WHEN App_Id IS NOT NULL THEN App_Id\r\n      ELSE NULL\r\n    END AS App,\r\n    Ad_Type,\r\n    Impressions,\r\n    IF(App IS NOT NULL OR App_ID IS NOT NULL, Impressions, 0) AS Visible_Impressions,\r\n    IF(App IS NULL AND App_Id IS NULL, Impressions, 0) AS Null_Impressions\r\n  FROM `[PARAMETER].[PARAMETER].Transparency_App_KPI`\r\n  WHERE Environment = 'App'\r\n),\r\nDomains_And_Apps AS (\r\n  SELECT \r\n    TD.Advertiser,\r\n    TD.Campaign,\r\n    TD.Site,\r\n    TD.Ad_Type,\r\n    TD.Domain,\r\n    TD.Impressions AS Domain_Impressions,\r\n    TD.Visible_Impressions AS Domain_Visible_Impressions,\r\n    TD.Null_Impressions AS Domain_Null_Impressions,\r\n    NULL AS App,\r\n    0 AS App_Impressions,\r\n    0 AS App_Visible_Impressions,\r\n    0 AS App_Null_Impressions\r\n  FROM Transparent_Domains AS TD\r\n  UNION ALL\r\n  SELECT \r\n    TA.Advertiser,\r\n    TA.Campaign,\r\n    TA.Site,\r\n    TA.Ad_Type,\r\n    NULL AS Domain,\r\n    0 AS Domain_Impressions,\r\n    0 AS Domain_Visible_Impressions,\r\n    0 AS Domain_Null_Impressions,\r\n    TA.App,\r\n    TA.Impressions AS App_Impressions,\r\n    TA.Visible_Impressions AS App_Visible_Impressions,\r\n    TA.Null_Impressions AS App_Null_Impressions\r\n  FROM Transparent_Apps AS TA\r\n)\r\n\r\n  SELECT\r\n    Advertiser,\r\n    Campaign,\r\n    Site,\r\n    COALESCE(Domain, App, '') AS Domain_Or_App,\r\n    Ad_Type,\r\n    CASE\r\n      WHEN App IS NOT NULL AND Domain IS NOT NULL THEN 'Both' /* SHOULD NOT HAPPEN */\r\n      WHEN App IS NOT NULL THEN 'App'\r\n      WHEN Domain IS NOT NULL Then 'Domain'\r\n      ELSE 'Neither'\r\n    END AS Category,\r\n\r\n    SUM(Domain_Impressions) AS Domain_Impressions,\r\n    SUM(Domain_Visible_Impressions) AS Domain_Visible_Impressions,\r\n    SUM(Domain_Null_Impressions) AS Domain_Null_Impressions,\r\n\r\n    SUM(App_Impressions) AS App_Impressions,\r\n    SUM(App_Visible_Impressions) AS App_Visible_Impressions,\r\n    SUM(App_Null_Impressions) AS App_Null_Impressions,\r\n\r\n    SUM(App_Impressions + Domain_Impressions) AS Impressions /* Could also be MAX as its always one or the other*/\r\n\r\n  FROM Domains_And_Apps\r\n  GROUP By 1,2,3,4,5,6",
+                "parameters": [
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_project&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        "field": {
+                            "name": "recipe_project",
+                            "kind": "string",
+                            "description": "Project where BigQuery dataset will be created."
                         }
                     },
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
                         }
                     },
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;recipe_project&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Project where BigQuery dataset will be created.&quot;
+                        "field": {
+                            "name": "recipe_project",
+                            "kind": "string",
+                            "description": "Project where BigQuery dataset will be created."
                         }
                     },
                     {
-                        &quot;field&quot;: {
-                            &quot;name&quot;: &quot;dataset&quot;,
-                            &quot;kind&quot;: &quot;string&quot;,
-                            &quot;description&quot;: &quot;Place where tables will be written in BigQuery.&quot;
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
                         }
                     }
                 ],
-                &quot;legacy&quot;: false
+                "legacy": false
             }
         }
     }
-]</pre>
+]</code></pre>
     </div>
 
   </div>
@@ -707,7 +693,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       Developer Guide<i class="material-icons right">build</i>
     </a>
-    <a href="https://github.com/google/starthinker/blob/master/tutorials/ui_recipe.md" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+    <a href="https://google.github.io/starthinker/help/" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
       UI How To<i class="material-icons right">laptop</i>
     </a>
   </p>
@@ -723,7 +709,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google, Inc
+    &copy; 2019 Google LLC
     </div>
   </div>
 </footer>

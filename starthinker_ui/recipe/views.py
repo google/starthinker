@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ###########################################################################
 #
 #  Copyright 2019 Google Inc.
@@ -18,13 +16,13 @@
 #
 ###########################################################################
 
-from __future__ import unicode_literals
 import json
 
 from django.shortcuts import render
 from django.contrib import messages
+from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect, HttpResponseNotFound
 
 from starthinker_ui.account.decorators import permission_admin
 from starthinker_ui.recipe.forms_script import ScriptForm
@@ -103,6 +101,16 @@ def recipe_cancel(request, pk):
     messages.error(request, str(e))
   return HttpResponseRedirect('/recipe/edit/%s/' % pk)
 
+
+@permission_admin()
+def recipe_status(request, pk):
+  try:
+    recipe = request.user.recipe_set.get(pk=pk)
+    log = recipe.get_log()
+    log['report'] = render_to_string("recipe/log.html", { 'log': log })
+  except Recipe.DoesNotExist:
+    log = {}
+  return JsonResponse(log)
 
 @csrf_exempt
 def recipe_start(request):

@@ -23,3 +23,7 @@ class WebsiteTest(TestCase):
   def test_solution(self):
     resp = self.client.get('/solution/')
     self.assertEqual(resp.status_code, 200)
+
+  def test_help(self):
+    resp = self.client.get('/help/')
+    self.assertEqual(resp.status_code, 200)

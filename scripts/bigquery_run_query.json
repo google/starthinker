@@ -3,10 +3,9 @@
     "released":"2017-08-14",
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
-    "open":true,
     "icon":"arrow_forward",
-    "product":"BigQuery",
-    "title":"Run Query",
+    "requirements":["bigquery"],
+    "title":"Query Run",
     "description":"Run query on a project.",
     "instructions":[
       "Specify a single query and choose legacy or standard mode.",
