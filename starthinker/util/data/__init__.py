@@ -266,7 +266,18 @@ def put_rows(auth, destination, rows, variant=''):
     # put the file
     file_out = destination['storage']['bucket'] + ':' + destination['storage']['path'] + variant
     if project.verbose: print('SAVING', file_out)
-    object_put(auth, file_out, rows_to_csv(rows))
+
+    # @author hernanperalta
+    # fix type error when calling object_put
+    # the original line was:
+    # object_put(auth, file_out, rows_to_csv(rows))
+    # but this generates a type error, saying third param should be bytes, not str
+    # this might not be the best performing fix, but surely gets that csv in storage
+
+    import io
+    string_rows = rows_to_csv(rows)
+    byte_rows = io.BytesIO(string_rows.read().encode('utf8'))
+    object_put(auth, file_out, byte_rows)
 
   if 'sftp' in destination:
     try:
