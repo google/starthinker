@@ -9,7 +9,7 @@
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/cm_user_edit.png",
     "sample":"https://docs.google.com/spreadsheets/d/1tt597dMsAaxYXaJdifwKYNVzJrIl6E9Pe8GysfVrWOs/",
     "documentation":"https://docs.google.com/spreadsheets/d/1tt597dMsAaxYXaJdifwKYNVzJrIl6E9Pe8GysfVrWOs/",
-    "categories":["bulk", "security"],
+    "categories":["automation", "security"],
     "requirements":[ "cm", "sheets", "apps script"],
     "pitches":[
       "View multiple campaigns at once.",

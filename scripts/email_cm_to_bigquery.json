@@ -8,7 +8,7 @@
     "description":"Pulls a CM Report from a gMail powered email account into BigQuery.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/email_cm.png",
     "test":"https://github.com/google/starthinker/blob/master/tests/scripts/email_cm.json",
-    "categories":["reporting"],
+    "categories":["data"],
     "requirements":[ "cm", "gmail", "bigquery" ],
     "pitches":[
       "Acquire client CM data without having an account.",

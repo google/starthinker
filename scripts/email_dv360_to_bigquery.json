@@ -8,7 +8,7 @@
     "description":"Pulls a DV360 Report from a gMail email into BigQuery.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/email_dv360.png",
     "test":"https://github.com/google/starthinker/blob/master/tests/scripts/email_dv360.json",
-    "categories":["reporting"],
+    "categories":["data"],
     "requirements":[ "dv360", "gmail", "bigquery" ],
     "pitches":[
       "Acquire client DV360 data without having an account.",

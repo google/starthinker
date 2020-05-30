@@ -9,7 +9,7 @@
     "image":"",
     "sample":"",
     "requirements":[ "datastudio", "bigquery", "ga" ],
-    "categories":["reporting"],
+    "categories":["data"],
     "pitches":[
       "Store, visualize, and compare Google Analytics settings over time."
     ],
