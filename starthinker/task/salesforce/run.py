@@ -32,6 +32,7 @@ def salesforce():
   if project.verbose: print('Salesforce')
 
   sf = authenticate(
+    project.task['domain'],
     project.task['client'],
     project.task['secret'],
     project.task['username'],

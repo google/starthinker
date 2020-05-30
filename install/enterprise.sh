@@ -2,7 +2,7 @@
 
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ setup_sql() {
     echo "Instance already exists."
   fi
 
-  values=$(gcloud sql databases list --instance=starthinker --filter="name=$STARTHINKER_UI_PRODUCTION_DATABASE_NAME" --format="value(name)" --verbosity=none)
+  values=$(gcloud sql databases list --instance=$STARTHINKER_UI_PRODUCTION_DATABASE_NAME --filter="name=$STARTHINKER_UI_PRODUCTION_DATABASE_NAME" --format="value(name)" --verbosity=none)
   if [ -z "${values}" ]; then
     gcloud sql databases create $STARTHINKER_UI_PRODUCTION_DATABASE_NAME --instance=$STARTHINKER_UI_PRODUCTION_DATABASE_NAME
   else
@@ -83,7 +83,7 @@ stop_proxy() {
 migrate_database_proxy() {
   echo ""
   echo "----------------------------------------"
-  echo "Setup Database"
+  echo "Migrate Database"
   echo "----------------------------------------"
   echo ""
 
@@ -113,12 +113,14 @@ deploy_appengine() {
   # create recipe scripts python file for App Engine ( buffers scripts avoiding complex disk lookup )
   source "${STARTHINKER_ROOT}/starthinker_assets/production.sh";
   python "${STARTHINKER_ROOT}/starthinker_ui/recipe/scripts.py";
-  deactivate
 
-  gcloud app deploy app.yaml --stop-previous-version
+  gcloud app deploy $STARTHINKER_ROOT/app.yaml --stop-previous-version
+  gcloud app deploy $STARTHINKER_ROOT/cron.yaml --stop-previous-version
 
   # delete the recipe scripts python file for App Engine ( easy to forget and waste time debugging )
   rm "${STARTHINKER_ROOT}/starthinker_ui/recipe/scripts_lookup.py"* 
+
+  deactivate
 
   echo "Done"
   echo ""
@@ -139,7 +141,16 @@ configure_yaml() {
   appengine_client=$(cat "$STARTHINKER_CLIENT_WEB" | tr '\n' ' ')
   appengine_service=$(cat "$STARTHINKER_SERVICE" | tr '\n' ' ')
 
-  appengine_domain="https://$STARTHINKER_PROJECT.appspot.com"
+  if [ -z "${STARTHINKER_UI_PRODUCTION_DOMAIN}" ]; then
+    if [[ $STARTHINKER_PROJECT == "google.com:"* ]]; then
+      appengine_domain="https://${STARTHINKER_PROJECT/google.com:/}.googleplex.com"
+    else
+      appengine_domain="https://$STARTHINKER_PROJECT.appspot.com"
+    fi
+  else
+    appengine_domain=$STARTHINKER_UI_PRODUCTION_DOMAIN;
+  fi
+
   appengine_database_engine="${STARTHINKER_UI_PRODUCTION_DATABASE_ENGINE}"
   appengine_database_host="/cloudsql/$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"
   appengine_database_port="${STARTHINKER_UI_PRODUCTION_DATABASE_PORT}"
@@ -148,6 +159,8 @@ configure_yaml() {
 runtime: python37
 env: standard
 entrypoint: gunicorn -b :\$PORT starthinker_ui.ui.wsgi
+
+instance_class: F4_HIGHMEM
 
 runtime_config:
   python_version: 37
@@ -158,6 +171,9 @@ beta_settings:
 env_variables:
   STARTHINKER_SCALE: '1'
   STARTHINKER_DEVELOPMENT: '$STARTHINKER_DEVELOPMENT'
+  STARTHINKER_WORKER_MAX: '$STARTHINKER_WORKER_MAX'
+  STARTHINKER_WORKER_JOBS: '$STARTHINKER_WORKER_JOBS'
+  STARTHINKER_ANALYTICS: '$STARTHINKER_ANALYTICS'
   STARTHINKER_PROJECT: '$STARTHINKER_PROJECT'
   STARTHINKER_ZONE: '$STARTHINKER_ZONE'
   STARTHINKER_CLIENT: '$appengine_client'
@@ -298,7 +314,7 @@ setup_enterprise() {
   echo ""
 
   enterprise_done=0
-  enterprise_options=("Deploy Multi User UI" "Deploy Job Workers" "Check Job Workers" "Change Domain" "Change Database" "Migrate Database" "Install Datbase Proxy")
+  enterprise_options=("Deploy UI & Workers" "Change Domain" "Change Database" "Migrate Database" "Install Datbase Proxy")
 
   while (( !enterprise_done ))
   do
@@ -310,13 +326,11 @@ setup_enterprise() {
     PS3='Your Choice ( q = Quit ): '
     select enterprise_option in "${enterprise_options[@]}"; do
       case $REPLY in
-        1) setup_appengine; break ;;
-        2) setup_worker; break ;;
-        3) check_worker; break ;;
-        4) setup_domain; save_config; break ;;
-        5) setup_database; save_config; break ;;
-        6) migrate_database_enterprise; break ;;
-        7) start_worker_proxy; break ;;
+        1) setup_worker; setup_appengine; break ;;
+        2) setup_domain; save_config; break ;;
+        3) setup_database; save_config; break ;;
+        4) migrate_database_enterprise; break ;;
+        5) start_worker_proxy; break ;;
         q) enterprise_done=1; break;;
         *) echo "What's that?" ;;
       esac

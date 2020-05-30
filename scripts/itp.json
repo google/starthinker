@@ -9,9 +9,8 @@
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/itp.png",
     "sample":"https://datastudio.google.com/c/reporting/1ftGTV0jaHKwGemhSgKOcoesuWzf4Jcwd/page/E3bj",
     "documentation":"https://docs.google.com/document/d/11NlVWzbw6UeSUVUeNuERZGU9FYySWcRbu2Fg6zJ4O-A/edit",
-    "categories":["reporting"],
+    "categories":["solution", "audience"],
     "requirements":[ "dv360", "cm", "datastudio", "bigquery" ],
-    "catalysts":["insights", "data", "acquisition"],
     "pitches":[
       "Understand client exposure to ITP and ETP.",
       "Identify browser impact across devices.",

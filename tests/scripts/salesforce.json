@@ -8,23 +8,22 @@
       "auth":"user",
       "dataset":"Test"
     }},
-    { "salesforce": {
-      "auth":"user",
-      "client":{"field":{ "name":"client", "kind":"string", "default":"", "description":"Retrieve from a Salesforce App." }},
-      "secret":{"field":{ "name":"secret", "kind":"string", "default":"", "description":"Retrieve from a Salesforce App." }},
-      "username":{"field":{ "name":"username", "kind":"email", "default":"", "description":"Your Salesforce user email." }},
-      "password":{"field":{ "name":"password", "kind":"password", "default":"", "description":"Your Salesforce login password." }},
-      "query":"SELECT Id, Name, Email FROM Contact",
-      "out":{
-        "bigquery":{
-          "dataset":"Test",
-          "table":"Salesforce_Contact",
-          "schema":[
-            { "name":"ID", "type":"STRING", "mode": "REQUIRED" },
-            { "name":"Name", "type":"STRING", "mode": "NULLABLE" },
-            { "name":"Email", "type":"STRING", "mode": "NULLABLE" }
-          ]
-        }
+    { "include":{
+      "script":"scripts/salesforce_to_bigquery.json",
+      "parameters":{
+        "domain":{"field":{ "name":"domain", "kind":"string", "description":"Retrieve from a Salesforce Domain." }},
+        "client":{"field":{ "name":"client", "kind":"string", "description":"Retrieve from a Salesforce App." }},
+        "secret":{"field":{ "name":"secret", "kind":"string", "description":"Retrieve from a Salesforce App." }},
+        "username":{"field":{ "name":"username", "kind":"email", "description":"Your Salesforce user email." }},
+        "password":{"field":{ "name":"password", "kind":"password", "description":"Your Salesforce login password." }},
+        "query":"SELECT Id, Name, Email FROM Contact",
+        "dataset":"Test",
+        "table":"Salesforce_Contact",
+        "schema":[
+          { "name":"ID", "type":"STRING", "mode": "REQUIRED" },
+          { "name":"Name", "type":"STRING", "mode": "NULLABLE" },
+          { "name":"Email", "type":"STRING", "mode": "NULLABLE" }
+        ]
       }
     }},
     { "test": {

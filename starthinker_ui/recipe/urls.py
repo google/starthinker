@@ -36,4 +36,6 @@ urlpatterns = [
   url(r'^recipe/start/$', views.recipe_start, name='recipe.start'),
   url(r'^recipe/stop/$', views.recipe_stop, name='recipe.stop'),
   url(r'^$', views.recipe_list, name='recipe.list'),
+
+  url(r'^recipe/autoscale/$', views.autoscale, name='recipe.autoscale'),
 ]

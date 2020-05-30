@@ -38,8 +38,8 @@ DV360 Report
 Create a DV360 report.
 
 Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DV360 API</a> to build a report.
-Copy and paste the JSON definition of a report.
-The report is only created, use a move script to move it.
+Copy and paste the JSON definition of a report, <a href='https://github.com/google/starthinker/blob/master/tests/scripts/dbm_to_bigquery.json#L9-L40' target='_blank'>sample for reference</a>.
+The report is only created, a seperate script is required to move the data.
 To reset a report, delete it from DV360 reporting.
 
 '''
@@ -51,8 +51,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'body': '{}',
-  'delete': False,
+  'report': '{}',  # Report body and filters.
+  'delete': False,  # If report exists, delete it before creating a new one.
 }
 
 TASKS = [
@@ -60,21 +60,21 @@ TASKS = [
     'dbm': {
       'auth': 'user',
       'report': {
-        'body': {
-          'field': {
-            'name': 'body',
-            'kind': 'json',
-            'order': 1,
-            'default': '{}'
-          }
+        'field': {
+          'name': 'report',
+          'kind': 'json',
+          'order': 1,
+          'default': '{}',
+          'description': 'Report body and filters.'
         }
       },
       'delete': {
         'field': {
           'name': 'delete',
           'kind': 'boolean',
-          'order': 3,
-          'default': False
+          'order': 2,
+          'default': False,
+          'description': 'If report exists, delete it before creating a new one.'
         }
       }
     }

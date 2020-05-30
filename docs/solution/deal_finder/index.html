@@ -7,6 +7,15 @@
 <html>
   <head>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167283455-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-167283455-3');
+    </script>
+
     <link rel="shortcut icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
     <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
 
@@ -120,15 +129,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=experience">experience</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=monetization">monetization</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=insights">insights</a>
-  
-
-  <br/><br/>
-  
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
   
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=datastudio">datastudio</a>
@@ -138,9 +138,9 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <br/><br/>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=budget">budget</a>
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=solution">solution</a>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=reporting">reporting</a>
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=budget">budget</a>
   
 
   <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/deal_finder.png"/>
@@ -300,7 +300,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
             <tr>
               <td>Age</td>
-              <td>Nov. 22, 2017 (2 years, 4 months)</td>
+              <td>Nov. 22, 2017 (2 years, 6 months)</td>
             </tr>
     
             <tr>
@@ -433,13 +433,18 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "params": {
                         "type": "TYPE_CROSS_PARTNER",
                         "groupBys": [
+                            "FILTER_PARTNER_NAME",
                             "FILTER_PARTNER",
+                            "FILTER_ADVERTISER_NAME",
                             "FILTER_ADVERTISER",
+                            "FILTER_APP_URL",
                             "FILTER_SITE_ID",
+                            "FILTER_INVENTORY_SOURCE_NAME",
                             "FILTER_INVENTORY_SOURCE",
                             "FILTER_INVENTORY_SOURCE_TYPE",
                             "FILTER_ADVERTISER_CURRENCY",
-                            "FILTER_CREATIVE_SIZE",
+                            "FILTER_CREATIVE_WIDTH",
+                            "FILTER_CREATIVE_HEIGHT",
                             "FILTER_CREATIVE_TYPE"
                         ],
                         "metrics": [
@@ -494,27 +499,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "type": "INTEGER"
                         },
                         {
-                            "name": "Partner_Status",
-                            "type": "STRING",
-                            "mode": "NULLABLE"
-                        },
-                        {
                             "name": "Advertiser",
                             "type": "STRING"
                         },
                         {
                             "name": "Advertiser_ID",
                             "type": "INTEGER"
-                        },
-                        {
-                            "name": "Advertiser_Status",
-                            "type": "STRING",
-                            "mode": "NULLABLE"
-                        },
-                        {
-                            "name": "Advertiser_Integration_Code",
-                            "type": "STRING",
-                            "mode": "NULLABLE"
                         },
                         {
                             "name": "Site",

@@ -22,10 +22,12 @@
 This is a helper to help developers debug and create reports. The following
 calls are valid:
 
-- To get list of reports: `python dbm/helper.py --list -u [credentials]`
-- To get report json: `python dbm/helper.py --report [id] -u [credentials]`
-- To get report schema: `python dbm/helper.py --schema [id] -u [credentials]`
-- To get report sample: `python dbm/helper.py --sample [id] -u [credentials]`
+- To get list of reports: `python dbm/helper.py --list -u $STARTHINKER_USER`
+- To get report json: `python dbm/helper.py --report [id] -u $STARTHINKER_USER`
+- To get report schema: `python dbm/helper.py --schema [id] -u $STARTHINKER_USER`
+- To get report sample: `python dbm/helper.py --sample [id] -u$STARTHINKER_USER`
+
+Prerequisite: https://github.com/google/starthinker/blob/master/tutorials/deploy_developer.md#command-line-deploy
 
 """
 

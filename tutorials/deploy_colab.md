@@ -4,7 +4,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 
 ## List Of Notebooks
 * [Anonymize Dataset](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/anonymize.ipynb) - Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.
-* [Archive](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/archive.ipynb) - Wipe old information from a Storage bucket.
+* [Archive](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/archive.ipynb) - Wipe old information from a Storage bucket based on last update time.
 * [DV360 Audience Analysis](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/audience_analysis.ipynb) - The Audience Wizard Dashboard helps you to track the audience performance across all audiences on Display.
 * [CM User Audit](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/barnacle.ipynb) - Gives CM clients ability to see which profiles have access to which parts of an account. Loads CM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.
 * [Query To Table](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_query.ipynb) - Save query results into a BigQuery table.
@@ -14,6 +14,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Query To View](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_view.ipynb) - Create a BigQuery view.
 * [Storage Bucket](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bucket.ipynb) - Create and permission a bucket in Storage.
 * [Bulkdozer](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bulkdozer.ipynb) - Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.
+* [CM Campaign Auditor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm_campaign_audit.ipynb) - A tool for rapidly bulk checking Campaign Manager campaigns
 * [CM User Editor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm_user_editor.ipynb) - A tool for rapidly bulk editing Campaign Manager profiles, roles, and sub accounts.
 * [Conversion Upload BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/conversion_upload_from_biguery.ipynb) - Move from BigQuery to CM.
 * [Conversion Upload Sheets](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/conversion_upload_from_sheets.ipynb) - Move form Sheets to CM.
@@ -34,6 +35,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Drive Copy](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/drive_copy.ipynb) - Copy a drive document.
 * [DT To Table](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dt.ipynb) - Move data from a DT bucket into a BigQuery table.
 * [DV360 Feature Adoption Dashboard](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv360_feature_adoption.ipynb) - Tracks revenue spent on various DV360 features and compares to performance metrics.
+* [[DV-3PO] Custom Signals](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv3po_custom_signals.ipynb) - [DV-3PO] Custom Signals allows automated changes to be made to DV360 campaigns based on external signals from weather and social media trends. In the future it will also support news, disaster alerts, stocks, sports, custom APIs, etc. 
 * [Dynamic Costs Reporting](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dynamic_costs.ipynb) - Calculate DV360 cost at the dynamic creative combination level.
 * [CM Report Emailed To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/email_cm_to_bigquery.ipynb) - Pulls a CM Report from a gMail powered email account into BigQuery.
 * [DV360 Report Emailed To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/email_dv360_to_bigquery.ipynb) - Pulls a DV360 Report from a gMail email into BigQuery.

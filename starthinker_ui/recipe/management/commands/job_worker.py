@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 import os
 import fcntl
 import json
+import math
 import uuid
 import time
 import signal
@@ -31,14 +32,16 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import connection, transaction
 from django.conf import settings
 
-from starthinker_ui.recipe.models import Recipe, utc_milliseconds, JOB_LOOKBACK_MS, JOB_INTERVAL_MS, JOB_RECHECK_MS
-from starthinker_ui.ui.log import log_manager_start, log_manager_end, log_manager_error
-from starthinker_ui.ui.log import log_job_timeout, log_job_error, log_job_start, log_job_end, log_job_cancel
-from starthinker_ui.ui.log import log_verbose, get_instance_name
+from starthinker_ui.recipe.models import Recipe, utc_milliseconds, utc_milliseconds_to_timezone, JOB_LOOKBACK_MS, JOB_INTERVAL_MS
+from starthinker_ui.recipe.log import log_manager_start, log_manager_end, log_manager_scale, log_manager_timeout, log_manager_error
+from starthinker_ui.recipe.log import log_job_timeout, log_job_error, log_job_start, log_job_end, log_job_cancel
+from starthinker_ui.recipe.log import log_verbose, get_instance_name
+from starthinker_ui.recipe.compute import group_instances_delete
 
 
 MANAGER_ON = True
 MANAGER_HEALTHY = True
+IDLE_INTERVAL = 5 * 60 # if worker is idle for 5 minutes, shut it down
 
 def signal_exit(self, signum):
   global MANAGER_ON
@@ -75,33 +78,35 @@ def worker_pull(worker_uid, jobs=1):
 
   worker_utm = utc_milliseconds()
   worker_lookback = worker_utm - JOB_LOOKBACK_MS
-  worker_recheck = worker_utm - JOB_RECHECK_MS
 
   if jobs:
 
     with transaction.atomic():
 
-      # every half hour put jobs back in rotation so worker can trigger get_status logic, triggers status at 24 hour mark
-      Recipe.objects.filter(active=True, manual=False, worker_utm__lt=worker_recheck).select_for_update(skip_locked=True).update(job_done=False)
-
       # find recipes that are available but have not been pinged recently from all workers ( pulls from pool )
       where = Recipe.objects.filter(
-        job_done=False,
         active=True,
-        worker_utm__lt=worker_lookback,
-      ).select_for_update(skip_locked=True).order_by('worker_utm').values_list('id', flat=True)[:jobs]
+        worker_utm__lte=worker_lookback,
+        job_utm__lte=worker_utm,
+      ).exclude(job_utm=0).select_for_update(skip_locked=True).order_by('worker_utm').values_list('id', flat=True)[:jobs]
 
       # mark those recipes as belonging to this worker
       Recipe.objects.filter(id__in=where).update(worker_uid=worker_uid, worker_utm=worker_utm)
 
   # find all recipes that belong to this worker and check if they have new tasks
-  for job in Recipe.objects.filter(job_done=False, active=True, worker_uid=worker_uid): 
+  for job in Recipe.objects.filter(active=True, worker_uid=worker_uid): 
     jobs_all.append(job.id)
-    task = job.get_task() # also checks if job is done
+    task = job.get_task() # also resets status
     if job.worker_utm == worker_utm and task: # jobs with current timestamp are new ( odds of a ping matching this worker_utm? ), isolate evens and odds?
       jobs_new.append(task)
 
   return jobs_all, jobs_new
+
+
+def worker_downscale():
+  name = get_instance_name()
+  if name != 'UNKNOWN':
+    group_instances_delete(name)
 
 
 def make_non_blocking(file_io):
@@ -113,7 +118,7 @@ def make_non_blocking(file_io):
 class Workers():
 
   def __init__(self, uid, jobs_maximum, timeout_seconds, trace=False):
-    self.uid = uid or get_instance_name(str(uuid.uuid1()))
+    self.uid = uid or get_instance_name()
     self.timeout_seconds = timeout_seconds
     self.trace = trace
     self.jobs_maximum = jobs_maximum
@@ -124,15 +129,17 @@ class Workers():
     self.ping_thread = threading.Thread(target=self.ping)
     self.ping_thread.start()
 
+    self.busy_time = datetime.utcnow()
 
   def available(self):
     return self.jobs_maximum - len(self.jobs)
 
 
   def pull(self):
+
     self.lock_thread.acquire()
 
-    # get jobs for this worker
+    # get jobs for this worker ( threadsafe and takes a long time, so outside of thread lock )
     jobs_all, jobs_new = worker_pull(self.uid, jobs=self.available())
 
     # remove all lost jobs from ping
@@ -287,9 +294,16 @@ class Workers():
       self.jobs = [job for job in self.jobs if job['job']['process'] is not None]
       self.lock_thread.release()
 
+    # update the busy time if jobs exist
+    if len(self.jobs) != 0: self.busy_time = datetime.utcnow()
+
     # if workers remain, return True
     return bool(self.jobs)
 
+
+  def idle(self):
+    return (datetime.utcnow() - self.busy_time).seconds > IDLE_INTERVAL
+  
 
   def shutdown(self):
     # wait for jobs to finish
@@ -361,11 +375,13 @@ class Command(BaseCommand):
     MANAGER_ON = True
     MANAGER_HEALTHY = True
 
-    print('Starting Up...')
+    if kwargs['test']: print('Starting Up...')
 
     if kwargs['verbose']: log_verbose()
 
     log_manager_start()
+
+    if kwargs['test']: print('Initializing Workers...')
 
     workers = Workers(
       kwargs['worker'], 
@@ -377,20 +393,37 @@ class Command(BaseCommand):
     try:
 
       while MANAGER_HEALTHY and MANAGER_ON:
+
+        # load jobs
         workers.pull()
+
         time.sleep(JOB_INTERVAL_MS / 1000)
+
+        # evaluate jobs
         workers.poll()
-        time.sleep(JOB_INTERVAL_MS / 1000)
+
+        # check if worker needs to scale down
+        if workers.idle(): 
+          MANAGER_ON = False
+          log_manager_timeout()
+        else:
+          time.sleep(JOB_INTERVAL_MS / 1000)
+          
         if kwargs['test']: 
           MANAGER_ON = False
 
     except KeyboardInterrupt:
       MANAGER_ON = False
+
     except Exception as e:
+      if kwargs['test']: print(str(e))
       log_manager_error(traceback.format_exc())
 
     if MANAGER_HEALTHY:
-      print('Shutting Down...')
+      if kwargs['test']: print('Shutting Down...')
       workers.shutdown()
 
     log_manager_end()
+
+    # worker will terminate itself in a group safe way
+    worker_downscale()

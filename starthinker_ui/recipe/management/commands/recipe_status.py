@@ -47,6 +47,8 @@ class Command(BaseCommand):
 
   def handle(self, *args, **kwargs):
     for recipe in (Recipe.objects.filter(pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.all()):
+      status = json.loads(recipe.job_status)
+
       print('---------------------------------------')
       print('Name:', recipe.name)
       print('Account:', recipe.account.email)
@@ -57,11 +59,11 @@ class Command(BaseCommand):
       print('Hour:', recipe.hour)
       print('Timezone:', recipe.timezone)
       print('Manual:', recipe.manual)
-      print('Done:', recipe.job_done)
+      print('Done:', all(task['done'] for task in status['tasks']))
 
       if kwargs['raw']:
         print('Job Status:')
-        print(json.dumps(json.loads(recipe.job_status), indent=2))
+        print(json.dumps(status), indent=2)
         continue
       
       log = recipe.get_log()

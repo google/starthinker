@@ -136,13 +136,18 @@ TASKS = [
           'params': {
             'type': 'TYPE_CROSS_PARTNER',
             'groupBys': [
+              'FILTER_PARTNER_NAME',
               'FILTER_PARTNER',
+              'FILTER_ADVERTISER_NAME',
               'FILTER_ADVERTISER',
+              'FILTER_APP_URL',
               'FILTER_SITE_ID',
+              'FILTER_INVENTORY_SOURCE_NAME',
               'FILTER_INVENTORY_SOURCE',
               'FILTER_INVENTORY_SOURCE_TYPE',
               'FILTER_ADVERTISER_CURRENCY',
-              'FILTER_CREATIVE_SIZE',
+              'FILTER_CREATIVE_WIDTH',
+              'FILTER_CREATIVE_HEIGHT',
               'FILTER_CREATIVE_TYPE'
             ],
             'metrics': [
@@ -197,27 +202,12 @@ TASKS = [
               'type': 'INTEGER'
             },
             {
-              'name': 'Partner_Status',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
               'name': 'Advertiser',
               'type': 'STRING'
             },
             {
               'name': 'Advertiser_ID',
               'type': 'INTEGER'
-            },
-            {
-              'name': 'Advertiser_Status',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Advertiser_Integration_Code',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
             },
             {
               'name': 'Site',

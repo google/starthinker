@@ -71,7 +71,6 @@ class Command(BaseCommand):
         print('Week:', recipe.week)
         print('Hour:', recipe.hour)
         print('Timezone:', recipe.timezone)
-        print('Done:', recipe.job_done)
         print('---------------------------------------')
 
       except (KeyboardInterrupt, SystemExit):

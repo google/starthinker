@@ -8,9 +8,8 @@
     "description":"Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domains and apps are misconfigured by publisher resulting in underreporting.",
     "image":"https://storage.googleapis.com/starthinker-ui/transparency.png",
     "sample":"https://datastudio.google.com/c/u/0/reporting/1foircGRxgYCL_PR8gfdmYOleBacnPKwB/page/QCXj",
-    "categories":["reporting"],
+    "categories":["solution", "audience"],
     "requirements":[ "cm", "datastudio", "bigquery" ],
-    "catalysts":["audit", "insights", "experience", "data"],
     "pitches":[
       "Measure mix of domain and app traffic.",
       "Discover which sites are underepporting.",

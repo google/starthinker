@@ -158,7 +158,7 @@ def put_rows(auth, destination, rows, variant=''):
           "disposition": [ string - same as BigQuery documentation ]
         },
         "sheets":{
-          "url":[ string - full URL, suggest using share link ],
+          "sheet":[ string - full URL, suggest using share link ],
           "tab":[ string ],
           "range":[ string - A1:A notation ]
           "delete": [ boolean - if sheet range should be cleared before writing ]

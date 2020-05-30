@@ -63,6 +63,7 @@ class FieldMap:
   AD_CREATIVE_ROTATION_END_TIME = 'End Date'
   AD_HARDCUTOFF = 'Hard Cutoff'
   AD_TYPE = 'Ad Type'
+  AD_URL_SUFFIX = 'URL Suffix'
   CUSTOM_CLICK_THROUGH_URL = 'Custom URL'
 
   ADVERTISER_ID = 'Advertiser ID'

@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2017 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ def twitter_trends_closest():
 TWITTER_TRENDS_AVAILABLE_SCHEMA = TWITTER_TRENDS_CLOSEST_SCHEMA
 
 def twitter_trends_available():
-  if project.verbose: print('TWITTER TRENDS CLOSEST')
+  if project.verbose: print('TWITTER TRENDS AVAILABLE')
   results = api.request('trends/available', {})
   for r in results: 
     yield [r['country'], r['countryCode'], r['name'], r['parentid'], r['placeType']['code'], r['placeType']['name'], r['url'], r['woeid']]

@@ -152,9 +152,6 @@ class Script:
   def get_categories(self):
     return self.script.get('script', {}).get('categories', [])
 
-  def get_catalysts(self):
-    return self.script.get('script', {}).get('catalysts', [])
-
   def get_pitches(self):
     return self.script.get('script', {}).get('pitches', [])
 
@@ -176,7 +173,6 @@ class Script:
     return data
 
   def is_manual(self):
-    #return self.is_solution() and self.script.get('setup', {}).get('day', None) == []
     return self.script.get('setup', {}).get('day', None) == []
 
   @staticmethod

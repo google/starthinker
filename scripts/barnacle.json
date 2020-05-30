@@ -8,9 +8,8 @@
     "description":"Gives CM clients ability to see which profiles have access to which parts of an account. Loads CM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.",
     "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
     "sample":"https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT",
-    "categories":["security", "reporting", "covid"],
+    "categories":["security", "solution", "covid"],
     "requirements":[ "cm", "datastudio", "bigquery" ],
-    "catalysts":["insights", "experience"],
     "pitches":[
       "Meet contractual access reporting information.",
       "Reduce unauthorized use of CM accounts and assets.",

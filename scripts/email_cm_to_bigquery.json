@@ -10,7 +10,6 @@
     "test":"https://github.com/google/starthinker/blob/master/tests/scripts/email_cm.json",
     "categories":["reporting"],
     "requirements":[ "cm", "gmail", "bigquery" ],
-    "catalysts":["automation", "acquisition", "data"],
     "pitches":[
       "Acquire client CM data without having an account.",
       "Build new data ingestion service for clients.",

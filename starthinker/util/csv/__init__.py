@@ -204,3 +204,9 @@ def pivot_column_to_row(rows, discard_blanks=True):
 
 def rows_to_dict(rows):
   return dict([(row[0], row[1:]) for row in rows])
+
+
+def rows_slice(rows, row_min=0, row_max=100):
+  for count, row in enumerate(rows):
+    if count >= row_min: yield row
+    if count >= row_max: break

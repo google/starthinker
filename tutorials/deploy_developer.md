@@ -26,8 +26,12 @@ bash install/deploy.sh
 source starthinker_assets/development.sh
 ```
 ```
-python starthinker/all/run.py scripts/say_hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT --verbose 
+python starthinker/all/run.py scripts/say_hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT -c $STARTHINKER_CLIENT --verbose 
 ```
+
+  - The **-u** and **-s** flags denote user and service credentials path, only required for recipes that use them.
+  - The **-p** is the cloud billing project to use, not every recipe requires it.
+  - The **-c** flag is for authentication if the **-u** file does not exist yet, it is ignored otherwise and can be left off.
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
 

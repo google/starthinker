@@ -94,9 +94,10 @@ def job_wait(auth, job):
       if project.verbose: print('.', end='')
       sys.stdout.flush()
       result = API_Retry(request)
-      if 'errorResult' in result['status']: 
-        errors = ' '.join([e['message'] for e in result['status']['errors']])
-        raise Exception('BigQuery Job Error: %s' % errors)
+      if 'errors' in result['status']:
+        raise Exception('BigQuery Job Error: %s' % ' '.join([e['message'] for e in result['status']['errors']]))
+      elif 'errorResult' in result['status']: 
+        raise Exception('BigQuery Job Error: %s' % result['status']['errorResult']['message'])
       elif result['status']['state'] == 'DONE':
         if project.verbose: print('JOB COMPLETE:', result['id'])
         break

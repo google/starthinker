@@ -7,9 +7,8 @@
     "title":"ITP Audit Dashboard ( 2020 )",
     "description":"Dashboard that shows performance metrics across browser to see the impact of ITP.",
     "document":"https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/",
-    "categories":["itp", "reporting"],
+    "categories":["solution", "audience"],
     "requirements":[ "cm", "dv360", "datastudio", "bigquery" ],
-    "catalysts":["insights", "experience"],
     "pitches":[
       "See drilled down metrics of your accounts performance as ITP changes"
     ],

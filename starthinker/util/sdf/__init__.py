@@ -50,7 +50,7 @@ def sdf_download(auth, version, partner_id, file_types, filter_type, filter_ids_
 
   operation = API_DV360_Beta(auth).sdfdownloadtasks().create(body=body).execute()
 
-  if operation or 'name' not in operation:
+  if operation and 'name' in operation:
     request = API_DV360_Beta(auth).sdfdownloadtasks().operations().get(name=operation['name'])
 
     # This is the eng recommended way of getting the operation

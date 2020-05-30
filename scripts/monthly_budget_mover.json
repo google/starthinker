@@ -7,9 +7,8 @@
     "title":"Monthly Budget Mover",
     "image": "https://storage.googleapis.com/starthinker-ui/MonthlyBudgetMover.png",
     "description":"Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.",
-    "categories":["budget"],
+    "categories":["budget", "automation"],
     "requirements":[ "dv360", "bigquery" ],
-    "catalysts":["monetization", "automation", "experience"],
     "pitches":[
       "Saves on the time to manually move Insertion Order budgets from month to month.",
       "Allows you to categorize line items into categories, then the tool will aggregate up all the spend and budget for those line items and determine any remaining or negative budget.  Then it will spread that amount equally across all of the Line Items in that category."

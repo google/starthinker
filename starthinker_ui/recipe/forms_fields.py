@@ -24,7 +24,7 @@ from django import forms
 from django.core import validators
 from django.core.exceptions import ValidationError
 
-from starthinker_ui.ui.timezones import TIMEZONES
+from starthinker_ui.recipe.timezones import TIMEZONES
 
 
 class CommaSeparatedCharField(forms.CharField):
@@ -102,11 +102,24 @@ class JsonField(forms.CharField):
   widget = forms.Textarea
 
   def prepare_value(self, value):
-    return json.dumps(json.loads(value or '[]') if isinstance(value, str) else value, indent=2)
+    if isinstance(value, str): 
+      if value: 
+        try: return json.dumps(json.loads(value))
+        except ValueError: return value
+      else: 
+        return None
+    else: 
+      return value  
 
   def clean(self, value):
-    try: return json.loads(value.strip() or '[]')  if isinstance(value, str) else value
-    except Exception as e: raise ValidationError(str(e))
+    if isinstance(value, str):
+      if value: 
+        try: return json.loads(value.strip())
+        except ValueError as e: raise ValidationError(str(e))
+      else: 
+        return None
+    else:
+      return value
 
 
 class TimezoneField(forms.ChoiceField):

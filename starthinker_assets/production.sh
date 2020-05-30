@@ -38,7 +38,7 @@ if [ ! -z "${STARTHINKER_ROOT}" ]; then
   source "${STARTHINKER_ROOT}/starthinker_assets/config.sh";
 
   export STARTHINKER_SCALE=1;
-  export STARTHINKER_DEVELOPMENT=1;
+  export STARTHINKER_DEVELOPMENT=0;
 
   export STARTHINKER_CLIENT="${STARTHINKER_CLIENT_WEB}";
 

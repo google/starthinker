@@ -16,17 +16,21 @@
 #
 ###########################################################################
 
+import socket
 import threading
 
 from googleapiclient import discovery
+from googleapiclient import discovery
 
-from starthinker.util.project import project
 from starthinker.util.auth.wrapper import CredentialsUserWrapper, CredentialsServiceWrapper, CredentialsFlowWrapper
-
 
 CREDENTIALS_USER_CACHE = None # WARNING:  possible issue if switching user credentials mid recipe, not in scope but possible ( need to address using hash? )
 DISCOVERY_CACHE = {} 
 
+# set timeout to 10 minutes ( reduce socket.timeout: The read operation timed out )
+socket.setdefaulttimeout(600)  
+
+from starthinker.util.project import project
 
 def clear_credentials_cache():
   global CREDENTIALS_USER_CACHE 

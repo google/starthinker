@@ -28,8 +28,20 @@ from website.views import solutions, solution, help
 class Command(BaseCommand):
   help = 'Generate HTML For GitHub'
 
+  def add_arguments(self, parser):
+    parser.add_argument(
+      '--analytics',
+      action='store',
+      dest='analytics',
+      required=True,
+      type=str,
+      help='Google analytics tag.',
+    )
+
   def handle(self, *args, **kwargs):
     
+    settings.GOOGLE_ANALYTICS = kwargs['analytics']
+
     directory = '%s/docs' % settings.UI_ROOT
     print('Writing:', directory)
     with open('%s/index.html' % directory, 'w') as index_file:

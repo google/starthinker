@@ -10,7 +10,6 @@
     "test":"https://github.com/google/starthinker/blob/master/tests/scripts/email_dv360.json",
     "categories":["reporting"],
     "requirements":[ "dv360", "gmail", "bigquery" ],
-    "catalysts":["acquisition", "automation", "data"],
     "pitches":[
       "Acquire client DV360 data without having an account.",
       "Build new data ingestion service for clients.",

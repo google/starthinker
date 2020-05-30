@@ -82,7 +82,8 @@ def smartsheet():
   project.task['out'].setdefault('bigquery', {}).setdefault('schema', get_schema(sheet))
   print('SCHEMA = %s' % json.dumps(project.task['out']['bigquery']['schema'], indent=2))
 
-  if link and 'schema' in project.task['out']['bigquery']: project.task['out']['bigquery']['schema'].insert(0, { "name":"rowPermalink", "type":"STRING", "mode":"NULLABLE" })
+  if link and 'schema' in project.task['out']['bigquery']: 
+    project.task['out']['bigquery']['schema'].insert(0, { "name":"rowPermalink", "type":"STRING", "mode":"NULLABLE" })
 
   if rows: put_rows(project.task['auth'], project.task['out'], rows)
 

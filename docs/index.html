@@ -7,6 +7,15 @@
 <html>
   <head>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167283455-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-167283455-3');
+    </script>
+
     <link rel="shortcut icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
     <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
 
@@ -123,10 +132,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_all">All</span>
   
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_7-days">7 days</span>
-  
-  
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_30-days">30 days</span>
   
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_90-days">90 days</span>
@@ -136,20 +141,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   
 
   <br/>
-  
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_acquisition">acquisition</span>
-  
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_audit">audit</span>
-  
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_automation">automation</span>
-  
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_data">data</span>
-  
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_experience">experience</span>
-  
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_insights">insights</span>
-  
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_monetization">monetization</span>
   
 
   <br/>
@@ -172,8 +163,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_google-api">google api</span>
   
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_plx">plx</span>
-  
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_salesforce">salesforce</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_sheets">sheets</span>
@@ -187,11 +176,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <br/>
   
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_3p">3P</span>
-  
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_alerts">alerts</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_audience">audience</span>
+  
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_automation">automation</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_budget">budget</span>
   
@@ -199,13 +188,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_covid">covid</span>
   
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_itp">itp</span>
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_data">data</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_reporting">reporting</span>
   
      <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_security">security</span>
   
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_trafficking">trafficking</span>
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_solution">solution</span>
   
 
   <br/><br/>
@@ -236,7 +225,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_data category_experience category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_automation category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -281,7 +270,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 Archive
               </a>
             </span>
-            <p>Wipe old information from a Storage bucket.</p>
+            <p>Wipe old information from a Storage bucket based on last update time.</p>
           </div>
           <div class="card-reveal">
             <i class="card-title material-icons right">close</i>
@@ -321,7 +310,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_reporting category_insights category_data category_acquisition category_dv360 category_cm category_datastudio category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_solution category_audience category_dv360 category_cm category_datastudio category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -360,7 +349,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_trafficking category_bulk category_automation category_cm category_sheets">
+      <div class="col s6 m4 l3 category_all  category_older category_automation category_cm category_sheets">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -428,6 +417,45 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
+      <div class="col s6 m4 l3 category_all  category_90-days category_bulk category_security category_cm category_sheets category_apps-script">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <i class="activator material-icons expand">more_vert</i>
+              
+              <a href="/starthinker/solution/cm_campaign_audit/"> 
+                <i class="material-icons medium">done_outline</i><br/><br/>
+                CM Campaign Auditor
+              </a>
+            </span>
+            <p>A tool for rapidly bulk checking Campaign Manager campaigns</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                   <tr>
+                     <td>View multiple campaigns at once.</td>
+                   </tr>
+                 
+                   <tr>
+                     <td>Write custom filters to find outliers.</td>
+                   </tr>
+                 
+                   <tr>
+                     <td>Rapidly audit entire campaign set for an account.</td>
+                   </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
       <div class="col s6 m4 l3 category_all  category_older category_cm">
         <div class="card ">
           <div class="card-content">
@@ -453,7 +481,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_90-days category_reporting category_automation category_acquisition category_data category_cm category_gmail category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_90-days category_reporting category_cm category_gmail category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -625,7 +653,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_security category_reporting category_covid category_insights category_experience category_cm category_datastudio category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_security category_solution category_covid category_cm category_datastudio category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -668,7 +696,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_30-days category_90-days category_bulk category_covid category_security category_automation category_cm category_sheets category_apps-script">
+      <div class="col s6 m4 l3 category_all  category_90-days category_automation category_covid category_security category_cm category_sheets category_apps-script">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -790,7 +818,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_cm category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_data category_cm category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -815,7 +843,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_90-days category_audience category_reporting category_experience category_insights category_audit category_dv360 category_datastudio category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_solution category_audience category_dv360 category_datastudio category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -854,32 +882,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_dv360 category_bigquery">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <a href="/starthinker/solution/dbm_authorize/"> 
-                <i class="material-icons medium">filter_list</i><br/><br/>
-                DV360 Authorize
-              </a>
-            </span>
-            <p>Authorize access to a table based on DV360 permissions.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all  category_90-days category_budget category_reporting category_covid category_experience category_data category_monetization category_insights category_dv360 category_datastudio category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_budget category_solution category_covid category_dv360 category_datastudio category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -926,49 +929,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_budget category_reporting category_automation category_monetization category_insights category_dv360 category_sheets category_datastudio category_bigquery">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <i class="activator material-icons expand">more_vert</i>
-              
-              <a href="/starthinker/solution/pacing/"> 
-                <i class="material-icons medium">directions_run</i><br/><br/>
-                DV360 Pacing
-              </a>
-            </span>
-            <p>Pace the spend of DV360 campaigns to hit targets.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                   <tr>
-                     <td>Optimize spend to prevent under spend.</td>
-                   </tr>
-                 
-                   <tr>
-                     <td>Optimize spend to prevent over spend.</td>
-                   </tr>
-                 
-                   <tr>
-                     <td>Allow client traders to enter budgets.</td>
-                   </tr>
-                 
-                   <tr>
-                     <td>Allow client traders to categorize spend.</td>
-                   </tr>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
       <div class="col s6 m4 l3 category_all  category_older category_dv360">
         <div class="card ">
           <div class="card-content">
@@ -994,7 +954,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_90-days category_reporting category_acquisition category_automation category_data category_dv360 category_gmail category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_90-days category_reporting category_dv360 category_gmail category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1116,7 +1076,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_budget category_reporting category_experience category_monetization category_insights category_dv360 category_datastudio category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_solution category_budget category_dv360 category_datastudio category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1154,45 +1114,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  
                    <tr>
                      <td>Identify poorly performing deals.</td>
-                   </tr>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all  category_older category_reporting category_insights category_experience category_acquisition category_dv360 category_cm category_datastudio category_bigquery">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <i class="activator material-icons expand">more_vert</i>
-              
-              <a href="/starthinker/solution/digitx/"> 
-                <i class="material-icons medium">whatshot</i><br/><br/>
-                Digit X
-              </a>
-            </span>
-            <p>Combines DV360 and CM reports into a single audience reach report.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                   <tr>
-                     <td>Provide audience reach report.</td>
-                   </tr>
-                 
-                   <tr>
-                     <td>Help client decide which inventory to invest in.</td>
-                   </tr>
-                 
-                   <tr>
-                     <td>Identify poorly performing audiences.</td>
                    </tr>
                  
                 </tbody>
@@ -1277,7 +1198,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_automation category_data category_dv360 category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_data category_dv360 category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1324,7 +1245,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_alerts category_covid category_audit category_experience category_insights category_dv360 category_gmail">
+      <div class="col s6 m4 l3 category_all  category_older category_alerts category_covid category_dv360 category_gmail">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1393,37 +1314,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  
                    <tr>
                      <td>Store, visualize, and compare Google Analytics settings over time.</td>
-                   </tr>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all  category_older category_itp category_reporting category_insights category_experience category_cm category_dv360 category_datastudio category_bigquery">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <i class="activator material-icons expand">more_vert</i>
-              
-              <a href="/starthinker/solution/itp_audit/"> 
-                <i class="material-icons medium">donut_small</i><br/><br/>
-                ITP Audit Dashboard ( 2020 )
-              </a>
-            </span>
-            <p>Dashboard that shows performance metrics across browser to see the impact of ITP.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                   <tr>
-                     <td>See drilled down metrics of your accounts performance as ITP changes</td>
                    </tr>
                  
                 </tbody>
@@ -1508,7 +1398,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_budget category_monetization category_automation category_experience category_dv360 category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_budget category_automation category_dv360 category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1543,32 +1433,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_plx">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              
-              <a href="/starthinker/solution/plx_to_bigquery/"> 
-                <i class="material-icons medium">account_balance</i><br/><br/>
-                PLX To BigQuery
-              </a>
-            </span>
-            <p>Save PLX query results into a BigQuery table.</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col s6 m4 l3 category_all  category_older category_trafficking category_automation category_audit category_cm category_sheets category_apps-script">
+      <div class="col s6 m4 l3 category_all  category_older category_automation category_cm category_sheets category_apps-script">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1765,7 +1630,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_90-days category_salesforce category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_salesforce category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1865,7 +1730,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_90-days category_smartsheet category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_smartsheet category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1940,7 +1805,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_bulk category_trafficking category_automation category_cm category_sheets category_apps-script">
+      <div class="col s6 m4 l3 category_all  category_older category_automation category_cm category_sheets category_apps-script">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -1979,7 +1844,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_reporting category_audit category_insights category_experience category_data category_cm category_datastudio category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_solution category_audience category_cm category_datastudio category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -2022,7 +1887,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_older category_budget category_3p category_automation category_monetization category_insights category_dv360 category_sheets category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_older category_budget category_automation category_dv360 category_sheets category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">
@@ -2090,7 +1955,50 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         </div>
       </div>
     
-      <div class="col s6 m4 l3 category_all  category_7-days category_30-days category_90-days category_audience category_data category_monetization category_insights category_dv360 category_datastudio category_bigquery">
+      <div class="col s6 m4 l3 category_all  category_90-days category_automation category_dv360 category_sheets">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              
+              <i class="activator material-icons expand">more_vert</i>
+              
+              <a href="/starthinker/solution/dv3po_custom_signals/"> 
+                <i class="material-icons medium">donut_small</i><br/><br/>
+                [DV-3PO] Custom Signals
+              </a>
+            </span>
+            <p>[DV-3PO] Custom Signals allows automated changes to be made to DV360 campaigns based on external signals from weather and social media trends. In the future it will also support news, disaster alerts, stocks, sports, custom APIs, etc. </p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 
+                   <tr>
+                     <td>Automatically react to custom signals and analytics</td>
+                   </tr>
+                 
+                   <tr>
+                     <td>Budget is better allocated based on business rules and priorities.</td>
+                   </tr>
+                 
+                   <tr>
+                     <td>Shortest possible reaction time to external events.</td>
+                   </tr>
+                 
+                   <tr>
+                     <td>Minimize manual work.</td>
+                   </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col s6 m4 l3 category_all  category_90-days category_audience category_dv360 category_datastudio category_bigquery">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">

@@ -66,5 +66,9 @@ Odds are your firewall settings are not up to date for the machine you're on.  T
 gcloud compute firewall-rules create default-allow-ssh --allow tcp:22
 ```
 
+---
+### How do I completely revoke access to my user credentials for StarThinker?
+Visit [Google Account Permissions](https://myaccount.google.com/permissions) to revoke access to StarThinker.
+
 --- 
 &copy; 2020 Google LLC - Apache License, Version 2.0

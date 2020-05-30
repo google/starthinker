@@ -2,7 +2,7 @@
 
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -19,9 +19,8 @@
 ###########################################################################
 
 
-gcloud_firewall_ssh()
+firewall_create()
 {
-
   values=$(gcloud compute firewall-rules list --filter="name=default-allow-ssh" --format="value(name)" --verbosity=none)
   if [ -z "${values}" ]; then
     gcloud compute firewall-rules create default-allow-ssh --allow tcp:22
@@ -40,6 +39,7 @@ instance_create()
   if [ -z "${values}" ]; then
     gcloud compute instances create $create_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE --machine-type=$create_MACHINE --boot-disk-size=200GB --scopes https://www.googleapis.com/auth/cloud-platform
   else
+    gcloud compute instances start $create_INSTANCE --zone=$STARTHINKER_ZONE
     echo "Instance already exists."
   fi
 }
@@ -79,7 +79,7 @@ instance_copy()
 start_worker_proxy() {
   echo ""
   echo "----------------------------------------"
-  echo "Start Worker Proxy"
+  echo "Start Worker Proxy - sudo systemctl status starthinker_proxy"
   echo "----------------------------------------"
   echo ""
 
@@ -106,11 +106,9 @@ User=root
 EOL
 
   sudo systemctl daemon-reload
-  sudo systemctl restart starthinker_proxy
   sudo systemctl enable starthinker_proxy
+  #sudo systemctl restart starthinker_proxy
 
-  echo ""
-  echo "Check status using: sudo systemctl status starthinker_proxy"
   echo ""
   echo "Done"
   echo ""
@@ -122,7 +120,7 @@ start_worker() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Start Worker"
+  echo "Start Worker - sudo systemctl status starthinker"
   echo "----------------------------------------"
   echo ""
 
@@ -139,6 +137,8 @@ Restart=always
 RestartSec=5
 TimeoutSec=10
 Environment=STARTHINKER_SCALE=$STARTHINKER_SCALE
+Environment=STARTHINKER_WORKER_MAX=$STARTHINKER_WORKER_MAX
+Environment=STARTHINKER_WORKER_JOBS=$STARTHINKER_WORKER_JOBS
 Environment=STARTHINKER_DEVELOPMENT=$STARTHINKER_DEVELOPMENT
 Environment=STARTHINKER_PROJECT=$STARTHINKER_PROJECT
 Environment=STARTHINKER_ZONE=$STARTHINKER_ZONE
@@ -163,65 +163,14 @@ WantedBy=multi-user.target
 EOL
 
   sudo systemctl daemon-reload
-  sudo systemctl restart starthinker
   sudo systemctl enable starthinker
+  #sudo systemctl restart starthinker
 
-  echo ""
-  echo "Check status using: sudo systemctl status starthinker"
   echo ""
   echo "Done"
   echo ""
 }
 
-
-deploy_worker() {
-  instance_Label=$1
-  instance_Type=$2
-  instance_Workers=$3
-  instance_Jobs=$4
-
-  setup_credentials_service;
-  setup_credentials_ui;
-  save_config;
-
-  echo ""
-  echo "----------------------------------------"
-  echo "Deploy Worker Instances - $instance_Label: $instance_Type ( $instance_Workers x $instance_Jobs )"
-  echo "----------------------------------------"
-  echo ""
-
-  gcloud_firewall_ssh;
-
-  for ((instance=1;instance<=instance_Workers;instance++)); do
-    instance_name="starthinker-${instance_Label}-${instance}"
-
-    echo ""
-    echo "----------------------------------------"
-    echo "Deploy Instance: $instance_name" 
-    echo "----------------------------------------"
-    echo ""
-
-    instance_create "$instance_name" "$instance_Type"
-    instance_start "$instance_name"
-
-    sleep 1m
-
-    instance_command "$instance_name" "sudo systemctl stop starthinker"
-    instance_command "$instance_name" "sudo systemctl stop starthinker_proxy"
-
-    instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_assets" "~/starthinker_assets/" --recurse
-    instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_ui" "~/starthinker_ui/" --recurse
-    instance_copy "$instance_name" "${STARTHINKER_ROOT}/scripts" "~/scripts/" --recurse
-    instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker" "~/starthinker/" --recurse
-    instance_copy "$instance_name" "${STARTHINKER_ROOT}/install" "~/install/" --recurse
-    instance_copy "$instance_name" "${STARTHINKER_ROOT}/requirements.txt" "~/requirements.txt"
-
-    instance_command "$instance_name" "source install/worker.sh --instance --jobs $instance_Jobs"
-  done
-
-  echo "Done"
-  echo ""
-}
 
 setup_worker() {
 
@@ -230,86 +179,97 @@ setup_worker() {
   echo "Setup Worker"
   echo "----------------------------------------"
   echo ""
-  echo "This will create Google Cloud Instances in project $STARTHINKER_PROJECT to run jobs."
+  echo "This will create Google Cloud VM Instances in project $STARTHINKER_PROJECT to run jobs."
   echo ""
   echo "Up To Date Pricing: https://cloud.google.com/compute/pricing"
   echo "Worker List: https:/console.cloud.google.com/compute/instances?project=$STARTHINKER_PROJECT"
   echo ""
   echo " - Pricing is subject to change, these estimates were roughly valid on Oct 2019 for US Central zone."
   echo " - StarThinker workers catch shutdown signals and attempt to gracefully finish jobs before shutdown."
-  echo " - Its OK to simply terminate machines from the console."
-  echo " - Deploying workers overwrites existing workers of the same kind."
-  echo " - You will have to manually shutdown and delete any unused workers if you change configuration."
   echo ""
   echo "WARNING: Your zone is set to $STARTHINKER_ZONE, you must delete any StarThinker workers outside this zone before launching new ones."
   echo ""
 
-  worker_done=0
-  worker_options=(
-    "1   - 50 Recipes  = 1 x n1-highmem-4 x 2 jobs = 48 recipe hours  ( ~ \$37  / month )"
-    "50  - 100 Recipes = 2 x n1-highmem-4 x 2 jobs = 96 recipe hours  ( ~ \$73  / month )"
-    "100 - 200 Recipes = 3 x n1-highmem-4 x 2 jobs = 144 recipe hours ( ~ \$110 / month )"
-    "200 - 300 Recipes = 4 x n1-highmem-4 x 2 jobs = 192 recipe hours ( ~ \$146 / month )"
-    "300 - 400 Recipes = 5 x n1-highmem-4 x 2 jobs = 240 recipe hours ( ~ \$182 / month )"
-    "400 - 500 Recipes = 4 x n1-highmem-8 x 3 jobs = 288 recipe hours ( ~ \$292 / month )"
-    "500 - 600 Recipes = 5 x n1-highmem-8 x 3 jobs = 360 recipe hours ( ~ \$365 / month )"
-    "600 - 700 Recipes = 6 x n1-highmem-8 x 3 jobs = 432 recipe hours ( ~ \$438 / month )"
-  )
+  setup_credentials_service;
+  setup_credentials_ui;
+  save_config;
+  firewall_create;
 
-  while (( !worker_done ))
-   do
-    echo "----------------------------------------------------------------------"
-    echo "Worker Deployment Menu"
-    echo "----------------------------------------------------------------------"
-    echo ""
-
-    PS3='Your Choice ( q = Quit ): '
-    select worker_option in "${worker_options[@]}"; do
-      case $REPLY in
-        1) deploy_worker "medium" "n1-highmem-4" 1 2; break ;;
-        2) deploy_worker "medium" "n1-highmem-4" 2 2; break ;;
-        3) deploy_worker "medium" "n1-highmem-4" 3 2; break ;;
-        4) deploy_worker "medium" "n1-highmem-4" 4 2; break ;;
-        5) deploy_worker "medium" "n1-highmem-4" 5 2; break ;;
-        6) deploy_worker "large" "n1-highmem-8" 4 3; break ;;
-        7) deploy_worker "large" "n1-highmem-8" 5 3; break ;;
-        8) deploy_worker "large" "n1-highmem-8" 6 3; break ;;
-        q) worker_done=1; break;;
-        *) echo "What's that?" ;;
-      esac
-    done
-    echo ""
-  done
-}
-
-check_worker() {
+  instance_name="starthinker-worker-instance" 
+  instance_image="starthinker-worker-image-$(date '+%Y-%m-%d-%H-%M-%S')"
 
   echo ""
   echo "----------------------------------------"
-  echo "Check Workers"
+  echo "Configure Worker Instance - $instance_name: $STARTHINKER_WORKER_INSTANCE x $STARTHINKER_WORKER_JOBS job handlers"
   echo "----------------------------------------"
+  echo ""
 
-  for instance_name in $(gcloud compute instances list --filter="name~'^starthinker-.*'" --format="value(NAME)"); do
+  instance_create $instance_name "${STARTHINKER_WORKER_INSTANCE}"
 
-    echo ""
-    echo "----------------------------------------"
-    echo "INSTANCE PROXY: $instance_name"
-    echo "----------------------------------------"
-    instance_command "$instance_name" "sudo systemctl status starthinker_proxy"
+  sleep 60s
 
-    echo ""
-    echo "----------------------------------------"
-    echo "INSTANCE STARTHINKER: $instance_name"
-    echo "----------------------------------------"
-    instance_command "$instance_name" "sudo systemctl status starthinker"
-    echo ""
+  instance_command "$instance_name" "sudo systemctl stop starthinker"
+  instance_command "$instance_name" "sudo systemctl stop starthinker_proxy"
 
-  done
+  find . -name '__pycache__' -delete
+  find . -name '*.pyc' -delete
+
+  instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_assets" "~/starthinker_assets/" --recurse
+  instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_ui" "~/starthinker_ui/" --recurse
+  instance_copy "$instance_name" "${STARTHINKER_ROOT}/scripts" "~/scripts/" --recurse
+  instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker" "~/starthinker/" --recurse
+  instance_copy "$instance_name" "${STARTHINKER_ROOT}/install" "~/install/" --recurse
+  instance_copy "$instance_name" "${STARTHINKER_ROOT}/requirements.txt" "~/requirements.txt"
+
+  instance_command "$instance_name" "source install/worker.sh --instance --jobs $STARTHINKER_WORKER_JOBS"
+
+  gcloud compute instances stop "$instance_name" --zone=$STARTHINKER_ZONE
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Create Image - starthinker-worker-family"
+  echo "----------------------------------------"
+  echo ""
+  
+  gcloud compute images create $instance_image --project=$STARTHINKER_PROJECT --description="Worker configuration." --family=starthinker-worker-family --source-disk=$instance_name --source-disk-zone=$STARTHINKER_ZONE
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Create Template - starthinker-worker-template"
+  echo "----------------------------------------"
+  echo ""
+
+  values=$(gcloud compute instance-templates list --filter="name=starthinker-worker-template" --format="value(name)" --verbosity=none)
+  if [ -z "${values}" ]; then
+    gcloud compute --project=$STARTHINKER_PROJECT instance-templates create starthinker-worker-template --machine-type=$STARTHINKER_WORKER_INSTANCE --network=projects/$STARTHINKER_PROJECT/global/networks/default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=default --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --image-family=starthinker-worker-family --image-project=$STARTHINKER_PROJECT --boot-disk-size=200GB --boot-disk-type=pd-standard --boot-disk-device-name=starthinker-worker-template --reservation-affinity=any
+  else
+    echo "Template already exists."
+  fi
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Create Managed Instance Group - starthinker-worker-group"
+  echo "----------------------------------------"
+  echo ""
+
+  values=$(gcloud compute instance-groups managed list --filter="name=starthinker-worker-group" --format="value(name)" --verbosity=none)
+  if [ -z "${values}" ]; then
+    gcloud compute --project=$STARTHINKER_PROJECT instance-groups managed create starthinker-worker-group --base-instance-name=$instance_name --template=starthinker-worker-template --size=0 --description="Worker auto scaling group" --zone=$STARTHINKER_ZONE
+  else
+    echo "Group already exists."
+  fi
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Roll Managed Instance Group  Workers - custom.googleapis.com/starthinker/worker/usage"
+  echo "----------------------------------------"
+  echo ""
+
+  gcloud compute instance-groups managed rolling-action replace starthinker-worker-group --max-surge="0" --max-unavailable="100%" --zone=$STARTHINKER_ZONE
 
   echo "Done"
   echo ""
 }
-
 
 if [ "$1" = "--instance" ];then
   shift

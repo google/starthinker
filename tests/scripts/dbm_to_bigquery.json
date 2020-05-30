@@ -4,41 +4,43 @@
     "copyright":"Copyright 2019 Google Inc."
   },
   "tasks":[
-    { "dbm":{
-      "auth":"user",
-      "report":{
-        "filters": {
-           "FILTER_PARTNER": {
-             "values": {"field":{ "name":"partner_ids", "kind":"integer_list", "order":5, "default":[], "description":"DBM partner id." }}
-           },
-           "FILTER_ADVERTISER": {
-             "values": {"field":{ "name":"advertiser_ids", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DBM advertiser ids." }}
-           }
-        },
-        "body": {
-          "timezoneCode":"America/Los_Angeles",
-          "metadata":{
-            "title":"Test Report ( StarThinker )",
-            "dataRange":"LAST_7_DAYS",
-            "format": "CSV"
+    { "include":{
+      "script":"scripts/dbm.json",
+      "parameters":{
+        "report":{
+          "filters": {
+             "FILTER_PARTNER": {
+               "values": {"field":{ "name":"partner_ids", "kind":"integer_list", "order":5, "default":[], "description":"DBM partner id." }}
+             },
+             "FILTER_ADVERTISER": {
+               "values": {"field":{ "name":"advertiser_ids", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DBM advertiser ids." }}
+             }
           },
-          "params": {
-            "type":"TYPE_CROSS_PARTNER",
-            "groupBys":[
-              "FILTER_DATE",
-              "FILTER_ADVERTISER",
-              "FILTER_INSERTION_ORDER",
-              "FILTER_CREATIVE_ID",
-              "FILTER_ADVERTISER_CURRENCY"
-            ],
-            "metrics":[
-              "METRIC_REVENUE_ADVERTISER",
-              "METRIC_IMPRESSIONS"
-            ]
+          "body": {
+            "timezoneCode":"America/Los_Angeles",
+            "metadata":{
+              "title":"Test Report ( StarThinker )",
+              "dataRange":"LAST_7_DAYS",
+              "format": "CSV"
+            },
+            "params": {
+              "type":"TYPE_CROSS_PARTNER",
+              "groupBys":[
+                "FILTER_DATE",
+                "FILTER_ADVERTISER",
+                "FILTER_INSERTION_ORDER",
+                "FILTER_CREATIVE_ID",
+                "FILTER_ADVERTISER_CURRENCY"
+              ],
+              "metrics":[
+                "METRIC_REVENUE_ADVERTISER",
+                "METRIC_IMPRESSIONS"
+              ]
+            }
           }
-        }
-      },
-      "delete":true
+        },
+        "delete":true
+      }
     }},
     { "dbm":{
       "auth":"user",

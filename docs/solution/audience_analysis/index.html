@@ -7,6 +7,15 @@
 <html>
   <head>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167283455-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-167283455-3');
+    </script>
+
     <link rel="shortcut icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
     <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
 
@@ -120,15 +129,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=experience">experience</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=insights">insights</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/?category=audit">audit</a>
-  
-
-  <br/><br/>
-  
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
   
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=datastudio">datastudio</a>
@@ -138,9 +138,9 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <br/><br/>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=audience">audience</a>
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=solution">solution</a>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=reporting">reporting</a>
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=audience">audience</a>
   
 
   <img id="solution_image" src="https://github.com/google/starthinker/raw/master/tutorials/images/audience_analysis.png"/>
@@ -292,7 +292,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
             <tr>
               <td>Age</td>
-              <td>Feb. 18, 2020 (1 month, 3 weeks)</td>
+              <td>Feb. 18, 2020 (3 months, 1 week)</td>
             </tr>
     
             <tr>
@@ -410,13 +410,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         }
                     },
                     "metadata": {
-                        "dataRange": "LAST_30_DAYS",
+                        "dataRange": "LAST_7_DAYS",
                         "format": "CSV",
                         "title": {
                             "field": {
                                 "name": "recipe_name",
                                 "kind": "string",
-                                "prefix": "Audience Performance ",
+                                "prefix": "Audience Analysis Performance ",
                                 "description": "Name of report in DV360, should be unique."
                             }
                         }
@@ -424,8 +424,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "params": {
                         "type": "TYPE_GENERAL",
                         "groupBys": [
+                            "FILTER_ADVERTISER_NAME",
                             "FILTER_ADVERTISER",
-                            "FILTER_USER_LIST"
+                            "FILTER_AUDIENCE_LIST",
+                            "FILTER_USER_LIST",
+                            "FILTER_AUDIENCE_LIST_TYPE",
+                            "FILTER_AUDIENCE_LIST_COST",
+                            "FILTER_PARTNER_CURRENCY"
                         ],
                         "metrics": [
                             "METRIC_IMPRESSIONS",
@@ -451,7 +456,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_name",
                         "kind": "string",
-                        "prefix": "Audience Performance ",
+                        "prefix": "Audience Analysis Performance ",
                         "description": "Name of report in DV360, should be unique."
                     }
                 }
@@ -476,16 +481,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "mode": "REQUIRED",
                             "name": "advertiser_id",
                             "type": "INT64"
-                        },
-                        {
-                            "mode": "REQUIRED",
-                            "name": "advertiser_status",
-                            "type": "STRING"
-                        },
-                        {
-                            "mode": "NULLABLE",
-                            "name": "advertiser_integration_code",
-                            "type": "STRING"
                         },
                         {
                             "mode": "REQUIRED",
@@ -588,13 +583,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         }
                     },
                     "metadata": {
-                        "dataRange": "LAST_30_DAYS",
+                        "dataRange": "LAST_7_DAYS",
                         "format": "CSV",
                         "title": {
                             "field": {
                                 "name": "recipe_name",
                                 "kind": "string",
-                                "prefix": "First Party Audience ",
+                                "prefix": "Audience Analysis First Party",
                                 "description": "Name of report in DV360, should be unique."
                             }
                         }
@@ -602,8 +597,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "params": {
                         "type": "TYPE_INVENTORY_AVAILABILITY",
                         "groupBys": [
+                            "FILTER_ADVERTISER_NAME",
                             "FILTER_ADVERTISER",
-                            "FILTER_USER_LIST_FIRST_PARTY"
+                            "FILTER_USER_LIST_FIRST_PARTY_NAME",
+                            "FILTER_USER_LIST_FIRST_PARTY",
+                            "FILTER_FIRST_PARTY_AUDIENCE_LIST_TYPE",
+                            "FILTER_FIRST_PARTY_AUDIENCE_LIST_COST"
                         ],
                         "metrics": [
                             "METRIC_BID_REQUESTS",
@@ -625,7 +624,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_name",
                         "kind": "string",
-                        "prefix": "First Party Audience ",
+                        "prefix": "Audience Analysis First Party",
                         "description": "Name of report in DV360, should be unique."
                     }
                 }
@@ -653,16 +652,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         },
                         {
                             "mode": "REQUIRED",
-                            "name": "advertiser_status",
-                            "type": "STRING"
-                        },
-                        {
-                            "mode": "NULLABLE",
-                            "name": "advertiser_integration_code",
-                            "type": "STRING"
-                        },
-                        {
-                            "mode": "REQUIRED",
                             "name": "audience_list",
                             "type": "STRING"
                         },
@@ -737,13 +726,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         }
                     },
                     "metadata": {
-                        "dataRange": "LAST_30_DAYS",
+                        "dataRange": "LAST_7_DAYS",
                         "format": "CSV",
                         "title": {
                             "field": {
                                 "name": "recipe_name",
                                 "kind": "string",
-                                "prefix": "Google Audience ",
+                                "prefix": "Audience Analysis Google",
                                 "description": "Name of report in DV360, should be unique."
                             }
                         }
@@ -751,8 +740,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "params": {
                         "type": "TYPE_INVENTORY_AVAILABILITY",
                         "groupBys": [
+                            "FILTER_ADVERTISER_NAME",
                             "FILTER_ADVERTISER",
-                            "FILTER_USER_LIST"
+                            "FILTER_AUDIENCE_LIST",
+                            "FILTER_USER_LIST",
+                            "FILTER_AUDIENCE_LIST_TYPE",
+                            "FILTER_AUDIENCE_LIST_COST"
                         ],
                         "metrics": [
                             "METRIC_BID_REQUESTS",
@@ -774,7 +767,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_name",
                         "kind": "string",
-                        "prefix": "Google Audience ",
+                        "prefix": "Audience Analysis Google",
                         "description": "Name of report in DV360, should be unique."
                     }
                 }
@@ -802,16 +795,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         },
                         {
                             "mode": "REQUIRED",
-                            "name": "advertiser_status",
-                            "type": "STRING"
-                        },
-                        {
-                            "mode": "NULLABLE",
-                            "name": "advertiser_integration_code",
-                            "type": "STRING"
-                        },
-                        {
-                            "mode": "REQUIRED",
                             "name": "audience_list",
                             "type": "STRING"
                         },
@@ -886,13 +869,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         }
                     },
                     "metadata": {
-                        "dataRange": "LAST_30_DAYS",
+                        "dataRange": "LAST_7_DAYS",
                         "format": "CSV",
                         "title": {
                             "field": {
                                 "name": "recipe_name",
                                 "kind": "string",
-                                "prefix": "Third Party Audience ",
+                                "prefix": "Audience Analysis Third Party",
                                 "description": "Name of report in DV360, should be unique."
                             }
                         }
@@ -900,8 +883,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "params": {
                         "type": "TYPE_INVENTORY_AVAILABILITY",
                         "groupBys": [
+                            "FILTER_ADVERTISER_NAME",
                             "FILTER_ADVERTISER",
-                            "FILTER_USER_LIST_THIRD_PARTY"
+                            "FILTER_USER_LIST_THIRD_PARTY_NAME",
+                            "FILTER_USER_LIST_THIRD_PARTY",
+                            "FILTER_THIRD_PARTY_AUDIENCE_LIST_TYPE",
+                            "FILTER_THIRD_PARTY_AUDIENCE_LIST_COST"
                         ],
                         "metrics": [
                             "METRIC_BID_REQUESTS",
@@ -923,7 +910,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_name",
                         "kind": "string",
-                        "prefix": "Third Party Audience ",
+                        "prefix": "Audience Analysis Third Party",
                         "description": "Name of report in DV360, should be unique."
                     }
                 }
@@ -948,16 +935,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "mode": "REQUIRED",
                             "name": "advertiser_id",
                             "type": "INT64"
-                        },
-                        {
-                            "mode": "REQUIRED",
-                            "name": "advertiser_status",
-                            "type": "STRING"
-                        },
-                        {
-                            "mode": "NULLABLE",
-                            "name": "advertiser_integration_code",
-                            "type": "STRING"
                         },
                         {
                             "mode": "REQUIRED",

@@ -106,7 +106,7 @@
   <br/><br/>
   <div id="scripts" class="row">
     {% for script in scripts %}
-      <div class="col s6 m4 l3 category_all {% for c in script.get_released_ago %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_categories %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_catalysts %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_requirements %} category_{{ c|slugify }}{% endfor %}">
+      <div class="col s6 m4 l3 category_all {% for c in script.get_released_ago %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_categories %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_requirements %} category_{{ c|slugify }}{% endfor %}">
         <div class="card ">
           <div class="card-content">
             <span class="card-title text-darken-4">

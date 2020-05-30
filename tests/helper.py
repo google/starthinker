@@ -217,14 +217,15 @@ def tests():
 
   args = parser.parse_args()
   scripts = list(load_tests())
+  tests = [t.split('.')[0] for t in (args.tests or [])]
 
   print("")
 
   if args.init:
-    initialize_tests(scripts, args.tests or [])
+    initialize_tests(scripts, tests)
   else:
-    recipes = initialize_tests(scripts, args.tests or [])
-    run_tests(scripts, recipes, args.tests or [])
+    recipes = initialize_tests(scripts, tests)
+    run_tests(scripts, recipes, tests)
 
 
 if __name__ == "__main__":

@@ -9,16 +9,19 @@ Developing solutions is easier with helpers that automate common development tas
   - Minimal example of oAuth.
 - [CM Report Inspector](../starthinker/task/dcm/helper.py) 
   - Pull CM Report shema, files, and fields.
-  -  Useful for bulding the dbm task JSON.
+  - Useful for building the dbm task JSON.
   - Minimal CM API example.
 - [DV360 LineItem Inspector](../starthinker/task/lineitem/helper.py) 
   - Pull DV360 Line Item schema or data.
-  -  Useful for bulding the lineitem task JSON.
+  - Useful for building the lineitem task JSON.
   - Minimal DV360 Line Item API example.
 - [DV360 Report Inspector](../starthinker/task/dbm/helper.py) 
   - Pull DV360 Report shema, files, and fields.
-  -  Useful for bulding the dbm task JSON.
+  - Useful for building the dbm task JSON.
   - Minimal DV360 API example.
+- [DV360 LineItem Download](../starthinker/task/dv360_beta/helper.py) 
+  - Pull DV360 Beta APi LineItems.
+  - Minimal DV360 Beta API example.
 - [Send An Email Template](../starthinker/task/newsletter/helper.py) 
   - Quickly send a nicely [formatted email](../starthinker/util/email/template.py), including tables, to anyone.
   - Useful for automating reporting emails.
@@ -32,6 +35,5 @@ Developing solutions is easier with helpers that automate common development tas
 - [Pull BigQuery Table Schema](../starthinker/task/bigquery/helper.py) 
   - Quickly pull table schema and modify for a recipe.
 
-
 ---
-&copy; 2020 Google Inc. - Apache License, Version 2.0
+&copy; 2020 Google LLC - Apache License, Version 2.0

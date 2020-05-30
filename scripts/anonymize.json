@@ -13,9 +13,8 @@
     ],
     "image":"https://storage.googleapis.com/starthinker-ui/anonymize_dataset.png",
     "test":"https://github.com/google/starthinker/blob/master/tests/scripts/anonymize.json",
-    "categories":[],
+    "categories":["automation"],
     "requirements":[ "bigquery" ],
-    "catalysts":["data", "experience"],
     "pitches":[
       "Create anonymous data sets for demos.",
       "Anonymize dashboard data."

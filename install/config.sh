@@ -2,7 +2,7 @@
 
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -26,6 +26,12 @@
 STARTHINKER_SCALE=1
 STARTHINKER_DEVELOPMENT=0
 STARTHINKER_GSUITE=0
+
+STARTHINKER_WORKER_MAX=10
+STARTHINKER_WORKER_INSTANCE="n1-highmem-4"
+STARTHINKER_WORKER_JOBS=4
+
+STARTHINKER_ANALYTICS="UA-167283455-2"
 
 STARTHINKER_PROJECT=""
 STARTHINKER_ZONE="us-west1-b"
@@ -119,6 +125,14 @@ save_config() {
 
   echo "export STARTHINKER_SCALE=$STARTHINKER_SCALE;" > "${STARTHINKER_CONFIG}"
   echo "export STARTHINKER_DEVELOPMENT=$STARTHINKER_DEVELOPMENT;" >> "${STARTHINKER_CONFIG}"
+  echo "" >> "${STARTHINKER_CONFIG}"
+
+  echo "export STARTHINKER_WORKER_MAX=$STARTHINKER_WORKER_MAX;" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_WORKER_INSTANCE=\"$STARTHINKER_WORKER_INSTANCE\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_WORKER_JOBS=$STARTHINKER_WORKER_JOBS;" >> "${STARTHINKER_CONFIG}"
+  echo "" >> "${STARTHINKER_CONFIG}"
+
+  echo "export STARTHINKER_ANALYTICS=$STARTHINKER_ANALYTICS;" >> "${STARTHINKER_CONFIG}"
   echo "" >> "${STARTHINKER_CONFIG}"
 
   echo "export STARTHINKER_PROJECT=\"$STARTHINKER_PROJECT\";" >> "${STARTHINKER_CONFIG}"
@@ -370,7 +384,7 @@ setup_credentials_commandline() {
     echo "Step 2: Setup Credentials ( do only once )"
     echo "----------------------------------------"
     echo "  A. Visit: https://console.developers.google.com/apis/credentials/oauthclient"
-    echo "  B. Choose Other."
+    echo "  B. Choose Desktop."
     echo "  C. For Name enter: StarThinker."
     echo "  D. Click Create and ignore the confirmation pop-up."
     echo ""
@@ -581,7 +595,7 @@ install_virtualenv_linux() {
   if [ "$(command -v lsb_release)" == "" ]; then
     echo "Install not supported.  Please use a Debian based Linux instance."
   else
-    sudo apt-get install gcc python3-dev python3-pip -qq;
+    sudo apt-get install gcc python3-dev python3-pip wget -qq;
     if [ "$(command -v virtualenv)" == "" ]; then
       sudo apt-get install virtualenv -qq 
     fi
@@ -623,6 +637,7 @@ install_requirements() {
   echo ""
 
   source "${STARTHINKER_ENV}/bin/activate"
+  python3 -m pip install --upgrade pip
   pip3 install -r ${STARTHINKER_ROOT}/starthinker/requirements.txt --quiet
   deactivate
 
@@ -682,6 +697,7 @@ setup_domain() {
   echo "----------------------------------------"
   echo ""
   echo "If you DO NOT HAVE A DOMAIN then LEAVE IT BLANK."
+  echo "If left blank, the default domain of [project].[appengine URL] will be used."
   echo "The script will use whatever defaults necessary to get things working."
   echo ""
 
@@ -752,7 +768,7 @@ install_proxy() {
   if [ "$(command -v psql)" == "" ]; then
     case "$(uname -s)" in
       Darwin) echo "Skipping Postgres, not required for local development: https://www.postgresql.org/download/macosx/";;
-      Linux)  sudo apt-get install gcc python3-dev python3-pip libpq-dev postgresql-client python-psycopg2 -qq;;
+      Linux)  sudo apt-get install gcc python3-dev python3-pip libpq-dev postgresql-client python-psycopg2 wget -qq;;
       *) echo "ERROR: Unknown Postgres install, visit http://postgresguide.com/setup/install.html" ;;
     esac
   fi
@@ -790,3 +806,5 @@ else
   setup_project;
   check_gsuite;
 fi
+
+save_config;

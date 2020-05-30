@@ -47,7 +47,7 @@ A field with the same name in multiple palces will be requested form the user on
 ```
 
 - name: Shown in UI and used as key to store value.
-- default - Default value to insert if none given by UI or command line.
+- default - Default value to insert if blank given by UI or command line. If default is omitted, the field is removed from JSON entirely, allowing the task handler to detect a missing key and creatign its own default value.
 - description - Test explaining use of field value.
 - prefix - Appended to the value given by the user for name-spacing purposes.
 - order - The sequence in which fieds will be asked for in UI or command line.
@@ -132,7 +132,6 @@ scripts/script_hello.json
     "sample":"https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT",
     "document":"https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/",
     "requirements":[ "dcm", "datastudio", "bigquery" ],
-    "catalysts":["security", "reporting"],
     "categories":["security", "reporting"],
     "pitches":[
       "Meet contractual access reporting information.",
@@ -182,22 +181,7 @@ scripts/script_hello.json
   - sample - Optional, link to public sample with anonymized data.
   - document - Optional, link to public communications deocument.
   - requirements - Required, technical product dependencies.
-  - catalysts - Optional, list of gTech catalysts.
-    - Acquisition - How do I reach growth by acquiring and reaching new customers?
-    - Monetization - How do I deliver the most value to my consumers and reach higher average revenue per order?
-    - Experience - How do I provide frictionless consumer experience to enable deeper engagement and loyalty to my brand?
-    - Automation - How do I scale, optimize and automate processes to increase my proficiency?
-    - Insights - How do I get deeper consumer and brand insights to make better decisions?
-    - Data - How do I make my data usable and structured to measure and attribute my marketing efforts?
-  - categories - Optional, arbitrary categories, suggest including one of the following.
-    - Strategy, Organization & Operations
-    - Implementation, Onboarding & Data Architecture
-    - Audience, Attribution & Advanced Analytics
-    - Creative Services
-    - Training
-    - Managed Services
-    - Automation
-    - Site Testing & Personalization
+  - categories - Optional, arbitrary list of strings used in solution gallery and add task pages.
   - pitches - Optional, list of short sentences describing value propositions.
   - instructions - Required, instructions for manual steps, supports embedded HTML and links.
 

@@ -8,9 +8,8 @@
     "description":"Adjusts line item settings based on Twitter hashtags and locations specified in a sheet.",
     "image":"https://storage.googleapis.com/starthinker-ui/twitter_targeting.png",
     "sample":"https://docs.google.com/spreadsheets/d/1iYCGa2NKOZiL2mdT4yiDfV_SWV9C7SUosXdIr4NAEXE/edit?usp=sharing",
-    "categories":["budget", "3P"],
+    "categories":["budget", "automation"],
     "requirements":[ "dv360", "sheets", "bigquery" ],
-    "catalysts":["automation", "monetization", "insights"],
     "pitches":[
       "Create campaigns that respond to twitter trends.",
       "Activate spend when a specific tag trends.",

@@ -9,9 +9,8 @@
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/cm_user_edit.png",
     "sample":"https://docs.google.com/spreadsheets/d/1zQDqm3owQMNsx0lvcN1SQWVGOhwfgsWSmirBK54qVL0/",
     "documentation":"https://docs.google.com/spreadsheets/d/1zQDqm3owQMNsx0lvcN1SQWVGOhwfgsWSmirBK54qVL0/",
-    "categories":["bulk", "covid", "security"],
+    "categories":["automation", "covid", "security"],
     "requirements":[ "cm", "sheets", "apps script"],
-    "catalysts":["automation"],
     "pitches":[
       "Change multiple profile access.",
       "Redefine bulk role permissions.",

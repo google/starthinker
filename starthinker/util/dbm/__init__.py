@@ -32,13 +32,13 @@ from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
 from starthinker.util.data import get_rows
 from starthinker.util.auth import get_service
-from starthinker.util.google_api import API_Retry
 from starthinker.util.storage import object_get_chunks
 from starthinker.util.csv import column_header_sanitize, csv_to_rows, rows_to_csv
 from starthinker.util.dbm.schema import LineItem_Write_Schema
+from starthinker.util.google_api import API_DV360_Beta
+from starthinker.util.google_api import API_DBM
 
 
-API_VERSION = 'v1.1'
 DBM_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200MB recommended by docs * scale in config.py
 RE_FILENAME = re.compile(r'.*/(.*)\?GoogleAccess')
 
@@ -58,14 +58,13 @@ def report_get(auth, report_id=None, name=None):
 
   """
 
-  service = get_service('doubleclickbidmanager', API_VERSION, auth)
+
   if name:
-    job = service.queries().listqueries()
-    result = API_Retry(job)
-    return ([query for query in result.get('queries', []) if query['metadata']['title'] == name ] or [None])[0]
+    for query in API_DBM(auth, iterate=True).queries().listqueries().execute():
+      if query['metadata']['title'] == name:
+        return query
   else:
-    job = service.queries().getquery(queryId=report_id)
-    return API_Retry(job)
+    return API_DBM(auth).queries().getquery(queryId=report_id).execute()
 
 
 def report_filter(auth, body, filters):
@@ -128,7 +127,6 @@ def report_build(auth, body):
   report = report_get(auth, name=body['metadata']['title'])
 
   if not report:
-    service = get_service('doubleclickbidmanager', API_VERSION, auth)
 
     # add default daily schedule if it does not exist ( convenience )
     if "schedule" not in body:
@@ -139,20 +137,16 @@ def report_build(auth, body):
         "nextRunTimezoneCode": body['timezoneCode']
       }   
 
-    #pprint.PrettyPrinter().pprint(body)
-
     # build report
-    job = service.queries().createquery(body=body)
-    report = API_Retry(job)
+    #pprint.PrettyPrinter().pprint(body)
+    report = API_DBM(auth).queries().createquery(body=body).execute()
 
     # run report first time
     body = {
      "dataRange":report['metadata']['dataRange'],
      "timezoneCode":body['timezoneCode']
     }
-
-    run = service.queries().runquery(queryId=report['queryId'], body=body)
-    API_Retry(run)
+    API_DBM(auth).queries().runquery(queryId=report['queryId'], body=body).execute()
 
   else:
     if project.verbose: print('DBM Report Exists:', body['metadata']['title'])
@@ -190,7 +184,6 @@ def report_fetch(auth, report_id=None, name=None, timeout = 60):
     #pprint.PrettyPrinter().pprint(report)
     if report:
       # report is running ( return only if timeout is exhausted )
-      print(report)
       if report['metadata'].get('googleCloudStoragePathForLatestReport', '') == '':
         if project.verbose: print('DBM Still Running')
         if timeout < 0: return True
@@ -272,9 +265,7 @@ def report_delete(auth, report_id=None, name=None):
   if project.verbose: print("DBM DELETE:", report_id or name)
   report = report_get(auth, report_id, name)
   if report:
-    service = get_service('doubleclickbidmanager', API_VERSION, auth)
-    job = service.queries().deletequery(queryId=report['queryId'])
-    API_Retry(job)
+    API_DBM(auth).queries().deletequery(queryId=report['queryId']).execute()
   else:
     if project.verbose: print('DBM DELETE: No Report')
 
@@ -292,9 +283,7 @@ def report_list(auth):
 
   """
 
-  service = get_service('doubleclickbidmanager', API_VERSION, auth)
-  job = service.queries().listqueries()
-  for query in API_Retry(job, 'queries'):
+  for query in API_DBM(auth, iterate=True).queries().listqueries().execute():
     yield query
 
 
@@ -419,6 +408,27 @@ def report_clean(rows):
     # not first row anymore
     first = False
 
+def lineitem_patch_v1(auth, patch, li):
+  """Patches a DV360 Line Item
+
+  Args:
+    auth: StarThinker authentication scheme
+    patch: List of field names to patch
+    li: Line item with updates to push
+  Returns: Updated Line Item
+  """
+  return API_DV360_Beta(auth).advertisers().lineItems().patch(advertiserId = li['advertiserId'], lineItemId = li['lineItemId'], updateMask=patch, body=li).execute()
+
+def lineitem_get_v1(auth, advertiser_id, lineitem_id):
+  """Gets a DV360 Line Item
+
+  Args:
+    auth: StarThinker authentication scheme
+    advertiser_id: ID of the advertiser of the line item
+    lineitem_id: ID of the line item
+  Returns: Line Item from the DV360 API
+  """
+  return API_DV360_Beta(auth).advertisers().lineItems().get(advertiserId = advertiser_id, lineItemId = lineitem_id).execute()
 
 def lineitem_read(auth, advertisers=[], insertion_orders=[], lineitems=[]):
   """ Reads line item configurations from DBM.
@@ -435,8 +445,6 @@ def lineitem_read(auth, advertisers=[], insertion_orders=[], lineitems=[]):
     * Iterator of lists: https://developers.google.com/bid-manager/guides/entity-write/format
 
   """
-
-  service = get_service('doubleclickbidmanager', API_VERSION, auth)
 
   body = {
     'format':'CSV',
@@ -457,7 +465,7 @@ def lineitem_read(auth, advertisers=[], insertion_orders=[], lineitems=[]):
 
   #print(body)
 
-  result = API_Retry(service.lineitems().downloadlineitems(body=body))
+  result = API_DBM(auth).lineitems().downloadlineitems(body=body).execute()
 
   for count, row in enumerate(csv_to_rows(result.get('lineItems', ''))):
     if count == 0: continue # skip header
@@ -493,8 +501,6 @@ def lineitem_write(auth, rows, dry_run=True):
 
   """
 
-  service = get_service('doubleclickbidmanager', API_VERSION, auth)
-
   header = [s['name'] for s in LineItem_Write_Schema]
 
   body = {
@@ -503,8 +509,7 @@ def lineitem_write(auth, rows, dry_run=True):
     "dryRun":dry_run
   }
 
-  job = service.lineitems().uploadlineitems(body=body)
-  result = API_Retry(job)
+  result = API_DBM(auth).lineitems().uploadlineitems(body=body).execute()
   #print(result)
   return(result)
 
@@ -524,7 +529,6 @@ def sdf_read(auth, file_types, filter_type, filter_ids, version='3.1'):
     * Rows of the sdf files requested
 
   """
-  service = get_service('doubleclickbidmanager', API_VERSION, auth)
 
   body = {
       "fileTypes": file_types,
@@ -533,7 +537,7 @@ def sdf_read(auth, file_types, filter_type, filter_ids, version='3.1'):
       "version": version
   }
 
-  result = API_Retry(service.sdf().download(body=body))
+  result = API_DBM(auth).sdf().download(body=body).execute()
 
   # Clean the date field in each row
   for key in result.keys():

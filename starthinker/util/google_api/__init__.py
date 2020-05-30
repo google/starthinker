@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -53,11 +53,13 @@ RETRIABLE_EXCEPTIONS = (
 RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
 
 
-def API_Retry(job, key=None, retries=3, wait=61):
+def API_Retry(job, key=None, retries=3, wait=31): 
   """ API retry that includes back off and some common error handling.
 
+  CAUTION:  Total timeout cannot exceed 5 minutes or the SSL token expires for all future calls.
+
   For critical but recoverable errors, the back off executes [retry] times.  Each time the [wait] is doubled.
-  By default retries are: 1:01 + 2:02 + 4:04 = 7:07 ( minutes )
+  By default retries are: 0:31 + 1:02 + 2:04 = 3:37 ( minutes )
   The recommended minimum wait is 60 seconds for most APIs.
 
   * Errors retried: 429, 500, 503
@@ -183,9 +185,9 @@ def API_Iterator(function, kwargs, results = None):
             self.iterable = tag
             break
   
-        # this shouldn't happen unless error or iterate
-        if self.iterable is None:
-          raise ValueError('JSON response with nextPageToken but no list type element.')
+        # this shouldn't happen but some APIs simply omit the key if no results
+        if self.iterable is None and project.verbose: 
+          print('WARNING API RETURNED NO KEYS WITH LISTS:', ', '.join(self.results.keys()))
       
     def __iter__(self):
       return self
@@ -547,6 +549,20 @@ def API_Gmail(auth, iterate=False):
 
   configuration = {
       'api':'gmail',
+      'version':'v1',
+      'auth':auth,
+      'iterate':iterate
+  }
+  return API(configuration)
+
+
+def API_Compute(auth, iterate=False):
+  """Compute helper configuration Google API. 
+     https://cloud.google.com/compute/docs/reference/rest/v1/
+  """
+
+  configuration = {
+      'api':'compute',
       'version':'v1',
       'auth':auth,
       'iterate':iterate

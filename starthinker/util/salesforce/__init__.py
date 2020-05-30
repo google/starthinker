@@ -23,7 +23,7 @@ from starthinker.util.project import project
 from simple_salesforce import Salesforce
 
 
-def authenticate(client_id, client_secret, username, password):
+def authenticate(domain, client_id, client_secret, username, password):
 
   data = parse.urlencode({
     "grant_type":"password",
@@ -33,10 +33,9 @@ def authenticate(client_id, client_secret, username, password):
     "password":password
   }).encode()
 
-  req =  request.Request("https://login.salesforce.com/services/oauth2/token", data=data) 
+  req =  request.Request("https://%s/services/oauth2/token" % domain, data=data) 
   creds = json.loads(request.urlopen(req).read())
   return Salesforce(instance_url=creds['instance_url'], session_id=creds['access_token'])
-  
 
 def query(service, query, header=False):
   for record in service.query_all(query)['records']:

@@ -9,9 +9,8 @@
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/kv_uploader.png",
     "sample":"https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/edit?usp=sharing",
     "documentation":"https://github.com/google/starthinker/blob/master/tutorials/appscript_troubleshooting.md",
-    "categories":["bulk", "trafficking"],
+    "categories":["automation"],
     "requirements":[ "cm", "sheets", "apps script"],
-    "catalysts":["automation"],
     "pitches":[
       "Update CM Placement key value pairs in bulk.",
       "Speed up tag editing.",

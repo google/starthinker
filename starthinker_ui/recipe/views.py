@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,18 +17,23 @@
 ###########################################################################
 
 import json
+import math
 
 from django.shortcuts import render
 from django.contrib import messages
+from django.db import connection, transaction
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.conf import settings
 
 from starthinker_ui.account.decorators import permission_admin
 from starthinker_ui.recipe.forms_script import ScriptForm
-from starthinker_ui.recipe.models import Recipe
+from starthinker_ui.recipe.models import Recipe, utc_milliseconds
 from starthinker_ui.recipe.colab import script_to_colab
 from starthinker_ui.recipe.dag import script_to_dag
+from starthinker_ui.recipe.log import log_manager_scale
+from starthinker_ui.recipe.compute import group_instances_list, group_instances_resize
 
 
 def recipe_list(request):
@@ -54,8 +59,7 @@ def recipe_edit(request, pk=None, manual=False):
       messages.success(request, 'Recipe updated.')
       return HttpResponseRedirect(form_script.instance.link_edit())
     else:
-      print('ERRORS', form_script.get_errors())
-      messages.error(request, 'Recipe Script Errors: %s' % form_script.get_errors())
+      messages.error(request, 'Recipe Script Errors: %s' % ' '.join(form_script.get_errors()))
   else:
     form_script = ScriptForm(manual, recipe, request.user, scripts=request.GET.get('scripts', ''))
 
@@ -168,7 +172,7 @@ def recipe_colab(request, pk):
       recipe.slug(),
       '',
       [],
-      recipe.get_json()['tasks']
+      recipe.get_json(credentials=False)['tasks']
     )
     response = HttpResponse(data, content_type='application/vnd.jupyter')
     response['Content-Disposition'] = 'attachment; filename=colab_%s.ipynb' % recipe.slug()
@@ -188,7 +192,7 @@ def recipe_airflow(request, pk):
       recipe.name,
       '',
       [],
-      recipe.get_json()['tasks']
+      recipe.get_json(credentials=False)['tasks']
     )
     response = HttpResponse(data, content_type='application/vnd.jupyter')
     response['Content-Disposition'] = 'attachment; filename=airflow_%s.py' % recipe.slug()
@@ -199,3 +203,27 @@ def recipe_airflow(request, pk):
   return HttpResponseRedirect('/recipe/download/%s/' % pk)
 
 
+def autoscale(request):
+
+  scale = {
+    'jobs':0,
+    'workers':{
+      'jobs':settings.WORKER_JOBS,
+      'max':settings.WORKER_MAX,
+      'existing':0,
+      'required':0
+    }
+  }
+
+  # get task and worker list
+  scale['jobs'] = Recipe.objects.filter(active=True, job_utm__lt=utc_milliseconds()).exclude(job_utm=0).count()
+  scale['workers']['existing'] = 3 if request == 'TEST' else sum(1 for instance in group_instances_list(('PROVISIONING', 'STAGING', 'RUNNING'))) 
+  scale['workers']['required'] = min(settings.WORKER_MAX, math.ceil(scale['jobs'] / scale['workers']['jobs']))
+
+  if request != 'TEST' and scale['workers']['required'] > scale['workers']['existing']:
+    group_instances_resize(scale['workers']['required'])
+
+  # log the scaling operation
+  log_manager_scale(scale)
+
+  return JsonResponse(scale)

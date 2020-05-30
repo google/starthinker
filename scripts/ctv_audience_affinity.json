@@ -12,7 +12,6 @@
     "sample": "https://datastudio.google.com/reporting/3008bdb5-03a7-4f18-99ae-038d803a7dc3",
     "categories":["audience"],
     "requirements":[ "dv360", "datastudio", "bigquery"],
-    "catalysts": ["data", "monetization", "insights"],
     "pitches": ["Identify cTV apps to potentially reach desired audiences"],
     "impacts": {
       "cTV Targeting": 50

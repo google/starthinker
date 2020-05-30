@@ -23,8 +23,15 @@ from starthinker.config import UI_ROOT, UI_PROJECT, UI_CLIENT, UI_SERVICE, UI_CR
 # Load all technical settings
 from starthinker_ui.ui.framework import *
 
+# Used by workers to manage instance group
+WORKER_MAX = int(os.environ.get('STARTHINKER_WORKER_MAX', 0))
+WORKER_JOBS = int(os.environ.get('STARTHINKER_WORKER_JOBS', 1))
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = DEVELOPMENT_MODE
+
+# Optional tracking parameter
+GOOGLE_ANALYTICS = os.environ.get('STARTHINKER_ANALYTICS', "")
 
 # Currently StarThinker is in English, internationalization TBD
 LANGUAGE_CODE = 'en-us'

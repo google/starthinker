@@ -8,9 +8,8 @@
     "description":"Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.",
     "image":"https://storage.googleapis.com/starthinker-ui/deal_finder.png",
     "sample":"https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO",
-    "categories":["budget", "reporting"],
+    "categories":["solution", "budget"],
     "requirements":[ "dv360", "datastudio", "bigquery" ],
-    "catalysts":["experience", "monetization", "insights"],
     "pitches":[
       "Move client towards more deals.",
       "Help client decide which inventory to invest in.",
@@ -71,13 +70,18 @@
           "params": {
             "type":"TYPE_CROSS_PARTNER",
             "groupBys":[
+              "FILTER_PARTNER_NAME",
               "FILTER_PARTNER",
+              "FILTER_ADVERTISER_NAME",
               "FILTER_ADVERTISER",
+              "FILTER_APP_URL",
               "FILTER_SITE_ID",
+              "FILTER_INVENTORY_SOURCE_NAME",
               "FILTER_INVENTORY_SOURCE",
               "FILTER_INVENTORY_SOURCE_TYPE",
               "FILTER_ADVERTISER_CURRENCY",
-              "FILTER_CREATIVE_SIZE",
+              "FILTER_CREATIVE_WIDTH",
+              "FILTER_CREATIVE_HEIGHT",
               "FILTER_CREATIVE_TYPE"
             ],
             "metrics":[
@@ -108,11 +112,8 @@
           "schema":[
             { "name":"Partner", "type":"STRING" },
             { "name":"Partner_ID", "type":"INTEGER" },
-            { "name":"Partner_Status", "type":"STRING", "mode":"NULLABLE" },
             { "name":"Advertiser", "type":"STRING" },
             { "name":"Advertiser_ID", "type":"INTEGER" },
-            { "name":"Advertiser_Status", "type":"STRING", "mode":"NULLABLE" },
-            { "name":"Advertiser_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
             { "name":"Site", "type":"STRING" },
             { "name":"Site_ID", "type":"INTEGER" },
             { "name":"Inventory", "type":"STRING", "mode":"NULLABLE" },

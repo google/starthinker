@@ -25,7 +25,7 @@
         "bigquery":{
           "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "default":"", "description":"Existing BigQuery dataset." }},
           "table":{"field":{ "name":"table", "kind":"string", "order":4, "default":"", "description":"Table to create from this report." }},
-          "schema":{"field":{ "name":"schema", "kind":"json", "order":5, "default":[], "description":"Schema provided in JSON list format or empty list." }}
+          "schema":{"field":{ "name":"schema", "kind":"json", "order":5, "description":"Schema provided in JSON list format or leave empty to auto detect." }}
         }
       }
     }}

@@ -511,6 +511,16 @@ class AdDAO(BaseDAO):
       landing_page = self._landing_page_dao.get(feed_item, required=True)
       item['clickThroughUrl'] = {'landingPageId': landing_page['id']}
 
+    if feed_item.get(FieldMap.AD_URL_SUFFIX, ''):
+      item['clickThroughUrlSuffixProperties'] = {
+          'overrideInheritedSuffix': True,
+          'clickThroughUrlSuffix': feed_item.get(FieldMap.AD_URL_SUFFIX, '')
+      }
+    else:
+      item['clickThroughUrlSuffixProperties'] = {
+          'overrideInheritedSuffix': False
+      }
+
   def _sub_entity_map(self, assignments, item, campaign):
     """Maps ids and names of sub entities so they can be updated in the Bulkdozer feed.
 

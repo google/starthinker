@@ -48,11 +48,6 @@
   <p class="flow-text">{{ script.get_description|safe }}</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="{% if external %}/starthinker{% endif %}/solution/">All</a>
-  {% for c in script.get_catalysts %}
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="{% if external %}/starthinker{% endif %}/solution/?category={{ c|slugify }}">{{ c }}</a>
-  {% endfor %}
-
-  <br/><br/>
   {% for c in script.get_requirements %}
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="{% if external %}/starthinker{% endif %}/solution/?category={{ c|slugify }}">{{ c }}</a>
   {% endfor %}

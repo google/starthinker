@@ -92,8 +92,8 @@ class ScriptForm(forms.Form):
     return super(ScriptForm, self).is_valid() & self.setup.is_valid() & all([script.is_valid() for script in self.forms])
 
   def get_errors(self):
-    errors = list(self.setup.errors)
-    for script in self.forms: errors.extend(script.errors)
+    errors = list(["%s: %s" % (k,v) for k,v in self.setup.errors.items()])
+    for script in self.forms: errors.extend(["%s: %s" % (k,v) for k,v in script.errors.items()])
     return errors
 
   def get_scripts(self):
@@ -104,3 +104,4 @@ class ScriptForm(forms.Form):
     self.instance = self.setup.save()
     self.instance.set_values(self.get_scripts())
     self.instance.save()
+    self.instance.update()

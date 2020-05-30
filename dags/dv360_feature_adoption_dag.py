@@ -139,9 +139,12 @@ TASKS = [
             'type': 'TYPE_GENERAL',
             'groupBys': [
               'FILTER_ADVERTISER',
+              'FILTER_ADVERTISER_NAME',
               'FILTER_ADVERTISER_CURRENCY',
               'FILTER_INSERTION_ORDER',
+              'FILTER_INSERTION_ORDER_NAME',
               'FILTER_LINE_ITEM',
+              'FILTER_LINE_ITEM_NAME',
               'FILTER_DATE'
             ],
             'metrics': [
@@ -222,9 +225,12 @@ TASKS = [
             'type': 'TYPE_GENERAL',
             'groupBys': [
               'FILTER_ADVERTISER',
+              'FILTER_ADVERTISER_NAME',
               'FILTER_ADVERTISER_CURRENCY',
               'FILTER_INSERTION_ORDER',
+              'FILTER_INSERTION_ORDER_NAME',
               'FILTER_LINE_ITEM',
+              'FILTER_LINE_ITEM_NAME',
               'FILTER_DEVICE_TYPE',
               'FILTER_PAGE_LAYOUT',
               'FILTER_DATE'
@@ -273,19 +279,11 @@ TASKS = [
           'is_incremental_load': True,
           'schema': [
             {
-              'name': 'Advertiser',
-              'type': 'STRING'
-            },
-            {
               'name': 'Advertiser_Id',
               'type': 'INTEGER'
             },
             {
-              'name': 'Advertiser_Status',
-              'type': 'STRING'
-            },
-            {
-              'name': 'Advertiser_Integration_Code',
+              'name': 'Advertiser',
               'type': 'STRING'
             },
             {
@@ -293,23 +291,11 @@ TASKS = [
               'type': 'STRING'
             },
             {
-              'name': 'Insertion_Order',
-              'type': 'STRING'
-            },
-            {
               'name': 'Insertion_Order_Id',
               'type': 'INTEGER'
             },
             {
-              'name': 'Insertion_Order_Status',
-              'type': 'STRING'
-            },
-            {
-              'name': 'Insertion_Order_Integration_Code',
-              'type': 'STRING'
-            },
-            {
-              'name': 'Line_Item',
+              'name': 'Insertion_Order',
               'type': 'STRING'
             },
             {
@@ -317,15 +303,7 @@ TASKS = [
               'type': 'INTEGER'
             },
             {
-              'name': 'Line_Item_Status',
-              'type': 'STRING'
-            },
-            {
-              'name': 'Line_Item_Integration_Code',
-              'type': 'STRING'
-            },
-            {
-              'name': 'Targeted_Data_Providers',
+              'name': 'Line_Item',
               'type': 'STRING'
             },
             {
@@ -418,19 +396,11 @@ TASKS = [
           'is_incremental_load': True,
           'schema': [
             {
-              'name': 'Advertiser',
-              'type': 'STRING'
-            },
-            {
               'name': 'Advertiser_Id',
               'type': 'INTEGER'
             },
             {
-              'name': 'Advertiser_Status',
-              'type': 'STRING'
-            },
-            {
-              'name': 'Advertiser_Integration_Code',
+              'name': 'Advertiser',
               'type': 'STRING'
             },
             {
@@ -438,23 +408,11 @@ TASKS = [
               'type': 'STRING'
             },
             {
-              'name': 'Insertion_Order',
-              'type': 'STRING'
-            },
-            {
               'name': 'Insertion_Order_Id',
               'type': 'INTEGER'
             },
             {
-              'name': 'Insertion_Order_Status',
-              'type': 'STRING'
-            },
-            {
-              'name': 'Insertion_Order_Integration_Code',
-              'type': 'STRING'
-            },
-            {
-              'name': 'Line_Item',
+              'name': 'Insertion_Order',
               'type': 'STRING'
             },
             {
@@ -462,15 +420,7 @@ TASKS = [
               'type': 'INTEGER'
             },
             {
-              'name': 'Line_Item_Status',
-              'type': 'STRING'
-            },
-            {
-              'name': 'Line_Item_Integration_Code',
-              'type': 'STRING'
-            },
-            {
-              'name': 'Targeted_Data_Providers',
+              'name': 'Line_Item',
               'type': 'STRING'
             },
             {

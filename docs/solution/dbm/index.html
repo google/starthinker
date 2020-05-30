@@ -7,6 +7,15 @@
 <html>
   <head>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167283455-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-167283455-3');
+    </script>
+
     <link rel="shortcut icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
     <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
 
@@ -120,9 +129,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
-
-  <br/><br/>
-  
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
   
 
@@ -186,7 +192,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
             <tr>
               <td>Age</td>
-              <td>Aug. 14, 2017 (2 years, 8 months)</td>
+              <td>Aug. 14, 2017 (2 years, 9 months)</td>
             </tr>
     
             <tr>
@@ -216,11 +222,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                </tr>
              
                <tr>
-                 <td>Copy and paste the JSON definition of a report.</td>
+                 <td>Copy and paste the JSON definition of a report, <a href='https://github.com/google/starthinker/blob/master/tests/scripts/dbm_to_bigquery.json#L9-L40' target='_blank'>sample for reference</a>.</td>
                </tr>
              
                <tr>
-                 <td>The report is only created, use a move script to move it.</td>
+                 <td>The report is only created, a seperate script is required to move the data.</td>
                </tr>
              
                <tr>
@@ -239,21 +245,21 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
             "auth": "user",
             "report": {
-                "body": {
-                    "field": {
-                        "name": "body",
-                        "kind": "json",
-                        "order": 1,
-                        "default": "{}"
-                    }
+                "field": {
+                    "name": "report",
+                    "kind": "json",
+                    "order": 1,
+                    "default": "{}",
+                    "description": "Report body and filters."
                 }
             },
             "delete": {
                 "field": {
                     "name": "delete",
                     "kind": "boolean",
-                    "order": 3,
-                    "default": false
+                    "order": 2,
+                    "default": false,
+                    "description": "If report exists, delete it before creating a new one."
                 }
             }
         }

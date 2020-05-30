@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2018 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 #
 ###########################################################################
 
-from datetime import date, timedelta
+from datetime import datetime, date, timedelta
 
 from starthinker.util.project import project 
-from starthinker.util.regexp import parse_yyyymmdd
 from starthinker.util.storage import object_list, object_move, object_delete
 
 
@@ -29,16 +28,27 @@ def archive():
 
   day = project.date - timedelta(days=abs(project.task['days']))
 
-  if 'storage' in project.task:
-    for file_name in object_list(project.task['auth'], project.task['storage']['bucket'] + ':' + project.task['storage']['path'], files_only=True):
-      file_day = parse_yyyymmdd(file_name)
-      if file_day and file_day <= day:
-        if project.task.get('delete', False) == False:
-          if project.verbose: print('ARCHIVING FILE:', file_name)
-          object_move(project.task['auth'], file_name, file_name.replace(':', ':archive/'))
-        else:
-          if project.verbose: print('DELETING FILE:', file_name)
-          object_delete(project.task['auth'], file_name)
+  for object in object_list(
+    project.task['auth'],
+    project.task['storage']['bucket'] + ':' + project.task['storage']['path'],
+    files_only=True, 
+    raw=True
+  ):
+    object_day = datetime.strptime(object['updated'], '%Y-%m-%dT%H:%M:%S.%fZ').date()
+    if object_day <= day:
+      if project.task.get('delete', False) == False:
+        if project.verbose: print('ARCHIVING FILE:', object['name'])
+        object_move(
+          project.task['auth'], 
+          '%s:%s' % (object['bucket'], object['name']),
+          '%s:archive/%s' % (object['bucket'], object['name'])
+        )
+      else:
+        if project.verbose: print('DELETING FILE:', )
+        object_delete(
+          project.task['auth'],
+          '%s:%s' % (object['bucket'], object['name'])
+        )
 
 
 if __name__ == "__main__":

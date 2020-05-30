@@ -110,8 +110,8 @@ def json_get_fields(struct, path=[]):
 def get_field_value(field, variables):
   value = None
   try:
-    value = variables.get(field['name'], field.get('default', ''))
-    if 'prefix' in field: # and isinstance(value, (str, int)): # why check this? It should never happen.
+    value = variables.get(field['name'], field.get('default'))
+    if value is not None and 'prefix' in field: 
       value = "%s%s" % (field['prefix'], value)
   except KeyError:
     pass

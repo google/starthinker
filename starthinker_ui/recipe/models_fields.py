@@ -25,7 +25,6 @@ from django.db import models
 
 class JsonField(models.TextField):
 
-
   # python to SQL
   def get_prep_value(self, value):
     if value is None:
@@ -36,11 +35,9 @@ class JsonField(models.TextField):
       try: return json.dumps(value)
       except: raise ValidationError(_("Bad JSON string."))
 
-
   # SQL to python
   def from_db_value(self, value, expression, connection, context):
     return json.loads(value)
-
 
   # any source to python
   def to_python(self, value):

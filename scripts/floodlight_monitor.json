@@ -10,7 +10,6 @@
     "sample":"https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing",
     "categories":["alerts", "covid"],
     "requirements":[ "dv360", "gmail" ],
-    "catalysts":["audit", "experience", "insights"],
     "pitches":[
       "Reduce floodlight outages.",
       "Verify configuration issues faster.",

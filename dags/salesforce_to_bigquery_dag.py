@@ -50,6 +50,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'domain': 'login.salesforce.com',  # Retrieve from a Salesforce Domain.
   'client': '',  # Retrieve from a Salesforce App.
   'secret': '',  # Retrieve from a Salesforce App.
   'username': '',  # Your Salesforce user email.
@@ -64,6 +65,14 @@ TASKS = [
   {
     'salesforce': {
       'auth': 'user',
+      'domain': {
+        'field': {
+          'name': 'domain',
+          'kind': 'string',
+          'default': 'login.salesforce.com',
+          'description': 'Retrieve from a Salesforce Domain.'
+        }
+      },
       'client': {
         'field': {
           'name': 'client',

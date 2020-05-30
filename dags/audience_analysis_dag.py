@@ -121,13 +121,13 @@ TASKS = [
             }
           },
           'metadata': {
-            'dataRange': 'LAST_30_DAYS',
+            'dataRange': 'LAST_7_DAYS',
             'format': 'CSV',
             'title': {
               'field': {
                 'name': 'recipe_name',
                 'kind': 'string',
-                'prefix': 'Audience Performance ',
+                'prefix': 'Audience Analysis Performance ',
                 'description': 'Name of report in DV360, should be unique.'
               }
             }
@@ -135,8 +135,13 @@ TASKS = [
           'params': {
             'type': 'TYPE_GENERAL',
             'groupBys': [
+              'FILTER_ADVERTISER_NAME',
               'FILTER_ADVERTISER',
-              'FILTER_USER_LIST'
+              'FILTER_AUDIENCE_LIST',
+              'FILTER_USER_LIST',
+              'FILTER_AUDIENCE_LIST_TYPE',
+              'FILTER_AUDIENCE_LIST_COST',
+              'FILTER_PARTNER_CURRENCY'
             ],
             'metrics': [
               'METRIC_IMPRESSIONS',
@@ -162,7 +167,7 @@ TASKS = [
           'field': {
             'name': 'recipe_name',
             'kind': 'string',
-            'prefix': 'Audience Performance ',
+            'prefix': 'Audience Analysis Performance ',
             'description': 'Name of report in DV360, should be unique.'
           }
         }
@@ -187,16 +192,6 @@ TASKS = [
               'mode': 'REQUIRED',
               'name': 'advertiser_id',
               'type': 'INT64'
-            },
-            {
-              'mode': 'REQUIRED',
-              'name': 'advertiser_status',
-              'type': 'STRING'
-            },
-            {
-              'mode': 'NULLABLE',
-              'name': 'advertiser_integration_code',
-              'type': 'STRING'
             },
             {
               'mode': 'REQUIRED',
@@ -301,13 +296,13 @@ TASKS = [
             }
           },
           'metadata': {
-            'dataRange': 'LAST_30_DAYS',
+            'dataRange': 'LAST_7_DAYS',
             'format': 'CSV',
             'title': {
               'field': {
                 'name': 'recipe_name',
                 'kind': 'string',
-                'prefix': 'First Party Audience ',
+                'prefix': 'Audience Analysis First Party',
                 'description': 'Name of report in DV360, should be unique.'
               }
             }
@@ -315,8 +310,12 @@ TASKS = [
           'params': {
             'type': 'TYPE_INVENTORY_AVAILABILITY',
             'groupBys': [
+              'FILTER_ADVERTISER_NAME',
               'FILTER_ADVERTISER',
-              'FILTER_USER_LIST_FIRST_PARTY'
+              'FILTER_USER_LIST_FIRST_PARTY_NAME',
+              'FILTER_USER_LIST_FIRST_PARTY',
+              'FILTER_FIRST_PARTY_AUDIENCE_LIST_TYPE',
+              'FILTER_FIRST_PARTY_AUDIENCE_LIST_COST'
             ],
             'metrics': [
               'METRIC_BID_REQUESTS',
@@ -338,7 +337,7 @@ TASKS = [
           'field': {
             'name': 'recipe_name',
             'kind': 'string',
-            'prefix': 'First Party Audience ',
+            'prefix': 'Audience Analysis First Party',
             'description': 'Name of report in DV360, should be unique.'
           }
         }
@@ -366,16 +365,6 @@ TASKS = [
             },
             {
               'mode': 'REQUIRED',
-              'name': 'advertiser_status',
-              'type': 'STRING'
-            },
-            {
-              'mode': 'NULLABLE',
-              'name': 'advertiser_integration_code',
-              'type': 'STRING'
-            },
-            {
-              'mode': 'REQUIRED',
               'name': 'audience_list',
               'type': 'STRING'
             },
@@ -452,13 +441,13 @@ TASKS = [
             }
           },
           'metadata': {
-            'dataRange': 'LAST_30_DAYS',
+            'dataRange': 'LAST_7_DAYS',
             'format': 'CSV',
             'title': {
               'field': {
                 'name': 'recipe_name',
                 'kind': 'string',
-                'prefix': 'Google Audience ',
+                'prefix': 'Audience Analysis Google',
                 'description': 'Name of report in DV360, should be unique.'
               }
             }
@@ -466,8 +455,12 @@ TASKS = [
           'params': {
             'type': 'TYPE_INVENTORY_AVAILABILITY',
             'groupBys': [
+              'FILTER_ADVERTISER_NAME',
               'FILTER_ADVERTISER',
-              'FILTER_USER_LIST'
+              'FILTER_AUDIENCE_LIST',
+              'FILTER_USER_LIST',
+              'FILTER_AUDIENCE_LIST_TYPE',
+              'FILTER_AUDIENCE_LIST_COST'
             ],
             'metrics': [
               'METRIC_BID_REQUESTS',
@@ -489,7 +482,7 @@ TASKS = [
           'field': {
             'name': 'recipe_name',
             'kind': 'string',
-            'prefix': 'Google Audience ',
+            'prefix': 'Audience Analysis Google',
             'description': 'Name of report in DV360, should be unique.'
           }
         }
@@ -517,16 +510,6 @@ TASKS = [
             },
             {
               'mode': 'REQUIRED',
-              'name': 'advertiser_status',
-              'type': 'STRING'
-            },
-            {
-              'mode': 'NULLABLE',
-              'name': 'advertiser_integration_code',
-              'type': 'STRING'
-            },
-            {
-              'mode': 'REQUIRED',
               'name': 'audience_list',
               'type': 'STRING'
             },
@@ -603,13 +586,13 @@ TASKS = [
             }
           },
           'metadata': {
-            'dataRange': 'LAST_30_DAYS',
+            'dataRange': 'LAST_7_DAYS',
             'format': 'CSV',
             'title': {
               'field': {
                 'name': 'recipe_name',
                 'kind': 'string',
-                'prefix': 'Third Party Audience ',
+                'prefix': 'Audience Analysis Third Party',
                 'description': 'Name of report in DV360, should be unique.'
               }
             }
@@ -617,8 +600,12 @@ TASKS = [
           'params': {
             'type': 'TYPE_INVENTORY_AVAILABILITY',
             'groupBys': [
+              'FILTER_ADVERTISER_NAME',
               'FILTER_ADVERTISER',
-              'FILTER_USER_LIST_THIRD_PARTY'
+              'FILTER_USER_LIST_THIRD_PARTY_NAME',
+              'FILTER_USER_LIST_THIRD_PARTY',
+              'FILTER_THIRD_PARTY_AUDIENCE_LIST_TYPE',
+              'FILTER_THIRD_PARTY_AUDIENCE_LIST_COST'
             ],
             'metrics': [
               'METRIC_BID_REQUESTS',
@@ -640,7 +627,7 @@ TASKS = [
           'field': {
             'name': 'recipe_name',
             'kind': 'string',
-            'prefix': 'Third Party Audience ',
+            'prefix': 'Audience Analysis Third Party',
             'description': 'Name of report in DV360, should be unique.'
           }
         }
@@ -665,16 +652,6 @@ TASKS = [
               'mode': 'REQUIRED',
               'name': 'advertiser_id',
               'type': 'INT64'
-            },
-            {
-              'mode': 'REQUIRED',
-              'name': 'advertiser_status',
-              'type': 'STRING'
-            },
-            {
-              'mode': 'NULLABLE',
-              'name': 'advertiser_integration_code',
-              'type': 'STRING'
             },
             {
               'mode': 'REQUIRED',

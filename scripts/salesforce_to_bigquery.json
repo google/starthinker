@@ -17,6 +17,7 @@
   "tasks":[
     { "salesforce": {
       "auth":"user",
+      "domain":{"field":{ "name":"domain", "kind":"string", "default":"login.salesforce.com", "description":"Retrieve from a Salesforce Domain." }},
       "client":{"field":{ "name":"client", "kind":"string", "default":"", "description":"Retrieve from a Salesforce App." }},
       "secret":{"field":{ "name":"secret", "kind":"string", "default":"", "description":"Retrieve from a Salesforce App." }},
       "username":{"field":{ "name":"username", "kind":"email", "default":"", "description":"Your Salesforce user email." }},

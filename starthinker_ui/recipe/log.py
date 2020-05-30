@@ -31,7 +31,9 @@ LOG_VERSION = "2" # must be string
 
 MANAGER_START = 'MANAGER_START'
 MANAGER_END = 'MANAGER_END'
+MANAGER_TIMEOUT = 'MANAGER_TIMEOUT'
 MANAGER_ERROR = 'MANAGER_ERROR'
+MANAGER_SCALE = 'MANAGER_SCALE'
 
 
 JOB_UPDATE = 'JOB_UPDATE'
@@ -61,7 +63,7 @@ def log_verbose(verbose=True):
 
 
 INSTANCE_NAME = None
-def get_instance_name(default='UKNOWN'):
+def get_instance_name(default='UNKNOWN'):
   global INSTANCE_NAME
   if INSTANCE_NAME is None:
     try:
@@ -74,7 +76,7 @@ def get_instance_name(default='UKNOWN'):
   return INSTANCE_NAME
 
 
-def log_put(event, severity, job=None, text=None):
+def log_put(event, severity, job=None, text=None, payload=None):
   """Generic log writer used by helper functions. Writes to StackDriver.
 
   Creates a record that can be read using log_get function. Entire recipe is
@@ -84,6 +86,7 @@ def log_put(event, severity, job=None, text=None):
 
   Do not call this directly, use helper functions instead:
     - log_manager_start
+    - log_manager_timeout
     - log_manager_error
     - log_manager_end
     - log_job_dispatch
@@ -97,9 +100,10 @@ def log_put(event, severity, job=None, text=None):
 
   Args:
     - event ( string ): One of the JOB_* enums.
-    - job ( json ): Recipe workflow to execute.
     - severity ( enum ): Stackdriver severity level.
-    - text ( string ): Mesaging output form the task. Usual stdout and stderr.
+    - job ( json ): Recipe workflow to execute.
+    - text ( string ): Messaging output form the task. Usual stdout and stderr.
+    - payload ( json ): Output from the scaler or any generic json payload.
   """
 
   if VERBOSE: print("LOGGING:", event, severity, text or '')
@@ -139,6 +143,8 @@ def log_put(event, severity, job=None, text=None):
 
   if text is not None:
     body['entries'][0]["textPayload"] = text
+  elif payload is not None:
+    body['entries'][0]["jsonPayload"] = payload
   else:
     # Removing tasks from job REMOVES ALL POTENTIAL CREDENTIALS IN CODE
     job_buffer = json.loads(json.dumps(job, indent=2, sort_keys=True, default=str))
@@ -197,8 +203,16 @@ def log_manager_end():
   log_put(MANAGER_END, LogSeverity.NOTICE, text='')
 
 
+def log_manager_timeout():
+  log_put(MANAGER_TIMEOUT, LogSeverity.NOTICE, text='')
+
+
 def log_manager_error(error):
   log_put(MANAGER_ERROR, LogSeverity.ALERT, text=error)
+
+
+def log_manager_scale(record):
+  log_put(MANAGER_SCALE, LogSeverity.NOTICE, payload=record)
 
 
 def log_job_update(job):

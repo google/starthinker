@@ -23,6 +23,7 @@ from itertools import chain
 from urllib.parse import quote_plus
 
 from django import template
+from django.conf import settings
 from django.utils.html import mark_safe
 from django.forms.widgets import CheckboxInput
 from django.template.loader_tags import do_include
@@ -47,12 +48,12 @@ class SearchScriptsTag(template.Node):
 
     if self.filter == 'SOME':
       scripts = [s for s in scripts if s.is_manual() == context.get('manual', False)]
-      if context.get('external', False):
-        scripts = [s for s in scripts if s.get_open_source()]
+
+    if context.get('external', False):
+      scripts = [s for s in scripts if s.get_open_source()]
 
     context['scripts'] = scripts
     context['categories'] = sorted(set(chain.from_iterable([s.get_categories() for s in scripts])))
-    context['catalysts'] = sorted(set(chain.from_iterable([s.get_catalysts() for s in scripts])))
     context['requirements'] = sorted(set(chain.from_iterable([s.get_requirements() for s in scripts])))
     context['agos'] = sorted(set(chain.from_iterable([s.get_released_ago() for s in scripts])))
 
@@ -173,3 +174,17 @@ class TryIncludeNode(template.Node):
 def try_include(parser, token):
   return TryIncludeNode(parser, token)
 
+
+@register.simple_tag
+def google_analytics():
+  if settings.GOOGLE_ANALYTICS:
+    return mark_safe('''<!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '%s');
+    </script>''' % (settings.GOOGLE_ANALYTICS, settings.GOOGLE_ANALYTICS))
+  else:
+    return '' 

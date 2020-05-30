@@ -11,11 +11,10 @@
     "documentation":"https://docs.google.com/spreadsheets/d/1tt597dMsAaxYXaJdifwKYNVzJrIl6E9Pe8GysfVrWOs/",
     "categories":["bulk", "security"],
     "requirements":[ "cm", "sheets", "apps script"],
-    "catalysts":["insights"],
     "pitches":[
       "View multiple campaigns at once.",
       "Write custom filters to find outliers.",
-      "Rapidly audit entire campaign set for an account.",
+      "Rapidly audit entire campaign set for an account."
     ],
     "impacts":{
       "spend optimization":0,

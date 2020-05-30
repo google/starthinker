@@ -54,7 +54,7 @@ INPUTS = {
   'dbm_report_name': '',  # Name of report, not needed if ID used.
   'dbm_dataset': '',  # Existing BigQuery dataset.
   'dbm_table': '',  # Table to create from this report.
-  'dbm_schema': '[]',  # Schema provided in JSON list format or empty list.
+  'dbm_schema': '',  # Schema provided in JSON list format or empty value to auto detect.
   'is_incremental_load': False,  # Clear data in destination table during this report's time period, then append report data to destination table.
 }
 
@@ -107,8 +107,7 @@ TASKS = [
               'name': 'dbm_schema',
               'kind': 'json',
               'order': 5,
-              'default': '[]',
-              'description': 'Schema provided in JSON list format or empty list.'
+              'description': 'Schema provided in JSON list format or empty value to auto detect.'
             }
           },
           'is_incremental_load': {

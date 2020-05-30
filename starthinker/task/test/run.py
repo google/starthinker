@@ -27,6 +27,7 @@ from starthinker.util.storage import object_exists, object_delete
 from starthinker.util.drive import file_exists, file_delete
 from starthinker.util.csv import rows_to_type
 from starthinker.task.traffic.test import bulkdozer_test
+from starthinker.task.weather_gov.test import weather_gov_test
 
 
 def deep_compare(actual, expected):
@@ -181,6 +182,11 @@ def drive_exists():
   else: print('FAILED')
 
 
+def weather_gov():
+  print('running weather_gov test')
+  weather_gov_test()
+
+
 def traffic():
   print('running Bulkdozer test')
   bulkdozer_test()
@@ -197,6 +203,7 @@ def test():
   elif 'drive' in project.task: drive_exists()
   elif 'template' in project.task: template()
   elif 'traffic' in project.task: traffic()
+  elif 'weather_gov' in project.task: weather_gov()
 
 
 # test should be run like any other task

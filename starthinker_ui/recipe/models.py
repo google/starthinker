@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import re
 import pytz
 import json
 import functools
+from itertools import chain
 from datetime import date, datetime, timedelta
 
 from django.db import models
@@ -36,16 +37,21 @@ JOB_RECHECK_MS = 30 * 60 * 1000 # 30 minutes
 
 RE_SLUG = re.compile(r'[^\w]')
 
-def utc_milliseconds(timestamp=None):
-  if timestamp is None: timestamp = datetime.utcnow()
-  epoch = datetime.utcfromtimestamp(0)
-  return int((timestamp - epoch).total_seconds() * 1000)
 
+def utc_milliseconds(utc_timestamp=None):
+  if utc_timestamp is None: utc_timestamp = datetime.utcnow()
+  utc_epoch = datetime.utcfromtimestamp(0)
+  return int((utc_timestamp - utc_epoch) / timedelta(milliseconds=1))
 
-def utc_to_timezone(timestamp, timezone):
-  if timestamp: return timestamp.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(timezone))
-  else: return None
+def utc_milliseconds_to_timezone(utm, timezone):
+  return utc_to_timezone(datetime.utcfromtimestamp(int(utm/1000)), timezone)
 
+def utc_to_timezone(utc_timestamp, timezone):
+  tz = pytz.timezone(timezone)
+  return tz.normalize(utc_timestamp.replace(tzinfo=pytz.utc).astimezone(tz))
+
+def timezone_to_utc(tz_timestamp):
+  return tz_timestamp.astimezone(pytz.utc).replace(tzinfo=None)
 
 def time_ago(timestamp):
   ago = ''
@@ -90,7 +96,7 @@ class Recipe(models.Model):
 
   tasks = models.TextField()
 
-  job_done = models.BooleanField(blank=True, default=False)
+  job_utm = models.BigIntegerField(blank=True, default=0)
   job_status = models.TextField(default='{}')
   worker_uid = models.CharField(max_length=128, default='')
   worker_utm = models.BigIntegerField(blank=True, default=0)
@@ -153,7 +159,6 @@ class Recipe(models.Model):
     if not self.reference: self.reference = token_generate(Recipe, 'reference', 32)
     return self.reference
 
-
   def get_values(self):
     constants = {
       'recipe_project':self.get_project_identifier(),
@@ -174,7 +179,7 @@ class Recipe(models.Model):
     return [int(h) for h in json.loads(self.hour or '[]')]
 
   def get_days(self):
-    return json.loads(self.week or '[]')
+    return json.loads(self.week or '[]') or ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
   def get_icon(self): return '' #get_icon('')
 
@@ -189,6 +194,10 @@ class Recipe(models.Model):
 
   def get_scripts(self):
     for value in self.get_values():  yield Script(value['tag'])
+
+  def get_tasks(self):
+    for task in chain.from_iterable(map(lambda s: s.get_tasks(), self.get_scripts())):
+      yield next(iter(task.items())) # script, task 
 
   def get_json(self, credentials=True):
     return Script.get_json(
@@ -210,128 +219,141 @@ class Recipe(models.Model):
     self.active = False
     self.save(update_fields=['active'])
 
+  def update(self):
+    return self.get_status(update=True)
+    
   def force(self):
     status = self.get_status(force=True)
-    self.job_done = False
-    self.job_status = json.dumps(status)
     self.worker_uid = '' # forces current worker to cancel job
-    self.save(update_fields=['job_status', 'job_done', 'worker_uid'])
+    self.save(update_fields=['worker_uid'])
+    return status
 
   def cancel(self):
-    status = self.get_status()
-
-    for task in status['tasks']:
-      if not task['done']:
-        task['done'] = True
-        task['utc'] = str(datetime.utcnow())
-        task['event'] = 'JOB_CANCEL'
-
-    self.job_done = True
-    self.job_status = json.dumps(status)
+    status = self.get_status(cancel=True)
     self.worker_uid = '' # forces current worker to cancel job
-    self.save(update_fields=['job_status', 'job_done', 'worker_uid'])
+    self.save(update_fields=['worker_uid'])
+    return status
 
-  # WORKER METHODS
-
-  def get_status(self, force=False):
-    recipe = self.get_json()
-    recipe_day = recipe.get('setup', {}).get('day',[]) or ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-
-    # current 24 hour time zone derived frame to RUN the job
+  def get_job_utm(self, status):
     now_tz = utc_to_timezone(datetime.utcnow(), self.timezone)
+
+    # check if tasks remain for today
+    hour =  None
+    if now_tz.strftime('%a') in self.get_days():
+      for task in status['tasks']:
+        if task['done']: continue
+        else:
+          hour = task['hour']
+          break 
+       
+    # all tasks done, advance to next day first task
+    if hour is None:
+      now_tz += timedelta(hours=24)
+      for i in range(0, 7):
+        if now_tz.strftime('%a') in self.get_days(): break
+        else: now_tz += timedelta(hours=24)
+      
+      # get the first hour ( if tasks exist, lame use of for loop but works )
+      for script, task in self.get_tasks():
+        try: hour = task.get('hour', self.get_hours())[0]
+        except IndexError: hour = 0
+        break
+
+    now_tz = now_tz.replace(hour=hour or 0, minute=0, second=0, microsecond=0)
+    return utc_milliseconds(timezone_to_utc(now_tz))
+
+  def get_status(self, update=False, force=False, cancel=False):
+    # current 24 hour time zone derived frame to RUN the job
+    now_utc = datetime.utcnow()
+    now_tz = utc_to_timezone(now_utc, self.timezone)
     date_tz = str(now_tz.date())
-    day_tz = now_tz.strftime('%a')
-    hour_tz = now_tz.hour
 
     # load prior status
-    try: prior_status = json.loads(self.job_status)
-    except ValueError: 
-      prior_status = {}
+    try: status = json.loads(self.job_status)
+    except ValueError: status = {}
 
     # create default status for new recipes
-    prior_status.setdefault('date_tz', date_tz)
-    prior_status.setdefault('force', False)
-    prior_status.setdefault('day', recipe_day)
-    prior_status.setdefault('tasks', [])
+    status.setdefault('date_tz', date_tz)
+    status.setdefault('tasks', [])
 
-    # for manual recipes DO NOT CHANGE STATUS unless it is forced to run
-    if self.manual and not force: 
-      return prior_status
-     
-    # reset prior status if force or scheduled today and new 24 hour block
-    if force or date_tz != prior_status.get('date_tz'):
-      prior_status = { 'force':force }
+    # if not saved yet, do nothing
+    if not self.pk:
+      return status
 
-    # create a vanilla status with all tasks pending ( always do this because recipe may change )
-    status = {
-      'date_tz':date_tz,
-      'force':prior_status.get('force', False),
-      'day':recipe_day,
-      'tasks':[],
-    }
-
-    # create task list based on recipe json
-    instances = {}
-    for order, task in enumerate(recipe.get('tasks', [])):
-      script, task = next(iter(task.items()))
-
-      # if force, queue each task in sequence without hours
-      if prior_status.get('force', False):
-        hours = [hour_tz]
-
-      # if schedule, take tasks with hours or no hours given defaulted to recipe wide hours
-      else:
-        hours = task.get('hour', recipe['setup'].get('hour', []))
-
-      # tasks with hours = [] will be skipped unless force=True
-      if hours:
-        instances.setdefault(script, 0)
-        instances[script] += 1
-        for hour in hours:
-          status['tasks'].append({
-            'order':order,
-            'script':script,
-            'instance':instances[script],
-            'hour':hour,
-            'utc':str(datetime.utcnow()),
-            'event':'JOB_PENDING',
-            'stdout':'',
-            'stderr':'',
-            'done':False
-          })
-
-    # sort new order by first by hour and second by order
-    def queue_compare(left, right):
-      if left['hour'] < right['hour']: return -1
-      elif left['hour'] > right['hour']: return 1
-      else:
-        if left['order'] < right['order']: return -1
-        elif left['order'] > right['order']: return 1
-        else: return 0
-
-    status['tasks'].sort(key=functools.cmp_to_key(queue_compare))
-
-    # merge old status in if it exists at this point
-    for task_prior in prior_status.get('tasks', []):
+    # if cancel, do it on whatever status exists
+    elif cancel:
       for task in status['tasks']:
-        if task_prior['script'] == task['script'] and task_prior['instance'] == task['instance'] and task_prior['hour'] == task['hour']:
-          task['utc'] = task_prior['utc']
-          task['event'] = task_prior['event']
-          task['stdout'] = task_prior['stdout']
-          task['stderr'] = task_prior['stderr']
-          task['done'] = task_prior['done']
+        if not task['done']:
+          task['done'] = True
+          task['utc'] = str(now_utc)
+          task['event'] = 'JOB_CANCEL'
 
-    # check if done ( not today or maybe recipe changed )
-    done = all([task['done'] for task in status['tasks']])
-    done |= day_tz not in recipe_day
-    if self.job_done != done:
-      self.job_done = done
-      Recipe.objects.filter(pk=self.pk).update(job_done=self.job_done)
-
-    # check if job status changed
-    if json.loads(self.job_status).get('force', False) != status.get('force', False):
+      self.job_utm = self.get_job_utm(status)
       self.job_status = json.dumps(status)
-      self.save(update_fields=['job_status'])
+      self.worker_uid = '' # forces current worker to cancel job
+      self.save(update_fields=['job_status', 'job_utm', 'worker_uid'])
+
+    # if manual and all task are done set the utm to be ignored in worker pulls
+    elif self.manual and not force and not update:
+      if not status['tasks'] or all(task['done'] for task in status['tasks']):
+        self.job_utm = 0
+        self.save(update_fields=['job_utm'])
+
+    # if updating, modify the status
+    elif force or update or (date_tz > status['date_tz'] and now_tz.strftime('%a') in self.get_days()):
+      status = {
+        'date_tz':date_tz,
+        'tasks':[],
+      }
+
+      # create task list based on recipe json
+      instances = {}
+      for order, (script, task) in enumerate(self.get_tasks()):
+
+        # if force use current hour, if schedule use task and recipe hours
+        hours = [now_tz.hour] if force else task.get('hour', self.get_hours())
+  
+        # tasks with hours = [] will be skipped unless force=True
+        if hours:
+          instances.setdefault(script, 0)
+          instances[script] += 1
+          for hour in hours:
+            status['tasks'].append({
+              'order':order,
+              'script':script,
+              'instance':instances[script],
+              'hour':hour,
+              'utc':str(datetime.utcnow()),
+              'event':'JOB_NEW' if update else 'JOB_PENDING',
+              'stdout':'',
+              'stderr':'',
+              'done':update # if saved by user, write as done for that day, user must force run first time
+            })
+  
+      # sort new order by first by hour and second by order
+      def queue_compare(left, right):
+        if left['hour'] < right['hour']: return -1
+        elif left['hour'] > right['hour']: return 1
+        else:
+          if left['order'] < right['order']: return -1
+          elif left['order'] > right['order']: return 1
+          else: return 0
+  
+      status['tasks'].sort(key=functools.cmp_to_key(queue_compare))
+  
+      self.job_utm = self.get_job_utm(status)
+      self.job_status = json.dumps(status)
+      if force or update:
+        self.worker_uid = '' # cancel all current workers
+        self.save(update_fields=['job_status', 'job_utm', 'worker_uid'])
+      else:
+        self.save(update_fields=['job_status', 'job_utm'])
+
+    else:
+      job_utm = self.get_job_utm(status)
+      if job_utm != self.job_utm:
+        self.job_utm = job_utm
+        self.save(update_fields=['job_utm'])
 
     return status
 
@@ -340,15 +362,12 @@ class Recipe(models.Model):
     status = self.get_status()
 
     # if not done return next task prior or equal to current time zone hour
-    if self.job_done == False and ( self.manual == False or status['force'] == True ):
-      now_tz = utc_to_timezone(datetime.utcnow(), self.timezone)
-      day_tz = now_tz.strftime('%a')
-      if day_tz in status['day']:
-        hour_tz = now_tz.hour
-        for task in status['tasks']:
-          if not task['done'] and task['hour'] <= hour_tz:
-            task['recipe'] = self.get_json()
-            return task
+    now_tz = utc_to_timezone(datetime.utcnow(), self.timezone)
+    if now_tz.strftime('%a') in self.get_days(): 
+      for task in status['tasks']:
+        if not task['done'] and task['hour'] <= now_tz.hour:
+          task['recipe'] = self.get_json()
+          return task
 
     return None
 
@@ -364,10 +383,10 @@ class Recipe(models.Model):
         if stderr: task['stderr'] += stderr
         task['done'] = (event != 'JOB_START')
 
-        self.job_done = all([task['done'] for task in status['tasks']])
-        self.job_status = json.dumps(status, default=str)
-        self.worker_utm=utc_milliseconds()
-        self.save(update_fields=['worker_utm', 'job_status', 'job_done'])
+        self.job_status = json.dumps(status)
+        self.job_utm = self.get_job_utm(status)
+        self.worker_utm=utc_milliseconds() # give worker some time to clean up
+        self.save(update_fields=['worker_utm', 'job_utm', 'job_status'])
         break
 
 
@@ -376,16 +395,18 @@ class Recipe(models.Model):
 
     error = False
     timeout = False
+    new = False
     done = 0
     for task in status['tasks']:
       task['utc'] = datetime.strptime(task['utc'].split('.', 1)[0], "%Y-%m-%d %H:%M:%S")
       task['ltc'] = utc_to_timezone(task['utc'], self.timezone)
       task['ago'] = time_ago(task['utc'])
 
-      if task['done']: done += 1
+      if task['done'] and task['event'] != 'JOB_NEW': done += 1
       if status.get('utc', task['utc']) <= task['utc']: status['utc'] = task['utc']
 
       if task['event'] == 'JOB_TIMEOUT': timeout = True
+      elif task['event'] == 'JOB_NEW': new = True
       elif task['event'] not in ('JOB_PENDING', 'JOB_START', 'JOB_END'): error = True
 
     if 'utc' not in status: status['utc'] = datetime.utcnow()
@@ -396,9 +417,11 @@ class Recipe(models.Model):
 
     if timeout:
       status['status'] = 'TIMEOUT'
+    elif new:
+      status['status'] = 'NEW'
     elif error:
       status['status'] = 'ERROR'
-    elif self.job_done:
+    elif not status['tasks'] or all(task['done'] for task in status['tasks']):
       status['status'] = 'FINISHED'
     elif utc_milliseconds() - self.worker_utm < JOB_LOOKBACK_MS:
       status['status'] = 'RUNNING'

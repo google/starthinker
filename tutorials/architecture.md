@@ -11,14 +11,14 @@ This is a typical pattern deployed for large scale job processing.  It is design
 both open source and Google Cloud technologies.  StarThinker can be leveraged as a whole or in pieces, the central
 contract is the JSON/Python script task combination.
 
+![Application](images/starthinker_map.png)
 
 ![Architecture](images/architecture.png)
-[View Architecture Larger](images/architecture.png)
-
+[View Architecture Larger](images/architecture.png) / [View Application Slides](https://docs.google.com/presentation/d/1Ro3KSV8Y-7xyNtvG0IsRB5E2zBYLnRso8tTOVvyUCv0/edit?usp=sharing)
 
 ## Components
 
-### [UI](../starthinker_ui) 
+### [UI](../starthinker_ui) ( Enterprise Deployment )
 
 Light weight open source [Django Framework](https://www.djangoproject.com/) using open source [Materialize CSS](https://materializecss.com/) for the interface. Manages recipes and authentication using a browser interface.  Ideal for [deploying](deploy_enterprise.md) in a multiuser enterprise programmatic media teams.
 
@@ -30,7 +30,7 @@ Light weight open source [Django Framework](https://www.djangoproject.com/) usin
 
 ---
 
-### [Job Worker](../starthinker_ui/recipe/management/commands/job_worker.py)
+### [Job Worker](../starthinker_ui/recipe/management/commands/job_worker.py) ( Enterprise Deployment )
 
 Scalable back end for pulling and executing jobs. Multiple machines can be [deployed](deploy_enterprise.md) with several workers each.  Collision detection is built in, each worker will reserve tasks.  If a worker stops working, other workers will begin pulling dropped tasks.  The [deploy](../install/deploy.sh) script offers 4 scale options, that can be extended to any size budget permitting.  The worker has [full test coverage](../starthinker_ui/recipe/tests.py) for safe maintenance.
 
@@ -41,7 +41,7 @@ Scalable back end for pulling and executing jobs. Multiple machines can be [depl
 
 ---
 
-### [Command Line](deploy_developer.md) 
+### [Command Line](deploy_developer.md) ( Optional Developer Support Interface )
 
 Command line for creating, testing, and executing scripts.
 
@@ -51,15 +51,16 @@ Command line for creating, testing, and executing scripts.
 
 ---
 
-### [Airflow Cloud Composer](deploy_airflow.md) 
+### [Airflow Cloud Composer](deploy_airflow.md)  ( Optional Alternate Deployment )
 
 Connector for deploying recipes to Apache Airflow.
 
-   1. [Airflow Helper](starthinker_airflow/helper.py) - Command line utility that converts any script JSON into a DAG.
-   1. [Dag Factory](starthinker_airflow/factory.py) - Python function doing the actual translation of JSON into a DAG.
+   1. [Dag Recipes](../dags/) - List of all StarThinker recipes as Airflow DAGs.
+   1. [Dag Generator](../starthinker_ui/website/management/commands/airflow.py) - Utility for generating Dags from recipes.
+   1. [Dag Factory](../starthinker_airflow/factory.py) - Python function doing the actual translation of JSON into a DAG.
    1. [Dag](https://cloud.google.com/composer/docs/how-to/using/writing-dags) - A wrapper for a python function in Airflow.
    1. [Cloud Composer](https://cloud.google.com/composer/) - Google Cloud instance of Apache Airflow.
    1. [Airflow Framework](https://airflow.apache.org/) - Project documentation and tutorials.
 
 ---
-&copy; 2019 Google Inc. - Apache License, Version 2.0
+&copy; 2019 Google LLC - Apache License, Version 2.0
