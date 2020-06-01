@@ -1,0 +1,4 @@
+cron:
+- description: "Worker Scale Protection"
+  url: /recipe/autoscale/
+  schedule: every 3 minutes
