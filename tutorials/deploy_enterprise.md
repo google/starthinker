@@ -57,6 +57,8 @@ gcloud app deploy $STARTHINKER_ROOT/app.yaml --stop-previous-version
 ```
 UPDATE recipe_recipe SET job_utm=1 WHERE job_utm=0;
 ```
+- If you are updating and you deleted prior migrations, you may have to run Django migrations manually.
+- If you are updating, the new default region is us-west3, you may have to modify your config.sh to match your prior region.
 
 ## Cloud Resources
 

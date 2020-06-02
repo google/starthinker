@@ -42,7 +42,6 @@ def oauth_callback(request):
 
   # get or create the account
   account = Account.objects.get_or_create_user(profile, flow.credentials)
-  #authenticate(username = username, password = password)
 
   # log the account in ( set cookie )
   django_login(request, account, backend=settings.AUTHENTICATION_BACKENDS[0])

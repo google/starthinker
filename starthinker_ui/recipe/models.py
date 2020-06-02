@@ -103,6 +103,8 @@ class Recipe(models.Model):
 
   birthday = models.DateField(auto_now_add=True)
 
+  _cache_log = None 
+
   def __str__(self):
     return self.name
 
@@ -391,43 +393,44 @@ class Recipe(models.Model):
 
 
   def get_log(self):
-    status = self.get_status()
-
-    error = False
-    timeout = False
-    new = False
-    done = 0
-    for task in status['tasks']:
-      task['utc'] = datetime.strptime(task['utc'].split('.', 1)[0], "%Y-%m-%d %H:%M:%S")
-      task['ltc'] = utc_to_timezone(task['utc'], self.timezone)
-      task['ago'] = time_ago(task['utc'])
-
-      if task['done'] and task['event'] != 'JOB_NEW': done += 1
-      if status.get('utc', task['utc']) <= task['utc']: status['utc'] = task['utc']
-
-      if task['event'] == 'JOB_TIMEOUT': timeout = True
-      elif task['event'] == 'JOB_NEW': new = True
-      elif task['event'] not in ('JOB_PENDING', 'JOB_START', 'JOB_END'): error = True
-
-    if 'utc' not in status: status['utc'] = datetime.utcnow()
-    status['utl'] = utc_to_timezone(status['utc'], self.timezone)
-    status['ago'] = time_ago(status['utc'])
-    status['percent'] = int(( done * 100 ) / ( len(status['tasks']) or 1 ))
-    status['uid'] = self.uid()
-
-    if timeout:
-      status['status'] = 'TIMEOUT'
-    elif new:
-      status['status'] = 'NEW'
-    elif error:
-      status['status'] = 'ERROR'
-    elif not status['tasks'] or all(task['done'] for task in status['tasks']):
-      status['status'] = 'FINISHED'
-    elif utc_milliseconds() - self.worker_utm < JOB_LOOKBACK_MS:
-      status['status'] = 'RUNNING'
-    elif not self.active:
-      status['status'] = 'PAUSED'
-    else:
-      status['status'] = 'QUEUED'
-
-    return status
+    if self._cache_log is None:
+      self._cache_log = self.get_status()
+  
+      error = False
+      timeout = False
+      new = False
+      done = 0
+      for task in self._cache_log['tasks']:
+        task['utc'] = datetime.strptime(task['utc'].split('.', 1)[0], "%Y-%m-%d %H:%M:%S")
+        task['ltc'] = utc_to_timezone(task['utc'], self.timezone)
+        task['ago'] = time_ago(task['utc'])
+  
+        if task['done'] and task['event'] != 'JOB_NEW': done += 1
+        if self._cache_log.get('utc', task['utc']) <= task['utc']: self._cache_log['utc'] = task['utc']
+  
+        if task['event'] == 'JOB_TIMEOUT': timeout = True
+        elif task['event'] == 'JOB_NEW': new = True
+        elif task['event'] not in ('JOB_PENDING', 'JOB_START', 'JOB_END'): error = True
+  
+      if 'utc' not in self._cache_log: self._cache_log['utc'] = datetime.utcnow()
+      self._cache_log['utl'] = utc_to_timezone(self._cache_log['utc'], self.timezone)
+      self._cache_log['ago'] = time_ago(self._cache_log['utc'])
+      self._cache_log['percent'] = int(( done * 100 ) / ( len(self._cache_log['tasks']) or 1 ))
+      self._cache_log['uid'] = self.uid()
+  
+      if timeout:
+        self._cache_log['status'] = 'TIMEOUT'
+      elif new:
+        self._cache_log['status'] = 'NEW'
+      elif error:
+        self._cache_log['status'] = 'ERROR'
+      elif not self._cache_log['tasks'] or all(task['done'] for task in self._cache_log['tasks']):
+        self._cache_log['status'] = 'FINISHED'
+      elif utc_milliseconds() - self.worker_utm < JOB_LOOKBACK_MS:
+        self._cache_log['status'] = 'RUNNING'
+      elif not self.active:
+        self._cache_log['status'] = 'PAUSED'
+      else:
+        self._cache_log['status'] = 'QUEUED'
+    
+    return self._cache_log

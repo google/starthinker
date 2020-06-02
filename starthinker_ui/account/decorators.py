@@ -34,20 +34,15 @@ def permission_admin():
         return _view(request, *args, **kwargs)
 
       # multi user mode, log user in using oauth
-      elif settings.UI_CLIENT:
+      else:
         flow = CredentialsFlowWrapper(settings.UI_CLIENT, redirect_uri=settings.CONST_URL + '/oauth_callback/')
         auth_url, _ = flow.authorization_url(
-          prompt='consent',
-          #approval_prompt='auto',
+          prompt='',
           access_type='offline',
           include_granted_scopes='true'
         ) 
         request.session['code_verifier'] = flow.code_verifier
         return HttpResponseRedirect(auth_url)
-
-      # single user mode, no oath, use native django user management ( intead of gsuite )
-      else:
-        return HttpResponseRedirect('/login/')
 
     return _wrapper
   return _decorator

@@ -47,7 +47,7 @@
     $(document).ready(function() {
 
       $('span.trigger_category').on('click tap', function() {
-        category = this.id.replace('trigger_', '');
+        var category = this.id.replace('trigger_', '');
         $("#scripts div.col").hide();
         $("#scripts div.col." + category).show();
         $("#category_link").attr('href', '?category=' + category.replace('category_', ''));

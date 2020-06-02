@@ -310,48 +310,38 @@ setup_database() {
 setup_project() {
   forced=$1
 
-  if [ "$(command -v gcloud)" == "" ]; then
-
-    echo "Please install gcloud command using: https://cloud.google.com/sdk/install"
-    echo "Then run the StarThinker deployment again."
+  echo ""
+  echo "----------------------------------------"
+  echo "Set gCloud Project - ${STARTHINKER_PROJECT}"
+  echo "----------------------------------------"
+  echo ""
+  
+  if [ "$forced" == "forced" ] || [ "${STARTHINKER_PROJECT}" == "" ]; then
+  
+    echo "Retrieve Project ID from: https://console.cloud.google.com"
     echo ""
-    exit 1;
-
-  else
-
+    echo "IMPORTANT SETUP NOTES"
     echo ""
-    echo "----------------------------------------"
-    echo "Set gCloud Project - ${STARTHINKER_PROJECT}"
-    echo "----------------------------------------"
+    echo " * The Project ID is in a drop down at the top of your Google Cloud Console."
+    echo " * Use the Project ID not the Name."
+    echo " * Include the organization if it is part of the Project ID."
     echo ""
   
-    if [ "$forced" == "forced" ] || [ "${STARTHINKER_PROJECT}" == "" ]; then
+    read -p "Cloud Project ID ( blank to keep existing ): " cloud_id
   
-      echo "Retrieve Project ID from: https://console.cloud.google.com"
-      echo ""
-      echo "IMPORTANT SETUP NOTES"
-      echo ""
-      echo " * The Project ID is in a drop down at the top of your Google Cloud Console."
-      echo " * Use the Project ID not the Name."
-      echo " * Include the organization if it is part of the Project ID."
-      echo ""
-  
-      read -p "Cloud Project ID ( blank to keep existing ): " cloud_id
-  
-      if [ "${cloud_id}" ]; then
-        STARTHINKER_PROJECT="${cloud_id}"
-        save_config;
-      else
-        echo "Project ID Unchanged"
-        echo ""
-      fi
+    if [ "${cloud_id}" ]; then
+      STARTHINKER_PROJECT="${cloud_id}"
+      save_config;
     else
-      echo "Using Existing Project ID"
+      echo "Project ID Unchanged"
       echo ""
     fi
-  
-    gcloud config set project "${STARTHINKER_PROJECT}" --no-user-output-enabled;
+  else
+    echo "Using Existing Project ID"
+    echo ""
   fi
+  
+  gcloud config set project "${STARTHINKER_PROJECT}" --no-user-output-enabled;
 }
 
 
@@ -638,24 +628,7 @@ install_requirements() {
 
   source "${STARTHINKER_ENV}/bin/activate"
   python3 -m pip install --upgrade pip
-  pip3 install -r ${STARTHINKER_ROOT}/starthinker/requirements.txt --quiet
-  deactivate
-
-  echo ""
-  echo "Done"
-  echo ""
-}
-
-
-install_requirements_ui() {
-  echo ""
-  echo "----------------------------------------"
-  echo "Install Python Packages For UI - ${STARTHINKER_ROOT}/starthinker_ui/requirements.txt"
-  echo "----------------------------------------"
-  echo ""
-
-  source "${STARTHINKER_ENV}/bin/activate"
-  pip3 install -r ${STARTHINKER_ROOT}/starthinker_ui/requirements.txt --quiet
+  pip3 install -r ${STARTHINKER_ROOT}/requirements.txt --quiet
   deactivate
 
   echo ""
@@ -800,6 +773,7 @@ load_config;
 
 if [ "$1" = "--no_user" ];then
   shift
+  setup_gcloud;
   setup_project;
 else
   setup_gcloud;

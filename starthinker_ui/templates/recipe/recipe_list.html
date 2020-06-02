@@ -3,7 +3,7 @@
 {% comment %}
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -20,6 +20,22 @@
 ###########################################################################
 {% endcomment %}
 
+{% block js %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('span.trigger_category').on('click tap', function() {
+        var category = this.id.replace('trigger_', '');
+        if (category == 'category_all') {
+          $('table.category_all').show();
+        } else {
+          $('table.category_all').hide();
+          $('#' + category).show();
+        }
+      });
+    });
+  </script>
+{% endblock %}
+
 {% block content %}
 
   <h1>Recipes</h1>
@@ -27,51 +43,56 @@
 
   <p>
     <a href="/recipe/edit/" class="waves-effect waves-light btn blue form_button modal-trigger">
-      Scheduled <i class="material-icons right">access_time</i>
+      Add Scheduled <i class="material-icons right">access_time</i>
     </a>
-    <a href="/recipe/manual/" class="waves-effect waves-light btn blue form_button modal-trigger">
-      Manual <i class="material-icons right">build</i>
+    <a href="/recipe/manual/" class="waves-effect waves-light btn green form_button modal-trigger">
+      Add Manual <i class="material-icons right">construction</i>
     </a>
   </p>
 
+  <p>
+    {% if recipes.running or recipes.finished or recipes.paused or recipes.manual or recipes.errors %}
+      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_all">All</span>
+    {% endif %}
+    {% if recipes.running %}
+      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_running">{{ recipes.running|length }} Running</span>
+    {% endif %}
+    {% if recipes.finished %}
+      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_finished">{{ recipes.finished|length }} Finished</span>
+    {% endif %}
+    {% if recipes.paused %}
+      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_paused">{{ recipes.paused|length }} Paused</span>
+    {% endif %}
+    {% if recipes.manual %}
+      <span class="trigger_category menu_link waves-effect waves-light btn green" id="trigger_category_manual">{{ recipes.manual|length }} Manual</span>
+    {% endif %}
+    {% if recipes.errors %}
+      <span class="trigger_category menu_link waves-effect waves-light btn red" id="trigger_category_errors">{{ recipes.errors|length }} Errors</span>
+    {% endif %}
+  </p>
 
-  <table class="bordered highlight list">
-    <thead>
-      <tr>
-        <th>Recipe</th>
-        <th></th>
-        <th class="center">Status</th>
-      </tr>
-     </thead>
-     <tbody>
-       {% for recipe in recipes %}
-       {% with log=recipe.get_log %}
-         <tr>
-           <td style="width:90px;">
-             <a href="{{ recipe.link_edit }}"><i class="material-icons medium blue-text">{% if recipe.active %}play_arrow{% else %}pause{% endif %}</i></a>
-           </td>
-           <td>
-             <a href="{{ recipe.link_edit }}">{{ recipe.name }}</a>
-             {% if recipe.manual %}
-               <br/>Manual Trigger
-             {% else %}
-               <br/>{% for day in recipe.get_days %}{{ day }}{% if not forloop.last %}, {% endif %}{% endfor %}
-               <br/>{% for hour in recipe.get_hours %}{{ hour }}{% if not forloop.last %}, {% endif %}{% endfor %}
-             {% endif %}
-           </td>
-           <td class="center">
-             {{ log.percent }}% {{ log.status }}
-             <br/>{{ log.ago }}
-           </td>
-         </tr>
-       {% endwith %}
-       {% endfor %}
-     </tbody>
-  </table>
+  {% with category='Running' recipes=recipes.running %}
+    {% include "recipe/recipe.html" %}
+  {% endwith %}
+  
+  {% with category='Finished' recipes=recipes.finished %}
+    {% include "recipe/recipe.html" %}
+  {% endwith %}
+
+  {% with category='Paused' recipes=recipes.paused %}
+    {% include "recipe/recipe.html" %}
+  {% endwith %}
+  
+  {% with category='Manual' recipes=recipes.manual %}
+    {% include "recipe/recipe.html" %}
+  {% endwith %}
+
+  {% with category='Errors' recipes=recipes.errors %}
+    {% include "recipe/recipe.html" %}
+  {% endwith %}
 
   <br/><br/>
   <h3 id="code-tasks">Need A Custom Task?</h3>
   <p class="flow-text">Ask Google gTech to write one for you <a href="mailto:starthinker-help@google.com?subject=Custom+StarThinker+Recipe">starthinker-help@google.com</a></p>
-
 
 {% endblock %}

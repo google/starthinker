@@ -115,8 +115,8 @@ class Account(AbstractBaseUser):
     return self.is_admin
 
   def set_credentials(self, credentials):
-    # check if refresh token exists before saving credentials ( only given first time through auth )?
-    if self.identifier:
+    # check if refresh token exists before saving credentials ( only given when authenticating not refreshing )
+    if self.identifier and credentials.refresh_token:
       buffer = CredentialsUserWrapper()
       buffer.from_credentials(credentials)
       buffer.save(self.get_credentials_path()) 

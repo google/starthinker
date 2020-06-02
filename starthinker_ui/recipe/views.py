@@ -37,10 +37,22 @@ from starthinker_ui.recipe.compute import group_instances_list, group_instances_
 
 
 def recipe_list(request):
+  recipes = {
+    'running':[],
+    'paused':[],
+    'finished':[],
+    'errors':[],
+    'manual':[]
+  }
+
   if request.user.is_authenticated:
-    recipes = request.user.recipe_set.all()
-  else:
-    recipes = []
+    for recipe in request.user.recipe_set.all():
+      if recipe.manual: recipes['manual'].append(recipe)
+      elif not recipe.active or recipe.get_log()['status'] == 'NEW': recipes['paused'].append(recipe)
+      elif recipe.get_log()['status'] == 'FINISHED': recipes['finished'].append(recipe)
+      elif recipe.get_log()['status'] == 'ERROR': recipes['error'].append(recipe)
+      else: recipes['running'].append(recipe)
+    
   return render(request, "recipe/recipe_list.html", { 'recipes':recipes })
 
 

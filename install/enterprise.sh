@@ -219,7 +219,6 @@ setup_appengine() {
   install_virtualenv; # second because pip is here
 
   install_requirements; # second because pip is here
-  install_requirements_ui; # second because pip is here
 
   setup_sql;
   migrate_database_proxy; 
@@ -281,7 +280,6 @@ migrate_database_enterprise() {
   install_virtualenv; # second because pip is here
 
   install_requirements; # second because pip is here
-  install_requirements_ui; # second because pip is here
 
   setup_sql;
   migrate_database_proxy;
