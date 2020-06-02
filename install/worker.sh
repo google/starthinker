@@ -211,7 +211,6 @@ setup_worker() {
   instance_command "$instance_name" "sudo systemctl stop starthinker"
   instance_command "$instance_name" "sudo systemctl stop starthinker_proxy"
 
-  find . -name '__pycache__' -delete
   find . -name '*.pyc' -delete
 
   instance_copy "$instance_name" "${STARTHINKER_ROOT}/starthinker_assets" "~/starthinker_assets/" --recurse

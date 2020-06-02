@@ -145,7 +145,7 @@ configure_yaml() {
     if [[ $STARTHINKER_PROJECT == "google.com:"* ]]; then
       appengine_domain="https://${STARTHINKER_PROJECT/google.com:/}.googleplex.com"
     else
-      appengine_domain="https://$STARTHINKER_PROJECT.appspot.com"
+      appengine_domain=$(gcloud app browse --no-launch-browser)
     fi
   else
     appengine_domain=$STARTHINKER_UI_PRODUCTION_DOMAIN;
@@ -233,7 +233,7 @@ setup_appengine() {
   echo ""
   echo "----------------------------------------"
   echo ""
-  echo "Access Your StarThinker UI At: https://${STARTHINKER_PROJECT}.appspot.com"
+  echo "Access Your StarThinker UI At: $(gcloud app browse --no-launch-browser)"
   echo ""
 
 
