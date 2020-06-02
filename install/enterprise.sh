@@ -142,11 +142,7 @@ configure_yaml() {
   appengine_service=$(cat "$STARTHINKER_SERVICE" | tr '\n' ' ')
 
   if [ -z "${STARTHINKER_UI_PRODUCTION_DOMAIN}" ]; then
-    if [[ $STARTHINKER_PROJECT == "google.com:"* ]]; then
-      appengine_domain="https://${STARTHINKER_PROJECT/google.com:/}.googleplex.com"
-    else
-      appengine_domain=$(gcloud app browse --no-launch-browser)
-    fi
+    appengine_domain=$(gcloud app browse --no-launch-browser)
   else
     appengine_domain=$STARTHINKER_UI_PRODUCTION_DOMAIN;
   fi

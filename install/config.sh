@@ -367,7 +367,7 @@ setup_credentials_commandline() {
     fi
 
     echo "  C. For Application Name enter: StarThinker"
-    echo "  D. In Authorised domains, type $STARTHINKER_PROJECT.appspot.com and press Enter"
+    echo "  D. In Authorised domains, type $(gcloud app browse --no-launch-browser) and press Enter."
     echo "  E. All other fields are optional, click Save."
     echo ""
 
@@ -421,7 +421,7 @@ setup_credentials_ui() {
     fi
 
     echo "  C. For Application Name enter: StarThinker"
-    echo "  D. In Authorised domains, type $STARTHINKER_PROJECT.appspot.com and press Enter"
+    echo "  D. In Authorised domains, type $(gcloud app browse --no-launch-browser) and press Enter."
     echo "  E. All other fields are optional, click Save."
     echo ""
 
@@ -432,7 +432,7 @@ setup_credentials_ui() {
     echo "  C. For Name enter: StarThinker."
     echo "  D. For Authorized redirect URIs enter:"
     echo "       http://localhost:8000/oauth_callback/"
-    echo "       https://$STARTHINKER_PROJECT.appspot.com/oauth_callback/"
+    echo "       $(gcloud app browse --no-launch-browser)/oauth_callback/"
     echo "  F. Click Create and ignore the confirmation pop-up."
     echo ""
 
