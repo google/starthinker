@@ -7,12 +7,15 @@ end on Google Cloud Instances.  The instructions are the same for installing or 
 recipes and users are preserved between updates.
 
 ## Instructions
+The Cloud Shell will do the following steps for you:
 ```
 git clone https://github.com/google/starthinker
 ```
 ```
 cd starthinker
 ```
+
+For updating or installing run the following:
 ```
 bash install/deploy.sh
 ```
