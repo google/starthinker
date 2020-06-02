@@ -50,7 +50,7 @@ def recipe_list(request):
       if recipe.manual: recipes['manual'].append(recipe)
       elif not recipe.active or recipe.get_log()['status'] == 'NEW': recipes['paused'].append(recipe)
       elif recipe.get_log()['status'] == 'FINISHED': recipes['finished'].append(recipe)
-      elif recipe.get_log()['status'] == 'ERROR': recipes['error'].append(recipe)
+      elif recipe.get_log()['status'] == 'ERROR': recipes['errors'].append(recipe)
       else: recipes['running'].append(recipe)
     
   return render(request, "recipe/recipe_list.html", { 'recipes':recipes })

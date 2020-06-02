@@ -60,34 +60,34 @@
     {% if recipes.finished %}
       <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_finished">{{ recipes.finished|length }} Finished</span>
     {% endif %}
+    {% if recipes.errors %}
+      <span class="trigger_category menu_link waves-effect waves-light btn red" id="trigger_category_errors">{{ recipes.errors|length }} Errors</span>
+    {% endif %}
     {% if recipes.paused %}
       <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_paused">{{ recipes.paused|length }} Paused</span>
     {% endif %}
     {% if recipes.manual %}
       <span class="trigger_category menu_link waves-effect waves-light btn green" id="trigger_category_manual">{{ recipes.manual|length }} Manual</span>
     {% endif %}
-    {% if recipes.errors %}
-      <span class="trigger_category menu_link waves-effect waves-light btn red" id="trigger_category_errors">{{ recipes.errors|length }} Errors</span>
-    {% endif %}
   </p>
 
   {% with category='Running' recipes=recipes.running %}
     {% include "recipe/recipe.html" %}
   {% endwith %}
-  
+
   {% with category='Finished' recipes=recipes.finished %}
     {% include "recipe/recipe.html" %}
   {% endwith %}
 
+  {% with category='Errors' recipes=recipes.errors %}
+    {% include "recipe/recipe.html" %}
+  {% endwith %}
+  
   {% with category='Paused' recipes=recipes.paused %}
     {% include "recipe/recipe.html" %}
   {% endwith %}
   
   {% with category='Manual' recipes=recipes.manual %}
-    {% include "recipe/recipe.html" %}
-  {% endwith %}
-
-  {% with category='Errors' recipes=recipes.errors %}
     {% include "recipe/recipe.html" %}
   {% endwith %}
 
