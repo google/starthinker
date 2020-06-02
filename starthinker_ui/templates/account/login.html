@@ -1,0 +1,47 @@
+{% extends "page.html" %}
+
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% block css %}
+  #login { margin: 100px auto 20px auto; max-width: 500px;}
+{% endblock %}
+
+{% block js %}
+{% endblock %}
+
+{% block content %}
+
+  <form action="." method="post">
+    {% csrf_token %}
+    <div id="login" class="card-panel">
+      <h3>Log In</h3>
+      <p class="flow-text">This login is specific to this application, do not use your gSuite password!</p>
+      {% with fields=form_login %}
+        {% include "form_fields.html" %}
+      {% endwith %}
+    </div>
+    <br/>
+    <button id="form_submit" class="btn waves-effect waves-light" type="submit" name="action">
+      Login <i class="material-icons right">security</i>
+    </button>
+  </form>
+
+{% endblock %}

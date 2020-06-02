@@ -1,0 +1,146 @@
+{
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2019 Google Inc."
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"user",
+      "dataset":"Test"
+    }},
+    { "bigquery": {
+      "auth":"user",
+      "from":{
+        "values":[
+          ["2018-02-27", "dog", 7, 67],
+          ["2018-03-01", "cat", 5, 1.5],
+          ["2018-03-02", "bird", 12, 0.44],
+          ["2018-03-03", "lizard", 22, 1],
+          ["2018-03-04", "dinosaur", 1600, 273.97]
+        ]
+      },
+      "to":{
+        "dataset":"Test",
+        "table":"BQ_Values"
+      },
+      "schema":[
+        { "name":"Date_Column", "type":"DATE" },
+        { "name":"String_Column", "type":"STRING" },
+        { "name":"Integer_Column", "type":"INTEGER" },
+        { "name":"Float_Column", "type":"FLOAT" }
+      ]
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":"Test",
+        "table":"BQ_Values",
+        "schema":[
+          { "name":"Date_Column", "type":"DATE" },
+          { "name":"String_Column", "type":"STRING" },
+          { "name":"Integer_Column", "type":"INTEGER" },
+          { "name":"Float_Column", "type":"FLOAT" }
+        ],
+        "values":[
+          ["2018-02-27", "dog", 7, 67.0],
+          ["2018-03-01", "cat", 5, 1.5],
+          ["2018-03-02", "bird", 12, 0.44],
+          ["2018-03-03", "lizard", 22, 1.0],
+          ["2018-03-04", "dinosaur", 1600, 273.97]
+        ]
+      }
+    }},
+    { "sheets":{
+      "auth":"user",
+      "sheet":"StarThinker Template: Sheets Test",
+      "tab":"Sheet_Template",
+      "range":"A1:C",
+      "header":true,
+      "out":{
+        "bigquery":{
+          "dataset":"Test",
+          "table":"Sheet_To_BigQuery",
+          "schema":[
+            { "name":"Animal", "type":"STRING" },
+            { "name":"Age", "type":"INTEGER" },
+            { "name":"Weight_lbs", "type":"FLOAT" }
+          ]
+        }
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":"Test",
+        "table":"Sheet_To_BigQuery",
+        "schema":[
+          {"name": "Animal", "type": "STRING"},
+          {"name": "Age", "type": "INTEGER"},
+          {"name": "Weight_lbs", "type": "FLOAT"}
+        ],
+        "values":[
+          ["dog", 7, 67.0],
+          ["cat", 5, 1.5],
+          ["bird", 12, 0.44],
+          ["lizard", 22, 1.0],
+          ["dinosaur", 1600, 273.97]
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":"Test",
+        "query":"SELECT * FROM Test.Sheet_To_BigQuery;",
+        "values":[
+          ["dog", 7, 67.0],
+          ["cat", 5, 1.5],
+          ["bird", 12, 0.44],
+          ["lizard", 22, 1.0],
+          ["dinosaur", 1600, 273.97]
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":"Test",
+        "query":"SELECT * FROM Test.Sheet_To_BigQuery WHERE Animal='dog';",
+        "values":[
+          ["dog", 7, 67.0]
+        ]
+      }
+    }},
+    { "sheets":{
+      "auth":"user",
+      "sheet":"StarThinker BigQuery Test",
+      "tab":"BigQuery_Test",
+      "delete":true,
+      "template":{}
+    }},
+    { "bigquery": {
+      "auth":"user",
+      "from":{
+        "dataset":"Test",
+        "query":"SELECT * FROM Test.Sheet_To_BigQuery WHERE Animal IN ('dog', 'cat') ORDER BY Animal;"
+      },
+      "to":{
+        "sheet":"StarThinker BigQuery Test",
+        "tab":"BigQuery_Test",
+        "range":"A1:C"
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "sheets": {
+        "sheet":"StarThinker BigQuery Test",
+        "tab":"BigQuery_Test",
+        "range":"A1:C",
+        "values":[
+          ["cat", 5, 1.5],
+          ["dog", 7, 67]
+        ]
+      }
+    }}
+  ]
+}

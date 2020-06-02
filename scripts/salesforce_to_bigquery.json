@@ -1,0 +1,35 @@
+{
+  "script":{
+    "released":"2020-01-22",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"donut_large",
+    "requirements":["salesforce", "bigquery"],
+    "title":"Salesforce To BigQuery",
+    "description":"Move query results into a BigQuery table.",
+    "instructions":[
+      "Specify <a href='https://developer.salesforce.com/' target='_blank'>Salesforce</a> credentials.",
+      "Specify the query youd like to execute.",
+      "Specify a <a href='https://cloud.google.com/bigquery/docs/schemas#creating_a_json_schema_file' target='_blank'>SCHEMA</a> for that query ( optional )."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "salesforce": {
+      "auth":"user",
+      "domain":{"field":{ "name":"domain", "kind":"string", "default":"login.salesforce.com", "description":"Retrieve from a Salesforce Domain." }},
+      "client":{"field":{ "name":"client", "kind":"string", "default":"", "description":"Retrieve from a Salesforce App." }},
+      "secret":{"field":{ "name":"secret", "kind":"string", "default":"", "description":"Retrieve from a Salesforce App." }},
+      "username":{"field":{ "name":"username", "kind":"email", "default":"", "description":"Your Salesforce user email." }},
+      "password":{"field":{ "name":"password", "kind":"password", "default":"", "description":"Your Salesforce login password." }},
+      "query":{"field":{ "name":"query", "kind":"string", "default":"", "description":"The query to run in Salesforce." }},
+      "out":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "default":"", "description":"Existing BigQuery dataset." }},
+          "table":{"field":{ "name":"table", "kind":"string", "order":4, "default":"", "description":"Table to create from this report." }},
+          "schema":{"field":{ "name":"schema", "kind":"json", "order":5, "default":"[]", "description":"Schema provided in JSON list format or empty list." }}
+        }
+      }
+    }}
+  ]
+}

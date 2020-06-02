@@ -1,0 +1,32 @@
+{
+  "script":{
+    "released":"2018-01-29",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "icon":"donut_large",
+    "requirements":["dv360", "sheets"],
+    "title":"DV360 To Sheets",
+    "description":"Move existing DV360 report into a Sheets tab.",
+    "instructions":[
+      "Specify either report name or report id to move a report.",
+      "The most recent valid file will be moved to the sheet."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "dbm":{
+      "auth":"user",
+      "report":{
+        "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":1, "default":"", "description":"DV360 report ID given in UI, not needed if name used." }},
+        "name":{"field":{ "name":"report_name", "kind":"string", "order":2, "default":"", "description":"Name of report, not needed if ID used." }}
+      },
+      "out":{
+        "sheets":{
+          "sheet":{"field":{ "name":"sheet", "kind":"string", "order":3, "default":"", "description":"Full URL to sheet being written to." }},
+          "tab":{"field":{ "name":"tab", "kind":"string", "order":4, "default":"", "description":"Existing tab in sheet to write to." }},
+          "range":"A1"
+        }
+      }
+    }}
+  ]
+}

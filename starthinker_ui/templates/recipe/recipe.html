@@ -1,0 +1,53 @@
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google LLC
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% if recipes %}
+  <table id="category_{{ category.lower }}" class="category_all bordered highlight list">
+    <thead>
+      <tr>
+        <th>{{ category }}</th>
+        <th></th>
+        <th class="center">Status</th>
+      </tr>
+     </thead>
+     <tbody>
+       {% for recipe in recipes %}
+         <tr>
+           <td style="width:90px;">
+             <a href="{{ recipe.link_edit }}"><i class="material-icons medium blue-text">{% if category == 'Running' %}play_arrow{% elif category == 'Paused' %}pause{% elif category == 'Finished' %}flag{% elif category == 'Manual' %}construction{% else %}warning{% endif %}</i></a>
+           </td>
+           <td>
+             <a href="{{ recipe.link_edit }}">{{ recipe.name }}</a>
+             {% if recipe.manual %}
+               <br/>Manual Trigger
+             {% else %}
+               <br/>{% for day in recipe.get_days %}{{ day }}{% if not forloop.last %}, {% endif %}{% endfor %}
+               <br/>{% for hour in recipe.get_hours %}{{ hour }}{% if not forloop.last %}, {% endif %}{% endfor %}
+             {% endif %}
+           </td>
+           <td class="center">
+             {{ recipe.get_log.percent }}% {{ recipe.get_log.status }}
+             <br/>{{ recipe.get_log.ago }}
+           </td>
+         </tr>
+       {% endfor %}
+     </tbody>
+  </table>
+{% endif %}

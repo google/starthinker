@@ -1,0 +1,158 @@
+{% extends "page.html" %}
+
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google LLC
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% load website_app %}
+
+{% block css %}
+  i.expand { position: absolute; right: 15px; top: 15px; }
+  i.expand:hover { cursor: pointer; }
+  .col { margin-right: auto; }
+  .card { min-height: 30vh; }
+{% endblock %}
+
+{% block js %}
+  <script type="text/javascript">
+
+    function getQueryVariable(variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+      }
+      return null;
+    }
+
+    $(document).ready(function() {
+
+      $('span.trigger_category').on('click tap', function() {
+        var category = this.id.replace('trigger_', '');
+        $("#scripts div.col").hide();
+        $("#scripts div.col." + category).show();
+        $("#category_link").attr('href', '?category=' + category.replace('category_', ''));
+      });
+
+      var category = getQueryVariable('category');
+      if ( category ) { 
+        $("#scripts div.col").hide();
+        $("#scripts div.col.category_" + category).show();
+        $("#category_link").attr('href', '?category=' + category.replace('category_', ''));
+      }
+
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+
+  {% search_scripts ALL %}
+
+  <h1>
+    Packaged Solutions
+    <a id="category_link" href="?catgegory=all"><i class="material-icons blue-text">link</i></a>
+  </h1>
+  <p class="flow-text">These recipes are entire workflows that deploy end to end solutions for clients.</p>
+
+  <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_all">All</span>
+  {% if '7 days' in agos %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_7-days">7 days</span>
+  {% endif %}
+  {% if '30 days' in agos %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_30-days">30 days</span>
+  {% endif %}
+  {% if '90 days' in agos %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_90-days">90 days</span>
+  {% endif %}
+  {% if 'older' in agos %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_older">older</span>
+  {% endif %}
+
+  <br/>
+  {% for c in catalysts %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
+  {% endfor %}
+
+  <br/>
+  {% for c in requirements %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
+  {% endfor %}
+
+  <br/>
+  {% for c in categories %}
+     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
+  {% endfor %}
+
+  <br/><br/>
+  <div id="scripts" class="row">
+    {% for script in scripts %}
+      <div class="col s6 m4 l3 category_all {% for c in script.get_released_ago %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_categories %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_requirements %} category_{{ c|slugify }}{% endfor %}">
+        <div class="card ">
+          <div class="card-content">
+            <span class="card-title text-darken-4">
+              {% if script.get_pitches %}
+              <i class="activator material-icons expand">more_vert</i>
+              {% endif %}
+              <a href="{% if external %}/starthinker{% endif %}/solution/{{ script.get_tag }}/"> 
+                <i class="material-icons medium">{{ script.get_icon }}</i><br/><br/>
+                {{ script.get_name }}
+              </a>
+            </span>
+            <p>{{ script.get_description|safe }}</p>
+          </div>
+          <div class="card-reveal">
+            <i class="card-title material-icons right">close</i>
+            <div class="solution">
+              <table class="bordered">
+                 <tbody>
+                 {% for pitch in script.get_pitches %}
+                   <tr>
+                     <td>{{ pitch }}</td>
+                   </tr>
+                 {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <br/><br/>
+
+  <h3 id="code-tasks">Run These Workflows In Minutes On Google Cloud</h3>
+  <p class="flow-text">Everything from a quick Google Cloud UI to reference developer code for your team in one GitHub repository.</p>
+  <p>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#deployment" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      Deployment Steps<i class="material-icons right">launch</i>
+    </a>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      Developer Guide<i class="material-icons right">build</i>
+    </a>
+    <a href="{% if external %}https://google.github.io/starthinker/help/{% else %}/help/{% endif %}" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      UI How To<i class="material-icons right">laptop</i>
+    </a>
+  </p>
+
+{% endblock %}

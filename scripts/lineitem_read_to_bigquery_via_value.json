@@ -1,0 +1,34 @@
+{
+  "script":{
+    "released":"2018-06-11",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "icon":"arrow_downward",
+    "requirements":["dv360", "bigquery"],
+    "title":"Line Item To BigQuery Via Values",
+    "description":"Move using hard coded Id values.",
+    "instructions":[
+      "Provide a comma delimited list of line item ids.",
+      "Specify the dataset and table where the lineitems will be written.",
+      "The schema will match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "lineitem":{
+      "auth":"user",
+      "read":{
+        "line_items": {
+          "single_cell":true,
+          "values": {"field":{ "name":"ids", "kind":"integer_list", "order":1, "default":[] }}
+        },
+        "out":{
+          "bigquery":{
+            "dataset":{"field":{ "name":"destination_dataset", "kind":"string", "order":2, "default":"" }},
+            "table":{"field":{ "name":"destination_table", "kind":"string", "order":3, "default":"" }}
+          }
+        }
+      }
+    }}
+  ]
+}

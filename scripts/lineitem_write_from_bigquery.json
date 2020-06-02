@@ -1,0 +1,29 @@
+{
+  "script":{
+    "released":"2018-06-06",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "icon":"arrow_upward",
+    "requirements":["dv360"],
+    "title":"Line Item From BigQuery",
+    "description":"Upload Line Items From BigQuery To DV360.",
+    "instructions":[
+      "Specify the table or view where the lineitem data is defined.",
+      "The schema should match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "lineitem":{
+      "auth":"user",
+      "write":{
+        "dry_run":false,
+        "bigquery":{
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"" }},
+          "query":{"field":{ "name":"query", "kind":"string", "order":2, "default":"SELECT * FROM `Dataset.Table`;" }},
+          "legacy":{"field":{ "name":"legacy", "kind":"boolean", "order":3, "default":false }}
+        }
+      }
+    }}
+  ]
+}

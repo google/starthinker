@@ -1,125 +1,66 @@
 This is not an officially supported Google product.  It is a reference implementation.
+There is absolutley NO WARRANTY provided for using this code.  **The code is Apache Licensed 
+and CAN BE fully modified, white labeled, and dissasmbled by your team.**
 
-# StarThinker Workflow Framework For Google
+# Scaled Automation Application For Ad Operations Teams
 
-StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components. 
-To make it easier for partners and clients to work with some of our advertsing solutions, the gTech team has
-open sourced this framework as a reference implementation.  Our goal is to make managing data workflows
-using Google Cloud as fast and re-usable as possible, allowing teams to focus on building advertising solutions.
+At gTech, we believe every ad operations team should be faster, nimbler, and able to use all their data sources 
+to drive client impact.  To that end, we've created StarThinker, a simple and intuitive web UI that allows users 
+to create, edit, run, and schedule data pipelines consisting of data transfer and data processing jobs.
+StarThinker deploys on Google Cloud in minutes without engineering or coding required.  [Read the WhitePaper](tutorials/images/StarThinker_Whitepaper.pdf).
 
-## Why Use The StarThinker Open Source Code?
-
-- The framework provides practical working examples of moving data using Google Cloud.
-- Google teams can hand over internally built solutions to your team on top of this framework.
-- The code has been stress tested internally across projects and includes many best practices.
-- The code runs at scale, allowing you to simply upgrade Cloud Machines to move larger data sets.
-- The code is Apache Licensed and fully modifiable by your team.
-
-## Where Is The Documentation?
-
-Every directory contains a README.me file. These are instructions for how to use the code in that directory.
-General structure ofthe code is:
-
-- [/setup.sh](setup.sh) - source this to set up python paths to run commands using this framework.
-- [/setup.py](setup.py) - global settings covering buffer size, cloud paths, and production vs debug.
-- [/utils](utils/) - Low level library wrappers around Google API with helpers to handle common errors.
-- [/gtech](gtech/) - complete solution templates provided by Google gTech
-- [/script](script/) - command line for converting a recipe template into a client specific executable recipe
-- [/all](all/) - command line for executing a recipe in its entirety
-- [/cron](cron/) - command line for executing recipes on a schedule
-- [/projects](projects/) - a place where custom recipes can be checked into the repository
-- [/auth](auth/) - command line for testing user credential setup
-- [/deploy.sh](/deploy.sh) - a micro UI for setting up credentials, and running recipes on a schedule
-- others - command line handlers for specific tasks within a recipe
-
-## What are some common terms?
-
-StarThinker uses JSON configuration blocks that map to python run handlers.  When these JSON blocks
-are assembled in sequence, a recipe is created that can execute complex workflows.  To make the JSON
-configurations re-usable they are packaged as templates that can be populated with client specific
-data on the command line ( or a UI ).
-
-- recipe template - a JSON file with a structure script\*.json and { 'field':{...}} placeholders.
-- recipe - a JSON file with all the { 'field':{...}} placeholders replaced with actual values.
-- handler - any run.py script, its directory will map to a task JSON block in a recipe.
-
-[StarThinker GitHub Documentation Page](https://google.github.io/starthinker/)
-
-## Whats The Most Basic Use?
-
-For a quick start that will do nothing other than show how to successfully run recipes, try:
-
-```
-git clone https://github.com/google/starthinker
-cd starthinker
-pip install -r requirements.txt
-source setup.sh
-python all/run.py project/sample/say_hello.json --verbose
-```
-
-Read more at [all/README.md](all/README.md) under Useful Developer Features. 
+![StarThinker Screen Shots](tutorials/images/splash.png)
 
 
-## How Do I Turn A Recipe Template Into A Recipe?
+## For Ad Operations Teams...
 
-To quickly use any one of the template to perform a task, moving a DCM report for example:
+Sheets only go so far, with a StarThinker running, the ad operations team can operate on larger data sets, scale
+solutions across clients fast, and even automate campaing controls.  All using a drag and drop UI.
 
-```
-python script/run.py dcm/script_dcm_to_bigquery.json -h
-python script/run.py dcm/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" --datastudio > test_recipe.json
-python python all/run.py test_recipe.json
-```
+- Start building solutions immediately by leveraging [dozens of existing workflow tasks](https://google.github.io/starthinker/).
+- Scale solutions across clients [without coding](https://google.github.io/starthinker/help/#help_recipe).
+- Pull repository [updates anytime](tutorials/deploy_enterprise.md).
+- Empower your team with simple [UI documentation](https://google.github.io/starthinker/help/).
+- Bill [clients for data usage](https://google.github.io/starthinker/help/#help_setup).
+- Monitor all workflows from [one UI](https://google.github.io/starthinker/help/#help_status).
+- Build enteprise solutions in hours not weeks.
 
-Read more at [script/README.md](script/README.md).
+Steps From [Tutorial](tutorials/README.md):
+- [ ] [Deploy UI on GCP.](tutorials/deploy_enterprise.md)
+- [ ] [Configure a GCP Project for client data warehousing.](https://google.github.io/starthinker/help/#help_setup)
+- [ ] [Run a recipe workflow.](https://google.github.io/starthinker/help/#help_recipe)
 
-## Whats The Easiest ( Non-Technical ) Way To Deploy Long Running Jobs?
+## For Ad Engineering Teams....
 
-To execute recipes on a regular schedule, for example moving a report every day. Find an always
-on machine, like a Google Cloud Instance. Download the open source code, and execute the following
+No one enjoys building boiler plate code, its slow, error prone, tedious, and honestly drains the energy out of 
+any project. At best StarThinker lets you skip all that, at worst its working code you can strip down for your needs.
+Take what you need.
 
-```
-git clone https://github.com/google/starthinker
-cd starthinker
-pip install -r requirements.txt
-source setup.sh
-./deploy.sh
-```
+- Out of the box [authentication](tutorials/deploy_enterprise.md).
+- Out of the box [scaling](tutorials/architecture.md).
+- Put of the box [logging](tutorials/logging.md).
+- Out of the box [testing](tutorials/testing.md).
+- All Apache Licensed to give you a head start and complete development control.
 
-A micro UI will activate ( no system changes are made unless you choose an option ), choose the 
-appropriate option.  Full setup walks through everything, including credentials and install.  
-The process is re-entrant so you can run it multiple times without corrupting the setup.  
-Start with Option 11 to get an overview. Here is the main utility menu:
-
-```
-Welcome To StarThinker ( Google gTech )
-
-This utility will help you set up and manage long running recipes.
-If this is your first time running this script, select Full Setup.
-
-
-Path Setup Finished
-
-----------------------------------------------------------------------
-Main Menu
-
-1) Full Setup		   5) Start Cron	     9) Run Recipe
-2) Install Dependencies	   6) Stop Cron		    10) Delete Recipe
-3) Set Cloud Project	   7) List Recipes	    11) Instructions
-4) Set Credentials	   8) Add Recipe	    12) Quit
-Your Choice: 
-```
+Steps From [Tutorial](tutorials/README.md):
+- [ ] [Deploy developer.](tutorials/deploy_developer.md) 
+- [ ] [Run hello world.](tutorials/running.md)
+- [ ] [Develop a new task or recipe worflow.](tutorials/README.md#development)
 
 ## Where Do I Get Help?
 
-Email: starthinker-help@google.com
+- The [StarThinker Solution Gallery](https://google.github.io/starthinker/) lists all the existing tasks and authors. 
+- Read the [Tutorials](tutorials/README.md).
+- Review the [FAQ](tutorials/faq.md).
+- Ask for help ( no SLA, not guranteed ): starthinker-help@google.com
 
 ## Authors 
 
-Paul Kenjora ( kenjora@google.com ) - Google gTech
-Mauricio Desiderio ( mauriciod@google.com ) - Google gTech
+- Paul Kenjora ( kenjora@google.com ) - Technical Project Lead 
+- Mauricio Desiderio ( mauriciod@google.com ) - Software Engineer
+- John Terwilleger ( terwilleger@google.com ) - Software Engineer
 
 Additional contributors to individual handlers and recipes are listed in each file.
 
-# The Rest Of This Document Is Pulled From Code Comments
-
-No code comments at this level.
+---
+&copy; 2020 Google LLC - Apache License, Version 2.0

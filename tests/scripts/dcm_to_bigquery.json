@@ -1,0 +1,55 @@
+{
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2019 Google Inc."
+  },
+  "tasks":[
+    { "dcm":{
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
+        "body":{
+          "criteria": {
+            "dateRange": {"kind": "dfareporting#dateRange", "relativeDateRange": "LAST_7_DAYS"},
+            "dimensions": [
+              {"kind": "dfareporting#sortedDimension", "name": "dfa:date"},
+              {"kind": "dfareporting#sortedDimension", "name": "dfa:platformType"}],
+            "metricNames": ["dfa:impressions"]
+          },
+          "type": "STANDARD",
+          "delivery": {"emailOwner": false},
+          "format": "CSV",
+          "kind": "dfareporting#report",
+          "name": "Test Report ( StarThinker )"
+        }
+      },
+      "delete":true
+    }},
+    { "dcm":{
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
+        "name":"Test Report ( StarThinker )",
+        "timeout":5
+      },
+      "out":{
+        "bigquery":{
+          "dataset":"Test",
+          "table":"DCM_Report"
+        }
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":"Test",
+        "table":"DCM_Report",
+        "schema":[
+          { "name":"Report_Day", "type":"DATE", "mode":"NULLABLE" },
+          { "name":"Platform_Type", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Impressions", "type":"INTEGER", "mode":"NULLABLE" }
+        ]
+      }
+    }}
+  ]
+}

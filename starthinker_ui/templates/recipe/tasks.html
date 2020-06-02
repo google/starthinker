@@ -1,0 +1,136 @@
+{% comment %}
+###########################################################################
+#
+#  Copyright 2020 Google LLC
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% load website_app %}
+{% search_scripts SOME %}
+
+<div id="modal_task_add" class="modal" style="overflow: hidden;">
+
+  <a href="#!" class="modal-action modal-close" style="position:absolute;right:10px;top:10px;">
+    <i class="card-title material-icons right">close</i>
+  </a>
+
+  <div class="row" style="height:70vh; overflow:hidden;flex-wrap: nowrap;align-items:stretch;">
+    <div class="col s6 m3 l3 right-align" style="overflow-x: hidden; overflow-y: scroll;">
+
+      <div class="collection">
+        <a href="#!" class="trigger_category collection-item" id="trigger_category_all">All</a>
+      </div>
+  
+      <div class="collection">
+        {% for c in catalysts %}
+          <a href="#!" class="trigger_category collection-item" id="trigger_category_{{ c|slugify }}">{{ c }}</a>
+        {% endfor %}
+      </div>
+  
+      <div class="collection">
+        {% for c in requirements %}
+          <a href="#!" class="trigger_category collection-item" id="trigger_category_{{ c|slugify }}">{{ c }}</a>
+        {% endfor %}
+      </div>
+      
+      <div class="collection">
+        {% for c in categories %}
+          <a href="#!" class="trigger_category collection-item" id="trigger_category_{{ c|slugify }}">{{ c }}</a>
+        {% endfor %}
+      </div>
+  
+    </div>
+  
+    <div id="task_add_script" class="col s6 m3 l3 right-align" style="overflow-x: hidden;overflow-y: scroll;">
+      <div class="collection">
+        {% for script in scripts %}
+          <a href="#!" class="trigger_script collection-item category_all{% for c in script.get_categories %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_catalysts %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_requirements %} category_{{ c|slugify }}{% endfor %}" id="trigger_task_add_detail_{{ script.get_tag }}">{{ script.get_name }}</a>
+  
+        {% endfor %}
+      </div>
+    </div>
+  
+    <div id="task_add_details" class="col s12 m6 l6" style="overflow-x: hidden;overflow-y: scroll;" >
+      <div class="center-align" style="margin-top:60px;">
+        <h3>Add A Script To Your Recipe Workflow</h3>
+        <i class="material-icons large blue-text">add_circle</i>
+        <p class="flow-text center-align">Use the filters on the left to find a script, then click the add icon to add it to the end of the workflow.</p>
+        <p class="center-align">This filters scroll <i class="small material-icons">swap_vert</i>.</p>
+      </div>
+      {% for script in scripts %}
+        <div id="task_add_detail_{{ script.get_tag }}" class="center-align" style="display:none;margin-top:60px;">
+          <i class="medium material-icons large">{{ script.get_icon }}</i>
+          <h3>{{ script.get_name }}</h3>
+          <p class="flow-text center-align">
+            <i class="form_button material-icons blue-text large" id="form_button_{{ script.get_tag }}">add_circle</i>
+            <span id="form_button_count_{{ script.get_tag }}"></span>
+          </p>
+          <p class="flow-text center-align">{{ script.get_description|safe }}</p>
+  
+          {% if script.get_image %}
+            <br/><br/>
+            <img src="{{ script.get_image }}" style="width:300px;height:auto;"/>
+          {% endif %}
+  
+          {% if script.get_pitches %}
+            <br/><br/>
+            <table class="bordered">
+              <tbody>
+                {% for pitch in script.get_pitches %}
+                  <tr>
+                    <td>{{ pitch }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+  
+          <br/><br/>
+          {% if script.get_sample %}
+            <a class="btn blue waves-effect waves-light" href="{{ script.get_sample }}" target="_blank">
+              <i class="material-icons right">directions_bike</i>Sample
+            </a>
+          {% endif %}
+      
+          {% if script.get_test %}
+            <a class="btn blue waves-effect waves-light" href="{{ script.get_test }}" target="_blank">
+              <i class="material-icons right">thumb_up</i>Example Test
+            </a>
+          {% endif %}
+      
+          {% if script.get_documentation %}
+            <a class="btn blue waves-effect waves-light" href="{{ script.get_documentation }}" target="_blank">
+              <i class="material-icons right">list</i>Documentation
+            </a>
+          {% endif %}
+      
+          {% if script.get_open_source %}
+            <a class="menu_link btn blue waves-effect waves-light" href="{{ script.get_open_source }}" target="_blank">
+              <i class="material-icons right">list</i>Git Hub
+            </a>
+            <a class="menu_link btn blue waves-effect waves-light" href="{{ script.get_link_colab }}" target="_blank">
+              <i class="material-icons right">copyright</i>Data Pill Colab
+            </a>
+            <a class="menu_link btn blue waves-effect waves-light" href="{{ script.get_link_airflow }}" target="_blank">
+              <i class="material-icons right">copyright</i>Airflow DAG
+            </a>
+          {% endif %}
+          <br/>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

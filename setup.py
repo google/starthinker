@@ -1,6 +1,8 @@
+#!/usr/bin/env python
+
 ###########################################################################
-#
-#  Copyright 2017 Google Inc.
+# 
+#  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,44 +18,51 @@
 #
 ###########################################################################
 
-import os
+# -*- coding: utf-8 -*-
 
-EXECUTE_PATH = os.environ.get('STARTHINKER_PATH', "/home/starthinker") + '/'
+from setuptools import setup, find_packages
 
-# In production simply create this file: touch /mnt/SERVER
-DEVELOPMENT_MODE = not os.path.isfile('/mnt/SERVER')
+REQUIREMENTS = [
+  'google-api-python-client',
+  'google-auth-oauthlib',
+  'jsonpickle',
+  'pysftp',
+  'pytz',
+  'tzlocal',
+  'TwitterAPI',
+  'python-dateutil',
+  'pandas',
+  'psutil',
+  'moviepy',
+  'py-xlsx',
+  'simple-salesforce'
+]
 
-# This is always set to False ( setting it to True does nothing productive )
-INTERNAL_MODE = False
+#TEST_REQUIREMENTS = []
 
-# Used for local testing, 
-if DEVELOPMENT_MODE:
- 
-  # credentials used to manage universal information such as logs, and project that does NOT store data
-  UI_PROJECT = 'cloud-project-id-test'
-  UI_CLIENT = '/home/credentials/test/starthinker_client.json'
-  UI_SERVICE = '/home/credentials/test/starthinker_service.json'
-  UI_BUCKET_LOG = 'starthinker-test-log'
-  UI_TOPIC = 'test_worker'
-
-  # credentials used to store data ( for security reasons not same project as logs and credentials )
-  CLOUD_PROJECT = 'cloud-project-id-data-test'
-  CLOUD_SERVICE = '/home/credentials/test/starthinker_data_service.json'
-
-  # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
-  BUFFER_SCALE = 1
-
-else:
-  # credentials used to manage universal infomation such as logs, and project that does NOT store data
-  UI_PROJECT = 'cloud-project-id'
-  UI_CLIENT = '/home/credentials/starthinker_client.json'
-  UI_SERVICE = '/home/credentials/starthinker_service.json'
-  UI_BUCKET_LOG = 'starthinker-log'
-  UI_TOPIC = 'prod_worker'
-
-  # credentials used to store data ( for security reasons not same project as logs and credentials )
-  CLOUD_PROJECT = 'cloud-project-id-data'
-  CLOUD_SERVICE = '/home/credentials/starthinker_data_service.json'
-
- # used to multiply all buffer sizes for scaling on larger or smaller machines, can be a float
-  BUFFER_SCALE = 5
+setup(
+  name='starthinker',
+  version='0.0.9',
+  description="StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components.",
+  long_description="StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components. To make it easier for partners and clients to work with some of our advertsing solutions, the gTech team has open sourced this framework as a reference implementation.  Our goal is to make managing data workflows using Google Cloud as fast and re-usable as possible, allowing teams to focus on building advertising solutions.",
+  author="Paul Kenjora & Mauricio Desidario",
+  author_email='kenjora@google.com',
+  url='https://github.com/google/starthinker',
+  packages=find_packages(),
+  package_dir={'starthinker':
+               'starthinker'},
+  include_package_data=True,
+  install_requires=REQUIREMENTS,
+  license="Apache License, Version 2.0",
+  zip_safe=False,
+  keywords='starthinker',
+  classifiers=[
+      'Development Status :: 2 - Pre-Alpha',
+      'Intended Audience :: Developers',
+      'License :: OSI Approved :: Apache License',
+      'Natural Language :: English',
+      "Programming Language :: Python :: 3",
+  ],
+  #test_suite='tests',
+  #tests_require=TEST_REQUIREMENTS,
+)

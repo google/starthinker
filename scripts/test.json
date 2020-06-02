@@ -1,0 +1,63 @@
+{
+  "script":{
+    "released":"2019-05-03",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "ui":false,
+    "icon":"notifications",
+    "title":"Test Script",
+    "description":"Used by tests.",
+    "instructions":[
+      "This should be called by the tests scripts only.",
+      "When run will generate a say hello log."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "hour":[1, 3, 23]
+  },
+  "tasks":[
+    { "hello":{
+      "auth":"user",
+      "hour":[1],
+      "say":"Hello At 1",
+      "sleep":0
+    }},
+    { "hello":{
+      "auth":"user",
+      "hour":[3],
+      "say":"Hello At 3",
+      "sleep":0
+    }},
+    { "hello":{
+      "auth":"user",
+      "hour":[],
+      "say":"Hello Manual",
+      "sleep":0
+    }},
+    { "hello":{
+      "auth":"user",
+      "hour":[23],
+      "say":"Hello At 23 Sleep",
+      "sleep":30
+    }},
+    { "hello":{
+      "auth":"user",
+      "say":"Hello At Anytime",
+      "sleep":0
+    }},
+    { "hello":{
+      "auth":"user",
+      "hour":[1, 3, 23],
+      "say":"Hello At 1, 3, 23",
+      "sleep":0
+    }},
+    { "hello":{
+      "auth":"user",
+      "hour":[3],
+      "say":"Hello At 3 Reordered",
+      "sleep":0
+    }}
+  ]
+}

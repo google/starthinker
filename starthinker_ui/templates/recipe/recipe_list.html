@@ -1,0 +1,98 @@
+{% extends "page.html" %}
+
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google LLC
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% block js %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('span.trigger_category').on('click tap', function() {
+        var category = this.id.replace('trigger_', '');
+        if (category == 'category_all') {
+          $('table.category_all').show();
+        } else {
+          $('table.category_all').hide();
+          $('#' + category).show();
+        }
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+
+  <h1>Recipes</h1>
+  <p class="flow-text">Assemble recipes that run on a schedule or are triggered manually.</p>
+
+  <p>
+    <a href="/recipe/edit/" class="waves-effect waves-light btn blue form_button modal-trigger">
+      Add Scheduled <i class="material-icons right">access_time</i>
+    </a>
+    <a href="/recipe/manual/" class="waves-effect waves-light btn green form_button modal-trigger">
+      Add Manual <i class="material-icons right">construction</i>
+    </a>
+  </p>
+
+  <p>
+    {% if recipes.running or recipes.finished or recipes.paused or recipes.manual or recipes.errors %}
+      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_all">All</span>
+    {% endif %}
+    {% if recipes.running %}
+      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_running">{{ recipes.running|length }} Running</span>
+    {% endif %}
+    {% if recipes.finished %}
+      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_finished">{{ recipes.finished|length }} Finished</span>
+    {% endif %}
+    {% if recipes.errors %}
+      <span class="trigger_category menu_link waves-effect waves-light btn red" id="trigger_category_errors">{{ recipes.errors|length }} Errors</span>
+    {% endif %}
+    {% if recipes.paused %}
+      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_paused">{{ recipes.paused|length }} Paused</span>
+    {% endif %}
+    {% if recipes.manual %}
+      <span class="trigger_category menu_link waves-effect waves-light btn green" id="trigger_category_manual">{{ recipes.manual|length }} Manual</span>
+    {% endif %}
+  </p>
+
+  {% with category='Running' recipes=recipes.running %}
+    {% include "recipe/recipe.html" %}
+  {% endwith %}
+
+  {% with category='Finished' recipes=recipes.finished %}
+    {% include "recipe/recipe.html" %}
+  {% endwith %}
+
+  {% with category='Errors' recipes=recipes.errors %}
+    {% include "recipe/recipe.html" %}
+  {% endwith %}
+  
+  {% with category='Paused' recipes=recipes.paused %}
+    {% include "recipe/recipe.html" %}
+  {% endwith %}
+  
+  {% with category='Manual' recipes=recipes.manual %}
+    {% include "recipe/recipe.html" %}
+  {% endwith %}
+
+  <br/><br/>
+  <h3 id="code-tasks">Need A Custom Task?</h3>
+  <p class="flow-text">Ask Google gTech to write one for you <a href="mailto:starthinker-help@google.com?subject=Custom+StarThinker+Recipe">starthinker-help@google.com</a></p>
+
+{% endblock %}

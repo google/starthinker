@@ -1,1 +1,14 @@
+.DS_Store
 *.pyc 
+*.swp
+*.yaml
+starthinker_cron/
+starthinker_database/
+starthinker_virtualenv/
+starthinker_assets/*.json
+starthinker_assets/config.sh
+starthinker_ui/recipe/scripts_lookup.py
+starthinker_ui/*/migrations/0*.py
+tests/config.json
+tests/recipes/
+tests/logs/

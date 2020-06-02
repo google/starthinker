@@ -1,0 +1,47 @@
+{
+  "script":{
+    "released":"2019-12-04",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "icon":"policy",
+    "title":"Tag Key Value Uploader",
+    "description":"A tool for bulk editing key value pairs for CM placements.",
+    "image":"https://github.com/google/starthinker/raw/master/tutorials/images/kv_uploader.png",
+    "sample":"https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/edit?usp=sharing",
+    "documentation":"https://github.com/google/starthinker/blob/master/tutorials/appscript_troubleshooting.md",
+    "categories":["automation"],
+    "requirements":[ "cm", "sheets", "apps script"],
+    "pitches":[
+      "Update CM Placement key value pairs in bulk.",
+      "Speed up tag editing.",
+      "Ensure more consistent tagging."
+    ],
+    "impacts":{
+      "spend optimization":0,
+      "spend growth":20,
+      "time savings":100,
+      "account health":50,
+      "csat improvement":80
+    },
+    "instructions":[
+      "Add this card to a recipe and save it.",
+      "Then click <strong>Run Now</strong> to deploy.",
+      "Follow the instructions in the sheet for setup."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "day":[],
+    "hour":[]
+  },
+  "tasks":[
+    { "drive": {
+        "auth": "user",
+        "hour":[],
+        "copy":{
+          "source":"https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/",
+          "destination":{"field":{ "name":"recipe_name", "prefix":"Key Value Uploader For ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }}
+        }
+    }}
+  ]
+}

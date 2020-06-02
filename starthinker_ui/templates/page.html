@@ -1,0 +1,157 @@
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google LLC
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% load static %}
+{% load website_app %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+
+    {% google_analytics %}
+
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
+
+    <style>
+       html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
+ 
+       .material-icons { line-height: normal; vertical-align: middle; }
+
+       #message { justify-content: center; font-size: 2em;}
+       #message i { font-size: 2em; margin: 10px; }
+       #message ul, #message li { display: inline; margin-left: 10px; }
+       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
+
+       div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+       h1 a i.material-icons { font-size: 3.28rem; }
+       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+       ol li { line-height: 1.8em; }
+       textarea { margin-top: 7px; height: 10rem; }
+       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
+
+       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+
+       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
+       div.card h4 { width 100%; padding: 20px;}
+       div.card h4 i.material-icons { font-size: 2.28rem; }
+       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+
+       .card .card-content .card-title { word-wrap: break-word; }
+       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
+
+       {% block css %}{% endblock %}
+    </style>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  {% block nav %}
+  <nav class="green lighten-0">
+    <div class="nav-wrapper">
+      <a href="{% if not external %}/{% else %}/starthinker/{% endif %}" class="brand-logo">
+        <img src="{% static 'StarThinker.png' %}"/>&nbsp;StarThinker
+      </a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        {% if not external %}<li><a href="/">Recipes</a></li>{% endif %}
+        {% if not external %}<li><a href="/project/">Projects</a></li>{% endif %}
+        <li><a href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
+        <li><a href="{% if external %}/starthinker{% endif %}/help/">Help</a></li>
+        {% if request.user.is_authenticated %}
+          <li><a href="/logout/">Logout</a></li>
+          <li>
+            <div class="chip">
+              <img src="{{ request.user.picture }}" alt="{{ request.user.name }}">
+              {{ request.user.name }}
+            </div>
+          </li>
+        {% endif %}
+      </ul>
+      <ul class="side-nav green lighten-1" id="mobile-demo">
+        {% if request.user.is_authenticated %}
+          <li>
+            <div class="chip" style="margin: 0px 30px;">
+              <img src="{{ request.user.picture }}" alt="{{ request.user.name }}">
+              {{ request.user.name }}
+            </div>
+          </li>
+        {% endif %}
+        {% if not external %}<li><a class="white-text" href="/">Recipes</a></li>{% endif %}
+        {% if not external %}<li><a class="white-text" href="/project/">Project</a></li>{% endif %}
+        <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
+        <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/help/">Help</a></li>
+        {% if request.user.is_authenticated %}
+          <li><a class="white-text" href="/logout/">Logout</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+  {% endblock %}
+
+  <body>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
+
+    {% include "floodlight.html" %}
+
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'success' %}
+          <div id="message" class="card-panel green darken-1 white-text valign-wrapper center-align">
+            <i class="material-icons">check</i>
+            {{ message|safe }}
+          </div>
+        {% else %}
+          <div id="message" class="card-panel red darken-1 white-text valign-wrapper center-align">
+            <i class="material-icons">error</i>
+            {{ message|safe }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <div id="page" class="center">
+      {% block content %}{% endblock %}
+    </div>
+
+  </body>
+
+  {% include "footer.html" %}
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".button-collapse").sideNav();
+      $('select').material_select();
+      $('.modal').modal();
+    });
+  </script>
+
+  {% block js %}{% endblock %}
+
+</html>

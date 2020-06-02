@@ -1,0 +1,54 @@
+{
+  "script":{
+    "released":"2019-03-08",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "icon":"donut_large",
+    "requirements":["dv360", "bigquery"],
+    "title":"SDF Download",
+    "description":"Download SDF reports into a BigQuery table.",
+    "instructions":[
+      "Select your filter types and the filter ideas.",
+      "Enter the <a href='https://developers.google.com/bid-manager/v1.1/sdf/download' target='_blank'>file types</a> using commas.",
+      "SDF_ will be prefixed to all tables and date appended to daily tables.",
+      "File types take the following format: FILE_TYPE_CAMPAIGN, FILE_TYPE_AD_GROUP,..."
+    ],
+    "authors":["terwilleger@google.com"]
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"dataset", "kind":"string", "order":6, "default":"", "description":"Dataset to be written to in BigQuery." }}
+    }},
+    { "sdf":{
+        "auth": "user",
+        "version":{"field":{ "name":"version", "kind":"choice", "order":6, "default":"5", "description":"The sdf version to be returned.",
+          "choices": [
+            "SDF_VERSION_5",
+            "SDF_VERSION_5_1"
+          ]}},
+        "partner_id":{"field":{ "name":"partner_id", "kind":"integer", "order":1,"description":"The sdf file types."}},
+        "file_types":{"field":{ "name":"file_types", "kind":"string_list", "order":2, "default":[], "description":"The sdf file types."}},
+        "filter_type":{"field":{ "name":"filter_type", "kind":"choice", "order":3, "default":"", "description":"The filter type for the filter ids.", 
+          "choices": [
+            "FILTER_TYPE_ADVERTISER_ID",
+            "FILTER_TYPE_CAMPAIGN_ID",
+            "FILTER_TYPE_INSERTION_ORDER_ID",
+            "FILTER_TYPE_MEDIA_PRODUCT_ID",
+            "FILTER_TYPE_LINE_ITEM_ID"
+          ]}},
+        "read": { 
+          "filter_ids":{
+            "single_cell": true,
+            "values":{
+              "field":{ "name":"filter_ids", "kind":"integer_list", "order":4, "default":[], "description":"Comma separated list of filter ids for the request." }  
+            }
+          }
+        },
+        "time_partitioned_table":{"field":{ "name":"time_partitioned_table", "kind":"boolean", "order":7, "default":false, "description":"Is the end table a time partitioned" }},
+        "create_single_day_table":{"field":{ "name":"create_single_day_table", "kind":"boolean", "order":8, "default":false, "description":"Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF." }},
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":6, "default":"", "description":"Dataset to be written to in BigQuery." }},
+        "table_suffix":{"field":{ "name":"table_suffix", "kind":"string", "order":6, "default":"", "description":"Optional: Suffix string to put at the end of the table name (Must contain alphanumeric or underscores)" }}
+      }}
+  ]
+}

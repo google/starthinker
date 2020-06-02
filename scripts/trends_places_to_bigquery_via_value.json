@@ -1,0 +1,39 @@
+{
+  "script":{
+    "released":"2018-06-06",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "ui":false,
+    "icon":"perm_phone_msg",
+    "requirements":["twitter", "bigquery"],
+    "title":"Trends Places To BigQuery Via Values",
+    "description":"Move using hard coded WOEID values.",
+    "instructions":[
+      "Provide <a href='https://apps.twitter.com/' target='_blank'>Twitter credentials</a>.",
+      "Provide a comma delimited list of WOEIDs.",
+      "Specify BigQuery dataset and table to write API call results to.",
+      "Writes: WOEID, Name, Url, Promoted_Content, Query, Tweet_Volume",
+      "Note Twitter API is rate limited to 15 requests per 15 minutes. So keep WOEID lists short."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "twitter":{
+      "auth":"service",
+      "secret":{"field":{ "name":"secret", "kind":"string", "order":1, "default":"" }},
+      "key":{"field":{ "name":"key", "kind":"string", "order":2, "default":"" }},
+      "trends":{
+        "places":{
+          "single_cell":true,
+          "values": {"field":{ "name":"woeids", "kind":"integer_list", "order":3, "default":[] }}
+        }
+      },
+      "out":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"destination_dataset", "kind":"string", "order":6, "default":"" }},
+          "table":{"field":{ "name":"destination_table", "kind":"string", "order":7, "default":"" }}
+        }
+      }
+    }}
+  ]
+}

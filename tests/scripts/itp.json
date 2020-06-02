@@ -1,0 +1,22 @@
+{
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks": [
+    { "include":{
+      "script":"scripts/itp.json",
+      "parameters":{
+        "dataset":"Test",
+        "dcm_account":{"field":{ "name":"dcm_account", "kind":"integer", "description":"DCM account id of client." }},
+        "dcm_advertisers":{"field":{ "name":"dcm_advertisers", "kind":"integer_list", "description":"Comma delimited list of DCM advertiser ids." }},
+        "dcm_floodlight":{"field":{ "name":"dcm_floodlight", "kind":"integer", "description":"DCM floodlight configuration id." }},
+        "dbm_partners":{"field":{ "name":"dbm_partners", "kind":"integer_list", "description":"DBM partner id." }},
+        "dbm_advertisers":{"field":{ "name":"dbm_advertisers", "kind":"integer_list", "description":"Comma delimited list of DBM advertiser ids." }}
+      }
+    }},
+    { "test": {
+      "assert":"Completed all tasks."
+    }}
+  ]
+}

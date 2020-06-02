@@ -1,0 +1,24 @@
+{ 
+  "script":{
+    "released":"2017-12-07",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "icon":"view_column",
+    "requirements":["sheets"],
+    "title":"Sheet Clear",
+    "description":"Clear data from a sheet.",
+    "instructions":[
+      "For the sheet, provide the full edit URL."
+    ],
+    "authors":["mauriciod@google.com"]
+  },
+  "tasks":[
+    { "sheets":{
+      "auth":"user",
+      "sheet":{"field":{ "name":"sheets_sheet", "kind":"string", "order":1, "default":"" }},
+      "tab":{"field":{ "name":"sheets_tab", "kind":"string", "order":2, "default":"" }},
+      "range":{"field":{ "name":"sheets_range", "kind":"string", "order":3, "default":"" }},
+      "clear":true
+    }}
+  ]
+}

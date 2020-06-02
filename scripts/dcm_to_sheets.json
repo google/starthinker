@@ -1,0 +1,35 @@
+{
+  "script":{
+    "released":"2018-01-29",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "icon":"donut_small",
+    "requirements":["cm", "sheets"],
+    "title":"CM To Sheets",
+    "description":"Move existing CM report into a Sheet tab.",
+    "instructions":[
+      "Specify an account id.",
+      "Specify either report name or report id to move a report.",
+      "The most recent valid file will be moved to the sheet.",
+      "Schema is pulled from the official CM specification."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "dcm":{
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account", "kind":"integer", "order":2, "default":"" }},
+        "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":3, "default":"" }},
+        "name":{"field":{ "name":"report_name", "kind":"string", "order":4, "default":"" }}
+      },
+      "out":{
+       "sheets":{
+          "sheet":{"field":{ "name":"sheet", "kind":"string", "order":5, "default":"" }},
+          "tab":{"field":{ "name":"tab", "kind":"string", "order":6, "default":"" }},
+          "range":"A1"
+        }
+      }
+    }}
+  ]
+}

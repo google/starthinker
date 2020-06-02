@@ -1,0 +1,58 @@
+{ 
+  "script":{
+    "released":"2020-03-11",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"email",
+    "title":"DV360 Report Emailed To BigQuery",
+    "description":"Pulls a DV360 Report from a gMail email into BigQuery.",
+    "image":"https://github.com/google/starthinker/raw/master/tutorials/images/email_dv360.png",
+    "test":"https://github.com/google/starthinker/blob/master/tests/scripts/email_dv360.json",
+    "categories":["data"],
+    "requirements":[ "dv360", "gmail", "bigquery" ],
+    "pitches":[
+      "Acquire client DV360 data without having an account.",
+      "Build new data ingestion service for clients.",
+      "Consolidate client data in a central data warehouse.",
+      "Automate emailed report downloading.",
+      "Build dashboards from emailed reports."
+    ],
+    "impacts":{
+      "spend optimization":0,
+      "spend growth":70,
+      "time savings":100,
+      "account health":80,
+      "csat improvement":80
+    },
+    "instructions":[
+      "The person executing this recipe must be the recipient of the email.",
+      "Schedule a DV360 report to be sent to an email like <b>{field:recipe_email_token}</b>.",
+      "Or set up a redirect rule to forward a report you already receive.",
+      "The report can be sent as an attachment or a link.",
+      "Ensure this recipe runs after the report is email daily.",
+      "Give a regular expression to match the email subject.",
+      "Configure the destination in BigQuery to write the data."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "email":{
+      "auth":"user",
+      "read":{
+        "from":"noreply-dv360@google.com",
+        "to": {"field":{ "name":"email", "kind":"string", "order":1, "default":"", "description":"Email address report was sent to." }},
+        "subject": {"field":{ "name":"subject", "kind":"string", "order":2, "default":".*", "description":"Regular expression to match subject. Double escape backslashes." }},
+        "link":"https://storage.googleapis.com/.*",
+        "attachment":".*",
+        "out":{
+          "bigquery":{
+            "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "default":"", "description":"Existing dataset in BigQuery." }},
+            "table":{"field":{ "name":"table", "kind":"string", "order":4, "default":"", "description":"Name of table to be written to." }},
+            "schema":{"field":{ "name":"dbm_schema", "kind":"json", "order":5, "default":"[]", "description":"Schema provided in JSON list format or empty list." }},
+            "is_incremental_load":{"field":{ "name":"is_incremental_load", "kind":"boolean", "order":6, "default":false, "description":"Append report data to table based on date column, de-duplicates." }}
+          }
+        }
+      }
+    }}
+  ]
+}

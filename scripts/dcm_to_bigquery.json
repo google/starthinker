@@ -1,0 +1,35 @@
+{
+  "script":{
+    "released":"2017-08-14",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "icon":"donut_small",
+    "requirements":["cm", "bigquery"],
+    "title":"CM To BigQuery",
+    "description":"Move existing CM report into a BigQuery table.",
+    "instructions":[
+      "Specify an account id.",
+      "Specify either report name or report id to move a report.",
+      "The most recent valid file will overwrite the table.",
+      "Schema is pulled from the official CM specification."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "dcm":{
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account", "kind":"integer", "order":2, "default":"", "description":"CM network id." }},
+        "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":3, "default":"", "description":"CM report id, empty if using name ." }},
+        "name":{"field":{ "name":"report_name", "kind":"string", "order":4, "default":"", "description":"CM report name, empty if using id instead." }}
+      },
+      "out":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":5, "default":"", "description":"Dataset to be written to in BigQuery." }},
+          "table":{"field":{ "name":"table", "kind":"string", "order":6, "default":"", "description":"Table to be written to in BigQuery." }},
+          "is_incremental_load":{"field":{ "name":"is_incremental_load", "kind":"boolean", "order":7, "default":false, "description":"Clear data in destination table during this report's time period, then append report data to existing table." }}
+        }
+      }
+    }}
+  ]
+}

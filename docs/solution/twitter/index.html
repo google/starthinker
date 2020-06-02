@@ -1,0 +1,726 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167283455-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-167283455-3');
+    </script>
+
+    <link rel="shortcut icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize.min.css">
+
+    <style>
+       html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
+ 
+       .material-icons { line-height: normal; vertical-align: middle; }
+
+       #message { justify-content: center; font-size: 2em;}
+       #message i { font-size: 2em; margin: 10px; }
+       #message ul, #message li { display: inline; margin-left: 10px; }
+       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
+
+       div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+       h1 a i.material-icons { font-size: 3.28rem; }
+       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+       ol li { line-height: 1.8em; }
+       textarea { margin-top: 7px; height: 10rem; }
+       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
+
+       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+
+       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
+       div.card h4 { width 100%; padding: 20px;}
+       div.card h4 i.material-icons { font-size: 2.28rem; }
+       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+
+       .card .card-content .card-title { word-wrap: break-word; }
+       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
+
+       
+  #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
+  .btn-large { margin: 1vh 1vw; } 
+  .col { margin-right: auto; }
+  pre.expand_code { height: 70vh; }
+  pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
+
+    </style>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  
+  <nav class="green lighten-0">
+    <div class="nav-wrapper">
+      <a href="/starthinker/" class="brand-logo">
+        <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+      </a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        
+        
+        <li><a href="/starthinker/solution/">Solutions</a></li>
+        <li><a href="/starthinker/help/">Help</a></li>
+        
+      </ul>
+      <ul class="side-nav green lighten-1" id="mobile-demo">
+        
+        
+        
+        <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
+        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
+        
+      </ul>
+    </div>
+  </nav>
+  
+
+  <body>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize.min.js"></script>
+
+    
+
+
+<!--
+Start of Floodlight Tag: Please do not remove
+Activity name of this tag: Gallery Conversions
+URL of the webpage where the tag is expected to be placed: https://google.github.io/starthinker/
+This tag must be placed between the <body> and </body> tags, as close as possible to the opening tag.
+Creation Date: 03/09/2020
+-->
+<script type="text/javascript">
+var axel = Math.random() + "";
+var a = axel * 10000000000000;
+document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;type=github;cat=galle0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=' + a + '?" width="1" height="1" alt=""/>');
+</script>
+<noscript>
+<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;type=github;cat=galle0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=1?" width="1" height="1" alt=""/>
+</noscript>
+<!-- End of Floodlight Tag: Please do not remove -->
+
+
+
+    
+
+    <div id="page" class="center">
+      
+
+  <br/>
+  <h1><i class="medium material-icons">perm_phone_msg</i>&nbsp; Twitter Targeting</h1>
+  <p class="flow-text">Adjusts line item settings based on Twitter hashtags and locations specified in a sheet.</p>
+
+  <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=sheets">sheets</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=bigquery">bigquery</a>
+  
+
+  <br/><br/>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=budget">budget</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=automation">automation</a>
+  
+
+  <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/twitter_targeting.png"/>
+
+  <div class="buttons">
+
+    <a class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
+      <i class="material-icons right">lock_open</i>Get Access
+    </a>
+
+    
+      <a class="btn-large blue waves-effect waves-light" href="https://docs.google.com/spreadsheets/d/1iYCGa2NKOZiL2mdT4yiDfV_SWV9C7SUosXdIr4NAEXE/edit?usp=sharing" target="_blank">
+        <i class="material-icons right">directions_bike</i>Sample
+      </a>
+    
+
+    
+
+    
+
+    <br/>
+
+    
+
+    
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/twitter.json" target="_blank">
+        <i class="material-icons right">list</i>Git Hub
+      </a>
+      <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/twitter.ipynb" target="_blank">
+        <i class="material-icons right">copyright</i>Data Pill Colab
+      </a>
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/twitter_dag.py" target="_blank">
+        <i class="material-icons right">copyright</i>Airflow DAG
+      </a>
+    
+
+  </div>
+
+  <br/><br/>
+
+  <div class="row">
+    
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <table class="bordered">
+            <thead>
+              <tr>
+                <th>Value Proposition</th>
+              </tr>
+             </thead>
+             <tbody>
+             
+               <tr>
+                 <td>Create campaigns that respond to twitter trends.</td>
+               </tr>
+             
+               <tr>
+                 <td>Activate spend when a specific tag trends.</td>
+               </tr>
+             
+               <tr>
+                 <td>Protect brand by disabling advertising based on trends.</td>
+               </tr>
+             
+               <tr>
+                 <td>Fully automated, just provide locations, hashtags and line item settings to change.</td>
+               </tr>
+             
+             </tbody>
+          </table>
+        </div>
+      </div>
+    
+  
+    
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <table class="bordered">
+            <thead>
+              <tr>
+                <th>Impact</th>
+                <th>Level</th>
+              </tr>
+             </thead>
+               <tbody>
+               
+                 <tr>
+                   <td>Spend Optimization</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 100%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Spend Growth</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 80%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Time Savings</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 90%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Account Health</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 60%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Csat Improvement</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 70%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+             </tbody>
+          </table>
+        </div> 
+      </div> 
+    
+
+    <div class="col s12 m6 l4">
+      <div class="card">
+        <table class="bordered">
+          <thead>
+            <tr>
+              <th colspan="2">Details</th>
+            </tr>
+           </thead>
+          <tbody>
+    
+            
+            <tr>
+              <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
+            </tr>
+            
+    
+            <tr>
+              <td>Age</td>
+              <td>June 4, 2018 (1 year, 12 months)</td>
+            </tr>
+    
+            <tr>
+              <td>Authors</td>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Twitter+Targeting+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Twitter+Targeting+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Ftwitter%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+   
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <table class="bordered">
+          <thead>
+              <tr>
+                <th>Instructions</th>
+              </tr>
+             </thead>
+             <tbody>
+             
+               <tr>
+                 <td>Provide a sheets URL. No account information required.</td>
+               </tr>
+             
+               <tr>
+                 <td>Click <b>Run Now</b> once and a new tab called <b>Twitter Triggers</b> will be added to the sheet.</td>
+               </tr>
+             
+               <tr>
+                 <td>Follow instructions on the sheets tab.</td>
+               </tr>
+             
+               <tr>
+                 <td>Click <b>Run Now</b> again, trends are downloaded and triggered</td>
+               </tr>
+             
+               <tr>
+                 <td>Or give these intructions to the client.</td>
+               </tr>
+             
+             </tbody>
+          </table>
+        </div>
+       </div>
+     
+
+    <div class="col s12 m12 l8">
+      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
+            "description": "Create a dataset where data will be combined and transfored for upload.",
+            "auth": "service",
+            "dataset": {
+                "field": {
+                    "name": "recipe_name",
+                    "kind": "string",
+                    "order": 1,
+                    "description": "Place where tables will be created in BigQuery."
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
+            "description": "Read mapping of hash tags to line item toggles from sheets.",
+            "auth": "user",
+            "template": {
+                "sheet": "https://docs.google.com/spreadsheets/d/1iYCGa2NKOZiL2mdT4yiDfV_SWV9C7SUosXdIr4NAEXE/edit?usp=sharing",
+                "tab": "Twitter Triggers"
+            },
+            "sheet": {
+                "field": {
+                    "name": "recipe_name",
+                    "kind": "string",
+                    "prefix": "Twitter Targeting ",
+                    "order": 2,
+                    "description": "Name of sheet where Line Item settings will be read from.",
+                    "default": ""
+                }
+            },
+            "tab": "Twitter Triggers",
+            "range": "A8:T",
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
+                        }
+                    },
+                    "table": "Twitter_Triggers",
+                    "schema": [
+                        {
+                            "name": "Location",
+                            "type": "STRING",
+                            "mode": "REQUIRED"
+                        },
+                        {
+                            "name": "WOEID",
+                            "type": "INTEGER",
+                            "mode": "REQUIRED"
+                        },
+                        {
+                            "name": "Hashtag",
+                            "type": "STRING",
+                            "mode": "REQUIRED"
+                        },
+                        {
+                            "name": "Line_Item_Id",
+                            "type": "INTEGER",
+                            "mode": "REQUIRED"
+                        },
+                        {
+                            "name": "Line_Item_Name",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_Status",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_Start_Date",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_End_Date",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_Budget_Type",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_Budget_Amount",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_Pacing",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_Pacing_Rate",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_Pacing_Amount",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_Frequency_Enabled",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_Frequency_Exposures",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_Frequency_Period",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_Frequency_Amount",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Bid_Price",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Partner_Revenue_Model",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Partner_Revenue_Amount",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/twitter/run.py" target="_blank">twitter</a>": {
+            "description": "Read trends from Twitter and place into BigQuery.",
+            "auth": "service",
+            "secret": {
+                "field": {
+                    "name": "twitter_secret",
+                    "kind": "string",
+                    "order": 3,
+                    "default": "",
+                    "description": "Twitter API secret token."
+                }
+            },
+            "key": {
+                "field": {
+                    "name": "twitter_key",
+                    "kind": "string",
+                    "order": 4,
+                    "default": "",
+                    "description": "Twitter API key token."
+                }
+            },
+            "trends": {
+                "places": {
+                    "single_cell": true,
+                    "bigquery": {
+                        "dataset": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "description": "Place where tables will be created in BigQuery."
+                            }
+                        },
+                        "query": "SELECT WOEID FROM {dataset}.Twitter_Triggers",
+                        "legacy": false,
+                        "parameters": {
+                            "dataset": {
+                                "field": {
+                                    "name": "recipe_name",
+                                    "kind": "string",
+                                    "description": "Place where tables will be created in BigQuery."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
+                        }
+                    },
+                    "table": "Twitter_Trends_Place"
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/lineitem/run.py" target="_blank">lineitem</a>": {
+            "description": "Read current lineitem settings from DV360 into BigQuery, so it can be joined with Twitter analysis.",
+            "auth": "user",
+            "read": {
+                "line_items": {
+                    "single_cell": true,
+                    "bigquery": {
+                        "dataset": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "description": "Place where tables will be created in BigQuery."
+                            }
+                        },
+                        "query": "SELECT Line_Item_Id FROM {dataset}.Twitter_Triggers",
+                        "parameters": {
+                            "dataset": {
+                                "field": {
+                                    "name": "recipe_name",
+                                    "kind": "string",
+                                    "description": "Place where tables will be created in BigQuery."
+                                }
+                            }
+                        }
+                    }
+                },
+                "out": {
+                    "bigquery": {
+                        "dataset": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "description": "Place where tables will be created in BigQuery."
+                            }
+                        },
+                        "table": "LineItem_Reads"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
+            "description": "Get all triggered lineitmes from sheet, if they have a keyword match in twitter, take the triger values, else take the default values (default>trigger).  Take all non-null values from trigger and overlay over current DV360 values. Will be used to upload to DV360.",
+            "auth": "service",
+            "from": {
+                "query": "SELECT o.Line_Item_Id AS Line_Item_Id, o.Partner_Name AS Partner_Name, o.Partner_Id AS Partner_Id, o.Advertiser_Name AS Advertiser_Name, o.IO_Name AS IO_Name, IFNULL(t.Line_Item_Name, o.Line_Item_Name) AS Line_Item_Name, o.Line_Item_Timestamp AS Line_Item_Timestamp , IFNULL(t.Line_Item_Status, o.Line_Item_Status) AS Line_Item_Status, o.IO_Start_Date AS IO_Start_Date, o.IO_End_Date AS IO_End_Date, o.IO_Budget_Type AS IO_Budget_Type, o.IO_Budget_Amount AS IO_Budget_Amount, o.IO_Pacing AS IO_Pacing, o.IO_Pacing_Rate AS IO_Pacing_Rate, o.IO_Pacing_Amount AS IO_Pacing_Amount, IFNULL(t.Line_Item_Start_Date, o.Line_Item_Start_Date) AS Line_Item_Start_Date, IFNULL(t.Line_Item_End_Date, o.Line_Item_End_Date) AS Line_Item_End_Date, IFNULL(t.Line_Item_Budget_Type, o.Line_Item_Budget_Type) AS Line_Item_Budget_Type, IFNULL(t.Line_Item_Budget_Amount, o.Line_Item_Budget_Amount) AS Line_Item_Budget_Amount, IFNULL(t.Line_Item_Pacing, o.Line_Item_Pacing) AS Line_Item_Pacing, IFNULL(t.Line_Item_Pacing_Rate, o.Line_Item_Pacing_Rate) AS Line_Item_Pacing_Rate, IFNULL(t.Line_Item_Pacing_Amount, o.Line_Item_Pacing_Amount) AS Line_Item_Pacing_Amount, IFNULL(t.Line_Item_Frequency_Enabled, o.Line_Item_Frequency_Enabled) AS Line_Item_Frequency_Enabled, IFNULL(t.Line_Item_Frequency_Exposures, o.Line_Item_Frequency_Exposures) AS Line_Item_Frequency_Exposures, IFNULL(t.Line_Item_Frequency_Period, o.Line_Item_Frequency_Period) AS Line_Item_Frequency_Period, IFNULL(t.Line_Item_Frequency_Amount, o.Line_Item_Frequency_Amount) AS Line_Item_Frequency_Amount, IFNULL(t.Bid_Price, o.Bid_Price) AS Bid_Price, IFNULL(t.Partner_Revenue_Model, o.Partner_Revenue_Model) AS Partner_Revenue_Model, IFNULL(t.Partner_Revenue_Amount, o.Partner_Revenue_Amount) AS Partner_Revenue_Amount, o.Current_Audience_Targeting_Ids AS Current_Audience_Targeting_Ids , o.Current_Audience_Targeting_Names AS Current_Audience_Targeting_Names FROM `{project}.{dataset}.LineItem_Reads` AS o LEFT JOIN ( SELECT Line_Item_Id, ANY_VALUE(SPLIT(Line_Item_Name, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Name, ANY_VALUE(SPLIT(Line_Item_Status, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Status, ANY_VALUE(SPLIT(Line_Item_Start_Date, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Start_Date, ANY_VALUE(SPLIT(Line_Item_End_Date, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_End_Date, ANY_VALUE(SPLIT(Line_Item_Budget_Type, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Budget_Type, ANY_VALUE(CAST(SPLIT(Line_Item_Budget_Amount, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Line_Item_Budget_Amount, ANY_VALUE(SPLIT(Line_Item_Pacing, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Pacing, ANY_VALUE(SPLIT(Line_Item_Pacing_Rate, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Pacing_Rate, ANY_VALUE(CAST(SPLIT(Line_Item_Pacing_Amount, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Line_Item_Pacing_Amount, ANY_VALUE(CAST(SPLIT(Line_Item_Frequency_Enabled, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS BOOL)) AS Line_Item_Frequency_Enabled, ANY_VALUE(SPLIT(Line_Item_Frequency_Exposures, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Frequency_Exposures, ANY_VALUE(SPLIT(Line_Item_Frequency_Period, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Frequency_Period, ANY_VALUE(CAST(SPLIT(Line_Item_Frequency_Amount, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS INT64)) AS Line_Item_Frequency_Amount, ANY_VALUE(CAST(SPLIT(Bid_Price, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Bid_Price, ANY_VALUE(SPLIT(Partner_Revenue_Model, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Partner_Revenue_Model, ANY_VALUE(CAST(SPLIT(Partner_Revenue_Amount, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Partner_Revenue_Amount FROM ( SELECT WOEID, Hashtag, Line_Item_Id, Line_Item_Name, Line_Item_Status, Line_Item_Start_Date, Line_Item_End_Date, Line_Item_Budget_Type, Line_Item_Budget_Amount, Line_Item_Pacing, Line_Item_Pacing_Rate, Line_Item_Pacing_Amount, Line_Item_Frequency_Enabled, Line_Item_Frequency_Exposures, Line_Item_Frequency_Period, Line_Item_Frequency_Amount, Bid_Price, Partner_Revenue_Model, Partner_Revenue_Amount, CONCAT(CAST(WOEID AS STRING), LOWER(Hashtag)) IN (SELECT CONCAT(CAST(WOEID AS STRING), LOWER(REPLACE(name, '#', ''))) FROM `{project}.{dataset}.Twitter_Trends_Place` GROUP BY 1) AS Triggered FROM `{project}.{dataset}.Twitter_Triggers`) GROUP BY 1) AS t ON o.Line_Item_Id=t.Line_Item_Id;",
+                "parameters": {
+                    "project": {
+                        "field": {
+                            "name": "recipe_project",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
+                        }
+                    },
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
+                        }
+                    }
+                },
+                "legacy": false
+            },
+            "to": {
+                "dataset": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "description": "Place where tables will be created in BigQuery."
+                    }
+                },
+                "view": "LineItem_Writes"
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/lineitem/run.py" target="_blank">lineitem</a>": {
+            "description": "Write lineitem settings to DV360 after transformation.",
+            "auth": "user",
+            "write": {
+                "dry_run": false,
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
+                        }
+                    },
+                    "query": "Select * FROM {dataset}.LineItem_Writes",
+                    "parameters": {
+                        "dataset": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "description": "Place where tables will be created in BigQuery."
+                            }
+                        }
+                    },
+                    "legacy": false
+                }
+            }
+        }
+    }
+]</code></pre>
+    </div>
+
+  </div>
+
+  <br/><br/>
+  <h3 id="code-tasks">Run This Workflow In Minutes On Google Cloud</h3>
+  <p class="flow-text">Everything from a quick Google Cloud UI to reference developer code for your team in one GitHub repository.</p>
+  <p>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#deployment" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      Deployment Steps<i class="material-icons right">launch</i>
+    </a>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      Developer Guide<i class="material-icons right">build</i>
+    </a>
+    <a href="https://google.github.io/starthinker/help/" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      UI How To<i class="material-icons right">laptop</i>
+    </a>
+  </p>
+
+
+
+    </div>
+
+  </body>
+
+  
+
+<footer class="page-footer red lighten-1">
+  <div class="footer-copyright">
+    <div class="container center">
+    &copy; 2019 Google LLC
+    </div>
+  </div>
+</footer>
+
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".button-collapse").sideNav();
+      $('select').material_select();
+      $('.modal').modal();
+    });
+  </script>
+
+  
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('span.expand_code').on('click tap', function() {
+        $('pre.expand_code').css('height', 'auto');
+        $(this).hide();
+      });
+    });
+  </script>
+
+
+</html>

@@ -1,0 +1,35 @@
+{ 
+  "script":{
+    "released":"2017-12-05",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "open":true,
+    "icon":"view_column",
+    "requirements":["sheets", "bigquery"],
+    "title":"Sheet To BigQuery",
+    "description":"Import data from a sheet and move it to a BigQuery table.",
+    "instructions":[
+      "For the sheet, provide the full edit URL.",
+      "If the tab does not exist it will be created.",
+      "Empty cells in the range will be NULL.",
+      "Check Sheets header if first row is a header"
+    ],
+    "authors":["mauriciod@google.com"]
+  },
+  "tasks":[
+    { "sheets":{
+      "auth":"user",
+      "sheet":{"field":{ "name":"sheets_url", "kind":"string", "order":1, "default":"" }},
+      "tab":{"field":{ "name":"sheets_tab", "kind":"string", "order":2, "default":"" }},
+      "range":{"field":{ "name":"sheets_range", "kind":"string", "order":3, "default":"" }},
+      "header":{"field":{ "name":"sheets_header", "kind":"boolean", "order":9, "default":true }},
+      "out":{
+        "auth":"service",
+        "bigquery":{
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":7, "default":"" }},
+          "table":{"field":{ "name":"table", "kind":"string", "order":8, "default":"" }}
+        }
+      }
+    }}
+  ]
+}

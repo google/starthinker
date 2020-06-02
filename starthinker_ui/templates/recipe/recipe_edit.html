@@ -1,0 +1,336 @@
+{% extends "page.html" %}
+
+{% comment %}
+###########################################################################
+#
+#  Copyright 2019 Google LLC
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% block css %}
+  i.form_button { cursor: pointer; }
+  i.form_delete { font-size: 2em; margin: 0.24em 0px; cursor: pointer;}
+  i.form_move { font-size: 3em; cursor: row-resize;}
+  i.form_move:hover { color: #ee637e; }
+  div.form_move_from { color: #ee637e; }
+  div.card-panel h3 { margin-top: 0px; }
+  .recipe_link { display: block; margin: 10px 0px; width: 100%;}
+{% endblock %}
+
+{% block js %}
+  <script type="text/javascript">
+    var forms = {{ form_script.forms|length }};
+
+    function getQueryVariable(variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+      }
+      return null;
+    }
+
+    var percent = 0
+    function updateStatus() {
+      if ( !document.hidden ) {
+        $('#recipe_status_bar').css('width', percent + '%');
+        if ( percent >= 100 ) {
+          $.getJSON( "/recipe/status/{{ form_script.setup.instance.pk }}", function( log ) {
+            $('#recipe_status_percent').text(log['percent']);
+            $('#recipe_status_state').text(log['status']);
+            $('#recipe_status_ago').text(log['ago']);
+            $('#recipe_status_report').html(log['report']);
+          });
+          percent = 0;
+        }
+        else {
+          percent += 10;
+        }
+      }
+      setTimeout(updateStatus, 1 * 1000);
+    }
+
+    function updateTasks() {
+      var tasks = {};
+
+      $("input.form_prefix").each(function( index ) { 
+        var task = $(this).attr('value');
+        if ( !task.endsWith("_[BLANK]")) { 
+          task = task.substring(0, task.lastIndexOf("_"));
+          tasks[task] = ( tasks[task] || 0) + 1;
+        } 
+      });
+
+      for (var task in tasks) {
+       var element = $('#form_button_count_' + task);
+       element.text('X ' + tasks[task]);
+       element.prev().text('check_circle');
+       element.prev().removeClass('blue-text');
+       element.prev().addClass('green-text');
+      }
+    }
+
+    var category = 'category_all';
+
+    $(document).ready(function() {
+
+      $('a.trigger_category').on('click tap', function() {
+        category = this.id.replace('trigger_', '');
+        $('#task_add_script a').hide();
+        $('#task_add_script a.' + category).show();
+      });
+
+      $('a.trigger_script').on('click tap', function() {
+        var script = this.id.replace('trigger_', '');
+        $('#task_add_details div').hide();
+        $('#' + script).show();
+      });
+
+      var script = getQueryVariable('script');
+
+      if (script) {
+        forms += 1;
+        var repeat_blank = $('#form_blank_' + script);
+        $('#insert_here').before(repeat_blank.html().replace(/\[BLANK\]/g, forms));
+        $('select').material_select();
+      }
+
+      $('i.form_button').on('click tap', function() {
+        forms += 1;
+        var repeat_blank = $('#' + this.id.replace('button', 'blank'));
+        $('#insert_here').before(repeat_blank.html().replace(/\[BLANK\]/g, forms));
+        $('select').material_select();
+        updateTasks();
+      });
+
+      var move = null;
+      $(document).on('click tap', 'i.form_move', function() {
+        if (move === null) {
+          move = $(this).parent(); 
+          $(this).addClass('form_move_from');
+        } else {
+          if (move != $(this).parent()) { $(this).parent().before(move); }
+          $(move).removeClass('form_move_from');
+          move = null; 
+          $("input.form_sequence").each(function( index ) { $(this).val(index + 1); }); 
+        }
+      });
+
+      $(document).on('click tap', 'i.form_delete', function() {
+        var input = $('#id_' + this.id);
+        input.val(1 - parseInt(input.val()));
+        if ( input.val() == 1) {
+          $(this).html('delete_forever');
+        } else {
+          $(this).html('delete');
+        }
+      });
+
+      updateTasks();
+      {% if form_script.setup.instance.pk %}updateStatus();{% endif %}
+    });
+
+  </script>
+{% endblock %}
+
+{% block content %}
+
+  <form action="." method="post">
+    {% csrf_token %}
+
+    {% with recipe=form_script.setup.instance %}
+    {% with log=recipe.get_log %}
+
+      <br/>
+      <div class="row">
+
+        <div class="col s12 m3 l2 right-align">
+
+          {% if recipe.pk %}
+            <h4><span id="recipe_status_percent">{{ log.percent }}</span>% <span id="recipe_status_state">{{ log.status }}</span></h4>
+            <div class="progress blue lighten-4">
+              <div id="recipe_status_bar" class="determinate blue" style="width: 0%"></div>
+            </div>
+            {% if log.ago %}<h5 id="recipe_status_ago">{{ log.ago }}</h5>{% endif %}
+          {% endif %}
+
+          <br/>
+          <a href="#modal_task_add" class="btn recipe_link waves-effect waves-light blue form_button modal-trigger">
+            Add <i class="material-icons right">add_circle</i>
+          </a>
+          <button id="form_submit" class="btn recipe_link blue waves-effect waves-light" type="submit" name="save">
+            Save <i class="material-icons right">save</i>
+          </button>
+
+          {% if recipe.pk %}
+    
+            {% if recipe.active %}
+              <a href="{{ recipe.link_run }}" class="recipe_link waves-effect waves-light btn blue form_button modal-trigger">
+                Run <i class="material-icons right">directions_run</i>
+              </a>
+            {% endif %}
+      
+            {% if recipe.is_running %}
+              <a href="{{ recipe.link_cancel }}" class="btn recipe_link waves-effect waves-light blue form_button modal-trigger">
+                Cancel <i class="material-icons right">cancel</i>
+              </a>
+            {% endif %}
+      
+            <a href="#modal_log" class="btn recipe_link waves-effect waves-light blue form_button modal-trigger">
+              Log <i class="material-icons right">list</i>
+            </a>
+      
+            {% comment %}
+            <a href="" class="recipe_link waves-effect waves-light btn blue form_button modal-trigger">
+              Refresh <i class="material-icons right">refresh</i>
+            </a>
+            {% endcomment %}
+      
+            {% comment %}
+            <a href="#modal_remote" class="recipe_link waves-effect waves-light btn blue form_button modal-trigger">
+              Remote <i class="material-icons right">settings_remote</i>
+            </a>
+            {% endcomment %}
+      
+            <a href="/recipe/download/{{ recipe.pk }}/" class="recipe_link waves-effect waves-light btn blue form_button modal-trigger">
+              Download <i class="material-icons right">file_download</i>
+            </a>
+        
+            {% if form_script.instance.pk %}
+              <a class="recipe_link btn waves-effect waves-light red darken-2" href="{{ form_script.instance.link_delete }}">
+                Delete <i class="material-icons right">delete</i>
+              </a>
+            {% endif %}
+    
+          {% endif %}
+
+          <br/><br/>
+          {% if manual %}
+            <p class="right-align">Click <a href="/recipe/edit/"><i class="material-icons blue-text">access_time</i></a> for scheduled recipes.</p>
+          {% else %}
+            <p class="right-align">Click <a href="/recipe/manual/"><i class="material-icons blue-text">build</i></a> for manual recipes.</p>
+          {% endif %}
+
+          <p class="right-align">To move a step click <i class="material-icons blue-text">drag_handle</i> to select a card. Then click another <i class="material-icons blue-text">drag_handle</i> to place it above that card.</a></p>
+          <p class="right-align">To delete a step click <i class="material-icons blue-text">delete</i> to mark a step for deletion. Then click save to commit the delete.</p>
+
+        </div>
+
+        <div class="col s12 m9 l10 left-align">
+
+          {% if form_script.setup %}
+            {% with form_setup=form_script.setup %}
+              {% include "form_setup.html" %}
+            {% endwith %}
+          {% endif %}
+  
+          {% for form in form_script.forms %}
+            <div class="card-panel">
+              <i class="right material-icons form_move blue-text">drag_handle</i>
+              <i class="right material-icons form_delete blue-text" id="{{ form.prefix }}-script_delete">delete</i>
+              <h3>{{ form.script.get_name }}</h3>
+              <p class="flow-text">{{ form.get_description|safe }}</p>
+              <ol>
+                {% for step in form.get_instructions %}
+                  <li>{{ step|safe }}</li>
+                {% endfor %}
+              </ol>
+              {% with fields=form %}
+                <input type="hidden" class="form_prefix" name="form_prefix" value="{{ form.script.get_tag }}_{{ forloop.counter }}"/>
+                {% include "form_fields.html" %}
+              {% endwith %}
+            </div>
+          {% endfor %}
+    
+          <div id="insert_here"></div>
+        </div>
+
+      </div>
+    
+      {% if recipe.pk %}
+        <div id="modal_remote" class="modal">
+
+          <a href="#!" class="modal-action modal-close" style="position:absolute;right:10px;top:10px;">
+            <i class="card-title material-icons right">close</i>
+          </a>
+
+          <div class="modal-content">
+            <h4>Start This Recipe Remotely</h4>
+            <hr/>
+            <p><strong>Issue a POST request to:</strong>  {{ recipe.link_start }}</p>
+            <p><strong>Include parameter:</strong> reference={{ recipe.reference }}</p>
+            <p><strong>Reponse codes include:</strong></p>
+            <p>RECIPE STARTED ( 200 ) - Recipe was succesfully scheduled to run all task in sequence.</p>
+            <p>RECIPE INTERRUPTED ( 200 ) - Recipe will be restarted as soon as current subtask stops.</p>
+            <p>RECIPE NOT FOUND ( 404 ) - The reference provided does not match any recipe.</p>
+            <br/>
+            <h4>Stop This Recipe Remotely</h4>
+            <hr/>
+            <p><strong>Issue a POST request to:</strong>  {{ recipe.link_stop }}</p>
+            <p><strong>Include parameter:</strong> reference={{ recipe.reference }}</p>
+            <p><strong>Reponse codes include:</strong></p>
+            <p>RECIPE STOPPED ( 200 ) - Recipe was succesfully stopped from running remianing tasks.</p>
+            <p>RECIPE INTERRUPTED ( 200 ) - Recipe will finish current task and not execute rmaining ones.</p>
+            <p>RECIPE NOT FOUND ( 404 ) - The reference provided does not match any recipe.</p>
+            <br/>
+            <hr/>
+            <p>If you use <a href="https://console.cloud.google.com/security/iap" target="_blank">Identity Aware Proxy</a>, add <a href="https://cloud.google.com/iap/docs/authentication-howto#iap_make_request-python" target="_blank">Bearer and Google Open Id</a> to your request.</p> 
+            <br/>
+          </div>
+        </div>
+
+        <div id="modal_log" class="modal">
+          <a href="#!" class="modal-action modal-close" style="position:absolute;right:10px;top:10px;">
+            <i class="card-title material-icons right">close</i>
+          </a>
+          <div id="recipe_status_report" class="modal-content">
+            {% include "recipe/log.html" %}
+          </div>
+        </div>
+
+      {% endif %}
+
+    {% endwith %}
+    {% endwith %}
+
+    {% include "recipe/tasks.html" %}
+
+  </form>
+
+  {% for blank in form_script.blanks %}
+    <div id="form_blank_{{ blank.script.get_tag }}" style="display:none;">
+      <div class="card-panel">
+        <i class="right material-icons form_move">drag_handle</i>
+        <i class="right material-icons form_delete" id="{{ blank.prefix }}-script_delete">delete</i>
+        <h3>{{ blank.script.get_name }}</h3>
+        <p class="flow-text">{{ blank.get_description|safe }}</p>
+        <ol>
+          {% for step in blank.get_instructions %}
+            <li>{{ step|safe }}</li>
+          {% endfor %}
+        </ol>
+        {% with fields=blank %}
+          <input type="hidden" class="form_prefix" name="form_prefix" value="{{ blank.prefix }}"/>
+          {% include "form_fields.html" %}
+        {% endwith %}
+      </div>
+    </div>
+  {% endfor %}
+
+{% endblock %}

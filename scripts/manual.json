@@ -1,0 +1,28 @@
+{
+  "script":{
+    "released":"2019-07-17",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "ui":false,
+    "icon":"notifications",
+    "title":"Test Script",
+    "description":"Used by tests.",
+    "instructions":[
+      "This should be called by the tests scripts only.",
+      "When run will generate a say hello log."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "day":[],
+    "hour":[]
+  },
+  "tasks":[
+    { "hello":{
+      "auth":"user",
+      "hour":[],
+      "say":"Hello Manual",
+      "sleep":0
+    }}
+  ]
+}

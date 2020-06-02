@@ -1,0 +1,907 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167283455-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-167283455-3');
+    </script>
+
+    <link rel="shortcut icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize.min.css">
+
+    <style>
+       html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
+ 
+       .material-icons { line-height: normal; vertical-align: middle; }
+
+       #message { justify-content: center; font-size: 2em;}
+       #message i { font-size: 2em; margin: 10px; }
+       #message ul, #message li { display: inline; margin-left: 10px; }
+       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
+
+       div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+       h1 a i.material-icons { font-size: 3.28rem; }
+       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+       ol li { line-height: 1.8em; }
+       textarea { margin-top: 7px; height: 10rem; }
+       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
+       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
+
+       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+
+       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
+       div.card h4 { width 100%; padding: 20px;}
+       div.card h4 i.material-icons { font-size: 2.28rem; }
+       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+
+       .card .card-content .card-title { word-wrap: break-word; }
+       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
+
+       
+  #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
+  .btn-large { margin: 1vh 1vw; } 
+  .col { margin-right: auto; }
+  pre.expand_code { height: 70vh; }
+  pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
+
+    </style>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  
+  <nav class="green lighten-0">
+    <div class="nav-wrapper">
+      <a href="/starthinker/" class="brand-logo">
+        <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+      </a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        
+        
+        <li><a href="/starthinker/solution/">Solutions</a></li>
+        <li><a href="/starthinker/help/">Help</a></li>
+        
+      </ul>
+      <ul class="side-nav green lighten-1" id="mobile-demo">
+        
+        
+        
+        <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
+        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
+        
+      </ul>
+    </div>
+  </nav>
+  
+
+  <body>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize.min.js"></script>
+
+    
+
+
+<!--
+Start of Floodlight Tag: Please do not remove
+Activity name of this tag: Gallery Conversions
+URL of the webpage where the tag is expected to be placed: https://google.github.io/starthinker/
+This tag must be placed between the <body> and </body> tags, as close as possible to the opening tag.
+Creation Date: 03/09/2020
+-->
+<script type="text/javascript">
+var axel = Math.random() + "";
+var a = axel * 10000000000000;
+document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;type=github;cat=galle0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=' + a + '?" width="1" height="1" alt=""/>');
+</script>
+<noscript>
+<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;type=github;cat=galle0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=1?" width="1" height="1" alt=""/>
+</noscript>
+<!-- End of Floodlight Tag: Please do not remove -->
+
+
+
+    
+
+    <div id="page" class="center">
+      
+
+  <br/>
+  <h1><i class="medium material-icons">donut_large</i>&nbsp; cTV Inventory Availability Dashboard</h1>
+  <p class="flow-text">The cTV Audience Affinity dashboard is designed to give clients insights into which cTV apps their audiences have a high affinity for using.  The goal of this dashboard is to provide some assistance with the lack of audience targeting for cTV within DV360.</p>
+
+  <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=datastudio">datastudio</a>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=bigquery">bigquery</a>
+  
+
+  <br/><br/>
+  
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=audience">audience</a>
+  
+
+  <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/ctv_audience_affinity.png"/>
+
+  <div class="buttons">
+
+    <a class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
+      <i class="material-icons right">lock_open</i>Get Access
+    </a>
+
+    
+      <a class="btn-large blue waves-effect waves-light" href="https://datastudio.google.com/reporting/3008bdb5-03a7-4f18-99ae-038d803a7dc3" target="_blank">
+        <i class="material-icons right">directions_bike</i>Sample
+      </a>
+    
+
+    
+
+    
+
+    <br/>
+
+    
+
+    
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/ctv_audience_affinity.json" target="_blank">
+        <i class="material-icons right">list</i>Git Hub
+      </a>
+      <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/ctv_audience_affinity.ipynb" target="_blank">
+        <i class="material-icons right">copyright</i>Data Pill Colab
+      </a>
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/ctv_audience_affinity_dag.py" target="_blank">
+        <i class="material-icons right">copyright</i>Airflow DAG
+      </a>
+    
+
+  </div>
+
+  <br/><br/>
+
+  <div class="row">
+    
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <table class="bordered">
+            <thead>
+              <tr>
+                <th>Value Proposition</th>
+              </tr>
+             </thead>
+             <tbody>
+             
+               <tr>
+                 <td>Identify cTV apps to potentially reach desired audiences</td>
+               </tr>
+             
+             </tbody>
+          </table>
+        </div>
+      </div>
+    
+  
+    
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <table class="bordered">
+            <thead>
+              <tr>
+                <th>Impact</th>
+                <th>Level</th>
+              </tr>
+             </thead>
+               <tbody>
+               
+                 <tr>
+                   <td>Ctv Targeting</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 50%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+             </tbody>
+          </table>
+        </div> 
+      </div> 
+    
+
+    <div class="col s12 m6 l4">
+      <div class="card">
+        <table class="bordered">
+          <thead>
+            <tr>
+              <th colspan="2">Details</th>
+            </tr>
+           </thead>
+          <tbody>
+    
+            
+            <tr>
+              <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
+            </tr>
+            
+    
+            <tr>
+              <td>Age</td>
+              <td>April 8, 2020 (1 month, 3 weeks)</td>
+            </tr>
+    
+            <tr>
+              <td>Authors</td>
+              <td><a href="mailto:terwilleger@google.com?subject=Request+For+A+cTV+Inventory+Availability+Dashboard+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+cTV+Inventory+Availability+Dashboard+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fctv_audience_affinity%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">terwilleger@google.com</a>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+   
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <table class="bordered">
+          <thead>
+              <tr>
+                <th>Instructions</th>
+              </tr>
+             </thead>
+             <tbody>
+             
+               <tr>
+                 <td>Find instructions and recommendations for this dashboard <a href="https://docs.google.com/document/d/120kcR9OrS4hGdTxRK0Ig2koNmm6Gl7sH0L6U56N0SAM/view?usp=sharing" target="_blank">here</a></td>
+               </tr>
+             
+             </tbody>
+          </table>
+        </div>
+       </div>
+     
+
+    <div class="col s12 m12 l8">
+      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/drive/run.py" target="_blank">drive</a>": {
+            "auth": "user",
+            "copy": {
+                "source": "https://docs.google.com/spreadsheets/d/1PPPk2b4gGJHNgQ4hXLiTKzH8pRIdlF5fNy9VCw1v7tM/",
+                "destination": {
+                    "field": {
+                        "name": "recipe_name",
+                        "prefix": "cTV App Match Table ",
+                        "kind": "string",
+                        "order": 1,
+                        "description": "Name of document to deploy to.",
+                        "default": ""
+                    }
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
+            "auth": "service",
+            "dataset": {
+                "field": {
+                    "name": "dataset",
+                    "kind": "string",
+                    "order": 3,
+                    "default": "",
+                    "description": "BigQuery Dataset where all data will live."
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "auth": "user",
+            "report": {
+                "body": {
+                    "timezoneCode": "America/Los_Angeles",
+                    "kind": "doubleclickbidmanager#query",
+                    "metadata": {
+                        "title": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "prefix": "us_country_app_"
+                            }
+                        },
+                        "dataRange": "LAST_30_DAYS",
+                        "format": "CSV",
+                        "sendNotification": false
+                    },
+                    "params": {
+                        "type": "TYPE_INVENTORY_AVAILABILITY",
+                        "groupBys": [
+                            "FILTER_APP_URL"
+                        ],
+                        "filters": [
+                            {
+                                "type": "FILTER_PARTNER",
+                                "value": {
+                                    "field": {
+                                        "name": "partner_id",
+                                        "kind": "integer",
+                                        "order": 1,
+                                        "description": "DV360 Partner id."
+                                    }
+                                }
+                            },
+                            {
+                                "type": "FILTER_INVENTORY_FORMAT",
+                                "value": "VIDEO"
+                            },
+                            {
+                                "type": "FILTER_COUNTRY",
+                                "value": "US"
+                            }
+                        ],
+                        "metrics": [
+                            "METRIC_BID_REQUESTS",
+                            "METRIC_UNIQUE_VISITORS_COOKIES"
+                        ],
+                        "includeInviteData": true
+                    },
+                    "schedule": {
+                        "frequency": "DAILY",
+                        "nextRunMinuteOfDay": 0,
+                        "nextRunTimezoneCode": "America/Los_Angeles",
+                        "endTimeMs": 7983727200000
+                    }
+                }
+            },
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "order": 3,
+                            "default": "",
+                            "description": "BigQuery Dataset where all data will live."
+                        }
+                    },
+                    "schema": [
+                        {
+                            "type": "STRING",
+                            "name": "app_url",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "type": "STRING",
+                            "name": "impressions",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "type": "STRING",
+                            "name": "uniques",
+                            "mode": "NULLABLE"
+                        }
+                    ],
+                    "table": "us_country_app"
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "auth": "user",
+            "report": {
+                "body": {
+                    "timezoneCode": "America/Los_Angeles",
+                    "kind": "doubleclickbidmanager#query",
+                    "metadata": {
+                        "title": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "prefix": "us_country_baseline_"
+                            }
+                        },
+                        "dataRange": "LAST_30_DAYS",
+                        "format": "CSV",
+                        "sendNotification": false
+                    },
+                    "params": {
+                        "type": "TYPE_INVENTORY_AVAILABILITY",
+                        "filters": [
+                            {
+                                "type": "FILTER_PARTNER",
+                                "value": {
+                                    "field": {
+                                        "name": "partner_id",
+                                        "kind": "integer",
+                                        "order": 1,
+                                        "description": "DV360 Partner id."
+                                    }
+                                }
+                            },
+                            {
+                                "type": "FILTER_COUNTRY",
+                                "value": "US"
+                            }
+                        ],
+                        "metrics": [
+                            "METRIC_BID_REQUESTS",
+                            "METRIC_UNIQUE_VISITORS_COOKIES"
+                        ],
+                        "includeInviteData": true
+                    },
+                    "schedule": {
+                        "frequency": "DAILY",
+                        "nextRunMinuteOfDay": 0,
+                        "nextRunTimezoneCode": "America/Los_Angeles",
+                        "endTimeMs": 7983727200000
+                    }
+                }
+            },
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "order": 3,
+                            "default": "",
+                            "description": "BigQuery Dataset where all data will live."
+                        }
+                    },
+                    "schema": [
+                        {
+                            "type": "STRING",
+                            "name": "impressions",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "type": "STRING",
+                            "name": "uniques",
+                            "mode": "NULLABLE"
+                        }
+                    ],
+                    "table": "us_country_baseline"
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "auth": "user",
+            "report": {
+                "filters": {
+                    "FILTER_USER_LIST": {
+                        "single_cell": true,
+                        "values": {
+                            "field": {
+                                "name": "audience_ids",
+                                "kind": "integer_list",
+                                "order": 2,
+                                "description": "Comma separated list of Audience Ids"
+                            }
+                        }
+                    }
+                },
+                "body": {
+                    "timezoneCode": "America/Los_Angeles",
+                    "kind": "doubleclickbidmanager#query",
+                    "metadata": {
+                        "title": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "prefix": "us_audience_baseline_"
+                            }
+                        },
+                        "dataRange": "LAST_30_DAYS",
+                        "format": "CSV",
+                        "sendNotification": false
+                    },
+                    "params": {
+                        "type": "TYPE_INVENTORY_AVAILABILITY",
+                        "groupBys": [
+                            "FILTER_AUDIENCE_LIST"
+                        ],
+                        "filters": [
+                            {
+                                "type": "FILTER_PARTNER",
+                                "value": {
+                                    "field": {
+                                        "name": "partner_id",
+                                        "kind": "integer",
+                                        "order": 1,
+                                        "description": "DV360 Partner id."
+                                    }
+                                }
+                            },
+                            {
+                                "type": "FILTER_COUNTRY",
+                                "value": "US"
+                            }
+                        ],
+                        "metrics": [
+                            "METRIC_BID_REQUESTS",
+                            "METRIC_UNIQUE_VISITORS_COOKIES"
+                        ],
+                        "includeInviteData": true
+                    },
+                    "schedule": {
+                        "frequency": "DAILY",
+                        "nextRunMinuteOfDay": 0,
+                        "nextRunTimezoneCode": "America/Los_Angeles",
+                        "endTimeMs": 7983727200000
+                    }
+                }
+            },
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "order": 3,
+                            "default": "",
+                            "description": "BigQuery Dataset where all data will live."
+                        }
+                    },
+                    "schema": [
+                        {
+                            "type": "STRING",
+                            "name": "user_list",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "type": "STRING",
+                            "name": "impressions",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "type": "STRING",
+                            "name": "uniques",
+                            "mode": "NULLABLE"
+                        }
+                    ],
+                    "table": "us_audience_baseline"
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "auth": "user",
+            "report": {
+                "filters": {
+                    "FILTER_USER_LIST": {
+                        "single_cell": true,
+                        "values": {
+                            "field": {
+                                "name": "audience_ids",
+                                "kind": "integer_list",
+                                "order": 2,
+                                "description": "Comma separated list of Audience Ids"
+                            }
+                        }
+                    }
+                },
+                "body": {
+                    "timezoneCode": "America/Los_Angeles",
+                    "kind": "doubleclickbidmanager#query",
+                    "metadata": {
+                        "title": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "prefix": "us_audience_app_"
+                            }
+                        },
+                        "dataRange": "LAST_30_DAYS",
+                        "format": "CSV",
+                        "sendNotification": false
+                    },
+                    "params": {
+                        "type": "TYPE_INVENTORY_AVAILABILITY",
+                        "groupBys": [
+                            "FILTER_APP_URL",
+                            "FILTER_AUDIENCE_LIST"
+                        ],
+                        "filters": [
+                            {
+                                "type": "FILTER_PARTNER",
+                                "value": {
+                                    "field": {
+                                        "name": "partner_id",
+                                        "kind": "integer",
+                                        "order": 1,
+                                        "description": "DV360 Partner id."
+                                    }
+                                }
+                            },
+                            {
+                                "type": "FILTER_INVENTORY_FORMAT",
+                                "value": "VIDEO"
+                            },
+                            {
+                                "type": "FILTER_COUNTRY",
+                                "value": "US"
+                            }
+                        ],
+                        "metrics": [
+                            "METRIC_BID_REQUESTS",
+                            "METRIC_UNIQUE_VISITORS_COOKIES"
+                        ],
+                        "includeInviteData": true
+                    },
+                    "schedule": {
+                        "frequency": "DAILY",
+                        "nextRunMinuteOfDay": 0,
+                        "nextRunTimezoneCode": "America/Los_Angeles",
+                        "endTimeMs": 7983727200000
+                    }
+                }
+            },
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "order": 3,
+                            "default": "",
+                            "description": "BigQuery Dataset where all data will live."
+                        }
+                    },
+                    "schema": [
+                        {
+                            "type": "STRING",
+                            "name": "app_url",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "type": "STRING",
+                            "name": "user_list",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "type": "STRING",
+                            "name": "impressions",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "type": "STRING",
+                            "name": "uniques",
+                            "mode": "NULLABLE"
+                        }
+                    ],
+                    "table": "us_audience_app"
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
+            "auth": "user",
+            "sheet": {
+                "field": {
+                    "name": "recipe_name",
+                    "prefix": "cTV App Match Table ",
+                    "kind": "string",
+                    "order": 1,
+                    "description": "Name of document to deploy to.",
+                    "default": ""
+                }
+            },
+            "tab": "data",
+            "range": "A:Z",
+            "header": true,
+            "out": {
+                "auth": "service",
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "BigQuery Dataset where all data will live."
+                        }
+                    },
+                    "table": "CTV_App_Lookup",
+                    "schema": [
+                        {
+                            "type": "STRING",
+                            "name": "Publisher_Name",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "type": "STRING",
+                            "name": "CTV_App_name",
+                            "mode": "NULLABLE"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
+            "description": "The query to join all the IAR reports into an Affinity Index.",
+            "auth": "service",
+            "from": {
+                "query": "SELECT    audience_app.app_url,    audience_app.ctv_app_name,  IF    (audience_app.app_url LIKE '%Android%'      OR audience_app.app_url LIKE '%iOS',      'App',      'Domain') AS app_or_domain,    audience_app.user_list AS audience_list,    audience_app.Potential_Impressions AS audience_app_impressions,    audience_app.Unique_Cookies_With_Impressions AS audience_app_uniques,    audience_baseline.Potential_Impressions AS audience_baseline_impressions,    audience_baseline.Unique_Cookies_With_Impressions AS audience_baseline_uniques,    country_app.Potential_Impressions AS country_app_impressions,    country_app.Unique_Cookies_With_Impressions AS country_app_uniques,    country_baseline.Potential_Impressions AS country_baseline_impressions,    country_baseline.Unique_Cookies_With_Impressions AS country_baseline_uniques,    ((audience_app.Unique_Cookies_With_Impressions/NULLIF(audience_baseline.Unique_Cookies_With_Impressions,          0))/NULLIF((country_app.Unique_Cookies_With_Impressions/NULLIF(CAST(country_baseline.Unique_Cookies_With_Impressions AS int64),            0)),        0))*100 AS affinity_index  FROM (    SELECT      user_list,      CAST(      IF        (impressions LIKE '%< 1000%',          0,          CAST(impressions AS int64)) AS int64) AS potential_impressions,      CAST(      IF        (uniques LIKE '%< 100%',          0,          CAST(uniques AS int64)) AS int64) AS unique_cookies_with_impressions    FROM      `[PARAMETER].[PARAMETER].us_audience_baseline` ) AS audience_baseline  JOIN (    SELECT      ctv_app.CTV_App_name AS ctv_app_name,      user_list,      app_url,      CAST(      IF        (impressions LIKE '%< 1000%',          0,          CAST(impressions AS int64)) AS int64) AS potential_impressions,      CAST(      IF        (uniques LIKE '%< 1000%',          0,          CAST(uniques AS int64)) AS int64) AS unique_cookies_with_impressions    FROM      `[PARAMETER].[PARAMETER].us_audience_app` AS a    LEFT JOIN      `[PARAMETER].[PARAMETER].CTV_App_Lookup` AS ctv_app    ON      a.app_url = ctv_app.Publisher_Name ) AS audience_app  ON    audience_baseline.user_list = audience_app.user_list  LEFT JOIN (    SELECT      app_url,      CAST(      IF        (CAST(impressions AS STRING) LIKE '%< 1000%',          0,          CAST(impressions AS int64)) AS int64) AS Potential_Impressions,      CAST(      IF        (CAST(uniques AS STRING) LIKE '%< 1000%',          0,          CAST(uniques AS int64)) AS int64) AS Unique_Cookies_With_Impressions    FROM      `[PARAMETER].[PARAMETER].us_country_app` ) AS country_app  ON    country_app.app_url = audience_app.app_url  CROSS JOIN (    SELECT      CAST(      IF        (CAST(impressions AS STRING) LIKE '%< 1000%',          0,          CAST(impressions AS int64)) AS int64) AS Potential_Impressions,      CAST(      IF        (CAST(uniques AS STRING) LIKE '%< 1000%',          0,          CAST(uniques AS int64)) AS int64) AS Unique_Cookies_With_Impressions    FROM      `[PARAMETER].[PARAMETER].us_country_baseline` ) AS country_baseline",
+                "legacy": false,
+                "parameters": [
+                    {
+                        "field": {
+                            "name": "recipe_project",
+                            "kind": "string",
+                            "description": "Project where BigQuery dataset will be created."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "recipe_project",
+                            "kind": "string",
+                            "description": "Project where BigQuery dataset will be created."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "recipe_project",
+                            "kind": "string",
+                            "description": "Project where BigQuery dataset will be created."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "recipe_project",
+                            "kind": "string",
+                            "description": "Project where BigQuery dataset will be created."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "recipe_project",
+                            "kind": "string",
+                            "description": "Project where BigQuery dataset will be created."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "recipe_project",
+                            "kind": "string",
+                            "description": "Project where BigQuery dataset will be created."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
+                        }
+                    }
+                ]
+            },
+            "to": {
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "kind": "string",
+                        "description": "BigQuery Dataset where all data will live."
+                    }
+                },
+                "table": "final_table"
+            }
+        }
+    }
+]</code></pre>
+    </div>
+
+  </div>
+
+  <br/><br/>
+  <h3 id="code-tasks">Run This Workflow In Minutes On Google Cloud</h3>
+  <p class="flow-text">Everything from a quick Google Cloud UI to reference developer code for your team in one GitHub repository.</p>
+  <p>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#deployment" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      Deployment Steps<i class="material-icons right">launch</i>
+    </a>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      Developer Guide<i class="material-icons right">build</i>
+    </a>
+    <a href="https://google.github.io/starthinker/help/" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      UI How To<i class="material-icons right">laptop</i>
+    </a>
+  </p>
+
+
+
+    </div>
+
+  </body>
+
+  
+
+<footer class="page-footer red lighten-1">
+  <div class="footer-copyright">
+    <div class="container center">
+    &copy; 2019 Google LLC
+    </div>
+  </div>
+</footer>
+
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".button-collapse").sideNav();
+      $('select').material_select();
+      $('.modal').modal();
+    });
+  </script>
+
+  
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('span.expand_code').on('click tap', function() {
+        $('pre.expand_code').css('height', 'auto');
+        $(this).hide();
+      });
+    });
+  </script>
+
+
+</html>

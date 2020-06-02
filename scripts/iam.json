@@ -1,0 +1,24 @@
+{
+  "script":{
+    "released":"2018-10-02",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "icon":"file_download",
+    "requirements":["google api"],
+    "title":"Project IAM",
+    "description":"Sets project permissions for an email.",
+    "instructions":[
+      "Provide a role in the form of projects/[project name]/roles/[role name]",
+      "Enter an email to grant that role to.",
+      "This only grants roles, you must remove them from the project manually."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "iam":{
+      "auth":"service",
+      "role":{"field":{ "name":"role", "kind":"string", "order":1, "default":"", "description":"projects/[project name]/roles/[role name]" }},
+      "email":{"field":{ "name":"email", "kind":"string", "order":2, "default":"", "description":"Email address to grant role to." }}
+    }}
+  ]
+}

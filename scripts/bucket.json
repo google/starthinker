@@ -1,0 +1,27 @@
+{ 
+  "script":{
+    "released":"2017-08-15",
+    "released":"2017-08-15",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
+    "icon":"storage",
+    "requirements":["storage"],
+    "title":"Storage Bucket",
+    "description":"Create and permission a bucket in Storage.",
+    "instructions":[
+      "Specify the name of the bucket and who will have owner permissions.",
+      "Existing buckets are preserved.",
+      "Adding a permission to the list will update the permissions but removing them will not.",
+      "You have to manualy remove grants."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "bucket":{
+      "auth":"service",
+      "bucket":{"field":{ "name":"bucket_bucket", "kind":"string", "order":2, "default":"", "description":"Name of Google Cloud Bucket to create." }},
+      "emails":{"field":{ "name":"bucket_emails", "kind":"string_list", "order":3, "default":"", "description":"Comma separated emails." }},
+      "groups":{"field":{ "name":"bucket_groups", "kind":"string_list", "order":4, "default":"", "description":"Comma separated groups." }}
+    }}
+  ]
+}

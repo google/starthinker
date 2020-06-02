@@ -1,0 +1,68 @@
+{ 
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dcm":{
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
+        "body":{
+          "criteria": {
+            "dateRange": {"kind": "dfareporting#dateRange", "relativeDateRange": "LAST_7_DAYS"},
+            "dimensions": [
+              {"kind": "dfareporting#sortedDimension", "name": "dfa:date"},
+              {"kind": "dfareporting#sortedDimension", "name": "dfa:platformType"}],
+            "metricNames": ["dfa:impressions"]
+          },
+          "delivery": {
+            "emailOwner": true,
+            "emailOwnerDeliveryType": "ATTACHMENT"
+          },
+          "schedule": {
+            "active": false,
+            "repeats": "DAILY",
+            "every": 1
+          },
+          "type": "STANDARD",
+          "format": "CSV",
+          "kind": "dfareporting#report",
+          "name": "Test Email Report ( StarThinker )"
+        }
+      },
+      "delete":true
+    }},
+    { "dcm":{
+      "__comment__":"Do nothing wait for the report to finish.",
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
+        "name":"Test Email Report ( StarThinker )",
+        "timeout":5
+      },
+      "out":{}
+    }},
+    { "include":{
+      "script":"scripts/email_cm_to_bigquery.json",
+      "parameters":{
+        "email":{"field":{ "name":"email", "kind":"string", "description":"Email address to send and read report." }},
+        "subject":".*Test Email Report \\( StarThinker \\).*",
+        "dataset":"Test",
+        "table":"Email_Attachment"
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":"Test",
+        "table":"Email_Attachment",
+        "schema":[
+          { "name":"Report_Day", "type":"DATE", "mode":"NULLABLE" },
+          { "name":"Platform_Type", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Impressions", "type":"INTEGER", "mode":"NULLABLE" }
+        ]
+      }
+    }}
+  ]
+}
