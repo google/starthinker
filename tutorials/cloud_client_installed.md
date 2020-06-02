@@ -1,6 +1,6 @@
 # StarThinker Command Line Client Credentials
   
-## Create Client Credentials ( Other )
+## Create Client Credentials ( Desktop )
 
 Retrieve oAuth Client Id from: https://console.cloud.google.com/apis/credentials
 
@@ -10,7 +10,7 @@ Retrieve oAuth Client Id from: https://console.cloud.google.com/apis/credentials
 ### Setup Steps
 
  1. Google Cloud Project -> APIs & Services -> Credentials -> Create Credentials -> oAuth Client Id.
-   1. Select Other.
+   1. Select Desktop.
    1. Name is StarThinker.
  1. Click the download icon next to the new credentials and open the downloaded file.
  1. Copy the contents and paste into the StarThinker deployment script when prompted for Client Installed Credentials.

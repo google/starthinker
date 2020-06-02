@@ -13,9 +13,9 @@ Retrieve oAuth Client Id from: https://console.cloud.google.com/apis/credentials
    1. Select Web.
    1. Name is StarThinker.
    1. Auth Redirect URI is ( you can have several or change them later ):
-     1. http://localhost:8000/oauth_callback/ ( if you deploy the local UI )
-     1. http://[your appengine instance ]/oauth_callback/ ( if you deploy on appengine )
-     1. http://[your custom domain ]/oauth_callback/ ( if you deploy on a custom domain )
+     - http://localhost:8000/oauth_callback/ ( if you deploy the local UI )
+     - http://[your appengine instance ]/oauth_callback/ ( if you deploy on appengine )
+     - http://[your custom domain ]/oauth_callback/ ( if you deploy on a custom domain )
  1. Click the download icon next to the new credentials and open the downloaded file.
  1. Copy the contents and paste into the StarThinker deployment script when prompted for Client Web Credentials.
 

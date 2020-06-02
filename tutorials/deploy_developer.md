@@ -5,21 +5,22 @@ for testing and creating recipes.  Each developer should have a unigue Google Cl
 utilize StarThinker out of the box.  StarThinker is fully extensible.
 
 ## Command Line Deploy
+The Cloud Shell will do the following steps for you:
 ```
 git clone https://github.com/google/starthinker
 ```
 ```
 cd starthinker
 ```
+
+For updating or installing run the following:
 ```
 bash install/deploy.sh 
 ```
 
+1. Set up [Google Cloud Project](https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md).
 1. Option 1) Developer Menu
-1. Option 1) Install StarThinker
-  - You will be asked for a Cloud Project ID ( use the ID, not the Name, not the Number )
-  - You will be asked for [Service Credentials](cloud_service.md).
-  - You will be asked for [Installed Client Credentials](cloud_client_installed.md).
+1. Option 1) Install Developer StarThinker using [Desktop Client Credentials](https://github.com/google/starthinker/blob/master/tutorials/cloud_client_installed.md)
 1. Option 9) Quit
 1. Then run a recipe using:
 ```

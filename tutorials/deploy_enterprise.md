@@ -20,13 +20,11 @@ For updating or installing run the following:
 bash install/deploy.sh
 ```
 
- 1. Option 1) Pull Latest GitHub Version
- 1. Option 2) Enterprise Setup Menu 
- 1. Option 1) Deploy UI And Workers
-     - You will be asked for a Cloud Project ID ( use the ID, not the Name, not the Number )
-     - You will be asked for Web Client Credentials. [See Instructions](cloud_client_web.md)
- 1. Enable backups for your Google Cloud SQL. [Visit Application](https://console.cloud.google.com/sql)
- 1. Enable Google Cloud IAP to restrict access to the UI. [Visit Application](https://console.cloud.google.com/security/iap) 
+ 1. Set up [Google Cloud Project](https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md).
+ 1. Option 2) Enterprise Menu 
+ 1. Option 1) Deploy UI And Workers using [Web Client Credentials](https://github.com/google/starthinker/blob/master/tutorials/cloud_client_web.md)
+ 1. Enable backups for your [Google Cloud SQL](https://console.cloud.google.com/sql).
+ 1. Enable Google [Cloud IAP](https://console.cloud.google.com/security/iap) to restrict access to the UI.
  1. Start using the UI to create and deploy jobs.
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_enterprise.md)
