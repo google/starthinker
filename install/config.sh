@@ -34,7 +34,7 @@ STARTHINKER_WORKER_JOBS=4
 STARTHINKER_ANALYTICS="UA-167283455-2"
 
 STARTHINKER_PROJECT=""
-STARTHINKER_ZONE="us-west1-b"
+STARTHINKER_ZONE="us-west2-b"
 
 STARTHINKER_UI_PRODUCTION_DOMAIN=""
 STARTHINKER_UI_PRODUCTION_SECRET=""
@@ -367,8 +367,7 @@ setup_credentials_commandline() {
     fi
 
     echo "  C. For Application Name enter: StarThinker"
-    echo "  D. In Authorised domains, type $(gcloud app browse --no-launch-browser) and press Enter."
-    echo "  E. All other fields are optional, click Save."
+    echo "  D. All other fields are optional, click Save."
     echo ""
 
     echo "Step 2: Setup Credentials ( do only once )"
@@ -410,6 +409,11 @@ setup_credentials_ui() {
 
   if [ "$forced" == "forced" ] || [ ! -f "$STARTHINKER_CLIENT_WEB" ]; then
 
+    values=$(gcloud app describe --format="value(name)" --verbosity=none)
+    if [ -z "${values}" ]; then
+      gcloud app create --region "${STARTHINKER_REGION}"
+    fi
+
     echo "Step 1: Configure Consent Screen ( do only once )"
     echo "----------------------------------------"
     echo "  A. Visit: https://console.developers.google.com/apis/credentials/consent"
@@ -421,7 +425,7 @@ setup_credentials_ui() {
     fi
 
     echo "  C. For Application Name enter: StarThinker"
-    echo "  D. In Authorised domains, type $(gcloud app browse --no-launch-browser) and press Enter."
+    echo "  D. In Authorized domains, type $(gcloud app browse --no-launch-browser) and press Enter."
     echo "  E. All other fields are optional, click Save."
     echo ""
 
