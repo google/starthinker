@@ -380,8 +380,9 @@ setup_credentials_commandline() {
 
     echo "Step 3: Enter Credentials ( do only once )"
     echo "----------------------------------------"
-    echo "  A. Find your key under OAuth 2.0 Client IDs and click download arrow."
-    echo "  B. Paste credentials JSON below, then press return ( if return does not work press CTRL + D ):"
+    echo "  A. Visit: https://console.developers.google.com/apis/credentials"
+    echo "  B. Find your key under OAuth 2.0 Client IDs and click download arrow."
+    echo "  C. Paste credentials JSON below, then press return ( if return does not work press CTRL + D ):"
     echo ""
 
     read_multiline "}}"
@@ -442,8 +443,9 @@ setup_credentials_ui() {
 
     echo "Step 3: Enter Credentials ( do only once )"
     echo "----------------------------------------"
-    echo "  A. Find your key under OAuth 2.0 Client IDs and click download arrow."
-    echo "  B. Paste credentials JSON below, then press return ( if return does not work press CTRL + D ):"
+    echo "  A. Visit: https://console.developers.google.com/apis/credentials"
+    echo "  B. Find your key under OAuth 2.0 Client IDs and click download arrow."
+    echo "  C. Paste credentials JSON below, then press return ( if return does not work press CTRL + D ):"
     echo ""
 
     read_multiline "}}"
