@@ -65,7 +65,8 @@ want to use the new creative.
 
 ## Push to Campaign Manager
 
-Push to Campaign Manager through the menu Bulkdozer -> Push to CM.
+Push to Campaign Manager by going to your StarThinker recipe and clicking the
+"Run" button.
 
 Watch the Log tab as the process runs and your campaign is trafficked. 
 When you see the message "Bulkdozer traffic job ended" in the logs the 

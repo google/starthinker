@@ -1,6 +1,26 @@
 # List Of StarThinker Command Line Helpers
 
-Developing solutions is easier with helpers that automate common development tasks. Here are a few you can run from the command line...
+Developing solutions is easier with helpers that automate common development 
+tasks. Here are a few you can run from the command line.  Before running any 
+helpers make sure to install the [developer environment](deploy_developer.md)
+and load the python virtual environment:
+
+```
+source starthinker_assets/development.sh
+```
+
+The most common parameters for helpers are:
+
+- -u $STARTHINKER_USER - user credentials for accessing API endpoints.
+- -c $STARTHINKER_CLIENT - client creddentials for authenticating, not needed if user credentials already exist.
+- -s $STARTHINKER_SERVICE - service credentials for writing data.
+- -p $STARTHINKER_PROJECT - cloud project to bill the data transfer to.
+
+Examples exist within the python code for each helper, but a typical run is:
+
+```
+python dbm/helper.py --list -u $STARTHINKER_USER
+```
 
 ## List Of Helper Utilities
 

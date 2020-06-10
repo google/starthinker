@@ -46,13 +46,16 @@ Steps From [Tutorial](tutorials/README.md):
 - [ ] [Deploy developer.](tutorials/deploy_developer.md) 
 - [ ] [Run hello world.](tutorials/running.md)
 - [ ] [Develop a new task or recipe worflow.](tutorials/README.md#development)
+- [ ] [Optional: Get your own private copy of the code.](CONTRIBUTING.md) 
+- [ ] [Optional: Make contributions to an open source Google project.](CONTRIBUTING.md) 
 
 ## Where Do I Get Help?
 
 - The [StarThinker Solution Gallery](https://google.github.io/starthinker/) lists all the existing tasks and authors. 
 - Read the [Tutorials](tutorials/README.md).
 - Review the [FAQ](tutorials/faq.md).
-- Ask for help ( no SLA, not guranteed ): starthinker-help@google.com
+- Read the [Contributing Process](CONTRIBUTING.md).
+- Ask for help ( no SLA, not guaranteed ): starthinker-help@google.com
 
 ## Authors 
 

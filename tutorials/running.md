@@ -1,9 +1,18 @@
 # Running A Recipe
   
-The command line version of StarThinker is runs directly on Python, other than some python 
+The command line version of StarThinker runs directly on Python, other than some python 
 libraries, no intermediate frameworks are necessary. The goal is rapid development and iteration.
 
-Before running any recipes make sure to load the python virtual environment:
+The most common parameters for helpers are:
+
+- -u $STARTHINKER_USER - user credentials for accessing API endpoints.
+- -c $STARTHINKER_CLIENT - client creddentials for authenticating, not needed if user credentials already exist.
+- -s $STARTHINKER_SERVICE - service credentials for writing data.
+- -p $STARTHINKER_PROJECT - cloud project to bill the data transfer to.
+- --verbose - print all debug output to STDOUT.
+- --force - if recipe has a schedule, ignore it and run all the tasks.
+
+Before running any recipes make sure to [install](deploy_developer.md) and load the python virtual environment:
 
 ```
 source starthinker_assets/development.sh
@@ -11,11 +20,15 @@ source starthinker_assets/development.sh
 
 ### Run All Tasks In Recipe
 
+This srcript looks inside the recipe and kicks off a new process for each task in sequence.
+
 ```
 python starthinker/all/run.py scripts/say_hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT 
 ```
 
 ### Run A Specific Task In A Recipe
+
+This is a specific task run, the -i parameter specifies which instance of that task to execute if there is more than one.
 
 ```
 python starthinker/tasks/hello/run.py scripts/say_hello.json -i 1 -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT 
@@ -23,8 +36,8 @@ python starthinker/tasks/hello/run.py scripts/say_hello.json -i 1 -u $STARTHINKE
 
 ## Converting A Script To A Recipe
 
-Recipe scripts have { field:... } parameters and use the naming convention srcipt_\*.json.  To run them 
-you must first convert the fields to values using the [script helper](../starthinker/script/run.py).
+Scripts have { field:... } parameters because they are templates.  To run them you must first convert 
+the fields to values using the [script helper](../starthinker/script/run.py). An example below:
 
 ### Interactive Conversion
 

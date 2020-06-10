@@ -191,7 +191,7 @@ By using Bulkdozer the user agrees with the
 <a name="support"></a>
 ## Support
 
-Contact the team or request Bulkdozer: bulkdozer-support@google.com
+Bulkdozer is community supported, if you have any issues or questions please post a new issue [here](https://github.com/google/starthinker/issues)
 
 Sign up for updates and announcements: [Bulkdozer Announcements](https://groups.google.com/forum/#!forum/bulkdozer-announcements)
 

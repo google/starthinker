@@ -102,13 +102,11 @@ Fields not mentioned above can be left blank.
 
 ## Push to Campaign Manager 
 
-Push to Campaign Manager through the menu Bulkdozer -> Push to CM. Watch
-the Log tab as the process runs and your campaign is trafficked. When
-you see the message "Bulkdozer traffic job ended" in the logs the
-process is done. If you see any errors in the Log tab you can make
+Push to Campaign Manager by going to your StarThinker recipe and clicking the
+"Run" button.Watch the Log tab as the process runs and your campaign is
+trafficked. When you see the message "Bulkdozer traffic job ended" in the logs
+the process is done. If you see any errors in the Log tab you can make
 corrections to the appropriate tab and push again.
-
- 
 
 
 [Back to Documentation](Intsallation_and_User_guides.md) <br/>

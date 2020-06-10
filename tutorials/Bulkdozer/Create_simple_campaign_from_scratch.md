@@ -76,7 +76,8 @@ The grey columns below will populate automatically once you push to CM.
 
 ## Push to Campaign Manager 
 
-Push to Campaign Manager through the menu Bulkdozer -> Push to CM. 
+Push to Campaign Manager by going to your StarThinker recipe and clicking the
+"Run" button.
 
 ![](Images/bulkdozer_push_to_CM_menu.png)
 
