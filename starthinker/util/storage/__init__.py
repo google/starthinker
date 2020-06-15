@@ -111,7 +111,7 @@ def object_get(auth, path):
   return service.objects().get_media(bucket=bucket, object=filename).execute()
 
 
-def object_get_chunks(auth, path, chunksize=CHUNKSIZE):
+def object_get_chunks(auth, path, chunksize=CHUNKSIZE, encoding=None):
   bucket, filename = path.split(':', 1)
   service = get_service('storage', 'v1', auth)
 
@@ -127,7 +127,8 @@ def object_get_chunks(auth, path, chunksize=CHUNKSIZE):
       progress, done = media.next_chunk()
       if progress: print('Download %d%%' % int(progress.progress() * 100))
       data.seek(0)
-      yield data
+      #yield data
+      yield data.read().decode(encoding) if encoding else data
       data.seek(0)
       data.truncate(0)
     except HttpError as err:

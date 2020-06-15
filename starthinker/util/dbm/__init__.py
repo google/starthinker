@@ -202,7 +202,7 @@ def report_fetch(auth, report_id=None, name=None, timeout = 60):
       time.sleep(60)
 
 
-def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = None):
+def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = DBM_CHUNKSIZE):
   """ Retrieves most recent DBM file by name or ID, if in progress, waits for it to complete.
 
   Bulletproofing: https://developers.google.com/bid-manager/v1/queries/getquery
@@ -235,15 +235,14 @@ def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = None)
     filename = RE_FILENAME.search(storage_path).groups(0)[0]
 
     # streaming
-    if 0: #if chunksize: BROKEN SO DEFAULTING TO STREAMING
-      #print('PATH PRE', storage_path)
+    if chunksize: 
       path = storage_path.split('?', 1)[0].replace('https://storage.googleapis.com/', '').replace('/', ':', 1)
-      #print('PATH POST', path)
-      return filename, object_get_chunks(auth, path, chunksize)
+      if project.verbose: print("REPORT FILE STREAM:", path)
+      return filename, object_get_chunks(auth, path, chunksize, 'utf-8')
 
     # single object
     else:
-      #print('SP', storage_path)
+      if project.verbose: print("REPORT FILE SINGLE:", storage_path)
       return filename, StringIO(urlopen(storage_path).read().decode('UTF-8'))
 
 
@@ -334,7 +333,7 @@ def report_to_rows(report):
   if type(report) is GeneratorType:
     leftovers = ''
     for chunk in report:
-      data, extra = chunk.read().rsplit('\n', 1)
+      data, extra = chunk.rsplit('\n', 1)
       for row in csv_to_rows(leftovers + data): 
         yield row
       leftovers = extra

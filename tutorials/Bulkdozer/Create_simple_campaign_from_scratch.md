@@ -79,7 +79,7 @@ The grey columns below will populate automatically once you push to CM.
 Push to Campaign Manager by going to your StarThinker recipe and clicking the
 "Run" button.
 
-![](Images/bulkdozer_push_to_CM_menu.png)
+![buulkdozer_ui_recipe_run](Images/buulkdozer_ui_recipe_run.png)
 
 Watch the Log tab as the process runs and your campaign is trafficked.
 When you see the message "Bulkdozer traffic job ended" in the logs the
@@ -91,6 +91,16 @@ appropriate tab and push again.
 Once the process completes successfully, go to your campaign in Campaign
 manager and verify the event tags applied to the ads under the placement
 you've configured with the profile.
+
+## Sanity check:
+
+After completing the above steps you will have a customized Google sheet 
+representing the “Feed” and have a Bulkdozer instance deployed. This 
+section will help you to determine whether all components are accessible 
+and that the tool has been successfully deployed.
+
+Open your copy of the “Feed”. At this stage we will check connectivity 
+with CM and perform the authentication process.
 
 ## Expected Result
 
