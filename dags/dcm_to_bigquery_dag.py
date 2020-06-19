@@ -94,6 +94,7 @@ TASKS = [
       },
       'out': {
         'bigquery': {
+          'auth': 'service',
           'dataset': {
             'field': {
               'name': 'dataset',

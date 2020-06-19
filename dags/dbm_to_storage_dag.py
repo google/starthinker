@@ -81,6 +81,7 @@ TASKS = [
       },
       'out': {
         'storage': {
+          'auth': 'service',
           'bucket': {
             'field': {
               'name': 'dbm_bucket',

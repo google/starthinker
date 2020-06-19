@@ -25,6 +25,7 @@
       },
       "out":{
         "storage":{
+          "auth":"service",
           "bucket":{"field":{ "name":"bucket", "kind":"string", "order":5, "default":"" }},
           "path":{"field":{ "name":"path", "kind":"string", "order":6, "default":"CM_Report" }}
         }

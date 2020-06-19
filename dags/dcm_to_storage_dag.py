@@ -90,6 +90,7 @@ TASKS = [
       },
       'out': {
         'storage': {
+          'auth': 'service',
           'bucket': {
             'field': {
               'name': 'bucket',

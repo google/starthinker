@@ -1,8 +1,8 @@
 {
   "script":{
     "released":"2019-11-19",
-    "license_off":"Apache License, Version 2.0",
-    "copyright":"Copyright 2019 Google LLC",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2018 Google LLC",
     "icon":"donut_small",
     "title":"ITP Audit Dashboard ( 2020 )",
     "description":"Dashboard that shows performance metrics across browser to see the impact of ITP.",

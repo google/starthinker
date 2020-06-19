@@ -22,6 +22,7 @@
       },
       "out":{
         "storage":{
+          "auth":"service",
           "bucket":{"field":{ "name":"dbm_bucket", "kind":"string", "order":3, "default":"", "description":"Google cloud bucket." }},
           "path":{"field":{ "name":"dbm_path", "kind":"string", "order":4, "default":"", "description":"Path and filename to write to." }}
         }

@@ -22,12 +22,13 @@
 
 import re
 import sys
+import codecs
 import csv
 import pprint
 import uuid
 import json
 from time import sleep
-from io import StringIO, BytesIO
+from io import BytesIO
 from datetime import datetime, timedelta
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseUpload
@@ -254,8 +255,9 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
 def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_rows=1, disposition='WRITE_TRUNCATE', wait=True):
   if project.verbose: print('BIGQUERY ROWS TO TABLE: ', project_id, dataset_id, table_id)
 
-  buffer_data = StringIO()
-  writer = csv.writer(buffer_data, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+  buffer_data = BytesIO()
+  buffer_writer = codecs.getwriter('utf-8')
+  writer = csv.writer(buffer_writer(buffer_data), delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
   has_rows = False
 
   if rows == []:
@@ -289,13 +291,13 @@ def rows_to_table(auth, project_id, dataset_id, table_id, rows, schema=[], skip_
 def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None, disposition='WRITE_TRUNCATE', wait=True):
   if project.verbose: print('BIGQUERY JSON TO TABLE: ', project_id, dataset_id, table_id)
 
-  buffer_data = StringIO()
+  buffer_data = BytesIO()
   has_rows = False
 
   for is_last, record in flag_last(json_data):
 
     # check if json is already string encoded, and write to buffer
-    buffer_data.write(record if isinstance(record, str) else json.dumps(record))
+    buffer_data.write((record if isinstance(record, str) else json.dumps(record)).encode('utf-8'))
 
     # write the buffer in chunks
     if is_last or buffer_data.tell() + 1 > BIGQUERY_BUFFERSIZE:
@@ -311,7 +313,7 @@ def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None
 
     # if not end append newline, for newline delimited json
     else:
-      buffer_data.write('\n')
+      buffer_data.write('\n'.encode('utf-8'))
 
   # if no rows, clear table to simulate empty write
   if not has_rows:
@@ -320,15 +322,15 @@ def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None
 
 
 # NEWLINE_DELIMITED_JSON, CSV
-def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV', schema=None, skip_rows=0, disposition='WRITE_TRUNCATE', wait=True):
+def io_to_table(auth, project_id, dataset_id, table_id, data_bytes, source_format='CSV', schema=None, skip_rows=0, disposition='WRITE_TRUNCATE', wait=True):
 
   # if data exists, write data to table
-  data.seek(0, 2)
-  if data.tell() > 0:
-    data.seek(0)
+  data_bytes.seek(0, 2)
+  if data_bytes.tell() > 0:
+    data_bytes.seek(0)
 
     media = MediaIoBaseUpload(
-      BytesIO(data.read().encode('utf8')),
+      data_bytes,
       mimetype='application/octet-stream',
       resumable=True,
       chunksize=BIGQUERY_CHUNKSIZE
@@ -354,6 +356,9 @@ def io_to_table(auth, project_id, dataset_id, table_id, data, source_format='CSV
  
     if schema:
       body['configuration']['load']['schema'] = { 'fields':schema }
+      body['configuration']['load']['autodetect'] = False
+
+    if disposition == 'WRITE_APPEND':
       body['configuration']['load']['autodetect'] = False
 
     if source_format == 'CSV':

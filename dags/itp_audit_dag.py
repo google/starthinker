@@ -43,17 +43,18 @@ Follow the instructions from <a href="https://docs.google.com/document/d/1HaRCMa
 
 from starthinker_airflow.factory import DAG_Factory
  
-USER_CONN_ID = "google_cloud_default" # The connection to use for user authentication.
-GCP_CONN_ID = "" # The connection to use for service authentication.
+# Add the following credentials to your Airflow configuration.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
+  'recipe_name': '',  # Name of document to deploy to.
   'cm_account_id': '',  # Campaign Manager Account Id.
+  'cm_advertiser_ids': '',  # Optional: Comma delimited list of CM advertiser ids.
   'floodlight_configuration_id': '',  # Floodlight Configuration Id for the Campaign Manager floodlight report.
-  'cm_advertiser_ids': '',  # Optional: Comma delimited list of DCM advertiser ids.
   'dv360_partner_ids': '',  # Comma delimited list of DV360 Partner ids.
   'dv360_advertiser_ids': '',  # Optional: Comma delimited list of DV360 Advertiser ids.
-  'recipe_name': '',  # Name of document to deploy to.
 }
 
 TASKS = [
@@ -69,7 +70,7 @@ TASKS = [
             'name': 'recipe_name',
             'prefix': 'ITP Audit ',
             'kind': 'string',
-            'order': 7,
+            'order': 1,
             'description': 'Name of document to deploy to.',
             'default': ''
           }
@@ -84,7 +85,7 @@ TASKS = [
         'field': {
           'name': 'recipe_name',
           'kind': 'string',
-          'order': 7,
+          'order': 1,
           'default': 'ITP_Audit_Dashboard',
           'description': 'BigQuery dataset for store dashboard tables.'
         }
@@ -102,7 +103,7 @@ TASKS = [
               'field': {
                 'name': 'dv360_advertiser_ids',
                 'kind': 'integer_list',
-                'order': 5,
+                'order': 6,
                 'default': '',
                 'description': 'Optional: Comma delimited list of DV360 Advertiser ids.'
               }
@@ -113,7 +114,7 @@ TASKS = [
               'field': {
                 'name': 'dv360_partner_ids',
                 'kind': 'integer_list',
-                'order': 4,
+                'order': 5,
                 'default': '',
                 'description': 'Comma delimited list of DV360 Partner ids.'
               }
@@ -135,8 +136,8 @@ TASKS = [
                 'name': 'recipe_name',
                 'kind': 'string',
                 'prefix': 'ITP_Audit_Browser_',
-                'order': 7,
-                'description': 'Name of report in DBM, should be unique.'
+                'order': 1,
+                'description': 'Name of report in DV360, should be unique.'
               }
             },
             'dataRange': 'LAST_365_DAYS',
@@ -185,7 +186,7 @@ TASKS = [
           'field': {
             'name': 'cm_account_id',
             'kind': 'string',
-            'order': 1,
+            'order': 2,
             'default': '',
             'description': 'Campaign Manager Account Id.'
           }
@@ -197,8 +198,8 @@ TASKS = [
               'name': 'recipe_name',
               'kind': 'string',
               'prefix': 'ITP_Audit_Floodlight_',
-              'order': 7,
-              'description': 'Name of report in DBM, should be unique.'
+              'order': 1,
+              'description': 'Name of report in DV360, should be unique.'
             }
           },
           'format': 'CSV',
@@ -215,7 +216,7 @@ TASKS = [
                 'field': {
                   'name': 'floodlight_configuration_id',
                   'kind': 'integer',
-                  'order': 2,
+                  'order': 4,
                   'default': '',
                   'description': 'Floodlight Configuration Id for the Campaign Manager floodlight report.'
                 }
@@ -282,7 +283,7 @@ TASKS = [
             'field': {
               'name': 'recipe_name',
               'kind': 'string',
-              'order': 7,
+              'order': 1,
               'default': 'ITP_Audit_Dashboard',
               'description': 'BigQuery dataset for store dashboard tables.'
             }
@@ -303,7 +304,7 @@ TASKS = [
           'field': {
             'name': 'cm_account_id',
             'kind': 'string',
-            'order': 1,
+            'order': 2,
             'default': '',
             'description': 'Campaign Manager Account Id.'
           }
@@ -316,7 +317,7 @@ TASKS = [
                 'kind': 'integer_list',
                 'order': 3,
                 'default': '',
-                'description': 'Optional: Comma delimited list of DCM advertiser ids.'
+                'description': 'Optional: Comma delimited list of CM advertiser ids.'
               }
             }
           }
@@ -327,7 +328,7 @@ TASKS = [
             'field': {
               'name': 'recipe_name',
               'kind': 'string',
-              'order': 9,
+              'order': 1,
               'prefix': 'ITP_Audit_Browser_',
               'default': 'ITP_Audit_Dashboard_Browser',
               'description': 'Name of the Campaign Manager browser report.'
@@ -337,7 +338,7 @@ TASKS = [
             'field': {
               'name': 'recipe_name',
               'kind': 'string',
-              'order': 9,
+              'order': 1,
               'prefix': 'ITP_Audit_Browser_',
               'default': 'ITP_Audit_Dashboard_Browser',
               'description': 'Name of the Campaign Manager browser report.'
@@ -417,7 +418,7 @@ TASKS = [
             'field': {
               'name': 'recipe_name',
               'kind': 'string',
-              'order': 7,
+              'order': 1,
               'default': 'ITP_Audit_Dashboard',
               'description': 'BigQuery dataset for store dashboard tables.'
             }
@@ -437,7 +438,7 @@ TASKS = [
           'name': 'recipe_name',
           'prefix': 'ITP Audit ',
           'kind': 'string',
-          'order': 7,
+          'order': 1,
           'description': 'Name of document to deploy to.',
           'default': ''
         }
@@ -452,7 +453,7 @@ TASKS = [
             'field': {
               'name': 'recipe_name',
               'kind': 'string',
-              'order': 7,
+              'order': 1,
               'default': 'ITP_Audit_Dashboard',
               'description': 'BigQuery dataset for store dashboard tables.'
             }
@@ -470,7 +471,7 @@ TASKS = [
           'name': 'recipe_name',
           'prefix': 'ITP Audit ',
           'kind': 'string',
-          'order': 7,
+          'order': 1,
           'description': 'Name of document to deploy to.',
           'default': ''
         }
@@ -485,7 +486,7 @@ TASKS = [
             'field': {
               'name': 'recipe_name',
               'kind': 'string',
-              'order': 7,
+              'order': 1,
               'default': 'ITP_Audit_Dashboard',
               'description': 'BigQuery dataset for store dashboard tables.'
             }
@@ -503,7 +504,7 @@ TASKS = [
           'name': 'recipe_name',
           'prefix': 'ITP Audit ',
           'kind': 'string',
-          'order': 7,
+          'order': 1,
           'description': 'Name of document to deploy to.',
           'default': ''
         }
@@ -518,7 +519,7 @@ TASKS = [
             'field': {
               'name': 'recipe_name',
               'kind': 'string',
-              'order': 7,
+              'order': 1,
               'default': 'ITP_Audit_Dashboard',
               'description': 'BigQuery dataset for store dashboard tables.'
             }
@@ -536,7 +537,7 @@ TASKS = [
           'name': 'recipe_name',
           'prefix': 'ITP Audit ',
           'kind': 'string',
-          'order': 7,
+          'order': 1,
           'description': 'Name of document to deploy to.',
           'default': ''
         }
@@ -551,7 +552,7 @@ TASKS = [
             'field': {
               'name': 'recipe_name',
               'kind': 'string',
-              'order': 7,
+              'order': 1,
               'default': 'ITP_Audit_Dashboard',
               'description': 'BigQuery dataset for store dashboard tables.'
             }
@@ -569,7 +570,7 @@ TASKS = [
           'name': 'recipe_name',
           'prefix': 'ITP Audit ',
           'kind': 'string',
-          'order': 7,
+          'order': 1,
           'description': 'Name of document to deploy to.',
           'default': ''
         }
@@ -584,7 +585,7 @@ TASKS = [
             'field': {
               'name': 'recipe_name',
               'kind': 'string',
-              'order': 7,
+              'order': 1,
               'default': 'ITP_Audit_Dashboard',
               'description': 'BigQuery dataset for store dashboard tables.'
             }
@@ -603,8 +604,8 @@ TASKS = [
             'name': 'recipe_name',
             'kind': 'string',
             'prefix': 'ITP_Audit_Browser_',
-            'order': 7,
-            'description': 'Name of report in DBM, should be unique.'
+            'order': 1,
+            'description': 'Name of report in DV360, should be unique.'
           }
         }
       },
@@ -614,7 +615,7 @@ TASKS = [
             'field': {
               'name': 'recipe_name',
               'kind': 'string',
-              'order': 7,
+              'order': 1,
               'default': 'ITP_Audit_Dashboard',
               'description': 'BigQuery dataset for store dashboard tables.'
             }
@@ -631,7 +632,7 @@ TASKS = [
         'field': {
           'name': 'cm_account_id',
           'kind': 'string',
-          'order': 1,
+          'order': 2,
           'default': '',
           'description': 'Campaign Manager Account Id.'
         }
@@ -640,7 +641,7 @@ TASKS = [
         'field': {
           'name': 'recipe_name',
           'kind': 'string',
-          'order': 7,
+          'order': 1,
           'default': 'ITP_Audit_Dashboard',
           'description': 'BigQuery dataset for store dashboard tables.'
         }
@@ -650,7 +651,7 @@ TASKS = [
           'name': 'recipe_name',
           'prefix': 'ITP Audit ',
           'kind': 'string',
-          'order': 7,
+          'order': 1,
           'description': 'Name of document to deploy to.',
           'default': ''
         }

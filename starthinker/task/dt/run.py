@@ -20,7 +20,7 @@
 import re
 import zlib
 import gzip
-from io import StringIO
+from io import BytesIO
 from datetime import datetime, timedelta
 from googleapiclient.errors import HttpError
 
@@ -104,7 +104,7 @@ def dt_move_large(dt_file, dt_partition, jobs):
       project.id,
       project.task['to']['dataset'],
       dt_partition,
-      StringIO(view[:end]),
+      BytesIO(view[:end].encode()),
       'CSV',
       schema,
       0,

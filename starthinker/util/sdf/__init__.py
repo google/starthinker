@@ -32,6 +32,23 @@ from starthinker.util.bigquery import rows_to_table, table_create, table_exists
 from starthinker.util.sdf.schema.Lookup import SDF_Field_Lookup
 from starthinker.util.google_api import API_DV360_Beta
 
+# Desired file name: InsertionOrders, LineItems, *Camel case of the filetype
+def get_single_sdf_rows(auth, version, partner_id, file_types, filter_type, filter_ids_obj, desired_file_type):
+  sdf_zip_file = sdf_download(auth, version, partner_id, file_types, filter_type, filter_ids_obj)
+
+  with zipfile.ZipFile(sdf_zip_file, 'r', zipfile.ZIP_DEFLATED) as d: 
+    file_names = d.namelist()
+    for file_name  in file_names:
+
+      # make sure to only get the one file
+      if desired_file_type != file_name.split('-')[1].split('.')[0] or 'Skipped' in file_name: continue
+
+      if project.verbose: print('SDF: Loading: ' + file_name)
+      with d.open(file_name) as sdf_file:
+        rows = csv_to_rows(sdf_file.read().decode('utf-8'))
+
+        return rows
+
 
 def sdf_download(auth, version, partner_id, file_types, filter_type, filter_ids_obj):
   #Read Filter Ids

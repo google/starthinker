@@ -20,43 +20,183 @@
 from datetime import datetime
 
 from starthinker.util.project import project
-from starthinker.util.dbm import report_file, report_clean, report_to_rows, DBM_CHUNKSIZE, sdf_read, report_to_list
+from starthinker.util.dbm import report_file, report_get, report_clean, report_to_rows, DBM_CHUNKSIZE, report_to_list
 from starthinker.util.bigquery import rows_to_table, make_schema
+from starthinker.util.sdf import get_single_sdf_rows
+from starthinker.util.data import put_rows
 
 BUDGET_SEGMENTS = 'Budget Segments'
 IO_ID = 'Io Id'
+CHANGES_SCHEMA = ['Io Id','Category','Old Value','Delta','New Value']
 
 
 @project.from_parameters
 def monthly_budget_mover():
 	if project.verbose: print('MONTHLY BUDGET MOVER')
 
-	report = report_to_list(project.task['auth'], project.task['spend_report_id'])
+	# Get Spend report
+	r = report_get(project.task['auth'], name=project.task['report_name'])
 
-	categories = remove_excluded_ios_from_categories(project.task['budget_categories'], project.task['excluded_ios'])
+	report_id = report_get(project.task['auth'], name=project.task['report_name'])['queryId']
+#	report = report_to_list(project.task['auth'], report_id)
 
-	categories_spend = aggregate_io_spend_to_categories(report, categories)
+	# Get Insertion Order SDF
+	# sdf = list(get_single_sdf_rows(
+	#     project.task['auth'], 
+	#     project.task['sdf']['version'], 
+	#     project.task['sdf']['partner_id'], 
+	#     project.task['sdf']['file_types'], 
+	#     project.task['sdf']['filter_type'], 
+	#     project.task['sdf']['read']['filter_ids'],
+ #    	'InsertionOrders'))
 
-	sdf = list(sdf_read(project.task['auth'], project.task['sdf']['file_types'].split(','), project.task['sdf']['filter_type'], project.task['sdf']['filter_ids']))
+	# print('sdf============================================================')
+	# print(sdf)
+	# print('sdf============================================================')
 
-	categories_budget = aggregate_io_budget_to_categories(sdf, categories)
+	sdf = [['Io Id', 'Campaign Id', 'Name', 'Timestamp', 'Status', 'Io Type', 'Billable Outcome', 'Fees', 'Integration Code', 'Details', 'Pacing', 'Pacing Rate', 'Pacing Amount', 'Frequency Enabled', 'Frequency Exposures', 'Frequency Period', 'Frequency Amount', 'Performance Goal Type', 'Performance Goal Value', 'Measure DAR', 'Measure DAR Channel', 'Budget Type', 'Budget Segments', 'Auto Budget Allocation', 'Geography Targeting - Include', 'Geography Targeting - Exclude', 'Language Targeting - Include', 'Language Targeting - Exclude', 'Device Targeting - Include', 'Device Targeting - Exclude', 'Browser Targeting - Include', 'Browser Targeting - Exclude', 'Digital Content Labels - Exclude', 'Brand Safety Sensitivity Setting', 'Brand Safety Custom Settings', 'Third Party Verification Services', 'Third Party Verification Labels', 'Channel Targeting - Include', 'Channel Targeting - Exclude', 'Site Targeting - Include', 'Site Targeting - Exclude', 'App Targeting - Include', 'App Targeting - Exclude', 'App Collection Targeting - Include', 'App Collection Targeting - Exclude', 'Category Targeting - Include', 'Category Targeting - Exclude', 'Keyword Targeting - Include', 'Keyword Targeting - Exclude', 'Keyword List Targeting - Exclude', 'Audience Targeting - Similar Audiences', 'Audience Targeting - Include', 'Audience Targeting - Exclude', 'Affinity & In Market Targeting - Include', 'Affinity & In Market Targeting - Exclude', 'Custom List Targeting', 'Inventory Source Targeting - Authorized Seller Options', 'Inventory Source Targeting - Include', 'Inventory Source Targeting - Exclude', 'Inventory Source Targeting - Target New Exchanges', 'Daypart Targeting', 'Daypart Targeting Time Zone', 'Environment Targeting', 'Viewability Targeting Active View', 'Position Targeting - Display On Screen', 'Position Targeting - Video On Screen', 'Position Targeting - Display Position In Content', 'Position Targeting - Video Position In Content', 'Position Targeting - Audio Position In Content', 'Video Player Size Targeting', 'Demographic Targeting Gender', 'Demographic Targeting Age', 'Demographic Targeting Household Income', 'Demographic Targeting Parental Status', 'Connection Speed Targeting', 'Carrier Targeting - Include', 'Carrier Targeting - Exclude', 'Insertion Order Optimization', 'Bid Strategy Unit', 'Bid Strategy Do Not Exceed', 'Apply Floor Price For Deals', 'Algorithm Id'],['3489402', '294948', 'Audit_creas_Mustang', '2020-03-06T22:04:11.821000', 'Paused', 'Standard', 'Impression', '(Media; 0.0; Display & Video 360 Fee; True;);', '', '', 'Flight', 'Even', '0', 'True', '1', 'Lifetime', '0', 'None', '0', 'False', '', 'Amount', '(12000.0; 05/01/2020; 05/31/2020;);(12000.0; 06/01/2020; 06/30/2020;);', 'False', '', '', '', '', '2; 502; 202; 302;', '', '', '', '', 'Use custom', 'Adult; Alcohol; Derogatory; Downloads & Sharing; Drugs; Gambling; Profanity; Religion; Sensitive social issues; Suggestive; Tobacco; Tragedy; Transportation Accidents; Violence; Weapons;', 'None', '', '', '2203109; 2998109; 2998110; 2998111; 2998112; 2998113; 2998114;', '', '', '', '', '', '', '', '', '', '', '', 'False', '', '', '', '', '', 'Authorized and Non-Participating Publisher', '1; 6; 8; 9; 10; 2; 11; 12; 13; 16; 17; 19; 20; 21; 23; 27; 31; 34; 36; 37; 38; 41; 42; 43; 50; 52; 60;', '', 'True', '', '', 'Web; App;', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'False', '', '', '', ''],  ['3502002', '294948', 'FR_Mindshare_Ford_Mustang_CTX_VOL_Avril17', '2020-03-06T12:07:04.366000', 'Paused', 'Standard', 'Impression', '(Media; 0.0; Display & Video 360 Fee; True;);', '', '', 'Flight', 'Even', '0', 'False', '0', 'Minutes', '0', 'None', '0', 'False', '', 'Amount', '(12000.0; 05/01/2020; 05/31/2020;);(12000.0; 06/01/2020; 06/30/2020;);', 'False', '2250;', '', '', '', '2;', '502; 202; 302;', '', '', '', 'Use custom', 'Adult; Alcohol; Derogatory; Downloads & Sharing; Drugs; Gambling; Politics; Profanity; Religion; Sensitive social issues; Suggestive; Tobacco; Tragedy; Transportation Accidents; Violence; Weapons;', 'None', '', '', '2203109; 2998109; 2998110; 2998111; 2998112; 2998113; 2998114;', '', '', '', '', '', '', '', '', '', '', '', 'False', '', '', '', '', '', 'Authorized and Non-Participating Publisher', '1; 6; 8; 9; 10; 2; 11; 12; 13; 16; 17; 19; 20; 21; 23; 27; 31; 34; 36; 37; 38; 41; 42; 43; 50; 52; 60;', '', 'True', '', '', 'Web; App;', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'False', '', '', '', ''],['3522675', '294948', 'FR_Mindshare_Ford_Sales_Juin_CTX_VOL_Juin17', '2020-03-06T10:44:48.709000', 'Paused', 'Standard', 'Impression', '(Media; 0.0; Display & Video 360 Fee; True;);', '', '', 'Flight', 'Ahead', '0', 'False', '0', 'Minutes', '0', 'None', '0', 'False', '', 'Amount', '(12000.0; 05/01/2020; 05/31/2020;);(12000.0; 06/01/2020; 06/30/2020;);', 'False', '2250;', '', '', '', '2;', '502; 202; 302;', '', '', '', 'Use custom', 'Adult; Alcohol; Derogatory; Downloads & Sharing; Drugs; Gambling; Profanity; Religion; Sensitive social issues; Suggestive; Tobacco; Tragedy; Transportation Accidents; Violence; Weapons;', 'None', '', '', '2203109; 2998109; 2998110; 2998111; 2998112; 2998113; 2998114;', '', '', '', '', '', '', '', '', '', '', '', 'False', '', '', '', '', '', 'Authorized and Non-Participating Publisher', '1; 6; 8; 9; 10; 2; 11; 12; 13; 16; 17; 19; 20; 21; 23; 27; 31; 34; 36; 37; 38; 41; 42; 43; 50; 52; 60;', '', 'True', '', '', 'Web; App;', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'False', '', '', '', '']]
 
-	category_budget_deltas = calc_budget_spend_deltas(categories_budget, categories_spend, categories)
+	report = [['Advertiser_Currency', 'Insertion_Order_Id', 'Revenue_Adv_Currency'], ['EUR', '3489402', '893.195881'],['EUR', '3502002', '14893.195881'],['EUR', '3522675', '893.195881']]
+	print('report============================================================')
+	print(report)
+	print('report============================================================')
 
-	new_sdf,changes = apply_category_budgets(sdf, category_budget_deltas, categories)
 
-	# Set Schemas for BQ tables
-	schema = make_schema(new_sdf[0])
-	schema_changes = make_schema(['Io Id','Category','Old Value','Delta','New Value'])
-	
+	# Prep out blocks depending on where the outputs should be stored
+	if project.task['is_colab']:
+		project.task['out_old_sdf'].pop('bigquery')
+		project.task['out_new_sdf'].pop('bigquery')
+		project.task['out_changes'].pop('bigquery')
+
+	else:
+		project.task['out_old_sdf'].pop('file')
+		project.task['out_new_sdf'].pop('file')
+		project.task['out_changes'].pop('file')
+
+		# Build Schemas
+		schema = make_schema(sdf[0])
+		schema_changes = make_schema(CHANGES_SCHEMA)
+		project.task['out_old_sdf']['bigquery']['schema'] = schema
+		project.task['out_new_sdf']['bigquery']['schema'] = schema
+		project.task['out_changes']['bigquery']['schema'] = schema_changes
+
 	# Write old sdf to table
-	rows_to_table(project.task['auth'], project.id, project.task['out']['dataset'], project.task['out']['old_sdf_table_name'], sdf, schema, skip_rows=1, disposition='WRITE_TRUNCATE')
-	
+	put_rows(project.task['auth'], project.task['out_old_sdf'], (n for n in sdf))
+
+
+	# Categorize the IOs to be aggregated together
+	if(project.task['budget_categories'] != {} and project.task['budget_categories'] != '' and project.task['budget_categories'] != None):
+		
+		categories = remove_excluded_ios_from_categories(project.task['budget_categories'], project.task['excluded_ios'])
+
+		categories_spend = aggregate_io_spend_to_categories(report, categories)
+		
+		categories_budget = aggregate_io_budget_to_categories(sdf, categories)
+
+		category_budget_deltas = calc_budget_spend_deltas(categories_budget, categories_spend, categories)
+
+		new_sdf,changes = apply_category_budgets(sdf, category_budget_deltas, categories)
+
+	# Don't split up the IOs by categories
+	else:
+		report_dict = convert_report_to_dict(report)
+		new_sdf,changes = calc_new_sdf_no_categories(sdf, report_dict, project.task['excluded_ios'])
+
+	if project.task['is_colab']: changes.insert(0, CHANGES_SCHEMA)
+
 	# Write new sdf to table
-	rows_to_table(project.task['auth'], project.id, project.task['out']['dataset'], project.task['out']['new_sdf_table_name'], new_sdf, schema, skip_rows=1, disposition='WRITE_TRUNCATE')
-	
+	put_rows(project.task['auth'], project.task['out_new_sdf'], (n for n in new_sdf))
+
 	# Write log file to table
-	rows_to_table(project.task['auth'], project.id, project.task['out']['dataset'], project.task['out']['changes_table_name'], iter(changes), schema_changes, skip_rows=0, disposition='WRITE_TRUNCATE')
+	put_rows(project.task['auth'], project.task['out_changes'], (n for n in changes))
+
+
+
+""" Convert the spend report into an dictionary: key=>io_id, value=>spend
+
+Args:
+  * report=> DV360 report containing spend data for every IO in the categories list
+
+Returns:
+  * a dictionary: key=>io_id, value=>spend for the previous month
+"""	
+def convert_report_to_dict(report):
+	spend_dict = {}
+
+	# Read header to get correct columns then remove header
+	report_spend_column = report[0].index('Revenue_Adv_Currency')
+	report_io_id_column = report[0].index('Insertion_Order_Id')
+	report.pop(0)
+
+	for row in report:
+		spend_dict[row[report_io_id_column]] = row[report_spend_column]
+
+	return spend_dict
+
+
+
+""" Create new SDF when no categories are provided
+
+Args:
+  * report dictionary=> DV360 report dictionary with io_id and spend amount
+
+Returns:
+  * sdf -> updated budget segments
+  *changes -> what sort of changes happened to the budget
+"""	
+def calc_new_sdf_no_categories(sdf, report, excluded_ios):
+	changes = []
+	new_sdf = []
+
+	# Read sdf header for values
+	sdf_io_id_column = sdf[0].index(IO_ID)
+	sdf_budget_segments_column = sdf[0].index(BUDGET_SEGMENTS)
+	is_first = True
+
+	for row in sdf:
+		if is_first:
+			new_sdf.append(row)
+			is_first = False
+			continue
+
+		# If Io is in exclude then just add the current 
+		io_id = row[sdf_io_id_column]
+		if io_id in excluded_ios: 	
+			new_sdf.append(row)
+			continue
+
+		budget_segment = convert_budget_segment_to_obj(row[sdf_budget_segments_column])
+		current_month_idx = get_current_month_idx_in_budget_segment(budget_segment, str(io_id))
+
+		# Calculate the budget delta from the previous month
+		prev_spend = 0
+		if io_id in report:
+			prev_spend = report[io_id]
+
+		prev_budget = get_prev_month_budget(row[sdf_budget_segments_column], io_id)
+
+		prev_delta = float(prev_budget) - float(prev_spend)
+
+		old_budget = float(budget_segment[current_month_idx][0])
+		new_budget = old_budget + prev_delta
+		budget_segment[current_month_idx][0] = "{:0.2f}".format(new_budget)
+
+		# Insert new budget segment information into the row
+		new_budget_segment = convert_budget_segment_obj_to_string(budget_segment)
+		row[sdf_budget_segments_column] = new_budget_segment
+
+
+		# Log the change to be written to BQ
+		changes.append([
+			io_id,
+			'',
+			old_budget,
+			prev_delta,
+			new_budget])
+
+		new_sdf.append(row)
+
+	return new_sdf, changes
 
 
 """ Aggregates all the io spend into their categories
@@ -380,6 +520,7 @@ def validate_all_ios_processed(categories, processed_ios, source):
 		not_processed_str = ''
 		for io in not_processed:
 			not_processed_str += str(io) + ', '
+
 		raise Exception('The following ios were not found in the ' + source  + ':  ' + not_processed_str)
 
 
