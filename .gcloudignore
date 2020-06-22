@@ -1,0 +1,10 @@
+.*~
+.pyc
+starthinker_cron/
+starthinker_assets/
+starthinker_airflow/
+starthinker_database/
+starthinker_virtualenv/
+.git
+.gitignore
+*__pycache__/
