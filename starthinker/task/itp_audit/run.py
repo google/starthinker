@@ -24,20 +24,21 @@ from starthinker.util.data import get_rows, put_rows
 from starthinker.util.dcm import report_delete, report_build, report_file, report_to_rows, report_clean, report_schema, report_run
 from starthinker.util.sheets import sheets_read, sheets_clear, sheets_write
 from starthinker.task.sdf.run import sdf
+from starthinker.task.itp_audit.queries import Queries
 
 SQL_DIRECTORY = 'sql/'
 
 # Queries
-CLEAN_BROWSER_REPORT_FILENAME = 'clean_browser_report.sql'
-BROWSER_PERFORMANCE_2YEARS_FILENAME = 'browser_performance_2years.sql'
-SAFARI_DISTRIBUTION_90DAYS_FILENAME = 'safari_distribution_90days.sql'
-DV360_BROWSER_SHARES_MULTICHART_FILENAME = 'browser_share_multichart.sql'
-CM_SEGMENTATION_FILENAME ='CM_Segmentation.sql'
-CM_SITE_SEGMENTATION_FILENAME = 'CM_Site_Segmentation.sql'
-CM_FLOODLIGHT_JOIN_FILENAME = 'CM_Floodlight_Join.sql' 
-CM_FLOODLIGHT_MULTICHART_FILENAME = 'CM_Floodlight_Multichart.sql' 
-SDF_JOIN_FILENAME = 'sdf_join.sql'
-DV360_CUSTOM_SEGMENTS_FILENAME = 'DV360_Custom_Segments.sql'
+# CLEAN_BROWSER_REPORT_FILENAME = 'clean_browser_report.sql'
+# BROWSER_PERFORMANCE_2YEARS_FILENAME = 'browser_performance_2years.sql'
+# SAFARI_DISTRIBUTION_90DAYS_FILENAME = 'safari_distribution_90days.sql'
+# DV360_BROWSER_SHARES_MULTICHART_FILENAME = 'browser_share_multichart.sql'
+# CM_SEGMENTATION_FILENAME ='CM_Segmentation.sql'
+# CM_SITE_SEGMENTATION_FILENAME = 'CM_Site_Segmentation.sql'
+# CM_FLOODLIGHT_JOIN_FILENAME = 'CM_Floodlight_Join.sql' 
+# CM_FLOODLIGHT_MULTICHART_FILENAME = 'CM_Floodlight_Multichart.sql' 
+# SDF_JOIN_FILENAME = 'sdf_join.sql'
+# DV360_CUSTOM_SEGMENTS_FILENAME = 'DV360_Custom_Segments.sql'
 
 # Output Tables
 BROWSER_PERFORMANCE_2YEARS_TABLE = 'DV3_Browser'
@@ -67,18 +68,18 @@ def itp_audit():
 
   # CM Segmentation Query
   if project.verbose: print('RUN CM Segmentation Query')
-  run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + CM_SEGMENTATION_FILENAME), project.id, project.task['dataset'], CM_BROWSER_REPORT_CLEAN_TABLE)
+  run_query_from_file(Queries.cm_segmentation, project.id, project.task['dataset'], CM_BROWSER_REPORT_CLEAN_TABLE)
 
   run_cm_queries(project)
 
 
 def run_cm_queries(project):
   # CM Floodlight Lookup Table
-  run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + CM_FLOODLIGHT_JOIN_FILENAME), project.id, project.task['dataset'], CM_FLOODLIGHT_TABLE)
+  run_query_from_file(Queries.cm_floodlight_join, project.id, project.task['dataset'], CM_FLOODLIGHT_TABLE)
 
   # Floodlight Multichart
   if project.verbose: print('RUN CM Floodlight Multichart')
-  run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + CM_FLOODLIGHT_MULTICHART_FILENAME), 
+  run_query_from_file(Queries.cm_floodlight_multichart, 
     project.id, project.task['dataset'], CM_FLOODLIGHT_MULTICHART_TABLE)
 
 
@@ -90,21 +91,21 @@ def run_dv_360_queries(project):
   create_dv360_segments(project)
 
   # Clean DV360 Browser Report
-  run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + CLEAN_BROWSER_REPORT_FILENAME), project.id, project.task['dataset'], CLEAN_BROWSER_REPORT_TABLE)
+  run_query_from_file(Queries.clean_browser_report, project.id, project.task['dataset'], CLEAN_BROWSER_REPORT_TABLE)
 
   # Browser Performance 2 years
   if project.verbose: print('RUN Browser Performance 2 years Query')
-  run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + BROWSER_PERFORMANCE_2YEARS_FILENAME), 
+  run_query_from_file(Queries.browser_2_year, 
     project.id, project.task['dataset'], BROWSER_PERFORMANCE_2YEARS_TABLE)
 
   #Safari Distribution 90 days
   if project.verbose: print('RUN Safari Distribution 90 days Query')
-  run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + SAFARI_DISTRIBUTION_90DAYS_FILENAME), 
+  run_query_from_file(Queries.safari_distribution_90days, 
     project.id, project.task['dataset'], SAFARI_DISTRIBUTION_90DAYS_TABLE)
 
   # Browser Shares Multichart
   if project.verbose: print('RUN Dv360 Browser Share Multichart')
-  run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + DV360_BROWSER_SHARES_MULTICHART_FILENAME), 
+  run_query_from_file(Queries.browser_share_multichart, 
     project.id, project.task['dataset'], DV360_BROWSER_SHARES_MULTICHART_TABLE)
 
 
@@ -145,22 +146,9 @@ def create_dv360_segments(project):
     )
 
   # Run Query
-  path = os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + DV360_CUSTOM_SEGMENTS_FILENAME)
-  query = ''
-  with open(path, 'r') as file:
-    data = file.read().replace('\n', ' ')
-    query = data.replace("{{project_id}}", project.id).replace("{{dataset}}", project.task['dataset'])
-
-  print('DV360 CUSTOM SEGMENT TABLE')
-
-  query_to_table(
-    'service',
-    project.id,
-    project.task['dataset'],
-    DV360_CUSTOM_SEGMENTS_TABLE,
-    query,
-    legacy=False
-  )  
+  if project.verbose: print('RUN DV360 Custom Segments Query')
+  run_query_from_file(Queries.dv360_custom_segments, 
+    project.id, project.task['dataset'], DV360_CUSTOM_SEGMENTS_TABLE)
 
   # Move Table back to sheets
   query = 'SELECT * from `' + project.id + '.' + project.task['dataset'] + '.' + DV360_CUSTOM_SEGMENTS_TABLE + '`'
@@ -200,7 +188,7 @@ def create_cm_site_segmentation(project):
   )
 
   # Get Site_Type from the sheet
-  run_query_from_file(os.path.join(os.path.dirname(__file__), SQL_DIRECTORY + CM_SITE_SEGMENTATION_FILENAME), project.id, project.task['dataset'], CM_SITE_SEGMENTATION_TABLE)  
+  run_query_from_file(Queries.cm_site_segmentation, project.id, project.task['dataset'], CM_SITE_SEGMENTATION_TABLE)  
 
   # Move Table back to sheets
   query = 'SELECT * from `' + project.id + '.' + project.task['dataset'] + '.' + CM_SITE_SEGMENTATION_TABLE + '`'
@@ -212,11 +200,8 @@ def create_cm_site_segmentation(project):
   sheets_write('user', project.task['sheet'], 'CM_Site_Segments', 'A2:C', rows)
 
 
-def run_query_from_file(path, project_id, dataset, table_name):
-  query = ''
-  with open(path, 'r') as file:
-    data = file.read().replace('\n', ' ')
-    query = data.replace("{{project_id}}", project_id).replace("{{dataset}}", dataset)
+def run_query_from_file(query, project_id, dataset, table_name):
+  query = query.replace('\n', ' ').replace("{{project_id}}", project_id).replace("{{dataset}}", dataset)
 
   query_to_table(
     'service',

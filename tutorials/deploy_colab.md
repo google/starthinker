@@ -46,13 +46,14 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [API To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/google_api_to_bigquery.ipynb) - Execute a Google API function and store results to BigQuery.
 * [Say Hello](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/hello.ipynb) - Recipe template for say hello.
 * [Project IAM](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/iam.ipynb) - Sets project permissions for an email.
-* [Browser Activity Dashboard ( 2019 )](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/itp.ipynb) - Visualizes a client's Campaign Manager and DV360 activity by browser and device
+* [ITP Audit Dashboard ( 2020 )](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/itp_audit.ipynb) - Dashboard that shows performance metrics across browser to see the impact of ITP.
 * [Tag Key Value Uploader](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/kv_uploader.ipynb) - A tool for bulk editing key value pairs for CM placements.
 * [Line Item To BigQuery Via Query](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/lineitem_read_to_bigquery_via_query.ipynb) - Move using an Id query.
 * [Line Item To BigQuery Via Values](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/lineitem_read_to_bigquery_via_value.ipynb) - Move using hard coded Id values.
 * [Line Item From BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/lineitem_write_from_bigquery.ipynb) - Upload Line Items From BigQuery To DV360.
 * [Test Script](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/manual.ipynb) - Used by tests.
 * [Column Mapping](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/mapping.ipynb) - Use sheet to define keyword to column mappings.
+* [Monthly Budget Mover](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/monthly_budget_mover.ipynb) - Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.
 * [PoliceBot](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/policebot.ipynb) - A tool that helps enforce CM object name conventions by checking names against a set of client-defined patterns, and emailing violations to appropriate agency teams on a daily basis.
 * [Salesforce To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/salesforce_to_bigquery.ipynb) - Move query results into a BigQuery table.
 * [SDF Download](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sdf_to_bigquery.ipynb) - Download SDF reports into a BigQuery table.
