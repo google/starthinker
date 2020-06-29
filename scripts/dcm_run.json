@@ -4,7 +4,8 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2019 Google LLC",
     "icon":"donut_small",
-    "requirements":["cm"],
+    "from":["cm"],
+    "to":["cm"],
     "title":"CM Report Run",
     "description":"Trigger a CM report run",
     "instructions":[
@@ -15,7 +16,7 @@
   },
   "tasks":[
     { "dcm":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report_run_only":true,
       "report":{
         "account":{"field":{ "name":"account", "kind":"integer", "order":1, "default":"", "description":"CM network id." }},

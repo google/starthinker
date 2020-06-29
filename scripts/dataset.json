@@ -4,7 +4,8 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"folder",
-    "requirements":["bigquery"],
+    "from":["bigquery"],
+    "to":["bigquery"],
     "title":"BigQuery Dataset",
     "description":"Create and permission a dataset in BigQuery.",
     "instructions":[
@@ -18,7 +19,7 @@
   },
   "tasks":[
     { "dataset":{
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "dataset":{"field":{ "name":"dataset_dataset", "kind":"string", "order":1, "default":"", "description":"Name of Google BigQuery dataset to create." }},
       "emails":{"field":{ "name":"dataset_emails", "kind":"string_list", "order":2, "default":[], "description":"Comma separated emails." }},
       "groups":{"field":{ "name":"dataset_groups", "kind":"string_list", "order":3, "default":[], "description":"Comma separated groups." }}

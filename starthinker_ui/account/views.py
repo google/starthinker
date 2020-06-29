@@ -18,7 +18,6 @@
 #
 ###########################################################################
 
-from googleapiclient import discovery
 
 from django.conf import settings
 from django.contrib import messages
@@ -36,12 +35,8 @@ def oauth_callback(request):
   flow.code_verifier = request.session.get('code_verifier')
   flow.fetch_token(code=request.GET['code'])
 
-  # pull user information for account lookup or creation
-  service = discovery.build('oauth2', 'v2', credentials=flow.credentials)
-  profile = service.userinfo().get().execute()
-
   # get or create the account
-  account = Account.objects.get_or_create_user(profile, flow.credentials)
+  account = Account.objects.get_or_create_user(flow.credentials)
 
   # log the account in ( set cookie )
   django_login(request, account, backend=settings.AUTHENTICATION_BACKENDS[0])

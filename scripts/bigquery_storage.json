@@ -5,9 +5,10 @@
     "copyright":"Copyright 2018 Google LLC",
     "open":true,
     "icon":"arrow_forward",
-    "requirements":["bigquery", "storage"],
     "title":"Storage To Table",
     "description":"Move using bucket and path prefix.",
+    "from":["storage"],
+    "to":["bigquery"],
     "instructions":[
       "Specify a bucket and path prefix, * suffix is NOT required.",
       "Every time the job runs it will overwrite the table."
@@ -16,13 +17,13 @@
   },
   "tasks":[
     { "bigquery":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "from":{
         "bucket":{"field":{ "name":"bucket", "kind":"string", "order":1, "default":"", "description":"Google cloud bucket." }},
         "path":{"field":{ "name":"path", "kind":"string", "order":2, "default":"", "description":"Path prefix to read from, no * required." }}
       },
       "to":{
-        "auth":"service",
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "default":"", "description":"Existing BigQuery dataset." }},
         "table":{"field":{ "name":"table", "kind":"string", "order":4, "default":"", "description":"Table to create from this query." }}
       },

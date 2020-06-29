@@ -4,9 +4,10 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"donut_large",
-    "requirements":["dv360", "bigquery"],
     "title":"SDF Download",
     "description":"Download SDF reports into a BigQuery table.",
+    "from":["dv360"],
+    "to":["bigquery"],
     "instructions":[
       "Select your filter types and the filter ideas.",
       "Enter the <a href='https://developers.google.com/bid-manager/v1.1/sdf/download' target='_blank'>file types</a> using commas.",
@@ -17,7 +18,7 @@
   },
   "tasks":[
     { "dataset":{
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "dataset":{"field":{ "name":"dataset", "kind":"string", "order":6, "default":"", "description":"Dataset to be written to in BigQuery." }}
     }},
     { "sdf":{

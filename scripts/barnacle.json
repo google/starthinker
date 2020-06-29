@@ -8,8 +8,8 @@
     "description":"Gives CM clients ability to see which profiles have access to which parts of an account. Loads CM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.",
     "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
     "sample":"https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT",
-    "categories":["security", "solution", "covid"],
-    "requirements":[ "cm", "datastudio", "bigquery" ],
+    "from":["cm"],
+    "to":["datastudio", "bigquery" ],
     "pitches":[
       "Meet contractual access reporting information.",
       "Reduce unauthorized use of CM accounts and assets.",
@@ -50,13 +50,13 @@
     { "dataset":{
       "description":"The dataset will hold multiple tables, amke sure it exists.",
       "hour":[1],
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Name of Google BigQuery dataset to create." }}
     }},
     { "barnacle":{
       "description":"Will create tables with format CM_* to hold each endpoint via a call to the API list function. Exclude reports for its own task.",
       "hour":[1],
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "endpoints":["accounts", "subaccounts", "profiles", "advertisers", "campaigns", "sites", "roles"],
       "reports":false,
       "accounts":{
@@ -64,14 +64,14 @@
         "values":{"field":{ "name":"accounts", "kind":"integer_list", "order":2, "default":[], "description":"Comma separated CM account ids." }}
       },
       "out":{
-        "auth":"service",
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Google BigQuery dataset to create tables in." }}
       }
     }},
     { "barnacle":{
       "description":"Will create tables with format CM_* to hold each endpoint via a call to the API list function. Reports run long so seperate task.",
       "hour":[3],
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "endpoints":[],
       "reports":{"field":{ "name":"reports", "kind":"boolean", "order":3, "default":false, "description":"Include report audit, consumes significant API and data." }},
       "accounts":{
@@ -79,14 +79,14 @@
         "values":{"field":{ "name":"accounts", "kind":"integer_list", "order":2, "default":[], "description":"Comma separated CM account ids." }}
       },
       "out":{
-        "auth":"service",
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Google BigQuery dataset to create tables in." }}
       }
     }},
     {"bigquery":{
       "hour":[8],
       "description":"Combine profile, account, subaccount, and roles into one view, used by other views in this workflow.",
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "from":{
         "legacy":false,
         "query":"
@@ -140,7 +140,7 @@ LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS S
     {"bigquery":{
       "description":"Combine profiles and advertisers.",
       "hour":[8],
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "from":{
         "legacy":false,
         "query":"
@@ -175,7 +175,7 @@ LEFT JOIN `[PARAMETER].[PARAMETER].CM_Advertisers` AS A
     {"bigquery":{
       "description":"Profile to campaign mapping.",
       "hour":[8],
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "from":{
         "legacy":false,
         "query":"
@@ -210,7 +210,7 @@ LEFT JOIN `[PARAMETER].[PARAMETER].CM_Campaigns` AS C
     {"bigquery":{
       "description":"The logic query for Deal Finder, transforms report into view used by datastudio.",
       "hour":[8],
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "from":{
         "legacy":false,
         "query":"
@@ -244,7 +244,7 @@ LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map`
     {"bigquery":{
       "description":"The logic query for Deal Finder, transforms report into view used by datastudio.",
       "hour":[8],
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "from":{
         "legacy":false,
         "query":"
@@ -278,7 +278,7 @@ LEFT JOIN `[PARAMETER].[PARAMETER].CM_Sites` AS S
     {"bigquery":{
       "description":"The logic query for Deal Finder, transforms report into view used by datastudio.",
       "hour":[8],
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "from":{
         "legacy":false,
         "query":"
@@ -316,7 +316,7 @@ WHERE
     {"bigquery":{
       "description":"",
       "hour":[8],
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "from":{
         "legacy":false,
         "query":"
@@ -363,7 +363,7 @@ LEFT JOIN `[PARAMETER].[PARAMETER].CM_Reports` AS R
     {"bigquery":{
       "description":"",
       "hour":[8],
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "from":{
         "legacy":false,
         "query":"
@@ -404,7 +404,7 @@ WHERE roleId NOT IN (
     {"bigquery":{
       "description":"",
       "hour":[8],
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "from":{
         "legacy":false,
         "query":"
@@ -454,7 +454,7 @@ LEFT JOIN `[PARAMETER].[PARAMETER].CM_Sites` AS S
     {"bigquery":{
       "description":"",
       "hour":[8],
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "from":{
         "legacy":false,
         "query":"

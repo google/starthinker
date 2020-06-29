@@ -49,6 +49,11 @@ def sheets_id(auth, url_or_name):
   return None
 
 
+def sheets_url(auth, url_or_name):
+  sheet_id = sheets_id(auth, url_or_name)
+  return 'https://docs.google.com/spreadsheets/d/%s/' % sheet_id
+
+
 def sheets_tab_range(sheet_tab, sheet_range):
   if sheet_range: return '%s!%s' % (sheet_tab, sheet_range)
   else: return sheet_tab
@@ -79,10 +84,11 @@ def sheets_tab_id(auth, sheet_url_or_name, sheet_tab):
 def sheets_read(auth, sheet_url_or_name, sheet_tab, sheet_range='', retries=10):
   if project.verbose: print('SHEETS READ', sheet_url_or_name, sheet_tab, sheet_range)
   service = get_service('sheets', 'v4', auth)
-  print(sheet_url_or_name)
   sheet_id = sheets_id(auth, sheet_url_or_name)
-  print(sheet_id)
-  return API_Retry(service.spreadsheets().values().get(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range)), 'values', retries=retries)
+  if sheet_id is None:
+    raise(OSError('Sheet does not exist: %s' % sheet_url_or_name))
+  else:
+    return API_Retry(service.spreadsheets().values().get(spreadsheetId=sheet_id, range=sheets_tab_range(sheet_tab, sheet_range)), 'values', retries=retries)
 
 
 # TIP: Specify sheet_range as 'Tab!A1' coordinate, the API will figure out length and height based on data

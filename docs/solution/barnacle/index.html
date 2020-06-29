@@ -20,43 +20,52 @@
     <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
 
     <!--Import Google Icon Font-->
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize.min.css">
+    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize-1.0.0.min.css">
 
     <style>
-       html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
+      html { color: rgba(68,68,68,1); font-family: Roboto, sans-serif; }
  
-       .material-icons { line-height: normal; vertical-align: middle; }
+      .material-icons { line-height: normal; vertical-align: middle; }
 
-       #message { justify-content: center; font-size: 2em;}
-       #message i { font-size: 2em; margin: 10px; }
-       #message ul, #message li { display: inline; margin-left: 10px; }
-       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
+      #message { justify-content: center; font-size: 2em;}
+      #message i { font-size: 2em; margin: 10px; }
+      #message ul, #message li { display: inline; margin-left: 10px; }
+      #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
-       h1 a i.material-icons { font-size: 3.28rem; }
-       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
-       ol li { line-height: 1.8em; }
-       textarea { margin-top: 7px; height: 10rem; }
-       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
+      div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+      h1 a i.material-icons { font-size: 4rem; }
+      a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+      ol li { line-height: 1.8em; }
+      textarea { margin-top: 7px; height: 10rem; }
+      table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
+      a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+      div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
-       div.card h4 { width 100%; padding: 20px;}
-       div.card h4 i.material-icons { font-size: 2.28rem; }
-       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+      #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
+      div.card h4 { width 100%; padding: 20px;}
+      div.card h4 i.material-icons { font-size: 2.28rem; }
+      div.card table { margin: 0px 5% 30px 5%; width: 90%; }
 
-       .card .card-content .card-title { word-wrap: break-word; }
-       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
+      .card .card-content .card-title { word-wrap: break-word; }
+      div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
 
-       
+      div.switch { padding-top: 1rem; padding-bottom: 1rem; }
+      div.switch label { font-size: 1.05rem; }
+      div.switch label:first-child { font-size: 1.3rem; margin-right: 40px; }
+
+      p.flow-text { font-weight: 100; }
+      i.right { margin: 0px 15px; font-size: 1.5rem;}
+      .collapsible-body { padding: 0px; }
+
+      
   #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; } 
   .col { margin-right: auto; }
-  pre.expand_code { height: 70vh; }
+  pre.expand_code { height: 70vh; overflow: hidden; }
   pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
 
     </style>
@@ -66,35 +75,37 @@
   </head>
 
   
-  <nav class="green lighten-0">
-    <div class="nav-wrapper">
-      <a href="/starthinker/" class="brand-logo">
-        <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
-      </a>
-      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down">
-        
-        
-        <li><a href="/starthinker/solution/">Solutions</a></li>
-        <li><a href="/starthinker/help/">Help</a></li>
-        
-      </ul>
-      <ul class="side-nav green lighten-1" id="mobile-demo">
-        
-        
-        
-        <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
-        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
-        
-      </ul>
-    </div>
-  </nav>
+    <nav class="green lighten-0">
+      <div class="nav-wrapper">
+        <a href="/starthinker/" class="brand-logo">
+          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+        </a>
+        <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+  
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          
+          
+          <li><a href="/starthinker/solution/">Solutions</a></li>
+          <li><a href="/starthinker/help/">Help</a></li>
+          
+        </ul>
+      </div>
+    </nav>
+  
+    <ul class="sidenav green lighten-1" id="mobile-menu">
+      
+      
+      
+      <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
+      <li><a class="white-text" href="/starthinker/help/">Help</a></li>
+      
+    </ul>
   
 
   <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize.min.js"></script>
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize-1.0.0.min.js"></script>
 
     
 
@@ -129,20 +140,8 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=cm">cm</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=datastudio">datastudio</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=bigquery">bigquery</a>
-  
 
   <br/><br/>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=security">security</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=solution">solution</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=covid">covid</a>
   
 
   <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/barnacle.png"/>
@@ -298,12 +297,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
             <tr>
               <td>Age</td>
-              <td>Feb. 27, 2019 (1 year, 3 months)</td>
+              <td>Feb. 27, 2019 (1 year, 4 months)</td>
             </tr>
     
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com,ceh@google.com?subject=Request+For+A+CM+User+Audit+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+CM+User+Audit+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fbarnacle%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com<br/>ceh@google.com</a>
+              <td><a href="mailto:ceh@google.com,kenjora@google.com?subject=Request+For+A+CM+User+Audit+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+CM+User+Audit+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fbarnacle%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">ceh@google.com<br/>kenjora@google.com</a>
               </td>
             </tr>
 
@@ -397,7 +396,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 1
             ],
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "dataset": {
                 "field": {
                     "name": "dataset",
@@ -415,7 +422,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 1
             ],
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "endpoints": [
                 "accounts",
                 "subaccounts",
@@ -439,7 +454,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 }
             },
             "out": {
-                "auth": "service",
+                "auth": {
+                    "field": {
+                        "name": "auth_write",
+                        "kind": "authentication",
+                        "order": 1,
+                        "default": "service",
+                        "description": "Credentials used for writing data."
+                    }
+                },
                 "dataset": {
                     "field": {
                         "name": "dataset",
@@ -458,7 +481,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 3
             ],
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "endpoints": [],
             "reports": {
                 "field": {
@@ -482,7 +513,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 }
             },
             "out": {
-                "auth": "service",
+                "auth": {
+                    "field": {
+                        "name": "auth_write",
+                        "kind": "authentication",
+                        "order": 1,
+                        "default": "service",
+                        "description": "Credentials used for writing data."
+                    }
+                },
                 "dataset": {
                     "field": {
                         "name": "dataset",
@@ -501,7 +540,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 8
             ],
             "description": "Combine profile, account, subaccount, and roles into one view, used by other views in this workflow.",
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "from": {
                 "legacy": false,
                 "query": " SELECT   P.profileId AS profileId,   P.accountId AS accountId,   P.subaccountId AS subaccountId,   P.name AS Profile_Name,    P.email AS Profile_Email,    REGEXP_EXTRACT(P.email, r'@(.+)') AS Profile_Domain,   P.userAccessType AS Profile_userAccessType,    P.active AS Profie_active,    P.traffickerType AS Profile_traffickerType,    P.comments AS Profile_comments,   P.userRoleId AS Profile_userRoleId,    R.role_name AS Role_role_name,    R.role_defaultUserRole AS Role_role_defaultUserRole,    R.permission_name AS Role_permission_name,        R.permission_availability AS Role_permission_availability,   A.name AS Account_name,   A.active AS Account_active,   A.description AS Account_description,   A.locale AS Account_locale,   S.name AS SubAccount_name FROM `[PARAMETER].[PARAMETER].CM_Profiles` AS P  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Roles` AS R    ON P.userRoleId=R.roleId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A    ON P.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS S    ON P.accountId=S.accountId   AND P.subaccountId=S.subaccountId ; ",
@@ -582,7 +629,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 8
             ],
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "from": {
                 "legacy": false,
                 "query": " SELECT   APRASM.*,   A.advertiserId AS advertiserId,   A.name AS Advertiser_name,    A.status AS Advertiser_status,    A.defaultEmail AS Advertiser_defaultEmail,    A.suspended AS Advertiser_suspended FROM `[PARAMETER].[PARAMETER].CM_Profile_Advertisers` As PA LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM    ON PA.profileID=APRASM.profileID LEFT JOIN `[PARAMETER].[PARAMETER].CM_Advertisers` AS A    ON PA.advertiserId=A.advertiserId ; ",
@@ -649,7 +704,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 8
             ],
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "from": {
                 "legacy": false,
                 "query": " SELECT   APRASM.*,   C.campaignId AS campaignId,   C.name AS Campaign_name,    C.archived AS Campaign_archived,   IF(C.startDate <= CURRENT_DATE() AND C.endDate >= CURRENT_DATE(), True, False) AS Campaign_running,   ROUND(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), C.lastModifiedInfo_time, DAY) / 7) AS Campaign_Modified_Weeks_Ago FROM `[PARAMETER].[PARAMETER].CM_Profile_Campaigns` As PC LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM    ON PC.profileID=APRASM.profileID  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Campaigns` AS C    ON PC.campaignId=C.campaignId ; ",
@@ -716,7 +779,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 8
             ],
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "from": {
                 "legacy": false,
                 "query": " SELECT   APRASM.*,   R.reportId AS reportId,   R.name AS Report_name,    R.type AS Report_type,   R.format AS Report_format,   R.schedule_active AS Report_schedule_active,   R.schedule_repeats AS Report_schedule_repeats,   ROUND(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), R.lastModifiedTime, DAY) / 7) AS Report_Modified_Weeks_Ago,   DATE_DIFF(R.schedule_expirationDate, CURRENT_DATE(), MONTH) AS Report_Schedule_Weeks_To_Go FROM `[PARAMETER].[PARAMETER].CM_Reports` As R LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM    ON R.profileID=APRASM.profileID ; ",
@@ -769,7 +840,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 8
             ],
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "from": {
                 "legacy": false,
                 "query": " SELECT   APRASM.*,   S.siteId AS siteId,   S.name AS Site_Name,    S.keyName AS Site_keyName,    S.approved AS Site_approved FROM `[PARAMETER].[PARAMETER].CM_Profile_Sites` As PS LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM    ON PS.profileID=APRASM.profileID  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Sites` AS S    ON PS.siteId=S.siteId ; ",
@@ -836,7 +915,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 8
             ],
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "from": {
                 "legacy": false,
                 "query": " SELECT    APRASM.* FROM `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM LEFT JOIN `[PARAMETER].[PARAMETER].CM_Profile_Advertisers` AS PA    ON APRASM.profileId=PA.profileId  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Profile_Campaigns` AS PC    ON APRASM.profileId=PC.profileId  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Profile_Sites` AS PS   ON APRASM.profileId=PS.profileId  WHERE   PA.advertiserId IS NULL   AND PC.campaignId IS NULL   AND PS.siteId IS NULL  ",
@@ -917,7 +1004,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 8
             ],
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "from": {
                 "legacy": false,
                 "query": " SELECT   RD.accountId AS accountId,   RD.subaccountId AS subaccountId,   RD.reportId AS reportId,   A.name AS Account_name,   A.active AS Account_active,   SA.name as SubAccount_name,   R.name as Report_name,   R.schedule_active AS Report_schedule_active,   RD.emailOwnerDeliveryType AS Delivery_emailOwnerDeliveryType,   RD.deliveryType AS Delivery_deliveryType,   RD.email AS Delivery_email,   RD.message AS Delivery_message,   IF(RD.email in (SELECT email from `[PARAMETER].[PARAMETER].CM_Profiles`), True, False) AS Profile_Match_Exists FROM `[PARAMETER].[PARAMETER].CM_Report_Deliveries` AS RD  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A    ON RD.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA    ON RD.subaccountId=SA.subaccountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Reports` AS R    ON RD.reportId=R.reportId ",
@@ -1012,7 +1107,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 8
             ],
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "from": {
                 "legacy": false,
                 "query": " SELECT   R.accountId AS accountId,   R.subaccountId AS subaccountId,   R.roleId AS roleId,   A.name AS Account_name,   A.active AS Account_active,   SA.name AS SubAccount_name,   R.role_name as Role_role_name,   R.role_defaultUserRole AS Role_role_defaultUserRole,   R.permission_name AS Role_permission_name,   R.permission_availability AS Role_permission_availability   FROM `[PARAMETER].[PARAMETER].CM_Roles` AS R LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A on R.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA on R.subaccountId=SA.subaccountId WHERE roleId NOT IN (   SELECT roleId FROM `[PARAMETER].[PARAMETER].CM_Profile_Roles`  ) ",
@@ -1093,7 +1196,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 8
             ],
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "from": {
                 "legacy": false,
                 "query": " SELECT   SC.accountId AS accountId,   SC.subaccountId AS subaccountId,   SC.siteId AS siteId,   SC.contactId AS contactId,   A.name AS Account_name,   A.active AS Account_active,   SA.name as SubAccount_name,   S.name as Site_name,   S.approved AS Site_approved,   SC.email AS Site_Contact_email,   CONCAT(SC.firstName, ' ', sc.lastname) AS Site_Contact_Name,   SC.phone AS Site_Contact_phone,   SC.contactType AS Site_Contact_contactType,   IF(sc.email in (SELECT email from `[PARAMETER].[PARAMETER].CM_Profiles`), True, False) AS Profile_Match_Exists FROM `[PARAMETER].[PARAMETER].CM_Site_Contacts` AS SC  LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A    ON SC.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA    ON SC.accountId=SA.accountId    AND SC.subaccountId=SA.subaccountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Sites` AS S    ON SC.siteId=S.siteId ; ",
@@ -1188,7 +1299,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 8
             ],
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "from": {
                 "legacy": false,
                 "query": " WITH   profile_counts AS (   SELECT userRoleId, COUNT(profileId) as profile_count   FROM `[PARAMETER].[PARAMETER].CM_Profiles`   GROUP BY 1  ),  permission_fingerprints AS (   SELECT     accountId,     subaccountId,     roleId,     role_name,     role_defaultUserRole,     SUM(profile_count) AS profile_count,     FARM_FINGERPRINT(       ARRAY_TO_STRING(       ARRAY_AGG(         DISTINCT permission_name ORDER BY permission_name ASC       ), ',', '-'     )   ) AS permissions_fingerprint   FROM     `[PARAMETER].[PARAMETER].CM_Roles` AS R   LEFT JOIN profile_counts AS P   ON R.roleId = P.userRoleId   GROUP BY     accountId,     subaccountId,     roleId,     role_name,     role_defaultUserRole )  SELECT    PFL.accountId AS accountId,   A.name AS Account_name,   A.active AS Account_active,   PFL.subaccountId AS subaccountId,    SA.name AS SubAccount_name,   PFL.roleId AS roleId,   PFL.role_name AS role_name,   PFL.role_defaultUserRole AS role_defaultUserRole,   COALESCE(PFL.profile_count, 0) AS profile_count,   PFR.roleId AS duplicate_roleId,   PFR.role_name AS duplicate_role_name,   PFR.role_defaultUserRole AS duplicate_role_defaultUserRole,   COALESCE(PFR.profile_count, 0) AS duplicate_profile_count FROM permission_fingerprints AS PFL LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A on PFL.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA on PFL.subaccountId=SA.subaccountId LEFT JOIN permission_fingerprints AS PFR    ON PFL.permissions_fingerprint=PFR.permissions_fingerprint   AND PFL.accountId=PFR.accountId   AND COALESCE(PFL.subaccountId, 0)=COALESCE(PFR.subaccountId, 0) WHERE PFL.roleId != PFR.roleId ; ",
@@ -1302,9 +1421,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <script type="text/javascript">
     $(document).ready(function() {
-      $(".button-collapse").sideNav();
-      $('select').material_select();
-      $('.modal').modal();
+      M.AutoInit();
     });
   </script>
 

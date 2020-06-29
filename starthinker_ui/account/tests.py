@@ -24,7 +24,7 @@ from datetime import datetime, timedelta
 from django.test import TestCase
 
 from starthinker.util.project import project
-from starthinker.util.auth import clear_credentials_cache, get_profile, get_credentials, get_service
+from starthinker.util.auth import clear_credentials_cache, get_credentials, get_service
 from starthinker.config import UI_CLIENT, UI_SERVICE
 from starthinker_ui.account.models import Account
 
@@ -32,11 +32,13 @@ UI_USER = os.environ.get('STARTHINKER_USER', '')
 
 def account_create():
 
-  project.initialize(_client=UI_CLIENT, _service=UI_SERVICE, _user=UI_USER)
-  credentials = get_credentials('user')
-  profile = get_profile()
-
-  account = Account.objects.get_or_create_user(profile, credentials, 'password')
+  accounts = Account.objects.all()
+  if len(accounts) > 0: 
+    account = accounts[0]
+  else: 
+    project.initialize(_client=UI_CLIENT, _service=UI_SERVICE, _user=UI_USER)
+    credentials = get_credentials('user')
+    account = Account.objects.get_or_create_user(credentials, 'password')
 
   return account
 
@@ -152,8 +154,7 @@ class CredentialsTest(TestCase):
   def test_remote_credentials_user(self):
     project.initialize(_user=self.user_file)
     credentials = get_credentials('user')
-    profile = get_profile()
-    account = Account.objects.get_or_create_user(profile, credentials, 'password')
+    account = Account.objects.get_or_create_user(credentials, 'password')
 
     clear_credentials_cache()
 

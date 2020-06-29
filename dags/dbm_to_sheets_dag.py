@@ -49,6 +49,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_read': 'user',  # Credentials used for reading data.
   'report_id': '',  # DV360 report ID given in UI, not needed if name used.
   'report_name': '',  # Name of report, not needed if ID used.
   'sheet': '',  # Full URL to sheet being written to.
@@ -58,7 +59,15 @@ INPUTS = {
 TASKS = [
   {
     'dbm': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'report': {
         'report_id': {
           'field': {

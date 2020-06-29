@@ -20,43 +20,52 @@
     <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
 
     <!--Import Google Icon Font-->
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize.min.css">
+    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize-1.0.0.min.css">
 
     <style>
-       html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
+      html { color: rgba(68,68,68,1); font-family: Roboto, sans-serif; }
  
-       .material-icons { line-height: normal; vertical-align: middle; }
+      .material-icons { line-height: normal; vertical-align: middle; }
 
-       #message { justify-content: center; font-size: 2em;}
-       #message i { font-size: 2em; margin: 10px; }
-       #message ul, #message li { display: inline; margin-left: 10px; }
-       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
+      #message { justify-content: center; font-size: 2em;}
+      #message i { font-size: 2em; margin: 10px; }
+      #message ul, #message li { display: inline; margin-left: 10px; }
+      #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
-       h1 a i.material-icons { font-size: 3.28rem; }
-       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
-       ol li { line-height: 1.8em; }
-       textarea { margin-top: 7px; height: 10rem; }
-       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
+      div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+      h1 a i.material-icons { font-size: 4rem; }
+      a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+      ol li { line-height: 1.8em; }
+      textarea { margin-top: 7px; height: 10rem; }
+      table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
+      a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+      div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
-       div.card h4 { width 100%; padding: 20px;}
-       div.card h4 i.material-icons { font-size: 2.28rem; }
-       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+      #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
+      div.card h4 { width 100%; padding: 20px;}
+      div.card h4 i.material-icons { font-size: 2.28rem; }
+      div.card table { margin: 0px 5% 30px 5%; width: 90%; }
 
-       .card .card-content .card-title { word-wrap: break-word; }
-       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
+      .card .card-content .card-title { word-wrap: break-word; }
+      div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
 
-       
+      div.switch { padding-top: 1rem; padding-bottom: 1rem; }
+      div.switch label { font-size: 1.05rem; }
+      div.switch label:first-child { font-size: 1.3rem; margin-right: 40px; }
+
+      p.flow-text { font-weight: 100; }
+      i.right { margin: 0px 15px; font-size: 1.5rem;}
+      .collapsible-body { padding: 0px; }
+
+      
   #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; } 
   .col { margin-right: auto; }
-  pre.expand_code { height: 70vh; }
+  pre.expand_code { height: 70vh; overflow: hidden; }
   pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
 
     </style>
@@ -66,35 +75,37 @@
   </head>
 
   
-  <nav class="green lighten-0">
-    <div class="nav-wrapper">
-      <a href="/starthinker/" class="brand-logo">
-        <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
-      </a>
-      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down">
-        
-        
-        <li><a href="/starthinker/solution/">Solutions</a></li>
-        <li><a href="/starthinker/help/">Help</a></li>
-        
-      </ul>
-      <ul class="side-nav green lighten-1" id="mobile-demo">
-        
-        
-        
-        <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
-        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
-        
-      </ul>
-    </div>
-  </nav>
+    <nav class="green lighten-0">
+      <div class="nav-wrapper">
+        <a href="/starthinker/" class="brand-logo">
+          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+        </a>
+        <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+  
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          
+          
+          <li><a href="/starthinker/solution/">Solutions</a></li>
+          <li><a href="/starthinker/help/">Help</a></li>
+          
+        </ul>
+      </div>
+    </nav>
+  
+    <ul class="sidenav green lighten-1" id="mobile-menu">
+      
+      
+      
+      <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
+      <li><a class="white-text" href="/starthinker/help/">Help</a></li>
+      
+    </ul>
   
 
   <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize.min.js"></script>
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize-1.0.0.min.js"></script>
 
     
 
@@ -129,16 +140,8 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=datastudio">datastudio</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=bigquery">bigquery</a>
-  
 
   <br/><br/>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=audience">audience</a>
   
 
   <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/ctv_audience_affinity.png"/>
@@ -246,7 +249,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
             <tr>
               <td>Age</td>
-              <td>April 8, 2020 (2 months, 2 weeks)</td>
+              <td>April 8, 2020 (2 months, 3 weeks)</td>
             </tr>
     
             <tr>
@@ -303,7 +306,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "dataset": {
                 "field": {
                     "name": "dataset",
@@ -701,7 +712,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "sheet": {
                 "field": {
                     "name": "recipe_name",
@@ -716,7 +735,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "range": "A:Z",
             "header": true,
             "out": {
-                "auth": "service",
+                "auth": {
+                    "field": {
+                        "name": "auth_write",
+                        "kind": "authentication",
+                        "order": 1,
+                        "default": "service",
+                        "description": "Credentials used for writing data."
+                    }
+                },
                 "bigquery": {
                     "dataset": {
                         "field": {
@@ -745,7 +772,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
             "description": "The query to join all the IAR reports into an Affinity Index.",
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "from": {
                 "query": "SELECT    audience_app.app_url,    audience_app.ctv_app_name,  IF    (audience_app.app_url LIKE '%Android%'      OR audience_app.app_url LIKE '%iOS',      'App',      'Domain') AS app_or_domain,    audience_app.user_list AS audience_list,    audience_app.Potential_Impressions AS audience_app_impressions,    audience_app.Unique_Cookies_With_Impressions AS audience_app_uniques,    audience_baseline.Potential_Impressions AS audience_baseline_impressions,    audience_baseline.Unique_Cookies_With_Impressions AS audience_baseline_uniques,    country_app.Potential_Impressions AS country_app_impressions,    country_app.Unique_Cookies_With_Impressions AS country_app_uniques,    country_baseline.Potential_Impressions AS country_baseline_impressions,    country_baseline.Unique_Cookies_With_Impressions AS country_baseline_uniques,    ((audience_app.Unique_Cookies_With_Impressions/NULLIF(audience_baseline.Unique_Cookies_With_Impressions,          0))/NULLIF((country_app.Unique_Cookies_With_Impressions/NULLIF(CAST(country_baseline.Unique_Cookies_With_Impressions AS int64),            0)),        0))*100 AS affinity_index  FROM (    SELECT      user_list,      CAST(      IF        (impressions LIKE '%< 1000%',          0,          CAST(impressions AS int64)) AS int64) AS potential_impressions,      CAST(      IF        (uniques LIKE '%< 100%',          0,          CAST(uniques AS int64)) AS int64) AS unique_cookies_with_impressions    FROM      `[PARAMETER].[PARAMETER].us_audience_baseline` ) AS audience_baseline  JOIN (    SELECT      ctv_app.CTV_App_name AS ctv_app_name,      user_list,      app_url,      CAST(      IF        (impressions LIKE '%< 1000%',          0,          CAST(impressions AS int64)) AS int64) AS potential_impressions,      CAST(      IF        (uniques LIKE '%< 1000%',          0,          CAST(uniques AS int64)) AS int64) AS unique_cookies_with_impressions    FROM      `[PARAMETER].[PARAMETER].us_audience_app` AS a    LEFT JOIN      `[PARAMETER].[PARAMETER].CTV_App_Lookup` AS ctv_app    ON      a.app_url = ctv_app.Publisher_Name ) AS audience_app  ON    audience_baseline.user_list = audience_app.user_list  LEFT JOIN (    SELECT      app_url,      CAST(      IF        (CAST(impressions AS STRING) LIKE '%< 1000%',          0,          CAST(impressions AS int64)) AS int64) AS Potential_Impressions,      CAST(      IF        (CAST(uniques AS STRING) LIKE '%< 1000%',          0,          CAST(uniques AS int64)) AS int64) AS Unique_Cookies_With_Impressions    FROM      `[PARAMETER].[PARAMETER].us_country_app` ) AS country_app  ON    country_app.app_url = audience_app.app_url  CROSS JOIN (    SELECT      CAST(      IF        (CAST(impressions AS STRING) LIKE '%< 1000%',          0,          CAST(impressions AS int64)) AS int64) AS Potential_Impressions,      CAST(      IF        (CAST(uniques AS STRING) LIKE '%< 1000%',          0,          CAST(uniques AS int64)) AS int64) AS Unique_Cookies_With_Impressions    FROM      `[PARAMETER].[PARAMETER].us_country_baseline` ) AS country_baseline",
                 "legacy": false,
@@ -887,9 +922,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <script type="text/javascript">
     $(document).ready(function() {
-      $(".button-collapse").sideNav();
-      $('select').material_select();
-      $('.modal').modal();
+      M.AutoInit();
     });
   </script>
 

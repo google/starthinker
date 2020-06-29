@@ -20,43 +20,52 @@
     <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
 
     <!--Import Google Icon Font-->
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize.min.css">
+    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize-1.0.0.min.css">
 
     <style>
-       html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
+      html { color: rgba(68,68,68,1); font-family: Roboto, sans-serif; }
  
-       .material-icons { line-height: normal; vertical-align: middle; }
+      .material-icons { line-height: normal; vertical-align: middle; }
 
-       #message { justify-content: center; font-size: 2em;}
-       #message i { font-size: 2em; margin: 10px; }
-       #message ul, #message li { display: inline; margin-left: 10px; }
-       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
+      #message { justify-content: center; font-size: 2em;}
+      #message i { font-size: 2em; margin: 10px; }
+      #message ul, #message li { display: inline; margin-left: 10px; }
+      #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
-       h1 a i.material-icons { font-size: 3.28rem; }
-       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
-       ol li { line-height: 1.8em; }
-       textarea { margin-top: 7px; height: 10rem; }
-       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
+      div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+      h1 a i.material-icons { font-size: 4rem; }
+      a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+      ol li { line-height: 1.8em; }
+      textarea { margin-top: 7px; height: 10rem; }
+      table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
+      a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+      div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
-       div.card h4 { width 100%; padding: 20px;}
-       div.card h4 i.material-icons { font-size: 2.28rem; }
-       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+      #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
+      div.card h4 { width 100%; padding: 20px;}
+      div.card h4 i.material-icons { font-size: 2.28rem; }
+      div.card table { margin: 0px 5% 30px 5%; width: 90%; }
 
-       .card .card-content .card-title { word-wrap: break-word; }
-       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
+      .card .card-content .card-title { word-wrap: break-word; }
+      div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
 
-       
+      div.switch { padding-top: 1rem; padding-bottom: 1rem; }
+      div.switch label { font-size: 1.05rem; }
+      div.switch label:first-child { font-size: 1.3rem; margin-right: 40px; }
+
+      p.flow-text { font-weight: 100; }
+      i.right { margin: 0px 15px; font-size: 1.5rem;}
+      .collapsible-body { padding: 0px; }
+
+      
   #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; } 
   .col { margin-right: auto; }
-  pre.expand_code { height: 70vh; }
+  pre.expand_code { height: 70vh; overflow: hidden; }
   pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
 
     </style>
@@ -66,35 +75,37 @@
   </head>
 
   
-  <nav class="green lighten-0">
-    <div class="nav-wrapper">
-      <a href="/starthinker/" class="brand-logo">
-        <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
-      </a>
-      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down">
-        
-        
-        <li><a href="/starthinker/solution/">Solutions</a></li>
-        <li><a href="/starthinker/help/">Help</a></li>
-        
-      </ul>
-      <ul class="side-nav green lighten-1" id="mobile-demo">
-        
-        
-        
-        <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
-        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
-        
-      </ul>
-    </div>
-  </nav>
+    <nav class="green lighten-0">
+      <div class="nav-wrapper">
+        <a href="/starthinker/" class="brand-logo">
+          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+        </a>
+        <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+  
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          
+          
+          <li><a href="/starthinker/solution/">Solutions</a></li>
+          <li><a href="/starthinker/help/">Help</a></li>
+          
+        </ul>
+      </div>
+    </nav>
+  
+    <ul class="sidenav green lighten-1" id="mobile-menu">
+      
+      
+      
+      <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
+      <li><a class="white-text" href="/starthinker/help/">Help</a></li>
+      
+    </ul>
   
 
   <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize.min.js"></script>
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize-1.0.0.min.js"></script>
 
     
 
@@ -129,18 +140,8 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=datastudio">datastudio</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=bigquery">bigquery</a>
-  
 
   <br/><br/>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=solution">solution</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=budget">budget</a>
   
 
   <img id="solution_image" src="https://storage.googleapis.com/starthinker-ui/deal_finder.png"/>
@@ -367,7 +368,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 4
             ],
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "dataset": {
                 "field": {
                     "name": "dataset",
@@ -383,7 +392,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 3
             ],
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "report": {
                 "filters": {
                     "FILTER_PARTNER": {
@@ -467,7 +484,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 4
             ],
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "report": {
                 "name": {
                     "field": {
@@ -585,7 +610,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "hour": [
                 4
             ],
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "from": {
                 "query": "SELECT Partner, Partner_ID, Advertiser, Advertiser_ID, Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Size, Always_On, Deal_Impressions, Open_Impressions, Rank_Impressions, Deal_Clicks, Open_Clicks, Rank_Clicks, Deal_Conversions, Open_Conversions, Rank_Conversions, Deal_Impressions_Viewable, Open_Impressions_Viewable, Rank_Impressions_Viewable, Deal_Impressions_Measurable, Open_Impressions_Measurable, Rank_Impressions_Measurable, Deal_Cost, Open_Cost, Rank_Cost, FROM ( SELECT FIRST(Partner) AS Partner, FIRST(Partner_ID) AS Partner_ID, FIRST(Advertiser) AS Advertiser, Advertiser_ID, First(Site) AS Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Width + ' x ' + Creative_Height AS Creative_Size, IF (LEFT(Inventory, 5) == 'AO - ', True, False) AS Always_On, SUM(Deal_Impressions) AS Deal_Impressions, SUM(Open_Impressions) AS Open_Impressions, SUM(Open_Impressions) + SUM(Deal_Impressions) AS Total_Impressions, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions DESC) AS Rank_Impressions, SUM(Deal_Clicks) AS Deal_Clicks, SUM(Open_Clicks) AS Open_Clicks, SUM(Open_Clicks) + SUM(Deal_Clicks) AS Total_Clicks, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Clicks DESC) AS Rank_Clicks, SUM(Deal_Conversions) AS Deal_Conversions, SUM(Open_Conversions) AS Open_Conversions, SUM(Open_Conversions) + SUM(Deal_Conversions) AS Total_Conversions, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Conversions DESC) AS Rank_Conversions, SUM(Deal_Cost) AS Deal_Cost, SUM(Open_Cost) AS Open_Cost, SUM(Open_Cost) + SUM(Deal_Cost) AS Total_Cost, RANK() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Cost DESC) AS Rank_Cost, SUM(Deal_Impressions_Viewable) AS Deal_Impressions_Viewable, SUM(Open_Impressions_Viewable) AS Open_Impressions_Viewable, SUM(Open_Impressions_Viewable) + SUM(Deal_Impressions_Viewable) AS Total_Impressions_Viewable, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions_Viewable DESC) AS Rank_Impressions_Viewable, SUM(Deal_Impressions_Measurable) AS Deal_Impressions_Measurable, SUM(Open_Impressions_Measurable) AS Open_Impressions_Measurable, SUM(Open_Impressions_Measurable) + SUM(Deal_Impressions_Measurable) AS Total_Impressions_Measurable, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions_Measurable DESC) AS Rank_Impressions_Measurable, FROM ( SELECT Partner, Partner_ID, Advertiser, Advertiser_ID, Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Width, Creative_Height, IF(Inventory_ID IS NULL, Impressions, 0) AS Open_Impressions, IF(Inventory_ID IS NULL, 0, Impressions) AS Deal_Impressions, IF(Inventory_ID IS NULL, Clicks, 0) AS Open_Clicks, IF(Inventory_ID IS NULL, 0, Clicks) AS Deal_Clicks, IF(Inventory_ID IS NULL, Conversions, 0) AS Open_Conversions, IF(Inventory_ID IS NULL, 0, Conversions) AS Deal_Conversions, IF(Inventory_ID IS NULL, Cost, 0) AS Open_Cost, IF(Inventory_ID IS NULL, 0, Cost) AS Deal_Cost, IF(Inventory_ID IS NULL, AV_Impressions_Viewable, 0) AS Open_Impressions_Viewable, IF(Inventory_ID IS NULL, 0, AV_Impressions_Viewable) AS Deal_Impressions_Viewable, IF(Inventory_ID IS NULL, AV_Impressions_Measurable, 0) AS Open_Impressions_Measurable, IF(Inventory_ID IS NULL, 0, AV_Impressions_Measurable) AS Deal_Impressions_Measurable, FROM [[PARAMETER].Deal_Finder_DV360_Report] OMIT RECORD IF Site == 'Low volume inventory') GROUP By Advertiser_ID, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Size, Always_On) WHERE Rank_Impressions < 100 OR Rank_Clicks < 100 OR Rank_Conversions < 100 OR Rank_Cost < 100;",
                 "parameters": [
@@ -649,9 +682,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <script type="text/javascript">
     $(document).ready(function() {
-      $(".button-collapse").sideNav();
-      $('select').material_select();
-      $('.modal').modal();
+      M.AutoInit();
     });
   </script>
 

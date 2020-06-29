@@ -4,11 +4,10 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"assignment_returned",
-    "requirements":["cm", "bigquery"],
     "title":"DT To Table",
     "description":"Move data from a DT bucket into a BigQuery table.",
-    "categories":["data"],
-    "requirements":[ "cm", "bigquery" ],
+    "from":["cm"],
+    "to":["bigquery"],
     "instructions":[
       "Ensure your user has <a href='https://developers.google.com/doubleclick-advertisers/dtv2/getting-started' target='_blank'>access to the bucket</a>.",
       "Provide the DT bucket name to read from.",
@@ -22,7 +21,7 @@
   },
   "tasks":[
     { "dt":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "from":{
         "bucket":{"field":{ "name":"bucket", "kind":"string", "order":1, "default":"", "description":"Name of bucket where DT files are stored."}},
         "paths":{"field":{ "name":"paths", "kind":"string_list", "order":2, "default":[], "description":"List of prefixes to pull specific DT files."}},
@@ -30,7 +29,7 @@
         "hours":{"field":{ "name":"hours", "kind":"integer", "order":3, "default":0, "description":"Number of hours back to synchronize."}}
       },
       "to":{
-        "auth":"service",
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "default":"", "description":"Existing dataset in BigQuery." }}
       }
     }}

@@ -4,9 +4,10 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"donut_small",
-    "requirements":["cm", "storage"],
     "title":"CM To Storage",
     "description":"Move existing CM report into a Storage bucket.",
+    "from":["cm"],
+    "to":["storage"],
     "instructions":[
       "Specify an account id.",
       "Specify either report name or report id to move a report.",
@@ -17,7 +18,7 @@
   },
   "tasks":[
     { "dcm":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "account":{"field":{ "name":"account", "kind":"integer", "order":2, "default":"" }},
         "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":3, "default":"" }},
@@ -25,7 +26,7 @@
       },
       "out":{
         "storage":{
-          "auth":"service",
+          "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
           "bucket":{"field":{ "name":"bucket", "kind":"string", "order":5, "default":"" }},
           "path":{"field":{ "name":"path", "kind":"string", "order":6, "default":"CM_Report" }}
         }

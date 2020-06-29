@@ -20,43 +20,52 @@
     <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
 
     <!--Import Google Icon Font-->
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize.min.css">
+    <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize-1.0.0.min.css">
 
     <style>
-       html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
+      html { color: rgba(68,68,68,1); font-family: Roboto, sans-serif; }
  
-       .material-icons { line-height: normal; vertical-align: middle; }
+      .material-icons { line-height: normal; vertical-align: middle; }
 
-       #message { justify-content: center; font-size: 2em;}
-       #message i { font-size: 2em; margin: 10px; }
-       #message ul, #message li { display: inline; margin-left: 10px; }
-       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
+      #message { justify-content: center; font-size: 2em;}
+      #message i { font-size: 2em; margin: 10px; }
+      #message ul, #message li { display: inline; margin-left: 10px; }
+      #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
-       h1 a i.material-icons { font-size: 3.28rem; }
-       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
-       ol li { line-height: 1.8em; }
-       textarea { margin-top: 7px; height: 10rem; }
-       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
+      div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+      h1 a i.material-icons { font-size: 4rem; }
+      a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+      ol li { line-height: 1.8em; }
+      textarea { margin-top: 7px; height: 10rem; }
+      table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
+      a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+      div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
-       div.card h4 { width 100%; padding: 20px;}
-       div.card h4 i.material-icons { font-size: 2.28rem; }
-       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+      #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
+      div.card h4 { width 100%; padding: 20px;}
+      div.card h4 i.material-icons { font-size: 2.28rem; }
+      div.card table { margin: 0px 5% 30px 5%; width: 90%; }
 
-       .card .card-content .card-title { word-wrap: break-word; }
-       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
+      .card .card-content .card-title { word-wrap: break-word; }
+      div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
 
-       
+      div.switch { padding-top: 1rem; padding-bottom: 1rem; }
+      div.switch label { font-size: 1.05rem; }
+      div.switch label:first-child { font-size: 1.3rem; margin-right: 40px; }
+
+      p.flow-text { font-weight: 100; }
+      i.right { margin: 0px 15px; font-size: 1.5rem;}
+      .collapsible-body { padding: 0px; }
+
+      
   #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; } 
   .col { margin-right: auto; }
-  pre.expand_code { height: 70vh; }
+  pre.expand_code { height: 70vh; overflow: hidden; }
   pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
 
     </style>
@@ -66,35 +75,37 @@
   </head>
 
   
-  <nav class="green lighten-0">
-    <div class="nav-wrapper">
-      <a href="/starthinker/" class="brand-logo">
-        <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
-      </a>
-      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down">
-        
-        
-        <li><a href="/starthinker/solution/">Solutions</a></li>
-        <li><a href="/starthinker/help/">Help</a></li>
-        
-      </ul>
-      <ul class="side-nav green lighten-1" id="mobile-demo">
-        
-        
-        
-        <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
-        <li><a class="white-text" href="/starthinker/help/">Help</a></li>
-        
-      </ul>
-    </div>
-  </nav>
+    <nav class="green lighten-0">
+      <div class="nav-wrapper">
+        <a href="/starthinker/" class="brand-logo">
+          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+        </a>
+        <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+  
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          
+          
+          <li><a href="/starthinker/solution/">Solutions</a></li>
+          <li><a href="/starthinker/help/">Help</a></li>
+          
+        </ul>
+      </div>
+    </nav>
+  
+    <ul class="sidenav green lighten-1" id="mobile-menu">
+      
+      
+      
+      <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
+      <li><a class="white-text" href="/starthinker/help/">Help</a></li>
+      
+    </ul>
   
 
   <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize.min.js"></script>
+    <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize-1.0.0.min.js"></script>
 
     
 
@@ -129,23 +140,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=cm">cm</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=dv360">dv360</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=datastudio">datastudio</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="/starthinker/solution/?category=bigquery">bigquery</a>
-  
 
   <br/><br/>
   
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=solution">solution</a>
-  
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="/starthinker/solution/?category=audience">audience</a>
-  
 
-  
+  <img id="solution_image" src="https://storage.cloud.google.com/starthinker-ui/itp_audit.png"/>
 
   <div class="buttons">
 
@@ -155,6 +154,10 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
     
 
+    
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/tests/scripts/itp_audit.json" target="_blank">
+        <i class="material-icons right">thumb_up</i>Example Test
+      </a>
     
 
     
@@ -282,7 +285,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
             <tr>
               <td>Age</td>
-              <td>Nov. 19, 2019 (7 months)</td>
+              <td>Nov. 19, 2019 (7 months, 1 week)</td>
             </tr>
     
             <tr>
@@ -340,7 +343,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "dataset": {
                 "field": {
                     "name": "recipe_name",
@@ -354,7 +365,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "report": {
                 "timeout": 90,
                 "filters": {
@@ -439,7 +458,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "report": {
                 "timeout": 90,
                 "account": {
@@ -557,7 +584,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "report": {
                 "timeout": 90,
                 "account": {
@@ -691,7 +726,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "sheet": {
                 "field": {
                     "name": "recipe_name",
@@ -706,7 +749,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "range": "A:B",
             "header": true,
             "out": {
-                "auth": "service",
+                "auth": {
+                    "field": {
+                        "name": "auth_write",
+                        "kind": "authentication",
+                        "order": 1,
+                        "default": "service",
+                        "description": "Credentials used for writing data."
+                    }
+                },
                 "bigquery": {
                     "dataset": {
                         "field": {
@@ -724,7 +775,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "sheet": {
                 "field": {
                     "name": "recipe_name",
@@ -739,7 +798,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "range": "A:C",
             "header": true,
             "out": {
-                "auth": "service",
+                "auth": {
+                    "field": {
+                        "name": "auth_write",
+                        "kind": "authentication",
+                        "order": 1,
+                        "default": "service",
+                        "description": "Credentials used for writing data."
+                    }
+                },
                 "bigquery": {
                     "dataset": {
                         "field": {
@@ -757,7 +824,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "sheet": {
                 "field": {
                     "name": "recipe_name",
@@ -772,7 +847,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "range": "A:C",
             "header": true,
             "out": {
-                "auth": "service",
+                "auth": {
+                    "field": {
+                        "name": "auth_write",
+                        "kind": "authentication",
+                        "order": 1,
+                        "default": "service",
+                        "description": "Credentials used for writing data."
+                    }
+                },
                 "bigquery": {
                     "dataset": {
                         "field": {
@@ -790,7 +873,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "sheet": {
                 "field": {
                     "name": "recipe_name",
@@ -805,7 +896,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "range": "A:B",
             "header": true,
             "out": {
-                "auth": "service",
+                "auth": {
+                    "field": {
+                        "name": "auth_write",
+                        "kind": "authentication",
+                        "order": 1,
+                        "default": "service",
+                        "description": "Credentials used for writing data."
+                    }
+                },
                 "bigquery": {
                     "dataset": {
                         "field": {
@@ -823,7 +922,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "sheet": {
                 "field": {
                     "name": "recipe_name",
@@ -838,7 +945,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "range": "A:B",
             "header": true,
             "out": {
-                "auth": "service",
+                "auth": {
+                    "field": {
+                        "name": "auth_write",
+                        "kind": "authentication",
+                        "order": 1,
+                        "default": "service",
+                        "description": "Credentials used for writing data."
+                    }
+                },
                 "bigquery": {
                     "dataset": {
                         "field": {
@@ -856,7 +971,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "report": {
                 "name": {
                     "field": {
@@ -957,9 +1080,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <script type="text/javascript">
     $(document).ready(function() {
-      $(".button-collapse").sideNav();
-      $('select').material_select();
-      $('.modal').modal();
+      M.AutoInit();
     });
   </script>
 

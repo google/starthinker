@@ -56,6 +56,7 @@ INPUTS = {
   'username': '',  # Your Salesforce user email.
   'password': '',  # Your Salesforce login password.
   'query': '',  # The query to run in Salesforce.
+  'auth_read': 'user',  # Credentials used for reading data.
   'dataset': '',  # Existing BigQuery dataset.
   'table': '',  # Table to create from this report.
   'schema': '[]',  # Schema provided in JSON list format or empty list.
@@ -64,7 +65,15 @@ INPUTS = {
 TASKS = [
   {
     'salesforce': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'domain': {
         'field': {
           'name': 'domain',

@@ -48,6 +48,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_read': 'user',  # Credentials used for reading data.
   'say_first': 'Hello Once',  # Type in a greeting.
   'say_second': 'Hello Twice',  # Type in a greeting.
   'error': '',  # Optional error for testing.
@@ -57,7 +58,15 @@ INPUTS = {
 TASKS = [
   {
     'hello': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'say': {
         'field': {
           'name': 'say_first',
@@ -89,7 +98,15 @@ TASKS = [
   },
   {
     'hello': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'say': {
         'field': {
           'name': 'say_second',

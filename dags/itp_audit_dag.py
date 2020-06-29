@@ -50,6 +50,8 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 INPUTS = {
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
   'recipe_name': '',  # Name of document to deploy to.
+  'auth_write': 'service',  # Credentials used for writing data.
+  'auth_read': 'user',  # Credentials used for reading data.
   'cm_account_id': '',  # Campaign Manager Account Id.
   'cm_advertiser_ids': '',  # Optional: Comma delimited list of CM advertiser ids.
   'floodlight_configuration_id': '',  # Floodlight Configuration Id for the Campaign Manager floodlight report.
@@ -80,7 +82,15 @@ TASKS = [
   },
   {
     'dataset': {
-      'auth': 'service',
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'dataset': {
         'field': {
           'name': 'recipe_name',
@@ -94,7 +104,15 @@ TASKS = [
   },
   {
     'dbm': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'report': {
         'timeout': 90,
         'filters': {
@@ -179,7 +197,15 @@ TASKS = [
   },
   {
     'dcm': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'report': {
         'timeout': 90,
         'account': {
@@ -297,7 +323,15 @@ TASKS = [
   },
   {
     'dcm': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'report': {
         'timeout': 90,
         'account': {
@@ -432,7 +466,15 @@ TASKS = [
   },
   {
     'sheets': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'sheet': {
         'field': {
           'name': 'recipe_name',
@@ -447,7 +489,15 @@ TASKS = [
       'range': 'A:B',
       'header': True,
       'out': {
-        'auth': 'service',
+        'auth': {
+          'field': {
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
+          }
+        },
         'bigquery': {
           'dataset': {
             'field': {
@@ -465,7 +515,15 @@ TASKS = [
   },
   {
     'sheets': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'sheet': {
         'field': {
           'name': 'recipe_name',
@@ -480,7 +538,15 @@ TASKS = [
       'range': 'A:C',
       'header': True,
       'out': {
-        'auth': 'service',
+        'auth': {
+          'field': {
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
+          }
+        },
         'bigquery': {
           'dataset': {
             'field': {
@@ -498,7 +564,15 @@ TASKS = [
   },
   {
     'sheets': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'sheet': {
         'field': {
           'name': 'recipe_name',
@@ -513,7 +587,15 @@ TASKS = [
       'range': 'A:C',
       'header': True,
       'out': {
-        'auth': 'service',
+        'auth': {
+          'field': {
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
+          }
+        },
         'bigquery': {
           'dataset': {
             'field': {
@@ -531,7 +613,15 @@ TASKS = [
   },
   {
     'sheets': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'sheet': {
         'field': {
           'name': 'recipe_name',
@@ -546,7 +636,15 @@ TASKS = [
       'range': 'A:B',
       'header': True,
       'out': {
-        'auth': 'service',
+        'auth': {
+          'field': {
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
+          }
+        },
         'bigquery': {
           'dataset': {
             'field': {
@@ -564,7 +662,15 @@ TASKS = [
   },
   {
     'sheets': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'sheet': {
         'field': {
           'name': 'recipe_name',
@@ -579,7 +685,15 @@ TASKS = [
       'range': 'A:B',
       'header': True,
       'out': {
-        'auth': 'service',
+        'auth': {
+          'field': {
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
+          }
+        },
         'bigquery': {
           'dataset': {
             'field': {
@@ -597,7 +711,15 @@ TASKS = [
   },
   {
     'dbm': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'report': {
         'name': {
           'field': {

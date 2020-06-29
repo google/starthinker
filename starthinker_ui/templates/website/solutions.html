@@ -46,7 +46,7 @@
 
     $(document).ready(function() {
 
-      $('span.trigger_category').on('click tap', function() {
+      $('a.trigger_category').on('click tap', function() {
         var category = this.id.replace('trigger_', '');
         $("#scripts div.col").hide();
         $("#scripts div.col." + category).show();
@@ -74,69 +74,78 @@
   </h1>
   <p class="flow-text">These recipes are entire workflows that deploy end to end solutions for clients.</p>
 
-  <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_all">All</span>
+  <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_all">All</a>
   {% if '7 days' in agos %}
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_7-days">7 days</span>
+     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_7-days">7 days</a>
   {% endif %}
   {% if '30 days' in agos %}
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_30-days">30 days</span>
+     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_30-days">30 days</a>
   {% endif %}
   {% if '90 days' in agos %}
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_90-days">90 days</span>
+     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_90-days">90 days</a>
   {% endif %}
   {% if 'older' in agos %}
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_older">older</span>
+     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_older">older</a>
   {% endif %}
 
-  <br/>
-  {% for c in catalysts %}
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
-  {% endfor %}
-
-  <br/>
-  {% for c in requirements %}
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
-  {% endfor %}
-
-  <br/>
-  {% for c in categories %}
-     <span class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" id="trigger_category_{{ c|slugify }}">{{ c }}</span>
-  {% endfor %}
-
   <br/><br/>
-  <div id="scripts" class="row">
-    {% for script in scripts %}
-      <div class="col s6 m4 l3 category_all {% for c in script.get_released_ago %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_categories %} category_{{ c|slugify }}{% endfor %}{% for c in script.get_requirements %} category_{{ c|slugify }}{% endfor %}">
-        <div class="card ">
-          <div class="card-content">
-            <span class="card-title text-darken-4">
-              {% if script.get_pitches %}
-              <i class="activator material-icons expand">more_vert</i>
-              {% endif %}
-              <a href="{% if external %}/starthinker{% endif %}/solution/{{ script.get_tag }}/"> 
-                <i class="material-icons medium">{{ script.get_icon }}</i><br/><br/>
-                {{ script.get_name }}
-              </a>
-            </span>
-            <p>{{ script.get_description|safe }}</p>
-          </div>
-          <div class="card-reveal">
-            <i class="card-title material-icons right">close</i>
-            <div class="solution">
-              <table class="bordered">
-                 <tbody>
-                 {% for pitch in script.get_pitches %}
-                   <tr>
-                     <td>{{ pitch }}</td>
-                   </tr>
-                 {% endfor %}
-                </tbody>
-              </table>
+
+  <div class="row"> 
+    <div class="col s6 m4 l3 right-align">
+      <ul class="collapsible">
+        <li>
+          <div class="collapsible-header"><i class="material-icons">mediation</i><a href="#!" class="trigger_category collection-item" id="trigger_category_all">All</a></div>
+        </li>
+        {% for from, tos in categories %}
+          <li>
+            <div class="collapsible-header"><i class="material-icons">mediation</i>{{ from|title }}</div>
+            <div class="collapsible-body"><span>
+              <ul class="collection">
+                {% for to in tos %}<li class="collection-item"><div><a href="#!" class="trigger_category collection-item" id="trigger_category_{{ from|slugify }}_{{ to|slugify }}"><i class="material-icons">arrow_forward</i>{{ to }}</a></div></li>
+                {% endfor %}
+              </ul>
+            </span></div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col s6 m8 l9 right-align">
+      <div id="scripts" class="row center-align">
+
+        {% for script in scripts %}
+          <div class="col s6 m4 l3 category_all{% for c in script.get_released_ago %} category_{{ c|slugify }}{% endfor %}{% for from in script.get_from %}{% for to in script.get_to %} category_{{ from|slugify }}_{{ to|slugify }}{% endfor %}{% endfor %}">
+            <div class="card ">
+              <div class="card-content">
+                <span class="card-title text-darken-4">
+                  {% if script.get_pitches %}
+                  <i class="activator material-icons expand">more_vert</i>
+                  {% endif %}
+                  <a href="{% if external %}/starthinker{% endif %}/solution/{{ script.get_tag }}/"> 
+                    <i class="material-icons medium">{{ script.get_icon }}</i><br/><br/>
+                    {{ script.get_name }}
+                  </a>
+                </span>
+                <p>{{ script.get_description|safe }}</p>
+              </div>
+              <div class="card-reveal">
+                <i class="card-title material-icons right">close</i>
+                <div class="solution">
+                  <table class="bordered">
+                     <tbody>
+                     {% for pitch in script.get_pitches %}
+                       <tr>
+                         <td>{{ pitch }}</td>
+                       </tr>
+                     {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        {% endfor %}
       </div>
-    {% endfor %}
+    </div>
   </div>
 
   <br/><br/>

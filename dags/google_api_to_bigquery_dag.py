@@ -51,6 +51,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_read': 'user',  # Credentials used for reading data.
   'api': 'doubleclickbidmanager',  # See developer guide.
   'version': 'v1',  # Must be supported version.
   'function': 'reports.files.list',  # Full function dot notation path.
@@ -64,7 +65,15 @@ INPUTS = {
 TASKS = [
   {
     'google_api': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'api': {
         'field': {
           'name': 'api',

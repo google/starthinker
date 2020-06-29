@@ -4,7 +4,8 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"donut_small",
-    "requirements":["cm"],
+    "from":["cm"],
+    "to":["cm"],
     "title":"CM Report",
     "description":"Create a CM report from a JSON definition.",
     "instructions":[
@@ -16,7 +17,7 @@
   },
   "tasks":[
     { "dcm":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "account":{"field":{ "name":"account", "kind":"string", "order":1, "default":"" }},
         "body":{"field":{ "name":"body", "kind":"json", "order":2, "default":"{}" }}

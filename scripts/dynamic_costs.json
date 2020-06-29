@@ -4,9 +4,10 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"monetization_on",
-    "requirements":["cm", "sheets", "bigquery"],
     "title":"Dynamic Costs Reporting",
     "description":"Calculate DV360 cost at the dynamic creative combination level.",
+    "from":["cm", "sheets"],
+    "to":["bigquery"],
     "instructions":[
       "Add a sheet URL. This is where you will enter advertiser and campaign level details.",
       "Specify the CM network ID.",
@@ -25,7 +26,7 @@
   },
   "tasks":[
     { "dynamic_costs":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "account":{"field": {"name": "dcm_account", "kind": "string", "order": 0, "default": ""}}, 
       "sheet":{
         "template":{
@@ -38,7 +39,7 @@
         "range":"A2:B"
       },
       "out":{
-        "auth":"service",
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "dataset":{"field": {"name": "bigquery_dataset", "kind": "string", "order": 2, "default": "dynamic_costs"}}
       } 
     }}

@@ -59,6 +59,8 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 INPUTS = {
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
   'recipe_name': '',  # 
+  'auth_write': 'service',  # Credentials used for writing data.
+  'auth_read': 'user',  # Credentials used for reading data.
   'partner_id': '',  # The sdf file types.
   'budget_categories': '{}',  # A dictionary to show which IO Ids go under which Category. {"CATEGORY1":[12345,12345,12345], "CATEGORY2":[12345,12345]}
   'filter_ids': [],  # Comma separated list of filter ids for the request.
@@ -72,7 +74,15 @@ TASKS = [
   {
     'dataset': {
       'description': 'Create a dataset where data will be combined and transfored for upload.',
-      'auth': 'service',
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'dataset': {
         'field': {
           'name': 'dataset',
@@ -85,7 +95,15 @@ TASKS = [
   },
   {
     'dbm': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'report': {
         'timeout': 90,
         'filters': {

@@ -49,6 +49,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_write': 'service',  # Credentials used for writing data.
   'archive_days': 7,
   'archive_bucket': '',
   'archive_path': '',
@@ -58,7 +59,15 @@ INPUTS = {
 TASKS = [
   {
     'archive': {
-      'auth': 'service',
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'days': {
         'field': {
           'name': 'archive_days',

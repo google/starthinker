@@ -50,6 +50,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_read': 'user',  # Credentials used for reading data.
   'account_ids': [],
   'dataset': '',  # Dataset to be written to in BigQuery.
 }
@@ -58,7 +59,15 @@ TASKS = [
   {
     'ga_settings_download': {
       'description': 'Will create tables with format ga_* to hold each endpoint via a call to the API list function.',
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'accounts': {
         'field': {
           'name': 'account_ids',

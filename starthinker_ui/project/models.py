@@ -26,12 +26,12 @@ class Project(models.Model):
   account = models.ForeignKey(Account, on_delete=models.PROTECT, null=True)
   identifier = models.CharField(max_length=255)
   service = models.TextField()
+  share = models.CharField(max_length=50, default='')
 
   def __str__(self):
-    return self.identifier
-
-  def __unicode__(self):
-    return self.identifier
+    if self.share == 'domain': return 'DOMAIN: %s | CAUTION: Be sure you trust this project.' % self.identifier
+    elif self.share == 'global': return 'GLOBAL: %s | CAUTION: Be sure you trust this project.' % self.identifier
+    else: return 'USER: %s | SAFE: Only you are using this service account.' % self.identifier
 
   def link_edit(self):
     return '/project/edit/%d/' % self.pk

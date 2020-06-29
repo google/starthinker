@@ -131,8 +131,8 @@ scripts/script_hello.json
     "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
     "sample":"https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT",
     "document":"https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/",
-    "requirements":[ "dcm", "datastudio", "bigquery" ],
-    "categories":["security", "reporting"],
+    "from":["cm"],
+    "to":["bigquery", "datastudio"],
     "pitches":[
       "Meet contractual access reporting information.",
       "Reduce unauthorized use of DCM accounts and assets.",
@@ -179,9 +179,10 @@ scripts/script_hello.json
     - csat improvement - How well does it improve client perception of Googles products and services.
   - image - Optional, public screen shot or diagram of solution.
   - sample - Optional, link to public sample with anonymized data.
-  - document - Optional, link to public communications deocument.
-  - requirements - Required, technical product dependencies.
-  - categories - Optional, arbitrary list of strings used in solution gallery and add task pages.
+  - document - Optional, link to public communications document.
+  - test - Optional, link to public test document.
+  - from - Required, list of endpoints data is pulled from, used in UI.
+  - to - Required, list of endpoints data is written to, used in UI.
   - pitches - Optional, list of short sentences describing value propositions.
   - instructions - Required, instructions for manual steps, supports embedded HTML and links.
 

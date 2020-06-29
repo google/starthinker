@@ -4,7 +4,8 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_small",
-    "requirements":["cm", "sheets", "bigquery"],
+    "from":["cm", "sheets"],
+    "to":["bigquery"],
     "title":"CM Report Replicate",
     "description":"Replicate a report across multiple networks and advertisers.",
     "instructions":[
@@ -24,11 +25,11 @@
       }
     }},
     { "dataset":{
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "dataset":{"field":{ "name":"recipe_name", "kind":"string", "order":1, "default":"", "description":"Name of Google BigQuery dataset to create." }}
     }},
     { "dcm_replicate":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "account":{"field":{ "name":"account", "kind":"integer", "order":1, "default":"", "description":"CM network id." }},
         "id":{"field":{ "name":"report_id", "kind":"integer", "order":2, "default":"", "description":"CM template report id, for template" }},

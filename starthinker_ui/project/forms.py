@@ -19,18 +19,32 @@
 import json
 
 from django import forms
+from django.utils.html import mark_safe
 
 from starthinker_ui.project.models import Project
 
 class ProjectForm(forms.ModelForm):
+  share = forms.ChoiceField()
 
   class Meta:
     model = Project
-    fields = ['service']
+    fields = ['service', 'share']
 
   def __init__(self, account, *args, **kwargs):
     super(ProjectForm, self).__init__(*args, **kwargs)
     self.instance.account = account
+    self.fields['share'].label = 'Share'
+    self.fields['share'].help_text = mark_safe('WARNING: Sharing with DOMAIN or GLOBAL will allow other users to use, but not view, your <a href="https://console.cloud.google.com/iam-admin/iam" target="_blank">service credentials and project permissions</a> in their recipes.')
+
+    domain = account.get_domain()
+    self.fields['share'].choices = (
+      ('user', 'USER | SAFE: Only you can use it.'),
+      ('domain', 'DOMAIN ( %s ) | CAUTION: Only people in your verified domain can use it.' % domain),
+      ('global', 'GLOBAL | CAUTION: Anyone logging in can use it.')
+    ) if domain else (
+      ('user', 'User'), 
+      ('global', 'Global')
+    )
 
   def clean_service(self):
     try:

@@ -5,9 +5,10 @@
     "copyright":"Copyright 2018 Google LLC",
     "ui":false,
     "icon":"perm_phone_msg",
-    "requirements":["twitter", "bigquery"],
     "title":"Trends Places To BigQuery Via Query",
     "description":"Move using a WOEID query.",
+    "from":["twitter"],
+    "to":["bigquery"],
     "instructions":[
       "Provide <a href='https://apps.twitter.com/' target='_blank'>Twitter credentials</a>.",
       "Provide BigQuery WOEID source query.",
@@ -19,7 +20,7 @@
   },
   "tasks":[
     { "twitter":{
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "secret":{"field":{ "name":"secret", "kind":"string", "order":1, "default":"" }},
       "key":{"field":{ "name":"key", "kind":"string", "order":2, "default":"" }},
       "trends":{

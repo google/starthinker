@@ -1358,6 +1358,11 @@ class WorkerTest(TransactionTestCase):
     self.RECIPE_DONE = self.job_done.uid()
 
 
+  def test_ui_autoscale(self):
+    resp = self.client.get('/recipe/autoscale/')
+    self.assertEqual(resp.status_code, 200)
+
+
   def test_worker_downscale(self):
      self.assertIsNone(worker_downscale())
 

@@ -8,8 +8,8 @@
     "description":"Download Google Analytics settings to a BigQuery table.",
     "image":"",
     "sample":"",
-    "requirements":[ "datastudio", "bigquery", "ga" ],
-    "categories":["data"],
+    "from":["ga"],
+    "to":["bigquery", "datastudio"],
     "pitches":[
       "Store, visualize, and compare Google Analytics settings over time."
     ],
@@ -34,7 +34,7 @@
   "tasks":[{
     "ga_settings_download":{
       "description":"Will create tables with format ga_* to hold each endpoint via a call to the API list function.",
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "accounts": {"field":{ "name":"account_ids", "kind":"integer_list", "order":1, "default":[] }},
       "dataset":{
         "field":{ "name":"dataset", "kind":"string", "order":2, "default":"", "description": "Dataset to be written to in BigQuery." }

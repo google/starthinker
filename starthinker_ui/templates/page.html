@@ -31,39 +31,48 @@
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
 
     <!--Import Google Icon Font-->
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/materialize-1.0.0.min.css' %}">
 
     <style>
-       html { color: rgba(68,68,68,1); text-shadow: 5px 5px 15px rgba(168,168,168,0.5); }
+      html { color: rgba(68,68,68,1); font-family: Roboto, sans-serif; }
  
-       .material-icons { line-height: normal; vertical-align: middle; }
+      .material-icons { line-height: normal; vertical-align: middle; }
 
-       #message { justify-content: center; font-size: 2em;}
-       #message i { font-size: 2em; margin: 10px; }
-       #message ul, #message li { display: inline; margin-left: 10px; }
-       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
+      #message { justify-content: center; font-size: 2em;}
+      #message i { font-size: 2em; margin: 10px; }
+      #message ul, #message li { display: inline; margin-left: 10px; }
+      #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
 
-       div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
-       h1 a i.material-icons { font-size: 3.28rem; }
-       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
-       ol li { line-height: 1.8em; }
-       textarea { margin-top: 7px; height: 10rem; }
-       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
-       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
+      div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+      h1 a i.material-icons { font-size: 4rem; }
+      a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+      ol li { line-height: 1.8em; }
+      textarea { margin-top: 7px; height: 10rem; }
+      table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
+      a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
 
-       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+      div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
-       div.card h4 { width 100%; padding: 20px;}
-       div.card h4 i.material-icons { font-size: 2.28rem; }
-       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
+      #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
+      div.card h4 { width 100%; padding: 20px;}
+      div.card h4 i.material-icons { font-size: 2.28rem; }
+      div.card table { margin: 0px 5% 30px 5%; width: 90%; }
 
-       .card .card-content .card-title { word-wrap: break-word; }
-       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
+      .card .card-content .card-title { word-wrap: break-word; }
+      div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
 
-       {% block css %}{% endblock %}
+      div.switch { padding-top: 1rem; padding-bottom: 1rem; }
+      div.switch label { font-size: 1.05rem; }
+      div.switch label:first-child { font-size: 1.3rem; margin-right: 40px; }
+
+      p.flow-text { font-weight: 100; }
+      i.right { margin: 0px 15px; font-size: 1.5rem;}
+      .collapsible-body { padding: 0px; }
+
+      {% block css %}{% endblock %}
     </style>
 
     <!--Let browser know website is optimized for mobile-->
@@ -71,52 +80,54 @@
   </head>
 
   {% block nav %}
-  <nav class="green lighten-0">
-    <div class="nav-wrapper">
-      <a href="{% if not external %}/{% else %}/starthinker/{% endif %}" class="brand-logo">
-        <img src="{% static 'StarThinker.png' %}"/>&nbsp;StarThinker
-      </a>
-      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down">
-        {% if not external %}<li><a href="/">Recipes</a></li>{% endif %}
-        {% if not external %}<li><a href="/project/">Projects</a></li>{% endif %}
-        <li><a href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
-        <li><a href="{% if external %}/starthinker{% endif %}/help/">Help</a></li>
-        {% if request.user.is_authenticated %}
-          <li><a href="/logout/">Logout</a></li>
-          <li>
-            <div class="chip">
-              <img src="{{ request.user.picture }}" alt="{{ request.user.name }}">
-              {{ request.user.name }}
-            </div>
-          </li>
-        {% endif %}
-      </ul>
-      <ul class="side-nav green lighten-1" id="mobile-demo">
-        {% if request.user.is_authenticated %}
-          <li>
-            <div class="chip" style="margin: 0px 30px;">
-              <img src="{{ request.user.picture }}" alt="{{ request.user.name }}">
-              {{ request.user.name }}
-            </div>
-          </li>
-        {% endif %}
-        {% if not external %}<li><a class="white-text" href="/">Recipes</a></li>{% endif %}
-        {% if not external %}<li><a class="white-text" href="/project/">Project</a></li>{% endif %}
-        <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
-        <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/help/">Help</a></li>
-        {% if request.user.is_authenticated %}
-          <li><a class="white-text" href="/logout/">Logout</a></li>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>
+    <nav class="green lighten-0">
+      <div class="nav-wrapper">
+        <a href="{% if not external %}/{% else %}/starthinker/{% endif %}" class="brand-logo">
+          <img src="{% static 'StarThinker.png' %}"/>&nbsp;StarThinker
+        </a>
+        <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+  
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          {% if not external %}<li><a href="/">Recipes</a></li>{% endif %}
+          {% if not external %}<li><a href="/project/">Projects</a></li>{% endif %}
+          <li><a href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
+          <li><a href="{% if external %}/starthinker{% endif %}/help/">Help</a></li>
+          {% if request.user.is_authenticated %}
+            <li><a href="/logout/">Logout</a></li>
+            <li>
+              <div class="chip">
+                <img src="{{ request.user.picture }}" alt="{{ request.user.name }}">
+                {{ request.user.name }}
+              </div>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+  
+    <ul class="sidenav green lighten-1" id="mobile-menu">
+      {% if request.user.is_authenticated %}
+        <li>
+          <div class="chip" style="margin: 0px 30px;">
+            <img src="{{ request.user.picture }}" alt="{{ request.user.name }}">
+            {{ request.user.name }}
+          </div>
+        </li>
+      {% endif %}
+      {% if not external %}<li><a class="white-text" href="/">Recipes</a></li>{% endif %}
+      {% if not external %}<li><a class="white-text" href="/project/">Project</a></li>{% endif %}
+      <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
+      <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/help/">Help</a></li>
+      {% if request.user.is_authenticated %}
+        <li><a class="white-text" href="/logout/">Logout</a></li>
+      {% endif %}
+    </ul>
   {% endblock %}
 
   <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/materialize-1.0.0.min.js' %}"></script>
 
     {% include "floodlight.html" %}
 
@@ -146,9 +157,7 @@
 
   <script type="text/javascript">
     $(document).ready(function() {
-      $(".button-collapse").sideNav();
-      $('select').material_select();
-      $('.modal').modal();
+      M.AutoInit();
     });
   </script>
 

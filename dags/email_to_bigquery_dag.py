@@ -50,6 +50,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_read': 'user',  # Credentials used for reading data.
   'email_from': '',  # Must match from field.
   'email_to': '',  # Must match to field.
   'subject': '',  # Regular expression to match subject.
@@ -64,53 +65,59 @@ INPUTS = {
 TASKS = [
   {
     'email': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'read': {
-        'email': {
-          'from': {
-            'field': {
-              'name': 'email_from',
-              'kind': 'string',
-              'order': 1,
-              'default': '',
-              'description': 'Must match from field.'
-            }
-          },
-          'to': {
-            'field': {
-              'name': 'email_to',
-              'kind': 'string',
-              'order': 2,
-              'default': '',
-              'description': 'Must match to field.'
-            }
-          },
-          'subject': {
-            'field': {
-              'name': 'subject',
-              'kind': 'string',
-              'order': 3,
-              'default': '',
-              'description': 'Regular expression to match subject.'
-            }
-          },
-          'link': {
-            'field': {
-              'name': 'link',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Regular expression to match email.'
-            }
-          },
-          'attachment': {
-            'field': {
-              'name': 'attachment',
-              'kind': 'string',
-              'order': 5,
-              'default': '',
-              'description': 'Regular expression to match atttachment.'
-            }
+        'from': {
+          'field': {
+            'name': 'email_from',
+            'kind': 'string',
+            'order': 1,
+            'default': '',
+            'description': 'Must match from field.'
+          }
+        },
+        'to': {
+          'field': {
+            'name': 'email_to',
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Must match to field.'
+          }
+        },
+        'subject': {
+          'field': {
+            'name': 'subject',
+            'kind': 'string',
+            'order': 3,
+            'default': '',
+            'description': 'Regular expression to match subject.'
+          }
+        },
+        'link': {
+          'field': {
+            'name': 'link',
+            'kind': 'string',
+            'order': 4,
+            'default': '',
+            'description': 'Regular expression to match email.'
+          }
+        },
+        'attachment': {
+          'field': {
+            'name': 'attachment',
+            'kind': 'string',
+            'order': 5,
+            'default': '',
+            'description': 'Regular expression to match atttachment.'
           }
         }
       },

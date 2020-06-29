@@ -5,7 +5,8 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"storage",
-    "requirements":["storage"],
+    "from":["storage"],
+    "to":["storage"],
     "title":"Storage Bucket",
     "description":"Create and permission a bucket in Storage.",
     "instructions":[
@@ -18,7 +19,7 @@
   },
   "tasks":[
     { "bucket":{
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "bucket":{"field":{ "name":"bucket_bucket", "kind":"string", "order":2, "default":"", "description":"Name of Google Cloud Bucket to create." }},
       "emails":{"field":{ "name":"bucket_emails", "kind":"string_list", "order":3, "default":"", "description":"Comma separated emails." }},
       "groups":{"field":{ "name":"bucket_groups", "kind":"string_list", "order":4, "default":"", "description":"Comma separated groups." }}

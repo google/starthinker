@@ -50,6 +50,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_read': 'user',  # Credentials used for reading data.
   'from_sheet': '',
   'from_tab': '',
   'to_sheet': '',
@@ -59,7 +60,15 @@ INPUTS = {
 TASKS = [
   {
     'sheets': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'template': {
         'sheet': {
           'field': {

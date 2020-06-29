@@ -4,7 +4,8 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"donut_small",
-    "requirements":["cm", "sheets"],
+    "from":["cm"],
+    "to":["sheets"],
     "title":"CM To Sheets",
     "description":"Move existing CM report into a Sheet tab.",
     "instructions":[
@@ -17,7 +18,7 @@
   },
   "tasks":[
     { "dcm":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "account":{"field":{ "name":"account", "kind":"integer", "order":2, "default":"" }},
         "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":3, "default":"" }},

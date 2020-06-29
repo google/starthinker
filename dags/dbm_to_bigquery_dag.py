@@ -50,6 +50,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_read': 'user',  # Credentials used for reading data.
+  'auth_write': 'service',  # Authorization used for writing data.
   'dbm_report_id': '',  # DV360 report ID given in UI, not needed if name used.
   'dbm_report_name': '',  # Name of report, not needed if ID used.
   'dbm_dataset': '',  # Existing BigQuery dataset.
@@ -61,13 +63,21 @@ INPUTS = {
 TASKS = [
   {
     'dbm': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'report': {
         'report_id': {
           'field': {
             'name': 'dbm_report_id',
             'kind': 'integer',
-            'order': 1,
+            'order': 2,
             'default': '',
             'description': 'DV360 report ID given in UI, not needed if name used.'
           }
@@ -76,7 +86,7 @@ TASKS = [
           'field': {
             'name': 'dbm_report_name',
             'kind': 'string',
-            'order': 2,
+            'order': 3,
             'default': '',
             'description': 'Name of report, not needed if ID used.'
           }
@@ -84,12 +94,20 @@ TASKS = [
       },
       'out': {
         'bigquery': {
-          'auth': 'service',
+          'auth': {
+            'field': {
+              'name': 'auth_write',
+              'kind': 'authentication',
+              'order': 1,
+              'default': 'service',
+              'description': 'Authorization used for writing data.'
+            }
+          },
           'dataset': {
             'field': {
               'name': 'dbm_dataset',
               'kind': 'string',
-              'order': 3,
+              'order': 4,
               'default': '',
               'description': 'Existing BigQuery dataset.'
             }
@@ -98,7 +116,7 @@ TASKS = [
             'field': {
               'name': 'dbm_table',
               'kind': 'string',
-              'order': 4,
+              'order': 5,
               'default': '',
               'description': 'Table to create from this report.'
             }
@@ -107,7 +125,7 @@ TASKS = [
             'field': {
               'name': 'dbm_schema',
               'kind': 'json',
-              'order': 5,
+              'order': 6,
               'description': 'Schema provided in JSON list format or empty value to auto detect.'
             }
           },
@@ -115,7 +133,7 @@ TASKS = [
             'field': {
               'name': 'is_incremental_load',
               'kind': 'boolean',
-              'order': 6,
+              'order': 7,
               'default': False,
               'description': "Clear data in destination table during this report's time period, then append report data to destination table."
             }

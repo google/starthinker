@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2018 Google Inc.
+#  Copyright 2018 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ from datetime import date, timedelta
 
 from starthinker.util.project import project 
 from starthinker.util.dcm import report_build, report_file, report_to_rows, report_clean, parse_account
-from starthinker.util.sheets import sheets_tab_copy, sheets_read
+from starthinker.util.sheets import sheets_tab_copy, sheets_read, sheets_url
 from starthinker.util.csv import rows_to_type, rows_header_trim
 from starthinker.util.email.template import EmailTemplate
 from starthinker.util.email import send_email
@@ -54,7 +54,6 @@ def floodlight_report(floodlight_id):
       'kind': 'dfareporting#report',
       'type': 'FLOODLIGHT',
       'accountId': account_id,
-      #'ownerProfileId': profile_id,
       'name': name,
       'fileName': name.replace('( ', '').replace(' )', '').replace(' ', '_'),
       'format': 'CSV',
@@ -95,17 +94,27 @@ def floodlight_report(floodlight_id):
       },
     }
   )
+  return report['id']
 
-  # fetch report file if it exists ( timeout = 0 means grab most reent ready )
+
+def floodlight_rows(report_id):
+
+  # fetch report file if it exists 
   filename, report = report_file(
     project.task['auth'],
     project.task['account'],
-    report['id'],
+    report_id,
     None,
     10
   )
 
-  return report
+  # clean up rows
+  rows = report_to_rows(report)
+  rows = report_clean(rows)
+  rows = rows_header_trim(rows)
+  rows = rows_to_type(rows, column=6)
+
+  return rows
 
 
 def floodlight_outliers(df_in, col_name):
@@ -113,11 +122,13 @@ def floodlight_outliers(df_in, col_name):
   q3 = df_in[col_name].quantile(0.75)
   iqr = q3-q1 
   fence_low  = q1-1.5*iqr
-  #fence_high = q3+1.5*iqr
-  #df_out = df_in.loc[(df_in[col_name] < fence_low) | (df_in[col_name] > fence_high)]
-  df_out = df_in.loc[(df_in[col_name] < fence_low)]
-  #return df_in # for debug
-  return df_out
+  fence_high = q3+1.5*iqr
+
+  df_in['status'] = 'NORMAL'
+  df_in.loc[df_in[col_name] < fence_low, 'status'] = 'LOW'
+  df_in.loc[df_in[col_name] > fence_high, 'status'] = 'HIGH'
+
+  return df_in
 
 
 def floodlight_analysis(rows):
@@ -144,32 +155,35 @@ def floodlight_email(day, alerts):
   for email, table in alerts.items():
 
     # build email template
-    t = EmailTemplate();
+    t = EmailTemplate()
+    t.align('center')
+    t.section(True)
 
     # when floodlight alerts exist
-    if table:
-      subject = '%d Floodlight Alerts For %s' % (len(table), day)
-      t.header(subject)
-      t.paragraph('For the following floodlights, there are suspiciously low impressions. Please check their configurations.')
-      t.table(
-        [
-          { "name":"Date", "type":"STRING" },
-          { "name":"Floodlight", "type":"STRING" },
-          { "name":"Activity Id", "type":"STRING" },
-          { "name":"Activity", "type":"STRING" },
-          { "name":"Impressions", "type":"INTEGER" },
-        ],
-        table
-      )
+    issues = sum(1 for row in table if row[5] != 'NORMAL')
+      
+    if issues > 0 : subject = '%d Floodlight Alerts For %s' % (issues, day)
+    else: subject = 'All Floodlights Normal For %s' % day
 
-    # when everything is OK
-    else:
-      subject = 'All Floodlights Normal For %s' % day
-      t.header(subject)
-      t.paragraph('Impressions all look within statistically expected range.')
+    t.header(subject)
+    t.paragraph('The following floodlights are being monitored.  A status of LOW or HIGH inidcates impressions have changed significantly for the day.  A status of NORMAL means impressions are close to the average for the past 7 days.')
+    t.table(
+      [
+        { "name":"Date", "type":"STRING" },
+        { "name":"Floodlight", "type":"STRING" },
+        { "name":"Activity Id", "type":"STRING" },
+        { "name":"Activity", "type":"STRING" },
+        { "name":"Impressions", "type":"INTEGER" },
+        { "name":"Status", "type":"STRING" },
+      ],
+      table
+    )
+
+    t.paragraph('Your monitored floodlights and recipients are listed in the sheet below.')
 
     # either way link to the configuration sheet
-    t.button('Floodlight Monitoring Sheet', project.task['sheet']['sheet'], big=True)
+    t.button('Floodlight Monitoring Sheet', sheets_url(project.task['auth'], project.task['sheet']['sheet']), big=True)
+    t.section(False)
 
     if project.verbose: print("FLOODLIGHT MONITOR EMAIL ALERTS", email, len(table))
 
@@ -196,7 +210,8 @@ def floodlight_monitor():
       project.task['sheet']['template']['sheet'],
       project.task['sheet']['template']['tab'],
       project.task['sheet']['sheet'],
-      project.task['sheet']['tab'])
+      project.task['sheet']['tab']
+    )
 
   # read peers from sheet
   triggers = sheets_read(
@@ -207,20 +222,23 @@ def floodlight_monitor():
   )
   # 0 - Floodlight Id
   # 1 - email
+  # 2 - dcm report id ( added by this script )
+  # 3 - status, added by the script ( LOW, NORMAL, HIGH )
 
   if project.verbose and len(triggers) == 0: print("FLOODLIGHT MONITOR: No floodlight ids specified in sheet.")
 
   alerts = {}
   day = None
 
+  # create reports first in parallel
+  for trigger in triggers:
+    trigger.append(floodlight_report(trigger[0]))
+
+  # download data from all reports
   for trigger in triggers:
 
-    # get report data for each floodlight
-    report = floodlight_report(trigger[0])
-    rows = report_to_rows(report)
-    rows = report_clean(rows)
-    rows = rows_header_trim(rows)
-    rows = rows_to_type(rows, column=6)
+    # get report rows for each floodlight
+    rows = floodlight_rows(trigger[2])
  
     # calculate outliers
     last_day, rows = floodlight_analysis(rows)

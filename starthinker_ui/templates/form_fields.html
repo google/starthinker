@@ -23,10 +23,22 @@
 {% for field in fields %}
   {% if field.is_hidden %}
     {{ field }}
+  {% elif field|is_switch %}
+    <div class="switch">
+      <label for="{{ field.id_for_label }}" class="switch_widget">
+        {{ field.field.value_true }}
+        {{ field }}
+        <span class="lever"></span>
+        {{ field.field.value_false }}
+      </label>
+      <label><strong>{{ field.label }}</strong>{% if field.help_text %} - {{ field.help_text|safe }}{% endif %}</label>
+    </div>
   {% elif field|is_checkbox %}
     <div>
-      {{ field }}
-      <label for="{{ field.id_for_label }}"><strong>{{ field.label }}</strong>{% if field.help_text %} - {{ field.help_text|safe }}{% endif %}</label>
+      <label for="{{ field.id_for_label }}">
+        {{ field }}
+        <span>{{ field.label }}</span>{% if field.help_text %} - {{ field.help_text|safe }}{% endif %}
+      </label>
     </div>
   {% else %}
     <div>

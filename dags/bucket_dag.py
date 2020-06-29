@@ -51,6 +51,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_write': 'service',  # Credentials used for writing data.
   'bucket_bucket': '',  # Name of Google Cloud Bucket to create.
   'bucket_emails': '',  # Comma separated emails.
   'bucket_groups': '',  # Comma separated groups.
@@ -59,7 +60,15 @@ INPUTS = {
 TASKS = [
   {
     'bucket': {
-      'auth': 'service',
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'bucket': {
         'field': {
           'name': 'bucket_bucket',

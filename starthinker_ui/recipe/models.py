@@ -118,9 +118,9 @@ class Recipe(models.Model):
     self.get_token()
     self.get_reference()
     super(Recipe, self).save(*args, **kwargs)
+    self._cache_log = None
 
   def uid(self):
-    #return "UI-RECIPE-%s" % (self.pk or 'NEW')
     return self.pk or 'NEW'
 
   def link_edit(self):

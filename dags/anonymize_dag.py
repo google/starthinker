@@ -50,6 +50,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_read': 'user',  # Credentials used for reading data.
   'from_project': '',  # Original project to copy from.
   'from_dataset': '',  # Original dataset to copy from.
   'to_project': None,  # Anonymous data will be writen to.
@@ -59,7 +60,15 @@ INPUTS = {
 TASKS = [
   {
     'anonymize': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'bigquery': {
         'from': {
           'project': {

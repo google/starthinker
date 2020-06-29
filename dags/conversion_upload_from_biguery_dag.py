@@ -52,6 +52,7 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'account': '',
+  'auth_read': 'user',  # Credentials used for reading data.
   'floodlight_activity_id': '',
   'floodlight_conversion_type': 'encryptedUserId',
   'encryption_entity_id': '',
@@ -65,7 +66,15 @@ INPUTS = {
 TASKS = [
   {
     'conversion_upload': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'account_id': {
         'field': {
           'name': 'account',

@@ -7,8 +7,8 @@
     "title":"Entity Read Files",
     "image":"https://storage.googleapis.com/starthinker-ui/entity_read_files.png",
     "description":"Import public and private <a href='https://developers.google.com/bid-manager/guides/entity-read/format-v2' target='_blank'>Entity Read Files</a> into a BigQuery dataset.<br/>CAUTION: PARTNER ONLY, ADVERTISER FILTER IS NOT APPLIED.",
-    "categories":["data"],
-    "requirements":[ "dv360", "bigquery" ],
+    "from":["dv360"],
+    "to":["bigquery"],
     "pitches":[
       "Provide Entity Read Files to client.",
       "Automatically updated every 24 hours.",
@@ -36,11 +36,11 @@
   },
   "tasks":[
     { "dataset":{
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "default":"", "description":"BigQuery dataset to write tables for each entity." }}
     }},
     { "entity":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "prefix":"Entity",
       "entities":["Campaign", "LineItem", "Creative", "UserList", "Partner", "Advertiser", "InsertionOrder", "Pixel", "InventorySource", "CustomAffinity", "UniversalChannel", "UniversalSite", "SupportedExchange", "DataPartner", "GeoLocation", "Language", "DeviceCriteria", "Browser", "Isp"],
       "partners": {
@@ -49,7 +49,7 @@
       },
       "out":{
         "bigquery":{
-          "auth":"service",
+          "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
           "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "default":"", "description":"BigQuery dataset to write tables for each entity." }}
         }
       }

@@ -290,9 +290,9 @@ def report_build(auth, account, body):
     body['accountId'] = account_id
     body['ownerProfileId'] = profile_id
 
-    # add advertisers to the body
-    if advertiser_ids:
-       body['criteria']['dimensionFilters'] = body['criteria'].get('dimensionFilters', []) + [{
+    # add advertisers to the body, ignore for floodlight reports
+    if advertiser_ids and 'criteria' in body:
+       body['criteria']['dimensionFilters'] = body.get('criteria', {}).get('dimensionFilters', []) + [{
          'kind':'dfareporting#dimensionValue',
          'dimensionName':'dfa:advertiser',
          'id':advertiser_id,

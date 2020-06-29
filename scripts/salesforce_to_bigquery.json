@@ -4,9 +4,10 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_large",
-    "requirements":["salesforce", "bigquery"],
     "title":"Salesforce To BigQuery",
     "description":"Move query results into a BigQuery table.",
+    "from":["salesforce"],
+    "to":["bigquery"],
     "instructions":[
       "Specify <a href='https://developer.salesforce.com/' target='_blank'>Salesforce</a> credentials.",
       "Specify the query youd like to execute.",
@@ -16,7 +17,7 @@
   },
   "tasks":[
     { "salesforce": {
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "domain":{"field":{ "name":"domain", "kind":"string", "default":"login.salesforce.com", "description":"Retrieve from a Salesforce Domain." }},
       "client":{"field":{ "name":"client", "kind":"string", "default":"", "description":"Retrieve from a Salesforce App." }},
       "secret":{"field":{ "name":"secret", "kind":"string", "default":"", "description":"Retrieve from a Salesforce App." }},

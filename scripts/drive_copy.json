@@ -4,9 +4,10 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2019 Google LLC",
     "icon":"file_copy",
-    "requirements":["drive"],
     "title":"Drive Copy",
     "description":"Copy a drive document.",
+    "from":["drive"],
+    "to":["drive"],
     "instructions":[
       "Specify a source URL or document name.",
       "Specify a destination name.",
@@ -16,7 +17,7 @@
   },
   "tasks":[
     { "drive":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "copy":{
         "source":{"field":{ "name":"source", "kind":"string", "order":1, "default":"", "description":"Name or URL of document to copy from." }},
         "destination":{"field":{ "name":"destination", "kind":"string", "order":2, "default":"", "description":"Name document to copy to." }}

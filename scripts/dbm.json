@@ -4,9 +4,10 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"donut_large",
-    "requirements":["dv360"],
     "title":"DV360 Report",
     "description":"Create a DV360 report.",
+    "from":["dv360"],
+    "to":["dv360"],
     "instructions":[
       "Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DV360 API</a> to build a report.",
       "Copy and paste the JSON definition of a report, <a href='https://github.com/google/starthinker/blob/master/tests/scripts/dbm_to_bigquery.json#L9-L40' target='_blank'>sample for reference</a>.",
@@ -17,7 +18,7 @@
   },
   "tasks":[
     { "dbm":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report": {"field":{ "name":"report", "kind":"json", "order":1, "default":"{}", "description":"Report body and filters."}},
       "delete":{"field":{ "name":"delete", "kind":"boolean", "order":2, "default":false, "description":"If report exists, delete it before creating a new one." }}
     }}

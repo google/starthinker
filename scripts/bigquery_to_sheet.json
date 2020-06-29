@@ -4,7 +4,8 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"arrow_forward",
-    "requirements":["bigquery", "sheets"],
+    "from":["bigquery"],
+    "to":["sheets"],
     "title":"Query to Sheet",
     "description":"Copy the contents of a query into a Google Sheet.",
     "instructions":[
@@ -17,7 +18,7 @@
   },
   "tasks":[
     { "bigquery":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "from":{
         "auth": "service",
         "dataset": {"field":{ "name":"dataset", "kind":"string", "order":4, "default":"", "description":"Existing BigQuery dataset." }},

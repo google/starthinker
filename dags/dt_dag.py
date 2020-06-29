@@ -51,7 +51,9 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_read': 'user',  # Credentials used for reading data.
   'bucket': '',  # Name of bucket where DT files are stored.
+  'auth_write': 'service',  # Credentials used for writing data.
   'paths': [],  # List of prefixes to pull specific DT files.
   'days': 2,  # Number of days back to synchronize.
   'hours': 0,  # Number of hours back to synchronize.
@@ -61,7 +63,15 @@ INPUTS = {
 TASKS = [
   {
     'dt': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'from': {
         'bucket': {
           'field': {
@@ -102,7 +112,15 @@ TASKS = [
         }
       },
       'to': {
-        'auth': 'service',
+        'auth': {
+          'field': {
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
+          }
+        },
         'dataset': {
           'field': {
             'name': 'dataset',

@@ -14,7 +14,7 @@
   },
   "tasks":[
     { "hello":{
-        "auth":"user",
+        "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
         "say":"Hello World"
       }
     }

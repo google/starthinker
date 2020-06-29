@@ -109,7 +109,7 @@ class JsonField(forms.CharField):
       else: 
         return None
     else: 
-      return value  
+      return json.dumps(value)  
 
   def clean(self, value):
     if isinstance(value, str):
@@ -127,3 +127,20 @@ class TimezoneField(forms.ChoiceField):
     kwargs['choices'] = map(lambda t: (t, t.replace('_', ' ')), TIMEZONES)
     kwargs['initial'] = 'America/Los_Angeles'
     super(TimezoneField, self).__init__(*args, **kwargs)
+
+
+class SwitchField(forms.ChoiceField):
+  widget = forms.CheckboxInput
+
+  def __init__(self, value_true, value_false, *args, **kwargs):
+    self.value_true = value_true
+    self.value_false = value_false
+    kwargs['choices'] = [value_true, value_false]
+    super(SwitchField, self).__init__(*args, **kwargs)
+
+  def prepare_value(self, value):
+    return value == self.value_true
+
+  def clean(self, value):
+    if value == True: return self.value_true
+    else: return self.value_false

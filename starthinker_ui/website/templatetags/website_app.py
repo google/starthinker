@@ -33,6 +33,7 @@ try: from django.utils.encoding import force_unicode
 except: from django.utils.encoding import force_text as force_unicode
 
 from starthinker_ui.recipe.forms_json import json_get_fields as json_get_fields_imported
+from starthinker_ui.recipe.forms_fields import SwitchField
 from starthinker_ui.recipe.scripts import Script
 
 register = template.Library()
@@ -53,9 +54,16 @@ class SearchScriptsTag(template.Node):
       scripts = [s for s in scripts if s.get_open_source()]
 
     context['scripts'] = scripts
-    context['categories'] = sorted(set(chain.from_iterable([s.get_categories() for s in scripts])))
-    context['requirements'] = sorted(set(chain.from_iterable([s.get_requirements() for s in scripts])))
     context['agos'] = sorted(set(chain.from_iterable([s.get_released_ago() for s in scripts])))
+
+    categories = {}
+    for s in scripts:
+      for f in s.get_from():
+        categories.setdefault(f, [])
+        categories[f].extend(s.get_to())
+    for f in categories.keys():
+      categories[f] = sorted(set(categories[f]))
+    context['categories'] = sorted(categories.items())
 
     return ''
 
@@ -107,6 +115,11 @@ def json_pretty(data):
 @register.filter
 def is_checkbox(field):
   return isinstance(field.field.widget, CheckboxInput)
+
+
+@register.filter
+def is_switch(field):
+  return isinstance(field.field, SwitchField)
 
 
 @register.filter

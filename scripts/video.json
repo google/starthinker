@@ -4,9 +4,10 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"switch_video",
-    "requirements":["video", "sheets", "bigquery"],
     "title":"Video Overlay",
     "description":"Add images, text, and audio to videos.",
+    "from":["sheets", "video"],
+    "to":["bigquery", "youtube", "cm"],
     "instructions":[
       "Provide either a sheet or a BigQuery table.",
       "Each video edit will be read from the sheet or table."
@@ -20,7 +21,7 @@
   "tasks":[
     { "sheets":{
       "__comment__":"Copy the tamplate sheet to the users sheet.  If it already exists, nothing happens.",
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "template":{
         "sheet":"https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit#gid=0",
         "tab":"Video"
@@ -30,7 +31,7 @@
     }},
     { "video":{
       "__comment__":"Read video effects and values from sheet and/or bigquery.",
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "sheets":{
         "sheet":{"field":{ "name":"sheet", "kind":"string", "order":1, "default":"", "description":"Name or URL of sheet." }},
         "tab":{"field":{ "name":"tab", "kind":"string", "order":2, "default":"", "description":"Name of sheet tab." }}

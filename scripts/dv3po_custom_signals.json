@@ -9,8 +9,8 @@
     "image":"",
     "sample":"",
     "documentation":"",
-    "categories":["automation"],
-    "requirements":[ "dv360", "sheets"],
+    "from":["weather", "sheets"],
+    "to":["dv360"],
     "pitches":[
       "Automatically react to custom signals and analytics",
       "Budget is better allocated based on business rules and priorities.",
@@ -57,7 +57,7 @@
       }
     }, {
       "lineitem_beta":{
-        "auth":"user",
+        "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
         "read":{
           "sheet":{
             "sheet": {"field":{ "name":"sheet_url", "kind":"string", "order":2, "description":"Feed Sheet URL", "default":"" }},

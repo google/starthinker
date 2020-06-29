@@ -4,9 +4,10 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_large",
-    "requirements":["smartsheet", "bigquery"],
     "title":"SmartSheet To BigQuery",
     "description":"Move sheet data into a BigQuery table.",
+    "from":["smartsheet"],
+    "to":["bigquery"],
     "instructions":[
       "Specify <a href='https://smartsheet-platform.github.io/api-docs/' target='_blank'>SmartSheet</a> token.",
       "Locate the ID of a sheet by viewing its properties.",
@@ -17,7 +18,7 @@
   },
   "tasks":[
     { "smartsheet": {
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "token":{"field":{ "name":"token", "kind":"string", "order":1, "default":"", "description":"Retrieve from SmartSheet account settings." }},
       "sheet":{"field":{ "name":"sheet", "kind":"string", "order":2, "default":"", "description":"Retrieve from sheet properties." }},
       "link":{ "field":{ "name":"link", "kind":"boolean", "order":6, "default":true, "description":"Add a link to each row as the first column." }},

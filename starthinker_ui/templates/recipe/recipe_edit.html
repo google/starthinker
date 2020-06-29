@@ -86,7 +86,8 @@
       }
     }
 
-    var category = 'category_all';
+    var category_from = 'category_from_all';
+    var category_to = 'category_to_all';
 
     $(document).ready(function() {
 
@@ -108,14 +109,12 @@
         forms += 1;
         var repeat_blank = $('#form_blank_' + script);
         $('#insert_here').before(repeat_blank.html().replace(/\[BLANK\]/g, forms));
-        $('select').material_select();
       }
 
       $('i.form_button').on('click tap', function() {
         forms += 1;
         var repeat_blank = $('#' + this.id.replace('button', 'blank'));
         $('#insert_here').before(repeat_blank.html().replace(/\[BLANK\]/g, forms));
-        $('select').material_select();
         updateTasks();
       });
 

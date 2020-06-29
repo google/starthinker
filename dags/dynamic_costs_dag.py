@@ -60,14 +60,24 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'dcm_account': '',
+  'auth_read': 'user',  # Credentials used for reading data.
   'configuration_sheet_url': '',
+  'auth_write': 'service',  # Credentials used for writing data.
   'bigquery_dataset': 'dynamic_costs',
 }
 
 TASKS = [
   {
     'dynamic_costs': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'account': {
         'field': {
           'name': 'dcm_account',
@@ -94,7 +104,15 @@ TASKS = [
         'range': 'A2:B'
       },
       'out': {
-        'auth': 'service',
+        'auth': {
+          'field': {
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
+          }
+        },
         'dataset': {
           'field': {
             'name': 'bigquery_dataset',

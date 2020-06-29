@@ -24,7 +24,6 @@ import re
 import pprint
 import json
 import time
-from io import StringIO
 from types import GeneratorType
 from urllib.request import urlopen
 
@@ -234,16 +233,21 @@ def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = DBM_C
   else:
     filename = RE_FILENAME.search(storage_path).groups(0)[0]
 
+    def report_stream(response, chunksize):
+      while True:
+        chunk = response.read(chunksize).decode('UTF-8')
+        if chunk: yield chunk
+        else: break
+
     # streaming
     if chunksize: 
-      path = storage_path.split('?', 1)[0].replace('https://storage.googleapis.com/', '').replace('/', ':', 1)
-      if project.verbose: print("REPORT FILE STREAM:", path)
-      return filename, object_get_chunks(auth, path, chunksize, 'utf-8')
+      if project.verbose: print("REPORT FILE STREAM:", storage_path)
+      return filename, report_stream(urlopen(storage_path), chunksize)
 
     # single object
     else:
       if project.verbose: print("REPORT FILE SINGLE:", storage_path)
-      return filename, StringIO(urlopen(storage_path).read().decode('UTF-8'))
+      return filename, urlopen(storage_path).read().decode('UTF-8')
 
 
 def report_delete(auth, report_id=None, name=None):

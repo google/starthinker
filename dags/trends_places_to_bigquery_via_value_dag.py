@@ -52,6 +52,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_write': 'service',  # Credentials used for writing data.
   'secret': '',
   'key': '',
   'woeids': [],
@@ -62,7 +63,15 @@ INPUTS = {
 TASKS = [
   {
     'twitter': {
-      'auth': 'service',
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'secret': {
         'field': {
           'name': 'secret',

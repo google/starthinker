@@ -8,8 +8,8 @@
     "description":"Pulls a DV360 Report from a gMail email into BigQuery.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/email_dv360.png",
     "test":"https://github.com/google/starthinker/blob/master/tests/scripts/email_dv360.json",
-    "categories":["data"],
-    "requirements":[ "dv360", "gmail", "bigquery" ],
+    "from":["dv360", "gmail"],
+    "to":["bigquery"],
     "pitches":[
       "Acquire client DV360 data without having an account.",
       "Build new data ingestion service for clients.",
@@ -37,7 +37,7 @@
   },
   "tasks":[
     { "email":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "read":{
         "from":"noreply-dv360@google.com",
         "to": {"field":{ "name":"email", "kind":"string", "order":1, "default":"", "description":"Email address report was sent to." }},

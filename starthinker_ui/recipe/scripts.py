@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ class Script:
   def get_scripts(account_email=None, ui=False):
     for tag in sorted(iter(SCRIPTS.keys())):
       if account_email in SCRIPTS[tag]['script'].get('private', (account_email,)):
-        if not ui or SCRIPTS[tag]['script'].get('ui', True):
+        if not ui or ('from' in SCRIPTS[tag]['script'] and 'to' in SCRIPTS[tag]['script']):
           yield Script(tag)
 
   def __init__(self, tag):
@@ -146,11 +146,11 @@ class Script:
     else:
       return ''
 
-  def get_requirements(self):
-    return self.script.get('script', {}).get('requirements', [])
+  def get_from(self):
+    return self.script.get('script', {}).get('from', [])
 
-  def get_categories(self):
-    return self.script.get('script', {}).get('categories', [])
+  def get_to(self):
+    return self.script.get('script', {}).get('to', [])
 
   def get_pitches(self):
     return self.script.get('script', {}).get('pitches', [])

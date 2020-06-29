@@ -49,7 +49,9 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_read': 'user',  # Credentials used for reading data.
   'dbm_report_id': '',  # DV360 report ID given in UI, not needed if name used.
+  'auth_write': 'service',  # Credentials used for writing data.
   'dbm_report_name': '',  # Name of report, not needed if ID used.
   'dbm_bucket': '',  # Google cloud bucket.
   'dbm_path': '',  # Path and filename to write to.
@@ -58,7 +60,15 @@ INPUTS = {
 TASKS = [
   {
     'dbm': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'report': {
         'report_id': {
           'field': {
@@ -81,7 +91,15 @@ TASKS = [
       },
       'out': {
         'storage': {
-          'auth': 'service',
+          'auth': {
+            'field': {
+              'name': 'auth_write',
+              'kind': 'authentication',
+              'order': 1,
+              'default': 'service',
+              'description': 'Credentials used for writing data.'
+            }
+          },
           'bucket': {
             'field': {
               'name': 'dbm_bucket',

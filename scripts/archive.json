@@ -4,9 +4,10 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"archive",
-    "requirements":["storage"],
     "title":"Archive",
     "description":"Wipe old information from a Storage bucket based on last update time.",
+    "from":["storage"],
+    "to":["storage"],
     "instructions":[
       "Specify how many days back to retain data and which buckets and paths to purge.",
       "Everything under a path will be moved to archive or deleted depending on your choice."
@@ -15,7 +16,7 @@
   },
   "tasks":[
     { "archive":{
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "days":{"field":{ "name":"archive_days", "kind":"integer", "order":1, "default":7 }},
       "storage": {
         "bucket":{"field":{ "name":"archive_bucket", "kind":"string", "order":2, "default":"" }},

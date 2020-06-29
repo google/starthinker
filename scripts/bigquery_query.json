@@ -4,9 +4,10 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"arrow_forward",
-    "requirements":["bigquery"],
     "title":"Query To Table",
     "description":"Save query results into a BigQuery table.",
+    "to":["bigquery"],
+    "from":["bigquery"],
     "instructions":[
       "Specify a single query and choose legacy or standard mode.",
       "For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...",
@@ -16,7 +17,7 @@
   },
   "tasks":[
     { "bigquery":{
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "from":{
         "query":{"field":{ "name":"query", "kind":"text", "order":1, "default":"", "description":"SQL with newlines and all." }},
         "legacy":{"field":{ "name":"legacy", "kind":"boolean", "order":4, "default":true, "description":"Query type must match source tables." }}

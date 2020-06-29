@@ -22,7 +22,7 @@ import json
 from django import forms
 
 from starthinker.script.parse import json_get_fields
-from starthinker_ui.recipe.forms_fields import CommaSeparatedCharField, CommaSeparatedIntegerField, JsonField, TimezoneField
+from starthinker_ui.recipe.forms_fields import CommaSeparatedCharField, CommaSeparatedIntegerField, JsonField, TimezoneField, SwitchField
 
 
 def load_config_data(config, path, default):
@@ -50,6 +50,8 @@ def get_field_kind(field):
     return forms.ChoiceField(choices=map(lambda c: (c,c), field['choices']))
   elif field['kind'] == 'timezones':
     return TimezoneField()
+  elif field['kind'] == 'authentication':
+    return SwitchField('user', 'service', required=True)
   elif field['kind'] == 'json':
     return JsonField(required=False)
   elif field['kind'] == 'integer_list':

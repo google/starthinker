@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@ from django.test import TestCase
 
 class WebsiteTest(TestCase):
 
-  def test_solution(self):
+  def test_ui_solution(self):
     resp = self.client.get('/solution/')
     self.assertEqual(resp.status_code, 200)
 
-  def test_help(self):
+  def test_ui_help(self):
     resp = self.client.get('/help/')
     self.assertEqual(resp.status_code, 200)

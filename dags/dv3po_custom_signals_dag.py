@@ -57,6 +57,7 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'station_ids': '',  # NOAA Weather Station ID
+  'auth_read': 'user',  # Credentials used for reading data.
   'sheet_url': '',  # Feed Sheet URL
 }
 
@@ -93,7 +94,15 @@ TASKS = [
   },
   {
     'lineitem_beta': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'read': {
         'sheet': {
           'sheet': {

@@ -4,7 +4,8 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2019 Google LLC",
     "icon":"donut_small",
-    "requirements":["cm", "bigquery"],
+    "from":["cm"],
+    "to":["bigquery"],
     "title":"CM API To BigQuery",
     "description":"Write the current state of accounts, subaccounts, profiles, advertisers, campaigns, sites, roles, and reports to BigQuery for a given list of CM accounts.",
     "instructions":[
@@ -16,7 +17,7 @@
   },
   "tasks":[
     { "dcm_api":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "endpoints":{"field":{ "name":"endpoint", "kind":"choice", "choices":[
         "accountPermissionGroups",
         "accountPermissions",
@@ -74,7 +75,7 @@
         "values":{"field":{ "name":"accounts", "kind":"integer_list", "order":2, "default":"", "description":"Comma separated CM account ids." }}
       },
       "out":{
-        "auth":"service",
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Google BigQuery dataset to create tables in." }}
       }
     }}

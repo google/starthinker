@@ -51,6 +51,8 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'endpoint': '',
+  'auth_read': 'user',  # Credentials used for reading data.
+  'auth_write': 'service',  # Credentials used for writing data.
   'dataset': '',  # Google BigQuery dataset to create tables in.
   'accounts': '',  # Comma separated CM account ids.
 }
@@ -58,7 +60,15 @@ INPUTS = {
 TASKS = [
   {
     'dcm_api': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'endpoints': {
         'field': {
           'name': 'endpoint',
@@ -131,7 +141,15 @@ TASKS = [
         }
       },
       'out': {
-        'auth': 'service',
+        'auth': {
+          'field': {
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
+          }
+        },
         'dataset': {
           'field': {
             'name': 'dataset',

@@ -51,7 +51,9 @@ INPUTS = {
   'dataset': '',  # BigQuery Dataset where all data will live.
   'recipe_project': '',  # Project where BigQuery dataset will be created.
   'recipe_name': '',  # Name of document to deploy to.
+  'auth_write': 'service',  # Credentials used for writing data.
   'partner_id': '',  # DV360 Partner id.
+  'auth_read': 'user',  # Credentials used for reading data.
   'audience_ids': '',  # Comma separated list of Audience Ids
 }
 
@@ -76,7 +78,15 @@ TASKS = [
   },
   {
     'dataset': {
-      'auth': 'service',
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'dataset': {
         'field': {
           'name': 'dataset',
@@ -474,7 +484,15 @@ TASKS = [
   },
   {
     'sheets': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'sheet': {
         'field': {
           'name': 'recipe_name',
@@ -489,7 +507,15 @@ TASKS = [
       'range': 'A:Z',
       'header': True,
       'out': {
-        'auth': 'service',
+        'auth': {
+          'field': {
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
+          }
+        },
         'bigquery': {
           'dataset': {
             'field': {
@@ -518,7 +544,15 @@ TASKS = [
   {
     'bigquery': {
       'description': 'The query to join all the IAR reports into an Affinity Index.',
-      'auth': 'service',
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'from': {
         'query': "SELECT    audience_app.app_url,    audience_app.ctv_app_name,  IF    (audience_app.app_url LIKE '%Android%'      OR audience_app.app_url LIKE '%iOS',      'App',      'Domain') AS app_or_domain,    audience_app.user_list AS audience_list,    audience_app.Potential_Impressions AS audience_app_impressions,    audience_app.Unique_Cookies_With_Impressions AS audience_app_uniques,    audience_baseline.Potential_Impressions AS audience_baseline_impressions,    audience_baseline.Unique_Cookies_With_Impressions AS audience_baseline_uniques,    country_app.Potential_Impressions AS country_app_impressions,    country_app.Unique_Cookies_With_Impressions AS country_app_uniques,    country_baseline.Potential_Impressions AS country_baseline_impressions,    country_baseline.Unique_Cookies_With_Impressions AS country_baseline_uniques,    ((audience_app.Unique_Cookies_With_Impressions/NULLIF(audience_baseline.Unique_Cookies_With_Impressions,          0))/NULLIF((country_app.Unique_Cookies_With_Impressions/NULLIF(CAST(country_baseline.Unique_Cookies_With_Impressions AS int64),            0)),        0))*100 AS affinity_index  FROM (    SELECT      user_list,      CAST(      IF        (impressions LIKE '%< 1000%',          0,          CAST(impressions AS int64)) AS int64) AS potential_impressions,      CAST(      IF        (uniques LIKE '%< 100%',          0,          CAST(uniques AS int64)) AS int64) AS unique_cookies_with_impressions    FROM      `[PARAMETER].[PARAMETER].us_audience_baseline` ) AS audience_baseline  JOIN (    SELECT      ctv_app.CTV_App_name AS ctv_app_name,      user_list,      app_url,      CAST(      IF        (impressions LIKE '%< 1000%',          0,          CAST(impressions AS int64)) AS int64) AS potential_impressions,      CAST(      IF        (uniques LIKE '%< 1000%',          0,          CAST(uniques AS int64)) AS int64) AS unique_cookies_with_impressions    FROM      `[PARAMETER].[PARAMETER].us_audience_app` AS a    LEFT JOIN      `[PARAMETER].[PARAMETER].CTV_App_Lookup` AS ctv_app    ON      a.app_url = ctv_app.Publisher_Name ) AS audience_app  ON    audience_baseline.user_list = audience_app.user_list  LEFT JOIN (    SELECT      app_url,      CAST(      IF        (CAST(impressions AS STRING) LIKE '%< 1000%',          0,          CAST(impressions AS int64)) AS int64) AS Potential_Impressions,      CAST(      IF        (CAST(uniques AS STRING) LIKE '%< 1000%',          0,          CAST(uniques AS int64)) AS int64) AS Unique_Cookies_With_Impressions    FROM      `[PARAMETER].[PARAMETER].us_country_app` ) AS country_app  ON    country_app.app_url = audience_app.app_url  CROSS JOIN (    SELECT      CAST(      IF        (CAST(impressions AS STRING) LIKE '%< 1000%',          0,          CAST(impressions AS int64)) AS int64) AS Potential_Impressions,      CAST(      IF        (CAST(uniques AS STRING) LIKE '%< 1000%',          0,          CAST(uniques AS int64)) AS int64) AS Unique_Cookies_With_Impressions    FROM      `[PARAMETER].[PARAMETER].us_country_baseline` ) AS country_baseline",
         'legacy': False,

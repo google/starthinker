@@ -5,9 +5,10 @@
     "copyright":"Copyright 2018 Google LLC",
     "open":true,
     "icon":"view_column",
-    "requirements":["sheets", "bigquery"],
     "title":"Sheet To BigQuery",
     "description":"Import data from a sheet and move it to a BigQuery table.",
+    "from":["sheets"],
+    "to":["bigquery"],
     "instructions":[
       "For the sheet, provide the full edit URL.",
       "If the tab does not exist it will be created.",
@@ -18,13 +19,13 @@
   },
   "tasks":[
     { "sheets":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "sheet":{"field":{ "name":"sheets_url", "kind":"string", "order":1, "default":"" }},
       "tab":{"field":{ "name":"sheets_tab", "kind":"string", "order":2, "default":"" }},
       "range":{"field":{ "name":"sheets_range", "kind":"string", "order":3, "default":"" }},
       "header":{"field":{ "name":"sheets_header", "kind":"boolean", "order":9, "default":true }},
       "out":{
-        "auth":"service",
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "bigquery":{
           "dataset":{"field":{ "name":"dataset", "kind":"string", "order":7, "default":"" }},
           "table":{"field":{ "name":"table", "kind":"string", "order":8, "default":"" }}

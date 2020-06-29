@@ -7,8 +7,10 @@
     "title":"ITP Audit Dashboard ( 2020 )",
     "description":"Dashboard that shows performance metrics across browser to see the impact of ITP.",
     "document":"https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/",
-    "categories":["solution", "audience"],
-    "requirements":[ "cm", "dv360", "datastudio", "bigquery" ],
+    "test": "https://github.com/google/starthinker/blob/master/tests/scripts/itp_audit.json",
+    "image":"https://storage.cloud.google.com/starthinker-ui/itp_audit.png",
+    "from":["cm", "dv360"],
+    "to":["bigquery", "datastudio"],
     "pitches":[
       "See drilled down metrics of your accounts performance as ITP changes"
     ],
@@ -42,11 +44,11 @@
         }
     }},
     { "dataset":{
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
     }},
     { "dbm":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "timeout": 90,
         "filters": {
@@ -98,7 +100,7 @@
       "delete": false
     }},
     { "dcm":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "timeout": 90,
         "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default": "", "description":"Campaign Manager Account Id." }},
@@ -180,7 +182,7 @@
       "delete":false
     }},
     { "dcm":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "timeout": 90,
         "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default": "", "description":"Campaign Manager Account Id." }},
@@ -267,13 +269,13 @@
       "delete":false
     }},
     { "sheets":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
       "tab":"Enviroment",
       "range":"A:B",
       "header": true,
       "out":{
-        "auth":"service",
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "bigquery":{
           "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_Environment"
@@ -281,13 +283,13 @@
       }
     }},
     { "sheets":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
       "tab":"Browser",
       "range":"A:C",
       "header": true,
       "out":{
-        "auth":"service",
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "bigquery":{
           "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_Browser"
@@ -295,13 +297,13 @@
       }
     }},
     { "sheets":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
       "tab":"CM_Browser_lookup",
       "range":"A:C",
       "header": true,
       "out":{
-        "auth":"service",
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "bigquery":{
           "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_CM_Browser_lookup"
@@ -309,13 +311,13 @@
       }
     }},
     { "sheets":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
       "tab":"Device_Type",
       "range":"A:B",
       "header": true,
       "out":{
-        "auth":"service",
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "bigquery":{
           "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_Device_Type"
@@ -323,13 +325,13 @@
       }
     }},   
     { "sheets":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
       "tab":"Floodlight_Attribution",
       "range":"A:B",
       "header": true,
       "out":{
-        "auth":"service",
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "bigquery":{
           "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_Floodlight_Attribution"
@@ -337,7 +339,7 @@
       }
     }},
     { "dbm":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "name":{"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Browser_", "order":1, "description":"Name of report in DV360, should be unique." }}
       },

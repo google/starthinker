@@ -8,8 +8,8 @@
     "description":"Tracks revenue spent on various DV360 features and compares to performance metrics.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/dv360_feature_adoption.png",
     "sample":"https://datastudio.google.com/open/1uZ4WtxiRsBu54gxFdYAzPfW2yGRZlWn0?usp=sharing",
-    "categories":["budget", "solution", "covid"],
-    "requirements":[ "dv360", "datastudio", "bigquery" ],
+    "from":["dv360"],
+    "to":["bigquery", "datastudio"],
     "pitches":[
       "Identify gaps in usage of key features.",
       "Start tracking feature adoption over time.",

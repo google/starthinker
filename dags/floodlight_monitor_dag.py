@@ -51,21 +51,30 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'dcm_account': '',  # Specify an account_id or account_id:subaccount_id.
+  'auth_read': 'user',  # Credentials used for reading data.
+  'dcm_account': '',  # Specify an account_id as a number.
   'sheet': '',  # Full Name or URL to Google Sheet, Floodlight Monitor tab will be added.
 }
 
 TASKS = [
   {
     'floodlight_monitor': {
-      'auth': 'user',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'account': {
         'field': {
           'name': 'dcm_account',
           'kind': 'string',
           'order': 1,
           'default': '',
-          'description': 'Specify an account_id or account_id:subaccount_id.'
+          'description': 'Specify an account_id as a number.'
         }
       },
       'template': {
@@ -86,7 +95,7 @@ TASKS = [
           }
         },
         'tab': 'Floodlight Monitor',
-        'range': 'A2:C'
+        'range': 'A2:B'
       }
     }
   }

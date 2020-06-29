@@ -4,7 +4,8 @@
     "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2018 Google LLC",
     "icon":"donut_large",
-    "requirements":["dv360", "sheets"],
+    "from":["dv360"],
+    "to":["sheets"],
     "title":"DV360 To Sheets",
     "description":"Move existing DV360 report into a Sheets tab.",
     "instructions":[
@@ -15,7 +16,7 @@
   },
   "tasks":[
     { "dbm":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":1, "default":"", "description":"DV360 report ID given in UI, not needed if name used." }},
         "name":{"field":{ "name":"report_name", "kind":"string", "order":2, "default":"", "description":"Name of report, not needed if ID used." }}
