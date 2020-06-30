@@ -24,8 +24,9 @@ from setuptools import setup, find_packages
 
 REQUIREMENTS = [
   'google-api-python-client',
+  'google-auth',
   'google-auth-oauthlib',
-  'jsonpickle',
+  'google-auth-httplib2',
   'pysftp',
   'pytz',
   'tzlocal',
@@ -33,9 +34,9 @@ REQUIREMENTS = [
   'python-dateutil',
   'pandas',
   'psutil',
-  'moviepy',
   'py-xlsx',
-  'simple-salesforce'
+  'simple-salesforce',
+  'smartsheet-python-sdk'
 ]
 
 #TEST_REQUIREMENTS = []
