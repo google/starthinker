@@ -53,6 +53,13 @@ setup(
                'starthinker'},
   include_package_data=True,
   install_requires=REQUIREMENTS,
+  entry_points={
+    'console_scripts': [
+      'st_auth = starthinker.auth.helper:main',
+      'st_test = starthinker.tests.helper:main',
+      'st_dv360_beta = starthinker.task.dv360_beta.helper:main'
+    ]
+  },
   license="Apache License, Version 2.0",
   zip_safe=False,
   keywords='starthinker',
