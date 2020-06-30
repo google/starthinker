@@ -22,6 +22,7 @@
 if [ -d "${PWD}/install" ]; then
   THIS_DIR=$PWD
 
+  echo ""
   echo "Welcome To StarThinker ( Google gTech )"
   echo ""
   echo "This utility will help you set up and manage long running recipes."
@@ -63,9 +64,12 @@ if [ -d "${PWD}/install" ]; then
       echo "Sets up a Google Cloud Composer Instance for distributed jobs.  Alternate scalable team wide deployment."
       echo ""
       echo ""
+      echo "Change Analytics Token"
+      echo "The UI deployment will track anonymous usage data, to disable, adjust the Google Analytics Token."
+      echo ""
     
       main_done=0
-      main_options=("Developer Menu" "Enterprise Menu" "Composer Setup Menu" "Change gCloud User" "Change gCloud Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials")
+      main_options=("Developer Menu" "Enterprise Menu" "Composer Setup Menu" "Change gCloud User" "Change gCloud Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials" "Change Analytics Token")
     
       while (( !main_done ))
       do
@@ -85,6 +89,7 @@ if [ -d "${PWD}/install" ]; then
             6) setup_credentials_service "forced"; save_config; break ;;
             7) setup_credentials_commandline "forced"; setup_credentials_user "forced"; save_config; break ;;
             8) setup_credentials_ui "forced"; save_config; break ;;
+            9) setup_analytics "forced"; save_config; break ;;
             q) main_done=1; break;;
             *) echo "What's that?" ;;
           esac

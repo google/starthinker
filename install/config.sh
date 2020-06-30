@@ -307,6 +307,32 @@ setup_database() {
 }
 
 
+setup_analytics() {
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Set Analytics Tracking - ${STARTHINKER_ANALYTICS}"
+  echo "----------------------------------------"
+  echo ""
+  echo "All data collected is anonymous and never shared outside of the StarThinker team."
+  echo "Leaving the tracking in place helps us continue supporting StarThinker by showing it is useful."
+  echo "To opt out simply enter a blank or type in your own."
+  echo ""
+  
+  read -p "Google Analytics Token ( blank to leave unchanged or OFF to remove): " analytics
+
+  if [ "$analytics" == "OFF" ]; then
+    STARTHINKER_ANALYTICS="";
+  elif [ ! -z "${analytics}" ]; then
+    STARTHINKER_ANALYTICS=$analytics;
+  fi
+
+  echo ""
+  echo "Done"
+  echo ""
+}
+
+
 setup_project() {
   forced=$1
 
