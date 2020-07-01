@@ -16,36 +16,40 @@
 #
 ###########################################################################
 
-
 import json
 import argparse
+import textwrap
 
 from starthinker.util.project import project
 from starthinker.util.google_api import API_DV360_Beta
 
-"""Command line to get a DV360 Line Item lists.
 
-This is a helper demonstrate the use of the new DV360 API.
+def main():
+  parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent('''\
+      Command line utility to download and print line items from the DV360 Beta API.
 
-`python helper.py --advertiser # -u $STARTHINKER_USER -c $STARTHINKER_CLIENT`
-`python helper.py --advertiser 3721733 --user $STARTHINKER_USER`
+      Example: python helper.py --advertiser 3721733 --user user.json
+               python helper.py --advertiser 3721733 --service service.json
+  '''))
 
-Prerequisite: https://github.com/google/starthinker/blob/master/tutorials/deploy_developer.md#command-line-deploy
-
-"""
-
-
-if __name__ == "__main__":
-
-  parser = argparse.ArgumentParser()
-  parser.add_argument('--advertiser', help='advertiser ID to pull', default=None)
+  # lineitem list requires an advertiser id
+  parser.add_argument('--advertiser', help='Advertiser ID to pull line items from.')
 
   # initialize project
-  project.from_commandline(parser=parser)
+  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s'))
+
+  # determine auth based on parameters
   auth = 'service' if project.args.service else 'user'
 
   # pull the line items
   lineitems =  API_DV360_Beta(auth, iterate=True).advertisers().lineItems().list(advertiserId=project.args.advertiser).execute()
 
+  # print line items
   for lineitem in lineitems:
     print(json.dumps(lineitem, indent=2, sort_keys=True))
+
+
+if __name__ == "__main__":
+  main()

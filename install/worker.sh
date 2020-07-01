@@ -156,7 +156,7 @@ Environment=STARTHINKER_UI_DOMAIN=$STARTHINKER_UI_PRODUCTION_DOMAIN
 Environment=STARTHINKER_UI_SECRET=$STARTHINKER_UI_PRODUCTION_SECRET
 Environment=PYTHONPATH=$STARTHINKER_ROOT
 WorkingDirectory=$THIS_DIR
-ExecStart=$STARTHINKER_ENV/bin/python $STARTHINKER_ROOT/starthinker_ui/manage.py job_worker $worker_PARAMETERS
+ExecStart=$STARTHINKER_ENV/bin/python3 $STARTHINKER_ROOT/starthinker_ui/manage.py job_worker $worker_PARAMETERS
 
 [Install]
 WantedBy=multi-user.target

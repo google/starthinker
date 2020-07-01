@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2018 Google Inc.
+#  Copyright 2018 Google LLC.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,49 +16,57 @@
 #
 ###########################################################################
 
-
-"""Command line to get user profile, mainly for testing the client auth flow.
-
-This script requires Client Credentials and will fetch and download User Credentials.
-To verify that the User Credentials work, it will download and display the user profile.
-
-Google Cloud Projects provide Client Credentials that allow them to act as users.
-Using Client Credentials this command line will download user credentials which
-can be used with various recipes to act as the user.
-
-Downloading Client Credentials
-
-https://cloud.google.com/genomics/docs/how-tos/getting-started#download_credentials_for_api_access
-
-Scopes Granted To This Application
-
-See APPLICATION_SCOPES in starthinker/config.py or review util/auth/README.md
-
-Arguments
-
-  --client / -c - path to client credentials file used to authenticate
-  --user / -u - path to user credentials file to be created if it does not exist.
-
-Example
-
-  python auth/helper.py -u [user credentials path] -c [client credentials path]
-
-"""
-
 import json
 import argparse
+import textwrap
 
 from starthinker.util.project import project
 from starthinker.util.auth import get_profile
 
 
-if __name__ == "__main__":
+def main():
 
-  # all parameters come from project ( forces ignore of json file )
-  parser = argparse.ArgumentParser()
+  parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent('''\
+      Creates USER credentials from Google Cloud Project CLIENT Credentials and displays profile information if it worked. 
+      CLIENT credentials are required to run this script, to obtain the JSON file...
+      
+        Step 1: Configure Authentication Consent Screen ( do only once )
+        ----------------------------------------
+          A. Visit: https://console.developers.google.com/apis/credentials/consent
+          B. Choose Internal if you have GSuite, otherwise choose External.
+          C. For Application Name enter: StarThinker
+          D. All other fields are optional, click Save.
+      
+        Step 2: Create CLIENT Credentials ( do only once )
+        ----------------------------------------
+          A. Visit: https://console.developers.google.com/apis/credentials/oauthclient
+          B. Choose Desktop.
+          C. For Name enter: StarThinker.
+          D. Click Create and ignore the confirmation pop-up.
+      
+        Step 3: Download CLIENT Credentials File ( do only once )"
+        ----------------------------------------"
+          A. Visit: https://console.developers.google.com/apis/credentials"
+          B. Find your newly created key under OAuth 2.0 Client IDs and click download arrow on the right."
+          C. The downloaded file is the CLIENT credentials, use its path for the --client -c parameter.
+      
+        Step 4: Generate USER Credentials File ( do only once )"
+        ----------------------------------------"
+          A. Run this command with parameters -c [CLIENT file path] and -u [USER file path].
+          B. The USER file will be created and can be used to access Google APIs.
+          C. The user profile will be printed to the screen
+      
+        Example: python helper.py -u [CLIENT file path] -c [USER file path]
+'''))
 
-  # initialize project
-  project.from_commandline(parser=parser)
+  # initialize project, enable only some default arguments
+  project.from_commandline(parser=parser, arguments=('-c', '-u'))
 
-  # get profile
+  # get profile to verify everything worked
   print('Profile:', json.dumps(get_profile(), indent=2, sort_keys=True))
+
+
+if __name__ == "__main__":
+  main()

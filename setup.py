@@ -24,9 +24,8 @@ from setuptools import setup, find_packages
 
 REQUIREMENTS = [
   'google-api-python-client',
-  'google-auth',
   'google-auth-oauthlib',
-  'google-auth-httplib2',
+  'jsonpickle',
   'pysftp',
   'pytz',
   'tzlocal',
@@ -34,9 +33,9 @@ REQUIREMENTS = [
   'python-dateutil',
   'pandas',
   'psutil',
+  'moviepy',
   'py-xlsx',
-  'simple-salesforce',
-  'smartsheet-python-sdk'
+  'simple-salesforce'
 ]
 
 #TEST_REQUIREMENTS = []
@@ -50,13 +49,15 @@ setup(
   author_email='kenjora@google.com',
   url='https://github.com/google/starthinker',
   packages=find_packages(),
-  package_dir={'starthinker': 'starthinker'},
+  package_dir={'starthinker':
+               'starthinker'},
   include_package_data=True,
   install_requires=REQUIREMENTS,
   entry_points={
     'console_scripts': [
       'st_auth = starthinker.auth.helper:main',
-      'st_test = starthinker.tests.helper:main',
+      'st_cm = starthinker.task.dcm.helper:main'
+      'st_dv360 = starthinker.task.dbm.helper:main'
       'st_dv360_beta = starthinker.task.dv360_beta.helper:main'
     ]
   },

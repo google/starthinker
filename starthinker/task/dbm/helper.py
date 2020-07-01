@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2018 Google Inc.
+#  Copyright 2018 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,24 +16,9 @@
 #
 ###########################################################################
 
-
-"""Command line to get a DBM report or show list of reports.
-
-This is a helper to help developers debug and create reports. The following
-calls are valid:
-
-- To get list of reports: `python dbm/helper.py --list -u $STARTHINKER_USER`
-- To get report json: `python dbm/helper.py --report [id] -u $STARTHINKER_USER`
-- To get report schema: `python dbm/helper.py --schema [id] -u $STARTHINKER_USER`
-- To get report sample: `python dbm/helper.py --sample [id] -u$STARTHINKER_USER`
-
-Prerequisite: https://github.com/google/starthinker/blob/master/tutorials/deploy_developer.md#command-line-deploy
-
-"""
-
-
 import json
 import argparse
+import textwrap
 
 from starthinker.util.project import project
 from starthinker.util.google_api import API_DBM
@@ -41,10 +26,23 @@ from starthinker.util.dbm import report_file, report_to_rows, report_clean
 from starthinker.util.bigquery import get_schema
 from starthinker.util.csv import rows_to_type, rows_print
 
-if __name__ == "__main__":
 
-  # get parameters
-  parser = argparse.ArgumentParser()
+def main():
+
+  parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent('''\
+      Command line to help debug DV360 reports and build reporting tools.
+
+      Examples:
+        To get list of reports: python helper.py --list -u [user credentials path]
+        To get report json: python helper.py --report [id] -u [user credentials path]
+        To get report schema: python helper.py --schema [id] -u [user credentials path]
+        To get report sample: python helper.py --sample [id] -u [user credentials path]
+
+  '''))
+
+  # create parameters
   parser.add_argument('--report', help='report ID to pull json definition', default=None)
   parser.add_argument('--schema', help='report ID to pull schema format', default=None)
   parser.add_argument('--sample', help='report ID to pull sample data', default=None)
@@ -80,3 +78,6 @@ if __name__ == "__main__":
     for report in API_DBM(auth, iterate=True).queries().listqueries().execute():
       print(json.dumps(report, indent=2, sort_keys=True))
 
+
+if __name__ == "__main__":
+  main()

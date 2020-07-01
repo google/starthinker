@@ -225,7 +225,7 @@ class project:
   date = None
 
   @classmethod
-  def from_commandline(cls, _task = None, parser = None):
+  def from_commandline(cls, _task = None, parser = None, arguments=None):
     """Used in StarThinker scripts as entry point for command line calls. Loads json for execution.
 
     Usage example:
@@ -258,39 +258,39 @@ class project:
 
     if parser is None:
       parser = argparse.ArgumentParser()
-      parser.add_argument('json', help='path to recipe json file to load')
+      if arguments is None or '-j' in arguments: parser.add_argument('json', help='Path to recipe json file to load.')
     else:
-      parser.add_argument('--json', '-j', help='path to recipe json file to load')
+      if arguments is None or '-j' in arguments: parser.add_argument('--json', '-j', help='Path to recipe json file to load.')
 
-    parser.add_argument('--project', '-p', help='cloud id of project, defaults to None', default=None)
-    parser.add_argument('--user', '-u', help='path to user credentials json file, defaults to GOOGLE_APPLICATION_CREDENTIALS', default=None)
-    parser.add_argument('--service', '-s', help='path to service credentials json file, defaults None', default=None)
-    parser.add_argument('--client', '-c', help='path to client credentials json file, defaults None', default=None)
+    if arguments is None or '-p' in arguments: parser.add_argument('--project', '-p', help='Cloud ID of Google Cloud Project.', default=None)
+    if arguments is None or '-u' in arguments: parser.add_argument('--user', '-u', help='Path to USER credentials json file.', default=None)
+    if arguments is None or '-s' in arguments: parser.add_argument('--service', '-s', help='Path to SERVICE credentials json file.', default=None)
+    if arguments is None or '-c' in arguments: parser.add_argument('--client', '-c', help='Path to CLIENT credentials json file.', default=None)
 
-    parser.add_argument('--instance', '-i', help='the instance of the task to run ( for tasks with same name ), default is 1.', default=1, type=int)
+    if arguments is None or '-i' in arguments: parser.add_argument('--instance', '-i', help='Instance number of the task to run ( for tasks with same name ) starting at 1.', default=1, type=int)
 
-    parser.add_argument('--verbose', '-v', help='print all the steps as they happen.', action='store_true')
-    parser.add_argument('--force', '-force', help='no-op for compatibility with all.', action='store_true')
+    if arguments is None or '-v' in arguments: parser.add_argument('--verbose', '-v', help='Print all the steps as they happen.', action='store_true')
+    if arguments is None or '-f' in arguments: parser.add_argument('--force', '-force', help='Not used but included for compatiblity with another script.', action='store_true')
 
-    parser.add_argument('--trace_print', '-tp', help='Simplified execution trace of the program written to stdout.', action='store_true')
-    parser.add_argument('--trace_file', '-tf', help='Simplified execution trace of the program written to file.', action='store_true')
+    if arguments is None or '-tp' in arguments: parser.add_argument('--trace_print', '-tp', help='Execution trace written to stdout.', action='store_true')
+    if arguments is None or '-tf' in arguments: parser.add_argument('--trace_file', '-tf', help='Execution trace written to file.', action='store_true')
 
     cls.args = parser.parse_args()
 
     # initialize the project singleton with passed in parameters
     cls.initialize(
-      get_project(cls.args.json) if cls.args.json else {},
+      get_project(cls.args.json) if hasattr(cls.args, 'json') else {},
       _task,
-      cls.args.instance,
-      cls.args.project,
-      cls.args.user,
-      cls.args.service,
-      cls.args.client,
-      cls.args.json,
-      cls.args.verbose,
-      cls.args.force,
-      cls.args.trace_print,
-      cls.args.trace_file
+      getattr(cls.args, 'instance', None),
+      getattr(cls.args, 'project', None),
+      getattr(cls.args, 'user', None),
+      getattr(cls.args, 'service', None),
+      getattr(cls.args, 'client', None),
+      getattr(cls.args, 'json', None),
+      getattr(cls.args, 'verbose', None),
+      getattr(cls.args, 'force', None),
+      getattr(cls.args, 'trace_print', None),
+      getattr(cls.args, 'trace_file', None)
     )
 
   recipe = None

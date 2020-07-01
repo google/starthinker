@@ -550,7 +550,7 @@ setup_credentials_user() {
   echo ""
 
   source "${STARTHINKER_ROOT}/starthinker_assets/development.sh";
-  python "${THIS_DIR}/starthinker/auth/helper.py" -c "${STARTHINKER_CLIENT_INSTALLED}" -u "${STARTHINKER_USER}"
+  python3 "${THIS_DIR}/starthinker/auth/helper.py" -c "${STARTHINKER_CLIENT_INSTALLED}" -u "${STARTHINKER_USER}"
   deactivate
 
   echo ""
@@ -602,12 +602,12 @@ install_virtualenv_darwin() {
     return
   else
     if [[ -z $VIRTUAL_ENV ]]; then
-      pip3 install pip --upgrade --quiet --user;
+      python3 -m pip install pip --upgrade --quiet --user;
     fi
   fi
 
   if [ "$(command -v virtualenv)" == "" ]; then
-    pip3 install virtualenv --quiet --user;
+    python3 -m pip install virtualenv --quiet --user;
   fi
 
 }
@@ -660,7 +660,7 @@ install_requirements() {
 
   source "${STARTHINKER_ENV}/bin/activate"
   python3 -m pip install --upgrade pip
-  pip3 install -r ${STARTHINKER_ROOT}/requirements.txt --quiet
+  python3 -m pip install install -r ${STARTHINKER_ROOT}/requirements.txt --quiet
   deactivate
 
   echo ""

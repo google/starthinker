@@ -90,8 +90,8 @@ migrate_database_proxy() {
   (
     start_proxy;
     source "${STARTHINKER_ROOT}/starthinker_assets/production.sh";
-    python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" makemigrations;
-    python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" migrate;
+    python3 "${STARTHINKER_ROOT}/starthinker_ui/manage.py" makemigrations;
+    python3 "${STARTHINKER_ROOT}/starthinker_ui/manage.py" migrate;
     deactivate
     stop_proxy;
   )
@@ -112,7 +112,7 @@ deploy_appengine() {
 
   # create recipe scripts python file for App Engine ( buffers scripts avoiding complex disk lookup )
   source "${STARTHINKER_ROOT}/starthinker_assets/production.sh";
-  python "${STARTHINKER_ROOT}/starthinker_ui/recipe/scripts.py";
+  python3 "${STARTHINKER_ROOT}/starthinker_ui/recipe/scripts.py";
 
   gcloud app deploy $STARTHINKER_ROOT/app.yaml --stop-previous-version
   gcloud app deploy $STARTHINKER_ROOT/cron.yaml --stop-previous-version

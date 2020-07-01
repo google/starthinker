@@ -16,7 +16,7 @@
 #
 ###########################################################################
 
-#-r starthinker/requirements.txt
+# starthinker
 google-api-python-client
 google-auth
 google-auth-oauthlib
@@ -28,12 +28,12 @@ TwitterAPI
 python-dateutil
 pandas
 psutil
-#moviepy==1.0.0
+moviepy==1.0.0
 py-xlsx
 simple-salesforce
 smartsheet-python-sdk
 
-#-r starthinker_ui/requirements.txt
+# starthinker_ui
 wheel
 gunicorn
 uwsgi

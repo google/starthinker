@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2018 Google Inc.
+#  Copyright 2018 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,41 +16,41 @@
 #
 ###########################################################################
 
-
-"""Command line to get a DCM report or show list of report or files.
-
-This is a helper to help developers debug and create reports. Prints using JSON for
-copy and paste compatibility. The following command lines are available:
-
-- To get list of reports: `python dcm/helper.py --account [id] --list -u [credentials]`
-- To get report: `python dcm/helper.py --account [id] --report [id] -u [credentials]`
-- To get report files: `python dcm/helper.py --account [id] --files [id] -u [credentials]`
-- To get report sample: `python dcm/helper.py --account [id] --sample [id] -u [credentials]`
-- To get report schema: `python dcm/helper.py --account [id] --schema [id] -u [credentials]`
-
-"""
-
 import json
 import argparse
+import textwrap
 
 from starthinker.util.project import project
 from starthinker.util.google_api import API_DCM
 from starthinker.util.dcm import get_profile_for_api, report_to_rows, report_clean, report_file, report_schema
 from starthinker.util.csv import rows_to_type, rows_print
 
-if __name__ == "__main__":
 
-  # get parameters
-  parser = argparse.ArgumentParser()
-  parser.add_argument('--account', help='account ID to use to pull the report', default=None)
-  parser.add_argument('--report', help='report ID to pull JSON definition', default=None)
-  parser.add_argument('--schema', help='report ID to pull achema definition', default=None)
-  parser.add_argument('--sample', help='report ID to pull sample data', default=None)
-  parser.add_argument('--files', help='report ID to pull file list', default=None)
-  parser.add_argument('--list', help='list reports', action='store_true')
+def main():
+
+  parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent('''\
+      Command line to help debug CM reports and build reporting tools.
+
+      Examples: 
+        To get list of reports: python helper.py --account [id] --list -u [user credentials path]
+        To get report: python helper.py --account [id] --report [id] -u [user credentials path]
+        To get report files: python helper.py --account [id] --files [id] -u [user credentials path]
+        To get report sample: python helper.py --account [id] --sample [id] -u [user credentials path]
+        To get report schema: python helper.py --account [id] --schema [id] -u [user credentials path]
+
+  '''))
+
+  parser.add_argument('--account', help='Account ID to use to pull the report.', default=None)
+  parser.add_argument('--report', help='Report ID to pull JSON definition.', default=None)
+  parser.add_argument('--schema', help='Report ID to pull achema definition.', default=None)
+  parser.add_argument('--sample', help='Report ID to pull sample data.', default=None)
+  parser.add_argument('--files', help='Report ID to pull file list.', default=None)
+  parser.add_argument('--list', help='List reports.', action='store_true')
 
   # initialize project
-  project.from_commandline(parser=parser)
+  project.from_commandline(parser=parser, arguments=('-u', '-c'))
   auth = 'service' if project.args.service else 'user'
 
   is_superuser, profile = get_profile_for_api(auth, project.args.account)
@@ -87,3 +87,7 @@ if __name__ == "__main__":
   else:
     for report in API_DCM(auth, internal=is_superuser).reports().list(**kwargs).execute():
       print(json.dumps(report, indent=2, sort_keys=True))
+
+
+if __name__ == "__main__":
+  main()
