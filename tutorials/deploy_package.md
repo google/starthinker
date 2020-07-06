@@ -12,9 +12,9 @@ pip3 install git+https://github.com/google/starthinker
 
 - If you get a permission error add: ```--user``` to the above command.
 - If you get a PATH WARNING:
-  1. Copy the path where these helpers are installed, in the warning itself.
-  1. To activate the command path, run: ```export PATH="[PASTE THE PATH HERE]":$PATH;```
-  1. To automatically activate the comands when you open a new terminal: ```echo 'export PATH="[PASTE THE PATH HERE]":$PATH;' >> ~/.bash_profile;```
+  1. Copy the new command PATH from the warning.
+  1. Activate the new command path now, run: ```export PATH="[PASTE THE PATH HERE]":$PATH;```
+  1. Activate for all future logins, run: ```echo 'export PATH="[PASTE THE PATH HERE]":$PATH;' >> ~/.bash_profile;```
 
 ## Optional Setup User Credentials
 
