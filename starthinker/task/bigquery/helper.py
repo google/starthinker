@@ -36,8 +36,8 @@ def main():
 
   '''))
 
-  parser.add_argument('--dataset', help='name of BigQuery dataset', default=None)
-  parser.add_argument('--table', help='name of BigQuery table', default=None)
+  parser.add_argument('--dataset', '-d', help='name of BigQuery dataset', default=None)
+  parser.add_argument('--table', '-t', help='name of BigQuery table', default=None)
 
   # initialize project
   project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v', '-p'))
