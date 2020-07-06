@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2018 Google Inc.
+#  Copyright 2018 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,23 +17,8 @@
 ###########################################################################
 
 
-"""Command line interface for running Google API calls.  Any API works.
-
-Allows developers to quickly test and debug API calls before building them
-into scripts.  Useful for debugging permission or call errors.
-
-For example, pull a DBM report via API: https://developers.google.com/bid-manager/v1/queries/getquery
-
-python google_api/helper.py -api doubleclickbidmanager -version v1 -function queries.getquery -kwargs '{ "queryId": 132865172 }' -u [credentials path] 
-
-For example, pull a list of placements: https://developers.google.com/doubleclick-advertisers/v3.2/placements/list
-
-python task/google_api/helper.py -api dfareporting -version v3.2 -function placements.list -kwargs '{ "profileId":2782211 }' -u [credentials path]
-
-"""
-
-
 import argparse
+import textwrap
 import pprint
 import json
 
@@ -41,10 +26,26 @@ from starthinker.util.project import project
 from starthinker.util.google_api import API
 
 
-if __name__ == "__main__":
+def main():
 
- # get parameters
-  parser = argparse.ArgumentParser()
+  parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent('''\
+      Command line interface for running Google API calls.  Any API works.  Allows developers to quickly test
+      and debug API calls before building them into scripts.  Useful for debugging permission or call errors.
+      
+      Examples:
+        - Pull a DBM report via API.
+          - https://developers.google.com/bid-manager/v1/queries/getquery
+          - python google_api/helper.py -api doubleclickbidmanager -version v1 -function queries.getquery -kwargs '{ "queryId": 132865172 }' -u [credentials path] 
+
+        - Pull a list of placements: 
+          - https://developers.google.com/doubleclick-advertisers/v3.3/placements/list
+          - python task/google_api/helper.py -api dfareporting -version v3.3 -function placements.list -kwargs '{ "profileId":2782211 }' -u [credentials path]
+      
+  '''))
+
+  # get parameters
   parser.add_argument('-api', help='api to run, name of product api')
   parser.add_argument('-version', help='version of api')
   parser.add_argument('-function', help='function to call in api')
@@ -53,7 +54,7 @@ if __name__ == "__main__":
   parser.add_argument('--iterate', help='set to true to force iteration', action='store_true')
 
   # initialize project ( used to load standard credentials parameters )
-  project.from_commandline(parser=parser)
+  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v'))
 
   # the api wrapper takes parameters as JSON
   job = { 
@@ -66,10 +67,16 @@ if __name__ == "__main__":
     "iterate":project.args.iterate,
   }
 
+  # run the API call
   results = API(job).execute()
 
+  # display results
   if project.args.iterate:
     for result in results:
       pprint.PrettyPrinter().pprint(result)
   else:
     pprint.PrettyPrinter().pprint(results)
+
+
+if __name__ == "__main__":
+  main()

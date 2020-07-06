@@ -2,7 +2,7 @@
 
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -56,9 +56,14 @@ setup(
   entry_points={
     'console_scripts': [
       'st_auth = starthinker.auth.helper:main',
-      'st_cm = starthinker.task.dcm.helper:main'
-      'st_dv360 = starthinker.task.dbm.helper:main'
-      'st_dv360_beta = starthinker.task.dv360_beta.helper:main'
+      'st_json = starthinker.script.helper:main',
+      'st_cm = starthinker.task.dcm.helper:main',
+      'st_dv360 = starthinker.task.dbm.helper:main',
+      'st_dv360_lineitem = starthinker.task.dv360_beta.helper:main',
+      'st_dv360_lineitem_legacy = starthinker.task.lineitem.helper:main',
+      'st_bigquery = starthinker.task.bigquery.helper:main',
+      'st_google_api = starthinker.task.google_api.helper:main',
+      'st_newsletter = starthinker.task.newsletter.helper:main'
     ]
   },
   license="Apache License, Version 2.0",

@@ -17,39 +17,39 @@
 ###########################################################################
 
 
-"""Command line to send newsletter email to people.
-
-Before using StarThinker ensure you're set up by reading tutorials/deploy_developer.sh.
-
-To generate an HTML page:
-```
-python helper.py --template internal/2019_07_23.json > ~/Downloads/email.html
-```
-
-To actualy send an email:
-```
-python helper.py --template internal/2019_07_23.json --email_to kenjora@google.com --email_from kenjora@google.com -u $STARTHINKER_USER
-```
-
-"""
-
 import json
 import argparse
+import textwrap
 
 from starthinker.util.project import project
 from starthinker.util.email import send_email
 from starthinker.util.email.template import EmailTemplate
 
-if __name__ == "__main__":
+def main():
+
+  parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent('''\
+      Command line to send email template via gMail.
+
+      Email templates are JSON that assembles into both HTMl and TXT parts of an email.
+      For email sample see: https://github.com/google/starthinker/blob/master/starthinker/task/newsletter/sample.json
+ 
+      Example:
+        - Generate an HTML page from a template, then view via browser.
+          python helper.py --template sample.json > ~/Downloads/email.html
+
+        - Send an email template via gMail.
+          python helper.py --template sample.json --email_to kenjora@google.com --email_from kenjora@google.com -u $STARTHINKER_USER
+  '''))
 
   # get parameters
-  parser = argparse.ArgumentParser()
   parser.add_argument('--template', help='template to use for email', default=None, required=True)
   parser.add_argument('--email_to', help='email to', default=None)
   parser.add_argument('--email_from', help='email from', default=None)
 
   # initialize project
-  project.from_commandline(parser=parser)
+  project.from_commandline(parser=parser, arguments=('-u', '-c', '-v'))
 
   # load template
   with open(project.args.template, 'r') as json_file:
@@ -63,3 +63,7 @@ if __name__ == "__main__":
     # write to STDOUT
     print(email.get_html())
     print('<pre style="width:600px;margin:0px auto;">%s</pre>' % email.get_text())
+
+
+if __name__ == "__main__":
+  main()

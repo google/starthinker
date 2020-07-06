@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,30 +17,24 @@
 ###########################################################################
 
 
-"""Evaluate the validity of a json file. Helps in debugging recipes.
-
-Print the line and character position of any errors in the given json file.
-
-Arguments
-
-  file - path to JSON file to be evaluated
-
-Example 
-
-  python project/helper.py project/sample.json
-
-"""
-
-
 import argparse
+import textwrap
 from json import JSONDecodeError
 
 from starthinker.util.project import get_project
 
 
-if __name__ == "__main__":
+def main():
 
-  parser = argparse.ArgumentParser()
+  parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent('''\
+      Evaluate the validity of a json file. Helps in debugging recipes.
+      Print the line and character position of any errors in the given json file.
+
+      Example: python helper.py scripts/say_hello.json
+  '''))
+
   parser.add_argument('file', help='A JSON file.')
   args = parser.parse_args()
 
@@ -49,3 +43,7 @@ if __name__ == "__main__":
     print('JSON OK:', args.file)
   except JSONDecodeError as e:
     print(str(e))
+
+
+if __name__ == "__main__":
+  main()

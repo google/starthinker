@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2018 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,70 +16,45 @@
 #
 ###########################################################################
 
-""" Command line to execute all tasks in a recipe once. ( Common Entry Point )
-
-This script dispatches all the tasks in a JSON recipe to handlers in sequence.
-For each task, it calls a subprocess to execute the JSON instructions, waits
-for the process to complete and dispatches the next task, until all tasks are 
-complete or a critical failure ( exception ) is raised.
-
-To execute a recipe run:
-
-`python all/run.py [path to recipe file] [see optional arguments below] --force`
-
-### Arguments
-
-- path - run all tasks the specified recipe
-- --project / -p - cloud id of project
-- --user / -u - path to user credentials json file, defaults to GOOGLE_APPLICATION_CREDENTIALS
-- --service / -s - path to service credentials json file
-- --client / -c' - path to client credentials json file
-- --verbose / -v - print all the steps as they happen.
-- --trace_print / -tp - print execution trace
-- --trace_file / -tf - write execution trace to file
-- --force - execute all tasks regardless of schedule
-
-### Notes
-
-If an exception is raised in any task, all following tasks are not executed by design.
-Obeys the schedule rules defined in /cron/README.md.
-Uses credentials logic defined in /util/project/README.md.
-For scheduled jobs this script is called by /cron/run.py.
-
-### CAUTION
-
-This script does NOT check if the last job finished, potentially causing overruns.
-
-### Useful Development Features
-
-To avoid running the entire script when debugging a single task, the command line 
-can easily replace "all" with the name of any "task" in the json.  For example
-
-`python all/run.py project/sample/say_hello.json`
-
-Can be easily replaced with the following to run only the "hello" task:
-
-`python task/hello/run.py project/sample/say_hello.json`
-
-Or specified further to run only the second hello task:
-
-`python task/hello/run.py project/sample/say_hello.json -i 2`
-
-"""
-
-
 import sys
-import subprocess
+import textwrap
 import argparse
+import subprocess
 
 from starthinker.config import UI_ROOT
 from starthinker.util.project import get_project, is_scheduled
 
 
-if __name__ == "__main__":
+def main():
 
   # this is a helper function, these inputs mirror util.project.Project singleton used by tasks because they are pass through to each task
-  parser = argparse.ArgumentParser()
+  parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent('''\
+      Command line to execute all tasks in a recipe once. ( Common Entry Point )
+
+      This script dispatches all the tasks in a JSON recipe to handlers in sequence.
+      For each task, it calls a subprocess to execute the JSON instructions, waits
+      for the process to complete and dispatches the next task, until all tasks are 
+      complete or a critical failure ( exception ) is raised.
+
+      If an exception is raised in any task, all following tasks are not executed by design.
+      
+      Example: python run.py [path to recipe file] --force
+      Caution: This script does NOT check if the last job finished, potentially causing overruns.
+      Notes:
+        - To avoid running the entire script when debugging a single task, the command line 
+          can easily replace "all" with the name of any "task" in the json.  For example
+          python all/run.py project/sample/say_hello.json
+
+        - Can be easily replaced with the following to run only the "hello" task:
+          python task/hello/run.py project/sample/say_hello.json
+
+        - Or specified further to run only the second hello task:
+          python task/hello/run.py project/sample/say_hello.json -i 2
+
+  '''))
+
   parser.add_argument('json', help='path to tasks json file')
 
   parser.add_argument('--project', '-p', help='cloud id of project, defaults to None', default=None)
@@ -126,3 +101,7 @@ if __name__ == "__main__":
 
   # Set lowest return code from all tasks
   exit(returncode)
+
+
+if __name__ == "__main__":
+  main()

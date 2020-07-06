@@ -16,6 +16,7 @@
 #
 ###########################################################################
 
+import sys
 import socket
 import threading
 
@@ -45,14 +46,32 @@ def get_credentials(auth):
       try:
         CREDENTIALS_USER_CACHE = CredentialsUserWrapper(project.recipe['setup']['auth']['user'], project.recipe['setup']['auth'].get('client'))
       except (KeyError, ValueError): 
-        raise KeyError("Either specify a -u [user credentials path] parameter on the command line or include setup->auth->user->[JSON OR PATH] in the recipe.")
+        print('')
+        print('ERROR: You are attempting to access an API endpoiont that requires Google OAuth USER authentication but have not provided credentials to make that possible.')
+        print('')
+        print('SOLUTION: Specify a -u [user credentials path] parameter on the command line.')
+        print('          Alternaitvely specify a -u [user credentials path to be created] parameter and a -c [client credentials path] parameter on the command line.')
+        print('          Alternaitvely if running a recipe, include { "setup":{ "auth":{ "user":"[JSON OR PATH]" }}} in the JSON.')
+        print('')
+        print('INSTRUCTIONS: https://github.com/google/starthinker/blob/master/tutorials/cloud_client_installed.md')
+        print('')
+        sys.exit(1)
+
     return CREDENTIALS_USER_CACHE
 
   elif auth == 'service':
     try:
       return CredentialsServiceWrapper(project.recipe['setup']['auth']['service'])
     except (KeyError, ValueError): 
-      raise KeyError("Either specify a -s [service credentials path] parameter on the command line or include setup->auth->service->[JSON OR PATH] in the recipe.")
+      print('')
+      print('ERROR: You are attempting to access an API endpoint that requires Google Cloud SERVICE authentication but have not provided credentials to make that possible.')
+      print('')
+      print('SOLUTION: Specify a -s [service credentials path] parameter on the command line.')
+      print('          Alternaitvely if running a recipe, include { "setup":{ "auth":{ "service":"[JSON OR PATH]" }}} in the JSON.')
+      print('')
+      print('INSTRUCTIONS: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md')
+      print('')
+      sys.exit(1)
 
 
 def get_service(api='gmail', version='v1', auth='service', scopes=None, uri_file=None):

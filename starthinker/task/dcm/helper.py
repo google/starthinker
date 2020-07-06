@@ -50,7 +50,7 @@ def main():
   parser.add_argument('--list', help='List reports.', action='store_true')
 
   # initialize project
-  project.from_commandline(parser=parser, arguments=('-u', '-c'))
+  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v'))
   auth = 'service' if project.args.service else 'user'
 
   is_superuser, profile = get_profile_for_api(auth, project.args.account)

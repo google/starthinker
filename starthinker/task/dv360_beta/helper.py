@@ -38,7 +38,7 @@ def main():
   parser.add_argument('--advertiser', help='Advertiser ID to pull line items from.')
 
   # initialize project
-  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s'))
+  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v'))
 
   # determine auth based on parameters
   auth = 'service' if project.args.service else 'user'

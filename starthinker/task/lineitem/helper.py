@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2018 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,30 +17,35 @@
 ###########################################################################
 
 
-"""Command line interface for fetching line items via API.
-
-Helps developers quickl debug lineitem issues or permissions access issues.
-
-For example: https://developers.google.com/bid-manager/v1/lineitems/downloadlineitems
-python lineitem/helper.py [line item id] -u [credentials]
-"""
-
-
 import argparse
+import textwrap
 
 from starthinker.util.project import project
-from starthinker.util.dbm import lineitem_read, lineitem_write
+from starthinker.util.dbm import lineitem_read
 
 
-if __name__ == "__main__":
+def main():
 
-  # get parameters
+  parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent('''\
+      Command line interface for fetching line items via legacy API.
+      Helps developers quickly debug lineitem issues or permissions access issues.
+
+      Example: python helper.py [line item id] -u [user credentials]
+  '''))
+
   parser = argparse.ArgumentParser()
   parser.add_argument('lineitem', help='lineitem ID to pull schema, or "list" to get index')
 
   # initialize project
-  project.from_commandline(parser=parser)
+  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v'))
   auth = 'service' if project.args.service else 'user'
 
+  # print lineitem
   for row in lineitem_read(auth, lineitems=[project.args.lineitem]):
     print(row)
+
+
+if __name__ == "__main__":
+  main()
