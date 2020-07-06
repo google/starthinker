@@ -5,12 +5,17 @@ tasks. Here are a few you can [run from the command line](deploy_package.md).
 
 ## Installing Command Line Helpers
 
-From the command line on any unix/linux machine install the package.  All following examples begin with this step.
-This requires Python 3 and is ideally done from a virtual environment.
+From the command line on any unix/linux machine install StarThinker.  All following examples begin with this step.
 
 ```
-pip install git+https://github.com/google/starthinker
+pip3 install git+https://github.com/google/starthinker
 ```
+
+- If you get a permission error add: ```--user``` to the above command.
+- If you get a PATH WARNING:
+  1. Copy the path where these helpers are installed, in the warning itself.
+  1. To activate the command path, run: ```export PATH="[PASTE THE PATH HERE]":$PATH;```
+  1. To automatically activate the comands when you open a new terminal: ```echo 'export PATH="[PASTE THE PATH HERE]":$PATH;' >> ~/.bash_profile;```
 
 ## List Of Helpers For Users 
 
