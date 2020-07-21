@@ -68,7 +68,7 @@ TASKS = [
         'field': {
           'name': 'auth_read',
           'kind': 'authentication',
-          'order': 1,
+          'order': 0,
           'default': 'user',
           'description': 'Credentials used for reading data.'
         }

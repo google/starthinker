@@ -52,8 +52,8 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'auth_read': 'user',  # Credentials used for reading data.
-  'sheets_url': '',
   'auth_write': 'service',  # Credentials used for writing data.
+  'sheets_url': '',
   'sheets_tab': '',
   'sheets_range': '',
   'dataset': '',
@@ -68,7 +68,7 @@ TASKS = [
         'field': {
           'name': 'auth_read',
           'kind': 'authentication',
-          'order': 1,
+          'order': 0,
           'default': 'user',
           'description': 'Credentials used for reading data.'
         }
@@ -77,7 +77,7 @@ TASKS = [
         'field': {
           'name': 'sheets_url',
           'kind': 'string',
-          'order': 1,
+          'order': 2,
           'default': ''
         }
       },
@@ -85,7 +85,7 @@ TASKS = [
         'field': {
           'name': 'sheets_tab',
           'kind': 'string',
-          'order': 2,
+          'order': 3,
           'default': ''
         }
       },
@@ -93,7 +93,7 @@ TASKS = [
         'field': {
           'name': 'sheets_range',
           'kind': 'string',
-          'order': 3,
+          'order': 4,
           'default': ''
         }
       },
@@ -120,7 +120,7 @@ TASKS = [
             'field': {
               'name': 'dataset',
               'kind': 'string',
-              'order': 7,
+              'order': 5,
               'default': ''
             }
           },
@@ -128,7 +128,7 @@ TASKS = [
             'field': {
               'name': 'table',
               'kind': 'string',
-              'order': 8,
+              'order': 6,
               'default': ''
             }
           }

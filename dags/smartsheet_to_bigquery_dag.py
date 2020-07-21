@@ -33,7 +33,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-SmartSheet To BigQuery
+SmartSheet Sheet To BigQuery
 
 Move sheet data into a BigQuery table.
 
@@ -51,6 +51,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'auth_read': 'user',  # Credentials used for reading data.
   'auth_write': 'service',  # Credentials used for writing data.
   'token': '',  # Retrieve from SmartSheet account settings.
   'sheet': '',  # Retrieve from sheet properties.
@@ -65,18 +66,18 @@ TASKS = [
     'smartsheet': {
       'auth': {
         'field': {
-          'name': 'auth_write',
+          'name': 'auth_read',
           'kind': 'authentication',
-          'order': 1,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
+          'order': 0,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'token': {
         'field': {
           'name': 'token',
           'kind': 'string',
-          'order': 1,
+          'order': 2,
           'default': '',
           'description': 'Retrieve from SmartSheet account settings.'
         }
@@ -85,8 +86,7 @@ TASKS = [
         'field': {
           'name': 'sheet',
           'kind': 'string',
-          'order': 2,
-          'default': '',
+          'order': 3,
           'description': 'Retrieve from sheet properties.'
         }
       },
@@ -94,18 +94,27 @@ TASKS = [
         'field': {
           'name': 'link',
           'kind': 'boolean',
-          'order': 6,
+          'order': 7,
           'default': True,
           'description': 'Add a link to each row as the first column.'
         }
       },
       'out': {
         'bigquery': {
+          'auth': {
+            'field': {
+              'name': 'auth_write',
+              'kind': 'authentication',
+              'order': 1,
+              'default': 'service',
+              'description': 'Credentials used for writing data.'
+            }
+          },
           'dataset': {
             'field': {
               'name': 'dataset',
               'kind': 'string',
-              'order': 3,
+              'order': 4,
               'default': '',
               'description': 'Existing BigQuery dataset.'
             }
@@ -114,7 +123,7 @@ TASKS = [
             'field': {
               'name': 'table',
               'kind': 'string',
-              'order': 4,
+              'order': 5,
               'default': '',
               'description': 'Table to create from this report.'
             }
@@ -123,7 +132,7 @@ TASKS = [
             'field': {
               'name': 'schema',
               'kind': 'json',
-              'order': 5,
+              'order': 6,
               'description': 'Schema provided in JSON list format or leave empty to auto detect.'
             }
           }

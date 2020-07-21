@@ -37,7 +37,7 @@ Twitter Targeting
 
 Adjusts line item settings based on Twitter hashtags and locations specified in a sheet.
 
-Provide a sheets URL. No account information required.
+A sheet will be generated for you when you run this the first time.
 Click <b>Run Now</b> once and a new tab called <b>Twitter Triggers</b> will be added to the sheet.
 Follow instructions on the sheets tab.
 Click <b>Run Now</b> again, trends are downloaded and triggered

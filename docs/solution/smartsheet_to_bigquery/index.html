@@ -135,7 +135,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       
 
   <br/>
-  <h1><i class="medium material-icons">donut_large</i>&nbsp; SmartSheet To BigQuery</h1>
+  <h1><i class="medium material-icons">donut_large</i>&nbsp; SmartSheet Sheet To BigQuery</h1>
   <p class="flow-text">Move sheet data into a BigQuery table.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
@@ -201,12 +201,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
             <tr>
               <td>Age</td>
-              <td>Jan. 23, 2020 (5 months, 1 week)</td>
+              <td>Jan. 23, 2020 (6 months)</td>
             </tr>
     
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+SmartSheet+To+BigQuery+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+SmartSheet+To+BigQuery+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fsmartsheet_to_bigquery%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+SmartSheet+Sheet+To+BigQuery+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+SmartSheet+Sheet+To+BigQuery+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fsmartsheet_to_bigquery%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
 
@@ -254,18 +254,18 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/smartsheet/run.py" target="_blank">smartsheet</a>": {
             "auth": {
                 "field": {
-                    "name": "auth_write",
+                    "name": "auth_read",
                     "kind": "authentication",
-                    "order": 1,
-                    "default": "service",
-                    "description": "Credentials used for writing data."
+                    "order": 0,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
                 }
             },
             "token": {
                 "field": {
                     "name": "token",
                     "kind": "string",
-                    "order": 1,
+                    "order": 2,
                     "default": "",
                     "description": "Retrieve from SmartSheet account settings."
                 }
@@ -274,8 +274,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "field": {
                     "name": "sheet",
                     "kind": "string",
-                    "order": 2,
-                    "default": "",
+                    "order": 3,
                     "description": "Retrieve from sheet properties."
                 }
             },
@@ -283,18 +282,27 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "field": {
                     "name": "link",
                     "kind": "boolean",
-                    "order": 6,
+                    "order": 7,
                     "default": true,
                     "description": "Add a link to each row as the first column."
                 }
             },
             "out": {
                 "bigquery": {
+                    "auth": {
+                        "field": {
+                            "name": "auth_write",
+                            "kind": "authentication",
+                            "order": 1,
+                            "default": "service",
+                            "description": "Credentials used for writing data."
+                        }
+                    },
                     "dataset": {
                         "field": {
                             "name": "dataset",
                             "kind": "string",
-                            "order": 3,
+                            "order": 4,
                             "default": "",
                             "description": "Existing BigQuery dataset."
                         }
@@ -303,7 +311,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "field": {
                             "name": "table",
                             "kind": "string",
-                            "order": 4,
+                            "order": 5,
                             "default": "",
                             "description": "Table to create from this report."
                         }
@@ -312,7 +320,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "field": {
                             "name": "schema",
                             "kind": "json",
-                            "order": 5,
+                            "order": 6,
                             "description": "Schema provided in JSON list format or leave empty to auto detect."
                         }
                     }

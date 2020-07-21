@@ -63,9 +63,9 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'dataset': '',  # Place where tables will be written in BigQuery.
+  'auth_read': 'user',  # Credentials used for reading data.
   'recipe_project': '',  # Project where BigQuery dataset will be created.
   'auth_write': 'service',  # Credentials used for writing data.
-  'auth_read': 'user',  # Credentials used for reading data.
   'accounts': [],  # Comma separated CM account ids.
   'reports': False,  # Include report audit, consumes significant API and data.
 }
@@ -73,7 +73,7 @@ INPUTS = {
 TASKS = [
   {
     'dataset': {
-      'description': 'The dataset will hold multiple tables, amke sure it exists.',
+      'description': 'The dataset will hold multiple tables, make sure it exists.',
       'hour': [
         1
       ],
@@ -107,7 +107,7 @@ TASKS = [
         'field': {
           'name': 'auth_read',
           'kind': 'authentication',
-          'order': 1,
+          'order': 0,
           'default': 'user',
           'description': 'Credentials used for reading data.'
         }
@@ -149,7 +149,7 @@ TASKS = [
           'field': {
             'name': 'dataset',
             'kind': 'string',
-            'order': 1,
+            'order': 2,
             'default': '',
             'description': 'Google BigQuery dataset to create tables in.'
           }
@@ -167,7 +167,7 @@ TASKS = [
         'field': {
           'name': 'auth_read',
           'kind': 'authentication',
-          'order': 1,
+          'order': 0,
           'default': 'user',
           'description': 'Credentials used for reading data.'
         }
@@ -210,7 +210,7 @@ TASKS = [
           'field': {
             'name': 'dataset',
             'kind': 'string',
-            'order': 1,
+            'order': 2,
             'default': '',
             'description': 'Google BigQuery dataset to create tables in.'
           }

@@ -7,6 +7,8 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Archive](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/archive.ipynb) - Wipe old information from a Storage bucket based on last update time.
 * [DV360 Audience Analysis](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/audience_analysis.ipynb) - The Audience Wizard Dashboard helps you to track the audience performance across all audiences on Display.
 * [CM User Audit](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/barnacle.ipynb) - Gives CM clients ability to see which profiles have access to which parts of an account. Loads CM user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.
+* [Census Data Normalized](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_census_normalize.ipynb) - Convert given census table to percent of population, normalizing it.
+* [Pearson Correlation Significance Function](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_pearson_significance.ipynb) - Add function to dataset for checking if correlation is significant.
 * [Query To Table](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_query.ipynb) - Save query results into a BigQuery table.
 * [Query Run](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_run_query.ipynb) - Run query on a project.
 * [Storage To Table](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_storage.ipynb) - Move using bucket and path prefix.
@@ -60,7 +62,8 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Sheet Clear](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_clear.ipynb) - Clear data from a sheet.
 * [Sheet Copy](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_copy.ipynb) - Copy tab from a sheet to a sheet.
 * [Sheet To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_to_bigquery.ipynb) - Import data from a sheet and move it to a BigQuery table.
-* [SmartSheet To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/smartsheet_to_bigquery.ipynb) - Move sheet data into a BigQuery table.
+* [SmartSheet Report To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/smartsheet_report_to_bigquery.ipynb) - Move report data into a BigQuery table.
+* [SmartSheet Sheet To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/smartsheet_to_bigquery.ipynb) - Move sheet data into a BigQuery table.
 * [Test Script](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/test.ipynb) - Used by tests.
 * [Transparency Dashboard](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/transparency.ipynb) - Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domains and apps are misconfigured by publisher resulting in underreporting.
 * [Trends Places To BigQuery Via Query](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/trends_places_to_bigquery_via_query.ipynb) - Move using a WOEID query.

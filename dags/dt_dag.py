@@ -52,8 +52,8 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'auth_read': 'user',  # Credentials used for reading data.
-  'bucket': '',  # Name of bucket where DT files are stored.
   'auth_write': 'service',  # Credentials used for writing data.
+  'bucket': '',  # Name of bucket where DT files are stored.
   'paths': [],  # List of prefixes to pull specific DT files.
   'days': 2,  # Number of days back to synchronize.
   'hours': 0,  # Number of hours back to synchronize.
@@ -67,7 +67,7 @@ TASKS = [
         'field': {
           'name': 'auth_read',
           'kind': 'authentication',
-          'order': 1,
+          'order': 0,
           'default': 'user',
           'description': 'Credentials used for reading data.'
         }
@@ -77,7 +77,7 @@ TASKS = [
           'field': {
             'name': 'bucket',
             'kind': 'string',
-            'order': 1,
+            'order': 2,
             'default': '',
             'description': 'Name of bucket where DT files are stored.'
           }
@@ -86,7 +86,7 @@ TASKS = [
           'field': {
             'name': 'paths',
             'kind': 'string_list',
-            'order': 2,
+            'order': 3,
             'default': [
             ],
             'description': 'List of prefixes to pull specific DT files.'
@@ -96,7 +96,7 @@ TASKS = [
           'field': {
             'name': 'days',
             'kind': 'integer',
-            'order': 3,
+            'order': 4,
             'default': 2,
             'description': 'Number of days back to synchronize.'
           }
@@ -105,7 +105,7 @@ TASKS = [
           'field': {
             'name': 'hours',
             'kind': 'integer',
-            'order': 3,
+            'order': 5,
             'default': 0,
             'description': 'Number of hours back to synchronize.'
           }
@@ -125,7 +125,7 @@ TASKS = [
           'field': {
             'name': 'dataset',
             'kind': 'string',
-            'order': 3,
+            'order': 6,
             'default': '',
             'description': 'Existing dataset in BigQuery.'
           }
