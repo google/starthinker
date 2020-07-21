@@ -33,7 +33,7 @@ class SetupForm(forms.ModelForm):
   week = ListChoiceField(choices=map(lambda d: (d[:3],d), DAYS), initial=map(lambda d: d[:3], DAYS))
   hour = ListChoiceIntegerField(choices=map(lambda h: (h,h), HOURS), initial=[3])
   timezone = TimezoneField(required=False)
-  project = forms.ModelChoiceField(queryset=None)
+  project = forms.ModelChoiceField(queryset=None, required=False)
 
   class Meta:
     model = Recipe

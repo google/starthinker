@@ -72,7 +72,7 @@ import json
 import argparse
 
 from starthinker.util.project import get_project
-from starthinker.script.parse import json_get_fields, json_set_fields, json_set_instructions, json_set_description
+from starthinker.script.parse import json_get_fields, json_set_fields, json_set_instructions, json_set_description, json_expand_includes
 
 
 def parser_add_field(parser, field):
@@ -117,6 +117,9 @@ def parser_add_field(parser, field):
 def script_write(script, args, filepath=None):
   # insert fields into json
   json_set_fields(script, args)
+
+  # Expand all includes to full recipe
+  json_expand_includes(script)
 
   # insert variables into instructions
   json_set_instructions(script, args)

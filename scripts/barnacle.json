@@ -48,7 +48,7 @@
   },
   "tasks":[
     { "dataset":{
-      "description":"The dataset will hold multiple tables, amke sure it exists.",
+      "description":"The dataset will hold multiple tables, make sure it exists.",
       "hour":[1],
       "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Name of Google BigQuery dataset to create." }}
@@ -56,7 +56,7 @@
     { "barnacle":{
       "description":"Will create tables with format CM_* to hold each endpoint via a call to the API list function. Exclude reports for its own task.",
       "hour":[1],
-      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for reading data." }},
       "endpoints":["accounts", "subaccounts", "profiles", "advertisers", "campaigns", "sites", "roles"],
       "reports":false,
       "accounts":{
@@ -65,13 +65,13 @@
       },
       "out":{
         "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
-        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Google BigQuery dataset to create tables in." }}
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":2, "default":"", "description":"Google BigQuery dataset to create tables in." }}
       }
     }},
     { "barnacle":{
       "description":"Will create tables with format CM_* to hold each endpoint via a call to the API list function. Reports run long so seperate task.",
       "hour":[3],
-      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for reading data." }},
       "endpoints":[],
       "reports":{"field":{ "name":"reports", "kind":"boolean", "order":3, "default":false, "description":"Include report audit, consumes significant API and data." }},
       "accounts":{
@@ -80,7 +80,7 @@
       },
       "out":{
         "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
-        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Google BigQuery dataset to create tables in." }}
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":2, "default":"", "description":"Google BigQuery dataset to create tables in." }}
       }
     }},
     {"bigquery":{

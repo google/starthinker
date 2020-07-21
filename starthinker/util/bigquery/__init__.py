@@ -45,7 +45,7 @@ BIGQUERY_CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # 200 MB * scale in confi
 BIGQUERY_BUFFERSIZE = min(BIGQUERY_CHUNKSIZE * 4, BIGQUERY_BUFFERMAX) # 1 GB * scale in config.py
 
 RE_TABLE_NAME = re.compile(r'[^\w]+')
-
+RE_INDENT = re.compile(r' {5,}')
 
 def bigquery_date(value):
   return value.strftime('%Y%m%d')
@@ -64,6 +64,9 @@ def query_parameters(query, parameters):
   parameters = {'project': 'Test_Project', 'dataset':'Test_dataset'}
   print query_parameters(query, parameters)
   '''
+
+  # no effect other than visual formatting
+  query = RE_INDENT.sub(r'\n\g<0>', query)
 
   if not parameters:
     return query

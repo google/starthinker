@@ -39,7 +39,7 @@ from airflow import DAG
 from airflow.hooks.base_hook import BaseHook
 from airflow.operators.python_operator import PythonOperator
 
-from starthinker.script.parse import json_set_fields
+from starthinker.script.parse import json_set_fields, json_expand_includes
 
 
 class DAG_Factory():
@@ -63,6 +63,7 @@ class DAG_Factory():
     self.dag_name = _dag_name
     self.recipe = _script
     if _script_parameters: json_set_fields(self.recipe, _script_parameters)
+    json_expand_includes(self.recipe)
     self.dag = None
 
 

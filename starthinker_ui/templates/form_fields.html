@@ -26,10 +26,10 @@
   {% elif field|is_switch %}
     <div class="switch">
       <label for="{{ field.id_for_label }}" class="switch_widget">
-        {{ field.field.value_true }}
+        {{ field.field.value_false }}
         {{ field }}
         <span class="lever"></span>
-        {{ field.field.value_false }}
+        <span class="teal-text text-lighten-2">{{ field.field.value_true }}</span>
       </label>
       <label><strong>{{ field.label }}</strong>{% if field.help_text %} - {{ field.help_text|safe }}{% endif %}</label>
     </div>

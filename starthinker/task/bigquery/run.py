@@ -39,9 +39,8 @@ def bigquery():
     run_query(
       project.task['auth'],
       project.id,
-      project.task['run']['query'],
+      query_parameters(project.task['run']['query'], project.task['run'].get('parameters')),
       project.task['run'].get('legacy', True),
-      #project.task['run'].get('billing_project_id', None)
    )
 
   elif 'values' in project.task['from']:
@@ -62,7 +61,6 @@ def bigquery():
       if project.verbose: print("QUERY TO TABLE", project.task['to']['table'])
 
       if 'pre_process_query' in project.task['to']:
-        print('executing statement')
         execute_statement(
             project.task['auth'],
             project.id,

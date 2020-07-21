@@ -132,7 +132,7 @@ class TimezoneField(forms.ChoiceField):
 class SwitchField(forms.ChoiceField):
   widget = forms.CheckboxInput
 
-  def __init__(self, value_true, value_false, *args, **kwargs):
+  def __init__(self, value_false, value_true, *args, **kwargs):
     self.value_true = value_true
     self.value_false = value_false
     kwargs['choices'] = [value_true, value_false]
