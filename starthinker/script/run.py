@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2018 Google Inc.
+#  Copyright 2018 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -94,6 +94,8 @@ def parser_add_field(parser, field):
     parser.add_argument('--' + field['name'], help=field.get('description', 'No instructions.'), default=field.get('default', ''))
   elif field['kind'] == 'email':
     parser.add_argument('--' + field['name'], help=field.get('description', 'No instructions.'), default=field.get('default', ''))
+  elif field['kind'] == 'authentication':
+    parser.add_argument('--' + field['name'], help=field.get('description', 'No instructions.'), default=field.get('default', ''), choices=['user', 'service'])
   elif field['kind'] == 'integer':
     parser.add_argument('--' + field['name'], type=int, help=field.get('description', 'No instructions.'), default=field.get('default', ''))
   elif field['kind'] == 'boolean':
@@ -147,18 +149,23 @@ def script_interactive():
   # parse fields and constants into parameters
   fields = json_get_fields(script)
 
+  print('-' * 60) 
   if to_json:
-    print('\n(1 of %d) From %s template create recipe: %s\n' % (len(fields), from_json, to_json))
+    print('(1 of %d) From %s template create recipe: %s\n' % (len(fields), from_json, to_json))
   else:
-    print('\n(1 of %d) Recipe file to create from %s template.\n' % (len(fields), sys.argv[1]))
+    print('(1 of %d) Recipe file to create from %s template.\n' % (len(fields), sys.argv[1]))
     to_json = input("Full Path TO JSON File:") 
 
   for count, field in enumerate(fields):
-    print('\n(%d of %d) %s' % (count + 2, len(fields), field['description']),)
-    if 'default' in field: print(' ( Default to "%s" if blank. )' % field['default'],)
-    print('\n')
+    print('')
+    print('-' * 60) 
+    print('(%d of %d) %s%s%s' % (
+      count + 2, 
+      len(fields), field['description'],
+      ','.join(field['choices']) if 'choices' in field else '',
+      (' Default to "%s" if blank.' % field['default']) if 'default' in field else '',
+    ))
     args[field['name']] = input("%s ( %s ):" % (field['name'], field['kind']))
-    print('\n')
 
     # remove blanks ( they should have defaults )
     if not args[field['name']]: del args[field['name']]
@@ -181,30 +188,14 @@ def script_commandline():
   # run new arg parser with parameters from script
   args = vars(parser.parse_args())
 
-  # always write to STDOUT, caller whould rediect output to a JSON file
+  # always write to STDOUT, caller should rediect output to a JSON file
   script_write(script, args)
 
 
-def script_test_include():
-  script = get_project(sys.argv[1])
-
-  # parse fields and constants into parameters
-  print('    { "include":{')
-  print('      "script":"%s",' % sys.argv[1])
-  print('      "parameters":{')
-  print(',\n'.join(['        "%s":{"field":{ "name":"%s", "kind":"%s", "description":"%s" }}' % (field['name'], field['name'], field['kind'], field.get('description', '')) for field in json_get_fields(script)]))
-  print('      }')
-  print('    }}')
-
-if __name__ == "__main__":
-
+def main():
   # invalid command line
   if len(sys.argv) < 2:
-    print("USAGE: run.py [json recipe template file path] [-h] [-t]")
-
-  # print test include block
-  elif len(sys.argv) == 3 and sys.argv[2] == '-t':
-    script_test_include()
+    print("USAGE: run.py [json recipe template file path] [-h]")
 
   # only script, json and optional destination supplied, assume interactive
   elif len(sys.argv) == 2 or (len(sys.argv) == 3 and sys.argv[2] != '-h'):
@@ -213,3 +204,7 @@ if __name__ == "__main__":
   # parameters supplied, assume command line
   else:
     script_commandline()
+
+
+if __name__ == "__main__":
+ main()

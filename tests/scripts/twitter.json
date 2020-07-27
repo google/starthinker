@@ -8,6 +8,7 @@
       "script":"scripts/twitter.json",
       "parameters":{
         "recipe_name":"Test",
+        "recipe_slug":"Test",
         "recipe_project":{"field":{ "name":"recipe_project", "kind":"string", "description":"Google Cloud project id." }},
         "twitter_secret":{"field":{ "name":"twitter_secret", "kind":"string", "description":"Twitter API secret token." }},
         "twitter_key":{"field":{ "name":"twitter_key", "kind":"string", "description":"Twitter API key token." }}

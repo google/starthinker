@@ -7,8 +7,8 @@
     { "include":{
       "script":"scripts/transparency.json",
       "parameters":{
-        "dataset":"Test",
-        "recipe_name":"StarThinker_Test",
+        "recipe_name":"Test",
+        "recipe_slug":"Test",
         "recipe_project":{"field":{ "name":"recipe_project", "kind":"string", "description":"Project where BigQuery dataset will be created." }},
         "dcm_account":{"field":{ "name":"dcm_account", "kind":"integer", "description":"DCM account id of client." }}
       }

@@ -42,10 +42,10 @@ REQUIREMENTS = [
 
 setup(
   name='starthinker',
-  version='1.0.1',
+  version='1.0.2',
   description="StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components.",
   long_description="StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components. To make it easier for partners and clients to work with some of our advertsing solutions, the gTech team has open sourced this framework as a reference implementation.  Our goal is to make managing data workflows using Google Cloud as fast and re-usable as possible, allowing teams to focus on building advertising solutions.",
-  author="Paul Kenjora & Mauricio Desidario",
+  author="Paul Kenjora",
   author_email='kenjora@google.com',
   url='https://github.com/google/starthinker',
   packages=find_packages(),
@@ -57,6 +57,8 @@ setup(
     'console_scripts': [
       'st_auth = starthinker.auth.helper:main',
       'st_json = starthinker.script.helper:main',
+      'st_script = starthinker.script.run:main',
+      'st_run = starthinker.all.helper:main',
       'st_cm = starthinker.task.dcm.helper:main',
       'st_dv360 = starthinker.task.dbm.helper:main',
       'st_dv360_lineitem = starthinker.task.dv360_beta.helper:main',

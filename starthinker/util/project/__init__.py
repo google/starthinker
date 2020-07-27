@@ -74,6 +74,7 @@ import re
 import json
 import pytz
 import argparse
+import textwrap
 
 from datetime import datetime 
 from importlib import import_module
@@ -250,6 +251,7 @@ class project:
 
     Args:
       - parser: (ArgumentParser) optional custom argument parser ( json argument becomes optional if not None )
+      - arguments: (String) optional list of parameters to use when invoking project ( defaults to ALL if set to None )
 
     Returns:
       Nothing, this manipulates a singleton object.  All calls to project.* result in the same object.
@@ -257,7 +259,32 @@ class project:
     """
 
     if parser is None:
-      parser = argparse.ArgumentParser()
+      parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent('''\
+          Command line to execute all tasks in a recipe once. ( Common Entry Point )
+    
+          This script dispatches all the tasks in a JSON recipe to handlers in sequence.
+          For each task, it calls a subprocess to execute the JSON instructions, waits
+          for the process to complete and dispatches the next task, until all tasks are
+          complete or a critical failure ( exception ) is raised.
+    
+          If an exception is raised in any task, all following tasks are not executed by design.
+    
+          Example: python run.py [path to recipe file] --force
+          Caution: This script does NOT check if the last job finished, potentially causing overruns.
+          Notes:
+            - To avoid running the entire script when debugging a single task, the command line
+              can easily replace "all" with the name of any "task" in the json.  For example
+              python all/run.py project/sample/say_hello.json
+    
+            - Can be easily replaced with the following to run only the "hello" task:
+              python task/hello/run.py project/sample/say_hello.json
+    
+            - Or specified further to run only the second hello task:
+              python task/hello/run.py project/sample/say_hello.json -i 2
+    
+      '''))
       if arguments is None or '-j' in arguments: parser.add_argument('json', help='Path to recipe json file to load.')
     else:
       if arguments is None or '-j' in arguments: parser.add_argument('--json', '-j', help='Path to recipe json file to load.')
@@ -410,6 +437,7 @@ class project:
     cls.recipe = _recipe
     cls.function = _task
     cls.instance = _instance
+    cls.force = _force
 
     # populates the task variable based on function and instance
     cls.get_task()
@@ -476,15 +504,25 @@ class project:
 
     '''
 
+    returncode = 0
     instances = {}
     for task in cls.recipe['tasks']:
-      function = next(iter(task.keys()))
+      script, task = next(iter(task.items()))
 
       # count instance per task
-      instances.setdefault(function, 0)
-      instances[function] += 1
+      instances.setdefault(script, 0)
+      instances[script] += 1
 
-      print('Running:', '%s %d' % (function, instances[function]))
+      print('RUNNING TASK:', '%s %d' % (script, instances[script]))
 
-      python_callable = getattr(import_module('starthinker.task.%s.run' % function), function)
-      python_callable(cls.recipe, instances[function])
+      if cls.force or is_scheduled(cls.recipe, task):
+        try:
+          python_callable = getattr(import_module('starthinker.task.%s.run' % script), script)
+          python_callable(cls.recipe, instances[script])
+        except Exception as e:
+          print(str(e))
+          return_code = 1
+      else:
+        print("Schedule Skipping: add --force to ignore schedule or run specific task handler")
+
+    return returncode

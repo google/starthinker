@@ -23,10 +23,10 @@
       "csat improvement":90
     },
     "instructions":[
-      "Wait for <b>BigQuery->{field:recipe_project}->{field:recipe_name}->DV360_Audience_Analysis</b> to be created.",
+      "Wait for <b>BigQuery->{field:recipe_project}->{field:recipe_slug}->DV360_Audience_Analysis</b> to be created.",
       "Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets",
       "Copy <a href='https://datastudio.google.com/open/1d2vlf4C1roN95NsdsvWNZqKFcYN8N9Jg' target='_blank'>Sample DV360 Audience Analysis Dataset</a>.",
-      "Click Edit Connection, and change to <b>BigQuery->{field:recipe_project}->{field:recipe_name}->DV360_Audience_Analysis</b>.",
+      "Click Edit Connection, and change to <b>BigQuery->{field:recipe_project}->{field:recipe_slug}->DV360_Audience_Analysis</b>.",
       "Copy <a href='https://datastudio.google.com/open/1Ij_RluqolElm7Nny9fBrIAPRB9ObUl0M' target='_blank'>Sample DV360 Audience Analysis Report</a>.",
       "When prompted choose the new data source you just created.",
       "Or give these intructions to the client."
@@ -42,7 +42,7 @@
       "hour":[1],
       "auth": "service", 
       "description": "Create a dataset for bigquery tables.", 
-      "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
+      "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
     }}, 
     { "dbm": {
       "hour":[2],
@@ -94,7 +94,7 @@
       },
       "out": {
         "bigquery": {
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Audience_Performance",
           "schema": [
             { "mode": "REQUIRED", "name": "advertiser", "type": "STRING" },
@@ -159,7 +159,7 @@
       },
       "out": {
         "bigquery": {
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_First_Party_Audience",
           "schema": [
             { "mode": "REQUIRED", "name": "advertiser", "type": "STRING" },
@@ -219,7 +219,7 @@
       },
       "out": {
         "bigquery": {
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Google_Audience",
           "schema": [
             { "mode": "REQUIRED", "name": "advertiser", "type": "STRING" },
@@ -279,7 +279,7 @@
       },
       "out": {
         "bigquery": {
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Third_Party_Audience",
           "schema": [
             { "mode": "REQUIRED", "name": "advertiser", "type": "STRING" },
@@ -333,18 +333,18 @@ LEFT JOIN
 ",
         "parameters": [
           {"field":{ "name":"recipe_project", "kind":"string", "order":6, "default":"", "description":"Google Cloud Project Id." }},
-          {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           {"field":{ "name":"recipe_project", "kind":"string", "order":6, "default":"", "description":"Google Cloud Project Id." }},
-          {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           {"field":{ "name":"recipe_project", "kind":"string", "order":6, "default":"", "description":"Google Cloud Project Id." }},
-          {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           {"field":{ "name":"recipe_project", "kind":"string", "order":6, "default":"", "description":"Google Cloud Project Id." }},
-          {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
+          {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
         ],
         "legacy":false
       }, 
       "to": {
-        "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+        "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
         "view": "DV360_Audience_Analysis"
       }
     }}

@@ -543,75 +543,70 @@ def barnacle():
 
   accounts = set(get_rows("user", project.task['accounts']))
 
-  if 'accounts' in project.task['endpoints']:
-    # Accounts
-    rows = get_accounts(accounts)
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Accounts', ACCOUNTS_SCHEMA),
-      rows
-    )
+  # Accounts
+  rows = get_accounts(accounts)
+  put_rows(
+    project.task['out']['auth'], 
+    put_json('CM_Accounts', ACCOUNTS_SCHEMA),
+    rows
+  )
 
-  if 'profiles' in project.task['endpoints']:
-    # Profiles
-    rows = get_profiles(accounts)
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Profiles', PROFILES_SCHEMA),
-      rows
-    )
+  # Profiles
+  rows = get_profiles(accounts)
+  put_rows(
+    project.task['out']['auth'], 
+    put_json('CM_Profiles', PROFILES_SCHEMA),
+    rows
+  )
 
-    # Profiles Campaigns
-    if project.verbose: print('DCM Profile Campaigns')
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Profile_Campaigns', PROFILE_CAMPAIGNS_SCHEMA),
-      PROFILE_CAMPAIGNS
-    )
+  # Profiles Campaigns
+  if project.verbose: print('DCM Profile Campaigns')
+  put_rows(
+    project.task['out']['auth'], 
+    put_json('CM_Profile_Campaigns', PROFILE_CAMPAIGNS_SCHEMA),
+    PROFILE_CAMPAIGNS
+  )
 
-    # Profiles Sites
-    if project.verbose: print('DCM Profile Sites')
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Profile_Sites', PROFILE_SITES_SCHEMA),
-      PROFILE_SITES
-    )
+  # Profiles Sites
+  if project.verbose: print('DCM Profile Sites')
+  put_rows(
+    project.task['out']['auth'], 
+    put_json('CM_Profile_Sites', PROFILE_SITES_SCHEMA),
+    PROFILE_SITES
+  )
 
-    # Profiles Roles
-    if project.verbose: print('DCM Profile Roles')
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Profile_Roles', PROFILE_ROLES_SCHEMA),
-      PROFILE_ROLES
-    )
+  # Profiles Roles
+  if project.verbose: print('DCM Profile Roles')
+  put_rows(
+    project.task['out']['auth'], 
+    put_json('CM_Profile_Roles', PROFILE_ROLES_SCHEMA),
+    PROFILE_ROLES
+  )
 
-    # Profiles Advertisers
-    if project.verbose: print('DCM Profile Advertisers')
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Profile_Advertisers', PROFILE_ADVERTISERS_SCHEMA),
-      PROFILE_ADVERTISERS
-    )
+  # Profiles Advertisers
+  if project.verbose: print('DCM Profile Advertisers')
+  put_rows(
+    project.task['out']['auth'], 
+    put_json('CM_Profile_Advertisers', PROFILE_ADVERTISERS_SCHEMA),
+    PROFILE_ADVERTISERS
+  )
 
-  if 'subaccounts' in project.task['endpoints']:
-    # Subaccounts
-    rows = get_subaccounts(accounts)
-    put_rows(
-      project.task['out']['auth'],
-      put_json('CM_SubAccounts', SUBACCOUNTS_SCHEMA),
-      rows
-    )
+  # Subaccounts
+  rows = get_subaccounts(accounts)
+  put_rows(
+    project.task['out']['auth'],
+    put_json('CM_SubAccounts', SUBACCOUNTS_SCHEMA),
+    rows
+  )
 
-  if 'advertisers' in project.task['endpoints']:
-    # Advertisers
-    rows = get_advertisers(accounts)
-    put_rows(
-      project.task['out']['auth'],
-      put_json('CM_Advertisers', ADVERTISERS_SCHEMA),
-      rows
-    )
+  # Advertisers
+  rows = get_advertisers(accounts)
+  put_rows(
+    project.task['out']['auth'],
+    put_json('CM_Advertisers', ADVERTISERS_SCHEMA),
+    rows
+  )
 
-  #if 'changelogs' in project.task['endpoints']:
   #  # Changelogs 
   #  rows = get_changelogs(accounts)
   #  put_rows(
@@ -620,42 +615,39 @@ def barnacle():
   #    rows
   #  )
 
-  if 'campaigns' in project.task['endpoints']:
-    # Campaigns 
-    rows = get_campaigns(accounts)
-    put_rows(
-      project.task['out']['auth'],
-      put_json('CM_Campaigns', CAMPAIGNS_SCHEMA),
-      rows
-    )
+  # Campaigns 
+  rows = get_campaigns(accounts)
+  put_rows(
+    project.task['out']['auth'],
+    put_json('CM_Campaigns', CAMPAIGNS_SCHEMA),
+    rows
+  )
 
-  if 'sites' in project.task['endpoints']:
-    # Sites 
-    rows = get_sites(accounts)
-    put_rows(
-      project.task['out']['auth'],
-      put_json('CM_Sites', SITES_SCHEMA),
-      rows
-    )
+  # Sites 
+  rows = get_sites(accounts)
+  put_rows(
+    project.task['out']['auth'],
+    put_json('CM_Sites', SITES_SCHEMA),
+    rows
+  )
   
-    # Sites Contacts
-    if project.verbose: print('DCM Site Contacts')
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Site_Contacts', SITE_CONTACTS_SCHEMA),
-      SITE_CONTACTS
-    )
+  # Sites Contacts
+  if project.verbose: print('DCM Site Contacts')
+  put_rows(
+    project.task['out']['auth'], 
+    put_json('CM_Site_Contacts', SITE_CONTACTS_SCHEMA),
+    SITE_CONTACTS
+  )
 
-  if 'roles' in project.task['endpoints']:
-    # Roles
-    rows = get_roles(accounts)
-    put_rows(
-      project.task['out']['auth'], 
-      put_json('CM_Roles', ROLES_SCHEMA),
-      rows
-    )
+  # Roles
+  rows = get_roles(accounts)
+  put_rows(
+    project.task['out']['auth'], 
+    put_json('CM_Roles', ROLES_SCHEMA),
+    rows
+  )
   
-  if 'reports' in project.task['endpoints'] or project.task.get('reports') == True:
+  if project.task.get('reports', False) == True:
     # Reports
     rows = get_reports(accounts)
     put_rows(

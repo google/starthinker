@@ -9,6 +9,7 @@
       "parameters":{
         "recipe_timezone": "America/Los_Angeles",
         "recipe_name": "Test",
+        "recipe_slug": "Test",
         "recipe_project": {"field":{ "name":"recipe_project", "kind":"string", "order":1, "default":"", "description":"Google Cloud Project Id" }},
         "partners": {"field":{ "name":"partners", "kind":"integer_list", "order":3, "default":[], "description":"DBM partner id." }},
         "advertisers": {"field":{ "name":"advertisers", "kind":"integer_list", "order":4, "default":[], "description":"DBM advertiser id." }}

@@ -164,7 +164,8 @@ class Recipe(models.Model):
   def get_values(self):
     constants = {
       'recipe_project':self.get_project_identifier(),
-      'recipe_name':self.slug(),
+      'recipe_name':self.name,
+      'recipe_slug':self.slug(),
       'recipe_token':self.get_token(),
       'recipe_timezone':self.timezone,
       'recipe_email':self.account.email if self.account else None,

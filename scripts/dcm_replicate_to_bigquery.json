@@ -10,9 +10,9 @@
     "description":"Replicate a report across multiple networks and advertisers.",
     "instructions":[
       "Provide the name or ID of an existing report.",
-      "Run the recipe once to generate the input sheet called {field:recipe_name}.",
+      "Run the recipe once to generate the input sheet called CM Replicate For {field:recipe_name}.",
       "Enter network and advertiser ids to replicate the report.",
-      "Data will be written to BigQuery &gt; {field:recipe_project} &gt; {field:recipe_name} &gt; [REPORT NAME]_All"
+      "Data will be written to BigQuery &gt; {field:recipe_project} &gt; {field:recipe_slug} &gt; [REPORT NAME]_All"
     ],
     "authors":["kenjora@google.com"]
   },
@@ -21,29 +21,29 @@
       "auth": "user",
       "copy":{
         "source":"https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/",
-        "destination":{"field":{ "name":"recipe_name", "prefix":"CM Replicate ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }}
+        "destination":{"field":{ "name":"recipe_name", "prefix":"CM Replicate For ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }}
       }
     }},
     { "dataset":{
       "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
-      "dataset":{"field":{ "name":"recipe_name", "kind":"string", "order":1, "default":"", "description":"Name of Google BigQuery dataset to create." }}
+      "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":2, "default":"", "description":"Name of Google BigQuery dataset to create." }}
     }},
     { "dcm_replicate":{
-      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
-        "account":{"field":{ "name":"account", "kind":"integer", "order":1, "default":"", "description":"CM network id." }},
-        "id":{"field":{ "name":"report_id", "kind":"integer", "order":2, "default":"", "description":"CM template report id, for template" }},
-        "name":{"field":{ "name":"report_name", "kind":"string", "order":3, "default":"", "description":"CM template report name, empty if using id instead." }},
+        "account":{"field":{ "name":"account", "kind":"integer", "order":3, "default":"", "description":"CM network id." }},
+        "id":{"field":{ "name":"report_id", "kind":"integer", "order":4, "default":"", "description":"CM template report id, for template" }},
+        "name":{"field":{ "name":"report_name", "kind":"string", "order":5, "default":"", "description":"CM template report name, empty if using id instead." }},
         "delete":{"field":{ "name":"delete", "kind":"boolean", "order":6, "default":false, "description":"Use only to reset the reports if setup changes." }}
       },
       "in":{
-        "sheet":{"field":{ "name":"recipe_name", "prefix":"CM Replicate ", "kind":"string", "order":1, "default":"", "description":"Sheet to read ids from." }},
+        "sheet":{"field":{ "name":"recipe_name", "prefix":"CM Replicate For ", "kind":"string", "order":1, "default":"", "description":"Sheet to read ids from." }},
         "tab":"Accounts"
       },
       "out":{
         "bigquery":{
-          "dataset":{"field":{ "name":"recipe_name", "kind":"string", "order":4, "default":"" }},
-          "is_incremental_load":{"field":{ "name":"Aggregate", "kind":"boolean", "order":5, "default":false, "description":"Append report data to existing table, requires Date column." }}
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"" }},
+          "is_incremental_load":{"field":{ "name":"Aggregate", "kind":"boolean", "order":7, "default":false, "description":"Append report data to existing table, requires Date column." }}
         }
       }
     }}

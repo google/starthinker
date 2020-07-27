@@ -21,7 +21,7 @@
 
 Meant to speed up an automate testing of StarThinker.
 
-To initialize: python tests/helper.py --init
+To configure: python tests/helper.py --config
 To run all: python tests/helper.py
 To run some: python tests/helper.py --tests dt entity
 
@@ -54,7 +54,7 @@ def load_tests():
         yield filename, get_project(TEST_DIRECTORY + filename)
 
 
-def initialize_tests(scripts, tests):
+def configure_tests(scripts, tests):
   """Initialize all the necessary test files for Starthinker
   
   Args:
@@ -210,22 +210,40 @@ def run_tests(scripts, recipes, tests):
   print("")
 
 
+def generate_include(script_file):
+  script = get_project(script_file)
+
+  # parse fields and constants into parameters
+  print('    { "include":{')
+  print('      "script":"%s",' % script_file)
+  print('      "parameters":{')
+  print(',\n'.join(['        "%s":{"field":{ "name":"%s", "kind":"%s", "description":"%s" }}' % (field['name'], field['name'], field['kind'], field.get('description', '')) for field in json_get_fields(script)]))
+  print('      }')
+  print('    }}')
+  print ('')
+
 def tests():
   parser = argparse.ArgumentParser()
-  parser.add_argument('-i', '--init', help='Initialize test config.json only.', action='store_true')
+  parser.add_argument('-c', '--configure', help='Configure test config.json only.', action='store_true')
   parser.add_argument('-t', '--tests', nargs='*', help='Run only these tests, name of test from scripts without .json part.')
+  parser.add_argument('-i', '--include', help='Run only these tests, name of test from scripts without .json part.', default=None)
 
   args = parser.parse_args()
-  scripts = list(load_tests())
-  tests = [t.split('.')[0] for t in (args.tests or [])]
 
   print("")
 
-  if args.init:
-    initialize_tests(scripts, tests)
+  if args.include:
+    generate_include(args.include)
+
   else:
-    recipes = initialize_tests(scripts, tests)
-    run_tests(scripts, recipes, tests)
+    scripts = list(load_tests())
+    tests = [t.split('.')[0] for t in (args.tests or [])]
+
+    if args.config:
+      configure_tests(scripts, tests)
+    else:
+      recipes = configure_tests(scripts, tests)
+      run_tests(scripts, recipes, tests)
 
 
 if __name__ == "__main__":

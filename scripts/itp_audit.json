@@ -45,7 +45,7 @@
     }},
     { "dataset":{
       "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
-      "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
+      "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
     }},
     { "dbm":{
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
@@ -174,7 +174,7 @@
       },
       "out":{
         "bigquery":{
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_Floodlight_CM_Report",
           "is_incremental_load":false
         }
@@ -261,7 +261,7 @@
       },
       "out":{
         "bigquery":{
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_CM_Browser_Report_Dirty",
           "is_incremental_load":false
         }
@@ -277,7 +277,7 @@
       "out":{
         "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "bigquery":{
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_Environment"
         }
       }
@@ -291,7 +291,7 @@
       "out":{
         "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "bigquery":{
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_Browser"
         }
       }
@@ -305,7 +305,7 @@
       "out":{
         "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "bigquery":{
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_CM_Browser_lookup"
         }
       }
@@ -319,7 +319,7 @@
       "out":{
         "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "bigquery":{
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_Device_Type"
         }
       }
@@ -333,7 +333,7 @@
       "out":{
         "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "bigquery":{
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_Floodlight_Attribution"
         }
       }
@@ -345,7 +345,7 @@
       },
       "out":{
         "bigquery":{
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default":"ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default":"ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table": "z_Dv360_Browser_Report_Dirty"
         }
       }
@@ -354,7 +354,7 @@
       "itp_audit": {
         "auth": "service",
         "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default":"", "description":"Campaign Manager Account Id." }},  
-        "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+        "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
         "timeout": 60
     }}

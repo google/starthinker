@@ -71,6 +71,7 @@ def query_parameters(query, parameters):
   if not parameters:
     return query
   elif isinstance(parameters, dict):
+    print('BQ PARAM')
     return query.format(**parameters)
   else:
     while '[PARAMETER]' in query:

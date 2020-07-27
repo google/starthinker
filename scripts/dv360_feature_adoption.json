@@ -26,7 +26,7 @@
     },
     "instructions":[
       "IMPORTANT: You must add Advertiser IDS, we're still working on a partner level report.",
-      "Wait for <b>BigQuery->{field:recipe_project}->{field:recipe_name}->DV360_Feature_Analysis</b> dataset to be created.",
+      "Wait for <b>BigQuery->{field:recipe_project}->{field:recipe_slug}->DV360_Feature_Analysis</b> dataset to be created.",
       "Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets",
       "Copy <a href='https://datastudio.google.com/c/u/0/datasources/1IPh_zqjFeZTemq6iTUvc3JvZqD0Frneo' target='_blank'>Sample DV360 Feature Adoption Analysis</a>.",
       "Click Edit Connection, find above dataset, and choose <b>Sample DV360 Feature Adoption Analysis</b>.",
@@ -47,7 +47,7 @@
       "hour":[1],
       "auth": "service", 
       "description": "Create a dataset for bigquery tables.", 
-      "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
+      "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
     }}, 
     { "dbm": {
       "hour":[2],
@@ -66,7 +66,7 @@
           "metadata": {
             "dataRange": "LAST_30_DAYS",
             "format": "CSV",
-            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature_Adoption_Spend_", "description":"Name of report in DV360, should be unique." }}
+            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature Adoption Spend For ", "description":"Name of report in DV360, should be unique." }}
           },
           "params": {
             "type": "TYPE_GENERAL",
@@ -116,7 +116,7 @@
           "metadata": {
             "dataRange": "LAST_30_DAYS",
             "format": "CSV",
-            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature_Adoption_Environment_", "description":"Name of report in DV360, should be unique." }}
+            "title": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature Adoption Environment For ", "description":"Name of report in DV360, should be unique." }}
           },
           "params": {
             "type": "TYPE_GENERAL",
@@ -150,11 +150,11 @@
       "hour":[6],
       "auth": "user", 
       "report": {
-        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature_Adoption_Spend_", "description":"Name of report in DV360, should be unique." }}
+        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature Adoption Spend For ", "description":"Name of report in DV360, should be unique." }}
       },
       "out": {
         "bigquery": {
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Feature_Spend",
           "is_incremental_load":true,
           "schema": [
@@ -187,11 +187,11 @@
       "hour":[6],
       "auth": "user", 
       "report": {
-        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature_Adoption_Environment_", "description":"Name of report in DV360, should be unique." }}
+        "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature Adoption Environment For ", "description":"Name of report in DV360, should be unique." }}
       },
       "out": {
         "bigquery": {
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Feature_Environment",
           "is_incremental_load":true,
           "schema": [
@@ -230,7 +230,7 @@
       "daily": true,
       "out": {
         "bigquery": {
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
         }
       }
     }},
@@ -247,7 +247,7 @@
       "daily": true,
       "out": {
         "bigquery": {
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
         }
       }
     }},
@@ -315,14 +315,14 @@ SELECT
 ",
         "parameters": [
           {"field":{ "name":"recipe_project", "kind":"string", "order":6, "default":"", "description":"Google Cloud Project Id." }},
-          {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           {"field":{ "name":"recipe_project", "kind":"string", "order":6, "default":"", "description":"Google Cloud Project Id." }},
-          {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
+          {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
         ],
         "legacy":false
       }, 
       "to": {
-        "dataset": {"field":{ "name":"recipe_name", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+        "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
         "view": "DV360_Feature_Adoption_Analysis"
       }
     }}

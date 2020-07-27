@@ -52,6 +52,7 @@
       "script":"scripts/dcm_replicate_to_bigquery.json",
       "parameters":{
         "recipe_name":"Test",
+        "recipe_slug":"Test",
         "report_name":"CM Replicate Test",
         "account":{"field":{ "name":"account_id", "kind":"integer", "default":"" }},
         "delete":true
