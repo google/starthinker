@@ -258,7 +258,7 @@ def tests():
   parser.add_argument(
       '-i',
       '--include',
-      help='Run only these tests, name of test from scripts without .json part.',
+      help='Generate an include file for the script.',
       default=None)
 
   args = parser.parse_args()
@@ -272,7 +272,7 @@ def tests():
     scripts = list(load_tests())
     tests = [t.split('.')[0] for t in (args.tests or [])]
 
-    if args.config:
+    if args.configure:
       configure_tests(scripts, tests)
     else:
       recipes = configure_tests(scripts, tests)

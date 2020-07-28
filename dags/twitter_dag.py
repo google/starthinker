@@ -1,5 +1,5 @@
 ###########################################################################
-#
+# 
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,7 +45,7 @@ Or give these intructions to the client.
 '''
 
 from starthinker_airflow.factory import DAG_Factory
-
+ 
 # Add the following credentials to your Airflow configuration.
 USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
@@ -429,7 +429,7 @@ TASKS = [
   }
 ]
 
-DAG_FACTORY = DAG_Factory('twitter', { 'tasks': TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('twitter', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 

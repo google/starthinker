@@ -64,7 +64,7 @@ bash install/deploy.sh
 ### Initializing the tests to create or update the configuration file and recipe files:
 ```
 source starthinker_assets/developer.sh
-python tests/helper.py --init
+python tests/helper.py --configure
 vi tests/config.json
 ```
 
@@ -96,7 +96,7 @@ A test is a [script](recipe.md) with additional [test tasks](../starthinker/task
 
 1. generate an include block for any script
 ```
-python starthinker/script/run.py scripts/deal_finder.json -t
+python tests/helper.py --include scripts/deal_finder.json
 ```
 1. inlcude another script in the test with parameters
 ```
