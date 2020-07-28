@@ -339,7 +339,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                </tr>
              
                <tr>
-                 <td>Click Edit Connection, and change to <b>BigQuery->StarThinker Data->(field:recipe_name}->Deal_Finder_Dashboard</b>.</td>
+                 <td>Click Edit Connection, and change to <b>BigQuery->StarThinker Data->(field:recipe_slug}->Deal_Finder_Dashboard</b>.</td>
                </tr>
              
                <tr>
@@ -379,7 +379,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             },
             "dataset": {
                 "field": {
-                    "name": "dataset",
+                    "name": "recipe_slug",
                     "kind": "string",
                     "description": "Place where tables will be created in BigQuery."
                 }
@@ -440,7 +440,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "field": {
                                 "name": "recipe_name",
                                 "kind": "string",
-                                "prefix": "Deal_Finder_",
+                                "prefix": "Deal Finder For ",
                                 "description": "Name of report in DV360, should be unique."
                             }
                         },
@@ -498,7 +498,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_name",
                         "kind": "string",
-                        "prefix": "Deal_Finder_",
+                        "prefix": "Deal Finder For ",
                         "description": "Name of report in DV360, should be unique."
                     }
                 },
@@ -508,7 +508,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "bigquery": {
                     "dataset": {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -624,7 +624,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "parameters": [
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -634,7 +634,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "dataset",
+                        "name": "recipe_slug",
                         "kind": "string",
                         "description": "Place where tables will be written in BigQuery."
                     }

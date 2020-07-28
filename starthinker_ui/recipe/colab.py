@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,7 +51,13 @@ def script_to_colab(name, description, instructions, tasks, parameters={}):
   colab.paragraph('This does NOT need to be modified unles you are changing the recipe, click play.')
 
   colab.code('from starthinker.util.project import project')
+<<<<<<< HEAD
   colab.code('from starthinker.script.parse import json_set_fields')
+=======
+  colab.code(
+      'from starthinker.script.parse import json_set_fields, json_expand_includes'
+  )
+>>>>>>> 2648cbff7b4b88b322cc501e235f1fb153f92090
   colab.code('')
   colab.code("USER_CREDENTIALS = '/content/user.json'")
   colab.code('')

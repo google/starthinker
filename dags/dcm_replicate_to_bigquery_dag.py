@@ -38,7 +38,7 @@ CM Report Replicate
 Replicate a report across multiple networks and advertisers.
 
 Provide the name or ID of an existing report.
-Run the recipe once to generate the input sheet called UNDEFINED.
+Run the recipe once to generate the input sheet called CM Replicate For UNDEFINED.
 Enter network and advertiser ids to replicate the report.
 Data will be written to BigQuery &gt; UNDEFINED &gt; UNDEFINED &gt; [REPORT NAME]_All
 
@@ -51,14 +51,15 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
   'auth_read': 'user',  # Credentials used for reading data.
+  'recipe_name': '',  # Sheet to read ids from.
+  'auth_write': 'service',  # Credentials used for writing data.
   'account': '',  # CM network id.
+  'recipe_slug': '',
   'report_id': '',  # CM template report id, for template
   'report_name': '',  # CM template report name, empty if using id instead.
-  'recipe_name': '',
-  'Aggregate': False,  # Append report data to existing table, requires Date column.
   'delete': False,  # Use only to reset the reports if setup changes.
+  'Aggregate': False,  # Append report data to existing table, requires Date column.
 }
 
 TASKS = [
@@ -70,7 +71,7 @@ TASKS = [
         'destination': {
           'field': {
             'name': 'recipe_name',
-            'prefix': 'CM Replicate ',
+            'prefix': 'CM Replicate For ',
             'kind': 'string',
             'order': 1,
             'description': 'Name of document to deploy to.',
@@ -93,9 +94,9 @@ TASKS = [
       },
       'dataset': {
         'field': {
-          'name': 'recipe_name',
+          'name': 'recipe_slug',
           'kind': 'string',
-          'order': 1,
+          'order': 2,
           'default': '',
           'description': 'Name of Google BigQuery dataset to create.'
         }
@@ -108,7 +109,7 @@ TASKS = [
         'field': {
           'name': 'auth_read',
           'kind': 'authentication',
-          'order': 1,
+          'order': 0,
           'default': 'user',
           'description': 'Credentials used for reading data.'
         }
@@ -118,7 +119,7 @@ TASKS = [
           'field': {
             'name': 'account',
             'kind': 'integer',
-            'order': 1,
+            'order': 3,
             'default': '',
             'description': 'CM network id.'
           }
@@ -127,7 +128,7 @@ TASKS = [
           'field': {
             'name': 'report_id',
             'kind': 'integer',
-            'order': 2,
+            'order': 4,
             'default': '',
             'description': 'CM template report id, for template'
           }
@@ -136,7 +137,7 @@ TASKS = [
           'field': {
             'name': 'report_name',
             'kind': 'string',
-            'order': 3,
+            'order': 5,
             'default': '',
             'description': 'CM template report name, empty if using id instead.'
           }
@@ -155,7 +156,7 @@ TASKS = [
         'sheet': {
           'field': {
             'name': 'recipe_name',
-            'prefix': 'CM Replicate ',
+            'prefix': 'CM Replicate For ',
             'kind': 'string',
             'order': 1,
             'default': '',
@@ -168,7 +169,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'order': 4,
               'default': ''
@@ -178,7 +179,7 @@ TASKS = [
             'field': {
               'name': 'Aggregate',
               'kind': 'boolean',
-              'order': 5,
+              'order': 7,
               'default': False,
               'description': 'Append report data to existing table, requires Date column.'
             }

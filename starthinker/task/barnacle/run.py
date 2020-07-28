@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2018 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,95 +32,95 @@ REPORT_DELIVERIES = []
 SITE_CONTACTS = []
 
 ACCOUNTS_SCHEMA = [
- { "name":"accountId", "type":"INTEGER" },
- { "name":"name", "type":"STRING" },
- { "name":"active", "type":"BOOLEAN" },
- { "name":"description", "type":"STRING" },
- { "name":"timezone", "type":"STRING" },
- { "name":"currencyId", "type":"INTEGER" },
- { "name":"countryId", "type":"INTEGER" },
- { "name":"locale", "type":"STRING" },
- { "name":"nielsenOcrEnabled", "type":"BOOLEAN" },
- { "name":"shareReportsWithTwitter", "type":"BOOLEAN" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "name", "type": "STRING" },
+ { "name": "active", "type": "BOOLEAN" },
+ { "name": "description", "type": "STRING" },
+ { "name": "timezone", "type": "STRING" },
+ { "name": "currencyId", "type": "INTEGER" },
+ { "name": "countryId", "type": "INTEGER" },
+ { "name": "locale", "type": "STRING" },
+ { "name": "nielsenOcrEnabled", "type": "BOOLEAN" },
+ { "name": "shareReportsWithTwitter", "type": "BOOLEAN" },
 ]
 
 PROFILES_SCHEMA = [
- { "name":"profileId", "type":"INTEGER" },
- { "name":"accountId", "type":"INTEGER" },
- { "name":"subaccountId", "type":"INTEGER" },
- { "name":"name", "type":"STRING" },
- { "name":"email", "type":"STRING" },
- { "name":"locale", "type":"STRING" },
- { "name":"userRoleId", "type":"INTEGER" },
- { "name":"userAccessType", "type":"STRING" },
- { "name":"active", "type":"BOOLEAN" },
- { "name":"comments", "type":"STRING" },
- { "name":"traffickerType", "type":"STRING" },
+ { "name": "profileId", "type": "INTEGER" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "name", "type": "STRING" },
+ { "name": "email", "type": "STRING" },
+ { "name": "locale", "type": "STRING" },
+ { "name": "userRoleId", "type": "INTEGER" },
+ { "name": "userAccessType", "type": "STRING" },
+ { "name": "active", "type": "BOOLEAN" },
+ { "name": "comments", "type": "STRING" },
+ { "name": "traffickerType", "type": "STRING" },
 ]
 
 PROFILE_CAMPAIGNS_SCHEMA = [
- { "name":"profileId", "type":"INTEGER" },
- { "name":"accountId", "type":"INTEGER" },
- { "name":"subaccountId", "type":"INTEGER" },
- { "name":"campaignId", "type":"INTEGER" },
+ { "name": "profileId", "type": "INTEGER" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "campaignId", "type": "INTEGER" },
 ]
 
 PROFILE_SITES_SCHEMA = [
- { "name":"profileId", "type":"INTEGER" },
- { "name":"accountId", "type":"INTEGER" },
- { "name":"subaccountId", "type":"INTEGER" },
- { "name":"siteId", "type":"INTEGER" },
+ { "name": "profileId", "type": "INTEGER" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "siteId", "type": "INTEGER" },
 ]
 
 PROFILE_ROLES_SCHEMA = [
- { "name":"profileId", "type":"INTEGER" },
- { "name":"accountId", "type":"INTEGER" },
- { "name":"subaccountId", "type":"INTEGER" },
- { "name":"roleId", "type":"INTEGER" },
+ { "name": "profileId", "type": "INTEGER" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "roleId", "type": "INTEGER" },
 ]
 
 PROFILE_ADVERTISERS_SCHEMA = [
- { "name":"profileId", "type":"INTEGER" },
- { "name":"accountId", "type":"INTEGER" },
- { "name":"subaccountId", "type":"INTEGER" },
- { "name":"advertiserId", "type":"INTEGER" },
+ { "name": "profileId", "type": "INTEGER" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "advertiserId", "type": "INTEGER" },
 ]
 
 ADVERTISERS_SCHEMA = [
- { "name":"accountId", "type":"INTEGER" },
- { "name":"subaccountId", "type":"INTEGER" },
- { "name":"advertiserId", "type":"INTEGER" },
- { "name":"advertiserGroupId", "type":"INTEGER" },
- { "name":"name", "type":"STRING" },
- { "name":"status", "type":"STRING" },
- { "name":"defaultEmail", "type":"STRING" },
- { "name":"clickThroughUrlSuffix", "type":"STRING" },
- { "name":"defaultClickThroughEventTagId", "type":"INTEGER" },
- { "name":"suspended", "type":"BOOLEAN" },
- { "name":"floodlightConfigurationId", "type":"INTEGER" },
- { "name":"originalFloodlightConfigurationId", "type":"INTEGER" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "advertiserId", "type": "INTEGER" },
+ { "name": "advertiserGroupId", "type": "INTEGER" },
+ { "name": "name", "type": "STRING" },
+ { "name": "status", "type": "STRING" },
+ { "name": "defaultEmail", "type": "STRING" },
+ { "name": "clickThroughUrlSuffix", "type": "STRING" },
+ { "name": "defaultClickThroughEventTagId", "type": "INTEGER" },
+ { "name": "suspended", "type": "BOOLEAN" },
+ { "name": "floodlightConfigurationId", "type": "INTEGER" },
+ { "name": "originalFloodlightConfigurationId", "type": "INTEGER" },
 ]
 
 CAMPAIGNS_SCHEMA = [
- { "name":"accountId", "type":"INTEGER" },
- { "name":"subaccountId", "type":"INTEGER" },
- { "name":"advertiserId", "type":"INTEGER" },
- { "name":"advertiserGroupId", "type":"INTEGER" },
- { "name":"campaignId", "type":"INTEGER" },
- { "name":"name", "type":"STRING" },
- { "name":"archived", "type":"BOOLEAN" },
- { "name":"startDate", "type":"DATE" },
- { "name":"endDate", "type":"DATE" },
- { "name":"comment", "type":"STRING" },
- { "name":"createInfo_time", "type":"STRING" },
- { "name":"lastModifiedInfo_time", "type":"TIMESTAMP" },
- { "name":"externalId", "type":"STRING" },
- { "name":"defaultLandingPageId", "type":"STRING" },
- { "name":"adBlockingConfiguration_enabled", "type":"BOOLEAN" },
- { "name":"adBlockingConfiguration_overrideClickThroughUrl", "type":"STRING" },
- { "name":"adBlockingConfiguration_clickThroughUrl", "type":"STRING" },
- { "name":"adBlockingConfiguration_creativeBundleId", "type":"STRING" },
- { "name":"nielsenOcrEnabled", "type":"BOOLEAN" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "advertiserId", "type": "INTEGER" },
+ { "name": "advertiserGroupId", "type": "INTEGER" },
+ { "name": "campaignId", "type": "INTEGER" },
+ { "name": "name", "type": "STRING" },
+ { "name": "archived", "type": "BOOLEAN" },
+ { "name": "startDate", "type": "DATE" },
+ { "name": "endDate", "type": "DATE" },
+ { "name": "comment", "type": "STRING" },
+ { "name": "createInfo_time", "type": "STRING" },
+ { "name": "lastModifiedInfo_time", "type": "TIMESTAMP" },
+ { "name": "externalId", "type": "STRING" },
+ { "name": "defaultLandingPageId", "type": "STRING" },
+ { "name": "adBlockingConfiguration_enabled", "type": "BOOLEAN" },
+ { "name": "adBlockingConfiguration_overrideClickThroughUrl", "type": "STRING" },
+ { "name": "adBlockingConfiguration_clickThroughUrl", "type": "STRING" },
+ { "name": "adBlockingConfiguration_creativeBundleId", "type": "STRING" },
+ { "name": "nielsenOcrEnabled", "type": "BOOLEAN" },
 ]
 
 #CHANGELOGS_SCHEMA = [
@@ -139,87 +139,87 @@ CAMPAIGNS_SCHEMA = [
 #]
 
 SITES_SCHEMA = [
- { "name":"accountId", "type":"INTEGER" }, 
- { "name":"subaccountId", "type":"INTEGER" }, 
- { "name":"directorySiteId", "type":"INTEGER" },
- { "name":"siteId", "type":"INTEGER" }, 
- { "name":"name", "type":"STRING" },
- { "name":"keyName", "type":"STRING" },
- { "name":"approved", "type":"BOOLEAN" },
- { "name":"orientation", "type":"STRING" },
- { "name":"siteSettings_disableNewCookie", "type":"BOOLEAN" },
- { "name":"siteSettings_activeViewOptOut", "type":"BOOLEAN" },
- { "name":"siteSettings_adBlockingOptOut", "type":"BOOLEAN" },
- { "name":"siteSettings_videoActiveViewOptOutTemplate", "type":"BOOLEAN" },
- { "name":"siteSettings_vpaidAdapterChoiceTemplate", "type":"STRING" },
- { "name":"siteSettings_tagSetting_additionalKeyValues", "type":"STRING" },
- { "name":"siteSettings_tagSetting_includeClickTracking", "type":"BOOLEAN" },
- { "name":"siteSettings_tagSetting_includeClickThroughUrls", "type":"BOOLEAN" },
- { "name":"siteSettings_tagSetting_keywordOption", "type":"STRING" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "directorySiteId", "type": "INTEGER" },
+ { "name": "siteId", "type": "INTEGER" },
+ { "name": "name", "type": "STRING" },
+ { "name": "keyName", "type": "STRING" },
+ { "name": "approved", "type": "BOOLEAN" },
+ { "name": "orientation", "type": "STRING" },
+ { "name": "siteSettings_disableNewCookie", "type": "BOOLEAN" },
+ { "name": "siteSettings_activeViewOptOut", "type": "BOOLEAN" },
+ { "name": "siteSettings_adBlockingOptOut", "type": "BOOLEAN" },
+ { "name": "siteSettings_videoActiveViewOptOutTemplate", "type": "BOOLEAN" },
+ { "name": "siteSettings_vpaidAdapterChoiceTemplate", "type": "STRING" },
+ { "name": "siteSettings_tagSetting_additionalKeyValues", "type": "STRING" },
+ { "name": "siteSettings_tagSetting_includeClickTracking", "type": "BOOLEAN" },
+ { "name": "siteSettings_tagSetting_includeClickThroughUrls", "type": "BOOLEAN" },
+ { "name": "siteSettings_tagSetting_keywordOption", "type": "STRING" },
 ]
 
 SITE_CONTACTS_SCHEMA = [
- { "name":"accountId", "type":"INTEGER" },
- { "name":"subaccountId", "type":"INTEGER" },
- { "name":"directorySiteId", "type":"INTEGER" },
- { "name":"siteId", "type":"INTEGER" },
- { "name":"contactId", "type":"INTEGER" },
- { "name":"email", "type":"STRING" },
- { "name":"firstName", "type":"STRING" },
- { "name":"lastName", "type":"STRING" },
- { "name":"title", "type":"STRING" },
- { "name":"address", "type":"STRING" },
- { "name":"phone", "type":"STRING" },
- { "name":"contactType", "type":"STRING" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "directorySiteId", "type": "INTEGER" },
+ { "name": "siteId", "type": "INTEGER" },
+ { "name": "contactId", "type": "INTEGER" },
+ { "name": "email", "type": "STRING" },
+ { "name": "firstName", "type": "STRING" },
+ { "name": "lastName", "type": "STRING" },
+ { "name": "title", "type": "STRING" },
+ { "name": "address", "type": "STRING" },
+ { "name": "phone", "type": "STRING" },
+ { "name": "contactType", "type": "STRING" },
 ]
 
 ROLES_SCHEMA = [
- { "name":"accountId", "type":"INTEGER" },
- { "name":"subaccountId", "type":"INTEGER" },
- { "name":"roleId", "type":"INTEGER" },
- { "name":"role_name", "type":"STRING" },
- { "name":"role_defaultUserRole", "type":"BOOLEAN" },
- { "name":"permission_name", "type":"STRING" },
- { "name":"permission_availability", "type":"STRING" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "roleId", "type": "INTEGER" },
+ { "name": "role_name", "type": "STRING" },
+ { "name": "role_defaultUserRole", "type": "BOOLEAN" },
+ { "name": "permission_name", "type": "STRING" },
+ { "name": "permission_availability", "type": "STRING" },
 ]
 
 SUBACCOUNTS_SCHEMA = [
- { "name":"accountId", "type":"INTEGER" },
- { "name":"subaccountId", "type":"INTEGER" },
- { "name":"name", "type":"STRING" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "name", "type": "STRING" },
 ]
 
 REPORTS_SCHEMA = [
- { "name":"profileId", "type":"INTEGER" },
- { "name":"accountId", "type":"INTEGER" },
- { "name":"subaccountId", "type":"INTEGER" },
- { "name":"reportId", "type":"INTEGER" },
- { "name":"name", "type":"STRING" },
- { "name":"type", "type":"STRING" },
- { "name":"format", "type":"STRING" },
- { "name":"lastModifiedTime", "type":"TIMESTAMP" },
- { "name":"criteria_startDate", "type":"DATE" },
- { "name":"criteria_endDate", "type":"DATE" },
- { "name":"criteria_relativeDateRange", "type":"STRING" },
- { "name":"schedule_active", "type":"BOOLEAN" },
- { "name":"schedule_startDate", "type":"DATE" },
- { "name":"schedule_expirationDate", "type":"DATE" },
- { "name":"schedule_runsOnDayOfMonth", "type":"STRING" },
- { "name":"schedule_repeats", "type":"STRING" },
- { "name":"schedule_every", "type":"STRING" },
- { "name":"schedule_repeatsOnWeekDays", "type":"STRING" },
+ { "name": "profileId", "type": "INTEGER" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "reportId", "type": "INTEGER" },
+ { "name": "name", "type": "STRING" },
+ { "name": "type", "type": "STRING" },
+ { "name": "format", "type": "STRING" },
+ { "name": "lastModifiedTime", "type": "TIMESTAMP" },
+ { "name": "criteria_startDate", "type": "DATE" },
+ { "name": "criteria_endDate", "type": "DATE" },
+ { "name": "criteria_relativeDateRange", "type": "STRING" },
+ { "name": "schedule_active", "type": "BOOLEAN" },
+ { "name": "schedule_startDate", "type": "DATE" },
+ { "name": "schedule_expirationDate", "type": "DATE" },
+ { "name": "schedule_runsOnDayOfMonth", "type": "STRING" },
+ { "name": "schedule_repeats", "type": "STRING" },
+ { "name": "schedule_every", "type": "STRING" },
+ { "name": "schedule_repeatsOnWeekDays", "type": "STRING" },
 ]
 
 REPORT_DELIVERIES_SCHEMA = [
- { "name":"profileId", "type":"INTEGER" },
- { "name":"accountId", "type":"INTEGER" },
- { "name":"subaccountId", "type":"INTEGER" },
- { "name":"reportId", "type":"INTEGER" },
- { "name":"emailOwner", "type":"STRING" },
- { "name":"emailOwnerDeliveryType", "type":"STRING" },
- { "name":"message", "type":"STRING" },
- { "name":"email", "type":"STRING" },
- { "name":"deliveryType", "type":"STRING" },
+ { "name": "profileId", "type": "INTEGER" },
+ { "name": "accountId", "type": "INTEGER" },
+ { "name": "subaccountId", "type": "INTEGER" },
+ { "name": "reportId", "type": "INTEGER" },
+ { "name": "emailOwner", "type": "STRING" },
+ { "name": "emailOwnerDeliveryType", "type": "STRING" },
+ { "name": "message", "type": "STRING" },
+ { "name": "email", "type": "STRING" },
+ { "name": "deliveryType", "type": "STRING" },
 ]
 
 
@@ -228,7 +228,7 @@ def get_accounts(accounts):
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = { 'profileId':profile_id, 'id':account_id }
+    kwargs = { 'profileId': profile_id, 'id': account_id }
     account = API_DCM("user").accounts().get(**kwargs).execute()
     yield [
       account['id'],
@@ -249,7 +249,7 @@ def get_profiles(accounts):
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    kwargs = { 'profileId': profile_id, 'accountId': account_id } if is_superuser else { 'profileId': profile_id }
     for profile in API_DCM("user", iterate=True, internal=is_superuser).accountUserProfiles().list(**kwargs).execute():
       if int(profile['accountId']) in accounts:
 
@@ -306,14 +306,14 @@ def get_subaccounts(accounts):
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    kwargs = { 'profileId': profile_id, 'accountId': account_id } if is_superuser else { 'profileId': profile_id }
     for subaccount in API_DCM("user", iterate=True, internal=is_superuser).subaccounts().list(**kwargs).execute():
-      if int(subaccount['accountId']) in accounts: 
+      if int(subaccount['accountId']) in accounts:
         yield [
           subaccount['accountId'],
           subaccount['id'],
           subaccount['name'],
-       ]
+        ]
 
 
 def get_advertisers(accounts):
@@ -322,9 +322,9 @@ def get_advertisers(accounts):
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    kwargs = { 'profileId': profile_id, 'accountId': account_id } if is_superuser else { 'profileId': profile_id }
     for advertiser in API_DCM("user", iterate=True, internal=is_superuser).advertisers().list(**kwargs).execute():
-      if int(advertiser['accountId']) in accounts: 
+      if int(advertiser['accountId']) in accounts:
         yield [
           advertiser['accountId'],
           advertiser.get('subaccountId'),
@@ -338,7 +338,7 @@ def get_advertisers(accounts):
           advertiser['suspended'],
           advertiser['floodlightConfigurationId'],
           advertiser['originalFloodlightConfigurationId'],
-       ]
+        ]
 
 
 def get_campaigns(accounts):
@@ -347,9 +347,9 @@ def get_campaigns(accounts):
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    kwargs = { 'profileId': profile_id, 'accountId': account_id } if is_superuser else { 'profileId': profile_id }
     for campaign in API_DCM("user", iterate=True, internal=is_superuser).campaigns().list(**kwargs).execute():
-      if int(campaign['accountId']) in accounts: 
+      if int(campaign['accountId']) in accounts:
 
         yield [
           campaign['accountId'],
@@ -371,7 +371,7 @@ def get_campaigns(accounts):
           campaign['adBlockingConfiguration'].get('clickThroughUrl'),
           campaign['adBlockingConfiguration'].get('creativeBundleId'),
           campaign['nielsenOcrEnabled'],
-       ]
+        ]
 
 
 #def get_changelogs(accounts):
@@ -382,7 +382,7 @@ def get_campaigns(accounts):
 #    is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
 #    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
 #    for changelog in API_DCM("user", iterate=True, internal=is_superuser).changeLogs().list(**kwargs).execute():
-#      if int(changelog['accountId']) in accounts: 
+#      if int(changelog['accountId']) in accounts:
 #
 #        #print(changelog)
 #        yield [
@@ -407,9 +407,9 @@ def get_sites(accounts):
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    kwargs = { 'profileId': profile_id, 'accountId': account_id } if is_superuser else { 'profileId': profile_id }
     for site in API_DCM("user", iterate=True, internal=is_superuser).sites().list(**kwargs).execute():
-      if int(site['accountId']) in accounts: 
+      if int(site['accountId']) in accounts:
 
         for contact in site.get('siteContacts', []):
           SITE_CONTACTS.append([
@@ -453,7 +453,7 @@ def get_roles(accounts):
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    kwargs = { 'profileId': profile_id, 'accountId': account_id } if is_superuser else { 'profileId': profile_id }
     for role in API_DCM("user", iterate=True, internal=is_superuser).userRoles().list(**kwargs).execute():
       if int(role['accountId']) in accounts:
         if 'permissions' in role:
@@ -485,10 +485,10 @@ def get_reports(accounts):
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = { 'profileId':profile_id, 'accountId':account_id, 'scope':'ALL' } if is_superuser else { 'profileId':profile_id, 'scope':'ALL' }
+    kwargs = { 'profileId': profile_id, 'accountId': account_id, 'scope': 'ALL' } if is_superuser else { 'profileId': profile_id, 'scope': 'ALL' }
     for report in API_DCM("user", iterate=True, internal=is_superuser).reports().list(**kwargs).execute():
       if int(report['accountId']) in accounts:
-  
+
         for delivery in report.get('delivery', {}).get('recipients', []):
           REPORT_DELIVERIES.append((
             report['ownerProfileId'],
@@ -501,7 +501,7 @@ def get_reports(accounts):
             delivery['email'],
             delivery['deliveryType'],
           ))
- 
+
         yield [
           report['ownerProfileId'],
           report['accountId'],
@@ -527,12 +527,12 @@ def get_reports(accounts):
 def put_json(kind, schema):
 
   return {
-    "bigquery":{
+    "bigquery": {
       "dataset": project.task['out']['dataset'],
       "table": kind,
       "schema": schema,
       "skip_rows": 0,
-      "format":"CSV"
+      "format": "CSV"
     }
   }
 
@@ -545,69 +545,51 @@ def barnacle():
 
   # Accounts
   rows = get_accounts(accounts)
-  put_rows(
-    project.task['out']['auth'], 
-    put_json('CM_Accounts', ACCOUNTS_SCHEMA),
-    rows
-  )
+  put_rows(project.task["out"]["auth"], put_json("CM_Accounts",
+                                                 ACCOUNTS_SCHEMA), rows)
 
   # Profiles
   rows = get_profiles(accounts)
-  put_rows(
-    project.task['out']['auth'], 
-    put_json('CM_Profiles', PROFILES_SCHEMA),
-    rows
-  )
+  put_rows(project.task["out"]["auth"], put_json("CM_Profiles",
+                                                 PROFILES_SCHEMA), rows)
 
   # Profiles Campaigns
-  if project.verbose: print('DCM Profile Campaigns')
-  put_rows(
-    project.task['out']['auth'], 
-    put_json('CM_Profile_Campaigns', PROFILE_CAMPAIGNS_SCHEMA),
-    PROFILE_CAMPAIGNS
-  )
+  if project.verbose:
+    print("DCM Profile Campaigns")
+  put_rows(project.task["out"]["auth"],
+           put_json("CM_Profile_Campaigns", PROFILE_CAMPAIGNS_SCHEMA),
+           PROFILE_CAMPAIGNS)
 
   # Profiles Sites
-  if project.verbose: print('DCM Profile Sites')
-  put_rows(
-    project.task['out']['auth'], 
-    put_json('CM_Profile_Sites', PROFILE_SITES_SCHEMA),
-    PROFILE_SITES
-  )
+  if project.verbose:
+    print("DCM Profile Sites")
+  put_rows(project.task["out"]["auth"],
+           put_json("CM_Profile_Sites", PROFILE_SITES_SCHEMA), PROFILE_SITES)
 
   # Profiles Roles
-  if project.verbose: print('DCM Profile Roles')
-  put_rows(
-    project.task['out']['auth'], 
-    put_json('CM_Profile_Roles', PROFILE_ROLES_SCHEMA),
-    PROFILE_ROLES
-  )
+  if project.verbose:
+    print("DCM Profile Roles")
+  put_rows(project.task["out"]["auth"],
+           put_json("CM_Profile_Roles", PROFILE_ROLES_SCHEMA), PROFILE_ROLES)
 
   # Profiles Advertisers
-  if project.verbose: print('DCM Profile Advertisers')
-  put_rows(
-    project.task['out']['auth'], 
-    put_json('CM_Profile_Advertisers', PROFILE_ADVERTISERS_SCHEMA),
-    PROFILE_ADVERTISERS
-  )
+  if project.verbose:
+    print("DCM Profile Advertisers")
+  put_rows(project.task["out"]["auth"],
+           put_json("CM_Profile_Advertisers", PROFILE_ADVERTISERS_SCHEMA),
+           PROFILE_ADVERTISERS)
 
   # Subaccounts
   rows = get_subaccounts(accounts)
-  put_rows(
-    project.task['out']['auth'],
-    put_json('CM_SubAccounts', SUBACCOUNTS_SCHEMA),
-    rows
-  )
+  put_rows(project.task["out"]["auth"],
+           put_json("CM_SubAccounts", SUBACCOUNTS_SCHEMA), rows)
 
   # Advertisers
   rows = get_advertisers(accounts)
-  put_rows(
-    project.task['out']['auth'],
-    put_json('CM_Advertisers', ADVERTISERS_SCHEMA),
-    rows
-  )
+  put_rows(project.task["out"]["auth"],
+           put_json("CM_Advertisers", ADVERTISERS_SCHEMA), rows)
 
-  #  # Changelogs 
+  #  # Changelogs
   #  rows = get_changelogs(accounts)
   #  put_rows(
   #    project.task['out']['auth'],
@@ -615,43 +597,32 @@ def barnacle():
   #    rows
   #  )
 
-  # Campaigns 
+  # Campaigns
   rows = get_campaigns(accounts)
-  put_rows(
-    project.task['out']['auth'],
-    put_json('CM_Campaigns', CAMPAIGNS_SCHEMA),
-    rows
-  )
+  put_rows(project.task["out"]["auth"],
+           put_json("CM_Campaigns", CAMPAIGNS_SCHEMA), rows)
 
-  # Sites 
+  # Sites
   rows = get_sites(accounts)
-  put_rows(
-    project.task['out']['auth'],
-    put_json('CM_Sites', SITES_SCHEMA),
-    rows
-  )
-  
+  put_rows(project.task["out"]["auth"], put_json("CM_Sites", SITES_SCHEMA),
+           rows)
+
   # Sites Contacts
-  if project.verbose: print('DCM Site Contacts')
-  put_rows(
-    project.task['out']['auth'], 
-    put_json('CM_Site_Contacts', SITE_CONTACTS_SCHEMA),
-    SITE_CONTACTS
-  )
+  if project.verbose:
+    print("DCM Site Contacts")
+  put_rows(project.task["out"]["auth"],
+           put_json("CM_Site_Contacts", SITE_CONTACTS_SCHEMA), SITE_CONTACTS)
 
   # Roles
   rows = get_roles(accounts)
-  put_rows(
-    project.task['out']['auth'], 
-    put_json('CM_Roles', ROLES_SCHEMA),
-    rows
-  )
-  
-  if project.task.get('reports', False) == True:
+  put_rows(project.task["out"]["auth"], put_json("CM_Roles", ROLES_SCHEMA),
+           rows)
+
+  if project.task.get("reports", False) == True:
     # Reports
     rows = get_reports(accounts)
     put_rows(
-      project.task['out']['auth'], 
+      project.task['out']['auth'],
       put_json('CM_Reports', REPORTS_SCHEMA),
       rows
     )
@@ -659,10 +630,10 @@ def barnacle():
     # Reports Deliveries
     if project.verbose: print('DCM Deliveries')
     put_rows(
-      project.task['out']['auth'], 
+      project.task['out']['auth'],
       put_json('CM_Report_Deliveries', REPORT_DELIVERIES_SCHEMA),
       REPORT_DELIVERIES
     )
-  
+
 if __name__ == "__main__":
   barnacle()

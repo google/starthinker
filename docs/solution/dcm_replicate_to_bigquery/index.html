@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
             <tr>
               <td>Age</td>
-              <td>March 3, 2020 (4 months, 2 weeks)</td>
+              <td>March 3, 2020 (4 months, 3 weeks)</td>
             </tr>
     
             <tr>
@@ -231,7 +231,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                </tr>
              
                <tr>
-                 <td>Run the recipe once to generate the input sheet called UNDEFINED.</td>
+                 <td>Run the recipe once to generate the input sheet called CM Replicate For UNDEFINED.</td>
                </tr>
              
                <tr>
@@ -258,7 +258,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "destination": {
                     "field": {
                         "name": "recipe_name",
-                        "prefix": "CM Replicate ",
+                        "prefix": "CM Replicate For ",
                         "kind": "string",
                         "order": 1,
                         "description": "Name of document to deploy to.",
@@ -281,9 +281,9 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             },
             "dataset": {
                 "field": {
-                    "name": "recipe_name",
+                    "name": "recipe_slug",
                     "kind": "string",
-                    "order": 1,
+                    "order": 2,
                     "default": "",
                     "description": "Name of Google BigQuery dataset to create."
                 }
@@ -296,7 +296,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "field": {
                     "name": "auth_read",
                     "kind": "authentication",
-                    "order": 1,
+                    "order": 0,
                     "default": "user",
                     "description": "Credentials used for reading data."
                 }
@@ -306,7 +306,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "account",
                         "kind": "integer",
-                        "order": 1,
+                        "order": 3,
                         "default": "",
                         "description": "CM network id."
                     }
@@ -315,7 +315,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "report_id",
                         "kind": "integer",
-                        "order": 2,
+                        "order": 4,
                         "default": "",
                         "description": "CM template report id, for template"
                     }
@@ -324,7 +324,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "report_name",
                         "kind": "string",
-                        "order": 3,
+                        "order": 5,
                         "default": "",
                         "description": "CM template report name, empty if using id instead."
                     }
@@ -343,7 +343,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "sheet": {
                     "field": {
                         "name": "recipe_name",
-                        "prefix": "CM Replicate ",
+                        "prefix": "CM Replicate For ",
                         "kind": "string",
                         "order": 1,
                         "default": "",
@@ -356,7 +356,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "bigquery": {
                     "dataset": {
                         "field": {
-                            "name": "recipe_name",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "order": 4,
                             "default": ""
@@ -366,7 +366,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "field": {
                             "name": "Aggregate",
                             "kind": "boolean",
-                            "order": 5,
+                            "order": 7,
                             "default": false,
                             "description": "Append report data to existing table, requires Date column."
                         }

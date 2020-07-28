@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,25 +37,25 @@ Twitter Targeting
 
 Adjusts line item settings based on Twitter hashtags and locations specified in a sheet.
 
-A sheet will be generated for you when you run this the first time.
-Click <b>Run Now</b> once and a new tab called <b>Twitter Triggers</b> will be added to the sheet.
-Follow instructions on the sheets tab.
-Click <b>Run Now</b> again, trends are downloaded and triggered
+Click <b>Run Now</b> and a sheet called <b>Twitter Targeting UNDEFINED</b> will be generated with a tab called <b>Twitter Triggers</b>.
+Follow instructions on the sheets tab to provide triggers and lineitems.
+Click <b>Run Now</b> again, trends are downloaded and triggered.
 Or give these intructions to the client.
 
 '''
 
 from starthinker_airflow.factory import DAG_Factory
- 
+
 # Add the following credentials to your Airflow configuration.
 USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'recipe_name': '',  # Place where tables will be created in BigQuery.
+  'recipe_slug': '',  # Place where tables will be created in BigQuery.
+  'auth_read': 'user',  # Credentials used for reading data.
   'recipe_project': '',  # Place where tables will be created in BigQuery.
   'auth_write': 'service',  # Credentials used for writing data.
-  'auth_read': 'user',  # Credentials used for reading data.
+  'recipe_name': '',  # Name of sheet where Line Item settings will be read from.
   'twitter_secret': '',  # Twitter API secret token.
   'twitter_key': '',  # Twitter API key token.
 }
@@ -75,7 +75,7 @@ TASKS = [
       },
       'dataset': {
         'field': {
-          'name': 'recipe_name',
+          'name': 'recipe_slug',
           'kind': 'string',
           'order': 1,
           'description': 'Place where tables will be created in BigQuery.'
@@ -90,7 +90,7 @@ TASKS = [
         'field': {
           'name': 'auth_read',
           'kind': 'authentication',
-          'order': 1,
+          'order': 0,
           'default': 'user',
           'description': 'Credentials used for reading data.'
         }
@@ -103,7 +103,7 @@ TASKS = [
         'field': {
           'name': 'recipe_name',
           'kind': 'string',
-          'prefix': 'Twitter Targeting ',
+          'prefix': 'Twitter Targeting For ',
           'order': 2,
           'description': 'Name of sheet where Line Item settings will be read from.',
           'default': ''
@@ -115,7 +115,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -263,7 +263,7 @@ TASKS = [
           'bigquery': {
             'dataset': {
               'field': {
-                'name': 'recipe_name',
+                'name': 'recipe_slug',
                 'kind': 'string',
                 'description': 'Place where tables will be created in BigQuery.'
               }
@@ -273,7 +273,7 @@ TASKS = [
             'parameters': {
               'dataset': {
                 'field': {
-                  'name': 'recipe_name',
+                  'name': 'recipe_slug',
                   'kind': 'string',
                   'description': 'Place where tables will be created in BigQuery.'
                 }
@@ -286,7 +286,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -303,7 +303,7 @@ TASKS = [
         'field': {
           'name': 'auth_read',
           'kind': 'authentication',
-          'order': 1,
+          'order': 0,
           'default': 'user',
           'description': 'Credentials used for reading data.'
         }
@@ -314,7 +314,7 @@ TASKS = [
           'bigquery': {
             'dataset': {
               'field': {
-                'name': 'recipe_name',
+                'name': 'recipe_slug',
                 'kind': 'string',
                 'description': 'Place where tables will be created in BigQuery.'
               }
@@ -323,7 +323,7 @@ TASKS = [
             'parameters': {
               'dataset': {
                 'field': {
-                  'name': 'recipe_name',
+                  'name': 'recipe_slug',
                   'kind': 'string',
                   'description': 'Place where tables will be created in BigQuery.'
                 }
@@ -335,7 +335,7 @@ TASKS = [
           'bigquery': {
             'dataset': {
               'field': {
-                'name': 'recipe_name',
+                'name': 'recipe_slug',
                 'kind': 'string',
                 'description': 'Place where tables will be created in BigQuery.'
               }
@@ -370,7 +370,7 @@ TASKS = [
           },
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -381,7 +381,7 @@ TASKS = [
       'to': {
         'dataset': {
           'field': {
-            'name': 'recipe_name',
+            'name': 'recipe_slug',
             'kind': 'string',
             'description': 'Place where tables will be created in BigQuery.'
           }
@@ -397,7 +397,7 @@ TASKS = [
         'field': {
           'name': 'auth_read',
           'kind': 'authentication',
-          'order': 1,
+          'order': 0,
           'default': 'user',
           'description': 'Credentials used for reading data.'
         }
@@ -407,7 +407,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -416,7 +416,7 @@ TASKS = [
           'parameters': {
             'dataset': {
               'field': {
-                'name': 'recipe_name',
+                'name': 'recipe_slug',
                 'kind': 'string',
                 'description': 'Place where tables will be created in BigQuery.'
               }
@@ -429,7 +429,7 @@ TASKS = [
   }
 ]
 
-DAG_FACTORY = DAG_Factory('twitter', { 'tasks':TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('twitter', { 'tasks': TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 

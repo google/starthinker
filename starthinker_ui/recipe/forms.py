@@ -56,9 +56,9 @@ class SetupForm(forms.ModelForm):
     self.fields['active'].help_text = 'To pause recipe, uncheck this.'
 
     self.structure = [
-      { 'title':'%s Recipe' % self.instance.name.title(),
-        'description':'',
-        'fields':[
+      { 'title': '%s Recipe' % self.instance.name.title(),
+        'description': '',
+        'fields': [
           self['name'],
           self['project']
         ]
@@ -78,10 +78,10 @@ class SetupForm(forms.ModelForm):
       self.structure[0]['fields'].append(self['timezone'])
 
     else:
-      self.structure.append( 
-        { 'title':'Schedule',
-          'description':'',
-          'fields':[
+      self.structure.append(
+        { 'title': 'Schedule',
+          'description': '',
+          'fields': [
             self['timezone'],
             self['week'],
             self['hour'],

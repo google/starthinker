@@ -93,7 +93,7 @@ def job_wait(auth, job):
       projectId=job['jobReference']['projectId'],
       jobId=job['jobReference']['jobId']
     )
-  
+
     while True:
       sleep(5)
       if project.verbose: print('.', end='')
@@ -101,7 +101,7 @@ def job_wait(auth, job):
       result = API_Retry(request)
       if 'errors' in result['status']:
         raise Exception('BigQuery Job Error: %s' % ' '.join([e['message'] for e in result['status']['errors']]))
-      elif 'errorResult' in result['status']: 
+      elif 'errorResult' in result['status']:
         raise Exception('BigQuery Job Error: %s' % result['status']['errorResult']['message'])
       elif result['status']['state'] == 'DONE':
         if project.verbose: print('JOB COMPLETE:', result['id'])
@@ -111,13 +111,13 @@ def job_wait(auth, job):
 def datasets_create(auth, project_id, dataset_id):
 
   body = {
-    "description":dataset_id,
+    "description": dataset_id,
     "datasetReference": {
-      "projectId":project_id,
-      "datasetId":dataset_id,
+      "projectId": project_id,
+      "datasetId": dataset_id,
     },
-    "location":"US",
-    "friendlyName":dataset_id,
+    "location": "US",
+    "friendlyName": dataset_id,
   }
 
   API_BigQuery(auth).datasets().insert(projectId=project_id, body=body).execute()
@@ -132,15 +132,15 @@ def datasets_access(auth, project_id, dataset_id, role='READER', emails=[], grou
     # if emails
     for email in emails:
       access.append({
-        "userByEmail":email,
-        "role":role,
+        "userByEmail": email,
+        "role": role,
       })
 
     # if groups
     for group in groups:
       access.append({
-        "groupByEmail":group,
-        "role":role,
+        "groupByEmail": group,
+        "role": role,
       })
 
     for view in views:
@@ -152,7 +152,7 @@ def datasets_access(auth, project_id, dataset_id, role='READER', emails=[], grou
         }
       })
 
-    API_BigQuery(auth).datasets().patch(projectId=project_id, datasetId=dataset_id, body={'access':access}).execute()
+    API_BigQuery(auth).datasets().patch(projectId=project_id, datasetId=dataset_id, body={'access': access}).execute()
 
 def run_query(auth, project_id, query, legacy=True):
 
@@ -160,7 +160,7 @@ def run_query(auth, project_id, query, legacy=True):
     'configuration': {
       'query': {
         'useLegacySql': legacy,
-        'query':query
+        'query': query
       }
     }
   }
@@ -178,15 +178,15 @@ def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='W
     'configuration': {
       'query': {
         'useLegacySql': legacy,
-        'query':query,
+        'query': query,
         'destinationTable': {
-          'projectId':target_project_id,
-          'datasetId':dataset_id,
-          'tableId':table_id
+          'projectId': target_project_id,
+          'datasetId': dataset_id,
+          'tableId': table_id
         },
-        'createDisposition':'CREATE_IF_NEEDED',
-        'writeDisposition':disposition,
-        'allowLargeResults':True
+        'createDisposition': 'CREATE_IF_NEEDED',
+        'writeDisposition': disposition,
+        'allowLargeResults': True
       },
     }
   }
@@ -198,20 +198,20 @@ def query_to_view(auth, project_id, dataset_id, view_id, query, legacy=True, rep
 
   body={
     'tableReference': {
-      'projectId':project_id,
-      'datasetId':dataset_id,
-      'tableId':view_id,
+      'projectId': project_id,
+      'datasetId': dataset_id,
+      'tableId': view_id,
     },
     'view': {
-      'query':query,
-      'useLegacySql':legacy
+      'query': query,
+      'useLegacySql': legacy
     }
   }
 
   response = API_BigQuery(auth).tables().insert(projectId=project_id, datasetId=dataset_id, body=body).execute()
   if response is None and replace:
     return API_BigQuery(auth).tables().update(projectId=project_id,datasetId=dataset_id, tableId=view_id, body=body).execute()
-    
+
 
 
 #struture = CSV, NEWLINE_DELIMITED_JSON
@@ -231,8 +231,8 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
         'writeDisposition': disposition,
         'autodetect': True,
         'allowJaggedRows': True,
-        'allowQuotedNewlines':True,
-        'ignoreUnknownValues':True,
+        'allowQuotedNewlines': True,
+        'ignoreUnknownValues': True,
         'sourceUris': [
           'gs://%s' % path.replace(':', '/'),
         ],
@@ -241,7 +241,7 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
   }
 
   if schema:
-    body['configuration']['load']['schema'] = { 'fields':schema }
+    body['configuration']['load']['schema'] = { 'fields': schema }
     body['configuration']['load']['autodetect'] = False
 
   if structure == 'CSV':
@@ -352,14 +352,14 @@ def io_to_table(auth, project_id, dataset_id, table_id, data_bytes, source_forma
           'writeDisposition': disposition,
           'autodetect': True,
           'allowJaggedRows': True,
-          'allowQuotedNewlines':True,
+          'allowQuotedNewlines': True,
           'ignoreUnknownValues': True,
         }
       }
     }
- 
+
     if schema:
-      body['configuration']['load']['schema'] = { 'fields':schema }
+      body['configuration']['load']['schema'] = { 'fields': schema }
       body['configuration']['load']['autodetect'] = False
 
     if disposition == 'WRITE_APPEND':
@@ -416,7 +416,7 @@ def incremental_rows_to_table(auth, project_id, dataset_id, table_id, rows, sche
       _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id, start_date, end_date, billing_project_id=billing_project_id)
 
     #append temp table to master
-    query = ('SELECT * FROM `' 
+    query = ('SELECT * FROM `'
       + project_id + '.' + dataset_id + '.' + table_id_temp + '` ')
     query_to_table(auth, project_id, dataset_id, table_id, query, disposition, False, billing_project_id=billing_project_id)
 
@@ -506,7 +506,7 @@ def table_to_schema(auth, project_id, dataset_id, table_id):
 # https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query
 def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True):
 
-  # Create the query 
+  # Create the query
   body = {
     "kind": "bigquery#queryRequest",
     "query": query,
@@ -543,7 +543,7 @@ def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True
 
     if 'PageToken' in response:
       response = API_BigQuery(auth).jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], pageToken=response['PageToken']).execute(iterate=False)
-    elif row_count < int(response['totalRows']): 
+    elif row_count < int(response['totalRows']):
       response = API_BigQuery(auth).jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], startIndex=row_count).execute(iterate=False)
     else:
       break
@@ -567,7 +567,7 @@ def get_schema(rows, header=True, infer_type=True):
   row_buffer = []
 
   # everything else defaults to STRING
-  type_to_bq = {int:'INTEGER', bool:'BOOLEAN', float:'FLOAT'} if infer_type else {} # empty lookup defaults to STRING below
+  type_to_bq = {int: 'INTEGER', bool: 'BOOLEAN', float: 'FLOAT'} if infer_type else {} # empty lookup defaults to STRING below
 
   # first non null value determines type
   non_null_column = set()
@@ -585,7 +585,7 @@ def get_schema(rows, header=True, infer_type=True):
     if first:
       ct_columns = len(row)
       for index, value in enumerate(row_header_sanitize(row)):
-        schema.append({ "name":value if header else 'Field_%d' % index, "type":"STRING" })
+        schema.append({ "name": value if header else 'Field_%d' % index, "type": "STRING" })
 
     # then determine type of each column
     if not first and header:
@@ -653,7 +653,7 @@ def _build_converter_array(schema, fields, col_count):
     for field in schema['fields']:
       if fields is None or field in fields:
         converters.append(_JSON_CONVERTERS[field['type']])
-  else: 
+  else:
     #No schema so simply return the string as string
     converters = [lambda v: v] * col_count
   #print(converters)
@@ -664,7 +664,7 @@ def drop_table(auth, project_id, dataset_id, table_id, billing_project_id=None):
   if not billing_project_id:
     billing_project_id = project_id
 
-  query = ('DROP TABLE `' 
+  query = ('DROP TABLE `'
     + project_id + '.' + dataset_id + '.' + table_id + '` ')
 
   body = {
@@ -683,7 +683,7 @@ def _get_max_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
   if not billing_project_id:
     billing_project_id = project_id
 
-  query = ('SELECT MAX(Report_Day) FROM `' 
+  query = ('SELECT MAX(Report_Day) FROM `'
     + project_id + '.' + dataset_id + '.' + table_id + '` ')
 
   body = {
@@ -703,7 +703,7 @@ def _get_min_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
   if not billing_project_id:
     billing_project_id = project_id
 
-  query = ('SELECT MIN(Report_Day) FROM `' 
+  query = ('SELECT MIN(Report_Day) FROM `'
     + project_id + '.' + dataset_id + '.' + table_id + '` ')
 
   body = {
@@ -716,7 +716,7 @@ def _get_min_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
   }
 
   job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute()
-  
+
   return job['rows'][0]['f'][0]['v']
 
 
@@ -742,7 +742,7 @@ def _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id,
   if not billing_project_id:
     billing_project_id = project_id
 
-  query = ('DELETE FROM `' 
+  query = ('DELETE FROM `'
     + project_id + '.' + dataset_id + '.' + table_id + '` '
     + 'WHERE Report_Day >= "' + start_date + '"' + 'AND Report_Day <= "' + end_date + '"'
     )

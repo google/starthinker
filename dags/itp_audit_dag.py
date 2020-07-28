@@ -51,6 +51,7 @@ INPUTS = {
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
   'recipe_name': '',  # Name of document to deploy to.
   'auth_write': 'service',  # Credentials used for writing data.
+  'recipe_slug': 'ITP_Audit_Dashboard',  # BigQuery dataset for store dashboard tables.
   'auth_read': 'user',  # Credentials used for reading data.
   'cm_account_id': '',  # Campaign Manager Account Id.
   'cm_advertiser_ids': '',  # Optional: Comma delimited list of CM advertiser ids.
@@ -93,7 +94,7 @@ TASKS = [
       },
       'dataset': {
         'field': {
-          'name': 'recipe_name',
+          'name': 'recipe_slug',
           'kind': 'string',
           'order': 1,
           'default': 'ITP_Audit_Dashboard',
@@ -307,7 +308,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -450,7 +451,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -501,7 +502,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -550,7 +551,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -599,7 +600,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -648,7 +649,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -697,7 +698,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -735,7 +736,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'order': 1,
               'default': 'ITP_Audit_Dashboard',
@@ -761,7 +762,7 @@ TASKS = [
       },
       'dataset': {
         'field': {
-          'name': 'recipe_name',
+          'name': 'recipe_slug',
           'kind': 'string',
           'order': 1,
           'default': 'ITP_Audit_Dashboard',

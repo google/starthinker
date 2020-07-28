@@ -297,12 +297,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
             <tr>
               <td>Age</td>
-              <td>Feb. 27, 2019 (1 year, 4 months)</td>
+              <td>Feb. 27, 2019 (1 year, 5 months)</td>
             </tr>
     
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com,ceh@google.com?subject=Request+For+A+CM+User+Audit+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+CM+User+Audit+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fbarnacle%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com<br/>ceh@google.com</a>
+              <td><a href="mailto:ceh@google.com,kenjora@google.com?subject=Request+For+A+CM+User+Audit+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+CM+User+Audit+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fbarnacle%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">ceh@google.com<br/>kenjora@google.com</a>
               </td>
             </tr>
 
@@ -407,9 +407,9 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             },
             "dataset": {
                 "field": {
-                    "name": "dataset",
+                    "name": "recipe_slug",
                     "kind": "string",
-                    "order": 1,
+                    "order": 4,
                     "default": "",
                     "description": "Name of Google BigQuery dataset to create."
                 }
@@ -431,66 +431,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "description": "Credentials used for reading data."
                 }
             },
-            "endpoints": [
-                "accounts",
-                "subaccounts",
-                "profiles",
-                "advertisers",
-                "campaigns",
-                "sites",
-                "roles"
-            ],
-            "reports": false,
-            "accounts": {
-                "single_cell": true,
-                "values": {
-                    "field": {
-                        "name": "accounts",
-                        "kind": "integer_list",
-                        "order": 2,
-                        "default": [],
-                        "description": "Comma separated CM account ids."
-                    }
-                }
-            },
-            "out": {
-                "auth": {
-                    "field": {
-                        "name": "auth_write",
-                        "kind": "authentication",
-                        "order": 1,
-                        "default": "service",
-                        "description": "Credentials used for writing data."
-                    }
-                },
-                "dataset": {
-                    "field": {
-                        "name": "dataset",
-                        "kind": "string",
-                        "order": 2,
-                        "default": "",
-                        "description": "Google BigQuery dataset to create tables in."
-                    }
-                }
-            }
-        }
-    },
-    {
-        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/barnacle/run.py" target="_blank">barnacle</a>": {
-            "description": "Will create tables with format CM_* to hold each endpoint via a call to the API list function. Reports run long so seperate task.",
-            "hour": [
-                3
-            ],
-            "auth": {
-                "field": {
-                    "name": "auth_read",
-                    "kind": "authentication",
-                    "order": 0,
-                    "default": "user",
-                    "description": "Credentials used for reading data."
-                }
-            },
-            "endpoints": [],
             "reports": {
                 "field": {
                     "name": "reports",
@@ -524,9 +464,9 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 },
                 "dataset": {
                     "field": {
-                        "name": "dataset",
+                        "name": "recipe_slug",
                         "kind": "string",
-                        "order": 2,
+                        "order": 4,
                         "default": "",
                         "description": "Google BigQuery dataset to create tables in."
                     }
@@ -562,7 +502,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -576,7 +516,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -590,7 +530,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -604,7 +544,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -614,7 +554,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "dataset",
+                        "name": "recipe_slug",
                         "kind": "string",
                         "description": "Place where tables will be written in BigQuery."
                     }
@@ -651,7 +591,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -665,7 +605,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -679,7 +619,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -689,7 +629,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "dataset",
+                        "name": "recipe_slug",
                         "kind": "string",
                         "description": "Place where tables will be written in BigQuery."
                     }
@@ -726,7 +666,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -740,7 +680,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -754,7 +694,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -764,7 +704,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "dataset",
+                        "name": "recipe_slug",
                         "kind": "string",
                         "description": "Place where tables will be written in BigQuery."
                     }
@@ -801,7 +741,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -815,7 +755,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -825,7 +765,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "dataset",
+                        "name": "recipe_slug",
                         "kind": "string",
                         "description": "Place where tables will be written in BigQuery."
                     }
@@ -862,7 +802,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -876,7 +816,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -890,7 +830,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -900,7 +840,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "dataset",
+                        "name": "recipe_slug",
                         "kind": "string",
                         "description": "Place where tables will be written in BigQuery."
                     }
@@ -937,7 +877,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -951,7 +891,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -965,7 +905,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -979,7 +919,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -989,7 +929,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "dataset",
+                        "name": "recipe_slug",
                         "kind": "string",
                         "description": "Place where tables will be written in BigQuery."
                     }
@@ -1026,7 +966,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1040,7 +980,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1054,7 +994,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1068,7 +1008,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1082,7 +1022,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1092,7 +1032,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "dataset",
+                        "name": "recipe_slug",
                         "kind": "string",
                         "description": "Place where tables will be written in BigQuery."
                     }
@@ -1129,7 +1069,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1143,7 +1083,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1157,7 +1097,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1171,7 +1111,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1181,7 +1121,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "dataset",
+                        "name": "recipe_slug",
                         "kind": "string",
                         "description": "Place where tables will be written in BigQuery."
                     }
@@ -1218,7 +1158,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1232,7 +1172,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1246,7 +1186,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1260,7 +1200,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1274,7 +1214,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1284,7 +1224,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "dataset",
+                        "name": "recipe_slug",
                         "kind": "string",
                         "description": "Place where tables will be written in BigQuery."
                     }
@@ -1321,7 +1261,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1335,7 +1275,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1349,7 +1289,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1363,7 +1303,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     {
                         "field": {
-                            "name": "dataset",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be written in BigQuery."
                         }
@@ -1373,7 +1313,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "dataset",
+                        "name": "recipe_slug",
                         "kind": "string",
                         "description": "Place where tables will be written in BigQuery."
                     }

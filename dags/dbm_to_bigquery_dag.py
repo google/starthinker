@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ The most recent valid file will be moved to the table.
 '''
 
 from starthinker_airflow.factory import DAG_Factory
- 
+
 # Add the following credentials to your Airflow configuration.
 USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
@@ -60,91 +60,103 @@ INPUTS = {
   'is_incremental_load': False,  # Clear data in destination table during this report's time period, then append report data to destination table.
 }
 
-TASKS = [
-  {
+TASKS = [{
     'dbm': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 0,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'report': {
-        'report_id': {
-          'field': {
-            'name': 'dbm_report_id',
-            'kind': 'integer',
-            'order': 2,
-            'default': '',
-            'description': 'DV360 report ID given in UI, not needed if name used.'
-          }
+        'auth': {
+            'field': {
+                'name': 'auth_read',
+                'kind': 'authentication',
+                'order': 0,
+                'default': 'user',
+                'description': 'Credentials used for reading data.'
+            }
         },
-        'name': {
-          'field': {
-            'name': 'dbm_report_name',
-            'kind': 'string',
-            'order': 3,
-            'default': '',
-            'description': 'Name of report, not needed if ID used.'
-          }
+        'report': {
+            'report_id': {
+                'field': {
+                    'name':
+                        'dbm_report_id',
+                    'kind':
+                        'integer',
+                    'order':
+                        2,
+                    'default':
+                        '',
+                    'description':
+                        'DV360 report ID given in UI, not needed if name used.'
+                }
+            },
+            'name': {
+                'field': {
+                    'name': 'dbm_report_name',
+                    'kind': 'string',
+                    'order': 3,
+                    'default': '',
+                    'description': 'Name of report, not needed if ID used.'
+                }
+            }
+        },
+        'out': {
+            'bigquery': {
+                'auth': {
+                    'field': {
+                        'name': 'auth_write',
+                        'kind': 'authentication',
+                        'order': 1,
+                        'default': 'service',
+                        'description': 'Authorization used for writing data.'
+                    }
+                },
+                'dataset': {
+                    'field': {
+                        'name': 'dbm_dataset',
+                        'kind': 'string',
+                        'order': 4,
+                        'default': '',
+                        'description': 'Existing BigQuery dataset.'
+                    }
+                },
+                'table': {
+                    'field': {
+                        'name': 'dbm_table',
+                        'kind': 'string',
+                        'order': 5,
+                        'default': '',
+                        'description': 'Table to create from this report.'
+                    }
+                },
+                'schema': {
+                    'field': {
+                        'name':
+                            'dbm_schema',
+                        'kind':
+                            'json',
+                        'order':
+                            6,
+                        'description':
+                            'Schema provided in JSON list format or empty value to auto detect.'
+                    }
+                },
+                'is_incremental_load': {
+                    'field': {
+                        'name':
+                            'is_incremental_load',
+                        'kind':
+                            'boolean',
+                        'order':
+                            7,
+                        'default':
+                            False,
+                        'description':
+                            "Clear data in destination table during this report's time period, then append report data to destination table."
+                    }
+                }
+            }
         }
-      },
-      'out': {
-        'bigquery': {
-          'auth': {
-            'field': {
-              'name': 'auth_write',
-              'kind': 'authentication',
-              'order': 1,
-              'default': 'service',
-              'description': 'Authorization used for writing data.'
-            }
-          },
-          'dataset': {
-            'field': {
-              'name': 'dbm_dataset',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Existing BigQuery dataset.'
-            }
-          },
-          'table': {
-            'field': {
-              'name': 'dbm_table',
-              'kind': 'string',
-              'order': 5,
-              'default': '',
-              'description': 'Table to create from this report.'
-            }
-          },
-          'schema': {
-            'field': {
-              'name': 'dbm_schema',
-              'kind': 'json',
-              'order': 6,
-              'description': 'Schema provided in JSON list format or empty value to auto detect.'
-            }
-          },
-          'is_incremental_load': {
-            'field': {
-              'name': 'is_incremental_load',
-              'kind': 'boolean',
-              'order': 7,
-              'default': False,
-              'description': "Clear data in destination table during this report's time period, then append report data to destination table."
-            }
-          }
-        }
-      }
     }
-  }
-]
+}]
 
-DAG_FACTORY = DAG_Factory('dbm_to_bigquery', { 'tasks':TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('dbm_to_bigquery', { 'tasks': TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 

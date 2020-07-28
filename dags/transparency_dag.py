@@ -52,7 +52,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'dataset': '',  # Place where tables will be written in BigQuery.
+  'recipe_slug': '',  # Place where tables will be written in BigQuery.
   'recipe_name': '',  # Name of report in CM, should be unique.
   'recipe_project': '',  # Project where BigQuery dataset will be created.
   'dcm_account': '',  # CM account id of client.
@@ -68,7 +68,7 @@ TASKS = [
       'auth': 'service',
       'dataset': {
         'field': {
-          'name': 'dataset',
+          'name': 'recipe_slug',
           'kind': 'string',
           'order': 1,
           'default': '',
@@ -100,7 +100,6 @@ TASKS = [
                 'name': 'dcm_advertisers',
                 'kind': 'integer_list',
                 'order': 3,
-                'default': '',
                 'description': 'Comma delimited list of CM advertiser ids.'
               }
             }
@@ -113,7 +112,7 @@ TASKS = [
             'field': {
               'name': 'recipe_name',
               'kind': 'string',
-              'prefix': 'Transparency_App_',
+              'prefix': 'Transparency App For ',
               'description': 'Name of report in CM, unique.'
             }
           },
@@ -190,7 +189,6 @@ TASKS = [
                 'name': 'dcm_advertisers',
                 'kind': 'integer_list',
                 'order': 3,
-                'default': '',
                 'description': 'Comma delimited list of CM advertiser ids.'
               }
             }
@@ -203,7 +201,7 @@ TASKS = [
             'field': {
               'name': 'recipe_name',
               'kind': 'string',
-              'prefix': 'Transparency_Domain_',
+              'prefix': 'Transparency Domain For ',
               'description': 'Name of report in CM, unique.'
             }
           },
@@ -271,7 +269,7 @@ TASKS = [
           'field': {
             'name': 'recipe_name',
             'kind': 'string',
-            'prefix': 'Transparency_Domain_',
+            'prefix': 'Transparency Domain For ',
             'description': 'Name of report in CM, should be unique.'
           }
         }
@@ -281,7 +279,7 @@ TASKS = [
           'auth': 'service',
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_slug',
               'kind': 'string',
               'order': 1,
               'default': '',
@@ -313,7 +311,7 @@ TASKS = [
           'field': {
             'name': 'recipe_name',
             'kind': 'string',
-            'prefix': 'Transparency_App_',
+            'prefix': 'Transparency App For ',
             'description': 'Name of report in CM, should be unique.'
           }
         }
@@ -323,7 +321,7 @@ TASKS = [
           'auth': 'service',
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_slug',
               'kind': 'string',
               'order': 1,
               'default': '',
@@ -344,7 +342,7 @@ TASKS = [
       'to': {
         'dataset': {
           'field': {
-            'name': 'dataset',
+            'name': 'recipe_slug',
             'kind': 'string',
             'order': 1,
             'default': '',
@@ -365,7 +363,7 @@ TASKS = [
           },
           {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be written in BigQuery.'
             }
@@ -379,7 +377,7 @@ TASKS = [
           },
           {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be written in BigQuery.'
             }

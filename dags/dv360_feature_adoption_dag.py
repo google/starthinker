@@ -57,8 +57,9 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'recipe_name': '',  # Place where tables will be created in BigQuery.
+  'recipe_slug': '',  # Place where tables will be created in BigQuery.
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
+  'recipe_name': '',  # Name of report in DV360, should be unique.
   'partners': [],  # DV360 partner id.
   'advertisers': [],  # Comma delimited list of DV360 advertiser ids.
   'recipe_project': '',  # Google Cloud Project Id.
@@ -74,7 +75,7 @@ TASKS = [
       'description': 'Create a dataset for bigquery tables.',
       'dataset': {
         'field': {
-          'name': 'recipe_name',
+          'name': 'recipe_slug',
           'kind': 'string',
           'description': 'Place where tables will be created in BigQuery.'
         }
@@ -130,7 +131,7 @@ TASKS = [
               'field': {
                 'name': 'recipe_name',
                 'kind': 'string',
-                'prefix': 'Feature_Adoption_Spend_',
+                'prefix': 'Feature Adoption Spend For ',
                 'description': 'Name of report in DV360, should be unique.'
               }
             }
@@ -216,7 +217,7 @@ TASKS = [
               'field': {
                 'name': 'recipe_name',
                 'kind': 'string',
-                'prefix': 'Feature_Adoption_Environment_',
+                'prefix': 'Feature Adoption Environment For ',
                 'description': 'Name of report in DV360, should be unique.'
               }
             }
@@ -261,7 +262,7 @@ TASKS = [
           'field': {
             'name': 'recipe_name',
             'kind': 'string',
-            'prefix': 'Feature_Adoption_Spend_',
+            'prefix': 'Feature Adoption Spend For ',
             'description': 'Name of report in DV360, should be unique.'
           }
         }
@@ -270,7 +271,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -378,7 +379,7 @@ TASKS = [
           'field': {
             'name': 'recipe_name',
             'kind': 'string',
-            'prefix': 'Feature_Adoption_Environment_',
+            'prefix': 'Feature Adoption Environment For ',
             'description': 'Name of report in DV360, should be unique.'
           }
         }
@@ -387,7 +388,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -502,7 +503,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -541,7 +542,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -570,7 +571,7 @@ TASKS = [
           },
           {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -586,7 +587,7 @@ TASKS = [
           },
           {
             'field': {
-              'name': 'recipe_name',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
@@ -597,7 +598,7 @@ TASKS = [
       'to': {
         'dataset': {
           'field': {
-            'name': 'recipe_name',
+            'name': 'recipe_slug',
             'kind': 'string',
             'description': 'Place where tables will be created in BigQuery.'
           }

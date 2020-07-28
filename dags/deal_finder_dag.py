@@ -40,7 +40,7 @@ Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites,
 Wait for <b>BigQuery->StarThinker Data->UNDEFINED->Deal_Finder_Dashboard</b> to be created.
 Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
 Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Deal Finder Sample Data</a>.
-Click Edit Connection, and change to <b>BigQuery->StarThinker Data->(field:recipe_name}->Deal_Finder_Dashboard</b>.
+Click Edit Connection, and change to <b>BigQuery->StarThinker Data->(field:recipe_slug}->Deal_Finder_Dashboard</b>.
 Copy <a href='https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO' target='_blank'>Deal Finder Sample Report</a>.
 When prompted choose the new data source you just created.
 Or give these intructions to the client.
@@ -54,7 +54,7 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'dataset': '',  # Place where tables will be written in BigQuery.
+  'recipe_slug': '',  # Place where tables will be written in BigQuery.
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
   'recipe_name': '',  # Name of report in DV360, should be unique.
   'auth_write': 'service',  # Credentials used for writing data.
@@ -81,7 +81,7 @@ TASKS = [
       },
       'dataset': {
         'field': {
-          'name': 'dataset',
+          'name': 'recipe_slug',
           'kind': 'string',
           'description': 'Place where tables will be created in BigQuery.'
         }
@@ -144,7 +144,7 @@ TASKS = [
               'field': {
                 'name': 'recipe_name',
                 'kind': 'string',
-                'prefix': 'Deal_Finder_',
+                'prefix': 'Deal Finder For ',
                 'description': 'Name of report in DV360, should be unique.'
               }
             },
@@ -202,7 +202,7 @@ TASKS = [
           'field': {
             'name': 'recipe_name',
             'kind': 'string',
-            'prefix': 'Deal_Finder_',
+            'prefix': 'Deal Finder For ',
             'description': 'Name of report in DV360, should be unique.'
           }
         },
@@ -212,7 +212,7 @@ TASKS = [
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be written in BigQuery.'
             }
@@ -328,7 +328,7 @@ TASKS = [
         'parameters': [
           {
             'field': {
-              'name': 'dataset',
+              'name': 'recipe_slug',
               'kind': 'string',
               'description': 'Place where tables will be written in BigQuery.'
             }
@@ -338,7 +338,7 @@ TASKS = [
       'to': {
         'dataset': {
           'field': {
-            'name': 'dataset',
+            'name': 'recipe_slug',
             'kind': 'string',
             'description': 'Place where tables will be written in BigQuery.'
           }

@@ -323,19 +323,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
              <tbody>
              
                <tr>
-                 <td>A sheet will be generated for you when you run this the first time.</td>
+                 <td>Click <b>Run Now</b> and a sheet called <b>Twitter Targeting UNDEFINED</b> will be generated with a tab called <b>Twitter Triggers</b>.</td>
                </tr>
              
                <tr>
-                 <td>Click <b>Run Now</b> once and a new tab called <b>Twitter Triggers</b> will be added to the sheet.</td>
+                 <td>Follow instructions on the sheets tab to provide triggers and lineitems.</td>
                </tr>
              
                <tr>
-                 <td>Follow instructions on the sheets tab.</td>
-               </tr>
-             
-               <tr>
-                 <td>Click <b>Run Now</b> again, trends are downloaded and triggered</td>
+                 <td>Click <b>Run Now</b> again, trends are downloaded and triggered.</td>
                </tr>
              
                <tr>
@@ -364,7 +360,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             },
             "dataset": {
                 "field": {
-                    "name": "recipe_name",
+                    "name": "recipe_slug",
                     "kind": "string",
                     "order": 1,
                     "description": "Place where tables will be created in BigQuery."
@@ -379,7 +375,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "field": {
                     "name": "auth_read",
                     "kind": "authentication",
-                    "order": 1,
+                    "order": 0,
                     "default": "user",
                     "description": "Credentials used for reading data."
                 }
@@ -392,7 +388,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "field": {
                     "name": "recipe_name",
                     "kind": "string",
-                    "prefix": "Twitter Targeting ",
+                    "prefix": "Twitter Targeting For ",
                     "order": 2,
                     "description": "Name of sheet where Line Item settings will be read from.",
                     "default": ""
@@ -404,7 +400,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "bigquery": {
                     "dataset": {
                         "field": {
-                            "name": "recipe_name",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be created in BigQuery."
                         }
@@ -552,7 +548,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "bigquery": {
                         "dataset": {
                             "field": {
-                                "name": "recipe_name",
+                                "name": "recipe_slug",
                                 "kind": "string",
                                 "description": "Place where tables will be created in BigQuery."
                             }
@@ -562,7 +558,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "parameters": {
                             "dataset": {
                                 "field": {
-                                    "name": "recipe_name",
+                                    "name": "recipe_slug",
                                     "kind": "string",
                                     "description": "Place where tables will be created in BigQuery."
                                 }
@@ -575,7 +571,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "bigquery": {
                     "dataset": {
                         "field": {
-                            "name": "recipe_name",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be created in BigQuery."
                         }
@@ -592,7 +588,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "field": {
                     "name": "auth_read",
                     "kind": "authentication",
-                    "order": 1,
+                    "order": 0,
                     "default": "user",
                     "description": "Credentials used for reading data."
                 }
@@ -603,7 +599,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "bigquery": {
                         "dataset": {
                             "field": {
-                                "name": "recipe_name",
+                                "name": "recipe_slug",
                                 "kind": "string",
                                 "description": "Place where tables will be created in BigQuery."
                             }
@@ -612,7 +608,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "parameters": {
                             "dataset": {
                                 "field": {
-                                    "name": "recipe_name",
+                                    "name": "recipe_slug",
                                     "kind": "string",
                                     "description": "Place where tables will be created in BigQuery."
                                 }
@@ -624,7 +620,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "bigquery": {
                         "dataset": {
                             "field": {
-                                "name": "recipe_name",
+                                "name": "recipe_slug",
                                 "kind": "string",
                                 "description": "Place where tables will be created in BigQuery."
                             }
@@ -659,7 +655,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     },
                     "dataset": {
                         "field": {
-                            "name": "recipe_name",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be created in BigQuery."
                         }
@@ -670,7 +666,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "recipe_name",
+                        "name": "recipe_slug",
                         "kind": "string",
                         "description": "Place where tables will be created in BigQuery."
                     }
@@ -686,7 +682,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "field": {
                     "name": "auth_read",
                     "kind": "authentication",
-                    "order": 1,
+                    "order": 0,
                     "default": "user",
                     "description": "Credentials used for reading data."
                 }
@@ -696,7 +692,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "bigquery": {
                     "dataset": {
                         "field": {
-                            "name": "recipe_name",
+                            "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be created in BigQuery."
                         }
@@ -705,7 +701,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "parameters": {
                         "dataset": {
                             "field": {
-                                "name": "recipe_name",
+                                "name": "recipe_slug",
                                 "kind": "string",
                                 "description": "Place where tables will be created in BigQuery."
                             }
