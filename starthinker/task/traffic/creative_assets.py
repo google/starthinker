@@ -97,9 +97,12 @@ class CreativeAssetDAO(BaseDAO):
     Returns:
       The newly created item in DCM.
     """
-    file_buffer = object_get('user', '%s:%s' % (feed_item.get(FieldMap.CREATIVE_ASSET_BUCKET_NAME, None), feed_item.get(FieldMap.CREATIVE_ASSET_FILE_NAME, None)))
-    
+    filename = feed_item.get(FieldMap.CREATIVE_ASSET_FILE_NAME, None)
+
+    file_buffer = object_get('user', '%s:%s' % (feed_item.get(FieldMap.CREATIVE_ASSET_BUCKET_NAME, None), filename))
+
     file_mime = mimetypes.guess_type(filename, strict=False)[0]
+
     media = MediaIoBaseUpload(BytesIO(file_buffer), mimetype=file_mime, chunksize=CHUNKSIZE, resumable=True)
 
     result = self._api().insert(

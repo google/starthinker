@@ -19,7 +19,6 @@
 import re
 
 from starthinker.util.project import get_project
-from starthinker.config import UI_ROOT
 
 RE_TEXT_FIELD = re.compile(r'\{(.*?:.*?)\}')
 
@@ -212,23 +211,3 @@ def json_set_description(struct, variables):
     if 'description' in struct['script']:
       try: struct['script']['description'] = text_set_fields(struct['script']['description'], variables)
       except KeyError: pass
-
-
-def json_expand_includes(script):
-  expanded_tasks = []
-  for task in script['tasks']:
-    function, parameters = next(iter(task.items()))
-
-    if function == 'include':
-      tasks = get_project(UI_ROOT + '/' + parameters['script'])['tasks']
-      json_set_fields(tasks, parameters['parameters'])
-      for t in tasks:
-        function, parameters = next(iter(t.items()))
-        expanded_tasks.append({function:parameters})
-
-    else:
-      expanded_tasks.append({function:parameters})
-
-  script['tasks'] = expanded_tasks
-
-  return script

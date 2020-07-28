@@ -36,7 +36,7 @@ import json
 from time import sleep
 
 from starthinker.config import UI_ROOT, UI_SERVICE, UI_PROJECT
-from starthinker.script.parse import json_get_fields, json_set_fields, json_expand_includes
+from starthinker.script.parse import json_get_fields, json_set_fields
 from starthinker.util.project import get_project
 
 CONFIG_FILE = UI_ROOT + '/tests/config.json'
@@ -44,6 +44,26 @@ TEST_DIRECTORY = UI_ROOT + '/tests/scripts/'
 RECIPE_DIRECTORY = UI_ROOT + '/tests/recipes/'
 LOG_DIRECTORY = UI_ROOT + '/tests/logs/'
 RE_TEST = re.compile(r'test.*\.json')
+
+
+def json_expand_includes(script):
+  expanded_tasks = []
+  for task in script['tasks']:
+    function, parameters = next(iter(task.items()))
+
+    if function == 'include':
+      tasks = get_project(UI_ROOT + '/' + parameters['script'])['tasks']
+      json_set_fields(tasks, parameters['parameters'])
+      for t in tasks:
+        function, parameters = next(iter(t.items()))
+        expanded_tasks.append({function:parameters})
+
+    else:
+      expanded_tasks.append({function:parameters})
+
+  script['tasks'] = expanded_tasks
+
+  return script
 
 
 def load_tests():
@@ -222,6 +242,7 @@ def generate_include(script_file):
   print('    }}')
   print ('')
 
+
 def tests():
   parser = argparse.ArgumentParser()
   parser.add_argument('-c', '--configure', help='Configure test config.json only.', action='store_true')
@@ -239,7 +260,7 @@ def tests():
     scripts = list(load_tests())
     tests = [t.split('.')[0] for t in (args.tests or [])]
 
-    if args.config:
+    if args.configure:
       configure_tests(scripts, tests)
     else:
       recipes = configure_tests(scripts, tests)

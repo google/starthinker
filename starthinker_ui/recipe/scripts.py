@@ -26,7 +26,7 @@ from datetime import datetime, date
 from django.conf import settings
 
 from starthinker.config import UI_ROOT
-from starthinker.script.parse import json_set_fields, text_set_fields, json_expand_includes
+from starthinker.script.parse import json_set_fields, text_set_fields
 from starthinker.util.project import get_project
 
 
@@ -203,8 +203,6 @@ class Script:
       },
       "tasks":tasks,
     }
-
-    json_expand_includes(data)
 
     return data
 

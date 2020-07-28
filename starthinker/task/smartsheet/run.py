@@ -22,6 +22,7 @@ This script translates JSON instructions into operations on smartsheet reporting
 
 """
 
+import re
 import json
 
 from smartsheet import Smartsheet
@@ -31,6 +32,7 @@ from starthinker.util.data import put_rows
 from starthinker.util.csv import column_header_sanitize
 
 SMARTSHEET_PAGESIZE = 10000
+SMARTSHEET_DATE = re.compile(r'^\d{4}[-/_]\d{2}[-/_]\d{2}$')
 
 SMARTSHEET_TYPES = {
   'AUTO_NUMBER':'STRING',
@@ -80,10 +82,17 @@ def get_rows(sheet=None, report=None, header=True, link=True, key='id'):
   for row in (sheet or report).rows:
     buffer = [None] * len(columns)
     for cell in row.cells:
+      value = cell.value
+
       # correct the date column ( for reports it comes in as date and time even though column is DATE)
-      if columns[cell.column_id if sheet else cell.virtual_column_id]['type'] == 'DATE' and cell.value is not None and 'T' in cell.value: 
-        cell.value = cell.value.split('T', 1)[0] 
-      buffer[columns[cell.column_id if sheet else cell.virtual_column_id]['index']] = cell.value
+      if columns[cell.column_id if sheet else cell.virtual_column_id]['type'] == 'DATE' and value is not None:
+        if 'T' in value: value = value.split('T', 1)[0] 
+        if not SMARTSHEET_DATE.match(value): 
+          print('BAD DATE VALUE', value)
+          value = None
+
+      buffer[columns[cell.column_id if sheet else cell.virtual_column_id]['index']] = value
+
     if link: buffer.insert(0, row.permalink)
     yield buffer  
 
