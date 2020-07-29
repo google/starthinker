@@ -15,10 +15,10 @@
   },
   "tasks":[
     { "bigquery":{
-      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":0, "default":"service", "description":"Credentials used for writing data." }},
+      "auth":{"field":{ "name":"auth", "kind":"authentication", "order":0, "default":"service", "description":"Credentials used for writing data." }},
       "run":{
         "query":"
-          CREATE FUNCTION IF NOT EXISTS [PARAMETER].pearson_significance_test(correlation FLOAT64, population FLOAT64, percent FLOAT64, threshold FLOAT64)
+          CREATE FUNCTION IF NOT EXISTS [PARAMETER].pearson_significance_test(correlation FLOAT64, population INT64, percent FLOAT64, threshold FLOAT64)
             RETURNS INT64
             LANGUAGE js AS
             '''

@@ -135,8 +135,8 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       
 
   <br/>
-  <h1><i class="medium material-icons">donut_small</i>&nbsp; CM Report Replicate</h1>
-  <p class="flow-text">Replicate a report across multiple networks and advertisers.</p>
+  <h1><i class="medium material-icons">analytics</i>&nbsp; Census Data Correlation</h1>
+  <p class="flow-text">Correlate another table with US Census data.  Expands a data set dimensions by finding population segments that correlate with the master table.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
@@ -163,13 +163,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
 
     
-      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/dcm_replicate_to_bigquery.json" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/bigquery_census_correlate.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
-      <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_replicate_to_bigquery.ipynb" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_census_correlate.ipynb" target="_blank">
         <i class="material-icons right">copyright</i>Data Pill Colab
       </a>
-      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/dcm_replicate_to_bigquery_dag.py" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/bigquery_census_correlate_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
       </a>
     
@@ -201,12 +201,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
             <tr>
               <td>Age</td>
-              <td>March 3, 2020 (4 months, 4 weeks)</td>
+              <td>July 6, 2020 (3 weeks, 2 days)</td>
             </tr>
     
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+CM+Report+Replicate+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+CM+Report+Replicate+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fdcm_replicate_to_bigquery%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Census+Data+Correlation+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Census+Data+Correlation+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fbigquery_census_correlate%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
 
@@ -227,19 +227,27 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
              <tbody>
              
                <tr>
-                 <td>Provide the name or ID of an existing report.</td>
+                 <td>Pre-requisite is Census Normalize, run that at least once.</td>
                </tr>
              
                <tr>
-                 <td>Run the recipe once to generate the input sheet called CM Replicate For UNDEFINED.</td>
+                 <td>Specify JOIN, PASS, SUM, and CORRELATE columns to build the correlation query.</td>
                </tr>
              
                <tr>
-                 <td>Enter network and advertiser ids to replicate the report.</td>
+                 <td>Define the DATASET and TABLE for the joinable source. Can be a view.</td>
                </tr>
              
                <tr>
-                 <td>Data will be written to BigQuery &gt; UNDEFINED &gt; UNDEFINED &gt; [REPORT NAME]_All</td>
+                 <td>Choose the significance level.  More significance usually means more NULL results, balance quantity and quality using this value.</td>
+               </tr>
+             
+               <tr>
+                 <td>Specify where to write the results.</td>
+               </tr>
+             
+               <tr>
+                 <td><br>IMPORTANT:</b> If you use VIEWS, you will have to delete them manually if the recipe changes.</td>
                </tr>
              
              </tbody>
@@ -251,125 +259,110 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <div class="col s12 m12 l8">
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
-        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/drive/run.py" target="_blank">drive</a>": {
-            "auth": "user",
-            "copy": {
-                "source": "https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/",
-                "destination": {
-                    "field": {
-                        "name": "recipe_name",
-                        "prefix": "CM Replicate For ",
-                        "kind": "string",
-                        "order": 1,
-                        "description": "Name of document to deploy to.",
-                        "default": ""
-                    }
-                }
-            }
-        }
-    },
-    {
-        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/census/run.py" target="_blank">census</a>": {
             "auth": {
                 "field": {
-                    "name": "auth_write",
+                    "name": "auth",
                     "kind": "authentication",
-                    "order": 1,
+                    "order": 0,
                     "default": "service",
                     "description": "Credentials used for writing data."
                 }
             },
-            "dataset": {
-                "field": {
-                    "name": "recipe_slug",
-                    "kind": "string",
-                    "order": 2,
-                    "default": "",
-                    "description": "Name of Google BigQuery dataset to create."
-                }
-            }
-        }
-    },
-    {
-        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm_replicate/run.py" target="_blank">dcm_replicate</a>": {
-            "auth": {
-                "field": {
-                    "name": "auth_read",
-                    "kind": "authentication",
-                    "order": 0,
-                    "default": "user",
-                    "description": "Credentials used for reading data."
-                }
-            },
-            "report": {
-                "account": {
+            "correlate": {
+                "join": {
                     "field": {
-                        "name": "account",
-                        "kind": "integer",
-                        "order": 3,
-                        "default": "",
-                        "description": "CM network id."
-                    }
-                },
-                "id": {
-                    "field": {
-                        "name": "report_id",
-                        "kind": "integer",
-                        "order": 4,
-                        "default": "",
-                        "description": "CM template report id, for template"
-                    }
-                },
-                "name": {
-                    "field": {
-                        "name": "report_name",
-                        "kind": "string",
-                        "order": 5,
-                        "default": "",
-                        "description": "CM template report name, empty if using id instead."
-                    }
-                },
-                "delete": {
-                    "field": {
-                        "name": "delete",
-                        "kind": "boolean",
-                        "order": 6,
-                        "default": false,
-                        "description": "Use only to reset the reports if setup changes."
-                    }
-                }
-            },
-            "in": {
-                "sheet": {
-                    "field": {
-                        "name": "recipe_name",
-                        "prefix": "CM Replicate For ",
+                        "name": "join",
                         "kind": "string",
                         "order": 1,
                         "default": "",
-                        "description": "Sheet to read ids from."
+                        "description": "Name of column to join on, must match Census Geo_Id column."
                     }
                 },
-                "tab": "Accounts"
+                "pass": {
+                    "field": {
+                        "name": "pass",
+                        "kind": "string_list",
+                        "order": 2,
+                        "default": [],
+                        "description": "Comma seperated list of columns to pass through."
+                    }
+                },
+                "sum": {
+                    "field": {
+                        "name": "sum",
+                        "kind": "string_list",
+                        "order": 3,
+                        "default": [],
+                        "description": "Comma seperated list of columns to sum, optional."
+                    }
+                },
+                "correlate": {
+                    "field": {
+                        "name": "correlate",
+                        "kind": "string_list",
+                        "order": 4,
+                        "default": [],
+                        "description": "Comma seperated list of percentage columns to correlate."
+                    }
+                },
+                "dataset": {
+                    "field": {
+                        "name": "from_dataset",
+                        "kind": "string",
+                        "order": 5,
+                        "default": "",
+                        "description": "Existing BigQuery dataset."
+                    }
+                },
+                "table": {
+                    "field": {
+                        "name": "from_table",
+                        "kind": "string",
+                        "order": 6,
+                        "default": "",
+                        "description": "Table to use as join data."
+                    }
+                },
+                "significance": {
+                    "field": {
+                        "name": "significance",
+                        "kind": "choice",
+                        "order": 7,
+                        "default": "80",
+                        "description": "Select level of significance to test.",
+                        "choices": [
+                            "80",
+                            "90",
+                            "98",
+                            "99",
+                            "99.5",
+                            "99.95"
+                        ]
+                    }
+                }
             },
-            "out": {
-                "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "name": "recipe_slug",
-                            "kind": "string",
-                            "order": 4,
-                            "default": ""
-                        }
-                    },
-                    "is_incremental_load": {
-                        "field": {
-                            "name": "Aggregate",
-                            "kind": "boolean",
-                            "order": 7,
-                            "default": false,
-                            "description": "Append report data to existing table, requires Date column."
-                        }
+            "to": {
+                "dataset": {
+                    "field": {
+                        "name": "to_dataset",
+                        "kind": "string",
+                        "order": 9,
+                        "default": "",
+                        "description": "Existing BigQuery dataset."
+                    }
+                },
+                "type": {
+                    "field": {
+                        "name": "type",
+                        "kind": "choice",
+                        "order": 10,
+                        "default": "table",
+                        "description": "Write Census_Percent as table or view.",
+                        "choices": [
+                            "table",
+                            "view"
+                        ]
                     }
                 }
             }

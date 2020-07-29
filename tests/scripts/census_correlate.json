@@ -1,0 +1,79 @@
+{
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2019 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"user",
+      "dataset":"Test"
+    }},
+    { "bigquery": {
+      "auth":"user",
+      "from":{
+        "values":[
+          [1234, "Partner 1", 456, "Advertiser 1", 789, "Campaign 1", 58755, 0.48, 0.25, 0.11, 779],
+          [1234, "Partner 1", 456, "Advertiser 1", 789, "Campaign 1", 99774, 0.01, 0.01, 0.41, 23605],
+          [1234, "Partner 1", 456, "Advertiser 1", 789, "Campaign 1", 69353, 0.12, 0.22, 0.02, 1786],
+          [1234, "Partner 1", 456, "Advertiser 1", 789, "Campaign 1", 59244, 0.32, 0.29, 0.34, 3708],
+          [1234, "Partner 1", 456, "Advertiser 1", 789, "Campaign 1", 49877, 0.05, 0.18, 0.05, 3270],
+          [1234, "Partner 1", 456, "Advertiser 1", 789, "Campaign 1", 36473, 0.22, 0.21, 0.06, 11518],
+          [1234, "Partner 1", 456, "Advertiser 1", 789, "Campaign 1", 45618, 0.05, 0.22, 0.07, 9655],
+          [1234, "Partner 1", 456, "Advertiser 1", 789, "Campaign 1", 85024, 0.27, 0.03, 0.09, 1],
+          [1234, "Partner 1", 456, "Advertiser 1", 789, "Campaign 1", 85032, 0.03, 0.03, 0.02, 325],
+          [1234, "Partner 1", 456, "Advertiser 1", 789, "Campaign 1", 94920, 0.15, 0.02, 0.97, 25186]
+        ]
+      },
+      "to":{
+        "dataset":"Test",
+        "table":"Census_KPI_Percent"
+      },
+      "schema":[
+        { "name": "Partner_Id", "type": "INTEGER", "mode": "NULLABLE" },
+        { "name": "Partner", "type": "STRING", "mode": "NULLABLE" },
+        { "name": "Advertiser_Id", "type": "INTEGER", "mode": "NULLABLE" },
+        { "name": "Advertiser", "type": "STRING", "mode": "NULLABLE" },
+        { "name": "Campaign_Id", "type": "INTEGER", "mode": "NULLABLE" },
+        { "name": "Campaign", "type": "STRING", "mode": "NULLABLE" },
+        { "name": "Zip_Code", "type": "STRING", "mode": "NULLABLE" },
+        { "name": "Impression_Percent", "type": "FLOAT", "mode": "NULLABLE" },
+        { "name": "Click_Percent", "type": "FLOAT", "mode": "NULLABLE" },
+        { "name": "Conversion_Percent", "type": "FLOAT", "mode": "NULLABLE" },
+        { "name": "Impressions", "type": "INTEGER", "mode": "NULLABLE" }
+      ]
+    }},
+    { "include":{
+      "script":"scripts/bigquery_pearson_significance.json",
+      "parameters":{
+        "auth":"user",
+        "dataset":"Test"
+      }
+    }},
+    { "include":{
+      "script":"scripts/bigquery_census_normalize.json",
+      "parameters":{
+        "auth":"user",
+        "census_geography":"zip_codes",
+        "census_year":"2018",
+        "census_span":"5yr",
+        "dataset":"Test",
+        "type":"table"
+      }
+    }},
+    { "include":{
+      "script":"scripts/bigquery_census_correlate.json",
+      "parameters":{
+        "auth":"user",
+        "join":"Zip_Code",
+        "pass":["Partner_Id", "Partner", "Advertiser_Id", "Advertiser", "Campaign_Id", "Campaign"],
+        "sum":["Impressions"],
+        "correlate":["Impression_Percent", "Click_Percent", "Conversion_Percent"],
+        "from_dataset":"Test",
+        "from_table":"Census_KPI_Percent",
+        "significance":"80",
+        "to_dataset":"Test",
+        "type":"table"
+      }
+    }}
+  ]
+}

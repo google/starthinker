@@ -1,0 +1,23 @@
+{
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2019 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"user",
+      "dataset":"Test"
+    }},
+    { "include":{
+      "script":"scripts/bigquery_census_normalize.json",
+      "parameters":{
+        "auth":"user",
+        "census_geography":"zip_codes",
+        "census_year":"2018",
+        "census_span":"5yr",
+        "dataset":"Test",
+        "table":"Census_Percent"
+      }
+    }}
+  ]
+}

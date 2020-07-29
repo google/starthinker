@@ -1,0 +1,53 @@
+{
+  "script":{
+    "released":"2020-07-06",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"analytics",
+    "title":"Census Data Correlation",
+    "description":"Correlate another table with US Census data.  Expands a data set dimensions by finding population segments that correlate with the master table.",
+    "to":["bigquery"],
+    "from":["bigquery"],
+    "instructions":[
+      "Pre-requisite is Census Normalize, run that at least once.",
+      "Specify JOIN, PASS, SUM, and CORRELATE columns to build the correlation query.",
+      "Define the DATASET and TABLE for the joinable source. Can be a view.",
+      "Choose the significance level.  More significance usually means more NULL results, balance quantity and quality using this value.",
+      "Specify where to write the results.",
+      "<br>IMPORTANT:</b> If you use VIEWS, you will have to delete them manually if the recipe changes."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "census":{
+      "auth":{"field":{ "name":"auth", "kind":"authentication", "order":0, "default":"service", "description":"Credentials used for writing data." }},
+      "correlate":{
+        "join":{"field":{ "name":"join", "kind":"string", "order":1, "default":"", "description":"Name of column to join on, must match Census Geo_Id column." }},
+        "pass":{"field":{ "name":"pass", "kind":"string_list", "order":2, "default":[], "description":"Comma seperated list of columns to pass through." }},
+        "sum":{"field":{ "name":"sum", "kind":"string_list", "order":3, "default":[], "description":"Comma seperated list of columns to sum, optional." }},
+        "correlate":{"field":{ "name":"correlate", "kind":"string_list", "order":4, "default":[], "description":"Comma seperated list of percentage columns to correlate." }},
+        "dataset":{"field":{ "name":"from_dataset", "kind":"string", "order":5, "default":"", "description":"Existing BigQuery dataset." }},
+        "table":{"field":{ "name":"from_table", "kind":"string", "order":6, "default":"", "description":"Table to use as join data." }},
+        "significance":{"field":{
+          "name":"significance",
+          "kind":"choice",
+          "order":7,
+          "default":"80",
+          "description":"Select level of significance to test." ,
+          "choices":["80", "90", "98", "99", "99.5", "99.95"]
+        }}
+      },
+      "to":{
+        "dataset":{"field":{ "name":"to_dataset", "kind":"string", "order":9, "default":"", "description":"Existing BigQuery dataset." }},
+        "type":{"field":{
+          "name":"type",
+          "kind":"choice",
+          "order":10,
+          "default":"table",
+          "description":"Write Census_Percent as table or view." ,
+          "choices":["table", "view"]
+        }}
+      }
+    }}
+  ]
+}

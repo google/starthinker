@@ -220,10 +220,18 @@ class project:
   """
 
   args = None
-  verbose = False
-  filepath = None
+  recipe = None
   task = None
+  instance = None
+  filepath = None
+  verbose = False
+  force = False
+  function = None
+  timezone = None
+  now = None
   date = None
+  hour = None
+
 
   @classmethod
   def from_commandline(cls, _task = None, parser = None, arguments=None):
@@ -319,14 +327,6 @@ class project:
       getattr(cls.args, 'trace_print', None),
       getattr(cls.args, 'trace_file', None)
     )
-
-  recipe = None
-  verbose = None
-  filepath = None
-  instance = None
-  function = None
-  task = None
-
 
   @classmethod
   def get_task_index(cls):
@@ -472,13 +472,13 @@ class project:
     cls.hour = cls.now.hour
 
     if cls.verbose:
-      print('TASK:', _task)
+      print('TASK:', _task or 'all')
       print('DATE:', cls.now.date())
       print('HOUR:', cls.now.hour)
 
 
   @classmethod
-  def execute(cls):
+  def execute(cls, _force=False):
     '''Run all the tasks in a project in one sequence.
 
     ```
@@ -515,7 +515,7 @@ class project:
 
       print('RUNNING TASK:', '%s %d' % (script, instances[script]))
 
-      if cls.force or is_scheduled(cls.recipe, task):
+      if _force or cls.force or is_scheduled(cls.recipe, task):
         try:
           python_callable = getattr(
               import_module('starthinker.task.%s.run' % script), script)
