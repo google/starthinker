@@ -62,6 +62,6 @@ def script_to_colab(name, description, instructions, tasks, parameters={}):
   colab.code('')
 
   colab.code("project.initialize(_recipe={ 'tasks':TASKS }, _project=CLOUD_PROJECT, _user=USER_CREDENTIALS, _client=CLIENT_CREDENTIALS, _verbose=True, _force=True)")
-  colab.code('project.execute()')
+  colab.code('project.execute(_force=True)')
 
   return colab.render()
