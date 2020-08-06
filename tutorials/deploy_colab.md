@@ -45,6 +45,8 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Email Fetch](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/email_to_bigquery.ipynb) - Import emailed CM report, Dv360 report, csv, or excel into a BigQuery table.
 * [Entity Read Files](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/entity.ipynb) - Import public and private <a href='https://developers.google.com/bid-manager/guides/entity-read/format-v2' target='_blank'>Entity Read Files</a> into a BigQuery dataset.<br/>CAUTION: PARTNER ONLY, ADVERTISER FILTER IS NOT APPLIED.
 * [Floodlight Monitor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/floodlight_monitor.ipynb) - Monitor floodlight impressions specified in sheet and send email alerts.
+* [Federal Reserve Regional Data](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/fred_regional_to_bigquery.ipynb) - Download federal reserve region.
+* [Federal Reserve Series Data](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/fred_series_to_bigquery.ipynb) - Download federal reserve series.
 * [Google Analytics Timeline](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/ga_timeline.ipynb) - Download Google Analytics settings to a BigQuery table.
 * [API To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/google_api_to_bigquery.ipynb) - Execute a Google API function and store results to BigQuery.
 * [Say Hello](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/hello.ipynb) - Recipe template for say hello.
@@ -58,6 +60,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Column Mapping](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/mapping.ipynb) - Use sheet to define keyword to column mappings.
 * [Monthly Budget Mover](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/monthly_budget_mover.ipynb) - Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.
 * [PoliceBot](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/policebot.ipynb) - A tool that helps enforce CM object name conventions by checking names against a set of client-defined patterns, and emailing violations to appropriate agency teams on a daily basis.
+* [SA360 Web Query Report](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sa360_web_query.ipynb) - Download SA360 reports into a Google Sheet.
 * [Salesforce To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/salesforce_to_bigquery.ipynb) - Move query results into a BigQuery table.
 * [SDF Download](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sdf_to_bigquery.ipynb) - Download SDF reports into a BigQuery table.
 * [Sheet Clear](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_clear.ipynb) - Clear data from a sheet.

@@ -251,7 +251,18 @@ CENSUS_FIELDS = [
     ]
   }, 
   {
-    'category':'commute',
+    'category':'cars owned',
+    'denominator':'total_pop',
+    'columns':[
+      'no_car',
+      'one_car',
+      'two_cars',
+      'three_cars',
+      'four_more_cars',
+    ]
+  }, 
+  {
+    'category':'commuter time',
     'denominator':'total_pop',
     'columns':[
       'commute_less_10_mins',
@@ -262,14 +273,21 @@ CENSUS_FIELDS = [
       'commute_30_34_mins',
       'commute_35_44_mins',
       'commute_45_59_mins',
+    ]
+  }, 
+  {
+    'category':'commuter age',
+    'denominator':'total_pop',
+    'columns':[
       'commuters_16_over',
-      'walked_to_work',
+    ]
+  }, 
+  {
+    'category':'commuter method',
+    'denominator':'total_pop',
+    'columns':[
       'worked_at_home',
-      'no_car',
-      'one_car',
-      'two_cars',
-      'three_cars',
-      'four_more_cars',
+      'walked_to_work',
       'commuters_by_public_transportation',
       'commuters_by_bus',
       'commuters_by_car_truck_van',

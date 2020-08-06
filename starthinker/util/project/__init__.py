@@ -76,7 +76,7 @@ import pytz
 import argparse
 import textwrap
 
-from datetime import datetime
+from datetime import datetime 
 from importlib import import_module
 
 from starthinker.util.debug import starthinker_trace_start
@@ -143,7 +143,7 @@ def is_scheduled(recipe, task = {}):
 
   if days == [] or day_tz in days:
     if hours == [] or hour_tz in hours:
-      return True
+      return True 
 
   return False
 
@@ -268,8 +268,8 @@ class project:
 
     if parser is None:
       parser = argparse.ArgumentParser(
-          formatter_class=argparse.RawDescriptionHelpFormatter,
-          description=textwrap.dedent("""\
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent('''\
           Command line to execute all tasks in a recipe once. ( Common Entry Point )
     
           This script dispatches all the tasks in a JSON recipe to handlers in sequence.
@@ -292,7 +292,7 @@ class project:
             - Or specified further to run only the second hello task:
               python task/hello/run.py project/sample/say_hello.json -i 2
     
-      """))
+      '''))
       if arguments is None or '-j' in arguments: parser.add_argument('json', help='Path to recipe json file to load.')
     else:
       if arguments is None or '-j' in arguments: parser.add_argument('--json', '-j', help='Path to recipe json file to load.')
@@ -328,12 +328,13 @@ class project:
       getattr(cls.args, 'trace_file', None)
     )
 
+  
   @classmethod
   def get_task_index(cls):
     i = 0
     for c, t in enumerate(cls.recipe.get('tasks', [])):
       if next(iter(t.keys())) == cls.function:
-        i += 1
+        i += 1 
         if i == cls.instance:
           return c
     return None
@@ -341,7 +342,7 @@ class project:
 
   @classmethod
   def get_task(cls):
-    #if cls.task is None:
+    #if cls.task is None: 
     i = cls.get_task_index()
     cls.task = None if i is None else next(iter(cls.recipe['tasks'][i].values()))
     return cls.task
@@ -349,14 +350,14 @@ class project:
 
   @classmethod
   def set_task(cls, function, parameters):
-    if cls.task is None:
-      cls.recipe['tasks'].append({ function: parameters })
+    if cls.task is None: 
+      cls.recipe['tasks'].append({ function:parameters })
       cls.function = function
       cls.task = parameters
       cls.instance = 1
-    else:
+    else: 
       i = cls.get_task_index()
-      cls.recipe['tasks'][i] = { function: parameters }
+      cls.recipe['tasks'][i] = { function:parameters }
       cls.function = function
       cls.task = parameters
       cls.instance = sum([1 for c, t in enumerate(cls.recipe['tasks']) if t == function and c <= i])
@@ -384,7 +385,7 @@ class project:
 
 
   @classmethod
-  def initialize(cls,
+  def initialize(cls, 
     _recipe={},
     _task=None,
     _instance=1,
@@ -453,7 +454,7 @@ class project:
     # if user explicity specified by command line
     if _user: cls.recipe['setup']['auth']['user'] = _user
     # or if user not given, then try default credentials ( disabled security risk to assume on behalf of recipe )
-    #elif not cls.recipe['setup']['auth'].get('user'):
+    #elif not cls.recipe['setup']['auth'].get('user'): 
     #  cls.recipe['setup']['auth']['user'] = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', None)
 
     # if project id given, use it
@@ -517,15 +518,12 @@ class project:
 
       if _force or cls.force or is_scheduled(cls.recipe, task):
         try:
-          python_callable = getattr(
-              import_module('starthinker.task.%s.run' % script), script)
+          python_callable = getattr(import_module('starthinker.task.%s.run' % script), script)
           python_callable(cls.recipe, instances[script])
         except Exception as e:
           print(str(e))
           return_code = 1
       else:
-        print(
-            'Schedule Skipping: add --force to ignore schedule or run specific task handler'
-        )
+        print("Schedule Skipping: add --force to ignore schedule or run specific task handler")
 
     return returncode

@@ -46,13 +46,15 @@ If you are running gSuite, you can select Internal Deployment and avoid the warn
  
 ## Debug
 
-- If you get 500 error, change the UI to show errors:
+- If you get 500 error, check the [APP Engine Error Logs](https://console.cloud.google.com/errors)</a> or change the UI to show errors:
 ```
 source starthinker_assets/production.sh
 vim app.yaml and set STARTHINKER_DEVELOPMENT: '1'
 gcloud app deploy $STARTHINKER_ROOT/app.yaml --stop-previous-version
 ```
 - If you get a 404 error, you may have to set a custom App Engine domain using the install deploy script.
+- If you get a service credentials error, verify the file *starthinker_assets/service.json* has a valid credential, if not delete the file and run install again.
+- If you get a database not found error, ensure your *starthinker_assets/config.json* region is the same as your current [database region](https://console.cloud.google.com/sql/instances).
 - If your jobs all read queued and never change, odds are there was an error during deployment, scroll up and review.
 - If you are updating you may have to run the follwing SQL command in your database once to trigger a recipe refresh, or re-save each receipe via the UI:
 ```

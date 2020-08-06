@@ -1,5 +1,5 @@
 ###########################################################################
-#
+# 
 #  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -114,7 +114,7 @@ def configure_tests(scripts, tests):
   if fields:
     f = open(CONFIG_FILE,"w")
     f.write(json.dumps(fields, sort_keys=True, indent=2))
-    f.close()
+    f.close()  
   else:
     print('WARNING CONFIGURATION IS EMPTY, CHECK YOUR PATHS!')
 
@@ -138,7 +138,7 @@ def configure_tests(scripts, tests):
 
     with open(RECIPE_DIRECTORY + filename, 'w') as f:
       f.write(json.dumps(script, sort_keys=True, indent=2))
-
+    
     recipes.append(filename)
 
   # Create log directory and clear old logs
@@ -192,8 +192,8 @@ def run_tests(scripts, recipes, tests):
     print('LAUNCHED:', ' '.join(command))
 
     jobs.append({
-      'recipe': recipe,
-      'process': subprocess.Popen(command, shell=False, cwd=UI_ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+      'recipe':recipe,
+      'process':subprocess.Popen(command, shell=False, cwd=UI_ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     })
 
   # Monitor each job for completion and write to log
@@ -237,29 +237,17 @@ def generate_include(script_file):
   print('    { "include":{')
   print('      "script":"%s",' % script_file)
   print('      "parameters":{')
-  print(',\n'.join([
-      '        "%s":{"field":{ "name":"%s", "kind":"%s", "description":"%s" }}'
-      % (field['name'], field['name'], field['kind'],
-         field.get('description', '')) for field in json_get_fields(script)
-  ]))
+  print(',\n'.join(['        "%s":{"field":{ "name":"%s", "kind":"%s", "description":"%s" }}' % (field['name'], field['name'], field['kind'], field.get('description', '')) for field in json_get_fields(script)]))
   print('      }')
   print('    }}')
-  print('')
+  print ('')
 
 
 def tests():
   parser = argparse.ArgumentParser()
-  parser.add_argument(
-      '-c',
-      '--configure',
-      help='Configure test config.json only.',
-      action='store_true')
+  parser.add_argument('-c', '--configure', help='Configure test config.json only.', action='store_true')
   parser.add_argument('-t', '--tests', nargs='*', help='Run only these tests, name of test from scripts without .json part.')
-  parser.add_argument(
-      '-i',
-      '--include',
-      help='Generate an include file for the script.',
-      default=None)
+  parser.add_argument('-i', '--include', help='Create an include file for the script, used in tests.', default=None)
 
   args = parser.parse_args()
 

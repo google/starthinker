@@ -58,9 +58,9 @@ def census_correlate(column_join, column_pass, column_sum, column_correlate, dat
           query += '  CORR(A.%s, B.%s) AS %s_%s_Correlation,\n' % (column_b, column_a.title(), column_a.title(), column_b)
 
   query += 'FROM `%s.%s.%s` AS A\n' % (project.id, dataset, table)
-  query += 'LEFT JOIN `%s.%s.Census_Percent` AS B\n' % (project.id, dataset)
+  query += 'LEFT JOIN `%s.%s.Census_Normalized` AS B\n' % (project.id, dataset)
   query += 'ON A.%s=B.Geo_Id\n' % column_join
-  query += 'GROUP BY %s' % ','.join(str(n) for n in range(1, len(column_pass) + 1))
+  query += 'GROUP BY %s' % ','.join(map(str, range(1, len(column_pass) + 1)))
 
   return query
 
@@ -88,7 +88,7 @@ def census_significance(column_join, column_pass, column_sum, column_correlate, 
             column_a.title(), column_b,
           )
 
-  query += 'FROM  `%s.%s.Census_Correlation`;' % (project.id, dataset)
+  query += 'FROM  `%s.%s.Census_Correlated`;' % (project.id, dataset)
 
   return query
 
@@ -118,13 +118,15 @@ def census_pivot(column_join, column_pass, column_sum, column_correlate, dataset
         query += '      ),\n'
 
   query = query[:-2] + '\n  ] AS Correlation\n'
-  query += 'FROM  `%s.%s.Census_Significance`;' % (project.id, dataset)
+  query += 'FROM  `%s.%s.Census_Significant`;' % (project.id, dataset)
 
   print(query)
   return query
 
 
 def census_write(query, table):
+
+  if project.verbose:  print('%s: %s' % ( table, query))
 
   if project.task['to']['type'] == 'table':
     query_to_view(
@@ -155,7 +157,7 @@ def census():
       project.task['normalize']['census_year'],
       project.task['normalize']['census_span'],
     )
-    census_write(query, 'Census_Percent')
+    census_write(query, 'Census_Normalized')
 
   if 'correlate' in project.task:
     query = census_correlate(
@@ -166,7 +168,7 @@ def census():
       project.task['correlate']['dataset'],
       project.task['correlate']['table'],
     )
-    census_write(query, 'Census_Correlation')
+    census_write(query, 'Census_Correlated')
 
     query = census_significance(
       project.task['correlate']['join'],
@@ -176,7 +178,7 @@ def census():
       project.task['correlate']['dataset'],
       project.task['correlate']['significance'],
     )
-    census_write(query, 'Census_Significance')
+    census_write(query, 'Census_Significant')
 
     query = census_pivot(
       project.task['correlate']['join'],
@@ -186,6 +188,16 @@ def census():
       project.task['correlate']['dataset']
     )
     census_write(query, 'Census_Pivot')
+
+#WITH data AS (
+#  SELECT ST_GEOGPOINT(-122.4194, 37.7749) point
+#  UNION ALL 
+#  SELECT ST_GEOGPOINT(-74.0060, 40.7128) point
+#)
+#SELECT zip_code, city, county
+#FROM `bigquery-public-data.geo_us_boundaries.zip_codes` 
+#JOIN data
+#ON ST_WITHIN(point, zip_code_geom)
 
 if __name__ == "__main__":
   census()
