@@ -1,0 +1,69 @@
+{
+  "script":{
+    "released":"2020-08-04",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"analytics",
+    "title":"Federal Reserve Series Data",
+    "description":"Download federal reserve series.",
+    "to":["bigquery"],
+    "from":["fred"],
+    "instructions":[
+      "Specify the values for a <a href='https://fred.stlouisfed.org/docs/api/fred/series_observations.html' target='_blank'>Fred observations API call</a>.",
+      "A table with the same name will appear in the dataset."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "fred":{
+      "auth":{"field":{ "name":"auth", "kind":"authentication", "order":0, "default":"service", "description":"Credentials used for writing data." }},
+      "parameters":{
+        "api_key":{"field":{
+          "name":"fred_api_key",
+          "kind":"string",
+          "order":1,
+          "default":"",
+          "description":"32 character alpha-numeric lowercase string."
+        }},
+        "series_id":{"field":{
+          "name":"fred_series_id",
+          "kind":"string",
+          "order":2,
+          "default":"",
+          "description":"Series ID to pull data from."
+        }},
+        "units":{"field":{ 
+          "name":"fred_units", 
+          "kind":"choice", 
+          "order":3, 
+          "default":"lin", 
+          "description":"A key that indicates a data value transformation." ,
+          "choices":["lin", "chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+        }},
+        "frequency":{"field":{ 
+          "name":"fred_frequency", 
+          "kind":"choice", 
+          "order":4, 
+          "default":"", 
+          "description":"An optional parameter that indicates a lower frequency to aggregate values to." ,
+          "choices":["", "d", "w", "bw", "m", "q", "sa", "a", "wef", "weth", "wew", "wetu", "wem", "wesu", "wesa", "bwew", "bwem"]
+        }},
+        "aggregation_method":{"field":{ 
+          "name":"fred_aggregation_method", 
+          "kind":"choice", 
+          "order":5, 
+          "default":"avg", 
+          "description":"A key that indicates the aggregation method used for frequency aggregation." ,
+          "choices":["avg", "sum", "eop"]
+        }}
+      },
+      "out":{
+        "bigquery":{
+          "project":{"field":{ "name":"project", "kind":"string", "order":10, "default":"", "description":"Existing BigQuery dataset." }},
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":11, "default":"", "description":"Existing BigQuery dataset." }},
+          "table":{"field":{ "name":"fred_series_id", "kind":"string", "order":2, "default":"", "prefix":"FRED_SERIES_", "description":"Series ID to pull data from." }}
+        }
+      }
+    }}
+  ]
+}

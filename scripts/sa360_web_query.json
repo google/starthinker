@@ -1,0 +1,45 @@
+{
+  "script":{
+    "released":"2019-12-02",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"security",
+    "title":"SA360 Web Query Report",
+    "description":"Download SA360 reports into a Google Sheet.",
+    "sample":"https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/",
+    "from":["cm", "apps script"],
+    "to":["sheets"],
+    "pitches":[
+      "Download reports.",
+      "Build custom analysis.",
+      "Save time on account audits."
+    ],
+    "impacts":{
+      "spend optimization":0,
+      "spend growth":0,
+      "time savings":100,
+      "account health":100,
+      "csat improvement":100
+    },
+    "instructions":[
+      "Add this card to a recipe and save it.",
+      "Then click <strong>Run Now</strong> to deploy.",
+      "Follow the <a href=\"https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/\">instructions</a> for setup."
+    ],
+    "authors":["syb@google.com"]
+  },
+  "setup":{
+    "day":[],
+    "hour":[]
+  },
+  "tasks":[
+    { "drive": {
+        "auth": "user",
+        "hour":[],
+        "copy":{
+          "source":"https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/",
+          "destination":{"field":{ "name":"recipe_name", "prefix":"CM User Editor For ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }}
+        }
+    }}
+  ]
+}
