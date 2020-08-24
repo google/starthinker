@@ -1,0 +1,21 @@
+{
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks": [
+    { "include":{
+      "script":"scripts/segmentology_dv360.json",
+      "parameters":{
+        "auth_read":"user",
+        "auth_write":"service",
+        "recipe_timezone":"America/Los_Angeles",
+        "recipe_name":"Test",
+        "recipe_slug":"Test",
+        "recipe_project":{"field":{ "name":"recipe_project", "kind":"string", "description":"Project ID hosting dataset." }},
+        "partners":{"field":{ "name":"partners", "kind":"integer_list", "default":[], "description":"DV360 partner id." }},
+        "advertisers":{"field":{ "name":"advertisers", "kind":"integer_list", "default":[], "description":"Comma delimited list of DV360 advertiser ids." }}
+      }
+    }}
+  ]
+}

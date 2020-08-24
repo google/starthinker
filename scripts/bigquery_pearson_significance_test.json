@@ -1,0 +1,25 @@
+{
+  "script":{
+    "released":"2020-07-07",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"addchart",
+    "title":"Pearson Significance Test Function",
+    "description":"Add function to dataset for checking if correlation is significant.",
+    "to":["bigquery"],
+    "from":["bigquery"],
+    "instructions":[
+      "Specify the dataset, and the function will be added and available."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "bigquery":{
+      "auth":{"field":{ "name":"auth", "kind":"authentication", "order":0, "default":"service", "description":"Credentials used for writing function." }},
+      "function":"pearson_significance_test",
+      "to":{
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Existing BigQuery dataset." }}
+      }
+    }}
+  ]
+}
