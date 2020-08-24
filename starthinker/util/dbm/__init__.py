@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2017 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ from starthinker.util.project import project
 from starthinker.util.data import get_rows
 from starthinker.util.auth import get_service
 from starthinker.util.storage import object_get_chunks
-from starthinker.util.csv import column_header_sanitize, csv_to_rows, rows_to_csv
+from starthinker.util.csv import column_header_sanitize, csv_to_rows, rows_to_csv, response_utf8_stream
 from starthinker.util.dbm.schema import LineItem_Write_Schema
 from starthinker.util.google_api import API_DV360_Beta
 from starthinker.util.google_api import API_DBM
@@ -128,13 +128,12 @@ def report_build(auth, body):
   if not report:
 
     # add default daily schedule if it does not exist ( convenience )
-    if "schedule" not in body:
-      body['schedule'] = {
-        "endTimeMs": int((time.time() + (365 * 24 * 60 * 60)) * 1000), # 1 year in future
-        "frequency": "DAILY",
-        "nextRunMinuteOfDay": 4 * 60,
-        "nextRunTimezoneCode": body['timezoneCode']
-      }   
+    body.setdefault('schedule', {})
+    body['schedule'].setdefault('nextRunTimezoneCode', body['timezoneCode'])
+    body['schedule'].setdefault('frequency', 'DAILY')
+    if body['schedule']['frequency'] != 'ONE_TIME':
+      body['schedule'].setdefault('nextRunMinuteOfDay',  4 * 60)
+      body['schedule'].setdefault('endTimeMs', int((time.time() + (365 * 24 * 60 * 60)) * 1000)) # 1 year in future
 
     # build report
     #pprint.PrettyPrinter().pprint(body)
@@ -233,16 +232,10 @@ def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = DBM_C
   else:
     filename = RE_FILENAME.search(storage_path).groups(0)[0]
 
-    def report_stream(response, chunksize):
-      while True:
-        chunk = response.read(chunksize).decode('UTF-8')
-        if chunk: yield chunk
-        else: break
-
     # streaming
     if chunksize: 
       if project.verbose: print("REPORT FILE STREAM:", storage_path)
-      return filename, report_stream(urlopen(storage_path), chunksize)
+      return filename, response_utf8_stream(urlopen(storage_path), chunksize)
 
     # single object
     else:
