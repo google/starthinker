@@ -29,19 +29,20 @@ RE_HUMAN = re.compile('[^0-9a-zA-Z]+')
 INT_LIMIT = 9223372036854775807 # defined by BigQuery 64 bit mostly ( not system )
 
 
-def find_utf8_split(data, bytes=None):
+def find_utf8_split(data, offset=None):
 
-  bytes = bytes or len(data)
+  if not isinstance(data, bytes):  data = data.getbuffer()
+  offset = offset or len(data)
 
-  while bytes > 0 and data[bytes - 1] & 0xC0 == 0x80:
-    bytes -= 1
+  while offset > 0 and data[offset - 1] & 0xC0 == 0x80:
+    offset -= 1
 
-  if bytes > 0:
-    if data[bytes - 1] & 0xE0 == 0xC0: bytes = bytes - 1
-    if data[bytes - 1] & 0xF0 == 0xE0: bytes = bytes - 1
-    if data[bytes - 1] & 0xF8 == 0xF0: bytes = bytes - 1
+  if offset > 0:
+    if data[offset - 1] & 0xE0 == 0xC0: offset -= 1
+    if data[offset - 1] & 0xF0 == 0xE0: offset -= 1
+    if data[offset - 1] & 0xF8 == 0xF0: offset -= 1
 
-  return bytes
+  return offset
 
 
 def response_utf8_stream(response, chunksize):

@@ -55,8 +55,8 @@ def dt_header(dt_file):
 
   # find first line of file ( gzip will decompress partial, and pull header out )
   sample_data = next(object_get_chunks(project.task['auth'], path, HEADER_SIZE))
-  with gzip.GzipFile(fileobj=sample_data, mode='rb') as fo: 
-    sample_header = fo.read(HEADER_SIZE).decode().split('\n')[0]
+  with gzip.GzipFile(fileobj=BytesIO(sample_data), mode='rb') as fo: 
+    sample_header = fo.read(HEADER_SIZE).decode('utf-8').split('\n')[0]
 
   return sample_header.split(',')
 
@@ -89,7 +89,7 @@ def dt_move_large(dt_file, dt_partition, jobs):
   # loop all chunks of file, decompress, and find row delimiter
   for data_gz in object_get_chunks(project.task['auth'], '%s:%s' % (project.task['bucket'], dt_file)):
 
-    view += gz_handler.decompress(data_gz.read()).decode()
+    view += gz_handler.decompress(data_gz.read()).decode('utf-8')
 
     if first_row:
       end = view.find(delimiter)

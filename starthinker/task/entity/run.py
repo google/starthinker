@@ -86,7 +86,7 @@ def get_entity(path):
 
   for chunk in object_get_chunks(project.task['auth'], path, CHUNK_SIZE):
     # read the next chunk, remove all newlines, leaving only '\r\r' between records ( clever use of non display characters for parsing )
-    view += chunk.read().decode().replace('\n', '')
+    view += chunk.decode().replace('\n', '')
 
     # first time through, scrap the leading bracket
     if first:

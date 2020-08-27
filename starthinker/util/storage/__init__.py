@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2018 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,16 +16,9 @@
 #
 ###########################################################################
 
-#https://google.github.io/google-api-python-client/docs/epy/googleapiclient.http-module.html
-#https://raw.githubusercontent.com/GoogleCloudPlatform/storage-file-transfer-json-python/master/chunked_transfer.py
-#https://cloud.google.com/storage/docs/json_api/v1/buckets/insert#try-it
-#https://cloud.google.com/storage/docs/json_api/v1/buckets/setIamPolicy
-#https://developers.google.com/resources/api-libraries/documentation/storage/v1/python/latest/index.html
-
 import os
 import errno
 import json
-import traceback
 import httplib2
 from time import sleep
 from io import BytesIO
@@ -37,6 +30,7 @@ from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
 from starthinker.util.auth import get_service
 from starthinker.util.google_api import API_Storage, API_Retry
+from starthinker.util.csv import find_utf8_split
 
 
 CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # scale is controlled in config.py
@@ -66,6 +60,8 @@ def parse_filename(path, url=False):
 
 def media_download(request, chunksize, encoding=None):
   data = BytesIO()
+  leftovers = b''
+
   media = MediaIoBaseDownload(data, request, chunksize=chunksize)
 
   retries = 0
@@ -75,8 +71,22 @@ def media_download(request, chunksize, encoding=None):
     try:
       progress, done = media.next_chunk()
       if progress: print('Download %d%%' % int(progress.progress() * 100))
+
       data.seek(0)
-      yield data.read().decode(encoding) if encoding else data
+
+      if encoding is None:
+        yield data.read()
+
+      elif encoding.lower() == 'utf-8':
+        print('AAAA')
+        position = find_utf8_split(data)
+        yield (leftovers + data.read(position)).decode(encoding)
+        data.seek(position)
+        leftftovers = data.read() 
+
+      else:
+        yield data.read().decode(encoding) 
+
       data.seek(0)
       data.truncate(0)
     except HttpError as err:
@@ -117,34 +127,7 @@ def object_get_chunks(auth, path, chunksize=CHUNKSIZE, encoding=None):
 
   data = BytesIO()
   request = service.objects().get_media(bucket=bucket, object=filename)
-  media = MediaIoBaseDownload(data, request, chunksize=chunksize)
-
-  retries = 0
-  done = False
-  while not done:
-    error = None
-    try:
-      progress, done = media.next_chunk()
-      if progress: print('Download %d%%' % int(progress.progress() * 100))
-      data.seek(0)
-      #yield data
-      yield data.read().decode(encoding) if encoding else data
-      data.seek(0)
-      data.truncate(0)
-    except HttpError as err:
-      error = err
-      if err.resp.status < 500: raise
-    except (httplib2.HttpLib2Error, IOError) as err:
-      error = err
-
-    if error:
-      retries += 1
-      if retries > RETRIES: raise error
-      else: sleep(5 * retries)
-    else:
-      retries = 0
-
-  print('Download End')
+  yield from media_download(request, chunksize, encoding)
 
 
 def object_put(auth, path, data, mimetype='application/octet-stream'):
