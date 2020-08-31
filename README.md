@@ -23,7 +23,7 @@ solutions across clients fast, and even automate campaign controls. All using a 
 - Empower your team with simple [UI documentation](https://google.github.io/starthinker/help/).
 - Bill [clients for data usage](https://google.github.io/starthinker/help/#help_setup).
 - Monitor all workflows from [one UI](https://google.github.io/starthinker/help/#help_status).
-- Build enteprise solutions in hours not weeks.
+- Build enterprise solutions in hours not weeks.
 
 Steps From [Tutorial](tutorials/README.md):
 - [ ] [Deploy UI on GCP.](tutorials/deploy_enterprise.md)
