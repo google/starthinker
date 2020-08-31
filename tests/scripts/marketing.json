@@ -1,0 +1,63 @@
+{
+  "tasks":[
+    { "marketing":{
+      "auth":"user",
+      "offers":10,
+      "link":"https://docs.google.com/document/d/17v0voupfkRGHMq4n7PITEzmR_YLoDcU2o7dc7n_oH9g/edit?usp=sharing",
+      "email":{
+        "from": {"field":{ "name":"email", "kind":"string", "default":"" }},
+        "cc":"",
+        "subject":"Marketing Test",
+        "introduction":"This tests matching solutions with owners."
+      },
+      "owners":{
+        "sheet":{
+          "url":"Primary Test Sheet ( StarThinker )",
+          "tab":"Marketing Owners",
+          "range":"A4:G"
+        }
+      },
+      "impacts":{
+        "sheet":{
+          "url": "Primary Test Sheet ( StarThinker )",
+          "tab":"Marketing Impacts",
+          "range":"A4:B"
+        }
+      },
+      "solutions":[
+        { "name":"Test Solution",
+          "description":"Testing the marketing module.",
+          "gap":"This is the gap pargraph.",
+          "image":"https://storage.googleapis.com/starthinker-ui/brand_safety.png",
+          "sample":"https://datastudio.google.com/open/0B1dzmNeF4E-MWnMyMmd4SzNPWW8",
+          "link":"http://localhost:8000/deployment/request/",
+          "pitches":[
+            "Pitch 1",
+            "Pitch 2",
+            "Pitch 3",
+            "Pitch 4"
+          ],
+          "impacts":{
+            "spend optimization":10,
+            "spend growth":20,
+            "time savings":30,
+            "account health":40,
+            "csat improvement":50,
+            "technical level":60
+          },
+          "key":"DBM Partner ID",
+          "sheet":{
+            "url":"Primary Test Sheet ( StarThinker )",
+            "tab":"Marketing Scores",
+            "range":"A4:D"
+          }
+        }
+      ]
+    }},
+    {
+      "test" : {
+        "assert":"Marketing complete."
+      }
+    }
+  ]
+}

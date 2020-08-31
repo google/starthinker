@@ -45,6 +45,8 @@ python starthinker_ui/manage.py job_worker --jobs=1 --test --verbose
 
 ### Get Recipe Status
 
+Must be logged into one of the worker machines.
+
 ```
 cd /home/starthinker
 source starthinker_assets/development.sh
@@ -52,6 +54,8 @@ python starthinker_ui/manage.py recipe_status --recipe 116
 ```
 
 ### Get Recipe JSON And Run It Locally
+
+Must be logged into one of the worker machines.
 
 CAUTION: This has user credentials in it.
 CAUTION: UI Machine is set to use low memory buffers, recipes will take a long time to run locally.
@@ -64,6 +68,8 @@ python starthinker/all/run.py /home/starthinker/starthinker_cron/recipe_116.json
 ```
 
 ### Force Run A Recipe On Workers
+
+Must be logged into one of the worker machines.
 
 CAUTION: This removes all schedule from recipe and executes tasks sequentially.
 
@@ -93,7 +99,9 @@ source install/deploy.sh
 psql starthinker-ui --port 5432 --host=127.0.0.1 --user starthinker
 ```
 
-## Updating UI
+## Updating UI And Workers
+
+All code is pulled from the current working ST directory and copied to AppEngine and VM.
 
 ```
 cd /home/starthinker
@@ -101,15 +109,4 @@ git pull
 source install/deploy.sh
 3) Enterprise Menu
 1) Deploy UI
-```
-
-## Updating Workers
-
-```
-cd /home/starthinker
-git pull
-source install/deploy.sh
-3) Enterprise Menu
-2) Deploy Job Workers
-3) Medium - 20 Jobs
 ```

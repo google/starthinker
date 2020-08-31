@@ -1,0 +1,6 @@
+.DS_Store
+*.pyc
+*.swp
+.dockerignore
+starthinker_assets/
+starthinker/legacy/

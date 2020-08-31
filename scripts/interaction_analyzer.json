@@ -1,0 +1,46 @@
+{
+  "script":{
+    "released":"2020-05-26",
+    "icon":"security",
+    "title":"Interaction Analyzer",
+    "description":"A tool for viewing calendar and email interactions for tracking work quicker.",
+    "image":"https://drive.google.com/file/d/1KBeZkv0gncjNV1dvg6IUkcF-SPPgGm9F/view?usp=sharing",
+    "sample":"https://docs.google.com/spreadsheets/d/164ey9QUvu6J4qxAGd21FUGFZTtjmXPgES9UHGu2CQ5A/",
+    "from":["gmail", "calendar", "plx", "sheets", "apps script"],
+    "to":["datastudio"],
+    "pitches":[
+      "View distribution of calendar meetings.",
+      "View distribution of email threads.",
+      "Find interactions with specific clients.",
+      "Check whom each interaction rolls up to.",
+      "AI identifies possible interactions to track."
+    ],
+    "impacts":{
+      "spend optimization":0,
+      "spend growth":0,
+      "time savings":100,
+      "account health":100,
+      "csat improvement":100
+    },
+    "instructions":[
+      "Add this card to a recipe and save it.",
+      "Then click <strong>Run Now</strong> to deploy.",
+      "Follow the <a href=\"https://docs.google.com/spreadsheets/d/164ey9QUvu6J4qxAGd21FUGFZTtjmXPgES9UHGu2CQ5A/\">instructions</a> for setup."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "day":[],
+    "hour":[]
+  },
+  "tasks":[
+    { "drive": {
+        "auth": "user",
+        "hour":[],
+        "copy":{
+          "source":"https://docs.google.com/spreadsheets/d/164ey9QUvu6J4qxAGd21FUGFZTtjmXPgES9UHGu2CQ5A/",
+          "destination":{"field":{ "name":"recipe_name", "prefix":"CM User Editor For ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }}
+        }
+    }}
+  ]
+}
