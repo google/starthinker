@@ -1,0 +1,20 @@
+{
+  "script":{
+    "released":"2017-08-14",
+    "icon":"chat",
+    "title":"Dynamite",
+    "description":"Write a notification to a dynamite room.",
+    "authors":["kenjora@google.com"],
+    "private":["kenjora@google.com"],
+    "from":["python"],
+    "to":["dynamite"]
+  },
+  "tasks":[
+    { "dynamite":{
+      "room":{"field":{ "name":"dynamite_room", "kind":"string", "order":1, "default":"" }},
+      "key":{"field":{ "name":"dynamite_key", "kind":"string", "order":2, "default":"" }},
+      "token":{"field":{ "name":"dynamite_token", "kind":"string", "order":3, "default":"" }},
+      "message":{"field":{ "name":"dynamite_message", "kind":"string", "order":4, "default":"" }}
+    }}
+  ]
+}

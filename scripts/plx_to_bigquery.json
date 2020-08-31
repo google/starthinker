@@ -1,0 +1,31 @@
+{
+  "script":{
+    "released":"2017-08-14",
+    "icon":"account_balance",
+    "title":"PLX To BigQuery",
+    "description":"Save PLX query results into a BigQuery table.",
+    "from":["plx"],
+    "to":["bigquery"],
+    "instructions":[
+      "Each PLX BigQuery Bridge <a href=\"https://docs.google.com/document/d/1ok5lzaeb0GMbNomsIjQqCevSzcSUpDUGrcFJZmHP9zU/edit\" target=\"_blank\">now requires per table approval</a>.",
+      "SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...",
+      "Specify a single query and choose legacy or standard mode.",
+      "Every time the query runs it will overwrite the table."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "bigquery":{
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "from":{
+        "query":{"field":{ "name":"query", "kind":"text", "order":1, "default":"SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...", "description":"Query to run on PLX as this user." }},
+        "legacy":{"field":{ "name":"legacy", "kind":"boolean", "order":4, "default":true, "description":"Legacy Or Standard SQL." }}
+      },
+      "to":{
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":2, "default":"", "description":"Existing BigQuery dataset." }},
+        "table":{"field":{ "name":"table", "kind":"string", "order":3, "default":"", "description":"Table to create from this query." }}
+      }
+    }}
+  ]
+}

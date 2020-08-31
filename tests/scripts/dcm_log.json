@@ -1,0 +1,18 @@
+{
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2019 Google Inc."
+  },
+  "tasks":[
+    { "include":{
+      "script":"scripts/dcm_log.json",
+      "parameters":{
+        "auth_read":"user",
+        "auth_write":"service",
+        "accounts":[7480],
+        "recipe_project":"kenjora-161023",
+        "recipe_slug":"Test"
+      }
+    }}
+  ]
+}

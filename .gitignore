@@ -1,7 +1,8 @@
 .DS_Store
-*.pyc 
+*.pyc
 *.swp
 *.yaml
+__pycache__
 starthinker_cron/
 starthinker_database/
 starthinker_virtualenv/

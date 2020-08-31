@@ -395,7 +395,7 @@ def API_DCM(auth, iterate=False, internal=False):
 
   configuration = {
     'api':'dfareporting',
-    'version':'v3.3',
+    'version':'v3.4',
     'auth':auth,
     'iterate':iterate
   }

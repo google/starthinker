@@ -43,7 +43,7 @@
       ]
     }},
     { "include":{
-      "script":"scripts/bigquery_pearson_significance.json",
+      "script":"scripts/bigquery_pearson_significance_test.json",
       "parameters":{
         "auth":"user",
         "dataset":"Test"

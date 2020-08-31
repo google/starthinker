@@ -1,0 +1,29 @@
+{
+  "tasks": [
+    { "dataset": {
+      "auth": "service",
+      "dataset": "SmartSheets"
+    }},
+    { "include":{
+      "script":"scripts/smartsheet_report_to_bigquery.json",
+      "parameters":{
+        "token":{"field":{ "name":"token", "kind":"string", "description":"Retrieve from SmartSheet account settings." }},
+        "report":{"field":{ "name":"report", "kind":"string", "description":"Retrieve from report properties." }},
+        "dataset":"Test",
+        "table":"SmartSheet_Report"
+      }
+    }},
+    { "include":{
+      "script":"scripts/smartsheet_to_bigquery.json",
+      "parameters":{
+        "token":{"field":{ "name":"token", "kind":"string", "description":"Retrieve from SmartSheet account settings." }},
+        "sheet":{"field":{ "name":"sheet", "kind":"string", "description":"Retrieve from sheet properties." }},
+        "dataset":"Test",
+        "table":"SmartSheet_Sheet"
+      }
+    }},
+    { "test": {
+      "assert":"Completed all tasks."
+    }}
+  ]
+}

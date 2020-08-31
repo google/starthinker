@@ -1,6 +1,6 @@
 ###########################################################################
 # 
-#  Copyright 2018 Google Inc.
+#  Copyright 2018 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -122,21 +122,6 @@ CAMPAIGNS_SCHEMA = [
  { "name":"adBlockingConfiguration_creativeBundleId", "type":"STRING" },
  { "name":"nielsenOcrEnabled", "type":"BOOLEAN" },
 ]
-
-#CHANGELOGS_SCHEMA = [
-#  { "name":"userProfileId", "type":"INTEGER" },
-#  { "name":"accountId", "type":"INTEGER" },
-#  { "name":"subaccountId", "type":"INTEGER" },
-#  { "name":"id", "type":"INTEGER" },
-#  { "name":"transactionId", "type":"INTEGER" },
-#  { "name":"objectType", "type":"STRING" },
-#  { "name":"objectId", "type":"INTEGER" },
-#  { "name":"action", "type":"STRING" },
-#  { "name":"fieldName", "type":"STRING" },
-#  { "name":"changeTime", "type":"TIMESTAMP" },
-#  { "name":"oldValue", "type":"STRING" },
-#  { "name":"newValue", "type":"STRING" },
-#]
 
 SITES_SCHEMA = [
  { "name":"accountId", "type":"INTEGER" }, 
@@ -374,33 +359,6 @@ def get_campaigns(accounts):
        ]
 
 
-#def get_changelogs(accounts):
-#
-#  if project.verbose: print('DCM ChangeLogs')
-#
-#  for account_id in accounts:
-#    is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-#    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
-#    for changelog in API_DCM("user", iterate=True, internal=is_superuser).changeLogs().list(**kwargs).execute():
-#      if int(changelog['accountId']) in accounts: 
-#
-#        #print(changelog)
-#        yield [
-#          changelog.get('userProfileId'),
-#          changelog['accountId'],
-#          changelog.get('subaccountId'),
-#          changelog['id'],
-#          changelog['transactionId'],
-#          changelog['objectType'],
-#          changelog['objectId'],
-#          changelog['action'],
-#          changelog.get('fieldName'),
-#          changelog['changeTime'],
-#          changelog.get('oldValue'),
-#          changelog.get('newValue'),
-#       ]
-
-
 def get_sites(accounts):
 
   if project.verbose: print('DCM Sites')
@@ -606,14 +564,6 @@ def barnacle():
     put_json('CM_Advertisers', ADVERTISERS_SCHEMA),
     rows
   )
-
-  #  # Changelogs 
-  #  rows = get_changelogs(accounts)
-  #  put_rows(
-  #    project.task['out']['auth'],
-  #    put_json('CM_ChangeLogs', CHANGELOGS_SCHEMA),
-  #    rows
-  #  )
 
   # Campaigns 
   rows = get_campaigns(accounts)

@@ -71,7 +71,6 @@ def query_parameters(query, parameters):
   if not parameters:
     return query
   elif isinstance(parameters, dict):
-    print('BQ PARAM')
     return query.format(**parameters)
   else:
     while '[PARAMETER]' in query:
@@ -154,18 +153,17 @@ def datasets_access(auth, project_id, dataset_id, role='READER', emails=[], grou
 
     API_BigQuery(auth).datasets().patch(projectId=project_id, datasetId=dataset_id, body={'access':access}).execute()
 
-def run_query(auth, project_id, query, legacy=True):
+
+def run_query(auth, project_id, query, legacy=True, dataset_id=None):
 
   body={
-    'configuration': {
-      'query': {
-        'useLegacySql': legacy,
-        'query':query
-      }
-    }
+    'query':query,
+    'useLegacySql': legacy
   }
 
-  job_wait(auth, API_BigQuery(auth).jobs().insert(projectId=project_id, body=body).execute())
+  if dataset_id: body['defaultDataset'] =  { 'datasetId' : dataset_id }
+
+  job_wait(auth, API_BigQuery(auth).jobs().query(projectId=project_id, body=body).execute())
 
 
 def query_to_table(auth, project_id, dataset_id, table_id, query, disposition='WRITE_TRUNCATE', legacy=True, billing_project_id=None, target_project_id=None):
@@ -718,22 +716,6 @@ def _get_min_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
   job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute()
   
   return job['rows'][0]['f'][0]['v']
-
-
-def execute_statement(auth, project_id, dataset_id, statement, billing_project_id=None, use_legacy_sql=False):
-  if not billing_project_id:
-    billing_project_id = project_id
-
-  body = {
-    "kind": "bigquery#queryRequest",
-    'query': statement,
-    'defaultDataset': {
-      'datasetId' : dataset_id,
-    },
-    'useLegacySql': use_legacy_sql,
-  }
-
-  job_wait(auth, API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute())
 
 
 #start and end date must be in format YYYY-MM-DD

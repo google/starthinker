@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2018 Google LLC.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,25 +16,35 @@
 #
 ###########################################################################
 
-# PARAMETIZE QUERIES: https://cloud.google.com/bigquery/docs/parameterized-queries
-
-import uuid
-import os
-import csv
 
 from starthinker.util.project import project
-from starthinker.util.bigquery import query_to_table, query_to_view, storage_to_table, query_to_rows, execute_statement, rows_to_table, run_query, query_parameters
 from starthinker.util.csv import rows_to_type
 from starthinker.util.sheets import sheets_clear
 from starthinker.util.sheets import sheets_write
-from starthinker.util.storage import object_put
 from starthinker.util.data import get_rows, put_rows
+from starthinker.util.bigquery import query_to_table, query_to_view, storage_to_table, query_to_rows, rows_to_table, run_query, query_parameters
+from starthinker.util.bigquery.functions import pearson_significance_test
 
 
 @project.from_parameters
 def bigquery():
 
-  if 'run' in project.task and 'query' in project.task.get('run', {}):
+  if 'function' in project.task:
+    query = None
+
+    if project.task['function'] == 'pearson_significance_test':
+      query = pearson_significance_test()
+
+    if query:
+      run_query(
+        project.task['auth'],
+        project.id,
+        query,
+        False,
+        project.task['to']['dataset']
+      )
+  
+  elif 'run' in project.task and 'query' in project.task.get('run', {}):
     if project.verbose: print("QUERY", project.task['run']['query'])
     run_query(
       project.task['auth'],
@@ -55,19 +65,12 @@ def bigquery():
       project.task.get('schema', []),
       0
     )
-      
+
   elif 'query' in project.task['from']:
+
     if 'table' in project.task['to']:
       if project.verbose: print("QUERY TO TABLE", project.task['to']['table'])
 
-      if 'pre_process_query' in project.task['to']:
-        execute_statement(
-            project.task['auth'],
-            project.id,
-            project.task['to']['dataset'],
-            project.task['to']['pre_process_query'],
-            use_legacy_sql=project.task['from'].get('legacy', project.task['from'].get('useLegacySql', True))
-        )
       query_to_table(
         project.task['auth'],
         project.id,
@@ -78,23 +81,7 @@ def bigquery():
         legacy=project.task['from'].get('legacy', project.task['from'].get('useLegacySql', True)), # DEPRECATED: useLegacySql,
         target_project_id=project.task['to'].get('project_id', project.id)
       )
-    # NOT USED SO RIPPING IT OUT
-    # Mauriciod: Yes, it is used, look at project/mauriciod/target_winrate.json
-    elif 'storage' in project.task['to']:
-      if project.verbose: print("QUERY TO STORAGE", project.task['to']['storage'])
-      local_file_name = '/tmp/%s' % str(uuid.uuid1())
-      rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'])
 
-      f = open(local_file_name, 'wb')
-      writer = csv.writer(f)
-      writer.writerows(rows)
-      f.close()
-
-      f = open(local_file_name, 'rb')
-      object_put(project.task['auth'], project.task['to']['storage'], f)
-      f.close()
-
-      os.remove(local_file_name)
     elif 'sheet' in project.task['to']:
       if project.verbose: print("QUERY TO SHEET", project.task['to']['sheet'])
       rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'], legacy=project.task['from'].get('legacy', True))
@@ -104,12 +91,14 @@ def bigquery():
 
       sheets_clear(project.task['auth'], project.task['to']['sheet'], project.task['to']['tab'], project.task['to'].get('range', 'A2'))
       sheets_write(project.task['auth'], project.task['to']['sheet'], project.task['to']['tab'], project.task['to'].get('range', 'A2'), rows)
+
     elif 'sftp' in project.task['to']:
       rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'], legacy=project.task['from'].get('use_legacy_sql', True))
 
       if rows:
         if project.verbose: print("QUERY TO SFTP")
         put_rows(project.task['auth'], project.task['to'], rows)
+
     else:
       if project.verbose: print("QUERY TO VIEW", project.task['to']['view'])
       query_to_view(
@@ -121,6 +110,7 @@ def bigquery():
         project.task['from'].get('legacy', project.task['from'].get('useLegacySql', True)), # DEPRECATED: useLegacySql
         project.task['to'].get('replace', False)
       )
+
   else:
     if project.verbose: print("STORAGE TO TABLE", project.task['to']['table'])
     storage_to_table(

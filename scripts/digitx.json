@@ -1,0 +1,596 @@
+{
+  "script":{
+    "released":"2018-11-15",
+    "icon":"whatshot",
+    "title":"Digit X",
+    "description":"Combines DV360 and CM reports into a single audience reach report.",
+    "image":"https://storage.googleapis.com/starthinker-ui/deal_finder.png",
+    "sample":"https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO",
+    "from":["dv360", "cm"],
+    "to":["bigquery", "datastudio"],
+    "pitches":[
+      "Provide audience reach report.",
+      "Help client decide which inventory to invest in.",
+      "Identify poorly performing audiences."
+    ],
+    "impacts":{
+      "spend optimization":100,
+      "spend growth":100,
+      "time savings":70,
+      "account health":60,
+      "csat improvement":70
+    },
+    "instructions":[
+      "Wait for <b>BigQuery->StarThinker Data->{field:recipe_slug}->Digitx_Dashboard</b> to be created.",
+      "Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Digit X Sample Data</a>.",
+      "Click Edit Connection, and change to <b>BigQuery->StarThinker Data->{field:recipe_slug}->Digit_X_Dashboard</b>.",
+      "Copy <a href='https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO' target='_blank'>Digit X Sample Report</a>.",
+      "When prompted choose the new data source you just created.",
+      "Or give these intructions to the client."
+    ],
+    "authors":["kenjora@google.com", "kskur@google.com"],
+    "managers":["kskur@google.com"]
+  },
+
+  "setup":{
+    "timezone":"America/Los_Angeles",
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "hour":[3, 4]
+  },
+
+  "tasks":[
+
+    { "dataset":{
+      "description":"Create a dataset for bigquery tables.",
+      "hour":[4], 
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+      "dataset":{"field":{ "name":"dataset", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
+    }},
+
+    { "dbm":{
+      "description":"Create a DV360 report for LI reach and frequency.",
+      "hour":[3], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "filters": {
+          "FILTER_PARTNER": {
+            "single_cell":true,
+            "values":[1188537]
+          },
+          "FILTER_ADVERTISER": {
+            "single_cell":true,
+            "values":[2214431]
+          },
+          "FILTER_INSERTION_ORDER": {
+            "single_cell":true,
+            "values":[6502042, 6536941, 6637645, 6637647, 6760848, 6680778, 6489746, 6680779, 6642761]
+          }
+        },
+        "body":{
+          "kind": "doubleclickbidmanager#query",
+          "timezoneCode":"America/Los_Angeles",
+          "metadata": {
+            "title": {"field":{ "name":"report", "kind":"string", "prefix":"LI Level Reach ", "description":"Unique name of report in DV360/CM." }},
+            "dataRange":"LAST_30_DAYS",
+            "format": "CSV"
+          },
+          "params": {
+            "type": "TYPE_REACH_AND_FREQUENCY",
+            "filters":[],
+            "groupBys": [
+              "FILTER_PARTNER",
+              "FILTER_ADVERTISER",
+              "FILTER_INSERTION_ORDER",
+              "FILTER_LINE_ITEM"
+            ],
+            "metrics": [
+              "METRIC_COOKIE_REACH_IMPRESSION_REACH",
+              "METRIC_COOKIE_REACH_AVERAGE_IMPRESSION_FREQUENCY"
+            ],
+            "includeInviteData":true
+          }
+        }
+      }
+    }},
+
+    { "dbm":{
+      "description":"Copy a DV360 report to BigQuery.",
+      "hour":[4], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "name":"Nobody's Fool LI Level Reach",
+        "timeout":10
+      },
+      "out":{
+        "bigquery": {
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "table": {"field":{ "name":"report", "kind":"string", "prefix":"LI Level Reach ", "description":"Unique name of report in DV360/CM." }},
+          "schema":[
+            { "name": "Partner", "type": "STRING" }, 
+            { "name": "Partner_ID", "type": "INTEGER" }, 
+            { "name": "Partner_Status", "type": "STRING" }, 
+            { "name": "Advertiser", "type": "STRING" }, 
+            { "name": "Advertiser_ID", "type": "INTEGER" }, 
+            { "name": "Advertiser_Status", "type": "STRING" }, 
+            { "name": "Advertiser_Integration_Code", "type": "STRING" }, 
+            { "name": "Insertion_Order", "type": "STRING" }, 
+            { "name": "Insertion_Order_ID", "type": "INTEGER" }, 
+            { "name": "Insertion_Order_Status", "type": "STRING" }, 
+            { "name": "Insertion_Order_Integration_Code", "type": "STRING" }, 
+            { "name": "Line_Item", "type": "STRING" }, 
+            { "name": "Line_Item_ID", "type": "INTEGER" }, 
+            { "name": "Line_Item_Status", "type": "STRING" }, 
+            { "name": "Line_Item_Integration_Code", "type": "STRING" }, 
+            { "name": "Targeted_Data_Providers", "type": "STRING" }, 
+            { "name": "Cookie_Reach_Impression_Reach", "type": "INTEGER" }, 
+            { "name": "Cookie_Reach_Average_Impression_Frequency", "type": "FLOAT" }
+          ]
+        }
+      }
+    }},
+
+    { "dbm":{
+      "description":"Create a DV360 report for IO reach and frequency.",
+      "hour":[3], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "description":"Copy of exiting report 162251724.",
+        "filters": {
+          "FILTER_PARTNER": {
+            "single_cell":true,
+            "values":[1188537]
+          },
+          "FILTER_ADVERTISER": {
+            "single_cell":true,
+            "values":[2214431]
+          },
+          "FILTER_INSERTION_ORDER": {
+            "single_cell":true,
+            "values":[6502042, 6536941, 6637645, 6637647, 6760848, 6680778, 6489746, 6680779, 6642761]
+          }
+        },
+        "body":{
+          "kind": "doubleclickbidmanager#query",
+          "timezoneCode":"America/Los_Angeles",
+          "metadata": {
+            "title": {"field":{ "name":"report", "kind":"string", "prefix":"IO Level Reach ", "description":"Unique name of report in DV360/CM." }},
+            "dataRange":"LAST_30_DAYS",
+            "format": "CSV"
+          },
+          "params": {
+            "type": "TYPE_REACH_AND_FREQUENCY",
+            "filters":[],
+            "groupBys": [
+              "FILTER_PARTNER",
+              "FILTER_ADVERTISER",
+              "FILTER_INSERTION_ORDER"
+            ],
+            "metrics": [
+              "METRIC_COOKIE_REACH_IMPRESSION_REACH",
+              "METRIC_COOKIE_REACH_AVERAGE_IMPRESSION_FREQUENCY"
+            ],
+            "includeInviteData": true
+          }
+        }
+      }
+    }},
+
+    { "dbm":{
+      "description":"Copy a DV360 report to BigQuery.",
+      "hour":[4], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "name":"Nobody's Fool IO Level Reach",
+        "timeout":10
+      },
+      "out":{
+        "bigquery": {
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "table": {"field":{ "name":"report", "kind":"string", "prefix":"IO Level Reach ", "description":"Unique name of report in DV360/CM." }},
+          "schema":[
+            { "name": "Partner", "type": "STRING" }, 
+            { "name": "Partner_ID", "type": "INTEGER" }, 
+            { "name": "Partner_Status", "type": "STRING" }, 
+            { "name": "Advertiser", "type": "STRING" }, 
+            { "name": "Advertiser_ID", "type": "INTEGER" }, 
+            { "name": "Advertiser_Status", "type": "STRING" }, 
+            { "name": "Advertiser_Integration_Code", "type": "STRING" }, 
+            { "name": "Insertion_Order", "type": "STRING" }, 
+            { "name": "Insertion_Order_ID", "type": "INTEGER" }, 
+            { "name": "Insertion_Order_Status", "type": "STRING" }, 
+            { "name": "Insertion_Order_Integration_Code", "type": "STRING" }, 
+            { "name": "Cookie_Reach_Impression_Reach", "type": "INTEGER" }, 
+            { "name": "Cookie_Reach_Average_Impression_Frequency", "type": "FLOAT" }
+          ]
+        }
+      }
+    }},
+
+    { "dcm":{
+      "description":"Create a CM report for site level with cookie reach, clicks, and impressions.",
+      "hour":[3], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "filters": {
+          "accountId": {
+            "single_cell":true,
+            "values":[783065]
+          },
+          "dfa:activity": {
+            "single_cell":true,
+            "values":[7829811, 7847234, 7274861, 7824484]
+          },
+          "dfa:advertiser": {
+            "single_cell":true,
+            "values":[8293341]
+          },
+          "dfa:campaign": {
+            "single_cell":true,
+            "values":[8293341, 21467940, 21826008, 21309386, 21849046]
+          }
+        },
+        "body":{
+          "kind": "dfareporting#report", 
+          "type": "REACH",
+          "name": {"field":{ "name":"report", "kind":"string", "prefix":"Site Level Campaign ", "description":"Unique name of report in DV360/CM." }},
+          "format": "CSV", 
+          "reachCriteria": {
+            "activities": {
+              "kind": "dfareporting#activities", 
+              "filters": [], 
+              "metricNames": [
+                "dfa:totalConversions"
+              ]
+            }, 
+            "dateRange": {
+              "kind": "dfareporting#dateRange", 
+              "relativeDateRange": "LAST_60_DAYS"
+            }, 
+            "dimensionFilters": [], 
+            "dimensions": [
+              { "kind": "dfareporting#sortedDimension", "name": "dfa:advertiser" }, 
+              { "kind": "dfareporting#sortedDimension", "name": "dfa:campaign" }, 
+              { "kind": "dfareporting#sortedDimension", "name": "dfa:site" }
+            ], 
+            "enableAllDimensionCombinations": false, 
+            "metricNames": [
+              "dfa:cookieReachTotalReach", 
+              "dfa:cookieReachAverageImpressionFrequency", 
+              "dfa:richMediaVideoCompletions", 
+              "dfa:activeViewViewableImpressions", 
+              "dfa:activeViewMeasurableImpressions", 
+              "dfa:impressions", 
+              "dfa:mediaCost", 
+              "dfa:activeViewPercentImpressionsAudibleAndVisibleAtCompletion", 
+              "dfa:clicks", 
+              "dfa:clickRate"
+            ]
+          } 
+        }
+      }
+    }},
+
+    { "dcm":{
+      "description":"Copy a CM report to BigQuery.",
+      "hour":[4], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "account":783065, 
+        "name":"Nobody's Fool Site Level Campaign",
+        "timeout":10
+      },
+      "out":{
+        "bigquery": {
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "table": {"field":{ "name":"report", "kind":"string", "prefix":"Site Level Campaign ", "description":"Unique name of report in DV360/CM." }}
+        }
+      }
+    }},
+
+    { "dcm":{
+      "description":"Create a CM report for campaign level with cookie reach, clicks, and impressions.",
+      "hour":[3], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "filters": {
+          "accountId": {
+            "single_cell":true,
+            "values":[783065]
+          },
+          "dfa:activity": {
+            "single_cell":true,
+            "values":[7829811, 7847234, 7274861, 7824484]
+          },
+          "dfa:advertiser": {
+            "single_cell":true,
+            "values":[8293341]
+          },
+          "dfa:campaign": {
+            "single_cell":true,
+            "values":[8293341, 21467940, 21826008, 21309386, 21849046]
+          }
+        },
+        "body":{
+          "kind": "dfareporting#report", 
+          "type": "REACH",
+          "name": {"field":{ "name":"report", "kind":"string", "prefix":"High Level Campaign ", "description":"Unique name of report in DV360/CM." }},
+          "format": "CSV", 
+          "reachCriteria": {
+            "activities": {
+              "kind": "dfareporting#activities", 
+              "filters": [], 
+              "metricNames": [
+                "dfa:totalConversions"
+              ]
+            }, 
+            "dateRange": {
+              "kind": "dfareporting#dateRange", 
+              "relativeDateRange": "LAST_60_DAYS"
+            }, 
+            "dimensionFilters": [], 
+            "dimensions": [
+              { "kind": "dfareporting#sortedDimension", "name": "dfa:advertiser" }, 
+              { "kind": "dfareporting#sortedDimension", "name": "dfa:campaign" }
+            ], 
+            "enableAllDimensionCombinations": false, 
+            "metricNames": [
+              "dfa:cookieReachTotalReach", 
+              "dfa:cookieReachAverageImpressionFrequency", 
+              "dfa:richMediaVideoCompletions", 
+              "dfa:activeViewViewableImpressions", 
+              "dfa:activeViewMeasurableImpressions", 
+              "dfa:impressions", 
+              "dfa:mediaCost", 
+              "dfa:activeViewPercentImpressionsAudibleAndVisibleAtCompletion", 
+              "dfa:clickRate", 
+              "dfa:clicks"
+            ]
+          } 
+        }
+      }
+    }},
+
+    { "dcm":{
+      "description":"Copy a CM report to BigQuery.",
+      "hour":[4], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "account":783065, 
+        "name":"Nobody's Fool High Level Campaign",
+        "timeout":10
+      },
+      "out":{
+        "bigquery": {
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "table": {"field":{ "name":"report", "kind":"string", "prefix":"High Level Campaign ", "description":"Unique name of report in DV360/CM." }}
+        }
+      }
+    }},
+
+    { "dcm":{
+      "description":"Create a CM report for user frequency at the site level.",
+      "hour":[3], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "description":"Copy of exiting report 162250257.",
+        "filters": {
+          "accountId": {
+            "single_cell":true,
+            "values":[783065]
+          },
+          "dfa:activity": {
+            "single_cell":true,
+            "values":[7829811, 7847234, 7274861, 7824484]
+          },
+          "dfa:advertiser": {
+            "single_cell":true,
+            "values":[8293341]
+          },
+          "dfa:campaign": {
+            "single_cell":true,
+            "values":[8293341, 21467940, 21826008, 21309386, 21849046]
+          }
+        },
+        "body":{
+          "kind": "dfareporting#report", 
+          "name": {"field":{ "name":"report", "kind":"string", "prefix":"User Frequency Site Level Campaign ", "description":"Unique name of report in DV360/CM." }},
+          "type": "REACH",
+          "format": "CSV", 
+          "reachCriteria": {
+            "activities": {
+              "filters": [], 
+              "kind": "dfareporting#activities", 
+              "metricNames": [
+                "dfa:totalConversions"
+              ]
+            }, 
+            "dateRange": {
+              "kind": "dfareporting#dateRange", 
+              "relativeDateRange": "LAST_60_DAYS"
+            }, 
+            "dimensionFilters": [], 
+            "dimensions": [
+              { "kind": "dfareporting#sortedDimension", "name": "dfa:advertiser" }, 
+              { "kind": "dfareporting#sortedDimension", "name": "dfa:campaign" }, 
+              { "kind": "dfareporting#sortedDimension", "name": "dfa:site" }
+            ], 
+            "enableAllDimensionCombinations": false, 
+            "metricNames": [
+              "dfa:cookieReachTotalReach", 
+              "dfa:cookieReachAverageImpressionFrequency", 
+              "dfa:richMediaVideoCompletions", 
+              "dfa:activeViewViewableImpressions", 
+              "dfa:activeViewMeasurableImpressions", 
+              "dfa:impressions", 
+              "dfa:mediaCost", 
+              "dfa:activeViewPercentImpressionsAudibleAndVisibleAtCompletion"
+            ], 
+            "reachByFrequencyMetricNames": [
+              "dfa:cookieReachTotalReach"
+            ]
+          } 
+        }
+      }
+    }},
+
+    { "dcm":{
+      "description":"Copy a CM report to BigQuery.",
+      "hour":[4], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "account":783065, 
+        "name":"Nobody's Fool User Frequency Site Level Campaign",
+        "timeout":10
+      },
+      "out":{
+        "bigquery": {
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "table": {"field":{ "name":"report", "kind":"string", "prefix":"User Frequency Site Level Campaign ", "description":"Unique name of report in DV360/CM." }}
+        }
+      }
+    }},
+
+    { "dcm":{
+      "description":"Create a CM report for user frequency at the campaign level.",
+      "hour":[3], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "description":"Copy of exiting report 162251464.",
+        "filters": {
+          "accountId": {
+            "single_cell":true,
+            "values":[783065]
+          },
+          "dfa:activity": {
+            "single_cell":true,
+            "values":[7829811, 7847234, 7274861, 7824484]
+          },
+          "dfa:advertiser": {
+            "single_cell":true,
+            "values":[8293341]
+          },
+          "dfa:campaign": {
+            "single_cell":true,
+            "values":[8293341, 21467940, 21826008, 21309386, 21849046]
+          }
+        },
+        "body":{
+          "kind": "dfareporting#report", 
+          "name": {"field":{ "name":"report", "kind":"string", "prefix":"Campaign User Frequency ", "description":"Unique name of report in DV360/CM." }},
+          "format": "CSV", 
+          "type": "REACH",
+          "reachCriteria": {
+            "activities": {
+              "filters": [ ], 
+              "kind": "dfareporting#activities", 
+              "metricNames": [
+                "dfa:totalConversions"
+              ]
+            }, 
+            "dateRange": {
+              "kind": "dfareporting#dateRange", 
+              "relativeDateRange": "LAST_60_DAYS"
+            }, 
+            "dimensionFilters": [ ], 
+            "dimensions": [
+              { "kind": "dfareporting#sortedDimension", "name": "dfa:advertiser" }, 
+              { "kind": "dfareporting#sortedDimension", "name": "dfa:campaign" }
+            ], 
+            "enableAllDimensionCombinations": false, 
+            "metricNames": [
+              "dfa:cookieReachTotalReach", 
+              "dfa:cookieReachAverageImpressionFrequency", 
+              "dfa:richMediaVideoCompletions", 
+              "dfa:activeViewViewableImpressions", 
+              "dfa:activeViewMeasurableImpressions", 
+              "dfa:impressions", 
+              "dfa:mediaCost", 
+              "dfa:activeViewPercentImpressionsAudibleAndVisibleAtCompletion"
+            ], 
+            "reachByFrequencyMetricNames": [
+              "dfa:cookieReachTotalReach"
+            ]
+          } 
+        }
+      }
+    }},
+
+    { "dcm":{
+      "description":"Copy a CM report to BigQuery.",
+      "hour":[4], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "account":783065, 
+        "name":"Nobody's Fool Campaign User Frequency",
+        "timeout":10
+      },
+      "out":{
+        "bigquery": {
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "table": {"field":{ "name":"report", "kind":"string", "prefix":"Campaign User Frequency ", "description":"Unique name of report in DV360/CM." }}
+        }
+      }
+    }},
+
+    { "dcm":{
+      "description":"Create a CM report for cookie overlap by site and campaign.",
+      "hour":[3], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "description":"Copy of exiting report 162251357.",
+        "filters": {
+          "accountId": {
+            "single_cell":true,
+            "values":[783065]
+          },
+          "dfa:advertiser": {
+            "single_cell":true,
+            "values":[8293341]
+          },
+          "dfa:campaign": {
+            "single_cell":true,
+            "values":[8293341, 21467940, 21826008, 21309386, 21849046]
+          }
+        },
+        "body":{
+          "kind": "dfareporting#report", 
+          "name": {"field":{ "name":"report", "kind":"string", "prefix":"Overlap Site By Campaign ", "description":"Unique name of report in DV360/CM." }},
+          "type": "CROSS_DIMENSION_REACH",
+          "format": "CSV", 
+          "crossDimensionReachCriteria": {
+            "dateRange": {
+              "kind": "dfareporting#dateRange", 
+              "relativeDateRange": "LAST_60_DAYS"
+            }, 
+            "dimension": "SITE_BY_CAMPAIGN", 
+            "dimensionFilters": [
+            ], 
+            "overlapMetricNames": [
+              "dfa:cookieReachOverlapTotalReach", 
+              "dfa:cookieReachOverlapTotalReachPercent"
+            ], 
+            "pivoted": false
+          } 
+        }
+      }
+    }},
+
+    { "dcm":{
+      "description":"Copy a CM report to BigQuery.",
+      "hour":[4], 
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "account":783065, 
+        "name":"Nobody's Fool Overlap Site By Campaign",
+        "timeout":10
+      },
+      "out":{
+        "bigquery": {
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
+          "table": {"field":{ "name":"report", "kind":"string", "prefix":"Overlap Site By Campaign ", "description":"Unique name of report in DV360/CM." }}
+        }
+      }
+    }}
+
+  ]
+}

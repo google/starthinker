@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -484,7 +484,7 @@ def report_file(auth, account, report_id=None, name=None, timeout=60, chunksize=
 
     # single object
     else:
-      return filename, StringIO(API_DCM(auth).files().get_media(reportId=file_json['reportId'], fileId=file_json['id']).execute(False), chunksize)
+      return filename, StringIO(API_DCM(auth).files().get_media(reportId=file_json['reportId'], fileId=file_json['id']).execute().decode('utf-8'))
 
 
 def report_list(auth, account):
