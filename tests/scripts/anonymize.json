@@ -5,15 +5,15 @@
   },
   "tasks":[
     { "dataset":{
-      "auth":"user",
+      "auth":"service",
       "dataset":"Test_Anonymize_From"
     }},
     { "dataset":{
-      "auth":"user",
+      "auth":"service",
       "dataset":"Test_Anonymize_To"
     }},
     { "bigquery": {
-      "auth":"user",
+      "auth":"service",
       "from":{
         "values":[
           ["2018-02-27", "dog", 7, 67],
@@ -35,7 +35,7 @@
         ]
     }},
     { "bigquery": {
-      "auth":"user",
+      "auth":"service",
       "from":{
         "dataset":"Test_Anonymize_From",
         "query":"SELECT * FROM Test_Anonymize_From.Anonymize_Table;"
@@ -55,7 +55,7 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
         "dataset":"Test_Anonymize_To",
         "table":"Anonymize_Table",
@@ -68,7 +68,7 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
         "dataset":"Test_Anonymize_From",
         "table":"Anonymize_View",
