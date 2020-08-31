@@ -15,7 +15,7 @@ StarThinker deploys on Google Cloud in minutes without engineering or coding req
 ## For Ad Operations Teams...
 
 Sheets only go so far, with a StarThinker running, the ad operations team can operate on larger data sets, scale
-solutions across clients fast, and even automate campaign controls.  All using a drag and drop UI.
+solutions across clients fast, and even automate campaign controls. All using a drag and drop UI.
 
 - Start building solutions immediately by leveraging [dozens of existing workflow tasks](https://google.github.io/starthinker/).
 - Scale solutions across clients [without coding](https://google.github.io/starthinker/help/#help_recipe).
