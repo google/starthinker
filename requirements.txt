@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2019 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,6 +38,6 @@ wheel
 gunicorn
 uwsgi
 jsonpickle
-django==2.2.12
+django==2.2.13
 psycopg2-binary
 contextlib2
