@@ -1,5 +1,5 @@
-This is not an officially supported Google product.  It is a reference implementation.
-There is absolutely NO WARRANTY provided for using this code.  **The code is Apache Licensed
+This is not an officially supported Google product. It is a reference implementation.
+There is absolutely NO WARRANTY provided for using this code. **The code is Apache Licensed
 and CAN BE fully modified, white labeled, and disassembled by your team.**
 
 # Scaled Automation Application For Ad Operations Teams
