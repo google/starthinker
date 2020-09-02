@@ -32,7 +32,7 @@ Steps From [Tutorial](tutorials/README.md):
 
 ## For Ad Engineering Teams....
 
-No one enjoys building boiler plate code, its slow, error prone, tedious, and honestly drains the energy out of
+No one enjoys building boiler plate code, it's slow, error prone, tedious, and honestly drains the energy out of
 any project. At best StarThinker lets you skip all that, at worst it's working code you can strip down for your needs.
 Take what you need.
 
