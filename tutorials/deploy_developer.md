@@ -15,7 +15,7 @@ cd starthinker
 
 For updating or installing run the following:
 ```
-bash install/deploy.sh 
+bash install/deploy.sh
 ```
 
 1. Set up [Google Cloud Project](https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md).
@@ -27,7 +27,7 @@ bash install/deploy.sh
 source starthinker_assets/development.sh
 ```
 ```
-python starthinker/all/run.py scripts/say_hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT -c $STARTHINKER_CLIENT --verbose 
+python starthinker/all/run.py scripts/say_hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT -c $STARTHINKER_CLIENT --verbose
 ```
 
   - The **-u** and **-s** flags denote user and service credentials path, only required for recipes that use them.
@@ -36,7 +36,7 @@ python starthinker/all/run.py scripts/say_hello.json -u $STARTHINKER_USER -s $ST
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=README.md)
 
-Next, learn how to [create a recipe](recipe.md) or look at the [cheat sheet of commands](cheat_sheet.md). 
+Next, learn how to [create a recipe](recipe.md) or look at the [cheat sheet of commands](cheat_sheet.md).
 
 ## UI For Development Deploy
 
@@ -47,7 +47,7 @@ git clone https://github.com/google/starthinker
 cd starthinker
 ```
 ```
-bash install/deploy.sh 
+bash install/deploy.sh
 ```
 
 1. Option 1) Developer Menu
@@ -60,7 +60,7 @@ bash install/deploy.sh
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_developer.md)
 
-Next, learn how to [create a recipe](recipe.md) or look at the [cheat sheet of commands](cheat_sheet.md). 
+Next, learn how to [create a recipe](recipe.md) or look at the [cheat sheet of commands](cheat_sheet.md).
 
 ## Cloud Resources
 

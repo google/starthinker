@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -49,8 +49,8 @@ def lineitem():
       line_items
     )
 
-    if rows: 
-      if 'bigquery' in project.task['read']['out']: 
+    if rows:
+      if 'bigquery' in project.task['read']['out']:
         project.task['read']['out']['bigquery']['schema'] = LineItem_Read_Schema
         project.task['read']['out']['bigquery']['skip_rows'] = 0
 
@@ -59,11 +59,11 @@ def lineitem():
   elif 'write' in project.task:
     rows = get_rows(project.task['auth'], project.task['write'])
     lineitem_write(
-      project.task['auth'], 
+      project.task['auth'],
       rows,
       project.task['write'].get('dry_run', True)
     )
-  
+
 
 if __name__ == "__main__":
   lineitem()

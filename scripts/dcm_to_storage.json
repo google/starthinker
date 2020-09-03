@@ -2,7 +2,7 @@
   "script":{
     "released":"2017-08-14",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_small",
     "title":"CM To Storage",
     "description":"Move existing CM report into a Storage bucket.",

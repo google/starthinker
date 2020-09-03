@@ -1,6 +1,6 @@
 # StarThinker Tutorials
 
-Samples and references for using the StarThinker code base. Use these to deploy and maintain 
+Samples and references for using the StarThinker code base. Use these to deploy and maintain
 a StarThinker instance.
 
 ## Deployment
@@ -14,7 +14,7 @@ a StarThinker instance.
 ## UI
 
 - [Running A Recipe](https://google.github.io/starthinker/help/) - How to set up and deploy a recipe using the UI.
-- [Recipe Gallery](https://google.github.io/starthinker/) - List of packaged solutions. 
+- [Recipe Gallery](https://google.github.io/starthinker/) - List of packaged solutions.
 - [Logging](logging.md) - All logs are written to StackDriver, you can build dashboards on them.
 - [Testing](testing_ui.md) - How to test the UI and worker.
 

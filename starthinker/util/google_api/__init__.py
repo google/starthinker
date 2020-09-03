@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google LLC
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 This does not change or augment the standard API calls other than the following:
 
   * Allows passing of auth parameter to constructor, required for switching.
-  * Execute statement is overloaded to include iterator for responses with nextPageToken. 
+  * Execute statement is overloaded to include iterator for responses with nextPageToken.
   * Retries handle some common errors and have a back off scheme.
   * JSON based configuration allows StarThinker recipe definitions.
   * Pre-defined functions for each API can be added to fix version and uri options.
@@ -53,7 +53,7 @@ RETRIABLE_EXCEPTIONS = (
 RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
 
 
-def API_Retry(job, key=None, retries=3, wait=31): 
+def API_Retry(job, key=None, retries=3, wait=31):
   """ API retry that includes back off and some common error handling.
 
   CAUTION:  Total timeout cannot exceed 5 minutes or the SSL token expires for all future calls.
@@ -75,7 +75,7 @@ def API_Retry(job, key=None, retries=3, wait=31):
   Returns:
     * JSON result of job or key value from JSON result if job succeed.
     * None if object already exists.
-       
+
   Raises:
     * Any exceptions not listed in comments above.
 
@@ -134,26 +134,26 @@ def API_Retry(job, key=None, retries=3, wait=31):
 
 
 def API_Iterator(function, kwargs, results = None):
-  """ See below API_Iterator_Instance for documentaion, this is just an iter wrapper. 
-      
+  """ See below API_Iterator_Instance for documentaion, this is just an iter wrapper.
+
       Returns:
         iter(API_Iterator_Instance(function, kwargs, results))
   """
 
   class API_Iterator_Instance():
     """A helper class that iterates multiple results, automatically called by execute.
-    
+
       This is a standard python iterator definition, no need to document functions.
 
       The only job this has is to handle Google API iteration, as such it can be called
       on any API call that reurns a 'nextPageToken' in the result.
-     
+
       For example if calling the DCM list placement API:
-     
+
         https://developers.google.com/doubleclick-advertisers/v3.3/placements/list
-    
+
         function = get_service('dfareporting', 'v3.3', 'user').placements().list
-        kwargs = { 'profile_id':1234, 'archived':False } 
+        kwargs = { 'profile_id':1234, 'archived':False }
         for placement in API_Iterator(function, kwargs):
           print(placement)
 
@@ -168,7 +168,7 @@ def API_Iterator(function, kwargs, results = None):
     Returns:
       Iterator over JSON objects.
     """
-  
+
     def __init__(self, function, kwargs, results = None):
       self.function = function
       self.kwargs = kwargs
@@ -176,32 +176,32 @@ def API_Iterator(function, kwargs, results = None):
       self.position = 0
       self.iterable = None
       self.__find_tag__()
-  
+
     def __find_tag__(self):
       # find the only list item for a paginated response, JOSN will only have list type, so ok to be specific
       if self.results: # None and {} both excluded
         for tag in iter(self.results.keys()):
-          if isinstance(self.results[tag], list): 
+          if isinstance(self.results[tag], list):
             self.iterable = tag
             break
-  
+
         # this shouldn't happen but some APIs simply omit the key if no results
-        if self.iterable is None and project.verbose: 
+        if self.iterable is None and project.verbose:
           print('WARNING API RETURNED NO KEYS WITH LISTS:', ', '.join(self.results.keys()))
-      
+
     def __iter__(self):
       return self
-  
+
     def __next__(self):
       return self.next()
-  
+
     def next(self):
-  
+
       # if no initial results, get some, empty results {} different
       if self.results is None:
         self.results = API_Retry(self.function(**self.kwargs))
         self.__find_tag__()
-  
+
       # if empty results or exhausted page, get next page
       if self.iterable and self.position >= len(self.results[self.iterable]):
         page_token = self.results.get('nextPageToken', None)
@@ -213,15 +213,15 @@ def API_Iterator(function, kwargs, results = None):
           self.results = API_Retry(self.function(**self.kwargs))
           self.position = 0
 
-        else: 
+        else:
           raise StopIteration
-  
+
       # if results remain, return them
       if self.iterable and self.position < len(self.results[self.iterable]):
         value = self.results[self.iterable][self.position]
         self.position += 1
         return value
-  
+
       # if pages and results exhausted, stop
       else:
         raise StopIteration
@@ -231,12 +231,12 @@ def API_Iterator(function, kwargs, results = None):
 
 class API():
   """A wrapper around Google API with built in helpers for StarThinker.
-  
+
     The wrapper mimics function calls, storing the m in a stack, until it encounters
     execute().  Then it uses the stored stack and arguments to call the actual API.
     This allows handlers on execute such as API_Retry and API_Iterator.
 
-    See module level description for wrapped changes to Google API.  The class is 
+    See module level description for wrapped changes to Google API.  The class is
     designed to be a connector to JSON, hence the configuraton is a JSON object.
 
     configuration = {
@@ -341,7 +341,7 @@ class API():
           error = "A retriable error occurred: %s" % e
         else:
           raise
-  
+
       if error is not None:
         print(error)
         retries -= 1
@@ -557,7 +557,7 @@ def API_Gmail(auth, iterate=False):
 
 
 def API_Compute(auth, iterate=False):
-  """Compute helper configuration Google API. 
+  """Compute helper configuration Google API.
      https://cloud.google.com/compute/docs/reference/rest/v1/
   """
 

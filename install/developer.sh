@@ -2,7 +2,7 @@
 
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@
 
 test_ui() {
 
-  install_virtualenv; 
-  install_requirements; 
+  install_virtualenv;
+  install_requirements;
   setup_credentials_service;
   setup_credentials_commandline;
   save_config;
@@ -67,8 +67,8 @@ test_ui() {
 
 test_tasks() {
 
-  install_virtualenv; 
-  install_requirements; 
+  install_virtualenv;
+  install_requirements;
   setup_credentials_service;
   setup_credentials_commandline;
   save_config;
@@ -99,8 +99,8 @@ test_tasks() {
 launch_developer_ui() {
   cloud_shell=$1
 
-  install_virtualenv; 
-  install_requirements; 
+  install_virtualenv;
+  install_requirements;
   setup_credentials_service;
   setup_credentials_commandline;
   save_config;
@@ -140,16 +140,16 @@ launch_developer_ui() {
     echo ""
 
     read -p "Cloud Shell URL: " url
-    
+
     STARTHINKER_UI_DOMAIN=$(awk -F/ '{print $3}' <<< $url)
 
-    echo "" 
+    echo ""
     echo "Step 2: Configure oAuth Callback"
     echo "----------------------------------------"echo
-    echo "  A. Visit: https://console.developers.google.com/apis/credentials" 
-    echo "  B. Edit the client credentials uploaded in an earlier step." 
-    echo "  C. Under Authorized redirect URIs add: https://$STARTHINKER_UI_DOMAIN/oauth_callback/" 
-    echo "  D. Click Save." 
+    echo "  A. Visit: https://console.developers.google.com/apis/credentials"
+    echo "  B. Edit the client credentials uploaded in an earlier step."
+    echo "  C. Under Authorized redirect URIs add: https://$STARTHINKER_UI_DOMAIN/oauth_callback/"
+    echo "  D. Click Save."
     echo ""
 
     read -p "Press enter to continue, then visit the browser at: https://$STARTHINKER_UI_DOMAIN"
@@ -191,11 +191,11 @@ launch_developer_worker() {
 
 
 install_developer() {
-  install_virtualenv; 
-  install_requirements; 
+  install_virtualenv;
+  install_requirements;
   setup_credentials_service;
   setup_credentials_commandline;
-  setup_credentials_user; 
+  setup_credentials_user;
   save_config;
   make_cron;
 }
@@ -236,14 +236,14 @@ setup_developer() {
 
   developer_done=0
   developer_options=("Install Developer StarThinker" "Launch Developer UI" "Launch Cloud Shell UI" "Developer Worker - Single" "Developer Worker - Peristent" "Test UI" "Test Tasks")
- 
+
   while (( !developer_done ))
   do
     echo "----------------------------------------------------------------------"
     echo "Developer Menu"
     echo "----------------------------------------------------------------------"
     echo ""
-   
+
     PS3='Your Choice ( q = Quit ): '
     select developer_option in "${developer_options[@]}"; do
       case $REPLY in

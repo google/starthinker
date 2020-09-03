@@ -26,7 +26,7 @@ pip install git+https://github.com/google/starthinker
 ## Sample DAG Recipe
 
 The [airflow.json](../scripts/airflow.json) recipe has three tasks in it.
-You can edit the underlying JSON recipe without re-generating the connector, 
+You can edit the underlying JSON recipe without re-generating the connector,
 this connector generates the DAG in real time whenever AirFlow calls it.
 
 ```

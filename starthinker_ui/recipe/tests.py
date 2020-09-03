@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google LLC
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -81,7 +81,7 @@ WORKER_LOOKBACK_EXPIRE = (JOB_LOOKBACK_MS + 1000)
 def test_job_utm(hour = 0, days_offset = 0):
   utc = datetime.utcnow().replace(hour=hour, minute=0, second=0, microsecond=0)
   if days_offset: utc += timedelta(days=days_offset)
-  return utc_milliseconds(utc) 
+  return utc_milliseconds(utc)
 
 
 def assertRecipeDone(cls, recipe):
@@ -150,7 +150,7 @@ class StatusTest(TestCase):
 
     # pull new recipe, nothing in it until update is called
     status = self.recipe.get_status()
-    
+
     self.assertEqual(status['date_tz'], str(tz_now.date()))
     self.assertEqual(status['tasks'], [])
 
@@ -163,7 +163,7 @@ class StatusTest(TestCase):
 
     self.assertEqual(tz_recipe.date(), tz_now.date() + timedelta(days=1))
     self.assertEqual(tz_recipe.hour, self.recipe.get_hours()[0])
-    
+
     # done recipe
     for task in status['tasks']:
       task['done'] = True
@@ -230,7 +230,7 @@ class StatusTest(TestCase):
 
     # reduce the hours so that fewer permutations are created
     self.recipe.hour = json.dumps([])
-    self.recipe.save() 
+    self.recipe.save()
     self.recipe.update()
 
     status = self.recipe.get_status()
@@ -239,7 +239,7 @@ class StatusTest(TestCase):
     date_tz = str(now_tz.date())
 
     self.assertEqual(status['date_tz'], date_tz)
-    self.assertEqual(len(status['tasks']), 1 + 1 + 1 + 0 + 3 + 1) 
+    self.assertEqual(len(status['tasks']), 1 + 1 + 1 + 0 + 3 + 1)
 
 
   def test_forced(self):
@@ -249,7 +249,7 @@ class StatusTest(TestCase):
     date_tz = str(now_tz.date())
 
     self.assertEqual(status['date_tz'], date_tz)
-    self.assertEqual(len(status['tasks']), len(self.recipe.get_json()['tasks'])) 
+    self.assertEqual(len(status['tasks']), len(self.recipe.get_json()['tasks']))
 
     # includes all tasks in sequence including hours=[], normally #2 is skipped
     self.assertEqual(status['tasks'][0]['order'], 0)
@@ -313,7 +313,7 @@ class StatusTest(TestCase):
         task = self.recipe.get_task()
 
       status = self.recipe.get_status()
-      
+
       self.assertTrue(
         all([
           (task['done'] and task['hour'] <= hour_tz) or (not task['done'] and task['hour'] > hour_tz)
@@ -373,17 +373,17 @@ class StatusTest(TestCase):
     self.recipe.update()
     log = self.recipe.get_log()
 
-    self.assertEqual(log["ago"], "1 Minute Ago") 
+    self.assertEqual(log["ago"], "1 Minute Ago")
     self.assertEqual(log["uid"], self.recipe.uid())
-    self.assertEqual(log["percent"], 0) 
+    self.assertEqual(log["percent"], 0)
     self.assertEqual(log["status"], "NEW")
 
     self.recipe.force()
     log = self.recipe.get_log()
 
-    self.assertEqual(log["ago"], "1 Minute Ago") 
+    self.assertEqual(log["ago"], "1 Minute Ago")
     self.assertEqual(log["uid"], self.recipe.uid())
-    self.assertEqual(log["percent"], 0) 
+    self.assertEqual(log["percent"], 0)
     self.assertEqual(log["status"], "QUEUED")
 
 
@@ -435,7 +435,7 @@ class ManualTest(TestCase):
             "instance": 1,
             "order": 0,
             "event": "JOB_END",
-            "utc":str(datetime.utcnow()), 
+            "utc":str(datetime.utcnow()),
             "script": "manual",
             "hour": 0,
             "stdout":"",
@@ -482,7 +482,7 @@ class ManualTest(TestCase):
     # manual mode ( without force always returns no tasks )
     ignore, job = worker_pull('SAMPLE_WORKER', jobs=1)
     self.assertEqual(len(job), 0)
-    
+
     # advance time, since current jobs need to expire, artificially ping to keep out of queue
     sleep(WORKER_LOOKBACK_EXPIRE/1000)
 
@@ -539,7 +539,7 @@ class RecipeViewTest(TestCase):
       hour = json.dumps([0]),
       timezone = 'America/Los_Angeles',
       tasks = json.dumps([
-        { "tag": "hello", 
+        { "tag": "hello",
           "values": {"say_first":"Hi Once", "say_second":"Hi Twice", "sleep":0},
           "sequence": 1
         },
@@ -673,7 +673,7 @@ class JobTest(TransactionTestCase):
       hour = json.dumps([0]),
       timezone = 'America/Los_Angeles',
       tasks = json.dumps([
-        { "tag": "hello", 
+        { "tag": "hello",
           "values": {"say_first":"Hi Once", "say_second":"Hi Twice", "sleep":0},
           "sequence": 1
         },
@@ -690,7 +690,7 @@ class JobTest(TransactionTestCase):
       hour = json.dumps([0]),
       timezone = 'America/Los_Angeles',
       tasks = json.dumps([
-        { "tag": "hello", 
+        { "tag": "hello",
           "values": {"say_first":"Hi Once", "say_second":"Hi Twice", "sleep":0},
           "sequence": 1
         },
@@ -709,7 +709,7 @@ class JobTest(TransactionTestCase):
       hour = json.dumps([0]),
       timezone = 'America/Los_Angeles',
       tasks = json.dumps([
-        { "tag": "hello", 
+        { "tag": "hello",
           "values": {"say_first":"Hi Once", "say_second":"Hi Twice", "sleep":0},
           "sequence": 1
         },
@@ -730,7 +730,7 @@ class JobTest(TransactionTestCase):
       hour = json.dumps([0]),
       timezone = 'America/Los_Angeles',
       tasks = json.dumps([
-        { "tag": "hello", 
+        { "tag": "hello",
           "values": {"say_first":"Hi Once", "say_second":"Hi Twice", "sleep":0},
           "sequence": 1
         }
@@ -751,7 +751,7 @@ class JobTest(TransactionTestCase):
       hour = json.dumps([0]),
       timezone = 'America/Los_Angeles',
       tasks = json.dumps([
-        { "tag": "hello", 
+        { "tag": "hello",
           "values": {"say_first":"Hi Once", "say_second":"Hi Twice", "sleep":0},
           "sequence": 1
         }
@@ -773,7 +773,7 @@ class JobTest(TransactionTestCase):
       hour = json.dumps([0]),
       timezone = 'America/Los_Angeles',
       tasks = json.dumps([
-        { "tag": "hello", 
+        { "tag": "hello",
           "values": {"say_first":"Hi Once", "say_second":"Hi Twice", "sleep":0, "errror":"An error is triggered."},
           "sequence": 1
         },
@@ -840,7 +840,7 @@ class JobTest(TransactionTestCase):
   def test_manager(self):
 
     management.call_command('job_worker', worker='TEST_WORKER', jobs=5, timeout=60*60*1, verbose=True, test=True)
-    
+
     jobs = Recipe.objects.filter(worker_uid='TEST_WORKER')
     self.assertEqual(len(jobs), 2)
     status = jobs[0].get_status()
@@ -1088,7 +1088,7 @@ class JobDayTest(TransactionTestCase):
   def setUp(self):
     self.account = account_create()
     self.project = project_create()
-    
+
     now_tz = utc_to_timezone(datetime.utcnow(), 'America/Los_Angeles')
     today_tz = now_tz.strftime('%a')
     yesterday_tz = (now_tz - timedelta(days=1)).strftime('%a')
@@ -1111,7 +1111,7 @@ class JobDayTest(TransactionTestCase):
       job_status = json.dumps({
         "date_tz":str(now_tz.date()),
         "tasks": [
-          { 
+          {
             "instance": 1,
             "order": 0,
             "event": "JOB_PENDING",
@@ -1122,7 +1122,7 @@ class JobDayTest(TransactionTestCase):
             "stderr": "",
             "done": False
           },
-          { 
+          {
             "instance": 2,
             "order": 0,
             "event": "JOB_PENDING",
@@ -1150,7 +1150,7 @@ class JobDayTest(TransactionTestCase):
       timezone = 'America/Los_Angeles',
       tasks = json.dumps([
         { "tag": "hello",
-          "values": {}, 
+          "values": {},
           "sequence": 1
         },
       ]),
@@ -1228,7 +1228,7 @@ class JobCancelTest(TransactionTestCase):
       job_status = json.dumps({
         "date_tz":str(now_tz.date()),
         "tasks": [
-          { 
+          {
             "instance": 1,
             "order": 0,
             "event": "JOB_END",
@@ -1239,7 +1239,7 @@ class JobCancelTest(TransactionTestCase):
             "stderr": "",
             "done": False
           },
-          { 
+          {
             "instance": 2,
             "order": 0,
             "event": "JOB_END",
@@ -1320,7 +1320,7 @@ class WorkerTest(TransactionTestCase):
       hour = json.dumps([0]),
       timezone = 'America/Los_Angeles',
       tasks = json.dumps([
-        { "tag": "hello", 
+        { "tag": "hello",
           "values": {"say_first":"Hi Once", "say_second":"Hi Twice", "sleep":0},
           "sequence": 1
         },

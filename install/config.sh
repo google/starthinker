@@ -2,7 +2,7 @@
 
 ###########################################################################
 #
-#  Copyright 2019 Google LLC
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -241,7 +241,7 @@ setup_gcloud() {
        error=$(gcloud auth print-identity-token 2>&1 > /dev/null)
 
        if [[ ! -z $error ]]; then
-    
+
          echo "No gcloud account detected, please log in."
          echo ""
          gcloud auth login --no-launch-browser --brief
@@ -318,7 +318,7 @@ setup_analytics() {
   echo "Leaving the tracking in place helps us continue supporting StarThinker by showing it is useful."
   echo "To opt out simply enter a blank or type in your own."
   echo ""
-  
+
   read -p "Google Analytics Token ( blank to leave unchanged or OFF to remove): " analytics
 
   if [ "$analytics" == "OFF" ]; then
@@ -341,9 +341,9 @@ setup_project() {
   echo "Set gCloud Project - ${STARTHINKER_PROJECT}"
   echo "----------------------------------------"
   echo ""
-  
+
   if [ "$forced" == "forced" ] || [ "${STARTHINKER_PROJECT}" == "" ]; then
-  
+
     echo "Retrieve Project ID from: https://console.cloud.google.com"
     echo ""
     echo "IMPORTANT SETUP NOTES"
@@ -352,9 +352,9 @@ setup_project() {
     echo " * Use the Project ID not the Name."
     echo " * Include the organization if it is part of the Project ID."
     echo ""
-  
+
     read -p "Cloud Project ID ( blank to keep existing ): " cloud_id
-  
+
     if [ "${cloud_id}" ]; then
       STARTHINKER_PROJECT="${cloud_id}"
       save_config;
@@ -366,7 +366,7 @@ setup_project() {
     echo "Using Existing Project ID"
     echo ""
   fi
-  
+
   gcloud config set project "${STARTHINKER_PROJECT}" --no-user-output-enabled;
 }
 
@@ -619,7 +619,7 @@ install_virtualenv_linux() {
   else
     sudo apt-get install gcc python3-dev python3-pip wget -qq;
     if [ "$(command -v virtualenv)" == "" ]; then
-      sudo apt-get install virtualenv -qq 
+      sudo apt-get install virtualenv -qq
     fi
   fi
 }
@@ -734,9 +734,9 @@ make_cron() {
       echo " Create Cron Directory - ${STARTHINKER_CRON}"
       echo "----------------------------------------"
       echo ""
-  
+
       mkdir -p "${STARTHINKER_CRON}"
-  
+
       echo "Done"
       echo ""
 

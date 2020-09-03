@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ class Command(BaseCommand):
   help = 'Generate Templates For Colab'
 
   def handle(self, *args, **kwargs):
-     
+
     with open('%s/tutorials/deploy_colab.md' % settings.UI_ROOT, 'w') as readme_file:
       readme_file.write('# Using Scripts As A Colab Notebook\n')
       readme_file.write('\n')

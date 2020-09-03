@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ def about(auth, fields='importFormats'):
 def file_id(auth, url_or_name):
 
   if url_or_name.startswith('https://drive.google.com/open?id='):
-    return url_or_name.split('?id=', 1)[-1]  
+    return url_or_name.split('?id=', 1)[-1]
 
   elif url_or_name.startswith('https://docs.google.com/'):
     m = re.search('^(?:https:\/\/docs.google.com\/\w+\/d\/)([a-zA-Z0-9-_]+)(?:\/.*)?$', url_or_name)
@@ -85,10 +85,10 @@ def file_get(auth, drive_id):
 def file_exists(auth, name):
   drive_id = file_id(auth, name)
   if drive_id:
-    try: 
+    try:
       API_Drive(auth).files().get(fileId=drive_id).execute()
       return True
-    except HttpError: 
+    except HttpError:
       return False
   return False
 
@@ -99,7 +99,7 @@ def file_find(auth, name, parent = None):
 
    try: return next(API_Drive(auth, iterate=True).files().list(q=query).execute())
    except StopIteration: return None
- 
+
 
 def file_delete(auth, name, parent = None):
   drive_id = file_id(auth, name)
@@ -112,18 +112,18 @@ def file_delete(auth, name, parent = None):
 
 
 def file_create(auth, name, filename, data, parent=None):
-  """ Checks if file with name already exists ( outside of trash ) and 
+  """ Checks if file with name already exists ( outside of trash ) and
     if not, uploads the file.  Determines filetype based on filename extension
     and attempts to map to Google native such as Docs, Sheets, Slides, etc...
 
     For example:
-    -  ```file_create('user', 'Sample Document', 'sample.txt', BytesIO('File contents'))``` 
+    -  ```file_create('user', 'Sample Document', 'sample.txt', BytesIO('File contents'))```
     -  Creates a Google Document object in the user's drive.
 
     -  ```file_Create('user', 'Sample Sheet', 'sample.csv', BytesIO('col1,col2\nrow1a,row1b\n'))````
     -  Creates a Google Sheet object in the user's drive.
 
-    See: https://developers.google.com/drive/api/v3/manage-uploads 
+    See: https://developers.google.com/drive/api/v3/manage-uploads
 
     ### Args:
     -  * auth: (string) specify 'service' or 'user' to toggle between credentials used to access
@@ -157,11 +157,11 @@ def file_create(auth, name, filename, data, parent=None):
 
     # construct upload object, and stream upload in chunks
     body = {
-      'name':name, 
+      'name':name,
       'parents' : [parent] if parent else [],
       'mimeType': drive_mime,
     }
-  
+
     media = MediaIoBaseUpload(
       BytesIO(data or ' '), # if data is empty BAD REQUEST error occurs
       mimetype=file_mime,
@@ -174,7 +174,7 @@ def file_create(auth, name, filename, data, parent=None):
       media_body=media,
       fields='id'
     ).execute()
-  
+
   return drive_file
 
 
@@ -191,7 +191,7 @@ def file_copy(auth, source_name, destination_name):
     if source_id:
       body = {
         'visibility':'PRIVATE',
-        'name':destination_name 
+        'name':destination_name
       }
       return API_Drive(auth).files().copy(fileId=source_id, body=body).execute()
     else:

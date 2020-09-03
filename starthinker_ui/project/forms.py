@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ class ProjectForm(forms.ModelForm):
       ('domain', 'DOMAIN ( %s ) | CAUTION: Only people in your verified domain can use it.' % domain),
       ('global', 'GLOBAL | CAUTION: Anyone logging in can use it.')
     ) if domain else (
-      ('user', 'User'), 
+      ('user', 'User'),
       ('global', 'Global')
     )
 

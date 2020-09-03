@@ -1,4 +1,4 @@
-# Operating Costs For StarThinker UI and Workers At Scale 
+# Operating Costs For StarThinker UI and Workers At Scale
 
 StarThinker UI and Job Workers use Google Cloud resources in the form a database, virtual machines, and appengine.
 Although we cannot provide specific guaranteed pricing due to pricing variations in your specific Google contract,
@@ -12,22 +12,22 @@ Google Project running StarThinker as the project hosting recipe data for securi
 
 = **$0 - All data costs are billed to recipe owner.**
 
-## Costs 
+## Costs
 
 The UI web server and database are roughly fixed in cost, for most add operations teams, these costs will be minimal.
 If your database grows past 100 users or 1000 recipes or you request increased availability, your costs will vary...
 
-- $85 [App Engine UI](https://cloud.google.com/appengine/pricing) - Monthly cost of scaled web server.  
-- $95 [Cloud SQL](https://cloud.google.com/appengine/pricing) - Monthly cost of backed up database. 
+- $85 [App Engine UI](https://cloud.google.com/appengine/pricing) - Monthly cost of scaled web server.
+- $95 [Cloud SQL](https://cloud.google.com/appengine/pricing) - Monthly cost of backed up database.
 - $1 [Cloud Storage](https://cloud.google.com/storage/pricing) - Monthly cost of storing credential data.
 
 = **$181 / month fixed costs**
 
 ## Scaled Costs
 
-StarThinker [autoscales the number of workers](../starthinker_ui/recipe/views.py) based on the number of pending recipe tasks.  A 
+StarThinker [autoscales the number of workers](../starthinker_ui/recipe/views.py) based on the number of pending recipe tasks.  A
 [cron job](../cron.yaml) brings new workers up every 3 minutes and [workers fall of if idle](../starthinker_ui/recipe/management/commands/job_worker.py)
- for 5 minutes.  This allows the system to scale to zero workers when no recipe tasks are scheduled for that time.  
+ for 5 minutes.  This allows the system to scale to zero workers when no recipe tasks are scheduled for that time.
 
 Currently StarThinker uses [n1-highmem-4 instances at $0.2368 / hour](https://cloud.google.com/compute/vm-instance-pricing#n1_predefined)
  with 4 concurrent tasks per machine.  Which reduces to roughly a cost of $0.059225 / task / hour = $0.000987083333333 / task / minute.

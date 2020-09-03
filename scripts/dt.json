@@ -2,7 +2,7 @@
   "script":{
     "released":"2018-03-15",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"assignment_returned",
     "title":"DT To Table",
     "description":"Move data from a DT bucket into a BigQuery table.",

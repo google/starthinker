@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -189,12 +189,12 @@ class PlacementDAO(BaseDAO):
 
     self._process_skipability(feed_item, item)
 
-    item['pricingSchedule']['startDate'] = (StringExtensions.convertDateTimeStrToDateStr(feed_item.get(FieldMap.PLACEMENT_START_DATE, None)) 
+    item['pricingSchedule']['startDate'] = (StringExtensions.convertDateTimeStrToDateStr(feed_item.get(FieldMap.PLACEMENT_START_DATE, None))
         if feed_item.get(FieldMap.PLACEMENT_START_DATE, '')
         else item['pricingSchedule']['startDate'])
 
-    item['pricingSchedule']['endDate'] = (StringExtensions.convertDateTimeStrToDateStr(feed_item.get(FieldMap.PLACEMENT_END_DATE, None)) 
-      if feed_item.get(FieldMap.PLACEMENT_END_DATE, '') 
+    item['pricingSchedule']['endDate'] = (StringExtensions.convertDateTimeStrToDateStr(feed_item.get(FieldMap.PLACEMENT_END_DATE, None))
+      if feed_item.get(FieldMap.PLACEMENT_END_DATE, '')
       else item['pricingSchedule']['endDate'])
 
     item['pricingSchedule']['pricingType'] = feed_item.get(

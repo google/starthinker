@@ -92,7 +92,7 @@ def job_wait(auth, job):
       projectId=job['jobReference']['projectId'],
       jobId=job['jobReference']['jobId']
     )
-  
+
     while True:
       sleep(5)
       if project.verbose: print('.', end='')
@@ -100,7 +100,7 @@ def job_wait(auth, job):
       result = API_Retry(request)
       if 'errors' in result['status']:
         raise Exception('BigQuery Job Error: %s' % ' '.join([e['message'] for e in result['status']['errors']]))
-      elif 'errorResult' in result['status']: 
+      elif 'errorResult' in result['status']:
         raise Exception('BigQuery Job Error: %s' % result['status']['errorResult']['message'])
       elif result['status']['state'] == 'DONE':
         if project.verbose: print('JOB COMPLETE:', result['id'])
@@ -209,7 +209,7 @@ def query_to_view(auth, project_id, dataset_id, view_id, query, legacy=True, rep
   response = API_BigQuery(auth).tables().insert(projectId=project_id, datasetId=dataset_id, body=body).execute()
   if response is None and replace:
     return API_BigQuery(auth).tables().update(projectId=project_id,datasetId=dataset_id, tableId=view_id, body=body).execute()
-    
+
 
 
 #struture = CSV, NEWLINE_DELIMITED_JSON
@@ -355,7 +355,7 @@ def io_to_table(auth, project_id, dataset_id, table_id, data_bytes, source_forma
         }
       }
     }
- 
+
     if schema:
       body['configuration']['load']['schema'] = { 'fields':schema }
       body['configuration']['load']['autodetect'] = False
@@ -414,7 +414,7 @@ def incremental_rows_to_table(auth, project_id, dataset_id, table_id, rows, sche
       _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id, start_date, end_date, billing_project_id=billing_project_id)
 
     #append temp table to master
-    query = ('SELECT * FROM `' 
+    query = ('SELECT * FROM `'
       + project_id + '.' + dataset_id + '.' + table_id_temp + '` ')
     query_to_table(auth, project_id, dataset_id, table_id, query, disposition, False, billing_project_id=billing_project_id)
 
@@ -504,7 +504,7 @@ def table_to_schema(auth, project_id, dataset_id, table_id):
 # https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query
 def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True):
 
-  # Create the query 
+  # Create the query
   body = {
     "kind": "bigquery#queryRequest",
     "query": query,
@@ -541,7 +541,7 @@ def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True
 
     if 'PageToken' in response:
       response = API_BigQuery(auth).jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], pageToken=response['PageToken']).execute(iterate=False)
-    elif row_count < int(response['totalRows']): 
+    elif row_count < int(response['totalRows']):
       response = API_BigQuery(auth).jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId'], startIndex=row_count).execute(iterate=False)
     else:
       break
@@ -651,7 +651,7 @@ def _build_converter_array(schema, fields, col_count):
     for field in schema['fields']:
       if fields is None or field in fields:
         converters.append(_JSON_CONVERTERS[field['type']])
-  else: 
+  else:
     #No schema so simply return the string as string
     converters = [lambda v: v] * col_count
   #print(converters)
@@ -662,7 +662,7 @@ def drop_table(auth, project_id, dataset_id, table_id, billing_project_id=None):
   if not billing_project_id:
     billing_project_id = project_id
 
-  query = ('DROP TABLE `' 
+  query = ('DROP TABLE `'
     + project_id + '.' + dataset_id + '.' + table_id + '` ')
 
   body = {
@@ -681,7 +681,7 @@ def _get_max_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
   if not billing_project_id:
     billing_project_id = project_id
 
-  query = ('SELECT MAX(Report_Day) FROM `' 
+  query = ('SELECT MAX(Report_Day) FROM `'
     + project_id + '.' + dataset_id + '.' + table_id + '` ')
 
   body = {
@@ -701,7 +701,7 @@ def _get_min_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
   if not billing_project_id:
     billing_project_id = project_id
 
-  query = ('SELECT MIN(Report_Day) FROM `' 
+  query = ('SELECT MIN(Report_Day) FROM `'
     + project_id + '.' + dataset_id + '.' + table_id + '` ')
 
   body = {
@@ -714,7 +714,7 @@ def _get_min_date_from_table(auth, project_id, dataset_id, table_id, billing_pro
   }
 
   job = API_BigQuery(auth).jobs().query(projectId=billing_project_id, body=body).execute()
-  
+
   return job['rows'][0]['f'][0]['v']
 
 
@@ -724,7 +724,7 @@ def _clear_data_in_date_range_from_table(auth, project_id, dataset_id, table_id,
   if not billing_project_id:
     billing_project_id = project_id
 
-  query = ('DELETE FROM `' 
+  query = ('DELETE FROM `'
     + project_id + '.' + dataset_id + '.' + table_id + '` '
     + 'WHERE Report_Day >= "' + start_date + '"' + 'AND Report_Day <= "' + end_date + '"'
     )

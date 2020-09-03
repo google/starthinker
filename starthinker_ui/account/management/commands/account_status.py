@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -107,11 +107,11 @@ class Command(BaseCommand):
     )
 
   def handle(self, *args, **kwargs):
-    
+
     # loop through accounts
     for account in Account.objects.all():
       # if account is given only do that one
-      if kwargs['email'] is None or account.email == kwargs['email']: 
+      if kwargs['email'] is None or account.email == kwargs['email']:
         print('CHECKING: ', account.email)
 
         status = False
@@ -126,7 +126,7 @@ class Command(BaseCommand):
         rows = []
         for recipe in account.recipe_set.all():
           log = recipe.get_log()
-          rows.append([recipe.name, log.get('status'), log.get('ago'), 'http://starthinker.corp.google.com/recipe/edit/%d/' % recipe.pk]) 
+          rows.append([recipe.name, log.get('status'), log.get('ago'), 'http://starthinker.corp.google.com/recipe/edit/%d/' % recipe.pk])
 
         if rows:
           email.segment_next()
@@ -138,7 +138,7 @@ class Command(BaseCommand):
         #rows = []
         #for recipe in storage_list(account):
         #  recipe.log = logs.get(recipe.uid(), {})
-        #  rows.append([recipe.name, recipe.log.get('status'), recipe.log.get('time_ago'), recipe.link_storage]) 
+        #  rows.append([recipe.name, recipe.log.get('status'), recipe.log.get('time_ago'), recipe.link_storage])
 
         if rows:
           email.segment_next()

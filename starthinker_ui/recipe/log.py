@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -80,8 +80,8 @@ def log_put(event, severity, job=None, text=None, payload=None):
   """Generic log writer used by helper functions. Writes to StackDriver.
 
   Creates a record that can be read using log_get function. Entire recipe is
-  logged, worker data and stdout and stderr are added to the JOSN under worker key. 
-  Only JOB_EXCEPTION and MANAGER_EXCEPTION logs to text in case JSON is corrupt, 
+  logged, worker data and stdout and stderr are added to the JOSN under worker key.
+  Only JOB_EXCEPTION and MANAGER_EXCEPTION logs to text in case JSON is corrupt,
   everythng else is JSON.
 
   Do not call this directly, use helper functions instead:
@@ -113,7 +113,7 @@ def log_put(event, severity, job=None, text=None, payload=None):
       {
         "logName": "projects/%s/logs/StarThinker" % UI_PROJECT,
         "severity": severity,
-        "resource": { 
+        "resource": {
           "type": "project",
           "labels": { "key": UI_PROJECT },
         },
@@ -159,7 +159,7 @@ def log_put(event, severity, job=None, text=None, payload=None):
 def log_get(recipe_id=[], timezone='America/Los_Angeles', days=1):
   """Returns last actionable job run for a specific recipe or all recipes.
 
-  Pulls status entries from StackDriver in reverse order.  A single recipe may 
+  Pulls status entries from StackDriver in reverse order.  A single recipe may
   be run multiple times for multiple tasks at different hours, do not
   assume a JOB_END means a recipe is complete.  Only way to ensure a recipe is complete
   is to compare all tasks run against all tasks in recipe ( not done by log code).
@@ -183,7 +183,7 @@ def log_get(recipe_id=[], timezone='America/Los_Angeles', days=1):
        AND labels.layer="JOB" \
     ' % (UI_PROJECT, LOG_VERSION),
     "orderBy": "timestamp desc",
-    "pageSize": 1000 
+    "pageSize": 1000
   }
 
   if recipe_id:

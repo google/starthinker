@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -61,10 +61,10 @@ def sheets_tab_range(sheet_tab, sheet_range):
 
 def sheets_get(auth, sheet_url_or_name):
   sheet_id = sheets_id(auth, sheet_url_or_name)
-  if sheet_id: 
+  if sheet_id:
     service = get_service('sheets', 'v4', auth)
     return API_Retry(service.spreadsheets().get(spreadsheetId=sheet_id))
-  else: 
+  else:
     return None
 
 
@@ -111,9 +111,9 @@ def sheets_write(auth, sheet_url_or_name, sheet_tab, sheet_range, data, append=F
     ))
   else:
     API_Retry(service.spreadsheets().values().update(
-      spreadsheetId=sheet_id, 
-      range=range, 
-      body=body, 
+      spreadsheetId=sheet_id,
+      range=range,
+      body=body,
       valueInputOption=valueInputOption
     ))
 
@@ -142,7 +142,7 @@ def sheets_tab_copy(auth, from_sheet_url_or_name, from_sheet_tab, to_sheet_url_o
     }))
 
     body = {
-      "requests":[] 
+      "requests":[]
     }
 
     # if destination tab exists, delete it
@@ -190,7 +190,7 @@ def sheets_tab_create(auth, sheet_url_or_name, sheet_tab):
           }
         }
       }]
-    }) 
+    })
 
 
 def sheets_tab_delete(auth, sheet_url_or_name, sheet_tab):
@@ -210,7 +210,7 @@ def sheets_tab_delete(auth, sheet_url_or_name, sheet_tab):
               "sheetId": tab_id,
             }
           }]
-        }) 
+        })
 
 
 def sheets_tab_rename(auth, sheet_url_or_name, old_sheet_tab, new_sheet_tab):
@@ -226,7 +226,7 @@ def sheets_tab_rename(auth, sheet_url_or_name, old_sheet_tab, new_sheet_tab):
           "fields":"title"
         }
       }]
-    }) 
+    })
 
 
 def sheets_create(auth, sheet_name, sheet_tab, template_sheet=None, template_tab=None):
@@ -240,7 +240,7 @@ def sheets_create(auth, sheet_name, sheet_tab, template_sheet=None, template_tab
     * sheet_tab: (string) name of the tab to create.
     * template_sheet: (string) optional sheet to copy tempalte from.
     * template_tab: (string) optional tab to copy template from.
-    * parent: (string) the Google Drive to upload the file to. 
+    * parent: (string) the Google Drive to upload the file to.
 
   Returns:
     * JSON specification of the file created or existing.

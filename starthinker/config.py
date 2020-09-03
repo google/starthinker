@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google LLC
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ TRACE_FILE = '/tmp/starthinker_trace.log'
 # used for user authentication
 APPLICATION_NAME = 'StarThinker Client'
 APPLICATION_SCOPES = [
-  'https://www.googleapis.com/auth/userinfo.profile', 
-  'https://www.googleapis.com/auth/userinfo.email', 
+  'https://www.googleapis.com/auth/userinfo.profile',
+  'https://www.googleapis.com/auth/userinfo.email',
   'https://www.googleapis.com/auth/gmail.readonly',
   'https://www.googleapis.com/auth/gmail.send',
   'https://www.googleapis.com/auth/doubleclickbidmanager',

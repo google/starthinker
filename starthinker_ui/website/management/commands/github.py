@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ class Command(BaseCommand):
     )
 
   def handle(self, *args, **kwargs):
-    
+
     settings.GOOGLE_ANALYTICS = kwargs['analytics']
 
     directory = '%s/docs' % settings.UI_ROOT

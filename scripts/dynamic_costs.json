@@ -2,7 +2,7 @@
   "script": {
     "released":"2018-07-13",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"monetization_on",
     "title":"Dynamic Costs Reporting",
     "description":"Calculate DV360 cost at the dynamic creative combination level.",
@@ -27,7 +27,7 @@
   "tasks":[
     { "dynamic_costs":{
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
-      "account":{"field": {"name": "dcm_account", "kind": "string", "order": 0, "default": ""}}, 
+      "account":{"field": {"name": "dcm_account", "kind": "string", "order": 0, "default": ""}},
       "sheet":{
         "template":{
           "url":"https://docs.google.com/spreadsheets/d/19J-Hjln2wd1E0aeG3JDgKQN9TVGRLWxIEUQSmmQetJc/edit?usp=sharing",
@@ -41,7 +41,7 @@
       "out":{
         "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "dataset":{"field": {"name": "bigquery_dataset", "kind": "string", "order": 2, "default": "dynamic_costs"}}
-      } 
+      }
     }}
   ]
 }

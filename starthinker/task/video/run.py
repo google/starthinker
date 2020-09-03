@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ def get_effects(video, effect):
 
     if effect.get('position', {}).get('rotate'):
       clip = clip.rotate(effect['position']['rotate'])
- 
+
     yield clip
 
   if 'text' in effect:
@@ -99,11 +99,11 @@ def get_effects(video, effect):
     # Requires working installation of ImageMagick
     try:
       clip = mp.TextClip(
-        txt=effect['text']['message'], 
-        color=effect['text'].get('color', '#666666'), 
-        font=effect['text'].get('font', 'Courier'), 
-        fontsize=effect['text'].get('size', 12), 
-        align=effect['text'].get('align', 'center'), 
+        txt=effect['text']['message'],
+        color=effect['text'].get('color', '#666666'),
+        font=effect['text'].get('font', 'Courier'),
+        fontsize=effect['text'].get('size', 12),
+        align=effect['text'].get('align', 'center'),
         kerning=effect['text'].get('kerning', 0)
       )
 
@@ -148,7 +148,7 @@ def edit_video(video):
 
   for effect in video['effects']:
     clips.extend(get_effects(clips[0], effect))
- 
+
   video = mp.CompositeVideoClip(clips)
 
   return video
@@ -194,9 +194,9 @@ def save_video(out, clip):
     }
     try:
       API_YouTube(project.task['auth']).videos().insert(
-        part=",".join(body.keys()), 
+        part=",".join(body.keys()),
         body=body,
-        media_body=MediaFileUpload(temporary_file_name, chunksize=CHUNKSIZE, resumable=True)  
+        media_body=MediaFileUpload(temporary_file_name, chunksize=CHUNKSIZE, resumable=True)
       ).upload()
     finally:
       os.remove(temporary_file_name)
@@ -205,9 +205,9 @@ def save_video(out, clip):
 def rows_to_videos(rows):
   videos = {}
   for row in rows:
-    videos.setdefault(row[0], { 
+    videos.setdefault(row[0], {
       "file_or_url":row[0],
-      'effects':[], 
+      'effects':[],
       'out': {
         "youtube":{
            'title':row[17],
@@ -222,10 +222,10 @@ def rows_to_videos(rows):
           "file":row[24],
         }
       }
-    })['effects'].append({ 
+    })['effects'].append({
       "duration":{ "start":float(row[1]), "end":float(row[2]) },
       "fade":{ "in":float(row[3]), "out":float(row[4]) },
-      "opacity":float(row[5]), 
+      "opacity":float(row[5]),
       "position":{ "height":int(row[6]), "width":int(row[7]), "angle":int(row[8]) },
       "image":{ "file_or_url":row[9] },
       "text":{

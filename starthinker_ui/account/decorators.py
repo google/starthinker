@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ def permission_admin():
           prompt='',
           access_type='offline',
           include_granted_scopes='true'
-        ) 
+        )
         request.session['code_verifier'] = flow.code_verifier
         return HttpResponseRedirect(auth_url)
 

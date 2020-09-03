@@ -2,7 +2,7 @@
 
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ composer_activate() {
   echo ""
 
   gcloud services enable doubleclickbidmanager.googleapis.com dfareporting.googleapis.com doubleclicksearch.googleapis.com sheets.googleapis.com
-  
+
   echo ""
   echo "----------------------------------------"
   echo "Creating The Composer Environment ${COMPOSER_NAME} In ${STARTHINKER_ZONE}"
@@ -81,10 +81,10 @@ composer_credentials() {
   echo "Data folder is ${COMPOSER_GCS_BUCKET_DATA_FOLDER}"
   COMPOSER_GCS_BUCKET_PLUGINS_FOLDER=${COMPOSER_GCS_BUCKET}plugins
   echo "Data folder is ${COMPOSER_GCS_BUCKET_PLUGINS_FOLDER}"
-  
+
   # Store the StarThinker Service credentials in the cloud bucket
   gsutil cp ${THIS_DIR}/starthinker_assets/service.json ${COMPOSER_GCS_BUCKET_DATA_FOLDER}
-  
+
   # Store the StarThinker User credentials in the cloud bucket
   gsutil cp starthinker_assets/user.json ${COMPOSER_GCS_BUCKET_DATA_FOLDER}
 }
@@ -92,7 +92,7 @@ composer_credentials() {
 composer_environment() {
   # Install PyPi packages from file and configure environment variables
   echo "Installing pypi packages from requirements.txt and setting up environment variables"
-  
+
   # Clean up requirements.txt: lowercase and remove comments ( awk is more platform compatible because of lack of regexp )
   awk '!/^ *#/ && NF {print tolower($0)}' starthinker/requirements.txt > /tmp/requirements.txt
 
@@ -100,13 +100,13 @@ composer_environment() {
   cat /tmp/requirements.txt
   echo ""
   echo "----------------------------------------"
-  
+
   # Install requirements and clean up
   echo " gcloud composer environments update ${COMPOSER_NAME} --location ${STARTHINKER_REGION} --update-pypi-packages-from-file=/tmp/requirements.txt"
 
   gcloud composer environments update ${COMPOSER_NAME} --location ${STARTHINKER_REGION} --update-pypi-packages-from-file=/tmp/requirements.txt
   rm -f /tmp/requirements.txt
-  
+
   # Set-up environment variables
   echo "Setting up StarThinker environment variables"
   gcloud composer environments update ${COMPOSER_NAME} --location ${STARTHINKER_REGION} --update-env-variables=\
@@ -114,7 +114,7 @@ composer_environment() {
   STARTHINKER_ZONE=${STARTHINKER_ZONE},\
   STARTHINKER_PROJECT=${STARTHINKER_PROJECT},\
   STARTHINKER_SERVICE=${STARTHINKER_SERVICE}
-  
+
   echo "Creating StarThinker connections"
   gcloud composer environments run ${COMPOSER_NAME} \
       --location ${STARTHINKER_REGION} connections -- --add \
@@ -133,7 +133,7 @@ EXTRA
 
   echo "Done"
 }
-  
+
 composer_code() {
   echo "Copying StarThinker code to ${COMPOSER_GCS_BUCKET}/plugins"
   # Clean up *.pyc files before uploading to the GCS bucket

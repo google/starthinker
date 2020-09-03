@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -26,11 +26,11 @@ def sdf():
 
   # Download sdf files
   sdf_zip_file = sdf_download(
-    project.task['auth'], 
-    project.task['version'], 
-    project.task['partner_id'], 
-    project.task['file_types'], 
-    project.task['filter_type'], 
+    project.task['auth'],
+    project.task['version'],
+    project.task['partner_id'],
+    project.task['file_types'],
+    project.task['filter_type'],
     project.task['read']['filter_ids'])
 
   # Load data into BigQuery

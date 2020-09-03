@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ def anonymize_string(cell, column):
   global STRING_IDS
   STRING_IDS.setdefault(column, {})
   STRING_IDS[column].setdefault(cell, len(STRING_IDS[column]) + 1)
-  
+
   # email
   if RE_EMAIL.match(cell):
     return '%s_%d@email.com' % (column, STRING_IDS[column][cell])
@@ -48,7 +48,7 @@ def anonymize_integer(cell, column):
   # possible date ( legacy Data Studio format )
   if len(str(cell)) == 4 + 2 + 2:
     return cell
-  else: 
+  else:
     # integer
     return (cell * INTEGER_MULTIPLY) + INTEGER_OFFSET
 
@@ -63,11 +63,11 @@ def anonymize_rows(rows, schema):
     for index, cell in enumerate(row):
       if cell is not None:
         if schema[index]['type'] == 'STRING':
-          row[index] = anonymize_string(cell, schema[index]['name']) 
+          row[index] = anonymize_string(cell, schema[index]['name'])
         elif schema[index]['type'] in ('INTEGER', 'INT64', 'NUMERIC'):
-          row[index] = anonymize_integer(cell, schema[index]['name']) 
+          row[index] = anonymize_integer(cell, schema[index]['name'])
         elif schema[index]['type'] in ('FLOAT', 'FLOAT64'):
-          row[index] = anonymize_float(cell, schema[index]['name']) 
+          row[index] = anonymize_float(cell, schema[index]['name'])
           row[index] = (cell * INTEGER_MULTIPLY) + INTEGER_OFFSET
     yield row
 
@@ -88,7 +88,7 @@ def anonymize_table(table_id):
     project.task['bigquery']['from']['dataset'],
     table_id
    )
-  
+
   rows = anonymize_rows(rows, schema)
 
   rows_to_table(
@@ -115,11 +115,11 @@ def copy_view(view_id):
   project_dataset_template = '[%s:%s.' if view['useLegacySql'] else '`%s.%s.'
 
   query = view['query'].replace(
-    project_dataset_template % ( 
+    project_dataset_template % (
       project.task['bigquery']['from']['project'],
       project.task['bigquery']['from']['dataset']
     ),
-    project_dataset_template % ( 
+    project_dataset_template % (
       project.task['bigquery']['to']['project'],
       project.task['bigquery']['to']['dataset']
     ),
@@ -145,9 +145,9 @@ def anonymize():
     projectId=project.task['bigquery']['from']['project'],
     datasetId=project.task['bigquery']['from']['dataset']
   ).execute():
-    if table['type'] == 'VIEW': 
+    if table['type'] == 'VIEW':
       views.append(table['tableReference']['tableId'])
-    else: 
+    else:
       anonymize_table(table['tableReference']['tableId'])
 
   # views have dependencies, loop through all and create until no more errors or no change in view list
@@ -163,7 +163,7 @@ def anonymize():
       except HttpError as e:
         if e.resp.status == 404:
           retry_views.append(view)
-        else: 
+        else:
           raise e
     views = retry_views
 

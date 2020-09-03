@@ -2,7 +2,7 @@
   "script":{
     "released":"2019-02-27",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"waves",
     "title":"Anonymize Dataset",
     "description":"Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.",

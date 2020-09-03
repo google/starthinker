@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 """AirFlow connector for StarThinker, builds airflow workflow from json recipe.
 
 Connector between AirFlow and StarThinker that turns all tasks into PythonOperators.
-In future, as AirFlow matures and becomes more reliable, some handlers will migrate from 
+In future, as AirFlow matures and becomes more reliable, some handlers will migrate from
 StarThinker tasks to native AirFlow calls.
 
 Any StarThinker task immediately becomes available as an Airflow endpoint using this code.
@@ -56,7 +56,7 @@ class DAG_Factory():
     from starthinker_airflow.factory import DAG_Factory
     dag = DAG_Factory('[path to a StarThinker JSON recipe]').execute()
     ```
-  
+
   """
 
   def __init__(self, _dag_name, _script, _script_parameters=None):
@@ -121,10 +121,10 @@ class DAG_Factory():
       af_source = 'starthinker_airflow.operators'
 
     operator = getattr(import_module('%s.%s' % (af_source, af_module)), af_operator)
-    
-    af_parameters['dag'] = self.dag 
+
+    af_parameters['dag'] = self.dag
     af_parameters['task_id'] = '%s_%d' % (function, instance)
-     
+
     operator(**af_parameters)
 
 
@@ -168,7 +168,7 @@ class DAG_Factory():
     print('')
     print('DAG: %s' % self.dag_name)
     print('')
- 
+
     instances = {}
     for task in self.recipe['tasks']:
       function = next(iter(task.keys()))

@@ -2,7 +2,7 @@
   "script":{
     "released":"2019-07-25",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"timeline",
     "title":"Google Analytics Timeline",
     "description":"Download Google Analytics settings to a BigQuery table.",

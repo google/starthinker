@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -21,21 +21,21 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source: 
+  Install StarThinker in cloud composer from open source:
 
     pip install git+https://github.com/google/starthinker
 
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	   
+    4) Composer Menu	
     l) Install All
 
 --------------------------------------------------------------
 
 [DV-3PO] Custom Signals
 
-[DV-3PO] Custom Signals allows automated changes to be made to DV360 campaigns based on external signals from weather and social media trends. In the future it will also support news, disaster alerts, stocks, sports, custom APIs, etc. 
+[DV-3PO] Custom Signals allows automated changes to be made to DV360 campaigns based on external signals from weather and social media trends. In the future it will also support news, disaster alerts, stocks, sports, custom APIs, etc.
 
 Open the template sheet: <a target='_blank' href='https://docs.google.com/spreadsheets/d/1xl2bknsn9ptCKwg1sZqTBpmRFDdcG3ATdp2f4C2CQ2U/edit#gid=1579485492'>[DV-3PO] Custom Signals Configs</a>.
 Make a copy of the sheet through the menu File -> Make a copy, for clarity we suggest you rename the copy to a meaningful name describing the usage of this copy.
@@ -50,7 +50,7 @@ The 'Fixed Bid' column of the Rules tab allows you to control the fixed bid amou
 '''
 
 from starthinker_airflow.factory import DAG_Factory
- 
+
 # Add the following credentials to your Airflow configuration.
 USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.

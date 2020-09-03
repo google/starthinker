@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google LLC
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ RE_FILENAME = re.compile(r'.*/(.*)\?GoogleAccess')
 
 def report_get(auth, report_id=None, name=None):
   """ Returns the DBM JSON definition of a report based on name or ID.
- 
+
   Bulletproofing: https://developers.google.com/bid-manager/v1/queries/getquery
 
   Args:
@@ -113,7 +113,7 @@ def report_build(auth, body):
 
   The body JSON provided will have the following fields added if not present:
     * schedule - set to run daily and expire in one year.
-  
+
   Args:
     * auth: (string) Either user or service.
     * body: (json) As defined in: https://developers.google.com/doubleclick-advertisers/v3.2/reports#resource
@@ -166,7 +166,7 @@ def report_fetch(auth, report_id=None, name=None, timeout = 60):
     * timeout: (int) Minutes to wait for in progress report before giving up.
 
   Returns:
-    * Report JSON if report exists and is ready. 
+    * Report JSON if report exists and is ready.
     * True if report is in progress but not ready.
     * False if report does not exist.
 
@@ -233,7 +233,7 @@ def report_file(auth, report_id=None, name=None, timeout = 60, chunksize = DBM_C
     filename = RE_FILENAME.search(storage_path).groups(0)[0]
 
     # streaming
-    if chunksize: 
+    if chunksize:
       if project.verbose: print("REPORT FILE STREAM:", storage_path)
       return filename, response_utf8_stream(urlopen(storage_path), chunksize)
 
@@ -291,7 +291,7 @@ Args:
 
 Returns:
   * a DV360 report represented as a list
-""" 
+"""
 def report_to_list(auth, report_id):
   filename,report = report_file(
       auth,
@@ -305,7 +305,7 @@ def report_to_list(auth, report_id):
     rows = report_to_rows(report)
     rows = report_clean(rows)
 
-  return list(rows)  
+  return list(rows)
 
 
 def report_to_rows(report):
@@ -331,7 +331,7 @@ def report_to_rows(report):
     leftovers = ''
     for chunk in report:
       data, extra = chunk.rsplit('\n', 1)
-      for row in csv_to_rows(leftovers + data): 
+      for row in csv_to_rows(leftovers + data):
         yield row
       leftovers = extra
 
@@ -361,7 +361,7 @@ def report_clean(rows):
 
   Args:
     * rows: (iterator) Rows to clean.
-   
+
   Returns:
     * Iterator of cleaned rows.
 
@@ -381,7 +381,7 @@ def report_clean(rows):
 
     # sanitizie header row
     if first:
-      try: 
+      try:
         date_column = row.index('Date')
         row[date_column] = 'Report_Day'
       except ValueError: pass
@@ -428,15 +428,15 @@ def lineitem_get_v1(auth, advertiser_id, lineitem_id):
 
 def lineitem_read(auth, advertisers=[], insertion_orders=[], lineitems=[]):
   """ Reads line item configurations from DBM.
-  
-  Bulletproofing: https://developers.google.com/bid-manager/v1/lineitems/downloadlineitems 
+
+  Bulletproofing: https://developers.google.com/bid-manager/v1/lineitems/downloadlineitems
 
   Args:
     * auth: (string) Either user or service.
     * advertisers (list) List of advertiser ids ( exclusive with insertion_orders and lineitems ).
     * insertion_orders (list) List of insertion_order ids ( exclusive with advertisers and lineitems ).
     * lineitems (list) List of ilineitem ids ( exclusive with insertion_orders and advertisers ).
-  
+
   Returns:
     * Iterator of lists: https://developers.google.com/bid-manager/guides/entity-write/format
 
@@ -447,15 +447,15 @@ def lineitem_read(auth, advertisers=[], insertion_orders=[], lineitems=[]):
     'fileSpec':'EWF'
   }
 
-  if advertisers: 
+  if advertisers:
     body['filterType'] = 'ADVERTISER_ID'
     body['filterIds'] = list(advertisers) # in case its a generator
 
-  elif insertion_orders: 
+  elif insertion_orders:
     body['filterType'] = 'INSERTION_ORDER_ID'
     body['filterIds'] = list(insertion_orders) # in case its a generator
 
-  elif lineitems: 
+  elif lineitems:
     body['filterType'] = 'LINE_ITEM_ID'
     body['filterIds'] = list(lineitems) # in case its a generator
 
@@ -480,7 +480,7 @@ def lineitem_read(auth, advertisers=[], insertion_orders=[], lineitems=[]):
 def lineitem_edit(row, column_name, value):
   lineitem_lookup = {k['name']:v for v,k in enumerate(LineItem_Write_Schema)}
   row[lineitem_lookup[column_name]] = value
-  
+
 
 def lineitem_write(auth, rows, dry_run=True):
   """ Writes a list of lineitem configurations to DBM.
@@ -491,7 +491,7 @@ def lineitem_write(auth, rows, dry_run=True):
     * auth: (string) Either user or service.
     * rows (iterator) List of lineitems: https://developers.google.com/bid-manager/guides/entity-write/format
     * dry_run (boolean) If set to True no write will occur, only a test of the upload for errors.
-  
+
   Returns:
     * Results of upload.
 
@@ -517,7 +517,7 @@ def sdf_read(auth, file_types, filter_type, filter_ids, version='3.1'):
 
   Args:
     * auth:  (string) Either user or service.
-    * file_types: (list[string]) List of the requested file types 
+    * file_types: (list[string]) List of the requested file types
     * filter_type: (string) Value of the type of filter ids to be expected
     * filter_ids: (list[int]) Filter ids for the api call
 

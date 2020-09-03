@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -54,10 +54,10 @@ def starthinker_trace(frame, event, arg, returns=True):
   line_no = frame.f_lineno
   filename = co.co_filename
 
-  if event == 'exception': 
+  if event == 'exception':
     exc_type, exc_value, exc_traceback = arg
     starthinker_trace_log('Exception: %s on line %s of %s with type %s and value %s' % (func_name, line_no, filename, exc_type.__name__, exc_value))
-    return 
+    return
 
   elif is_starthinker_module(frame):
 
@@ -69,7 +69,7 @@ def starthinker_trace(frame, event, arg, returns=True):
       starthinker_trace_log('Return From: %s on line %s of %s with value %s' % (func_name, line_no, filename, arg))
       return
 
-  return 
+  return
 
 
 def starthinker_trace_start(to_print=True, to_file=False):

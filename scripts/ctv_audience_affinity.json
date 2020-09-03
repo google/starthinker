@@ -2,7 +2,7 @@
   "script": {
     "released":"2020-04-08",
     "license": "Apache License, Version 2.0",
-    "copyright": "Copyright 2018 Google Inc.",
+    "copyright": "Copyright 2020 Google LLC",
     "open": true,
     "icon": "donut_large",
     "product": "DV360",
@@ -34,7 +34,7 @@
     { "dataset":{
       "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "dataset": { "field": { "name": "dataset", "kind": "string", "order": 3, "default": "", "description": "BigQuery Dataset where all data will live." }}
-    }},    
+    }},
     {
       "dbm": {
         "auth": "user",
@@ -101,7 +101,7 @@
                 "mode": "NULLABLE"
               }
             ],
-            "table": "us_country_app"            
+            "table": "us_country_app"
           }
         }
       }
@@ -167,7 +167,7 @@
                 "mode": "NULLABLE"
               }
             ],
-            "table": "us_country_baseline"            
+            "table": "us_country_baseline"
           }
         }
       }
@@ -260,7 +260,7 @@
                 "mode": "NULLABLE"
               }
             ],
-            "table": "us_audience_baseline"            
+            "table": "us_audience_baseline"
           }
         }
       }
@@ -363,7 +363,7 @@
                 "mode": "NULLABLE"
               }
             ],
-            "table": "us_audience_app"            
+            "table": "us_audience_app"
           }
         }
       }

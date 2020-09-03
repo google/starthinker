@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -39,11 +39,11 @@ def dt_schema(header):
   schema = []
   for h in header:
     h = column_header_sanitize(h)
-    schema.append({ 
-      'name':h, 
-      'type':DT_Field_Lookup.get(h, 'STRING'), 
-      'mode':'NULLABLE' 
-    }) 
+    schema.append({
+      'name':h,
+      'type':DT_Field_Lookup.get(h, 'STRING'),
+      'mode':'NULLABLE'
+    })
   return schema
 
 
@@ -55,7 +55,7 @@ def dt_header(dt_file):
 
   # find first line of file ( gzip will decompress partial, and pull header out )
   sample_data = next(object_get_chunks(project.task['auth'], path, HEADER_SIZE))
-  with gzip.GzipFile(fileobj=BytesIO(sample_data), mode='rb') as fo: 
+  with gzip.GzipFile(fileobj=BytesIO(sample_data), mode='rb') as fo:
     sample_header = fo.read(HEADER_SIZE).decode('utf-8').split('\n')[0]
 
   return sample_header.split(',')
@@ -164,7 +164,7 @@ def dt():
       dt_partition = dt_file.split('.', 1)[0]
       if ((project.task.get('days') is None and project.task.get('hours') is None) or (dt_time > project.now - timedelta(days=project.task.get('days', 60), hours=project.task.get('hours', 0)))):
         if not table_exists(project.task['to']['auth'], project.id, project.task['to']['dataset'], dt_partition):
-           dt_move(dt_object, dt_partition, jobs) 
+           dt_move(dt_object, dt_partition, jobs)
         else:
           if project.verbose: print ('DT Partition Exists:', dt_partition)
 

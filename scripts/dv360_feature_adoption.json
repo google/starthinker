@@ -45,13 +45,13 @@
   "tasks": [
     { "dataset": {
       "hour":[1],
-      "auth": "service", 
-      "description": "Create a dataset for bigquery tables.", 
+      "auth": "service",
+      "description": "Create a dataset for bigquery tables.",
       "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
-    }}, 
+    }},
     { "dbm": {
       "hour":[2],
-      "auth": "user", 
+      "auth": "user",
       "report": {
         "filters": {
            "FILTER_PARTNER": {
@@ -148,7 +148,7 @@
     }},
     { "dbm": {
       "hour":[6],
-      "auth": "user", 
+      "auth": "user",
       "report": {
         "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature Adoption Spend For ", "description":"Name of report in DV360, should be unique." }}
       },
@@ -185,7 +185,7 @@
     }},
     { "dbm": {
       "hour":[6],
-      "auth": "user", 
+      "auth": "user",
       "report": {
         "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Feature Adoption Environment For ", "description":"Name of report in DV360, should be unique." }}
       },
@@ -240,8 +240,8 @@
       "version": "5",
       "file_types": ["INSERTION_ORDER"],
       "filter_type": "ADVERTISER_ID",
-        "read": { 
-          "filter_ids": {"values": {"field":{ "name":"advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DV360 advertiser ids." }} 
+        "read": {
+          "filter_ids": {"values": {"field":{ "name":"advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DV360 advertiser ids." }}
         }
       },
       "daily": true,
@@ -275,9 +275,9 @@ SELECT
   IF(Affinity_In_Market_Targeting_Include IS NULL, 'False', 'True') AS Affinity_In_Market_TF,
   IF(Affinity_In_Market_Targeting_Exclude IS NULL, 'False', 'True') AS Affinity_In_Market_Exclude_TF,
   IF(Custom_List_Targeting IS NULL, 'False', 'True') AS Custom_List_TF,
-  IF(Audience_Targeting_Include IS NULL 
-    AND Affinity_In_Market_Targeting_Include IS NULL 
-    AND Custom_List_Targeting IS NULL 
+  IF(Audience_Targeting_Include IS NULL
+    AND Affinity_In_Market_Targeting_Include IS NULL
+    AND Custom_List_Targeting IS NULL
     AND Audience_Targeting_Similar_Audiences = 'False' , 'False', 'True') AS Audience_Targeting_TF,
   IF(Keyword_Targeting_Exclude IS NULL
     AND Keyword_List_Targeting_Exclude IS NULL, 'False', 'True') AS Keyword_Exclusions_TF,
@@ -307,10 +307,10 @@ SELECT
   IF (Type = 'TrueView', Revenue_Adv_Currency, 0) AS TrueView_Rev,
   IF (Type = 'Audio', Revenue_Adv_Currency, 0) AS Audio_Rev,
   IF ((STRPOS(Environment_Targeting, 'Desktop')>0), Revenue_Adv_Currency, 0) AS Desktop_Rev
-  FROM `[PARAMETER].[PARAMETER].SDF_LINE_ITEM` AS a 
-  LEFT JOIN `[PARAMETER].[PARAMETER].DV360_Feature_Spend` AS b 
+  FROM `[PARAMETER].[PARAMETER].SDF_LINE_ITEM` AS a
+  LEFT JOIN `[PARAMETER].[PARAMETER].DV360_Feature_Spend` AS b
     ON DATE_SUB(a.SDF_Day, INTERVAL 1 DAY) = b.Report_Day
-    AND a.Line_Item_Id = b.Line_Item_Id 
+    AND a.Line_Item_Id = b.Line_Item_Id
   WHERE b.Report_Day IS NOT NULL
 ",
         "parameters": [
@@ -320,11 +320,11 @@ SELECT
           {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
         ],
         "legacy":false
-      }, 
+      },
       "to": {
         "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
         "view": "DV360_Feature_Adoption_Analysis"
       }
     }}
-  ] 
+  ]
 }

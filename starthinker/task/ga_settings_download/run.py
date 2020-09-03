@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the 'License');
 #  you may not use this file except in compliance with the License.
@@ -36,11 +36,11 @@ def custom_dimensions_download(accounts, current_date):
   for account in accounts:
     for web_property in account.get('webProperties', []):
       for custom_dimension in API_Analytics(project.task['auth'], iterate=True).management().customDimensions().list(
-        accountId=account.get('id'), 
+        accountId=account.get('id'),
         webPropertyId=web_property.get('id')
       ).execute():
         yield (
-          account.get('name'), 
+          account.get('name'),
           account.get('id'),
           web_property.get('name'),
           web_property.get('id'),
@@ -50,7 +50,7 @@ def custom_dimensions_download(accounts, current_date):
           custom_dimension.get('scope'),
           custom_dimension.get('active'),
           custom_dimension.get('created'),
-          custom_dimension.get('updated'), 
+          custom_dimension.get('updated'),
           current_date,
           custom_dimension.get('selfLink')
         )
@@ -73,7 +73,7 @@ def custom_metrics_download(accounts, current_date):
           custom_metric.get('scope'),
           custom_metric.get('active'),
           custom_metric.get('created'),
-          custom_metric.get('updated'), 
+          custom_metric.get('updated'),
           current_date,
           custom_metric.get('selfLink'),
           custom_metric.get('type'),
@@ -404,31 +404,31 @@ def ga_settings_download():
   accounts = [a for a in API_Analytics(project.task['auth'], iterate=True).management().accountSummaries().list().execute() if not filters or a['id'] in filters or a['name'] in filters]
 
   if accounts:
-    current_date = project.date 
+    current_date = project.date
 
     write_to_bigquery(
-      'ga_custom_dimension_settings', 
+      'ga_custom_dimension_settings',
       CUSTOM_DIMENSION_SCHEMA,
       custom_dimensions_download(accounts, current_date),
       'CSV'
     )
-  
+
     write_to_bigquery(
-      'ga_custom_metric_settings', 
+      'ga_custom_metric_settings',
       CUSTOM_METRIC_SCHEMA,
       custom_metrics_download(accounts, current_date),
       'CSV'
     )
-  
+
     write_to_bigquery(
-      'ga_view_settings', 
-      VIEW_SCHEMA, 
+      'ga_view_settings',
+      VIEW_SCHEMA,
       views_download(accounts, current_date),
       'CSV'
     )
-  
+
     write_to_bigquery(
-      'ga_goal_settings', 
+      'ga_goal_settings',
       GOAL_SCHEMA,
       goals_download(accounts, current_date),
       'JSON'
@@ -447,7 +447,7 @@ def ga_settings_download():
       remarketing_audiences_download(accounts, current_date),
       'JSON'
     )
-  
+
     write_to_bigquery(
       'ga_account_summaries_settings',
       ACCOUNT_SUMMARIES_SCHEMA,

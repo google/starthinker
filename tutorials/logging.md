@@ -25,7 +25,7 @@ logs to be filtered by values within each script.  Logging is used primarily by 
 
 ## StackDriver Dashboard
 
-Adding metrics and creating a dashboard in StackDriver helps monitor the system and find 
+Adding metrics and creating a dashboard in StackDriver helps monitor the system and find
 optimization points.
 
 ![StackDriver Dashboard](images/logging_dashboard.png)
@@ -59,11 +59,11 @@ optimization points.
       - Label Type: String
       - Field Name: jsonPayload.hour
   - Units: 1
-  - Type: Counter 
+  - Type: Counter
 
-1. Second create a dashboard with charts from the [StackDriver Dashboards](https://app.google.stackdriver.com/dashboards)  screen. 
+1. Second create a dashboard with charts from the [StackDriver Dashboards](https://app.google.stackdriver.com/dashboards)  screen.
   - For each chart select StackedBar.
-  - Manager Events - shows critical manager errors, these should be close to zero, may indicate need for larger database. 
+  - Manager Events - shows critical manager errors, these should be close to zero, may indicate need for larger database.
     - Resource type: Global
     - Metric: logging/user/StarThinker
     - Filter: Layer="MANAGER"
@@ -75,7 +75,7 @@ optimization points.
     - Filter: Layer="JOB"
     - Group By: Event
     - Aggregator: sum
-  - Workers  - all workers should have roughly equal share of jobs, may indicate frozen worker needing reboot. 
+  - Workers  - all workers should have roughly equal share of jobs, may indicate frozen worker needing reboot.
     - Resource type: Global
     - Metric: logging/user/StarThinker
     - Group By: Worker
@@ -92,11 +92,11 @@ optimization points.
     - Group By: Recipe
     - Aggregator: sum
 
-Next, learn how to [create a recipe](recipe.md) or look at the [cheat sheet of commands](cheat_sheet.md). 
+Next, learn how to [create a recipe](recipe.md) or look at the [cheat sheet of commands](cheat_sheet.md).
 
 ## Recipe Status In UI
 
-Each recipe also has a curated custom status visible in the UI that is independent on the StackDriver logs. 
+Each recipe also has a curated custom status visible in the UI that is independent on the StackDriver logs.
 
 ![UI Logs](images/logging_ui.png)
 [View UI Logs Larger](images/logging_ui.png)

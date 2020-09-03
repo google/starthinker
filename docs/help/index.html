@@ -1,4 +1,18 @@
+<!--
+ Copyright 2020 Google LLC
 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 
 
 
@@ -27,7 +41,7 @@
 
     <style>
       html { color: rgba(68,68,68,1); font-family: Roboto, sans-serif; }
- 
+
       .material-icons { line-height: normal; vertical-align: middle; }
 
       #message { justify-content: center; font-size: 2em;}
@@ -61,7 +75,7 @@
       i.right { margin: 0px 15px; font-size: 1.5rem;}
       .collapsible-body { padding: 0px; }
 
-      
+
   #help_menu a { display: block; margin: 10px 0px; width: 100%;}
 
     </style>
@@ -70,40 +84,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
 
-  
+
     <nav class="green lighten-0">
       <div class="nav-wrapper">
         <a href="/starthinker/" class="brand-logo">
           <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
         </a>
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-  
+
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          
-          
+
+
           <li><a href="/starthinker/solution/">Solutions</a></li>
           <li><a href="/starthinker/help/">Help</a></li>
-          
+
         </ul>
       </div>
     </nav>
-  
+
     <ul class="sidenav green lighten-1" id="mobile-menu">
-      
-      
-      
+
+
+
       <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
       <li><a class="white-text" href="/starthinker/help/">Help</a></li>
-      
+
     </ul>
-  
+
 
   <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize-1.0.0.min.js"></script>
 
-    
+
 
 
 <!--
@@ -125,10 +139,10 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
 
 
-    
+
 
     <div id="page" class="center">
-      
+
 
   <br/>
   <div class="row">
@@ -334,7 +348,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </ol>
           </li>
         </ul>
-  
+
         <ul class="col s6 m6 l6 left-align">
           <li><strong>Changing DBM / DCM report definition requires delete of report.</strong>
             <ol>
@@ -343,7 +357,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </ol>
           </li>
         </ul>
-  
+
         <ul class="col s6 m6 l6 left-align">
           <li><strong>BigQuery views are not modified by StarThinker if they exist.</strong>
             <ol>
@@ -352,7 +366,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </ol>
           </li>
         </ul>
-  
+
         <ul class="col s6 m6 l6 left-align">
           <li><strong>All tasks in a recipe are executed, even if ones prior fail.</strong>
             <ol>
@@ -361,7 +375,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </ol>
           </li>
         </ul>
-  
+
         <ul class="col s6 m6 l6 left-align">
           <li><strong>All errors and fields come from the API documentation.</strong>
             <ol>
@@ -370,7 +384,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </ol>
           </li>
         </ul>
-  
+
         <ul class="col s6 m6 l6 left-align">
           <li><strong>StarThinker does not gurantee exact task execution time.</strong>
             <ol>
@@ -390,7 +404,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <p class="flow-text">Errors in StarThinker can range from a misconfigured field value to a bug in the code.  To promptly resolve most issues please follow these debugging steps.</p>
       <p>When working with StarThinker administrators, please include the recipe number ( found in the recipe edit URL ) in all communications.</p>
       <ol>
-        <li>Consult the log and reference the error in the API documentation relevant to the product used in the task.</li> 
+        <li>Consult the log and reference the error in the API documentation relevant to the product used in the task.</li>
         <li>Ensure the service account used in the recipe exists and is valid.</li>
         <li>Try logging out and logging back in to refresh user credentials and access to APIs.</li>
         <li>Contact the administrator of the StarThinker UI where the recipe was deployed.</li>
@@ -406,7 +420,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   </body>
 
-  
+
 
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
@@ -423,6 +437,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     });
   </script>
 
-  
+
 
 </html>

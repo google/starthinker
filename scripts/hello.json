@@ -2,7 +2,7 @@
   "script":{
     "released":"2019-05-03",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "ui":false,
     "icon":"notifications",
     "title":"Say Hello",

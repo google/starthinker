@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2018 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ def google_api():
   results = API(project.task).execute()
 
   put_rows(
-    project.task['auth'], 
-    project.task['out'], 
+    project.task['auth'],
+    project.task['out'],
     results
   )
 

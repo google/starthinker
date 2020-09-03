@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ class Command(BaseCommand):
         print('Job Status:')
         print(json.dumps(status), indent=2)
         continue
-      
+
       log = recipe.get_log()
 
       print('Tasks', len(log['tasks']))

@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google LLC
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ def twitter_trends_places():
   for place in get_rows(project.task['auth'], project.task['trends']['places']):
     if project.verbose: print('PLACE', place)
     results = get_twitter_api().request('trends/place', {'id':int(place)})
-    for r in results: 
+    for r in results:
       if project.verbose: print('RESULT', r['name'])
       yield [place, r['name'], r['url'], r['promoted_content'], r['query'], r['tweet_volume']]
     print('.', end='')
@@ -84,7 +84,7 @@ def twitter_trends_closest():
   for row in get_rows(project.task['auth'], project.task['trends']['closest']):
     lat, lon = row[0], row[1]
     results = api.request('trends/closest', {'lat':lat, 'long':lon})
-    for r in results: 
+    for r in results:
       yield [lat, lon, r['country'], r['countryCode'], r['name'], r['parentid'], r['placeType']['code'], r['placeType']['name'], r['url'], r['woeid']]
 
 
@@ -93,26 +93,26 @@ TWITTER_TRENDS_AVAILABLE_SCHEMA = TWITTER_TRENDS_CLOSEST_SCHEMA
 def twitter_trends_available():
   if project.verbose: print('TWITTER TRENDS AVAILABLE')
   results = api.request('trends/available', {})
-  for r in results: 
+  for r in results:
     yield [r['country'], r['countryCode'], r['name'], r['parentid'], r['placeType']['code'], r['placeType']['name'], r['url'], r['woeid']]
 
 
 @project.from_parameters
 def twitter():
   if project.verbose: print('TWITTER')
-  
+
   rows = None
 
   if 'trends' in project.task:
-    if 'places' in project.task['trends']: 
+    if 'places' in project.task['trends']:
       rows = twitter_trends_places()
       project.task['out']['bigquery']['schema'] = TWITTER_TRENDS_PLACE_SCHEMA
       project.task['out']['bigquery']['skip_rows'] = 0
-    elif 'closest' in project.task['trends']: 
+    elif 'closest' in project.task['trends']:
       rows = twitter_trends_closest()
       project.task['out']['bigquery']['schema'] = TWITTER_TRENDS_CLOSEST_SCHEMA
       project.task['out']['bigquery']['skip_rows'] = 0
-    else: 
+    else:
       rows = twitter_trends_available()
       project.task['out']['bigquery']['schema'] = TWITTER_TRENDS_AVAILABLE_SCHEMA
       project.task['out']['bigquery']['skip_rows'] = 0

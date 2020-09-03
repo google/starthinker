@@ -1,5 +1,5 @@
 # StarThinker Cloud Service Credentials
-  
+
 ## Create Service Credentials
 
 Retrieve Service Account Key Credentials from: https://console.cloud.google.com/apis/credentials

@@ -65,13 +65,13 @@ def get_schema(sheet_or_report):
 
 def get_rows(sheet=None, report=None, header=True, link=True, key='id'):
 
-  columns = { 
+  columns = {
     (column.id if sheet else column.virtual_id):{
-      'title':column.title, 
+      'title':column.title,
       'index':column.index,
       'type':str(column.type)
-    } 
-    for column in (sheet or report).columns 
+    }
+    for column in (sheet or report).columns
   }
 
   if header:
@@ -86,15 +86,15 @@ def get_rows(sheet=None, report=None, header=True, link=True, key='id'):
 
       # correct the date column ( for reports it comes in as date and time even though column is DATE)
       if columns[cell.column_id if sheet else cell.virtual_column_id]['type'] == 'DATE' and value is not None:
-        if 'T' in value: value = value.split('T', 1)[0] 
-        if not SMARTSHEET_DATE.match(value): 
+        if 'T' in value: value = value.split('T', 1)[0]
+        if not SMARTSHEET_DATE.match(value):
           print('BAD DATE VALUE', value)
           value = None
 
       buffer[columns[cell.column_id if sheet else cell.virtual_column_id]['index']] = value
 
     if link: buffer.insert(0, row.permalink)
-    yield buffer  
+    yield buffer
 
 
 def get_sheet_schema(token, sheet, link=True):
@@ -102,26 +102,26 @@ def get_sheet_schema(token, sheet, link=True):
   sheet_json = smartsheet_api(token).Sheets.get_sheet(sheet, include=("rowPermalink" if link else ''), page_size=0)
   return get_schema(sheet_json)
 
-  
+
 def get_report_schema(token, report, link=True):
   if project.verbose: print('SMARTSHEET SHEET SCHEMA', report)
   report_json = smartsheet_api(token).Reports.get_report(report, page_size=0)
   return get_schema(report_json)
-  
-  
+
+
 def get_sheet_rows(token, sheet, link=True):
   if project.verbose: print('SMARTSHEET SHEET ROWS', sheet)
   sheet_json = smartsheet_api(token).Sheets.get_sheet(sheet, include=("rowPermalink" if link else ''))
-  return get_rows(sheet = sheet_json, header=False, link=link) 
-  
-  
+  return get_rows(sheet = sheet_json, header=False, link=link)
+
+
 def get_report_rows(token, report):
   if project.verbose: print('SMARTSHEET REPORT ROWS', report)
-  
+
   count = 0
   total = 1
   page = 1
-  
+
   api = smartsheet_api(token)
   while count < total:
     report_json = api.Reports.get_report(report, page_size=SMARTSHEET_PAGESIZE, page=page)
@@ -130,18 +130,18 @@ def get_report_rows(token, report):
       yield row
       count += 1
     page += 1
-  
+
 
 @project.from_parameters
 def smartsheet():
   if project.verbose: print('SMARTSHEET')
 
-  if 'sheet' in project.task: 
+  if 'sheet' in project.task:
     link = project.task.get('link', True)
     rows = get_sheet_rows(project.task['token'], project.task['sheet'], link)
     schema = get_sheet_schema(project.task['token'], project.task['sheet'], link)
 
-  elif 'report' in project.task: 
+  elif 'report' in project.task:
     link = False
     rows = get_report_rows(project.task['token'], project.task['report'])
     schema = get_report_schema(project.task['token'], project.task['report'])
@@ -153,7 +153,7 @@ def smartsheet():
     project.task['out']['bigquery'].setdefault('schema', schema)
     print('SCHEMA = %s' % json.dumps(project.task['out']['bigquery']['schema'], indent=2))
 
-    if link and 'schema' in project.task['out']['bigquery']: 
+    if link and 'schema' in project.task['out']['bigquery']:
       project.task['out']['bigquery']['schema'].insert(0, { "name":"rowPermalink", "type":"STRING", "mode":"NULLABLE" })
 
   if rows: put_rows(project.task['auth'], project.task['out'], rows)

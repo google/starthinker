@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -80,10 +80,10 @@ class Command(BaseCommand):
     for account in accounts:
       if account.email == kwargs['email_from']:
         user = account.get_credentials_path()
-        
+
     if user:
       print("SEND USER FOUND")
-    
+
       # initialize project
       project.initialize(_user=user)
 
@@ -92,9 +92,9 @@ class Command(BaseCommand):
         email = EmailTemplate(json.load(json_file))
 
       # loop through accounts
-      for account in accounts: 
+      for account in accounts:
         # if account is given only do that one
-        if kwargs['email_to'] is None or account.email == kwargs['email_to']: 
+        if kwargs['email_to'] is None or account.email == kwargs['email_to']:
           if account.email in kwargs['ignore']:
             print('IGNORING: ', account.email)
           else:

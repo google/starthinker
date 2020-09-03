@@ -2,7 +2,7 @@
   "script":{
     "released":"2020-08-13",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_large",
     "title":"Segmentology DV360",
     "description":"DV360 funnel analysis using Census data.",
@@ -112,7 +112,7 @@
            Zip,
            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression_Percent,
            SAFE_DIVIDE(Clicks, Impressions) AS Click_Percent,
-           SAFE_DIVIDE(Conversions, Impressions) AS Conversion_Percent, 
+           SAFE_DIVIDE(Conversions, Impressions) AS Conversion_Percent,
            Impressions AS Impressions
          FROM
            `{project}.{dataset}.DV360_KPI`;

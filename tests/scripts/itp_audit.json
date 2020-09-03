@@ -1,8 +1,8 @@
 {
   "setup": {
-    "hour": [ 3 ],  
-    "day": [ "Mon" ]   
-  },  
+    "hour": [ 3 ],
+    "day": [ "Mon" ]
+  },
   "tasks": [
     { "include":{
       "script":"scripts/itp_audit.json",

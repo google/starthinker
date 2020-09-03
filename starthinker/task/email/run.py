@@ -18,7 +18,7 @@
 
 import gzip
 
-from starthinker.util.project import project 
+from starthinker.util.project import project
 from starthinker.util.data import put_rows, get_rows
 from starthinker.util.csv import excel_to_rows, csv_to_rows, rows_trim, rows_header_sanitize, column_header_sanitize
 from starthinker.util.email import get_email_messages, get_email_links, get_email_attachments, get_subject, send_email
@@ -29,7 +29,7 @@ from starthinker.util.dcm import report_to_rows as cm_report_to_rows, report_cle
 def email_read():
 
   # process only most recent message
-  try: 
+  try:
     message = next(get_email_messages(
       project.task['auth'],
       project.task['read']['from'],

@@ -46,7 +46,7 @@ python starthinker/all/run.py hello.json -u $STARTHINKER_USER -s $STARTHINKER_SE
 ## Notes
 
 - The [@project.from_parameters](../starthinker/util/project/__init__.py)  decorator is StarThinker.  Everything else is just python.
-- Using the [util library](../starthinker/util/) is optional but convenient. 
+- Using the [util library](../starthinker/util/) is optional but convenient.
 - Always check [starthinker/task](../starthinker/task/) folder for task samples.
 - Always check [scripts](../scripts/) folder for script samples.
 - New scopes for user authentication can be added at [starthinker/config.py](../starthinker/config.py).

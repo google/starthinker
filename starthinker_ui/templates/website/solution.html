@@ -3,7 +3,7 @@
 {% comment %}
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
 
 {% block css %}
   #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
-  .btn-large { margin: 1vh 1vw; } 
+  .btn-large { margin: 1vh 1vw; }
   .col { margin-right: auto; }
   pre.expand_code { height: 70vh; overflow: hidden; }
   pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
@@ -128,7 +128,7 @@
         </div>
       </div>
     {% endif %}
-  
+
     {% if script.get_impacts %}
       <div class="col s12 m6 l4">
         <div class="card">
@@ -152,8 +152,8 @@
                {% endfor %}
              </tbody>
           </table>
-        </div> 
-      </div> 
+        </div>
+      </div>
     {% endif %}
 
     <div class="col s12 m6 l4">
@@ -165,18 +165,18 @@
             </tr>
            </thead>
           <tbody>
-    
+
             {% if script.get_open_source %}
             <tr>
               <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
             </tr>
             {% endif %}
-    
+
             <tr>
               <td>Age</td>
               <td>{{ script.get_released }} ({{ script.get_released|timesince }})</td>
             </tr>
-    
+
             <tr>
               <td>Authors</td>
               <td><a href="{% request_solution script %}" target="_blank">{{ script.get_authors|join:"<br/>" }}</a>
@@ -187,7 +187,7 @@
         </table>
       </div>
     </div>
-    
+
    {% if script.get_instructions %}
       <div class="col s12 m6 l4">
         <div class="card">

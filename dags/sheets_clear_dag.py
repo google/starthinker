@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -21,14 +21,14 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source: 
+  Install StarThinker in cloud composer from open source:
 
     pip install git+https://github.com/google/starthinker
 
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	   
+    4) Composer Menu	
     l) Install All
 
 --------------------------------------------------------------
@@ -42,7 +42,7 @@ For the sheet, provide the full edit URL.
 '''
 
 from starthinker_airflow.factory import DAG_Factory
- 
+
 # Add the following credentials to your Airflow configuration.
 USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.

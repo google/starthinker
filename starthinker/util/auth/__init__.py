@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -26,26 +26,26 @@ from googleapiclient import discovery
 from starthinker.util.auth.wrapper import CredentialsUserWrapper, CredentialsServiceWrapper, CredentialsFlowWrapper
 
 CREDENTIALS_USER_CACHE = None # WARNING:  possible issue if switching user credentials mid recipe, not in scope but possible ( need to address using hash? )
-DISCOVERY_CACHE = {} 
+DISCOVERY_CACHE = {}
 
 # set timeout to 10 minutes ( reduce socket.timeout: The read operation timed out )
-socket.setdefaulttimeout(600)  
+socket.setdefaulttimeout(600)
 
 from starthinker.util.project import project
 
 def clear_credentials_cache():
-  global CREDENTIALS_USER_CACHE 
+  global CREDENTIALS_USER_CACHE
   CREDENTIALS_USER_CACHE = None
 
 
 def get_credentials(auth):
-  global CREDENTIALS_USER_CACHE 
+  global CREDENTIALS_USER_CACHE
 
   if auth == 'user':
     if CREDENTIALS_USER_CACHE is None:
       try:
         CREDENTIALS_USER_CACHE = CredentialsUserWrapper(project.recipe['setup']['auth']['user'], project.recipe['setup']['auth'].get('client'))
-      except (KeyError, ValueError): 
+      except (KeyError, ValueError):
         print('')
         print('ERROR: You are attempting to access an API endpoiont that requires Google OAuth USER authentication but have not provided credentials to make that possible.')
         print('')
@@ -62,7 +62,7 @@ def get_credentials(auth):
   elif auth == 'service':
     try:
       return CredentialsServiceWrapper(project.recipe['setup']['auth']['service'])
-    except (KeyError, ValueError): 
+    except (KeyError, ValueError):
       print('')
       print('ERROR: You are attempting to access an API endpoint that requires Google Cloud SERVICE authentication but have not provided credentials to make that possible.')
       print('')
@@ -75,7 +75,7 @@ def get_credentials(auth):
 
 
 def get_service(api='gmail', version='v1', auth='service', scopes=None, uri_file=None):
-  global DISCOVERY_CACHE 
+  global DISCOVERY_CACHE
 
   key = api + version + auth + str(threading.current_thread().ident)
 
@@ -96,7 +96,7 @@ def get_service(api='gmail', version='v1', auth='service', scopes=None, uri_file
 def get_client_type(credentials):
   client_json = CredentialsFlowWrapper(credentials, credentials_only=True)
   return next(iter(client_json.keys()))
-  
+
 
 def get_profile():
   service = get_service('oauth2', 'v2', 'user')

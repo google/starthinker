@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@
 """Script that executes { "entity":{...}} task.
 
 This script translates JSON instructions into operations on Entity Read File
-transfer to BigQuery.  
+transfer to BigQuery.
 
-### CAUTION 
+### CAUTION
 
-ONLY PARTNER LEVEL LOG FILES ARE MOVED, no advertiser filters in 
+ONLY PARTNER LEVEL LOG FILES ARE MOVED, no advertiser filters in
 this script. To filter by advertiser, add queries within BigQuery to create
 additional tables.
 
@@ -31,14 +31,14 @@ See: https://developers.google.com/bid-manager/guides/entity-read/format-v2
 
 ### Table Names And Entities
 
-The prefix value specified in JSON is used to name each table and avoid 
+The prefix value specified in JSON is used to name each table and avoid
 collisions.  All tables will be prefixed with "Entity_" by default. For
 example 'Campaign' Entity Read becomes, 'Entity_Campaign'. You can
 modify the preifx in the JSON script.
 
 The following Entity Read Files Can Be Specified:
 
-- Campaign 
+- Campaign
 - LineItem
 - Creative
 - UserList
@@ -60,7 +60,7 @@ The following Entity Read Files Can Be Specified:
 
 ### Notes
 
-- Files are moved using an in memory buffer, controlled by BUFFER_SCALE in config.py. 
+- Files are moved using an in memory buffer, controlled by BUFFER_SCALE in config.py.
 - Bigger buffer means faster move but needs a machine with more memory.
 - These transfers take a long time, two jobs can write over each other.
 - The tables are filled over time, if you need instant data switch, use table copy after job.

@@ -2,7 +2,7 @@
   "script":{
     "released":"2018-03-16",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"file_upload",
     "title":"Conversion Upload Sheets",
     "description":"Move form Sheets to CM.",
@@ -27,7 +27,7 @@
         "gclid",
         "mobileDeviceId"
       ], "default":"encryptedUserId" }},
-      "encryptionInfo":{ 
+      "encryptionInfo":{
         "encryptionEntityId":{"field":{ "name":"encryption_entity_id", "kind":"integer", "order":3, "default":"" }},
         "encryptionEntityType":{"field":{ "name":"encryption_entity_type", "kind":"choice", "order":4, "choices":[
           "ADWORDS_CUSTOMER",

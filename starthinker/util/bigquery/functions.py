@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ def pearson_significance_test():
         [7, .4716, .5822, .6664, .7498, .7977, .8983], /* 6 */
         [8, .4428, .5494, .6319, .7155, .7646, .8721], /* 7 */
         [9, .4187, .5214, .6021, .6851, .7348, .8470], /* 8 */
-        [10, .3981, .4973, .5760, .6581, .7079, .8233], /* 9 */ 
+        [10, .3981, .4973, .5760, .6581, .7079, .8233], /* 9 */
         [11, .3802, .4762, .5529, .6339, .6835, .8010], /* 10 */
         [12, .3646, .4575, .5324, .6120, .6614, .7800], /* 11 */
         [13, .3507, .4409, .5140, .5923, .6411, .7604], /* 12 */
@@ -104,5 +104,5 @@ def pearson_significance_test():
         if (Math.abs(correlation) > dt_lookup[dt_low][dt_sigma] + ((dt_lookup[dt_high][dt_sigma] - dt_lookup[dt_low][dt_sigma]) * ((population - dt_lookup[dt_low][0]) / (dt_lookup[dt_high][0] - dt_lookup[dt_low][0])))) { return Math.sign(correlation); }
         else { return 0; }
       }
-    \'\'\' 
+    \'\'\'
   '''

@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2018 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ RE_TEXT_FIELD = re.compile(r'\{(.*?:.*?)\}')
 
 def fields_to_string(fields, values={}):
   items = [repr(field['name']) + ': ' + repr(values.get(field['name'], field.get('default', ''))) + ',' + ('  # %s' % field['description'] if 'description' in field else '') for field in fields]
-  return '{\n  %s\n}' % ('\n  '.join(items)) 
+  return '{\n  %s\n}' % ('\n  '.join(items))
 
 
 def dict_to_string(value, char_indent='  ', char_line='\n', skip=[], indent=0):
@@ -110,7 +110,7 @@ def get_field_value(field, variables):
   value = None
   try:
     value = variables.get(field['name'], field.get('default'))
-    if value is not None and 'prefix' in field: 
+    if value is not None and 'prefix' in field:
       value = "%s%s" % (field['prefix'], value)
   except KeyError:
     pass
@@ -160,7 +160,7 @@ def text_set_fields(text, variables):
      Args:
        text (string) A paragraph containing {field:[string]} or {field:[string], prefix:[string]}.
        variables: (dict) The keys mapping to field, and values to replace those fields.
-       
+
      Returns:
        A string with all the {field:[string]} or {field:[string], prefix:[string]} values replaced by actual values from variables.
 

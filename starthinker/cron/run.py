@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ Arguments
   --client / -c' - path to client credentials json file
   --verbose / -v - print all the steps as they happen.
 
-Each recipe can run under different credentials, specify project, client, user, and service 
+Each recipe can run under different credentials, specify project, client, user, and service
 values in the JSON for each recipe. See /util/project/README.md.
 
 CAUTION

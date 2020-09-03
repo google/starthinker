@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 """The core singleton class of StarThinker that translates json to python.
 
-Project loads JSON and parameters and combines them for execturion.  It handles 
+Project loads JSON and parameters and combines them for execturion.  It handles
 three important concepts:
 
   1. Load the JSON and make all task parameters available to python scripts.
@@ -31,13 +31,13 @@ three important concepts:
                 or a Cloud Bucket Storage path for distributed jobs.
 
     service.json - service credentials json ( generated from cloud project ).
-                   Passed as a local path or an embedded json object for 
+                   Passed as a local path or an embedded json object for
                    distributed jobs.
- 
+
     client.json - client credentials json ( generated from cloud project ).
                   Also require a user json path which will be written to after
                   client authnetication.  Once authenticated this client is not
-                  required. 
+                  required.
 
     Credentials can be specified in one of three ways for maximum flexibility:
 
@@ -63,8 +63,8 @@ three important concepts:
          ```
 
     C. Use default credentials ( lowest priority, last resort )
-       If neither the json not the command line provides a path, the environmental 
-       variable GOOGLE_APPLICATION_CREDENTIALS will be used for service accounts.  
+       If neither the json not the command line provides a path, the environmental
+       variable GOOGLE_APPLICATION_CREDENTIALS will be used for service accounts.
        It is created by google cloud utilities.
 """
 
@@ -76,7 +76,7 @@ import pytz
 import argparse
 import textwrap
 
-from datetime import datetime 
+from datetime import datetime
 from importlib import import_module
 
 from starthinker.util.debug import starthinker_trace_start
@@ -143,7 +143,7 @@ def is_scheduled(recipe, task = {}):
 
   if days == [] or day_tz in days:
     if hours == [] or hour_tz in hours:
-      return True 
+      return True
 
   return False
 
@@ -152,7 +152,7 @@ class project:
   """A singleton that represents the loaded recipe within python scripts.
 
   All access to json scripts within StarThinker must pass through the project
-  class.  It handles parameters, time zones, permissions management, and 
+  class.  It handles parameters, time zones, permissions management, and
   scheduling overhead. Task function name must match JSON task name.
 
   Project is meant as the entry point into all StarThinker scripts as follows:
@@ -202,7 +202,7 @@ class project:
     ```
 
   Attributes:
-    
+
     Dealing with authentication...
       - project: (string) The Google Cloud project id.
       - user: (string) Path to the user credentials json file.  It can also be a Google Cloud Bucket path when passed to the class directly.
@@ -271,27 +271,27 @@ class project:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent('''\
           Command line to execute all tasks in a recipe once. ( Common Entry Point )
-    
+
           This script dispatches all the tasks in a JSON recipe to handlers in sequence.
           For each task, it calls a subprocess to execute the JSON instructions, waits
           for the process to complete and dispatches the next task, until all tasks are
           complete or a critical failure ( exception ) is raised.
-    
+
           If an exception is raised in any task, all following tasks are not executed by design.
-    
+
           Example: python run.py [path to recipe file] --force
           Caution: This script does NOT check if the last job finished, potentially causing overruns.
           Notes:
             - To avoid running the entire script when debugging a single task, the command line
               can easily replace "all" with the name of any "task" in the json.  For example
               python all/run.py project/sample/say_hello.json
-    
+
             - Can be easily replaced with the following to run only the "hello" task:
               python task/hello/run.py project/sample/say_hello.json
-    
+
             - Or specified further to run only the second hello task:
               python task/hello/run.py project/sample/say_hello.json -i 2
-    
+
       '''))
       if arguments is None or '-j' in arguments: parser.add_argument('json', help='Path to recipe json file to load.')
     else:
@@ -328,13 +328,13 @@ class project:
       getattr(cls.args, 'trace_file', None)
     )
 
-  
+
   @classmethod
   def get_task_index(cls):
     i = 0
     for c, t in enumerate(cls.recipe.get('tasks', [])):
       if next(iter(t.keys())) == cls.function:
-        i += 1 
+        i += 1
         if i == cls.instance:
           return c
     return None
@@ -342,7 +342,7 @@ class project:
 
   @classmethod
   def get_task(cls):
-    #if cls.task is None: 
+    #if cls.task is None:
     i = cls.get_task_index()
     cls.task = None if i is None else next(iter(cls.recipe['tasks'][i].values()))
     return cls.task
@@ -350,12 +350,12 @@ class project:
 
   @classmethod
   def set_task(cls, function, parameters):
-    if cls.task is None: 
+    if cls.task is None:
       cls.recipe['tasks'].append({ function:parameters })
       cls.function = function
       cls.task = parameters
       cls.instance = 1
-    else: 
+    else:
       i = cls.get_task_index()
       cls.recipe['tasks'][i] = { function:parameters }
       cls.function = function
@@ -366,15 +366,15 @@ class project:
   @staticmethod
   def from_parameters(func):
     """Initializes a project singleton for execution by a task.
-    
+
     Either loads parameters (recipe, instance) passed to task programatically,
-    or if no parameters passed attmepts to load them from the command line. 
+    or if no parameters passed attmepts to load them from the command line.
     Uses decorator pattern, task name is inferred from function ebing decorated.
 
     Args:
       - recipe: (dict) JSON object representing the project ( setup plus at least one task )
       - instance: (integer) numeric offset of task to run if multiple calls to thsi task exist
- 
+
     """
 
     def from_parameters_wrapper(recipe=None, instance=1):
@@ -385,7 +385,7 @@ class project:
 
 
   @classmethod
-  def initialize(cls, 
+  def initialize(cls,
     _recipe={},
     _task=None,
     _instance=1,
@@ -399,7 +399,7 @@ class project:
     _trace_print=False,
     _trace_file=False
   ):
-    """Used in StarThinker scripts as programmatic entry point. 
+    """Used in StarThinker scripts as programmatic entry point.
 
     Set up the project singleton for execution of a task, be sure to mimic defaults in helper
     this function loads credentials from various source ( command line argument, json, default credentials )
@@ -411,7 +411,7 @@ class project:
 
        if __name__ == "__main__":
          user = 'user.json'
-         service = 'service.json' 
+         service = 'service.json'
          recipe = {'setup':..., 'tasks':.... }
          project.initialize(_recipe=recipe, _user=user, _service=service, _verbose=True)
     ```
@@ -454,7 +454,7 @@ class project:
     # if user explicity specified by command line
     if _user: cls.recipe['setup']['auth']['user'] = _user
     # or if user not given, then try default credentials ( disabled security risk to assume on behalf of recipe )
-    #elif not cls.recipe['setup']['auth'].get('user'): 
+    #elif not cls.recipe['setup']['auth'].get('user'):
     #  cls.recipe['setup']['auth']['user'] = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', None)
 
     # if project id given, use it

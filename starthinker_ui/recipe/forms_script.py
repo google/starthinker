@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ class ScriptForm(forms.Form):
     self.instance = recipe or Recipe()
     self.setup = SetupForm(manual, account, post, instance=self.instance)
     super(ScriptForm, self).__init__(*args, **kwargs)
-    
-    # create blank forms 
+
+    # create blank forms
     self.blanks = []
     for s in Script.get_scripts(account.email):
       if s.is_manual() == manual:

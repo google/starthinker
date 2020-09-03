@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ class ScriptJsonForm(forms.Form):
     for variable in self.variables:
       if variable['name'].startswith('recipe_'): continue # skip inputs that come from recipe constants
       self.fields[variable['name']] = get_field_kind(variable)
-      self.fields[variable['name']].initial = values.get(variable['name'], variable.get('value', variable.get('default', ''))) 
+      self.fields[variable['name']].initial = values.get(variable['name'], variable.get('value', variable.get('default', '')))
       self.fields[variable['name']].required = variable.get('required', False)
       self.fields[variable['name']].help_text = variable.get('description', '')
 
@@ -93,7 +93,7 @@ class ScriptJsonForm(forms.Form):
     # if saving, return values ( constants are not stored as they come from the recipe )
     else:
       values = {}
-      for variable in self.variables: 
+      for variable in self.variables:
         if variable['name'].startswith('recipe_'): continue # skip inputs that come from recipe constants
         values[variable['name']] = self.cleaned_data[variable['name']]
       return { 'tag':self.script.get_tag(), 'values':values, 'sequence':self.cleaned_data['script_sequence'] }

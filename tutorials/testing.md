@@ -1,9 +1,9 @@
 # Recipe Tests
 
 Recipe tests are integration tests, since StarThinker is mostly an integration platform.  They are recipes
-with values hard coded and designed to be ran by anyone with access to the underlying resources.  To help 
+with values hard coded and designed to be ran by anyone with access to the underlying resources.  To help
 test recipes, StarThinker has a [Test Task](../starthinker/task/test/). It is like any other task
-in StarThinker except that it doesn't do any work.  It simply compares and asserts endpoints.  
+in StarThinker except that it doesn't do any work.  It simply compares and asserts endpoints.
 
 StarThinker also comes with a test helper that loads and runs test recipes for complete integration testing.
 Tests are run in parallel and written to individual log files.  The test helper uses StarThinker virtual
@@ -18,7 +18,7 @@ an account id is almost always left as a field because each developer has unique
 
 - Each test should inlude a script instead of re-coding it, this ensures a full stack test.
 - Inside the test file, hard code any fields that do not need to be customized by developers.
-- All remaining fields will be automatically inserted into the test configuration for the developer to provide.  
+- All remaining fields will be automatically inserted into the test configuration for the developer to provide.
 
 StarThinker runs full integration tests, many tests require specific access to testing assets such as account identifiers and emails.
 To configure this, the helper will create or update a config.json file in the [tests/](../tests/) directory. After it is
@@ -156,7 +156,7 @@ python tests/helper.py --include scripts/deal_finder.json
 { "test": {
   "assert":"Completed all tasks."
 }}
-``` 
+```
 1. check if path exists
 ```
 { "test": {

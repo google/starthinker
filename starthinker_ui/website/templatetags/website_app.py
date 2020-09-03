@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google LLC
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -92,7 +92,7 @@ def request_solution(script):
     script.get_link()
   )
   return mark_safe('mailto:%s?subject=%s&body=%s' % (
-    ','.join(script.get_authors()).replace(' ', ''), 
+    ','.join(script.get_authors()).replace(' ', ''),
     quote_plus(subject),
     quote_plus(body)
   ))
@@ -100,7 +100,7 @@ def request_solution(script):
 @register.simple_tag
 def mailto(emails, subject='', body=''):
   return mark_safe('mailto:%s?subject=%s&body=%s' % (
-    ','.join(emails).replace(' ', ''), 
+    ','.join(emails).replace(' ', ''),
     quote_plus(subject),
     quote_plus(body)
   ))
@@ -200,4 +200,4 @@ def google_analytics():
       gtag('config', '%s');
     </script>''' % (settings.GOOGLE_ANALYTICS, settings.GOOGLE_ANALYTICS))
   else:
-    return '' 
+    return ''

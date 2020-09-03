@@ -2,7 +2,7 @@
   "script":{
     "released":"2019-11-19",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_small",
     "title":"ITP Audit Dashboard ( 2020 )",
     "description":"Dashboard that shows performance metrics across browser to see the impact of ITP.",
@@ -28,12 +28,12 @@
   },
   "setup": {
     "hour": [
-      3   
-    ],  
+      3
+    ],
     "day": [
       "Mon"
-    ]   
-  },  
+    ]
+  },
   "tasks": [
     { "drive": {
         "auth": "user",
@@ -178,7 +178,7 @@
           "table":"z_Floodlight_CM_Report",
           "is_incremental_load":false
         }
-      },      
+      },
       "delete":false
     }},
     { "dcm":{
@@ -265,7 +265,7 @@
           "table":"z_CM_Browser_Report_Dirty",
           "is_incremental_load":false
         }
-      },      
+      },
       "delete":false
     }},
     { "sheets":{
@@ -323,7 +323,7 @@
           "table":"z_Device_Type"
         }
       }
-    }},   
+    }},
     { "sheets":{
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
@@ -353,7 +353,7 @@
     {
       "itp_audit": {
         "auth": "service",
-        "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default":"", "description":"Campaign Manager Account Id." }},  
+        "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default":"", "description":"Campaign Manager Account Id." }},
         "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
         "timeout": 60

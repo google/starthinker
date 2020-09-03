@@ -1,5 +1,5 @@
 # StarThinker Cloud Project ID
-  
+
 ## Get Cloud Project ID
 
 Retrieve a Cloud Project ID from: https://console.cloud.google.com/

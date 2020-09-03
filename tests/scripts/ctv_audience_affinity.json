@@ -1,10 +1,10 @@
 {
   "setup": {
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2019 Google Inc.",
-    "hour": [ 3 ],  
-    "day": [ "Mon" ]   
-  },  
+    "copyright":"Copyright 2020 Google LLC",
+    "hour": [ 3 ],
+    "day": [ "Mon" ]
+  },
   "tasks": [
     { "include":{
       "script":"scripts/ctv_audience_affinity.json",

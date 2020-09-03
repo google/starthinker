@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ def main():
     formatter_class=argparse.RawDescriptionHelpFormatter,
     description=textwrap.dedent('''\
       Command line to get table schema from BigQuery.
-      This is a helper to help developers debug and create tables. 
+      This is a helper to help developers debug and create tables.
 
       Example: `python helper.py --project [id] --dataset [name] --table [name] -s [credentials]`
 

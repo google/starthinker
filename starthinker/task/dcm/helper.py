@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2018 Google LLC
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ def main():
     description=textwrap.dedent('''\
       Command line to help debug CM reports and build reporting tools.
 
-      Examples: 
+      Examples:
         To get list of reports: python helper.py --account [id] --list -u [user credentials path]
         To get report: python helper.py --account [id] --report [id] -u [user credentials path]
         To get report files: python helper.py --account [id] --files [id] -u [user credentials path]

@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2018 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,17 +17,17 @@
 ###########################################################################
 
 def Placement(
-    name, 
+    name,
     compatibility,
     size_width,
     size_height,
-    paymentSource, 
+    paymentSource,
     pricingSchedule_startDate,
     pricingSchedule_endDate,
-    campaignId, 
+    campaignId,
     placementStrategyId,
     contentCategoryId,
-    siteId=None, 
+    siteId=None,
     directorySiteId=None
   ):
   """ Default minial placement definition.

@@ -48,7 +48,7 @@ def census_correlate(column_join, column_pass, column_sum, column_correlate, dat
 
   for column in column_sum:
     query += '  SUM(A.%s) AS %s,\n' % (column, column)
- 
+
   query += '  COUNT(*) AS Locations,\n'
 
   for segment in CENSUS_FIELDS:
@@ -191,11 +191,11 @@ def census():
 
 #WITH data AS (
 #  SELECT ST_GEOGPOINT(-122.4194, 37.7749) point
-#  UNION ALL 
+#  UNION ALL
 #  SELECT ST_GEOGPOINT(-74.0060, 40.7128) point
 #)
 #SELECT zip_code, city, county
-#FROM `bigquery-public-data.geo_us_boundaries.zip_codes` 
+#FROM `bigquery-public-data.geo_us_boundaries.zip_codes`
 #JOIN data
 #ON ST_WITHIN(point, zip_code_geom)
 

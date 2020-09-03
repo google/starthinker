@@ -24,11 +24,11 @@
         "default":"",
         "description":"32 character alpha-numeric lowercase string."
       }},
-      "frequency":{"field":{ 
-        "name":"fred_frequency", 
-        "kind":"choice", 
-        "order":4, 
-        "default":"", 
+      "frequency":{"field":{
+        "name":"fred_frequency",
+        "kind":"choice",
+        "order":4,
+        "default":"",
         "description":"An optional parameter that indicates a lower frequency to aggregate values to." ,
         "choices":["", "d", "w", "bw", "m", "q", "sa", "a", "wef", "weth", "wew", "wetu", "wem", "wesu", "wesa", "bwew", "bwem"]
       }},
@@ -41,19 +41,19 @@
             "default":"",
             "description":"Series ID to pull data from."
           }},
-          "units":{"field":{ 
-            "name":"fred_units", 
-            "kind":"choice", 
-            "order":3, 
-            "default":"lin", 
+          "units":{"field":{
+            "name":"fred_units",
+            "kind":"choice",
+            "order":3,
+            "default":"lin",
             "description":"A key that indicates a data value transformation." ,
             "choices":["lin", "chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
           }},
-          "aggregation_method":{"field":{ 
-            "name":"fred_aggregation_method", 
-            "kind":"choice", 
-            "order":5, 
-            "default":"avg", 
+          "aggregation_method":{"field":{
+            "name":"fred_aggregation_method",
+            "kind":"choice",
+            "order":5,
+            "default":"avg",
             "description":"A key that indicates the aggregation method used for frequency aggregation." ,
             "choices":["avg", "sum", "eop"]
           }}
