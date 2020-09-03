@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -33,9 +33,9 @@ UI_USER = os.environ.get('STARTHINKER_USER', '')
 def account_create():
 
   accounts = Account.objects.all()
-  if len(accounts) > 0: 
+  if len(accounts) > 0:
     account = accounts[0]
-  else: 
+  else:
     project.initialize(_client=UI_CLIENT, _service=UI_SERVICE, _user=UI_USER)
     credentials = get_credentials('user')
     account = Account.objects.get_or_create_user(credentials, 'password')

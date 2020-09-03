@@ -2,7 +2,7 @@
   "script":{
     "released":"2018-06-15",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"add_alert",
     "title":"Floodlight Monitor",
     "description":"Monitor floodlight impressions specified in sheet and send email alerts.",

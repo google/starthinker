@@ -1,10 +1,10 @@
-# Creating A Script For A Single Task 
+# Creating A Script For A Single Task
 
 A script in StarThinker is a set of JSON parameters mapping back to [tasks](task.md). Creating a script
 makes the task executable from the command line.  Connecting the script to the UI makes it executable by any user
 using the UI, it also makes it available in the [Recipe Gallery](https://google.github.io/starthinker/code/).
 
-Note, a recipe is a JSON file with hard coded values specific to a client while a script or solution is a JSON file 
+Note, a recipe is a JSON file with hard coded values specific to a client while a script or solution is a JSON file
 with a structure __script\*.json__ and { 'field':{...}} placeholders that act as a template instead of values.
 
 ![UI Recipe Architecture](images/ui_recipe_map.png)
@@ -110,7 +110,7 @@ scripts/script_hello.json
 
 The __instructions__ and __description__ parameters can also use fields to help construct instructions.
 
-Text fields are {field:[string]} or {field:[string], prefix:[string]} where field is a field from the JSON 
+Text fields are {field:[string]} or {field:[string], prefix:[string]} where field is a field from the JSON
 parameters in a task and prefix is a string value that gets appended to the value from variables.
 
 
@@ -120,7 +120,7 @@ scripts/script_hello.json
 {
   "script":{
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google Inc.",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"notifications",
     "title":"Say Hello",
     "description":"Recipe template for say hello.",

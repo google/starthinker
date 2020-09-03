@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ class Command(BaseCommand):
   help = 'Generate Templates For Airflow'
 
   def handle(self, *args, **kwargs):
-     
+
     for script in Script.get_scripts():
       if script.get_open_source():
 

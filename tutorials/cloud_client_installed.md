@@ -1,5 +1,5 @@
 # StarThinker Command Line Client Credentials
-  
+
 ## Create Client Credentials ( Desktop )
 
 Retrieve oAuth Client Id from: https://console.cloud.google.com/apis/credentials

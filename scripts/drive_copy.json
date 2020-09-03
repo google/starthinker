@@ -2,7 +2,7 @@
   "script":{
     "released":"2019-08-28",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2019 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"file_copy",
     "title":"Drive Copy",
     "description":"Copy a drive document.",

@@ -3,7 +3,7 @@
 {% comment %}
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@
             Save <i class="material-icons right">save</i>
           </button>
         </p>
-  
+
         <br/>
         <p class="right-align"><strong>Roles we recommend:</strong>
           <br/>bigquery.jobs.create
@@ -57,11 +57,11 @@
           <br/>bigquery.tables.update
           <br/>bigquery.tables.updateData
         </p>
-  
+
       </div>
-  
+
       <div class="col s12 m8 l9 left-align">
-  
+
           <div class="card-panel">
             <h3>Edit Project</h3>
             <p class="flow-text">Copy and paste the JSON service credentials here.  You will be able to select this project for each recipe that requires Google Cloud resources.</p>
@@ -69,17 +69,17 @@
               {% include "form_fields.html" %}
             {% endwith %}
           </div>
-             
-    
+
+
           {% if form_project.instance.pk %}
             <a class="btn waves-effect waves-light red darken-2 right" href="{{ form_project.instance.link_delete }}">
               Delete <i class="material-icons right">delete</i>
             </a>
           {% endif %}
-    
+
       </div>
     </div>
-  
+
   </form>
 
 {% endblock %}

@@ -19,38 +19,38 @@
     { "census":{
       "auth":{"field":{ "name":"auth", "kind":"authentication", "order":0, "default":"service", "description":"Credentials used for writing data." }},
       "normalize":{
-        "census_geography":{"field":{ 
-          "name":"census_geography", 
-          "kind":"choice", 
-          "order":1, 
-          "default":"zip_codes", 
+        "census_geography":{"field":{
+          "name":"census_geography",
+          "kind":"choice",
+          "order":1,
+          "default":"zip_codes",
           "description":"Census table to get data from." ,
           "choices":["zip_codes", "state", "zcta5", "schooldistrictunified", "puma", "place", "county", "congressionaldistrict", "censustract", "cbsa"]
         }},
-        "census_year":{"field":{ 
-          "name":"census_year", 
-          "kind":"choice", 
-          "order":2, 
-          "default":"2018", 
+        "census_year":{"field":{
+          "name":"census_year",
+          "kind":"choice",
+          "order":2,
+          "default":"2018",
           "description":"Census table to get data from." ,
           "choices":[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007]
         }},
-        "census_span":{"field":{ 
-          "name":"census_span", 
-          "kind":"choice", 
-          "order":3, 
-          "default":"5yr", 
+        "census_span":{"field":{
+          "name":"census_span",
+          "kind":"choice",
+          "order":3,
+          "default":"5yr",
           "description":"Census table to get data from." ,
           "choices":["1yr", "3yr", "5yr"]
         }}
       },
       "to":{
         "dataset":{"field":{ "name":"dataset", "kind":"string", "order":4, "default":"", "description":"Existing BigQuery dataset." }},
-        "type":{"field":{ 
-          "name":"type", 
-          "kind":"choice", 
-          "order":5, 
-          "default":"table", 
+        "type":{"field":{
+          "name":"type",
+          "kind":"choice",
+          "order":5,
+          "default":"table",
           "description":"Write Census_Percent as table or view." ,
           "choices":["table", "view"]
         }}

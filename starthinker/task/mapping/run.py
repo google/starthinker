@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ def mapping():
       query += 'THEN "%s"\n' % tag
     query += '    ELSE "%s"\n  END AS %s,\n' % (defaults.get(dimension, ''), dimension)
   query += 'FROM [%s.%s]' % (project.task['in']['dataset'], project.task['in']['table'])
-        
+
   if project.verbose: print('QUERY: ', query)
 
   # write to view

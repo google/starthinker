@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,20 +42,20 @@ class Command(BaseCommand):
   def handle(self, *args, **kwargs):
     day = date.today() - timedelta(days=kwargs['days'])
 
-    email = {       
+    email = {
       "subject":"Announcing Six New Open Source Modules For Ecosystems",
-      "style":{ 
+      "style":{
         "background":"#f2f2f2",
         "foreground":"#ffffff",
         "text":"#414347",
         "link":"#4285f4",
-        "font":"Roboto, Helvetica, Arial sans-serif;", 
+        "font":"Roboto, Helvetica, Arial sans-serif;",
         "align":"left"
-      },        
+      },
       "logo":"https://storage.googleapis.com/starthinker-ui/gTech_StarThinker.png",
-      "body":{  
+      "body":{
         "sections":[
-          {     
+          {
             "header":"Six New Solutions For Partners To Build New Services",
             "paragraph":"In Q1, StarThinker released 6 new building blocks available as Python, Airflow, Colab, and no-coding UI.  These building blocks are now open sourve and availbale for deployment by Partners.  Below is a description of each solution and possible service or efficiency gain by partners.",
             "grid":[]

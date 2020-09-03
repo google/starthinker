@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google LLC.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ def bigquery():
         False,
         project.task['to']['dataset']
       )
-  
+
   elif 'run' in project.task and 'query' in project.task.get('run', {}):
     if project.verbose: print("QUERY", project.task['run']['query'])
     run_query(

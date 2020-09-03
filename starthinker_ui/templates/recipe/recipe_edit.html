@@ -3,7 +3,7 @@
 {% comment %}
 ###########################################################################
 #
-#  Copyright 2019 Google LLC
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -69,12 +69,12 @@
     function updateTasks() {
       var tasks = {};
 
-      $("input.form_prefix").each(function( index ) { 
+      $("input.form_prefix").each(function( index ) {
         var task = $(this).attr('value');
-        if ( !task.endsWith("_[BLANK]")) { 
+        if ( !task.endsWith("_[BLANK]")) {
           task = task.substring(0, task.lastIndexOf("_"));
           tasks[task] = ( tasks[task] || 0) + 1;
-        } 
+        }
       });
 
       for (var task in tasks) {
@@ -121,13 +121,13 @@
       var move = null;
       $(document).on('click tap', 'i.form_move', function() {
         if (move === null) {
-          move = $(this).parent(); 
+          move = $(this).parent();
           $(this).addClass('form_move_from');
         } else {
           if (move != $(this).parent()) { $(this).parent().before(move); }
           $(move).removeClass('form_move_from');
-          move = null; 
-          $("input.form_sequence").each(function( index ) { $(this).val(index + 1); }); 
+          move = null;
+          $("input.form_sequence").each(function( index ) { $(this).val(index + 1); });
         }
       });
 
@@ -178,45 +178,45 @@
           </button>
 
           {% if recipe.pk %}
-    
+
             {% if recipe.active %}
               <a href="{{ recipe.link_run }}" class="recipe_link waves-effect waves-light btn blue form_button modal-trigger">
                 Run <i class="material-icons right">directions_run</i>
               </a>
             {% endif %}
-      
+
             {% if recipe.is_running %}
               <a href="{{ recipe.link_cancel }}" class="btn recipe_link waves-effect waves-light blue form_button modal-trigger">
                 Cancel <i class="material-icons right">cancel</i>
               </a>
             {% endif %}
-      
+
             <a href="#modal_log" class="btn recipe_link waves-effect waves-light blue form_button modal-trigger">
               Log <i class="material-icons right">list</i>
             </a>
-      
+
             {% comment %}
             <a href="" class="recipe_link waves-effect waves-light btn blue form_button modal-trigger">
               Refresh <i class="material-icons right">refresh</i>
             </a>
             {% endcomment %}
-      
+
             {% comment %}
             <a href="#modal_remote" class="recipe_link waves-effect waves-light btn blue form_button modal-trigger">
               Remote <i class="material-icons right">settings_remote</i>
             </a>
             {% endcomment %}
-      
+
             <a href="/recipe/download/{{ recipe.pk }}/" class="recipe_link waves-effect waves-light btn blue form_button modal-trigger">
               Download <i class="material-icons right">file_download</i>
             </a>
-        
+
             {% if form_script.instance.pk %}
               <a class="recipe_link btn waves-effect waves-light red darken-2" href="{{ form_script.instance.link_delete }}">
                 Delete <i class="material-icons right">delete</i>
               </a>
             {% endif %}
-    
+
           {% endif %}
 
           <br/><br/>
@@ -238,7 +238,7 @@
               {% include "form_setup.html" %}
             {% endwith %}
           {% endif %}
-  
+
           {% for form in form_script.forms %}
             <div class="card-panel">
               <i class="right material-icons form_move blue-text">drag_handle</i>
@@ -256,12 +256,12 @@
               {% endwith %}
             </div>
           {% endfor %}
-    
+
           <div id="insert_here"></div>
         </div>
 
       </div>
-    
+
       {% if recipe.pk %}
         <div id="modal_remote" class="modal">
 
@@ -289,7 +289,7 @@
             <p>RECIPE NOT FOUND ( 404 ) - The reference provided does not match any recipe.</p>
             <br/>
             <hr/>
-            <p>If you use <a href="https://console.cloud.google.com/security/iap" target="_blank">Identity Aware Proxy</a>, add <a href="https://cloud.google.com/iap/docs/authentication-howto#iap_make_request-python" target="_blank">Bearer and Google Open Id</a> to your request.</p> 
+            <p>If you use <a href="https://console.cloud.google.com/security/iap" target="_blank">Identity Aware Proxy</a>, add <a href="https://cloud.google.com/iap/docs/authentication-howto#iap_make_request-python" target="_blank">Bearer and Google Open Id</a> to your request.</p>
             <br/>
           </div>
         </div>

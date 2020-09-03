@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -127,7 +127,7 @@ def rows_header_trim(rows):
 def column_header_sanitize(cell):
   header_sanitized = RE_HUMAN.sub('_', str(cell).title().replace('%', 'Percent')).strip('_')
   if header_sanitized[0].isdigit(): header_sanitized = '_' + header_sanitized # bigquery does not take leading digits
-  return header_sanitized  
+  return header_sanitized
 
 
 def row_header_sanitize(row):
@@ -137,7 +137,7 @@ def row_header_sanitize(row):
 def rows_header_sanitize(rows):
   first = True
   for row in rows:
-    if first: 
+    if first:
       row = row_header_sanitize(row)
       first = False
     yield row

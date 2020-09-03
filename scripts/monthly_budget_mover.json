@@ -2,7 +2,7 @@
   "script":{
     "released":"2019-05-23",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"perm_phone_msg",
     "title":"Monthly Budget Mover",
     "image": "https://storage.googleapis.com/starthinker-ui/MonthlyBudgetMover.png",
@@ -93,11 +93,11 @@
         "partner_id":{"field":{ "name":"partner_id", "kind":"integer", "order":1,"description":"The sdf file types."}},
         "file_types":"INSERTION_ORDER",
         "filter_type":"FILTER_TYPE_ADVERTISER_ID",
-        "read": { 
+        "read": {
           "filter_ids":{
             "single_cell": true,
             "values":{
-              "field":{ "name":"filter_ids", "kind":"integer_list", "order":4, "default":[], "description":"Comma separated list of filter ids for the request." }  
+              "field":{ "name":"filter_ids", "kind":"integer_list", "order":4, "default":[], "description":"Comma separated list of filter ids for the request." }
             }
           }
         },

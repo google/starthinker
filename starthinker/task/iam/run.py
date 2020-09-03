@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ in the cloud project that grants a collection of permissions for assets in
 that project.  Use this call to quickly grant a user a role.
 
 Users who authenticate against your client credentials DO NOT automatically get
-access permission.  That still needs to be granted on a case by case basis.  
+access permission.  That still needs to be granted on a case by case basis.
 Placing a call to this handler early in a recipe JSON ensures the user executing
-the recipe has the right privileges.  
+the recipe has the right privileges.
 
 This handler should be called with "service" auth in the the JSON.  The service should
-be able to assign roles. 
+be able to assign roles.
 
 ### Command Line COnvenience
 
@@ -45,8 +45,8 @@ handler allows the service to securely grant additional roles to users.
 ### Good Practice
 
 Using roles is a better practice than assigning permissions to user accounts
-individually because it allows for better tracking and quicker revocation. 
-Changing a role permission changes all user at once without having to track 
+individually because it allows for better tracking and quicker revocation.
+Changing a role permission changes all user at once without having to track
 down individuals.  We highly recommend using roles.
 
 """

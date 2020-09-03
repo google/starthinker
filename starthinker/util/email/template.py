@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google LLC
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ class EmailTemplate:
     if 'button' in template: self.button(**template['button'])
     if 'table' in template: self.table(**template['table'])
     if 'list' in template: self.list(template['list'])
-    if 'sections' in template: 
+    if 'sections' in template:
       for s in template['sections']:
         self.section(True, background=s.get('background', None))
         self.template(s)
@@ -143,7 +143,7 @@ class EmailTemplate:
 
 
   def paragraph(self, text):
-    
+
     # HTML
     self.content_html += '<p style="%s">%s<p>' % (
       self._text_css(),
@@ -155,7 +155,7 @@ class EmailTemplate:
     #self.content_text += '%s\n\n' % MARKUP_TO_TEXT.sub(r'\1 (\2)', text).replace('\n', '<br/><br/>')
     self.content_text += '%s\n\n' % self.markup_to_text(text)
 
-    
+
   def image(self, src, link=None):
     # HTML
     if link: self.content_html += '<a href="%s">' % link
@@ -177,7 +177,7 @@ class EmailTemplate:
 
   def grid(self, on=False):
     if on: self.content_html += '<table style="width:100%;margin:20px 0px;padding:0px;border:0px;border-spacing:0px 20px;">'
-    else: self.content_html += '</table>' 
+    else: self.content_html += '</table>'
 
 
   def row(self, on=False):
@@ -186,7 +186,7 @@ class EmailTemplate:
 
 
   def column(self, number=0):
-    if number: 
+    if number:
       width = int(100 / number)
       self.content_html += '<td style="width:%d%%;padding:10px;text-align:center;vertical-align:top;">' % width
     else: self.content_html += '</td>'
@@ -219,7 +219,7 @@ class EmailTemplate:
     for element in elements:
       self.content_html += '<tr><td style="padding:10px;text-align:%s;border-top:%dpx solid #ccc;%s">%s</td></tr>' % (self.style['align'], border, self._table_css(), self.markup_to_html(element))
       border = 1
-    self.content_html += '</table>' 
+    self.content_html += '</table>'
 
     # Text
     self.content_text += '\n\n'
@@ -251,7 +251,7 @@ class EmailTemplate:
         self.content_html += '<td style="padding:10px;text-align:%s;border-bottom:1px solid #ccc;%s">%s</td>' % (aligns.get(header['type'], 'left'), self._table_css(), value)
       self.content_html += '</tr>'
 
-    self.content_html += '</table>' 
+    self.content_html += '</table>'
 
     # Text
     for row in rows:
@@ -315,7 +315,7 @@ if __name__ == "__main__":
   t = EmailTemplate();
   t.header('This Is A Header')
   t.paragraph('A paragraph is a few sentences of text.  Although you can use HTML, it will break the text version.')
-  t.display( 
+  t.display(
     'Section Header',
     'A section paragraph is a few sentences of text.',
     'http://www.image.com/image.jpg',

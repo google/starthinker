@@ -2,7 +2,7 @@
 
 ###########################################################################
 #
-#  Copyright 2019 Google LLC
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -195,7 +195,7 @@ setup_worker() {
   save_config;
   firewall_create;
 
-  instance_name="starthinker-worker-instance" 
+  instance_name="starthinker-worker-instance"
   instance_image="starthinker-worker-image-$(date '+%Y-%m-%d-%H-%M-%S')"
 
   echo ""
@@ -229,7 +229,7 @@ setup_worker() {
   echo "Create Image - starthinker-worker-family"
   echo "----------------------------------------"
   echo ""
-  
+
   gcloud compute images create $instance_image --project=$STARTHINKER_PROJECT --description="Worker configuration." --family=starthinker-worker-family --source-disk=$instance_name --source-disk-zone=$STARTHINKER_ZONE
 
   echo ""
@@ -287,7 +287,7 @@ if [ "$1" = "--instance" ];then
     export STARTHINKER_UI_DATABASE_NAME="$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"
     export STARTHINKER_UI_DATABASE_USER="$STARTHINKER_UI_PRODUCTION_DATABASE_USER"
     export STARTHINKER_UI_DATABASE_PASSWORD="$STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD"
-    save_config; 
+    save_config;
 
     make_cron;
     update_apt;

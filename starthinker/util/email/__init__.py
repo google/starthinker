@@ -59,12 +59,12 @@ def get_email_links(auth, message, link_regexp, download=False):
     for part in message['payload'].get('parts', []) or [message['payload']]:
       if 'data' in part['body']:
         data = part['body']['data']
-        content = base64.urlsafe_b64decode(data).decode('utf-8') 
+        content = base64.urlsafe_b64decode(data).decode('utf-8')
         # plain text may be different than html
-        if part['mimeType'] == 'text/plain': 
+        if part['mimeType'] == 'text/plain':
           links.extend(parse_url(content))
         # html needs to decode links
-        elif part['mimeType'] == 'text/html': 
+        elif part['mimeType'] == 'text/html':
           links.extend(map(lambda link: html_parser.unescape(link), parse_url(content)))
 
   except HttpError as error:
@@ -77,7 +77,7 @@ def get_email_links(auth, message, link_regexp, download=False):
   if link_filter: links = [link for link in links if link_filter.match(link)]
 
   # for downloads convert links into files and data
-  for link in links: 
+  for link in links:
     if download:
       try: yield parse_filename(link, url=True), BytesIO(urlopen(link).read())
       except: 'ERROR: Unable To Download', link
@@ -95,7 +95,7 @@ def get_email_attachments(auth, message, attachment_regexp):
       if part['filename']:
 
         # filter regexp
-        if not file_filter or file_filter.match(part['filename']): 
+        if not file_filter or file_filter.match(part['filename']):
 
           if 'data' in part['body']:
             data=part['body']['data']
@@ -131,7 +131,7 @@ def get_email_messages(auth, email_from, email_to, subject_regexp=None, date_min
 
 def send_email(auth, email_to, email_from, email_cc, subject, text, html=None, attachment_filename=None, attachment_rows=None):
   if project.verbose: print('SENDING EMAIL', email_to)
-  
+
   message = MIMEMultipart('alternative')
   message.set_charset('utf8')
 
@@ -141,9 +141,9 @@ def send_email(auth, email_to, email_from, email_cc, subject, text, html=None, a
   message['subject'] = subject
   message.attach(MIMEText(text, 'plain', 'UTF-8'))
 
-  if html: 
+  if html:
     message.attach(MIMEText(html, 'html', 'UTF-8'))
-  
+
   if attachment_filename and attachment_rows:
     attachment = MIMEBase("text", "csv")
     attachment.set_payload(rows_to_csv(attachment_rows).read())

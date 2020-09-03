@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2018 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ def authenticate(domain, client_id, client_secret, username, password):
     "password":password
   }).encode()
 
-  req =  request.Request("https://%s/services/oauth2/token" % domain, data=data) 
+  req =  request.Request("https://%s/services/oauth2/token" % domain, data=data)
   creds = json.loads(request.urlopen(req).read())
   return Salesforce(instance_url=creds['instance_url'], session_id=creds['access_token'])
 

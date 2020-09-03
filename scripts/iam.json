@@ -2,7 +2,7 @@
   "script":{
     "released":"2018-10-02",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"file_download",
     "title":"Project IAM",
     "description":"Sets project permissions for an email.",

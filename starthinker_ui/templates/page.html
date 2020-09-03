@@ -1,7 +1,7 @@
 {% comment %}
 ###########################################################################
 #
-#  Copyright 2019 Google LLC
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@
 
     <style>
       html { color: rgba(68,68,68,1); font-family: Roboto, sans-serif; }
- 
+
       .material-icons { line-height: normal; vertical-align: middle; }
 
       #message { justify-content: center; font-size: 2em;}
@@ -86,7 +86,7 @@
           <img src="{% static 'StarThinker.png' %}"/>&nbsp;StarThinker
         </a>
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-  
+
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           {% if not external %}<li><a href="/">Recipes</a></li>{% endif %}
           {% if not external %}<li><a href="/project/">Projects</a></li>{% endif %}
@@ -104,7 +104,7 @@
         </ul>
       </div>
     </nav>
-  
+
     <ul class="sidenav green lighten-1" id="mobile-menu">
       {% if request.user.is_authenticated %}
         <li>

@@ -2,7 +2,7 @@
   "script":{
     "released":"2019-12-04",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"policy",
     "title":"Tag Key Value Uploader",
     "description":"A tool for bulk editing key value pairs for CM placements.",

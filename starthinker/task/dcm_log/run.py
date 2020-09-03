@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@ from starthinker.util.project import project
 from starthinker.util.google_api import API_DCM
 from starthinker.util.bigquery import table_exists, rows_to_table, query_to_rows
 from starthinker.util.dcm import get_profile_for_api
-from starthinker.util.data import get_rows 
+from starthinker.util.data import get_rows
 
 
 CHANGELOGS_TABLE = 'CM_Change_Logs'
@@ -49,7 +49,7 @@ def get_changelogs(accounts, start):
   for account_id in accounts:
 
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = { 'profileId':profile_id, 'minChangeTime':start } 
+    kwargs = { 'profileId':profile_id, 'minChangeTime':start }
     if is_superuser: kwargs['accountId'] = account_id
 
     for changelog in API_DCM("user", iterate=True, internal=is_superuser).changeLogs().list(**kwargs).execute():
@@ -77,7 +77,7 @@ def dcm_log():
 
   # determine start log date
   if table_exists(
-    project.task['out']['auth'], 
+    project.task['out']['auth'],
     project.task['out']['project'],
     project.task['out']['dataset'],
     CHANGELOGS_TABLE
@@ -98,7 +98,7 @@ def dcm_log():
 
   # load new logs
   rows = get_changelogs(accounts, start)
-  if rows: 
+  if rows:
     rows_to_table(
       project.task['out']['auth'],
       project.task['out']['project'],

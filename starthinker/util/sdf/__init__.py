@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ from starthinker.util.google_api import API_DV360_Beta
 def get_single_sdf_rows(auth, version, partner_id, file_types, filter_type, filter_ids_obj, desired_file_type):
   sdf_zip_file = sdf_download(auth, version, partner_id, file_types, filter_type, filter_ids_obj)
 
-  with zipfile.ZipFile(sdf_zip_file, 'r', zipfile.ZIP_DEFLATED) as d: 
+  with zipfile.ZipFile(sdf_zip_file, 'r', zipfile.ZIP_DEFLATED) as d:
     file_names = d.namelist()
     for file_name  in file_names:
 
@@ -82,7 +82,7 @@ def sdf_download(auth, version, partner_id, file_types, filter_type, filter_ids_
   if 'error' in response:
     raise Exception(response['error']['message'])
 
-  return download_media('user', response['response']['resourceName']) 
+  return download_media('user', response['response']['resourceName'])
 
 
 def add_seekable_to_file(f):
@@ -91,13 +91,13 @@ def add_seekable_to_file(f):
 
 
 def sdf_to_bigquery(sdf_zip_file, project_id, dataset, time_partitioned_table, create_single_day_table, table_suffix=''):
-  with zipfile.ZipFile(sdf_zip_file, 'r', zipfile.ZIP_DEFLATED) as d: 
+  with zipfile.ZipFile(sdf_zip_file, 'r', zipfile.ZIP_DEFLATED) as d:
     file_names = d.namelist()
     for file_name  in file_names:
       if project.verbose: print('SDF: Loading: ' + file_name)
       with d.open(file_name) as sdf_file:
         rows = csv_to_rows(sdf_file.read().decode('utf-8'))
-        if not rows: 
+        if not rows:
           if project.verbose: print('SDF: Empty file ' + file_name)
           continue
         table_name = file_name.split('.')[0].replace('-','_') + table_suffix
@@ -106,21 +106,21 @@ def sdf_to_bigquery(sdf_zip_file, project_id, dataset, time_partitioned_table, c
         # Check if each SDF should have a dated table
         if create_single_day_table:
           table_name_dated = table_name + date.today().strftime("%Y_%m_%d")
-          
+
           # Create table and upload data
-          table_create('service', project_id, dataset, table_name_dated)    
-          rows_to_table('service', project_id, dataset, table_name_dated, rows, 
-            schema=schema, 
-            skip_rows=1, 
+          table_create('service', project_id, dataset, table_name_dated)
+          rows_to_table('service', project_id, dataset, table_name_dated, rows,
+            schema=schema,
+            skip_rows=1,
             disposition='WRITE_TRUNCATE')
 
         # Create end result table if it doesn't already exist
         if not table_exists('service', project_id, dataset, table_name):
           table_create('service', project_id, dataset, table_name, is_time_partition=time_partitioned_table)
 
-        rows_to_table('service', project_id, dataset, table_name, rows, 
-          schema=schema, 
-          skip_rows=1, 
+        rows_to_table('service', project_id, dataset, table_name, rows,
+          schema=schema,
+          skip_rows=1,
           disposition='WRITE_APPEND' if time_partitioned_table else 'WRITE_TRUNCATE')
 
 
@@ -128,13 +128,13 @@ def sdf_schema(header):
   schema = []
 
   for h in header:
-    schema.append({ 
-      'name':column_header_sanitize(h), 
-      'type':SDF_Field_Lookup.get(h, 'STRING'), 
-      'mode':'NULLABLE' 
+    schema.append({
+      'name':column_header_sanitize(h),
+      'type':SDF_Field_Lookup.get(h, 'STRING'),
+      'mode':'NULLABLE'
     })
 
-  return schema 
+  return schema
 
 
 def download_media(auth, resource_name):

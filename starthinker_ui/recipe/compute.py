@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ def group_instances_resize(count):
   return API_Compute('service').instanceGroupManagers().resize(
     project=settings.UI_PROJECT,
     zone=settings.UI_ZONE,
-    instanceGroupManager='starthinker-worker-group',   
+    instanceGroupManager='starthinker-worker-group',
     size = count
   ).execute()
 

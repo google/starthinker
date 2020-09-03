@@ -10,7 +10,7 @@
     "from":["fred"],
     "instructions":[
       "Specify the values for a <a href='https://research.stlouisfed.org/docs/api/geofred/regional_data.html' target='_blank'>Fred observations API call</a>.",
-      "A table will appear in the dataset." 
+      "A table will appear in the dataset."
     ],
     "authors":["kenjora@google.com"]
   },
@@ -24,19 +24,19 @@
         "default":"",
         "description":"32 character alpha-numeric lowercase string."
       }},
-      "frequency":{"field":{ 
-        "name":"fred_frequency", 
-        "kind":"choice", 
-        "order":4, 
-        "default":"", 
+      "frequency":{"field":{
+        "name":"fred_frequency",
+        "kind":"choice",
+        "order":4,
+        "default":"",
         "description":"An optional parameter that indicates a lower frequency to aggregate values to." ,
         "choices":["", "d", "w", "bw", "m", "q", "sa", "a", "wef", "weth", "wew", "wetu", "wem", "wesu", "wesa", "bwew", "bwem"]
       }},
-      "region_type":{"field":{ 
-        "name":"fred_region_type", 
-        "kind":"choice", 
-        "order":3, 
-        "default":"county", 
+      "region_type":{"field":{
+        "name":"fred_region_type",
+        "kind":"choice",
+        "order":3,
+        "default":"county",
         "description":"The region you want want to pull data for." ,
         "choices":["bea", "msa", "frb", "necta", "state", "country", "county", "censusregion"]
       }},
@@ -49,27 +49,27 @@
             "default":"",
             "description":"The ID for a group of seriess found in GeoFRED."
           }},
-          "units":{"field":{ 
-            "name":"fred_units", 
-            "kind":"choice", 
-            "order":3, 
-            "default":"lin", 
+          "units":{"field":{
+            "name":"fred_units",
+            "kind":"choice",
+            "order":3,
+            "default":"lin",
             "description":"A key that indicates a data value transformation." ,
             "choices":["lin", "chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
           }},
-          "season":{"field":{ 
-            "name":"fred_season", 
-            "kind":"choice", 
-            "order":4, 
-            "default":"SA", 
+          "season":{"field":{
+            "name":"fred_season",
+            "kind":"choice",
+            "order":4,
+            "default":"SA",
             "description":"The seasonality of the series group." ,
             "choices":["SA", "NSA", "SSA"]
           }},
-          "aggregation_method":{"field":{ 
-            "name":"fred_aggregation_method", 
-            "kind":"choice", 
-            "order":5, 
-            "default":"avg", 
+          "aggregation_method":{"field":{
+            "name":"fred_aggregation_method",
+            "kind":"choice",
+            "order":5,
+            "default":"avg",
             "description":"A key that indicates the aggregation method used for frequency aggregation." ,
             "choices":["avg", "sum", "eop"]
           }}

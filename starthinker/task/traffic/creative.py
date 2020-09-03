@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ class CreativeDAO(BaseDAO):
     self._parent_dao = None
 
     self.creative_asset_dao = CreativeAssetDAO(auth, profile_id, is_admin, None)
-    self.landing_page_dao = LandingPageDAO(auth, profile_id, is_admin) 
+    self.landing_page_dao = LandingPageDAO(auth, profile_id, is_admin)
 
   def _api(self, iterate=False):
     """Returns an DCM API instance for this DAO."""
@@ -226,7 +226,7 @@ class CreativeDAO(BaseDAO):
         }]
 
       del creative['active']
-    
+
     #Display Creatives
     elif feed_item.get(FieldMap.CREATIVE_TYPE, None) == 'DISPLAY':
       creative['type'] = 'DISPLAY'
@@ -251,7 +251,7 @@ class CreativeDAO(BaseDAO):
         # Backup Asset
         if feed_item.get(FieldMap.CREATIVE_BACKUP_ASSET_ID, None) and feed_item.get(FieldMap.CREATIVE_BACKUP_ASSET_ID, None) != '':
           backup_identifier = self.creative_asset_dao.get_backup_identifier(association, self._creative_asset_feed)
-          
+
           creative['backupImageReportingLabel'] = feed_item.get(FieldMap.CREATIVE_BACKUP_NAME, None)
 
           # Parse Features
@@ -273,7 +273,7 @@ class CreativeDAO(BaseDAO):
           # Backup Image
           creative['creativeAssets'].append({
             'assetIdentifier': backup_identifier,
-            'role': 'BACKUP_IMAGE'        
+            'role': 'BACKUP_IMAGE'
           })
 
       del creative['active']
@@ -351,7 +351,7 @@ class CreativeDAO(BaseDAO):
       feed_item[FieldMap.CREATIVE_BACKUP_ASSET_ID] = backup_asset['id']
 
     # Backup Landing Page Id
-    backup_lp = self.landing_page_dao.get(feed_item, column_name=FieldMap.BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_ID)      
+    backup_lp = self.landing_page_dao.get(feed_item, column_name=FieldMap.BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_ID)
     if backup_lp:
       feed_item[FieldMap.BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_ID] = backup_lp['id']
       feed_item[FieldMap.BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_NAME] = backup_lp['name']

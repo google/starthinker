@@ -97,7 +97,7 @@ CENSUS_FIELDS = [
       'female_80_to_84',
       'female_85_and_over',
     ]
-  }, 
+  },
   {
     'category':'race',
     'denominator':'total_pop',
@@ -126,7 +126,7 @@ CENSUS_FIELDS = [
       'white_male_45_54',
       'white_male_55_64',
     ]
-  }, 
+  },
   {
     'category':'income',
     'denominator':'total_pop',
@@ -249,7 +249,7 @@ CENSUS_FIELDS = [
       'father_one_parent_families_with_young_children',
       'father_in_labor_force_one_parent_families_with_young_children',
     ]
-  }, 
+  },
   {
     'category':'cars owned',
     'denominator':'total_pop',
@@ -260,7 +260,7 @@ CENSUS_FIELDS = [
       'three_cars',
       'four_more_cars',
     ]
-  }, 
+  },
   {
     'category':'commuter time',
     'denominator':'total_pop',
@@ -274,14 +274,14 @@ CENSUS_FIELDS = [
       'commute_35_44_mins',
       'commute_45_59_mins',
     ]
-  }, 
+  },
   {
     'category':'commuter age',
     'denominator':'total_pop',
     'columns':[
       'commuters_16_over',
     ]
-  }, 
+  },
   {
     'category':'commuter method',
     'denominator':'total_pop',
@@ -313,7 +313,7 @@ CENSUS_FIELDS = [
       'graduate_professional_degree',
       'some_college_and_associates_degree',
     ]
-  },            
+  },
   {
     'category':'education grade',
     'denominator':'total_pop',
@@ -386,4 +386,4 @@ CENSUS_FIELDS = [
       'speak_spanish_at_home_low_english',
     ]
   }
-]    
+]

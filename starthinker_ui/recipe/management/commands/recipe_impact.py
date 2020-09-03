@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ def account_from_dbm_report(report_id, report_name):
       report = dbm_report_get('user', report_id, report_name)
     except Exception as e:
       print(e, report_id, report_name)
-      report = None 
+      report = None
 
     if report:
       for filter in report['params']['filters']:
@@ -74,7 +74,7 @@ class Command(BaseCommand):
     )
 
   def handle(self, *args, **kwargs):
-    
+
 
     impact = [] #{ 'day': DATE, 'deployment':INT, 'account': INT, 'product': STRING, 'recipe': STRING, 'user': STRING }
     missing = {}
@@ -92,13 +92,13 @@ class Command(BaseCommand):
       values = recipe.get_values()
       for v in values:
         if v['tag'] in ('dcm_to_bigquery', 'dcm_to_sheets', 'dcm_to_storage', 'dcm_run', 'conversion_upload_from_bigquery', 'conversion_upload_from_sheets'):
-          impact.append({ 
+          impact.append({
             'day':recipe.birthday,
             'deployment': recipe.id,
             'account': v['values'].get('account'),
             'script':v['tag'],
             'product': 'dcm',
-            'user': recipe.account.email.replace('@google.com', '') 
+            'user': recipe.account.email.replace('@google.com', '')
           })
         elif v['tag'] in ('dbm_to_bigquery', 'dbm_to_sheets', 'dbm_to_storage'):
           for partner in account_from_dbm_report(v['values'].get('dbm_report_id'), v['values'].get('dbm_report_name')):
@@ -108,10 +108,10 @@ class Command(BaseCommand):
               'account': partner,
               'script':v['tag'],
               'product': 'dbm',
-              'user': recipe.account.email.replace('@google.com', '') 
+              'user': recipe.account.email.replace('@google.com', '')
              })
         elif v['tag'] in ('dt',):
-          impact.append({ 
+          impact.append({
             'day':recipe.birthday,
             'deployment': recipe.id,
             'account': account_from_dt(v['values']),
@@ -121,17 +121,17 @@ class Command(BaseCommand):
           })
         elif v['tag'] == 'barnacle':
           for account in v['values']['accounts']:
-            impact.append({ 
+            impact.append({
               'day':recipe.birthday,
               'deployment': recipe.id,
               'account': account,
               'script':v['tag'],
               'product': 'dcm',
-              'user': recipe.account.email.replace('@google.com', '') 
+              'user': recipe.account.email.replace('@google.com', '')
             })
         elif v['tag'] in ('entity',):
           for partner in v['values']['partners']:
-            impact.append({ 
+            impact.append({
               'day':recipe.birthday,
               'deployment': recipe.id,
               'account': partner,
@@ -140,7 +140,7 @@ class Command(BaseCommand):
               'user': recipe.account.email.replace('@google.com', '')
             })
         elif v['tag'] == 'itp':
-          impact.append({ 
+          impact.append({
             'day':recipe.birthday,
             'deployment': recipe.id,
             'account': v['values']['dcm_account'],
@@ -148,7 +148,7 @@ class Command(BaseCommand):
             'product': 'dcm',
             'user': recipe.account.email.replace('@google.com', '')
           })
-          impact.append({ 
+          impact.append({
             'day':recipe.birthday,
             'deployment': recipe.id,
             'account': v['values']['dbm_partner'],
@@ -157,7 +157,7 @@ class Command(BaseCommand):
             'user': recipe.account.email.replace('@google.com', '')
           })
         elif v['tag'] == 'itp_audit':
-          impact.append({ 
+          impact.append({
             'day':recipe.birthday,
             'deployment': recipe.id,
             'account': v['values']['cm_account_id'],
@@ -166,7 +166,7 @@ class Command(BaseCommand):
             'user': recipe.account.email.replace('@google.com', '')
           })
           for partner in account_from_dbm_report(None, v['values'].get('dv360_report_name')):
-            impact.append({ 
+            impact.append({
               'day':recipe.birthday,
               'deployment': recipe.id,
               'account': partner,
@@ -234,7 +234,7 @@ class Command(BaseCommand):
           disposition='WRITE_TRUNCATE' if id_max == 0 else 'WRITE_APPEND',
           wait=True
         )
-  
+
       print('MISSING', missing)
       print('Coverage:', (len(impact) * 100) / (len(missing) + len(impact)))
     else:

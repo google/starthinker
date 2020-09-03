@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google LLC
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -35,15 +35,15 @@ def main():
 
       This script dispatches all the tasks in a JSON recipe to handlers in sequence.
       For each task, it calls a subprocess to execute the JSON instructions, waits
-      for the process to complete and dispatches the next task, until all tasks are 
+      for the process to complete and dispatches the next task, until all tasks are
       complete or a critical failure ( exception ) is raised.
 
       If an exception is raised in any task, all following tasks are not executed by design.
-      
+
       Example: python run.py [path to recipe file] --force
       Caution: This script does NOT check if the last job finished, potentially causing overruns.
       Notes:
-        - To avoid running the entire script when debugging a single task, the command line 
+        - To avoid running the entire script when debugging a single task, the command line
           can easily replace "all" with the name of any "task" in the json.  For example
           python all/run.py project/sample/say_hello.json
 

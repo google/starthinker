@@ -2,7 +2,7 @@
   "script":{
     "released":"2019-08-28",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"policy",
     "title":"PoliceBot",
     "description":"A tool that helps enforce CM object name conventions by checking names against a set of client-defined patterns, and emailing violations to appropriate agency teams on a daily basis.",

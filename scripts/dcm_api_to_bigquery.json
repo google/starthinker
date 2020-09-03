@@ -2,7 +2,7 @@
   "script":{
     "released":"2019-02-20",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2019 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_small",
     "from":["cm"],
     "to":["bigquery"],

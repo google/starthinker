@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -21,14 +21,14 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source: 
+  Install StarThinker in cloud composer from open source:
 
     pip install git+https://github.com/google/starthinker
 
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	   
+    4) Composer Menu	
     l) Install All
 
 --------------------------------------------------------------
@@ -51,14 +51,14 @@ Take the new sdf and upload it into DV360
 '''
 
 from starthinker_airflow.factory import DAG_Factory
- 
+
 # Add the following credentials to your Airflow configuration.
 USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
-  'recipe_name': '',  # 
+  'recipe_name': '',  #
   'auth_write': 'service',  # Credentials used for writing data.
   'auth_read': 'user',  # Credentials used for reading data.
   'partner_id': '',  # The sdf file types.

@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -42,11 +42,11 @@ def monthly_budget_mover():
 
 	# Get Insertion Order SDF
 	# sdf = list(get_single_sdf_rows(
-	#     project.task['auth'], 
-	#     project.task['sdf']['version'], 
-	#     project.task['sdf']['partner_id'], 
-	#     project.task['sdf']['file_types'], 
-	#     project.task['sdf']['filter_type'], 
+	#     project.task['auth'],
+	#     project.task['sdf']['version'],
+	#     project.task['sdf']['partner_id'],
+	#     project.task['sdf']['file_types'],
+	#     project.task['sdf']['filter_type'],
 	#     project.task['sdf']['read']['filter_ids'],
  #    	'InsertionOrders'))
 
@@ -159,7 +159,7 @@ def calc_new_sdf_no_categories(sdf, report, excluded_ios):
 			is_first = False
 			continue
 
-		# If Io is in exclude then just add the current 
+		# If Io is in exclude then just add the current
 		io_id = row[sdf_io_id_column]
 		if io_id in excluded_ios: 	
 			new_sdf.append(row)
@@ -235,7 +235,7 @@ def aggregate_io_spend_to_categories(report, categories):
 				# Aggregate category spend
 				if categories_spend.has_key(key):
 					categories_spend[key] = categories_spend[key] + float(io_spend)
-				else: 
+				else:
 					categories_spend[key] = float(io_spend)
 
 				break
@@ -283,7 +283,7 @@ def aggregate_io_budget_to_categories(sdf, categories):
 				# Aggregate category budget
 				if categories_budget.has_key(key):
 					categories_budget[key] = categories_budget[key] + budget
-				else: 
+				else:
 					categories_budget[key] = budget
 
 	validate_all_ios_processed(categories, processed_ios, 'SDF')					
@@ -295,8 +295,8 @@ def aggregate_io_budget_to_categories(sdf, categories):
 
 Args:
   * categories => dictionary with categories as the key, and a list of ios under that category as the value
-  * excluded_ios => list of ios to be excluded from the calculations 
- 
+  * excluded_ios => list of ios to be excluded from the calculations
+
 Returns:
   * The new dictionary of categories with the necessary ios excluded from the list
 
@@ -331,7 +331,7 @@ def apply_category_budgets(sdf, category_budget_deltas, categories):
 	budget_segments_idx = -1
 
 	for row in sdf:
-		# Do not process the header and get the idx for Io Id and 
+		# Do not process the header and get the idx for Io Id and
 		if first:
 			io_id_idx = row.index(IO_ID)
 			budget_segments_idx = row.index(BUDGET_SEGMENTS)
@@ -411,7 +411,7 @@ def get_current_month_idx_in_budget_segment(budget_objs, io_id):
 	# Seperate budget_string into a list of budget objs
 	today = datetime.today()
 	month = str(today.month)
-	if len(month) == 1: 
+	if len(month) == 1:
 		month = '0'+ month
 
 	# Find correct month in the budget_obj
@@ -426,7 +426,7 @@ def get_current_month_idx_in_budget_segment(budget_objs, io_id):
 
 Args:
   * categories_budget => dictionary with the category as the key, and the aggregated budget for that category as the value
-  * categories_spend => dictionary with the category as the key, and the aggregated spend from the previous month as the 
+  * categories_spend => dictionary with the category as the key, and the aggregated spend from the previous month as the
   * categories => dictionary with categories as the key, and a list of ios under that category as the value
 
 Returns:
@@ -460,12 +460,12 @@ def get_prev_month_budget(budget_string, io_id):
 	cur_year = str(datetime.today().year)
 	cur_month = datetime.today().month
 	prev_month_int = int(cur_month) - 1
-	if(prev_month_int == 0): 
+	if(prev_month_int == 0):
 		prev_month_int = 12
 		cur_year = str(int(cur_year)-1)
 	prev_month = str(prev_month_int)
-	if(len(prev_month) == 1): 
-		prev_month = '0' + prev_month 
+	if(len(prev_month) == 1):
+		prev_month = '0' + prev_month
 
 	# Find correct month in the budget_obj
 	for monthly_budget in budget_obj:
@@ -479,8 +479,8 @@ def get_prev_month_budget(budget_string, io_id):
 
 Args:
   * budget_string => string from the SDF that represents the budget segment
-  	Format of the string => 
- 
+  	Format of the string =>
+
 Returns:
   * List of budget objects => [{budget, start_date, end_date},...]
   	budget_string format => "(#; MM/DD/YYYY; MM/DD/YYYY;); (#; MM/DD/YYYY; MM/DD/YYYY;);"

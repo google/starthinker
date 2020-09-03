@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ class Colab:
     self.code_lines = []
     self.colab = {
       "license":"Apache License, Version 2.0",
-      "copyright":"Copyright 2018 Google Inc.",
+      "copyright":"Copyright 2020 Google LLC",
       "nbformat": version.split('.', 1)[0],
       "nbformat_minor": version.split('.', 1)[1],
       "metadata": {

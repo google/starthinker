@@ -46,7 +46,7 @@
         {% endfor %}
       </ul>
     </div>
-  
+
     <div id="task_add_script" class="col s6 m3 l3 right-align" style="overflow-x: hidden;overflow-y: scroll;">
       <div class="collection">
         {% for script in scripts %}
@@ -54,7 +54,7 @@
         {% endfor %}
       </div>
     </div>
-  
+
     <div id="task_add_details" class="col s12 m6 l6" style="overflow-x: hidden;overflow-y: scroll;" >
       <div class="center-align" style="margin-top:60px;">
         <h3>Add A Script To Your Recipe Workflow</h3>
@@ -71,12 +71,12 @@
             <span id="form_button_count_{{ script.get_tag }}"></span>
           </p>
           <p class="flow-text center-align">{{ script.get_description|safe }}</p>
-  
+
           {% if script.get_image %}
             <br/><br/>
             <img src="{{ script.get_image }}" style="width:300px;height:auto;"/>
           {% endif %}
-  
+
           {% if script.get_pitches %}
             <br/><br/>
             <table class="bordered">
@@ -89,26 +89,26 @@
               </tbody>
             </table>
           {% endif %}
-  
+
           <br/><br/>
           {% if script.get_sample %}
             <a class="btn blue waves-effect waves-light" href="{{ script.get_sample }}" target="_blank">
               <i class="material-icons right">directions_bike</i>Sample
             </a>
           {% endif %}
-      
+
           {% if script.get_test %}
             <a class="btn blue waves-effect waves-light" href="{{ script.get_test }}" target="_blank">
               <i class="material-icons right">thumb_up</i>Example Test
             </a>
           {% endif %}
-      
+
           {% if script.get_documentation %}
             <a class="btn blue waves-effect waves-light" href="{{ script.get_documentation }}" target="_blank">
               <i class="material-icons right">list</i>Documentation
             </a>
           {% endif %}
-      
+
           {% if script.get_open_source %}
             <a class="menu_link btn blue waves-effect waves-light" href="{{ script.get_open_source }}" target="_blank">
               <i class="material-icons right">list</i>Git Hub

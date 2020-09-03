@@ -17,7 +17,7 @@
 ###########################################################################
 
 
-from starthinker.util.project import project 
+from starthinker.util.project import project
 from starthinker.util.data import put_rows
 from starthinker.util.sheets import sheets_read
 from starthinker.util.csv import pivot_column_to_row
@@ -146,8 +146,8 @@ def dcm_replicate():
     project.task['out']['bigquery']['dataset'],
     table_name_sanitize('%s - All' % template['name']),
     "SELECT CAST(REPLACE(_TABLE_SUFFIX, '_', '') AS INT64) AS Account_Id, * FROM `%s.%s.%s*`" % (
-      project.id, 
-      project.task['out']['bigquery']['dataset'], 
+      project.id,
+      project.task['out']['bigquery']['dataset'],
       table_name_sanitize('%s - Account ' % template['name']
     )),
     disposition='WRITE_TRUNCATE',

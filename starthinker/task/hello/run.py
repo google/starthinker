@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@
 
 """Handler that executes { "hello":{...}} task in recipe JSON.
 
-This is meant as an example only, it executes no useful tasks. Use this as 
-a template for how to connect a handler to a JSON recipe task.  It 
-illustrates how to use JOSN variables, access constants in the system, and 
-best practices for using this framework.  Credentials are not required for 
+This is meant as an example only, it executes no useful tasks. Use this as
+a template for how to connect a handler to a JSON recipe task.  It
+illustrates how to use JOSN variables, access constants in the system, and
+best practices for using this framework.  Credentials are not required for
 this recipe handler.
 
 Call from the command line using:

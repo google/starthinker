@@ -13,7 +13,7 @@ Increasing the number and size of the workers will directly impact the speed and
 Yes, StarThinker can be executed on any machine supporting python.  In the deploy script select the development menu.
 
 ---
-### Mac OSX and the missing command line 'cc' error? 
+### Mac OSX and the missing command line 'cc' error?
 Installing xCode and Command Line tools will resolve the 'cc' error on Mac OSX.
 
 ---
@@ -30,7 +30,7 @@ When setting up Google Cloud Client Credentials, be sure to edit the credentials
 
 ---
 ### Does StarThinker write logs?
-Yes, all UI logs are writtent to Google Cloud StackDriver under the category StarThinker.  Logs include the recipe and commands ran.  Logs do not include PII such as credentials or task details which may contain PII.  Command line logs are written to standard output and error. 
+Yes, all UI logs are writtent to Google Cloud StackDriver under the category StarThinker.  Logs include the recipe and commands ran.  Logs do not include PII such as credentials or task details which may contain PII.  Command line logs are written to standard output and error.
 
 ---
 ### How do I reset all StarThinker settings?
@@ -38,7 +38,7 @@ Delete the starthinker_assets/production.sh, service.json, user.json, client_web
 
 ---
 ### Can I run multiple StarThinker instances on the same machine?
-Yes, however each StarThinker will need to run under a different user with distinct environmental variables.  
+Yes, however each StarThinker will need to run under a different user with distinct environmental variables.
 
 ---
 ### Can StarThinker settings in Google Cloud Console be shared?
@@ -57,7 +57,7 @@ xcode-select --install
 
 ---
 ### I'm getting an admin_policy_enforced error.
-The error may occur if the [StarThinker Scopes](../starthinker/config.py) do not match the [oAuth Consent Screen](https://console.cloud.google.com/apis/credentials/consent). 
+The error may occur if the [StarThinker Scopes](../starthinker/config.py) do not match the [oAuth Consent Screen](https://console.cloud.google.com/apis/credentials/consent).
 
 ---
 ### I'm getting an SSH Connection Timeout error.
@@ -70,5 +70,5 @@ gcloud compute firewall-rules create default-allow-ssh --allow tcp:22
 ### How do I completely revoke access to my user credentials for StarThinker?
 Visit [Google Account Permissions](https://myaccount.google.com/permissions) to revoke access to StarThinker.
 
---- 
+---
 &copy; 2020 Google LLC - Apache License, Version 2.0

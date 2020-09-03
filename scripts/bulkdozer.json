@@ -2,7 +2,7 @@
   "script":{
     "released":"2018-04-03",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_small",
     "title":"Bulkdozer",
     "description":"Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.",

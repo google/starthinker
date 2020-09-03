@@ -2,7 +2,7 @@
   "script":{
     "released":"2019-03-08",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_large",
     "title":"SDF Download",
     "description":"Download SDF reports into a BigQuery table.",
@@ -30,7 +30,7 @@
           ]}},
         "partner_id":{"field":{ "name":"partner_id", "kind":"integer", "order":1,"description":"The sdf file types."}},
         "file_types":{"field":{ "name":"file_types", "kind":"string_list", "order":2, "default":[], "description":"The sdf file types."}},
-        "filter_type":{"field":{ "name":"filter_type", "kind":"choice", "order":3, "default":"", "description":"The filter type for the filter ids.", 
+        "filter_type":{"field":{ "name":"filter_type", "kind":"choice", "order":3, "default":"", "description":"The filter type for the filter ids.",
           "choices": [
             "FILTER_TYPE_ADVERTISER_ID",
             "FILTER_TYPE_CAMPAIGN_ID",
@@ -38,11 +38,11 @@
             "FILTER_TYPE_MEDIA_PRODUCT_ID",
             "FILTER_TYPE_LINE_ITEM_ID"
           ]}},
-        "read": { 
+        "read": {
           "filter_ids":{
             "single_cell": true,
             "values":{
-              "field":{ "name":"filter_ids", "kind":"integer_list", "order":4, "default":[], "description":"Comma separated list of filter ids for the request." }  
+              "field":{ "name":"filter_ids", "kind":"integer_list", "order":4, "default":[], "description":"Comma separated list of filter ids for the request." }
             }
           }
         },

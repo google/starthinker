@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 import json
 
-from starthinker.util.project import project 
+from starthinker.util.project import project
 from starthinker.util.bigquery import rows_to_table, query_to_view
 from starthinker.util.dcm import report_build, report_file, report_to_rows, report_clean, report_schema, DCM_CHUNK_SIZE
 
@@ -164,12 +164,12 @@ def report_main(name, dateRange, schedule, advertiser, campaign, shadow=True):
         {"kind": "dfareporting#sortedDimension", "name": "dfa:placementId"}
       ],
       "metricNames": [
-        "dfa:impressions", 
+        "dfa:impressions",
         "dfa:clicks"
       ]
     }
   }
-  
+
   # if not using shadow advertiser, pull DBM cost here
   if not shadow:
     schema["criteria"]["metricNames"].append("dfa:dbmCost")
@@ -180,7 +180,7 @@ def report_main(name, dateRange, schedule, advertiser, campaign, shadow=True):
     project.task["account"],
     schema
   )
-  
+
 
   # fetch report file if it exists ( timeout = 0 means grab most reent ready )
   filename, filedata = report_file(
@@ -355,7 +355,7 @@ def dynamic_costs():
     project.task['main_campaign_id'],
     shadow
   )
-  
+
   if shadow:
     shadow_table = report_shadow(
       unique_name,
@@ -368,8 +368,8 @@ def dynamic_costs():
 
   view_combine(
     unique_name,
-    combos_table, 
-    main_table, 
+    combos_table,
+    main_table,
     shadow_table
   )
 

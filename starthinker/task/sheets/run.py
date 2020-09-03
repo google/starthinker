@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -32,11 +32,11 @@ def sheets():
     if project.verbose: print('Missing Sheet and/or Tab, skipping task.')
     return
 
-  # delete if specified, will delete sheet if no more tabs remain 
+  # delete if specified, will delete sheet if no more tabs remain
   if project.task.get('delete', False):
     sheets_tab_delete(
-      project.task['auth'], 
-      project.task['sheet'], 
+      project.task['auth'],
+      project.task['sheet'],
       project.task['tab']
     )
 
@@ -82,7 +82,7 @@ def sheets():
   if 'write' in project.task:
     rows = get_rows(project.task['auth'], project.task['write'])
     sheets_write(
-      project.task['auth'], 
+      project.task['auth'],
       project.task['sheet'],
       project.task['tab'],
       project.task['range'],
@@ -94,7 +94,7 @@ def sheets():
   if 'append' in project.task:
     rows = get_rows(project.task['auth'], project.task['append'])
     sheets_write(
-      project.task['auth'], 
+      project.task['auth'],
       project.task['sheet'],
       project.task['tab'],
       project.task['range'],
@@ -120,14 +120,14 @@ def sheets():
         if project.verbose: print('SHEETS SCHEMA DEFINED')
         schema = project.task['out']['bigquery']['schema']
 
-      # NOT RECOMMENDED: determine schema if missing 
+      # NOT RECOMMENDED: determine schema if missing
       else:
         if project.verbose: print('SHEETS SCHEMA DETECT ( Note Recommended - Define Schema In JSON )')
         # cast rows to types ( for schema detection )
         rows = rows_to_type(rows)
         rows, schema = get_schema(
-          rows, 
-          project.task.get('header', False), 
+          rows,
+          project.task.get('header', False),
           infer_type=project.task.get('infer_type', True)
         )
 

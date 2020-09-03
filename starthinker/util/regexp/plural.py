@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2017 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ VOWELS = set('aeiou')
 def pluralize(singular):
   """Return plural form of given lowercase singular word (English only). Based on
   ActiveState recipe http://code.activestate.com/recipes/413172/
-  
+
   >>> pluralize('')
   ''
   >>> pluralize('goose')

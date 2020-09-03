@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google LLC
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ def recipe_list(request):
       elif recipe.get_log()['status'] == 'FINISHED': recipes['finished'].append(recipe)
       elif recipe.get_log()['status'] == 'ERROR': recipes['errors'].append(recipe)
       else: recipes['running'].append(recipe)
-    
+
   return render(request, "recipe/recipe_list.html", { 'recipes':recipes })
 
 
@@ -85,7 +85,7 @@ def recipe_manual(request, pk=None):
 
 @permission_admin()
 def recipe_delete(request, pk=None):
-  request.user.recipe_set.filter(pk=pk).delete() 
+  request.user.recipe_set.filter(pk=pk).delete()
   messages.success(request, 'Recipe deleted.')
   return HttpResponseRedirect('/')
 
@@ -229,7 +229,7 @@ def autoscale(request):
 
   # get task and worker list
   scale['jobs'] = Recipe.objects.filter(active=True, job_utm__lt=utc_milliseconds()).exclude(job_utm=0).count()
-  scale['workers']['existing'] = 3 if request == 'TEST' else sum(1 for instance in group_instances_list(('PROVISIONING', 'STAGING', 'RUNNING'))) 
+  scale['workers']['existing'] = 3 if request == 'TEST' else sum(1 for instance in group_instances_list(('PROVISIONING', 'STAGING', 'RUNNING')))
   scale['workers']['required'] = min(settings.WORKER_MAX, math.ceil(scale['jobs'] / scale['workers']['jobs']))
 
   if request != 'TEST' and scale['workers']['required'] > scale['workers']['existing']:

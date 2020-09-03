@@ -2,7 +2,7 @@
   "script":{
     "released":"2018-06-04",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"perm_phone_msg",
     "title":"Twitter Targeting",
     "description":"Adjusts line item settings based on Twitter hashtags and locations specified in a sheet.",
@@ -138,7 +138,7 @@
           "project":{"field":{ "name":"recipe_project", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
         },
-        "legacy":false 
+        "legacy":false
       },
       "to":{
         "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},

@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2018 Google LLC
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import pandas
 from datetime import date, timedelta
 
 
-from starthinker.util.project import project 
+from starthinker.util.project import project
 from starthinker.util.dcm import report_build, report_file, report_to_rows, report_clean, parse_account
 from starthinker.util.sheets import sheets_tab_copy, sheets_read, sheets_url
 from starthinker.util.csv import rows_to_type, rows_header_trim
@@ -48,9 +48,9 @@ def floodlight_report(floodlight_id):
 
   # create report if it does not exists
   report = report_build(
-    project.task['auth'], 
-    project.task['account'], 
-    { 
+    project.task['auth'],
+    project.task['account'],
+    {
       'kind': 'dfareporting#report',
       'type': 'FLOODLIGHT',
       'accountId': account_id,
@@ -99,7 +99,7 @@ def floodlight_report(floodlight_id):
 
 def floodlight_rows(report_id):
 
-  # fetch report file if it exists 
+  # fetch report file if it exists
   filename, report = report_file(
     project.task['auth'],
     project.task['account'],
@@ -120,7 +120,7 @@ def floodlight_rows(report_id):
 def floodlight_outliers(df_in, col_name):
   q1 = df_in[col_name].quantile(0.25)
   q3 = df_in[col_name].quantile(0.75)
-  iqr = q3-q1 
+  iqr = q3-q1
   fence_low  = q1-1.5*iqr
   fence_high = q3+1.5*iqr
 
@@ -161,7 +161,7 @@ def floodlight_email(day, alerts):
 
     # when floodlight alerts exist
     issues = sum(1 for row in table if row[5] != 'NORMAL')
-      
+
     if issues > 0 : subject = '%d Floodlight Alerts For %s' % (issues, day)
     else: subject = 'All Floodlights Normal For %s' % day
 
@@ -189,12 +189,12 @@ def floodlight_email(day, alerts):
 
     # send email template
     send_email(
-      project.task['auth'], 
-      email, 
-      None, 
-      None, 
+      project.task['auth'],
+      email,
+      None,
+      None,
       subject,
-      t.get_text(), 
+      t.get_text(),
       t.get_html()
     )
 
@@ -239,7 +239,7 @@ def floodlight_monitor():
 
     # get report rows for each floodlight
     rows = floodlight_rows(trigger[2])
- 
+
     # calculate outliers
     last_day, rows = floodlight_analysis(rows)
 

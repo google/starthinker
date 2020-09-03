@@ -2,7 +2,7 @@
   "script":{
     "released":"2017-08-14",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_large",
     "title":"DV360 To BigQuery",
     "description":"Move existing DV360 reports into a BigQuery table.",
@@ -28,7 +28,7 @@
           "dataset":{"field":{ "name":"dbm_dataset", "kind":"string", "order":4, "default":"", "description":"Existing BigQuery dataset." }},
           "table":{"field":{ "name":"dbm_table", "kind":"string", "order":5, "default":"", "description":"Table to create from this report." }},
           "schema":{"field":{ "name":"dbm_schema", "kind":"json", "order":6, "description":"Schema provided in JSON list format or empty value to auto detect." }},
-          "is_incremental_load":{"field":{ "name":"is_incremental_load", "kind":"boolean", "order":7, "default":false, "description":"Clear data in destination table during this report's time period, then append report data to destination table." }}  
+          "is_incremental_load":{"field":{ "name":"is_incremental_load", "kind":"boolean", "order":7, "default":false, "description":"Clear data in destination table during this report's time period, then append report data to destination table." }}
         }
       }
     }}

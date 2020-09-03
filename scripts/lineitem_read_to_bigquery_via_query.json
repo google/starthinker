@@ -2,7 +2,7 @@
   "script":{
     "released":"2018-06-06",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "open":true,
     "icon":"arrow_downward",
     "title":"Line Item To BigQuery Via Query",

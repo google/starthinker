@@ -58,7 +58,7 @@ example will execute two tasks in sequence in a single process.
 
 ```
 from starthinker.util.project import project
-  
+
 if __name__ == "__main__":
   var_service = '[SERVICE CREDENTIALS JSON STRING OR PATH]'
   var_user = '[USER CREDENTIALS JSON STRING OR PATH]'

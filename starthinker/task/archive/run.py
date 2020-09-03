@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google LLC
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 from datetime import datetime, date, timedelta
 
-from starthinker.util.project import project 
+from starthinker.util.project import project
 from starthinker.util.storage import object_list, object_move, object_delete
 
 
@@ -31,7 +31,7 @@ def archive():
   for object in object_list(
     project.task['auth'],
     project.task['storage']['bucket'] + ':' + project.task['storage']['path'],
-    files_only=True, 
+    files_only=True,
     raw=True
   ):
     object_day = datetime.strptime(object['updated'], '%Y-%m-%dT%H:%M:%S.%fZ').date()
@@ -39,7 +39,7 @@ def archive():
       if project.task.get('delete', False) == False:
         if project.verbose: print('ARCHIVING FILE:', object['name'])
         object_move(
-          project.task['auth'], 
+          project.task['auth'],
           '%s:%s' % (object['bucket'], object['name']),
           '%s:archive/%s' % (object['bucket'], object['name'])
         )

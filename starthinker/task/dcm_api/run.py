@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google Inc.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ def bigquery_clean(struct):
 
 def row_clean(structs):
   for struct in structs:
-    yield bigquery_clean(struct) 
+    yield bigquery_clean(struct)
 
 
 def put_data(kind, schema, row_format='CSV'):
@@ -94,7 +94,7 @@ def dcm_api():
     rows = dcm_api_list(endpoint)
     rows = row_clean(rows)
     put_rows(
-      project.task['out']['auth'], 
+      project.task['out']['auth'],
       put_data('CM_%s' % endpoint.title(), schema, 'JSON'),
       rows
     )

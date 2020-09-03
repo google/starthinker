@@ -40,13 +40,13 @@
   "tasks": [
     { "dataset": {
       "hour":[1],
-      "auth": "service", 
-      "description": "Create a dataset for bigquery tables.", 
+      "auth": "service",
+      "description": "Create a dataset for bigquery tables.",
       "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
-    }}, 
+    }},
     { "dbm": {
       "hour":[2],
-      "auth": "user", 
+      "auth": "user",
       "report": {
         "filters": {
            "FILTER_PARTNER": {
@@ -88,7 +88,7 @@
     }},
     { "dbm": {
       "hour":[6],
-      "auth": "user", 
+      "auth": "user",
       "report": {
         "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Audience Analysis Performance ", "description":"Name of report in DV360, should be unique." }}
       },
@@ -153,7 +153,7 @@
     }},
     { "dbm": {
       "hour":[6],
-      "auth": "user", 
+      "auth": "user",
       "report": {
         "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Audience Analysis First Party", "description":"Name of report in DV360, should be unique." }}
       },
@@ -213,7 +213,7 @@
     }},
     { "dbm": {
       "hour":[6],
-      "auth": "user", 
+      "auth": "user",
       "report": {
         "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Audience Analysis Google", "description":"Name of report in DV360, should be unique." }}
       },
@@ -273,7 +273,7 @@
     }},
     { "dbm": {
       "hour":[6],
-      "auth": "user", 
+      "auth": "user",
       "report": {
         "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"Audience Analysis Third Party", "description":"Name of report in DV360, should be unique." }}
       },
@@ -342,11 +342,11 @@ LEFT JOIN
           {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
         ],
         "legacy":false
-      }, 
+      },
       "to": {
         "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
         "view": "DV360_Audience_Analysis"
       }
     }}
-  ] 
+  ]
 }

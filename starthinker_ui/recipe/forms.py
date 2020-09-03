@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2019 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ class SetupForm(forms.ModelForm):
       self.structure[0]['fields'].append(self['timezone'])
 
     else:
-      self.structure.append( 
+      self.structure.append(
         { 'title':'Schedule',
           'description':'',
           'fields':[

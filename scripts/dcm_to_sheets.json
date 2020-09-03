@@ -2,7 +2,7 @@
   "script":{
     "released":"2018-01-29",
     "license":"Apache License, Version 2.0",
-    "copyright":"Copyright 2018 Google LLC",
+    "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_small",
     "from":["cm"],
     "to":["sheets"],

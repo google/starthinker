@@ -1,5 +1,5 @@
 ###########################################################################
-# 
+#
 #  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,10 +76,10 @@ def load_tests():
 
 def configure_tests(scripts, tests):
   """Initialize all the necessary test files for Starthinker
-  
+
   Args:
     None
-  
+
   Returns:
     None
 
@@ -114,7 +114,7 @@ def configure_tests(scripts, tests):
   if fields:
     f = open(CONFIG_FILE,"w")
     f.write(json.dumps(fields, sort_keys=True, indent=2))
-    f.close()  
+    f.close()
   else:
     print('WARNING CONFIGURATION IS EMPTY, CHECK YOUR PATHS!')
 
@@ -138,7 +138,7 @@ def configure_tests(scripts, tests):
 
     with open(RECIPE_DIRECTORY + filename, 'w') as f:
       f.write(json.dumps(script, sort_keys=True, indent=2))
-    
+
     recipes.append(filename)
 
   # Create log directory and clear old logs

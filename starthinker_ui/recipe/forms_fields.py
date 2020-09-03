@@ -91,7 +91,7 @@ class ListChoiceIntegerField(forms.MultipleChoiceField):
     return json.dumps([int(v) for v in value])
 
   def validate(self, value):
-    try: 
+    try:
       json.loads(value)
       return True
     except:
@@ -102,21 +102,21 @@ class JsonField(forms.CharField):
   widget = forms.Textarea
 
   def prepare_value(self, value):
-    if isinstance(value, str): 
-      if value: 
+    if isinstance(value, str):
+      if value:
         try: return json.dumps(json.loads(value))
         except ValueError: return value
-      else: 
+      else:
         return None
-    else: 
-      return json.dumps(value)  
+    else:
+      return json.dumps(value)
 
   def clean(self, value):
     if isinstance(value, str):
-      if value: 
+      if value:
         try: return json.loads(value.strip())
         except ValueError as e: raise ValidationError(str(e))
-      else: 
+      else:
         return None
     else:
       return value

@@ -1,5 +1,5 @@
 # StarThinker UI Client Credentials
-  
+
 ## Create Client Credentials ( Web )
 
 Retrieve oAuth Client Id from: https://console.cloud.google.com/apis/credentials

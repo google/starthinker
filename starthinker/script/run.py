@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2018 Google LLC
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ Scripts are JSON templates that define a workflow.  Files in the format script_*
 Each script can be converted to a recipe by replacing { field:{...}} elements with
 actual vaues.
 
-This program reads {{ field:{...}} values from the script JSON, translates them into 
+This program reads {{ field:{...}} values from the script JSON, translates them into
 command line arguments, and uses those arguments to fill in the JSON {{ field:{...}} values
 and produce a specific recipe as STDOUT.  Which can be piped to a file.
 
@@ -43,7 +43,7 @@ Example:
   ```
   python starthinker/script/run.py scripts/script_dcm_to_bigquery.json -h
   usage: run.py [-h] json account report_id report_name dataset table
-  
+
   positional arguments:
     json         JSON input recipe template file to onfigure.
     account      DCM network id.
@@ -51,7 +51,7 @@ Example:
     report_name  DCM report name, pass '' if using id instead.
     dataset      Dataset to be written to in BigQuery.
     table        Table to be written to in BigQuery.
-  
+
   optional arguments:
     -h, --help   show this help message and exit
     --output JSON file to write resulting recipe.
@@ -62,7 +62,7 @@ Example:
   `python starthinker/script/run.py scripts/script_dcm_to_bigquery.json 7880 1234567 "" "Test_Dataset" "Test_Table" > test_recipe.json`
 
   To perform the work of the script for the now filled in recipe:
- 
+
   `python starthinker/all/run.py test_recipe.json`
 
 """
@@ -126,7 +126,7 @@ def script_write(script, args, filepath=None):
   # insert variables into description
   json_set_description(script, args)
 
-  # produce output or run task 
+  # produce output or run task
   if filepath:
     with open(filepath, 'w') as data_file:
       data_file.write(json.dumps(script, indent=2))
@@ -146,18 +146,18 @@ def script_interactive():
   # parse fields and constants into parameters
   fields = json_get_fields(script)
 
-  print('-' * 60) 
+  print('-' * 60)
   if to_json:
     print('(1 of %d) From %s template create recipe: %s\n' % (len(fields), from_json, to_json))
   else:
     print('(1 of %d) Recipe file to create from %s template.\n' % (len(fields), sys.argv[1]))
-    to_json = input("Full Path TO JSON File:") 
+    to_json = input("Full Path TO JSON File:")
 
   for count, field in enumerate(fields):
     print('')
-    print('-' * 60) 
+    print('-' * 60)
     print('(%d of %d) %s%s%s' % (
-      count + 2, 
+      count + 2,
       len(fields), field['description'],
       ','.join(field['choices']) if 'choices' in field else '',
       (' Default to "%s" if blank.' % field['default']) if 'default' in field else '',

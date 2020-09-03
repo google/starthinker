@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2018 Google LLC
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -124,10 +124,10 @@ CAMPAIGNS_SCHEMA = [
 ]
 
 SITES_SCHEMA = [
- { "name":"accountId", "type":"INTEGER" }, 
- { "name":"subaccountId", "type":"INTEGER" }, 
+ { "name":"accountId", "type":"INTEGER" },
+ { "name":"subaccountId", "type":"INTEGER" },
  { "name":"directorySiteId", "type":"INTEGER" },
- { "name":"siteId", "type":"INTEGER" }, 
+ { "name":"siteId", "type":"INTEGER" },
  { "name":"name", "type":"STRING" },
  { "name":"keyName", "type":"STRING" },
  { "name":"approved", "type":"BOOLEAN" },
@@ -293,7 +293,7 @@ def get_subaccounts(accounts):
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
     for subaccount in API_DCM("user", iterate=True, internal=is_superuser).subaccounts().list(**kwargs).execute():
-      if int(subaccount['accountId']) in accounts: 
+      if int(subaccount['accountId']) in accounts:
         yield [
           subaccount['accountId'],
           subaccount['id'],
@@ -309,7 +309,7 @@ def get_advertisers(accounts):
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
     for advertiser in API_DCM("user", iterate=True, internal=is_superuser).advertisers().list(**kwargs).execute():
-      if int(advertiser['accountId']) in accounts: 
+      if int(advertiser['accountId']) in accounts:
         yield [
           advertiser['accountId'],
           advertiser.get('subaccountId'),
@@ -334,7 +334,7 @@ def get_campaigns(accounts):
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
     for campaign in API_DCM("user", iterate=True, internal=is_superuser).campaigns().list(**kwargs).execute():
-      if int(campaign['accountId']) in accounts: 
+      if int(campaign['accountId']) in accounts:
 
         yield [
           campaign['accountId'],
@@ -367,7 +367,7 @@ def get_sites(accounts):
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
     kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
     for site in API_DCM("user", iterate=True, internal=is_superuser).sites().list(**kwargs).execute():
-      if int(site['accountId']) in accounts: 
+      if int(site['accountId']) in accounts:
 
         for contact in site.get('siteContacts', []):
           SITE_CONTACTS.append([
@@ -446,7 +446,7 @@ def get_reports(accounts):
     kwargs = { 'profileId':profile_id, 'accountId':account_id, 'scope':'ALL' } if is_superuser else { 'profileId':profile_id, 'scope':'ALL' }
     for report in API_DCM("user", iterate=True, internal=is_superuser).reports().list(**kwargs).execute():
       if int(report['accountId']) in accounts:
-  
+
         for delivery in report.get('delivery', {}).get('recipients', []):
           REPORT_DELIVERIES.append((
             report['ownerProfileId'],
@@ -459,7 +459,7 @@ def get_reports(accounts):
             delivery['email'],
             delivery['deliveryType'],
           ))
- 
+
         yield [
           report['ownerProfileId'],
           report['accountId'],
@@ -504,7 +504,7 @@ def barnacle():
   # Accounts
   rows = get_accounts(accounts)
   put_rows(
-    project.task['out']['auth'], 
+    project.task['out']['auth'],
     put_json('CM_Accounts', ACCOUNTS_SCHEMA),
     rows
   )
@@ -512,7 +512,7 @@ def barnacle():
   # Profiles
   rows = get_profiles(accounts)
   put_rows(
-    project.task['out']['auth'], 
+    project.task['out']['auth'],
     put_json('CM_Profiles', PROFILES_SCHEMA),
     rows
   )
@@ -520,7 +520,7 @@ def barnacle():
   # Profiles Campaigns
   if project.verbose: print('DCM Profile Campaigns')
   put_rows(
-    project.task['out']['auth'], 
+    project.task['out']['auth'],
     put_json('CM_Profile_Campaigns', PROFILE_CAMPAIGNS_SCHEMA),
     PROFILE_CAMPAIGNS
   )
@@ -528,7 +528,7 @@ def barnacle():
   # Profiles Sites
   if project.verbose: print('DCM Profile Sites')
   put_rows(
-    project.task['out']['auth'], 
+    project.task['out']['auth'],
     put_json('CM_Profile_Sites', PROFILE_SITES_SCHEMA),
     PROFILE_SITES
   )
@@ -536,7 +536,7 @@ def barnacle():
   # Profiles Roles
   if project.verbose: print('DCM Profile Roles')
   put_rows(
-    project.task['out']['auth'], 
+    project.task['out']['auth'],
     put_json('CM_Profile_Roles', PROFILE_ROLES_SCHEMA),
     PROFILE_ROLES
   )
@@ -544,7 +544,7 @@ def barnacle():
   # Profiles Advertisers
   if project.verbose: print('DCM Profile Advertisers')
   put_rows(
-    project.task['out']['auth'], 
+    project.task['out']['auth'],
     put_json('CM_Profile_Advertisers', PROFILE_ADVERTISERS_SCHEMA),
     PROFILE_ADVERTISERS
   )
@@ -565,7 +565,7 @@ def barnacle():
     rows
   )
 
-  # Campaigns 
+  # Campaigns
   rows = get_campaigns(accounts)
   put_rows(
     project.task['out']['auth'],
@@ -573,18 +573,18 @@ def barnacle():
     rows
   )
 
-  # Sites 
+  # Sites
   rows = get_sites(accounts)
   put_rows(
     project.task['out']['auth'],
     put_json('CM_Sites', SITES_SCHEMA),
     rows
   )
-  
+
   # Sites Contacts
   if project.verbose: print('DCM Site Contacts')
   put_rows(
-    project.task['out']['auth'], 
+    project.task['out']['auth'],
     put_json('CM_Site_Contacts', SITE_CONTACTS_SCHEMA),
     SITE_CONTACTS
   )
@@ -592,16 +592,16 @@ def barnacle():
   # Roles
   rows = get_roles(accounts)
   put_rows(
-    project.task['out']['auth'], 
+    project.task['out']['auth'],
     put_json('CM_Roles', ROLES_SCHEMA),
     rows
   )
-  
+
   if project.task.get('reports', False) == True:
     # Reports
     rows = get_reports(accounts)
     put_rows(
-      project.task['out']['auth'], 
+      project.task['out']['auth'],
       put_json('CM_Reports', REPORTS_SCHEMA),
       rows
     )
@@ -609,10 +609,10 @@ def barnacle():
     # Reports Deliveries
     if project.verbose: print('DCM Deliveries')
     put_rows(
-      project.task['out']['auth'], 
+      project.task['out']['auth'],
       put_json('CM_Report_Deliveries', REPORT_DELIVERIES_SCHEMA),
       REPORT_DELIVERIES
     )
-  
+
 if __name__ == "__main__":
   barnacle()

@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -88,9 +88,9 @@ def object_compare(actual, expected):
 def sheets():
 
   rows = sheets_read(
-    project.task['auth'], 
-    project.task['sheets']['sheet'], 
-    project.task['sheets']['tab'], 
+    project.task['auth'],
+    project.task['sheets']['sheet'],
+    project.task['sheets']['tab'],
     project.task['sheets']['range']
   )
 
@@ -159,15 +159,15 @@ def asserts():
 
 
 def path_exists():
-  if os.path.exists(project.task['path']): 
+  if os.path.exists(project.task['path']):
     if project.task.get('delete', False):
-      os.remove(project.task['path']) 
+      os.remove(project.task['path'])
     print('PASSED')
   else: print('FAILED')
 
 
 def storage_exists():
-  if object_exists(project.task['auth'], '%s:%s' % (project.task['storage']['bucket'], project.task['storage']['file'])): 
+  if object_exists(project.task['auth'], '%s:%s' % (project.task['storage']['bucket'], project.task['storage']['file'])):
     if project.task.get('delete', False):
       object_delete(project.task['auth'], '%s:%s' % (project.task['storage']['bucket'], project.task['storage']['file']))
     print('PASSED')
@@ -175,7 +175,7 @@ def storage_exists():
 
 
 def drive_exists():
-  if file_exists(project.task['auth'], project.task['drive']['file']): 
+  if file_exists(project.task['auth'], project.task['drive']['file']):
     if project.task.get('delete', False):
       file_delete(project.task['auth'], project.task['drive']['file'])
     print('PASSED')
@@ -209,6 +209,6 @@ def test():
 # test should be run like any other task
 # one test per task ( otherwise it gets confusing )
 # calling script already indicates which test is being run
-# print only PASS or FAIL 
+# print only PASS or FAIL
 if __name__ == "__main__":
   test()

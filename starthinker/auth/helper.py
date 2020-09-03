@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2018 Google LLC.
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -29,35 +29,35 @@ def main():
   parser = argparse.ArgumentParser(
     formatter_class=argparse.RawDescriptionHelpFormatter,
     description=textwrap.dedent('''\
-      Creates USER credentials from Google Cloud Project CLIENT Credentials and displays profile information if it worked. 
+      Creates USER credentials from Google Cloud Project CLIENT Credentials and displays profile information if it worked.
       CLIENT credentials are required to run this script, to obtain the JSON file...
-      
+
         Step 1: Configure Authentication Consent Screen ( do only once )
         ----------------------------------------
           A. Visit: https://console.developers.google.com/apis/credentials/consent
           B. Choose Internal if you have GSuite, otherwise choose External.
           C. For Application Name enter: StarThinker
           D. All other fields are optional, click Save.
-      
+
         Step 2: Create CLIENT Credentials ( do only once )
         ----------------------------------------
           A. Visit: https://console.developers.google.com/apis/credentials/oauthclient
           B. Choose Desktop.
           C. For Name enter: StarThinker.
           D. Click Create and ignore the confirmation pop-up.
-      
+
         Step 3: Download CLIENT Credentials File ( do only once )"
         ----------------------------------------"
           A. Visit: https://console.developers.google.com/apis/credentials"
           B. Find your newly created key under OAuth 2.0 Client IDs and click download arrow on the right."
           C. The downloaded file is the CLIENT credentials, use its path for the --client -c parameter.
-      
+
         Step 4: Generate USER Credentials File ( do only once )"
         ----------------------------------------"
           A. Run this command with parameters -c [CLIENT file path] and -u [USER file path].
           B. The USER file will be created and can be used to access Google APIs.
           C. The user profile will be printed to the screen
-      
+
         Example: python helper.py -u [CLIENT file path] -c [USER file path]
 '''))
 

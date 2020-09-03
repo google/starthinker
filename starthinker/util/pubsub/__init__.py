@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2017 Google Inc.
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -23,14 +23,14 @@ from starthinker.util.google_api import API_PubSub
 
 def topic_create(suth, project_id, topic):
   api = API_PubSub(auth).projects().topics().create(
-    topic='projects/%s/topics/%s' % (project_id, topic), 
+    topic='projects/%s/topics/%s' % (project_id, topic),
     body={}
   ).execute()
 
 
 def subscription_create(auth, project_id, topic, subscription):
   body = {
-    "topic":'projects/%s/topics/%s' % (project_id, topic), 
+    "topic":'projects/%s/topics/%s' % (project_id, topic),
     "pushConfig": {},
     "ackDeadlineSeconds": 600,
     "messageRetentionDuration": "86400s", # 24 hours
@@ -38,7 +38,7 @@ def subscription_create(auth, project_id, topic, subscription):
   }
 
   api = API_PubSub(auth).projects().subscriptions().create(
-    name='projects/%s/subscriptions/%s' % (project_id, subscription), 
+    name='projects/%s/subscriptions/%s' % (project_id, subscription),
     body=body
   ).execute()
 
@@ -52,20 +52,20 @@ def topic_publish(auth, project_id, topic, data):
     ]
   }
   api = API_PubSub(auth).projects().topics().publish(
-    topic='projects/%s/topics/%s' % (project_id, topic), 
+    topic='projects/%s/topics/%s' % (project_id, topic),
     body=body
   ).execute()
   return api['messageIds'][0]
 
 
 def subscription_acknowledge(auth, project_id, subscription, ack_id):
-  if isinstance(ack_id, str): 
+  if isinstance(ack_id, str):
     ack_id = [ack_id] if ack_id else []
 
   if ack_id:
     body = { "ackIds": ack_id }
     API_PubSub(auth).projects().subscriptions().acknowledge(
-      subscription='projects/%s/subscriptions/%s' % (project_id, subscription), 
+      subscription='projects/%s/subscriptions/%s' % (project_id, subscription),
       body=body
     ).execute()
 
@@ -75,22 +75,22 @@ def subscription_pull(auth, project_id, subscription, immediate=True, maximum=1,
 
   if maximum <= 0: return messages
 
-  body = { 
+  body = {
     "returnImmediately": immediate,
     "maxMessages": maximum
   }
 
   for message in API_PubSub(auth, iterate=True).projects().subscriptions().pull(
-    subscription='projects/%s/subscriptions/%s' % (project_id, subscription), 
+    subscription='projects/%s/subscriptions/%s' % (project_id, subscription),
     body=body
   ).execute():
     messages.append({
-      'ackId':message['ackId'], 
+      'ackId':message['ackId'],
       'data':base64.b64decode(message['message']['data'])
     })
 
   # if acknowledge, then acknowledge all messages and return only data
-  if acknowledge: 
+  if acknowledge:
     subscription_acknowledge(auth, project_id, subscription, [m['ackId'] for m in messages])
     return [m['data'] for m in messages]
   # or return ack and data as a dictionary

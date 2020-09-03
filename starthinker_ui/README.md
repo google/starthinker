@@ -59,7 +59,7 @@ source install/deploy.sh
 Pull recipe from UI with credentails and execute from command line regardless of schedule ( uses UI user credentails ).
 
 ```
-source starthinker_assets/production.sh 
+source starthinker_assets/production.sh
 python starthinker_ui/manage.py recipe_to_json --recipe [RECIPE # FROM UI EDIT URL]
 python starthinker/all/run $STARTHINKER_CRON/[FILE WRITEN BY ABOVE COMMAND] --force
 ```
@@ -67,7 +67,7 @@ python starthinker/all/run $STARTHINKER_CRON/[FILE WRITEN BY ABOVE COMMAND] --fo
 Start the workers manually from the command line:
 
 ```
-source starthinker_assets/development.sh 
+source starthinker_assets/development.sh
 python starthinker_ui/manage.py job_worker --test --verbose --jobs 1
 ```
 

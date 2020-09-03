@@ -3,7 +3,7 @@
 {% comment %}
 ###########################################################################
 #
-#  Copyright 2019 Google LLC
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@
       });
 
       var category = getQueryVariable('category');
-      if ( category ) { 
+      if ( category ) {
         $("#scripts div.col").hide();
         $("#scripts div.col.category_" + category).show();
         $("#category_link").attr('href', '?category=' + category.replace('category_', ''));
@@ -90,7 +90,7 @@
 
   <br/><br/>
 
-  <div class="row"> 
+  <div class="row">
     <div class="col s6 m4 l3 right-align">
       <ul class="collapsible">
         <li>
@@ -120,7 +120,7 @@
                   {% if script.get_pitches %}
                   <i class="activator material-icons expand">more_vert</i>
                   {% endif %}
-                  <a href="{% if external %}/starthinker{% endif %}/solution/{{ script.get_tag }}/"> 
+                  <a href="{% if external %}/starthinker{% endif %}/solution/{{ script.get_tag }}/">
                     <i class="material-icons medium">{{ script.get_icon }}</i><br/><br/>
                     {{ script.get_name }}
                   </a>

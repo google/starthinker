@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2018 Google LLC
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ def parse_path(path):
 
 def parse_filename(path, url=False):
   f = path
-  try: 
+  try:
     if url: f = f.split('?', 1)[0]
     f = f.rsplit('/', 1)[1]
   except: pass
@@ -82,10 +82,10 @@ def media_download(request, chunksize, encoding=None):
         position = find_utf8_split(data)
         yield (leftovers + data.read(position)).decode(encoding)
         data.seek(position)
-        leftftovers = data.read() 
+        leftftovers = data.read()
 
       else:
-        yield data.read().decode(encoding) 
+        yield data.read().decode(encoding)
 
       data.seek(0)
       data.truncate(0)
@@ -113,7 +113,7 @@ def object_exists(auth, path):
     return True
   except:
     return False
-  
+
 
 def object_get(auth, path):
   bucket, filename = path.split(':', 1)
@@ -160,7 +160,7 @@ def object_list(auth, path, raw=False, files_only=False):
   bucket, prefix = path.split(':', 1)
   for item in API_Storage(auth, iterate=True).objects().list(bucket=bucket, prefix=prefix).execute():
     if files_only and item['name'].endswith('/'): continue
-    yield item if raw else '%s:%s' % (bucket, item['name']) 
+    yield item if raw else '%s:%s' % (bucket, item['name'])
 
 
 def object_copy(auth, path_from, path_to):

@@ -1,5 +1,5 @@
 # StarThinker Architecture
-  
+
 ## Overview
 
 At the core of StarThinker are python functions with a JSON defined parameter set.  The JSON allows
@@ -7,7 +7,7 @@ various interfaces such as UI and command line.  The python functions in their s
 for deployment on many back ends.  The architecture packaged in this project is fully extensible and
 customizable.
 
-This is a typical pattern deployed for large scale job processing.  It is designed to get any team started using 
+This is a typical pattern deployed for large scale job processing.  It is designed to get any team started using
 both open source and Google Cloud technologies.  StarThinker can be leveraged as a whole or in pieces, the central
 contract is the JSON/Python script task combination.
 

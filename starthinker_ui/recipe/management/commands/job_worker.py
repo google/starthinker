@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2019 Google LLC
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -94,7 +94,7 @@ def worker_pull(worker_uid, jobs=1):
       Recipe.objects.filter(id__in=where).update(worker_uid=worker_uid, worker_utm=worker_utm)
 
   # find all recipes that belong to this worker and check if they have new tasks
-  for job in Recipe.objects.filter(active=True, worker_uid=worker_uid): 
+  for job in Recipe.objects.filter(active=True, worker_uid=worker_uid):
     jobs_all.append(job.id)
     task = job.get_task() # also resets status
     if job.worker_utm == worker_utm and task: # jobs with current timestamp are new ( odds of a ping matching this worker_utm? ), isolate evens and odds?
@@ -144,7 +144,7 @@ class Workers():
 
     # remove all lost jobs from ping
     jobs_remove = []
-    last_job = len(self.jobs) 
+    last_job = len(self.jobs)
     while last_job > 0:
       last_job -= 1
       if self.jobs[last_job]['recipe']['setup']['uuid'] not in jobs_all:
@@ -168,7 +168,7 @@ class Workers():
 
 
   def run(self, job, force=False):
-   
+
     job['recipe']['setup'].setdefault('timeout_seconds', self.timeout_seconds)
 
     job['job'] = {
@@ -224,9 +224,9 @@ class Workers():
 
       # if job changes state, this is set, then sent to database
       status = None
- 
+
       # start job if it is not already running
-      if 'job' not in job: 
+      if 'job' not in job:
 
         self.run(job)
         log_job_start(job)
@@ -243,11 +243,11 @@ class Workers():
         stderr = job['job']['process'].stderr.read()
         if stderr is not None: stderr = stderr.decode()
 
-        # if process still running, check timeout or ping keep alive 
+        # if process still running, check timeout or ping keep alive
         poll = job['job']['process'].poll()
         if poll is None:
 
-          # check if task is a timeout 
+          # check if task is a timeout
           if (datetime.utcnow() - job['job']['utc']).total_seconds() > job['recipe']['setup']['timeout_seconds']:
             status = 'JOB_TIMEOUT'
             job['job']['process'].kill()
@@ -264,13 +264,13 @@ class Workers():
           self.cleanup(job)
 
           # if error scrap whole worker and flag error
-          if poll != 0: 
+          if poll != 0:
             status = 'JOB_ERROR'
             log_job_error(job)
             job['job']['process'] = None
 
           # if success, pop task off the stack and flag success
-          else: 
+          else:
             status = 'JOB_END'
             log_job_end(job)
             job['job']['process'] = None
@@ -303,7 +303,7 @@ class Workers():
 
   def idle(self):
     return (datetime.utcnow() - self.busy_time).seconds > IDLE_INTERVAL
-  
+
 
   def shutdown(self):
     # wait for jobs to finish
@@ -384,11 +384,11 @@ class Command(BaseCommand):
     if kwargs['test']: print('Initializing Workers...')
 
     workers = Workers(
-      kwargs['worker'], 
-      kwargs['jobs'], 
+      kwargs['worker'],
+      kwargs['jobs'],
       kwargs['timeout'],
       kwargs['trace'],
-    ) 
+    )
 
     try:
 
@@ -403,13 +403,13 @@ class Command(BaseCommand):
         workers.poll()
 
         # check if worker needs to scale down
-        if workers.idle(): 
+        if workers.idle():
           MANAGER_ON = False
           log_manager_timeout()
         else:
           time.sleep(JOB_INTERVAL_MS / 1000)
-          
-        if kwargs['test']: 
+
+        if kwargs['test']:
           MANAGER_ON = False
 
     except KeyboardInterrupt:

@@ -1,12 +1,12 @@
 # UI Tests
 
 UI tests use the open source out of the box [Django Test Framework](https://docs.djangoproject.com/en/2.2/topics/testing/).
-These are standard Python unit tests with a few additional Django helpers.  Tests use command line credentials.  Tests can 
+These are standard Python unit tests with a few additional Django helpers.  Tests use command line credentials.  Tests can
 be excuted per Django instructons or via the helper bash script:
 
 ## Steps
 ```
-bash install/deploy.sh 
+bash install/deploy.sh
 ```
 
 1. Option 1) Developer Menu
@@ -32,7 +32,7 @@ source starthinker_assets/developer.sh
 python starthinker_ui/manage.py job_worker --test --verbose --jobs 1
 ```
 
-This will execute one loop of the worker, pulling one recipe at a time from the local databse and executing 
+This will execute one loop of the worker, pulling one recipe at a time from the local databse and executing
 it as the worker.
 
 

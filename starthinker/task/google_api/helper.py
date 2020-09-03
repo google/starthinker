@@ -1,6 +1,6 @@
 ###########################################################################
-# 
-#  Copyright 2018 Google LLC
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -33,16 +33,16 @@ def main():
     description=textwrap.dedent('''\
       Command line interface for running Google API calls.  Any API works.  Allows developers to quickly test
       and debug API calls before building them into scripts.  Useful for debugging permission or call errors.
-      
+
       Examples:
         - Pull a DBM report via API.
           - https://developers.google.com/bid-manager/v1/queries/getquery
-          - python google_api/helper.py -api doubleclickbidmanager -version v1 -function queries.getquery -kwargs '{ "queryId": 132865172 }' -u [credentials path] 
+          - python google_api/helper.py -api doubleclickbidmanager -version v1 -function queries.getquery -kwargs '{ "queryId": 132865172 }' -u [credentials path]
 
-        - Pull a list of placements: 
+        - Pull a list of placements:
           - https://developers.google.com/doubleclick-advertisers/v3.3/placements/list
           - python task/google_api/helper.py -api dfareporting -version v3.3 -function placements.list -kwargs '{ "profileId":2782211 }' -u [credentials path]
-      
+
   '''))
 
   # get parameters
@@ -57,7 +57,7 @@ def main():
   project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v'))
 
   # the api wrapper takes parameters as JSON
-  job = { 
+  job = {
     "auth":'service' if project.args.service else 'user',
     "api":project.args.api,
     "version":project.args.version,

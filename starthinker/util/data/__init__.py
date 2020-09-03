@@ -41,11 +41,11 @@ from starthinker.util.csv import rows_to_csv
 
 def get_rows(auth, source):
   """Processes standard read JSON block for dynamic loading of data.
-  
-  Allows us to quickly pull a column or columns of data from and use it as an input 
+
+  Allows us to quickly pull a column or columns of data from and use it as an input
   into a script. For example pull a list of ids from bigquery and act on each one.
 
-  - When pulling a single column specify single_cell = True. Returns list AKA values. 
+  - When pulling a single column specify single_cell = True. Returns list AKA values.
   - When pulling a multiple columns specify single_cell = False. Returns list of lists AKA rows.
   - Values are always given as a list ( single_cell will trigger necessary wrapping ).
   - Values, bigquery, sheet are optional, if multiple given result is one continous iterator.
@@ -53,9 +53,9 @@ def get_rows(auth, source):
 
   Include the following JSON in a recipe, then in the run.py handler when
   encountering that block pass it to this function and use the returned results.
-  
+
     from utils.data import get_rows
-  
+
     var_json = {
       "in":{
         "single_cell":[ boolean ],
@@ -70,23 +70,23 @@ def get_rows(auth, source):
           "tab":[ string ],
           "range":[ string - A1:A notation ]
         }
-      } 
-    } 
-  
+      }
+    }
+
     values = get_rows('user', var_json)
-  
+
   Or you can use it directly with project singleton.
-  
+
     from util.project import project
     from utils.data import get_rows
-  
+
     @project.from_parameters
     def something():
       values = get_rows(project.task['auth'], project.task['in'])
-  
+
     if __name__ == "__main__":
       something()
-  
+
   Args:
     auth: (string) The type of authentication to use, user or service.
     source: (json) A json block resembling var_json described above.
@@ -97,7 +97,7 @@ def get_rows(auth, source):
 """
 
   # if handler points to list, concatenate all the values from various sources into one list
-  if isinstance(source, list):  
+  if isinstance(source, list):
     for s in source:
       for r in get_rows(auth, s):
         yield r
@@ -105,9 +105,9 @@ def get_rows(auth, source):
   # if handler is an endpoint, fetch data
   else:
     if 'values' in source:
-      if isinstance(source['values'], list):  
+      if isinstance(source['values'], list):
         for value in source['values']:
-          yield value 
+          yield value
       else:
         yield source['values']
 
@@ -136,7 +136,7 @@ def get_rows(auth, source):
 
 def put_rows(auth, destination, rows, variant=''):
   """Processes standard write JSON block for dynamic export of data.
-  
+
   Allows us to quickly write the results of a script to a destination.  For example
   write the results of a DCM report into BigQuery.
 
@@ -145,9 +145,9 @@ def put_rows(auth, destination, rows, variant=''):
 
   Include the following JSON in a recipe, then in the run.py handler when
   encountering that block pass it to this function and use the returned results.
-  
+
     from utils.data import put_rows
-  
+
     var_json = {
       "out":{
         "bigquery":{
@@ -168,23 +168,23 @@ def put_rows(auth, destination, rows, variant=''):
           "path": [ string ]
         },
         "file":[ string - full path to place to write file ]
-      } 
-    } 
-  
+      }
+    }
+
     values = put_rows('user', var_json)
-  
+
   Or you can use it directly with project singleton.
-  
+
     from util.project import project
     from utils.data import put_rows
-  
+
     @project.from_parameters
     def something():
       values = get_rows(project.task['auth'], project.task['out'])
-  
+
     if __name__ == "__main__":
       something()
-  
+
   Args:
     auth: (string) The type of authentication to use, user or service.
     destination: (json) A json block resembling var_json described above.
@@ -208,9 +208,9 @@ def put_rows(auth, destination, rows, variant=''):
         destination['bigquery'].get('schema', []),
         destination['bigquery'].get('disposition', 'WRITE_TRUNCATE'),
       )
-    
+
     elif destination['bigquery'].get('is_incremental_load', False) == True:
-      incremental_rows_to_table( 
+      incremental_rows_to_table(
         destination['bigquery'].get('auth', auth),
         destination['bigquery'].get('project_id', project.id),
         destination['bigquery']['dataset'],
@@ -235,7 +235,7 @@ def put_rows(auth, destination, rows, variant=''):
       )
 
   if 'sheets' in destination:
-    if destination['sheets'].get('delete', False): 
+    if destination['sheets'].get('delete', False):
       sheets_clear(
         auth,
         destination['sheets']['sheet'],
@@ -249,7 +249,7 @@ def put_rows(auth, destination, rows, variant=''):
       destination['sheets']['tab'] + variant,
       destination['sheets']['range'],
       rows
-    ) 
+    )
 
   if 'file' in destination:
     path_out, file_ext = destination['file'].rsplit('.', 1)

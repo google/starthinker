@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ###########################################################################
-# 
-#  Copyright 2019 Google LLC
+#
+#  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ start_proxy() {
   echo "Start Cloud Proxy - ${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy"
   echo "----------------------------------------"
   echo ""
- 
+
   "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE &
 
   echo "Done"
@@ -118,7 +118,7 @@ deploy_appengine() {
   gcloud app deploy $STARTHINKER_ROOT/cron.yaml --stop-previous-version
 
   # delete the recipe scripts python file for App Engine ( easy to forget and waste time debugging )
-  rm "${STARTHINKER_ROOT}/starthinker_ui/recipe/scripts_lookup.py"* 
+  rm "${STARTHINKER_ROOT}/starthinker_ui/recipe/scripts_lookup.py"*
 
   deactivate
 
@@ -174,7 +174,7 @@ env_variables:
   STARTHINKER_ZONE: '$STARTHINKER_ZONE'
   STARTHINKER_CLIENT: '$appengine_client'
   STARTHINKER_SERVICE: '$appengine_service'
-  STARTHINKER_UI_DOMAIN: '$appengine_domain' 
+  STARTHINKER_UI_DOMAIN: '$appengine_domain'
   STARTHINKER_UI_SECRET: '$STARTHINKER_UI_PRODUCTION_SECRET'
   STARTHINKER_UI_DATABASE_ENGINE: '$appengine_database_engine'
   STARTHINKER_UI_DATABASE_HOST: '$appengine_database_host'
@@ -198,7 +198,7 @@ setup_appengine() {
   echo ""
   echo "This will create a StarThinker UI instances in Google Cloud project $STARTHINKER_PROJECT."
   echo ""
-  
+
   setup_credentials_service;
   setup_database;
   save_config;
@@ -217,14 +217,14 @@ setup_appengine() {
   install_requirements; # second because pip is here
 
   setup_sql;
-  migrate_database_proxy; 
+  migrate_database_proxy;
 
   setup_credentials_ui;
   save_config;
 
-  configure_yaml $deploy_Type; 
+  configure_yaml $deploy_Type;
 
-  deploy_appengine; 
+  deploy_appengine;
 
   echo ""
   echo "----------------------------------------"
@@ -300,7 +300,7 @@ setup_enterprise() {
   echo "- All deployments are re-entrant, you can run them multiple times."
   echo "- Set up the UI first, you will probably leave the domain blank."
   echo "- Workers deployments will create cloud instances.  You can delete them and run the script again."
-  echo "- A Cloud SQL Postgres Database will be created for the UI and workers." 
+  echo "- A Cloud SQL Postgres Database will be created for the UI and workers."
   echo "- You need to manually delete and/or secure worker instances and database."
   echo ""
   echo "To edit deployment parameters use this script or from the command line edit:"
