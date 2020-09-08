@@ -39,8 +39,8 @@ def find_utf8_split(data, offset=None):
 
   if offset > 0:
     if data[offset - 1] & 0xE0 == 0xC0: offset -= 1
-    if data[offset - 1] & 0xF0 == 0xE0: offset -= 1
-    if data[offset - 1] & 0xF8 == 0xF0: offset -= 1
+    elif data[offset - 1] & 0xF0 == 0xE0: offset -= 1
+    elif data[offset - 1] & 0xF8 == 0xF0: offset -= 1
 
   return offset
 
