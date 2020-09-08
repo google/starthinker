@@ -5,9 +5,9 @@ and CAN BE fully modified, white labeled, and disassembled by your team.**
 # Scaled Automation Application For Ad Operations Teams
 
 At gTech, we believe every ad operations team should be faster, nimbler, and able to use all their data sources
-to drive client impact.  To that end, we've created StarThinker, a simple and intuitive web UI that allows users
+to drive client impact. To that end, we've created StarThinker, a simple and intuitive web UI that allows users
 to create, edit, run, and schedule data pipelines consisting of data transfer and data processing jobs.
-StarThinker deploys on Google Cloud in minutes without engineering or coding required.  [Read the WhitePaper](tutorials/images/StarThinker_Whitepaper.pdf).
+StarThinker deploys on Google Cloud in minutes without engineering or coding required. [Read the WhitePaper](tutorials/images/StarThinker_Whitepaper.pdf).
 
 ![StarThinker Screen Shots](tutorials/images/splash.png)
 
