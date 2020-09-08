@@ -54,14 +54,14 @@ Steps From [Tutorial](tutorials/README.md):
 - The [StarThinker Solution Gallery](https://google.github.io/starthinker/) lists all the existing tasks and authors.
 - Read the [Tutorials](tutorials/README.md).
 - Review the [FAQ](tutorials/faq.md).
-- Read the [Contributing Process](CONTRIBUTING.md).
-- Ask for help ( no SLA, not guaranteed ): starthinker-help@google.com
+- Read the [Contributing guidelines](CONTRIBUTING.md).
+- Ask for help (no SLA, not guaranteed): starthinker-help@google.com
 
 ## Authors
 
-- Paul Kenjora ( kenjora@google.com ) - Technical Project Lead
-- Mauricio Desiderio ( mauriciod@google.com ) - Software Engineer
-- John Terwilleger ( terwilleger@google.com ) - Software Engineer
+- Paul Kenjora (kenjora@google.com) - Technical Project Lead
+- Mauricio Desiderio (mauriciod@google.com) - Software Engineer
+- John Terwilleger (terwilleger@google.com) - Software Engineer
 
 Additional contributors to individual handlers and recipes are listed in each file.
 
