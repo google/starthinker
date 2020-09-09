@@ -1,0 +1,48 @@
+{
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "include":{
+      "script":"scripts/dv360_api_to_bigquery.json",
+      "parameters":{
+        "auth_read":"user",
+        "auth_write":"service",
+        "endpoint":"advertisers",
+        "dataset":"Test",
+        "partners":{"field":{ "name":"partners", "kind":"integer_list", "description":"Comma separated partners ids." }}
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_api_to_bigquery.json",
+      "parameters":{
+        "auth_read":"user",
+        "auth_write":"service",
+        "endpoint":"advertisers.campaigns",
+        "dataset":"Test",
+        "advertisers":{"field":{ "name":"advertisers", "kind":"integer_list", "description":"Comma separated advertisers ids." }}
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_api_patch_from_bigquery.json",
+      "parameters":{
+        "auth_read":"service",
+        "auth_write":"user",
+        "patch":"advertisers",
+        "dataset":"Test",
+        "table":"DV360_advertisers_upload"
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_api_insert_from_bigquery.json",
+      "parameters":{
+        "auth_read":"service",
+        "auth_write":"user",
+        "patch":"advertisers",
+        "dataset":"Test",
+        "table":"DV360_advertisers_upload"
+      }
+    }}
+  ]
+}

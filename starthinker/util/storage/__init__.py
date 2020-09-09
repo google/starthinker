@@ -78,10 +78,8 @@ def media_download(request, chunksize, encoding=None):
         yield data.read()
 
       elif encoding.lower() == 'utf-8':
-        print('AAAA')
         position = find_utf8_split(data)
         yield (leftovers + data.read(position)).decode(encoding)
-        data.seek(position)
         leftftovers = data.read()
 
       else:

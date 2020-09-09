@@ -16,22 +16,17 @@
 #
 ###########################################################################
 
-# https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#resource
-# https://cloud.google.com/bigquery/docs/reference/v2/jobs#resource
-# https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list
-
 import re
 import sys
 import codecs
 import csv
-import pprint
 import uuid
 import json
 from time import sleep
 from io import BytesIO
-from datetime import datetime, timedelta
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseUpload
+from google.cloud.bigquery._helpers import _row_tuple_from_json
 
 from starthinker.config import BUFFER_SCALE
 from starthinker.util import flag_last
@@ -46,6 +41,26 @@ BIGQUERY_BUFFERSIZE = min(BIGQUERY_CHUNKSIZE * 4, BIGQUERY_BUFFERMAX) # 1 GB * s
 
 RE_TABLE_NAME = re.compile(r'[^\w]+')
 RE_INDENT = re.compile(r' {5,}')
+
+
+def row_to_json(row, schema, as_object=False):
+
+  if as_object:
+    row_raw = {'f':[{'v':row}]}
+    schema_raw = [{
+      "name": "wrapper",
+      "type": "RECORD",
+      "mode": "REQUIRED",
+      "fields": schema
+    }]
+    return _row_tuple_from_json(row_raw, schema_raw)[0]
+
+  else:
+    row_raw = row
+    schema_raw = schema
+    return _row_tuple_from_json(row_raw, schema_raw)
+
+
 
 def bigquery_date(value):
   return value.strftime('%Y%m%d')
@@ -212,8 +227,6 @@ def query_to_view(auth, project_id, dataset_id, view_id, query, legacy=True, rep
 
 
 
-#struture = CSV, NEWLINE_DELIMITED_JSON
-#disposition = WRITE_TRUNCATE, WRITE_APPEND, WRITE_EMPTY
 def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], skip_rows=1, structure='CSV', disposition='WRITE_TRUNCATE', wait=True):
   if project.verbose: print('BIGQUERY STORAGE TO TABLE: ', project_id, dataset_id, table_id)
 
@@ -226,7 +239,7 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
           'tableId': table_id,
         },
         'sourceFormat': 'NEWLINE_DELIMITED_JSON',
-        'writeDisposition': disposition,
+        'writeDisposition': disposition, # WRITE_TRUNCATE, WRITE_APPEND, WRITE_EMPTY
         'autodetect': True,
         'allowJaggedRows': True,
         'allowQuotedNewlines':True,
@@ -242,7 +255,7 @@ def storage_to_table(auth, project_id, dataset_id, table_id, path, schema=[], sk
     body['configuration']['load']['schema'] = { 'fields':schema }
     body['configuration']['load']['autodetect'] = False
 
-  if structure == 'CSV':
+  if structure == 'CSV': # CSV, NEWLINE_DELIMITED_JSON
     body['configuration']['load']['sourceFormat'] = 'CSV'
     body['configuration']['load']['skipLeadingRows'] = skip_rows
 
@@ -320,10 +333,9 @@ def json_to_table(auth, project_id, dataset_id, table_id, json_data, schema=None
   # if no rows, clear table to simulate empty write
   if not has_rows:
     if project.verbose: print('BigQuery Zero Rows')
-    return io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'NEWLINE_DELIMITED_JSON', schema, skip_rows, disposition, wait)
+    return io_to_table(auth, project_id, dataset_id, table_id, buffer_data, 'NEWLINE_DELIMITED_JSON', schema, 0, disposition, wait)
 
 
-# NEWLINE_DELIMITED_JSON, CSV
 def io_to_table(auth, project_id, dataset_id, table_id, data_bytes, source_format='CSV', schema=None, skip_rows=0, disposition='WRITE_TRUNCATE', wait=True):
 
   # if data exists, write data to table
@@ -346,8 +358,8 @@ def io_to_table(auth, project_id, dataset_id, table_id, data_bytes, source_forma
             'datasetId': dataset_id,
             'tableId': table_id,
           },
-          'sourceFormat': source_format,
-          'writeDisposition': disposition,
+          'sourceFormat': source_format, # CSV, NEWLINE_DELIMITED_JSON
+          'writeDisposition': disposition, # WRITE_TRUNCATE, WRITE_APPEND, WRITE_EMPTY
           'autodetect': True,
           'allowJaggedRows': True,
           'allowQuotedNewlines':True,
@@ -477,32 +489,51 @@ def table_copy(auth, from_project, from_dataset, from_table, to_project, to_data
   job_wait(auth, API_BigQuery(auth).jobs().insert(projectId=project.id, body=body).execute())
 
 
-def table_to_rows(auth, project_id, dataset_id, table_id, fields=None, row_start=0, row_max=None):
+def table_to_rows(auth, project_id, dataset_id, table_id, fields=None, row_start=0, row_max=None, as_object=False):
   if project.verbose: print('BIGQUERY ROWS:', project_id, dataset_id, table_id)
 
-  schema = table_to_schema(auth, project_id, dataset_id, table_id)
-  converter = None
 
-  for row in API_BigQuery(auth, iterate=True).tabledata().list(
-    projectId=project_id,
-    datasetId=dataset_id,
-    tableId=table_id,
-    selectedFields=fields,
-    startIndex=row_start,
-    maxResults=row_max,
-  ).execute():
-    if converter is None:
-      converter = _build_converter_array(schema, fields, len(row.get('f')))
-    yield [converter[i](next(iter(r.values()))) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
+  table = API_BigQuery(auth).tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()
+  table_schema = table['schema'].get('fields', [])
+  table_type = table['type']
+  table_legacy = table['view']['useLegacySql']
+
+  if table_type == 'TABLE':
+
+    for row in API_BigQuery(auth, iterate=True).tabledata().list(
+      projectId=project_id,
+      datasetId=dataset_id,
+      tableId=table_id,
+      selectedFields=fields,
+      startIndex=row_start,
+      maxResults=row_max,
+    ).execute():
+      yield row_to_json(row, table_schema, as_object)
+
+  else:
+    yield from query_to_rows(
+      auth,
+      project_id,
+      dataset_id,
+      "SELECT * FROM %s" % table_id,
+      row_max,
+      table_legacy,
+      as_object
+    )
 
 
 def table_to_schema(auth, project_id, dataset_id, table_id):
   if project.verbose: print('TABLE SCHEMA:', project_id, dataset_id, table_id)
-  return API_BigQuery(auth).tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()['schema']
+  return API_BigQuery(auth).tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()['schema'].get('fields', [])
 
 
-# https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query
-def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True):
+def table_to_type(auth, project_id, dataset_id, table_id):
+  if project.verbose: print('TABLE TYPE:', project_id, dataset_id, table_id)
+  return API_BigQuery(auth).tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()['type']
+
+
+def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True, as_object=False):
+  if project.verbose: print('BIGQUERY QUERY:', project_id, dataset_id)
 
   # Create the query
   body = {
@@ -530,13 +561,13 @@ def query_to_rows(auth, project_id, dataset_id, query, row_max=None, legacy=True
     response = API_BigQuery(auth).jobs().getQueryResults(projectId=project_id, jobId=response['jobReference']['jobId']).execute(iterate=False)
 
   # fetch query results
+  schema = response.get('schema', {}).get('fields', None)
 
   row_count = 0
   while 'rows' in response:
-    converters = _build_converter_array(response.get('schema', None), None, len(response['rows'][0].get('f')))
 
     for row in response['rows']:
-      yield [converters[i](next(iter(r.values()))) for i, r in enumerate(row['f'])] # may break if we attempt nested reads
+      yield row_to_json(row, schema, as_object)
       row_count += 1
 
     if 'PageToken' in response:
@@ -612,50 +643,6 @@ def get_schema(rows, header=True, infer_type=True):
     first = False
 
   return row_buffer, schema
-
-
-def _int_from_json(value):
-  if value:
-    return int(value)
-  else:
-    return value
-
-
-def _float_from_json(value):
-  if value:
-    return float(value)
-  else:
-    return value
-
-
-_JSON_CONVERTERS = {
-  'INTEGER':  _int_from_json,
-  'INT64':  _int_from_json,
-  'FLOAT':  _float_from_json,
-  'FLOAT64': _float_from_json,
-  'BOOLEAN': lambda v: v,
-  'BOOL': lambda v: v,
-  'STRING': lambda v: v, #no conversion needed, adapt others as needed
-  'BYTES': lambda v: v,
-  'TIMESTAMP': lambda v: v,
-  'DATETIME': lambda v: v,
-  'DATE': lambda v: v,
-  'TIME': lambda v: v,
-  'RECORD': lambda v: v,
-}
-
-
-def _build_converter_array(schema, fields, col_count):
-  converters = []
-  if schema:
-    for field in schema['fields']:
-      if fields is None or field in fields:
-        converters.append(_JSON_CONVERTERS[field['type']])
-  else:
-    #No schema so simply return the string as string
-    converters = [lambda v: v] * col_count
-  #print(converters)
-  return converters
 
 
 def drop_table(auth, project_id, dataset_id, table_id, billing_project_id=None):

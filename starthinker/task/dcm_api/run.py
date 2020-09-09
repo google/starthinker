@@ -23,11 +23,16 @@ from starthinker.util.google_api import API_DCM
 from starthinker.util.data import put_rows, get_rows
 from starthinker.util.dcm import get_profile_for_api
 #from starthinker.util.regexp import epoch_to_datetime
-from starthinker.task.dcm_api.schema.lookup import DCM_Schema_Lookup
-
+#from starthinker.task.dcm_api.schema.lookup import DCM_Schema_Lookup
+from starthinker.util.google_api.discovery import discovery_schema
 
 RE_DATETIME = re.compile(r'\d{4}[-/]\d{2}[-/]\d{2}[ T]\d{2}:\d{2}:\d{2}\.?\d+Z')
 
+DCM_API_TO_RESOURCE = {
+  'campaigns':'Campaign',
+  'placements':'Placement',
+  'placementGroups':'PlacementGroup',
+}
 
 def bigquery_clean(struct):
   if isinstance(struct, dict):
@@ -50,23 +55,25 @@ def row_clean(structs):
     yield bigquery_clean(struct)
 
 
-def put_data(kind, schema, row_format='CSV'):
+def put_data(endpoint):
 
   out = {}
+  #schema = DCM_Schema_Lookup[endpoint]
+  schema = discovery_schema('dfareporting', 'v3.4', DCM_API_TO_RESOURCE.get(endpoint))
 
   if 'dataset' in project.task['out']:
     out["bigquery"] = {
       "dataset": project.task['out']['dataset'],
-      "table": kind,
+      "table": 'CM_%s' % endpoint,
       "schema": schema,
       "skip_rows": 0,
-      "format":row_format,
+      "format":'JSON',
     }
 
   if 'sheet' in project.task:
     out["sheets"] = {
       "url":project.task['out']['sheet'],
-      "tab":kind,
+      "tab":'CM_%s' % endpoint,
       "range":"A1:A1",
       "delete": True
     }
@@ -76,9 +83,18 @@ def put_data(kind, schema, row_format='CSV'):
 
 def dcm_api_list(endpoint):
   accounts = set(get_rows("user", project.task['accounts']))
+  advertisers = list(set(get_rows("user", project.task['advertisers'])))
+
+  print('AAA', advertisers)
+
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = { 'profileId':profile_id, 'accountId':account_id } if is_superuser else { 'profileId':profile_id }
+    kwargs = {
+      'profileId':profile_id,
+      'advertiserIds':advertisers
+    }
+    if is_superuser: kwargs['accountId'] = account_id
+
     for item in API_DCM(project.task['auth'], iterate=True, internal=is_superuser).call(endpoint).list(**kwargs).execute():
       yield item
 
@@ -90,12 +106,12 @@ def dcm_api():
   if isinstance(project.task['endpoints'], str): project.task['endpoints'] = [project.task['endpoints']]
 
   for endpoint in project.task['endpoints']:
-    schema = DCM_Schema_Lookup[endpoint]
     rows = dcm_api_list(endpoint)
     rows = row_clean(rows)
+
     put_rows(
       project.task['out']['auth'],
-      put_data('CM_%s' % endpoint.title(), schema, 'JSON'),
+      put_data(endpoint),
       rows
     )
 

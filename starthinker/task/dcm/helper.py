@@ -33,7 +33,7 @@ def main():
     description=textwrap.dedent('''\
       Command line to help debug CM reports and build reporting tools.
 
-      Examples:
+      Examples: 
         To get list of reports: python helper.py --account [id] --list -u [user credentials path]
         To get report: python helper.py --account [id] --report [id] -u [user credentials path]
         To get report files: python helper.py --account [id] --files [id] -u [user credentials path]
@@ -65,8 +65,8 @@ def main():
   # get report files
   elif project.args.files:
     kwargs['reportId'] = project.args.files
-    for report_file in API_DCM(auth, internal=is_superuser).reports().files().list(**kwargs).execute():
-      print(json.dumps(report_file, indent=2, sort_keys=True))
+    for rf in API_DCM(auth, internal=is_superuser).reports().files().list(**kwargs).execute():
+      print(json.dumps(rf, indent=2, sort_keys=True))
 
   # get schema
   elif project.args.schema:

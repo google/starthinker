@@ -280,9 +280,10 @@ class API():
       return self
     return function_call
 
-  # for calling function via string
-  def call(self, function_name):
-    self.function_stack.append(function_name)
+  # for calling function via string ( chain using dot notation )
+  def call(self, function_chain):
+    for function_name in function_chain.split('.'):
+      self.function_stack.append(function_name)
     return self
 
   # matches API execute with built in iteration and retry handlers

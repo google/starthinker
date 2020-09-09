@@ -1,0 +1,45 @@
+{
+  "script":{
+    "released":"2019-02-20",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"donut_small",
+    "from":["dv360"],
+    "to":["bigquery"],
+    "title":"DV360 API Insert From BigQuery",
+    "description":"Insert DV360 API Endpoints.",
+    "instructions":[
+      "Specify the name of the dataset and table.",
+      "Rows will be read and applied as a insert to DV360."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "dv360_api":{
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for writing data." }},
+      "insert":{"field":{ "name":"insert", "kind":"choice", "choices":[
+        "advertisers",
+        "advertisers.campaigns",
+        "advertisers.channels",
+        "advertisers.channels.sites",
+        "advertisers.creatives",
+        "advertisers.insertionOrders",
+        "advertisers.lineItems",
+        "advertisers.locationLists",
+        "advertisers.locationLists.assignedLocations",
+        "advertisers.negativeKeywordLists",
+        "advertisers.negativeKeywordLists.negativeKeywords",
+        "floodlightGroups",
+        "inventorySourceGroups",
+        "partners.channels",
+        "users"
+      ], "default":"" }},
+      "bigquery":{
+        "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":2, "default":"", "description":"Google BigQuery dataset to create tables in." }},
+        "table":{"field":{ "name":"table", "kind":"string", "order":3, "default":"", "description":"Google BigQuery dataset to create tables in." }},
+        "as_object":true
+      }
+    }}
+  ]
+}

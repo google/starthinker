@@ -1,0 +1,66 @@
+{
+  "script":{
+    "released":"2019-02-20",
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"donut_small",
+    "from":["dv360"],
+    "to":["bigquery"],
+    "title":"DV360 API To BigQuery",
+    "description":"Write the current state of advertisers, campaigns, sites, insertion orders, and line items to BigQuery for a given list of DV360 accounts.",
+    "instructions":[
+      "Specify the name of the dataset, several tables will be created here.",
+      "If dataset exists, it is unchanged.",
+      "Add DV360 advertiser ids for the accounts to pull data from."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "dv360_api":{
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "endpoints":{"field":{ "name":"endpoint", "kind":"choice", "choices":[
+        "advertisers",
+        "advertisers.campaigns",
+        "advertisers.channels",
+        "advertisers.channels.sites",
+        "advertisers.creatives",
+        "advertisers.insertionOrders",
+        "advertisers.lineItems",
+        "advertisers.lineItems.targetingTypes",
+        "advertisers.locationLists",
+        "advertisers.locationLists.assignedLocations",
+        "advertisers.negativeKeywordLists",
+        "advertisers.negativeKeywordLists.negativeKeywords",
+        "advertisers.targetingTypes.assignedTargetingOptions",
+        "combinedAudiences",
+        "customBiddingAlgorithms",
+        "customLists",
+        "firstAndThirdPartyAudiences",
+        "floodlightGroups",
+        "googleAudiences",
+        "inventorySourceGroups",
+        "inventorySourceGroups.assignedInventorySources",
+        "inventorySources",
+        "partners",
+        "partners.channels",
+        "partners.channels.sites",
+        "floodlightActivityGroups",
+        "partners.targetingTypes.assignedTargetingOptions",
+        "targetingTypes.targetingOptions",
+        "users"
+      ], "default":"" }},
+      "partners":{
+        "single_cell":true,
+        "values":{"field":{ "name":"partners", "kind":"integer_list", "order":2, "default":[], "description":"Comma separated partners ids." }}
+      },
+      "advertisers":{
+        "single_cell":true,
+        "values":{"field":{ "name":"advertisers", "kind":"integer_list", "order":2, "default":[], "description":"Comma separated advertisers ids." }}
+      },
+      "out":{
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Google BigQuery dataset to create tables in." }}
+      }
+    }}
+  ]
+}
