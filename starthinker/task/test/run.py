@@ -36,8 +36,8 @@ def deep_compare(actual, expected):
     return 'EXPECTED %s BUT ACTUAL %s' % (type(expected), type(actual))
 
   elif isinstance(expected, (dict, tuple, list)):
-    expected_str = json.dumps(expected, indent=2, sort_keys=True)
-    actual_str = json.dumps(actual, indent=2, sort_keys=True)
+    expected_str = json.dumps(expected, indent=2, sort_keys=True, default=str)
+    actual_str = json.dumps(actual, indent=2, sort_keys=True, default=str)
 
     delta = list(Differ().compare(
       expected_str.splitlines(),
@@ -129,7 +129,7 @@ def bigquery():
       project.task['bigquery']['dataset'],
       project.task['bigquery']['table']
     )
-    object_compare(schema['fields'], project.task['bigquery']['schema'])
+    object_compare(schema, project.task['bigquery']['schema'])
 
   # if query given check it
   if 'query' in project.task['bigquery']:

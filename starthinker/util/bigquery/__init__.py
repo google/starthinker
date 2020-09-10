@@ -58,7 +58,7 @@ def row_to_json(row, schema, as_object=False):
   else:
     row_raw = row
     schema_raw = schema
-    return _row_tuple_from_json(row_raw, schema_raw)
+    return list(_row_tuple_from_json(row_raw, schema_raw))
 
 
 
@@ -386,8 +386,9 @@ def io_to_table(auth, project_id, dataset_id, table_id, data_bytes, source_forma
       status, response = job.next_chunk()
       if project.verbose and status: print("Uploaded %d%%." % int(status.progress() * 100))
     if project.verbose: print("Uploaded 100%")
-    if wait: job_wait(auth, job.execute())
-    else: return job
+
+    if wait: job_wait(auth, execution)
+    else: return execution
 
   # if it does not exist and write, clear the table
   elif disposition == 'WRITE_TRUNCATE':
@@ -492,11 +493,10 @@ def table_copy(auth, from_project, from_dataset, from_table, to_project, to_data
 def table_to_rows(auth, project_id, dataset_id, table_id, fields=None, row_start=0, row_max=None, as_object=False):
   if project.verbose: print('BIGQUERY ROWS:', project_id, dataset_id, table_id)
 
-
   table = API_BigQuery(auth).tables().get(projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()
   table_schema = table['schema'].get('fields', [])
   table_type = table['type']
-  table_legacy = table['view']['useLegacySql']
+  table_legacy = table.get('view', {}).get('useLegacySql', False)
 
   if table_type == 'TABLE':
 

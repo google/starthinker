@@ -19,9 +19,9 @@
 
 """Command line to run all tests or list all runnable tests.
 
-Meant to speed up an automate testing of StarThinker.
+Meant to speed up automated testing of StarThinker.
 
-To configure: python tests/helper.py --config
+To configure: python tests/helper.py --configure
 To run all: python tests/helper.py
 To run some: python tests/helper.py --tests dt entity
 
@@ -39,7 +39,7 @@ from starthinker.config import UI_ROOT, UI_SERVICE, UI_PROJECT
 from starthinker.script.parse import json_get_fields, json_set_fields
 from starthinker.util.project import get_project
 
-CONFIG_FILE = UI_ROOT + '/tests/config.json'
+CONFIG_FILE = UI_ROOT + '/starthinker_assets/tests.json'
 TEST_DIRECTORY = UI_ROOT + '/tests/scripts/'
 RECIPE_DIRECTORY = UI_ROOT + '/tests/recipes/'
 LOG_DIRECTORY = UI_ROOT + '/tests/logs/'
@@ -245,7 +245,7 @@ def generate_include(script_file):
 
 def tests():
   parser = argparse.ArgumentParser()
-  parser.add_argument('-c', '--configure', help='Configure test config.json only.', action='store_true')
+  parser.add_argument('-c', '--configure', help='Configure test in starthinker_assets/tests.json only.', action='store_true')
   parser.add_argument('-t', '--tests', nargs='*', help='Run only these tests, name of test from scripts without .json part.')
   parser.add_argument('-i', '--include', help='Create an include file for the script, used in tests.', default=None)
 

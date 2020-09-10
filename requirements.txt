@@ -37,7 +37,6 @@ smartsheet-python-sdk
 # starthinker_ui
 wheel
 gunicorn
-uwsgi
 jsonpickle
 django==2.2.12
 psycopg2-binary

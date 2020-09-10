@@ -82,38 +82,40 @@ def put_data(endpoint):
 
 
 def dcm_api_list(endpoint):
-  accounts = set(get_rows("user", project.task['accounts']))
-  advertisers = list(set(get_rows("user", project.task['advertisers'])))
 
-  print('AAA', advertisers)
+  accounts = set(get_rows("user", project.task['accounts']))
 
   for account_id in accounts:
     is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = {
-      'profileId':profile_id,
-      'advertiserIds':advertisers
-    }
+    kwargs = { 'profileId':profile_id, }
     if is_superuser: kwargs['accountId'] = account_id
 
-    for item in API_DCM(project.task['auth'], iterate=True, internal=is_superuser).call(endpoint).list(**kwargs).execute():
-      yield item
+    if 'advertisers' in project.task:
+      advertisers = set(get_rows("user", project.task['advertisers']))
+      for advertiser in advertisers:
+        kwargs = {'advertiserId':str(advertiser)}
+        yield from API_DCM(project.task['auth'], iterate=True, internal=is_superuser).call(endpoint).list(**kwargs).execute()
+    else:
+      yield from API_DCM(project.task['auth'], iterate=True, internal=is_superuser).call(endpoint).list(**kwargs).execute()
 
 
 @project.from_parameters
 def dcm_api():
   if project.verbose: print('DCM API')
 
-  if isinstance(project.task['endpoints'], str): project.task['endpoints'] = [project.task['endpoints']]
+  if 'out' in project.task:
 
-  for endpoint in project.task['endpoints']:
-    rows = dcm_api_list(endpoint)
-    rows = row_clean(rows)
+    if isinstance(project.task['endpoints'], str): project.task['endpoints'] = [project.task['endpoints']]
 
-    put_rows(
-      project.task['out']['auth'],
-      put_data(endpoint),
-      rows
-    )
+    for endpoint in project.task['endpoints']:
+      rows = dcm_api_list(endpoint)
+      rows = row_clean(rows)
+
+      put_rows(
+        project.task['out']['auth'],
+        put_data(endpoint),
+        rows
+      )
 
 if __name__ == "__main__":
   dcm_api()
