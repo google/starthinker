@@ -177,7 +177,7 @@ def run_tests(scripts, recipes, tests):
   for recipe in recipes:
     if tests and recipe.split('.')[0] not in tests: continue
     command = [
-      '%s/starthinker_virtualenv/bin/python' % UI_ROOT,
+      'python3' % UI_ROOT,
       '-W', 'ignore',
       '%s/starthinker/all/run.py' % UI_ROOT,
       RECIPE_DIRECTORY + recipe,
