@@ -15,6 +15,7 @@
       "iterate":false,
       "out": {
         "bigquery":{
+          "auth": "service",
           "dataset":"Test",
           "table":"User_Profile",
           "format":"CSV"
@@ -22,7 +23,7 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
         "dataset":"Test",
         "table":"User_Profile",

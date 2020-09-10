@@ -5,11 +5,11 @@
   },
   "tasks":[
     { "dataset":{
-      "auth":"user",
+      "auth":"service",
       "dataset":"Test"
     }},
     { "bigquery": {
-      "auth":"user",
+      "auth":"service",
       "from":{
         "values":[
           ["2018-02-27", "dog", 7, 67],
@@ -31,7 +31,7 @@
       ]
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
         "dataset":"Test",
         "table":"BQ_Values",
@@ -58,6 +58,7 @@
       "header":true,
       "out":{
         "bigquery":{
+          "auth": "service",
           "dataset":"Test",
           "table":"Sheet_To_BigQuery",
           "schema":[
@@ -69,7 +70,7 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
         "dataset":"Test",
         "table":"Sheet_To_BigQuery",
@@ -88,7 +89,7 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
         "dataset":"Test",
         "query":"SELECT * FROM Test.Sheet_To_BigQuery;",
@@ -102,7 +103,7 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
         "dataset":"Test",
         "query":"SELECT * FROM Test.Sheet_To_BigQuery WHERE Animal='dog';",
@@ -119,12 +120,13 @@
       "template":{}
     }},
     { "bigquery": {
-      "auth":"user",
+      "auth":"service",
       "from":{
         "dataset":"Test",
         "query":"SELECT * FROM Test.Sheet_To_BigQuery WHERE Animal IN ('dog', 'cat') ORDER BY Animal;"
       },
       "to":{
+        "auth": "user",
         "sheet":"StarThinker BigQuery Test",
         "tab":"BigQuery_Test",
         "range":"A1:C"
