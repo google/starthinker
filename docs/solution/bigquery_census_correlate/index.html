@@ -61,7 +61,7 @@
       i.right { margin: 0px 15px; font-size: 1.5rem;}
       .collapsible-body { padding: 0px; }
 
-
+      
   #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; }
   .col { margin-right: auto; }
@@ -74,7 +74,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
 
-
+  
     <nav class="green lighten-0">
       <div class="nav-wrapper">
         <a href="/starthinker/" class="brand-logo">
@@ -83,31 +83,31 @@
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-
-
+          
+          
           <li><a href="/starthinker/solution/">Solutions</a></li>
           <li><a href="/starthinker/help/">Help</a></li>
-
+          
         </ul>
       </div>
     </nav>
 
     <ul class="sidenav green lighten-1" id="mobile-menu">
-
-
-
+      
+      
+      
       <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
       <li><a class="white-text" href="/starthinker/help/">Help</a></li>
-
+      
     </ul>
-
+  
 
   <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize-1.0.0.min.js"></script>
 
-
+    
 
 
 <!--
@@ -129,22 +129,22 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
 
 
-
+    
 
     <div id="page" class="center">
-
+      
 
   <br/>
   <h1><i class="medium material-icons">analytics</i>&nbsp; Census Data Correlation</h1>
   <p class="flow-text">Correlate another table with US Census data.  Expands a data set dimensions by finding population segments that correlate with the master table.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
-
+  
 
   <br/><br/>
+  
 
-
-
+  
 
   <div class="buttons">
 
@@ -152,17 +152,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <i class="material-icons right">lock_open</i>Get Access
     </a>
 
+    
 
+    
 
-
-
-
+    
 
     <br/>
 
+    
 
-
-
+    
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/bigquery_census_correlate.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
@@ -172,16 +172,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/bigquery_census_correlate_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
       </a>
-
+    
 
   </div>
 
   <br/><br/>
 
   <div class="row">
+    
 
-
-
+    
 
     <div class="col s12 m6 l4">
       <div class="card">
@@ -193,15 +193,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
            </thead>
           <tbody>
 
-
+            
             <tr>
               <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
             </tr>
-
+            
 
             <tr>
               <td>Age</td>
-              <td>July 6, 2020 (1 month)</td>
+              <td>July 6, 2020 (2 months)</td>
             </tr>
 
             <tr>
@@ -215,7 +215,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       </div>
     </div>
 
-
+   
       <div class="col s12 m6 l4">
         <div class="card">
           <table class="bordered">
@@ -225,111 +225,125 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
               </tr>
              </thead>
              <tbody>
-
+             
                <tr>
                  <td>Pre-requisite is Census Normalize, run that at least once.</td>
                </tr>
-
+             
                <tr>
                  <td>Specify JOIN, PASS, SUM, and CORRELATE columns to build the correlation query.</td>
                </tr>
-
+             
                <tr>
                  <td>Define the DATASET and TABLE for the joinable source. Can be a view.</td>
                </tr>
-
+             
                <tr>
                  <td>Choose the significance level.  More significance usually means more NULL results, balance quantity and quality using this value.</td>
                </tr>
-
+             
                <tr>
                  <td>Specify where to write the results.</td>
                </tr>
-
+             
                <tr>
                  <td><br>IMPORTANT:</b> If you use VIEWS, you will have to delete them manually if the recipe changes.</td>
                </tr>
-
+             
              </tbody>
           </table>
         </div>
        </div>
-
+     
 
     <div class="col s12 m12 l8">
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/census/run.py" target="_blank">census</a>": {
-            "auth": {
-                "field": {
-                    "name": "auth",
-                    "kind": "authentication",
-                    "order": 0,
-                    "default": "service",
-                    "description": "Credentials used for writing data."
+            "to": {
+                "dataset": {
+                    "field": {
+                        "description": "Existing BigQuery dataset.",
+                        "default": "",
+                        "name": "to_dataset",
+                        "kind": "string",
+                        "order": 9
+                    }
+                },
+                "type": {
+                    "field": {
+                        "default": "table",
+                        "name": "type",
+                        "order": 10,
+                        "description": "Write Census_Percent as table or view.",
+                        "choices": [
+                            "table",
+                            "view"
+                        ],
+                        "kind": "choice"
+                    }
                 }
             },
             "correlate": {
-                "join": {
-                    "field": {
-                        "name": "join",
-                        "kind": "string",
-                        "order": 1,
-                        "default": "",
-                        "description": "Name of column to join on, must match Census Geo_Id column."
-                    }
-                },
-                "pass": {
-                    "field": {
-                        "name": "pass",
-                        "kind": "string_list",
-                        "order": 2,
-                        "default": [],
-                        "description": "Comma seperated list of columns to pass through."
-                    }
-                },
                 "sum": {
                     "field": {
+                        "description": "Comma seperated list of columns to sum, optional.",
+                        "default": [],
                         "name": "sum",
                         "kind": "string_list",
-                        "order": 3,
-                        "default": [],
-                        "description": "Comma seperated list of columns to sum, optional."
+                        "order": 3
                     }
                 },
-                "correlate": {
+                "join": {
                     "field": {
-                        "name": "correlate",
-                        "kind": "string_list",
-                        "order": 4,
-                        "default": [],
-                        "description": "Comma seperated list of percentage columns to correlate."
-                    }
-                },
-                "dataset": {
-                    "field": {
-                        "name": "from_dataset",
-                        "kind": "string",
-                        "order": 5,
+                        "description": "Name of column to join on, must match Census Geo_Id column.",
                         "default": "",
-                        "description": "Existing BigQuery dataset."
+                        "name": "join",
+                        "kind": "string",
+                        "order": 1
                     }
                 },
                 "table": {
                     "field": {
+                        "description": "Table to use as join data.",
+                        "default": "",
                         "name": "from_table",
                         "kind": "string",
-                        "order": 6,
+                        "order": 6
+                    }
+                },
+                "pass": {
+                    "field": {
+                        "description": "Comma seperated list of columns to pass through.",
+                        "default": [],
+                        "name": "pass",
+                        "kind": "string_list",
+                        "order": 2
+                    }
+                },
+                "correlate": {
+                    "field": {
+                        "description": "Comma seperated list of percentage columns to correlate.",
+                        "default": [],
+                        "name": "correlate",
+                        "kind": "string_list",
+                        "order": 4
+                    }
+                },
+                "dataset": {
+                    "field": {
+                        "description": "Existing BigQuery dataset.",
                         "default": "",
-                        "description": "Table to use as join data."
+                        "name": "from_dataset",
+                        "kind": "string",
+                        "order": 5
                     }
                 },
                 "significance": {
                     "field": {
-                        "name": "significance",
-                        "kind": "choice",
-                        "order": 7,
                         "default": "80",
+                        "name": "significance",
+                        "order": 7,
                         "description": "Select level of significance to test.",
                         "choices": [
                             "80",
@@ -338,32 +352,18 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "99",
                             "99.5",
                             "99.95"
-                        ]
+                        ],
+                        "kind": "choice"
                     }
                 }
             },
-            "to": {
-                "dataset": {
-                    "field": {
-                        "name": "to_dataset",
-                        "kind": "string",
-                        "order": 9,
-                        "default": "",
-                        "description": "Existing BigQuery dataset."
-                    }
-                },
-                "type": {
-                    "field": {
-                        "name": "type",
-                        "kind": "choice",
-                        "order": 10,
-                        "default": "table",
-                        "description": "Write Census_Percent as table or view.",
-                        "choices": [
-                            "table",
-                            "view"
-                        ]
-                    }
+            "auth": {
+                "field": {
+                    "description": "Credentials used for writing data.",
+                    "default": "service",
+                    "name": "auth",
+                    "kind": "authentication",
+                    "order": 0
                 }
             }
         }
@@ -394,7 +394,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   </body>
 
-
+  
 
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
@@ -411,7 +411,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     });
   </script>
 
-
+  
   <script type="text/javascript">
     $(document).ready(function() {
       $('span.expand_code').on('click tap', function() {

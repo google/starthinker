@@ -38,7 +38,7 @@ Federal Reserve Series Data
 Download federal reserve series.
 
 Specify the values for a <a href='https://fred.stlouisfed.org/docs/api/fred/series_observations.html' target='_blank'>Fred observations API call</a>.
-A table with the same name will appear in the dataset.
+A table will appear in the dataset.
 
 '''
 
@@ -55,134 +55,126 @@ INPUTS = {
   'fred_units': 'lin',  # A key that indicates a data value transformation.
   'fred_frequency': '',  # An optional parameter that indicates a lower frequency to aggregate values to.
   'fred_aggregation_method': 'avg',  # A key that indicates the aggregation method used for frequency aggregation.
-  'project': '',  # Existing BigQuery dataset.
+  'project': '',  # Existing BigQuery project.
   'dataset': '',  # Existing BigQuery dataset.
 }
 
 TASKS = [
   {
     'fred': {
-      'auth': {
+      'series': [
+        {
+          'series_id': {
+            'field': {
+              'description': 'Series ID to pull data from.',
+              'kind': 'string',
+              'name': 'fred_series_id',
+              'order': 2,
+              'default': ''
+            }
+          },
+          'units': {
+            'field': {
+              'choices': [
+                'lin',
+                'chg',
+                'ch1',
+                'pch',
+                'pc1',
+                'pca',
+                'cch',
+                'cca',
+                'log'
+              ],
+              'description': 'A key that indicates a data value transformation.',
+              'name': 'fred_units',
+              'kind': 'choice',
+              'order': 3,
+              'default': 'lin'
+            }
+          },
+          'aggregation_method': {
+            'field': {
+              'choices': [
+                'avg',
+                'sum',
+                'eop'
+              ],
+              'description': 'A key that indicates the aggregation method used for frequency aggregation.',
+              'name': 'fred_aggregation_method',
+              'kind': 'choice',
+              'order': 5,
+              'default': 'avg'
+            }
+          }
+        }
+      ],
+      'api_key': {
         'field': {
-          'name': 'auth',
-          'kind': 'authentication',
-          'order': 0,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
+          'description': '32 character alpha-numeric lowercase string.',
+          'kind': 'string',
+          'name': 'fred_api_key',
+          'order': 1,
+          'default': ''
         }
       },
-      'parameters': {
-        'api_key': {
-          'field': {
-            'name': 'fred_api_key',
-            'kind': 'string',
-            'order': 1,
-            'default': '',
-            'description': '32 character alpha-numeric lowercase string.'
-          }
-        },
-        'series_id': {
-          'field': {
-            'name': 'fred_series_id',
-            'kind': 'string',
-            'order': 2,
-            'default': '',
-            'description': 'Series ID to pull data from.'
-          }
-        },
-        'units': {
-          'field': {
-            'name': 'fred_units',
-            'kind': 'choice',
-            'order': 3,
-            'default': 'lin',
-            'description': 'A key that indicates a data value transformation.',
-            'choices': [
-              'lin',
-              'chg',
-              'ch1',
-              'pch',
-              'pc1',
-              'pca',
-              'cch',
-              'cca',
-              'log'
-            ]
-          }
-        },
-        'frequency': {
-          'field': {
-            'name': 'fred_frequency',
-            'kind': 'choice',
-            'order': 4,
-            'default': '',
-            'description': 'An optional parameter that indicates a lower frequency to aggregate values to.',
-            'choices': [
-              '',
-              'd',
-              'w',
-              'bw',
-              'm',
-              'q',
-              'sa',
-              'a',
-              'wef',
-              'weth',
-              'wew',
-              'wetu',
-              'wem',
-              'wesu',
-              'wesa',
-              'bwew',
-              'bwem'
-            ]
-          }
-        },
-        'aggregation_method': {
-          'field': {
-            'name': 'fred_aggregation_method',
-            'kind': 'choice',
-            'order': 5,
-            'default': 'avg',
-            'description': 'A key that indicates the aggregation method used for frequency aggregation.',
-            'choices': [
-              'avg',
-              'sum',
-              'eop'
-            ]
-          }
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'kind': 'authentication',
+          'name': 'auth',
+          'order': 0,
+          'default': 'service'
         }
       },
       'out': {
         'bigquery': {
           'project': {
             'field': {
-              'name': 'project',
+              'description': 'Existing BigQuery project.',
               'kind': 'string',
+              'name': 'project',
               'order': 10,
-              'default': '',
-              'description': 'Existing BigQuery dataset.'
+              'default': ''
             }
           },
           'dataset': {
             'field': {
+              'description': 'Existing BigQuery dataset.',
+              'kind': 'string',
               'name': 'dataset',
-              'kind': 'string',
               'order': 11,
-              'default': '',
-              'description': 'Existing BigQuery dataset.'
-            }
-          },
-          'table': {
-            'field': {
-              'name': 'fred_series_id',
-              'kind': 'string',
-              'order': 2,
-              'default': '',
-              'prefix': 'FRED_SERIES_',
-              'description': 'Series ID to pull data from.'
+              'default': ''
             }
           }
+        }
+      },
+      'frequency': {
+        'field': {
+          'choices': [
+            '',
+            'd',
+            'w',
+            'bw',
+            'm',
+            'q',
+            'sa',
+            'a',
+            'wef',
+            'weth',
+            'wew',
+            'wetu',
+            'wem',
+            'wesu',
+            'wesa',
+            'bwew',
+            'bwem'
+          ],
+          'description': 'An optional parameter that indicates a lower frequency to aggregate values to.',
+          'name': 'fred_frequency',
+          'kind': 'choice',
+          'order': 4,
+          'default': ''
         }
       }
     }

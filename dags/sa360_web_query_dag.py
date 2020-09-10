@@ -63,11 +63,11 @@ TASKS = [
         'source': 'https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/',
         'destination': {
           'field': {
+            'description': 'Name of document to deploy to.',
             'name': 'recipe_name',
-            'prefix': 'CM User Editor For ',
             'kind': 'string',
             'order': 1,
-            'description': 'Name of document to deploy to.',
+            'prefix': 'CM User Editor For ',
             'default': ''
           }
         }

@@ -64,78 +64,78 @@ INPUTS = {
 TASKS = [
   {
     'smartsheet': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 0,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'token': {
-        'field': {
-          'name': 'token',
-          'kind': 'string',
-          'order': 2,
-          'default': '',
-          'description': 'Retrieve from SmartSheet account settings.'
-        }
-      },
       'sheet': {
         'field': {
-          'name': 'sheet',
-          'kind': 'string',
           'order': 3,
-          'description': 'Retrieve from sheet properties.'
+          'name': 'sheet',
+          'description': 'Retrieve from sheet properties.',
+          'kind': 'string'
         }
       },
-      'link': {
+      'auth': {
         'field': {
-          'name': 'link',
-          'kind': 'boolean',
-          'order': 7,
-          'default': True,
-          'description': 'Add a link to each row as the first column.'
+          'description': 'Credentials used for reading data.',
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'order': 0,
+          'default': 'user'
         }
       },
       'out': {
         'bigquery': {
           'auth': {
             'field': {
-              'name': 'auth_write',
+              'description': 'Credentials used for writing data.',
               'kind': 'authentication',
+              'name': 'auth_write',
               'order': 1,
-              'default': 'service',
-              'description': 'Credentials used for writing data.'
+              'default': 'service'
             }
           },
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'description': 'Existing BigQuery dataset.',
               'kind': 'string',
+              'name': 'dataset',
               'order': 4,
-              'default': '',
-              'description': 'Existing BigQuery dataset.'
+              'default': ''
             }
           },
           'table': {
             'field': {
-              'name': 'table',
+              'description': 'Table to create from this report.',
               'kind': 'string',
+              'name': 'table',
               'order': 5,
-              'default': '',
-              'description': 'Table to create from this report.'
+              'default': ''
             }
           },
           'schema': {
             'field': {
-              'name': 'schema',
-              'kind': 'json',
               'order': 6,
-              'description': 'Schema provided in JSON list format or leave empty to auto detect.'
+              'name': 'schema',
+              'description': 'Schema provided in JSON list format or leave empty to auto detect.',
+              'kind': 'json'
             }
           }
+        }
+      },
+      'token': {
+        'field': {
+          'description': 'Retrieve from SmartSheet account settings.',
+          'kind': 'string',
+          'name': 'token',
+          'order': 2,
+          'default': ''
+        }
+      },
+      'link': {
+        'field': {
+          'description': 'Add a link to each row as the first column.',
+          'kind': 'boolean',
+          'name': 'link',
+          'order': 7,
+          'default': True
         }
       }
     }

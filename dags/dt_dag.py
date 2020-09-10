@@ -63,72 +63,72 @@ INPUTS = {
 TASKS = [
   {
     'dt': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 0,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
       'from': {
         'bucket': {
           'field': {
-            'name': 'bucket',
+            'description': 'Name of bucket where DT files are stored.',
             'kind': 'string',
+            'name': 'bucket',
             'order': 2,
-            'default': '',
-            'description': 'Name of bucket where DT files are stored.'
-          }
-        },
-        'paths': {
-          'field': {
-            'name': 'paths',
-            'kind': 'string_list',
-            'order': 3,
-            'default': [
-            ],
-            'description': 'List of prefixes to pull specific DT files.'
+            'default': ''
           }
         },
         'days': {
           'field': {
-            'name': 'days',
+            'description': 'Number of days back to synchronize.',
             'kind': 'integer',
+            'name': 'days',
             'order': 4,
-            'default': 2,
-            'description': 'Number of days back to synchronize.'
+            'default': 2
           }
         },
         'hours': {
           'field': {
-            'name': 'hours',
+            'description': 'Number of hours back to synchronize.',
             'kind': 'integer',
+            'name': 'hours',
             'order': 5,
-            'default': 0,
-            'description': 'Number of hours back to synchronize.'
+            'default': 0
+          }
+        },
+        'paths': {
+          'field': {
+            'description': 'List of prefixes to pull specific DT files.',
+            'kind': 'string_list',
+            'name': 'paths',
+            'order': 3,
+            'default': [
+            ]
           }
         }
       },
       'to': {
         'auth': {
           'field': {
-            'name': 'auth_write',
+            'description': 'Credentials used for writing data.',
             'kind': 'authentication',
+            'name': 'auth_write',
             'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
+            'default': 'service'
           }
         },
         'dataset': {
           'field': {
-            'name': 'dataset',
+            'description': 'Existing dataset in BigQuery.',
             'kind': 'string',
+            'name': 'dataset',
             'order': 6,
-            'default': '',
-            'description': 'Existing dataset in BigQuery.'
+            'default': ''
           }
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'order': 0,
+          'default': 'user'
         }
       }
     }

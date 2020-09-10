@@ -60,30 +60,30 @@ TASKS = [
     'drive': {
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+          'default': 'user'
         }
       },
       'copy': {
         'source': {
           'field': {
-            'name': 'source',
+            'description': 'Name or URL of document to copy from.',
             'kind': 'string',
+            'name': 'source',
             'order': 1,
-            'default': '',
-            'description': 'Name or URL of document to copy from.'
+            'default': ''
           }
         },
         'destination': {
           'field': {
-            'name': 'destination',
+            'description': 'Name document to copy to.',
             'kind': 'string',
+            'name': 'destination',
             'order': 2,
-            'default': '',
-            'description': 'Name document to copy to.'
+            'default': ''
           }
         }
       }

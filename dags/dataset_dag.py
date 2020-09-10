@@ -52,8 +52,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
   'dataset_dataset': '',  # Name of Google BigQuery dataset to create.
+  'auth_write': 'service',  # Credentials used for writing data.
   'dataset_emails': [],  # Comma separated emails.
   'dataset_groups': [],  # Comma separated groups.
 }
@@ -61,42 +61,42 @@ INPUTS = {
 TASKS = [
   {
     'dataset': {
-      'auth': {
-        'field': {
-          'name': 'auth_write',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
-        }
-      },
-      'dataset': {
-        'field': {
-          'name': 'dataset_dataset',
-          'kind': 'string',
-          'order': 1,
-          'default': '',
-          'description': 'Name of Google BigQuery dataset to create.'
-        }
-      },
       'emails': {
         'field': {
-          'name': 'dataset_emails',
+          'description': 'Comma separated emails.',
           'kind': 'string_list',
+          'name': 'dataset_emails',
           'order': 2,
           'default': [
-          ],
-          'description': 'Comma separated emails.'
+          ]
         }
       },
       'groups': {
         'field': {
-          'name': 'dataset_groups',
+          'description': 'Comma separated groups.',
           'kind': 'string_list',
+          'name': 'dataset_groups',
           'order': 3,
           'default': [
-          ],
-          'description': 'Comma separated groups.'
+          ]
+        }
+      },
+      'dataset': {
+        'field': {
+          'description': 'Name of Google BigQuery dataset to create.',
+          'kind': 'string',
+          'name': 'dataset_dataset',
+          'order': 1,
+          'default': ''
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'kind': 'authentication',
+          'name': 'auth_write',
+          'order': 1,
+          'default': 'service'
         }
       }
     }

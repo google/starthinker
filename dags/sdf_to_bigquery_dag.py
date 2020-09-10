@@ -51,8 +51,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
   'partner_id': '',  # The sdf file types.
+  'auth_write': 'service',  # Credentials used for writing data.
   'file_types': [],  # The sdf file types.
   'filter_type': '',  # The filter type for the filter ids.
   'filter_ids': [],  # Comma separated list of filter ids for the request.
@@ -68,123 +68,123 @@ TASKS = [
     'dataset': {
       'auth': {
         'field': {
-          'name': 'auth_write',
+          'description': 'Credentials used for writing data.',
           'kind': 'authentication',
+          'name': 'auth_write',
           'order': 1,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
+          'default': 'service'
         }
       },
       'dataset': {
         'field': {
-          'name': 'dataset',
+          'description': 'Dataset to be written to in BigQuery.',
           'kind': 'string',
+          'name': 'dataset',
           'order': 6,
-          'default': '',
-          'description': 'Dataset to be written to in BigQuery.'
+          'default': ''
         }
       }
     }
   },
   {
     'sdf': {
-      'auth': 'user',
-      'version': {
+      'file_types': {
         'field': {
-          'name': 'version',
-          'kind': 'choice',
-          'order': 6,
-          'default': '5',
-          'description': 'The sdf version to be returned.',
-          'choices': [
-            'SDF_VERSION_5',
-            'SDF_VERSION_5_1'
+          'description': 'The sdf file types.',
+          'kind': 'string_list',
+          'name': 'file_types',
+          'order': 2,
+          'default': [
           ]
         }
       },
-      'partner_id': {
+      'table_suffix': {
         'field': {
-          'name': 'partner_id',
-          'kind': 'integer',
-          'order': 1,
-          'description': 'The sdf file types.'
+          'description': 'Optional: Suffix string to put at the end of the table name (Must contain alphanumeric or underscores)',
+          'kind': 'string',
+          'name': 'table_suffix',
+          'order': 6,
+          'default': ''
         }
       },
-      'file_types': {
+      'dataset': {
         'field': {
-          'name': 'file_types',
-          'kind': 'string_list',
-          'order': 2,
-          'default': [
-          ],
-          'description': 'The sdf file types.'
+          'description': 'Dataset to be written to in BigQuery.',
+          'kind': 'string',
+          'name': 'dataset',
+          'order': 6,
+          'default': ''
         }
       },
       'filter_type': {
         'field': {
-          'name': 'filter_type',
-          'kind': 'choice',
-          'order': 3,
-          'default': '',
-          'description': 'The filter type for the filter ids.',
           'choices': [
             'FILTER_TYPE_ADVERTISER_ID',
             'FILTER_TYPE_CAMPAIGN_ID',
             'FILTER_TYPE_INSERTION_ORDER_ID',
             'FILTER_TYPE_MEDIA_PRODUCT_ID',
             'FILTER_TYPE_LINE_ITEM_ID'
-          ]
+          ],
+          'description': 'The filter type for the filter ids.',
+          'name': 'filter_type',
+          'kind': 'choice',
+          'order': 3,
+          'default': ''
+        }
+      },
+      'partner_id': {
+        'field': {
+          'order': 1,
+          'name': 'partner_id',
+          'description': 'The sdf file types.',
+          'kind': 'integer'
+        }
+      },
+      'version': {
+        'field': {
+          'choices': [
+            'SDF_VERSION_5',
+            'SDF_VERSION_5_1'
+          ],
+          'description': 'The sdf version to be returned.',
+          'name': 'version',
+          'kind': 'choice',
+          'order': 6,
+          'default': '5'
+        }
+      },
+      'auth': 'user',
+      'create_single_day_table': {
+        'field': {
+          'description': 'Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF.',
+          'kind': 'boolean',
+          'name': 'create_single_day_table',
+          'order': 8,
+          'default': False
         }
       },
       'read': {
         'filter_ids': {
-          'single_cell': True,
           'values': {
             'field': {
-              'name': 'filter_ids',
+              'description': 'Comma separated list of filter ids for the request.',
               'kind': 'integer_list',
+              'name': 'filter_ids',
               'order': 4,
               'default': [
-              ],
-              'description': 'Comma separated list of filter ids for the request.'
+              ]
             }
-          }
+          },
+          'single_cell': True
         }
       },
       'time_partitioned_table': {
         'field': {
+          'description': 'Is the end table a time partitioned',
+          'kind': 'boolean',
           'name': 'time_partitioned_table',
-          'kind': 'boolean',
           'order': 7,
-          'default': False,
-          'description': 'Is the end table a time partitioned'
-        }
-      },
-      'create_single_day_table': {
-        'field': {
-          'name': 'create_single_day_table',
-          'kind': 'boolean',
-          'order': 8,
-          'default': False,
-          'description': 'Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF.'
-        }
-      },
-      'dataset': {
-        'field': {
-          'name': 'dataset',
-          'kind': 'string',
-          'order': 6,
-          'default': '',
-          'description': 'Dataset to be written to in BigQuery.'
-        }
-      },
-      'table_suffix': {
-        'field': {
-          'name': 'table_suffix',
-          'kind': 'string',
-          'order': 6,
-          'default': '',
-          'description': 'Optional: Suffix string to put at the end of the table name (Must contain alphanumeric or underscores)'
+          'default': False
         }
       }
     }

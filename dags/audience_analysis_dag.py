@@ -55,8 +55,8 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'recipe_slug': '',  # Place where tables will be created in BigQuery.
-  'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
   'recipe_name': '',  # Name of report in DV360, should be unique.
+  'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
   'partners': [],  # DV360 partner id.
   'advertisers': [],  # Comma delimited list of DV360 advertiser ids.
   'recipe_project': '',  # Google Cloud Project Id.
@@ -65,49 +65,49 @@ INPUTS = {
 TASKS = [
   {
     'dataset': {
+      'description': 'Create a dataset for bigquery tables.',
+      'auth': 'service',
       'hour': [
         1
       ],
-      'auth': 'service',
-      'description': 'Create a dataset for bigquery tables.',
       'dataset': {
         'field': {
+          'description': 'Place where tables will be created in BigQuery.',
           'name': 'recipe_slug',
-          'kind': 'string',
-          'description': 'Place where tables will be created in BigQuery.'
+          'kind': 'string'
         }
       }
     }
   },
   {
     'dbm': {
+      'auth': 'user',
       'hour': [
         2
       ],
-      'auth': 'user',
       'report': {
         'filters': {
-          'FILTER_PARTNER': {
-            'values': {
-              'field': {
-                'name': 'partners',
-                'kind': 'integer_list',
-                'order': 5,
-                'default': [
-                ],
-                'description': 'DV360 partner id.'
-              }
-            }
-          },
           'FILTER_ADVERTISER': {
             'values': {
               'field': {
-                'name': 'advertisers',
+                'description': 'Comma delimited list of DV360 advertiser ids.',
                 'kind': 'integer_list',
+                'name': 'advertisers',
                 'order': 6,
                 'default': [
-                ],
-                'description': 'Comma delimited list of DV360 advertiser ids.'
+                ]
+              }
+            }
+          },
+          'FILTER_PARTNER': {
+            'values': {
+              'field': {
+                'description': 'DV360 partner id.',
+                'kind': 'integer_list',
+                'name': 'partners',
+                'order': 5,
+                'default': [
+                ]
               }
             }
           }
@@ -115,23 +115,23 @@ TASKS = [
         'body': {
           'timezoneCode': {
             'field': {
-              'name': 'recipe_timezone',
-              'kind': 'timezone',
               'description': 'Timezone for report dates.',
-              'default': 'America/Los_Angeles'
+              'name': 'recipe_timezone',
+              'default': 'America/Los_Angeles',
+              'kind': 'timezone'
             }
           },
           'metadata': {
             'dataRange': 'LAST_7_DAYS',
-            'format': 'CSV',
             'title': {
               'field': {
                 'name': 'recipe_name',
-                'kind': 'string',
+                'description': 'Name of report in DV360, should be unique.',
                 'prefix': 'Audience Analysis Performance ',
-                'description': 'Name of report in DV360, should be unique.'
+                'kind': 'string'
               }
-            }
+            },
+            'format': 'CSV'
           },
           'params': {
             'type': 'TYPE_GENERAL',
@@ -159,130 +159,130 @@ TASKS = [
   },
   {
     'dbm': {
-      'hour': [
-        6
-      ],
       'auth': 'user',
-      'report': {
-        'name': {
-          'field': {
-            'name': 'recipe_name',
-            'kind': 'string',
-            'prefix': 'Audience Analysis Performance ',
-            'description': 'Name of report in DV360, should be unique.'
-          }
-        }
-      },
       'out': {
         'bigquery': {
           'dataset': {
             'field': {
+              'description': 'Place where tables will be created in BigQuery.',
               'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
+              'kind': 'string'
             }
           },
           'table': 'DV360_Audience_Performance',
           'schema': [
             {
-              'mode': 'REQUIRED',
+              'type': 'STRING',
               'name': 'advertiser',
-              'type': 'STRING'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'REQUIRED',
+              'type': 'INT64',
               'name': 'advertiser_id',
-              'type': 'INT64'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'REQUIRED',
+              'type': 'STRING',
               'name': 'audience_list',
-              'type': 'STRING'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'REQUIRED',
+              'type': 'INT64',
               'name': 'audience_list_id',
-              'type': 'INT64'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'STRING',
               'name': 'audience_list_type',
-              'type': 'STRING'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'STRING',
               'name': 'audience_list_cost_usd',
-              'type': 'STRING'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'STRING',
               'name': 'partner_currency',
-              'type': 'STRING'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'INT64',
               'name': 'impressions',
-              'type': 'INT64'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'INT64',
               'name': 'clicks',
-              'type': 'INT64'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'FLOAT',
               'name': 'total_conversions',
-              'type': 'FLOAT'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'FLOAT',
               'name': 'post_click_conversions',
-              'type': 'FLOAT'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'FLOAT',
               'name': 'post_view_conversions',
-              'type': 'FLOAT'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'FLOAT',
               'name': 'total_media_cost_partner_currency',
-              'type': 'FLOAT'
+              'mode': 'NULLABLE'
             }
           ]
+        }
+      },
+      'hour': [
+        6
+      ],
+      'report': {
+        'name': {
+          'field': {
+            'name': 'recipe_name',
+            'description': 'Name of report in DV360, should be unique.',
+            'prefix': 'Audience Analysis Performance ',
+            'kind': 'string'
+          }
         }
       }
     }
   },
   {
     'dbm': {
+      'auth': 'user',
       'hour': [
         2
       ],
-      'auth': 'user',
       'report': {
         'filters': {
-          'FILTER_PARTNER': {
-            'values': {
-              'field': {
-                'name': 'partners',
-                'kind': 'integer_list',
-                'order': 5,
-                'default': [
-                ],
-                'description': 'DV360 partner id.'
-              }
-            }
-          },
           'FILTER_ADVERTISER': {
             'values': {
               'field': {
-                'name': 'advertisers',
+                'description': 'Comma delimited list of DV360 advertiser ids.',
                 'kind': 'integer_list',
+                'name': 'advertisers',
                 'order': 6,
                 'default': [
-                ],
-                'description': 'Comma delimited list of DV360 advertiser ids.'
+                ]
+              }
+            }
+          },
+          'FILTER_PARTNER': {
+            'values': {
+              'field': {
+                'description': 'DV360 partner id.',
+                'kind': 'integer_list',
+                'name': 'partners',
+                'order': 5,
+                'default': [
+                ]
               }
             }
           }
@@ -290,23 +290,23 @@ TASKS = [
         'body': {
           'timezoneCode': {
             'field': {
-              'name': 'recipe_timezone',
-              'kind': 'timezone',
               'description': 'Timezone for report dates.',
-              'default': 'America/Los_Angeles'
+              'name': 'recipe_timezone',
+              'default': 'America/Los_Angeles',
+              'kind': 'timezone'
             }
           },
           'metadata': {
             'dataRange': 'LAST_7_DAYS',
-            'format': 'CSV',
             'title': {
               'field': {
                 'name': 'recipe_name',
-                'kind': 'string',
+                'description': 'Name of report in DV360, should be unique.',
                 'prefix': 'Audience Analysis First Party',
-                'description': 'Name of report in DV360, should be unique.'
+                'kind': 'string'
               }
-            }
+            },
+            'format': 'CSV'
           },
           'params': {
             'type': 'TYPE_INVENTORY_AVAILABILITY',
@@ -329,105 +329,105 @@ TASKS = [
   },
   {
     'dbm': {
-      'hour': [
-        6
-      ],
       'auth': 'user',
-      'report': {
-        'name': {
-          'field': {
-            'name': 'recipe_name',
-            'kind': 'string',
-            'prefix': 'Audience Analysis First Party',
-            'description': 'Name of report in DV360, should be unique.'
-          }
-        }
-      },
       'out': {
         'bigquery': {
           'dataset': {
             'field': {
+              'description': 'Place where tables will be created in BigQuery.',
               'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
+              'kind': 'string'
             }
           },
           'table': 'DV360_First_Party_Audience',
           'schema': [
             {
-              'mode': 'REQUIRED',
+              'type': 'STRING',
               'name': 'advertiser',
-              'type': 'STRING'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'REQUIRED',
+              'type': 'INT64',
               'name': 'advertiser_id',
-              'type': 'INT64'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'REQUIRED',
+              'type': 'STRING',
               'name': 'audience_list',
-              'type': 'STRING'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'REQUIRED',
+              'type': 'INT64',
               'name': 'audience_list_id',
-              'type': 'INT64'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'STRING',
               'name': 'audience_list_type',
-              'type': 'STRING'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'FLOAT',
               'name': 'audience_list_cost_usd',
-              'type': 'FLOAT'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'INT64',
               'name': 'potential_impressions',
-              'type': 'INT64'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'INT64',
               'name': 'unique_cookies_with_impressions',
-              'type': 'INT64'
+              'mode': 'NULLABLE'
             }
           ]
+        }
+      },
+      'hour': [
+        6
+      ],
+      'report': {
+        'name': {
+          'field': {
+            'name': 'recipe_name',
+            'description': 'Name of report in DV360, should be unique.',
+            'prefix': 'Audience Analysis First Party',
+            'kind': 'string'
+          }
         }
       }
     }
   },
   {
     'dbm': {
+      'auth': 'user',
       'hour': [
         2
       ],
-      'auth': 'user',
       'report': {
         'filters': {
-          'FILTER_PARTNER': {
-            'values': {
-              'field': {
-                'name': 'partners',
-                'kind': 'integer_list',
-                'order': 5,
-                'default': [
-                ],
-                'description': 'DV360 partner id.'
-              }
-            }
-          },
           'FILTER_ADVERTISER': {
             'values': {
               'field': {
-                'name': 'advertisers',
+                'description': 'Comma delimited list of DV360 advertiser ids.',
                 'kind': 'integer_list',
+                'name': 'advertisers',
                 'order': 6,
                 'default': [
-                ],
-                'description': 'Comma delimited list of DV360 advertiser ids.'
+                ]
+              }
+            }
+          },
+          'FILTER_PARTNER': {
+            'values': {
+              'field': {
+                'description': 'DV360 partner id.',
+                'kind': 'integer_list',
+                'name': 'partners',
+                'order': 5,
+                'default': [
+                ]
               }
             }
           }
@@ -435,23 +435,23 @@ TASKS = [
         'body': {
           'timezoneCode': {
             'field': {
-              'name': 'recipe_timezone',
-              'kind': 'timezone',
               'description': 'Timezone for report dates.',
-              'default': 'America/Los_Angeles'
+              'name': 'recipe_timezone',
+              'default': 'America/Los_Angeles',
+              'kind': 'timezone'
             }
           },
           'metadata': {
             'dataRange': 'LAST_7_DAYS',
-            'format': 'CSV',
             'title': {
               'field': {
                 'name': 'recipe_name',
-                'kind': 'string',
+                'description': 'Name of report in DV360, should be unique.',
                 'prefix': 'Audience Analysis Google',
-                'description': 'Name of report in DV360, should be unique.'
+                'kind': 'string'
               }
-            }
+            },
+            'format': 'CSV'
           },
           'params': {
             'type': 'TYPE_INVENTORY_AVAILABILITY',
@@ -474,105 +474,105 @@ TASKS = [
   },
   {
     'dbm': {
-      'hour': [
-        6
-      ],
       'auth': 'user',
-      'report': {
-        'name': {
-          'field': {
-            'name': 'recipe_name',
-            'kind': 'string',
-            'prefix': 'Audience Analysis Google',
-            'description': 'Name of report in DV360, should be unique.'
-          }
-        }
-      },
       'out': {
         'bigquery': {
           'dataset': {
             'field': {
+              'description': 'Place where tables will be created in BigQuery.',
               'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
+              'kind': 'string'
             }
           },
           'table': 'DV360_Google_Audience',
           'schema': [
             {
-              'mode': 'REQUIRED',
+              'type': 'STRING',
               'name': 'advertiser',
-              'type': 'STRING'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'REQUIRED',
+              'type': 'INT64',
               'name': 'advertiser_id',
-              'type': 'INT64'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'REQUIRED',
+              'type': 'STRING',
               'name': 'audience_list',
-              'type': 'STRING'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'REQUIRED',
+              'type': 'INT64',
               'name': 'audience_list_id',
-              'type': 'INT64'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'STRING',
               'name': 'audience_list_type',
-              'type': 'STRING'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'FLOAT',
               'name': 'audience_list_cost_usd',
-              'type': 'FLOAT'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'INT64',
               'name': 'potential_impressions',
-              'type': 'INT64'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'INT64',
               'name': 'unique_cookies_with_impressions',
-              'type': 'INT64'
+              'mode': 'NULLABLE'
             }
           ]
+        }
+      },
+      'hour': [
+        6
+      ],
+      'report': {
+        'name': {
+          'field': {
+            'name': 'recipe_name',
+            'description': 'Name of report in DV360, should be unique.',
+            'prefix': 'Audience Analysis Google',
+            'kind': 'string'
+          }
         }
       }
     }
   },
   {
     'dbm': {
+      'auth': 'user',
       'hour': [
         2
       ],
-      'auth': 'user',
       'report': {
         'filters': {
-          'FILTER_PARTNER': {
-            'values': {
-              'field': {
-                'name': 'partners',
-                'kind': 'integer_list',
-                'order': 5,
-                'default': [
-                ],
-                'description': 'DV360 partner id.'
-              }
-            }
-          },
           'FILTER_ADVERTISER': {
             'values': {
               'field': {
-                'name': 'advertisers',
+                'description': 'Comma delimited list of DV360 advertiser ids.',
                 'kind': 'integer_list',
+                'name': 'advertisers',
                 'order': 6,
                 'default': [
-                ],
-                'description': 'Comma delimited list of DV360 advertiser ids.'
+                ]
+              }
+            }
+          },
+          'FILTER_PARTNER': {
+            'values': {
+              'field': {
+                'description': 'DV360 partner id.',
+                'kind': 'integer_list',
+                'name': 'partners',
+                'order': 5,
+                'default': [
+                ]
               }
             }
           }
@@ -580,23 +580,23 @@ TASKS = [
         'body': {
           'timezoneCode': {
             'field': {
-              'name': 'recipe_timezone',
-              'kind': 'timezone',
               'description': 'Timezone for report dates.',
-              'default': 'America/Los_Angeles'
+              'name': 'recipe_timezone',
+              'default': 'America/Los_Angeles',
+              'kind': 'timezone'
             }
           },
           'metadata': {
             'dataRange': 'LAST_7_DAYS',
-            'format': 'CSV',
             'title': {
               'field': {
                 'name': 'recipe_name',
-                'kind': 'string',
+                'description': 'Name of report in DV360, should be unique.',
                 'prefix': 'Audience Analysis Third Party',
-                'description': 'Name of report in DV360, should be unique.'
+                'kind': 'string'
               }
-            }
+            },
+            'format': 'CSV'
           },
           'params': {
             'type': 'TYPE_INVENTORY_AVAILABILITY',
@@ -619,162 +619,162 @@ TASKS = [
   },
   {
     'dbm': {
-      'hour': [
-        6
-      ],
       'auth': 'user',
-      'report': {
-        'name': {
-          'field': {
-            'name': 'recipe_name',
-            'kind': 'string',
-            'prefix': 'Audience Analysis Third Party',
-            'description': 'Name of report in DV360, should be unique.'
-          }
-        }
-      },
       'out': {
         'bigquery': {
           'dataset': {
             'field': {
+              'description': 'Place where tables will be created in BigQuery.',
               'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
+              'kind': 'string'
             }
           },
           'table': 'DV360_Third_Party_Audience',
           'schema': [
             {
-              'mode': 'REQUIRED',
+              'type': 'STRING',
               'name': 'advertiser',
-              'type': 'STRING'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'REQUIRED',
+              'type': 'INT64',
               'name': 'advertiser_id',
-              'type': 'INT64'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'REQUIRED',
+              'type': 'STRING',
               'name': 'audience_list',
-              'type': 'STRING'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'REQUIRED',
+              'type': 'INT64',
               'name': 'audience_list_id',
-              'type': 'INT64'
+              'mode': 'REQUIRED'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'STRING',
               'name': 'audience_list_type',
-              'type': 'STRING'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'FLOAT',
               'name': 'audience_list_cost_usd',
-              'type': 'FLOAT'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'INT64',
               'name': 'potential_impressions',
-              'type': 'INT64'
+              'mode': 'NULLABLE'
             },
             {
-              'mode': 'NULLABLE',
+              'type': 'INT64',
               'name': 'unique_cookies_with_impressions',
-              'type': 'INT64'
+              'mode': 'NULLABLE'
             }
           ]
+        }
+      },
+      'hour': [
+        6
+      ],
+      'report': {
+        'name': {
+          'field': {
+            'name': 'recipe_name',
+            'description': 'Name of report in DV360, should be unique.',
+            'prefix': 'Audience Analysis Third Party',
+            'kind': 'string'
+          }
         }
       }
     }
   },
   {
     'bigquery': {
-      'hour': [
-        6
-      ],
-      'auth': 'service',
       'from': {
-        'query': " SELECT   p.advertiser_id,   p.advertiser,   p.audience_list_id,   IF (p.audience_list_type = 'Bid Manager Audiences', 'Google', p.audience_list_type) AS audience_list_type,   CASE     WHEN REGEXP_CONTAINS(p.audience_list, 'Affinity') THEN 'Affinity'     WHEN REGEXP_CONTAINS(p.audience_list, 'Demographics') THEN 'Demographics'     WHEN REGEXP_CONTAINS(p.audience_list, 'In-Market') THEN 'In-Market'     WHEN REGEXP_CONTAINS(p.audience_list, 'Similar') THEN 'Similar'     ELSE 'Custom'   END AS audience_list_category,   p.audience_list,   IF(p.audience_list_cost_usd = 'Unknown', 0.0, CAST(p.audience_list_cost_usd AS FLOAT64)) AS audience_list_cost,   p.total_media_cost_partner_currency AS total_media_cost,   p.impressions,   p.clicks,   p.total_conversions,   COALESCE(ggl.potential_impressions, fst.potential_impressions, trd.potential_impressions) AS potential_impressions,   COALESCE(ggl.unique_cookies_with_impressions, fst.unique_cookies_with_impressions, trd.unique_cookies_with_impressions) AS potential_reach FROM   `[PARAMETER].[PARAMETER].DV360_Audience_Performance` p LEFT JOIN   `[PARAMETER].[PARAMETER].DV360_Google_Audience` ggl   USING (advertiser_id, audience_list_id) LEFT JOIN   `[PARAMETER].[PARAMETER].DV360_First_Party_Audience` fst   USING (advertiser_id, audience_list_id) LEFT JOIN   `[PARAMETER].[PARAMETER].DV360_Third_Party_Audience` trd   USING (advertiser_id, audience_list_id) ",
+        'legacy': False,
         'parameters': [
           {
             'field': {
+              'description': 'Google Cloud Project Id.',
+              'kind': 'string',
               'name': 'recipe_project',
-              'kind': 'string',
               'order': 6,
-              'default': '',
-              'description': 'Google Cloud Project Id.'
+              'default': ''
             }
           },
           {
             'field': {
+              'description': 'Place where tables will be created in BigQuery.',
               'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
+              'kind': 'string'
             }
           },
           {
             'field': {
+              'description': 'Google Cloud Project Id.',
+              'kind': 'string',
               'name': 'recipe_project',
-              'kind': 'string',
               'order': 6,
-              'default': '',
-              'description': 'Google Cloud Project Id.'
+              'default': ''
             }
           },
           {
             'field': {
+              'description': 'Place where tables will be created in BigQuery.',
               'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
+              'kind': 'string'
             }
           },
           {
             'field': {
+              'description': 'Google Cloud Project Id.',
+              'kind': 'string',
               'name': 'recipe_project',
-              'kind': 'string',
               'order': 6,
-              'default': '',
-              'description': 'Google Cloud Project Id.'
+              'default': ''
             }
           },
           {
             'field': {
+              'description': 'Place where tables will be created in BigQuery.',
               'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
+              'kind': 'string'
             }
           },
           {
             'field': {
+              'description': 'Google Cloud Project Id.',
+              'kind': 'string',
               'name': 'recipe_project',
-              'kind': 'string',
               'order': 6,
-              'default': '',
-              'description': 'Google Cloud Project Id.'
+              'default': ''
             }
           },
           {
             'field': {
+              'description': 'Place where tables will be created in BigQuery.',
               'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
+              'kind': 'string'
             }
           }
         ],
-        'legacy': False
+        'query': " SELECT   p.advertiser_id,   p.advertiser,   p.audience_list_id,   IF (p.audience_list_type = 'Bid Manager Audiences', 'Google', p.audience_list_type) AS audience_list_type,   CASE     WHEN REGEXP_CONTAINS(p.audience_list, 'Affinity') THEN 'Affinity'     WHEN REGEXP_CONTAINS(p.audience_list, 'Demographics') THEN 'Demographics'     WHEN REGEXP_CONTAINS(p.audience_list, 'In-Market') THEN 'In-Market'     WHEN REGEXP_CONTAINS(p.audience_list, 'Similar') THEN 'Similar'     ELSE 'Custom'   END AS audience_list_category,   p.audience_list,   IF(p.audience_list_cost_usd = 'Unknown', 0.0, CAST(p.audience_list_cost_usd AS FLOAT64)) AS audience_list_cost,   p.total_media_cost_partner_currency AS total_media_cost,   p.impressions,   p.clicks,   p.total_conversions,   COALESCE(ggl.potential_impressions, fst.potential_impressions, trd.potential_impressions) AS potential_impressions,   COALESCE(ggl.unique_cookies_with_impressions, fst.unique_cookies_with_impressions, trd.unique_cookies_with_impressions) AS potential_reach FROM   `[PARAMETER].[PARAMETER].DV360_Audience_Performance` p LEFT JOIN   `[PARAMETER].[PARAMETER].DV360_Google_Audience` ggl   USING (advertiser_id, audience_list_id) LEFT JOIN   `[PARAMETER].[PARAMETER].DV360_First_Party_Audience` fst   USING (advertiser_id, audience_list_id) LEFT JOIN   `[PARAMETER].[PARAMETER].DV360_Third_Party_Audience` trd   USING (advertiser_id, audience_list_id) "
       },
       'to': {
+        'view': 'DV360_Audience_Analysis',
         'dataset': {
           'field': {
+            'description': 'Place where tables will be created in BigQuery.',
             'name': 'recipe_slug',
-            'kind': 'string',
-            'description': 'Place where tables will be created in BigQuery.'
+            'kind': 'string'
           }
-        },
-        'view': 'DV360_Audience_Analysis'
-      }
+        }
+      },
+      'auth': 'service',
+      'hour': [
+        6
+      ]
     }
   }
 ]

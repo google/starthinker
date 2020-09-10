@@ -49,8 +49,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
   'sheet': '',  # Name or URL of sheet.
+  'auth_read': 'user',  # Credentials used for reading data.
   'tab': '',  # Name of sheet tab.
   'project': '',  # Google Cloud Project Identifier.
   'dataset': '',  # Name of dataset.
@@ -60,98 +60,98 @@ INPUTS = {
 TASKS = [
   {
     'sheets': {
-      '__comment__': 'Copy the tamplate sheet to the users sheet.  If it already exists, nothing happens.',
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
       'template': {
         'sheet': 'https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit#gid=0',
         'tab': 'Video'
       },
       'sheet': {
         'field': {
-          'name': 'sheet',
+          'description': 'Name or URL of sheet.',
           'kind': 'string',
+          'name': 'sheet',
           'order': 1,
-          'default': '',
-          'description': 'Name or URL of sheet.'
+          'default': ''
         }
       },
       'tab': {
         'field': {
-          'name': 'tab',
+          'description': 'Name of sheet tab.',
           'kind': 'string',
+          'name': 'tab',
           'order': 2,
-          'default': '',
-          'description': 'Name of sheet tab.'
+          'default': ''
         }
-      }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'order': 1,
+          'default': 'user'
+        }
+      },
+      '__comment__': 'Copy the tamplate sheet to the users sheet.  If it already exists, nothing happens.'
     }
   },
   {
     'video': {
-      '__comment__': 'Read video effects and values from sheet and/or bigquery.',
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'sheets': {
-        'sheet': {
-          'field': {
-            'name': 'sheet',
-            'kind': 'string',
-            'order': 1,
-            'default': '',
-            'description': 'Name or URL of sheet.'
-          }
-        },
-        'tab': {
-          'field': {
-            'name': 'tab',
-            'kind': 'string',
-            'order': 2,
-            'default': '',
-            'description': 'Name of sheet tab.'
-          }
-        }
-      },
       'bigquery': {
         'project': {
           'field': {
-            'name': 'project',
+            'description': 'Google Cloud Project Identifier.',
             'kind': 'string',
+            'name': 'project',
             'order': 3,
-            'default': '',
-            'description': 'Google Cloud Project Identifier.'
+            'default': ''
           }
         },
         'dataset': {
           'field': {
-            'name': 'dataset',
+            'description': 'Name of dataset.',
             'kind': 'string',
+            'name': 'dataset',
             'order': 4,
-            'default': '',
-            'description': 'Name of dataset.'
+            'default': ''
           }
         },
         'table': {
           'field': {
-            'name': 'table',
+            'description': 'Name of table.',
             'kind': 'string',
+            'name': 'table',
             'order': 5,
-            'default': '',
-            'description': 'Name of table.'
+            'default': ''
+          }
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'order': 1,
+          'default': 'user'
+        }
+      },
+      '__comment__': 'Read video effects and values from sheet and/or bigquery.',
+      'sheets': {
+        'sheet': {
+          'field': {
+            'description': 'Name or URL of sheet.',
+            'kind': 'string',
+            'name': 'sheet',
+            'order': 1,
+            'default': ''
+          }
+        },
+        'tab': {
+          'field': {
+            'description': 'Name of sheet tab.',
+            'kind': 'string',
+            'name': 'tab',
+            'order': 2,
+            'default': ''
           }
         }
       }

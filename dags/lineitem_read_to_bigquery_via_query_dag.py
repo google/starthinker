@@ -50,8 +50,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
   'id_dataset': '',
+  'auth_read': 'user',  # Credentials used for reading data.
   'id_query': 'SELECT * FROM `Dataset.Table`;',
   'id_legacy': False,
   'destination_dataset': '',
@@ -63,62 +63,62 @@ TASKS = [
     'lineitem': {
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+          'default': 'user'
         }
       },
       'read': {
-        'line_items': {
-          'single_cell': True,
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'name': 'id_dataset',
-                'kind': 'string',
-                'order': 1,
-                'default': ''
-              }
-            },
-            'query': {
-              'field': {
-                'name': 'id_query',
-                'kind': 'string',
-                'order': 2,
-                'default': 'SELECT * FROM `Dataset.Table`;'
-              }
-            },
-            'legacy': {
-              'field': {
-                'name': 'id_legacy',
-                'kind': 'boolean',
-                'order': 3,
-                'default': False
-              }
-            }
-          }
-        },
         'out': {
           'bigquery': {
             'dataset': {
               'field': {
-                'name': 'destination_dataset',
-                'kind': 'string',
                 'order': 4,
-                'default': ''
+                'name': 'destination_dataset',
+                'default': '',
+                'kind': 'string'
               }
             },
             'table': {
               'field': {
-                'name': 'destination_table',
-                'kind': 'string',
                 'order': 5,
-                'default': ''
+                'name': 'destination_table',
+                'default': '',
+                'kind': 'string'
               }
             }
           }
+        },
+        'line_items': {
+          'bigquery': {
+            'legacy': {
+              'field': {
+                'order': 3,
+                'name': 'id_legacy',
+                'default': False,
+                'kind': 'boolean'
+              }
+            },
+            'query': {
+              'field': {
+                'order': 2,
+                'name': 'id_query',
+                'default': 'SELECT * FROM `Dataset.Table`;',
+                'kind': 'string'
+              }
+            },
+            'dataset': {
+              'field': {
+                'order': 1,
+                'name': 'id_dataset',
+                'default': '',
+                'kind': 'string'
+              }
+            }
+          },
+          'single_cell': True
         }
       }
     }

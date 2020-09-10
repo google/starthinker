@@ -70,11 +70,11 @@ TASKS = [
         'source': 'https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/',
         'destination': {
           'field': {
+            'description': 'Name of document to deploy to.',
             'name': 'recipe_name',
-            'prefix': 'CM Replicate For ',
             'kind': 'string',
             'order': 1,
-            'description': 'Name of document to deploy to.',
+            'prefix': 'CM Replicate For ',
             'default': ''
           }
         }
@@ -85,106 +85,106 @@ TASKS = [
     'dataset': {
       'auth': {
         'field': {
-          'name': 'auth_write',
+          'description': 'Credentials used for writing data.',
           'kind': 'authentication',
+          'name': 'auth_write',
           'order': 1,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
+          'default': 'service'
         }
       },
       'dataset': {
         'field': {
-          'name': 'recipe_slug',
+          'description': 'Name of Google BigQuery dataset to create.',
           'kind': 'string',
+          'name': 'recipe_slug',
           'order': 2,
-          'default': '',
-          'description': 'Name of Google BigQuery dataset to create.'
+          'default': ''
         }
       }
     }
   },
   {
     'dcm_replicate': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 0,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
       'report': {
         'account': {
           'field': {
-            'name': 'account',
+            'description': 'CM network id.',
             'kind': 'integer',
+            'name': 'account',
             'order': 3,
-            'default': '',
-            'description': 'CM network id.'
+            'default': ''
           }
         },
         'id': {
           'field': {
-            'name': 'report_id',
+            'description': 'CM template report id, for template',
             'kind': 'integer',
+            'name': 'report_id',
             'order': 4,
-            'default': '',
-            'description': 'CM template report id, for template'
+            'default': ''
           }
         },
         'name': {
           'field': {
-            'name': 'report_name',
+            'description': 'CM template report name, empty if using id instead.',
             'kind': 'string',
+            'name': 'report_name',
             'order': 5,
-            'default': '',
-            'description': 'CM template report name, empty if using id instead.'
+            'default': ''
           }
         },
         'delete': {
           'field': {
-            'name': 'delete',
+            'description': 'Use only to reset the reports if setup changes.',
             'kind': 'boolean',
+            'name': 'delete',
             'order': 6,
-            'default': False,
-            'description': 'Use only to reset the reports if setup changes.'
+            'default': False
+          }
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'order': 0,
+          'default': 'user'
+        }
+      },
+      'out': {
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'order': 4,
+              'name': 'recipe_slug',
+              'default': '',
+              'kind': 'string'
+            }
+          },
+          'is_incremental_load': {
+            'field': {
+              'description': 'Append report data to existing table, requires Date column.',
+              'kind': 'boolean',
+              'name': 'Aggregate',
+              'order': 7,
+              'default': False
+            }
           }
         }
       },
       'in': {
         'sheet': {
           'field': {
+            'description': 'Sheet to read ids from.',
             'name': 'recipe_name',
-            'prefix': 'CM Replicate For ',
             'kind': 'string',
             'order': 1,
-            'default': '',
-            'description': 'Sheet to read ids from.'
+            'prefix': 'CM Replicate For ',
+            'default': ''
           }
         },
         'tab': 'Accounts'
-      },
-      'out': {
-        'bigquery': {
-          'dataset': {
-            'field': {
-              'name': 'recipe_slug',
-              'kind': 'string',
-              'order': 4,
-              'default': ''
-            }
-          },
-          'is_incremental_load': {
-            'field': {
-              'name': 'Aggregate',
-              'kind': 'boolean',
-              'order': 7,
-              'default': False,
-              'description': 'Append report data to existing table, requires Date column.'
-            }
-          }
-        }
       }
     }
   }

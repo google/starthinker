@@ -51,9 +51,9 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'recipe_slug': '',  # Place where tables will be created in BigQuery.
   'auth_read': 'user',  # Credentials used for reading data.
   'recipe_project': '',  # Place where tables will be created in BigQuery.
+  'recipe_slug': '',  # Place where tables will be created in BigQuery.
   'auth_write': 'service',  # Credentials used for writing data.
   'recipe_name': '',  # Name of sheet where Line Item settings will be read from.
   'twitter_secret': '',  # Twitter API secret token.
@@ -66,19 +66,19 @@ TASKS = [
       'description': 'Create a dataset where data will be combined and transfored for upload.',
       'auth': {
         'field': {
-          'name': 'auth_write',
+          'description': 'Credentials used for writing data.',
           'kind': 'authentication',
+          'name': 'auth_write',
           'order': 1,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
+          'default': 'service'
         }
       },
       'dataset': {
         'field': {
-          'name': 'recipe_slug',
-          'kind': 'string',
           'order': 1,
-          'description': 'Place where tables will be created in BigQuery.'
+          'name': 'recipe_slug',
+          'description': 'Place where tables will be created in BigQuery.',
+          'kind': 'string'
         }
       }
     }
@@ -86,13 +86,118 @@ TASKS = [
   {
     'sheets': {
       'description': 'Read mapping of hash tags to line item toggles from sheets.',
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 0,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+      'out': {
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'description': 'Place where tables will be created in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
+          },
+          'table': 'Twitter_Triggers',
+          'schema': [
+            {
+              'type': 'STRING',
+              'name': 'Location',
+              'mode': 'REQUIRED'
+            },
+            {
+              'type': 'INTEGER',
+              'name': 'WOEID',
+              'mode': 'REQUIRED'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Hashtag',
+              'mode': 'REQUIRED'
+            },
+            {
+              'type': 'INTEGER',
+              'name': 'Line_Item_Id',
+              'mode': 'REQUIRED'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_Name',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_Status',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_Start_Date',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_End_Date',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_Budget_Type',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_Budget_Amount',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_Pacing',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_Pacing_Rate',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_Pacing_Amount',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_Frequency_Enabled',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_Frequency_Exposures',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_Frequency_Period',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Line_Item_Frequency_Amount',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Bid_Price',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Partner_Revenue_Model',
+              'mode': 'NULLABLE'
+            },
+            {
+              'type': 'STRING',
+              'name': 'Partner_Revenue_Amount',
+              'mode': 'NULLABLE'
+            }
+          ]
         }
       },
       'template': {
@@ -101,197 +206,92 @@ TASKS = [
       },
       'sheet': {
         'field': {
+          'description': 'Name of sheet where Line Item settings will be read from.',
           'name': 'recipe_name',
           'kind': 'string',
-          'prefix': 'Twitter Targeting For ',
           'order': 2,
-          'description': 'Name of sheet where Line Item settings will be read from.',
+          'prefix': 'Twitter Targeting For ',
           'default': ''
         }
       },
-      'tab': 'Twitter Triggers',
-      'range': 'A8:T',
-      'out': {
-        'bigquery': {
-          'dataset': {
-            'field': {
-              'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
-            }
-          },
-          'table': 'Twitter_Triggers',
-          'schema': [
-            {
-              'name': 'Location',
-              'type': 'STRING',
-              'mode': 'REQUIRED'
-            },
-            {
-              'name': 'WOEID',
-              'type': 'INTEGER',
-              'mode': 'REQUIRED'
-            },
-            {
-              'name': 'Hashtag',
-              'type': 'STRING',
-              'mode': 'REQUIRED'
-            },
-            {
-              'name': 'Line_Item_Id',
-              'type': 'INTEGER',
-              'mode': 'REQUIRED'
-            },
-            {
-              'name': 'Line_Item_Name',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Line_Item_Status',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Line_Item_Start_Date',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Line_Item_End_Date',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Line_Item_Budget_Type',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Line_Item_Budget_Amount',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Line_Item_Pacing',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Line_Item_Pacing_Rate',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Line_Item_Pacing_Amount',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Line_Item_Frequency_Enabled',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Line_Item_Frequency_Exposures',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Line_Item_Frequency_Period',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Line_Item_Frequency_Amount',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Bid_Price',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Partner_Revenue_Model',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            },
-            {
-              'name': 'Partner_Revenue_Amount',
-              'type': 'STRING',
-              'mode': 'NULLABLE'
-            }
-          ]
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'order': 0,
+          'default': 'user'
         }
-      }
+      },
+      'tab': 'Twitter Triggers',
+      'range': 'A8:T'
     }
   },
   {
     'twitter': {
-      'description': 'Read trends from Twitter and place into BigQuery.',
-      'auth': {
-        'field': {
-          'name': 'auth_write',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
-        }
-      },
-      'secret': {
-        'field': {
-          'name': 'twitter_secret',
-          'kind': 'string',
-          'order': 3,
-          'default': '',
-          'description': 'Twitter API secret token.'
-        }
-      },
       'key': {
         'field': {
-          'name': 'twitter_key',
+          'description': 'Twitter API key token.',
           'kind': 'string',
+          'name': 'twitter_key',
           'order': 4,
-          'default': '',
-          'description': 'Twitter API key token.'
+          'default': ''
         }
       },
-      'trends': {
-        'places': {
-          'single_cell': True,
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'description': 'Place where tables will be created in BigQuery.'
-              }
-            },
-            'query': 'SELECT WOEID FROM {dataset}.Twitter_Triggers',
-            'legacy': False,
-            'parameters': {
-              'dataset': {
-                'field': {
-                  'name': 'recipe_slug',
-                  'kind': 'string',
-                  'description': 'Place where tables will be created in BigQuery.'
-                }
-              }
-            }
-          }
-        }
-      },
+      'description': 'Read trends from Twitter and place into BigQuery.',
       'out': {
         'bigquery': {
           'dataset': {
             'field': {
+              'description': 'Place where tables will be created in BigQuery.',
               'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
+              'kind': 'string'
             }
           },
           'table': 'Twitter_Trends_Place'
+        }
+      },
+      'trends': {
+        'places': {
+          'bigquery': {
+            'legacy': False,
+            'parameters': {
+              'dataset': {
+                'field': {
+                  'description': 'Place where tables will be created in BigQuery.',
+                  'name': 'recipe_slug',
+                  'kind': 'string'
+                }
+              }
+            },
+            'query': 'SELECT WOEID FROM {dataset}.Twitter_Triggers',
+            'dataset': {
+              'field': {
+                'description': 'Place where tables will be created in BigQuery.',
+                'name': 'recipe_slug',
+                'kind': 'string'
+              }
+            }
+          },
+          'single_cell': True
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'kind': 'authentication',
+          'name': 'auth_write',
+          'order': 1,
+          'default': 'service'
+        }
+      },
+      'secret': {
+        'field': {
+          'description': 'Twitter API secret token.',
+          'kind': 'string',
+          'name': 'twitter_secret',
+          'order': 3,
+          'default': ''
         }
       }
     }
@@ -301,92 +301,92 @@ TASKS = [
       'description': 'Read current lineitem settings from DV360 into BigQuery, so it can be joined with Twitter analysis.',
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 0,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+          'default': 'user'
         }
       },
       'read': {
-        'line_items': {
-          'single_cell': True,
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'description': 'Place where tables will be created in BigQuery.'
-              }
-            },
-            'query': 'SELECT Line_Item_Id FROM {dataset}.Twitter_Triggers',
-            'parameters': {
-              'dataset': {
-                'field': {
-                  'name': 'recipe_slug',
-                  'kind': 'string',
-                  'description': 'Place where tables will be created in BigQuery.'
-                }
-              }
-            }
-          }
-        },
         'out': {
           'bigquery': {
             'dataset': {
               'field': {
+                'description': 'Place where tables will be created in BigQuery.',
                 'name': 'recipe_slug',
-                'kind': 'string',
-                'description': 'Place where tables will be created in BigQuery.'
+                'kind': 'string'
               }
             },
             'table': 'LineItem_Reads'
           }
+        },
+        'line_items': {
+          'bigquery': {
+            'parameters': {
+              'dataset': {
+                'field': {
+                  'description': 'Place where tables will be created in BigQuery.',
+                  'name': 'recipe_slug',
+                  'kind': 'string'
+                }
+              }
+            },
+            'query': 'SELECT Line_Item_Id FROM {dataset}.Twitter_Triggers',
+            'dataset': {
+              'field': {
+                'description': 'Place where tables will be created in BigQuery.',
+                'name': 'recipe_slug',
+                'kind': 'string'
+              }
+            }
+          },
+          'single_cell': True
         }
       }
     }
   },
   {
     'bigquery': {
-      'description': 'Get all triggered lineitmes from sheet, if they have a keyword match in twitter, take the triger values, else take the default values (default>trigger).  Take all non-null values from trigger and overlay over current DV360 values. Will be used to upload to DV360.',
-      'auth': {
-        'field': {
-          'name': 'auth_write',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
-        }
-      },
       'from': {
-        'query': "SELECT o.Line_Item_Id AS Line_Item_Id, o.Partner_Name AS Partner_Name, o.Partner_Id AS Partner_Id, o.Advertiser_Name AS Advertiser_Name, o.IO_Name AS IO_Name, IFNULL(t.Line_Item_Name, o.Line_Item_Name) AS Line_Item_Name, o.Line_Item_Timestamp AS Line_Item_Timestamp , IFNULL(t.Line_Item_Status, o.Line_Item_Status) AS Line_Item_Status, o.IO_Start_Date AS IO_Start_Date, o.IO_End_Date AS IO_End_Date, o.IO_Budget_Type AS IO_Budget_Type, o.IO_Budget_Amount AS IO_Budget_Amount, o.IO_Pacing AS IO_Pacing, o.IO_Pacing_Rate AS IO_Pacing_Rate, o.IO_Pacing_Amount AS IO_Pacing_Amount, IFNULL(t.Line_Item_Start_Date, o.Line_Item_Start_Date) AS Line_Item_Start_Date, IFNULL(t.Line_Item_End_Date, o.Line_Item_End_Date) AS Line_Item_End_Date, IFNULL(t.Line_Item_Budget_Type, o.Line_Item_Budget_Type) AS Line_Item_Budget_Type, IFNULL(t.Line_Item_Budget_Amount, o.Line_Item_Budget_Amount) AS Line_Item_Budget_Amount, IFNULL(t.Line_Item_Pacing, o.Line_Item_Pacing) AS Line_Item_Pacing, IFNULL(t.Line_Item_Pacing_Rate, o.Line_Item_Pacing_Rate) AS Line_Item_Pacing_Rate, IFNULL(t.Line_Item_Pacing_Amount, o.Line_Item_Pacing_Amount) AS Line_Item_Pacing_Amount, IFNULL(t.Line_Item_Frequency_Enabled, o.Line_Item_Frequency_Enabled) AS Line_Item_Frequency_Enabled, IFNULL(t.Line_Item_Frequency_Exposures, o.Line_Item_Frequency_Exposures) AS Line_Item_Frequency_Exposures, IFNULL(t.Line_Item_Frequency_Period, o.Line_Item_Frequency_Period) AS Line_Item_Frequency_Period, IFNULL(t.Line_Item_Frequency_Amount, o.Line_Item_Frequency_Amount) AS Line_Item_Frequency_Amount, IFNULL(t.Bid_Price, o.Bid_Price) AS Bid_Price, IFNULL(t.Partner_Revenue_Model, o.Partner_Revenue_Model) AS Partner_Revenue_Model, IFNULL(t.Partner_Revenue_Amount, o.Partner_Revenue_Amount) AS Partner_Revenue_Amount, o.Current_Audience_Targeting_Ids AS Current_Audience_Targeting_Ids , o.Current_Audience_Targeting_Names AS Current_Audience_Targeting_Names FROM `{project}.{dataset}.LineItem_Reads` AS o LEFT JOIN ( SELECT Line_Item_Id, ANY_VALUE(SPLIT(Line_Item_Name, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Name, ANY_VALUE(SPLIT(Line_Item_Status, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Status, ANY_VALUE(SPLIT(Line_Item_Start_Date, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Start_Date, ANY_VALUE(SPLIT(Line_Item_End_Date, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_End_Date, ANY_VALUE(SPLIT(Line_Item_Budget_Type, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Budget_Type, ANY_VALUE(CAST(SPLIT(Line_Item_Budget_Amount, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Line_Item_Budget_Amount, ANY_VALUE(SPLIT(Line_Item_Pacing, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Pacing, ANY_VALUE(SPLIT(Line_Item_Pacing_Rate, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Pacing_Rate, ANY_VALUE(CAST(SPLIT(Line_Item_Pacing_Amount, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Line_Item_Pacing_Amount, ANY_VALUE(CAST(SPLIT(Line_Item_Frequency_Enabled, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS BOOL)) AS Line_Item_Frequency_Enabled, ANY_VALUE(SPLIT(Line_Item_Frequency_Exposures, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Frequency_Exposures, ANY_VALUE(SPLIT(Line_Item_Frequency_Period, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Frequency_Period, ANY_VALUE(CAST(SPLIT(Line_Item_Frequency_Amount, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS INT64)) AS Line_Item_Frequency_Amount, ANY_VALUE(CAST(SPLIT(Bid_Price, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Bid_Price, ANY_VALUE(SPLIT(Partner_Revenue_Model, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Partner_Revenue_Model, ANY_VALUE(CAST(SPLIT(Partner_Revenue_Amount, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Partner_Revenue_Amount FROM ( SELECT WOEID, Hashtag, Line_Item_Id, Line_Item_Name, Line_Item_Status, Line_Item_Start_Date, Line_Item_End_Date, Line_Item_Budget_Type, Line_Item_Budget_Amount, Line_Item_Pacing, Line_Item_Pacing_Rate, Line_Item_Pacing_Amount, Line_Item_Frequency_Enabled, Line_Item_Frequency_Exposures, Line_Item_Frequency_Period, Line_Item_Frequency_Amount, Bid_Price, Partner_Revenue_Model, Partner_Revenue_Amount, CONCAT(CAST(WOEID AS STRING), LOWER(Hashtag)) IN (SELECT CONCAT(CAST(WOEID AS STRING), LOWER(REPLACE(name, '#', ''))) FROM `{project}.{dataset}.Twitter_Trends_Place` GROUP BY 1) AS Triggered FROM `{project}.{dataset}.Twitter_Triggers`) GROUP BY 1) AS t ON o.Line_Item_Id=t.Line_Item_Id;",
+        'legacy': False,
         'parameters': {
           'project': {
             'field': {
+              'description': 'Place where tables will be created in BigQuery.',
               'name': 'recipe_project',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
+              'kind': 'string'
             }
           },
           'dataset': {
             'field': {
+              'description': 'Place where tables will be created in BigQuery.',
               'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
+              'kind': 'string'
             }
           }
         },
-        'legacy': False
+        'query': "SELECT o.Line_Item_Id AS Line_Item_Id, o.Partner_Name AS Partner_Name, o.Partner_Id AS Partner_Id, o.Advertiser_Name AS Advertiser_Name, o.IO_Name AS IO_Name, IFNULL(t.Line_Item_Name, o.Line_Item_Name) AS Line_Item_Name, o.Line_Item_Timestamp AS Line_Item_Timestamp , IFNULL(t.Line_Item_Status, o.Line_Item_Status) AS Line_Item_Status, o.IO_Start_Date AS IO_Start_Date, o.IO_End_Date AS IO_End_Date, o.IO_Budget_Type AS IO_Budget_Type, o.IO_Budget_Amount AS IO_Budget_Amount, o.IO_Pacing AS IO_Pacing, o.IO_Pacing_Rate AS IO_Pacing_Rate, o.IO_Pacing_Amount AS IO_Pacing_Amount, IFNULL(t.Line_Item_Start_Date, o.Line_Item_Start_Date) AS Line_Item_Start_Date, IFNULL(t.Line_Item_End_Date, o.Line_Item_End_Date) AS Line_Item_End_Date, IFNULL(t.Line_Item_Budget_Type, o.Line_Item_Budget_Type) AS Line_Item_Budget_Type, IFNULL(t.Line_Item_Budget_Amount, o.Line_Item_Budget_Amount) AS Line_Item_Budget_Amount, IFNULL(t.Line_Item_Pacing, o.Line_Item_Pacing) AS Line_Item_Pacing, IFNULL(t.Line_Item_Pacing_Rate, o.Line_Item_Pacing_Rate) AS Line_Item_Pacing_Rate, IFNULL(t.Line_Item_Pacing_Amount, o.Line_Item_Pacing_Amount) AS Line_Item_Pacing_Amount, IFNULL(t.Line_Item_Frequency_Enabled, o.Line_Item_Frequency_Enabled) AS Line_Item_Frequency_Enabled, IFNULL(t.Line_Item_Frequency_Exposures, o.Line_Item_Frequency_Exposures) AS Line_Item_Frequency_Exposures, IFNULL(t.Line_Item_Frequency_Period, o.Line_Item_Frequency_Period) AS Line_Item_Frequency_Period, IFNULL(t.Line_Item_Frequency_Amount, o.Line_Item_Frequency_Amount) AS Line_Item_Frequency_Amount, IFNULL(t.Bid_Price, o.Bid_Price) AS Bid_Price, IFNULL(t.Partner_Revenue_Model, o.Partner_Revenue_Model) AS Partner_Revenue_Model, IFNULL(t.Partner_Revenue_Amount, o.Partner_Revenue_Amount) AS Partner_Revenue_Amount, o.Current_Audience_Targeting_Ids AS Current_Audience_Targeting_Ids , o.Current_Audience_Targeting_Names AS Current_Audience_Targeting_Names FROM `{project}.{dataset}.LineItem_Reads` AS o LEFT JOIN ( SELECT Line_Item_Id, ANY_VALUE(SPLIT(Line_Item_Name, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Name, ANY_VALUE(SPLIT(Line_Item_Status, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Status, ANY_VALUE(SPLIT(Line_Item_Start_Date, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Start_Date, ANY_VALUE(SPLIT(Line_Item_End_Date, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_End_Date, ANY_VALUE(SPLIT(Line_Item_Budget_Type, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Budget_Type, ANY_VALUE(CAST(SPLIT(Line_Item_Budget_Amount, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Line_Item_Budget_Amount, ANY_VALUE(SPLIT(Line_Item_Pacing, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Pacing, ANY_VALUE(SPLIT(Line_Item_Pacing_Rate, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Pacing_Rate, ANY_VALUE(CAST(SPLIT(Line_Item_Pacing_Amount, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Line_Item_Pacing_Amount, ANY_VALUE(CAST(SPLIT(Line_Item_Frequency_Enabled, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS BOOL)) AS Line_Item_Frequency_Enabled, ANY_VALUE(SPLIT(Line_Item_Frequency_Exposures, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Frequency_Exposures, ANY_VALUE(SPLIT(Line_Item_Frequency_Period, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Line_Item_Frequency_Period, ANY_VALUE(CAST(SPLIT(Line_Item_Frequency_Amount, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS INT64)) AS Line_Item_Frequency_Amount, ANY_VALUE(CAST(SPLIT(Bid_Price, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Bid_Price, ANY_VALUE(SPLIT(Partner_Revenue_Model, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))]) AS Partner_Revenue_Model, ANY_VALUE(CAST(SPLIT(Partner_Revenue_Amount, '>')[SAFE_OFFSET(IF(Triggered, 1, 0))] AS FLOAT64)) AS Partner_Revenue_Amount FROM ( SELECT WOEID, Hashtag, Line_Item_Id, Line_Item_Name, Line_Item_Status, Line_Item_Start_Date, Line_Item_End_Date, Line_Item_Budget_Type, Line_Item_Budget_Amount, Line_Item_Pacing, Line_Item_Pacing_Rate, Line_Item_Pacing_Amount, Line_Item_Frequency_Enabled, Line_Item_Frequency_Exposures, Line_Item_Frequency_Period, Line_Item_Frequency_Amount, Bid_Price, Partner_Revenue_Model, Partner_Revenue_Amount, CONCAT(CAST(WOEID AS STRING), LOWER(Hashtag)) IN (SELECT CONCAT(CAST(WOEID AS STRING), LOWER(REPLACE(name, '#', ''))) FROM `{project}.{dataset}.Twitter_Trends_Place` GROUP BY 1) AS Triggered FROM `{project}.{dataset}.Twitter_Triggers`) GROUP BY 1) AS t ON o.Line_Item_Id=t.Line_Item_Id;"
       },
       'to': {
+        'view': 'LineItem_Writes',
         'dataset': {
           'field': {
+            'description': 'Place where tables will be created in BigQuery.',
             'name': 'recipe_slug',
-            'kind': 'string',
-            'description': 'Place where tables will be created in BigQuery.'
+            'kind': 'string'
           }
-        },
-        'view': 'LineItem_Writes'
+        }
+      },
+      'description': 'Get all triggered lineitmes from sheet, if they have a keyword match in twitter, take the triger values, else take the default values (default>trigger).  Take all non-null values from trigger and overlay over current DV360 values. Will be used to upload to DV360.',
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'kind': 'authentication',
+          'name': 'auth_write',
+          'order': 1,
+          'default': 'service'
+        }
       }
     }
   },
@@ -395,35 +395,35 @@ TASKS = [
       'description': 'Write lineitem settings to DV360 after transformation.',
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 0,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+          'default': 'user'
         }
       },
       'write': {
-        'dry_run': False,
         'bigquery': {
-          'dataset': {
-            'field': {
-              'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be created in BigQuery.'
-            }
-          },
-          'query': 'Select * FROM {dataset}.LineItem_Writes',
+          'legacy': False,
           'parameters': {
             'dataset': {
               'field': {
+                'description': 'Place where tables will be created in BigQuery.',
                 'name': 'recipe_slug',
-                'kind': 'string',
-                'description': 'Place where tables will be created in BigQuery.'
+                'kind': 'string'
               }
             }
           },
-          'legacy': False
-        }
+          'query': 'Select * FROM {dataset}.LineItem_Writes',
+          'dataset': {
+            'field': {
+              'description': 'Place where tables will be created in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
+          }
+        },
+        'dry_run': False
       }
     }
   }

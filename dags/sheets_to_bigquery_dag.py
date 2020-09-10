@@ -64,74 +64,74 @@ INPUTS = {
 TASKS = [
   {
     'sheets': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 0,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'sheet': {
-        'field': {
-          'name': 'sheets_url',
-          'kind': 'string',
-          'order': 2,
-          'default': ''
-        }
-      },
       'tab': {
         'field': {
-          'name': 'sheets_tab',
-          'kind': 'string',
           'order': 3,
-          'default': ''
-        }
-      },
-      'range': {
-        'field': {
-          'name': 'sheets_range',
-          'kind': 'string',
-          'order': 4,
-          'default': ''
-        }
-      },
-      'header': {
-        'field': {
-          'name': 'sheets_header',
-          'kind': 'boolean',
-          'order': 9,
-          'default': True
+          'name': 'sheets_tab',
+          'default': '',
+          'kind': 'string'
         }
       },
       'out': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
-              'kind': 'string',
               'order': 5,
-              'default': ''
+              'name': 'dataset',
+              'default': '',
+              'kind': 'string'
             }
           },
           'table': {
             'field': {
-              'name': 'table',
-              'kind': 'string',
               'order': 6,
-              'default': ''
+              'name': 'table',
+              'default': '',
+              'kind': 'string'
             }
           }
+        },
+        'auth': {
+          'field': {
+            'description': 'Credentials used for writing data.',
+            'kind': 'authentication',
+            'name': 'auth_write',
+            'order': 1,
+            'default': 'service'
+          }
+        }
+      },
+      'header': {
+        'field': {
+          'order': 9,
+          'name': 'sheets_header',
+          'default': True,
+          'kind': 'boolean'
+        }
+      },
+      'sheet': {
+        'field': {
+          'order': 2,
+          'name': 'sheets_url',
+          'default': '',
+          'kind': 'string'
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'order': 0,
+          'default': 'user'
+        }
+      },
+      'range': {
+        'field': {
+          'order': 4,
+          'name': 'sheets_range',
+          'default': '',
+          'kind': 'string'
         }
       }
     }

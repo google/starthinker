@@ -66,79 +66,79 @@ TASKS = [
     'dcm': {
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 0,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'report': {
-        'account': {
-          'field': {
-            'name': 'account',
-            'kind': 'integer',
-            'order': 2,
-            'default': '',
-            'description': 'CM network id.'
-          }
-        },
-        'report_id': {
-          'field': {
-            'name': 'report_id',
-            'kind': 'integer',
-            'order': 3,
-            'default': '',
-            'description': 'CM report id, empty if using name .'
-          }
-        },
-        'name': {
-          'field': {
-            'name': 'report_name',
-            'kind': 'string',
-            'order': 4,
-            'default': '',
-            'description': 'CM report name, empty if using id instead.'
-          }
+          'default': 'user'
         }
       },
       'out': {
         'bigquery': {
           'auth': {
             'field': {
-              'name': 'auth_write',
+              'description': 'Credentials used for writing data.',
               'kind': 'authentication',
+              'name': 'auth_write',
               'order': 1,
-              'default': 'service',
-              'description': 'Credentials used for writing data.'
+              'default': 'service'
             }
           },
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'description': 'Dataset to be written to in BigQuery.',
               'kind': 'string',
+              'name': 'dataset',
               'order': 5,
-              'default': '',
-              'description': 'Dataset to be written to in BigQuery.'
+              'default': ''
             }
           },
           'table': {
             'field': {
-              'name': 'table',
+              'description': 'Table to be written to in BigQuery.',
               'kind': 'string',
+              'name': 'table',
               'order': 6,
-              'default': '',
-              'description': 'Table to be written to in BigQuery.'
+              'default': ''
             }
           },
           'is_incremental_load': {
             'field': {
-              'name': 'is_incremental_load',
+              'description': "Clear data in destination table during this report's time period, then append report data to existing table.",
               'kind': 'boolean',
+              'name': 'is_incremental_load',
               'order': 7,
-              'default': False,
-              'description': "Clear data in destination table during this report's time period, then append report data to existing table."
+              'default': False
             }
+          }
+        }
+      },
+      'report': {
+        'account': {
+          'field': {
+            'description': 'CM network id.',
+            'kind': 'integer',
+            'name': 'account',
+            'order': 2,
+            'default': ''
+          }
+        },
+        'name': {
+          'field': {
+            'description': 'CM report name, empty if using id instead.',
+            'kind': 'string',
+            'name': 'report_name',
+            'order': 4,
+            'default': ''
+          }
+        },
+        'report_id': {
+          'field': {
+            'description': 'CM report id, empty if using name .',
+            'kind': 'integer',
+            'name': 'report_id',
+            'order': 3,
+            'default': ''
           }
         }
       }

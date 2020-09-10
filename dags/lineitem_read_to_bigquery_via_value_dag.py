@@ -61,45 +61,45 @@ TASKS = [
     'lineitem': {
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+          'default': 'user'
         }
       },
       'read': {
-        'line_items': {
-          'single_cell': True,
-          'values': {
-            'field': {
-              'name': 'ids',
-              'kind': 'integer_list',
-              'order': 1,
-              'default': [
-              ]
-            }
-          }
-        },
         'out': {
           'bigquery': {
             'dataset': {
               'field': {
-                'name': 'destination_dataset',
-                'kind': 'string',
                 'order': 2,
-                'default': ''
+                'name': 'destination_dataset',
+                'default': '',
+                'kind': 'string'
               }
             },
             'table': {
               'field': {
-                'name': 'destination_table',
-                'kind': 'string',
                 'order': 3,
-                'default': ''
+                'name': 'destination_table',
+                'default': '',
+                'kind': 'string'
               }
             }
           }
+        },
+        'line_items': {
+          'values': {
+            'field': {
+              'order': 1,
+              'name': 'ids',
+              'default': [
+              ],
+              'kind': 'integer_list'
+            }
+          },
+          'single_cell': True
         }
       }
     }

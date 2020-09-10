@@ -35,7 +35,7 @@ Before running this Airflow module...
 
 [DV-3PO] Custom Signals
 
-[DV-3PO] Custom Signals allows automated changes to be made to DV360 campaigns based on external signals from weather and social media trends. In the future it will also support news, disaster alerts, stocks, sports, custom APIs, etc.
+[DV-3PO] Custom Signals allows automated changes to be made to DV360 campaigns based on external signals from weather and social media trends. In the future it will also support news, disaster alerts, stocks, sports, custom APIs, etc. 
 
 Open the template sheet: <a target='_blank' href='https://docs.google.com/spreadsheets/d/1xl2bknsn9ptCKwg1sZqTBpmRFDdcG3ATdp2f4C2CQ2U/edit#gid=1579485492'>[DV-3PO] Custom Signals Configs</a>.
 Make a copy of the sheet through the menu File -> Make a copy, for clarity we suggest you rename the copy to a meaningful name describing the usage of this copy.
@@ -65,51 +65,53 @@ TASKS = [
   {
     'weather_gov': {
       'auth': 'user',
-      'stations': {
-        'field': {
-          'name': 'station_ids',
-          'kind': 'string_list',
-          'order': 1,
-          'description': 'NOAA Weather Station ID',
-          'default': ''
-        }
-      },
       'out': {
         'sheets': {
           'sheet': {
             'field': {
-              'name': 'sheet_url',
-              'kind': 'string',
               'order': 2,
+              'kind': 'string',
+              'name': 'sheet_url',
               'description': 'Feed Sheet URL',
               'default': ''
             }
           },
           'tab': 'Weather',
-          'range': 'A2:K',
-          'delete': True
+          'delete': True,
+          'range': 'A2:K'
+        }
+      },
+      'stations': {
+        'field': {
+          'order': 1,
+          'kind': 'string_list',
+          'name': 'station_ids',
+          'description': 'NOAA Weather Station ID',
+          'default': ''
         }
       }
     }
   },
   {
     'lineitem_beta': {
+      'patch': {
+      },
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+          'default': 'user'
         }
       },
       'read': {
         'sheet': {
           'sheet': {
             'field': {
-              'name': 'sheet_url',
-              'kind': 'string',
               'order': 2,
+              'kind': 'string',
+              'name': 'sheet_url',
               'description': 'Feed Sheet URL',
               'default': ''
             }
@@ -117,8 +119,6 @@ TASKS = [
           'tab': 'Rules',
           'range': 'A1:D'
         }
-      },
-      'patch': {
       }
     }
   }

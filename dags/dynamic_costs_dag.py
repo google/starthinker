@@ -60,30 +60,49 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'dcm_account': '',
-  'auth_read': 'user',  # Credentials used for reading data.
   'configuration_sheet_url': '',
   'auth_write': 'service',  # Credentials used for writing data.
+  'auth_read': 'user',  # Credentials used for reading data.
   'bigquery_dataset': 'dynamic_costs',
 }
 
 TASKS = [
   {
     'dynamic_costs': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
       'account': {
         'field': {
-          'name': 'dcm_account',
-          'kind': 'string',
           'order': 0,
-          'default': ''
+          'name': 'dcm_account',
+          'default': '',
+          'kind': 'string'
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'order': 1,
+          'default': 'user'
+        }
+      },
+      'out': {
+        'auth': {
+          'field': {
+            'description': 'Credentials used for writing data.',
+            'kind': 'authentication',
+            'name': 'auth_write',
+            'order': 1,
+            'default': 'service'
+          }
+        },
+        'dataset': {
+          'field': {
+            'order': 2,
+            'name': 'bigquery_dataset',
+            'default': 'dynamic_costs',
+            'kind': 'string'
+          }
         }
       },
       'sheet': {
@@ -94,33 +113,14 @@ TASKS = [
         },
         'url': {
           'field': {
-            'name': 'configuration_sheet_url',
-            'kind': 'string',
             'order': 1,
-            'default': ''
+            'name': 'configuration_sheet_url',
+            'default': '',
+            'kind': 'string'
           }
         },
         'tab': 'Dynamic Costs',
         'range': 'A2:B'
-      },
-      'out': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
-        'dataset': {
-          'field': {
-            'name': 'bigquery_dataset',
-            'kind': 'string',
-            'order': 2,
-            'default': 'dynamic_costs'
-          }
-        }
       }
     }
   }

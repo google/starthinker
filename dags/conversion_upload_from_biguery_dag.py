@@ -66,59 +66,9 @@ INPUTS = {
 TASKS = [
   {
     'conversion_upload': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'account_id': {
-        'field': {
-          'name': 'account',
-          'kind': 'string',
-          'order': 0,
-          'default': ''
-        }
-      },
-      'activity_id': {
-        'field': {
-          'name': 'floodlight_activity_id',
-          'kind': 'integer',
-          'order': 1,
-          'default': ''
-        }
-      },
-      'conversion_type': {
-        'field': {
-          'name': 'floodlight_conversion_type',
-          'kind': 'choice',
-          'order': 2,
-          'choices': [
-            'encryptedUserId',
-            'encryptedUserIdCandidates',
-            'gclid',
-            'mobileDeviceId'
-          ],
-          'default': 'encryptedUserId'
-        }
-      },
       'encryptionInfo': {
-        'encryptionEntityId': {
-          'field': {
-            'name': 'encryption_entity_id',
-            'kind': 'integer',
-            'order': 3,
-            'default': ''
-          }
-        },
         'encryptionEntityType': {
           'field': {
-            'name': 'encryption_entity_type',
-            'kind': 'choice',
-            'order': 4,
             'choices': [
               'ADWORDS_CUSTOMER',
               'DBM_ADVERTISER',
@@ -127,47 +77,97 @@ TASKS = [
               'DCM_ADVERTISER',
               'ENCRYPTION_ENTITY_TYPE_UNKNOWN'
             ],
-            'default': 'DCM_ACCOUNT'
+            'order': 4,
+            'name': 'encryption_entity_type',
+            'default': 'DCM_ACCOUNT',
+            'kind': 'choice'
+          }
+        },
+        'encryptionEntityId': {
+          'field': {
+            'order': 3,
+            'name': 'encryption_entity_id',
+            'default': '',
+            'kind': 'integer'
           }
         },
         'encryptionSource': {
           'field': {
-            'name': 'encryption_entity_source',
-            'kind': 'choice',
-            'order': 5,
             'choices': [
               'AD_SERVING',
               'DATA_TRANSFER',
               'ENCRYPTION_SCOPE_UNKNOWN'
             ],
-            'default': 'DATA_TRANSFER'
+            'order': 5,
+            'name': 'encryption_entity_source',
+            'default': 'DATA_TRANSFER',
+            'kind': 'choice'
           }
         }
       },
       'bigquery': {
+        'legacy': {
+          'field': {
+            'order': 8,
+            'name': 'bigquery_legacy',
+            'default': True,
+            'kind': 'boolean'
+          }
+        },
         'dataset': {
           'field': {
-            'name': 'bigquery_dataset',
-            'kind': 'string',
             'order': 6,
-            'default': ''
+            'name': 'bigquery_dataset',
+            'default': '',
+            'kind': 'string'
           }
         },
         'table': {
           'field': {
-            'name': 'bigquery_table',
-            'kind': 'string',
             'order': 7,
-            'default': ''
+            'name': 'bigquery_table',
+            'default': '',
+            'kind': 'string'
           }
-        },
-        'legacy': {
-          'field': {
-            'name': 'bigquery_legacy',
-            'kind': 'boolean',
-            'order': 8,
-            'default': True
-          }
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'order': 1,
+          'default': 'user'
+        }
+      },
+      'activity_id': {
+        'field': {
+          'order': 1,
+          'name': 'floodlight_activity_id',
+          'default': '',
+          'kind': 'integer'
+        }
+      },
+      'account_id': {
+        'field': {
+          'order': 0,
+          'name': 'account',
+          'default': '',
+          'kind': 'string'
+        }
+      },
+      'conversion_type': {
+        'field': {
+          'choices': [
+            'encryptedUserId',
+            'encryptedUserIdCandidates',
+            'gclid',
+            'mobileDeviceId'
+          ],
+          'order': 2,
+          'name': 'floodlight_conversion_type',
+          'default': 'encryptedUserId',
+          'kind': 'choice'
         }
       }
     }

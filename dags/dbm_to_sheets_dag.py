@@ -49,8 +49,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
   'report_id': '',  # DV360 report ID given in UI, not needed if name used.
+  'auth_read': 'user',  # Credentials used for reading data.
   'report_name': '',  # Name of report, not needed if ID used.
   'sheet': '',  # Full URL to sheet being written to.
   'tab': '',  # Existing tab in sheet to write to.
@@ -61,54 +61,54 @@ TASKS = [
     'dbm': {
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'report': {
-        'report_id': {
-          'field': {
-            'name': 'report_id',
-            'kind': 'integer',
-            'order': 1,
-            'default': '',
-            'description': 'DV360 report ID given in UI, not needed if name used.'
-          }
-        },
-        'name': {
-          'field': {
-            'name': 'report_name',
-            'kind': 'string',
-            'order': 2,
-            'default': '',
-            'description': 'Name of report, not needed if ID used.'
-          }
+          'default': 'user'
         }
       },
       'out': {
         'sheets': {
           'sheet': {
             'field': {
-              'name': 'sheet',
+              'description': 'Full URL to sheet being written to.',
               'kind': 'string',
+              'name': 'sheet',
               'order': 3,
-              'default': '',
-              'description': 'Full URL to sheet being written to.'
+              'default': ''
             }
           },
           'tab': {
             'field': {
-              'name': 'tab',
+              'description': 'Existing tab in sheet to write to.',
               'kind': 'string',
+              'name': 'tab',
               'order': 4,
-              'default': '',
-              'description': 'Existing tab in sheet to write to.'
+              'default': ''
             }
           },
           'range': 'A1'
+        }
+      },
+      'report': {
+        'report_id': {
+          'field': {
+            'description': 'DV360 report ID given in UI, not needed if name used.',
+            'kind': 'integer',
+            'name': 'report_id',
+            'order': 1,
+            'default': ''
+          }
+        },
+        'name': {
+          'field': {
+            'description': 'Name of report, not needed if ID used.',
+            'kind': 'string',
+            'name': 'report_name',
+            'order': 2,
+            'default': ''
+          }
         }
       }
     }

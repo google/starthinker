@@ -63,11 +63,11 @@ TASKS = [
         'source': 'https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/',
         'destination': {
           'field': {
+            'description': 'Name of document to deploy to.',
             'name': 'recipe_name',
-            'prefix': 'Key Value Uploader For ',
             'kind': 'string',
             'order': 1,
-            'description': 'Name of document to deploy to.',
+            'prefix': 'Key Value Uploader For ',
             'default': ''
           }
         }

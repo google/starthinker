@@ -52,9 +52,9 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
+  'recipe_project': '',  # Project where BigQuery dataset will be created.
   'recipe_slug': '',  # Place where tables will be written in BigQuery.
   'recipe_name': '',  # Name of report in CM, should be unique.
-  'recipe_project': '',  # Project where BigQuery dataset will be created.
   'dcm_account': '',  # CM account id of client.
   'dcm_advertisers': '',  # Comma delimited list of CM advertiser ids.
 }
@@ -62,64 +62,48 @@ INPUTS = {
 TASKS = [
   {
     'dataset': {
+      'auth': 'service',
       'hour': [
         1
       ],
-      'auth': 'service',
       'dataset': {
         'field': {
-          'name': 'recipe_slug',
+          'description': 'Name of Google BigQuery dataset to create.',
           'kind': 'string',
+          'name': 'recipe_slug',
           'order': 1,
-          'default': '',
-          'description': 'Name of Google BigQuery dataset to create.'
+          'default': ''
         }
       }
     }
   },
   {
     'dcm': {
+      'auth': 'user',
       'hour': [
         2
       ],
-      'auth': 'user',
       'report': {
         'account': {
           'field': {
-            'name': 'dcm_account',
+            'description': 'CM account id of client.',
             'kind': 'integer',
+            'name': 'dcm_account',
             'order': 2,
-            'default': '',
-            'description': 'CM account id of client.'
-          }
-        },
-        'filters': {
-          'dfa:advertiser': {
-            'values': {
-              'field': {
-                'name': 'dcm_advertisers',
-                'kind': 'integer_list',
-                'order': 3,
-                'description': 'Comma delimited list of CM advertiser ids.'
-              }
-            }
+            'default': ''
           }
         },
         'body': {
           'type': 'STANDARD',
-          'format': 'CSV',
           'name': {
             'field': {
               'name': 'recipe_name',
-              'kind': 'string',
+              'description': 'Name of report in CM, unique.',
               'prefix': 'Transparency App For ',
-              'description': 'Name of report in CM, unique.'
+              'kind': 'string'
             }
           },
           'criteria': {
-            'dateRange': {
-              'relativeDateRange': 'PREVIOUS_MONTH'
-            },
             'dimensions': [
               {
                 'name': 'dfa:advertiser'
@@ -154,13 +138,29 @@ TASKS = [
             ],
             'metricNames': [
               'dfa:impressions'
-            ]
+            ],
+            'dateRange': {
+              'relativeDateRange': 'PREVIOUS_MONTH'
+            }
           },
+          'format': 'CSV',
           'schedule': {
-            'active': True,
             'every': 1,
+            'active': True,
             'repeats': 'MONTHLY',
             'runsOnDayOfMonth': 'DAY_OF_MONTH'
+          }
+        },
+        'filters': {
+          'dfa:advertiser': {
+            'values': {
+              'field': {
+                'order': 3,
+                'name': 'dcm_advertisers',
+                'description': 'Comma delimited list of CM advertiser ids.',
+                'kind': 'integer_list'
+              }
+            }
           }
         }
       }
@@ -168,47 +168,31 @@ TASKS = [
   },
   {
     'dcm': {
+      'auth': 'user',
       'hour': [
         2
       ],
-      'auth': 'user',
       'report': {
         'account': {
           'field': {
-            'name': 'dcm_account',
+            'description': 'CM account id of client.',
             'kind': 'integer',
+            'name': 'dcm_account',
             'order': 2,
-            'default': '',
-            'description': 'CM account id of client.'
-          }
-        },
-        'filters': {
-          'dfa:advertiser': {
-            'values': {
-              'field': {
-                'name': 'dcm_advertisers',
-                'kind': 'integer_list',
-                'order': 3,
-                'description': 'Comma delimited list of CM advertiser ids.'
-              }
-            }
+            'default': ''
           }
         },
         'body': {
           'type': 'STANDARD',
-          'format': 'CSV',
           'name': {
             'field': {
               'name': 'recipe_name',
-              'kind': 'string',
+              'description': 'Name of report in CM, unique.',
               'prefix': 'Transparency Domain For ',
-              'description': 'Name of report in CM, unique.'
+              'kind': 'string'
             }
           },
           'criteria': {
-            'dateRange': {
-              'relativeDateRange': 'PREVIOUS_MONTH'
-            },
             'dimensions': [
               {
                 'name': 'dfa:advertiser'
@@ -237,13 +221,29 @@ TASKS = [
             ],
             'metricNames': [
               'dfa:verificationVerifiableImpressions'
-            ]
+            ],
+            'dateRange': {
+              'relativeDateRange': 'PREVIOUS_MONTH'
+            }
           },
+          'format': 'CSV',
           'schedule': {
-            'active': True,
             'every': 1,
+            'active': True,
             'repeats': 'MONTHLY',
             'runsOnDayOfMonth': 'DAY_OF_MONTH'
+          }
+        },
+        'filters': {
+          'dfa:advertiser': {
+            'values': {
+              'field': {
+                'order': 3,
+                'name': 'dcm_advertisers',
+                'description': 'Comma delimited list of CM advertiser ids.',
+                'kind': 'integer_list'
+              }
+            }
           }
         }
       }
@@ -251,140 +251,140 @@ TASKS = [
   },
   {
     'dcm': {
-      'hour': [
-        4
-      ],
       'auth': 'user',
-      'report': {
-        'account': {
-          'field': {
-            'name': 'dcm_account',
-            'kind': 'integer',
-            'order': 2,
-            'default': '',
-            'description': 'CM account id of client.'
-          }
-        },
-        'name': {
-          'field': {
-            'name': 'recipe_name',
-            'kind': 'string',
-            'prefix': 'Transparency Domain For ',
-            'description': 'Name of report in CM, should be unique.'
-          }
-        }
-      },
       'out': {
         'bigquery': {
           'auth': 'service',
           'dataset': {
             'field': {
-              'name': 'recipe_slug',
+              'description': 'Name of Google BigQuery dataset to create.',
               'kind': 'string',
+              'name': 'recipe_slug',
               'order': 1,
-              'default': '',
-              'description': 'Name of Google BigQuery dataset to create.'
+              'default': ''
             }
           },
           'table': 'Transparency_Domain_KPI'
         }
-      }
-    }
-  },
-  {
-    'dcm': {
+      },
       'hour': [
         4
       ],
-      'auth': 'user',
       'report': {
         'account': {
           'field': {
-            'name': 'dcm_account',
+            'description': 'CM account id of client.',
             'kind': 'integer',
+            'name': 'dcm_account',
             'order': 2,
-            'default': '',
-            'description': 'CM account id of client.'
+            'default': ''
           }
         },
         'name': {
           'field': {
             'name': 'recipe_name',
-            'kind': 'string',
-            'prefix': 'Transparency App For ',
-            'description': 'Name of report in CM, should be unique.'
+            'description': 'Name of report in CM, should be unique.',
+            'prefix': 'Transparency Domain For ',
+            'kind': 'string'
           }
         }
-      },
+      }
+    }
+  },
+  {
+    'dcm': {
+      'auth': 'user',
       'out': {
         'bigquery': {
           'auth': 'service',
           'dataset': {
             'field': {
-              'name': 'recipe_slug',
+              'description': 'Name of Google BigQuery dataset to create.',
               'kind': 'string',
+              'name': 'recipe_slug',
               'order': 1,
-              'default': '',
-              'description': 'Name of Google BigQuery dataset to create.'
+              'default': ''
             }
           },
           'table': 'Transparency_App_KPI'
+        }
+      },
+      'hour': [
+        4
+      ],
+      'report': {
+        'account': {
+          'field': {
+            'description': 'CM account id of client.',
+            'kind': 'integer',
+            'name': 'dcm_account',
+            'order': 2,
+            'default': ''
+          }
+        },
+        'name': {
+          'field': {
+            'name': 'recipe_name',
+            'description': 'Name of report in CM, should be unique.',
+            'prefix': 'Transparency App For ',
+            'kind': 'string'
+          }
         }
       }
     }
   },
   {
     'bigquery': {
-      'hour': [
-        5
-      ],
-      'auth': 'user',
       'to': {
+        'view': 'Transparency_Combined_KPI',
         'dataset': {
           'field': {
-            'name': 'recipe_slug',
+            'description': 'Name of Google BigQuery dataset to create.',
             'kind': 'string',
+            'name': 'recipe_slug',
             'order': 1,
-            'default': '',
-            'description': 'Name of Google BigQuery dataset to create.'
+            'default': ''
           }
-        },
-        'view': 'Transparency_Combined_KPI'
+        }
       },
       'from': {
-        'query': "With \r\nTransparent_Domains AS ( \r\n  SELECT\r\n    CONCAT(Advertiser, ' - ', CAST(Advertiser_Id AS STRING)) AS Advertiser,\r\n    CONCAT(Campaign, ' - ', CAST(Campaign_Id AS STRING)) AS Campaign,\r\n    CONCAT(Site_Dcm, ' - ', CAST(Site_Id_Dcm AS STRING)) AS Site,\r\n    Domain,\r\n    Ad_Type,\r\n    Verifiable_Impressions AS Impressions,\r\n    IF(Domain IS NOT NULL, Verifiable_Impressions, 0) AS Visible_Impressions,\r\n    IF(Domain IS NULL, Verifiable_Impressions, 0) AS Null_Impressions\r\n  FROM `[PARAMETER].[PARAMETER].Transparency_Domain_KPI`\r\n),\r\nTransparent_Apps AS ( \r\n  SELECT\r\n    CONCAT(Advertiser, ' - ', CAST(Advertiser_Id AS STRING)) AS Advertiser,\r\n    CONCAT(Campaign, ' - ', CAST(Campaign_Id AS STRING)) AS Campaign,\r\n    CONCAT(Site_Dcm, ' - ', CAST(Site_Id_Dcm AS STRING)) AS Site,\r\n    /*If(App IS NOT NULL, CONCAT(App, ' - ', CAST(App_Id AS STRING)), App_Id) AS App, */\r\n    CASE \r\n      WHEN App IS NOT NULL THEN CONCAT(App, ' - ', CAST(App_Id AS STRING))\r\n      WHEN App_Id IS NOT NULL THEN App_Id\r\n      ELSE NULL\r\n    END AS App,\r\n    Ad_Type,\r\n    Impressions,\r\n    IF(App IS NOT NULL OR App_ID IS NOT NULL, Impressions, 0) AS Visible_Impressions,\r\n    IF(App IS NULL AND App_Id IS NULL, Impressions, 0) AS Null_Impressions\r\n  FROM `[PARAMETER].[PARAMETER].Transparency_App_KPI`\r\n  WHERE Environment = 'App'\r\n),\r\nDomains_And_Apps AS (\r\n  SELECT \r\n    TD.Advertiser,\r\n    TD.Campaign,\r\n    TD.Site,\r\n    TD.Ad_Type,\r\n    TD.Domain,\r\n    TD.Impressions AS Domain_Impressions,\r\n    TD.Visible_Impressions AS Domain_Visible_Impressions,\r\n    TD.Null_Impressions AS Domain_Null_Impressions,\r\n    NULL AS App,\r\n    0 AS App_Impressions,\r\n    0 AS App_Visible_Impressions,\r\n    0 AS App_Null_Impressions\r\n  FROM Transparent_Domains AS TD\r\n  UNION ALL\r\n  SELECT \r\n    TA.Advertiser,\r\n    TA.Campaign,\r\n    TA.Site,\r\n    TA.Ad_Type,\r\n    NULL AS Domain,\r\n    0 AS Domain_Impressions,\r\n    0 AS Domain_Visible_Impressions,\r\n    0 AS Domain_Null_Impressions,\r\n    TA.App,\r\n    TA.Impressions AS App_Impressions,\r\n    TA.Visible_Impressions AS App_Visible_Impressions,\r\n    TA.Null_Impressions AS App_Null_Impressions\r\n  FROM Transparent_Apps AS TA\r\n)\r\n\r\n  SELECT\r\n    Advertiser,\r\n    Campaign,\r\n    Site,\r\n    COALESCE(Domain, App, '') AS Domain_Or_App,\r\n    Ad_Type,\r\n    CASE\r\n      WHEN App IS NOT NULL AND Domain IS NOT NULL THEN 'Both' /* SHOULD NOT HAPPEN */\r\n      WHEN App IS NOT NULL THEN 'App'\r\n      WHEN Domain IS NOT NULL Then 'Domain'\r\n      ELSE 'Neither'\r\n    END AS Category,\r\n\r\n    SUM(Domain_Impressions) AS Domain_Impressions,\r\n    SUM(Domain_Visible_Impressions) AS Domain_Visible_Impressions,\r\n    SUM(Domain_Null_Impressions) AS Domain_Null_Impressions,\r\n\r\n    SUM(App_Impressions) AS App_Impressions,\r\n    SUM(App_Visible_Impressions) AS App_Visible_Impressions,\r\n    SUM(App_Null_Impressions) AS App_Null_Impressions,\r\n\r\n    SUM(App_Impressions + Domain_Impressions) AS Impressions /* Could also be MAX as its always one or the other*/\r\n\r\n  FROM Domains_And_Apps\r\n  GROUP By 1,2,3,4,5,6",
+        'legacy': False,
         'parameters': [
           {
             'field': {
+              'description': 'Project where BigQuery dataset will be created.',
               'name': 'recipe_project',
-              'kind': 'string',
-              'description': 'Project where BigQuery dataset will be created.'
+              'kind': 'string'
             }
           },
           {
             'field': {
+              'description': 'Place where tables will be written in BigQuery.',
               'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be written in BigQuery.'
+              'kind': 'string'
             }
           },
           {
             'field': {
+              'description': 'Project where BigQuery dataset will be created.',
               'name': 'recipe_project',
-              'kind': 'string',
-              'description': 'Project where BigQuery dataset will be created.'
+              'kind': 'string'
             }
           },
           {
             'field': {
+              'description': 'Place where tables will be written in BigQuery.',
               'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be written in BigQuery.'
+              'kind': 'string'
             }
           }
         ],
-        'legacy': False
-      }
+        'query': "With \r\nTransparent_Domains AS ( \r\n  SELECT\r\n    CONCAT(Advertiser, ' - ', CAST(Advertiser_Id AS STRING)) AS Advertiser,\r\n    CONCAT(Campaign, ' - ', CAST(Campaign_Id AS STRING)) AS Campaign,\r\n    CONCAT(Site_Dcm, ' - ', CAST(Site_Id_Dcm AS STRING)) AS Site,\r\n    Domain,\r\n    Ad_Type,\r\n    Verifiable_Impressions AS Impressions,\r\n    IF(Domain IS NOT NULL, Verifiable_Impressions, 0) AS Visible_Impressions,\r\n    IF(Domain IS NULL, Verifiable_Impressions, 0) AS Null_Impressions\r\n  FROM `[PARAMETER].[PARAMETER].Transparency_Domain_KPI`\r\n),\r\nTransparent_Apps AS ( \r\n  SELECT\r\n    CONCAT(Advertiser, ' - ', CAST(Advertiser_Id AS STRING)) AS Advertiser,\r\n    CONCAT(Campaign, ' - ', CAST(Campaign_Id AS STRING)) AS Campaign,\r\n    CONCAT(Site_Dcm, ' - ', CAST(Site_Id_Dcm AS STRING)) AS Site,\r\n    /*If(App IS NOT NULL, CONCAT(App, ' - ', CAST(App_Id AS STRING)), App_Id) AS App, */\r\n    CASE \r\n      WHEN App IS NOT NULL THEN CONCAT(App, ' - ', CAST(App_Id AS STRING))\r\n      WHEN App_Id IS NOT NULL THEN App_Id\r\n      ELSE NULL\r\n    END AS App,\r\n    Ad_Type,\r\n    Impressions,\r\n    IF(App IS NOT NULL OR App_ID IS NOT NULL, Impressions, 0) AS Visible_Impressions,\r\n    IF(App IS NULL AND App_Id IS NULL, Impressions, 0) AS Null_Impressions\r\n  FROM `[PARAMETER].[PARAMETER].Transparency_App_KPI`\r\n  WHERE Environment = 'App'\r\n),\r\nDomains_And_Apps AS (\r\n  SELECT \r\n    TD.Advertiser,\r\n    TD.Campaign,\r\n    TD.Site,\r\n    TD.Ad_Type,\r\n    TD.Domain,\r\n    TD.Impressions AS Domain_Impressions,\r\n    TD.Visible_Impressions AS Domain_Visible_Impressions,\r\n    TD.Null_Impressions AS Domain_Null_Impressions,\r\n    NULL AS App,\r\n    0 AS App_Impressions,\r\n    0 AS App_Visible_Impressions,\r\n    0 AS App_Null_Impressions\r\n  FROM Transparent_Domains AS TD\r\n  UNION ALL\r\n  SELECT \r\n    TA.Advertiser,\r\n    TA.Campaign,\r\n    TA.Site,\r\n    TA.Ad_Type,\r\n    NULL AS Domain,\r\n    0 AS Domain_Impressions,\r\n    0 AS Domain_Visible_Impressions,\r\n    0 AS Domain_Null_Impressions,\r\n    TA.App,\r\n    TA.Impressions AS App_Impressions,\r\n    TA.Visible_Impressions AS App_Visible_Impressions,\r\n    TA.Null_Impressions AS App_Null_Impressions\r\n  FROM Transparent_Apps AS TA\r\n)\r\n\r\n  SELECT\r\n    Advertiser,\r\n    Campaign,\r\n    Site,\r\n    COALESCE(Domain, App, '') AS Domain_Or_App,\r\n    Ad_Type,\r\n    CASE\r\n      WHEN App IS NOT NULL AND Domain IS NOT NULL THEN 'Both' /* SHOULD NOT HAPPEN */\r\n      WHEN App IS NOT NULL THEN 'App'\r\n      WHEN Domain IS NOT NULL Then 'Domain'\r\n      ELSE 'Neither'\r\n    END AS Category,\r\n\r\n    SUM(Domain_Impressions) AS Domain_Impressions,\r\n    SUM(Domain_Visible_Impressions) AS Domain_Visible_Impressions,\r\n    SUM(Domain_Null_Impressions) AS Domain_Null_Impressions,\r\n\r\n    SUM(App_Impressions) AS App_Impressions,\r\n    SUM(App_Visible_Impressions) AS App_Visible_Impressions,\r\n    SUM(App_Null_Impressions) AS App_Null_Impressions,\r\n\r\n    SUM(App_Impressions + Domain_Impressions) AS Impressions /* Could also be MAX as its always one or the other*/\r\n\r\n  FROM Domains_And_Apps\r\n  GROUP By 1,2,3,4,5,6"
+      },
+      'auth': 'user',
+      'hour': [
+        5
+      ]
     }
   }
 ]

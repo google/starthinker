@@ -65,78 +65,78 @@ TASKS = [
     'dbm': {
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 0,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+          'default': 'user'
+        }
+      },
+      'out': {
+        'bigquery': {
+          'schema': {
+            'field': {
+              'order': 6,
+              'name': 'dbm_schema',
+              'description': 'Schema provided in JSON list format or empty value to auto detect.',
+              'kind': 'json'
+            }
+          },
+          'auth': {
+            'field': {
+              'description': 'Authorization used for writing data.',
+              'kind': 'authentication',
+              'name': 'auth_write',
+              'order': 1,
+              'default': 'service'
+            }
+          },
+          'dataset': {
+            'field': {
+              'description': 'Existing BigQuery dataset.',
+              'kind': 'string',
+              'name': 'dbm_dataset',
+              'order': 4,
+              'default': ''
+            }
+          },
+          'table': {
+            'field': {
+              'description': 'Table to create from this report.',
+              'kind': 'string',
+              'name': 'dbm_table',
+              'order': 5,
+              'default': ''
+            }
+          },
+          'is_incremental_load': {
+            'field': {
+              'description': "Clear data in destination table during this report's time period, then append report data to destination table.",
+              'kind': 'boolean',
+              'name': 'is_incremental_load',
+              'order': 7,
+              'default': False
+            }
+          }
         }
       },
       'report': {
         'report_id': {
           'field': {
-            'name': 'dbm_report_id',
+            'description': 'DV360 report ID given in UI, not needed if name used.',
             'kind': 'integer',
+            'name': 'dbm_report_id',
             'order': 2,
-            'default': '',
-            'description': 'DV360 report ID given in UI, not needed if name used.'
+            'default': ''
           }
         },
         'name': {
           'field': {
-            'name': 'dbm_report_name',
+            'description': 'Name of report, not needed if ID used.',
             'kind': 'string',
+            'name': 'dbm_report_name',
             'order': 3,
-            'default': '',
-            'description': 'Name of report, not needed if ID used.'
-          }
-        }
-      },
-      'out': {
-        'bigquery': {
-          'auth': {
-            'field': {
-              'name': 'auth_write',
-              'kind': 'authentication',
-              'order': 1,
-              'default': 'service',
-              'description': 'Authorization used for writing data.'
-            }
-          },
-          'dataset': {
-            'field': {
-              'name': 'dbm_dataset',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Existing BigQuery dataset.'
-            }
-          },
-          'table': {
-            'field': {
-              'name': 'dbm_table',
-              'kind': 'string',
-              'order': 5,
-              'default': '',
-              'description': 'Table to create from this report.'
-            }
-          },
-          'schema': {
-            'field': {
-              'name': 'dbm_schema',
-              'kind': 'json',
-              'order': 6,
-              'description': 'Schema provided in JSON list format or empty value to auto detect.'
-            }
-          },
-          'is_incremental_load': {
-            'field': {
-              'name': 'is_incremental_load',
-              'kind': 'boolean',
-              'order': 7,
-              'default': False,
-              'description': "Clear data in destination table during this report's time period, then append report data to destination table."
-            }
+            'default': ''
           }
         }
       }

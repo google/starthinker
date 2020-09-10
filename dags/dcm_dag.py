@@ -50,8 +50,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
   'account': '',
+  'auth_read': 'user',  # Credentials used for reading data.
   'body': '{}',
   'delete': False,
 }
@@ -61,37 +61,37 @@ TASKS = [
     'dcm': {
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+          'default': 'user'
+        }
+      },
+      'delete': {
+        'field': {
+          'order': 3,
+          'name': 'delete',
+          'default': False,
+          'kind': 'boolean'
         }
       },
       'report': {
         'account': {
           'field': {
-            'name': 'account',
-            'kind': 'string',
             'order': 1,
-            'default': ''
+            'name': 'account',
+            'default': '',
+            'kind': 'string'
           }
         },
         'body': {
           'field': {
-            'name': 'body',
-            'kind': 'json',
             'order': 2,
-            'default': '{}'
+            'name': 'body',
+            'default': '{}',
+            'kind': 'json'
           }
-        }
-      },
-      'delete': {
-        'field': {
-          'name': 'delete',
-          'kind': 'boolean',
-          'order': 3,
-          'default': False
         }
       }
     }

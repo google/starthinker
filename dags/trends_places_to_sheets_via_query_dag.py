@@ -52,8 +52,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
   'secret': '',
+  'auth_write': 'service',  # Credentials used for writing data.
   'key': '',
   'places_dataset': '',
   'places_query': '',
@@ -65,81 +65,81 @@ INPUTS = {
 TASKS = [
   {
     'twitter': {
-      'auth': {
+      'key': {
         'field': {
-          'name': 'auth_write',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
+          'order': 2,
+          'name': 'key',
+          'default': '',
+          'kind': 'string'
         }
       },
       'secret': {
         'field': {
-          'name': 'secret',
-          'kind': 'string',
           'order': 1,
-          'default': ''
+          'name': 'secret',
+          'default': '',
+          'kind': 'string'
         }
       },
-      'key': {
+      'auth': {
         'field': {
-          'name': 'key',
-          'kind': 'string',
-          'order': 2,
-          'default': ''
-        }
-      },
-      'trends': {
-        'places': {
-          'single_cell': True,
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'name': 'places_dataset',
-                'kind': 'string',
-                'order': 3,
-                'default': ''
-              }
-            },
-            'query': {
-              'field': {
-                'name': 'places_query',
-                'kind': 'string',
-                'order': 4,
-                'default': ''
-              }
-            },
-            'legacy': {
-              'field': {
-                'name': 'places_legacy',
-                'kind': 'boolean',
-                'order': 5,
-                'default': False
-              }
-            }
-          }
+          'description': 'Credentials used for writing data.',
+          'kind': 'authentication',
+          'name': 'auth_write',
+          'order': 1,
+          'default': 'service'
         }
       },
       'out': {
         'sheets': {
           'sheet': {
             'field': {
-              'name': 'destination_sheet',
-              'kind': 'string',
               'order': 6,
-              'default': ''
+              'name': 'destination_sheet',
+              'default': '',
+              'kind': 'string'
             }
           },
           'tab': {
             'field': {
-              'name': 'destination_tab',
-              'kind': 'string',
               'order': 7,
-              'default': ''
+              'name': 'destination_tab',
+              'default': '',
+              'kind': 'string'
             }
           },
           'range': 'A1'
+        }
+      },
+      'trends': {
+        'places': {
+          'bigquery': {
+            'legacy': {
+              'field': {
+                'order': 5,
+                'name': 'places_legacy',
+                'default': False,
+                'kind': 'boolean'
+              }
+            },
+            'query': {
+              'field': {
+                'order': 4,
+                'name': 'places_query',
+                'default': '',
+                'kind': 'string'
+              }
+            },
+            'dataset': {
+              'field': {
+                'order': 3,
+                'name': 'places_dataset',
+                'default': '',
+                'kind': 'string'
+              }
+            }
+          },
+          'single_cell': True
         }
       }
     }

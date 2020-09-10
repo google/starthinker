@@ -61,44 +61,56 @@ INPUTS = {
 TASKS = [
   {
     'census': {
+      'to': {
+        'type': {
+          'field': {
+            'choices': [
+              'table',
+              'view'
+            ],
+            'description': 'Write Census_Percent as table or view.',
+            'name': 'type',
+            'kind': 'choice',
+            'order': 5,
+            'default': 'table'
+          }
+        },
+        'dataset': {
+          'field': {
+            'description': 'Existing BigQuery dataset.',
+            'kind': 'string',
+            'name': 'dataset',
+            'order': 4,
+            'default': ''
+          }
+        }
+      },
       'auth': {
         'field': {
-          'name': 'auth',
+          'description': 'Credentials used for writing data.',
           'kind': 'authentication',
+          'name': 'auth',
           'order': 0,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
+          'default': 'service'
         }
       },
       'normalize': {
-        'census_geography': {
+        'census_span': {
           'field': {
-            'name': 'census_geography',
-            'kind': 'choice',
-            'order': 1,
-            'default': 'zip_codes',
-            'description': 'Census table to get data from.',
             'choices': [
-              'zip_codes',
-              'state',
-              'zcta5',
-              'schooldistrictunified',
-              'puma',
-              'place',
-              'county',
-              'congressionaldistrict',
-              'censustract',
-              'cbsa'
-            ]
+              '1yr',
+              '3yr',
+              '5yr'
+            ],
+            'description': 'Census table to get data from.',
+            'name': 'census_span',
+            'kind': 'choice',
+            'order': 3,
+            'default': '5yr'
           }
         },
         'census_year': {
           'field': {
-            'name': 'census_year',
-            'kind': 'choice',
-            'order': 2,
-            'default': '2018',
-            'description': 'Census table to get data from.',
             'choices': [
               2018,
               2017,
@@ -112,45 +124,33 @@ TASKS = [
               2009,
               2008,
               2007
-            ]
-          }
-        },
-        'census_span': {
-          'field': {
-            'name': 'census_span',
-            'kind': 'choice',
-            'order': 3,
-            'default': '5yr',
+            ],
             'description': 'Census table to get data from.',
-            'choices': [
-              '1yr',
-              '3yr',
-              '5yr'
-            ]
-          }
-        }
-      },
-      'to': {
-        'dataset': {
-          'field': {
-            'name': 'dataset',
-            'kind': 'string',
-            'order': 4,
-            'default': '',
-            'description': 'Existing BigQuery dataset.'
+            'name': 'census_year',
+            'kind': 'choice',
+            'order': 2,
+            'default': '2018'
           }
         },
-        'type': {
+        'census_geography': {
           'field': {
-            'name': 'type',
-            'kind': 'choice',
-            'order': 5,
-            'default': 'table',
-            'description': 'Write Census_Percent as table or view.',
             'choices': [
-              'table',
-              'view'
-            ]
+              'zip_codes',
+              'state',
+              'zcta5',
+              'schooldistrictunified',
+              'puma',
+              'place',
+              'county',
+              'congressionaldistrict',
+              'censustract',
+              'cbsa'
+            ],
+            'description': 'Census table to get data from.',
+            'name': 'census_geography',
+            'kind': 'choice',
+            'order': 1,
+            'default': 'zip_codes'
           }
         }
       }

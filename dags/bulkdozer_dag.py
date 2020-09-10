@@ -67,22 +67,11 @@ INPUTS = {
 TASKS = [
   {
     'traffic': {
-      'hour': [
-      ],
-      'account_id': {
-        'field': {
-          'name': 'account_id',
-          'kind': 'string',
-          'order': 1,
-          'description': 'Campaign Manager Network ID (optional if profile id provided)',
-          'default': ''
-        }
-      },
       'dcm_profile_id': {
         'field': {
-          'name': 'dcm_profile_id',
-          'kind': 'string',
           'order': 1,
+          'kind': 'string',
+          'name': 'dcm_profile_id',
           'description': 'Campaign Manager Profile ID (optional if account id provided)',
           'default': ''
         }
@@ -90,19 +79,30 @@ TASKS = [
       'auth': 'user',
       'sheet_url': {
         'field': {
-          'name': 'sheet_url',
-          'kind': 'string',
           'order': 2,
+          'kind': 'string',
+          'name': 'sheet_url',
           'description': 'Feed Sheet URL',
+          'default': ''
+        }
+      },
+      'hour': [
+      ],
+      'account_id': {
+        'field': {
+          'order': 1,
+          'kind': 'string',
+          'name': 'account_id',
+          'description': 'Campaign Manager Network ID (optional if profile id provided)',
           'default': ''
         }
       },
       'timezone': {
         'field': {
-          'name': 'recipe_timezone',
-          'kind': 'timezone',
           'description': 'Timezone for report dates.',
-          'default': 'America/Chicago'
+          'name': 'recipe_timezone',
+          'default': 'America/Chicago',
+          'kind': 'timezone'
         }
       }
     }

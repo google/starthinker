@@ -64,58 +64,58 @@ TASKS = [
     'dcm': {
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'report': {
-        'account': {
-          'field': {
-            'name': 'account',
-            'kind': 'integer',
-            'order': 2,
-            'default': ''
-          }
-        },
-        'report_id': {
-          'field': {
-            'name': 'report_id',
-            'kind': 'integer',
-            'order': 3,
-            'default': ''
-          }
-        },
-        'name': {
-          'field': {
-            'name': 'report_name',
-            'kind': 'string',
-            'order': 4,
-            'default': ''
-          }
+          'default': 'user'
         }
       },
       'out': {
         'sheets': {
           'sheet': {
             'field': {
-              'name': 'sheet',
-              'kind': 'string',
               'order': 5,
-              'default': ''
+              'name': 'sheet',
+              'default': '',
+              'kind': 'string'
             }
           },
           'tab': {
             'field': {
-              'name': 'tab',
-              'kind': 'string',
               'order': 6,
-              'default': ''
+              'name': 'tab',
+              'default': '',
+              'kind': 'string'
             }
           },
           'range': 'A1'
+        }
+      },
+      'report': {
+        'account': {
+          'field': {
+            'order': 2,
+            'name': 'account',
+            'default': '',
+            'kind': 'integer'
+          }
+        },
+        'name': {
+          'field': {
+            'order': 4,
+            'name': 'report_name',
+            'default': '',
+            'kind': 'string'
+          }
+        },
+        'report_id': {
+          'field': {
+            'order': 3,
+            'name': 'report_id',
+            'default': '',
+            'kind': 'integer'
+          }
         }
       }
     }

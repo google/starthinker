@@ -61,7 +61,7 @@
       i.right { margin: 0px 15px; font-size: 1.5rem;}
       .collapsible-body { padding: 0px; }
 
-
+      
   #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; }
   .col { margin-right: auto; }
@@ -74,7 +74,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
 
-
+  
     <nav class="green lighten-0">
       <div class="nav-wrapper">
         <a href="/starthinker/" class="brand-logo">
@@ -83,31 +83,31 @@
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-
-
+          
+          
           <li><a href="/starthinker/solution/">Solutions</a></li>
           <li><a href="/starthinker/help/">Help</a></li>
-
+          
         </ul>
       </div>
     </nav>
 
     <ul class="sidenav green lighten-1" id="mobile-menu">
-
-
-
+      
+      
+      
       <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
       <li><a class="white-text" href="/starthinker/help/">Help</a></li>
-
+      
     </ul>
-
+  
 
   <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize-1.0.0.min.js"></script>
 
-
+    
 
 
 <!--
@@ -129,22 +129,22 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
 
 
-
+    
 
     <div id="page" class="center">
-
+      
 
   <br/>
   <h1><i class="medium material-icons">view_column</i>&nbsp; Sheet Copy</h1>
   <p class="flow-text">Copy tab from a sheet to a sheet.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
-
+  
 
   <br/><br/>
+  
 
-
-
+  
 
   <div class="buttons">
 
@@ -152,17 +152,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <i class="material-icons right">lock_open</i>Get Access
     </a>
 
+    
 
+    
 
-
-
-
+    
 
     <br/>
 
+    
 
-
-
+    
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/sheets_copy.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
@@ -172,16 +172,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/sheets_copy_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
       </a>
-
+    
 
   </div>
 
   <br/><br/>
 
   <div class="row">
+    
 
-
-
+    
 
     <div class="col s12 m6 l4">
       <div class="card">
@@ -193,15 +193,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
            </thead>
           <tbody>
 
-
+            
             <tr>
               <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
             </tr>
-
+            
 
             <tr>
               <td>Age</td>
-              <td>Oct. 2, 2018 (1 year, 10 months)</td>
+              <td>Oct. 2, 2018 (1 year, 11 months)</td>
             </tr>
 
             <tr>
@@ -215,7 +215,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       </div>
     </div>
 
-
+   
       <div class="col s12 m6 l4">
         <div class="card">
           <table class="bordered">
@@ -225,70 +225,70 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
               </tr>
              </thead>
              <tbody>
-
+             
                <tr>
                  <td>Provide the full edit URL for both sheets.</td>
                </tr>
-
+             
                <tr>
                  <td>Provide the tab name for both sheets.</td>
                </tr>
-
+             
                <tr>
                  <td>The tab will only be copied if it does not already exist.</td>
                </tr>
-
+             
              </tbody>
           </table>
         </div>
        </div>
-
+     
 
     <div class="col s12 m12 l8">
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
-            "auth": {
+            "tab": {
                 "field": {
-                    "name": "auth_read",
-                    "kind": "authentication",
-                    "order": 1,
-                    "default": "user",
-                    "description": "Credentials used for reading data."
-                }
-            },
-            "template": {
-                "sheet": {
-                    "field": {
-                        "name": "from_sheet",
-                        "kind": "string",
-                        "order": 1,
-                        "default": ""
-                    }
-                },
-                "tab": {
-                    "field": {
-                        "name": "from_tab",
-                        "kind": "string",
-                        "order": 2,
-                        "default": ""
-                    }
+                    "default": "",
+                    "name": "to_tab",
+                    "kind": "string",
+                    "order": 4
                 }
             },
             "sheet": {
                 "field": {
+                    "default": "",
                     "name": "to_sheet",
                     "kind": "string",
-                    "order": 3,
-                    "default": ""
+                    "order": 3
                 }
             },
-            "tab": {
+            "auth": {
                 "field": {
-                    "name": "to_tab",
-                    "kind": "string",
-                    "order": 4,
-                    "default": ""
+                    "description": "Credentials used for reading data.",
+                    "default": "user",
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1
+                }
+            },
+            "template": {
+                "tab": {
+                    "field": {
+                        "default": "",
+                        "name": "from_tab",
+                        "kind": "string",
+                        "order": 2
+                    }
+                },
+                "sheet": {
+                    "field": {
+                        "default": "",
+                        "name": "from_sheet",
+                        "kind": "string",
+                        "order": 1
+                    }
                 }
             }
         }
@@ -319,7 +319,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   </body>
 
-
+  
 
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
@@ -336,7 +336,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     });
   </script>
 
-
+  
   <script type="text/javascript">
     $(document).ready(function() {
       $('span.expand_code').on('click tap', function() {

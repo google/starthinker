@@ -50,8 +50,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
   'from_project': '',  # Original project to copy from.
+  'auth_read': 'service',  # Credentials used for reading data.
   'from_dataset': '',  # Original dataset to copy from.
   'to_project': None,  # Anonymous data will be writen to.
   'to_dataset': '',  # Anonymous data will be writen to.
@@ -60,52 +60,52 @@ INPUTS = {
 TASKS = [
   {
     'anonymize': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
       'bigquery': {
         'from': {
           'project': {
             'field': {
-              'name': 'from_project',
-              'kind': 'string',
               'order': 1,
-              'description': 'Original project to copy from.'
+              'name': 'from_project',
+              'description': 'Original project to copy from.',
+              'kind': 'string'
             }
           },
           'dataset': {
             'field': {
-              'name': 'from_dataset',
-              'kind': 'string',
               'order': 2,
-              'description': 'Original dataset to copy from.'
+              'name': 'from_dataset',
+              'description': 'Original dataset to copy from.',
+              'kind': 'string'
             }
           }
         },
         'to': {
           'project': {
             'field': {
-              'name': 'to_project',
+              'description': 'Anonymous data will be writen to.',
               'kind': 'string',
+              'name': 'to_project',
               'order': 3,
-              'default': None,
-              'description': 'Anonymous data will be writen to.'
+              'default': None
             }
           },
           'dataset': {
             'field': {
-              'name': 'to_dataset',
-              'kind': 'string',
               'order': 4,
-              'description': 'Anonymous data will be writen to.'
+              'name': 'to_dataset',
+              'description': 'Anonymous data will be writen to.',
+              'kind': 'string'
             }
           }
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'order': 1,
+          'default': 'service'
         }
       }
     }

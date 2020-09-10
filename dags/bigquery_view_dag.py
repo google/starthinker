@@ -50,8 +50,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
   'query': '',  # SQL with newlines and all.
+  'auth_read': 'user',  # Credentials used for reading data.
   'dataset': '',  # Existing BigQuery dataset.
   'view': '',  # View to create from this query.
   'legacy': True,  # Query type must match source tables.
@@ -60,53 +60,53 @@ INPUTS = {
 TASKS = [
   {
     'bigquery': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
       'from': {
-        'query': {
-          'field': {
-            'name': 'query',
-            'kind': 'text',
-            'order': 1,
-            'default': '',
-            'description': 'SQL with newlines and all.'
-          }
-        },
         'legacy': {
           'field': {
-            'name': 'legacy',
+            'description': 'Query type must match source tables.',
             'kind': 'boolean',
+            'name': 'legacy',
             'order': 4,
-            'default': True,
-            'description': 'Query type must match source tables.'
+            'default': True
+          }
+        },
+        'query': {
+          'field': {
+            'description': 'SQL with newlines and all.',
+            'kind': 'text',
+            'name': 'query',
+            'order': 1,
+            'default': ''
           }
         }
       },
       'to': {
-        'dataset': {
-          'field': {
-            'name': 'dataset',
-            'kind': 'string',
-            'order': 2,
-            'default': '',
-            'description': 'Existing BigQuery dataset.'
-          }
-        },
         'view': {
           'field': {
-            'name': 'view',
+            'description': 'View to create from this query.',
             'kind': 'string',
+            'name': 'view',
             'order': 3,
-            'default': '',
-            'description': 'View to create from this query.'
+            'default': ''
           }
+        },
+        'dataset': {
+          'field': {
+            'description': 'Existing BigQuery dataset.',
+            'kind': 'string',
+            'name': 'dataset',
+            'order': 2,
+            'default': ''
+          }
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'order': 1,
+          'default': 'user'
         }
       }
     }

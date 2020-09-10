@@ -60,41 +60,41 @@ TASKS = [
     'lineitem': {
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+          'default': 'user'
         }
       },
       'write': {
-        'dry_run': False,
         'bigquery': {
-          'dataset': {
+          'legacy': {
             'field': {
-              'name': 'dataset',
-              'kind': 'string',
-              'order': 1,
-              'default': ''
+              'order': 3,
+              'name': 'legacy',
+              'default': False,
+              'kind': 'boolean'
             }
           },
           'query': {
             'field': {
-              'name': 'query',
-              'kind': 'string',
               'order': 2,
-              'default': 'SELECT * FROM `Dataset.Table`;'
+              'name': 'query',
+              'default': 'SELECT * FROM `Dataset.Table`;',
+              'kind': 'string'
             }
           },
-          'legacy': {
+          'dataset': {
             'field': {
-              'name': 'legacy',
-              'kind': 'boolean',
-              'order': 3,
-              'default': False
+              'order': 1,
+              'name': 'dataset',
+              'default': '',
+              'kind': 'string'
             }
           }
-        }
+        },
+        'dry_run': False
       }
     }
   }

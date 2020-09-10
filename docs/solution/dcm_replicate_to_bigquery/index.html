@@ -61,7 +61,7 @@
       i.right { margin: 0px 15px; font-size: 1.5rem;}
       .collapsible-body { padding: 0px; }
 
-
+      
   #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; }
   .col { margin-right: auto; }
@@ -74,7 +74,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
 
-
+  
     <nav class="green lighten-0">
       <div class="nav-wrapper">
         <a href="/starthinker/" class="brand-logo">
@@ -83,31 +83,31 @@
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-
-
+          
+          
           <li><a href="/starthinker/solution/">Solutions</a></li>
           <li><a href="/starthinker/help/">Help</a></li>
-
+          
         </ul>
       </div>
     </nav>
 
     <ul class="sidenav green lighten-1" id="mobile-menu">
-
-
-
+      
+      
+      
       <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
       <li><a class="white-text" href="/starthinker/help/">Help</a></li>
-
+      
     </ul>
-
+  
 
   <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize-1.0.0.min.js"></script>
 
-
+    
 
 
 <!--
@@ -129,22 +129,22 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
 
 
-
+    
 
     <div id="page" class="center">
-
+      
 
   <br/>
   <h1><i class="medium material-icons">donut_small</i>&nbsp; CM Report Replicate</h1>
   <p class="flow-text">Replicate a report across multiple networks and advertisers.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
-
+  
 
   <br/><br/>
+  
 
-
-
+  
 
   <div class="buttons">
 
@@ -152,17 +152,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <i class="material-icons right">lock_open</i>Get Access
     </a>
 
+    
 
+    
 
-
-
-
+    
 
     <br/>
 
+    
 
-
-
+    
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/dcm_replicate_to_bigquery.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
@@ -172,16 +172,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/dcm_replicate_to_bigquery_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
       </a>
-
+    
 
   </div>
 
   <br/><br/>
 
   <div class="row">
+    
 
-
-
+    
 
     <div class="col s12 m6 l4">
       <div class="card">
@@ -193,15 +193,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
            </thead>
           <tbody>
 
-
+            
             <tr>
               <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
             </tr>
-
+            
 
             <tr>
               <td>Age</td>
-              <td>March 3, 2020 (5 months)</td>
+              <td>March 3, 2020 (6 months, 1 week)</td>
             </tr>
 
             <tr>
@@ -215,7 +215,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       </div>
     </div>
 
-
+   
       <div class="col s12 m6 l4">
         <div class="card">
           <table class="bordered">
@@ -225,152 +225,152 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
               </tr>
              </thead>
              <tbody>
-
+             
                <tr>
                  <td>Provide the name or ID of an existing report.</td>
                </tr>
-
+             
                <tr>
                  <td>Run the recipe once to generate the input sheet called CM Replicate For UNDEFINED.</td>
                </tr>
-
+             
                <tr>
                  <td>Enter network and advertiser ids to replicate the report.</td>
                </tr>
-
+             
                <tr>
                  <td>Data will be written to BigQuery &gt; UNDEFINED &gt; UNDEFINED &gt; [REPORT NAME]_All</td>
                </tr>
-
+             
              </tbody>
           </table>
         </div>
        </div>
-
+     
 
     <div class="col s12 m12 l8">
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/drive/run.py" target="_blank">drive</a>": {
-            "auth": "user",
             "copy": {
-                "source": "https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/",
                 "destination": {
                     "field": {
-                        "name": "recipe_name",
                         "prefix": "CM Replicate For ",
-                        "kind": "string",
+                        "default": "",
+                        "name": "recipe_name",
                         "order": 1,
                         "description": "Name of document to deploy to.",
-                        "default": ""
+                        "kind": "string"
                     }
-                }
-            }
+                },
+                "source": "https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/"
+            },
+            "auth": "user"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
-            "auth": {
-                "field": {
-                    "name": "auth_write",
-                    "kind": "authentication",
-                    "order": 1,
-                    "default": "service",
-                    "description": "Credentials used for writing data."
-                }
-            },
             "dataset": {
                 "field": {
+                    "description": "Name of Google BigQuery dataset to create.",
+                    "default": "",
                     "name": "recipe_slug",
                     "kind": "string",
-                    "order": 2,
-                    "default": "",
-                    "description": "Name of Google BigQuery dataset to create."
+                    "order": 2
+                }
+            },
+            "auth": {
+                "field": {
+                    "description": "Credentials used for writing data.",
+                    "default": "service",
+                    "name": "auth_write",
+                    "kind": "authentication",
+                    "order": 1
                 }
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm_replicate/run.py" target="_blank">dcm_replicate</a>": {
-            "auth": {
-                "field": {
-                    "name": "auth_read",
-                    "kind": "authentication",
-                    "order": 0,
-                    "default": "user",
-                    "description": "Credentials used for reading data."
-                }
-            },
-            "report": {
-                "account": {
-                    "field": {
-                        "name": "account",
-                        "kind": "integer",
-                        "order": 3,
-                        "default": "",
-                        "description": "CM network id."
-                    }
-                },
-                "id": {
-                    "field": {
-                        "name": "report_id",
-                        "kind": "integer",
-                        "order": 4,
-                        "default": "",
-                        "description": "CM template report id, for template"
-                    }
-                },
-                "name": {
-                    "field": {
-                        "name": "report_name",
-                        "kind": "string",
-                        "order": 5,
-                        "default": "",
-                        "description": "CM template report name, empty if using id instead."
-                    }
-                },
-                "delete": {
-                    "field": {
-                        "name": "delete",
-                        "kind": "boolean",
-                        "order": 6,
-                        "default": false,
-                        "description": "Use only to reset the reports if setup changes."
-                    }
-                }
-            },
-            "in": {
-                "sheet": {
-                    "field": {
-                        "name": "recipe_name",
-                        "prefix": "CM Replicate For ",
-                        "kind": "string",
-                        "order": 1,
-                        "default": "",
-                        "description": "Sheet to read ids from."
-                    }
-                },
-                "tab": "Accounts"
-            },
             "out": {
                 "bigquery": {
                     "dataset": {
                         "field": {
+                            "default": "",
                             "name": "recipe_slug",
                             "kind": "string",
-                            "order": 4,
-                            "default": ""
+                            "order": 4
                         }
                     },
                     "is_incremental_load": {
                         "field": {
+                            "description": "Append report data to existing table, requires Date column.",
+                            "default": false,
                             "name": "Aggregate",
                             "kind": "boolean",
-                            "order": 7,
-                            "default": false,
-                            "description": "Append report data to existing table, requires Date column."
+                            "order": 7
                         }
                     }
+                }
+            },
+            "report": {
+                "id": {
+                    "field": {
+                        "description": "CM template report id, for template",
+                        "default": "",
+                        "name": "report_id",
+                        "kind": "integer",
+                        "order": 4
+                    }
+                },
+                "name": {
+                    "field": {
+                        "description": "CM template report name, empty if using id instead.",
+                        "default": "",
+                        "name": "report_name",
+                        "kind": "string",
+                        "order": 5
+                    }
+                },
+                "delete": {
+                    "field": {
+                        "description": "Use only to reset the reports if setup changes.",
+                        "default": false,
+                        "name": "delete",
+                        "kind": "boolean",
+                        "order": 6
+                    }
+                },
+                "account": {
+                    "field": {
+                        "description": "CM network id.",
+                        "default": "",
+                        "name": "account",
+                        "kind": "integer",
+                        "order": 3
+                    }
+                }
+            },
+            "in": {
+                "tab": "Accounts",
+                "sheet": {
+                    "field": {
+                        "prefix": "CM Replicate For ",
+                        "default": "",
+                        "name": "recipe_name",
+                        "order": 1,
+                        "description": "Sheet to read ids from.",
+                        "kind": "string"
+                    }
+                }
+            },
+            "auth": {
+                "field": {
+                    "description": "Credentials used for reading data.",
+                    "default": "user",
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 0
                 }
             }
         }
@@ -401,7 +401,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   </body>
 
-
+  
 
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
@@ -418,7 +418,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     });
   </script>
 
-
+  
   <script type="text/javascript">
     $(document).ready(function() {
       $('span.expand_code').on('click tap', function() {

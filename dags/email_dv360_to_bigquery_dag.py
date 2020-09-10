@@ -54,8 +54,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
   'email': '',  # Email address report was sent to.
+  'auth_read': 'user',  # Credentials used for reading data.
   'subject': '.*',  # Regular expression to match subject. Double escape backslashes.
   'dataset': '',  # Existing dataset in BigQuery.
   'table': '',  # Name of table to be written to.
@@ -68,75 +68,75 @@ TASKS = [
     'email': {
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+          'default': 'user'
         }
       },
       'read': {
         'from': 'noreply-dv360@google.com',
-        'to': {
-          'field': {
-            'name': 'email',
-            'kind': 'string',
-            'order': 1,
-            'default': '',
-            'description': 'Email address report was sent to.'
-          }
-        },
         'subject': {
           'field': {
-            'name': 'subject',
+            'description': 'Regular expression to match subject. Double escape backslashes.',
             'kind': 'string',
+            'name': 'subject',
             'order': 2,
-            'default': '.*',
-            'description': 'Regular expression to match subject. Double escape backslashes.'
+            'default': '.*'
           }
         },
-        'link': 'https://storage.googleapis.com/.*',
-        'attachment': '.*',
         'out': {
           'bigquery': {
+            'schema': {
+              'field': {
+                'description': 'Schema provided in JSON list format or empty list.',
+                'kind': 'json',
+                'name': 'dbm_schema',
+                'order': 5,
+                'default': '[]'
+              }
+            },
             'dataset': {
               'field': {
-                'name': 'dataset',
+                'description': 'Existing dataset in BigQuery.',
                 'kind': 'string',
+                'name': 'dataset',
                 'order': 3,
-                'default': '',
-                'description': 'Existing dataset in BigQuery.'
+                'default': ''
               }
             },
             'table': {
               'field': {
-                'name': 'table',
+                'description': 'Name of table to be written to.',
                 'kind': 'string',
+                'name': 'table',
                 'order': 4,
-                'default': '',
-                'description': 'Name of table to be written to.'
-              }
-            },
-            'schema': {
-              'field': {
-                'name': 'dbm_schema',
-                'kind': 'json',
-                'order': 5,
-                'default': '[]',
-                'description': 'Schema provided in JSON list format or empty list.'
+                'default': ''
               }
             },
             'is_incremental_load': {
               'field': {
-                'name': 'is_incremental_load',
+                'description': 'Append report data to table based on date column, de-duplicates.',
                 'kind': 'boolean',
+                'name': 'is_incremental_load',
                 'order': 6,
-                'default': False,
-                'description': 'Append report data to table based on date column, de-duplicates.'
+                'default': False
               }
             }
           }
-        }
+        },
+        'to': {
+          'field': {
+            'description': 'Email address report was sent to.',
+            'kind': 'string',
+            'name': 'email',
+            'order': 1,
+            'default': ''
+          }
+        },
+        'link': 'https://storage.googleapis.com/.*',
+        'attachment': '.*'
       }
     }
   }

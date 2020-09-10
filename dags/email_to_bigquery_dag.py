@@ -50,8 +50,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
   'email_from': '',  # Must match from field.
+  'auth_read': 'user',  # Credentials used for reading data.
   'email_to': '',  # Must match to field.
   'subject': '',  # Regular expression to match subject.
   'link': '',  # Regular expression to match email.
@@ -67,97 +67,97 @@ TASKS = [
     'email': {
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+          'default': 'user'
+        }
+      },
+      'out': {
+        'bigquery': {
+          'schema': {
+            'field': {
+              'description': 'Schema provided in JSON list format or empty list.',
+              'kind': 'json',
+              'name': 'dbm_schema',
+              'order': 8,
+              'default': '[]'
+            }
+          },
+          'dataset': {
+            'field': {
+              'description': 'Existing dataset in BigQuery.',
+              'kind': 'string',
+              'name': 'dataset',
+              'order': 6,
+              'default': ''
+            }
+          },
+          'table': {
+            'field': {
+              'description': 'Name of table to be written to.',
+              'kind': 'string',
+              'name': 'table',
+              'order': 7,
+              'default': ''
+            }
+          },
+          'is_incremental_load': {
+            'field': {
+              'description': 'Append report data to table based on date column, de-duplicates.',
+              'kind': 'boolean',
+              'name': 'is_incremental_load',
+              'order': 9,
+              'default': False
+            }
+          }
         }
       },
       'read': {
         'from': {
           'field': {
-            'name': 'email_from',
+            'description': 'Must match from field.',
             'kind': 'string',
+            'name': 'email_from',
             'order': 1,
-            'default': '',
-            'description': 'Must match from field.'
+            'default': ''
           }
         },
         'to': {
           'field': {
-            'name': 'email_to',
+            'description': 'Must match to field.',
             'kind': 'string',
+            'name': 'email_to',
             'order': 2,
-            'default': '',
-            'description': 'Must match to field.'
+            'default': ''
           }
         },
         'subject': {
           'field': {
-            'name': 'subject',
+            'description': 'Regular expression to match subject.',
             'kind': 'string',
+            'name': 'subject',
             'order': 3,
-            'default': '',
-            'description': 'Regular expression to match subject.'
+            'default': ''
           }
         },
         'link': {
           'field': {
-            'name': 'link',
+            'description': 'Regular expression to match email.',
             'kind': 'string',
+            'name': 'link',
             'order': 4,
-            'default': '',
-            'description': 'Regular expression to match email.'
+            'default': ''
           }
         },
         'attachment': {
           'field': {
-            'name': 'attachment',
+            'description': 'Regular expression to match atttachment.',
             'kind': 'string',
+            'name': 'attachment',
             'order': 5,
-            'default': '',
-            'description': 'Regular expression to match atttachment.'
-          }
-        }
-      },
-      'out': {
-        'bigquery': {
-          'dataset': {
-            'field': {
-              'name': 'dataset',
-              'kind': 'string',
-              'order': 6,
-              'default': '',
-              'description': 'Existing dataset in BigQuery.'
-            }
-          },
-          'table': {
-            'field': {
-              'name': 'table',
-              'kind': 'string',
-              'order': 7,
-              'default': '',
-              'description': 'Name of table to be written to.'
-            }
-          },
-          'schema': {
-            'field': {
-              'name': 'dbm_schema',
-              'kind': 'json',
-              'order': 8,
-              'default': '[]',
-              'description': 'Schema provided in JSON list format or empty list.'
-            }
-          },
-          'is_incremental_load': {
-            'field': {
-              'name': 'is_incremental_load',
-              'kind': 'boolean',
-              'order': 9,
-              'default': False,
-              'description': 'Append report data to table based on date column, de-duplicates.'
-            }
+            'default': ''
           }
         }
       }

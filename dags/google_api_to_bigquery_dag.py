@@ -55,7 +55,7 @@ INPUTS = {
   'api': 'doubleclickbidmanager',  # See developer guide.
   'version': 'v1',  # Must be supported version.
   'function': 'reports.files.list',  # Full function dot notation path.
-  'kwargs': {'accountId': 7480, 'profileId': 2782211, 'reportId': 132847265},  # Dictionray object of name value pairs.
+  'kwargs': {'profileId': 2782211, 'accountId': 7480, 'reportId': 132847265},  # Dictionray object of name value pairs.
   'iterate': False,  # Is the result a list?
   'dataset': '',  # Existing dataset in BigQuery.
   'table': '',  # Table to write API call results to.
@@ -67,93 +67,93 @@ TASKS = [
     'google_api': {
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'api': {
-        'field': {
-          'name': 'api',
-          'kind': 'string',
-          'order': 1,
-          'default': 'doubleclickbidmanager',
-          'description': 'See developer guide.'
-        }
-      },
-      'version': {
-        'field': {
-          'name': 'version',
-          'kind': 'string',
-          'order': 2,
-          'default': 'v1',
-          'description': 'Must be supported version.'
-        }
-      },
-      'function': {
-        'field': {
-          'name': 'function',
-          'kind': 'string',
-          'order': 3,
-          'default': 'reports.files.list',
-          'description': 'Full function dot notation path.'
-        }
-      },
-      'kwargs': {
-        'field': {
-          'name': 'kwargs',
-          'kind': 'json',
-          'order': 4,
-          'default': {
-            'accountId': 7480,
-            'profileId': 2782211,
-            'reportId': 132847265
-          },
-          'description': 'Dictionray object of name value pairs.'
-        }
-      },
-      'iterate': {
-        'field': {
-          'name': 'iterate',
-          'kind': 'boolean',
-          'order': 5,
-          'default': False,
-          'description': 'Is the result a list?'
+          'default': 'user'
         }
       },
       'out': {
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'dataset',
+              'description': 'Existing dataset in BigQuery.',
               'kind': 'string',
+              'name': 'dataset',
               'order': 6,
-              'default': '',
-              'description': 'Existing dataset in BigQuery.'
+              'default': ''
             }
           },
           'table': {
             'field': {
-              'name': 'table',
+              'description': 'Table to write API call results to.',
               'kind': 'string',
+              'name': 'table',
               'order': 7,
-              'default': '',
-              'description': 'Table to write API call results to.'
+              'default': ''
             }
           },
+          'format': 'JSON',
           'schema': {
             'field': {
-              'name': 'schema',
+              'description': 'Schema provided in JSON list format or empty list.',
               'kind': 'json',
+              'name': 'schema',
               'order': 9,
               'default': [
-              ],
-              'description': 'Schema provided in JSON list format or empty list.'
+              ]
             }
-          },
-          'format': 'JSON'
+          }
+        }
+      },
+      'function': {
+        'field': {
+          'description': 'Full function dot notation path.',
+          'kind': 'string',
+          'name': 'function',
+          'order': 3,
+          'default': 'reports.files.list'
+        }
+      },
+      'version': {
+        'field': {
+          'description': 'Must be supported version.',
+          'kind': 'string',
+          'name': 'version',
+          'order': 2,
+          'default': 'v1'
+        }
+      },
+      'kwargs': {
+        'field': {
+          'description': 'Dictionray object of name value pairs.',
+          'kind': 'json',
+          'name': 'kwargs',
+          'order': 4,
+          'default': {
+            'profileId': 2782211,
+            'accountId': 7480,
+            'reportId': 132847265
+          }
+        }
+      },
+      'iterate': {
+        'field': {
+          'description': 'Is the result a list?',
+          'kind': 'boolean',
+          'name': 'iterate',
+          'order': 5,
+          'default': False
+        }
+      },
+      'api': {
+        'field': {
+          'description': 'See developer guide.',
+          'kind': 'string',
+          'name': 'api',
+          'order': 1,
+          'default': 'doubleclickbidmanager'
         }
       }
     }

@@ -49,8 +49,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
   'account': '',  # CM network id.
+  'auth_read': 'user',  # Credentials used for reading data.
   'report_id': '',  # CM report id, empty if using name.
   'report_name': '',  # CM report name, empty if using id instead.
 }
@@ -58,42 +58,42 @@ INPUTS = {
 TASKS = [
   {
     'dcm': {
+      'report_run_only': True,
       'auth': {
         'field': {
-          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
           'kind': 'authentication',
+          'name': 'auth_read',
           'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
+          'default': 'user'
         }
       },
-      'report_run_only': True,
       'report': {
         'account': {
           'field': {
+            'description': 'CM network id.',
+            'kind': 'integer',
             'name': 'account',
-            'kind': 'integer',
             'order': 1,
-            'default': '',
-            'description': 'CM network id.'
-          }
-        },
-        'report_id': {
-          'field': {
-            'name': 'report_id',
-            'kind': 'integer',
-            'order': 2,
-            'default': '',
-            'description': 'CM report id, empty if using name.'
+            'default': ''
           }
         },
         'name': {
           'field': {
-            'name': 'report_name',
+            'description': 'CM report name, empty if using id instead.',
             'kind': 'string',
+            'name': 'report_name',
             'order': 3,
-            'default': '',
-            'description': 'CM report name, empty if using id instead.'
+            'default': ''
+          }
+        },
+        'report_id': {
+          'field': {
+            'description': 'CM report id, empty if using name.',
+            'kind': 'integer',
+            'name': 'report_id',
+            'order': 2,
+            'default': ''
           }
         }
       }

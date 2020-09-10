@@ -38,7 +38,7 @@ Query To Table
 Save query results into a BigQuery table.
 
 Specify a single query and choose legacy or standard mode.
-For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
+For PLX use user authentication and: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
 Every time the query runs it will overwrite the table.
 
 '''
@@ -50,8 +50,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
   'query': '',  # SQL with newlines and all.
+  'auth_write': 'service',  # Credentials used for writing data.
   'dataset': '',  # Existing BigQuery dataset.
   'table': '',  # Table to create from this query.
   'legacy': True,  # Query type must match source tables.
@@ -60,53 +60,53 @@ INPUTS = {
 TASKS = [
   {
     'bigquery': {
-      'auth': {
-        'field': {
-          'name': 'auth_write',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
-        }
-      },
       'from': {
-        'query': {
-          'field': {
-            'name': 'query',
-            'kind': 'text',
-            'order': 1,
-            'default': '',
-            'description': 'SQL with newlines and all.'
-          }
-        },
         'legacy': {
           'field': {
-            'name': 'legacy',
+            'description': 'Query type must match source tables.',
             'kind': 'boolean',
+            'name': 'legacy',
             'order': 4,
-            'default': True,
-            'description': 'Query type must match source tables.'
+            'default': True
+          }
+        },
+        'query': {
+          'field': {
+            'description': 'SQL with newlines and all.',
+            'kind': 'text',
+            'name': 'query',
+            'order': 1,
+            'default': ''
           }
         }
       },
       'to': {
         'dataset': {
           'field': {
-            'name': 'dataset',
+            'description': 'Existing BigQuery dataset.',
             'kind': 'string',
+            'name': 'dataset',
             'order': 2,
-            'default': '',
-            'description': 'Existing BigQuery dataset.'
+            'default': ''
           }
         },
         'table': {
           'field': {
-            'name': 'table',
+            'description': 'Table to create from this query.',
             'kind': 'string',
+            'name': 'table',
             'order': 3,
-            'default': '',
-            'description': 'Table to create from this query.'
+            'default': ''
           }
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'kind': 'authentication',
+          'name': 'auth_write',
+          'order': 1,
+          'default': 'service'
         }
       }
     }

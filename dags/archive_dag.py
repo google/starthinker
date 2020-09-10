@@ -49,8 +49,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
   'archive_days': 7,
+  'auth_write': 'service',  # Credentials used for writing data.
   'archive_bucket': '',
   'archive_path': '',
   'archive_delete': False,
@@ -59,47 +59,47 @@ INPUTS = {
 TASKS = [
   {
     'archive': {
-      'auth': {
-        'field': {
-          'name': 'auth_write',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
-        }
-      },
-      'days': {
-        'field': {
-          'name': 'archive_days',
-          'kind': 'integer',
-          'order': 1,
-          'default': 7
-        }
-      },
       'storage': {
         'bucket': {
           'field': {
-            'name': 'archive_bucket',
-            'kind': 'string',
             'order': 2,
-            'default': ''
+            'name': 'archive_bucket',
+            'default': '',
+            'kind': 'string'
           }
         },
         'path': {
           'field': {
-            'name': 'archive_path',
-            'kind': 'string',
             'order': 3,
-            'default': ''
+            'name': 'archive_path',
+            'default': '',
+            'kind': 'string'
           }
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'kind': 'authentication',
+          'name': 'auth_write',
+          'order': 1,
+          'default': 'service'
         }
       },
       'delete': {
         'field': {
-          'name': 'archive_delete',
-          'kind': 'boolean',
           'order': 4,
-          'default': False
+          'name': 'archive_delete',
+          'default': False,
+          'kind': 'boolean'
+        }
+      },
+      'days': {
+        'field': {
+          'order': 1,
+          'name': 'archive_days',
+          'default': 7,
+          'kind': 'integer'
         }
       }
     }

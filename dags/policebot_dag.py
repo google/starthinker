@@ -63,11 +63,11 @@ TASKS = [
         'source': 'https://docs.google.com/spreadsheets/d/1dkESiK2s8YvdC03F3t4Jk_wvxJ0NMNk8CTGxO0HQk6I',
         'destination': {
           'field': {
+            'description': 'Name of document to deploy to.',
             'name': 'recipe_name',
-            'prefix': 'PoliceBot For ',
             'kind': 'string',
             'order': 1,
-            'description': 'Name of document to deploy to.',
+            'prefix': 'PoliceBot For ',
             'default': ''
           }
         }

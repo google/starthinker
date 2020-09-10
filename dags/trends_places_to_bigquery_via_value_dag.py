@@ -52,8 +52,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
   'secret': '',
+  'auth_write': 'service',  # Credentials used for writing data.
   'key': '',
   'woeids': [],
   'destination_dataset': '',
@@ -63,63 +63,63 @@ INPUTS = {
 TASKS = [
   {
     'twitter': {
-      'auth': {
+      'key': {
         'field': {
-          'name': 'auth_write',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'service',
-          'description': 'Credentials used for writing data.'
+          'order': 2,
+          'name': 'key',
+          'default': '',
+          'kind': 'string'
         }
       },
       'secret': {
         'field': {
-          'name': 'secret',
-          'kind': 'string',
           'order': 1,
-          'default': ''
+          'name': 'secret',
+          'default': '',
+          'kind': 'string'
         }
       },
-      'key': {
+      'auth': {
         'field': {
-          'name': 'key',
-          'kind': 'string',
-          'order': 2,
-          'default': ''
-        }
-      },
-      'trends': {
-        'places': {
-          'single_cell': True,
-          'values': {
-            'field': {
-              'name': 'woeids',
-              'kind': 'integer_list',
-              'order': 3,
-              'default': [
-              ]
-            }
-          }
+          'description': 'Credentials used for writing data.',
+          'kind': 'authentication',
+          'name': 'auth_write',
+          'order': 1,
+          'default': 'service'
         }
       },
       'out': {
         'bigquery': {
           'dataset': {
             'field': {
-              'name': 'destination_dataset',
-              'kind': 'string',
               'order': 6,
-              'default': ''
+              'name': 'destination_dataset',
+              'default': '',
+              'kind': 'string'
             }
           },
           'table': {
             'field': {
-              'name': 'destination_table',
-              'kind': 'string',
               'order': 7,
-              'default': ''
+              'name': 'destination_table',
+              'default': '',
+              'kind': 'string'
             }
           }
+        }
+      },
+      'trends': {
+        'places': {
+          'values': {
+            'field': {
+              'order': 3,
+              'name': 'woeids',
+              'default': [
+              ],
+              'kind': 'integer_list'
+            }
+          },
+          'single_cell': True
         }
       }
     }

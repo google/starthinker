@@ -61,7 +61,7 @@
       i.right { margin: 0px 15px; font-size: 1.5rem;}
       .collapsible-body { padding: 0px; }
 
-
+      
   #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; }
   .col { margin-right: auto; }
@@ -74,7 +74,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
 
-
+  
     <nav class="green lighten-0">
       <div class="nav-wrapper">
         <a href="/starthinker/" class="brand-logo">
@@ -83,31 +83,31 @@
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-
-
+          
+          
           <li><a href="/starthinker/solution/">Solutions</a></li>
           <li><a href="/starthinker/help/">Help</a></li>
-
+          
         </ul>
       </div>
     </nav>
 
     <ul class="sidenav green lighten-1" id="mobile-menu">
-
-
-
+      
+      
+      
       <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
       <li><a class="white-text" href="/starthinker/help/">Help</a></li>
-
+      
     </ul>
-
+  
 
   <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize-1.0.0.min.js"></script>
 
-
+    
 
 
 <!--
@@ -129,22 +129,22 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
 
 
-
+    
 
     <div id="page" class="center">
-
+      
 
   <br/>
   <h1><i class="medium material-icons">analytics</i>&nbsp; Federal Reserve Regional Data</h1>
   <p class="flow-text">Download federal reserve region.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
-
+  
 
   <br/><br/>
+  
 
-
-
+  
 
   <div class="buttons">
 
@@ -152,17 +152,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <i class="material-icons right">lock_open</i>Get Access
     </a>
 
+    
 
+    
 
-
-
-
+    
 
     <br/>
 
+    
 
-
-
+    
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/fred_regional_to_bigquery.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
@@ -172,16 +172,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/fred_regional_to_bigquery_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
       </a>
-
+    
 
   </div>
 
   <br/><br/>
 
   <div class="row">
+    
 
-
-
+    
 
     <div class="col s12 m6 l4">
       <div class="card">
@@ -193,15 +193,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
            </thead>
           <tbody>
 
-
+            
             <tr>
               <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
             </tr>
-
+            
 
             <tr>
               <td>Age</td>
-              <td>Aug. 4, 2020 (2 days, 16 hours)</td>
+              <td>Aug. 4, 2020 (1 month, 1 week)</td>
             </tr>
 
             <tr>
@@ -215,7 +215,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       </div>
     </div>
 
-
+   
       <div class="col s12 m6 l4">
         <div class="card">
           <table class="bordered">
@@ -225,179 +225,171 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
               </tr>
              </thead>
              <tbody>
-
+             
                <tr>
                  <td>Specify the values for a <a href='https://research.stlouisfed.org/docs/api/geofred/regional_data.html' target='_blank'>Fred observations API call</a>.</td>
                </tr>
-
+             
                <tr>
-                 <td>A table with the same name will appear in the dataset.</td>
+                 <td>A table will appear in the dataset.</td>
                </tr>
-
+             
              </tbody>
           </table>
         </div>
        </div>
-
+     
 
     <div class="col s12 m12 l8">
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/fred/run.py" target="_blank">fred</a>": {
-            "auth": {
-                "field": {
-                    "name": "auth",
-                    "kind": "authentication",
-                    "order": 0,
-                    "default": "service",
-                    "description": "Credentials used for writing data."
-                }
-            },
-            "parameters": {
-                "api_key": {
-                    "field": {
-                        "name": "fred_api_key",
-                        "kind": "string",
-                        "order": 1,
-                        "default": "",
-                        "description": "32 character alpha-numeric lowercase string."
-                    }
-                },
-                "series_group": {
-                    "field": {
-                        "name": "fred_series_group",
-                        "kind": "string",
-                        "order": 2,
-                        "default": "",
-                        "description": "The ID for a group of seriess found in GeoFRED."
-                    }
-                },
-                "region_type": {
-                    "field": {
-                        "name": "fred_region_type",
-                        "kind": "choice",
-                        "order": 3,
-                        "default": "county",
-                        "description": "The region you want want to pull data for.",
-                        "choices": [
-                            "bea",
-                            "msa",
-                            "frb",
-                            "necta",
-                            "state",
-                            "country",
-                            "county",
-                            "censusregion"
-                        ]
-                    }
-                },
-                "units": {
-                    "field": {
-                        "name": "fred_units",
-                        "kind": "choice",
-                        "order": 3,
-                        "default": "lin",
-                        "description": "A key that indicates a data value transformation.",
-                        "choices": [
-                            "lin",
-                            "chg",
-                            "ch1",
-                            "pch",
-                            "pc1",
-                            "pca",
-                            "cch",
-                            "cca",
-                            "log"
-                        ]
-                    }
-                },
-                "season": {
-                    "field": {
-                        "name": "fred_season",
-                        "kind": "choice",
-                        "order": 4,
-                        "default": "SA",
-                        "description": "The seasonality of the series group.",
-                        "choices": [
-                            "SA",
-                            "NSA",
-                            "SSA"
-                        ]
-                    }
-                },
-                "frequency": {
-                    "field": {
-                        "name": "fred_frequency",
-                        "kind": "choice",
-                        "order": 4,
-                        "default": "",
-                        "description": "An optional parameter that indicates a lower frequency to aggregate values to.",
-                        "choices": [
-                            "",
-                            "d",
-                            "w",
-                            "bw",
-                            "m",
-                            "q",
-                            "sa",
-                            "a",
-                            "wef",
-                            "weth",
-                            "wew",
-                            "wetu",
-                            "wem",
-                            "wesu",
-                            "wesa",
-                            "bwew",
-                            "bwem"
-                        ]
-                    }
-                },
-                "aggregation_method": {
-                    "field": {
-                        "name": "fred_aggregation_method",
-                        "kind": "choice",
-                        "order": 5,
-                        "default": "avg",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.",
-                        "choices": [
-                            "avg",
-                            "sum",
-                            "eop"
-                        ]
-                    }
-                }
-            },
-            "out": {
-                "bigquery": {
-                    "project": {
+            "regions": [
+                {
+                    "series_group": {
                         "field": {
-                            "name": "project",
-                            "kind": "string",
-                            "order": 10,
+                            "description": "The ID for a group of seriess found in GeoFRED.",
                             "default": "",
-                            "description": "Existing BigQuery dataset."
-                        }
-                    },
-                    "dataset": {
-                        "field": {
-                            "name": "dataset",
-                            "kind": "string",
-                            "order": 11,
-                            "default": "",
-                            "description": "Existing BigQuery dataset."
-                        }
-                    },
-                    "table": {
-                        "field": {
                             "name": "fred_series_group",
                             "kind": "string",
-                            "order": 2,
-                            "default": "",
-                            "prefix": "FRED_REGIONAL_",
-                            "description": "The ID for a group of seriess found in GeoFRED."
+                            "order": 2
+                        }
+                    },
+                    "season": {
+                        "field": {
+                            "default": "SA",
+                            "name": "fred_season",
+                            "order": 4,
+                            "description": "The seasonality of the series group.",
+                            "choices": [
+                                "SA",
+                                "NSA",
+                                "SSA"
+                            ],
+                            "kind": "choice"
+                        }
+                    },
+                    "units": {
+                        "field": {
+                            "default": "lin",
+                            "name": "fred_units",
+                            "order": 3,
+                            "description": "A key that indicates a data value transformation.",
+                            "choices": [
+                                "lin",
+                                "chg",
+                                "ch1",
+                                "pch",
+                                "pc1",
+                                "pca",
+                                "cch",
+                                "cca",
+                                "log"
+                            ],
+                            "kind": "choice"
+                        }
+                    },
+                    "aggregation_method": {
+                        "field": {
+                            "default": "avg",
+                            "name": "fred_aggregation_method",
+                            "order": 5,
+                            "description": "A key that indicates the aggregation method used for frequency aggregation.",
+                            "choices": [
+                                "avg",
+                                "sum",
+                                "eop"
+                            ],
+                            "kind": "choice"
                         }
                     }
+                }
+            ],
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "description": "Existing BigQuery dataset.",
+                            "default": "",
+                            "name": "dataset",
+                            "kind": "string",
+                            "order": 11
+                        }
+                    },
+                    "project": {
+                        "field": {
+                            "description": "Existing BigQuery project.",
+                            "default": "",
+                            "name": "project",
+                            "kind": "string",
+                            "order": 10
+                        }
+                    }
+                }
+            },
+            "api_key": {
+                "field": {
+                    "description": "32 character alpha-numeric lowercase string.",
+                    "default": "",
+                    "name": "fred_api_key",
+                    "kind": "string",
+                    "order": 1
+                }
+            },
+            "region_type": {
+                "field": {
+                    "default": "county",
+                    "name": "fred_region_type",
+                    "order": 3,
+                    "description": "The region you want want to pull data for.",
+                    "choices": [
+                        "bea",
+                        "msa",
+                        "frb",
+                        "necta",
+                        "state",
+                        "country",
+                        "county",
+                        "censusregion"
+                    ],
+                    "kind": "choice"
+                }
+            },
+            "frequency": {
+                "field": {
+                    "default": "",
+                    "name": "fred_frequency",
+                    "order": 4,
+                    "description": "An optional parameter that indicates a lower frequency to aggregate values to.",
+                    "choices": [
+                        "",
+                        "d",
+                        "w",
+                        "bw",
+                        "m",
+                        "q",
+                        "sa",
+                        "a",
+                        "wef",
+                        "weth",
+                        "wew",
+                        "wetu",
+                        "wem",
+                        "wesu",
+                        "wesa",
+                        "bwew",
+                        "bwem"
+                    ],
+                    "kind": "choice"
+                }
+            },
+            "auth": {
+                "field": {
+                    "description": "Credentials used for writing data.",
+                    "default": "service",
+                    "name": "auth",
+                    "kind": "authentication",
+                    "order": 0
                 }
             }
         }
@@ -428,7 +420,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   </body>
 
-
+  
 
 <footer class="page-footer red lighten-1">
   <div class="footer-copyright">
@@ -445,7 +437,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     });
   </script>
 
-
+  
   <script type="text/javascript">
     $(document).ready(function() {
       $('span.expand_code').on('click tap', function() {

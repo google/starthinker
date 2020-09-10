@@ -52,8 +52,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
   'sheet': '',
+  'auth_read': 'user',  # Credentials used for reading data.
   'tab': '',
   'in_dataset': '',
   'in_table': '',
@@ -64,64 +64,64 @@ INPUTS = {
 TASKS = [
   {
     'mapping': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
       'sheet': {
         'field': {
-          'name': 'sheet',
-          'kind': 'string',
           'order': 1,
-          'default': ''
+          'name': 'sheet',
+          'default': '',
+          'kind': 'string'
         }
       },
       'tab': {
         'field': {
-          'name': 'tab',
-          'kind': 'string',
           'order': 2,
-          'default': ''
+          'name': 'tab',
+          'default': '',
+          'kind': 'string'
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'order': 1,
+          'default': 'user'
+        }
+      },
+      'out': {
+        'view': {
+          'field': {
+            'order': 8,
+            'name': 'out_view',
+            'default': '',
+            'kind': 'string'
+          }
+        },
+        'dataset': {
+          'field': {
+            'order': 7,
+            'name': 'out_dataset',
+            'default': '',
+            'kind': 'string'
+          }
         }
       },
       'in': {
         'dataset': {
           'field': {
-            'name': 'in_dataset',
-            'kind': 'string',
             'order': 3,
-            'default': ''
+            'name': 'in_dataset',
+            'default': '',
+            'kind': 'string'
           }
         },
         'table': {
           'field': {
-            'name': 'in_table',
-            'kind': 'string',
             'order': 4,
-            'default': ''
-          }
-        }
-      },
-      'out': {
-        'dataset': {
-          'field': {
-            'name': 'out_dataset',
-            'kind': 'string',
-            'order': 7,
-            'default': ''
-          }
-        },
-        'view': {
-          'field': {
-            'name': 'out_view',
-            'kind': 'string',
-            'order': 8,
-            'default': ''
+            'name': 'in_table',
+            'default': '',
+            'kind': 'string'
           }
         }
       }
