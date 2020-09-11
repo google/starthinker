@@ -34,6 +34,7 @@
         "subject":"Testing Email Attachment",
         "attachment":"test_data.csv",
         "out":{
+          "auth": "service",
           "bigquery":{
             "dataset":"Test",
             "table":"Email_Attachment",
@@ -47,7 +48,7 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
         "dataset":"Test",
         "table":"Email_Attachment",

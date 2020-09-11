@@ -65,7 +65,8 @@ def email_read():
       for sheet, rows in excel_to_rows(data):
         rows = rows_trim(rows)
         rows = rows_header_sanitize(rows)
-        put_rows(project.task['auth'], project.task['read']['out'], rows, sheet)
+        put_rows(project.task['read']['out'].get('auth', project.task['auth']),
+                 project.task['read']['out'], rows, sheet)
 
     # if CM report
     elif project.task['read']['from'] == 'noreply-cm@google.com':
@@ -79,19 +80,22 @@ def email_read():
         project.task['read']['out']['bigquery']['schema'] = schema
         project.task['read']['out']['bigquery']['skip_rows'] = 1
 
-      put_rows(project.task['auth'], project.task['read']['out'], rows)
+      put_rows(project.task['read']['out'].get('auth', project.task['auth']),
+               project.task['read']['out'], rows)
 
     # if dv360 report
     elif project.task['read']['from'] == 'noreply-dv360@google.com':
       rows = dv360_report_to_rows(data.getvalue().decode())
       rows = dv360_report_clean(rows)
-      put_rows(project.task['auth'], project.task['read']['out'], rows)
+      put_rows(project.task['read']['out'].get('auth', project.task['auth']),
+               project.task['read']['out'], rows)
 
     # if csv
     elif filename.endswith('.csv'):
       rows = csv_to_rows(data.read().decode())
       rows = rows_header_sanitize(rows)
-      put_rows(project.task['auth'], project.task['read']['out'], rows)
+      put_rows(project.task['read']['out'].get('auth', project.task['auth']),
+               project.task['read']['out'], rows)
 
     else:
       if project.verbose: print('UNSUPPORTED FILE:', filename)
