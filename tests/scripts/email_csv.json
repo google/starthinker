@@ -35,6 +35,7 @@
         "attachment":"test_data.csv",
         "out":{
           "bigquery":{
+            "auth": "service",
             "dataset":"Test",
             "table":"Email_Attachment",
             "schema":[
@@ -49,6 +50,7 @@
     { "test": {
       "auth":"user",
       "bigquery":{
+        "auth": "service",
         "dataset":"Test",
         "table":"Email_Attachment",
         "schema":[
