@@ -16,7 +16,6 @@
 #
 ###########################################################################
 
-
 import argparse
 import textwrap
 from json import JSONDecodeError
@@ -27,13 +26,13 @@ from starthinker.util.project import get_project
 def main():
 
   parser = argparse.ArgumentParser(
-    formatter_class=argparse.RawDescriptionHelpFormatter,
-    description=textwrap.dedent('''\
+      formatter_class=argparse.RawDescriptionHelpFormatter,
+      description=textwrap.dedent("""\
       Evaluate the validity of a json file. Helps in debugging recipes.
       Print the line and character position of any errors in the given json file.
 
       Example: python helper.py scripts/say_hello.json
-  '''))
+  """))
 
   parser.add_argument('file', help='A JSON file.')
   args = parser.parse_args()
@@ -45,5 +44,5 @@ def main():
     print(str(e))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   main()

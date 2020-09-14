@@ -16,17 +16,14 @@
 #
 ###########################################################################
 
-videoOffset_Schema = [
-  {
-    "description": "",
-    "name": "offsetPercentage",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "offsetSeconds",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+videoOffset_Schema = [{
+    'description': '',
+    'name': 'offsetPercentage',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'offsetSeconds',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

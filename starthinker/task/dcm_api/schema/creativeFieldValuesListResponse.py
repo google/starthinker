@@ -16,42 +16,37 @@
 #
 ###########################################################################
 
-creativeFieldValuesListResponse_Schema = [
-  {
-    "name": "creativeFieldValues",
-    "type": "RECORD",
-    "mode": "REPEATED",
-    "fields": [
-      {
-        "description": "",
-        "name": "id",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "kind",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "value",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      }
-    ]
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "nextPageToken",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+creativeFieldValuesListResponse_Schema = [{
+    'name':
+        'creativeFieldValues',
+    'type':
+        'RECORD',
+    'mode':
+        'REPEATED',
+    'fields': [{
+        'description': '',
+        'name': 'id',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'value',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }]
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'nextPageToken',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

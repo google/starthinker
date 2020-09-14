@@ -16,33 +16,27 @@
 #
 ###########################################################################
 
-operatingSystem_Schema = [
-  {
-    "description": "",
-    "name": "dartId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "desktop",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "mobile",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "name",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+operatingSystem_Schema = [{
+    'description': '',
+    'name': 'dartId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'desktop',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'mobile',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

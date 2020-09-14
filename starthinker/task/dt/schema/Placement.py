@@ -16,26 +16,88 @@
 #
 ###########################################################################
 
-Placement_Schema = [
-  { "name":"Activity_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Campaign_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Content_Category", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Content_Category_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Flighting_Activated", "type":"BOOLEAN", "mode":"NULLABLE" },
-  { "name":"Placement_Cap_Cost_Option", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Placement_End_Date", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Package_Roadblock_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Package_Roadblock_Type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Package_Roadblock_Type_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Placement_Cost_Structure", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Placement_Start_Date", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Placement_Strategy", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Placement_Strategy_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Site_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Placement", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Placement_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Site_Keyname", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Placement_Schema = [{
+    'name': 'Activity_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Advertiser_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Campaign_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Content_Category',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Content_Category_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Flighting_Activated',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_Cap_Cost_Option',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_End_Date',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Package_Roadblock_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Package_Roadblock_Type',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Package_Roadblock_Type_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_Cost_Structure',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_Start_Date',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_Strategy',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_Strategy_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Site_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Site_Keyname',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Config_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Account_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

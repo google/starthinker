@@ -16,23 +16,19 @@
 #
 ###########################################################################
 
-rule_Schema = [
-  {
-    "description": "",
-    "name": "assetId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "name",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "targetingTemplateId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+rule_Schema = [{
+    'description': '',
+    'name': 'assetId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'targetingTemplateId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

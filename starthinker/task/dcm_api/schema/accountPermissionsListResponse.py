@@ -16,53 +16,46 @@
 #
 ###########################################################################
 
-accountPermissionsListResponse_Schema = [
-  {
-    "name": "accountPermissions",
-    "type": "RECORD",
-    "mode": "REPEATED",
-    "fields": [
-      {
-        "name": "accountProfiles",
-        "type": "STRING",
-        "mode": "REPEATED"
-      },
-      {
-        "description": "",
-        "name": "id",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "kind",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "ADMINISTRATOR, USER",
-        "name": "level",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "name",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "permissionGroupId",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      }
-    ]
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+accountPermissionsListResponse_Schema = [{
+    'name':
+        'accountPermissions',
+    'type':
+        'RECORD',
+    'mode':
+        'REPEATED',
+    'fields': [{
+        'name': 'accountProfiles',
+        'type': 'STRING',
+        'mode': 'REPEATED'
+    }, {
+        'description': '',
+        'name': 'id',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': 'ADMINISTRATOR, USER',
+        'name': 'level',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'name',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'permissionGroupId',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }]
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

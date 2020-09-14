@@ -16,40 +16,33 @@
 #
 ###########################################################################
 
-accountPermission_Schema = [
-  {
-    "name": "accountProfiles",
-    "type": "STRING",
-    "mode": "REPEATED"
-  },
-  {
-    "description": "",
-    "name": "id",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "ADMINISTRATOR, USER",
-    "name": "level",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "name",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "permissionGroupId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+accountPermission_Schema = [{
+    'name': 'accountProfiles',
+    'type': 'STRING',
+    'mode': 'REPEATED'
+}, {
+    'description': '',
+    'name': 'id',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': 'ADMINISTRATOR, USER',
+    'name': 'level',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'permissionGroupId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

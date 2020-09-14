@@ -17,54 +17,50 @@
 ###########################################################################
 
 siteSettings_Schema = [
-  {
-    "name": "activeViewOptOut",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "adBlockingOptOut",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "disableNewCookie",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  [
     {
-      "description": "",
-      "name": "additionalKeyValues",
-      "type": "STRING",
-      "mode": "NULLABLE"
+        'name': 'activeViewOptOut',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE'
+    }, {
+        'name': 'adBlockingOptOut',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE'
+    }, {
+        'name': 'disableNewCookie',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE'
     },
-    {
-      "name": "includeClickThroughUrls",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    },
-    {
-      "name": "includeClickTracking",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "GENERATE_SEPARATE_TAG_FOR_EACH_KEYWORD, IGNORE, PLACEHOLDER_WITH_LIST_OF_KEYWORDS",
-      "name": "keywordOption",
-      "type": "STRING",
-      "mode": "NULLABLE"
+    [{
+        'description': '',
+        'name': 'additionalKeyValues',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'name': 'includeClickThroughUrls',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE'
+    }, {
+        'name': 'includeClickTracking',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE'
+    }, {
+        'description':
+            'GENERATE_SEPARATE_TAG_FOR_EACH_KEYWORD, IGNORE, '
+            'PLACEHOLDER_WITH_LIST_OF_KEYWORDS',
+        'name':
+            'keywordOption',
+        'type':
+            'STRING',
+        'mode':
+            'NULLABLE'
+    }], {
+        'name': 'videoActiveViewOptOutTemplate',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE'
+    }, {
+        'description': 'BOTH, DEFAULT, FLASH, HTML5',
+        'name': 'vpaidAdapterChoiceTemplate',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
     }
-  ],
-  {
-    "name": "videoActiveViewOptOutTemplate",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "BOTH, DEFAULT, FLASH, HTML5",
-    "name": "vpaidAdapterChoiceTemplate",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
 ]

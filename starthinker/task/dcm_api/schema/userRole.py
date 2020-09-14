@@ -16,83 +16,76 @@
 #
 ###########################################################################
 
-userRole_Schema = [
-  {
-    "description": "",
-    "name": "accountId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "defaultUserRole",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "id",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "name",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "parentUserRoleId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "permissions",
-    "type": "RECORD",
-    "mode": "REPEATED",
-    "fields": [
-      {
-        "description": "ACCOUNT_ALWAYS, ACCOUNT_BY_DEFAULT, NOT_AVAILABLE_BY_DEFAULT, SUBACCOUNT_AND_ACCOUNT_ALWAYS, SUBACCOUNT_AND_ACCOUNT_BY_DEFAULT",
-        "name": "availability",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "id",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "kind",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "name",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "permissionGroupId",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      }
-    ]
-  },
-  {
-    "description": "",
-    "name": "subaccountId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+userRole_Schema = [{
+    'description': '',
+    'name': 'accountId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'defaultUserRole',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'id',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'parentUserRoleId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'name':
+        'permissions',
+    'type':
+        'RECORD',
+    'mode':
+        'REPEATED',
+    'fields': [{
+        'description':
+            'ACCOUNT_ALWAYS, ACCOUNT_BY_DEFAULT, NOT_AVAILABLE_BY_DEFAULT, '
+            'SUBACCOUNT_AND_ACCOUNT_ALWAYS, SUBACCOUNT_AND_ACCOUNT_BY_DEFAULT',
+        'name':
+            'availability',
+        'type':
+            'STRING',
+        'mode':
+            'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'id',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'name',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'permissionGroupId',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }]
+}, {
+    'description': '',
+    'name': 'subaccountId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

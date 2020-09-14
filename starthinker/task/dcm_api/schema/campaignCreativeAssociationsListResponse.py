@@ -16,36 +16,32 @@
 #
 ###########################################################################
 
-campaignCreativeAssociationsListResponse_Schema = [
-  {
-    "name": "campaignCreativeAssociations",
-    "type": "RECORD",
-    "mode": "REPEATED",
-    "fields": [
-      {
-        "description": "",
-        "name": "creativeId",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "kind",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      }
-    ]
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "nextPageToken",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+campaignCreativeAssociationsListResponse_Schema = [{
+    'name':
+        'campaignCreativeAssociations',
+    'type':
+        'RECORD',
+    'mode':
+        'REPEATED',
+    'fields': [{
+        'description': '',
+        'name': 'creativeId',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }]
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'nextPageToken',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

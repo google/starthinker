@@ -16,17 +16,14 @@
 #
 ###########################################################################
 
-targetWindow_Schema = [
-  {
-    "description": "",
-    "name": "customHtml",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "CURRENT_WINDOW, CUSTOM, NEW_WINDOW",
-    "name": "targetWindowOption",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+targetWindow_Schema = [{
+    'description': '',
+    'name': 'customHtml',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': 'CURRENT_WINDOW, CUSTOM, NEW_WINDOW',
+    'name': 'targetWindowOption',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

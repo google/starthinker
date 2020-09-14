@@ -15,8 +15,6 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-
 """Command line to run all tests or list all runnable tests.
 
 Meant to speed up automated testing of StarThinker.
@@ -56,10 +54,10 @@ def json_expand_includes(script):
       json_set_fields(tasks, parameters['parameters'])
       for t in tasks:
         function, parameters = next(iter(t.items()))
-        expanded_tasks.append({function:parameters})
+        expanded_tasks.append({function: parameters})
 
     else:
-      expanded_tasks.append({function:parameters})
+      expanded_tasks.append({function: parameters})
 
   script['tasks'] = expanded_tasks
 
@@ -77,8 +75,7 @@ def load_tests():
 def configure_tests(scripts, tests):
   """Initialize all the necessary test files for Starthinker
 
-  Args:
-    None
+  Args: None
 
   Returns:
     None
@@ -103,16 +100,19 @@ def configure_tests(scripts, tests):
 
     for field in script_fields:
       fields.setdefault(script_name, {})
-      fields[script_name][field["name"]] = old_fields.get(script_name, {}).get(field["name"], field.get("default", ''))
-      fields[script_name]['%s_description' % field["name"]] = '(%s) %s' % (field.get('kind', 'string'), field.get('description', 'No description.'))
+      fields[script_name][field['name']] = old_fields.get(script_name, {}).get(
+          field['name'], field.get('default', ''))
+      fields[script_name][
+          '%s_description' % field['name']] = '(%s) %s' % (field.get(
+              'kind', 'string'), field.get('description', 'No description.'))
 
-      if field["name"] not in old_fields.get(script_name, {}):
-        print('NEW FIELD ADDED', script_name, field["name"])
+      if field['name'] not in old_fields.get(script_name, {}):
+        print('NEW FIELD ADDED', script_name, field['name'])
 
   # Save field values to config file
 
   if fields:
-    f = open(CONFIG_FILE,"w")
+    f = open(CONFIG_FILE, 'w')
     f.write(json.dumps(fields, sort_keys=True, indent=2))
     f.close()
   else:
@@ -128,7 +128,8 @@ def configure_tests(scripts, tests):
   recipes = []
   for filename, script in scripts:
     name = filename.split('.')[0]
-    if tests and name not in tests: continue
+    if tests and name not in tests:
+      continue
 
     # Set config field values into the script
     json_set_fields(script, fields.get(name, {}))
@@ -147,22 +148,27 @@ def configure_tests(scripts, tests):
 
   # Display instructions
 
-  print("")
-  print("------")
-  print("------------")
-  print("------------------------")
-  print("Some tests require custom values. Update the necessary fields for the tests you wish to run.")
-  print("EDIT: " + CONFIG_FILE)
-  print("------------------------")
-  print("Some tests require external assets.  Join the following group to gain access.")
-  print("VISIT: https://groups.google.com/forum/#!forum/starthinker-assets")
-  print("------------------------")
-  print("------------")
-  print("------")
-  print("")
+  print('')
+  print('------')
+  print('------------')
+  print('------------------------')
+  print(
+      'Some tests require custom values. Update the necessary fields for the tests you wish to run.'
+  )
+  print('EDIT: ' + CONFIG_FILE)
+  print('------------------------')
+  print(
+      'Some tests require external assets.  Join the following group to gain access.'
+  )
+  print('VISIT: https://groups.google.com/forum/#!forum/starthinker-assets')
+  print('------------------------')
+  print('------------')
+  print('------')
+  print('')
   sleep(3)
 
   return recipes
+
 
 def run_tests(scripts, recipes, tests):
 
@@ -175,25 +181,34 @@ def run_tests(scripts, recipes, tests):
 
   jobs = []
   for recipe in recipes:
-    if tests and recipe.split('.')[0] not in tests: continue
+    if tests and recipe.split('.')[0] not in tests:
+      continue
     command = [
-      '%s/starthinker_virtualenv/bin/python' % UI_ROOT,
-      '-W', 'ignore',
-      '%s/starthinker/all/run.py' % UI_ROOT,
-      RECIPE_DIRECTORY + recipe,
-      '-u $STARTHINKER_USER',
-      '-s $STARTHINKER_SERVICE',
-      '-c $STARTHINKER_CLIENT',
-      '-p $STARTHINKER_PROJECT',
-      '--verbose',
-      '--force',
+        '%s/starthinker_virtualenv/bin/python' % UI_ROOT,
+        '-W',
+        'ignore',
+        '%s/starthinker/all/run.py' % UI_ROOT,
+        RECIPE_DIRECTORY + recipe,
+        '-u $STARTHINKER_USER',
+        '-s $STARTHINKER_SERVICE',
+        '-c $STARTHINKER_CLIENT',
+        '-p $STARTHINKER_PROJECT',
+        '--verbose',
+        '--force',
     ]
 
     print('LAUNCHED:', ' '.join(command))
 
     jobs.append({
-      'recipe':recipe,
-      'process':subprocess.Popen(command, shell=False, cwd=UI_ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        'recipe':
+            recipe,
+        'process':
+            subprocess.Popen(
+                command,
+                shell=False,
+                cwd=UI_ROOT,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE)
     })
 
   # Monitor each job for completion and write to log
@@ -208,10 +223,13 @@ def run_tests(scripts, recipes, tests):
     if poll is not None:
       job = jobs.pop(i)
 
-      print('\nOK:' if poll == 0 else '\nFAILED:', job['recipe'], 'REMAINING:', len(jobs), [j['recipe'].replace('.json', '') for j in jobs])
+      print('\nOK:' if poll == 0 else '\nFAILED:', job['recipe'], 'REMAINING:',
+            len(jobs), [j['recipe'].replace('.json', '') for j in jobs])
 
       output, errors = job['process'].communicate()
-      with open(LOG_DIRECTORY + ('OK_' if poll == 0 else 'FAILED_') + job['recipe'].replace('.json', '.log'), 'w') as f:
+      with open(
+          LOG_DIRECTORY + ('OK_' if poll == 0 else 'FAILED_') +
+          job['recipe'].replace('.json', '.log'), 'w') as f:
         f.write(output.decode())
         f.write(errors.decode())
 
@@ -219,15 +237,15 @@ def run_tests(scripts, recipes, tests):
     if i == 0:
       i = len(jobs)
 
-  print("")
-  print("------")
-  print("------------")
-  print("------------------------")
+  print('')
+  print('------')
+  print('------------')
+  print('------------------------')
   print('TEST RESULTS: ls -1 %s*.log' % LOG_DIRECTORY)
-  print("------------------------")
-  print("------------")
-  print("------")
-  print("")
+  print('------------------------')
+  print('------------')
+  print('------')
+  print('')
 
 
 def generate_include(script_file):
@@ -237,21 +255,38 @@ def generate_include(script_file):
   print('    { "include":{')
   print('      "script":"%s",' % script_file)
   print('      "parameters":{')
-  print(',\n'.join(['        "%s":{"field":{ "name":"%s", "kind":"%s", "description":"%s" }}' % (field['name'], field['name'], field['kind'], field.get('description', '')) for field in json_get_fields(script)]))
+  print(',\n'.join([
+      '        "%s":{"field":{ "name":"%s", "kind":"%s", "description":"%s" }}'
+      % (field['name'], field['name'], field['kind'],
+         field.get('description', '')) for field in json_get_fields(script)
+  ]))
   print('      }')
   print('    }}')
-  print ('')
+  print('')
 
 
 def tests():
   parser = argparse.ArgumentParser()
-  parser.add_argument('-c', '--configure', help='Configure test in starthinker_assets/tests.json only.', action='store_true')
-  parser.add_argument('-t', '--tests', nargs='*', help='Run only these tests, name of test from scripts without .json part.')
-  parser.add_argument('-i', '--include', help='Create an include file for the script, used in tests.', default=None)
+  parser.add_argument(
+      '-c',
+      '--configure',
+      help='Configure test in starthinker_assets/tests.json only.',
+      action='store_true')
+  parser.add_argument(
+      '-t',
+      '--tests',
+      nargs='*',
+      help='Run only these tests, name of test from scripts without .json part.'
+  )
+  parser.add_argument(
+      '-i',
+      '--include',
+      help='Create an include file for the script, used in tests.',
+      default=None)
 
   args = parser.parse_args()
 
-  print("")
+  print('')
 
   if args.include:
     generate_include(args.include)
@@ -267,5 +302,5 @@ def tests():
       run_tests(scripts, recipes, tests)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   tests()

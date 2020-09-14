@@ -16,19 +16,60 @@
 #
 ###########################################################################
 
-Creative_Ad_Assignment_Schema = [
-  { "name":"Ad_Click_Url", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Ad_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_End_Date", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_Group1", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Creative_Group1_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_Group2", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Creative_Group2_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_Rotation_Type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Creative_Rotation_Type_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_Start_Date", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Creative_Ad_Assignment_Schema = [{
+    'name': 'Ad_Click_Url',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Ad_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Advertiser_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_End_Date',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Group1',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Group1_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Group2',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Group2_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Rotation_Type',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Rotation_Type_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Start_Date',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Config_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Account_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

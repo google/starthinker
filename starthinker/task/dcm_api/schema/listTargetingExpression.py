@@ -16,11 +16,9 @@
 #
 ###########################################################################
 
-listTargetingExpression_Schema = [
-  {
-    "description": "",
-    "name": "expression",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+listTargetingExpression_Schema = [{
+    'description': '',
+    'name': 'expression',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

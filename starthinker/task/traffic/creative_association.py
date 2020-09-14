@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""Handles creation and updates of creative asset association.
-
-"""
+"""Handles creation and updates of creative asset association."""
 
 import json
 
@@ -49,7 +47,8 @@ class CreativeAssociationDAO(BaseDAO):
 
   def _api(self, iterate=False):
     """Returns an DCM API instance for this DAO."""
-    return super(CreativeAssociationDAO, self)._api(iterate).campaignCreativeAssociations()
+    return super(CreativeAssociationDAO,
+                 self)._api(iterate).campaignCreativeAssociations()
 
   def get(self, feed_item):
     """It is not possible to retrieve creative associations from DCM,
@@ -90,10 +89,9 @@ class CreativeAssociationDAO(BaseDAO):
         association = {'creativeId': creative['id']}
 
         result = self._api().insert(
-          profileId=self.profile_id,
-          campaignId=campaign['id'],
-          body=association
-        ).execute()
+            profileId=self.profile_id,
+            campaignId=campaign['id'],
+            body=association).execute()
 
         feed_item[FieldMap.CAMPAIGN_CREATIVE_ASSOCIATION_ID] = '%s|%s' % (
             campaign['id'], creative['id'])

@@ -17,12 +17,14 @@
 ###########################################################################
 
 UniversalSite_Schema = [
-  { "name":"id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"name",
-    "type":"STRING",
-    "mode":"NULLABLE",
-  },
+    {
+        'name': 'id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'name',
+        'type': 'STRING',
+        'mode': 'NULLABLE',
+    },
 ]

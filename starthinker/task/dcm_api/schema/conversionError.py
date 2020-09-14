@@ -16,23 +16,19 @@
 #
 ###########################################################################
 
-conversionError_Schema = [
-  {
-    "description": "INTERNAL, INVALID_ARGUMENT, NOT_FOUND, PERMISSION_DENIED",
-    "name": "code",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "message",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+conversionError_Schema = [{
+    'description': 'INTERNAL, INVALID_ARGUMENT, NOT_FOUND, PERMISSION_DENIED',
+    'name': 'code',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'message',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

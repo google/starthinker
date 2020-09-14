@@ -21,6 +21,8 @@ from django.conf.urls import url
 from starthinker_ui.account import views
 
 urlpatterns = [
-  url(r'^oauth_callback/$', views.oauth_callback, name='account.oauth.callback'),
-  url(r'^logout/$', views.logout, name='account.logout'),
+    url(r'^oauth_callback/$',
+        views.oauth_callback,
+        name='account.oauth.callback'),
+    url(r'^logout/$', views.logout, name='account.logout'),
 ]

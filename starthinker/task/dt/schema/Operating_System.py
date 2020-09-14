@@ -16,7 +16,12 @@
 #
 ###########################################################################
 
-Operating_System_Schema = [
-  { "name":"Operating_System", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Operating_System_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Operating_System_Schema = [{
+    'name': 'Operating_System',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Operating_System_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

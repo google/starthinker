@@ -16,36 +16,32 @@
 #
 ###########################################################################
 
-creativeAssetSelection_Schema = [
-  {
-    "description": "",
-    "name": "defaultAssetId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "rules",
-    "type": "RECORD",
-    "mode": "REPEATED",
-    "fields": [
-      {
-        "description": "",
-        "name": "assetId",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "name",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "targetingTemplateId",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      }
-    ]
-  }
-]
+creativeAssetSelection_Schema = [{
+    'description': '',
+    'name': 'defaultAssetId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'name':
+        'rules',
+    'type':
+        'RECORD',
+    'mode':
+        'REPEATED',
+    'fields': [{
+        'description': '',
+        'name': 'assetId',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'name',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'targetingTemplateId',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }]
+}]

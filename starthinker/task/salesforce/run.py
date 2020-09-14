@@ -15,10 +15,10 @@
 #  limitations under the License.
 #
 ###########################################################################
-
 """Handler that executes { "salesforce":{...}} task in recipe JSON.
 
-This script translates JSON instructions into operations on salesforce reporting.
+This script translates JSON instructions into operations on salesforce
+reporting.
 
 """
 
@@ -29,20 +29,18 @@ from starthinker.util.salesforce import authenticate, query
 
 @project.from_parameters
 def salesforce():
-  if project.verbose: print('Salesforce')
+  if project.verbose:
+    print('Salesforce')
 
-  sf = authenticate(
-    project.task['domain'],
-    project.task['client'],
-    project.task['secret'],
-    project.task['username'],
-    project.task['password']
-  )
+  sf = authenticate(project.task['domain'], project.task['client'],
+                    project.task['secret'], project.task['username'],
+                    project.task['password'])
 
   if 'query' in project.task:
     rows = query(sf, project.task['query'])
-    if rows: put_rows(project.task['auth'], project.task['out'], rows)
+    if rows:
+      put_rows(project.task['auth'], project.task['out'], rows)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   salesforce()

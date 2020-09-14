@@ -19,7 +19,7 @@
 from starthinker_ui.recipe.scripts import Script
 from starthinker.script.parse import json_get_fields, dict_to_string, fields_to_string
 
-AIRFLOW_TEMPLATE = '''###########################################################################
+AIRFLOW_TEMPLATE = """###########################################################################
 #
 #  Copyright 2020 Google LLC
 #
@@ -49,7 +49,7 @@ Before running this Airflow module...
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
@@ -78,15 +78,16 @@ DAG = DAG_FACTORY.execute()
 
 if __name__ == "__main__":
   DAG_FACTORY.print_commandline()
-'''
+"""
 
 
-def script_to_dag(dag_name, title, description, instructions, tasks, parameters={}):
-  return AIRFLOW_TEMPLATE % (
-    title,
-    description,
-    '\n'.join(instructions),
-    fields_to_string(json_get_fields(tasks), parameters),
-    dict_to_string(tasks, skip=('fields',)),
-    dag_name
-  )
+def script_to_dag(dag_name,
+                  title,
+                  description,
+                  instructions,
+                  tasks,
+                  parameters={}):
+  return AIRFLOW_TEMPLATE % (title, description, '\n'.join(instructions),
+                             fields_to_string(
+                                 json_get_fields(tasks), parameters),
+                             dict_to_string(tasks, skip=('fields',)), dag_name)

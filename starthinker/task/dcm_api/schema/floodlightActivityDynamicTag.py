@@ -16,23 +16,19 @@
 #
 ###########################################################################
 
-floodlightActivityDynamicTag_Schema = [
-  {
-    "description": "",
-    "name": "id",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "name",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "tag",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+floodlightActivityDynamicTag_Schema = [{
+    'description': '',
+    'name': 'id',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'tag',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

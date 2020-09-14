@@ -16,27 +16,27 @@
 #
 ###########################################################################
 
-tagSetting_Schema = [
-  {
-    "description": "",
-    "name": "additionalKeyValues",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "includeClickThroughUrls",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "includeClickTracking",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "GENERATE_SEPARATE_TAG_FOR_EACH_KEYWORD, IGNORE, PLACEHOLDER_WITH_LIST_OF_KEYWORDS",
-    "name": "keywordOption",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+tagSetting_Schema = [{
+    'description': '',
+    'name': 'additionalKeyValues',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'includeClickThroughUrls',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'includeClickTracking',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description':
+        'GENERATE_SEPARATE_TAG_FOR_EACH_KEYWORD, IGNORE, '
+        'PLACEHOLDER_WITH_LIST_OF_KEYWORDS',
+    'name':
+        'keywordOption',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}]

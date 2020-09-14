@@ -16,7 +16,6 @@
 #
 ###########################################################################
 
-
 from starthinker.util.project import project
 from starthinker.util.data import put_rows, get_rows
 from starthinker.util.dbm import lineitem_read, lineitem_write
@@ -25,7 +24,8 @@ from starthinker.util.dbm.schema import LineItem_Read_Schema
 
 @project.from_parameters
 def lineitem():
-  if project.verbose: print('LINEITEM')
+  if project.verbose:
+    print('LINEITEM')
 
   if 'read' in project.task:
     advertisers = []
@@ -33,21 +33,20 @@ def lineitem():
     line_items = []
 
     if 'advertisers' in project.task['read']:
-      advertisers = get_rows(project.task['auth'], project.task['read']['advertisers'])
+      advertisers = get_rows(project.task['auth'],
+                             project.task['read']['advertisers'])
 
     elif 'insertion_orders' in project.task['read']:
-      insertion_orders = get_rows(project.task['auth'], project.task['read']['insertion_orders'])
+      insertion_orders = get_rows(project.task['auth'],
+                                  project.task['read']['insertion_orders'])
 
     elif 'line_items' in project.task['read']:
-      line_items = list(get_rows(project.task['auth'], project.task['read']['line_items']))
+      line_items = list(
+          get_rows(project.task['auth'], project.task['read']['line_items']))
       print('LI', line_items)
 
-    rows = lineitem_read(
-      project.task['auth'],
-      advertisers,
-      insertion_orders,
-      line_items
-    )
+    rows = lineitem_read(project.task['auth'], advertisers, insertion_orders,
+                         line_items)
 
     if rows:
       if 'bigquery' in project.task['read']['out']:
@@ -58,12 +57,9 @@ def lineitem():
 
   elif 'write' in project.task:
     rows = get_rows(project.task['auth'], project.task['write'])
-    lineitem_write(
-      project.task['auth'],
-      rows,
-      project.task['write'].get('dry_run', True)
-    )
+    lineitem_write(project.task['auth'], rows,
+                   project.task['write'].get('dry_run', True))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   lineitem()

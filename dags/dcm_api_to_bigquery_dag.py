@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-'''
---------------------------------------------------------------
+"""--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -28,145 +26,120 @@ Before running this Airflow module...
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
 
 CM API To BigQuery
 
-Write the current state of accounts, subaccounts, profiles, advertisers, campaigns, sites, roles, and reports to BigQuery for a given list of CM accounts.
+Write the current state of accounts, subaccounts, profiles, advertisers,
+campaigns, sites, roles, and reports to BigQuery for a given list of CM
+accounts.
 
 Specify the name of the dataset, several tables will be created here.
 If dataset exists, it is inchanged.
 Add CM account ids for the accounts to pull data from.
 
-'''
+"""
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
+GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
 
 INPUTS = {
-  'endpoint': '',
-  'auth_read': 'user',  # Credentials used for reading data.
-  'dataset': '',  # Google BigQuery dataset to create tables in.
-  'auth_write': 'service',  # Credentials used for writing data.
-  'accounts': '',  # Comma separated CM account ids.
+    'endpoint': '',
+    'auth_read': 'user',  # Credentials used for reading data.
+    'dataset': '',  # Google BigQuery dataset to create tables in.
+    'auth_write': 'service',  # Credentials used for writing data.
+    'accounts': '',  # Comma separated CM account ids.
 }
 
-TASKS = [
-  {
+TASKS = [{
     'dcm_api': {
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'name': 'auth_read',
-          'default': 'user',
-          'kind': 'authentication',
-          'order': 1
-        }
-      },
-      'accounts': {
-        'single_cell': True,
-        'values': {
-          'field': {
-            'description': 'Comma separated CM account ids.',
-            'name': 'accounts',
-            'default': '',
-            'kind': 'integer_list',
-            'order': 2
-          }
-        }
-      },
-      'endpoints': {
-        'field': {
-          'name': 'endpoint',
-          'default': '',
-          'kind': 'choice',
-          'choices': [
-            'accountPermissionGroups',
-            'accountPermissions',
-            'accountUserProfiles',
-            'accounts',
-            'ads',
-            'advertiserGroups',
-            'advertiserLandingPages',
-            'advertisers',
-            'browsers',
-            'campaigns',
-            'changeLogs',
-            'cities',
-            'connectionTypes',
-            'contentCategories',
-            'countries',
-            'creativeFields',
-            'creativeGroups',
-            'creatives',
-            'directorySites',
-            'dynamicTargetingKeys',
-            'eventTags',
-            'files',
-            'floodlightActivities',
-            'floodlightActivityGroups',
-            'floodlightConfigurations',
-            'languages',
-            'metros',
-            'mobileApps',
-            'mobileCarriers',
-            'operatingSystemVersions',
-            'operatingSystems',
-            'placementGroups',
-            'placementStrategies',
-            'placements',
-            'platformTypes',
-            'postalCodes',
-            'projects',
-            'regions',
-            'remarketingLists',
-            'reports',
-            'sites',
-            'sizes',
-            'subaccounts',
-            'targetableRemarketingLists',
-            'targetingTemplates',
-            'userprofiles',
-            'userRolePermissionGroups',
-            'userRolePermissions',
-            'userRoles',
-            'videoFormats'
-          ]
-        }
-      },
-      'out': {
         'auth': {
-          'field': {
-            'description': 'Credentials used for writing data.',
-            'name': 'auth_write',
-            'default': 'service',
-            'kind': 'authentication',
-            'order': 1
-          }
+            'field': {
+                'description': 'Credentials used for reading data.',
+                'name': 'auth_read',
+                'default': 'user',
+                'kind': 'authentication',
+                'order': 1
+            }
         },
-        'dataset': {
-          'field': {
-            'description': 'Google BigQuery dataset to create tables in.',
-            'name': 'dataset',
-            'default': '',
-            'kind': 'string',
-            'order': 1
-          }
+        'accounts': {
+            'single_cell': True,
+            'values': {
+                'field': {
+                    'description': 'Comma separated CM account ids.',
+                    'name': 'accounts',
+                    'default': '',
+                    'kind': 'integer_list',
+                    'order': 2
+                }
+            }
+        },
+        'endpoints': {
+            'field': {
+                'name':
+                    'endpoint',
+                'default':
+                    '',
+                'kind':
+                    'choice',
+                'choices': [
+                    'accountPermissionGroups', 'accountPermissions',
+                    'accountUserProfiles', 'accounts', 'ads',
+                    'advertiserGroups', 'advertiserLandingPages', 'advertisers',
+                    'browsers', 'campaigns', 'changeLogs', 'cities',
+                    'connectionTypes', 'contentCategories', 'countries',
+                    'creativeFields', 'creativeGroups', 'creatives',
+                    'directorySites', 'dynamicTargetingKeys', 'eventTags',
+                    'files', 'floodlightActivities', 'floodlightActivityGroups',
+                    'floodlightConfigurations', 'languages', 'metros',
+                    'mobileApps', 'mobileCarriers', 'operatingSystemVersions',
+                    'operatingSystems', 'placementGroups',
+                    'placementStrategies', 'placements', 'platformTypes',
+                    'postalCodes', 'projects', 'regions', 'remarketingLists',
+                    'reports', 'sites', 'sizes', 'subaccounts',
+                    'targetableRemarketingLists', 'targetingTemplates',
+                    'userprofiles', 'userRolePermissionGroups',
+                    'userRolePermissions', 'userRoles', 'videoFormats'
+                ]
+            }
+        },
+        'out': {
+            'auth': {
+                'field': {
+                    'description': 'Credentials used for writing data.',
+                    'name': 'auth_write',
+                    'default': 'service',
+                    'kind': 'authentication',
+                    'order': 1
+                }
+            },
+            'dataset': {
+                'field': {
+                    'description':
+                        'Google BigQuery dataset to create tables in.',
+                    'name':
+                        'dataset',
+                    'default':
+                        '',
+                    'kind':
+                        'string',
+                    'order':
+                        1
+                }
+            }
         }
-      }
     }
-  }
-]
+}]
 
-DAG_FACTORY = DAG_Factory('dcm_api_to_bigquery', { 'tasks':TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('dcm_api_to_bigquery', {'tasks': TASKS}, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   DAG_FACTORY.print_commandline()

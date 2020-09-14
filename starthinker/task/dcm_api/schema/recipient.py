@@ -16,23 +16,19 @@
 #
 ###########################################################################
 
-recipient_Schema = [
-  {
-    "description": "ATTACHMENT, LINK",
-    "name": "deliveryType",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "email",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+recipient_Schema = [{
+    'description': 'ATTACHMENT, LINK',
+    'name': 'deliveryType',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'email',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

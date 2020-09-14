@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""Handles creation and updates of Ads.
-
-"""
+"""Handles creation and updates of Ads."""
 
 from starthinker.task.traffic.dao import BaseDAO
 from starthinker.task.traffic.landing_page import LandingPageDAO
@@ -64,8 +62,10 @@ class CampaignDAO(BaseDAO):
     feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_ID] = lp['id']
     feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_NAME] = lp['name']
 
-    item['startDate'] = StringExtensions.convertDateTimeStrToDateStr(feed_item.get(FieldMap.CAMPAIGN_START_DATE, None))
-    item['endDate'] = StringExtensions.convertDateTimeStrToDateStr(feed_item.get(FieldMap.CAMPAIGN_END_DATE, None))
+    item['startDate'] = StringExtensions.convertDateTimeStrToDateStr(
+        feed_item.get(FieldMap.CAMPAIGN_START_DATE, None))
+    item['endDate'] = StringExtensions.convertDateTimeStrToDateStr(
+        feed_item.get(FieldMap.CAMPAIGN_END_DATE, None))
     item['name'] = feed_item.get(FieldMap.CAMPAIGN_NAME, None)
     item['defaultLandingPageId'] = lp['id']
 
@@ -88,10 +88,16 @@ class CampaignDAO(BaseDAO):
     feed_item[FieldMap.CAMPAIGN_LANDING_PAGE_NAME] = lp['name']
 
     return {
-        'advertiserId': feed_item.get(FieldMap.ADVERTISER_ID, None),
-        'name': feed_item.get(FieldMap.CAMPAIGN_NAME, None),
-        'startDate': StringExtensions.convertDateTimeStrToDateStr(feed_item.get(FieldMap.CAMPAIGN_START_DATE, None)),
-        'endDate': StringExtensions.convertDateTimeStrToDateStr(feed_item.get(FieldMap.CAMPAIGN_END_DATE, None)),
-        'defaultLandingPageId': lp['id']
+        'advertiserId':
+            feed_item.get(FieldMap.ADVERTISER_ID, None),
+        'name':
+            feed_item.get(FieldMap.CAMPAIGN_NAME, None),
+        'startDate':
+            StringExtensions.convertDateTimeStrToDateStr(
+                feed_item.get(FieldMap.CAMPAIGN_START_DATE, None)),
+        'endDate':
+            StringExtensions.convertDateTimeStrToDateStr(
+                feed_item.get(FieldMap.CAMPAIGN_END_DATE, None)),
+        'defaultLandingPageId':
+            lp['id']
     }
-

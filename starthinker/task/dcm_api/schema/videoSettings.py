@@ -16,125 +16,101 @@
 #
 ###########################################################################
 
-videoSettings_Schema = [
-  [
-    {
-      "name": "companionsDisabled",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    },
-    {
-      "name": "enabledSizes",
-      "type": "RECORD",
-      "mode": "REPEATED",
-      "fields": [
-        {
-          "description": "",
-          "name": "height",
-          "type": "INT64",
-          "mode": "NULLABLE"
-        },
-        {
-          "name": "iab",
-          "type": "BOOLEAN",
-          "mode": "NULLABLE"
-        },
-        {
-          "description": "",
-          "name": "id",
-          "type": "INT64",
-          "mode": "NULLABLE"
-        },
-        {
-          "description": "",
-          "name": "kind",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "description": "",
-          "name": "width",
-          "type": "INT64",
-          "mode": "NULLABLE"
-        }
-      ]
-    },
-    {
-      "name": "imageOnly",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "kind",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    }
-  ],
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "ANY, LANDSCAPE, PORTRAIT",
-    "name": "orientation",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  [
-    {
-      "description": "",
-      "name": "kind",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    [
-      {
-        "description": "",
-        "name": "offsetPercentage",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "offsetSeconds",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      }
-    ],
-    [
-      {
-        "description": "",
-        "name": "offsetPercentage",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "offsetSeconds",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      }
-    ],
-    {
-      "name": "skippable",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    }
-  ],
-  [
-    {
-      "name": "enabledVideoFormats",
-      "type": "INT64",
-      "mode": "REPEATED"
-    },
-    {
-      "description": "",
-      "name": "kind",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    }
-  ]
-]
+videoSettings_Schema = [[{
+    'name': 'companionsDisabled',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'name':
+        'enabledSizes',
+    'type':
+        'RECORD',
+    'mode':
+        'REPEATED',
+    'fields': [{
+        'description': '',
+        'name': 'height',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'name': 'iab',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'id',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'width',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }]
+}, {
+    'name': 'imageOnly',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}], {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': 'ANY, LANDSCAPE, PORTRAIT',
+    'name': 'orientation',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+},
+                        [{
+                            'description': '',
+                            'name': 'kind',
+                            'type': 'STRING',
+                            'mode': 'NULLABLE'
+                        },
+                         [{
+                             'description': '',
+                             'name': 'offsetPercentage',
+                             'type': 'INT64',
+                             'mode': 'NULLABLE'
+                         }, {
+                             'description': '',
+                             'name': 'offsetSeconds',
+                             'type': 'INT64',
+                             'mode': 'NULLABLE'
+                         }],
+                         [{
+                             'description': '',
+                             'name': 'offsetPercentage',
+                             'type': 'INT64',
+                             'mode': 'NULLABLE'
+                         }, {
+                             'description': '',
+                             'name': 'offsetSeconds',
+                             'type': 'INT64',
+                             'mode': 'NULLABLE'
+                         }], {
+                             'name': 'skippable',
+                             'type': 'BOOLEAN',
+                             'mode': 'NULLABLE'
+                         }],
+                        [{
+                            'name': 'enabledVideoFormats',
+                            'type': 'INT64',
+                            'mode': 'REPEATED'
+                        }, {
+                            'description': '',
+                            'name': 'kind',
+                            'type': 'STRING',
+                            'mode': 'NULLABLE'
+                        }]]

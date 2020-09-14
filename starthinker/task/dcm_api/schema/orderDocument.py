@@ -16,105 +16,89 @@
 #
 ###########################################################################
 
-orderDocument_Schema = [
-  {
-    "description": "",
-    "name": "accountId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "advertiserId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "amendedOrderDocumentId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "approvedByUserProfileIds",
-    "type": "INT64",
-    "mode": "REPEATED"
-  },
-  {
-    "name": "cancelled",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  [
-    {
-      "description": "",
-      "name": "time",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    }
-  ],
-  {
-    "description": "",
-    "name": "effectiveDate",
-    "type": "DATE",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "id",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "lastSentRecipients",
-    "type": "STRING",
-    "mode": "REPEATED"
-  },
-  {
-    "description": "",
-    "name": "lastSentTime",
-    "type": "DATETIME",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "orderId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "projectId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "signed",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "subaccountId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "title",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "PLANNING_ORDER_TYPE_CHANGE_ORDER, PLANNING_ORDER_TYPE_INSERTION_ORDER",
-    "name": "type",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+orderDocument_Schema = [{
+    'description': '',
+    'name': 'accountId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'advertiserId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'amendedOrderDocumentId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'approvedByUserProfileIds',
+    'type': 'INT64',
+    'mode': 'REPEATED'
+}, {
+    'name': 'cancelled',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, [{
+    'description': '',
+    'name': 'time',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}], {
+    'description': '',
+    'name': 'effectiveDate',
+    'type': 'DATE',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'id',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'lastSentRecipients',
+    'type': 'STRING',
+    'mode': 'REPEATED'
+}, {
+    'description': '',
+    'name': 'lastSentTime',
+    'type': 'DATETIME',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'orderId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'projectId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'signed',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'subaccountId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'title',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description':
+        'PLANNING_ORDER_TYPE_CHANGE_ORDER, PLANNING_ORDER_TYPE_INSERTION_ORDER',
+    'name':
+        'type',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}]

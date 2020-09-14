@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""Handles creation and updates of video formats.
-
-"""
+"""Handles creation and updates of video formats."""
 
 import sys
 
@@ -53,7 +51,8 @@ class VideoFormatDAO(BaseDAO):
     """
 
     if not self._video_formats:
-      self._video_formats = list(self._api(iterate=True).list(profileId=self.profile_id).execute())
+      self._video_formats = list(
+          self._api(iterate=True).list(profileId=self.profile_id).execute())
 
     return self._video_formats
 
@@ -64,7 +63,8 @@ class VideoFormatDAO(BaseDAO):
       transcode_config: The transcode configuration feed item.
 
     Returns:
-      All trancode objects from Campaign Manager that match the transcode configuration specified.
+      All trancode objects from Campaign Manager that match the transcode
+      configuration specified.
     """
     result = []
     REALLY_BIG_INT = 9223372036854775807
@@ -73,12 +73,20 @@ class VideoFormatDAO(BaseDAO):
       for video_format in self.get_video_formats():
         for transcode_config in transcode_configs:
           min_width = int(transcode_config.get(FieldMap.TRANSCODE_MIN_WIDTH, 0))
-          min_height = int(transcode_config.get(FieldMap.TRANSCODE_MIN_HEIGHT, 0))
-          min_bitrate = int(transcode_config.get(FieldMap.TRANSCODE_MIN_BITRATE, 0))
+          min_height = int(
+              transcode_config.get(FieldMap.TRANSCODE_MIN_HEIGHT, 0))
+          min_bitrate = int(
+              transcode_config.get(FieldMap.TRANSCODE_MIN_BITRATE, 0))
 
-          max_width = int(transcode_config.get(FieldMap.TRANSCODE_MAX_WIDTH, REALLY_BIG_INT))
-          max_height = int(transcode_config.get(FieldMap.TRANSCODE_MAX_HEIGHT, REALLY_BIG_INT))
-          max_bitrate = int(transcode_config.get(FieldMap.TRANSCODE_MAX_BITRATE, REALLY_BIG_INT))
+          max_width = int(
+              transcode_config.get(FieldMap.TRANSCODE_MAX_WIDTH,
+                                   REALLY_BIG_INT))
+          max_height = int(
+              transcode_config.get(FieldMap.TRANSCODE_MAX_HEIGHT,
+                                   REALLY_BIG_INT))
+          max_bitrate = int(
+              transcode_config.get(FieldMap.TRANSCODE_MAX_BITRATE,
+                                   REALLY_BIG_INT))
 
           file_format = transcode_config.get(FieldMap.TRANSCODE_FORMAT, '')
 

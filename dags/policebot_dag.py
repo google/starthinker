@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-'''
---------------------------------------------------------------
+"""--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -28,57 +26,59 @@ Before running this Airflow module...
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
 
 PoliceBot
 
-A tool that helps enforce CM object name conventions by checking names against a set of client-defined patterns, and emailing violations to appropriate agency teams on a daily basis.
+A tool that helps enforce CM object name conventions by checking names against a
+set of client-defined patterns, and emailing violations to appropriate agency
+teams on a daily basis.
 
 Add this card to a recipe and save it.
 Then click <strong>Run Now</strong> to deploy.
-Follow the <a href="https://docs.google.com/document/d/1euSZt5VFmaMfV-vShb6NH6LWfA7a5KSPpSl1hYeNlAA">instructions</a> for setup.
+Follow the <a
+href="https://docs.google.com/document/d/1euSZt5VFmaMfV-vShb6NH6LWfA7a5KSPpSl1hYeNlAA">instructions</a>
+for setup.
 
-'''
+"""
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
+GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
 
 INPUTS = {
-  'recipe_name': '',  # Name of document to deploy to.
+    'recipe_name': '',  # Name of document to deploy to.
 }
 
-TASKS = [
-  {
+TASKS = [{
     'drive': {
-      'auth': 'user',
-      'copy': {
-        'source': 'https://docs.google.com/spreadsheets/d/1dkESiK2s8YvdC03F3t4Jk_wvxJ0NMNk8CTGxO0HQk6I',
-        'destination': {
-          'field': {
-            'name': 'recipe_name',
-            'default': '',
-            'description': 'Name of document to deploy to.',
-            'prefix': 'PoliceBot For ',
-            'kind': 'string',
-            'order': 1
-          }
-        }
-      },
-      'hour': [
-      ]
+        'auth': 'user',
+        'copy': {
+            'source':
+                'https://docs.google.com/spreadsheets/d/1dkESiK2s8YvdC03F3t4Jk_wvxJ0NMNk8CTGxO0HQk6I',
+            'destination': {
+                'field': {
+                    'name': 'recipe_name',
+                    'default': '',
+                    'description': 'Name of document to deploy to.',
+                    'prefix': 'PoliceBot For ',
+                    'kind': 'string',
+                    'order': 1
+                }
+            }
+        },
+        'hour': []
     }
-  }
-]
+}]
 
-DAG_FACTORY = DAG_Factory('policebot', { 'tasks':TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('policebot', {'tasks': TASKS}, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   DAG_FACTORY.print_commandline()

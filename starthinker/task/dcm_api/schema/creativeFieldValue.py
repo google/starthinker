@@ -16,23 +16,19 @@
 #
 ###########################################################################
 
-creativeFieldValue_Schema = [
-  {
-    "description": "",
-    "name": "id",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "value",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+creativeFieldValue_Schema = [{
+    'description': '',
+    'name': 'id',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'value',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

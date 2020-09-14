@@ -16,36 +16,35 @@
 #
 ###########################################################################
 
-deliverySchedule_Schema = [
-  [
-    {
-      "description": "",
-      "name": "duration",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "impressions",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    }
-  ],
-  {
-    "name": "hardCutoff",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "impressionRatio",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "AD_PRIORITY_01, AD_PRIORITY_02, AD_PRIORITY_03, AD_PRIORITY_04, AD_PRIORITY_05, AD_PRIORITY_06, AD_PRIORITY_07, AD_PRIORITY_08, AD_PRIORITY_09, AD_PRIORITY_10, AD_PRIORITY_11, AD_PRIORITY_12, AD_PRIORITY_13, AD_PRIORITY_14, AD_PRIORITY_15, AD_PRIORITY_16",
-    "name": "priority",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+deliverySchedule_Schema = [[{
+    'description': '',
+    'name': 'duration',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'impressions',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}], {
+    'name': 'hardCutoff',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'impressionRatio',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description':
+        'AD_PRIORITY_01, AD_PRIORITY_02, AD_PRIORITY_03, AD_PRIORITY_04, '
+        'AD_PRIORITY_05, AD_PRIORITY_06, AD_PRIORITY_07, AD_PRIORITY_08, '
+        'AD_PRIORITY_09, AD_PRIORITY_10, AD_PRIORITY_11, AD_PRIORITY_12, '
+        'AD_PRIORITY_13, AD_PRIORITY_14, AD_PRIORITY_15, AD_PRIORITY_16',
+    'name':
+        'priority',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}]

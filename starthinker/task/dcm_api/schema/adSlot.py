@@ -16,52 +16,53 @@
 #
 ###########################################################################
 
-adSlot_Schema = [
-  {
-    "description": "",
-    "name": "comment",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "APP, APP_INTERSTITIAL, DISPLAY, DISPLAY_INTERSTITIAL, IN_STREAM_AUDIO, IN_STREAM_VIDEO",
-    "name": "compatibility",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "height",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "linkedPlacementId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "name",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "PLANNING_PAYMENT_SOURCE_TYPE_AGENCY_PAID, PLANNING_PAYMENT_SOURCE_TYPE_PUBLISHER_PAID",
-    "name": "paymentSourceType",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "primary",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "width",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+adSlot_Schema = [{
+    'description': '',
+    'name': 'comment',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description':
+        'APP, APP_INTERSTITIAL, DISPLAY, DISPLAY_INTERSTITIAL, '
+        'IN_STREAM_AUDIO, IN_STREAM_VIDEO',
+    'name':
+        'compatibility',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}, {
+    'description': '',
+    'name': 'height',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'linkedPlacementId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description':
+        'PLANNING_PAYMENT_SOURCE_TYPE_AGENCY_PAID, '
+        'PLANNING_PAYMENT_SOURCE_TYPE_PUBLISHER_PAID',
+    'name':
+        'paymentSourceType',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}, {
+    'name': 'primary',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'width',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

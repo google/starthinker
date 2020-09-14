@@ -16,123 +16,112 @@
 #
 ###########################################################################
 
-fileList_Schema = [
-  {
-    "description": "",
-    "name": "etag",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "items",
-    "type": "RECORD",
-    "mode": "REPEATED",
-    "fields": [
-      [
-        {
-          "description": "",
-          "name": "endDate",
-          "type": "DATE",
-          "mode": "NULLABLE"
-        },
-        {
-          "description": "",
-          "name": "kind",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY",
-          "name": "relativeDateRange",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "description": "",
-          "name": "startDate",
-          "type": "DATE",
-          "mode": "NULLABLE"
-        }
-      ],
-      {
-        "description": "",
-        "name": "etag",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "fileName",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "CSV, EXCEL",
-        "name": "format",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "id",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "kind",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "lastModifiedTime",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "reportId",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "CANCELLED, FAILED, PROCESSING, REPORT_AVAILABLE",
-        "name": "status",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "name": "urls",
-        "type": "RECORD",
-        "mode": "NULLABLE",
-        "fields": [
-          {
-            "description": "",
-            "name": "apiUrl",
-            "type": "STRING",
-            "mode": "NULLABLE"
-          },
-          {
-            "description": "",
-            "name": "browserUrl",
-            "type": "STRING",
-            "mode": "NULLABLE"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "nextPageToken",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+fileList_Schema = [{
+    'description': '',
+    'name': 'etag',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name':
+        'items',
+    'type':
+        'RECORD',
+    'mode':
+        'REPEATED',
+    'fields': [[{
+        'description': '',
+        'name': 'endDate',
+        'type': 'DATE',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description':
+            'LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, '
+            'LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, '
+            'PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, '
+            'QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY',
+        'name':
+            'relativeDateRange',
+        'type':
+            'STRING',
+        'mode':
+            'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'startDate',
+        'type': 'DATE',
+        'mode': 'NULLABLE'
+    }], {
+        'description': '',
+        'name': 'etag',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'fileName',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': 'CSV, EXCEL',
+        'name': 'format',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'id',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'lastModifiedTime',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'reportId',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'description': 'CANCELLED, FAILED, PROCESSING, REPORT_AVAILABLE',
+        'name': 'status',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'name':
+            'urls',
+        'type':
+            'RECORD',
+        'mode':
+            'NULLABLE',
+        'fields': [{
+            'description': '',
+            'name': 'apiUrl',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
+        }, {
+            'description': '',
+            'name': 'browserUrl',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
+        }]
+    }]
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'nextPageToken',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

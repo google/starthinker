@@ -16,34 +16,28 @@
 #
 ###########################################################################
 
-size_Schema = [
-  {
-    "description": "",
-    "name": "height",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "iab",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "id",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "width",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+size_Schema = [{
+    'description': '',
+    'name': 'height',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'iab',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'id',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'width',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

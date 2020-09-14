@@ -16,23 +16,19 @@
 #
 ###########################################################################
 
-floodlightActivitiesGenerateTagResponse_Schema = [
-  {
-    "description": "",
-    "name": "floodlightActivityTag",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "globalSiteTagGlobalSnippet",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+floodlightActivitiesGenerateTagResponse_Schema = [{
+    'description': '',
+    'name': 'floodlightActivityTag',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'globalSiteTagGlobalSnippet',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

@@ -16,66 +16,79 @@
 #
 ###########################################################################
 
-pricing_Schema = [
-  {
-    "description": "PLANNING_PLACEMENT_CAP_COST_TYPE_CUMULATIVE, PLANNING_PLACEMENT_CAP_COST_TYPE_MONTHLY, PLANNING_PLACEMENT_CAP_COST_TYPE_NONE",
-    "name": "capCostType",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "endDate",
-    "type": "DATE",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "flights",
-    "type": "RECORD",
-    "mode": "REPEATED",
-    "fields": [
-      {
-        "description": "",
-        "name": "endDate",
-        "type": "DATE",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "rateOrCost",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "startDate",
-        "type": "DATE",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "units",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      }
-    ]
-  },
-  {
-    "description": "PLANNING_PLACEMENT_GROUP_TYPE_PACKAGE, PLANNING_PLACEMENT_GROUP_TYPE_ROADBLOCK",
-    "name": "groupType",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "PLANNING_PLACEMENT_PRICING_TYPE_CLICKS, PLANNING_PLACEMENT_PRICING_TYPE_CPA, PLANNING_PLACEMENT_PRICING_TYPE_CPC, PLANNING_PLACEMENT_PRICING_TYPE_CPM, PLANNING_PLACEMENT_PRICING_TYPE_CPM_ACTIVEVIEW, PLANNING_PLACEMENT_PRICING_TYPE_FLAT_RATE_CLICKS, PLANNING_PLACEMENT_PRICING_TYPE_FLAT_RATE_IMPRESSIONS, PLANNING_PLACEMENT_PRICING_TYPE_IMPRESSIONS",
-    "name": "pricingType",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "startDate",
-    "type": "DATE",
-    "mode": "NULLABLE"
-  }
-]
+pricing_Schema = [{
+    'description':
+        'PLANNING_PLACEMENT_CAP_COST_TYPE_CUMULATIVE, '
+        'PLANNING_PLACEMENT_CAP_COST_TYPE_MONTHLY, '
+        'PLANNING_PLACEMENT_CAP_COST_TYPE_NONE',
+    'name':
+        'capCostType',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}, {
+    'description': '',
+    'name': 'endDate',
+    'type': 'DATE',
+    'mode': 'NULLABLE'
+}, {
+    'name':
+        'flights',
+    'type':
+        'RECORD',
+    'mode':
+        'REPEATED',
+    'fields': [{
+        'description': '',
+        'name': 'endDate',
+        'type': 'DATE',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'rateOrCost',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'startDate',
+        'type': 'DATE',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'units',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }]
+}, {
+    'description':
+        'PLANNING_PLACEMENT_GROUP_TYPE_PACKAGE, '
+        'PLANNING_PLACEMENT_GROUP_TYPE_ROADBLOCK',
+    'name':
+        'groupType',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}, {
+    'description':
+        'PLANNING_PLACEMENT_PRICING_TYPE_CLICKS, '
+        'PLANNING_PLACEMENT_PRICING_TYPE_CPA, '
+        'PLANNING_PLACEMENT_PRICING_TYPE_CPC, '
+        'PLANNING_PLACEMENT_PRICING_TYPE_CPM, '
+        'PLANNING_PLACEMENT_PRICING_TYPE_CPM_ACTIVEVIEW, '
+        'PLANNING_PLACEMENT_PRICING_TYPE_FLAT_RATE_CLICKS, '
+        'PLANNING_PLACEMENT_PRICING_TYPE_FLAT_RATE_IMPRESSIONS, '
+        'PLANNING_PLACEMENT_PRICING_TYPE_IMPRESSIONS',
+    'name':
+        'pricingType',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}, {
+    'description': '',
+    'name': 'startDate',
+    'type': 'DATE',
+    'mode': 'NULLABLE'
+}]

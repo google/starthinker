@@ -16,6 +16,8 @@
 #
 ###########################################################################
 
-Custom_Rich_Media_Filters_Schema = [
-  { "name":"Rich_Media_Event", "type":"STRING", "mode":"NULLABLE" }
-]
+Custom_Rich_Media_Filters_Schema = [{
+    'name': 'Rich_Media_Event',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

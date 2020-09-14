@@ -17,59 +17,50 @@
 ###########################################################################
 
 deepLink_Schema = [
-  {
-    "description": "",
-    "name": "appUrl",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "fallbackUrl",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  [
     {
-      "description": "APPLE_APP_STORE, GOOGLE_PLAY_STORE, UNKNOWN",
-      "name": "directory",
-      "type": "STRING",
-      "mode": "NULLABLE"
+        'description': '',
+        'name': 'appUrl',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'fallbackUrl',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
     },
-    {
-      "description": "",
-      "name": "id",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "kind",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "publisherName",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "title",
-      "type": "STRING",
-      "mode": "NULLABLE"
+    [{
+        'description': 'APPLE_APP_STORE, GOOGLE_PLAY_STORE, UNKNOWN',
+        'name': 'directory',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'id',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'publisherName',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'title',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }], {
+        'name': 'remarketingListIds',
+        'type': 'INT64',
+        'mode': 'REPEATED'
     }
-  ],
-  {
-    "name": "remarketingListIds",
-    "type": "INT64",
-    "mode": "REPEATED"
-  }
 ]

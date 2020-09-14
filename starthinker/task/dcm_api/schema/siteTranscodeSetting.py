@@ -16,16 +16,13 @@
 #
 ###########################################################################
 
-siteTranscodeSetting_Schema = [
-  {
-    "name": "enabledVideoFormats",
-    "type": "INT64",
-    "mode": "REPEATED"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+siteTranscodeSetting_Schema = [{
+    'name': 'enabledVideoFormats',
+    'type': 'INT64',
+    'mode': 'REPEATED'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

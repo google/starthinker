@@ -30,6 +30,7 @@ from starthinker_ui.account.models import Account
 
 UI_USER = os.environ.get('STARTHINKER_USER', '')
 
+
 def account_create():
 
   accounts = Account.objects.all()
@@ -51,11 +52,9 @@ class CredentialsTest(TestCase):
     shutil.copyfile(UI_USER, self.user_file)
     shutil.copyfile(UI_SERVICE, self.service_file)
 
-
   def tearDown(self):
     os.remove(self.user_file)
     os.remove(self.service_file)
-
 
   def helper_refresh(self):
     credentials = get_credentials('user')
@@ -74,7 +73,7 @@ class CredentialsTest(TestCase):
     sleep(1)
 
     # test refresh ( expired cache, not expired file )
-    credentials.expiry=(datetime.now() - timedelta(days=5))
+    credentials.expiry = (datetime.now() - timedelta(days=5))
     credentials.refresh()
     self.assertEqual(token, credentials.token)
     self.assertEqual(expiry, credentials.expiry)
@@ -83,12 +82,11 @@ class CredentialsTest(TestCase):
     sleep(1)
 
     # test refresh ( expired cache, expired file )
-    credentials.expiry=(datetime.now() - timedelta(days=5))
+    credentials.expiry = (datetime.now() - timedelta(days=5))
     credentials.save()
     credentials.refresh()
     self.assertNotEqual(token, credentials.token)
     self.assertNotEqual(expiry, credentials.expiry)
-
 
   def test_file_credentials_user(self):
     project.initialize(_user=self.user_file)
@@ -99,7 +97,6 @@ class CredentialsTest(TestCase):
     self.assertIn('email', response)
     self.helper_refresh()
 
-
   def test_file_credentials_service(self):
     project.initialize(_service=self.service_file)
 
@@ -107,7 +104,6 @@ class CredentialsTest(TestCase):
     response = service.projects().list().execute()
 
     self.assertIn('projects', response)
-
 
   def test_string_credentials_user(self):
     with open(self.user_file, 'r') as json_file:
@@ -119,7 +115,6 @@ class CredentialsTest(TestCase):
     self.assertIn('email', response)
     self.helper_refresh()
 
-
   def test_string_credentials_service(self):
     with open(self.service_file, 'r') as json_file:
       project.initialize(_service=json_file.read())
@@ -128,7 +123,6 @@ class CredentialsTest(TestCase):
     response = service.projects().list().execute()
 
     self.assertIn('projects', response)
-
 
   def test_dictionary_credentials_user(self):
     with open(self.user_file, 'r') as json_file:
@@ -140,7 +134,6 @@ class CredentialsTest(TestCase):
     self.assertIn('email', response)
     self.helper_refresh()
 
-
   def test_dictionary_credentials_service(self):
     with open(self.service_file, 'r') as json_file:
       project.initialize(_service=json.load(json_file))
@@ -150,7 +143,6 @@ class CredentialsTest(TestCase):
 
     self.assertIn('projects', response)
 
-
   def test_remote_credentials_user(self):
     project.initialize(_user=self.user_file)
     credentials = get_credentials('user')
@@ -159,7 +151,8 @@ class CredentialsTest(TestCase):
     clear_credentials_cache()
 
     project.initialize(_user=account.get_credentials_path())
-    self.assertEqual(project.recipe['setup']['auth']['user'], account.get_credentials_path())
+    self.assertEqual(project.recipe['setup']['auth']['user'],
+                     account.get_credentials_path())
 
     service = get_service('oauth2', 'v2', 'user')
     response = service.userinfo().get().execute()

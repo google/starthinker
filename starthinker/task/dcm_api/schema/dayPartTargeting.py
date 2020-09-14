@@ -16,20 +16,16 @@
 #
 ###########################################################################
 
-dayPartTargeting_Schema = [
-  {
-    "name": "daysOfWeek",
-    "type": "STRING",
-    "mode": "REPEATED"
-  },
-  {
-    "name": "hoursOfDay",
-    "type": "INT64",
-    "mode": "REPEATED"
-  },
-  {
-    "name": "userLocalTime",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  }
-]
+dayPartTargeting_Schema = [{
+    'name': 'daysOfWeek',
+    'type': 'STRING',
+    'mode': 'REPEATED'
+}, {
+    'name': 'hoursOfDay',
+    'type': 'INT64',
+    'mode': 'REPEATED'
+}, {
+    'name': 'userLocalTime',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}]

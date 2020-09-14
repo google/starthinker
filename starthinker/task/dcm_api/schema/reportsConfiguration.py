@@ -16,30 +16,24 @@
 #
 ###########################################################################
 
-reportsConfiguration_Schema = [
-  {
-    "name": "exposureToConversionEnabled",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  [
-    {
-      "description": "",
-      "name": "clickDuration",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "postImpressionActivitiesDuration",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    }
-  ],
-  {
-    "description": "",
-    "name": "reportGenerationTimeZoneId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+reportsConfiguration_Schema = [{
+    'name': 'exposureToConversionEnabled',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+},
+                               [{
+                                   'description': '',
+                                   'name': 'clickDuration',
+                                   'type': 'INT64',
+                                   'mode': 'NULLABLE'
+                               }, {
+                                   'description': '',
+                                   'name': 'postImpressionActivitiesDuration',
+                                   'type': 'INT64',
+                                   'mode': 'NULLABLE'
+                               }], {
+                                   'description': '',
+                                   'name': 'reportGenerationTimeZoneId',
+                                   'type': 'INT64',
+                                   'mode': 'NULLABLE'
+                               }]

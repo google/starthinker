@@ -16,46 +16,40 @@
 #
 ###########################################################################
 
-operatingSystemsListResponse_Schema = [
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "operatingSystems",
-    "type": "RECORD",
-    "mode": "REPEATED",
-    "fields": [
-      {
-        "description": "",
-        "name": "dartId",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "name": "desktop",
-        "type": "BOOLEAN",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "kind",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "name": "mobile",
-        "type": "BOOLEAN",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "name",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      }
-    ]
-  }
-]
+operatingSystemsListResponse_Schema = [{
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name':
+        'operatingSystems',
+    'type':
+        'RECORD',
+    'mode':
+        'REPEATED',
+    'fields': [{
+        'description': '',
+        'name': 'dartId',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'name': 'desktop',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'name': 'mobile',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'name',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }]
+}]

@@ -16,37 +16,29 @@
 #
 ###########################################################################
 
-clickTag_Schema = [
-  [
-    {
-      "description": "",
-      "name": "computedClickThroughUrl",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "customClickThroughUrl",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "landingPageId",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    }
-  ],
-  {
-    "description": "",
-    "name": "eventName",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "name",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+clickTag_Schema = [[{
+    'description': '',
+    'name': 'computedClickThroughUrl',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'customClickThroughUrl',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'landingPageId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}], {
+    'description': '',
+    'name': 'eventName',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

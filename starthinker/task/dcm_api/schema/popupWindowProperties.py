@@ -16,87 +16,69 @@
 #
 ###########################################################################
 
-popupWindowProperties_Schema = [
-  [
-    {
-      "description": "",
-      "name": "height",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    },
-    {
-      "name": "iab",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "id",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "kind",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "width",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    }
-  ],
-  [
-    {
-      "description": "",
-      "name": "left",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "top",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    }
-  ],
-  {
-    "description": "CENTER, COORDINATES",
-    "name": "positionType",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "showAddressBar",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "showMenuBar",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "showScrollBar",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "showStatusBar",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "showToolBar",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "title",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+popupWindowProperties_Schema = [[{
+    'description': '',
+    'name': 'height',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'iab',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'id',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'width',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}],
+                                [{
+                                    'description': '',
+                                    'name': 'left',
+                                    'type': 'INT64',
+                                    'mode': 'NULLABLE'
+                                }, {
+                                    'description': '',
+                                    'name': 'top',
+                                    'type': 'INT64',
+                                    'mode': 'NULLABLE'
+                                }], {
+                                    'description': 'CENTER, COORDINATES',
+                                    'name': 'positionType',
+                                    'type': 'STRING',
+                                    'mode': 'NULLABLE'
+                                }, {
+                                    'name': 'showAddressBar',
+                                    'type': 'BOOLEAN',
+                                    'mode': 'NULLABLE'
+                                }, {
+                                    'name': 'showMenuBar',
+                                    'type': 'BOOLEAN',
+                                    'mode': 'NULLABLE'
+                                }, {
+                                    'name': 'showScrollBar',
+                                    'type': 'BOOLEAN',
+                                    'mode': 'NULLABLE'
+                                }, {
+                                    'name': 'showStatusBar',
+                                    'type': 'BOOLEAN',
+                                    'mode': 'NULLABLE'
+                                }, {
+                                    'name': 'showToolBar',
+                                    'type': 'BOOLEAN',
+                                    'mode': 'NULLABLE'
+                                }, {
+                                    'description': '',
+                                    'name': 'title',
+                                    'type': 'STRING',
+                                    'mode': 'NULLABLE'
+                                }]

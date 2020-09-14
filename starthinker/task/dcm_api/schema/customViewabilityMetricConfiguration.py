@@ -16,28 +16,23 @@
 #
 ###########################################################################
 
-customViewabilityMetricConfiguration_Schema = [
-  {
-    "name": "audible",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "timeMillis",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "timePercent",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "viewabilityPercent",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+customViewabilityMetricConfiguration_Schema = [{
+    'name': 'audible',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'timeMillis',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'timePercent',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'viewabilityPercent',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

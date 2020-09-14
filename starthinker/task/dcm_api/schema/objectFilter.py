@@ -16,22 +16,18 @@
 #
 ###########################################################################
 
-objectFilter_Schema = [
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "objectIds",
-    "type": "INT64",
-    "mode": "REPEATED"
-  },
-  {
-    "description": "ALL, ASSIGNED, NONE",
-    "name": "status",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+objectFilter_Schema = [{
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'objectIds',
+    'type': 'INT64',
+    'mode': 'REPEATED'
+}, {
+    'description': 'ALL, ASSIGNED, NONE',
+    'name': 'status',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

@@ -16,7 +16,6 @@
 #
 ###########################################################################
 
-
 # General StarThinker constants that can also be used from the command line interface
 from starthinker.config import UI_ROOT, UI_PROJECT, UI_CLIENT, UI_SERVICE, UI_CRON, UI_ZONE, DEVELOPMENT_MODE
 
@@ -31,7 +30,7 @@ WORKER_JOBS = int(os.environ.get('STARTHINKER_WORKER_JOBS', 1))
 DEBUG = DEVELOPMENT_MODE
 
 # Optional tracking parameter
-GOOGLE_ANALYTICS = os.environ.get('STARTHINKER_ANALYTICS', "")
+GOOGLE_ANALYTICS = os.environ.get('STARTHINKER_ANALYTICS', '')
 
 # Currently StarThinker is in English, internationalization TBD
 LANGUAGE_CODE = 'en-us'
@@ -45,21 +44,38 @@ ADMINS = [('User Name', 'email@domain.com')]
 # Store your logo and front end website graphics here.
 STATIC_URL = 'https://storage.googleapis.com/starthinker-ui/'
 
+
 def domain_to_host(domain):
-  return  domain.split('://', 1)[-1].split(':', 1)[0].split('/', 1)[0]
+  return domain.split('://', 1)[-1].split(':', 1)[0].split('/', 1)[0]
+
 
 CONST_URL = os.environ.get('STARTHINKER_UI_DOMAIN') or 'http://localhost:8000'
-SECRET_KEY = os.environ.get('STARTHINKER_UI_SECRET') or 'safetyandcivilreassuranceadministrationofficials'
-ALLOWED_HOSTS = [domain_to_host(os.environ.get('STARTHINKER_UI_DOMAIN', '')) or 'localhost', '127.0.0.1']
+SECRET_KEY = os.environ.get(
+    'STARTHINKER_UI_SECRET'
+) or 'safetyandcivilreassuranceadministrationofficials'
+ALLOWED_HOSTS = [
+    domain_to_host(os.environ.get('STARTHINKER_UI_DOMAIN', '')) or 'localhost',
+    '127.0.0.1'
+]
 
 DATABASES = {
-  'default': {
-    'ENGINE': os.environ.get('STARTHINKER_UI_DATABASE_ENGINE', 'MISSING RUN deploy.sh TO SET'),
-    'HOST': os.environ.get('STARTHINKER_UI_DATABASE_HOST', ''),
-    'PORT': os.environ.get('STARTHINKER_UI_DATABASE_PORT', ''),
-    'NAME': os.environ.get('STARTHINKER_UI_DATABASE_NAME', 'MISSING RUN deploy.sh TO SET'),
-    'USER': os.environ.get('STARTHINKER_UI_DATABASE_USER', ''),
-    'PASSWORD': os.environ.get('STARTHINKER_UI_DATABASE_PASSWORD', ''),
-    'TEST': { 'NAME': 'starthinker_test' }
-  }
+    'default': {
+        'ENGINE':
+            os.environ.get('STARTHINKER_UI_DATABASE_ENGINE',
+                           'MISSING RUN deploy.sh TO SET'),
+        'HOST':
+            os.environ.get('STARTHINKER_UI_DATABASE_HOST', ''),
+        'PORT':
+            os.environ.get('STARTHINKER_UI_DATABASE_PORT', ''),
+        'NAME':
+            os.environ.get('STARTHINKER_UI_DATABASE_NAME',
+                           'MISSING RUN deploy.sh TO SET'),
+        'USER':
+            os.environ.get('STARTHINKER_UI_DATABASE_USER', ''),
+        'PASSWORD':
+            os.environ.get('STARTHINKER_UI_DATABASE_PASSWORD', ''),
+        'TEST': {
+            'NAME': 'starthinker_test'
+        }
+    }
 }

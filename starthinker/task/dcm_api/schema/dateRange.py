@@ -16,29 +16,31 @@
 #
 ###########################################################################
 
-dateRange_Schema = [
-  {
-    "description": "",
-    "name": "endDate",
-    "type": "DATE",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY",
-    "name": "relativeDateRange",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "startDate",
-    "type": "DATE",
-    "mode": "NULLABLE"
-  }
-]
+dateRange_Schema = [{
+    'description': '',
+    'name': 'endDate',
+    'type': 'DATE',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description':
+        'LAST_14_DAYS, LAST_24_MONTHS, LAST_30_DAYS, LAST_365_DAYS, '
+        'LAST_60_DAYS, LAST_7_DAYS, LAST_90_DAYS, MONTH_TO_DATE, '
+        'PREVIOUS_MONTH, PREVIOUS_QUARTER, PREVIOUS_WEEK, PREVIOUS_YEAR, '
+        'QUARTER_TO_DATE, TODAY, WEEK_TO_DATE, YEAR_TO_DATE, YESTERDAY',
+    'name':
+        'relativeDateRange',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}, {
+    'description': '',
+    'name': 'startDate',
+    'type': 'DATE',
+    'mode': 'NULLABLE'
+}]

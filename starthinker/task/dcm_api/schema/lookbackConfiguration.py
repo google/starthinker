@@ -16,17 +16,14 @@
 #
 ###########################################################################
 
-lookbackConfiguration_Schema = [
-  {
-    "description": "",
-    "name": "clickDuration",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "postImpressionActivitiesDuration",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+lookbackConfiguration_Schema = [{
+    'description': '',
+    'name': 'clickDuration',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'postImpressionActivitiesDuration',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

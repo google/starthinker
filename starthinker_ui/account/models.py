@@ -34,9 +34,13 @@ def fix_picture(picture_url):
 def token_generate(model_class, model_field, length=8):
   token = None
   while not token:
-    token = ''.join([choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') for i in range(length)])
+    token = ''.join([
+        choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+        for i in range(length)
+    ])
     try:
-      if model_class.objects.filter(**{model_field:token}).exists(): token = None
+      if model_class.objects.filter(**{model_field: token}).exists():
+        token = None
     except Exception:
       pass
   return token
@@ -50,14 +54,15 @@ def get_profile(credentials):
 class AccountManager(BaseUserManager):
 
   def create_user(self, credentials=None, password=None, profile=None):
-    if profile is None: profile = get_profile(credentials)
+    if profile is None:
+      profile = get_profile(credentials)
 
     account = self.model(
-      identifier=profile['id'],
-      email=self.normalize_email(profile['email']),
-      name=profile['given_name'],
-      domain=profile.get('hd', ''),
-      picture=fix_picture(profile['picture']),
+        identifier=profile['id'],
+        email=self.normalize_email(profile['email']),
+        name=profile['given_name'],
+        domain=profile.get('hd', ''),
+        picture=fix_picture(profile['picture']),
     )
     account.set_credentials(credentials)
     account.set_password(password)
@@ -71,7 +76,7 @@ class AccountManager(BaseUserManager):
       account = Account.objects.get(identifier=profile['id'])
       account.email = self.normalize_email(profile['email'])
       account.name = profile['given_name']
-      domain=profile.get('hd', ''),
+      domain = profile.get('hd', ''),
       account.picture = fix_picture(profile['picture'])
       account.set_credentials(credentials)
       account.set_password(password)
@@ -148,7 +153,8 @@ class Account(AbstractBaseUser):
       buffer.save(self.get_credentials_path())
 
   def get_credentials(self):
-    return CredentialsUserWrapper(self.get_credentials_path()) if self.identifier else None
+    return CredentialsUserWrapper(
+        self.get_credentials_path()) if self.identifier else None
 
   def get_credentials_path(self):
     return '%s:ui/%s.json' % (USER_BUCKET, self.identifier)

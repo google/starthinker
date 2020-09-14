@@ -16,44 +16,35 @@
 #
 ###########################################################################
 
-siteSkippableSetting_Schema = [
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  [
-    {
-      "description": "",
-      "name": "offsetPercentage",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "offsetSeconds",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    }
-  ],
-  [
-    {
-      "description": "",
-      "name": "offsetPercentage",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "offsetSeconds",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    }
-  ],
-  {
-    "name": "skippable",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  }
-]
+siteSkippableSetting_Schema = [{
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+},
+                               [{
+                                   'description': '',
+                                   'name': 'offsetPercentage',
+                                   'type': 'INT64',
+                                   'mode': 'NULLABLE'
+                               }, {
+                                   'description': '',
+                                   'name': 'offsetSeconds',
+                                   'type': 'INT64',
+                                   'mode': 'NULLABLE'
+                               }],
+                               [{
+                                   'description': '',
+                                   'name': 'offsetPercentage',
+                                   'type': 'INT64',
+                                   'mode': 'NULLABLE'
+                               }, {
+                                   'description': '',
+                                   'name': 'offsetSeconds',
+                                   'type': 'INT64',
+                                   'mode': 'NULLABLE'
+                               }], {
+                                   'name': 'skippable',
+                                   'type': 'BOOLEAN',
+                                   'mode': 'NULLABLE'
+                               }]

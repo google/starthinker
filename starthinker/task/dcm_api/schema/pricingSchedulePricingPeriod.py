@@ -16,35 +16,29 @@
 #
 ###########################################################################
 
-pricingSchedulePricingPeriod_Schema = [
-  {
-    "description": "",
-    "name": "endDate",
-    "type": "DATE",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "pricingComment",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "rateOrCostNanos",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "startDate",
-    "type": "DATE",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "units",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+pricingSchedulePricingPeriod_Schema = [{
+    'description': '',
+    'name': 'endDate',
+    'type': 'DATE',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'pricingComment',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'rateOrCostNanos',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'startDate',
+    'type': 'DATE',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'units',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

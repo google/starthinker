@@ -23,6 +23,7 @@ from airflow import utils as airflow_utils
 
 
 class Hello(models.BaseOperator):
+
   @airflow_utils.apply_defaults
   def __init__(self, say='', sleep=0, **kwargs):
     self.say = say

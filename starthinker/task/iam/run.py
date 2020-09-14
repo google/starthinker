@@ -15,7 +15,6 @@
 #  limitations under the License.
 #
 ###########################################################################
-
 """ Handler that executes { "iam":{...}} task in recipe JSON.
 
 Grants roles to users in Google Cloud Projects.  Typically you define a role
@@ -27,19 +26,22 @@ access permission.  That still needs to be granted on a case by case basis.
 Placing a call to this handler early in a recipe JSON ensures the user executing
 the recipe has the right privileges.
 
-This handler should be called with "service" auth in the the JSON.  The service should
+This handler should be called with "service" auth in the the JSON.  The service
+should
 be able to assign roles.
 
 ### Command Line COnvenience
 
-Mostly a helper function, your service credential will already have a higher level
+Mostly a helper function, your service credential will already have a higher
+level
 of role granting and you need it to grant the role to your user.  So there is
 NO SECURITY benefit, just a conveniece.
 
 ### UI Security
 
 In a UI environment such as a web application, where users DO NOT have access to
-the service credentials, but the server does have access to user credentials, this
+the service credentials, but the server does have access to user credentials,
+this
 handler allows the service to securely grant additional roles to users.
 
 ### Good Practice
@@ -57,8 +59,9 @@ from starthinker.util.auth import set_iam
 
 @project.from_parameters
 def iam():
-  set_iam(project.task['auth'], project.id, project.task['role'], project.task['email'])
+  set_iam(project.task['auth'], project.id, project.task['role'],
+          project.task['email'])
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   iam()

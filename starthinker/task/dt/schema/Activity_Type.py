@@ -16,11 +16,28 @@
 #
 ###########################################################################
 
-Activity_Type_Schema = [
-  { "name":"Activity_Group", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Activity_Group_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Activity_Type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Activity_Type_Schema = [{
+    'name': 'Activity_Group',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Activity_Group_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Activity_Type',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Advertiser_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Config_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Account_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

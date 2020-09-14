@@ -29,16 +29,17 @@ from starthinker.util.google_api.discovery import discovery_schema
 RE_DATETIME = re.compile(r'\d{4}[-/]\d{2}[-/]\d{2}[ T]\d{2}:\d{2}:\d{2}\.?\d+Z')
 
 DCM_API_TO_RESOURCE = {
-  'campaigns':'Campaign',
-  'placements':'Placement',
-  'placementGroups':'PlacementGroup',
+    'campaigns': 'Campaign',
+    'placements': 'Placement',
+    'placementGroups': 'PlacementGroup',
 }
+
 
 def bigquery_clean(struct):
   if isinstance(struct, dict):
     for key, value in struct.items():
       if isinstance(value, str) and RE_DATETIME.match(value):
-        struct[key] =  struct[key].replace('.000Z', '.0000')
+        struct[key] = struct[key].replace('.000Z', '.0000')
       else:
         bigquery_clean(value)
   elif isinstance(struct, list):
@@ -47,7 +48,7 @@ def bigquery_clean(struct):
         struct[index] = struct[index].replace('.000Z', '.0000')
       else:
         bigquery_clean(value)
-  return  struct
+  return struct
 
 
 def row_clean(structs):
@@ -59,23 +60,24 @@ def put_data(endpoint):
 
   out = {}
   #schema = DCM_Schema_Lookup[endpoint]
-  schema = discovery_schema('dfareporting', 'v3.4', DCM_API_TO_RESOURCE.get(endpoint))
+  schema = discovery_schema('dfareporting', 'v3.4',
+                            DCM_API_TO_RESOURCE.get(endpoint))
 
   if 'dataset' in project.task['out']:
-    out["bigquery"] = {
-      "dataset": project.task['out']['dataset'],
-      "table": 'CM_%s' % endpoint,
-      "schema": schema,
-      "skip_rows": 0,
-      "format":'JSON',
+    out['bigquery'] = {
+        'dataset': project.task['out']['dataset'],
+        'table': 'CM_%s' % endpoint,
+        'schema': schema,
+        'skip_rows': 0,
+        'format': 'JSON',
     }
 
   if 'sheet' in project.task:
-    out["sheets"] = {
-      "url":project.task['out']['sheet'],
-      "tab":'CM_%s' % endpoint,
-      "range":"A1:A1",
-      "delete": True
+    out['sheets'] = {
+        'url': project.task['out']['sheet'],
+        'tab': 'CM_%s' % endpoint,
+        'range': 'A1:A1',
+        'delete': True
     }
 
   return out
@@ -83,39 +85,46 @@ def put_data(endpoint):
 
 def dcm_api_list(endpoint):
 
-  accounts = set(get_rows("user", project.task['accounts']))
+  accounts = set(get_rows('user', project.task['accounts']))
 
   for account_id in accounts:
-    is_superuser, profile_id = get_profile_for_api(project.task['auth'], account_id)
-    kwargs = { 'profileId':profile_id, }
-    if is_superuser: kwargs['accountId'] = account_id
+    is_superuser, profile_id = get_profile_for_api(project.task['auth'],
+                                                   account_id)
+    kwargs = {
+        'profileId': profile_id,
+    }
+    if is_superuser:
+      kwargs['accountId'] = account_id
 
     if 'advertisers' in project.task:
-      advertisers = set(get_rows("user", project.task['advertisers']))
+      advertisers = set(get_rows('user', project.task['advertisers']))
       for advertiser in advertisers:
-        kwargs = {'advertiserId':str(advertiser)}
-        yield from API_DCM(project.task['auth'], iterate=True, internal=is_superuser).call(endpoint).list(**kwargs).execute()
+        kwargs = {'advertiserId': str(advertiser)}
+        yield from API_DCM(
+            project.task['auth'], iterate=True,
+            internal=is_superuser).call(endpoint).list(**kwargs).execute()
     else:
-      yield from API_DCM(project.task['auth'], iterate=True, internal=is_superuser).call(endpoint).list(**kwargs).execute()
+      yield from API_DCM(
+          project.task['auth'], iterate=True,
+          internal=is_superuser).call(endpoint).list(**kwargs).execute()
 
 
 @project.from_parameters
 def dcm_api():
-  if project.verbose: print('DCM API')
+  if project.verbose:
+    print('DCM API')
 
   if 'out' in project.task:
 
-    if isinstance(project.task['endpoints'], str): project.task['endpoints'] = [project.task['endpoints']]
+    if isinstance(project.task['endpoints'], str):
+      project.task['endpoints'] = [project.task['endpoints']]
 
     for endpoint in project.task['endpoints']:
       rows = dcm_api_list(endpoint)
       rows = row_clean(rows)
 
-      put_rows(
-        project.task['out']['auth'],
-        put_data(endpoint),
-        rows
-      )
+      put_rows(project.task['out']['auth'], put_data(endpoint), rows)
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
   dcm_api()

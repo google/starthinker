@@ -16,17 +16,14 @@
 #
 ###########################################################################
 
-offsetPosition_Schema = [
-  {
-    "description": "",
-    "name": "left",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "top",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+offsetPosition_Schema = [{
+    'description': '',
+    'name': 'left',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'top',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

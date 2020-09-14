@@ -16,15 +16,12 @@
 #
 ###########################################################################
 
-omnitureSettings_Schema = [
-  {
-    "name": "omnitureCostDataEnabled",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "omnitureIntegrationEnabled",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  }
-]
+omnitureSettings_Schema = [{
+    'name': 'omnitureCostDataEnabled',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'omnitureIntegrationEnabled',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}]

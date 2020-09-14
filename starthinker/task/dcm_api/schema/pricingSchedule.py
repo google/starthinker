@@ -16,88 +16,81 @@
 #
 ###########################################################################
 
-pricingSchedule_Schema = [
-  {
-    "description": "CAP_COST_CUMULATIVE, CAP_COST_MONTHLY, CAP_COST_NONE",
-    "name": "capCostOption",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "disregardOverdelivery",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "endDate",
-    "type": "DATE",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "flighted",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "floodlightActivityId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "pricingPeriods",
-    "type": "RECORD",
-    "mode": "REPEATED",
-    "fields": [
-      {
-        "description": "",
-        "name": "endDate",
-        "type": "DATE",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "pricingComment",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "rateOrCostNanos",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "startDate",
-        "type": "DATE",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "units",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      }
-    ]
-  },
-  {
-    "description": "PRICING_TYPE_CPA, PRICING_TYPE_CPC, PRICING_TYPE_CPM, PRICING_TYPE_CPM_ACTIVEVIEW, PRICING_TYPE_FLAT_RATE_CLICKS, PRICING_TYPE_FLAT_RATE_IMPRESSIONS",
-    "name": "pricingType",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "startDate",
-    "type": "DATE",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "testingStartDate",
-    "type": "DATE",
-    "mode": "NULLABLE"
-  }
-]
+pricingSchedule_Schema = [{
+    'description': 'CAP_COST_CUMULATIVE, CAP_COST_MONTHLY, CAP_COST_NONE',
+    'name': 'capCostOption',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'disregardOverdelivery',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'endDate',
+    'type': 'DATE',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'flighted',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'floodlightActivityId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'name':
+        'pricingPeriods',
+    'type':
+        'RECORD',
+    'mode':
+        'REPEATED',
+    'fields': [{
+        'description': '',
+        'name': 'endDate',
+        'type': 'DATE',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'pricingComment',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'rateOrCostNanos',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'startDate',
+        'type': 'DATE',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'units',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }]
+}, {
+    'description':
+        'PRICING_TYPE_CPA, PRICING_TYPE_CPC, PRICING_TYPE_CPM, '
+        'PRICING_TYPE_CPM_ACTIVEVIEW, PRICING_TYPE_FLAT_RATE_CLICKS, '
+        'PRICING_TYPE_FLAT_RATE_IMPRESSIONS',
+    'name':
+        'pricingType',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}, {
+    'description': '',
+    'name': 'startDate',
+    'type': 'DATE',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'testingStartDate',
+    'type': 'DATE',
+    'mode': 'NULLABLE'
+}]

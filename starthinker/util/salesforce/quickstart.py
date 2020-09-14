@@ -22,5 +22,4 @@ from starthinker.util.salesforce import get_service
 if __name__ == '__main__':
   project.from_commandline('setup')
   service = get_service()
-  print("Credentials Ready: %s" % project.recipe['setup']['auth']['salesforce'])
-
+  print('Credentials Ready: %s' % project.recipe['setup']['auth']['salesforce'])

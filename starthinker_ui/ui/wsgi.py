@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-"""
-WSGI config for ui project.
+"""WSGI config for ui project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -29,6 +27,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "starthinker_ui.ui.settings")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'starthinker_ui.ui.settings')
 
 application = get_wsgi_application()

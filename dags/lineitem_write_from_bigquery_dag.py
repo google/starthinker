@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-'''
---------------------------------------------------------------
+"""--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -28,7 +26,7 @@ Before running this Airflow module...
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
@@ -38,71 +36,72 @@ Line Item From BigQuery
 Upload Line Items From BigQuery To DV360.
 
 Specify the table or view where the lineitem data is defined.
-The schema should match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>.
+The schema should match <a
+href='https://developers.google.com/bid-manager/guides/entity-write/format'
+target='_blank'>Entity Write Format</a>.
 
-'''
+"""
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
+GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'dataset': '',
-  'query': 'SELECT * FROM `Dataset.Table`;',
-  'legacy': False,
+    'auth_read': 'user',  # Credentials used for reading data.
+    'dataset': '',
+    'query': 'SELECT * FROM `Dataset.Table`;',
+    'legacy': False,
 }
 
-TASKS = [
-  {
+TASKS = [{
     'lineitem': {
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'name': 'auth_read',
-          'default': 'user',
-          'kind': 'authentication',
-          'order': 1
-        }
-      },
-      'write': {
-        'bigquery': {
-          'query': {
+        'auth': {
             'field': {
-              'name': 'query',
-              'default': 'SELECT * FROM `Dataset.Table`;',
-              'kind': 'string',
-              'order': 2
+                'description': 'Credentials used for reading data.',
+                'name': 'auth_read',
+                'default': 'user',
+                'kind': 'authentication',
+                'order': 1
             }
-          },
-          'legacy': {
-            'field': {
-              'name': 'legacy',
-              'default': False,
-              'kind': 'boolean',
-              'order': 3
-            }
-          },
-          'dataset': {
-            'field': {
-              'name': 'dataset',
-              'default': '',
-              'kind': 'string',
-              'order': 1
-            }
-          }
         },
-        'dry_run': False
-      }
+        'write': {
+            'bigquery': {
+                'query': {
+                    'field': {
+                        'name': 'query',
+                        'default': 'SELECT * FROM `Dataset.Table`;',
+                        'kind': 'string',
+                        'order': 2
+                    }
+                },
+                'legacy': {
+                    'field': {
+                        'name': 'legacy',
+                        'default': False,
+                        'kind': 'boolean',
+                        'order': 3
+                    }
+                },
+                'dataset': {
+                    'field': {
+                        'name': 'dataset',
+                        'default': '',
+                        'kind': 'string',
+                        'order': 1
+                    }
+                }
+            },
+            'dry_run': False
+        }
     }
-  }
-]
+}]
 
-DAG_FACTORY = DAG_Factory('lineitem_write_from_bigquery', { 'tasks':TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('lineitem_write_from_bigquery', {'tasks': TASKS},
+                          INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   DAG_FACTORY.print_commandline()

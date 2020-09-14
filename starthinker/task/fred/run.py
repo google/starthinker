@@ -29,13 +29,13 @@ def fred_series(api_key, frequency, **kwargs):
   kwargs['frequency'] = frequency
   kwargs['file_type'] = 'json'
 
-  url = 'https://api.stlouisfed.org/fred/series/observations?' + urlencode(kwargs)
-  for observation in json.loads(urlopen(url).read().decode('UTF-8'))['observations']:
+  url = 'https://api.stlouisfed.org/fred/series/observations?' + urlencode(
+      kwargs)
+  for observation in json.loads(
+      urlopen(url).read().decode('UTF-8'))['observations']:
     yield [
-      observation['realtime_start'],
-      observation['realtime_end'],
-      observation['date'],
-      observation['value']
+        observation['realtime_start'], observation['realtime_end'],
+        observation['date'], observation['value']
     ]
 
 
@@ -47,12 +47,11 @@ def fred_regional(api_key, frequency, region, **kwargs):
   kwargs['start_date'] = str(project.date)
 
   url = 'https://api.stlouisfed.org/geofred/regional/data?' + urlencode(kwargs)
-  for observation in json.loads(urlopen(url).read().decode('UTF-8'))['observations']:
+  for observation in json.loads(
+      urlopen(url).read().decode('UTF-8'))['observations']:
     yield [
-      observation['region'],
-      observation['code'],
-      observation['date'],
-      observation['series_id']
+        observation['region'], observation['code'], observation['date'],
+        observation['series_id']
     ]
 
 
@@ -64,35 +63,60 @@ def fred():
     for parameters in project.task['series']:
 
       name = 'FRED_SERIES_%s' % parameters['series_id']
-      rows = fred_series(project.task['api_key'], project.task['frequency'],  **parameters)
+      rows = fred_series(project.task['api_key'], project.task['frequency'],
+                         **parameters)
 
       if 'bigquery' in project.task['out']:
-        project.task['out']['bigquery']['schema'] = [
-          { "name":"realtime_start", "type":"DATE", "mode":"REQUIRED" },
-          { "name":"realtime_end", "type":"DATE", "mode":"REQUIRED" },
-          { "name":"day", "type":"DATE", "mode":"REQUIRED" },
-          { "name":"value", "type":"FLOAT", "mode":"REQUIRED" }
-        ]
+        project.task['out']['bigquery']['schema'] = [{
+            'name': 'realtime_start',
+            'type': 'DATE',
+            'mode': 'REQUIRED'
+        }, {
+            'name': 'realtime_end',
+            'type': 'DATE',
+            'mode': 'REQUIRED'
+        }, {
+            'name': 'day',
+            'type': 'DATE',
+            'mode': 'REQUIRED'
+        }, {
+            'name': 'value',
+            'type': 'FLOAT',
+            'mode': 'REQUIRED'
+        }]
 
   elif 'regions' in project.task:
     for parameters in project.task['regions']:
 
       name = 'FRED_SERIES_%s' % parameters['series_group']
-      rows = fred_regional(project.task['api_key'], project.task['frequency'],  project.task['region_type'], **parameters)
+      rows = fred_regional(project.task['api_key'], project.task['frequency'],
+                           project.task['region_type'], **parameters)
 
       if 'bigquery' in project.task['out']:
-        project.task['out']['bigquery']['schema'] = [
-          { "name":"region", "type":"STRING", "mode":"REQUIRED" },
-          { "name":"code", "type":"INTEGER", "mode":"REQUIRED" },
-          { "name":"series_id", "type":"STRING", "mode":"REQUIRED" },
-          { "name":"value", "type":"FLOAT", "mode":"REQUIRED" }
-        ]
+        project.task['out']['bigquery']['schema'] = [{
+            'name': 'region',
+            'type': 'STRING',
+            'mode': 'REQUIRED'
+        }, {
+            'name': 'code',
+            'type': 'INTEGER',
+            'mode': 'REQUIRED'
+        }, {
+            'name': 'series_id',
+            'type': 'STRING',
+            'mode': 'REQUIRED'
+        }, {
+            'name': 'value',
+            'type': 'FLOAT',
+            'mode': 'REQUIRED'
+        }]
 
   else:
-    raise Excpetion("MISSING CONFIGURATION: Specify either series_id or series_group.")
+    raise Excpetion(
+        'MISSING CONFIGURATION: Specify either series_id or series_group.')
 
   put_rows(project.task['auth'], name, rows)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   fred()

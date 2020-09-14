@@ -17,16 +17,19 @@
 ###########################################################################
 
 CostTrackingPixel_Schema = [
-  { "name":"pixel_id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"view_window_minutes",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"click_window_minutes",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
+    {
+        'name': 'pixel_id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'view_window_minutes',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'click_window_minutes',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
 ]

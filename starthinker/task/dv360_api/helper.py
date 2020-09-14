@@ -26,16 +26,17 @@ from starthinker.util.google_api import API_DV360_Beta
 
 def main():
   parser = argparse.ArgumentParser(
-    formatter_class=argparse.RawDescriptionHelpFormatter,
-    description=textwrap.dedent('''\
+      formatter_class=argparse.RawDescriptionHelpFormatter,
+      description=textwrap.dedent("""\
       Command line utility to download and print line items from the DV360 Beta API.
 
       Example: python helper.py --advertiser 3721733 --user user.json
                python helper.py --advertiser 3721733 --service service.json
-  '''))
+  """))
 
   # lineitem list requires an advertiser id
-  parser.add_argument('--advertiser', help='Advertiser ID to pull line items from.')
+  parser.add_argument(
+      '--advertiser', help='Advertiser ID to pull line items from.')
 
   # initialize project
   project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v'))
@@ -44,12 +45,14 @@ def main():
   auth = 'service' if project.args.service else 'user'
 
   # pull the line items
-  lineitems =  API_DV360_Beta(auth, iterate=True).advertisers().lineItems().list(advertiserId=project.args.advertiser).execute()
+  lineitems = API_DV360_Beta(
+      auth, iterate=True).advertisers().lineItems().list(
+          advertiserId=project.args.advertiser).execute()
 
   # print line items
   for lineitem in lineitems:
     print(json.dumps(lineitem, indent=2, sort_keys=True))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   main()

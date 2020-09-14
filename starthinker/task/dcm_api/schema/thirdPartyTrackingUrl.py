@@ -16,17 +16,23 @@
 #
 ###########################################################################
 
-thirdPartyTrackingUrl_Schema = [
-  {
-    "description": "CLICK_TRACKING, IMPRESSION, RICH_MEDIA_BACKUP_IMPRESSION, RICH_MEDIA_IMPRESSION, RICH_MEDIA_RM_IMPRESSION, SURVEY, VIDEO_COMPLETE, VIDEO_CUSTOM, VIDEO_FIRST_QUARTILE, VIDEO_FULLSCREEN, VIDEO_MIDPOINT, VIDEO_MUTE, VIDEO_PAUSE, VIDEO_PROGRESS, VIDEO_REWIND, VIDEO_SKIP, VIDEO_START, VIDEO_STOP, VIDEO_THIRD_QUARTILE",
-    "name": "thirdPartyUrlType",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "url",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+thirdPartyTrackingUrl_Schema = [{
+    'description':
+        'CLICK_TRACKING, IMPRESSION, RICH_MEDIA_BACKUP_IMPRESSION, '
+        'RICH_MEDIA_IMPRESSION, RICH_MEDIA_RM_IMPRESSION, SURVEY, '
+        'VIDEO_COMPLETE, VIDEO_CUSTOM, VIDEO_FIRST_QUARTILE, VIDEO_FULLSCREEN,'
+        ' VIDEO_MIDPOINT, VIDEO_MUTE, VIDEO_PAUSE, VIDEO_PROGRESS, '
+        'VIDEO_REWIND, VIDEO_SKIP, VIDEO_START, VIDEO_STOP, '
+        'VIDEO_THIRD_QUARTILE',
+    'name':
+        'thirdPartyUrlType',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}, {
+    'description': '',
+    'name': 'url',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

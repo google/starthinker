@@ -16,15 +16,12 @@
 #
 ###########################################################################
 
-tagSettings_Schema = [
-  {
-    "name": "dynamicTagEnabled",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "imageTagEnabled",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  }
-]
+tagSettings_Schema = [{
+    'name': 'dynamicTagEnabled',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'imageTagEnabled',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}]

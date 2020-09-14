@@ -16,51 +16,47 @@
 #
 ###########################################################################
 
-listPopulationTerm_Schema = [
-  {
-    "name": "contains",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "negation",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "NUM_EQUALS, NUM_GREATER_THAN, NUM_GREATER_THAN_EQUAL, NUM_LESS_THAN, NUM_LESS_THAN_EQUAL, STRING_CONTAINS, STRING_EQUALS",
-    "name": "operator",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "remarketingListId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "CUSTOM_VARIABLE_TERM, LIST_MEMBERSHIP_TERM, REFERRER_TERM",
-    "name": "type",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "value",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "variableFriendlyName",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "variableName",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+listPopulationTerm_Schema = [{
+    'name': 'contains',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'negation',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description':
+        'NUM_EQUALS, NUM_GREATER_THAN, NUM_GREATER_THAN_EQUAL, NUM_LESS_THAN, '
+        'NUM_LESS_THAN_EQUAL, STRING_CONTAINS, STRING_EQUALS',
+    'name':
+        'operator',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}, {
+    'description': '',
+    'name': 'remarketingListId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': 'CUSTOM_VARIABLE_TERM, LIST_MEMBERSHIP_TERM, REFERRER_TERM',
+    'name': 'type',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'value',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'variableFriendlyName',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'variableName',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

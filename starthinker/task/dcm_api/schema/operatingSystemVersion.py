@@ -16,65 +16,53 @@
 #
 ###########################################################################
 
-operatingSystemVersion_Schema = [
-  {
-    "description": "",
-    "name": "id",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "majorVersion",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "minorVersion",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "name",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  [
-    {
-      "description": "",
-      "name": "dartId",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    },
-    {
-      "name": "desktop",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "kind",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "name": "mobile",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "name",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    }
-  ]
-]
+operatingSystemVersion_Schema = [{
+    'description': '',
+    'name': 'id',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'majorVersion',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'minorVersion',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+},
+                                 [{
+                                     'description': '',
+                                     'name': 'dartId',
+                                     'type': 'INT64',
+                                     'mode': 'NULLABLE'
+                                 }, {
+                                     'name': 'desktop',
+                                     'type': 'BOOLEAN',
+                                     'mode': 'NULLABLE'
+                                 }, {
+                                     'description': '',
+                                     'name': 'kind',
+                                     'type': 'STRING',
+                                     'mode': 'NULLABLE'
+                                 }, {
+                                     'name': 'mobile',
+                                     'type': 'BOOLEAN',
+                                     'mode': 'NULLABLE'
+                                 }, {
+                                     'description': '',
+                                     'name': 'name',
+                                     'type': 'STRING',
+                                     'mode': 'NULLABLE'
+                                 }]]

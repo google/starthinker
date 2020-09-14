@@ -16,13 +16,36 @@
 #
 ###########################################################################
 
-Campaign_Schema = [
-  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Billing_Invoice_Code", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Campaign", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Campaign_End_Date", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Campaign_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Campaign_Start_Date", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Campaign_Schema = [{
+    'name': 'Advertiser_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Billing_Invoice_Code',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Campaign',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Campaign_End_Date',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Campaign_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Campaign_Start_Date',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Config_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Account_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

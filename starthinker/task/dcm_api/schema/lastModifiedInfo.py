@@ -16,11 +16,9 @@
 #
 ###########################################################################
 
-lastModifiedInfo_Schema = [
-  {
-    "description": "",
-    "name": "time",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+lastModifiedInfo_Schema = [{
+    'description': '',
+    'name': 'time',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

@@ -17,117 +17,98 @@
 ###########################################################################
 
 creativeAssetMetadata_Schema = [
-  [
-    {
-      "description": "",
-      "name": "name",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "AUDIO, FLASH, HTML, HTML_IMAGE, IMAGE, VIDEO",
-      "name": "type",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    }
-  ],
-  {
-    "name": "clickTags",
-    "type": "RECORD",
-    "mode": "REPEATED",
-    "fields": [
-      [
-        {
-          "description": "",
-          "name": "computedClickThroughUrl",
-          "type": "STRING",
-          "mode": "NULLABLE"
+    [{
+        'description': '',
+        'name': 'name',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': 'AUDIO, FLASH, HTML, HTML_IMAGE, IMAGE, VIDEO',
+        'name': 'type',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }], {
+        'name':
+            'clickTags',
+        'type':
+            'RECORD',
+        'mode':
+            'REPEATED',
+        'fields': [[{
+            'description': '',
+            'name': 'computedClickThroughUrl',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
+        }, {
+            'description': '',
+            'name': 'customClickThroughUrl',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
+        }, {
+            'description': '',
+            'name': 'landingPageId',
+            'type': 'INT64',
+            'mode': 'NULLABLE'
+        }], {
+            'description': '',
+            'name': 'eventName',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
         },
-        {
-          "description": "",
-          "name": "customClickThroughUrl",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "description": "",
-          "name": "landingPageId",
-          "type": "INT64",
-          "mode": "NULLABLE"
-        }
-      ],
-      {
-        "description": "",
-        "name": "eventName",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "name",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      }
-    ]
-  },
-  {
-    "name": "detectedFeatures",
-    "type": "STRING",
-    "mode": "REPEATED"
-  },
-  {
-    "description": "",
-    "name": "id",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  [
-    {
-      "description": "",
-      "name": "dimensionName",
-      "type": "STRING",
-      "mode": "NULLABLE"
+                   {
+                       'description': '',
+                       'name': 'name',
+                       'type': 'STRING',
+                       'mode': 'NULLABLE'
+                   }]
+    }, {
+        'name': 'detectedFeatures',
+        'type': 'STRING',
+        'mode': 'REPEATED'
+    }, {
+        'description': '',
+        'name': 'id',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
     },
-    {
-      "description": "",
-      "name": "etag",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "id",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "kind",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
-      "name": "matchType",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "value",
-      "type": "STRING",
-      "mode": "NULLABLE"
+    [{
+        'description': '',
+        'name': 'dimensionName',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'etag',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'id',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': 'BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION',
+        'name': 'matchType',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'value',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }], {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'name': 'warnedValidationRules',
+        'type': 'STRING',
+        'mode': 'REPEATED'
     }
-  ],
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "warnedValidationRules",
-    "type": "STRING",
-    "mode": "REPEATED"
-  }
 ]

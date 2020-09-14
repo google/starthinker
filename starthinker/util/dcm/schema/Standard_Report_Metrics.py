@@ -16,220 +16,888 @@
 #
 ###########################################################################
 
-Standard_Report_Metrics_Schema = [
-  { "name":"Active_View_Average_Viewable_Time_Seconds", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Eligible_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Active_View_Audible_Amp_Fully_On_Screen_For_Half_Of_Duration_15_Sec_Cap_Measurable_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Active_View_Audible_Amp_Fully_On_Screen_For_Half_Of_Duration_Trueview_Measurable_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Active_View_Audible_Amp_Fully_On_Screen_For_Half_Of_Duration_Trueview_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Active_View_Audible_Amp_Fully_On_Screen_For_Half_Of_Duration_15_Sec_Cap_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Active_View_Impression_Distribution_Not_Measurable", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Impression_Distribution_Not_Viewable", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Impression_Distribution_Viewable", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Impressions_Audible_And_Visible_At_Completion", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Active_View_Impressions_Visible_10_Seconds", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Active_View_Measurable_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Active_View_Not_Measurable_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Active_View_Not_Viewable_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Audible_And_Visible_At_Completion", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Audible_And_Visible_At_First_Quartile", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Audible_And_Visible_At_Midpoint", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Audible_And_Visible_At_Start", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Audible_And_Visible_At_Third_Quartile", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Audible_Impressions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_In_Background", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Full_Screen", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Audible_Amp_Fully_On_Screen_For_Half_Of_Duration_15_Sec_Cap_Rate", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Audible_Amp_Fully_On_Screen_For_Half_Of_Duration_Trueview_Rate", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Of_Completed_Impressions_Audible_And_Visible", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Of_First_Quartile_Impressions_Audible_And_Visible", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Of_Midpoint_Impressions_Audible_And_Visible", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Of_Third_Quartile_Impressions_Audible_And_Visible", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Of_Completed_Impressions_Visible", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Of_First_Quartile_Impressions_Visible", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Of_Midpoint_Impressions_Visible", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Of_Third_Quartile_Impressions_Visible", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Play_Time_Audible", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Play_Time_Audible_And_Visible", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Play_Time_Visible", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Visible_10_Seconds", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Visible_At_Completion", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Visible_At_First_Quartile", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Visible_At_Midpoint", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Visible_At_Start", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Visible_At_Third_Quartile", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Measurable_Impressions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Percent_Viewable_Impressions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Active_View_Viewable_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Click_Through_Conversions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Click_Through_Revenue", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Activity_Delivery_Status", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Activity_Per_Click", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Activity_Per_Thousand_Impressions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"View_Through_Conversions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"View_Through_Revenue", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Audio_Companion_Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Audio_Companion_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Booked_Activities", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Booked_Clicks", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Booked_Impressions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Booked_Viewable_Impressions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Click_Delivery_Status", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Click_Rate", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cost_Per_Activity", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Cost_Per_Click", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Cost_Per_Revenue", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Click_Through_Conversions_Cross_Environment", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Click_Through_Revenue_Cross_Environment", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Click_Through_Conversion_Events_Cross_Environment", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Total_Conversions_Cross_Environment", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Total_Revenue_Cross_Environment", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Total_Conversion_Events_Cross_Environment", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"View_Through_Conversions_Cross_Environment", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"View_Through_Revenue_Cross_Environment", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"View_Through_Conversion_Events_Cross_Environment", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Cost_Account_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cost_Usd", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Downloaded_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dynamic_Element_Click_Rate", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dynamic_Element_Click_Through_Conversions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dynamic_Element_Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dynamic_Element_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dynamic_Element_Total_Conversions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dynamic_Element_View_Through_Conversions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Effective_Cpm", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"General_Invalid_Traffic_Givt_Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"General_Invalid_Traffic_Givt_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Impression_Delivery_Status", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Invalid_Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Invalid_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Media_Cost", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Natural_Search_Actions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Natural_Search_Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Natural_Search_Revenue", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Natural_Search_Transactions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Action_Conversion_Percentage", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Actions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Average_Cost_Per_Action", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Average_Cost_Per_Transaction", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Average_Dcm_Transaction_Amount", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Average_Position", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Click_Rate", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Cost", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Revenue", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Spend_Per_Transaction_Revenue", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Transaction_Conversion_Percentage", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Transaction_Revenue_Per_Spend", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Transactions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Visits", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Percent_Invalid_Clicks", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Percent_Invalid_Impressions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Planned_Media_Cost", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Revenue_Per_Click", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Revenue_Per_Thousand_Impressions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Audio_Completions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Audio_First_Quartile_Completions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Audio_Midpoints", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Audio_Mutes", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Audio_Pauses", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Audio_Plays", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Audio_Replays", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Audio_Third_Quartile_Completions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Audio_Unmutes", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Average_Display_Time", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Average_Expansion_Time", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Full_Screen_Average_View_Time", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Average_Interaction_Time", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Video_Average_View_Time", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Backup_Image", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Rich_Media_Click_Rate", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Rich_Media_Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Code_Serves", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Average_Time", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Counters", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Exits", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Timers", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Custom_Variable_Count_1", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Custom_Variable_Count_2", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Total_Display_Time", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Event_Counters", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Event_Timers", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Expansion_Time", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Expansions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Full_Screen_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Full_Screen_Video_Completions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Full_Screen_Video_Plays", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Html5_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Rich_Media_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Interaction_Rate", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Total_Interaction_Time", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Total_Interactions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Interactive_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Manual_Closes", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Trueview_Views", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Companion_Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Completions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_First_Quartile_Completions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Full_Screen", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Interaction_Rate", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Video_Interactions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Midpoints", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Mutes", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Pauses", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Plays", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Progress_Events", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Replays", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Skips", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Stops", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Third_Quartile_Completions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Unmutes", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_View_Rate", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Video_Views", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Roadblock_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Email_Shares", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Social_Engagement_Rate", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Follows", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Twitter_Leads_Generated", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Likes", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Twitter_Offers_Accepted", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Replies", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Total_Social_Engagements", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Total_Conversions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Total_Revenue", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Twitter_App_Install_Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Twitter_Buy_Now_Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Twitter_Buy_Now_Purchases", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Other_Twitter_Engagements", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Retweets", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Twitter_Url_Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Twitter_Video_50Percent_In_View_For_2_Seconds", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Twitter_Video_100Percent_In_View_For_3_Seconds", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Blocked_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Classified_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Measurable_Impressions_For_Audio", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Measurable_Impressions_For_Video_Player_Location", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Measurable_Impressions_For_Video_Player_Size", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Percentage_Of_Measurable_Impressions_For_Audio", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Percentage_Of_Measurable_Impressions_For_Video_Player_Location", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Percentage_Of_Measurable_Impressions_For_Video_Player_Size", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Publisher_Problems", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Reporting_Problems", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Serving_Problems", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Verifiable_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Muted_At_Start", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Hd_Video_Player_Size_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Large_Video_Player_Size_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Player_Location_Avg_Pixels_From_Left", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Player_Location_Avg_Pixels_From_Top", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Player_Size_Avg_Height", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Player_Size_Avg_Width", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Small_Video_Player_Size_Impressions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Video_Prominence_Score", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Warnings", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Companion_Clicks", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Companion_Impressions", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Standard_Report_Metrics_Schema = [{
+    'name': 'Active_View_Average_Viewable_Time_Seconds',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Eligible_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name':
+        'Active_View_Audible_Amp_Fully_On_Screen_For_Half_Of_Duration_15_Sec_Cap_Measurable_Impressions',
+    'type':
+        'INTEGER',
+    'mode':
+        'NULLABLE'
+}, {
+    'name':
+        'Active_View_Audible_Amp_Fully_On_Screen_For_Half_Of_Duration_Trueview_Measurable_Impressions',
+    'type':
+        'INTEGER',
+    'mode':
+        'NULLABLE'
+}, {
+    'name':
+        'Active_View_Audible_Amp_Fully_On_Screen_For_Half_Of_Duration_Trueview_Impressions',
+    'type':
+        'INTEGER',
+    'mode':
+        'NULLABLE'
+}, {
+    'name':
+        'Active_View_Audible_Amp_Fully_On_Screen_For_Half_Of_Duration_15_Sec_Cap_Impressions',
+    'type':
+        'INTEGER',
+    'mode':
+        'NULLABLE'
+}, {
+    'name': 'Active_View_Impression_Distribution_Not_Measurable',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Impression_Distribution_Not_Viewable',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Impression_Distribution_Viewable',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Impressions_Audible_And_Visible_At_Completion',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Impressions_Visible_10_Seconds',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Measurable_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Not_Measurable_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Not_Viewable_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Audible_And_Visible_At_Completion',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Audible_And_Visible_At_First_Quartile',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Audible_And_Visible_At_Midpoint',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Audible_And_Visible_At_Start',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Audible_And_Visible_At_Third_Quartile',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Audible_Impressions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_In_Background',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Full_Screen',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name':
+        'Active_View_Audible_Amp_Fully_On_Screen_For_Half_Of_Duration_15_Sec_Cap_Rate',
+    'type':
+        'FLOAT',
+    'mode':
+        'NULLABLE'
+}, {
+    'name':
+        'Active_View_Audible_Amp_Fully_On_Screen_For_Half_Of_Duration_Trueview_Rate',
+    'type':
+        'FLOAT',
+    'mode':
+        'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Of_Completed_Impressions_Audible_And_Visible',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name':
+        'Active_View_Percent_Of_First_Quartile_Impressions_Audible_And_Visible',
+    'type':
+        'FLOAT',
+    'mode':
+        'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Of_Midpoint_Impressions_Audible_And_Visible',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name':
+        'Active_View_Percent_Of_Third_Quartile_Impressions_Audible_And_Visible',
+    'type':
+        'FLOAT',
+    'mode':
+        'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Of_Completed_Impressions_Visible',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Of_First_Quartile_Impressions_Visible',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Of_Midpoint_Impressions_Visible',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Of_Third_Quartile_Impressions_Visible',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Play_Time_Audible',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Play_Time_Audible_And_Visible',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Play_Time_Visible',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Visible_10_Seconds',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Visible_At_Completion',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Visible_At_First_Quartile',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Visible_At_Midpoint',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Visible_At_Start',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Visible_At_Third_Quartile',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Measurable_Impressions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Percent_Viewable_Impressions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Active_View_Viewable_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Click_Through_Conversions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Click_Through_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Activity_Delivery_Status',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Activity_Per_Click',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Activity_Per_Thousand_Impressions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'View_Through_Conversions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'View_Through_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Audio_Companion_Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Audio_Companion_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Booked_Activities',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Booked_Clicks',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Booked_Impressions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Booked_Viewable_Impressions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Click_Delivery_Status',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Click_Rate',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cost_Per_Activity',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cost_Per_Click',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cost_Per_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Click_Through_Conversions_Cross_Environment',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Click_Through_Revenue_Cross_Environment',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Click_Through_Conversion_Events_Cross_Environment',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Conversions_Cross_Environment',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Revenue_Cross_Environment',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Conversion_Events_Cross_Environment',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'View_Through_Conversions_Cross_Environment',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'View_Through_Revenue_Cross_Environment',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'View_Through_Conversion_Events_Cross_Environment',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cost_Account_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cost_Usd',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Downloaded_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dynamic_Element_Click_Rate',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dynamic_Element_Click_Through_Conversions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dynamic_Element_Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dynamic_Element_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dynamic_Element_Total_Conversions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dynamic_Element_View_Through_Conversions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Effective_Cpm',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'General_Invalid_Traffic_Givt_Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'General_Invalid_Traffic_Givt_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Impression_Delivery_Status',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Invalid_Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Invalid_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Media_Cost',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Natural_Search_Actions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Natural_Search_Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Natural_Search_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Natural_Search_Transactions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Action_Conversion_Percentage',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Actions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Average_Cost_Per_Action',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Average_Cost_Per_Transaction',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Average_Dcm_Transaction_Amount',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Average_Position',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Click_Rate',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Cost',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Spend_Per_Transaction_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Transaction_Conversion_Percentage',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Transaction_Revenue_Per_Spend',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Transactions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Visits',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Percent_Invalid_Clicks',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Percent_Invalid_Impressions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Planned_Media_Cost',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Revenue_Per_Click',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Revenue_Per_Thousand_Impressions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Audio_Completions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Audio_First_Quartile_Completions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Audio_Midpoints',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Audio_Mutes',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Audio_Pauses',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Audio_Plays',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Audio_Replays',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Audio_Third_Quartile_Completions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Audio_Unmutes',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Average_Display_Time',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Average_Expansion_Time',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Full_Screen_Average_View_Time',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Average_Interaction_Time',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Average_View_Time',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Backup_Image',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Rich_Media_Click_Rate',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Rich_Media_Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Code_Serves',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Average_Time',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Counters',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Exits',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Timers',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Custom_Variable_Count_1',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Custom_Variable_Count_2',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Display_Time',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Event_Counters',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Event_Timers',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Expansion_Time',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Expansions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Full_Screen_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Full_Screen_Video_Completions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Full_Screen_Video_Plays',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Html5_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Rich_Media_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Interaction_Rate',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Interaction_Time',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Interactions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Interactive_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Manual_Closes',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Trueview_Views',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Companion_Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Completions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_First_Quartile_Completions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Full_Screen',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Interaction_Rate',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Interactions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Midpoints',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Mutes',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Pauses',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Plays',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Progress_Events',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Replays',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Skips',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Stops',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Third_Quartile_Completions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Unmutes',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_View_Rate',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Views',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Roadblock_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Email_Shares',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Social_Engagement_Rate',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Follows',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Twitter_Leads_Generated',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Likes',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Twitter_Offers_Accepted',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Replies',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Social_Engagements',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Conversions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Twitter_App_Install_Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Twitter_Buy_Now_Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Twitter_Buy_Now_Purchases',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Other_Twitter_Engagements',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Retweets',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Twitter_Url_Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Twitter_Video_50Percent_In_View_For_2_Seconds',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Twitter_Video_100Percent_In_View_For_3_Seconds',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Blocked_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Classified_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Measurable_Impressions_For_Audio',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Measurable_Impressions_For_Video_Player_Location',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Measurable_Impressions_For_Video_Player_Size',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Percentage_Of_Measurable_Impressions_For_Audio',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Percentage_Of_Measurable_Impressions_For_Video_Player_Location',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Percentage_Of_Measurable_Impressions_For_Video_Player_Size',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Publisher_Problems',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Reporting_Problems',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Serving_Problems',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Verifiable_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Muted_At_Start',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Hd_Video_Player_Size_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Large_Video_Player_Size_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Player_Location_Avg_Pixels_From_Left',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Player_Location_Avg_Pixels_From_Top',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Player_Size_Avg_Height',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Player_Size_Avg_Width',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Small_Video_Player_Size_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Video_Prominence_Score',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Warnings',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Companion_Clicks',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Companion_Impressions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

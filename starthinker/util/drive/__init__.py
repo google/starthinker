@@ -29,9 +29,8 @@ from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
 from starthinker.util.google_api import API_Retry, API_Drive
 
-
-CHUNKSIZE = int(200 * 1024000 * BUFFER_SCALE) # scale is controlled in config.py
-
+CHUNKSIZE = int(200 * 1024000 *
+                BUFFER_SCALE)  # scale is controlled in config.py
 
 #https://drive.google.com/open?id=1um2RlasnKTvF_I6uVUsbmk4ioyW1Zemj
 #https://drive.google.com/open?id=1NQH5-yP9LM2dGTuGvdOA31KO1OwblruC-dK92F5IVLE
@@ -56,25 +55,34 @@ def file_id(auth, url_or_name):
     return url_or_name.split('?id=', 1)[-1]
 
   elif url_or_name.startswith('https://docs.google.com/'):
-    m = re.search('^(?:https:\/\/docs.google.com\/\w+\/d\/)([a-zA-Z0-9-_]+)(?:\/.*)?$', url_or_name)
-    if m: return m.group(1)
+    m = re.search(
+        '^(?:https:\/\/docs.google.com\/\w+\/d\/)([a-zA-Z0-9-_]+)(?:\/.*)?$',
+        url_or_name)
+    if m:
+      return m.group(1)
 
   elif url_or_name.startswith('https://datastudio.google.com/'):
-    m = re.search('^(?:https:\/\/datastudio.google.com\/c\/\w+\/)([a-zA-Z0-9-_]+)(?:\/.*)?$', url_or_name)
-    if m: return m.group(1)
+    m = re.search(
+        '^(?:https:\/\/datastudio.google.com\/c\/\w+\/)([a-zA-Z0-9-_]+)(?:\/.*)?$',
+        url_or_name)
+    if m:
+      return m.group(1)
 
   # check if name given convert to ID "Some Document"
   else:
     document = file_find(auth, url_or_name)
-    if document: return document['id']
+    if document:
+      return document['id']
 
-    # check if just ID given, "1uN9tnb-DZ9zZflZsoW4_34sf34tw3ff"
+      # check if just ID given, "1uN9tnb-DZ9zZflZsoW4_34sf34tw3ff"
     else:
       m = re.search('^([a-zA-Z0-9-_]+)$', url_or_name)
-      if m: return m.group(1)
+      if m:
+        return m.group(1)
 
   # probably a mangled id or name does not exist
-  if project.verbose: print('DOCUMENT DOES NOT EXIST', url_or_name)
+  if project.verbose:
+    print('DOCUMENT DOES NOT EXIST', url_or_name)
   return None
 
 
@@ -93,15 +101,18 @@ def file_exists(auth, name):
   return False
 
 
-def file_find(auth, name, parent = None):
-   query = "trashed = false and name = '%s'" % name
-   if parent: query = "%s and '%s' in parents" % (query, parent)
+def file_find(auth, name, parent=None):
+  query = "trashed = false and name = '%s'" % name
+  if parent:
+    query = "%s and '%s' in parents" % (query, parent)
 
-   try: return next(API_Drive(auth, iterate=True).files().list(q=query).execute())
-   except StopIteration: return None
+  try:
+    return next(API_Drive(auth, iterate=True).files().list(q=query).execute())
+  except StopIteration:
+    return None
 
 
-def file_delete(auth, name, parent = None):
+def file_delete(auth, name, parent=None):
   drive_id = file_id(auth, name)
 
   if drive_id:
@@ -113,22 +124,28 @@ def file_delete(auth, name, parent = None):
 
 def file_create(auth, name, filename, data, parent=None):
   """ Checks if file with name already exists ( outside of trash ) and
+
     if not, uploads the file.  Determines filetype based on filename extension
     and attempts to map to Google native such as Docs, Sheets, Slides, etc...
 
     For example:
-    -  ```file_create('user', 'Sample Document', 'sample.txt', BytesIO('File contents'))```
+    -  ```file_create('user', 'Sample Document', 'sample.txt', BytesIO('File
+    contents'))```
     -  Creates a Google Document object in the user's drive.
 
-    -  ```file_Create('user', 'Sample Sheet', 'sample.csv', BytesIO('col1,col2\nrow1a,row1b\n'))````
+    -  ```file_Create('user', 'Sample Sheet', 'sample.csv',
+    BytesIO('col1,col2\nrow1a,row1b\n'))````
     -  Creates a Google Sheet object in the user's drive.
 
     See: https://developers.google.com/drive/api/v3/manage-uploads
 
     ### Args:
-    -  * auth: (string) specify 'service' or 'user' to toggle between credentials used to access
-    -  * name: (string) name of file to create, used as key to check if file exists
-    -  * filename: ( string) specified as "file.extension" only to automate detection of mime type.
+    -  * auth: (string) specify 'service' or 'user' to toggle between
+    credentials used to access
+    -  * name: (string) name of file to create, used as key to check if file
+    exists
+    -  * filename: ( string) specified as "file.extension" only to automate
+    detection of mime type.
     -  * data: (BytesIO) any file like object that can be read from
     -  * parent: (string) the Google Drive to upload the file to
 
@@ -142,38 +159,38 @@ def file_create(auth, name, filename, data, parent=None):
 
   # if file exists, return it, prevents obliterating user changes
   if drive_file:
-    if project.verbose: print('Drive: File exists.')
+    if project.verbose:
+      print('Drive: File exists.')
 
   # if file does not exist, create it
   else:
-    if project.verbose: print('Drive: Creating file.')
+    if project.verbose:
+      print('Drive: Creating file.')
 
     # file mime is used for uplaod / fallback
     # drive mime attempts to map to a native Google format
     file_mime = mimetypes.guess_type(filename, strict=False)[0]
-    drive_mime = about('importFormats')['importFormats'].get(file_mime, file_mime)[0]
+    drive_mime = about('importFormats')['importFormats'].get(
+        file_mime, file_mime)[0]
 
-    if project.verbose: print('Drive Mimes:', file_mime, drive_mime)
+    if project.verbose:
+      print('Drive Mimes:', file_mime, drive_mime)
 
     # construct upload object, and stream upload in chunks
     body = {
-      'name':name,
-      'parents' : [parent] if parent else [],
-      'mimeType': drive_mime,
+        'name': name,
+        'parents': [parent] if parent else [],
+        'mimeType': drive_mime,
     }
 
     media = MediaIoBaseUpload(
-      BytesIO(data or ' '), # if data is empty BAD REQUEST error occurs
-      mimetype=file_mime,
-      chunksize=CHUNKSIZE,
-      resumable=True
-    )
+        BytesIO(data or ' '),  # if data is empty BAD REQUEST error occurs
+        mimetype=file_mime,
+        chunksize=CHUNKSIZE,
+        resumable=True)
 
     drive_file = API_Drive(auth).files().create(
-      body=body,
-      media_body=media,
-      fields='id'
-    ).execute()
+        body=body, media_body=media, fields='id').execute()
 
   return drive_file
 
@@ -182,26 +199,24 @@ def file_copy(auth, source_name, destination_name):
   destination_id = file_id(auth, destination_name)
 
   if destination_id:
-    if project.verbose: print('Drive: File exists.')
+    if project.verbose:
+      print('Drive: File exists.')
     return file_get(auth, destination_id)
 
   else:
     source_id = file_id(auth, source_name)
 
     if source_id:
-      body = {
-        'visibility':'PRIVATE',
-        'name':destination_name
-      }
+      body = {'visibility': 'PRIVATE', 'name': destination_name}
       return API_Drive(auth).files().copy(fileId=source_id, body=body).execute()
     else:
       return None
 
 
 def folder_create(auth, name, parent=None):
-   body = {
-     'name' : name,
-     'parents' : [parent] if parent else [],
-     'mimeType' : 'application/vnd.google-apps.folder'
-   }
-   return API_Drive(auth).files().create(body=body, fields='id').execute()
+  body = {
+      'name': name,
+      'parents': [parent] if parent else [],
+      'mimeType': 'application/vnd.google-apps.folder'
+  }
+  return API_Drive(auth).files().create(body=body, fields='id').execute()

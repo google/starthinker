@@ -16,41 +16,32 @@
 #
 ###########################################################################
 
-richMediaExitOverride_Schema = [
-  [
-    {
-      "description": "",
-      "name": "computedClickThroughUrl",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "customClickThroughUrl",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "name": "defaultLandingPage",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "landingPageId",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    }
-  ],
-  {
-    "name": "enabled",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "exitId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+richMediaExitOverride_Schema = [[{
+    'description': '',
+    'name': 'computedClickThroughUrl',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'customClickThroughUrl',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'defaultLandingPage',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'landingPageId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}], {
+    'name': 'enabled',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'exitId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

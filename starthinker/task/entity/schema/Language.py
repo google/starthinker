@@ -17,12 +17,14 @@
 ###########################################################################
 
 Language_Schema = [
-  { "name":"id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"code",
-    "type":"STRING",
-    "mode":"NULLABLE",
-  },
+    {
+        'name': 'id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'code',
+        'type': 'STRING',
+        'mode': 'NULLABLE',
+    },
 ]

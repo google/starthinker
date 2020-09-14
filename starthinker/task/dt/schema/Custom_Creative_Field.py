@@ -16,14 +16,40 @@
 #
 ###########################################################################
 
-Custom_Creative_Field_Schema = [
-  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_Field_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_Field_Name", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Creative_Field_Number", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_Field_Value", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Creative_Field_Value_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Custom_Creative_Field_Schema = [{
+    'name': 'Advertiser_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Field_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Field_Name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Field_Number',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Field_Value',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Field_Value_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Config_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Account_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

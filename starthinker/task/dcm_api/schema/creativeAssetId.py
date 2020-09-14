@@ -16,17 +16,14 @@
 #
 ###########################################################################
 
-creativeAssetId_Schema = [
-  {
-    "description": "",
-    "name": "name",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "AUDIO, FLASH, HTML, HTML_IMAGE, IMAGE, VIDEO",
-    "name": "type",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+creativeAssetId_Schema = [{
+    'description': '',
+    'name': 'name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': 'AUDIO, FLASH, HTML, HTML_IMAGE, IMAGE, VIDEO',
+    'name': 'type',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

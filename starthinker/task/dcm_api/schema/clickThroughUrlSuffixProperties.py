@@ -16,16 +16,13 @@
 #
 ###########################################################################
 
-clickThroughUrlSuffixProperties_Schema = [
-  {
-    "description": "",
-    "name": "clickThroughUrlSuffix",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "overrideInheritedSuffix",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  }
-]
+clickThroughUrlSuffixProperties_Schema = [{
+    'description': '',
+    'name': 'clickThroughUrlSuffix',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'overrideInheritedSuffix',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}]

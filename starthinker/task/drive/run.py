@@ -15,7 +15,6 @@
 #  limitations under the License.
 #
 ###########################################################################
-
 """Handler that executes { "drive":{...}} task in recipe JSON.
 
 This script perfroms various drive operations like copy and create.
@@ -27,16 +26,21 @@ from starthinker.util.drive import file_copy, file_create, file_delete
 
 @project.from_parameters
 def drive():
-  if project.verbose: print('Drive')
+  if project.verbose:
+    print('Drive')
 
   if 'delete' in project.task:
-    if project.verbose: print('Drive Delete', project.task['delete'])
+    if project.verbose:
+      print('Drive Delete', project.task['delete'])
     file_delete(project.task['auth'], project.task['delete'])
 
   if 'copy' in project.task:
-    if project.verbose: print('Drive Copy', project.task['copy']['source'], project.task['copy']['destination'])
-    file_copy(project.task['auth'], project.task['copy']['source'], project.task['copy']['destination'])
+    if project.verbose:
+      print('Drive Copy', project.task['copy']['source'],
+            project.task['copy']['destination'])
+    file_copy(project.task['auth'], project.task['copy']['source'],
+              project.task['copy']['destination'])
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   drive()

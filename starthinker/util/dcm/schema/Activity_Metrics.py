@@ -16,36 +16,128 @@
 #
 ###########################################################################
 
-Activity_Metrics_Schema = [
-  { "name":"Click_Through_Conversions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Click_Through_Revenue", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"View_Through_Conversions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"View_Through_Revenue", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Click_Through_Conversions_Cross_Environment", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Click_Through_Revenue_Cross_Environment", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Click_Through_Conversion_Events_Cross_Environment", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Total_Conversions_Cross_Environment", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Total_Revenue_Cross_Environment", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Total_Conversion_Events_Cross_Environment", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"View_Through_Conversions_Cross_Environment", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"View_Through_Revenue_Cross_Environment", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"View_Through_Conversion_Events_Cross_Environment", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dynamic_Element_Click_Through_Conversions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dynamic_Element_Total_Conversions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dynamic_Element_View_Through_Conversions", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Natural_Search_Actions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Natural_Search_Revenue", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Natural_Search_Transactions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Action_Conversion_Percentage", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Actions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Average_Cost_Per_Action", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Average_Cost_Per_Transaction", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Average_Dcm_Transaction_Amount", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Revenue", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Spend_Per_Transaction_Revenue", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Transaction_Conversion_Percentage", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Floodlight_Paid_Search_Transaction_Revenue_Per_Spend", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Transactions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Total_Conversions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Total_Revenue", "type":"FLOAT", "mode":"NULLABLE" }
-]
+Activity_Metrics_Schema = [{
+    'name': 'Click_Through_Conversions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Click_Through_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'View_Through_Conversions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'View_Through_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Click_Through_Conversions_Cross_Environment',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Click_Through_Revenue_Cross_Environment',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Click_Through_Conversion_Events_Cross_Environment',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Conversions_Cross_Environment',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Revenue_Cross_Environment',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Conversion_Events_Cross_Environment',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'View_Through_Conversions_Cross_Environment',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'View_Through_Revenue_Cross_Environment',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'View_Through_Conversion_Events_Cross_Environment',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dynamic_Element_Click_Through_Conversions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dynamic_Element_Total_Conversions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dynamic_Element_View_Through_Conversions',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Natural_Search_Actions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Natural_Search_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Natural_Search_Transactions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Action_Conversion_Percentage',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Actions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Average_Cost_Per_Action',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Average_Cost_Per_Transaction',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Average_Dcm_Transaction_Amount',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Spend_Per_Transaction_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Transaction_Conversion_Percentage',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Paid_Search_Transaction_Revenue_Per_Spend',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Transactions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Conversions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}]

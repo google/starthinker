@@ -16,35 +16,35 @@
 #
 ###########################################################################
 
-orderContact_Schema = [
-  {
-    "description": "",
-    "name": "contactInfo",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "contactName",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "contactTitle",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "PLANNING_ORDER_CONTACT_BUYER_BILLING_CONTACT, PLANNING_ORDER_CONTACT_BUYER_CONTACT, PLANNING_ORDER_CONTACT_SELLER_CONTACT",
-    "name": "contactType",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "signatureUserProfileId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+orderContact_Schema = [{
+    'description': '',
+    'name': 'contactInfo',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'contactName',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'contactTitle',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description':
+        'PLANNING_ORDER_CONTACT_BUYER_BILLING_CONTACT, '
+        'PLANNING_ORDER_CONTACT_BUYER_CONTACT, '
+        'PLANNING_ORDER_CONTACT_SELLER_CONTACT',
+    'name':
+        'contactType',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}, {
+    'description': '',
+    'name': 'signatureUserProfileId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

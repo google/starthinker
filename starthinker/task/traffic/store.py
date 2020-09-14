@@ -31,9 +31,7 @@
 
 
 class Store(object):
-  """Class that handles interaction with the Store.
-
-  """
+  """Class that handles interaction with the Store."""
 
   def __init__(self):
     """Initializes the store.
@@ -43,6 +41,7 @@ class Store(object):
     """
     self._store = {}
     self._id_map = {}
+
 
 #    self.trix_id = None
 #    self.auth = None
@@ -72,7 +71,6 @@ class Store(object):
 #      data = json.dumps(self._id_map)
 #      data = [data[start:start+49999] for start in range(0, len(data), 49999)]
 #      sheets_write(self.auth, self.trix_id, 'Store', 'A:' + columns[len(data) + 1], [data])
-
 
 #  def clear(self):
 #    """Clears the store in the Bulkdozer feed.
@@ -138,6 +136,5 @@ class Store(object):
       return self._store[entity].get(str(key))
 
     return None
-
 
 store = Store()

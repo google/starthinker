@@ -17,58 +17,49 @@
 ###########################################################################
 
 placementAssignment_Schema = [
-  {
-    "name": "active",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "placementId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  [
     {
-      "description": "",
-      "name": "dimensionName",
-      "type": "STRING",
-      "mode": "NULLABLE"
+        'name': 'active',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'placementId',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
     },
-    {
-      "description": "",
-      "name": "etag",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "id",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "kind",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
-      "name": "matchType",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "value",
-      "type": "STRING",
-      "mode": "NULLABLE"
+    [{
+        'description': '',
+        'name': 'dimensionName',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'etag',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'id',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': 'BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION',
+        'name': 'matchType',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'value',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }], {
+        'name': 'sslRequired',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE'
     }
-  ],
-  {
-    "name": "sslRequired",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  }
 ]

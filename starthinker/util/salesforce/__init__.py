@@ -26,16 +26,18 @@ from simple_salesforce import Salesforce
 def authenticate(domain, client_id, client_secret, username, password):
 
   data = parse.urlencode({
-    "grant_type":"password",
-    "client_id":client_id,
-    "client_secret":client_secret,
-    "username":username,
-    "password":password
+      'grant_type': 'password',
+      'client_id': client_id,
+      'client_secret': client_secret,
+      'username': username,
+      'password': password
   }).encode()
 
-  req =  request.Request("https://%s/services/oauth2/token" % domain, data=data)
+  req = request.Request('https://%s/services/oauth2/token' % domain, data=data)
   creds = json.loads(request.urlopen(req).read())
-  return Salesforce(instance_url=creds['instance_url'], session_id=creds['access_token'])
+  return Salesforce(
+      instance_url=creds['instance_url'], session_id=creds['access_token'])
+
 
 def query(service, query, header=False):
   for record in service.query_all(query)['records']:

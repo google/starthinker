@@ -16,29 +16,28 @@
 #
 ###########################################################################
 
-dynamicTargetingKey_Schema = [
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "name",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "objectId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "OBJECT_AD, OBJECT_ADVERTISER, OBJECT_CREATIVE, OBJECT_PLACEMENT",
-    "name": "objectType",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+dynamicTargetingKey_Schema = [{
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'objectId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description':
+        'OBJECT_AD, OBJECT_ADVERTISER, OBJECT_CREATIVE, OBJECT_PLACEMENT',
+    'name':
+        'objectType',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}]

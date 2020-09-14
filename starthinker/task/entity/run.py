@@ -15,7 +15,6 @@
 #  limitations under the License.
 #
 ###########################################################################
-
 """Script that executes { "entity":{...}} task.
 
 This script translates JSON instructions into operations on Entity Read File
@@ -60,10 +59,12 @@ The following Entity Read Files Can Be Specified:
 
 ### Notes
 
-- Files are moved using an in memory buffer, controlled by BUFFER_SCALE in config.py.
+- Files are moved using an in memory buffer, controlled by BUFFER_SCALE in
+config.py.
 - Bigger buffer means faster move but needs a machine with more memory.
 - These transfers take a long time, two jobs can write over each other.
-- The tables are filled over time, if you need instant data switch, use table copy after job.
+- The tables are filled over time, if you need instant data switch, use table
+copy after job.
 
 """
 
@@ -74,10 +75,10 @@ from starthinker.util.bigquery import json_to_table
 from starthinker.util.data import get_rows
 from starthinker.task.entity.schema import Entity_Schema_Lookup
 
-
-CHUNK_SIZE = int(200 * 1024000 * BUFFER_SCALE) # 200 MB * scale in config.py
+CHUNK_SIZE = int(200 * 1024000 * BUFFER_SCALE)  # 200 MB * scale in config.py
 PUBLIC_FILES = ('SupportedExchange', 'DataPartner', 'UniversalSite',
                 'GeoLocation', 'Language', 'DeviceCriteria', 'Browser', 'Isp')
+
 
 def get_entity(path):
   delimiter = ',\r\r'
@@ -104,7 +105,8 @@ def get_entity(path):
 
 
 def move_entity(project, path, table, schema, disposition):
-  if 'prefix' in project.task: table = '%s_%s' % (project.task['prefix'], table)
+  if 'prefix' in project.task:
+    table = '%s_%s' % (project.task['prefix'], table)
 
   if 'out' in project.task:
     auth = project.task['out']['bigquery'].get('auth', project.task['auth'])
@@ -119,20 +121,21 @@ def move_entity(project, path, table, schema, disposition):
 
   # write each part
   json_to_table(
-    auth,
-    project.id,
-    dataset,
-    table,
-    records,
-    schema=schema,
-    disposition=disposition)
+      auth,
+      project.id,
+      dataset,
+      table,
+      records,
+      schema=schema,
+      disposition=disposition)
   # after first write switch to append
   #disposition = 'WRITE_APPEND'
 
 
 @project.from_parameters
 def entity():
-  if project.verbose: print('ENTITY')
+  if project.verbose:
+    print('ENTITY')
 
   # legacy translations ( changed partners, advertisers to accounts with "partner_id:advertiser_id" )
   if 'partner_id' in project.task:
@@ -140,11 +143,13 @@ def entity():
 
   # create entities
   for entity in project.task['entities']:
-    if project.verbose: print('ENTITY:', entity)
+    if project.verbose:
+      print('ENTITY:', entity)
 
     # write public files only once
     if entity in PUBLIC_FILES:
-      path = 'gdbm-public:entity/%s.0.%s.json' % (project.date.strftime('%Y%m%d'), entity)
+      path = 'gdbm-public:entity/%s.0.%s.json' % (
+          project.date.strftime('%Y%m%d'), entity)
       schema = Entity_Schema_Lookup[entity]
       move_entity(project, path, entity, schema, 'WRITE_TRUNCATE')
 
@@ -153,13 +158,15 @@ def entity():
       disposition = 'WRITE_TRUNCATE'
       for account in get_rows('user', project.task['partners']):
 
-      #for account in project.task['accounts']:
+        #for account in project.task['accounts']:
         # if advertiser given do not run it ( SAFETY )
         if ':' in str(account):
           print('WARNING: Skipping advertiser: ', account)
           continue
-        if project.verbose: print('PARTNER:', account)
-        path = 'gdbm-%s:entity/%s.0.%s.json' % (account, project.date.strftime('%Y%m%d'), entity)
+        if project.verbose:
+          print('PARTNER:', account)
+        path = 'gdbm-%s:entity/%s.0.%s.json' % (
+            account, project.date.strftime('%Y%m%d'), entity)
         schema = Entity_Schema_Lookup[entity]
         move_entity(project, path, entity, schema, disposition)
         disposition = 'WRITE_APPEND'

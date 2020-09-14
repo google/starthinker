@@ -16,17 +16,14 @@
 #
 ###########################################################################
 
-thirdPartyAuthenticationToken_Schema = [
-  {
-    "description": "",
-    "name": "name",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "value",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+thirdPartyAuthenticationToken_Schema = [{
+    'description': '',
+    'name': 'name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'value',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

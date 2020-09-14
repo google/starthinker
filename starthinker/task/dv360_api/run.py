@@ -22,59 +22,89 @@ from starthinker.util.google_api import API_DV360_Beta
 from starthinker.util.google_api.discovery import discovery_schema
 
 DV360_API_TO_RESOURCE = {
-  "advertisers":"Advertiser",
-  "advertisers.campaigns":"Campaign",
-  "advertisers.channels":"Channel",
-  "advertisers.channels.sites":"Site",
-  "advertisers.creatives":"Creative",
-  "advertisers.insertionOrders":"InsertionOrder",
-  "advertisers.lineItems":"LineItem",
-  "advertisers.lineItems.targetingTypes":"TargetingType",
-  "advertisers.locationLists":"LocationList",
-  "advertisers.locationLists.assignedLocations":"AssignedLocation",
-  "advertisers.negativeKeywordLists":"NegativeKeywordList",
-  "advertisers.negativeKeywordLists.negativeKeywords":"NegativeKeyword",
-  "advertisers.targetingTypes.assignedTargetingOptions":"AssignedTargetingOption",
-  "combinedAudiences":"CombinedAudience",
-  "customBiddingAlgorithms":"CustomBiddingAlgorithm",
-  "customLists":"CustomList",
-  "firstAndThirdPartyAudiences":"FirstAndThirdPartyAudience",
-  "floodlightGroups":"FloodlightGroup",
-  "googleAudiences":"GoogleAudience",
-  "inventorySourceGroups":"InventorySourceGroup",
-  "inventorySourceGroups.assignedInventorySources":"AssignedInventorySource",
-  "inventorySources":"InventorySource",
-  "partners":"Partner",
-  "partners.channels":"Channel",
-  "partners.channels.sites":"Site",
-  "floodlightActivityGroups":"FloodlightActivityGroup",
-  "partners.targetingTypes.assignedTargetingOptions":"AssignedTargetingOption",
-  "targetingTypes.targetingOptions":"TargetingOption",
-  "users":"User"
+    'advertisers':
+        'Advertiser',
+    'advertisers.campaigns':
+        'Campaign',
+    'advertisers.channels':
+        'Channel',
+    'advertisers.channels.sites':
+        'Site',
+    'advertisers.creatives':
+        'Creative',
+    'advertisers.insertionOrders':
+        'InsertionOrder',
+    'advertisers.lineItems':
+        'LineItem',
+    'advertisers.lineItems.targetingTypes':
+        'TargetingType',
+    'advertisers.locationLists':
+        'LocationList',
+    'advertisers.locationLists.assignedLocations':
+        'AssignedLocation',
+    'advertisers.negativeKeywordLists':
+        'NegativeKeywordList',
+    'advertisers.negativeKeywordLists.negativeKeywords':
+        'NegativeKeyword',
+    'advertisers.targetingTypes.assignedTargetingOptions':
+        'AssignedTargetingOption',
+    'combinedAudiences':
+        'CombinedAudience',
+    'customBiddingAlgorithms':
+        'CustomBiddingAlgorithm',
+    'customLists':
+        'CustomList',
+    'firstAndThirdPartyAudiences':
+        'FirstAndThirdPartyAudience',
+    'floodlightGroups':
+        'FloodlightGroup',
+    'googleAudiences':
+        'GoogleAudience',
+    'inventorySourceGroups':
+        'InventorySourceGroup',
+    'inventorySourceGroups.assignedInventorySources':
+        'AssignedInventorySource',
+    'inventorySources':
+        'InventorySource',
+    'partners':
+        'Partner',
+    'partners.channels':
+        'Channel',
+    'partners.channels.sites':
+        'Site',
+    'floodlightActivityGroups':
+        'FloodlightActivityGroup',
+    'partners.targetingTypes.assignedTargetingOptions':
+        'AssignedTargetingOption',
+    'targetingTypes.targetingOptions':
+        'TargetingOption',
+    'users':
+        'User'
 }
 
 
 def put_data(endpoint):
 
-  schema = discovery_schema('displayvideo', 'v1', DV360_API_TO_RESOURCE.get(endpoint))
+  schema = discovery_schema('displayvideo', 'v1',
+                            DV360_API_TO_RESOURCE.get(endpoint))
 
   out = {}
 
   if 'dataset' in project.task['out']:
-    out["bigquery"] = {
-      "dataset": project.task['out']['dataset'],
-      "table": 'DV360_%s' % endpoint.replace('.', '_'),
-      "schema": schema,
-      "skip_rows": 0,
-      "format":'JSON',
+    out['bigquery'] = {
+        'dataset': project.task['out']['dataset'],
+        'table': 'DV360_%s' % endpoint.replace('.', '_'),
+        'schema': schema,
+        'skip_rows': 0,
+        'format': 'JSON',
     }
 
   if 'sheet' in project.task:
-    out["sheets"] = {
-      "url":project.task['out']['sheet'],
-      "tab":endpoint,
-      "range":"A1:A1",
-      "delete": True
+    out['sheets'] = {
+        'url': project.task['out']['sheet'],
+        'tab': endpoint,
+        'range': 'A1:A1',
+        'delete': True
     }
 
   return out
@@ -83,52 +113,55 @@ def put_data(endpoint):
 def dv360_api_list(endpoint):
 
   if 'partners' in project.task:
-    partners = set(get_rows("user", project.task['partners']))
+    partners = set(get_rows('user', project.task['partners']))
 
     for partner in partners:
-      kwargs = {'partnerId':partner}
-      yield from API_DV360_Beta(project.task['auth'], iterate=True).call(endpoint).list(**kwargs).execute()
+      kwargs = {'partnerId': partner}
+      yield from API_DV360_Beta(
+          project.task['auth'],
+          iterate=True).call(endpoint).list(**kwargs).execute()
 
   if 'advertisers' in project.task:
-    advertisers = set(get_rows("user", project.task['advertisers']))
+    advertisers = set(get_rows('user', project.task['advertisers']))
 
     for advertiser in advertisers:
-      kwargs = {'advertiserId':str(advertiser)}
-      yield from API_DV360_Beta(project.task['auth'], iterate=True).call(endpoint).list(**kwargs).execute()
+      kwargs = {'advertiserId': str(advertiser)}
+      yield from API_DV360_Beta(
+          project.task['auth'],
+          iterate=True).call(endpoint).list(**kwargs).execute()
 
 
 def dv360_api_patch(endpoint, row):
   kwargs = {
-    'advertiserId':str(row['advertiserId']),
-    'updateMask':'displayName',
-    'body':row
+      'advertiserId': str(row['advertiserId']),
+      'updateMask': 'displayName',
+      'body': row
   }
-  print(API_DV360_Beta(project.task['auth']).call(endpoint).patch(**kwargs).execute())
+  print(
+      API_DV360_Beta(
+          project.task['auth']).call(endpoint).patch(**kwargs).execute())
 
 
 def dv360_api_insert(endpoint, row):
   print(row)
-  kwargs = {
-    'advertiserId':str(row['advertiserId']),
-    'body':row
-  }
-  print(API_DV360_Beta(project.task['auth']).call(endpoint).create(**kwargs).execute())
+  kwargs = {'advertiserId': str(row['advertiserId']), 'body': row}
+  print(
+      API_DV360_Beta(
+          project.task['auth']).call(endpoint).create(**kwargs).execute())
 
 
 @project.from_parameters
 def dv360_api():
-  if project.verbose: print('DV360 API')
+  if project.verbose:
+    print('DV360 API')
 
   if 'out' in project.task:
-    if isinstance(project.task['endpoints'], str): project.task['endpoints'] = [project.task['endpoints']]
+    if isinstance(project.task['endpoints'], str):
+      project.task['endpoints'] = [project.task['endpoints']]
 
     for endpoint in project.task['endpoints']:
       rows = dv360_api_list(endpoint)
-      put_rows(
-        project.task['out']['auth'],
-        put_data(endpoint),
-        rows
-      )
+      put_rows(project.task['out']['auth'], put_data(endpoint), rows)
 
   elif 'patch' in project.task:
     rows = get_rows(project.task['auth'], project.task)
@@ -144,5 +177,6 @@ def dv360_api():
       dv360_api_insert(project.task['insert'], row)
       print(row)
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
   dv360_api()

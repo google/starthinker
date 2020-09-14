@@ -16,8 +16,16 @@
 #
 ###########################################################################
 
-Cross_Dimension_Reach_Report_Breakdown_Schema = [
-  { "name":"Date", "type":"DATE", "mode":"NULLABLE" },
-  { "name":"Month", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Week", "type":"STRING", "mode":"NULLABLE" }
-]
+Cross_Dimension_Reach_Report_Breakdown_Schema = [{
+    'name': 'Date',
+    'type': 'DATE',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Month',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Week',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

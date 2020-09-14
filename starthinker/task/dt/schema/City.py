@@ -16,7 +16,12 @@
 #
 ###########################################################################
 
-City_Schema = [
-  { "name":"City", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"City_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+City_Schema = [{
+    'name': 'City',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'City_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

@@ -16,17 +16,14 @@
 #
 ###########################################################################
 
-creativeGroupAssignment_Schema = [
-  {
-    "description": "",
-    "name": "creativeGroupId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "CREATIVE_GROUP_ONE, CREATIVE_GROUP_TWO",
-    "name": "creativeGroupNumber",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+creativeGroupAssignment_Schema = [{
+    'description': '',
+    'name': 'creativeGroupId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': 'CREATIVE_GROUP_ONE, CREATIVE_GROUP_TWO',
+    'name': 'creativeGroupNumber',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

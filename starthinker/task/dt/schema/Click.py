@@ -16,115 +16,444 @@
 #
 ###########################################################################
 
-Click_Schema = [
-  { "name":"Partitiontime", "type":"TIMESTAMP", "mode":"NULLABLE" },
-  { "name":"Event_Time", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"User_Id", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Campaign_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Ad_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Rendering_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_Version", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Site_Id_Dcm", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Country_Code", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"State_Region", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Browser_Platform_Id", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Browser_Platform_Version", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Designated_Market_Area_Dma_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"City_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Zip_Postal_Code", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"U_Value", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Event_Type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Event_Sub_Type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Auction_Id", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Request_Time", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Insertion_Order_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Line_Item_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Creative_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Bid_Price_Usd", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Bid_Price_Partner_Currency", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Bid_Price_Advertiser_Currency", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Url", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Site_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Language", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Adx_Page_Categories", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Matching_Targeted_Keywords", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Exchange_Id", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Attributed_Inventory_Source_External_Id", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Attributed_Inventory_Source_Is_Public", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Ad_Position", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Country_Code", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Zip_Postal_Code", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Browser_Platform_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Net_Speed", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Matching_Targeted_Segments", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Isp_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Device_Type", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Mobile_Model_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Placement_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Operating_System_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Segment_Value_1", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Designated_Market_Area_Dma_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_State_Region_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_City_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Browser_Timezone_Offset_Minutes", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Operating_System_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Mobile_Make_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Partner_1_Id", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Partner_2_Id", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Partner_3_Id", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Partner_4_Id", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Partner_5_Id", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Null_User_Id_Reason_Groups", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Google_Click_Id", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"City", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Impression_Id", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Landing_Page_Url_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_Pixel_Size", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Cost_Usd", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Cost_Partner_Currency", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Cost_Advertiser_Currency", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Revenue_Usd", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Revenue_Partner_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Revenue_Advertiser_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_1_Usd", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_1_Partner_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_1_Advertiser_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_2_Usd", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_2_Partner_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_2_Advertiser_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_3_Usd", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_3_Partner_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_3_Advertiser_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_4_Usd", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_4_Partner_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_4_Advertiser_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_5_Usd", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_5_Partner_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Cpm_Fee_5_Advertiser_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_1_Usd", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_1_Partner_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_1_Advertiser_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_2_Usd", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_2_Partner_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_2_Advertiser_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_3_Usd", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_3_Partner_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_3_Advertiser_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_4_Usd", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_4_Partner_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_4_Advertiser_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_5_Usd", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_5_Partner_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Media_Fee_5_Advertiser_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Data_Fees_Usd", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Data_Fees_Partner_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Data_Fees_Advertiser_Currency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Dbm_Billable_Cost_Usd", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Billable_Cost_Partner_Currency", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Billable_Cost_Advertiser_Currency", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Total_Media_Cost_Partner_Currency", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Total_Media_Cost_Advertiser_Currency", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Dbm_Total_Media_Cost_Usd", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Click_Schema = [{
+    'name': 'Partitiontime',
+    'type': 'TIMESTAMP',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Event_Time',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'User_Id',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Advertiser_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Campaign_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Ad_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Rendering_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Version',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Site_Id_Dcm',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Country_Code',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'State_Region',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Browser_Platform_Id',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Browser_Platform_Version',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Designated_Market_Area_Dma_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'City_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Zip_Postal_Code',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'U_Value',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Event_Type',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Event_Sub_Type',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Auction_Id',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Request_Time',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Advertiser_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Insertion_Order_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Line_Item_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Creative_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Bid_Price_Usd',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Bid_Price_Partner_Currency',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Bid_Price_Advertiser_Currency',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Url',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Site_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Language',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Adx_Page_Categories',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Matching_Targeted_Keywords',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Exchange_Id',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Attributed_Inventory_Source_External_Id',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Attributed_Inventory_Source_Is_Public',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Ad_Position',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Country_Code',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Zip_Postal_Code',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Browser_Platform_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Net_Speed',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Matching_Targeted_Segments',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Isp_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Device_Type',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Mobile_Model_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Operating_System_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Segment_Value_1',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Designated_Market_Area_Dma_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_State_Region_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_City_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Browser_Timezone_Offset_Minutes',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Operating_System_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Mobile_Make_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Partner_1_Id',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Partner_2_Id',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Partner_3_Id',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Partner_4_Id',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Partner_5_Id',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Null_User_Id_Reason_Groups',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Google_Click_Id',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'City',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Impression_Id',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Landing_Page_Url_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Pixel_Size',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Cost_Usd',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Cost_Partner_Currency',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Cost_Advertiser_Currency',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Revenue_Usd',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Revenue_Partner_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Revenue_Advertiser_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_1_Usd',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_1_Partner_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_1_Advertiser_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_2_Usd',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_2_Partner_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_2_Advertiser_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_3_Usd',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_3_Partner_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_3_Advertiser_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_4_Usd',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_4_Partner_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_4_Advertiser_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_5_Usd',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_5_Partner_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Cpm_Fee_5_Advertiser_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_1_Usd',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_1_Partner_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_1_Advertiser_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_2_Usd',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_2_Partner_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_2_Advertiser_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_3_Usd',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_3_Partner_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_3_Advertiser_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_4_Usd',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_4_Partner_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_4_Advertiser_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_5_Usd',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_5_Partner_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Media_Fee_5_Advertiser_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Data_Fees_Usd',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Data_Fees_Partner_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Data_Fees_Advertiser_Currency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Billable_Cost_Usd',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Billable_Cost_Partner_Currency',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Billable_Cost_Advertiser_Currency',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Total_Media_Cost_Partner_Currency',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Total_Media_Cost_Advertiser_Currency',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dbm_Total_Media_Cost_Usd',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

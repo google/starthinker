@@ -16,7 +16,12 @@
 #
 ###########################################################################
 
-Cross_Dimension_Reach_Report_Filters_Schema = [
-  { "name":"Advertiser", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Campaign", "type":"STRING", "mode":"NULLABLE" }
-]
+Cross_Dimension_Reach_Report_Filters_Schema = [{
+    'name': 'Advertiser',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Campaign',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

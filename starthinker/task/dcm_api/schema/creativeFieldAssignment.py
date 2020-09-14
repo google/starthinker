@@ -16,17 +16,14 @@
 #
 ###########################################################################
 
-creativeFieldAssignment_Schema = [
-  {
-    "description": "",
-    "name": "creativeFieldId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "creativeFieldValueId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+creativeFieldAssignment_Schema = [{
+    'description': '',
+    'name': 'creativeFieldId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'creativeFieldValueId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

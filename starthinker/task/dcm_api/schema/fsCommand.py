@@ -16,35 +16,29 @@
 #
 ###########################################################################
 
-fsCommand_Schema = [
-  {
-    "description": "",
-    "name": "left",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "CENTERED, DISTANCE_FROM_TOP_LEFT_CORNER",
-    "name": "positionOption",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "top",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "windowHeight",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "windowWidth",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+fsCommand_Schema = [{
+    'description': '',
+    'name': 'left',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': 'CENTERED, DISTANCE_FROM_TOP_LEFT_CORNER',
+    'name': 'positionOption',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'top',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'windowHeight',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'windowWidth',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

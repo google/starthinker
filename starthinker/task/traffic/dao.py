@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""Module that centralizes all CM data access.
-
-"""
+"""Module that centralizes all CM data access."""
 
 from starthinker.util.google_api import API_DCM
 from starthinker.task.traffic.store import store
@@ -31,9 +29,7 @@ class BaseDAO(object):
   """
 
   def __init__(self, auth, profile_id, is_admin=False):
-    """Initializes the object with a specific CM profile ID and an authorization scheme.
-
-    """
+    """Initializes the object with a specific CM profile ID and an authorization scheme."""
     self.auth = auth
     self.is_admin = is_admin
     self.profile_id = profile_id
@@ -41,7 +37,11 @@ class BaseDAO(object):
     self._metrics = {}
 
   def _api(self, iterate=False):
-    """Returns an DCM API instance.  Must be overloaded by one of the derived classes and extended for specific endpoint."""
+    """Returns an DCM API instance.
+
+    Must be overloaded by one of the derived classes and extended for
+    specific endpoint.
+    """
     return API_DCM(self.auth, iterate, self.is_admin)
 
   def _clean(self, item):
@@ -73,7 +73,8 @@ class BaseDAO(object):
         from CM.
     """
     #print('hitting the api to get %s, %s' % (self._entity, feed_item[self._id_field]))
-    return self._api().get(profileId=self.profile_id, id=feed_item[self._id_field]).execute()
+    return self._api().get(
+        profileId=self.profile_id, id=feed_item[self._id_field]).execute()
 
   def get(self, feed_item, required=False, column_name=None):
     """Retrieves an item.
@@ -91,14 +92,18 @@ class BaseDAO(object):
     """
     result = None
     keys = []
-    id_value = feed_item.get(self._id_field, None) if column_name == None else feed_item.get(column_name, None)
+    id_value = feed_item.get(self._id_field,
+                             None) if column_name == None else feed_item.get(
+                                 column_name, None)
 
-    if not id_value and self._search_field and feed_item.get(self._search_field, None):
+    if not id_value and self._search_field and feed_item.get(
+        self._search_field, None):
       store_key = feed_item[self._search_field]
 
       if self._parent_filter_name:
         if feed_item.get(self._parent_filter_field_name, None):
-          store_key = str(feed_item.get(self._parent_filter_field_name, None)) + store_key
+          store_key = str(feed_item.get(self._parent_filter_field_name,
+                                        None)) + store_key
 
       result = store.get(self._entity, store_key)
 
@@ -107,7 +112,8 @@ class BaseDAO(object):
         keys.append(key)
 
       if not result and required:
-        raise Exception('ERROR: Could not find %s with name %s' % (self._entity, feed_item[self._search_field]))
+        raise Exception('ERROR: Could not find %s with name %s' %
+                        (self._entity, feed_item[self._search_field]))
     elif id_value:
       if isinstance(id_value, str) and id_value.startswith('ext'):
         keys.append(id_value)
@@ -127,7 +133,8 @@ class BaseDAO(object):
           result = self._get(feed_item)
 
         if not result and required:
-          raise Exception('ERROR: Could not find %s with id %s' % (self._entity, id_value))
+          raise Exception('ERROR: Could not find %s with id %s' %
+                          (self._entity, id_value))
 
     store.set(self._entity, keys, result)
 
@@ -135,16 +142,17 @@ class BaseDAO(object):
 
   def _get_base_search_args(self, search_string):
     return {
-      'profileId': self.profile_id,
-      'searchString': search_string,
-      'sortField': 'NAME',
-      'maxResults': 2
+        'profileId': self.profile_id,
+        'searchString': search_string,
+        'sortField': 'NAME',
+        'maxResults': 2
     }
 
   def _get_by_name(self, feed_item):
     """Searches CM for an item of name defined in the search field of the DAO class.
 
-    If more than one item is returned an error is raised, e.g. if there are more than one item with the same name.
+    If more than one item is returned an error is raised, e.g. if there are more
+    than one item with the same name.
 
     Args:
       feed_item: The Bulkdozer feed item with the name to search for.
@@ -161,7 +169,8 @@ class BaseDAO(object):
 
       if self._parent_filter_name:
         if feed_item.get(self._parent_filter_field_name, None):
-          args[self._parent_filter_name] = feed_item.get(self._parent_filter_field_name, None)
+          args[self._parent_filter_name] = feed_item.get(
+              self._parent_filter_field_name, None)
         elif self._parent_dao:
           parent = self._parent_dao.get(feed_item, required=True)
           if parent:
@@ -169,7 +178,8 @@ class BaseDAO(object):
 
         key = str(args.get(self._parent_filter_name, '')) + key
 
-      print('hitting the api to search for %s, %s' % (self._entity, search_string))
+      print('hitting the api to search for %s, %s' %
+            (self._entity, search_string))
       search_result = self._api().list(**args).execute()
 
       items = search_result[self._list_name]
@@ -179,12 +189,12 @@ class BaseDAO(object):
 
         if search_string == item['name']:
           if len(items) > 1 and items[1]['name'] == search_string:
-            raise Exception('ERROR: More than one item found with %s %s' % (self._search_field, feed_item[self._search_field]))
+            raise Exception('ERROR: More than one item found with %s %s' %
+                            (self._search_field, feed_item[self._search_field]))
           else:
             return item, key
 
     return None, key
-
 
   def _insert(self, item, feed_item):
     """Inserts a new item into CM.
@@ -211,7 +221,6 @@ class BaseDAO(object):
     #print('ITEM', item)
     self._api().update(profileId=self.profile_id, body=item).execute()
 
-
   def pre_fetch(self, feed):
     """Pre-fetches all required items to be update into the cache.
 
@@ -222,14 +231,18 @@ class BaseDAO(object):
     """
     if hasattr(self, '_list_name') and self._list_name and self._id_field:
       print('pre fetching %s' % self._list_name)
-      ids = [feed_item[self._id_field] for feed_item in feed if isinstance(feed_item[self._id_field], int)]
+      ids = [
+          feed_item[self._id_field]
+          for feed_item in feed
+          if isinstance(feed_item[self._id_field], int)
+      ]
 
       if ids:
         for i in range(0, len(ids), 500):
-          results = self._api(iterate=True).list(profileId=self.profile_id, ids=ids[i:i+500]).execute()
+          results = self._api(iterate=True).list(
+              profileId=self.profile_id, ids=ids[i:i + 500]).execute()
           for item in results:
             store.set(self._entity, [item['id']], item)
-
 
   def process(self, feed_item):
     """Processes a Bulkdozer feed item.

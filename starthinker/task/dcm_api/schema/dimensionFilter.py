@@ -16,23 +16,19 @@
 #
 ###########################################################################
 
-dimensionFilter_Schema = [
-  {
-    "description": "",
-    "name": "dimensionName",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "value",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+dimensionFilter_Schema = [{
+    'description': '',
+    'name': 'dimensionName',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'value',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

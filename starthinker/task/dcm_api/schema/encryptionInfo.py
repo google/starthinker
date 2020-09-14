@@ -16,29 +16,29 @@
 #
 ###########################################################################
 
-encryptionInfo_Schema = [
-  {
-    "description": "",
-    "name": "encryptionEntityId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "ADWORDS_CUSTOMER, DBM_ADVERTISER, DBM_PARTNER, DCM_ACCOUNT, DCM_ADVERTISER, DFP_NETWORK_CODE, ENCRYPTION_ENTITY_TYPE_UNKNOWN",
-    "name": "encryptionEntityType",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "AD_SERVING, DATA_TRANSFER, ENCRYPTION_SCOPE_UNKNOWN",
-    "name": "encryptionSource",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+encryptionInfo_Schema = [{
+    'description': '',
+    'name': 'encryptionEntityId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description':
+        'ADWORDS_CUSTOMER, DBM_ADVERTISER, DBM_PARTNER, DCM_ACCOUNT, '
+        'DCM_ADVERTISER, DFP_NETWORK_CODE, ENCRYPTION_ENTITY_TYPE_UNKNOWN',
+    'name':
+        'encryptionEntityType',
+    'type':
+        'STRING',
+    'mode':
+        'NULLABLE'
+}, {
+    'description': 'AD_SERVING, DATA_TRANSFER, ENCRYPTION_SCOPE_UNKNOWN',
+    'name': 'encryptionSource',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

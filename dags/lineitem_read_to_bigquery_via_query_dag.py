@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-'''
---------------------------------------------------------------
+"""--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -28,7 +26,7 @@ Before running this Airflow module...
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
@@ -39,95 +37,96 @@ Move using an Id query.
 
 Specify the query that will pull the lineitem ids to download.
 Specify the dataset and table where the lineitems will be written.
-The schema will match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>.
+The schema will match <a
+href='https://developers.google.com/bid-manager/guides/entity-write/format'
+target='_blank'>Entity Write Format</a>.
 
-'''
+"""
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
+GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'id_dataset': '',
-  'id_query': 'SELECT * FROM `Dataset.Table`;',
-  'id_legacy': False,
-  'destination_dataset': '',
-  'destination_table': '',
+    'auth_read': 'user',  # Credentials used for reading data.
+    'id_dataset': '',
+    'id_query': 'SELECT * FROM `Dataset.Table`;',
+    'id_legacy': False,
+    'destination_dataset': '',
+    'destination_table': '',
 }
 
-TASKS = [
-  {
+TASKS = [{
     'lineitem': {
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'name': 'auth_read',
-          'default': 'user',
-          'kind': 'authentication',
-          'order': 1
-        }
-      },
-      'read': {
-        'out': {
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'name': 'destination_dataset',
-                'default': '',
-                'kind': 'string',
-                'order': 4
-              }
-            },
-            'table': {
-              'field': {
-                'name': 'destination_table',
-                'default': '',
-                'kind': 'string',
-                'order': 5
-              }
-            }
-          }
-        },
-        'line_items': {
-          'single_cell': True,
-          'bigquery': {
-            'query': {
-              'field': {
-                'name': 'id_query',
-                'default': 'SELECT * FROM `Dataset.Table`;',
-                'kind': 'string',
-                'order': 2
-              }
-            },
-            'legacy': {
-              'field': {
-                'name': 'id_legacy',
-                'default': False,
-                'kind': 'boolean',
-                'order': 3
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'id_dataset',
-                'default': '',
-                'kind': 'string',
+        'auth': {
+            'field': {
+                'description': 'Credentials used for reading data.',
+                'name': 'auth_read',
+                'default': 'user',
+                'kind': 'authentication',
                 'order': 1
-              }
             }
-          }
+        },
+        'read': {
+            'out': {
+                'bigquery': {
+                    'dataset': {
+                        'field': {
+                            'name': 'destination_dataset',
+                            'default': '',
+                            'kind': 'string',
+                            'order': 4
+                        }
+                    },
+                    'table': {
+                        'field': {
+                            'name': 'destination_table',
+                            'default': '',
+                            'kind': 'string',
+                            'order': 5
+                        }
+                    }
+                }
+            },
+            'line_items': {
+                'single_cell': True,
+                'bigquery': {
+                    'query': {
+                        'field': {
+                            'name': 'id_query',
+                            'default': 'SELECT * FROM `Dataset.Table`;',
+                            'kind': 'string',
+                            'order': 2
+                        }
+                    },
+                    'legacy': {
+                        'field': {
+                            'name': 'id_legacy',
+                            'default': False,
+                            'kind': 'boolean',
+                            'order': 3
+                        }
+                    },
+                    'dataset': {
+                        'field': {
+                            'name': 'id_dataset',
+                            'default': '',
+                            'kind': 'string',
+                            'order': 1
+                        }
+                    }
+                }
+            }
         }
-      }
     }
-  }
-]
+}]
 
-DAG_FACTORY = DAG_Factory('lineitem_read_to_bigquery_via_query', { 'tasks':TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('lineitem_read_to_bigquery_via_query',
+                          {'tasks': TASKS}, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   DAG_FACTORY.print_commandline()

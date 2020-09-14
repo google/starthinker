@@ -22,20 +22,22 @@ from starthinker.util.sdf import sdf_download, sdf_to_bigquery
 
 @project.from_parameters
 def sdf():
-  if project.verbose: print('SDF')
+  if project.verbose:
+    print('SDF')
 
   # Download sdf files
-  sdf_zip_file = sdf_download(
-    project.task['auth'],
-    project.task['version'],
-    project.task['partner_id'],
-    project.task['file_types'],
-    project.task['filter_type'],
-    project.task['read']['filter_ids'])
+  sdf_zip_file = sdf_download(project.task['auth'], project.task['version'],
+                              project.task['partner_id'],
+                              project.task['file_types'],
+                              project.task['filter_type'],
+                              project.task['read']['filter_ids'])
 
   # Load data into BigQuery
-  sdf_to_bigquery(sdf_zip_file, project.id, project.task['dataset'], project.task['time_partitioned_table'], project.task['create_single_day_table'], project.task.get('table_suffix', ''))
+  sdf_to_bigquery(sdf_zip_file, project.id, project.task['dataset'],
+                  project.task['time_partitioned_table'],
+                  project.task['create_single_day_table'],
+                  project.task.get('table_suffix', ''))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   sdf()

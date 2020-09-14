@@ -16,28 +16,23 @@
 #
 ###########################################################################
 
-clickThroughUrl_Schema = [
-  {
-    "description": "",
-    "name": "computedClickThroughUrl",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "customClickThroughUrl",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "defaultLandingPage",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "landingPageId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+clickThroughUrl_Schema = [{
+    'description': '',
+    'name': 'computedClickThroughUrl',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'customClickThroughUrl',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'defaultLandingPage',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'landingPageId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}]

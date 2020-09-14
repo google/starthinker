@@ -17,28 +17,34 @@
 ###########################################################################
 
 UniversalChannel_Schema = [
-  { "name":"id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"name",
-    "type":"STRING",
-    "mode":"NULLABLE",
-  },
-  { "name":"site_ids",
-    "type":"INTEGER",
-    "mode":"REPEATED",
-  },
-  { "name":"is_deleted",
-    "type":"BOOLEAN",
-    "mode":"NULLABLE",
-  },
-  { "name":"is_brand_safe_channel",
-    "type":"BOOLEAN",
-    "mode":"NULLABLE",
-  },
-  { "name":"accessing_advertisers",
-    "type":"INTEGER",
-    "mode":"REPEATED",
-  },
+    {
+        'name': 'id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'name',
+        'type': 'STRING',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'site_ids',
+        'type': 'INTEGER',
+        'mode': 'REPEATED',
+    },
+    {
+        'name': 'is_deleted',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'is_brand_safe_channel',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'accessing_advertisers',
+        'type': 'INTEGER',
+        'mode': 'REPEATED',
+    },
 ]

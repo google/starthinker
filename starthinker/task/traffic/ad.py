@@ -286,7 +286,8 @@ class AdDAO(BaseDAO):
     self._process_landing_page(item, feed_item)
 
   def _process_assignments(self, feed_item, creative_assignments,
-                           placement_assignments, event_tag_assignments, campaign):
+                           placement_assignments, event_tag_assignments,
+                           campaign):
     """Updates the ad by setting the values of child objects based on secondary feeds.
 
     Args:
@@ -339,12 +340,13 @@ class AdDAO(BaseDAO):
           endTime = None
 
         lp = None
-        if assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') != 'CAMPAIGN_DEFAULT':
+        if assignment.get(FieldMap.AD_LANDING_PAGE_ID,
+                          '') != 'CAMPAIGN_DEFAULT':
           lp = self._landing_page_dao.get(assignment, required=True)
         else:
-          lp = self._landing_page_dao.get({
-              FieldMap.AD_LANDING_PAGE_ID: campaign['defaultLandingPageId']
-          }, required=True)
+          lp = self._landing_page_dao.get(
+              {FieldMap.AD_LANDING_PAGE_ID: campaign['defaultLandingPageId']},
+              required=True)
 
         creative_assignment = {
             'active': True,
@@ -380,9 +382,9 @@ class AdDAO(BaseDAO):
                       'defaultLandingPage':
                           False if
                           (assignment.get(FieldMap.AD_LANDING_PAGE_ID, '') or
-                           assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')) and
-                          assignment.get(FieldMap.AD_LANDING_PAGE_ID,
-                                         '') != 'CAMPAIGN_DEFAULT' else True,
+                           assignment.get(FieldMap.CUSTOM_CLICK_THROUGH_URL, '')
+                          ) and assignment.get(FieldMap.AD_LANDING_PAGE_ID, '')
+                          != 'CAMPAIGN_DEFAULT' else True,
                       'landingPageId':
                           lp.get('id', None) if lp else None,
                       'customClickThroughUrl':
@@ -452,7 +454,8 @@ class AdDAO(BaseDAO):
     placement_assignments = []
     event_tag_assignments = []
     self._process_assignments(feed_item, creative_assignments,
-                              placement_assignments, event_tag_assignments, campaign)
+                              placement_assignments, event_tag_assignments,
+                              campaign)
 
     creative_rotation = {'creativeAssignments': creative_assignments}
 

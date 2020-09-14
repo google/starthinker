@@ -16,104 +16,90 @@
 #
 ###########################################################################
 
-creativeGroupsListResponse_Schema = [
-  {
-    "name": "creativeGroups",
-    "type": "RECORD",
-    "mode": "REPEATED",
-    "fields": [
-      {
-        "description": "",
-        "name": "accountId",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "advertiserId",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      [
+creativeGroupsListResponse_Schema = [{
+    'name':
+        'creativeGroups',
+    'type':
+        'RECORD',
+    'mode':
+        'REPEATED',
+    'fields': [
         {
-          "description": "",
-          "name": "dimensionName",
-          "type": "STRING",
-          "mode": "NULLABLE"
+            'description': '',
+            'name': 'accountId',
+            'type': 'INT64',
+            'mode': 'NULLABLE'
+        }, {
+            'description': '',
+            'name': 'advertiserId',
+            'type': 'INT64',
+            'mode': 'NULLABLE'
         },
-        {
-          "description": "",
-          "name": "etag",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "description": "",
-          "name": "id",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "description": "",
-          "name": "kind",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "description": "BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION",
-          "name": "matchType",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "description": "",
-          "name": "value",
-          "type": "STRING",
-          "mode": "NULLABLE"
+        [{
+            'description': '',
+            'name': 'dimensionName',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
+        }, {
+            'description': '',
+            'name': 'etag',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
+        }, {
+            'description': '',
+            'name': 'id',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
+        }, {
+            'description': '',
+            'name': 'kind',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
+        }, {
+            'description': 'BEGINS_WITH, CONTAINS, EXACT, WILDCARD_EXPRESSION',
+            'name': 'matchType',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
+        }, {
+            'description': '',
+            'name': 'value',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
+        }], {
+            'description': '',
+            'name': 'groupNumber',
+            'type': 'INT64',
+            'mode': 'NULLABLE'
+        }, {
+            'description': '',
+            'name': 'id',
+            'type': 'INT64',
+            'mode': 'NULLABLE'
+        }, {
+            'description': '',
+            'name': 'kind',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
+        }, {
+            'description': '',
+            'name': 'name',
+            'type': 'STRING',
+            'mode': 'NULLABLE'
+        }, {
+            'description': '',
+            'name': 'subaccountId',
+            'type': 'INT64',
+            'mode': 'NULLABLE'
         }
-      ],
-      {
-        "description": "",
-        "name": "groupNumber",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "id",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "kind",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "name",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "subaccountId",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      }
     ]
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "nextPageToken",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'nextPageToken',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

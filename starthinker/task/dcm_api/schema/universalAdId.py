@@ -16,17 +16,14 @@
 #
 ###########################################################################
 
-universalAdId_Schema = [
-  {
-    "description": "AD_ID.ORG, CLEARCAST, DCM, OTHER",
-    "name": "registry",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "value",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+universalAdId_Schema = [{
+    'description': 'AD_ID.ORG, CLEARCAST, DCM, OTHER',
+    'name': 'registry',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'value',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

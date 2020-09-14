@@ -31,8 +31,10 @@ class ScriptForm(forms.Form):
     post = args[0] if len(args) > 0 else None
 
     # load scripts ( used when creating new recipe )
-    if 'scripts' in kwargs: scripts = [s for s in kwargs.pop('scripts').split(',') if s]
-    else: scripts = []
+    if 'scripts' in kwargs:
+      scripts = [s for s in kwargs.pop('scripts').split(',') if s]
+    else:
+      scripts = []
 
     # fetch the instance and load initial data
     self.instance = recipe or Recipe()
@@ -43,7 +45,8 @@ class ScriptForm(forms.Form):
     self.blanks = []
     for s in Script.get_scripts(account.email):
       if s.is_manual() == manual:
-        self.blanks.append(ScriptJsonForm('[BLANK]', s, {}, prefix='%s_[BLANK]' % s.get_tag()))
+        self.blanks.append(
+            ScriptJsonForm('[BLANK]', s, {}, prefix='%s_[BLANK]' % s.get_tag()))
 
     # processing incoming form
     self.forms = []
@@ -53,52 +56,52 @@ class ScriptForm(forms.Form):
         sequence = int(sequence) - 1
         s = Script(tag)
         self.forms.append(
-          ScriptJsonForm(
-            sequence,
-            s,
-            self.instance.get_values()[sequence]['values'] if self.instance and sequence < len(self.instance.get_values()) else {},
-            post,
-            prefix=prefix
-          )
-        )
+            ScriptJsonForm(
+                sequence,
+                s,
+                self.instance.get_values()[sequence]['values']
+                if self.instance and sequence < len(self.instance.get_values())
+                else {},
+                post,
+                prefix=prefix))
 
     # loading from existing recipe
     elif self.instance:
       for sequence, script in enumerate(self.instance.get_values()):
         s = Script(script['tag'])
         self.forms.append(
-          ScriptJsonForm(
-            sequence + 1,
-            s,
-            script['values'],
-            prefix='%s_%d' % (s.get_tag(), sequence + 1)
-          )
-        )
+            ScriptJsonForm(
+                sequence + 1,
+                s,
+                script['values'],
+                prefix='%s_%d' % (s.get_tag(), sequence + 1)))
 
     # starting a new recipe
     else:
       for sequence, script in enumerate(scripts):
         s = Script(script)
         self.forms.append(
-          ScriptJsonForm(
-            sequence + 1,
-            s,
-            [],
-            prefix='%s_%d' % (s.get_tag(), sequence + 1)
-          )
-        )
+            ScriptJsonForm(
+                sequence + 1,
+                s, [],
+                prefix='%s_%d' % (s.get_tag(), sequence + 1)))
 
   def is_valid(self):
-    return super(ScriptForm, self).is_valid() & self.setup.is_valid() & all([script.is_valid() for script in self.forms])
+    return super(ScriptForm, self).is_valid() & self.setup.is_valid() & all(
+        [script.is_valid() for script in self.forms])
 
   def get_errors(self):
-    errors = list(["%s: %s" % (k,v) for k,v in self.setup.errors.items()])
-    for script in self.forms: errors.extend(["%s: %s" % (k,v) for k,v in script.errors.items()])
+    errors = list(['%s: %s' % (k, v) for k, v in self.setup.errors.items()])
+    for script in self.forms:
+      errors.extend(['%s: %s' % (k, v) for k, v in script.errors.items()])
     return errors
 
   def get_scripts(self):
-    scripts = [script.get_script() for script in self.forms] # fetch sequence and scripts
-    return sorted([script for script in scripts if script], key=lambda k: k['sequence']) # sort and return script ( if delete sript will be None )
+    scripts = [script.get_script() for script in self.forms
+              ]  # fetch sequence and scripts
+    return sorted([script for script in scripts if script],
+                  key=lambda k: k['sequence']
+                 )  # sort and return script ( if delete sript will be None )
 
   def save(self):
     self.instance = self.setup.save()

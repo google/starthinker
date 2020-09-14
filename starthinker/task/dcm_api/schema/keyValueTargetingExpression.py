@@ -16,11 +16,9 @@
 #
 ###########################################################################
 
-keyValueTargetingExpression_Schema = [
-  {
-    "description": "",
-    "name": "expression",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+keyValueTargetingExpression_Schema = [{
+    'description': '',
+    'name': 'expression',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

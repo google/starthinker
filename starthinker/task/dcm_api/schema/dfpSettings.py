@@ -16,32 +16,26 @@
 #
 ###########################################################################
 
-dfpSettings_Schema = [
-  {
-    "description": "",
-    "name": "dfpNetworkCode",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "dfpNetworkName",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "programmaticPlacementAccepted",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "pubPaidPlacementAccepted",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "publisherPortalOnly",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  }
-]
+dfpSettings_Schema = [{
+    'description': '',
+    'name': 'dfpNetworkCode',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'dfpNetworkName',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'programmaticPlacementAccepted',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'pubPaidPlacementAccepted',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'publisherPortalOnly',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+}]

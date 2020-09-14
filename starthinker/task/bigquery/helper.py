@@ -16,7 +16,6 @@
 #
 ###########################################################################
 
-
 import json
 import textwrap
 import argparse
@@ -24,28 +23,36 @@ import argparse
 from starthinker.util.project import project
 from starthinker.util.bigquery import table_to_schema
 
+
 def main():
   # get parameters
   parser = argparse.ArgumentParser(
-    formatter_class=argparse.RawDescriptionHelpFormatter,
-    description=textwrap.dedent('''\
+      formatter_class=argparse.RawDescriptionHelpFormatter,
+      description=textwrap.dedent("""\
       Command line to get table schema from BigQuery.
       This is a helper to help developers debug and create tables.
 
       Example: `python helper.py --project [id] --dataset [name] --table [name] -s [credentials]`
 
-  '''))
+  """))
 
-  parser.add_argument('--dataset', '-d', help='name of BigQuery dataset', default=None)
-  parser.add_argument('--table', '-t', help='name of BigQuery table', default=None)
+  parser.add_argument(
+      '--dataset', '-d', help='name of BigQuery dataset', default=None)
+  parser.add_argument(
+      '--table', '-t', help='name of BigQuery table', default=None)
 
   # initialize project
-  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v', '-p'))
+  project.from_commandline(
+      parser=parser, arguments=('-u', '-c', '-s', '-v', '-p'))
   auth = 'service' if project.args.service else 'user'
 
   # print schema
-  print(json.dumps(table_to_schema(auth, project.id, project.args.dataset, project.args.table)['fields'], indent=2))
+  print(
+      json.dumps(
+          table_to_schema(auth, project.id, project.args.dataset,
+                          project.args.table)['fields'],
+          indent=2))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   main()

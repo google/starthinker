@@ -16,105 +16,404 @@
 #
 ###########################################################################
 
-Path_To_Conversion_Report_Custom_Floodlight_Variables_Schema = [
-  { "name":"Floodlight_Variable_1", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_2", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_3", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_4", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_5", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_6", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_7", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_8", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_9", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_10", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_11", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_12", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_13", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_14", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_15", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_16", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_17", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_18", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_19", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_20", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_21", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_22", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_23", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_24", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_25", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_26", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_27", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_28", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_29", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_30", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_31", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_32", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_33", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_34", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_35", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_36", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_37", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_38", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_39", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_40", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_41", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_42", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_43", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_44", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_45", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_46", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_47", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_48", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_49", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_50", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_51", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_52", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_53", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_54", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_55", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_56", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_57", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_58", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_59", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_60", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_61", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_62", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_63", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_64", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_65", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_66", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_67", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_68", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_69", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_70", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_71", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_72", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_73", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_74", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_75", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_76", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_77", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_78", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_79", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_80", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_81", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_82", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_83", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_84", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_85", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_86", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_87", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_88", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_89", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_90", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_91", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_92", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_93", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_94", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_95", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_96", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_97", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_98", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_99", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Variable_100", "type":"STRING", "mode":"NULLABLE" }
-]
+Path_To_Conversion_Report_Custom_Floodlight_Variables_Schema = [{
+    'name': 'Floodlight_Variable_1',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_2',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_3',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_4',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_5',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_6',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_7',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_8',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_9',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_10',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_11',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_12',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_13',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_14',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_15',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_16',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_17',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_18',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_19',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_20',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_21',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_22',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_23',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_24',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_25',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_26',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_27',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_28',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_29',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_30',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_31',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_32',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_33',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_34',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_35',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_36',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_37',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_38',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_39',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_40',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_41',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_42',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_43',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_44',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_45',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_46',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_47',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_48',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_49',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_50',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_51',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_52',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_53',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_54',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_55',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_56',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_57',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_58',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_59',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_60',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_61',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_62',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_63',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_64',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_65',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_66',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_67',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_68',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_69',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_70',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_71',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_72',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_73',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_74',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_75',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_76',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_77',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_78',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_79',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_80',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_81',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_82',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_83',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_84',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_85',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_86',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_87',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_88',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_89',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_90',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_91',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_92',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_93',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_94',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_95',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_96',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_97',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_98',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_99',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Variable_100',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

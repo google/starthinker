@@ -16,49 +16,39 @@
 #
 ###########################################################################
 
-directorySiteSettings_Schema = [
-  {
-    "name": "activeViewOptOut",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  [
-    {
-      "description": "",
-      "name": "dfpNetworkCode",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "dfpNetworkName",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "name": "programmaticPlacementAccepted",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    },
-    {
-      "name": "pubPaidPlacementAccepted",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    },
-    {
-      "name": "publisherPortalOnly",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    }
-  ],
-  {
-    "name": "instreamVideoPlacementAccepted",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "interstitialPlacementAccepted",
-    "type": "BOOLEAN",
-    "mode": "NULLABLE"
-  }
-]
+directorySiteSettings_Schema = [{
+    'name': 'activeViewOptOut',
+    'type': 'BOOLEAN',
+    'mode': 'NULLABLE'
+},
+                                [{
+                                    'description': '',
+                                    'name': 'dfpNetworkCode',
+                                    'type': 'STRING',
+                                    'mode': 'NULLABLE'
+                                }, {
+                                    'description': '',
+                                    'name': 'dfpNetworkName',
+                                    'type': 'STRING',
+                                    'mode': 'NULLABLE'
+                                }, {
+                                    'name': 'programmaticPlacementAccepted',
+                                    'type': 'BOOLEAN',
+                                    'mode': 'NULLABLE'
+                                }, {
+                                    'name': 'pubPaidPlacementAccepted',
+                                    'type': 'BOOLEAN',
+                                    'mode': 'NULLABLE'
+                                }, {
+                                    'name': 'publisherPortalOnly',
+                                    'type': 'BOOLEAN',
+                                    'mode': 'NULLABLE'
+                                }], {
+                                    'name': 'instreamVideoPlacementAccepted',
+                                    'type': 'BOOLEAN',
+                                    'mode': 'NULLABLE'
+                                }, {
+                                    'name': 'interstitialPlacementAccepted',
+                                    'type': 'BOOLEAN',
+                                    'mode': 'NULLABLE'
+                                }]

@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-'''
---------------------------------------------------------------
+"""--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -28,7 +26,7 @@ Before running this Airflow module...
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
@@ -38,77 +36,76 @@ Archive
 Wipe old information from a Storage bucket based on last update time.
 
 Specify how many days back to retain data and which buckets and paths to purge.
-Everything under a path will be moved to archive or deleted depending on your choice.
+Everything under a path will be moved to archive or deleted depending on your
+choice.
 
-'''
+"""
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
+GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
 
 INPUTS = {
-  'archive_days': 7,
-  'auth_write': 'service',  # Credentials used for writing data.
-  'archive_bucket': '',
-  'archive_path': '',
-  'archive_delete': False,
+    'archive_days': 7,
+    'auth_write': 'service',  # Credentials used for writing data.
+    'archive_bucket': '',
+    'archive_path': '',
+    'archive_delete': False,
 }
 
-TASKS = [
-  {
+TASKS = [{
     'archive': {
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'name': 'auth_write',
-          'default': 'service',
-          'kind': 'authentication',
-          'order': 1
-        }
-      },
-      'days': {
-        'field': {
-          'name': 'archive_days',
-          'default': 7,
-          'kind': 'integer',
-          'order': 1
-        }
-      },
-      'delete': {
-        'field': {
-          'name': 'archive_delete',
-          'default': False,
-          'kind': 'boolean',
-          'order': 4
-        }
-      },
-      'storage': {
-        'bucket': {
-          'field': {
-            'name': 'archive_bucket',
-            'default': '',
-            'kind': 'string',
-            'order': 2
-          }
+        'auth': {
+            'field': {
+                'description': 'Credentials used for writing data.',
+                'name': 'auth_write',
+                'default': 'service',
+                'kind': 'authentication',
+                'order': 1
+            }
         },
-        'path': {
-          'field': {
-            'name': 'archive_path',
-            'default': '',
-            'kind': 'string',
-            'order': 3
-          }
+        'days': {
+            'field': {
+                'name': 'archive_days',
+                'default': 7,
+                'kind': 'integer',
+                'order': 1
+            }
+        },
+        'delete': {
+            'field': {
+                'name': 'archive_delete',
+                'default': False,
+                'kind': 'boolean',
+                'order': 4
+            }
+        },
+        'storage': {
+            'bucket': {
+                'field': {
+                    'name': 'archive_bucket',
+                    'default': '',
+                    'kind': 'string',
+                    'order': 2
+                }
+            },
+            'path': {
+                'field': {
+                    'name': 'archive_path',
+                    'default': '',
+                    'kind': 'string',
+                    'order': 3
+                }
+            }
         }
-      }
     }
-  }
-]
+}]
 
-DAG_FACTORY = DAG_Factory('archive', { 'tasks':TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('archive', {'tasks': TASKS}, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   DAG_FACTORY.print_commandline()

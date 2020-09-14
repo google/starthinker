@@ -24,8 +24,11 @@ from django.http import HttpResponseRedirect
 
 from starthinker.util.auth.wrapper import CredentialsFlowWrapper
 
+
 def permission_admin():
+
   def _decorator(_view):
+
     @wraps(_view)
     def _wrapper(request, *args, **kwargs):
 
@@ -35,14 +38,14 @@ def permission_admin():
 
       # multi user mode, log user in using oauth
       else:
-        flow = CredentialsFlowWrapper(settings.UI_CLIENT, redirect_uri=settings.CONST_URL + '/oauth_callback/')
+        flow = CredentialsFlowWrapper(
+            settings.UI_CLIENT,
+            redirect_uri=settings.CONST_URL + '/oauth_callback/')
         auth_url, _ = flow.authorization_url(
-          prompt='',
-          access_type='offline',
-          include_granted_scopes='true'
-        )
+            prompt='', access_type='offline', include_granted_scopes='true')
         request.session['code_verifier'] = flow.code_verifier
         return HttpResponseRedirect(auth_url)
 
     return _wrapper
+
   return _decorator

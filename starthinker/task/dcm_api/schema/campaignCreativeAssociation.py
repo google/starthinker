@@ -16,17 +16,14 @@
 #
 ###########################################################################
 
-campaignCreativeAssociation_Schema = [
-  {
-    "description": "",
-    "name": "creativeId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+campaignCreativeAssociation_Schema = [{
+    'description': '',
+    'name': 'creativeId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

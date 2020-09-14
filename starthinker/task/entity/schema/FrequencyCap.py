@@ -17,16 +17,19 @@
 ###########################################################################
 
 FrequencyCap_Schema = [
-  { "name":"max_impressions",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"time_unit",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"time_range",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
+    {
+        'name': 'max_impressions',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'time_unit',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'time_range',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
 ]

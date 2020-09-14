@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-'''
---------------------------------------------------------------
+"""--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -28,7 +26,7 @@ Before running this Airflow module...
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
@@ -42,105 +40,103 @@ If the tab does not exist it will be created.
 Empty cells in the range will be NULL.
 Check Sheets header if first row is a header
 
-'''
+"""
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
+GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'auth_write': 'service',  # Credentials used for writing data.
-  'sheets_url': '',
-  'sheets_tab': '',
-  'sheets_range': '',
-  'dataset': '',
-  'table': '',
-  'sheets_header': True,
+    'auth_read': 'user',  # Credentials used for reading data.
+    'auth_write': 'service',  # Credentials used for writing data.
+    'sheets_url': '',
+    'sheets_tab': '',
+    'sheets_range': '',
+    'dataset': '',
+    'table': '',
+    'sheets_header': True,
 }
 
-TASKS = [
-  {
+TASKS = [{
     'sheets': {
-      'header': {
-        'field': {
-          'name': 'sheets_header',
-          'default': True,
-          'kind': 'boolean',
-          'order': 9
-        }
-      },
-      'sheet': {
-        'field': {
-          'name': 'sheets_url',
-          'default': '',
-          'kind': 'string',
-          'order': 2
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'name': 'auth_read',
-          'default': 'user',
-          'kind': 'authentication',
-          'order': 0
-        }
-      },
-      'tab': {
-        'field': {
-          'name': 'sheets_tab',
-          'default': '',
-          'kind': 'string',
-          'order': 3
-        }
-      },
-      'out': {
-        'auth': {
-          'field': {
-            'description': 'Credentials used for writing data.',
-            'name': 'auth_write',
-            'default': 'service',
-            'kind': 'authentication',
-            'order': 1
-          }
+        'header': {
+            'field': {
+                'name': 'sheets_header',
+                'default': True,
+                'kind': 'boolean',
+                'order': 9
+            }
         },
-        'bigquery': {
-          'dataset': {
+        'sheet': {
             'field': {
-              'name': 'dataset',
-              'default': '',
-              'kind': 'string',
-              'order': 5
+                'name': 'sheets_url',
+                'default': '',
+                'kind': 'string',
+                'order': 2
             }
-          },
-          'table': {
+        },
+        'auth': {
             'field': {
-              'name': 'table',
-              'default': '',
-              'kind': 'string',
-              'order': 6
+                'description': 'Credentials used for reading data.',
+                'name': 'auth_read',
+                'default': 'user',
+                'kind': 'authentication',
+                'order': 0
             }
-          }
+        },
+        'tab': {
+            'field': {
+                'name': 'sheets_tab',
+                'default': '',
+                'kind': 'string',
+                'order': 3
+            }
+        },
+        'out': {
+            'auth': {
+                'field': {
+                    'description': 'Credentials used for writing data.',
+                    'name': 'auth_write',
+                    'default': 'service',
+                    'kind': 'authentication',
+                    'order': 1
+                }
+            },
+            'bigquery': {
+                'dataset': {
+                    'field': {
+                        'name': 'dataset',
+                        'default': '',
+                        'kind': 'string',
+                        'order': 5
+                    }
+                },
+                'table': {
+                    'field': {
+                        'name': 'table',
+                        'default': '',
+                        'kind': 'string',
+                        'order': 6
+                    }
+                }
+            }
+        },
+        'range': {
+            'field': {
+                'name': 'sheets_range',
+                'default': '',
+                'kind': 'string',
+                'order': 4
+            }
         }
-      },
-      'range': {
-        'field': {
-          'name': 'sheets_range',
-          'default': '',
-          'kind': 'string',
-          'order': 4
-        }
-      }
     }
-  }
-]
+}]
 
-DAG_FACTORY = DAG_Factory('sheets_to_bigquery', { 'tasks':TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('sheets_to_bigquery', {'tasks': TASKS}, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   DAG_FACTORY.print_commandline()

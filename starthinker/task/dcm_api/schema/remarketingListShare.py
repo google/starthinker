@@ -16,27 +16,22 @@
 #
 ###########################################################################
 
-remarketingListShare_Schema = [
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "remarketingListId",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "sharedAccountIds",
-    "type": "INT64",
-    "mode": "REPEATED"
-  },
-  {
-    "name": "sharedAdvertiserIds",
-    "type": "INT64",
-    "mode": "REPEATED"
-  }
-]
+remarketingListShare_Schema = [{
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'remarketingListId',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'sharedAccountIds',
+    'type': 'INT64',
+    'mode': 'REPEATED'
+}, {
+    'name': 'sharedAdvertiserIds',
+    'type': 'INT64',
+    'mode': 'REPEATED'
+}]

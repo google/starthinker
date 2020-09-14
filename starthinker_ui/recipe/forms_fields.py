@@ -28,32 +28,41 @@ from starthinker_ui.recipe.timezones import TIMEZONES
 
 
 class CommaSeparatedCharField(forms.CharField):
+
   def prepare_value(self, value):
     return ', '.join(value or [])
 
   def clean(self, value):
     try:
       v = [str(v.strip()) for v in value.split(',') if v.strip()]
-      json.dumps(v) # only do a check if valid
+      json.dumps(v)  # only do a check if valid
       return v
-    except: raise ValidationError
+    except:
+      raise ValidationError
 
 
 class CommaSeparatedIntegerField(forms.Field):
-  default_error_messages = { 'invalid': 'Enter comma separated numbers only.', }
+  default_error_messages = {
+      'invalid': 'Enter comma separated numbers only.',
+  }
 
   def prepare_value(self, value):
-    return ', '.join(str(v) for v in (json.loads(value or '[]') if isinstance(value, str) else (value or [])))
+    return ', '.join(
+        str(v)
+        for v in (json.loads(value or '[]') if isinstance(value, str) else (
+            value or [])))
 
   def clean(self, value):
     try:
       v = [int(v.strip()) for v in value.split(',') if v.strip()]
-      json.dumps(v) # only do a check if valid
+      json.dumps(v)  # only do a check if valid
       return v
-    except: raise ValidationError
+    except:
+      raise ValidationError
 
 
 class ListChoiceField(forms.MultipleChoiceField):
+
   def prepare_value(self, value):
     return json.loads(value or '[]') if isinstance(value, str) else value
 
@@ -69,6 +78,7 @@ class ListChoiceField(forms.MultipleChoiceField):
 
 
 class ListChoiceIntegerField(forms.MultipleChoiceField):
+
   def prepare_value(self, value):
     return json.loads(value or '[]') if isinstance(value, str) else value
 
@@ -84,6 +94,7 @@ class ListChoiceIntegerField(forms.MultipleChoiceField):
 
 
 class ListChoiceIntegerField(forms.MultipleChoiceField):
+
   def prepare_value(self, value):
     return json.loads(value or '[]') if isinstance(value, str) else value
 
@@ -104,8 +115,10 @@ class JsonField(forms.CharField):
   def prepare_value(self, value):
     if isinstance(value, str):
       if value:
-        try: return json.dumps(json.loads(value))
-        except ValueError: return value
+        try:
+          return json.dumps(json.loads(value))
+        except ValueError:
+          return value
       else:
         return None
     else:
@@ -114,8 +127,10 @@ class JsonField(forms.CharField):
   def clean(self, value):
     if isinstance(value, str):
       if value:
-        try: return json.loads(value.strip())
-        except ValueError as e: raise ValidationError(str(e))
+        try:
+          return json.loads(value.strip())
+        except ValueError as e:
+          raise ValidationError(str(e))
       else:
         return None
     else:
@@ -123,6 +138,7 @@ class JsonField(forms.CharField):
 
 
 class TimezoneField(forms.ChoiceField):
+
   def __init__(self, *args, **kwargs):
     kwargs['choices'] = map(lambda t: (t, t.replace('_', ' ')), TIMEZONES)
     kwargs['initial'] = 'America/Los_Angeles'
@@ -142,5 +158,7 @@ class SwitchField(forms.ChoiceField):
     return value == self.value_true
 
   def clean(self, value):
-    if value == True: return self.value_true
-    else: return self.value_false
+    if value == True:
+      return self.value_true
+    else:
+      return self.value_false

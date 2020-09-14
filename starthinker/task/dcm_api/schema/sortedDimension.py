@@ -16,23 +16,19 @@
 #
 ###########################################################################
 
-sortedDimension_Schema = [
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "name",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "ASCENDING, DESCENDING",
-    "name": "sortOrder",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+sortedDimension_Schema = [{
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': 'ASCENDING, DESCENDING',
+    'name': 'sortOrder',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

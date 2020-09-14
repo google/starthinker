@@ -16,7 +16,7 @@
 #
 ###########################################################################
 
-IO_WRITE = '''SELECT
+IO_WRITE = """SELECT
   COALESCE(CONCAT(name, ' - ', accountId), Rules.Cm_Campaign) AS displayName,
   '' AS entityStatus, /* ENUM: ENTITY_STATUS_DRAFT, ENTITY_STATUS_ACTIVE */
   STRUCT(
@@ -78,4 +78,4 @@ IO_WRITE = '''SELECT
 FROM `kenjora-161023.BB_Demo.Rules` As Rules
 LEFT JOIN `kenjora-161023.BB_Demo.CM_Campaigns` As CM
 ON Rules.Cm_Campaign=CM.name;
-'''
+"""

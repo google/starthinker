@@ -24,8 +24,7 @@ from starthinker.util.project import project
 from starthinker.util.google_api import API_BigQuery
 from starthinker.util.bigquery import table_to_rows, rows_to_table, query_to_view
 
-
-RE_EMAIL = re.compile(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
+RE_EMAIL = re.compile(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')
 INTEGER_MULTIPLY = random.randint(2, 9)
 INTEGER_OFFSET = random.randint(17, 99)
 STRING_IDS = {}
@@ -55,7 +54,10 @@ def anonymize_integer(cell, column):
 
 def anonymize_float(cell, column):
   # replace integers randonly within float to preserve semaintics ( in case 0 - 1 range is percent )
-  return float(''.join(['.' if char == '.' else str(random.randint(0, 9)) for char in str(cell).lstrip('0')]))
+  return float(''.join([
+      '.' if char == '.' else str(random.randint(0, 9))
+      for char in str(cell).lstrip('0')
+  ]))
 
 
 def anonymize_rows(rows, schema):
@@ -74,66 +76,58 @@ def anonymize_rows(rows, schema):
 
 def anonymize_table(table_id):
 
-  if project.verbose: print('ANONYMIZE TABLE', project.task['bigquery']['to']['dataset'], table_id)
+  if project.verbose:
+    print('ANONYMIZE TABLE', project.task['bigquery']['to']['dataset'],
+          table_id)
 
   schema = API_BigQuery(project.task['auth']).tables().get(
-    projectId=project.task['bigquery']['from']['project'],
-    datasetId=project.task['bigquery']['from']['dataset'],
-    tableId=table_id
-  ).execute()['schema']['fields']
+      projectId=project.task['bigquery']['from']['project'],
+      datasetId=project.task['bigquery']['from']['dataset'],
+      tableId=table_id).execute()['schema']['fields']
 
-  rows = table_to_rows(
-    project.task['auth'],
-    project.task['bigquery']['from']['project'],
-    project.task['bigquery']['from']['dataset'],
-    table_id
-   )
+  rows = table_to_rows(project.task['auth'],
+                       project.task['bigquery']['from']['project'],
+                       project.task['bigquery']['from']['dataset'], table_id)
 
   rows = anonymize_rows(rows, schema)
 
   rows_to_table(
-     project.task['auth'],
-     project.task['bigquery']['to']['project'],
-     project.task['bigquery']['to']['dataset'],
-     table_id,
-     rows,
-     schema,
-     skip_rows=0,
-     disposition='WRITE_TRUNCATE'
-  )
+      project.task['auth'],
+      project.task['bigquery']['to']['project'],
+      project.task['bigquery']['to']['dataset'],
+      table_id,
+      rows,
+      schema,
+      skip_rows=0,
+      disposition='WRITE_TRUNCATE')
 
 
 def copy_view(view_id):
-  if project.verbose: print('ANONYMIZE VIEW', project.task['bigquery']['to']['dataset'], view_id)
+  if project.verbose:
+    print('ANONYMIZE VIEW', project.task['bigquery']['to']['dataset'], view_id)
 
   view = API_BigQuery(project.task['auth']).tables().get(
-    projectId=project.task['bigquery']['from']['project'],
-    datasetId=project.task['bigquery']['from']['dataset'],
-    tableId=view_id
-  ).execute()['view']
+      projectId=project.task['bigquery']['from']['project'],
+      datasetId=project.task['bigquery']['from']['dataset'],
+      tableId=view_id).execute()['view']
 
   project_dataset_template = '[%s:%s.' if view['useLegacySql'] else '`%s.%s.'
 
   query = view['query'].replace(
-    project_dataset_template % (
-      project.task['bigquery']['from']['project'],
-      project.task['bigquery']['from']['dataset']
-    ),
-    project_dataset_template % (
-      project.task['bigquery']['to']['project'],
-      project.task['bigquery']['to']['dataset']
-    ),
+      project_dataset_template % (project.task['bigquery']['from']['project'],
+                                  project.task['bigquery']['from']['dataset']),
+      project_dataset_template % (project.task['bigquery']['to']['project'],
+                                  project.task['bigquery']['to']['dataset']),
   )
 
   query_to_view(
-    project.task['auth'],
-    project.task['bigquery']['to']['project'],
-    project.task['bigquery']['to']['dataset'],
-    view_id,
-    query,
-    legacy=view['useLegacySql'],
-    replace=True
-  )
+      project.task['auth'],
+      project.task['bigquery']['to']['project'],
+      project.task['bigquery']['to']['dataset'],
+      view_id,
+      query,
+      legacy=view['useLegacySql'],
+      replace=True)
 
 
 @project.from_parameters
@@ -141,10 +135,10 @@ def anonymize():
 
   views = []
 
-  for table in API_BigQuery(project.task['auth'], iterate=True).tables().list(
-    projectId=project.task['bigquery']['from']['project'],
-    datasetId=project.task['bigquery']['from']['dataset']
-  ).execute():
+  for table in API_BigQuery(
+      project.task['auth'], iterate=True).tables().list(
+          projectId=project.task['bigquery']['from']['project'],
+          datasetId=project.task['bigquery']['from']['dataset']).execute():
     if table['type'] == 'VIEW':
       views.append(table['tableReference']['tableId'])
     else:
@@ -167,5 +161,6 @@ def anonymize():
           raise e
     views = retry_views
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
   anonymize()

@@ -16,60 +16,49 @@
 #
 ###########################################################################
 
-videoFormat_Schema = [
-  {
-    "description": "FLV, M3U8, MP4, THREEGPP, WEBM",
-    "name": "fileType",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "id",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  },
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  [
-    {
-      "description": "",
-      "name": "height",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    },
-    {
-      "name": "iab",
-      "type": "BOOLEAN",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "id",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "kind",
-      "type": "STRING",
-      "mode": "NULLABLE"
-    },
-    {
-      "description": "",
-      "name": "width",
-      "type": "INT64",
-      "mode": "NULLABLE"
-    }
-  ],
-  {
-    "description": "",
-    "name": "targetBitRate",
-    "type": "INT64",
-    "mode": "NULLABLE"
-  }
-]
+videoFormat_Schema = [{
+    'description': 'FLV, M3U8, MP4, THREEGPP, WEBM',
+    'name': 'fileType',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'id',
+    'type': 'INT64',
+    'mode': 'NULLABLE'
+}, {
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+},
+                      [{
+                          'description': '',
+                          'name': 'height',
+                          'type': 'INT64',
+                          'mode': 'NULLABLE'
+                      }, {
+                          'name': 'iab',
+                          'type': 'BOOLEAN',
+                          'mode': 'NULLABLE'
+                      }, {
+                          'description': '',
+                          'name': 'id',
+                          'type': 'INT64',
+                          'mode': 'NULLABLE'
+                      }, {
+                          'description': '',
+                          'name': 'kind',
+                          'type': 'STRING',
+                          'mode': 'NULLABLE'
+                      }, {
+                          'description': '',
+                          'name': 'width',
+                          'type': 'INT64',
+                          'mode': 'NULLABLE'
+                      }], {
+                          'description': '',
+                          'name': 'targetBitRate',
+                          'type': 'INT64',
+                          'mode': 'NULLABLE'
+                      }]

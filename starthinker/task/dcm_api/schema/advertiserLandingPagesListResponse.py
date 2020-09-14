@@ -16,121 +16,106 @@
 #
 ###########################################################################
 
-advertiserLandingPagesListResponse_Schema = [
-  {
-    "description": "",
-    "name": "kind",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  },
-  {
-    "name": "landingPages",
-    "type": "RECORD",
-    "mode": "REPEATED",
-    "fields": [
-      {
-        "description": "",
-        "name": "advertiserId",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "name": "archived",
-        "type": "BOOLEAN",
-        "mode": "NULLABLE"
-      },
-      {
-        "name": "deepLinks",
-        "type": "RECORD",
-        "mode": "REPEATED",
-        "fields": [
-          {
-            "description": "",
-            "name": "appUrl",
-            "type": "STRING",
-            "mode": "NULLABLE"
-          },
-          {
-            "description": "",
-            "name": "fallbackUrl",
-            "type": "STRING",
-            "mode": "NULLABLE"
-          },
-          {
-            "description": "",
-            "name": "kind",
-            "type": "STRING",
-            "mode": "NULLABLE"
-          },
-          [
+advertiserLandingPagesListResponse_Schema = [{
+    'description': '',
+    'name': 'kind',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name':
+        'landingPages',
+    'type':
+        'RECORD',
+    'mode':
+        'REPEATED',
+    'fields': [{
+        'description': '',
+        'name': 'advertiserId',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'name': 'archived',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE'
+    }, {
+        'name':
+            'deepLinks',
+        'type':
+            'RECORD',
+        'mode':
+            'REPEATED',
+        'fields': [
             {
-              "description": "APPLE_APP_STORE, GOOGLE_PLAY_STORE, UNKNOWN",
-              "name": "directory",
-              "type": "STRING",
-              "mode": "NULLABLE"
+                'description': '',
+                'name': 'appUrl',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+            }, {
+                'description': '',
+                'name': 'fallbackUrl',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+            }, {
+                'description': '',
+                'name': 'kind',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
             },
-            {
-              "description": "",
-              "name": "id",
-              "type": "STRING",
-              "mode": "NULLABLE"
-            },
-            {
-              "description": "",
-              "name": "kind",
-              "type": "STRING",
-              "mode": "NULLABLE"
-            },
-            {
-              "description": "",
-              "name": "publisherName",
-              "type": "STRING",
-              "mode": "NULLABLE"
-            },
-            {
-              "description": "",
-              "name": "title",
-              "type": "STRING",
-              "mode": "NULLABLE"
+            [{
+                'description': 'APPLE_APP_STORE, GOOGLE_PLAY_STORE, UNKNOWN',
+                'name': 'directory',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+            }, {
+                'description': '',
+                'name': 'id',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+            }, {
+                'description': '',
+                'name': 'kind',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+            }, {
+                'description': '',
+                'name': 'publisherName',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+            }, {
+                'description': '',
+                'name': 'title',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+            }], {
+                'name': 'remarketingListIds',
+                'type': 'INT64',
+                'mode': 'REPEATED'
             }
-          ],
-          {
-            "name": "remarketingListIds",
-            "type": "INT64",
-            "mode": "REPEATED"
-          }
         ]
-      },
-      {
-        "description": "",
-        "name": "id",
-        "type": "INT64",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "kind",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "name",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      },
-      {
-        "description": "",
-        "name": "url",
-        "type": "STRING",
-        "mode": "NULLABLE"
-      }
-    ]
-  },
-  {
-    "description": "",
-    "name": "nextPageToken",
-    "type": "STRING",
-    "mode": "NULLABLE"
-  }
-]
+    }, {
+        'description': '',
+        'name': 'id',
+        'type': 'INT64',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'kind',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'name',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }, {
+        'description': '',
+        'name': 'url',
+        'type': 'STRING',
+        'mode': 'NULLABLE'
+    }]
+}, {
+    'description': '',
+    'name': 'nextPageToken',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

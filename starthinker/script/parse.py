@@ -24,7 +24,12 @@ RE_TEXT_FIELD = re.compile(r'\{(.*?:.*?)\}')
 
 
 def fields_to_string(fields, values={}):
-  items = [repr(field['name']) + ': ' + repr(values.get(field['name'], field.get('default', ''))) + ',' + ('  # %s' % field['description'] if 'description' in field else '') for field in fields]
+  items = [
+      repr(field['name']) + ': ' +
+      repr(values.get(field['name'], field.get('default', ''))) + ',' +
+      ('  # %s' % field['description'] if 'description' in field else '')
+      for field in fields
+  ]
   return '{\n  %s\n}' % ('\n  '.join(items))
 
 
@@ -32,21 +37,22 @@ def dict_to_string(value, char_indent='  ', char_line='\n', skip=[], indent=0):
   nlch = char_line + char_indent * (indent + 1)
   if type(value) is dict:
     is_skip = any(k in value for k in skip)
-    items = [
-      ('' if is_skip else nlch) + repr(key) + ': ' + dict_to_string(value[key], '' if is_skip else char_indent, '' if is_skip else char_line, skip, indent + 1)
-      for key in value
-    ]
-    return '{%s}' % (','.join(items) + ('' if is_skip else char_line + char_indent * indent))
+    items = [('' if is_skip else nlch) + repr(key) + ': ' +
+             dict_to_string(value[key], '' if is_skip else char_indent,
+                            '' if is_skip else char_line, skip, indent + 1)
+             for key in value]
+    return '{%s}' % (','.join(items) +
+                     ('' if is_skip else char_line + char_indent * indent))
   elif type(value) is list:
     items = [
-      nlch + dict_to_string(item, char_indent, char_line, skip, indent + 1)
-      for item in value
+        nlch + dict_to_string(item, char_indent, char_line, skip, indent + 1)
+        for item in value
     ]
     return '[%s]' % (','.join(items) + char_line + char_indent * indent)
   elif type(value) is tuple:
     items = [
-      nlch + dict_to_string(item, char_indent, char_line, skip, indent + 1)
-      for item in value
+        nlch + dict_to_string(item, char_indent, char_line, skip, indent + 1)
+        for item in value
     ]
     return '(%s)' % (','.join(items) + char_line + char_indent * indent)
   else:
@@ -79,14 +85,18 @@ def json_set_auths(struct, auth):
 
 def json_get_fields(struct, path=[]):
   """Recusrsively finds fields in script JSON and returns them as a list.
-     Field has format: { "field":{ "name":"???", "kind":"???", "default":???, "description":"???" }}
+
+     Field has format: { "field":{ "name":"???", "kind":"???", "default":???,
+     "description":"???" }}
 
     Args:
       struct: (dict) A dictionary representation fo the JSON script.
-      path: (list) Stack that keeps track of recursion depth. Not used externally.
+      path: (list) Stack that keeps track of recursion depth. Not used
+        externally.
 
     Returns:
-      fields: (list) A list of dictionaries representing each field struct found in the JSON.
+      fields: (list) A list of dictionaries representing each field struct found
+      in the JSON.
 
   """
 
@@ -102,8 +112,12 @@ def json_get_fields(struct, path=[]):
     for index, value in enumerate(struct):
       fields.update(json_get_fields(value, path + [index]))
 
-  if path == []: return sorted(fields.values(), key=lambda f: f.get('order', 0)) # sort only on last step of recursion
-  else: return fields # do not sort if deep in recursion
+  if path == []:
+    return sorted(
+        fields.values(),
+        key=lambda f: f.get('order', 0))  # sort only on last step of recursion
+  else:
+    return fields  # do not sort if deep in recursion
 
 
 def get_field_value(field, variables):
@@ -111,7 +125,7 @@ def get_field_value(field, variables):
   try:
     value = variables.get(field['name'], field.get('default'))
     if value is not None and 'prefix' in field:
-      value = "%s%s" % (field['prefix'], value)
+      value = '%s%s' % (field['prefix'], value)
   except KeyError:
     pass
 
@@ -120,14 +134,19 @@ def get_field_value(field, variables):
 
 def json_set_fields(struct, variables):
   """Recusrsively replaces fields in script JSON with values provided.
-     Field has format: { "field":{ "name":"???", "kind":"???", "default":???, "description":"???" }}
 
-     If field value is empty and field default is null, the value is removed from JSON as a parameter,
-     allowing the python task to pick a default value. Allows optional parameters to exist.
+     Field has format: { "field":{ "name":"???", "kind":"???", "default":???,
+     "description":"???" }}
+
+     If field value is empty and field default is null, the value is removed
+     from JSON as a parameter,
+     allowing the python task to pick a default value. Allows optional
+     parameters to exist.
 
     Args:
       struct: (dict) A dictionary representation of the JSON script.
-      variables: (dict) A lookup table of all values to be replaced, key is name of field.
+      variables: (dict) A lookup table of all values to be replaced, key is name
+        of field.
 
     Returns:
       Nothig. Struct is modified in place.
@@ -148,39 +167,50 @@ def json_set_fields(struct, variables):
     for index, value in enumerate(struct):
       if isinstance(value, dict) and 'field' in value:
         struct[index] = get_field_value(value['field'], variables)
-      else: json_set_fields(value, variables)
+      else:
+        json_set_fields(value, variables)
 
 
 def text_set_fields(text, variables):
   """Replaces fields in text with values from recipe.
 
-     Fields are {field:[string]} or {field:[string], prefix:[string]} where field is a key in variables
-     and prefix is a string value that gets appended to the value from variables.
+     Fields are {field:[string]} or {field:[string], prefix:[string]} where
+     field is a key in variables
+     and prefix is a string value that gets appended to the value from
+     variables.
 
      Args:
-       text (string) A paragraph containing {field:[string]} or {field:[string], prefix:[string]}.
-       variables: (dict) The keys mapping to field, and values to replace those fields.
+       text (string) A paragraph containing {field:[string]} or {field:[string],
+         prefix:[string]}.
+       variables: (dict) The keys mapping to field, and values to replace those
+         fields.
 
      Returns:
-       A string with all the {field:[string]} or {field:[string], prefix:[string]} values replaced by actual values from variables.
+       A string with all the {field:[string]} or {field:[string],
+       prefix:[string]} values replaced by actual values from variables.
 
   """
 
   for field in RE_TEXT_FIELD.findall(text):
     parts = dict([p.strip().split(':') for p in field.split(',', 1)])
-    value = (parts.get('prefix', '') + variables[parts['field']]) if parts['field'] in variables else 'UNDEFINED'
+    value = (parts.get('prefix', '') + variables[parts['field']]
+            ) if parts['field'] in variables else 'UNDEFINED'
     text = text.replace('{' + field + '}', value)
   return text
 
 
 def json_set_instructions(struct, variables):
   """Replaces all fields in instructions with values provided.
-     Checks if struct['script']['instructions'] exist.  The replaces all %(???)s variables
-     with values provided.  Note: %(???)s must match { "field":{ "name":"???" }} in JOSN.
+
+     Checks if struct['script']['instructions'] exist.  The replaces all %(???)s
+     variables
+     with values provided.  Note: %(???)s must match { "field":{ "name":"???" }}
+     in JOSN.
 
     Args:
       struct: (dict) A dictionary representation of the JSON script.
-      variables: (dict) A lookup table of all values to be replaced, key is name of field.
+      variables: (dict) A lookup table of all values to be replaced, key is name
+        of field.
 
     Returns:
       Nothig. Instructions are modified in place.
@@ -189,18 +219,27 @@ def json_set_instructions(struct, variables):
 
   if 'script' in struct:
     if 'instructions' in struct['script']:
-      try: struct['script']['instructions'] = [text_set_fields(instruction, variables) for instruction in struct['script']['instructions']]
-      except KeyError: pass
+      try:
+        struct['script']['instructions'] = [
+            text_set_fields(instruction, variables)
+            for instruction in struct['script']['instructions']
+        ]
+      except KeyError:
+        pass
 
 
 def json_set_description(struct, variables):
   """Replaces all fields in description with values provided.
-     Checks if struct['script']['description'] exist.  The replaces all %(???)s variables
-     with values provided.  Note: %(???)s must match { "field":{ "name":"???" }} in JOSN.
+
+     Checks if struct['script']['description'] exist.  The replaces all %(???)s
+     variables
+     with values provided.  Note: %(???)s must match { "field":{ "name":"???" }}
+     in JOSN.
 
     Args:
       struct: (dict) A dictionary representation of the JSON script.
-      variables: (dict) A lookup table of all values to be replaced, key is name of field.
+      variables: (dict) A lookup table of all values to be replaced, key is name
+        of field.
 
     Returns:
       Nothig. Description is modified in place.
@@ -209,5 +248,8 @@ def json_set_description(struct, variables):
 
   if 'script' in struct:
     if 'description' in struct['script']:
-      try: struct['script']['description'] = text_set_fields(struct['script']['description'], variables)
-      except KeyError: pass
+      try:
+        struct['script']['description'] = text_set_fields(
+            struct['script']['description'], variables)
+      except KeyError:
+        pass

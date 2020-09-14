@@ -30,29 +30,37 @@ def email_read():
 
   # process only most recent message
   try:
-    message = next(get_email_messages(
-      project.task['auth'],
-      project.task['read']['from'],
-      project.task['read']['to'],
-      project.task['read'].get('subject', None)
-    ))
+    message = next(
+        get_email_messages(project.task['auth'], project.task['read']['from'],
+                           project.task['read']['to'],
+                           project.task['read'].get('subject', None)))
   except StopIteration as e:
-    if project.verbose: print('NO EMAILS FOUND')
+    if project.verbose:
+      print('NO EMAILS FOUND')
     exit()
 
-  if project.verbose: print('EMAIL:', get_subject(message))
+  if project.verbose:
+    print('EMAIL:', get_subject(message))
 
   files = []
 
   if project.task['read'].get('attachment'):
-    files.extend(get_email_attachments(project.task['auth'], message, project.task['read']['attachment']))
+    files.extend(
+        get_email_attachments(project.task['auth'], message,
+                              project.task['read']['attachment']))
 
   if project.task['read'].get('link'):
-    files.extend(get_email_links(project.task['auth'], message, project.task['read']['link'], download=True))
+    files.extend(
+        get_email_links(
+            project.task['auth'],
+            message,
+            project.task['read']['link'],
+            download=True))
 
   for filename, data in files:
 
-    if project.verbose: print('EMAIL FILENAME:', filename)
+    if project.verbose:
+      print('EMAIL FILENAME:', filename)
 
     # decompress if necessary
     if filename.endswith('.gz'):
@@ -98,30 +106,34 @@ def email_read():
                project.task['read']['out'], rows)
 
     else:
-      if project.verbose: print('UNSUPPORTED FILE:', filename)
+      if project.verbose:
+        print('UNSUPPORTED FILE:', filename)
 
 
 def email_send():
-  if project.verbose: print('EMAIL SEND')
+  if project.verbose:
+    print('EMAIL SEND')
 
   send_email(
-    'user',
-    project.task['send']['from'],
-    project.task['send']['to'],
-    project.task['send'].get('cc', ''),
-    project.task['send']['subject'],
-    project.task['send']['text'],
-    project.task['send']['html'],
-    project.task['send']['attachment']['filename'],
-    get_rows('user', project.task['send']['attachment']),
+      'user',
+      project.task['send']['from'],
+      project.task['send']['to'],
+      project.task['send'].get('cc', ''),
+      project.task['send']['subject'],
+      project.task['send']['text'],
+      project.task['send']['html'],
+      project.task['send']['attachment']['filename'],
+      get_rows('user', project.task['send']['attachment']),
   )
 
 
 @project.from_parameters
 def email():
-  if 'read' in project.task: email_read()
-  elif 'send' in project.task: email_send()
+  if 'read' in project.task:
+    email_read()
+  elif 'send' in project.task:
+    email_send()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   email()
