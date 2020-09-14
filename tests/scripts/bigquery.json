@@ -57,8 +57,8 @@
       "range":"A1:C",
       "header":true,
       "out":{
+        "auth": "service",
         "bigquery":{
-          "auth": "service",
           "dataset":"Test",
           "table":"Sheet_To_BigQuery",
           "schema":[

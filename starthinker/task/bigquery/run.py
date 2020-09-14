@@ -89,8 +89,8 @@ def bigquery():
       # makes sure types are correct in sheet
       rows = rows_to_type(rows)
 
-      sheets_clear(project.task['auth'], project.task['to']['sheet'], project.task['to']['tab'], project.task['to'].get('range', 'A2'))
-      sheets_write(project.task['auth'], project.task['to']['sheet'], project.task['to']['tab'], project.task['to'].get('range', 'A2'), rows)
+      sheets_clear(project.task['to'].get('auth', project.task['auth']), project.task['to']['sheet'], project.task['to']['tab'], project.task['to'].get('range', 'A2'))
+      sheets_write(project.task['to'].get('auth', project.task['auth']), project.task['to']['sheet'], project.task['to']['tab'], project.task['to'].get('range', 'A2'), rows)
 
     elif 'sftp' in project.task['to']:
       rows = query_to_rows(project.task['auth'], project.id, project.task['from']['dataset'], project.task['from']['query'], legacy=project.task['from'].get('use_legacy_sql', True))
