@@ -61,29 +61,29 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'copy': {
         'source': {
           'field': {
             'description': 'Name or URL of document to copy from.',
-            'kind': 'string',
             'name': 'source',
-            'order': 1,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 1
           }
         },
         'destination': {
           'field': {
             'description': 'Name document to copy to.',
-            'kind': 'string',
             'name': 'destination',
-            'order': 2,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 2
           }
         }
       }

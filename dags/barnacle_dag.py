@@ -62,9 +62,9 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'recipe_project': '',  # Project where BigQuery dataset will be created.
-  'recipe_slug': '',  # Place where tables will be written in BigQuery.
   'auth_read': 'user',  # Credentials used for reading data.
+  'recipe_slug': '',  # Place where tables will be written in BigQuery.
+  'recipe_project': '',  # Project where BigQuery dataset will be created.
   'auth_write': 'service',  # Credentials used for writing data.
   'accounts': [],  # Comma separated CM account ids.
   'reports': False,  # Include report audit, consumes significant API and data.
@@ -73,82 +73,23 @@ INPUTS = {
 TASKS = [
   {
     'dataset': {
-      'description': 'The dataset will hold multiple tables, make sure it exists.',
       'auth': {
         'field': {
           'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
           'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
         }
       },
-      'hour': [
-        1
-      ],
+      'description': 'The dataset will hold multiple tables, make sure it exists.',
       'dataset': {
         'field': {
           'description': 'Name of Google BigQuery dataset to create.',
-          'kind': 'string',
           'name': 'recipe_slug',
-          'order': 4,
-          'default': ''
-        }
-      }
-    }
-  },
-  {
-    'barnacle': {
-      'description': 'Will create tables with format CM_* to hold each endpoint via a call to the API list function. Exclude reports for its own task.',
-      'out': {
-        'auth': {
-          'field': {
-            'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
-            'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
-          }
-        },
-        'dataset': {
-          'field': {
-            'description': 'Google BigQuery dataset to create tables in.',
-            'kind': 'string',
-            'name': 'recipe_slug',
-            'order': 4,
-            'default': ''
-          }
-        }
-      },
-      'accounts': {
-        'values': {
-          'field': {
-            'description': 'Comma separated CM account ids.',
-            'kind': 'integer_list',
-            'name': 'accounts',
-            'order': 2,
-            'default': [
-            ]
-          }
-        },
-        'single_cell': True
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 0,
-          'default': 'user'
-        }
-      },
-      'reports': {
-        'field': {
-          'description': 'Include report audit, consumes significant API and data.',
-          'kind': 'boolean',
-          'name': 'reports',
-          'order': 3,
-          'default': False
+          'default': '',
+          'kind': 'string',
+          'order': 4
         }
       },
       'hour': [
@@ -157,69 +98,76 @@ TASKS = [
     }
   },
   {
-    'bigquery': {
-      'from': {
-        'legacy': False,
-        'parameters': [
-          {
-            'field': {
-              'description': 'Project where BigQuery dataset will be created.',
-              'name': 'recipe_project',
-              'kind': 'string'
-            }
-          },
-          {
-            'field': {
-              'description': 'Place where tables will be written in BigQuery.',
-              'name': 'recipe_slug',
-              'kind': 'string'
-            }
-          },
-          {
-            'field': {
-              'description': 'Project where BigQuery dataset will be created.',
-              'name': 'recipe_project',
-              'kind': 'string'
-            }
-          },
-          {
-            'field': {
-              'description': 'Place where tables will be written in BigQuery.',
-              'name': 'recipe_slug',
-              'kind': 'string'
-            }
-          },
-          {
-            'field': {
-              'description': 'Project where BigQuery dataset will be created.',
-              'name': 'recipe_project',
-              'kind': 'string'
-            }
-          },
-          {
-            'field': {
-              'description': 'Place where tables will be written in BigQuery.',
-              'name': 'recipe_slug',
-              'kind': 'string'
-            }
-          },
-          {
-            'field': {
-              'description': 'Project where BigQuery dataset will be created.',
-              'name': 'recipe_project',
-              'kind': 'string'
-            }
-          },
-          {
-            'field': {
-              'description': 'Place where tables will be written in BigQuery.',
-              'name': 'recipe_slug',
-              'kind': 'string'
-            }
-          }
-        ],
-        'query': " SELECT   P.profileId AS profileId,   P.accountId AS accountId,   P.subaccountId AS subaccountId,   P.name AS Profile_Name,   P.email AS Profile_Email,   REGEXP_EXTRACT(P.email, r'@(.+)') AS Profile_Domain,   P.userAccessType AS Profile_userAccessType,   P.active AS Profie_active,   P.traffickerType AS Profile_traffickerType,   P.comments AS Profile_comments,   P.userRoleId AS Profile_userRoleId,   R.role_name AS Role_role_name,   R.role_defaultUserRole AS Role_role_defaultUserRole,   R.permission_name AS Role_permission_name,   R.permission_availability AS Role_permission_availability,   A.name AS Account_name,   A.active AS Account_active,   A.description AS Account_description,   A.locale AS Account_locale,   S.name AS SubAccount_name FROM `[PARAMETER].[PARAMETER].CM_Profiles` AS P LEFT JOIN `[PARAMETER].[PARAMETER].CM_Roles` AS R   ON P.userRoleId=R.roleId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A   ON P.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS S   ON P.accountId=S.accountId   AND P.subaccountId=S.subaccountId ; "
+    'barnacle': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 0
+        }
       },
+      'accounts': {
+        'single_cell': True,
+        'values': {
+          'field': {
+            'description': 'Comma separated CM account ids.',
+            'name': 'accounts',
+            'default': [
+            ],
+            'kind': 'integer_list',
+            'order': 2
+          }
+        }
+      },
+      'description': 'Will create tables with format CM_* to hold each endpoint via a call to the API list function. Exclude reports for its own task.',
+      'out': {
+        'auth': {
+          'field': {
+            'description': 'Credentials used for writing data.',
+            'name': 'auth_write',
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
+          }
+        },
+        'dataset': {
+          'field': {
+            'description': 'Google BigQuery dataset to create tables in.',
+            'name': 'recipe_slug',
+            'default': '',
+            'kind': 'string',
+            'order': 4
+          }
+        }
+      },
+      'hour': [
+        1
+      ],
+      'reports': {
+        'field': {
+          'description': 'Include report audit, consumes significant API and data.',
+          'name': 'reports',
+          'default': False,
+          'kind': 'boolean',
+          'order': 3
+        }
+      }
+    }
+  },
+  {
+    'bigquery': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'description': 'Combine profile, account, subaccount, and roles into one view, used by other views in this workflow.',
       'to': {
         'view': 'Barnacle_Profile_Role_Account_SubAccount_Map',
         'dataset': {
@@ -230,24 +178,8 @@ TASKS = [
           }
         }
       },
-      'description': 'Combine profile, account, subaccount, and roles into one view, used by other views in this workflow.',
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
-        }
-      },
-      'hour': [
-        8
-      ]
-    }
-  },
-  {
-    'bigquery': {
       'from': {
+        'query': " SELECT   P.profileId AS profileId,   P.accountId AS accountId,   P.subaccountId AS subaccountId,   P.name AS Profile_Name,   P.email AS Profile_Email,   REGEXP_EXTRACT(P.email, r'@(.+)') AS Profile_Domain,   P.userAccessType AS Profile_userAccessType,   P.active AS Profie_active,   P.traffickerType AS Profile_traffickerType,   P.comments AS Profile_comments,   P.userRoleId AS Profile_userRoleId,   R.role_name AS Role_role_name,   R.role_defaultUserRole AS Role_role_defaultUserRole,   R.permission_name AS Role_permission_name,   R.permission_availability AS Role_permission_availability,   A.name AS Account_name,   A.active AS Account_active,   A.description AS Account_description,   A.locale AS Account_locale,   S.name AS SubAccount_name FROM `[PARAMETER].[PARAMETER].CM_Profiles` AS P LEFT JOIN `[PARAMETER].[PARAMETER].CM_Roles` AS R   ON P.userRoleId=R.roleId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A   ON P.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS S   ON P.accountId=S.accountId   AND P.subaccountId=S.subaccountId ; ",
         'legacy': False,
         'parameters': [
           {
@@ -291,10 +223,40 @@ TASKS = [
               'name': 'recipe_slug',
               'kind': 'string'
             }
+          },
+          {
+            'field': {
+              'description': 'Project where BigQuery dataset will be created.',
+              'name': 'recipe_project',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Place where tables will be written in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
           }
-        ],
-        'query': ' SELECT   APRASM.*,   A.advertiserId AS advertiserId,   A.name AS Advertiser_name,   A.status AS Advertiser_status,   A.defaultEmail AS Advertiser_defaultEmail,   A.suspended AS Advertiser_suspended FROM `[PARAMETER].[PARAMETER].CM_Profile_Advertisers` As PA LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM   ON PA.profileID=APRASM.profileID LEFT JOIN `[PARAMETER].[PARAMETER].CM_Advertisers` AS A   ON PA.advertiserId=A.advertiserId ; '
+        ]
       },
+      'hour': [
+        8
+      ]
+    }
+  },
+  {
+    'bigquery': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'description': 'Combine profiles and advertisers.',
       'to': {
         'view': 'Barnacle_Profile_Advertiser_Map',
         'dataset': {
@@ -305,24 +267,8 @@ TASKS = [
           }
         }
       },
-      'description': 'Combine profiles and advertisers.',
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
-        }
-      },
-      'hour': [
-        8
-      ]
-    }
-  },
-  {
-    'bigquery': {
       'from': {
+        'query': ' SELECT   APRASM.*,   A.advertiserId AS advertiserId,   A.name AS Advertiser_name,   A.status AS Advertiser_status,   A.defaultEmail AS Advertiser_defaultEmail,   A.suspended AS Advertiser_suspended FROM `[PARAMETER].[PARAMETER].CM_Profile_Advertisers` As PA LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM   ON PA.profileID=APRASM.profileID LEFT JOIN `[PARAMETER].[PARAMETER].CM_Advertisers` AS A   ON PA.advertiserId=A.advertiserId ; ',
         'legacy': False,
         'parameters': [
           {
@@ -367,9 +313,25 @@ TASKS = [
               'kind': 'string'
             }
           }
-        ],
-        'query': ' SELECT   APRASM.*,   C.campaignId AS campaignId,   C.name AS Campaign_name,   C.archived AS Campaign_archived,   IF(C.startDate <= CURRENT_DATE() AND C.endDate >= CURRENT_DATE(), True, False) AS Campaign_running,   ROUND(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), C.lastModifiedInfo_time, DAY) / 7) AS Campaign_Modified_Weeks_Ago FROM `[PARAMETER].[PARAMETER].CM_Profile_Campaigns` As PC LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM   ON PC.profileID=APRASM.profileID LEFT JOIN `[PARAMETER].[PARAMETER].CM_Campaigns` AS C   ON PC.campaignId=C.campaignId ; '
+        ]
       },
+      'hour': [
+        8
+      ]
+    }
+  },
+  {
+    'bigquery': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'description': 'Profile to campaign mapping.',
       'to': {
         'view': 'Barnacle_Profile_Campaign_Map',
         'dataset': {
@@ -380,24 +342,8 @@ TASKS = [
           }
         }
       },
-      'description': 'Profile to campaign mapping.',
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
-        }
-      },
-      'hour': [
-        8
-      ]
-    }
-  },
-  {
-    'bigquery': {
       'from': {
+        'query': ' SELECT   APRASM.*,   C.campaignId AS campaignId,   C.name AS Campaign_name,   C.archived AS Campaign_archived,   IF(C.startDate <= CURRENT_DATE() AND C.endDate >= CURRENT_DATE(), True, False) AS Campaign_running,   ROUND(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), C.lastModifiedInfo_time, DAY) / 7) AS Campaign_Modified_Weeks_Ago FROM `[PARAMETER].[PARAMETER].CM_Profile_Campaigns` As PC LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM   ON PC.profileID=APRASM.profileID LEFT JOIN `[PARAMETER].[PARAMETER].CM_Campaigns` AS C   ON PC.campaignId=C.campaignId ; ',
         'legacy': False,
         'parameters': [
           {
@@ -427,10 +373,40 @@ TASKS = [
               'name': 'recipe_slug',
               'kind': 'string'
             }
+          },
+          {
+            'field': {
+              'description': 'Project where BigQuery dataset will be created.',
+              'name': 'recipe_project',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Place where tables will be written in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
           }
-        ],
-        'query': ' SELECT   APRASM.*,   R.reportId AS reportId,   R.name AS Report_name,   R.type AS Report_type,   R.format AS Report_format,   R.schedule_active AS Report_schedule_active,   R.schedule_repeats AS Report_schedule_repeats,   ROUND(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), R.lastModifiedTime, DAY) / 7) AS Report_Modified_Weeks_Ago,   DATE_DIFF(R.schedule_expirationDate, CURRENT_DATE(), MONTH) AS Report_Schedule_Weeks_To_Go FROM `[PARAMETER].[PARAMETER].CM_Reports` As R LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM   ON R.profileID=APRASM.profileID ; '
+        ]
       },
+      'hour': [
+        8
+      ]
+    }
+  },
+  {
+    'bigquery': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'description': 'The logic query for Deal Finder, transforms report into view used by datastudio.',
       'to': {
         'view': 'Barnacle_Profile_Report_Map',
         'dataset': {
@@ -441,24 +417,8 @@ TASKS = [
           }
         }
       },
-      'description': 'The logic query for Deal Finder, transforms report into view used by datastudio.',
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
-        }
-      },
-      'hour': [
-        8
-      ]
-    }
-  },
-  {
-    'bigquery': {
       'from': {
+        'query': ' SELECT   APRASM.*,   R.reportId AS reportId,   R.name AS Report_name,   R.type AS Report_type,   R.format AS Report_format,   R.schedule_active AS Report_schedule_active,   R.schedule_repeats AS Report_schedule_repeats,   ROUND(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), R.lastModifiedTime, DAY) / 7) AS Report_Modified_Weeks_Ago,   DATE_DIFF(R.schedule_expirationDate, CURRENT_DATE(), MONTH) AS Report_Schedule_Weeks_To_Go FROM `[PARAMETER].[PARAMETER].CM_Reports` As R LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM   ON R.profileID=APRASM.profileID ; ',
         'legacy': False,
         'parameters': [
           {
@@ -488,24 +448,26 @@ TASKS = [
               'name': 'recipe_slug',
               'kind': 'string'
             }
-          },
-          {
-            'field': {
-              'description': 'Project where BigQuery dataset will be created.',
-              'name': 'recipe_project',
-              'kind': 'string'
-            }
-          },
-          {
-            'field': {
-              'description': 'Place where tables will be written in BigQuery.',
-              'name': 'recipe_slug',
-              'kind': 'string'
-            }
           }
-        ],
-        'query': ' SELECT   APRASM.*,   S.siteId AS siteId,   S.name AS Site_Name,   S.keyName AS Site_keyName,   S.approved AS Site_approved FROM `[PARAMETER].[PARAMETER].CM_Profile_Sites` As PS LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM   ON PS.profileID=APRASM.profileID LEFT JOIN `[PARAMETER].[PARAMETER].CM_Sites` AS S   ON PS.siteId=S.siteId ; '
+        ]
       },
+      'hour': [
+        8
+      ]
+    }
+  },
+  {
+    'bigquery': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'description': 'The logic query for Deal Finder, transforms report into view used by datastudio.',
       'to': {
         'view': 'Barnacle_Profile_Site_Map',
         'dataset': {
@@ -516,24 +478,8 @@ TASKS = [
           }
         }
       },
-      'description': 'The logic query for Deal Finder, transforms report into view used by datastudio.',
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
-        }
-      },
-      'hour': [
-        8
-      ]
-    }
-  },
-  {
-    'bigquery': {
       'from': {
+        'query': ' SELECT   APRASM.*,   S.siteId AS siteId,   S.name AS Site_Name,   S.keyName AS Site_keyName,   S.approved AS Site_approved FROM `[PARAMETER].[PARAMETER].CM_Profile_Sites` As PS LEFT JOIN `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM   ON PS.profileID=APRASM.profileID LEFT JOIN `[PARAMETER].[PARAMETER].CM_Sites` AS S   ON PS.siteId=S.siteId ; ',
         'legacy': False,
         'parameters': [
           {
@@ -577,24 +523,26 @@ TASKS = [
               'name': 'recipe_slug',
               'kind': 'string'
             }
-          },
-          {
-            'field': {
-              'description': 'Project where BigQuery dataset will be created.',
-              'name': 'recipe_project',
-              'kind': 'string'
-            }
-          },
-          {
-            'field': {
-              'description': 'Place where tables will be written in BigQuery.',
-              'name': 'recipe_slug',
-              'kind': 'string'
-            }
           }
-        ],
-        'query': ' SELECT   APRASM.* FROM `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM LEFT JOIN `[PARAMETER].[PARAMETER].CM_Profile_Advertisers` AS PA   ON APRASM.profileId=PA.profileId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Profile_Campaigns` AS PC   ON APRASM.profileId=PC.profileId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Profile_Sites` AS PS   ON APRASM.profileId=PS.profileId WHERE   PA.advertiserId IS NULL   AND PC.campaignId IS NULL   AND PS.siteId IS NULL  '
+        ]
       },
+      'hour': [
+        8
+      ]
+    }
+  },
+  {
+    'bigquery': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'description': 'The logic query for Deal Finder, transforms report into view used by datastudio.',
       'to': {
         'view': 'Barnacle_Profiles_Connections',
         'dataset': {
@@ -605,24 +553,8 @@ TASKS = [
           }
         }
       },
-      'description': 'The logic query for Deal Finder, transforms report into view used by datastudio.',
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
-        }
-      },
-      'hour': [
-        8
-      ]
-    }
-  },
-  {
-    'bigquery': {
       'from': {
+        'query': ' SELECT   APRASM.* FROM `[PARAMETER].[PARAMETER].Barnacle_Profile_Role_Account_SubAccount_Map` AS APRASM LEFT JOIN `[PARAMETER].[PARAMETER].CM_Profile_Advertisers` AS PA   ON APRASM.profileId=PA.profileId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Profile_Campaigns` AS PC   ON APRASM.profileId=PC.profileId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Profile_Sites` AS PS   ON APRASM.profileId=PS.profileId WHERE   PA.advertiserId IS NULL   AND PC.campaignId IS NULL   AND PS.siteId IS NULL  ',
         'legacy': False,
         'parameters': [
           {
@@ -680,24 +612,26 @@ TASKS = [
               'name': 'recipe_slug',
               'kind': 'string'
             }
-          },
-          {
-            'field': {
-              'description': 'Project where BigQuery dataset will be created.',
-              'name': 'recipe_project',
-              'kind': 'string'
-            }
-          },
-          {
-            'field': {
-              'description': 'Place where tables will be written in BigQuery.',
-              'name': 'recipe_slug',
-              'kind': 'string'
-            }
           }
-        ],
-        'query': ' SELECT   RD.accountId AS accountId,   RD.subaccountId AS subaccountId,   RD.reportId AS reportId,   A.name AS Account_name,   A.active AS Account_active,   SA.name as SubAccount_name,   R.name as Report_name,   R.schedule_active AS Report_schedule_active,   RD.emailOwnerDeliveryType AS Delivery_emailOwnerDeliveryType,   RD.deliveryType AS Delivery_deliveryType,   RD.email AS Delivery_email,   RD.message AS Delivery_message,   IF(RD.email in (SELECT email from `[PARAMETER].[PARAMETER].CM_Profiles`), True, False) AS Profile_Match_Exists FROM `[PARAMETER].[PARAMETER].CM_Report_Deliveries` AS RD LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A   ON RD.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA   ON RD.subaccountId=SA.subaccountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Reports` AS R   ON RD.reportId=R.reportId '
+        ]
       },
+      'hour': [
+        8
+      ]
+    }
+  },
+  {
+    'bigquery': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'description': '',
       'to': {
         'view': 'Barnacle_Report_Delivery_Profiles',
         'dataset': {
@@ -708,24 +642,8 @@ TASKS = [
           }
         }
       },
-      'description': '',
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
-        }
-      },
-      'hour': [
-        8
-      ]
-    }
-  },
-  {
-    'bigquery': {
       'from': {
+        'query': ' SELECT   RD.accountId AS accountId,   RD.subaccountId AS subaccountId,   RD.reportId AS reportId,   A.name AS Account_name,   A.active AS Account_active,   SA.name as SubAccount_name,   R.name as Report_name,   R.schedule_active AS Report_schedule_active,   RD.emailOwnerDeliveryType AS Delivery_emailOwnerDeliveryType,   RD.deliveryType AS Delivery_deliveryType,   RD.email AS Delivery_email,   RD.message AS Delivery_message,   IF(RD.email in (SELECT email from `[PARAMETER].[PARAMETER].CM_Profiles`), True, False) AS Profile_Match_Exists FROM `[PARAMETER].[PARAMETER].CM_Report_Deliveries` AS RD LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A   ON RD.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA   ON RD.subaccountId=SA.subaccountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Reports` AS R   ON RD.reportId=R.reportId ',
         'legacy': False,
         'parameters': [
           {
@@ -783,10 +701,40 @@ TASKS = [
               'name': 'recipe_slug',
               'kind': 'string'
             }
+          },
+          {
+            'field': {
+              'description': 'Project where BigQuery dataset will be created.',
+              'name': 'recipe_project',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Place where tables will be written in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
           }
-        ],
-        'query': ' SELECT   R.accountId AS accountId,   R.subaccountId AS subaccountId,   R.roleId AS roleId,   A.name AS Account_name,   A.active AS Account_active,   SA.name AS SubAccount_name,   R.role_name as Role_role_name,   R.role_defaultUserRole AS Role_role_defaultUserRole,   R.permission_name AS Role_permission_name,   R.permission_availability AS Role_permission_availability FROM `[PARAMETER].[PARAMETER].CM_Roles` AS R LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A on R.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA on R.subaccountId=SA.subaccountId WHERE roleId NOT IN (   SELECT roleId FROM `[PARAMETER].[PARAMETER].CM_Profile_Roles` ) '
+        ]
       },
+      'hour': [
+        8
+      ]
+    }
+  },
+  {
+    'bigquery': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'description': '',
       'to': {
         'view': 'Barnacle_Roles_Not_Used',
         'dataset': {
@@ -797,24 +745,8 @@ TASKS = [
           }
         }
       },
-      'description': '',
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
-        }
-      },
-      'hour': [
-        8
-      ]
-    }
-  },
-  {
-    'bigquery': {
       'from': {
+        'query': ' SELECT   R.accountId AS accountId,   R.subaccountId AS subaccountId,   R.roleId AS roleId,   A.name AS Account_name,   A.active AS Account_active,   SA.name AS SubAccount_name,   R.role_name as Role_role_name,   R.role_defaultUserRole AS Role_role_defaultUserRole,   R.permission_name AS Role_permission_name,   R.permission_availability AS Role_permission_availability FROM `[PARAMETER].[PARAMETER].CM_Roles` AS R LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A on R.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA on R.subaccountId=SA.subaccountId WHERE roleId NOT IN (   SELECT roleId FROM `[PARAMETER].[PARAMETER].CM_Profile_Roles` ) ',
         'legacy': False,
         'parameters': [
           {
@@ -872,24 +804,26 @@ TASKS = [
               'name': 'recipe_slug',
               'kind': 'string'
             }
-          },
-          {
-            'field': {
-              'description': 'Project where BigQuery dataset will be created.',
-              'name': 'recipe_project',
-              'kind': 'string'
-            }
-          },
-          {
-            'field': {
-              'description': 'Place where tables will be written in BigQuery.',
-              'name': 'recipe_slug',
-              'kind': 'string'
-            }
           }
-        ],
-        'query': " SELECT   SC.accountId AS accountId,   SC.subaccountId AS subaccountId,   SC.siteId AS siteId,   SC.contactId AS contactId,   A.name AS Account_name,   A.active AS Account_active,   SA.name as SubAccount_name,   S.name as Site_name,   S.approved AS Site_approved,   SC.email AS Site_Contact_email,   CONCAT(SC.firstName, ' ', sc.lastname) AS Site_Contact_Name,   SC.phone AS Site_Contact_phone,   SC.contactType AS Site_Contact_contactType,   IF(sc.email in (SELECT email from `[PARAMETER].[PARAMETER].CM_Profiles`), True, False) AS Profile_Match_Exists FROM `[PARAMETER].[PARAMETER].CM_Site_Contacts` AS SC LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A   ON SC.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA   ON SC.accountId=SA.accountId   AND SC.subaccountId=SA.subaccountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Sites` AS S   ON SC.siteId=S.siteId ; "
+        ]
       },
+      'hour': [
+        8
+      ]
+    }
+  },
+  {
+    'bigquery': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'description': '',
       'to': {
         'view': 'Barnacle_Site_Contacts_Profiles',
         'dataset': {
@@ -900,15 +834,81 @@ TASKS = [
           }
         }
       },
-      'description': '',
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
-        }
+      'from': {
+        'query': " SELECT   SC.accountId AS accountId,   SC.subaccountId AS subaccountId,   SC.siteId AS siteId,   SC.contactId AS contactId,   A.name AS Account_name,   A.active AS Account_active,   SA.name as SubAccount_name,   S.name as Site_name,   S.approved AS Site_approved,   SC.email AS Site_Contact_email,   CONCAT(SC.firstName, ' ', sc.lastname) AS Site_Contact_Name,   SC.phone AS Site_Contact_phone,   SC.contactType AS Site_Contact_contactType,   IF(sc.email in (SELECT email from `[PARAMETER].[PARAMETER].CM_Profiles`), True, False) AS Profile_Match_Exists FROM `[PARAMETER].[PARAMETER].CM_Site_Contacts` AS SC LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A   ON SC.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA   ON SC.accountId=SA.accountId   AND SC.subaccountId=SA.subaccountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_Sites` AS S   ON SC.siteId=S.siteId ; ",
+        'legacy': False,
+        'parameters': [
+          {
+            'field': {
+              'description': 'Project where BigQuery dataset will be created.',
+              'name': 'recipe_project',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Place where tables will be written in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Project where BigQuery dataset will be created.',
+              'name': 'recipe_project',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Place where tables will be written in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Project where BigQuery dataset will be created.',
+              'name': 'recipe_project',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Place where tables will be written in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Project where BigQuery dataset will be created.',
+              'name': 'recipe_project',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Place where tables will be written in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Project where BigQuery dataset will be created.',
+              'name': 'recipe_project',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Place where tables will be written in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
+          }
+        ]
       },
       'hour': [
         8
@@ -917,7 +917,28 @@ TASKS = [
   },
   {
     'bigquery': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'description': '',
+      'to': {
+        'view': 'Barnacle_Roles_Duplicates',
+        'dataset': {
+          'field': {
+            'description': 'Place where tables will be written in BigQuery.',
+            'name': 'recipe_slug',
+            'kind': 'string'
+          }
+        }
+      },
       'from': {
+        'query': " WITH  profile_counts AS (   SELECT userRoleId, COUNT(profileId) as profile_count   FROM `[PARAMETER].[PARAMETER].CM_Profiles`   GROUP BY 1 ),  permission_fingerprints AS (   SELECT     accountId,     subaccountId,     roleId,     role_name,     role_defaultUserRole,     SUM(profile_count) AS profile_count,     FARM_FINGERPRINT(       ARRAY_TO_STRING(       ARRAY_AGG(         DISTINCT permission_name ORDER BY permission_name ASC       ), ',', '-'     )   ) AS permissions_fingerprint   FROM     `[PARAMETER].[PARAMETER].CM_Roles` AS R   LEFT JOIN profile_counts AS P   ON R.roleId = P.userRoleId   GROUP BY     accountId,     subaccountId,     roleId,     role_name,     role_defaultUserRole )  SELECT   PFL.accountId AS accountId,   A.name AS Account_name,   A.active AS Account_active,   PFL.subaccountId AS subaccountId,   SA.name AS SubAccount_name,   PFL.roleId AS roleId,   PFL.role_name AS role_name,   PFL.role_defaultUserRole AS role_defaultUserRole,   COALESCE(PFL.profile_count, 0) AS profile_count,   PFR.roleId AS duplicate_roleId,   PFR.role_name AS duplicate_role_name,   PFR.role_defaultUserRole AS duplicate_role_defaultUserRole,   COALESCE(PFR.profile_count, 0) AS duplicate_profile_count FROM permission_fingerprints AS PFL LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A on PFL.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA on PFL.subaccountId=SA.subaccountId LEFT JOIN permission_fingerprints AS PFR   ON PFL.permissions_fingerprint=PFR.permissions_fingerprint   AND PFL.accountId=PFR.accountId   AND COALESCE(PFL.subaccountId, 0)=COALESCE(PFR.subaccountId, 0) WHERE PFL.roleId != PFR.roleId ; ",
         'legacy': False,
         'parameters': [
           {
@@ -976,28 +997,7 @@ TASKS = [
               'kind': 'string'
             }
           }
-        ],
-        'query': " WITH  profile_counts AS (   SELECT userRoleId, COUNT(profileId) as profile_count   FROM `[PARAMETER].[PARAMETER].CM_Profiles`   GROUP BY 1 ),  permission_fingerprints AS (   SELECT     accountId,     subaccountId,     roleId,     role_name,     role_defaultUserRole,     SUM(profile_count) AS profile_count,     FARM_FINGERPRINT(       ARRAY_TO_STRING(       ARRAY_AGG(         DISTINCT permission_name ORDER BY permission_name ASC       ), ',', '-'     )   ) AS permissions_fingerprint   FROM     `[PARAMETER].[PARAMETER].CM_Roles` AS R   LEFT JOIN profile_counts AS P   ON R.roleId = P.userRoleId   GROUP BY     accountId,     subaccountId,     roleId,     role_name,     role_defaultUserRole )  SELECT   PFL.accountId AS accountId,   A.name AS Account_name,   A.active AS Account_active,   PFL.subaccountId AS subaccountId,   SA.name AS SubAccount_name,   PFL.roleId AS roleId,   PFL.role_name AS role_name,   PFL.role_defaultUserRole AS role_defaultUserRole,   COALESCE(PFL.profile_count, 0) AS profile_count,   PFR.roleId AS duplicate_roleId,   PFR.role_name AS duplicate_role_name,   PFR.role_defaultUserRole AS duplicate_role_defaultUserRole,   COALESCE(PFR.profile_count, 0) AS duplicate_profile_count FROM permission_fingerprints AS PFL LEFT JOIN `[PARAMETER].[PARAMETER].CM_Accounts` AS A on PFL.accountId=A.accountId LEFT JOIN `[PARAMETER].[PARAMETER].CM_SubAccounts` AS SA on PFL.subaccountId=SA.subaccountId LEFT JOIN permission_fingerprints AS PFR   ON PFL.permissions_fingerprint=PFR.permissions_fingerprint   AND PFL.accountId=PFR.accountId   AND COALESCE(PFL.subaccountId, 0)=COALESCE(PFR.subaccountId, 0) WHERE PFL.roleId != PFR.roleId ; "
-      },
-      'to': {
-        'view': 'Barnacle_Roles_Duplicates',
-        'dataset': {
-          'field': {
-            'description': 'Place where tables will be written in BigQuery.',
-            'name': 'recipe_slug',
-            'kind': 'string'
-          }
-        }
-      },
-      'description': '',
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
-        }
+        ]
       },
       'hour': [
         8

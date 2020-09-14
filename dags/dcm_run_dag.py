@@ -49,8 +49,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'account': '',  # CM network id.
   'auth_read': 'user',  # Credentials used for reading data.
+  'account': '',  # CM network id.
   'report_id': '',  # CM report id, empty if using name.
   'report_name': '',  # CM report name, empty if using id instead.
 }
@@ -58,45 +58,45 @@ INPUTS = {
 TASKS = [
   {
     'dcm': {
-      'report_run_only': True,
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'report': {
-        'account': {
+        'report_id': {
           'field': {
-            'description': 'CM network id.',
+            'description': 'CM report id, empty if using name.',
+            'name': 'report_id',
+            'default': '',
             'kind': 'integer',
-            'name': 'account',
-            'order': 1,
-            'default': ''
+            'order': 2
           }
         },
         'name': {
           'field': {
             'description': 'CM report name, empty if using id instead.',
-            'kind': 'string',
             'name': 'report_name',
-            'order': 3,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 3
           }
         },
-        'report_id': {
+        'account': {
           'field': {
-            'description': 'CM report id, empty if using name.',
+            'description': 'CM network id.',
+            'name': 'account',
+            'default': '',
             'kind': 'integer',
-            'name': 'report_id',
-            'order': 2,
-            'default': ''
+            'order': 1
           }
         }
-      }
+      },
+      'report_run_only': True
     }
   }
 ]

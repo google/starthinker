@@ -233,10 +233,10 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                <tbody>
                
                  <tr>
-                   <td>Spend Optimization</td>
+                   <td>Csat Improvement</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 100%"></div>
+                       <div class="determinate" style="width: 30%"></div>
                      </div>
                    </td>
                  </tr>
@@ -251,15 +251,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Spend Growth</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 30%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Time Savings</td>
                    <td>
                      <div class="progress">
@@ -269,7 +260,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Csat Improvement</td>
+                   <td>Spend Optimization</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 100%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Spend Growth</td>
                    <td>
                      <div class="progress">
                        <div class="determinate" style="width: 30%"></div>
@@ -376,45 +376,59 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
-            "dataset": {
-                "field": {
-                    "description": "Place where tables will be created in BigQuery.",
-                    "name": "recipe_slug",
-                    "kind": "string"
-                }
-            },
-            "description": "Create a dataset for bigquery tables.",
             "hour": [
                 1
             ],
-            "auth": "service"
+            "auth": "service",
+            "dataset": {
+                "field": {
+                    "name": "recipe_slug",
+                    "kind": "string",
+                    "description": "Place where tables will be created in BigQuery."
+                }
+            },
+            "description": "Create a dataset for bigquery tables."
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "hour": [
+                2
+            ],
             "report": {
                 "body": {
-                    "timezoneCode": {
-                        "field": {
-                            "description": "Timezone for report dates.",
-                            "default": "America/Los_Angeles",
-                            "name": "recipe_timezone",
-                            "kind": "timezone"
-                        }
-                    },
                     "metadata": {
                         "format": "CSV",
                         "title": {
                             "field": {
-                                "prefix": "Feature Adoption Spend For ",
                                 "name": "recipe_name",
                                 "kind": "string",
+                                "prefix": "Feature Adoption Spend For ",
                                 "description": "Name of report in DV360, should be unique."
                             }
                         },
                         "dataRange": "LAST_30_DAYS"
                     },
+                    "timezoneCode": {
+                        "field": {
+                            "name": "recipe_timezone",
+                            "default": "America/Los_Angeles",
+                            "kind": "timezone",
+                            "description": "Timezone for report dates."
+                        }
+                    },
                     "params": {
+                        "groupBys": [
+                            "FILTER_ADVERTISER",
+                            "FILTER_ADVERTISER_NAME",
+                            "FILTER_ADVERTISER_CURRENCY",
+                            "FILTER_INSERTION_ORDER",
+                            "FILTER_INSERTION_ORDER_NAME",
+                            "FILTER_LINE_ITEM",
+                            "FILTER_LINE_ITEM_NAME",
+                            "FILTER_DATE"
+                        ],
+                        "type": "TYPE_GENERAL",
                         "metrics": [
                             "METRIC_IMPRESSIONS",
                             "METRIC_BILLABLE_IMPRESSIONS",
@@ -429,17 +443,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "METRIC_RICH_MEDIA_VIDEO_PLAYS",
                             "METRIC_CM_POST_CLICK_REVENUE",
                             "METRIC_CM_POST_VIEW_REVENUE"
-                        ],
-                        "type": "TYPE_GENERAL",
-                        "groupBys": [
-                            "FILTER_ADVERTISER",
-                            "FILTER_ADVERTISER_NAME",
-                            "FILTER_ADVERTISER_CURRENCY",
-                            "FILTER_INSERTION_ORDER",
-                            "FILTER_INSERTION_ORDER_NAME",
-                            "FILTER_LINE_ITEM",
-                            "FILTER_LINE_ITEM_NAME",
-                            "FILTER_DATE"
                         ]
                     }
                 },
@@ -447,69 +450,58 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "FILTER_PARTNER": {
                         "values": {
                             "field": {
-                                "description": "DV360 partner id.",
-                                "default": [],
                                 "name": "partners",
+                                "order": 5,
+                                "default": [],
                                 "kind": "integer_list",
-                                "order": 5
+                                "description": "DV360 partner id."
                             }
                         }
                     },
                     "FILTER_ADVERTISER": {
                         "values": {
                             "field": {
-                                "description": "Comma delimited list of DV360 advertiser ids.",
-                                "default": [],
                                 "name": "advertisers",
+                                "order": 6,
+                                "default": [],
                                 "kind": "integer_list",
-                                "order": 6
+                                "description": "Comma delimited list of DV360 advertiser ids."
                             }
                         }
                     }
                 }
             },
-            "hour": [
-                2
-            ],
             "auth": "user"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "hour": [
+                2
+            ],
             "report": {
                 "body": {
-                    "timezoneCode": {
-                        "field": {
-                            "description": "Timezone for report dates.",
-                            "default": "America/Los_Angeles",
-                            "name": "recipe_timezone",
-                            "kind": "timezone"
-                        }
-                    },
                     "metadata": {
                         "format": "CSV",
                         "title": {
                             "field": {
-                                "prefix": "Feature Adoption Environment For ",
                                 "name": "recipe_name",
                                 "kind": "string",
+                                "prefix": "Feature Adoption Environment For ",
                                 "description": "Name of report in DV360, should be unique."
                             }
                         },
                         "dataRange": "LAST_30_DAYS"
                     },
+                    "timezoneCode": {
+                        "field": {
+                            "name": "recipe_timezone",
+                            "default": "America/Los_Angeles",
+                            "kind": "timezone",
+                            "description": "Timezone for report dates."
+                        }
+                    },
                     "params": {
-                        "metrics": [
-                            "METRIC_IMPRESSIONS",
-                            "METRIC_BILLABLE_IMPRESSIONS",
-                            "METRIC_CLICKS",
-                            "METRIC_TOTAL_CONVERSIONS",
-                            "METRIC_LAST_CLICKS",
-                            "METRIC_LAST_IMPRESSIONS",
-                            "METRIC_REVENUE_ADVERTISER",
-                            "METRIC_MEDIA_COST_ADVERTISER"
-                        ],
-                        "type": "TYPE_GENERAL",
                         "groupBys": [
                             "FILTER_ADVERTISER",
                             "FILTER_ADVERTISER_NAME",
@@ -521,6 +513,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "FILTER_DEVICE_TYPE",
                             "FILTER_PAGE_LAYOUT",
                             "FILTER_DATE"
+                        ],
+                        "type": "TYPE_GENERAL",
+                        "metrics": [
+                            "METRIC_IMPRESSIONS",
+                            "METRIC_BILLABLE_IMPRESSIONS",
+                            "METRIC_CLICKS",
+                            "METRIC_TOTAL_CONVERSIONS",
+                            "METRIC_LAST_CLICKS",
+                            "METRIC_LAST_IMPRESSIONS",
+                            "METRIC_REVENUE_ADVERTISER",
+                            "METRIC_MEDIA_COST_ADVERTISER"
                         ]
                     }
                 },
@@ -528,44 +531,47 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "FILTER_PARTNER": {
                         "values": {
                             "field": {
-                                "description": "DV360 partner id.",
-                                "default": [],
                                 "name": "partners",
+                                "order": 5,
+                                "default": [],
                                 "kind": "integer_list",
-                                "order": 5
+                                "description": "DV360 partner id."
                             }
                         }
                     },
                     "FILTER_ADVERTISER": {
                         "values": {
                             "field": {
-                                "description": "Comma delimited list of DV360 advertiser ids.",
-                                "default": [],
                                 "name": "advertisers",
+                                "order": 6,
+                                "default": [],
                                 "kind": "integer_list",
-                                "order": 6
+                                "description": "Comma delimited list of DV360 advertiser ids."
                             }
                         }
                     }
                 }
             },
-            "hour": [
-                2
-            ],
             "auth": "user"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "hour": [
+                6
+            ],
+            "report": {
+                "name": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "prefix": "Feature Adoption Spend For ",
+                        "description": "Name of report in DV360, should be unique."
+                    }
+                }
+            },
             "out": {
                 "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "description": "Place where tables will be created in BigQuery.",
-                            "name": "recipe_slug",
-                            "kind": "string"
-                        }
-                    },
                     "schema": [
                         {
                             "type": "INTEGER",
@@ -653,36 +659,36 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         }
                     ],
                     "table": "DV360_Feature_Spend",
-                    "is_incremental_load": true
-                }
-            },
-            "report": {
-                "name": {
-                    "field": {
-                        "prefix": "Feature Adoption Spend For ",
-                        "name": "recipe_name",
-                        "kind": "string",
-                        "description": "Name of report in DV360, should be unique."
+                    "is_incremental_load": true,
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_slug",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
+                        }
                     }
                 }
             },
-            "hour": [
-                6
-            ],
             "auth": "user"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "hour": [
+                6
+            ],
+            "report": {
+                "name": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "prefix": "Feature Adoption Environment For ",
+                        "description": "Name of report in DV360, should be unique."
+                    }
+                }
+            },
             "out": {
                 "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "description": "Place where tables will be created in BigQuery.",
-                            "name": "recipe_slug",
-                            "kind": "string"
-                        }
-                    },
                     "schema": [
                         {
                             "type": "INTEGER",
@@ -758,155 +764,149 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         }
                     ],
                     "table": "DV360_Feature_Environment",
-                    "is_incremental_load": true
-                }
-            },
-            "report": {
-                "name": {
-                    "field": {
-                        "prefix": "Feature Adoption Environment For ",
-                        "name": "recipe_name",
-                        "kind": "string",
-                        "description": "Name of report in DV360, should be unique."
+                    "is_incremental_load": true,
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_slug",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
+                        }
                     }
                 }
             },
-            "hour": [
-                6
-            ],
             "auth": "user"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sdf_legacy/run.py" target="_blank">sdf_legacy</a>": {
-            "version": "5",
-            "out": {
-                "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "description": "Place where tables will be created in BigQuery.",
-                            "name": "recipe_slug",
-                            "kind": "string"
-                        }
-                    }
-                }
-            },
-            "daily": true,
-            "hour": [
-                4
-            ],
-            "read": {
-                "filter_ids": {
-                    "values": {
-                        "field": {
-                            "description": "Comma delimited list of DV360 advertiser ids.",
-                            "default": [],
-                            "name": "advertisers",
-                            "kind": "integer_list",
-                            "order": 6
-                        }
-                    }
-                }
-            },
             "filter_type": "ADVERTISER_ID",
             "file_types": [
                 "LINE_ITEM"
             ],
+            "daily": true,
+            "version": "5",
+            "hour": [
+                4
+            ],
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_slug",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
+                        }
+                    }
+                }
+            },
+            "read": {
+                "filter_ids": {
+                    "values": {
+                        "field": {
+                            "name": "advertisers",
+                            "order": 6,
+                            "default": [],
+                            "kind": "integer_list",
+                            "description": "Comma delimited list of DV360 advertiser ids."
+                        }
+                    }
+                }
+            },
             "auth": "user"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sdf_legacy/run.py" target="_blank">sdf_legacy</a>": {
-            "version": "5",
-            "out": {
-                "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "description": "Place where tables will be created in BigQuery.",
-                            "name": "recipe_slug",
-                            "kind": "string"
-                        }
-                    }
-                }
-            },
-            "daily": true,
-            "hour": [
-                4
-            ],
-            "read": {
-                "filter_ids": {
-                    "values": {
-                        "field": {
-                            "description": "Comma delimited list of DV360 advertiser ids.",
-                            "default": [],
-                            "name": "advertisers",
-                            "kind": "integer_list",
-                            "order": 6
-                        }
-                    }
-                }
-            },
             "filter_type": "ADVERTISER_ID",
             "file_types": [
                 "INSERTION_ORDER"
             ],
+            "daily": true,
+            "version": "5",
+            "hour": [
+                4
+            ],
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_slug",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
+                        }
+                    }
+                }
+            },
+            "read": {
+                "filter_ids": {
+                    "values": {
+                        "field": {
+                            "name": "advertisers",
+                            "order": 6,
+                            "default": [],
+                            "kind": "integer_list",
+                            "description": "Comma delimited list of DV360 advertiser ids."
+                        }
+                    }
+                }
+            },
             "auth": "user"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
-            "to": {
-                "dataset": {
-                    "field": {
-                        "description": "Place where tables will be created in BigQuery.",
-                        "name": "recipe_slug",
-                        "kind": "string"
-                    }
-                },
-                "view": "DV360_Feature_Adoption_Analysis"
-            },
             "hour": [
                 6
             ],
+            "to": {
+                "view": "DV360_Feature_Adoption_Analysis",
+                "dataset": {
+                    "field": {
+                        "name": "recipe_slug",
+                        "kind": "string",
+                        "description": "Place where tables will be created in BigQuery."
+                    }
+                }
+            },
+            "auth": "service",
             "from": {
                 "parameters": [
                     {
                         "field": {
-                            "description": "Google Cloud Project Id.",
-                            "default": "",
                             "name": "recipe_project",
-                            "kind": "string",
-                            "order": 6
-                        }
-                    },
-                    {
-                        "field": {
-                            "description": "Place where tables will be created in BigQuery.",
-                            "name": "recipe_slug",
-                            "kind": "string"
-                        }
-                    },
-                    {
-                        "field": {
-                            "description": "Google Cloud Project Id.",
+                            "order": 6,
                             "default": "",
-                            "name": "recipe_project",
                             "kind": "string",
-                            "order": 6
+                            "description": "Google Cloud Project Id."
                         }
                     },
                     {
                         "field": {
-                            "description": "Place where tables will be created in BigQuery.",
                             "name": "recipe_slug",
-                            "kind": "string"
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "recipe_project",
+                            "order": 6,
+                            "default": "",
+                            "kind": "string",
+                            "description": "Google Cloud Project Id."
+                        }
+                    },
+                    {
+                        "field": {
+                            "name": "recipe_slug",
+                            "kind": "string",
+                            "description": "Place where tables will be created in BigQuery."
                         }
                     }
                 ],
                 "query": " SELECT   Report_Day,   Advertiser,   Advertiser_Id,   Advertiser_Currency,   Insertion_Order AS Insertion_Order_Name,   Insertion_Order_Id AS Insertion_Order_ID,   CONCAT(Insertion_Order,' (',CAST(Insertion_Order_ID AS STRING),')') AS Insertion_Order,   Line_Item AS LI_Name,   b.Line_Item_Id AS LI_ID,   CONCAT(Line_Item,' (',CAST(b.Line_Item_Id AS STRING),')') AS Line_Item,   IF(MAX(SDF_Day) OVER () = SDF_Day, 'True', 'False') AS Max_Date,   a.*,   IF(Bid_Strategy_Type = 'Fixed', 'Fixed', CONCAT(Bid_Strategy_Type, ' ', Bid_Strategy_Unit)) AS Bid_Strategy,   IF(Bid_Strategy_Type = 'Fixed', 'Fixed', 'Autobidding') AS Autobidding_Overall,   CONCAT(Pacing, ' ', Pacing_Rate) AS Pacing_Overall,   IF(Affinity_In_Market_Targeting_Include IS NULL, 'False', 'True') AS Affinity_In_Market_TF,   IF(Affinity_In_Market_Targeting_Exclude IS NULL, 'False', 'True') AS Affinity_In_Market_Exclude_TF,   IF(Custom_List_Targeting IS NULL, 'False', 'True') AS Custom_List_TF,   IF(Audience_Targeting_Include IS NULL     AND Affinity_In_Market_Targeting_Include IS NULL     AND Custom_List_Targeting IS NULL     AND Audience_Targeting_Similar_Audiences = 'False' , 'False', 'True') AS Audience_Targeting_TF,   IF(Keyword_Targeting_Exclude IS NULL     AND Keyword_List_Targeting_Exclude IS NULL, 'False', 'True') AS Keyword_Exclusions_TF,   IF(Position_Targeting_On_Screen IS NULL     AND Position_Targeting_Display_Position_In_Content IS NULL     AND Position_Targeting_Video_Position_In_Content IS NULL     AND Position_Targeting_Audio_Position_In_Content IS NULL, 'False', 'True') AS Position_Targeting_TF,   IF((Geography_Targeting_Include IS NULL       AND Geography_Regional_Location_List_Targeting_Include IS NULL), 'False', 'True') AS Geography_Targeting_TF,   IF(Language_Targeting_Include IS NULL, 'False', 'True') AS Language_Targeting_TF,   IF(Site_Targeting_Exclude IS NULL     AND Site_Targeting_Include IS NULL, 'False', 'True') AS Site_List_TF,   Impressions AS Impressions,   Billable_Impressions AS Billable_Impressions,   Clicks AS Clicks,   Total_Conversions AS Total_Conversions,   Post_Click_Conversions AS Post_Click_Conversions,   Post_View_Conversions AS Post_View_Conversions,   Revenue_Adv_Currency AS Rev_Adv_Currency,   Media_Cost_Advertiser_Currency AS Media_Cost_Adv_Currency,   Cm_Post_Click_Revenue AS CM_Post_Click_Revenue,   Cm_Post_View_Revenue AS CM_Post_View_Revenue,   (Cm_Post_Click_Revenue+Cm_Post_View_Revenue) AS CM_Total_Revenue,   IF (Bid_Strategy_Type = 'Fixed', 0, Revenue_Adv_Currency) AS Autobid_Rev,   IF (Type = 'Display', Revenue_Adv_Currency, 0) AS Display_Rev,   IF (Type = 'Video', Revenue_Adv_Currency, 0) AS Video_Rev,   IF (Type = 'TrueView', Revenue_Adv_Currency, 0) AS TrueView_Rev,   IF (Type = 'Audio', Revenue_Adv_Currency, 0) AS Audio_Rev,   IF ((STRPOS(Environment_Targeting, 'Desktop')>0), Revenue_Adv_Currency, 0) AS Desktop_Rev   FROM `[PARAMETER].[PARAMETER].SDF_LINE_ITEM` AS a   LEFT JOIN `[PARAMETER].[PARAMETER].DV360_Feature_Spend` AS b     ON DATE_SUB(a.SDF_Day, INTERVAL 1 DAY) = b.Report_Day     AND a.Line_Item_Id = b.Line_Item_Id   WHERE b.Report_Day IS NOT NULL ",
                 "legacy": false
-            },
-            "auth": "service"
+            }
         }
     }
 ]</code></pre>

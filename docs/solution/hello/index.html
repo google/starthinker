@@ -240,71 +240,71 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/hello/run.py" target="_blank">hello</a>": {
-            "auth": {
+            "sleep": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
-                    "name": "auth_read",
-                    "kind": "authentication",
-                    "order": 1
+                    "name": "sleep",
+                    "order": 4,
+                    "default": 0,
+                    "kind": "integer",
+                    "description": "Seconds to sleep."
                 }
             },
             "error": {
                 "field": {
-                    "description": "Optional error for testing.",
-                    "default": "",
                     "name": "error",
+                    "order": 3,
+                    "default": "",
                     "kind": "string",
-                    "order": 3
+                    "description": "Optional error for testing."
+                }
+            },
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
+                    "kind": "authentication",
+                    "description": "Credentials used for reading data."
                 }
             },
             "say": {
                 "field": {
-                    "description": "Type in a greeting.",
-                    "default": "Hello Once",
                     "name": "say_first",
+                    "order": 1,
+                    "default": "Hello Once",
                     "kind": "string",
-                    "order": 1
-                }
-            },
-            "sleep": {
-                "field": {
-                    "description": "Seconds to sleep.",
-                    "default": 0,
-                    "name": "sleep",
-                    "kind": "integer",
-                    "order": 4
+                    "description": "Type in a greeting."
                 }
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/hello/run.py" target="_blank">hello</a>": {
+            "sleep": {
+                "field": {
+                    "name": "sleep",
+                    "order": 4,
+                    "default": 0,
+                    "kind": "integer",
+                    "description": "Seconds to sleep."
+                }
+            },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for reading data."
                 }
             },
             "say": {
                 "field": {
-                    "description": "Type in a greeting.",
-                    "default": "Hello Twice",
                     "name": "say_second",
+                    "order": 1,
+                    "default": "Hello Twice",
                     "kind": "string",
-                    "order": 1
-                }
-            },
-            "sleep": {
-                "field": {
-                    "description": "Seconds to sleep.",
-                    "default": 0,
-                    "name": "sleep",
-                    "kind": "integer",
-                    "order": 4
+                    "description": "Type in a greeting."
                 }
             }
         }

@@ -56,8 +56,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'station_ids': '',  # NOAA Weather Station ID
   'auth_read': 'user',  # Credentials used for reading data.
+  'station_ids': '',  # NOAA Weather Station ID
   'sheet_url': '',  # Feed Sheet URL
 }
 
@@ -65,58 +65,58 @@ TASKS = [
   {
     'weather_gov': {
       'auth': 'user',
-      'out': {
-        'sheets': {
-          'sheet': {
-            'field': {
-              'order': 2,
-              'kind': 'string',
-              'name': 'sheet_url',
-              'description': 'Feed Sheet URL',
-              'default': ''
-            }
-          },
-          'tab': 'Weather',
-          'delete': True,
-          'range': 'A2:K'
-        }
-      },
       'stations': {
         'field': {
-          'order': 1,
-          'kind': 'string_list',
-          'name': 'station_ids',
           'description': 'NOAA Weather Station ID',
-          'default': ''
+          'name': 'station_ids',
+          'default': '',
+          'kind': 'string_list',
+          'order': 1
+        }
+      },
+      'out': {
+        'sheets': {
+          'tab': 'Weather',
+          'delete': True,
+          'sheet': {
+            'field': {
+              'description': 'Feed Sheet URL',
+              'name': 'sheet_url',
+              'default': '',
+              'kind': 'string',
+              'order': 2
+            }
+          },
+          'range': 'A2:K'
         }
       }
     }
   },
   {
     'lineitem_beta': {
-      'patch': {
-      },
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
+      },
+      'patch': {
       },
       'read': {
         'sheet': {
+          'tab': 'Rules',
           'sheet': {
             'field': {
-              'order': 2,
-              'kind': 'string',
-              'name': 'sheet_url',
               'description': 'Feed Sheet URL',
-              'default': ''
+              'name': 'sheet_url',
+              'default': '',
+              'kind': 'string',
+              'order': 2
             }
           },
-          'tab': 'Rules',
           'range': 'A1:D'
         }
       }

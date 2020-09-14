@@ -51,51 +51,51 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'dcm_account': '',  # Specify an account_id as a number.
   'auth_read': 'user',  # Credentials used for reading data.
+  'dcm_account': '',  # Specify an account_id as a number.
   'sheet': '',  # Full Name or URL to Google Sheet, Floodlight Monitor tab will be added.
 }
 
 TASKS = [
   {
     'floodlight_monitor': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
       'template': {
         'template': {
-          'sheet': 'https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing',
           'tab': 'Floodlight Monitor',
+          'sheet': 'https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing',
           'range': 'A1'
         }
+      },
+      'sheet': {
+        'tab': 'Floodlight Monitor',
+        'sheet': {
+          'field': {
+            'description': 'Full Name or URL to Google Sheet, Floodlight Monitor tab will be added.',
+            'name': 'sheet',
+            'default': '',
+            'kind': 'string',
+            'order': 2
+          }
+        },
+        'range': 'A2:B'
       },
       'account': {
         'field': {
           'description': 'Specify an account_id as a number.',
-          'kind': 'string',
           'name': 'dcm_account',
-          'order': 1,
-          'default': ''
+          'default': '',
+          'kind': 'string',
+          'order': 1
         }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
-        }
-      },
-      'sheet': {
-        'sheet': {
-          'field': {
-            'description': 'Full Name or URL to Google Sheet, Floodlight Monitor tab will be added.',
-            'kind': 'string',
-            'name': 'sheet',
-            'order': 2,
-            'default': ''
-          }
-        },
-        'tab': 'Floodlight Monitor',
-        'range': 'A2:B'
       }
     }
   }

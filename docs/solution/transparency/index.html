@@ -229,10 +229,10 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                <tbody>
                
                  <tr>
-                   <td>Spend Optimization</td>
+                   <td>Csat Improvement</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
+                       <div class="determinate" style="width: 100%"></div>
                      </div>
                    </td>
                  </tr>
@@ -247,15 +247,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Spend Growth</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Time Savings</td>
                    <td>
                      <div class="progress">
@@ -265,10 +256,19 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Csat Improvement</td>
+                   <td>Spend Optimization</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 100%"></div>
+                       <div class="determinate" style="width: 0%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Spend Growth</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 0%"></div>
                      </div>
                    </td>
                  </tr>
@@ -352,49 +352,34 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
-            "dataset": {
-                "field": {
-                    "description": "Name of Google BigQuery dataset to create.",
-                    "default": "",
-                    "name": "recipe_slug",
-                    "kind": "string",
-                    "order": 1
-                }
-            },
             "hour": [
                 1
             ],
-            "auth": "service"
+            "auth": "service",
+            "dataset": {
+                "field": {
+                    "name": "recipe_slug",
+                    "order": 1,
+                    "default": "",
+                    "kind": "string",
+                    "description": "Name of Google BigQuery dataset to create."
+                }
+            }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
+            "hour": [
+                2
+            ],
             "report": {
-                "account": {
-                    "field": {
-                        "description": "CM account id of client.",
-                        "default": "",
-                        "name": "dcm_account",
-                        "kind": "integer",
-                        "order": 2
-                    }
-                },
                 "body": {
                     "format": "CSV",
-                    "type": "STANDARD",
-                    "name": {
-                        "field": {
-                            "prefix": "Transparency App For ",
-                            "name": "recipe_name",
-                            "kind": "string",
-                            "description": "Name of report in CM, unique."
-                        }
-                    },
                     "schedule": {
                         "repeats": "MONTHLY",
-                        "active": true,
                         "runsOnDayOfMonth": "DAY_OF_MONTH",
-                        "every": 1
+                        "every": 1,
+                        "active": true
                     },
                     "criteria": {
                         "dimensions": [
@@ -429,61 +414,61 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                                 "name": "dfa:app"
                             }
                         ],
-                        "metricNames": [
-                            "dfa:impressions"
-                        ],
                         "dateRange": {
                             "relativeDateRange": "PREVIOUS_MONTH"
+                        },
+                        "metricNames": [
+                            "dfa:impressions"
+                        ]
+                    },
+                    "type": "STANDARD",
+                    "name": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "prefix": "Transparency App For ",
+                            "description": "Name of report in CM, unique."
                         }
+                    }
+                },
+                "account": {
+                    "field": {
+                        "name": "dcm_account",
+                        "order": 2,
+                        "default": "",
+                        "kind": "integer",
+                        "description": "CM account id of client."
                     }
                 },
                 "filters": {
                     "dfa:advertiser": {
                         "values": {
                             "field": {
-                                "description": "Comma delimited list of CM advertiser ids.",
                                 "name": "dcm_advertisers",
                                 "kind": "integer_list",
-                                "order": 3
+                                "order": 3,
+                                "description": "Comma delimited list of CM advertiser ids."
                             }
                         }
                     }
                 }
             },
-            "hour": [
-                2
-            ],
             "auth": "user"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
+            "hour": [
+                2
+            ],
             "report": {
-                "account": {
-                    "field": {
-                        "description": "CM account id of client.",
-                        "default": "",
-                        "name": "dcm_account",
-                        "kind": "integer",
-                        "order": 2
-                    }
-                },
                 "body": {
                     "format": "CSV",
-                    "type": "STANDARD",
-                    "name": {
-                        "field": {
-                            "prefix": "Transparency Domain For ",
-                            "name": "recipe_name",
-                            "kind": "string",
-                            "description": "Name of report in CM, unique."
-                        }
-                    },
                     "schedule": {
                         "repeats": "MONTHLY",
-                        "active": true,
                         "runsOnDayOfMonth": "DAY_OF_MONTH",
-                        "every": 1
+                        "every": 1,
+                        "active": true
                     },
                     "criteria": {
                         "dimensions": [
@@ -512,169 +497,184 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                                 "name": "dfa:domain"
                             }
                         ],
-                        "metricNames": [
-                            "dfa:verificationVerifiableImpressions"
-                        ],
                         "dateRange": {
                             "relativeDateRange": "PREVIOUS_MONTH"
+                        },
+                        "metricNames": [
+                            "dfa:verificationVerifiableImpressions"
+                        ]
+                    },
+                    "type": "STANDARD",
+                    "name": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "prefix": "Transparency Domain For ",
+                            "description": "Name of report in CM, unique."
                         }
+                    }
+                },
+                "account": {
+                    "field": {
+                        "name": "dcm_account",
+                        "order": 2,
+                        "default": "",
+                        "kind": "integer",
+                        "description": "CM account id of client."
                     }
                 },
                 "filters": {
                     "dfa:advertiser": {
                         "values": {
                             "field": {
-                                "description": "Comma delimited list of CM advertiser ids.",
                                 "name": "dcm_advertisers",
                                 "kind": "integer_list",
-                                "order": 3
+                                "order": 3,
+                                "description": "Comma delimited list of CM advertiser ids."
                             }
                         }
                     }
                 }
             },
-            "hour": [
-                2
-            ],
             "auth": "user"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
-            "out": {
-                "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "description": "Name of Google BigQuery dataset to create.",
-                            "default": "",
-                            "name": "recipe_slug",
-                            "kind": "string",
-                            "order": 1
-                        }
-                    },
-                    "table": "Transparency_Domain_KPI",
-                    "auth": "service"
-                }
-            },
+            "hour": [
+                4
+            ],
             "report": {
+                "account": {
+                    "field": {
+                        "name": "dcm_account",
+                        "order": 2,
+                        "default": "",
+                        "kind": "integer",
+                        "description": "CM account id of client."
+                    }
+                },
                 "name": {
                     "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
                         "prefix": "Transparency Domain For ",
-                        "name": "recipe_name",
-                        "kind": "string",
                         "description": "Name of report in CM, should be unique."
-                    }
-                },
-                "account": {
-                    "field": {
-                        "description": "CM account id of client.",
-                        "default": "",
-                        "name": "dcm_account",
-                        "kind": "integer",
-                        "order": 2
                     }
                 }
             },
-            "hour": [
-                4
-            ],
+            "out": {
+                "bigquery": {
+                    "table": "Transparency_Domain_KPI",
+                    "auth": "service",
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_slug",
+                            "order": 1,
+                            "default": "",
+                            "kind": "string",
+                            "description": "Name of Google BigQuery dataset to create."
+                        }
+                    }
+                }
+            },
             "auth": "user"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
-            "out": {
-                "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "description": "Name of Google BigQuery dataset to create.",
-                            "default": "",
-                            "name": "recipe_slug",
-                            "kind": "string",
-                            "order": 1
-                        }
-                    },
-                    "table": "Transparency_App_KPI",
-                    "auth": "service"
-                }
-            },
-            "report": {
-                "name": {
-                    "field": {
-                        "prefix": "Transparency App For ",
-                        "name": "recipe_name",
-                        "kind": "string",
-                        "description": "Name of report in CM, should be unique."
-                    }
-                },
-                "account": {
-                    "field": {
-                        "description": "CM account id of client.",
-                        "default": "",
-                        "name": "dcm_account",
-                        "kind": "integer",
-                        "order": 2
-                    }
-                }
-            },
             "hour": [
                 4
             ],
+            "report": {
+                "account": {
+                    "field": {
+                        "name": "dcm_account",
+                        "order": 2,
+                        "default": "",
+                        "kind": "integer",
+                        "description": "CM account id of client."
+                    }
+                },
+                "name": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "prefix": "Transparency App For ",
+                        "description": "Name of report in CM, should be unique."
+                    }
+                }
+            },
+            "out": {
+                "bigquery": {
+                    "table": "Transparency_App_KPI",
+                    "auth": "service",
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_slug",
+                            "order": 1,
+                            "default": "",
+                            "kind": "string",
+                            "description": "Name of Google BigQuery dataset to create."
+                        }
+                    }
+                }
+            },
             "auth": "user"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
-            "to": {
-                "dataset": {
-                    "field": {
-                        "description": "Name of Google BigQuery dataset to create.",
-                        "default": "",
-                        "name": "recipe_slug",
-                        "kind": "string",
-                        "order": 1
-                    }
-                },
-                "view": "Transparency_Combined_KPI"
-            },
             "hour": [
                 5
             ],
+            "to": {
+                "view": "Transparency_Combined_KPI",
+                "dataset": {
+                    "field": {
+                        "name": "recipe_slug",
+                        "order": 1,
+                        "default": "",
+                        "kind": "string",
+                        "description": "Name of Google BigQuery dataset to create."
+                    }
+                }
+            },
+            "auth": "user",
             "from": {
                 "parameters": [
                     {
                         "field": {
-                            "description": "Project where BigQuery dataset will be created.",
                             "name": "recipe_project",
-                            "kind": "string"
+                            "kind": "string",
+                            "description": "Project where BigQuery dataset will be created."
                         }
                     },
                     {
                         "field": {
-                            "description": "Place where tables will be written in BigQuery.",
                             "name": "recipe_slug",
-                            "kind": "string"
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
                         }
                     },
                     {
                         "field": {
-                            "description": "Project where BigQuery dataset will be created.",
                             "name": "recipe_project",
-                            "kind": "string"
+                            "kind": "string",
+                            "description": "Project where BigQuery dataset will be created."
                         }
                     },
                     {
                         "field": {
-                            "description": "Place where tables will be written in BigQuery.",
                             "name": "recipe_slug",
-                            "kind": "string"
+                            "kind": "string",
+                            "description": "Place where tables will be written in BigQuery."
                         }
                     }
                 ],
                 "query": "With \r\nTransparent_Domains AS ( \r\n  SELECT\r\n    CONCAT(Advertiser, ' - ', CAST(Advertiser_Id AS STRING)) AS Advertiser,\r\n    CONCAT(Campaign, ' - ', CAST(Campaign_Id AS STRING)) AS Campaign,\r\n    CONCAT(Site_Dcm, ' - ', CAST(Site_Id_Dcm AS STRING)) AS Site,\r\n    Domain,\r\n    Ad_Type,\r\n    Verifiable_Impressions AS Impressions,\r\n    IF(Domain IS NOT NULL, Verifiable_Impressions, 0) AS Visible_Impressions,\r\n    IF(Domain IS NULL, Verifiable_Impressions, 0) AS Null_Impressions\r\n  FROM `[PARAMETER].[PARAMETER].Transparency_Domain_KPI`\r\n),\r\nTransparent_Apps AS ( \r\n  SELECT\r\n    CONCAT(Advertiser, ' - ', CAST(Advertiser_Id AS STRING)) AS Advertiser,\r\n    CONCAT(Campaign, ' - ', CAST(Campaign_Id AS STRING)) AS Campaign,\r\n    CONCAT(Site_Dcm, ' - ', CAST(Site_Id_Dcm AS STRING)) AS Site,\r\n    /*If(App IS NOT NULL, CONCAT(App, ' - ', CAST(App_Id AS STRING)), App_Id) AS App, */\r\n    CASE \r\n      WHEN App IS NOT NULL THEN CONCAT(App, ' - ', CAST(App_Id AS STRING))\r\n      WHEN App_Id IS NOT NULL THEN App_Id\r\n      ELSE NULL\r\n    END AS App,\r\n    Ad_Type,\r\n    Impressions,\r\n    IF(App IS NOT NULL OR App_ID IS NOT NULL, Impressions, 0) AS Visible_Impressions,\r\n    IF(App IS NULL AND App_Id IS NULL, Impressions, 0) AS Null_Impressions\r\n  FROM `[PARAMETER].[PARAMETER].Transparency_App_KPI`\r\n  WHERE Environment = 'App'\r\n),\r\nDomains_And_Apps AS (\r\n  SELECT \r\n    TD.Advertiser,\r\n    TD.Campaign,\r\n    TD.Site,\r\n    TD.Ad_Type,\r\n    TD.Domain,\r\n    TD.Impressions AS Domain_Impressions,\r\n    TD.Visible_Impressions AS Domain_Visible_Impressions,\r\n    TD.Null_Impressions AS Domain_Null_Impressions,\r\n    NULL AS App,\r\n    0 AS App_Impressions,\r\n    0 AS App_Visible_Impressions,\r\n    0 AS App_Null_Impressions\r\n  FROM Transparent_Domains AS TD\r\n  UNION ALL\r\n  SELECT \r\n    TA.Advertiser,\r\n    TA.Campaign,\r\n    TA.Site,\r\n    TA.Ad_Type,\r\n    NULL AS Domain,\r\n    0 AS Domain_Impressions,\r\n    0 AS Domain_Visible_Impressions,\r\n    0 AS Domain_Null_Impressions,\r\n    TA.App,\r\n    TA.Impressions AS App_Impressions,\r\n    TA.Visible_Impressions AS App_Visible_Impressions,\r\n    TA.Null_Impressions AS App_Null_Impressions\r\n  FROM Transparent_Apps AS TA\r\n)\r\n\r\n  SELECT\r\n    Advertiser,\r\n    Campaign,\r\n    Site,\r\n    COALESCE(Domain, App, '') AS Domain_Or_App,\r\n    Ad_Type,\r\n    CASE\r\n      WHEN App IS NOT NULL AND Domain IS NOT NULL THEN 'Both' /* SHOULD NOT HAPPEN */\r\n      WHEN App IS NOT NULL THEN 'App'\r\n      WHEN Domain IS NOT NULL Then 'Domain'\r\n      ELSE 'Neither'\r\n    END AS Category,\r\n\r\n    SUM(Domain_Impressions) AS Domain_Impressions,\r\n    SUM(Domain_Visible_Impressions) AS Domain_Visible_Impressions,\r\n    SUM(Domain_Null_Impressions) AS Domain_Null_Impressions,\r\n\r\n    SUM(App_Impressions) AS App_Impressions,\r\n    SUM(App_Visible_Impressions) AS App_Visible_Impressions,\r\n    SUM(App_Null_Impressions) AS App_Null_Impressions,\r\n\r\n    SUM(App_Impressions + Domain_Impressions) AS Impressions /* Could also be MAX as its always one or the other*/\r\n\r\n  FROM Domains_And_Apps\r\n  GROUP By 1,2,3,4,5,6",
                 "legacy": false
-            },
-            "auth": "user"
+            }
         }
     }
 ]</code></pre>

@@ -57,21 +57,21 @@ TASKS = [
   {
     'drive': {
       'auth': 'user',
-      'hour': [
-      ],
       'copy': {
         'source': 'https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/',
         'destination': {
           'field': {
-            'description': 'Name of document to deploy to.',
             'name': 'recipe_name',
-            'kind': 'string',
-            'order': 1,
+            'default': '',
+            'description': 'Name of document to deploy to.',
             'prefix': 'CM User Editor For ',
-            'default': ''
+            'kind': 'string',
+            'order': 1
           }
         }
-      }
+      },
+      'hour': [
+      ]
     }
   }
 ]

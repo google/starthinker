@@ -66,10 +66,10 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 0,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 0
         }
       },
       'out': {
@@ -77,55 +77,55 @@ TASKS = [
           'auth': {
             'field': {
               'description': 'Credentials used for writing data.',
-              'kind': 'authentication',
               'name': 'auth_write',
-              'order': 1,
-              'default': 'service'
+              'default': 'service',
+              'kind': 'authentication',
+              'order': 1
             }
           },
           'dataset': {
             'field': {
               'description': 'Existing BigQuery dataset.',
-              'kind': 'string',
               'name': 'dataset',
-              'order': 4,
-              'default': ''
+              'default': '',
+              'kind': 'string',
+              'order': 4
+            }
+          },
+          'schema': {
+            'field': {
+              'description': 'Schema provided in JSON list format or leave empty to auto detect.',
+              'name': 'schema',
+              'kind': 'json',
+              'order': 6
             }
           },
           'table': {
             'field': {
               'description': 'Table to create from this report.',
-              'kind': 'string',
               'name': 'table',
-              'order': 5,
-              'default': ''
-            }
-          },
-          'schema': {
-            'field': {
-              'order': 6,
-              'name': 'schema',
-              'description': 'Schema provided in JSON list format or leave empty to auto detect.',
-              'kind': 'json'
+              'default': '',
+              'kind': 'string',
+              'order': 5
             }
           }
+        }
+      },
+      'report': {
+        'field': {
+          'description': 'Retrieve from report properties.',
+          'name': 'report',
+          'kind': 'string',
+          'order': 3
         }
       },
       'token': {
         'field': {
           'description': 'Retrieve from SmartSheet account settings.',
-          'kind': 'string',
           'name': 'token',
-          'order': 2,
-          'default': ''
-        }
-      },
-      'report': {
-        'field': {
-          'order': 3,
-          'name': 'report',
-          'description': 'Retrieve from report properties.',
-          'kind': 'string'
+          'default': '',
+          'kind': 'string',
+          'order': 2
         }
       }
     }

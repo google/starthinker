@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>July 6, 2020 (2 months)</td>
+              <td>July 6, 2020 (2 months, 1 week)</td>
             </tr>
 
             <tr>
@@ -248,48 +248,43 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/census/run.py" target="_blank">census</a>": {
+            "to": {
+                "type": {
+                    "field": {
+                        "default": "table",
+                        "choices": [
+                            "table",
+                            "view"
+                        ],
+                        "order": 5,
+                        "name": "type",
+                        "description": "Write Census_Percent as table or view.",
+                        "kind": "choice"
+                    }
+                },
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "order": 4,
+                        "default": "",
+                        "kind": "string",
+                        "description": "Existing BigQuery dataset."
+                    }
+                }
+            },
+            "auth": {
+                "field": {
+                    "name": "auth",
+                    "order": 0,
+                    "default": "service",
+                    "kind": "authentication",
+                    "description": "Credentials used for writing data."
+                }
+            },
             "normalize": {
-                "census_geography": {
-                    "field": {
-                        "default": "zip_codes",
-                        "name": "census_geography",
-                        "order": 1,
-                        "description": "Census table to get data from.",
-                        "choices": [
-                            "zip_codes",
-                            "state",
-                            "zcta5",
-                            "schooldistrictunified",
-                            "puma",
-                            "place",
-                            "county",
-                            "congressionaldistrict",
-                            "censustract",
-                            "cbsa"
-                        ],
-                        "kind": "choice"
-                    }
-                },
-                "census_span": {
-                    "field": {
-                        "default": "5yr",
-                        "name": "census_span",
-                        "order": 3,
-                        "description": "Census table to get data from.",
-                        "choices": [
-                            "1yr",
-                            "3yr",
-                            "5yr"
-                        ],
-                        "kind": "choice"
-                    }
-                },
                 "census_year": {
                     "field": {
                         "default": "2018",
-                        "name": "census_year",
-                        "order": 2,
-                        "description": "Census table to get data from.",
                         "choices": [
                             2018,
                             2017,
@@ -304,41 +299,46 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             2008,
                             2007
                         ],
+                        "order": 2,
+                        "name": "census_year",
+                        "description": "Census table to get data from.",
                         "kind": "choice"
-                    }
-                }
-            },
-            "to": {
-                "dataset": {
-                    "field": {
-                        "description": "Existing BigQuery dataset.",
-                        "default": "",
-                        "name": "dataset",
-                        "kind": "string",
-                        "order": 4
                     }
                 },
-                "type": {
+                "census_geography": {
                     "field": {
-                        "default": "table",
-                        "name": "type",
-                        "order": 5,
-                        "description": "Write Census_Percent as table or view.",
+                        "default": "zip_codes",
                         "choices": [
-                            "table",
-                            "view"
+                            "zip_codes",
+                            "state",
+                            "zcta5",
+                            "schooldistrictunified",
+                            "puma",
+                            "place",
+                            "county",
+                            "congressionaldistrict",
+                            "censustract",
+                            "cbsa"
                         ],
+                        "order": 1,
+                        "name": "census_geography",
+                        "description": "Census table to get data from.",
                         "kind": "choice"
                     }
-                }
-            },
-            "auth": {
-                "field": {
-                    "description": "Credentials used for writing data.",
-                    "default": "service",
-                    "name": "auth",
-                    "kind": "authentication",
-                    "order": 0
+                },
+                "census_span": {
+                    "field": {
+                        "default": "5yr",
+                        "choices": [
+                            "1yr",
+                            "3yr",
+                            "5yr"
+                        ],
+                        "order": 3,
+                        "name": "census_span",
+                        "description": "Census table to get data from.",
+                        "kind": "choice"
+                    }
                 }
             }
         }

@@ -66,56 +66,56 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 0,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 0
         }
       },
       'out': {
         'bigquery': {
-          'schema': {
-            'field': {
-              'order': 6,
-              'name': 'dbm_schema',
-              'description': 'Schema provided in JSON list format or empty value to auto detect.',
-              'kind': 'json'
-            }
-          },
           'auth': {
             'field': {
               'description': 'Authorization used for writing data.',
-              'kind': 'authentication',
               'name': 'auth_write',
-              'order': 1,
-              'default': 'service'
-            }
-          },
-          'dataset': {
-            'field': {
-              'description': 'Existing BigQuery dataset.',
-              'kind': 'string',
-              'name': 'dbm_dataset',
-              'order': 4,
-              'default': ''
-            }
-          },
-          'table': {
-            'field': {
-              'description': 'Table to create from this report.',
-              'kind': 'string',
-              'name': 'dbm_table',
-              'order': 5,
-              'default': ''
+              'default': 'service',
+              'kind': 'authentication',
+              'order': 1
             }
           },
           'is_incremental_load': {
             'field': {
               'description': "Clear data in destination table during this report's time period, then append report data to destination table.",
-              'kind': 'boolean',
               'name': 'is_incremental_load',
-              'order': 7,
-              'default': False
+              'default': False,
+              'kind': 'boolean',
+              'order': 7
+            }
+          },
+          'dataset': {
+            'field': {
+              'description': 'Existing BigQuery dataset.',
+              'name': 'dbm_dataset',
+              'default': '',
+              'kind': 'string',
+              'order': 4
+            }
+          },
+          'schema': {
+            'field': {
+              'description': 'Schema provided in JSON list format or empty value to auto detect.',
+              'name': 'dbm_schema',
+              'kind': 'json',
+              'order': 6
+            }
+          },
+          'table': {
+            'field': {
+              'description': 'Table to create from this report.',
+              'name': 'dbm_table',
+              'default': '',
+              'kind': 'string',
+              'order': 5
             }
           }
         }
@@ -124,19 +124,19 @@ TASKS = [
         'report_id': {
           'field': {
             'description': 'DV360 report ID given in UI, not needed if name used.',
-            'kind': 'integer',
             'name': 'dbm_report_id',
-            'order': 2,
-            'default': ''
+            'default': '',
+            'kind': 'integer',
+            'order': 2
           }
         },
         'name': {
           'field': {
             'description': 'Name of report, not needed if ID used.',
-            'kind': 'string',
             'name': 'dbm_report_name',
-            'order': 3,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 3
           }
         }
       }

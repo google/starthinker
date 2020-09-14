@@ -61,29 +61,29 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
           'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'run': {
-        'legacy': {
-          'field': {
-            'description': 'Query type must match table and query format.',
-            'kind': 'boolean',
-            'name': 'legacy',
-            'order': 2,
-            'default': True
-          }
-        },
         'query': {
           'field': {
             'description': 'SQL with newlines and all.',
-            'kind': 'text',
             'name': 'query',
-            'order': 1,
-            'default': ''
+            'default': '',
+            'kind': 'text',
+            'order': 1
+          }
+        },
+        'legacy': {
+          'field': {
+            'description': 'Query type must match table and query format.',
+            'name': 'legacy',
+            'default': True,
+            'kind': 'boolean',
+            'order': 2
           }
         }
       }

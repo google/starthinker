@@ -52,8 +52,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'sheet': '',
   'auth_read': 'user',  # Credentials used for reading data.
+  'sheet': '',
   'tab': '',
   'in_dataset': '',
   'in_table': '',
@@ -64,65 +64,65 @@ INPUTS = {
 TASKS = [
   {
     'mapping': {
-      'sheet': {
+      'auth': {
         'field': {
-          'order': 1,
-          'name': 'sheet',
-          'default': '',
-          'kind': 'string'
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'tab': {
         'field': {
-          'order': 2,
           'name': 'tab',
           'default': '',
-          'kind': 'string'
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'kind': 'string',
+          'order': 2
         }
       },
       'out': {
         'view': {
           'field': {
-            'order': 8,
             'name': 'out_view',
             'default': '',
-            'kind': 'string'
+            'kind': 'string',
+            'order': 8
           }
         },
         'dataset': {
           'field': {
-            'order': 7,
             'name': 'out_dataset',
             'default': '',
-            'kind': 'string'
+            'kind': 'string',
+            'order': 7
           }
         }
       },
       'in': {
         'dataset': {
           'field': {
-            'order': 3,
             'name': 'in_dataset',
             'default': '',
-            'kind': 'string'
+            'kind': 'string',
+            'order': 3
           }
         },
         'table': {
           'field': {
-            'order': 4,
             'name': 'in_table',
             'default': '',
-            'kind': 'string'
+            'kind': 'string',
+            'order': 4
           }
+        }
+      },
+      'sheet': {
+        'field': {
+          'name': 'sheet',
+          'default': '',
+          'kind': 'string',
+          'order': 1
         }
       }
     }

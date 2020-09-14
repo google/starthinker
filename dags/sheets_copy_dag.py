@@ -50,8 +50,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'from_sheet': '',
   'auth_read': 'user',  # Credentials used for reading data.
+  'from_sheet': '',
   'from_tab': '',
   'to_sheet': '',
   'to_tab': '',
@@ -60,47 +60,47 @@ INPUTS = {
 TASKS = [
   {
     'sheets': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'tab': {
+        'field': {
+          'name': 'to_tab',
+          'default': '',
+          'kind': 'string',
+          'order': 4
+        }
+      },
       'template': {
-        'sheet': {
-          'field': {
-            'order': 1,
-            'name': 'from_sheet',
-            'default': '',
-            'kind': 'string'
-          }
-        },
         'tab': {
           'field': {
-            'order': 2,
             'name': 'from_tab',
             'default': '',
-            'kind': 'string'
+            'kind': 'string',
+            'order': 2
+          }
+        },
+        'sheet': {
+          'field': {
+            'name': 'from_sheet',
+            'default': '',
+            'kind': 'string',
+            'order': 1
           }
         }
       },
       'sheet': {
         'field': {
-          'order': 3,
           'name': 'to_sheet',
           'default': '',
-          'kind': 'string'
-        }
-      },
-      'tab': {
-        'field': {
-          'order': 4,
-          'name': 'to_tab',
-          'default': '',
-          'kind': 'string'
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'kind': 'string',
+          'order': 3
         }
       }
     }

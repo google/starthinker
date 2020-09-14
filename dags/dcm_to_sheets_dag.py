@@ -65,56 +65,56 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'out': {
         'sheets': {
-          'sheet': {
-            'field': {
-              'order': 5,
-              'name': 'sheet',
-              'default': '',
-              'kind': 'string'
-            }
-          },
           'tab': {
             'field': {
-              'order': 6,
               'name': 'tab',
               'default': '',
-              'kind': 'string'
+              'kind': 'string',
+              'order': 6
+            }
+          },
+          'sheet': {
+            'field': {
+              'name': 'sheet',
+              'default': '',
+              'kind': 'string',
+              'order': 5
             }
           },
           'range': 'A1'
         }
       },
       'report': {
-        'account': {
+        'report_id': {
           'field': {
-            'order': 2,
-            'name': 'account',
+            'name': 'report_id',
             'default': '',
-            'kind': 'integer'
+            'kind': 'integer',
+            'order': 3
           }
         },
         'name': {
           'field': {
-            'order': 4,
             'name': 'report_name',
             'default': '',
-            'kind': 'string'
+            'kind': 'string',
+            'order': 4
           }
         },
-        'report_id': {
+        'account': {
           'field': {
-            'order': 3,
-            'name': 'report_id',
+            'name': 'account',
             'default': '',
-            'kind': 'integer'
+            'kind': 'integer',
+            'order': 2
           }
         }
       }

@@ -57,21 +57,21 @@ TASKS = [
   {
     'drive': {
       'auth': 'user',
-      'hour': [
-      ],
       'copy': {
         'source': 'https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/',
         'destination': {
           'field': {
-            'description': 'Name of document to deploy to.',
             'name': 'recipe_name',
-            'kind': 'string',
-            'order': 1,
+            'default': '',
+            'description': 'Name of document to deploy to.',
             'prefix': 'Key Value Uploader For ',
-            'default': ''
+            'kind': 'string',
+            'order': 1
           }
         }
-      }
+      },
+      'hour': [
+      ]
     }
   }
 ]

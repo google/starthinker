@@ -51,8 +51,8 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'endpoint': '',
-  'dataset': '',  # Google BigQuery dataset to create tables in.
   'auth_read': 'user',  # Credentials used for reading data.
+  'dataset': '',  # Google BigQuery dataset to create tables in.
   'auth_write': 'service',  # Credentials used for writing data.
   'advertisers': [],  # Comma separated advertisers ids.
   'partners': [],  # Comma separated partners ids.
@@ -61,8 +61,20 @@ INPUTS = {
 TASKS = [
   {
     'dv360_api': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
       'endpoints': {
         'field': {
+          'name': 'endpoint',
+          'default': '',
+          'kind': 'choice',
           'choices': [
             'advertisers',
             'advertisers.campaigns',
@@ -93,66 +105,54 @@ TASKS = [
             'partners.targetingTypes.assignedTargetingOptions',
             'targetingTypes.targetingOptions',
             'users'
-          ],
-          'name': 'endpoint',
-          'default': '',
-          'kind': 'choice'
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          ]
         }
       },
       'out': {
         'auth': {
           'field': {
             'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
             'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
           }
         },
         'dataset': {
           'field': {
             'description': 'Google BigQuery dataset to create tables in.',
-            'kind': 'string',
             'name': 'dataset',
-            'order': 1,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 1
           }
         }
       },
       'partners': {
+        'single_cell': True,
         'values': {
           'field': {
             'description': 'Comma separated partners ids.',
-            'kind': 'integer_list',
             'name': 'partners',
-            'order': 2,
             'default': [
-            ]
+            ],
+            'kind': 'integer_list',
+            'order': 2
           }
-        },
-        'single_cell': True
+        }
       },
       'advertisers': {
+        'single_cell': True,
         'values': {
           'field': {
             'description': 'Comma separated advertisers ids.',
-            'kind': 'integer_list',
             'name': 'advertisers',
-            'order': 2,
             'default': [
-            ]
+            ],
+            'kind': 'integer_list',
+            'order': 2
           }
-        },
-        'single_cell': True
+        }
       }
     }
   }

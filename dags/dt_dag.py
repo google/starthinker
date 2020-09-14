@@ -63,72 +63,72 @@ INPUTS = {
 TASKS = [
   {
     'dt': {
-      'from': {
-        'bucket': {
-          'field': {
-            'description': 'Name of bucket where DT files are stored.',
-            'kind': 'string',
-            'name': 'bucket',
-            'order': 2,
-            'default': ''
-          }
-        },
-        'days': {
-          'field': {
-            'description': 'Number of days back to synchronize.',
-            'kind': 'integer',
-            'name': 'days',
-            'order': 4,
-            'default': 2
-          }
-        },
-        'hours': {
-          'field': {
-            'description': 'Number of hours back to synchronize.',
-            'kind': 'integer',
-            'name': 'hours',
-            'order': 5,
-            'default': 0
-          }
-        },
-        'paths': {
-          'field': {
-            'description': 'List of prefixes to pull specific DT files.',
-            'kind': 'string_list',
-            'name': 'paths',
-            'order': 3,
-            'default': [
-            ]
-          }
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 0
         }
       },
       'to': {
         'auth': {
           'field': {
             'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
             'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
           }
         },
         'dataset': {
           'field': {
             'description': 'Existing dataset in BigQuery.',
-            'kind': 'string',
             'name': 'dataset',
-            'order': 6,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 6
           }
         }
       },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 0,
-          'default': 'user'
+      'from': {
+        'days': {
+          'field': {
+            'description': 'Number of days back to synchronize.',
+            'name': 'days',
+            'default': 2,
+            'kind': 'integer',
+            'order': 4
+          }
+        },
+        'bucket': {
+          'field': {
+            'description': 'Name of bucket where DT files are stored.',
+            'name': 'bucket',
+            'default': '',
+            'kind': 'string',
+            'order': 2
+          }
+        },
+        'paths': {
+          'field': {
+            'description': 'List of prefixes to pull specific DT files.',
+            'name': 'paths',
+            'default': [
+            ],
+            'kind': 'string_list',
+            'order': 3
+          }
+        },
+        'hours': {
+          'field': {
+            'description': 'Number of hours back to synchronize.',
+            'name': 'hours',
+            'default': 0,
+            'kind': 'integer',
+            'order': 5
+          }
         }
       }
     }

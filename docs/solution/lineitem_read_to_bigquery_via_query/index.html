@@ -249,63 +249,63 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/lineitem/run.py" target="_blank">lineitem</a>": {
             "read": {
-                "line_items": {
-                    "single_cell": true,
+                "out": {
                     "bigquery": {
+                        "table": {
+                            "field": {
+                                "name": "destination_table",
+                                "default": "",
+                                "kind": "string",
+                                "order": 5
+                            }
+                        },
                         "dataset": {
                             "field": {
+                                "name": "destination_dataset",
                                 "default": "",
-                                "name": "id_dataset",
                                 "kind": "string",
-                                "order": 1
-                            }
-                        },
-                        "query": {
-                            "field": {
-                                "default": "SELECT * FROM `Dataset.Table`;",
-                                "name": "id_query",
-                                "kind": "string",
-                                "order": 2
-                            }
-                        },
-                        "legacy": {
-                            "field": {
-                                "default": false,
-                                "name": "id_legacy",
-                                "kind": "boolean",
-                                "order": 3
+                                "order": 4
                             }
                         }
                     }
                 },
-                "out": {
+                "line_items": {
                     "bigquery": {
-                        "dataset": {
+                        "query": {
                             "field": {
-                                "default": "",
-                                "name": "destination_dataset",
+                                "name": "id_query",
+                                "default": "SELECT * FROM `Dataset.Table`;",
                                 "kind": "string",
-                                "order": 4
+                                "order": 2
                             }
                         },
-                        "table": {
+                        "dataset": {
                             "field": {
+                                "name": "id_dataset",
                                 "default": "",
-                                "name": "destination_table",
                                 "kind": "string",
-                                "order": 5
+                                "order": 1
+                            }
+                        },
+                        "legacy": {
+                            "field": {
+                                "name": "id_legacy",
+                                "default": false,
+                                "kind": "boolean",
+                                "order": 3
                             }
                         }
-                    }
+                    },
+                    "single_cell": true
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for reading data."
                 }
             }
         }

@@ -64,21 +64,21 @@ TASKS = [
   {
     'drive': {
       'auth': 'user',
-      'hour': [
-      ],
       'copy': {
         'source': 'https://docs.google.com/spreadsheets/d/1rH_PGXOYW2mVdmAYnKbv6kcaB6lQihAyMsGtFfinnqg/',
         'destination': {
           'field': {
-            'description': 'Name of document to deploy to.',
             'name': 'recipe_name',
-            'kind': 'string',
-            'order': 1,
+            'default': '',
+            'description': 'Name of document to deploy to.',
             'prefix': 'ITP Audit ',
-            'default': ''
+            'kind': 'string',
+            'order': 1
           }
         }
-      }
+      },
+      'hour': [
+      ]
     }
   },
   {
@@ -86,19 +86,19 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
           'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'dataset': {
         'field': {
           'description': 'BigQuery dataset for store dashboard tables.',
-          'kind': 'string',
           'name': 'recipe_slug',
-          'order': 1,
-          'default': 'ITP_Audit_Dashboard'
+          'default': 'ITP_Audit_Dashboard',
+          'kind': 'string',
+          'order': 1
         }
       }
     }
@@ -108,62 +108,53 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'delete': False,
       'report': {
         'filters': {
-          'FILTER_ADVERTISER': {
-            'values': {
-              'field': {
-                'description': 'Optional: Comma delimited list of DV360 Advertiser ids.',
-                'kind': 'integer_list',
-                'name': 'dv360_advertiser_ids',
-                'order': 6,
-                'default': ''
-              }
-            }
-          },
           'FILTER_PARTNER': {
             'values': {
               'field': {
                 'description': 'Comma delimited list of DV360 Partner ids.',
-                'kind': 'integer_list',
                 'name': 'dv360_partner_ids',
-                'order': 5,
-                'default': ''
+                'default': '',
+                'kind': 'integer_list',
+                'order': 5
+              }
+            }
+          },
+          'FILTER_ADVERTISER': {
+            'values': {
+              'field': {
+                'description': 'Optional: Comma delimited list of DV360 Advertiser ids.',
+                'name': 'dv360_advertiser_ids',
+                'default': '',
+                'kind': 'integer_list',
+                'order': 6
               }
             }
           }
         },
+        'timeout': 90,
         'body': {
-          'timezoneCode': {
-            'field': {
-              'description': 'Timezone for report dates.',
-              'name': 'recipe_timezone',
-              'default': 'America/Los_Angeles',
-              'kind': 'timezone'
-            }
-          },
-          'metadata': {
-            'title': {
-              'field': {
-                'name': 'recipe_name',
-                'order': 1,
-                'prefix': 'ITP_Audit_Browser_',
-                'description': 'Name of report in DV360, should be unique.',
-                'kind': 'string'
-              }
-            },
-            'dataRange': 'LAST_365_DAYS',
-            'format': 'CSV'
-          },
           'params': {
             'type': 'TYPE_GENERAL',
+            'metrics': [
+              'METRIC_MEDIA_COST_ADVERTISER',
+              'METRIC_IMPRESSIONS',
+              'METRIC_CLICKS',
+              'METRIC_TOTAL_CONVERSIONS',
+              'METRIC_LAST_CLICKS',
+              'METRIC_LAST_IMPRESSIONS',
+              'METRIC_CM_POST_CLICK_REVENUE',
+              'METRIC_CM_POST_VIEW_REVENUE',
+              'METRIC_REVENUE_ADVERTISER'
+            ],
             'groupBys': [
               'FILTER_ADVERTISER',
               'FILTER_ADVERTISER_CURRENCY',
@@ -178,21 +169,30 @@ TASKS = [
               'FILTER_LINE_ITEM_TYPE',
               'FILTER_DEVICE_TYPE',
               'FILTER_BROWSER'
-            ],
-            'metrics': [
-              'METRIC_MEDIA_COST_ADVERTISER',
-              'METRIC_IMPRESSIONS',
-              'METRIC_CLICKS',
-              'METRIC_TOTAL_CONVERSIONS',
-              'METRIC_LAST_CLICKS',
-              'METRIC_LAST_IMPRESSIONS',
-              'METRIC_CM_POST_CLICK_REVENUE',
-              'METRIC_CM_POST_VIEW_REVENUE',
-              'METRIC_REVENUE_ADVERTISER'
             ]
+          },
+          'metadata': {
+            'dataRange': 'LAST_365_DAYS',
+            'title': {
+              'field': {
+                'description': 'Name of report in DV360, should be unique.',
+                'name': 'recipe_name',
+                'kind': 'string',
+                'order': 1,
+                'prefix': 'ITP_Audit_Browser_'
+              }
+            },
+            'format': 'CSV'
+          },
+          'timezoneCode': {
+            'field': {
+              'description': 'Timezone for report dates.',
+              'name': 'recipe_timezone',
+              'default': 'America/Los_Angeles',
+              'kind': 'timezone'
+            }
           }
-        },
-        'timeout': 90
+        }
       }
     }
   },
@@ -201,54 +201,45 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
-        }
-      },
-      'out': {
-        'bigquery': {
-          'dataset': {
-            'field': {
-              'description': 'BigQuery dataset for store dashboard tables.',
-              'kind': 'string',
-              'name': 'recipe_slug',
-              'order': 1,
-              'default': 'ITP_Audit_Dashboard'
-            }
-          },
-          'table': 'z_Floodlight_CM_Report',
-          'is_incremental_load': False
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'delete': False,
-      'report': {
-        'account': {
-          'field': {
-            'description': 'Campaign Manager Account Id.',
-            'kind': 'string',
-            'name': 'cm_account_id',
-            'order': 2,
-            'default': ''
-          }
-        },
-        'body': {
-          'type': 'FLOODLIGHT',
-          'delivery': {
-            'emailOwner': False
-          },
-          'name': {
+      'out': {
+        'bigquery': {
+          'is_incremental_load': False,
+          'dataset': {
             'field': {
-              'name': 'recipe_name',
-              'order': 1,
-              'prefix': 'ITP_Audit_Floodlight_',
-              'description': 'Name of report in DV360, should be unique.',
-              'kind': 'string'
+              'description': 'BigQuery dataset for store dashboard tables.',
+              'name': 'recipe_slug',
+              'default': 'ITP_Audit_Dashboard',
+              'kind': 'string',
+              'order': 1
             }
           },
-          'format': 'CSV',
+          'table': 'z_Floodlight_CM_Report'
+        }
+      },
+      'report': {
+        'timeout': 90,
+        'body': {
+          'name': {
+            'field': {
+              'description': 'Name of report in DV360, should be unique.',
+              'name': 'recipe_name',
+              'kind': 'string',
+              'order': 1,
+              'prefix': 'ITP_Audit_Floodlight_'
+            }
+          },
           'floodlightCriteria': {
+            'dateRange': {
+              'kind': 'dfareporting#dateRange',
+              'relativeDateRange': 'LAST_30_DAYS'
+            },
             'dimensions': [
               {
                 'name': 'dfa:site',
@@ -281,17 +272,17 @@ TASKS = [
             ],
             'floodlightConfigId': {
               'matchType': 'EXACT',
-              'dimensionName': 'dfa:floodlightConfigId',
               'value': {
                 'field': {
                   'description': 'Floodlight Configuration Id for the Campaign Manager floodlight report.',
-                  'kind': 'integer',
                   'name': 'floodlight_configuration_id',
-                  'order': 4,
-                  'default': ''
+                  'default': '',
+                  'kind': 'integer',
+                  'order': 4
                 }
               },
-              'kind': 'dfareporting#dimensionValue'
+              'kind': 'dfareporting#dimensionValue',
+              'dimensionName': 'dfa:floodlightConfigId'
             },
             'reportProperties': {
               'includeUnattributedIPConversions': False,
@@ -302,23 +293,32 @@ TASKS = [
               'dfa:activityViewThroughConversions',
               'dfa:totalConversions',
               'dfa:totalConversionsRevenue'
-            ],
-            'dateRange': {
-              'relativeDateRange': 'LAST_30_DAYS',
-              'kind': 'dfareporting#dateRange'
-            }
+            ]
           },
-          'kind': 'dfareporting#report',
+          'type': 'FLOODLIGHT',
           'schedule': {
+            'active': True,
+            'every': 1,
             'repeatsOnWeekDays': [
               'Sunday'
             ],
-            'repeats': 'WEEKLY',
-            'active': True,
-            'every': 1
-          }
+            'repeats': 'WEEKLY'
+          },
+          'format': 'CSV',
+          'delivery': {
+            'emailOwner': False
+          },
+          'kind': 'dfareporting#report'
         },
-        'timeout': 90
+        'account': {
+          'field': {
+            'description': 'Campaign Manager Account Id.',
+            'name': 'cm_account_id',
+            'default': '',
+            'kind': 'string',
+            'order': 2
+          }
+        }
       }
     }
   },
@@ -327,65 +327,74 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
-        }
-      },
-      'out': {
-        'bigquery': {
-          'dataset': {
-            'field': {
-              'description': 'BigQuery dataset for store dashboard tables.',
-              'kind': 'string',
-              'name': 'recipe_slug',
-              'order': 1,
-              'default': 'ITP_Audit_Dashboard'
-            }
-          },
-          'table': 'z_CM_Browser_Report_Dirty',
-          'is_incremental_load': False
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'delete': False,
+      'out': {
+        'bigquery': {
+          'is_incremental_load': False,
+          'dataset': {
+            'field': {
+              'description': 'BigQuery dataset for store dashboard tables.',
+              'name': 'recipe_slug',
+              'default': 'ITP_Audit_Dashboard',
+              'kind': 'string',
+              'order': 1
+            }
+          },
+          'table': 'z_CM_Browser_Report_Dirty'
+        }
+      },
       'report': {
-        'account': {
-          'field': {
-            'description': 'Campaign Manager Account Id.',
-            'kind': 'string',
-            'name': 'cm_account_id',
-            'order': 2,
-            'default': ''
+        'filters': {
+          'dfa:advertiser': {
+            'values': {
+              'field': {
+                'description': 'Optional: Comma delimited list of CM advertiser ids.',
+                'name': 'cm_advertiser_ids',
+                'default': '',
+                'kind': 'integer_list',
+                'order': 3
+              }
+            }
           }
         },
         'timeout': 90,
         'body': {
-          'fileName': {
+          'name': {
             'field': {
-              'description': 'Name of the Campaign Manager browser report.',
               'name': 'recipe_name',
-              'kind': 'string',
-              'order': 1,
+              'default': 'ITP_Audit_Dashboard_Browser',
               'prefix': 'ITP_Audit_Browser_',
-              'default': 'ITP_Audit_Dashboard_Browser'
+              'description': 'Name of the Campaign Manager browser report.',
+              'kind': 'string',
+              'order': 1
             }
           },
+          'schedule': {
+            'active': True,
+            'every': 1,
+            'repeatsOnWeekDays': [
+              'Sunday'
+            ],
+            'repeats': 'WEEKLY'
+          },
           'type': 'STANDARD',
+          'format': 'CSV',
           'delivery': {
             'emailOwner': False
           },
-          'name': {
-            'field': {
-              'description': 'Name of the Campaign Manager browser report.',
-              'name': 'recipe_name',
-              'kind': 'string',
-              'order': 1,
-              'prefix': 'ITP_Audit_Browser_',
-              'default': 'ITP_Audit_Dashboard_Browser'
-            }
-          },
           'criteria': {
+            'dateRange': {
+              'kind': 'dfareporting#dateRange',
+              'relativeDateRange': 'LAST_365_DAYS'
+            },
+            'dimensionFilters': [
+            ],
             'dimensions': [
               {
                 'name': 'dfa:campaign',
@@ -424,42 +433,33 @@ TASKS = [
                 'kind': 'dfareporting#sortedDimension'
               }
             ],
-            'dimensionFilters': [
-            ],
             'metricNames': [
               'dfa:impressions',
               'dfa:clicks',
               'dfa:totalConversions',
               'dfa:activityViewThroughConversions',
               'dfa:activityClickThroughConversions'
-            ],
-            'dateRange': {
-              'relativeDateRange': 'LAST_365_DAYS',
-              'kind': 'dfareporting#dateRange'
+            ]
+          },
+          'fileName': {
+            'field': {
+              'name': 'recipe_name',
+              'default': 'ITP_Audit_Dashboard_Browser',
+              'prefix': 'ITP_Audit_Browser_',
+              'description': 'Name of the Campaign Manager browser report.',
+              'kind': 'string',
+              'order': 1
             }
           },
-          'format': 'CSV',
-          'kind': 'dfareporting#report',
-          'schedule': {
-            'repeatsOnWeekDays': [
-              'Sunday'
-            ],
-            'repeats': 'WEEKLY',
-            'active': True,
-            'every': 1
-          }
+          'kind': 'dfareporting#report'
         },
-        'filters': {
-          'dfa:advertiser': {
-            'values': {
-              'field': {
-                'description': 'Optional: Comma delimited list of CM advertiser ids.',
-                'kind': 'integer_list',
-                'name': 'cm_advertiser_ids',
-                'order': 3,
-                'default': ''
-              }
-            }
+        'account': {
+          'field': {
+            'description': 'Campaign Manager Account Id.',
+            'name': 'cm_account_id',
+            'default': '',
+            'kind': 'string',
+            'order': 2
           }
         }
       }
@@ -467,48 +467,48 @@ TASKS = [
   },
   {
     'sheets': {
+      'header': True,
+      'sheet': {
+        'field': {
+          'name': 'recipe_name',
+          'default': '',
+          'description': 'Name of document to deploy to.',
+          'prefix': 'ITP Audit ',
+          'kind': 'string',
+          'order': 1
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
       'tab': 'Enviroment',
       'out': {
+        'auth': {
+          'field': {
+            'description': 'Credentials used for writing data.',
+            'name': 'auth_write',
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
+          }
+        },
         'bigquery': {
           'dataset': {
             'field': {
               'description': 'BigQuery dataset for store dashboard tables.',
-              'kind': 'string',
               'name': 'recipe_slug',
-              'order': 1,
-              'default': 'ITP_Audit_Dashboard'
+              'default': 'ITP_Audit_Dashboard',
+              'kind': 'string',
+              'order': 1
             }
           },
           'table': 'z_Environment'
-        },
-        'auth': {
-          'field': {
-            'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
-            'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
-          }
-        }
-      },
-      'header': True,
-      'sheet': {
-        'field': {
-          'description': 'Name of document to deploy to.',
-          'name': 'recipe_name',
-          'kind': 'string',
-          'order': 1,
-          'prefix': 'ITP Audit ',
-          'default': ''
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
         }
       },
       'range': 'A:B'
@@ -516,48 +516,48 @@ TASKS = [
   },
   {
     'sheets': {
+      'header': True,
+      'sheet': {
+        'field': {
+          'name': 'recipe_name',
+          'default': '',
+          'description': 'Name of document to deploy to.',
+          'prefix': 'ITP Audit ',
+          'kind': 'string',
+          'order': 1
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
       'tab': 'Browser',
       'out': {
+        'auth': {
+          'field': {
+            'description': 'Credentials used for writing data.',
+            'name': 'auth_write',
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
+          }
+        },
         'bigquery': {
           'dataset': {
             'field': {
               'description': 'BigQuery dataset for store dashboard tables.',
-              'kind': 'string',
               'name': 'recipe_slug',
-              'order': 1,
-              'default': 'ITP_Audit_Dashboard'
+              'default': 'ITP_Audit_Dashboard',
+              'kind': 'string',
+              'order': 1
             }
           },
           'table': 'z_Browser'
-        },
-        'auth': {
-          'field': {
-            'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
-            'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
-          }
-        }
-      },
-      'header': True,
-      'sheet': {
-        'field': {
-          'description': 'Name of document to deploy to.',
-          'name': 'recipe_name',
-          'kind': 'string',
-          'order': 1,
-          'prefix': 'ITP Audit ',
-          'default': ''
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
         }
       },
       'range': 'A:C'
@@ -565,48 +565,48 @@ TASKS = [
   },
   {
     'sheets': {
+      'header': True,
+      'sheet': {
+        'field': {
+          'name': 'recipe_name',
+          'default': '',
+          'description': 'Name of document to deploy to.',
+          'prefix': 'ITP Audit ',
+          'kind': 'string',
+          'order': 1
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
       'tab': 'CM_Browser_lookup',
       'out': {
+        'auth': {
+          'field': {
+            'description': 'Credentials used for writing data.',
+            'name': 'auth_write',
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
+          }
+        },
         'bigquery': {
           'dataset': {
             'field': {
               'description': 'BigQuery dataset for store dashboard tables.',
-              'kind': 'string',
               'name': 'recipe_slug',
-              'order': 1,
-              'default': 'ITP_Audit_Dashboard'
+              'default': 'ITP_Audit_Dashboard',
+              'kind': 'string',
+              'order': 1
             }
           },
           'table': 'z_CM_Browser_lookup'
-        },
-        'auth': {
-          'field': {
-            'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
-            'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
-          }
-        }
-      },
-      'header': True,
-      'sheet': {
-        'field': {
-          'description': 'Name of document to deploy to.',
-          'name': 'recipe_name',
-          'kind': 'string',
-          'order': 1,
-          'prefix': 'ITP Audit ',
-          'default': ''
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
         }
       },
       'range': 'A:C'
@@ -614,48 +614,48 @@ TASKS = [
   },
   {
     'sheets': {
-      'tab': 'Device_Type',
-      'out': {
-        'bigquery': {
-          'dataset': {
-            'field': {
-              'description': 'BigQuery dataset for store dashboard tables.',
-              'kind': 'string',
-              'name': 'recipe_slug',
-              'order': 1,
-              'default': 'ITP_Audit_Dashboard'
-            }
-          },
-          'table': 'z_Device_Type'
-        },
-        'auth': {
-          'field': {
-            'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
-            'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
-          }
-        }
-      },
       'header': True,
       'sheet': {
         'field': {
-          'description': 'Name of document to deploy to.',
           'name': 'recipe_name',
-          'kind': 'string',
-          'order': 1,
+          'default': '',
+          'description': 'Name of document to deploy to.',
           'prefix': 'ITP Audit ',
-          'default': ''
+          'kind': 'string',
+          'order': 1
         }
       },
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'tab': 'Device_Type',
+      'out': {
+        'auth': {
+          'field': {
+            'description': 'Credentials used for writing data.',
+            'name': 'auth_write',
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
+          }
+        },
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'description': 'BigQuery dataset for store dashboard tables.',
+              'name': 'recipe_slug',
+              'default': 'ITP_Audit_Dashboard',
+              'kind': 'string',
+              'order': 1
+            }
+          },
+          'table': 'z_Device_Type'
         }
       },
       'range': 'A:B'
@@ -663,48 +663,48 @@ TASKS = [
   },
   {
     'sheets': {
-      'tab': 'Floodlight_Attribution',
-      'out': {
-        'bigquery': {
-          'dataset': {
-            'field': {
-              'description': 'BigQuery dataset for store dashboard tables.',
-              'kind': 'string',
-              'name': 'recipe_slug',
-              'order': 1,
-              'default': 'ITP_Audit_Dashboard'
-            }
-          },
-          'table': 'z_Floodlight_Attribution'
-        },
-        'auth': {
-          'field': {
-            'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
-            'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
-          }
-        }
-      },
       'header': True,
       'sheet': {
         'field': {
-          'description': 'Name of document to deploy to.',
           'name': 'recipe_name',
-          'kind': 'string',
-          'order': 1,
+          'default': '',
+          'description': 'Name of document to deploy to.',
           'prefix': 'ITP Audit ',
-          'default': ''
+          'kind': 'string',
+          'order': 1
         }
       },
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'tab': 'Floodlight_Attribution',
+      'out': {
+        'auth': {
+          'field': {
+            'description': 'Credentials used for writing data.',
+            'name': 'auth_write',
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
+          }
+        },
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'description': 'BigQuery dataset for store dashboard tables.',
+              'name': 'recipe_slug',
+              'default': 'ITP_Audit_Dashboard',
+              'kind': 'string',
+              'order': 1
+            }
+          },
+          'table': 'z_Floodlight_Attribution'
         }
       },
       'range': 'A:B'
@@ -715,10 +715,10 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'out': {
@@ -726,10 +726,10 @@ TASKS = [
           'dataset': {
             'field': {
               'description': 'BigQuery dataset for store dashboard tables.',
-              'kind': 'string',
               'name': 'recipe_slug',
-              'order': 1,
-              'default': 'ITP_Audit_Dashboard'
+              'default': 'ITP_Audit_Dashboard',
+              'kind': 'string',
+              'order': 1
             }
           },
           'table': 'z_Dv360_Browser_Report_Dirty'
@@ -738,11 +738,11 @@ TASKS = [
       'report': {
         'name': {
           'field': {
-            'name': 'recipe_name',
-            'order': 1,
-            'prefix': 'ITP_Audit_Browser_',
             'description': 'Name of report in DV360, should be unique.',
-            'kind': 'string'
+            'name': 'recipe_name',
+            'kind': 'string',
+            'order': 1,
+            'prefix': 'ITP_Audit_Browser_'
           }
         }
       }
@@ -750,36 +750,36 @@ TASKS = [
   },
   {
     'itp_audit': {
-      'sheet': {
-        'field': {
-          'description': 'Name of document to deploy to.',
-          'name': 'recipe_name',
-          'kind': 'string',
-          'order': 1,
-          'prefix': 'ITP Audit ',
-          'default': ''
-        }
-      },
+      'auth': 'service',
       'account': {
         'field': {
           'description': 'Campaign Manager Account Id.',
-          'kind': 'string',
           'name': 'cm_account_id',
-          'order': 2,
-          'default': ''
+          'default': '',
+          'kind': 'string',
+          'order': 2
         }
       },
-      'auth': 'service',
+      'timeout': 60,
+      'sheet': {
+        'field': {
+          'name': 'recipe_name',
+          'default': '',
+          'description': 'Name of document to deploy to.',
+          'prefix': 'ITP Audit ',
+          'kind': 'string',
+          'order': 1
+        }
+      },
       'dataset': {
         'field': {
           'description': 'BigQuery dataset for store dashboard tables.',
-          'kind': 'string',
           'name': 'recipe_slug',
-          'order': 1,
-          'default': 'ITP_Audit_Dashboard'
+          'default': 'ITP_Audit_Dashboard',
+          'kind': 'string',
+          'order': 1
         }
-      },
-      'timeout': 60
+      }
     }
   }
 ]

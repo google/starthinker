@@ -50,8 +50,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'query': '',  # SQL with newlines and all.
   'auth_read': 'user',  # Credentials used for reading data.
+  'query': '',  # SQL with newlines and all.
   'dataset': '',  # Existing BigQuery dataset.
   'view': '',  # View to create from this query.
   'legacy': True,  # Query type must match source tables.
@@ -60,53 +60,53 @@ INPUTS = {
 TASKS = [
   {
     'bigquery': {
-      'from': {
-        'legacy': {
-          'field': {
-            'description': 'Query type must match source tables.',
-            'kind': 'boolean',
-            'name': 'legacy',
-            'order': 4,
-            'default': True
-          }
-        },
-        'query': {
-          'field': {
-            'description': 'SQL with newlines and all.',
-            'kind': 'text',
-            'name': 'query',
-            'order': 1,
-            'default': ''
-          }
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'to': {
         'view': {
           'field': {
             'description': 'View to create from this query.',
-            'kind': 'string',
             'name': 'view',
-            'order': 3,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 3
           }
         },
         'dataset': {
           'field': {
             'description': 'Existing BigQuery dataset.',
-            'kind': 'string',
             'name': 'dataset',
-            'order': 2,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 2
           }
         }
       },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+      'from': {
+        'query': {
+          'field': {
+            'description': 'SQL with newlines and all.',
+            'name': 'query',
+            'default': '',
+            'kind': 'text',
+            'order': 1
+          }
+        },
+        'legacy': {
+          'field': {
+            'description': 'Query type must match source tables.',
+            'name': 'legacy',
+            'default': True,
+            'kind': 'boolean',
+            'order': 4
+          }
         }
       }
     }

@@ -66,9 +66,50 @@ INPUTS = {
 TASKS = [
   {
     'conversion_upload': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'activity_id': {
+        'field': {
+          'name': 'floodlight_activity_id',
+          'default': '',
+          'kind': 'integer',
+          'order': 1
+        }
+      },
       'encryptionInfo': {
+        'encryptionSource': {
+          'field': {
+            'order': 5,
+            'name': 'encryption_entity_source',
+            'default': 'DATA_TRANSFER',
+            'choices': [
+              'AD_SERVING',
+              'DATA_TRANSFER',
+              'ENCRYPTION_SCOPE_UNKNOWN'
+            ],
+            'kind': 'choice'
+          }
+        },
+        'encryptionEntityId': {
+          'field': {
+            'name': 'encryption_entity_id',
+            'default': '',
+            'kind': 'integer',
+            'order': 3
+          }
+        },
         'encryptionEntityType': {
           'field': {
+            'order': 4,
+            'name': 'encryption_entity_type',
+            'default': 'DCM_ACCOUNT',
             'choices': [
               'ADWORDS_CUSTOMER',
               'DBM_ADVERTISER',
@@ -77,97 +118,56 @@ TASKS = [
               'DCM_ADVERTISER',
               'ENCRYPTION_ENTITY_TYPE_UNKNOWN'
             ],
-            'order': 4,
-            'name': 'encryption_entity_type',
-            'default': 'DCM_ACCOUNT',
             'kind': 'choice'
           }
-        },
-        'encryptionEntityId': {
-          'field': {
-            'order': 3,
-            'name': 'encryption_entity_id',
-            'default': '',
-            'kind': 'integer'
-          }
-        },
-        'encryptionSource': {
-          'field': {
-            'choices': [
-              'AD_SERVING',
-              'DATA_TRANSFER',
-              'ENCRYPTION_SCOPE_UNKNOWN'
-            ],
-            'order': 5,
-            'name': 'encryption_entity_source',
-            'default': 'DATA_TRANSFER',
-            'kind': 'choice'
-          }
-        }
-      },
-      'bigquery': {
-        'legacy': {
-          'field': {
-            'order': 8,
-            'name': 'bigquery_legacy',
-            'default': True,
-            'kind': 'boolean'
-          }
-        },
-        'dataset': {
-          'field': {
-            'order': 6,
-            'name': 'bigquery_dataset',
-            'default': '',
-            'kind': 'string'
-          }
-        },
-        'table': {
-          'field': {
-            'order': 7,
-            'name': 'bigquery_table',
-            'default': '',
-            'kind': 'string'
-          }
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
-        }
-      },
-      'activity_id': {
-        'field': {
-          'order': 1,
-          'name': 'floodlight_activity_id',
-          'default': '',
-          'kind': 'integer'
         }
       },
       'account_id': {
         'field': {
-          'order': 0,
           'name': 'account',
           'default': '',
-          'kind': 'string'
+          'kind': 'string',
+          'order': 0
         }
       },
       'conversion_type': {
         'field': {
+          'order': 2,
+          'name': 'floodlight_conversion_type',
+          'default': 'encryptedUserId',
           'choices': [
             'encryptedUserId',
             'encryptedUserIdCandidates',
             'gclid',
             'mobileDeviceId'
           ],
-          'order': 2,
-          'name': 'floodlight_conversion_type',
-          'default': 'encryptedUserId',
           'kind': 'choice'
+        }
+      },
+      'bigquery': {
+        'legacy': {
+          'field': {
+            'name': 'bigquery_legacy',
+            'default': True,
+            'kind': 'boolean',
+            'order': 8
+          }
+        },
+        'dataset': {
+          'field': {
+            'name': 'bigquery_dataset',
+            'default': '',
+            'kind': 'string',
+            'order': 6
+          }
+        },
+        'table': {
+          'field': {
+            'name': 'bigquery_table',
+            'default': '',
+            'kind': 'string',
+            'order': 7
+          }
         }
       }
     }

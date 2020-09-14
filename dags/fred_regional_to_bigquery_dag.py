@@ -52,10 +52,10 @@ INPUTS = {
   'auth': 'service',  # Credentials used for writing data.
   'fred_api_key': '',  # 32 character alpha-numeric lowercase string.
   'fred_series_group': '',  # The ID for a group of seriess found in GeoFRED.
-  'fred_region_type': 'county',  # The region you want want to pull data for.
   'fred_units': 'lin',  # A key that indicates a data value transformation.
-  'fred_season': 'SA',  # The seasonality of the series group.
+  'fred_region_type': 'county',  # The region you want want to pull data for.
   'fred_frequency': '',  # An optional parameter that indicates a lower frequency to aggregate values to.
+  'fred_season': 'SA',  # The seasonality of the series group.
   'fred_aggregation_method': 'avg',  # A key that indicates the aggregation method used for frequency aggregation.
   'project': '',  # Existing BigQuery project.
   'dataset': '',  # Existing BigQuery dataset.
@@ -64,10 +64,42 @@ INPUTS = {
 TASKS = [
   {
     'fred': {
+      'region_type': {
+        'field': {
+          'order': 3,
+          'name': 'fred_region_type',
+          'default': 'county',
+          'description': 'The region you want want to pull data for.',
+          'choices': [
+            'bea',
+            'msa',
+            'frb',
+            'necta',
+            'state',
+            'country',
+            'county',
+            'censusregion'
+          ],
+          'kind': 'choice'
+        }
+      },
+      'api_key': {
+        'field': {
+          'description': '32 character alpha-numeric lowercase string.',
+          'name': 'fred_api_key',
+          'default': '',
+          'kind': 'string',
+          'order': 1
+        }
+      },
       'regions': [
         {
           'units': {
             'field': {
+              'order': 3,
+              'name': 'fred_units',
+              'default': 'lin',
+              'description': 'A key that indicates a data value transformation.',
               'choices': [
                 'lin',
                 'chg',
@@ -79,113 +111,63 @@ TASKS = [
                 'cca',
                 'log'
               ],
-              'description': 'A key that indicates a data value transformation.',
-              'name': 'fred_units',
-              'kind': 'choice',
-              'order': 3,
-              'default': 'lin'
-            }
-          },
-          'series_group': {
-            'field': {
-              'description': 'The ID for a group of seriess found in GeoFRED.',
-              'kind': 'string',
-              'name': 'fred_series_group',
-              'order': 2,
-              'default': ''
+              'kind': 'choice'
             }
           },
           'season': {
             'field': {
+              'order': 4,
+              'name': 'fred_season',
+              'default': 'SA',
+              'description': 'The seasonality of the series group.',
               'choices': [
                 'SA',
                 'NSA',
                 'SSA'
               ],
-              'description': 'The seasonality of the series group.',
-              'name': 'fred_season',
-              'kind': 'choice',
-              'order': 4,
-              'default': 'SA'
+              'kind': 'choice'
+            }
+          },
+          'series_group': {
+            'field': {
+              'description': 'The ID for a group of seriess found in GeoFRED.',
+              'name': 'fred_series_group',
+              'default': '',
+              'kind': 'string',
+              'order': 2
             }
           },
           'aggregation_method': {
             'field': {
+              'order': 5,
+              'name': 'fred_aggregation_method',
+              'default': 'avg',
+              'description': 'A key that indicates the aggregation method used for frequency aggregation.',
               'choices': [
                 'avg',
                 'sum',
                 'eop'
               ],
-              'description': 'A key that indicates the aggregation method used for frequency aggregation.',
-              'name': 'fred_aggregation_method',
-              'kind': 'choice',
-              'order': 5,
-              'default': 'avg'
+              'kind': 'choice'
             }
           }
         }
       ],
-      'api_key': {
-        'field': {
-          'description': '32 character alpha-numeric lowercase string.',
-          'kind': 'string',
-          'name': 'fred_api_key',
-          'order': 1,
-          'default': ''
-        }
-      },
-      'out': {
-        'bigquery': {
-          'project': {
-            'field': {
-              'description': 'Existing BigQuery project.',
-              'kind': 'string',
-              'name': 'project',
-              'order': 10,
-              'default': ''
-            }
-          },
-          'dataset': {
-            'field': {
-              'description': 'Existing BigQuery dataset.',
-              'kind': 'string',
-              'name': 'dataset',
-              'order': 11,
-              'default': ''
-            }
-          }
-        }
-      },
-      'region_type': {
-        'field': {
-          'choices': [
-            'bea',
-            'msa',
-            'frb',
-            'necta',
-            'state',
-            'country',
-            'county',
-            'censusregion'
-          ],
-          'description': 'The region you want want to pull data for.',
-          'name': 'fred_region_type',
-          'kind': 'choice',
-          'order': 3,
-          'default': 'county'
-        }
-      },
       'auth': {
         'field': {
           'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
           'name': 'auth',
-          'order': 0,
-          'default': 'service'
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 0
         }
       },
       'frequency': {
         'field': {
+          'order': 4,
+          'name': 'fred_frequency',
+          'default': '',
+          'description': 'An optional parameter that indicates a lower frequency to aggregate values to.',
           'choices': [
             '',
             'd',
@@ -205,11 +187,29 @@ TASKS = [
             'bwew',
             'bwem'
           ],
-          'description': 'An optional parameter that indicates a lower frequency to aggregate values to.',
-          'name': 'fred_frequency',
-          'kind': 'choice',
-          'order': 4,
-          'default': ''
+          'kind': 'choice'
+        }
+      },
+      'out': {
+        'bigquery': {
+          'project': {
+            'field': {
+              'description': 'Existing BigQuery project.',
+              'name': 'project',
+              'default': '',
+              'kind': 'string',
+              'order': 10
+            }
+          },
+          'dataset': {
+            'field': {
+              'description': 'Existing BigQuery dataset.',
+              'name': 'dataset',
+              'default': '',
+              'kind': 'string',
+              'order': 11
+            }
+          }
         }
       }
     }

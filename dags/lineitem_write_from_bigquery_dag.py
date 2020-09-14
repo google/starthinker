@@ -61,36 +61,36 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'write': {
         'bigquery': {
-          'legacy': {
-            'field': {
-              'order': 3,
-              'name': 'legacy',
-              'default': False,
-              'kind': 'boolean'
-            }
-          },
           'query': {
             'field': {
-              'order': 2,
               'name': 'query',
               'default': 'SELECT * FROM `Dataset.Table`;',
-              'kind': 'string'
+              'kind': 'string',
+              'order': 2
+            }
+          },
+          'legacy': {
+            'field': {
+              'name': 'legacy',
+              'default': False,
+              'kind': 'boolean',
+              'order': 3
             }
           },
           'dataset': {
             'field': {
-              'order': 1,
               'name': 'dataset',
               'default': '',
-              'kind': 'string'
+              'kind': 'string',
+              'order': 1
             }
           }
         },

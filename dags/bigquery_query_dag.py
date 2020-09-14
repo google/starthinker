@@ -60,53 +60,53 @@ INPUTS = {
 TASKS = [
   {
     'bigquery': {
-      'from': {
-        'legacy': {
-          'field': {
-            'description': 'Query type must match source tables.',
-            'kind': 'boolean',
-            'name': 'legacy',
-            'order': 4,
-            'default': True
-          }
-        },
-        'query': {
-          'field': {
-            'description': 'SQL with newlines and all.',
-            'kind': 'text',
-            'name': 'query',
-            'order': 1,
-            'default': ''
-          }
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'to': {
         'dataset': {
           'field': {
             'description': 'Existing BigQuery dataset.',
-            'kind': 'string',
             'name': 'dataset',
-            'order': 2,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 2
           }
         },
         'table': {
           'field': {
             'description': 'Table to create from this query.',
-            'kind': 'string',
             'name': 'table',
-            'order': 3,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 3
           }
         }
       },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
+      'from': {
+        'query': {
+          'field': {
+            'description': 'SQL with newlines and all.',
+            'name': 'query',
+            'default': '',
+            'kind': 'text',
+            'order': 1
+          }
+        },
+        'legacy': {
+          'field': {
+            'description': 'Query type must match source tables.',
+            'name': 'legacy',
+            'default': True,
+            'kind': 'boolean',
+            'order': 4
+          }
         }
       }
     }

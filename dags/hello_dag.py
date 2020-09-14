@@ -48,9 +48,9 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'say_first': 'Hello Once',  # Type in a greeting.
   'auth_read': 'user',  # Credentials used for reading data.
   'say_second': 'Hello Twice',  # Type in a greeting.
+  'say_first': 'Hello Once',  # Type in a greeting.
   'error': '',  # Optional error for testing.
   'sleep': 0,  # Seconds to sleep.
 }
@@ -58,71 +58,71 @@ INPUTS = {
 TASKS = [
   {
     'hello': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
       'error': {
         'field': {
           'description': 'Optional error for testing.',
-          'kind': 'string',
           'name': 'error',
-          'order': 3,
-          'default': ''
-        }
-      },
-      'say': {
-        'field': {
-          'description': 'Type in a greeting.',
+          'default': '',
           'kind': 'string',
-          'name': 'say_first',
-          'order': 1,
-          'default': 'Hello Once'
+          'order': 3
         }
       },
       'sleep': {
         'field': {
           'description': 'Seconds to sleep.',
-          'kind': 'integer',
           'name': 'sleep',
-          'order': 4,
-          'default': 0
+          'default': 0,
+          'kind': 'integer',
+          'order': 4
         }
       },
-      'auth': {
+      'say': {
         'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'description': 'Type in a greeting.',
+          'name': 'say_first',
+          'default': 'Hello Once',
+          'kind': 'string',
+          'order': 1
         }
       }
     }
   },
   {
     'hello': {
-      'say': {
+      'auth': {
         'field': {
-          'description': 'Type in a greeting.',
-          'kind': 'string',
-          'name': 'say_second',
-          'order': 1,
-          'default': 'Hello Twice'
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'sleep': {
         'field': {
           'description': 'Seconds to sleep.',
-          'kind': 'integer',
           'name': 'sleep',
-          'order': 4,
-          'default': 0
+          'default': 0,
+          'kind': 'integer',
+          'order': 4
         }
       },
-      'auth': {
+      'say': {
         'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'description': 'Type in a greeting.',
+          'name': 'say_second',
+          'default': 'Hello Twice',
+          'kind': 'string',
+          'order': 1
         }
       }
     }

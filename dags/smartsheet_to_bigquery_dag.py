@@ -64,21 +64,31 @@ INPUTS = {
 TASKS = [
   {
     'smartsheet': {
-      'sheet': {
-        'field': {
-          'order': 3,
-          'name': 'sheet',
-          'description': 'Retrieve from sheet properties.',
-          'kind': 'string'
-        }
-      },
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 0,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 0
+        }
+      },
+      'token': {
+        'field': {
+          'description': 'Retrieve from SmartSheet account settings.',
+          'name': 'token',
+          'default': '',
+          'kind': 'string',
+          'order': 2
+        }
+      },
+      'link': {
+        'field': {
+          'description': 'Add a link to each row as the first column.',
+          'name': 'link',
+          'default': True,
+          'kind': 'boolean',
+          'order': 7
         }
       },
       'out': {
@@ -86,56 +96,46 @@ TASKS = [
           'auth': {
             'field': {
               'description': 'Credentials used for writing data.',
-              'kind': 'authentication',
               'name': 'auth_write',
-              'order': 1,
-              'default': 'service'
+              'default': 'service',
+              'kind': 'authentication',
+              'order': 1
             }
           },
           'dataset': {
             'field': {
               'description': 'Existing BigQuery dataset.',
-              'kind': 'string',
               'name': 'dataset',
-              'order': 4,
-              'default': ''
+              'default': '',
+              'kind': 'string',
+              'order': 4
+            }
+          },
+          'schema': {
+            'field': {
+              'description': 'Schema provided in JSON list format or leave empty to auto detect.',
+              'name': 'schema',
+              'kind': 'json',
+              'order': 6
             }
           },
           'table': {
             'field': {
               'description': 'Table to create from this report.',
-              'kind': 'string',
               'name': 'table',
-              'order': 5,
-              'default': ''
-            }
-          },
-          'schema': {
-            'field': {
-              'order': 6,
-              'name': 'schema',
-              'description': 'Schema provided in JSON list format or leave empty to auto detect.',
-              'kind': 'json'
+              'default': '',
+              'kind': 'string',
+              'order': 5
             }
           }
         }
       },
-      'token': {
+      'sheet': {
         'field': {
-          'description': 'Retrieve from SmartSheet account settings.',
+          'description': 'Retrieve from sheet properties.',
+          'name': 'sheet',
           'kind': 'string',
-          'name': 'token',
-          'order': 2,
-          'default': ''
-        }
-      },
-      'link': {
-        'field': {
-          'description': 'Add a link to each row as the first column.',
-          'kind': 'boolean',
-          'name': 'link',
-          'order': 7,
-          'default': True
+          'order': 3
         }
       }
     }

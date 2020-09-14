@@ -50,8 +50,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'from_project': '',  # Original project to copy from.
   'auth_read': 'service',  # Credentials used for reading data.
+  'from_project': '',  # Original project to copy from.
   'from_dataset': '',  # Original dataset to copy from.
   'to_project': None,  # Anonymous data will be writen to.
   'to_dataset': '',  # Anonymous data will be writen to.
@@ -60,52 +60,52 @@ INPUTS = {
 TASKS = [
   {
     'anonymize': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
       'bigquery': {
-        'from': {
-          'project': {
-            'field': {
-              'order': 1,
-              'name': 'from_project',
-              'description': 'Original project to copy from.',
-              'kind': 'string'
-            }
-          },
-          'dataset': {
-            'field': {
-              'order': 2,
-              'name': 'from_dataset',
-              'description': 'Original dataset to copy from.',
-              'kind': 'string'
-            }
-          }
-        },
         'to': {
           'project': {
             'field': {
               'description': 'Anonymous data will be writen to.',
-              'kind': 'string',
               'name': 'to_project',
-              'order': 3,
-              'default': None
+              'default': None,
+              'kind': 'string',
+              'order': 3
             }
           },
           'dataset': {
             'field': {
-              'order': 4,
-              'name': 'to_dataset',
               'description': 'Anonymous data will be writen to.',
-              'kind': 'string'
+              'name': 'to_dataset',
+              'kind': 'string',
+              'order': 4
             }
           }
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'service'
+        },
+        'from': {
+          'project': {
+            'field': {
+              'description': 'Original project to copy from.',
+              'name': 'from_project',
+              'kind': 'string',
+              'order': 1
+            }
+          },
+          'dataset': {
+            'field': {
+              'description': 'Original dataset to copy from.',
+              'name': 'from_dataset',
+              'kind': 'string',
+              'order': 2
+            }
+          }
         }
       }
     }

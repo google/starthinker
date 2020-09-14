@@ -65,80 +65,80 @@ INPUTS = {
 TASKS = [
   {
     'twitter': {
-      'key': {
+      'auth': {
         'field': {
-          'order': 2,
-          'name': 'key',
-          'default': '',
-          'kind': 'string'
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'trends': {
+        'places': {
+          'single_cell': True,
+          'bigquery': {
+            'query': {
+              'field': {
+                'name': 'places_query',
+                'default': '',
+                'kind': 'string',
+                'order': 4
+              }
+            },
+            'legacy': {
+              'field': {
+                'name': 'places_legacy',
+                'default': False,
+                'kind': 'boolean',
+                'order': 5
+              }
+            },
+            'dataset': {
+              'field': {
+                'name': 'places_dataset',
+                'default': '',
+                'kind': 'string',
+                'order': 3
+              }
+            }
+          }
         }
       },
       'secret': {
         'field': {
-          'order': 1,
           'name': 'secret',
           'default': '',
-          'kind': 'string'
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
+          'kind': 'string',
+          'order': 1
         }
       },
       'out': {
         'bigquery': {
           'dataset': {
             'field': {
-              'order': 6,
               'name': 'destination_dataset',
               'default': '',
-              'kind': 'string'
+              'kind': 'string',
+              'order': 6
             }
           },
           'table': {
             'field': {
-              'order': 7,
               'name': 'destination_table',
               'default': '',
-              'kind': 'string'
+              'kind': 'string',
+              'order': 7
             }
           }
         }
       },
-      'trends': {
-        'places': {
-          'bigquery': {
-            'legacy': {
-              'field': {
-                'order': 5,
-                'name': 'places_legacy',
-                'default': False,
-                'kind': 'boolean'
-              }
-            },
-            'query': {
-              'field': {
-                'order': 4,
-                'name': 'places_query',
-                'default': '',
-                'kind': 'string'
-              }
-            },
-            'dataset': {
-              'field': {
-                'order': 3,
-                'name': 'places_dataset',
-                'default': '',
-                'kind': 'string'
-              }
-            }
-          },
-          'single_cell': True
+      'key': {
+        'field': {
+          'name': 'key',
+          'default': '',
+          'kind': 'string',
+          'order': 2
         }
       }
     }

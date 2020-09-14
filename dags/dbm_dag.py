@@ -62,28 +62,28 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'delete': {
         'field': {
           'description': 'If report exists, delete it before creating a new one.',
-          'kind': 'boolean',
           'name': 'delete',
-          'order': 2,
-          'default': False
+          'default': False,
+          'kind': 'boolean',
+          'order': 2
         }
       },
       'report': {
         'field': {
           'description': 'Report body and filters.',
-          'kind': 'json',
           'name': 'report',
-          'order': 1,
-          'default': '{}'
+          'default': '{}',
+          'kind': 'json',
+          'order': 1
         }
       }
     }

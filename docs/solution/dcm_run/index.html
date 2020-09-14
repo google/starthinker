@@ -246,41 +246,41 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
             "report_run_only": true,
             "report": {
+                "account": {
+                    "field": {
+                        "name": "account",
+                        "order": 1,
+                        "default": "",
+                        "kind": "integer",
+                        "description": "CM network id."
+                    }
+                },
                 "report_id": {
                     "field": {
-                        "description": "CM report id, empty if using name.",
-                        "default": "",
                         "name": "report_id",
+                        "order": 2,
+                        "default": "",
                         "kind": "integer",
-                        "order": 2
+                        "description": "CM report id, empty if using name."
                     }
                 },
                 "name": {
                     "field": {
-                        "description": "CM report name, empty if using id instead.",
-                        "default": "",
                         "name": "report_name",
-                        "kind": "string",
-                        "order": 3
-                    }
-                },
-                "account": {
-                    "field": {
-                        "description": "CM network id.",
+                        "order": 3,
                         "default": "",
-                        "name": "account",
-                        "kind": "integer",
-                        "order": 1
+                        "kind": "string",
+                        "description": "CM report name, empty if using id instead."
                     }
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for reading data."
                 }
             }
         }

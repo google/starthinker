@@ -247,7 +247,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "patch": {
                 "field": {
                     "default": "",
-                    "name": "patch",
                     "choices": [
                         "advertisers",
                         "advertisers.campaigns",
@@ -265,45 +264,46 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "partners.channels",
                         "users"
                     ],
-                    "kind": "choice"
+                    "kind": "choice",
+                    "name": "patch"
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
-                    "default": "user",
                     "name": "auth_write",
+                    "order": 0,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 0
+                    "description": "Credentials used for writing data."
                 }
             },
             "bigquery": {
-                "dataset": {
-                    "field": {
-                        "description": "Google BigQuery dataset to create tables in.",
-                        "default": "",
-                        "name": "dataset",
-                        "kind": "string",
-                        "order": 2
-                    }
-                },
                 "table": {
                     "field": {
-                        "description": "Google BigQuery dataset to create tables in.",
-                        "default": "",
                         "name": "table",
+                        "order": 3,
+                        "default": "",
                         "kind": "string",
-                        "order": 3
+                        "description": "Google BigQuery dataset to create tables in."
                     }
                 },
                 "as_object": true,
                 "auth": {
                     "field": {
-                        "description": "Credentials used for reading data.",
-                        "default": "service",
                         "name": "auth_read",
+                        "order": 1,
+                        "default": "service",
                         "kind": "authentication",
-                        "order": 1
+                        "description": "Credentials used for reading data."
+                    }
+                },
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "order": 2,
+                        "default": "",
+                        "kind": "string",
+                        "description": "Google BigQuery dataset to create tables in."
                     }
                 }
             }

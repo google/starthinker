@@ -51,17 +51,41 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'endpoint': '',
-  'auth_write': 'service',  # Credentials used for writing data.
   'auth_read': 'user',  # Credentials used for reading data.
   'dataset': '',  # Google BigQuery dataset to create tables in.
+  'auth_write': 'service',  # Credentials used for writing data.
   'accounts': '',  # Comma separated CM account ids.
 }
 
 TASKS = [
   {
     'dcm_api': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'accounts': {
+        'single_cell': True,
+        'values': {
+          'field': {
+            'description': 'Comma separated CM account ids.',
+            'name': 'accounts',
+            'default': '',
+            'kind': 'integer_list',
+            'order': 2
+          }
+        }
+      },
       'endpoints': {
         'field': {
+          'name': 'endpoint',
+          'default': '',
+          'kind': 'choice',
           'choices': [
             'accountPermissionGroups',
             'accountPermissions',
@@ -113,50 +137,26 @@ TASKS = [
             'userRolePermissions',
             'userRoles',
             'videoFormats'
-          ],
-          'name': 'endpoint',
-          'default': '',
-          'kind': 'choice'
-        }
-      },
-      'accounts': {
-        'values': {
-          'field': {
-            'description': 'Comma separated CM account ids.',
-            'kind': 'integer_list',
-            'name': 'accounts',
-            'order': 2,
-            'default': ''
-          }
-        },
-        'single_cell': True
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          ]
         }
       },
       'out': {
         'auth': {
           'field': {
             'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
             'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
           }
         },
         'dataset': {
           'field': {
             'description': 'Google BigQuery dataset to create tables in.',
-            'kind': 'string',
             'name': 'dataset',
-            'order': 1,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 1
           }
         }
       }

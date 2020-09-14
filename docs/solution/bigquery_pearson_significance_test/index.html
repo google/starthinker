@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>July 7, 2020 (2 months)</td>
+              <td>July 7, 2020 (2 months, 1 week)</td>
             </tr>
 
             <tr>
@@ -244,21 +244,21 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "to": {
                 "dataset": {
                     "field": {
-                        "description": "Existing BigQuery dataset.",
-                        "default": "",
                         "name": "dataset",
+                        "order": 1,
+                        "default": "",
                         "kind": "string",
-                        "order": 1
+                        "description": "Existing BigQuery dataset."
                     }
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing function.",
-                    "default": "service",
                     "name": "auth",
+                    "order": 0,
+                    "default": "service",
                     "kind": "authentication",
-                    "order": 0
+                    "description": "Credentials used for writing function."
                 }
             }
         }

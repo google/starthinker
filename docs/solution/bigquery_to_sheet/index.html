@@ -253,71 +253,71 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
             "to": {
-                "tab": {
-                    "field": {
-                        "description": "Name of the tab where to put the data.",
-                        "default": "",
-                        "name": "tab",
-                        "kind": "string",
-                        "order": 2
-                    }
-                },
                 "range": {
                     "field": {
-                        "description": "Range in the sheet to place the data, leave blank for whole sheet.",
-                        "default": "",
                         "name": "range",
+                        "order": 3,
+                        "default": "",
                         "kind": "string",
-                        "order": 3
+                        "description": "Range in the sheet to place the data, leave blank for whole sheet."
                     }
                 },
                 "sheet": {
                     "field": {
-                        "description": "Either sheet url or sheet name.",
-                        "default": "",
                         "name": "sheet",
+                        "order": 1,
+                        "default": "",
                         "kind": "string",
-                        "order": 1
+                        "description": "Either sheet url or sheet name."
+                    }
+                },
+                "tab": {
+                    "field": {
+                        "name": "tab",
+                        "order": 2,
+                        "default": "",
+                        "kind": "string",
+                        "description": "Name of the tab where to put the data."
                     }
                 }
             },
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
+                    "kind": "authentication",
+                    "description": "Credentials used for reading data."
+                }
+            },
             "from": {
-                "dataset": {
-                    "field": {
-                        "description": "Existing BigQuery dataset.",
-                        "default": "",
-                        "name": "dataset",
-                        "kind": "string",
-                        "order": 4
-                    }
-                },
                 "query": {
                     "field": {
-                        "description": "Query to pull data from the table.",
-                        "default": "",
                         "name": "query",
+                        "order": 5,
+                        "default": "",
                         "kind": "text",
-                        "order": 5
+                        "description": "Query to pull data from the table."
+                    }
+                },
+                "auth": "service",
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "order": 4,
+                        "default": "",
+                        "kind": "string",
+                        "description": "Existing BigQuery dataset."
                     }
                 },
                 "legacy": {
                     "field": {
-                        "description": "Use Legacy SQL",
-                        "default": true,
                         "name": "legacy",
+                        "order": 6,
+                        "default": true,
                         "kind": "boolean",
-                        "order": 6
+                        "description": "Use Legacy SQL"
                     }
-                },
-                "auth": "service"
-            },
-            "auth": {
-                "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
-                    "name": "auth_read",
-                    "kind": "authentication",
-                    "order": 1
                 }
             }
         }

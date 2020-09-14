@@ -256,80 +256,80 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/twitter/run.py" target="_blank">twitter</a>": {
-            "key": {
-                "field": {
-                    "default": "",
-                    "name": "key",
-                    "kind": "string",
-                    "order": 2
-                }
-            },
-            "out": {
-                "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "default": "",
-                            "name": "destination_dataset",
-                            "kind": "string",
-                            "order": 6
-                        }
-                    },
-                    "table": {
-                        "field": {
-                            "default": "",
-                            "name": "destination_table",
-                            "kind": "string",
-                            "order": 7
-                        }
-                    }
-                }
-            },
             "trends": {
                 "places": {
-                    "single_cell": true,
                     "bigquery": {
-                        "dataset": {
-                            "field": {
-                                "default": "",
-                                "name": "places_dataset",
-                                "kind": "string",
-                                "order": 3
-                            }
-                        },
                         "query": {
                             "field": {
-                                "default": "",
                                 "name": "places_query",
+                                "default": "",
                                 "kind": "string",
                                 "order": 4
                             }
                         },
+                        "dataset": {
+                            "field": {
+                                "name": "places_dataset",
+                                "default": "",
+                                "kind": "string",
+                                "order": 3
+                            }
+                        },
                         "legacy": {
                             "field": {
-                                "default": false,
                                 "name": "places_legacy",
+                                "default": false,
                                 "kind": "boolean",
                                 "order": 5
                             }
                         }
-                    }
+                    },
+                    "single_cell": true
                 }
             },
-            "secret": {
-                "field": {
-                    "default": "",
-                    "name": "secret",
-                    "kind": "string",
-                    "order": 1
+            "out": {
+                "bigquery": {
+                    "table": {
+                        "field": {
+                            "name": "destination_table",
+                            "default": "",
+                            "kind": "string",
+                            "order": 7
+                        }
+                    },
+                    "dataset": {
+                        "field": {
+                            "name": "destination_dataset",
+                            "default": "",
+                            "kind": "string",
+                            "order": 6
+                        }
+                    }
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
-                    "default": "service",
                     "name": "auth_write",
+                    "order": 1,
+                    "default": "service",
                     "kind": "authentication",
+                    "description": "Credentials used for writing data."
+                }
+            },
+            "secret": {
+                "field": {
+                    "name": "secret",
+                    "default": "",
+                    "kind": "string",
                     "order": 1
+                }
+            },
+            "key": {
+                "field": {
+                    "name": "key",
+                    "default": "",
+                    "kind": "string",
+                    "order": 2
                 }
             }
         }

@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 14, 2017 (3 years)</td>
+              <td>Aug. 14, 2017 (3 years, 1 month)</td>
             </tr>
 
             <tr>
@@ -252,82 +252,82 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
-            "out": {
-                "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "description": "Dataset to be written to in BigQuery.",
-                            "default": "",
-                            "name": "dataset",
-                            "kind": "string",
-                            "order": 5
-                        }
-                    },
-                    "table": {
-                        "field": {
-                            "description": "Table to be written to in BigQuery.",
-                            "default": "",
-                            "name": "table",
-                            "kind": "string",
-                            "order": 6
-                        }
-                    },
-                    "is_incremental_load": {
-                        "field": {
-                            "description": "Clear data in destination table during this report's time period, then append report data to existing table.",
-                            "default": false,
-                            "name": "is_incremental_load",
-                            "kind": "boolean",
-                            "order": 7
-                        }
-                    },
-                    "auth": {
-                        "field": {
-                            "description": "Credentials used for writing data.",
-                            "default": "service",
-                            "name": "auth_write",
-                            "kind": "authentication",
-                            "order": 1
-                        }
-                    }
-                }
-            },
             "report": {
+                "account": {
+                    "field": {
+                        "name": "account",
+                        "order": 2,
+                        "default": "",
+                        "kind": "integer",
+                        "description": "CM network id."
+                    }
+                },
                 "report_id": {
                     "field": {
-                        "description": "CM report id, empty if using name .",
-                        "default": "",
                         "name": "report_id",
+                        "order": 3,
+                        "default": "",
                         "kind": "integer",
-                        "order": 3
+                        "description": "CM report id, empty if using name ."
                     }
                 },
                 "name": {
                     "field": {
-                        "description": "CM report name, empty if using id instead.",
-                        "default": "",
                         "name": "report_name",
-                        "kind": "string",
-                        "order": 4
-                    }
-                },
-                "account": {
-                    "field": {
-                        "description": "CM network id.",
+                        "order": 4,
                         "default": "",
-                        "name": "account",
-                        "kind": "integer",
-                        "order": 2
+                        "kind": "string",
+                        "description": "CM report name, empty if using id instead."
+                    }
+                }
+            },
+            "out": {
+                "bigquery": {
+                    "table": {
+                        "field": {
+                            "name": "table",
+                            "order": 6,
+                            "default": "",
+                            "kind": "string",
+                            "description": "Table to be written to in BigQuery."
+                        }
+                    },
+                    "auth": {
+                        "field": {
+                            "name": "auth_write",
+                            "order": 1,
+                            "default": "service",
+                            "kind": "authentication",
+                            "description": "Credentials used for writing data."
+                        }
+                    },
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "order": 5,
+                            "default": "",
+                            "kind": "string",
+                            "description": "Dataset to be written to in BigQuery."
+                        }
+                    },
+                    "is_incremental_load": {
+                        "field": {
+                            "name": "is_incremental_load",
+                            "order": 7,
+                            "default": false,
+                            "kind": "boolean",
+                            "description": "Clear data in destination table during this report's time period, then append report data to existing table."
+                        }
                     }
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 0,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 0
+                    "description": "Credentials used for reading data."
                 }
             }
         }

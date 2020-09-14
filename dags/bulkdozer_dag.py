@@ -67,34 +67,13 @@ INPUTS = {
 TASKS = [
   {
     'traffic': {
-      'dcm_profile_id': {
-        'field': {
-          'order': 1,
-          'kind': 'string',
-          'name': 'dcm_profile_id',
-          'description': 'Campaign Manager Profile ID (optional if account id provided)',
-          'default': ''
-        }
-      },
-      'auth': 'user',
       'sheet_url': {
         'field': {
-          'order': 2,
-          'kind': 'string',
-          'name': 'sheet_url',
           'description': 'Feed Sheet URL',
-          'default': ''
-        }
-      },
-      'hour': [
-      ],
-      'account_id': {
-        'field': {
-          'order': 1,
+          'name': 'sheet_url',
+          'default': '',
           'kind': 'string',
-          'name': 'account_id',
-          'description': 'Campaign Manager Network ID (optional if profile id provided)',
-          'default': ''
+          'order': 2
         }
       },
       'timezone': {
@@ -104,7 +83,28 @@ TASKS = [
           'default': 'America/Chicago',
           'kind': 'timezone'
         }
-      }
+      },
+      'account_id': {
+        'field': {
+          'description': 'Campaign Manager Network ID (optional if profile id provided)',
+          'name': 'account_id',
+          'default': '',
+          'kind': 'string',
+          'order': 1
+        }
+      },
+      'dcm_profile_id': {
+        'field': {
+          'description': 'Campaign Manager Profile ID (optional if account id provided)',
+          'name': 'dcm_profile_id',
+          'default': '',
+          'kind': 'string',
+          'order': 1
+        }
+      },
+      'auth': 'user',
+      'hour': [
+      ]
     }
   }
 ]

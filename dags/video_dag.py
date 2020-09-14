@@ -49,8 +49,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'sheet': '',  # Name or URL of sheet.
   'auth_read': 'user',  # Credentials used for reading data.
+  'sheet': '',  # Name or URL of sheet.
   'tab': '',  # Name of sheet tab.
   'project': '',  # Google Cloud Project Identifier.
   'dataset': '',  # Name of dataset.
@@ -60,98 +60,98 @@ INPUTS = {
 TASKS = [
   {
     'sheets': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      '__comment__': 'Copy the tamplate sheet to the users sheet.  If it already exists, nothing happens.',
       'template': {
-        'sheet': 'https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit#gid=0',
-        'tab': 'Video'
+        'tab': 'Video',
+        'sheet': 'https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit#gid=0'
       },
       'sheet': {
         'field': {
           'description': 'Name or URL of sheet.',
-          'kind': 'string',
           'name': 'sheet',
-          'order': 1,
-          'default': ''
+          'default': '',
+          'kind': 'string',
+          'order': 1
         }
       },
       'tab': {
         'field': {
           'description': 'Name of sheet tab.',
-          'kind': 'string',
           'name': 'tab',
-          'order': 2,
-          'default': ''
+          'default': '',
+          'kind': 'string',
+          'order': 2
         }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
-        }
-      },
-      '__comment__': 'Copy the tamplate sheet to the users sheet.  If it already exists, nothing happens.'
+      }
     }
   },
   {
     'video': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      '__comment__': 'Read video effects and values from sheet and/or bigquery.',
       'bigquery': {
         'project': {
           'field': {
             'description': 'Google Cloud Project Identifier.',
-            'kind': 'string',
             'name': 'project',
-            'order': 3,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 3
           }
         },
         'dataset': {
           'field': {
             'description': 'Name of dataset.',
-            'kind': 'string',
             'name': 'dataset',
-            'order': 4,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 4
           }
         },
         'table': {
           'field': {
             'description': 'Name of table.',
-            'kind': 'string',
             'name': 'table',
-            'order': 5,
-            'default': ''
-          }
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
-        }
-      },
-      '__comment__': 'Read video effects and values from sheet and/or bigquery.',
-      'sheets': {
-        'sheet': {
-          'field': {
-            'description': 'Name or URL of sheet.',
+            'default': '',
             'kind': 'string',
-            'name': 'sheet',
-            'order': 1,
-            'default': ''
+            'order': 5
           }
-        },
+        }
+      },
+      'sheets': {
         'tab': {
           'field': {
             'description': 'Name of sheet tab.',
-            'kind': 'string',
             'name': 'tab',
-            'order': 2,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 2
+          }
+        },
+        'sheet': {
+          'field': {
+            'description': 'Name or URL of sheet.',
+            'name': 'sheet',
+            'default': '',
+            'kind': 'string',
+            'order': 1
           }
         }
       }

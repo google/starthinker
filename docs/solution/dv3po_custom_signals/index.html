@@ -225,25 +225,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                <tbody>
                
                  <tr>
-                   <td>Spend Optimization</td>
+                   <td>Csat Improvement</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 30%"></div>
+                       <div class="determinate" style="width: 90%"></div>
                      </div>
                    </td>
                  </tr>
                
                  <tr>
                    <td>Account Health</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
-                   <td>Spend Growth</td>
                    <td>
                      <div class="progress">
                        <div class="determinate" style="width: 0%"></div>
@@ -261,10 +252,19 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Csat Improvement</td>
+                   <td>Spend Optimization</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 90%"></div>
+                       <div class="determinate" style="width: 30%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Spend Growth</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 0%"></div>
                      </div>
                    </td>
                  </tr>
@@ -364,29 +364,29 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/weather_gov/run.py" target="_blank">weather_gov</a>": {
+            "stations": {
+                "field": {
+                    "name": "station_ids",
+                    "order": 1,
+                    "default": "",
+                    "kind": "string_list",
+                    "description": "NOAA Weather Station ID"
+                }
+            },
             "out": {
                 "sheets": {
-                    "tab": "Weather",
                     "range": "A2:K",
+                    "tab": "Weather",
                     "sheet": {
                         "field": {
-                            "description": "Feed Sheet URL",
-                            "default": "",
                             "name": "sheet_url",
+                            "order": 2,
+                            "default": "",
                             "kind": "string",
-                            "order": 2
+                            "description": "Feed Sheet URL"
                         }
                     },
                     "delete": true
-                }
-            },
-            "stations": {
-                "field": {
-                    "description": "NOAA Weather Station ID",
-                    "default": "",
-                    "name": "station_ids",
-                    "kind": "string_list",
-                    "order": 1
                 }
             },
             "auth": "user"
@@ -397,26 +397,26 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "patch": {},
             "read": {
                 "sheet": {
-                    "tab": "Rules",
                     "range": "A1:D",
                     "sheet": {
                         "field": {
-                            "description": "Feed Sheet URL",
-                            "default": "",
                             "name": "sheet_url",
+                            "order": 2,
+                            "default": "",
                             "kind": "string",
-                            "order": 2
+                            "description": "Feed Sheet URL"
                         }
-                    }
+                    },
+                    "tab": "Rules"
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for reading data."
                 }
             }
         }

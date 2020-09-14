@@ -60,67 +60,67 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'dcm_account': '',
+  'auth_read': 'user',  # Credentials used for reading data.
   'configuration_sheet_url': '',
   'auth_write': 'service',  # Credentials used for writing data.
-  'auth_read': 'user',  # Credentials used for reading data.
   'bigquery_dataset': 'dynamic_costs',
 }
 
 TASKS = [
   {
     'dynamic_costs': {
-      'account': {
-        'field': {
-          'order': 0,
-          'name': 'dcm_account',
-          'default': '',
-          'kind': 'string'
-        }
-      },
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'out': {
         'auth': {
           'field': {
             'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
             'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
           }
         },
         'dataset': {
           'field': {
-            'order': 2,
             'name': 'bigquery_dataset',
             'default': 'dynamic_costs',
-            'kind': 'string'
+            'kind': 'string',
+            'order': 2
           }
         }
       },
       'sheet': {
+        'url': {
+          'field': {
+            'name': 'configuration_sheet_url',
+            'default': '',
+            'kind': 'string',
+            'order': 1
+          }
+        },
         'template': {
           'url': 'https://docs.google.com/spreadsheets/d/19J-Hjln2wd1E0aeG3JDgKQN9TVGRLWxIEUQSmmQetJc/edit?usp=sharing',
           'tab': 'Dynamic Costs',
           'range': 'A1'
         },
-        'url': {
-          'field': {
-            'order': 1,
-            'name': 'configuration_sheet_url',
-            'default': '',
-            'kind': 'string'
-          }
-        },
         'tab': 'Dynamic Costs',
         'range': 'A2:B'
+      },
+      'account': {
+        'field': {
+          'name': 'dcm_account',
+          'default': '',
+          'kind': 'string',
+          'order': 0
+        }
       }
     }
   }

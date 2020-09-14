@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 14, 2017 (3 years)</td>
+              <td>Aug. 14, 2017 (3 years, 1 month)</td>
             </tr>
 
             <tr>
@@ -254,29 +254,29 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
             "report": {
                 "field": {
-                    "description": "Report body and filters.",
-                    "default": "{}",
                     "name": "report",
+                    "order": 1,
+                    "default": "{}",
                     "kind": "json",
-                    "order": 1
-                }
-            },
-            "delete": {
-                "field": {
-                    "description": "If report exists, delete it before creating a new one.",
-                    "default": false,
-                    "name": "delete",
-                    "kind": "boolean",
-                    "order": 2
+                    "description": "Report body and filters."
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for reading data."
+                }
+            },
+            "delete": {
+                "field": {
+                    "name": "delete",
+                    "order": 2,
+                    "default": false,
+                    "kind": "boolean",
+                    "description": "If report exists, delete it before creating a new one."
                 }
             }
         }

@@ -63,63 +63,63 @@ INPUTS = {
 TASKS = [
   {
     'twitter': {
-      'key': {
+      'auth': {
         'field': {
-          'order': 2,
-          'name': 'key',
-          'default': '',
-          'kind': 'string'
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'trends': {
+        'places': {
+          'single_cell': True,
+          'values': {
+            'field': {
+              'name': 'woeids',
+              'default': [
+              ],
+              'kind': 'integer_list',
+              'order': 3
+            }
+          }
         }
       },
       'secret': {
         'field': {
-          'order': 1,
           'name': 'secret',
           'default': '',
-          'kind': 'string'
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
+          'kind': 'string',
+          'order': 1
         }
       },
       'out': {
         'bigquery': {
           'dataset': {
             'field': {
-              'order': 6,
               'name': 'destination_dataset',
               'default': '',
-              'kind': 'string'
+              'kind': 'string',
+              'order': 6
             }
           },
           'table': {
             'field': {
-              'order': 7,
               'name': 'destination_table',
               'default': '',
-              'kind': 'string'
+              'kind': 'string',
+              'order': 7
             }
           }
         }
       },
-      'trends': {
-        'places': {
-          'values': {
-            'field': {
-              'order': 3,
-              'name': 'woeids',
-              'default': [
-              ],
-              'kind': 'integer_list'
-            }
-          },
-          'single_cell': True
+      'key': {
+        'field': {
+          'name': 'key',
+          'default': '',
+          'kind': 'string',
+          'order': 2
         }
       }
     }

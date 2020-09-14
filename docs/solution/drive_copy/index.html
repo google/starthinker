@@ -249,32 +249,32 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/drive/run.py" target="_blank">drive</a>": {
             "copy": {
-                "destination": {
-                    "field": {
-                        "description": "Name document to copy to.",
-                        "default": "",
-                        "name": "destination",
-                        "kind": "string",
-                        "order": 2
-                    }
-                },
                 "source": {
                     "field": {
-                        "description": "Name or URL of document to copy from.",
-                        "default": "",
                         "name": "source",
+                        "order": 1,
+                        "default": "",
                         "kind": "string",
-                        "order": 1
+                        "description": "Name or URL of document to copy from."
+                    }
+                },
+                "destination": {
+                    "field": {
+                        "name": "destination",
+                        "order": 2,
+                        "default": "",
+                        "kind": "string",
+                        "description": "Name document to copy to."
                     }
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for reading data."
                 }
             }
         }

@@ -253,70 +253,70 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dt/run.py" target="_blank">dt</a>": {
             "to": {
-                "dataset": {
-                    "field": {
-                        "description": "Existing dataset in BigQuery.",
-                        "default": "",
-                        "name": "dataset",
-                        "kind": "string",
-                        "order": 6
-                    }
-                },
                 "auth": {
                     "field": {
-                        "description": "Credentials used for writing data.",
-                        "default": "service",
                         "name": "auth_write",
+                        "order": 1,
+                        "default": "service",
                         "kind": "authentication",
-                        "order": 1
-                    }
-                }
-            },
-            "from": {
-                "days": {
-                    "field": {
-                        "description": "Number of days back to synchronize.",
-                        "default": 2,
-                        "name": "days",
-                        "kind": "integer",
-                        "order": 4
+                        "description": "Credentials used for writing data."
                     }
                 },
-                "hours": {
+                "dataset": {
                     "field": {
-                        "description": "Number of hours back to synchronize.",
-                        "default": 0,
-                        "name": "hours",
-                        "kind": "integer",
-                        "order": 5
-                    }
-                },
-                "paths": {
-                    "field": {
-                        "description": "List of prefixes to pull specific DT files.",
-                        "default": [],
-                        "name": "paths",
-                        "kind": "string_list",
-                        "order": 3
-                    }
-                },
-                "bucket": {
-                    "field": {
-                        "description": "Name of bucket where DT files are stored.",
+                        "name": "dataset",
+                        "order": 6,
                         "default": "",
-                        "name": "bucket",
                         "kind": "string",
-                        "order": 2
+                        "description": "Existing dataset in BigQuery."
                     }
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 0,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 0
+                    "description": "Credentials used for reading data."
+                }
+            },
+            "from": {
+                "hours": {
+                    "field": {
+                        "name": "hours",
+                        "order": 5,
+                        "default": 0,
+                        "kind": "integer",
+                        "description": "Number of hours back to synchronize."
+                    }
+                },
+                "bucket": {
+                    "field": {
+                        "name": "bucket",
+                        "order": 2,
+                        "default": "",
+                        "kind": "string",
+                        "description": "Name of bucket where DT files are stored."
+                    }
+                },
+                "paths": {
+                    "field": {
+                        "name": "paths",
+                        "order": 3,
+                        "default": [],
+                        "kind": "string_list",
+                        "description": "List of prefixes to pull specific DT files."
+                    }
+                },
+                "days": {
+                    "field": {
+                        "name": "days",
+                        "order": 4,
+                        "default": 2,
+                        "kind": "integer",
+                        "description": "Number of days back to synchronize."
+                    }
                 }
             }
         }

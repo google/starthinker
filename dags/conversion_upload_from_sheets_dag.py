@@ -66,9 +66,50 @@ INPUTS = {
 TASKS = [
   {
     'conversion_upload': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'activity_id': {
+        'field': {
+          'name': 'floodlight_activity_id',
+          'default': '',
+          'kind': 'integer',
+          'order': 1
+        }
+      },
       'encryptionInfo': {
+        'encryptionSource': {
+          'field': {
+            'order': 5,
+            'name': 'encryption_entity_source',
+            'default': 'DATA_TRANSFER',
+            'choices': [
+              'AD_SERVING',
+              'DATA_TRANSFER',
+              'ENCRYPTION_SCOPE_UNKNOWN'
+            ],
+            'kind': 'choice'
+          }
+        },
+        'encryptionEntityId': {
+          'field': {
+            'name': 'encryption_entity_id',
+            'default': '',
+            'kind': 'integer',
+            'order': 3
+          }
+        },
         'encryptionEntityType': {
           'field': {
+            'order': 4,
+            'name': 'encryption_entity_type',
+            'default': 'DCM_ACCOUNT',
             'choices': [
               'ADWORDS_CUSTOMER',
               'DBM_ADVERTISER',
@@ -77,97 +118,56 @@ TASKS = [
               'DCM_ADVERTISER',
               'ENCRYPTION_ENTITY_TYPE_UNKNOWN'
             ],
-            'order': 4,
-            'name': 'encryption_entity_type',
-            'default': 'DCM_ACCOUNT',
             'kind': 'choice'
           }
-        },
-        'encryptionEntityId': {
-          'field': {
-            'order': 3,
-            'name': 'encryption_entity_id',
-            'default': '',
-            'kind': 'integer'
-          }
-        },
-        'encryptionSource': {
-          'field': {
-            'choices': [
-              'AD_SERVING',
-              'DATA_TRANSFER',
-              'ENCRYPTION_SCOPE_UNKNOWN'
-            ],
-            'order': 5,
-            'name': 'encryption_entity_source',
-            'default': 'DATA_TRANSFER',
-            'kind': 'choice'
-          }
-        }
-      },
-      'sheets': {
-        'url': {
-          'field': {
-            'order': 9,
-            'name': 'sheet_url',
-            'default': '',
-            'kind': 'string'
-          }
-        },
-        'tab': {
-          'field': {
-            'order': 10,
-            'name': 'sheet_tab',
-            'default': '',
-            'kind': 'string'
-          }
-        },
-        'range': {
-          'field': {
-            'order': 11,
-            'name': 'sheet_range',
-            'default': '',
-            'kind': 'string'
-          }
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
-        }
-      },
-      'activity_id': {
-        'field': {
-          'order': 1,
-          'name': 'floodlight_activity_id',
-          'default': '',
-          'kind': 'integer'
         }
       },
       'account_id': {
         'field': {
-          'order': 0,
           'name': 'dcm_account',
           'default': '',
-          'kind': 'string'
+          'kind': 'string',
+          'order': 0
         }
       },
       'conversion_type': {
         'field': {
+          'order': 2,
+          'name': 'floodlight_conversion_type',
+          'default': 'encryptedUserId',
           'choices': [
             'encryptedUserId',
             'encryptedUserIdCandidates',
             'gclid',
             'mobileDeviceId'
           ],
-          'order': 2,
-          'name': 'floodlight_conversion_type',
-          'default': 'encryptedUserId',
           'kind': 'choice'
+        }
+      },
+      'sheets': {
+        'url': {
+          'field': {
+            'name': 'sheet_url',
+            'default': '',
+            'kind': 'string',
+            'order': 9
+          }
+        },
+        'tab': {
+          'field': {
+            'name': 'sheet_tab',
+            'default': '',
+            'kind': 'string',
+            'order': 10
+          }
+        },
+        'range': {
+          'field': {
+            'name': 'sheet_range',
+            'default': '',
+            'kind': 'string',
+            'order': 11
+          }
         }
       }
     }

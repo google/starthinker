@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 14, 2017 (3 years)</td>
+              <td>Aug. 14, 2017 (3 years, 1 month)</td>
             </tr>
 
             <tr>
@@ -248,81 +248,81 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
-            "out": {
-                "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "description": "Existing BigQuery dataset.",
-                            "default": "",
-                            "name": "dbm_dataset",
-                            "kind": "string",
-                            "order": 4
-                        }
-                    },
-                    "schema": {
-                        "field": {
-                            "description": "Schema provided in JSON list format or empty value to auto detect.",
-                            "name": "dbm_schema",
-                            "kind": "json",
-                            "order": 6
-                        }
-                    },
-                    "table": {
-                        "field": {
-                            "description": "Table to create from this report.",
-                            "default": "",
-                            "name": "dbm_table",
-                            "kind": "string",
-                            "order": 5
-                        }
-                    },
-                    "is_incremental_load": {
-                        "field": {
-                            "description": "Clear data in destination table during this report's time period, then append report data to destination table.",
-                            "default": false,
-                            "name": "is_incremental_load",
-                            "kind": "boolean",
-                            "order": 7
-                        }
-                    },
-                    "auth": {
-                        "field": {
-                            "description": "Authorization used for writing data.",
-                            "default": "service",
-                            "name": "auth_write",
-                            "kind": "authentication",
-                            "order": 1
-                        }
-                    }
-                }
-            },
             "report": {
                 "report_id": {
                     "field": {
-                        "description": "DV360 report ID given in UI, not needed if name used.",
-                        "default": "",
                         "name": "dbm_report_id",
+                        "order": 2,
+                        "default": "",
                         "kind": "integer",
-                        "order": 2
+                        "description": "DV360 report ID given in UI, not needed if name used."
                     }
                 },
                 "name": {
                     "field": {
-                        "description": "Name of report, not needed if ID used.",
-                        "default": "",
                         "name": "dbm_report_name",
+                        "order": 3,
+                        "default": "",
                         "kind": "string",
-                        "order": 3
+                        "description": "Name of report, not needed if ID used."
+                    }
+                }
+            },
+            "out": {
+                "bigquery": {
+                    "schema": {
+                        "field": {
+                            "name": "dbm_schema",
+                            "kind": "json",
+                            "order": 6,
+                            "description": "Schema provided in JSON list format or empty value to auto detect."
+                        }
+                    },
+                    "table": {
+                        "field": {
+                            "name": "dbm_table",
+                            "order": 5,
+                            "default": "",
+                            "kind": "string",
+                            "description": "Table to create from this report."
+                        }
+                    },
+                    "auth": {
+                        "field": {
+                            "name": "auth_write",
+                            "order": 1,
+                            "default": "service",
+                            "kind": "authentication",
+                            "description": "Authorization used for writing data."
+                        }
+                    },
+                    "dataset": {
+                        "field": {
+                            "name": "dbm_dataset",
+                            "order": 4,
+                            "default": "",
+                            "kind": "string",
+                            "description": "Existing BigQuery dataset."
+                        }
+                    },
+                    "is_incremental_load": {
+                        "field": {
+                            "name": "is_incremental_load",
+                            "order": 7,
+                            "default": false,
+                            "kind": "boolean",
+                            "description": "Clear data in destination table during this report's time period, then append report data to destination table."
+                        }
                     }
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 0,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 0
+                    "description": "Credentials used for reading data."
                 }
             }
         }

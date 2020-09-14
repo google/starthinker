@@ -49,8 +49,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'bucket': '',  # Google cloud bucket.
   'auth_read': 'user',  # Credentials used for reading data.
+  'bucket': '',  # Google cloud bucket.
   'auth_write': 'service',  # Credentials used for writing data.
   'path': '',  # Path prefix to read from, no * required.
   'dataset': '',  # Existing BigQuery dataset.
@@ -61,71 +61,71 @@ INPUTS = {
 TASKS = [
   {
     'bigquery': {
-      'from': {
-        'bucket': {
-          'field': {
-            'description': 'Google cloud bucket.',
-            'kind': 'string',
-            'name': 'bucket',
-            'order': 1,
-            'default': ''
-          }
-        },
-        'path': {
-          'field': {
-            'description': 'Path prefix to read from, no * required.',
-            'kind': 'string',
-            'name': 'path',
-            'order': 2,
-            'default': ''
-          }
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'to': {
         'auth': {
           'field': {
             'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
             'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
           }
         },
         'dataset': {
           'field': {
             'description': 'Existing BigQuery dataset.',
-            'kind': 'string',
             'name': 'dataset',
-            'order': 3,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 3
           }
         },
         'table': {
           'field': {
             'description': 'Table to create from this query.',
-            'kind': 'string',
             'name': 'table',
-            'order': 4,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 4
           }
         }
       },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+      'from': {
+        'bucket': {
+          'field': {
+            'description': 'Google cloud bucket.',
+            'name': 'bucket',
+            'default': '',
+            'kind': 'string',
+            'order': 1
+          }
+        },
+        'path': {
+          'field': {
+            'description': 'Path prefix to read from, no * required.',
+            'name': 'path',
+            'default': '',
+            'kind': 'string',
+            'order': 2
+          }
         }
       },
       'schema': {
         'field': {
           'description': 'Schema provided in JSON list format or empty list.',
-          'kind': 'json',
           'name': 'schema',
-          'order': 5,
-          'default': '[]'
+          'default': '[]',
+          'kind': 'json',
+          'order': 5
         }
       }
     }

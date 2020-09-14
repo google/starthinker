@@ -55,7 +55,7 @@ INPUTS = {
   'api': 'doubleclickbidmanager',  # See developer guide.
   'version': 'v1',  # Must be supported version.
   'function': 'reports.files.list',  # Full function dot notation path.
-  'kwargs': {'profileId': 2782211, 'accountId': 7480, 'reportId': 132847265},  # Dictionray object of name value pairs.
+  'kwargs': {'accountId': 7480, 'reportId': 132847265, 'profileId': 2782211},  # Dictionray object of name value pairs.
   'iterate': False,  # Is the result a list?
   'dataset': '',  # Existing dataset in BigQuery.
   'table': '',  # Table to write API call results to.
@@ -65,95 +65,95 @@ INPUTS = {
 TASKS = [
   {
     'google_api': {
-      'auth': {
+      'version': {
         'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
-        }
-      },
-      'out': {
-        'bigquery': {
-          'dataset': {
-            'field': {
-              'description': 'Existing dataset in BigQuery.',
-              'kind': 'string',
-              'name': 'dataset',
-              'order': 6,
-              'default': ''
-            }
-          },
-          'table': {
-            'field': {
-              'description': 'Table to write API call results to.',
-              'kind': 'string',
-              'name': 'table',
-              'order': 7,
-              'default': ''
-            }
-          },
-          'format': 'JSON',
-          'schema': {
-            'field': {
-              'description': 'Schema provided in JSON list format or empty list.',
-              'kind': 'json',
-              'name': 'schema',
-              'order': 9,
-              'default': [
-              ]
-            }
-          }
+          'description': 'Must be supported version.',
+          'name': 'version',
+          'default': 'v1',
+          'kind': 'string',
+          'order': 2
         }
       },
       'function': {
         'field': {
           'description': 'Full function dot notation path.',
-          'kind': 'string',
           'name': 'function',
-          'order': 3,
-          'default': 'reports.files.list'
-        }
-      },
-      'version': {
-        'field': {
-          'description': 'Must be supported version.',
+          'default': 'reports.files.list',
           'kind': 'string',
-          'name': 'version',
-          'order': 2,
-          'default': 'v1'
+          'order': 3
         }
       },
       'kwargs': {
         'field': {
           'description': 'Dictionray object of name value pairs.',
-          'kind': 'json',
           'name': 'kwargs',
-          'order': 4,
           'default': {
-            'profileId': 2782211,
             'accountId': 7480,
-            'reportId': 132847265
-          }
+            'reportId': 132847265,
+            'profileId': 2782211
+          },
+          'kind': 'json',
+          'order': 4
+        }
+      },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'out': {
+        'bigquery': {
+          'table': {
+            'field': {
+              'description': 'Table to write API call results to.',
+              'name': 'table',
+              'default': '',
+              'kind': 'string',
+              'order': 7
+            }
+          },
+          'dataset': {
+            'field': {
+              'description': 'Existing dataset in BigQuery.',
+              'name': 'dataset',
+              'default': '',
+              'kind': 'string',
+              'order': 6
+            }
+          },
+          'schema': {
+            'field': {
+              'description': 'Schema provided in JSON list format or empty list.',
+              'name': 'schema',
+              'default': [
+              ],
+              'kind': 'json',
+              'order': 9
+            }
+          },
+          'format': 'JSON'
         }
       },
       'iterate': {
         'field': {
           'description': 'Is the result a list?',
-          'kind': 'boolean',
           'name': 'iterate',
-          'order': 5,
-          'default': False
+          'default': False,
+          'kind': 'boolean',
+          'order': 5
         }
       },
       'api': {
         'field': {
           'description': 'See developer guide.',
-          'kind': 'string',
           'name': 'api',
-          'order': 1,
-          'default': 'doubleclickbidmanager'
+          'default': 'doubleclickbidmanager',
+          'kind': 'string',
+          'order': 1
         }
       }
     }

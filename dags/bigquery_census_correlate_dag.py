@@ -68,99 +68,22 @@ INPUTS = {
 TASKS = [
   {
     'census': {
-      'to': {
-        'type': {
-          'field': {
-            'choices': [
-              'table',
-              'view'
-            ],
-            'description': 'Write Census_Percent as table or view.',
-            'name': 'type',
-            'kind': 'choice',
-            'order': 10,
-            'default': 'table'
-          }
-        },
-        'dataset': {
-          'field': {
-            'description': 'Existing BigQuery dataset.',
-            'kind': 'string',
-            'name': 'to_dataset',
-            'order': 9,
-            'default': ''
-          }
-        }
-      },
       'auth': {
         'field': {
           'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
           'name': 'auth',
-          'order': 0,
-          'default': 'service'
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 0
         }
       },
       'correlate': {
-        'sum': {
-          'field': {
-            'description': 'Comma seperated list of columns to sum, optional.',
-            'kind': 'string_list',
-            'name': 'sum',
-            'order': 3,
-            'default': [
-            ]
-          }
-        },
-        'join': {
-          'field': {
-            'description': 'Name of column to join on, must match Census Geo_Id column.',
-            'kind': 'string',
-            'name': 'join',
-            'order': 1,
-            'default': ''
-          }
-        },
-        'correlate': {
-          'field': {
-            'description': 'Comma seperated list of percentage columns to correlate.',
-            'kind': 'string_list',
-            'name': 'correlate',
-            'order': 4,
-            'default': [
-            ]
-          }
-        },
-        'pass': {
-          'field': {
-            'description': 'Comma seperated list of columns to pass through.',
-            'kind': 'string_list',
-            'name': 'pass',
-            'order': 2,
-            'default': [
-            ]
-          }
-        },
-        'dataset': {
-          'field': {
-            'description': 'Existing BigQuery dataset.',
-            'kind': 'string',
-            'name': 'from_dataset',
-            'order': 5,
-            'default': ''
-          }
-        },
-        'table': {
-          'field': {
-            'description': 'Table to use as join data.',
-            'kind': 'string',
-            'name': 'from_table',
-            'order': 6,
-            'default': ''
-          }
-        },
         'significance': {
           'field': {
+            'order': 7,
+            'name': 'significance',
+            'default': '80',
+            'description': 'Select level of significance to test.',
             'choices': [
               '80',
               '90',
@@ -169,11 +92,88 @@ TASKS = [
               '99.5',
               '99.95'
             ],
-            'description': 'Select level of significance to test.',
-            'name': 'significance',
-            'kind': 'choice',
-            'order': 7,
-            'default': '80'
+            'kind': 'choice'
+          }
+        },
+        'correlate': {
+          'field': {
+            'description': 'Comma seperated list of percentage columns to correlate.',
+            'name': 'correlate',
+            'default': [
+            ],
+            'kind': 'string_list',
+            'order': 4
+          }
+        },
+        'join': {
+          'field': {
+            'description': 'Name of column to join on, must match Census Geo_Id column.',
+            'name': 'join',
+            'default': '',
+            'kind': 'string',
+            'order': 1
+          }
+        },
+        'pass': {
+          'field': {
+            'description': 'Comma seperated list of columns to pass through.',
+            'name': 'pass',
+            'default': [
+            ],
+            'kind': 'string_list',
+            'order': 2
+          }
+        },
+        'sum': {
+          'field': {
+            'description': 'Comma seperated list of columns to sum, optional.',
+            'name': 'sum',
+            'default': [
+            ],
+            'kind': 'string_list',
+            'order': 3
+          }
+        },
+        'dataset': {
+          'field': {
+            'description': 'Existing BigQuery dataset.',
+            'name': 'from_dataset',
+            'default': '',
+            'kind': 'string',
+            'order': 5
+          }
+        },
+        'table': {
+          'field': {
+            'description': 'Table to use as join data.',
+            'name': 'from_table',
+            'default': '',
+            'kind': 'string',
+            'order': 6
+          }
+        }
+      },
+      'to': {
+        'dataset': {
+          'field': {
+            'description': 'Existing BigQuery dataset.',
+            'name': 'to_dataset',
+            'default': '',
+            'kind': 'string',
+            'order': 9
+          }
+        },
+        'type': {
+          'field': {
+            'order': 10,
+            'name': 'type',
+            'default': 'table',
+            'description': 'Write Census_Percent as table or view.',
+            'choices': [
+              'table',
+              'view'
+            ],
+            'kind': 'choice'
           }
         }
       }

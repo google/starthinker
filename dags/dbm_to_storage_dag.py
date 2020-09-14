@@ -49,8 +49,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'dbm_report_id': '',  # DV360 report ID given in UI, not needed if name used.
   'auth_read': 'user',  # Credentials used for reading data.
+  'dbm_report_id': '',  # DV360 report ID given in UI, not needed if name used.
   'auth_write': 'service',  # Credentials used for writing data.
   'dbm_report_name': '',  # Name of report, not needed if ID used.
   'dbm_bucket': '',  # Google cloud bucket.
@@ -63,39 +63,39 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'out': {
         'storage': {
-          'bucket': {
-            'field': {
-              'description': 'Google cloud bucket.',
-              'kind': 'string',
-              'name': 'dbm_bucket',
-              'order': 3,
-              'default': ''
-            }
-          },
           'auth': {
             'field': {
               'description': 'Credentials used for writing data.',
-              'kind': 'authentication',
               'name': 'auth_write',
-              'order': 1,
-              'default': 'service'
+              'default': 'service',
+              'kind': 'authentication',
+              'order': 1
+            }
+          },
+          'bucket': {
+            'field': {
+              'description': 'Google cloud bucket.',
+              'name': 'dbm_bucket',
+              'default': '',
+              'kind': 'string',
+              'order': 3
             }
           },
           'path': {
             'field': {
               'description': 'Path and filename to write to.',
-              'kind': 'string',
               'name': 'dbm_path',
-              'order': 4,
-              'default': ''
+              'default': '',
+              'kind': 'string',
+              'order': 4
             }
           }
         }
@@ -104,19 +104,19 @@ TASKS = [
         'report_id': {
           'field': {
             'description': 'DV360 report ID given in UI, not needed if name used.',
-            'kind': 'integer',
             'name': 'dbm_report_id',
-            'order': 1,
-            'default': ''
+            'default': '',
+            'kind': 'integer',
+            'order': 1
           }
         },
         'name': {
           'field': {
             'description': 'Name of report, not needed if ID used.',
-            'kind': 'string',
             'name': 'dbm_report_name',
-            'order': 2,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 2
           }
         }
       }

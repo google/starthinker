@@ -252,94 +252,94 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/google_api/run.py" target="_blank">google_api</a>": {
-            "api": {
+            "version": {
                 "field": {
-                    "description": "See developer guide.",
-                    "default": "doubleclickbidmanager",
-                    "name": "api",
+                    "name": "version",
+                    "order": 2,
+                    "default": "v1",
                     "kind": "string",
-                    "order": 1
+                    "description": "Must be supported version."
                 }
             },
             "function": {
                 "field": {
-                    "description": "Full function dot notation path.",
-                    "default": "reports.files.list",
                     "name": "function",
+                    "order": 3,
+                    "default": "reports.files.list",
                     "kind": "string",
-                    "order": 3
+                    "description": "Full function dot notation path."
                 }
             },
             "iterate": {
                 "field": {
-                    "description": "Is the result a list?",
-                    "default": false,
                     "name": "iterate",
+                    "order": 5,
+                    "default": false,
                     "kind": "boolean",
-                    "order": 5
+                    "description": "Is the result a list?"
                 }
             },
-            "version": {
+            "kwargs": {
                 "field": {
-                    "description": "Must be supported version.",
-                    "default": "v1",
-                    "name": "version",
-                    "kind": "string",
-                    "order": 2
+                    "name": "kwargs",
+                    "order": 4,
+                    "default": {
+                        "reportId": 132847265,
+                        "accountId": 7480,
+                        "profileId": 2782211
+                    },
+                    "kind": "json",
+                    "description": "Dictionray object of name value pairs."
                 }
             },
             "out": {
                 "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "description": "Existing dataset in BigQuery.",
-                            "default": "",
-                            "name": "dataset",
-                            "kind": "string",
-                            "order": 6
-                        }
-                    },
                     "schema": {
                         "field": {
-                            "description": "Schema provided in JSON list format or empty list.",
-                            "default": [],
                             "name": "schema",
+                            "order": 9,
+                            "default": [],
                             "kind": "json",
-                            "order": 9
+                            "description": "Schema provided in JSON list format or empty list."
                         }
                     },
                     "format": "JSON",
                     "table": {
                         "field": {
-                            "description": "Table to write API call results to.",
-                            "default": "",
                             "name": "table",
+                            "order": 7,
+                            "default": "",
                             "kind": "string",
-                            "order": 7
+                            "description": "Table to write API call results to."
+                        }
+                    },
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "order": 6,
+                            "default": "",
+                            "kind": "string",
+                            "description": "Existing dataset in BigQuery."
                         }
                     }
                 }
             },
-            "kwargs": {
-                "field": {
-                    "description": "Dictionray object of name value pairs.",
-                    "default": {
-                        "reportId": 132847265,
-                        "profileId": 2782211,
-                        "accountId": 7480
-                    },
-                    "name": "kwargs",
-                    "kind": "json",
-                    "order": 4
-                }
-            },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for reading data."
+                }
+            },
+            "api": {
+                "field": {
+                    "name": "api",
+                    "order": 1,
+                    "default": "doubleclickbidmanager",
+                    "kind": "string",
+                    "description": "See developer guide."
                 }
             }
         }

@@ -57,97 +57,64 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
-  'recipe_slug': '',  # Place where tables will be created in BigQuery.
   'recipe_name': '',  # Name of report in DV360, should be unique.
+  'recipe_slug': '',  # Place where tables will be created in BigQuery.
+  'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
   'partners': [],  # DV360 partner id.
-  'advertisers': [],  # Comma delimited list of DV360 advertiser ids.
   'recipe_project': '',  # Google Cloud Project Id.
+  'advertisers': [],  # Comma delimited list of DV360 advertiser ids.
 }
 
 TASKS = [
   {
     'dataset': {
-      'description': 'Create a dataset for bigquery tables.',
       'auth': 'service',
-      'hour': [
-        1
-      ],
+      'description': 'Create a dataset for bigquery tables.',
       'dataset': {
         'field': {
           'description': 'Place where tables will be created in BigQuery.',
           'name': 'recipe_slug',
           'kind': 'string'
         }
-      }
+      },
+      'hour': [
+        1
+      ]
     }
   },
   {
     'dbm': {
       'auth': 'user',
-      'hour': [
-        2
-      ],
       'report': {
         'filters': {
-          'FILTER_ADVERTISER': {
-            'values': {
-              'field': {
-                'description': 'Comma delimited list of DV360 advertiser ids.',
-                'kind': 'integer_list',
-                'name': 'advertisers',
-                'order': 6,
-                'default': [
-                ]
-              }
-            }
-          },
           'FILTER_PARTNER': {
             'values': {
               'field': {
                 'description': 'DV360 partner id.',
-                'kind': 'integer_list',
                 'name': 'partners',
-                'order': 5,
                 'default': [
-                ]
+                ],
+                'kind': 'integer_list',
+                'order': 5
+              }
+            }
+          },
+          'FILTER_ADVERTISER': {
+            'values': {
+              'field': {
+                'description': 'Comma delimited list of DV360 advertiser ids.',
+                'name': 'advertisers',
+                'default': [
+                ],
+                'kind': 'integer_list',
+                'order': 6
               }
             }
           }
         },
         'body': {
-          'timezoneCode': {
-            'field': {
-              'description': 'Timezone for report dates.',
-              'name': 'recipe_timezone',
-              'default': 'America/Los_Angeles',
-              'kind': 'timezone'
-            }
-          },
-          'metadata': {
-            'dataRange': 'LAST_30_DAYS',
-            'title': {
-              'field': {
-                'name': 'recipe_name',
-                'description': 'Name of report in DV360, should be unique.',
-                'prefix': 'Feature Adoption Spend For ',
-                'kind': 'string'
-              }
-            },
-            'format': 'CSV'
-          },
           'params': {
             'type': 'TYPE_GENERAL',
-            'groupBys': [
-              'FILTER_ADVERTISER',
-              'FILTER_ADVERTISER_NAME',
-              'FILTER_ADVERTISER_CURRENCY',
-              'FILTER_INSERTION_ORDER',
-              'FILTER_INSERTION_ORDER_NAME',
-              'FILTER_LINE_ITEM',
-              'FILTER_LINE_ITEM_NAME',
-              'FILTER_DATE'
-            ],
             'metrics': [
               'METRIC_IMPRESSIONS',
               'METRIC_BILLABLE_IMPRESSIONS',
@@ -162,46 +129,30 @@ TASKS = [
               'METRIC_RICH_MEDIA_VIDEO_PLAYS',
               'METRIC_CM_POST_CLICK_REVENUE',
               'METRIC_CM_POST_VIEW_REVENUE'
+            ],
+            'groupBys': [
+              'FILTER_ADVERTISER',
+              'FILTER_ADVERTISER_NAME',
+              'FILTER_ADVERTISER_CURRENCY',
+              'FILTER_INSERTION_ORDER',
+              'FILTER_INSERTION_ORDER_NAME',
+              'FILTER_LINE_ITEM',
+              'FILTER_LINE_ITEM_NAME',
+              'FILTER_DATE'
             ]
-          }
-        }
-      }
-    }
-  },
-  {
-    'dbm': {
-      'auth': 'user',
-      'hour': [
-        2
-      ],
-      'report': {
-        'filters': {
-          'FILTER_ADVERTISER': {
-            'values': {
-              'field': {
-                'description': 'Comma delimited list of DV360 advertiser ids.',
-                'kind': 'integer_list',
-                'name': 'advertisers',
-                'order': 6,
-                'default': [
-                ]
-              }
-            }
           },
-          'FILTER_PARTNER': {
-            'values': {
+          'metadata': {
+            'dataRange': 'LAST_30_DAYS',
+            'title': {
               'field': {
-                'description': 'DV360 partner id.',
-                'kind': 'integer_list',
-                'name': 'partners',
-                'order': 5,
-                'default': [
-                ]
+                'prefix': 'Feature Adoption Spend For ',
+                'name': 'recipe_name',
+                'kind': 'string',
+                'description': 'Name of report in DV360, should be unique.'
               }
-            }
-          }
-        },
-        'body': {
+            },
+            'format': 'CSV'
+          },
           'timezoneCode': {
             'field': {
               'description': 'Timezone for report dates.',
@@ -209,21 +160,57 @@ TASKS = [
               'default': 'America/Los_Angeles',
               'kind': 'timezone'
             }
-          },
-          'metadata': {
-            'dataRange': 'LAST_30_DAYS',
-            'title': {
+          }
+        }
+      },
+      'hour': [
+        2
+      ]
+    }
+  },
+  {
+    'dbm': {
+      'auth': 'user',
+      'report': {
+        'filters': {
+          'FILTER_PARTNER': {
+            'values': {
               'field': {
-                'name': 'recipe_name',
-                'description': 'Name of report in DV360, should be unique.',
-                'prefix': 'Feature Adoption Environment For ',
-                'kind': 'string'
+                'description': 'DV360 partner id.',
+                'name': 'partners',
+                'default': [
+                ],
+                'kind': 'integer_list',
+                'order': 5
               }
-            },
-            'format': 'CSV'
+            }
           },
+          'FILTER_ADVERTISER': {
+            'values': {
+              'field': {
+                'description': 'Comma delimited list of DV360 advertiser ids.',
+                'name': 'advertisers',
+                'default': [
+                ],
+                'kind': 'integer_list',
+                'order': 6
+              }
+            }
+          }
+        },
+        'body': {
           'params': {
             'type': 'TYPE_GENERAL',
+            'metrics': [
+              'METRIC_IMPRESSIONS',
+              'METRIC_BILLABLE_IMPRESSIONS',
+              'METRIC_CLICKS',
+              'METRIC_TOTAL_CONVERSIONS',
+              'METRIC_LAST_CLICKS',
+              'METRIC_LAST_IMPRESSIONS',
+              'METRIC_REVENUE_ADVERTISER',
+              'METRIC_MEDIA_COST_ADVERTISER'
+            ],
             'groupBys': [
               'FILTER_ADVERTISER',
               'FILTER_ADVERTISER_NAME',
@@ -235,20 +222,33 @@ TASKS = [
               'FILTER_DEVICE_TYPE',
               'FILTER_PAGE_LAYOUT',
               'FILTER_DATE'
-            ],
-            'metrics': [
-              'METRIC_IMPRESSIONS',
-              'METRIC_BILLABLE_IMPRESSIONS',
-              'METRIC_CLICKS',
-              'METRIC_TOTAL_CONVERSIONS',
-              'METRIC_LAST_CLICKS',
-              'METRIC_LAST_IMPRESSIONS',
-              'METRIC_REVENUE_ADVERTISER',
-              'METRIC_MEDIA_COST_ADVERTISER'
             ]
+          },
+          'metadata': {
+            'dataRange': 'LAST_30_DAYS',
+            'title': {
+              'field': {
+                'prefix': 'Feature Adoption Environment For ',
+                'name': 'recipe_name',
+                'kind': 'string',
+                'description': 'Name of report in DV360, should be unique.'
+              }
+            },
+            'format': 'CSV'
+          },
+          'timezoneCode': {
+            'field': {
+              'description': 'Timezone for report dates.',
+              'name': 'recipe_timezone',
+              'default': 'America/Los_Angeles',
+              'kind': 'timezone'
+            }
           }
         }
-      }
+      },
+      'hour': [
+        2
+      ]
     }
   },
   {
@@ -264,108 +264,108 @@ TASKS = [
               'kind': 'string'
             }
           },
-          'table': 'DV360_Feature_Spend',
           'schema': [
             {
-              'type': 'INTEGER',
-              'name': 'Advertiser_Id'
+              'name': 'Advertiser_Id',
+              'type': 'INTEGER'
             },
             {
-              'type': 'STRING',
-              'name': 'Advertiser'
+              'name': 'Advertiser',
+              'type': 'STRING'
             },
             {
-              'type': 'STRING',
-              'name': 'Advertiser_Currency'
+              'name': 'Advertiser_Currency',
+              'type': 'STRING'
             },
             {
-              'type': 'INTEGER',
-              'name': 'Insertion_Order_Id'
+              'name': 'Insertion_Order_Id',
+              'type': 'INTEGER'
             },
             {
-              'type': 'STRING',
-              'name': 'Insertion_Order'
+              'name': 'Insertion_Order',
+              'type': 'STRING'
             },
             {
-              'type': 'INTEGER',
-              'name': 'Line_Item_Id'
+              'name': 'Line_Item_Id',
+              'type': 'INTEGER'
             },
             {
-              'type': 'STRING',
-              'name': 'Line_Item'
+              'name': 'Line_Item',
+              'type': 'STRING'
             },
             {
-              'type': 'DATE',
-              'name': 'Report_Day'
+              'name': 'Report_Day',
+              'type': 'DATE'
             },
             {
-              'type': 'INTEGER',
-              'name': 'Impressions'
+              'name': 'Impressions',
+              'type': 'INTEGER'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Billable_Impressions'
+              'name': 'Billable_Impressions',
+              'type': 'FLOAT'
             },
             {
-              'type': 'INTEGER',
-              'name': 'Clicks'
+              'name': 'Clicks',
+              'type': 'INTEGER'
             },
             {
-              'type': 'STRING',
-              'name': 'Click_Rate_Ctr'
+              'name': 'Click_Rate_Ctr',
+              'type': 'STRING'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Total_Conversions'
+              'name': 'Total_Conversions',
+              'type': 'FLOAT'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Post_Click_Conversions'
+              'name': 'Post_Click_Conversions',
+              'type': 'FLOAT'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Post_View_Conversions'
+              'name': 'Post_View_Conversions',
+              'type': 'FLOAT'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Revenue_Adv_Currency'
+              'name': 'Revenue_Adv_Currency',
+              'type': 'FLOAT'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Media_Cost_Advertiser_Currency'
+              'name': 'Media_Cost_Advertiser_Currency',
+              'type': 'FLOAT'
             },
             {
-              'type': 'INTEGER',
-              'name': 'Complete_Views_Video'
+              'name': 'Complete_Views_Video',
+              'type': 'INTEGER'
             },
             {
-              'type': 'INTEGER',
-              'name': 'Starts_Video'
+              'name': 'Starts_Video',
+              'type': 'INTEGER'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Cm_Post_Click_Revenue'
+              'name': 'Cm_Post_Click_Revenue',
+              'type': 'FLOAT'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Cm_Post_View_Revenue'
+              'name': 'Cm_Post_View_Revenue',
+              'type': 'FLOAT'
             }
-          ]
+          ],
+          'table': 'DV360_Feature_Spend'
         }
       },
-      'hour': [
-        6
-      ],
       'report': {
         'name': {
           'field': {
-            'name': 'recipe_name',
-            'description': 'Name of report in DV360, should be unique.',
             'prefix': 'Feature Adoption Spend For ',
-            'kind': 'string'
+            'name': 'recipe_name',
+            'kind': 'string',
+            'description': 'Name of report in DV360, should be unique.'
           }
         }
-      }
+      },
+      'hour': [
+        6
+      ]
     }
   },
   {
@@ -381,145 +381,155 @@ TASKS = [
               'kind': 'string'
             }
           },
-          'table': 'DV360_Feature_Environment',
           'schema': [
             {
-              'type': 'INTEGER',
-              'name': 'Advertiser_Id'
+              'name': 'Advertiser_Id',
+              'type': 'INTEGER'
             },
             {
-              'type': 'STRING',
-              'name': 'Advertiser'
+              'name': 'Advertiser',
+              'type': 'STRING'
             },
             {
-              'type': 'STRING',
-              'name': 'Advertiser_Currency'
+              'name': 'Advertiser_Currency',
+              'type': 'STRING'
             },
             {
-              'type': 'INTEGER',
-              'name': 'Insertion_Order_Id'
+              'name': 'Insertion_Order_Id',
+              'type': 'INTEGER'
             },
             {
-              'type': 'STRING',
-              'name': 'Insertion_Order'
+              'name': 'Insertion_Order',
+              'type': 'STRING'
             },
             {
-              'type': 'INTEGER',
-              'name': 'Line_Item_Id'
+              'name': 'Line_Item_Id',
+              'type': 'INTEGER'
             },
             {
-              'type': 'STRING',
-              'name': 'Line_Item'
+              'name': 'Line_Item',
+              'type': 'STRING'
             },
             {
-              'type': 'STRING',
-              'name': 'Device_Type'
+              'name': 'Device_Type',
+              'type': 'STRING'
             },
             {
-              'type': 'STRING',
-              'name': 'Environment'
+              'name': 'Environment',
+              'type': 'STRING'
             },
             {
-              'type': 'DATE',
-              'name': 'Report_Day'
+              'name': 'Report_Day',
+              'type': 'DATE'
             },
             {
-              'type': 'INTEGER',
-              'name': 'Impressions'
+              'name': 'Impressions',
+              'type': 'INTEGER'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Billable_Impressions'
+              'name': 'Billable_Impressions',
+              'type': 'FLOAT'
             },
             {
-              'type': 'INTEGER',
-              'name': 'Clicks'
+              'name': 'Clicks',
+              'type': 'INTEGER'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Total_Conversions'
+              'name': 'Total_Conversions',
+              'type': 'FLOAT'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Post_Click_Conversions'
+              'name': 'Post_Click_Conversions',
+              'type': 'FLOAT'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Post_View_Conversions'
+              'name': 'Post_View_Conversions',
+              'type': 'FLOAT'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Revenue_Adv_Currency'
+              'name': 'Revenue_Adv_Currency',
+              'type': 'FLOAT'
             },
             {
-              'type': 'FLOAT',
-              'name': 'Media_Cost_Advertiser_Currency'
+              'name': 'Media_Cost_Advertiser_Currency',
+              'type': 'FLOAT'
             }
-          ]
+          ],
+          'table': 'DV360_Feature_Environment'
+        }
+      },
+      'report': {
+        'name': {
+          'field': {
+            'prefix': 'Feature Adoption Environment For ',
+            'name': 'recipe_name',
+            'kind': 'string',
+            'description': 'Name of report in DV360, should be unique.'
+          }
         }
       },
       'hour': [
         6
-      ],
-      'report': {
-        'name': {
-          'field': {
-            'name': 'recipe_name',
-            'description': 'Name of report in DV360, should be unique.',
-            'prefix': 'Feature Adoption Environment For ',
-            'kind': 'string'
-          }
-        }
-      }
+      ]
     }
   },
   {
     'sdf_legacy': {
       'daily': True,
+      'read': {
+        'filter_ids': {
+          'values': {
+            'field': {
+              'description': 'Comma delimited list of DV360 advertiser ids.',
+              'name': 'advertisers',
+              'default': [
+              ],
+              'kind': 'integer_list',
+              'order': 6
+            }
+          }
+        }
+      },
+      'auth': 'user',
+      'out': {
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'description': 'Place where tables will be created in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
+          }
+        }
+      },
+      'filter_type': 'ADVERTISER_ID',
       'file_types': [
         'LINE_ITEM'
       ],
-      'version': '5',
-      'filter_type': 'ADVERTISER_ID',
-      'out': {
-        'bigquery': {
-          'dataset': {
-            'field': {
-              'description': 'Place where tables will be created in BigQuery.',
-              'name': 'recipe_slug',
-              'kind': 'string'
-            }
-          }
-        }
-      },
-      'auth': 'user',
       'hour': [
         4
       ],
-      'read': {
-        'filter_ids': {
-          'values': {
-            'field': {
-              'description': 'Comma delimited list of DV360 advertiser ids.',
-              'kind': 'integer_list',
-              'name': 'advertisers',
-              'order': 6,
-              'default': [
-              ]
-            }
-          }
-        }
-      }
+      'version': '5'
     }
   },
   {
     'sdf_legacy': {
       'daily': True,
-      'file_types': [
-        'INSERTION_ORDER'
-      ],
-      'version': '5',
-      'filter_type': 'ADVERTISER_ID',
+      'read': {
+        'filter_ids': {
+          'values': {
+            'field': {
+              'description': 'Comma delimited list of DV360 advertiser ids.',
+              'name': 'advertisers',
+              'default': [
+              ],
+              'kind': 'integer_list',
+              'order': 6
+            }
+          }
+        }
+      },
+      'auth': 'user',
       'out': {
         'bigquery': {
           'dataset': {
@@ -531,66 +541,19 @@ TASKS = [
           }
         }
       },
-      'auth': 'user',
+      'filter_type': 'ADVERTISER_ID',
+      'file_types': [
+        'INSERTION_ORDER'
+      ],
       'hour': [
         4
       ],
-      'read': {
-        'filter_ids': {
-          'values': {
-            'field': {
-              'description': 'Comma delimited list of DV360 advertiser ids.',
-              'kind': 'integer_list',
-              'name': 'advertisers',
-              'order': 6,
-              'default': [
-              ]
-            }
-          }
-        }
-      }
+      'version': '5'
     }
   },
   {
     'bigquery': {
-      'from': {
-        'legacy': False,
-        'parameters': [
-          {
-            'field': {
-              'description': 'Google Cloud Project Id.',
-              'kind': 'string',
-              'name': 'recipe_project',
-              'order': 6,
-              'default': ''
-            }
-          },
-          {
-            'field': {
-              'description': 'Place where tables will be created in BigQuery.',
-              'name': 'recipe_slug',
-              'kind': 'string'
-            }
-          },
-          {
-            'field': {
-              'description': 'Google Cloud Project Id.',
-              'kind': 'string',
-              'name': 'recipe_project',
-              'order': 6,
-              'default': ''
-            }
-          },
-          {
-            'field': {
-              'description': 'Place where tables will be created in BigQuery.',
-              'name': 'recipe_slug',
-              'kind': 'string'
-            }
-          }
-        ],
-        'query': " SELECT   Report_Day,   Advertiser,   Advertiser_Id,   Advertiser_Currency,   Insertion_Order AS Insertion_Order_Name,   Insertion_Order_Id AS Insertion_Order_ID,   CONCAT(Insertion_Order,' (',CAST(Insertion_Order_ID AS STRING),')') AS Insertion_Order,   Line_Item AS LI_Name,   b.Line_Item_Id AS LI_ID,   CONCAT(Line_Item,' (',CAST(b.Line_Item_Id AS STRING),')') AS Line_Item,   IF(MAX(SDF_Day) OVER () = SDF_Day, 'True', 'False') AS Max_Date,   a.*,   IF(Bid_Strategy_Type = 'Fixed', 'Fixed', CONCAT(Bid_Strategy_Type, ' ', Bid_Strategy_Unit)) AS Bid_Strategy,   IF(Bid_Strategy_Type = 'Fixed', 'Fixed', 'Autobidding') AS Autobidding_Overall,   CONCAT(Pacing, ' ', Pacing_Rate) AS Pacing_Overall,   IF(Affinity_In_Market_Targeting_Include IS NULL, 'False', 'True') AS Affinity_In_Market_TF,   IF(Affinity_In_Market_Targeting_Exclude IS NULL, 'False', 'True') AS Affinity_In_Market_Exclude_TF,   IF(Custom_List_Targeting IS NULL, 'False', 'True') AS Custom_List_TF,   IF(Audience_Targeting_Include IS NULL     AND Affinity_In_Market_Targeting_Include IS NULL     AND Custom_List_Targeting IS NULL     AND Audience_Targeting_Similar_Audiences = 'False' , 'False', 'True') AS Audience_Targeting_TF,   IF(Keyword_Targeting_Exclude IS NULL     AND Keyword_List_Targeting_Exclude IS NULL, 'False', 'True') AS Keyword_Exclusions_TF,   IF(Position_Targeting_On_Screen IS NULL     AND Position_Targeting_Display_Position_In_Content IS NULL     AND Position_Targeting_Video_Position_In_Content IS NULL     AND Position_Targeting_Audio_Position_In_Content IS NULL, 'False', 'True') AS Position_Targeting_TF,   IF((Geography_Targeting_Include IS NULL       AND Geography_Regional_Location_List_Targeting_Include IS NULL), 'False', 'True') AS Geography_Targeting_TF,   IF(Language_Targeting_Include IS NULL, 'False', 'True') AS Language_Targeting_TF,   IF(Site_Targeting_Exclude IS NULL     AND Site_Targeting_Include IS NULL, 'False', 'True') AS Site_List_TF,   Impressions AS Impressions,   Billable_Impressions AS Billable_Impressions,   Clicks AS Clicks,   Total_Conversions AS Total_Conversions,   Post_Click_Conversions AS Post_Click_Conversions,   Post_View_Conversions AS Post_View_Conversions,   Revenue_Adv_Currency AS Rev_Adv_Currency,   Media_Cost_Advertiser_Currency AS Media_Cost_Adv_Currency,   Cm_Post_Click_Revenue AS CM_Post_Click_Revenue,   Cm_Post_View_Revenue AS CM_Post_View_Revenue,   (Cm_Post_Click_Revenue+Cm_Post_View_Revenue) AS CM_Total_Revenue,   IF (Bid_Strategy_Type = 'Fixed', 0, Revenue_Adv_Currency) AS Autobid_Rev,   IF (Type = 'Display', Revenue_Adv_Currency, 0) AS Display_Rev,   IF (Type = 'Video', Revenue_Adv_Currency, 0) AS Video_Rev,   IF (Type = 'TrueView', Revenue_Adv_Currency, 0) AS TrueView_Rev,   IF (Type = 'Audio', Revenue_Adv_Currency, 0) AS Audio_Rev,   IF ((STRPOS(Environment_Targeting, 'Desktop')>0), Revenue_Adv_Currency, 0) AS Desktop_Rev   FROM `[PARAMETER].[PARAMETER].SDF_LINE_ITEM` AS a   LEFT JOIN `[PARAMETER].[PARAMETER].DV360_Feature_Spend` AS b     ON DATE_SUB(a.SDF_Day, INTERVAL 1 DAY) = b.Report_Day     AND a.Line_Item_Id = b.Line_Item_Id   WHERE b.Report_Day IS NOT NULL "
-      },
+      'auth': 'service',
       'to': {
         'view': 'DV360_Feature_Adoption_Analysis',
         'dataset': {
@@ -601,7 +564,44 @@ TASKS = [
           }
         }
       },
-      'auth': 'service',
+      'from': {
+        'query': " SELECT   Report_Day,   Advertiser,   Advertiser_Id,   Advertiser_Currency,   Insertion_Order AS Insertion_Order_Name,   Insertion_Order_Id AS Insertion_Order_ID,   CONCAT(Insertion_Order,' (',CAST(Insertion_Order_ID AS STRING),')') AS Insertion_Order,   Line_Item AS LI_Name,   b.Line_Item_Id AS LI_ID,   CONCAT(Line_Item,' (',CAST(b.Line_Item_Id AS STRING),')') AS Line_Item,   IF(MAX(SDF_Day) OVER () = SDF_Day, 'True', 'False') AS Max_Date,   a.*,   IF(Bid_Strategy_Type = 'Fixed', 'Fixed', CONCAT(Bid_Strategy_Type, ' ', Bid_Strategy_Unit)) AS Bid_Strategy,   IF(Bid_Strategy_Type = 'Fixed', 'Fixed', 'Autobidding') AS Autobidding_Overall,   CONCAT(Pacing, ' ', Pacing_Rate) AS Pacing_Overall,   IF(Affinity_In_Market_Targeting_Include IS NULL, 'False', 'True') AS Affinity_In_Market_TF,   IF(Affinity_In_Market_Targeting_Exclude IS NULL, 'False', 'True') AS Affinity_In_Market_Exclude_TF,   IF(Custom_List_Targeting IS NULL, 'False', 'True') AS Custom_List_TF,   IF(Audience_Targeting_Include IS NULL     AND Affinity_In_Market_Targeting_Include IS NULL     AND Custom_List_Targeting IS NULL     AND Audience_Targeting_Similar_Audiences = 'False' , 'False', 'True') AS Audience_Targeting_TF,   IF(Keyword_Targeting_Exclude IS NULL     AND Keyword_List_Targeting_Exclude IS NULL, 'False', 'True') AS Keyword_Exclusions_TF,   IF(Position_Targeting_On_Screen IS NULL     AND Position_Targeting_Display_Position_In_Content IS NULL     AND Position_Targeting_Video_Position_In_Content IS NULL     AND Position_Targeting_Audio_Position_In_Content IS NULL, 'False', 'True') AS Position_Targeting_TF,   IF((Geography_Targeting_Include IS NULL       AND Geography_Regional_Location_List_Targeting_Include IS NULL), 'False', 'True') AS Geography_Targeting_TF,   IF(Language_Targeting_Include IS NULL, 'False', 'True') AS Language_Targeting_TF,   IF(Site_Targeting_Exclude IS NULL     AND Site_Targeting_Include IS NULL, 'False', 'True') AS Site_List_TF,   Impressions AS Impressions,   Billable_Impressions AS Billable_Impressions,   Clicks AS Clicks,   Total_Conversions AS Total_Conversions,   Post_Click_Conversions AS Post_Click_Conversions,   Post_View_Conversions AS Post_View_Conversions,   Revenue_Adv_Currency AS Rev_Adv_Currency,   Media_Cost_Advertiser_Currency AS Media_Cost_Adv_Currency,   Cm_Post_Click_Revenue AS CM_Post_Click_Revenue,   Cm_Post_View_Revenue AS CM_Post_View_Revenue,   (Cm_Post_Click_Revenue+Cm_Post_View_Revenue) AS CM_Total_Revenue,   IF (Bid_Strategy_Type = 'Fixed', 0, Revenue_Adv_Currency) AS Autobid_Rev,   IF (Type = 'Display', Revenue_Adv_Currency, 0) AS Display_Rev,   IF (Type = 'Video', Revenue_Adv_Currency, 0) AS Video_Rev,   IF (Type = 'TrueView', Revenue_Adv_Currency, 0) AS TrueView_Rev,   IF (Type = 'Audio', Revenue_Adv_Currency, 0) AS Audio_Rev,   IF ((STRPOS(Environment_Targeting, 'Desktop')>0), Revenue_Adv_Currency, 0) AS Desktop_Rev   FROM `[PARAMETER].[PARAMETER].SDF_LINE_ITEM` AS a   LEFT JOIN `[PARAMETER].[PARAMETER].DV360_Feature_Spend` AS b     ON DATE_SUB(a.SDF_Day, INTERVAL 1 DAY) = b.Report_Day     AND a.Line_Item_Id = b.Line_Item_Id   WHERE b.Report_Day IS NOT NULL ",
+        'legacy': False,
+        'parameters': [
+          {
+            'field': {
+              'description': 'Google Cloud Project Id.',
+              'name': 'recipe_project',
+              'default': '',
+              'kind': 'string',
+              'order': 6
+            }
+          },
+          {
+            'field': {
+              'description': 'Place where tables will be created in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
+          },
+          {
+            'field': {
+              'description': 'Google Cloud Project Id.',
+              'name': 'recipe_project',
+              'default': '',
+              'kind': 'string',
+              'order': 6
+            }
+          },
+          {
+            'field': {
+              'description': 'Place where tables will be created in BigQuery.',
+              'name': 'recipe_slug',
+              'kind': 'string'
+            }
+          }
+        ]
+      },
       'hour': [
         6
       ]

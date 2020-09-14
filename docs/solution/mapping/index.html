@@ -256,65 +256,65 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/mapping/run.py" target="_blank">mapping</a>": {
-            "tab": {
-                "field": {
-                    "default": "",
-                    "name": "tab",
-                    "kind": "string",
-                    "order": 2
-                }
-            },
-            "out": {
-                "dataset": {
-                    "field": {
-                        "default": "",
-                        "name": "out_dataset",
-                        "kind": "string",
-                        "order": 7
-                    }
-                },
-                "view": {
-                    "field": {
-                        "default": "",
-                        "name": "out_view",
-                        "kind": "string",
-                        "order": 8
-                    }
-                }
-            },
             "sheet": {
                 "field": {
-                    "default": "",
                     "name": "sheet",
+                    "default": "",
                     "kind": "string",
                     "order": 1
                 }
             },
-            "in": {
-                "dataset": {
+            "out": {
+                "view": {
                     "field": {
+                        "name": "out_view",
                         "default": "",
-                        "name": "in_dataset",
                         "kind": "string",
-                        "order": 3
+                        "order": 8
                     }
                 },
-                "table": {
+                "dataset": {
                     "field": {
+                        "name": "out_dataset",
                         "default": "",
-                        "name": "in_table",
                         "kind": "string",
-                        "order": 4
+                        "order": 7
                     }
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for reading data."
+                }
+            },
+            "tab": {
+                "field": {
+                    "name": "tab",
+                    "default": "",
+                    "kind": "string",
+                    "order": 2
+                }
+            },
+            "in": {
+                "table": {
+                    "field": {
+                        "name": "in_table",
+                        "default": "",
+                        "kind": "string",
+                        "order": 4
+                    }
+                },
+                "dataset": {
+                    "field": {
+                        "name": "in_dataset",
+                        "default": "",
+                        "kind": "string",
+                        "order": 3
+                    }
                 }
             }
         }

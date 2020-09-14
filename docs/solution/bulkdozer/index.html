@@ -233,25 +233,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                <tbody>
                
                  <tr>
-                   <td>Spend Optimization</td>
+                   <td>Csat Improvement</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
+                       <div class="determinate" style="width: 90%"></div>
                      </div>
                    </td>
                  </tr>
                
                  <tr>
                    <td>Account Health</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
-                   <td>Spend Growth</td>
                    <td>
                      <div class="progress">
                        <div class="determinate" style="width: 0%"></div>
@@ -269,10 +260,19 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Csat Improvement</td>
+                   <td>Spend Optimization</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 90%"></div>
+                       <div class="determinate" style="width: 0%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Spend Growth</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 0%"></div>
                      </div>
                    </td>
                  </tr>
@@ -380,43 +380,43 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/traffic/run.py" target="_blank">traffic</a>": {
+            "timezone": {
+                "field": {
+                    "name": "recipe_timezone",
+                    "default": "America/Chicago",
+                    "kind": "timezone",
+                    "description": "Timezone for report dates."
+                }
+            },
+            "hour": [],
             "account_id": {
                 "field": {
-                    "description": "Campaign Manager Network ID (optional if profile id provided)",
-                    "default": "",
                     "name": "account_id",
+                    "order": 1,
+                    "default": "",
                     "kind": "string",
-                    "order": 1
+                    "description": "Campaign Manager Network ID (optional if profile id provided)"
                 }
             },
             "dcm_profile_id": {
                 "field": {
-                    "description": "Campaign Manager Profile ID (optional if account id provided)",
-                    "default": "",
                     "name": "dcm_profile_id",
+                    "order": 1,
+                    "default": "",
                     "kind": "string",
-                    "order": 1
+                    "description": "Campaign Manager Profile ID (optional if account id provided)"
                 }
             },
-            "timezone": {
-                "field": {
-                    "description": "Timezone for report dates.",
-                    "default": "America/Chicago",
-                    "name": "recipe_timezone",
-                    "kind": "timezone"
-                }
-            },
-            "hour": [],
+            "auth": "user",
             "sheet_url": {
                 "field": {
-                    "description": "Feed Sheet URL",
-                    "default": "",
                     "name": "sheet_url",
+                    "order": 2,
+                    "default": "",
                     "kind": "string",
-                    "order": 2
+                    "description": "Feed Sheet URL"
                 }
-            },
-            "auth": "user"
+            }
         }
     }
 ]</code></pre>

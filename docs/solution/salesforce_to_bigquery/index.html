@@ -248,92 +248,92 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/salesforce/run.py" target="_blank">salesforce</a>": {
-            "domain": {
+            "password": {
                 "field": {
-                    "description": "Retrieve from a Salesforce Domain.",
-                    "default": "login.salesforce.com",
-                    "name": "domain",
-                    "kind": "string"
-                }
-            },
-            "query": {
-                "field": {
-                    "description": "The query to run in Salesforce.",
+                    "name": "password",
                     "default": "",
-                    "name": "query",
-                    "kind": "string"
-                }
-            },
-            "client": {
-                "field": {
-                    "description": "Retrieve from a Salesforce App.",
-                    "default": "",
-                    "name": "client",
-                    "kind": "string"
-                }
-            },
-            "secret": {
-                "field": {
-                    "description": "Retrieve from a Salesforce App.",
-                    "default": "",
-                    "name": "secret",
-                    "kind": "string"
+                    "kind": "password",
+                    "description": "Your Salesforce login password."
                 }
             },
             "username": {
                 "field": {
-                    "description": "Your Salesforce user email.",
-                    "default": "",
                     "name": "username",
-                    "kind": "email"
+                    "default": "",
+                    "kind": "email",
+                    "description": "Your Salesforce user email."
                 }
             },
-            "password": {
+            "secret": {
                 "field": {
-                    "description": "Your Salesforce login password.",
+                    "name": "secret",
                     "default": "",
-                    "name": "password",
-                    "kind": "password"
+                    "kind": "string",
+                    "description": "Retrieve from a Salesforce App."
+                }
+            },
+            "client": {
+                "field": {
+                    "name": "client",
+                    "default": "",
+                    "kind": "string",
+                    "description": "Retrieve from a Salesforce App."
+                }
+            },
+            "domain": {
+                "field": {
+                    "name": "domain",
+                    "default": "login.salesforce.com",
+                    "kind": "string",
+                    "description": "Retrieve from a Salesforce Domain."
                 }
             },
             "out": {
                 "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "description": "Existing BigQuery dataset.",
-                            "default": "",
-                            "name": "dataset",
-                            "kind": "string",
-                            "order": 3
-                        }
-                    },
                     "schema": {
                         "field": {
-                            "description": "Schema provided in JSON list format or empty list.",
-                            "default": "[]",
                             "name": "schema",
+                            "order": 5,
+                            "default": "[]",
                             "kind": "json",
-                            "order": 5
+                            "description": "Schema provided in JSON list format or empty list."
                         }
                     },
                     "table": {
                         "field": {
-                            "description": "Table to create from this report.",
-                            "default": "",
                             "name": "table",
+                            "order": 4,
+                            "default": "",
                             "kind": "string",
-                            "order": 4
+                            "description": "Table to create from this report."
+                        }
+                    },
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "order": 3,
+                            "default": "",
+                            "kind": "string",
+                            "description": "Existing BigQuery dataset."
                         }
                     }
                 }
             },
+            "query": {
+                "field": {
+                    "name": "query",
+                    "default": "",
+                    "kind": "string",
+                    "description": "The query to run in Salesforce."
+                }
+            },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for reading data."
                 }
             }
         }

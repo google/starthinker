@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>July 6, 2020 (2 months)</td>
+              <td>July 6, 2020 (2 months, 1 week)</td>
             </tr>
 
             <tr>
@@ -261,90 +261,51 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/census/run.py" target="_blank">census</a>": {
             "to": {
-                "dataset": {
-                    "field": {
-                        "description": "Existing BigQuery dataset.",
-                        "default": "",
-                        "name": "to_dataset",
-                        "kind": "string",
-                        "order": 9
-                    }
-                },
                 "type": {
                     "field": {
                         "default": "table",
-                        "name": "type",
-                        "order": 10,
-                        "description": "Write Census_Percent as table or view.",
                         "choices": [
                             "table",
                             "view"
                         ],
+                        "order": 10,
+                        "name": "type",
+                        "description": "Write Census_Percent as table or view.",
                         "kind": "choice"
-                    }
-                }
-            },
-            "correlate": {
-                "sum": {
-                    "field": {
-                        "description": "Comma seperated list of columns to sum, optional.",
-                        "default": [],
-                        "name": "sum",
-                        "kind": "string_list",
-                        "order": 3
-                    }
-                },
-                "join": {
-                    "field": {
-                        "description": "Name of column to join on, must match Census Geo_Id column.",
-                        "default": "",
-                        "name": "join",
-                        "kind": "string",
-                        "order": 1
-                    }
-                },
-                "table": {
-                    "field": {
-                        "description": "Table to use as join data.",
-                        "default": "",
-                        "name": "from_table",
-                        "kind": "string",
-                        "order": 6
-                    }
-                },
-                "pass": {
-                    "field": {
-                        "description": "Comma seperated list of columns to pass through.",
-                        "default": [],
-                        "name": "pass",
-                        "kind": "string_list",
-                        "order": 2
-                    }
-                },
-                "correlate": {
-                    "field": {
-                        "description": "Comma seperated list of percentage columns to correlate.",
-                        "default": [],
-                        "name": "correlate",
-                        "kind": "string_list",
-                        "order": 4
                     }
                 },
                 "dataset": {
                     "field": {
-                        "description": "Existing BigQuery dataset.",
+                        "name": "to_dataset",
+                        "order": 9,
                         "default": "",
-                        "name": "from_dataset",
                         "kind": "string",
-                        "order": 5
+                        "description": "Existing BigQuery dataset."
+                    }
+                }
+            },
+            "auth": {
+                "field": {
+                    "name": "auth",
+                    "order": 0,
+                    "default": "service",
+                    "kind": "authentication",
+                    "description": "Credentials used for writing data."
+                }
+            },
+            "correlate": {
+                "table": {
+                    "field": {
+                        "name": "from_table",
+                        "order": 6,
+                        "default": "",
+                        "kind": "string",
+                        "description": "Table to use as join data."
                     }
                 },
                 "significance": {
                     "field": {
                         "default": "80",
-                        "name": "significance",
-                        "order": 7,
-                        "description": "Select level of significance to test.",
                         "choices": [
                             "80",
                             "90",
@@ -353,17 +314,56 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "99.5",
                             "99.95"
                         ],
+                        "order": 7,
+                        "name": "significance",
+                        "description": "Select level of significance to test.",
                         "kind": "choice"
                     }
-                }
-            },
-            "auth": {
-                "field": {
-                    "description": "Credentials used for writing data.",
-                    "default": "service",
-                    "name": "auth",
-                    "kind": "authentication",
-                    "order": 0
+                },
+                "join": {
+                    "field": {
+                        "name": "join",
+                        "order": 1,
+                        "default": "",
+                        "kind": "string",
+                        "description": "Name of column to join on, must match Census Geo_Id column."
+                    }
+                },
+                "dataset": {
+                    "field": {
+                        "name": "from_dataset",
+                        "order": 5,
+                        "default": "",
+                        "kind": "string",
+                        "description": "Existing BigQuery dataset."
+                    }
+                },
+                "correlate": {
+                    "field": {
+                        "name": "correlate",
+                        "order": 4,
+                        "default": [],
+                        "kind": "string_list",
+                        "description": "Comma seperated list of percentage columns to correlate."
+                    }
+                },
+                "pass": {
+                    "field": {
+                        "name": "pass",
+                        "order": 2,
+                        "default": [],
+                        "kind": "string_list",
+                        "description": "Comma seperated list of columns to pass through."
+                    }
+                },
+                "sum": {
+                    "field": {
+                        "name": "sum",
+                        "order": 3,
+                        "default": [],
+                        "kind": "string_list",
+                        "description": "Comma seperated list of columns to sum, optional."
+                    }
                 }
             }
         }

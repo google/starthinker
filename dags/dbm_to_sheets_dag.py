@@ -49,8 +49,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'report_id': '',  # DV360 report ID given in UI, not needed if name used.
   'auth_read': 'user',  # Credentials used for reading data.
+  'report_id': '',  # DV360 report ID given in UI, not needed if name used.
   'report_name': '',  # Name of report, not needed if ID used.
   'sheet': '',  # Full URL to sheet being written to.
   'tab': '',  # Existing tab in sheet to write to.
@@ -62,30 +62,30 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'out': {
         'sheets': {
-          'sheet': {
-            'field': {
-              'description': 'Full URL to sheet being written to.',
-              'kind': 'string',
-              'name': 'sheet',
-              'order': 3,
-              'default': ''
-            }
-          },
           'tab': {
             'field': {
               'description': 'Existing tab in sheet to write to.',
-              'kind': 'string',
               'name': 'tab',
-              'order': 4,
-              'default': ''
+              'default': '',
+              'kind': 'string',
+              'order': 4
+            }
+          },
+          'sheet': {
+            'field': {
+              'description': 'Full URL to sheet being written to.',
+              'name': 'sheet',
+              'default': '',
+              'kind': 'string',
+              'order': 3
             }
           },
           'range': 'A1'
@@ -95,19 +95,19 @@ TASKS = [
         'report_id': {
           'field': {
             'description': 'DV360 report ID given in UI, not needed if name used.',
-            'kind': 'integer',
             'name': 'report_id',
-            'order': 1,
-            'default': ''
+            'default': '',
+            'kind': 'integer',
+            'order': 1
           }
         },
         'name': {
           'field': {
             'description': 'Name of report, not needed if ID used.',
-            'kind': 'string',
             'name': 'report_name',
-            'order': 2,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 2
           }
         }
       }

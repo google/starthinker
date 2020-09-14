@@ -48,8 +48,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'sheets_sheet': '',
   'auth_read': 'user',  # Credentials used for reading data.
+  'sheets_sheet': '',
   'sheets_tab': '',
   'sheets_range': '',
 }
@@ -57,40 +57,40 @@ INPUTS = {
 TASKS = [
   {
     'sheets': {
-      'clear': True,
-      'sheet': {
+      'auth': {
         'field': {
-          'order': 1,
-          'name': 'sheets_sheet',
-          'default': '',
-          'kind': 'string'
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'tab': {
         'field': {
-          'order': 2,
           'name': 'sheets_tab',
           'default': '',
-          'kind': 'string'
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'kind': 'string',
+          'order': 2
         }
       },
       'range': {
         'field': {
-          'order': 3,
           'name': 'sheets_range',
           'default': '',
-          'kind': 'string'
+          'kind': 'string',
+          'order': 3
         }
-      }
+      },
+      'sheet': {
+        'field': {
+          'name': 'sheets_sheet',
+          'default': '',
+          'kind': 'string',
+          'order': 1
+        }
+      },
+      'clear': True
     }
   }
 ]

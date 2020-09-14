@@ -64,74 +64,74 @@ INPUTS = {
 TASKS = [
   {
     'sheets': {
-      'tab': {
-        'field': {
-          'order': 3,
-          'name': 'sheets_tab',
-          'default': '',
-          'kind': 'string'
-        }
-      },
-      'out': {
-        'bigquery': {
-          'dataset': {
-            'field': {
-              'order': 5,
-              'name': 'dataset',
-              'default': '',
-              'kind': 'string'
-            }
-          },
-          'table': {
-            'field': {
-              'order': 6,
-              'name': 'table',
-              'default': '',
-              'kind': 'string'
-            }
-          }
-        },
-        'auth': {
-          'field': {
-            'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
-            'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
-          }
-        }
-      },
       'header': {
         'field': {
-          'order': 9,
           'name': 'sheets_header',
           'default': True,
-          'kind': 'boolean'
+          'kind': 'boolean',
+          'order': 9
         }
       },
       'sheet': {
         'field': {
-          'order': 2,
           'name': 'sheets_url',
           'default': '',
-          'kind': 'string'
+          'kind': 'string',
+          'order': 2
         }
       },
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 0,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 0
+        }
+      },
+      'tab': {
+        'field': {
+          'name': 'sheets_tab',
+          'default': '',
+          'kind': 'string',
+          'order': 3
+        }
+      },
+      'out': {
+        'auth': {
+          'field': {
+            'description': 'Credentials used for writing data.',
+            'name': 'auth_write',
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
+          }
+        },
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'default': '',
+              'kind': 'string',
+              'order': 5
+            }
+          },
+          'table': {
+            'field': {
+              'name': 'table',
+              'default': '',
+              'kind': 'string',
+              'order': 6
+            }
+          }
         }
       },
       'range': {
         'field': {
-          'order': 4,
           'name': 'sheets_range',
           'default': '',
-          'kind': 'string'
+          'kind': 'string',
+          'order': 4
         }
       }
     }

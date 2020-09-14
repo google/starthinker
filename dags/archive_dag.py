@@ -59,47 +59,47 @@ INPUTS = {
 TASKS = [
   {
     'archive': {
-      'storage': {
-        'bucket': {
-          'field': {
-            'order': 2,
-            'name': 'archive_bucket',
-            'default': '',
-            'kind': 'string'
-          }
-        },
-        'path': {
-          'field': {
-            'order': 3,
-            'name': 'archive_path',
-            'default': '',
-            'kind': 'string'
-          }
-        }
-      },
       'auth': {
         'field': {
           'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
           'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
-        }
-      },
-      'delete': {
-        'field': {
-          'order': 4,
-          'name': 'archive_delete',
-          'default': False,
-          'kind': 'boolean'
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'days': {
         'field': {
-          'order': 1,
           'name': 'archive_days',
           'default': 7,
-          'kind': 'integer'
+          'kind': 'integer',
+          'order': 1
+        }
+      },
+      'delete': {
+        'field': {
+          'name': 'archive_delete',
+          'default': False,
+          'kind': 'boolean',
+          'order': 4
+        }
+      },
+      'storage': {
+        'bucket': {
+          'field': {
+            'name': 'archive_bucket',
+            'default': '',
+            'kind': 'string',
+            'order': 2
+          }
+        },
+        'path': {
+          'field': {
+            'name': 'archive_path',
+            'default': '',
+            'kind': 'string',
+            'order': 3
+          }
         }
       }
     }

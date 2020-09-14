@@ -50,8 +50,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'id_dataset': '',
   'auth_read': 'user',  # Credentials used for reading data.
+  'id_dataset': '',
   'id_query': 'SELECT * FROM `Dataset.Table`;',
   'id_legacy': False,
   'destination_dataset': '',
@@ -64,10 +64,10 @@ TASKS = [
       'auth': {
         'field': {
           'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
           'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'read': {
@@ -75,50 +75,50 @@ TASKS = [
           'bigquery': {
             'dataset': {
               'field': {
-                'order': 4,
                 'name': 'destination_dataset',
                 'default': '',
-                'kind': 'string'
+                'kind': 'string',
+                'order': 4
               }
             },
             'table': {
               'field': {
-                'order': 5,
                 'name': 'destination_table',
                 'default': '',
-                'kind': 'string'
+                'kind': 'string',
+                'order': 5
               }
             }
           }
         },
         'line_items': {
+          'single_cell': True,
           'bigquery': {
-            'legacy': {
-              'field': {
-                'order': 3,
-                'name': 'id_legacy',
-                'default': False,
-                'kind': 'boolean'
-              }
-            },
             'query': {
               'field': {
-                'order': 2,
                 'name': 'id_query',
                 'default': 'SELECT * FROM `Dataset.Table`;',
-                'kind': 'string'
+                'kind': 'string',
+                'order': 2
+              }
+            },
+            'legacy': {
+              'field': {
+                'name': 'id_legacy',
+                'default': False,
+                'kind': 'boolean',
+                'order': 3
               }
             },
             'dataset': {
               'field': {
-                'order': 1,
                 'name': 'id_dataset',
                 'default': '',
-                'kind': 'string'
+                'kind': 'string',
+                'order': 1
               }
             }
-          },
-          'single_cell': True
+          }
         }
       }
     }

@@ -51,8 +51,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'sheet': '',  # Either sheet url or sheet name.
   'auth_read': 'user',  # Credentials used for reading data.
+  'sheet': '',  # Either sheet url or sheet name.
   'tab': '',  # Name of the tab where to put the data.
   'range': '',  # Range in the sheet to place the data, leave blank for whole sheet.
   'dataset': '',  # Existing BigQuery dataset.
@@ -63,72 +63,72 @@ INPUTS = {
 TASKS = [
   {
     'bigquery': {
-      'from': {
-        'legacy': {
-          'field': {
-            'description': 'Use Legacy SQL',
-            'kind': 'boolean',
-            'name': 'legacy',
-            'order': 6,
-            'default': True
-          }
-        },
-        'auth': 'service',
-        'query': {
-          'field': {
-            'description': 'Query to pull data from the table.',
-            'kind': 'text',
-            'name': 'query',
-            'order': 5,
-            'default': ''
-          }
-        },
-        'dataset': {
-          'field': {
-            'description': 'Existing BigQuery dataset.',
-            'kind': 'string',
-            'name': 'dataset',
-            'order': 4,
-            'default': ''
-          }
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'to': {
-        'sheet': {
-          'field': {
-            'description': 'Either sheet url or sheet name.',
-            'kind': 'string',
-            'name': 'sheet',
-            'order': 1,
-            'default': ''
-          }
-        },
         'tab': {
           'field': {
             'description': 'Name of the tab where to put the data.',
-            'kind': 'string',
             'name': 'tab',
-            'order': 2,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 2
+          }
+        },
+        'sheet': {
+          'field': {
+            'description': 'Either sheet url or sheet name.',
+            'name': 'sheet',
+            'default': '',
+            'kind': 'string',
+            'order': 1
           }
         },
         'range': {
           'field': {
             'description': 'Range in the sheet to place the data, leave blank for whole sheet.',
-            'kind': 'string',
             'name': 'range',
-            'order': 3,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 3
           }
         }
       },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+      'from': {
+        'auth': 'service',
+        'query': {
+          'field': {
+            'description': 'Query to pull data from the table.',
+            'name': 'query',
+            'default': '',
+            'kind': 'text',
+            'order': 5
+          }
+        },
+        'legacy': {
+          'field': {
+            'description': 'Use Legacy SQL',
+            'name': 'legacy',
+            'default': True,
+            'kind': 'boolean',
+            'order': 6
+          }
+        },
+        'dataset': {
+          'field': {
+            'description': 'Existing BigQuery dataset.',
+            'name': 'dataset',
+            'default': '',
+            'kind': 'string',
+            'order': 4
+          }
         }
       }
     }

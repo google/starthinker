@@ -244,56 +244,56 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
-            "out": {
-                "sheets": {
-                    "tab": {
-                        "field": {
-                            "description": "Existing tab in sheet to write to.",
-                            "default": "",
-                            "name": "tab",
-                            "kind": "string",
-                            "order": 4
-                        }
-                    },
-                    "range": "A1",
-                    "sheet": {
-                        "field": {
-                            "description": "Full URL to sheet being written to.",
-                            "default": "",
-                            "name": "sheet",
-                            "kind": "string",
-                            "order": 3
-                        }
-                    }
-                }
-            },
             "report": {
                 "report_id": {
                     "field": {
-                        "description": "DV360 report ID given in UI, not needed if name used.",
-                        "default": "",
                         "name": "report_id",
+                        "order": 1,
+                        "default": "",
                         "kind": "integer",
-                        "order": 1
+                        "description": "DV360 report ID given in UI, not needed if name used."
                     }
                 },
                 "name": {
                     "field": {
-                        "description": "Name of report, not needed if ID used.",
-                        "default": "",
                         "name": "report_name",
+                        "order": 2,
+                        "default": "",
                         "kind": "string",
-                        "order": 2
+                        "description": "Name of report, not needed if ID used."
+                    }
+                }
+            },
+            "out": {
+                "sheets": {
+                    "range": "A1",
+                    "sheet": {
+                        "field": {
+                            "name": "sheet",
+                            "order": 3,
+                            "default": "",
+                            "kind": "string",
+                            "description": "Full URL to sheet being written to."
+                        }
+                    },
+                    "tab": {
+                        "field": {
+                            "name": "tab",
+                            "order": 4,
+                            "default": "",
+                            "kind": "string",
+                            "description": "Existing tab in sheet to write to."
+                        }
                     }
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for reading data."
                 }
             }
         }

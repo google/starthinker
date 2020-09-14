@@ -50,12 +50,12 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'client': '',  # Retrieve from a Salesforce App.
-  'password': '',  # Your Salesforce login password.
-  'query': '',  # The query to run in Salesforce.
-  'username': '',  # Your Salesforce user email.
   'secret': '',  # Retrieve from a Salesforce App.
+  'username': '',  # Your Salesforce user email.
+  'client': '',  # Retrieve from a Salesforce App.
+  'query': '',  # The query to run in Salesforce.
   'domain': 'login.salesforce.com',  # Retrieve from a Salesforce Domain.
+  'password': '',  # Your Salesforce login password.
   'auth_read': 'user',  # Credentials used for reading data.
   'dataset': '',  # Existing BigQuery dataset.
   'table': '',  # Table to create from this report.
@@ -65,14 +65,6 @@ INPUTS = {
 TASKS = [
   {
     'salesforce': {
-      'username': {
-        'field': {
-          'description': 'Your Salesforce user email.',
-          'name': 'username',
-          'default': '',
-          'kind': 'email'
-        }
-      },
       'secret': {
         'field': {
           'description': 'Retrieve from a Salesforce App.',
@@ -81,35 +73,20 @@ TASKS = [
           'kind': 'string'
         }
       },
-      'out': {
-        'bigquery': {
-          'dataset': {
-            'field': {
-              'description': 'Existing BigQuery dataset.',
-              'kind': 'string',
-              'name': 'dataset',
-              'order': 3,
-              'default': ''
-            }
-          },
-          'table': {
-            'field': {
-              'description': 'Table to create from this report.',
-              'kind': 'string',
-              'name': 'table',
-              'order': 4,
-              'default': ''
-            }
-          },
-          'schema': {
-            'field': {
-              'description': 'Schema provided in JSON list format or empty list.',
-              'kind': 'json',
-              'name': 'schema',
-              'order': 5,
-              'default': '[]'
-            }
-          }
+      'query': {
+        'field': {
+          'description': 'The query to run in Salesforce.',
+          'name': 'query',
+          'default': '',
+          'kind': 'string'
+        }
+      },
+      'username': {
+        'field': {
+          'description': 'Your Salesforce user email.',
+          'name': 'username',
+          'default': '',
+          'kind': 'email'
         }
       },
       'client': {
@@ -120,6 +97,15 @@ TASKS = [
           'kind': 'string'
         }
       },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
       'domain': {
         'field': {
           'description': 'Retrieve from a Salesforce Domain.',
@@ -128,13 +114,35 @@ TASKS = [
           'kind': 'string'
         }
       },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+      'out': {
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'description': 'Existing BigQuery dataset.',
+              'name': 'dataset',
+              'default': '',
+              'kind': 'string',
+              'order': 3
+            }
+          },
+          'schema': {
+            'field': {
+              'description': 'Schema provided in JSON list format or empty list.',
+              'name': 'schema',
+              'default': '[]',
+              'kind': 'json',
+              'order': 5
+            }
+          },
+          'table': {
+            'field': {
+              'description': 'Table to create from this report.',
+              'name': 'table',
+              'default': '',
+              'kind': 'string',
+              'order': 4
+            }
+          }
         }
       },
       'password': {
@@ -143,14 +151,6 @@ TASKS = [
           'name': 'password',
           'default': '',
           'kind': 'password'
-        }
-      },
-      'query': {
-        'field': {
-          'description': 'The query to run in Salesforce.',
-          'name': 'query',
-          'default': '',
-          'kind': 'string'
         }
       }
     }

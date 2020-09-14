@@ -61,42 +61,42 @@ INPUTS = {
 TASKS = [
   {
     'dataset': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
       'emails': {
         'field': {
           'description': 'Comma separated emails.',
-          'kind': 'string_list',
           'name': 'dataset_emails',
-          'order': 2,
           'default': [
-          ]
-        }
-      },
-      'groups': {
-        'field': {
-          'description': 'Comma separated groups.',
+          ],
           'kind': 'string_list',
-          'name': 'dataset_groups',
-          'order': 3,
-          'default': [
-          ]
+          'order': 2
         }
       },
       'dataset': {
         'field': {
           'description': 'Name of Google BigQuery dataset to create.',
-          'kind': 'string',
           'name': 'dataset_dataset',
-          'order': 1,
-          'default': ''
+          'default': '',
+          'kind': 'string',
+          'order': 1
         }
       },
-      'auth': {
+      'groups': {
         'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
+          'description': 'Comma separated groups.',
+          'name': 'dataset_groups',
+          'default': [
+          ],
+          'kind': 'string_list',
+          'order': 3
         }
       }
     }

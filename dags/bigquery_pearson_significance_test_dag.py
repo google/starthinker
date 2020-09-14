@@ -55,24 +55,24 @@ INPUTS = {
 TASKS = [
   {
     'bigquery': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing function.',
+          'name': 'auth',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 0
+        }
+      },
       'to': {
         'dataset': {
           'field': {
             'description': 'Existing BigQuery dataset.',
-            'kind': 'string',
             'name': 'dataset',
-            'order': 1,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 1
           }
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing function.',
-          'kind': 'authentication',
-          'name': 'auth',
-          'order': 0,
-          'default': 'service'
         }
       },
       'function': 'pearson_significance_test'

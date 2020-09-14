@@ -250,98 +250,98 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/email/run.py" target="_blank">email</a>": {
             "out": {
                 "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "description": "Existing dataset in BigQuery.",
-                            "default": "",
-                            "name": "dataset",
-                            "kind": "string",
-                            "order": 6
-                        }
-                    },
                     "schema": {
                         "field": {
-                            "description": "Schema provided in JSON list format or empty list.",
-                            "default": "[]",
                             "name": "dbm_schema",
+                            "order": 8,
+                            "default": "[]",
                             "kind": "json",
-                            "order": 8
+                            "description": "Schema provided in JSON list format or empty list."
                         }
                     },
                     "table": {
                         "field": {
-                            "description": "Name of table to be written to.",
-                            "default": "",
                             "name": "table",
+                            "order": 7,
+                            "default": "",
                             "kind": "string",
-                            "order": 7
+                            "description": "Name of table to be written to."
                         }
                     },
                     "is_incremental_load": {
                         "field": {
-                            "description": "Append report data to table based on date column, de-duplicates.",
-                            "default": false,
                             "name": "is_incremental_load",
+                            "order": 9,
+                            "default": false,
                             "kind": "boolean",
-                            "order": 9
+                            "description": "Append report data to table based on date column, de-duplicates."
+                        }
+                    },
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "order": 6,
+                            "default": "",
+                            "kind": "string",
+                            "description": "Existing dataset in BigQuery."
                         }
                     }
                 }
             },
             "read": {
-                "link": {
+                "attachment": {
                     "field": {
-                        "description": "Regular expression to match email.",
+                        "name": "attachment",
+                        "order": 5,
                         "default": "",
-                        "name": "link",
                         "kind": "string",
-                        "order": 4
-                    }
-                },
-                "to": {
-                    "field": {
-                        "description": "Must match to field.",
-                        "default": "",
-                        "name": "email_to",
-                        "kind": "string",
-                        "order": 2
+                        "description": "Regular expression to match atttachment."
                     }
                 },
                 "subject": {
                     "field": {
-                        "description": "Regular expression to match subject.",
-                        "default": "",
                         "name": "subject",
+                        "order": 3,
+                        "default": "",
                         "kind": "string",
-                        "order": 3
+                        "description": "Regular expression to match subject."
+                    }
+                },
+                "to": {
+                    "field": {
+                        "name": "email_to",
+                        "order": 2,
+                        "default": "",
+                        "kind": "string",
+                        "description": "Must match to field."
                     }
                 },
                 "from": {
                     "field": {
-                        "description": "Must match from field.",
-                        "default": "",
                         "name": "email_from",
+                        "order": 1,
+                        "default": "",
                         "kind": "string",
-                        "order": 1
+                        "description": "Must match from field."
                     }
                 },
-                "attachment": {
+                "link": {
                     "field": {
-                        "description": "Regular expression to match atttachment.",
+                        "name": "link",
+                        "order": 4,
                         "default": "",
-                        "name": "attachment",
                         "kind": "string",
-                        "order": 5
+                        "description": "Regular expression to match email."
                     }
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for reading data."
                 }
             }
         }

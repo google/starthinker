@@ -249,41 +249,40 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dv360_api/run.py" target="_blank">dv360_api</a>": {
             "advertisers": {
+                "single_cell": true,
                 "values": {
                     "field": {
-                        "description": "Comma separated advertisers ids.",
-                        "default": [],
                         "name": "advertisers",
+                        "order": 2,
+                        "default": [],
                         "kind": "integer_list",
-                        "order": 2
+                        "description": "Comma separated advertisers ids."
                     }
-                },
-                "single_cell": true
+                }
             },
             "out": {
-                "dataset": {
-                    "field": {
-                        "description": "Google BigQuery dataset to create tables in.",
-                        "default": "",
-                        "name": "dataset",
-                        "kind": "string",
-                        "order": 1
-                    }
-                },
                 "auth": {
                     "field": {
-                        "description": "Credentials used for writing data.",
-                        "default": "service",
                         "name": "auth_write",
+                        "order": 1,
+                        "default": "service",
                         "kind": "authentication",
-                        "order": 1
+                        "description": "Credentials used for writing data."
+                    }
+                },
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "order": 1,
+                        "default": "",
+                        "kind": "string",
+                        "description": "Google BigQuery dataset to create tables in."
                     }
                 }
             },
             "endpoints": {
                 "field": {
                     "default": "",
-                    "name": "endpoint",
                     "choices": [
                         "advertisers",
                         "advertisers.campaigns",
@@ -315,28 +314,29 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "targetingTypes.targetingOptions",
                         "users"
                     ],
-                    "kind": "choice"
+                    "kind": "choice",
+                    "name": "endpoint"
                 }
-            },
-            "partners": {
-                "values": {
-                    "field": {
-                        "description": "Comma separated partners ids.",
-                        "default": [],
-                        "name": "partners",
-                        "kind": "integer_list",
-                        "order": 2
-                    }
-                },
-                "single_cell": true
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 1,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for reading data."
+                }
+            },
+            "partners": {
+                "single_cell": true,
+                "values": {
+                    "field": {
+                        "name": "partners",
+                        "order": 2,
+                        "default": [],
+                        "kind": "integer_list",
+                        "description": "Comma separated partners ids."
+                    }
                 }
             }
         }

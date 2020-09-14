@@ -73,91 +73,91 @@ INPUTS = {
 TASKS = [
   {
     'dataset': {
-      'description': 'The dataset will hold log table, Create it exists.',
       'auth': {
         'field': {
           'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
           'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
+        }
+      },
+      'description': 'The dataset will hold log table, Create it exists.',
+      'dataset': {
+        'field': {
+          'description': 'Name of Google BigQuery dataset to create.',
+          'name': 'recipe_slug',
+          'default': '',
+          'kind': 'string',
+          'order': 4
         }
       },
       'hour': [
         1
-      ],
-      'dataset': {
-        'field': {
-          'description': 'Name of Google BigQuery dataset to create.',
-          'kind': 'string',
-          'name': 'recipe_slug',
-          'order': 4,
-          'default': ''
-        }
-      }
+      ]
     }
   },
   {
     'dcm_log': {
-      'description': 'Will create tables with format CM_* to hold each endpoint via a call to the API list function. Exclude reports for its own task.',
       'days': {
         'field': {
           'description': 'Number of days to backfill the log, works on first run only.',
-          'kind': 'integer',
           'name': 'days',
-          'order': 3,
-          'default': 7
+          'default': 7,
+          'kind': 'integer',
+          'order': 3
         }
       },
+      'auth': {
+        'field': {
+          'description': 'Credentials used for reading data.',
+          'name': 'auth_read',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 0
+        }
+      },
+      'accounts': {
+        'single_cell': True,
+        'values': {
+          'field': {
+            'description': 'Comma separated CM account ids.',
+            'name': 'accounts',
+            'default': [
+            ],
+            'kind': 'integer_list',
+            'order': 2
+          }
+        }
+      },
+      'description': 'Will create tables with format CM_* to hold each endpoint via a call to the API list function. Exclude reports for its own task.',
       'out': {
         'auth': {
           'field': {
             'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
             'name': 'auth_write',
-            'order': 1,
-            'default': 'service'
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
           }
         },
         'project': {
           'field': {
             'description': 'Google BigQuery project to create tables in.',
-            'kind': 'string',
             'name': 'recipe_project',
-            'order': 4,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 4
           }
         },
         'dataset': {
           'field': {
             'description': 'Google BigQuery dataset to create tables in.',
-            'kind': 'string',
             'name': 'recipe_slug',
-            'order': 5,
-            'default': ''
+            'default': '',
+            'kind': 'string',
+            'order': 5
           }
-        }
-      },
-      'accounts': {
-        'values': {
-          'field': {
-            'description': 'Comma separated CM account ids.',
-            'kind': 'integer_list',
-            'name': 'accounts',
-            'order': 2,
-            'default': [
-            ]
-          }
-        },
-        'single_cell': True
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 0,
-          'default': 'user'
         }
       },
       'hour': [

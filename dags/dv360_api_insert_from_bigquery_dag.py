@@ -59,8 +59,50 @@ INPUTS = {
 TASKS = [
   {
     'dv360_api': {
+      'auth': {
+        'field': {
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'user',
+          'kind': 'authentication',
+          'order': 0
+        }
+      },
+      'bigquery': {
+        'auth': {
+          'field': {
+            'description': 'Credentials used for reading data.',
+            'name': 'auth_read',
+            'default': 'service',
+            'kind': 'authentication',
+            'order': 1
+          }
+        },
+        'as_object': True,
+        'dataset': {
+          'field': {
+            'description': 'Google BigQuery dataset to create tables in.',
+            'name': 'dataset',
+            'default': '',
+            'kind': 'string',
+            'order': 2
+          }
+        },
+        'table': {
+          'field': {
+            'description': 'Google BigQuery dataset to create tables in.',
+            'name': 'table',
+            'default': '',
+            'kind': 'string',
+            'order': 3
+          }
+        }
+      },
       'insert': {
         'field': {
+          'name': 'insert',
+          'default': '',
+          'kind': 'choice',
           'choices': [
             'advertisers',
             'advertisers.campaigns',
@@ -77,49 +119,7 @@ TASKS = [
             'inventorySourceGroups',
             'partners.channels',
             'users'
-          ],
-          'name': 'insert',
-          'default': '',
-          'kind': 'choice'
-        }
-      },
-      'bigquery': {
-        'as_object': True,
-        'auth': {
-          'field': {
-            'description': 'Credentials used for reading data.',
-            'kind': 'authentication',
-            'name': 'auth_read',
-            'order': 1,
-            'default': 'service'
-          }
-        },
-        'dataset': {
-          'field': {
-            'description': 'Google BigQuery dataset to create tables in.',
-            'kind': 'string',
-            'name': 'dataset',
-            'order': 2,
-            'default': ''
-          }
-        },
-        'table': {
-          'field': {
-            'description': 'Google BigQuery dataset to create tables in.',
-            'kind': 'string',
-            'name': 'table',
-            'order': 3,
-            'default': ''
-          }
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 0,
-          'default': 'user'
+          ]
         }
       }
     }

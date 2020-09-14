@@ -60,40 +60,40 @@ INPUTS = {
 TASKS = [
   {
     'bucket': {
-      'emails': {
+      'auth': {
         'field': {
-          'description': 'Comma separated emails.',
-          'kind': 'string_list',
-          'name': 'bucket_emails',
-          'order': 3,
-          'default': ''
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'bucket': {
         'field': {
           'description': 'Name of Google Cloud Bucket to create.',
-          'kind': 'string',
           'name': 'bucket_bucket',
-          'order': 2,
-          'default': ''
+          'default': '',
+          'kind': 'string',
+          'order': 2
         }
       },
-      'auth': {
+      'emails': {
         'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
+          'description': 'Comma separated emails.',
+          'name': 'bucket_emails',
+          'default': '',
+          'kind': 'string_list',
+          'order': 3
         }
       },
       'groups': {
         'field': {
           'description': 'Comma separated groups.',
-          'kind': 'string_list',
           'name': 'bucket_groups',
-          'order': 4,
-          'default': ''
+          'default': '',
+          'kind': 'string_list',
+          'order': 4
         }
       }
     }

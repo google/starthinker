@@ -58,31 +58,31 @@ INPUTS = {
 TASKS = [
   {
     'iam': {
-      'email': {
+      'auth': {
         'field': {
-          'description': 'Email address to grant role to.',
-          'kind': 'string',
-          'name': 'email',
-          'order': 2,
-          'default': ''
+          'description': 'Credentials used for writing data.',
+          'name': 'auth_write',
+          'default': 'service',
+          'kind': 'authentication',
+          'order': 1
         }
       },
       'role': {
         'field': {
           'description': 'projects/[project name]/roles/[role name]',
-          'kind': 'string',
           'name': 'role',
-          'order': 1,
-          'default': ''
+          'default': '',
+          'kind': 'string',
+          'order': 1
         }
       },
-      'auth': {
+      'email': {
         'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
+          'description': 'Email address to grant role to.',
+          'name': 'email',
+          'default': '',
+          'kind': 'string',
+          'order': 2
         }
       }
     }

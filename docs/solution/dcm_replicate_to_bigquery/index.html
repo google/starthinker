@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>March 3, 2020 (6 months, 1 week)</td>
+              <td>March 3, 2020 (6 months, 2 weeks)</td>
             </tr>
 
             <tr>
@@ -253,125 +253,125 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/drive/run.py" target="_blank">drive</a>": {
             "copy": {
+                "source": "https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/",
                 "destination": {
                     "field": {
-                        "prefix": "CM Replicate For ",
                         "default": "",
-                        "name": "recipe_name",
                         "order": 1,
                         "description": "Name of document to deploy to.",
-                        "kind": "string"
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "prefix": "CM Replicate For "
                     }
-                },
-                "source": "https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/"
+                }
             },
             "auth": "user"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
-            "dataset": {
-                "field": {
-                    "description": "Name of Google BigQuery dataset to create.",
-                    "default": "",
-                    "name": "recipe_slug",
-                    "kind": "string",
-                    "order": 2
-                }
-            },
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
-                    "default": "service",
                     "name": "auth_write",
+                    "order": 1,
+                    "default": "service",
                     "kind": "authentication",
-                    "order": 1
+                    "description": "Credentials used for writing data."
+                }
+            },
+            "dataset": {
+                "field": {
+                    "name": "recipe_slug",
+                    "order": 2,
+                    "default": "",
+                    "kind": "string",
+                    "description": "Name of Google BigQuery dataset to create."
                 }
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm_replicate/run.py" target="_blank">dcm_replicate</a>": {
-            "out": {
-                "bigquery": {
-                    "dataset": {
-                        "field": {
-                            "default": "",
-                            "name": "recipe_slug",
-                            "kind": "string",
-                            "order": 4
-                        }
-                    },
-                    "is_incremental_load": {
-                        "field": {
-                            "description": "Append report data to existing table, requires Date column.",
-                            "default": false,
-                            "name": "Aggregate",
-                            "kind": "boolean",
-                            "order": 7
-                        }
-                    }
-                }
-            },
             "report": {
                 "id": {
                     "field": {
-                        "description": "CM template report id, for template",
-                        "default": "",
                         "name": "report_id",
-                        "kind": "integer",
-                        "order": 4
-                    }
-                },
-                "name": {
-                    "field": {
-                        "description": "CM template report name, empty if using id instead.",
+                        "order": 4,
                         "default": "",
-                        "name": "report_name",
-                        "kind": "string",
-                        "order": 5
-                    }
-                },
-                "delete": {
-                    "field": {
-                        "description": "Use only to reset the reports if setup changes.",
-                        "default": false,
-                        "name": "delete",
-                        "kind": "boolean",
-                        "order": 6
+                        "kind": "integer",
+                        "description": "CM template report id, for template"
                     }
                 },
                 "account": {
                     "field": {
-                        "description": "CM network id.",
-                        "default": "",
                         "name": "account",
+                        "order": 3,
+                        "default": "",
                         "kind": "integer",
-                        "order": 3
+                        "description": "CM network id."
+                    }
+                },
+                "delete": {
+                    "field": {
+                        "name": "delete",
+                        "order": 6,
+                        "default": false,
+                        "kind": "boolean",
+                        "description": "Use only to reset the reports if setup changes."
+                    }
+                },
+                "name": {
+                    "field": {
+                        "name": "report_name",
+                        "order": 5,
+                        "default": "",
+                        "kind": "string",
+                        "description": "CM template report name, empty if using id instead."
                     }
                 }
             },
-            "in": {
-                "tab": "Accounts",
-                "sheet": {
-                    "field": {
-                        "prefix": "CM Replicate For ",
-                        "default": "",
-                        "name": "recipe_name",
-                        "order": 1,
-                        "description": "Sheet to read ids from.",
-                        "kind": "string"
+            "out": {
+                "bigquery": {
+                    "is_incremental_load": {
+                        "field": {
+                            "name": "Aggregate",
+                            "order": 7,
+                            "default": false,
+                            "kind": "boolean",
+                            "description": "Append report data to existing table, requires Date column."
+                        }
+                    },
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_slug",
+                            "default": "",
+                            "kind": "string",
+                            "order": 4
+                        }
                     }
                 }
             },
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
                     "name": "auth_read",
+                    "order": 0,
+                    "default": "user",
                     "kind": "authentication",
-                    "order": 0
+                    "description": "Credentials used for reading data."
                 }
+            },
+            "in": {
+                "sheet": {
+                    "field": {
+                        "default": "",
+                        "description": "Sheet to read ids from.",
+                        "order": 1,
+                        "name": "recipe_name",
+                        "prefix": "CM Replicate For ",
+                        "kind": "string"
+                    }
+                },
+                "tab": "Accounts"
             }
         }
     }
