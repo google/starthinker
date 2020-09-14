@@ -172,7 +172,7 @@
     }},
     { "dataset":{
       "__comment__":"Create a dataset for testing.",
-      "auth":"user",
+      "auth":"service",
       "dataset":"Test"
     }},
     { "sheets":{
@@ -183,6 +183,7 @@
       "range":"A1:C",
       "header":true,
       "out":{
+        "auth": "service",
         "bigquery":{
           "dataset":"Test",
           "table":"Sheet_To_BigQuery",
@@ -196,7 +197,7 @@
     }},
     { "test": {
       "__comment__":"Verify that the data was moved with the proper schema and values.",
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
         "dataset":"Test",
         "table":"Sheet_To_BigQuery",
