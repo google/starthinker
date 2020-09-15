@@ -31,6 +31,8 @@ set to '.', to mimic python dot notation.
 
 """
 
+from airflow.operators.bash_operator import BashOperator
+
 import re
 from datetime import datetime, date
 from importlib import import_module
@@ -57,7 +59,7 @@ class DAG_Factory():
 
     ```
     from starthinker_airflow.factory import DAG_Factory
-    dag = DAG_Factory('[path to a StarThinker JSON recipe]').execute()
+    dag = DAG_Factory([StarThinker recipe JSON]).execute()
     ```
 
   """
@@ -117,6 +119,8 @@ class DAG_Factory():
             'extra__google_cloud_platform__project']
 
   def python_task(self, function, instance):
+    print('ST TASK:', function, instance)
+
     PythonOperator(
         task_id='%s_%d' % (function, instance),
         python_callable=getattr(
@@ -127,23 +131,26 @@ class DAG_Factory():
         },
         dag=self.dag)
 
-  def airflow_task(self, function, instance, parameters):
-    af_source, af_module = parameters.items()[0]
-    af_module, af_operator = af_module.items()[0]
-    af_operator, af_parameters = af_operator.items()[0]
+  def airflow_task(self, task, instance, parameters):
+    print('AF TASK:', task, instance)
 
-    if af_source == 'operator':
-      af_source = 'starthinker_airflow.operators'
+    def airflow_import_unroll(definition):
+      return next(iter([i for i in definition.items() if i[0] != '__comment__']))
 
-    operator = getattr(
-        import_module('%s.%s' % (af_source, af_module)), af_operator)
+    af_path, af_module = airflow_import_unroll(parameters)
+    af_module, af_operator = airflow_import_unroll(af_module)
+    af_operator, af_parameters = airflow_import_unroll(af_operator)
+
+    operator = getattr(import_module('%s.%s.%s' % (task, af_path, af_module)), af_operator)
 
     af_parameters['dag'] = self.dag
-    af_parameters['task_id'] = '%s_%d' % (function, instance)
+    af_parameters['task_id'] = '%s_%d' % (task, instance)
 
     operator(**af_parameters)
 
   def execute(self):
+    print('DAG:', self.dag_name)
+
     self.dag = DAG(
         dag_id=self.dag_name,
         default_args={
@@ -162,17 +169,18 @@ class DAG_Factory():
       instances[function] += 1
 
       # if airflow operator
-      if function in ('airflow', 'operator'):
-        self.airflow_task(function, instances[function], task)
+      if function in ('airflow', 'starthinker_airflow'):
+        self.airflow_task(function, instances[function], task[function])
 
       # if native python operator
       else:
         self.python_task(function, instances[function])
 
+    print('DONE')
     return self.dag
 
   def schedule(self):
-    # for now simplest case is to execute all tsks sequentially
+    # for now simplest case is to execute all tasks sequentially
     pass
 
   def print_commandline(self):
