@@ -20,19 +20,31 @@
 
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
 
 REQUIREMENTS = [
-    'google-api-python-client', 'google-auth-oauthlib', 'jsonpickle', 'pysftp',
-    'pytz', 'tzlocal', 'TwitterAPI', 'python-dateutil', 'pandas', 'psutil',
-    'moviepy', 'py-xlsx', 'simple-salesforce'
+    'google-api-python-client',
+    'google-auth',
+    'google-auth-oauthlib',
+    'google-auth-httplib2',
+    'google-cloud-bigquery',
+    'pysftp',
+    'pytz',
+    'tzlocal',
+    'TwitterAPI',
+    'python-dateutil',
+    'pandas',
+    'psutil',
+    'moviepy==1.0.0',
+    'py-xlsx',
+    'simple-salesforce',
+    'smartsheet-python-sdk'
 ]
-
-#TEST_REQUIREMENTS = []
 
 setup(
     name='starthinker',
-    version='1.0.3',
+    version='1.0.4',
     description='StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components.',
     long_description='StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components. To make it easier for partners and clients to work with some of our advertsing solutions, the gTech team has open sourced this framework as a reference implementation.  Our goal is to make managing data workflows using Google Cloud as fast and re-usable as possible, allowing teams to focus on building advertising solutions.',
     author='Paul Kenjora',
@@ -66,7 +78,5 @@ setup(
         'License :: OSI Approved :: Apache License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-    ],
-    #test_suite='tests',
-    #tests_require=TEST_REQUIREMENTS,
+    ]
 )
