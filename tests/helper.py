@@ -72,7 +72,7 @@ def load_tests():
         yield filename, get_project(TEST_DIRECTORY + filename)
 
 
-def configure_tests(scripts, tests):
+def configure_tests(scripts, tests, skips):
   """Initialize all the necessary test files for Starthinker
 
   Args: None
@@ -128,7 +128,9 @@ def configure_tests(scripts, tests):
   recipes = []
   for filename, script in scripts:
     name = filename.split('.')[0]
-    if tests and name not in tests:
+    if tests and name not in tests: 
+      continue
+    if name in skips: 
       continue
 
     # Set config field values into the script
@@ -169,8 +171,7 @@ def configure_tests(scripts, tests):
 
   return recipes
 
-
-def run_tests(scripts, recipes, tests):
+def run_tests(scripts, recipes, tests, skips):
 
   if not tests:
     print('CLEAR LOGS')
@@ -181,8 +182,9 @@ def run_tests(scripts, recipes, tests):
 
   jobs = []
   for recipe in recipes:
-    if tests and recipe.split('.')[0] not in tests:
-      continue
+    if tests and recipe.split('.')[0] not in tests: continue
+    if recipe.split('.')[0] in skips: continue
+
     command = [
         '%s/starthinker_virtualenv/bin/python' % UI_ROOT,
         '-W',
@@ -267,22 +269,10 @@ def generate_include(script_file):
 
 def tests():
   parser = argparse.ArgumentParser()
-  parser.add_argument(
-      '-c',
-      '--configure',
-      help='Configure test in starthinker_assets/tests.json only.',
-      action='store_true')
-  parser.add_argument(
-      '-t',
-      '--tests',
-      nargs='*',
-      help='Run only these tests, name of test from scripts without .json part.'
-  )
-  parser.add_argument(
-      '-i',
-      '--include',
-      help='Create an include file for the script, used in tests.',
-      default=None)
+  parser.add_argument('-c', '--configure', help='Configure test in starthinker_assets/tests.json only.', action='store_true')
+  parser.add_argument('-t', '--tests', nargs='*', help='Run only these tests, name of test from scripts.')
+  parser.add_argument('-s', '--skips', nargs='*', help='Skip these tests, name of test from scripts.')
+  parser.add_argument('-i', '--include', help='Create an include file for the script, used in tests.', default=None)
 
   args = parser.parse_args()
 
@@ -294,12 +284,13 @@ def tests():
   else:
     scripts = list(load_tests())
     tests = [t.split('.')[0] for t in (args.tests or [])]
+    skips = [t.split('.')[0] for t in (args.skips or [])]
 
     if args.configure:
-      configure_tests(scripts, tests)
+      configure_tests(scripts, tests, skips)
     else:
-      recipes = configure_tests(scripts, tests)
-      run_tests(scripts, recipes, tests)
+      recipes = configure_tests(scripts, tests, skips)
+      run_tests(scripts, recipes, tests, skips)
 
 
 if __name__ == '__main__':
