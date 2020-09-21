@@ -85,7 +85,8 @@ def bigquery():
           project.task['auth'],
           project.id,
           project.task['from']['dataset'],
-          project.task['from']['query'],
+          query_parameters(project.task['from']['query'],
+                           project.task['from'].get('parameters')),
           legacy=project.task['from'].get('legacy', True))
 
       # makes sure types are correct in sheet
@@ -103,7 +104,8 @@ def bigquery():
           project.task['auth'],
           project.id,
           project.task['from']['dataset'],
-          project.task['from']['query'],
+          query_parameters(project.task['from']['query'],
+                           project.task['from'].get('parameters')),
           legacy=project.task['from'].get('use_legacy_sql', True))
 
       if rows:
