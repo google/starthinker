@@ -21,7 +21,10 @@ import json
 from difflib import Differ
 
 from starthinker.util.project import project
-from starthinker.util.bigquery import table_to_schema, table_to_rows, query_to_rows
+from starthinker.util.bigquery import table_to_rows
+from starthinker.util.bigquery import table_to_schema
+from starthinker.util.bigquery import query_parameters
+from starthinker.util.bigquery import query_to_rows
 from starthinker.util.sheets import sheets_read
 from starthinker.util.storage import object_exists, object_delete
 from starthinker.util.drive import file_exists, file_delete
@@ -130,9 +133,13 @@ def bigquery():
 
   # if query given check it
   if 'query' in project.task['bigquery']:
-    rows = query_to_rows(project.task['auth'], project.id,
-                         project.task['bigquery']['dataset'],
-                         project.task['bigquery']['query'])
+    rows = query_to_rows(
+        project.task['auth'],
+        project.id,
+        project.task['bigquery']['dataset'],
+        query_parameters(project.task['bigquery']['query'],
+                         project.task['bigquery'].get('parameters')),
+    )
 
     object_compare(sorted(rows), sorted(project.task['bigquery']['values']))
 
