@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -39,42 +41,44 @@ Add this card to a recipe and save it.
 Then click <strong>Run Now</strong> to deploy.
 Follow the instructions in the sheet for setup.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'recipe_name': '',  # Name of document to deploy to.
+  'recipe_name': '',  # Name of document to deploy to.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'drive': {
-        'auth': 'user',
-        'copy': {
-            'source':
-                'https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/',
-            'destination': {
-                'field': {
-                    'name': 'recipe_name',
-                    'default': '',
-                    'description': 'Name of document to deploy to.',
-                    'prefix': 'Key Value Uploader For ',
-                    'kind': 'string',
-                    'order': 1
-                }
-            }
+      'hour': [
+      ],
+      'copy': {
+        'destination': {
+          'field': {
+            'description': 'Name of document to deploy to.',
+            'prefix': 'Key Value Uploader For ',
+            'order': 1,
+            'kind': 'string',
+            'name': 'recipe_name',
+            'default': ''
+          }
         },
-        'hour': []
+        'source': 'https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/'
+      },
+      'auth': 'user'
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('kv_uploader', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('kv_uploader', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

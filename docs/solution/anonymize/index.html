@@ -230,15 +230,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Account Health</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Time Savings</td>
                    <td>
                      <div class="progress">
@@ -249,6 +240,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                
                  <tr>
                    <td>Spend Optimization</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 0%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Account Health</td>
                    <td>
                      <div class="progress">
                        <div class="determinate" style="width: 0%"></div>
@@ -336,52 +336,52 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/anonymize/run.py" target="_blank">anonymize</a>": {
-            "bigquery": {
-                "to": {
-                    "project": {
-                        "field": {
-                            "name": "to_project",
-                            "order": 3,
-                            "default": null,
-                            "kind": "string",
-                            "description": "Anonymous data will be writen to."
-                        }
-                    },
-                    "dataset": {
-                        "field": {
-                            "name": "to_dataset",
-                            "kind": "string",
-                            "order": 4,
-                            "description": "Anonymous data will be writen to."
-                        }
-                    }
-                },
-                "from": {
-                    "project": {
-                        "field": {
-                            "name": "from_project",
-                            "kind": "string",
-                            "order": 1,
-                            "description": "Original project to copy from."
-                        }
-                    },
-                    "dataset": {
-                        "field": {
-                            "name": "from_dataset",
-                            "kind": "string",
-                            "order": 2,
-                            "description": "Original dataset to copy from."
-                        }
-                    }
-                }
-            },
             "auth": {
                 "field": {
-                    "name": "auth_read",
+                    "description": "Credentials used for reading data.",
                     "order": 1,
                     "default": "service",
                     "kind": "authentication",
-                    "description": "Credentials used for reading data."
+                    "name": "auth_read"
+                }
+            },
+            "bigquery": {
+                "from": {
+                    "project": {
+                        "field": {
+                            "description": "Original project to copy from.",
+                            "order": 1,
+                            "kind": "string",
+                            "name": "from_project"
+                        }
+                    },
+                    "dataset": {
+                        "field": {
+                            "description": "Original dataset to copy from.",
+                            "order": 2,
+                            "kind": "string",
+                            "name": "from_dataset"
+                        }
+                    }
+                },
+                "to": {
+                    "project": {
+                        "field": {
+                            "description": "Anonymous data will be writen to.",
+                            "order": 3,
+                            "default": null,
+                            "kind": "string",
+                            "name": "to_project"
+                        }
+                    },
+                    "dataset": {
+                        "field": {
+                            "description": "Anonymous data will be writen to.",
+                            "order": 4,
+                            "kind": "string",
+                            "name": "to_dataset"
+                        }
+                    }
                 }
             }
         }

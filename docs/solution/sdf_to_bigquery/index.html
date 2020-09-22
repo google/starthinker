@@ -254,26 +254,41 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
             "auth": {
                 "field": {
-                    "name": "auth_write",
+                    "description": "Credentials used for writing data.",
                     "order": 1,
                     "default": "service",
                     "kind": "authentication",
-                    "description": "Credentials used for writing data."
+                    "name": "auth_write"
                 }
             },
             "dataset": {
                 "field": {
-                    "name": "dataset",
+                    "description": "Dataset to be written to in BigQuery.",
                     "order": 6,
                     "default": "",
                     "kind": "string",
-                    "description": "Dataset to be written to in BigQuery."
+                    "name": "dataset"
                 }
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sdf/run.py" target="_blank">sdf</a>": {
+            "auth": "user",
+            "read": {
+                "filter_ids": {
+                    "single_cell": true,
+                    "values": {
+                        "field": {
+                            "description": "Comma separated list of filter ids for the request.",
+                            "order": 4,
+                            "default": [],
+                            "kind": "integer_list",
+                            "name": "filter_ids"
+                        }
+                    }
+                }
+            },
             "filter_type": {
                 "field": {
                     "default": "",
@@ -284,45 +299,10 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "FILTER_TYPE_MEDIA_PRODUCT_ID",
                         "FILTER_TYPE_LINE_ITEM_ID"
                     ],
-                    "order": 3,
+                    "kind": "choice",
                     "name": "filter_type",
-                    "description": "The filter type for the filter ids.",
-                    "kind": "choice"
-                }
-            },
-            "partner_id": {
-                "field": {
-                    "name": "partner_id",
-                    "kind": "integer",
-                    "order": 1,
-                    "description": "The sdf file types."
-                }
-            },
-            "file_types": {
-                "field": {
-                    "name": "file_types",
-                    "order": 2,
-                    "default": [],
-                    "kind": "string_list",
-                    "description": "The sdf file types."
-                }
-            },
-            "time_partitioned_table": {
-                "field": {
-                    "name": "time_partitioned_table",
-                    "order": 7,
-                    "default": false,
-                    "kind": "boolean",
-                    "description": "Is the end table a time partitioned"
-                }
-            },
-            "dataset": {
-                "field": {
-                    "name": "dataset",
-                    "order": 6,
-                    "default": "",
-                    "kind": "string",
-                    "description": "Dataset to be written to in BigQuery."
+                    "order": 3,
+                    "description": "The filter type for the filter ids."
                 }
             },
             "version": {
@@ -332,43 +312,63 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "SDF_VERSION_5",
                         "SDF_VERSION_5_1"
                     ],
-                    "order": 6,
+                    "kind": "choice",
                     "name": "version",
-                    "description": "The sdf version to be returned.",
-                    "kind": "choice"
+                    "order": 6,
+                    "description": "The sdf version to be returned."
                 }
             },
-            "create_single_day_table": {
+            "file_types": {
                 "field": {
-                    "name": "create_single_day_table",
-                    "order": 8,
+                    "description": "The sdf file types.",
+                    "order": 2,
+                    "default": [],
+                    "kind": "string_list",
+                    "name": "file_types"
+                }
+            },
+            "time_partitioned_table": {
+                "field": {
+                    "description": "Is the end table a time partitioned",
+                    "order": 7,
                     "default": false,
                     "kind": "boolean",
-                    "description": "Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF."
+                    "name": "time_partitioned_table"
                 }
             },
-            "auth": "user",
-            "read": {
-                "filter_ids": {
-                    "single_cell": true,
-                    "values": {
-                        "field": {
-                            "name": "filter_ids",
-                            "order": 4,
-                            "default": [],
-                            "kind": "integer_list",
-                            "description": "Comma separated list of filter ids for the request."
-                        }
-                    }
+            "dataset": {
+                "field": {
+                    "description": "Dataset to be written to in BigQuery.",
+                    "order": 6,
+                    "default": "",
+                    "kind": "string",
+                    "name": "dataset"
                 }
             },
             "table_suffix": {
                 "field": {
-                    "name": "table_suffix",
+                    "description": "Optional: Suffix string to put at the end of the table name (Must contain alphanumeric or underscores)",
                     "order": 6,
                     "default": "",
                     "kind": "string",
-                    "description": "Optional: Suffix string to put at the end of the table name (Must contain alphanumeric or underscores)"
+                    "name": "table_suffix"
+                }
+            },
+            "partner_id": {
+                "field": {
+                    "description": "The sdf file types.",
+                    "order": 1,
+                    "kind": "integer",
+                    "name": "partner_id"
+                }
+            },
+            "create_single_day_table": {
+                "field": {
+                    "description": "Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF.",
+                    "order": 8,
+                    "default": false,
+                    "kind": "boolean",
+                    "name": "create_single_day_table"
                 }
             }
         }

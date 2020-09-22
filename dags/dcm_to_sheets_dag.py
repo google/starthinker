@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -40,87 +42,89 @@ Specify either report name or report id to move a report.
 The most recent valid file will be moved to the sheet.
 Schema is pulled from the official CM specification.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_read': 'user',  # Credentials used for reading data.
-    'account': '',
-    'report_id': '',
-    'report_name': '',
-    'sheet': '',
-    'tab': '',
+  'auth_read': 'user',  # Credentials used for reading data.
+  'account': '',
+  'report_id': '',
+  'report_name': '',
+  'sheet': '',
+  'tab': '',
 }
 
-TASKS = [{
+TASKS = [
+  {
     'dcm': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for reading data.',
-                'name': 'auth_read',
-                'default': 'user',
-                'kind': 'authentication',
-                'order': 1
-            }
+      'report': {
+        'name': {
+          'field': {
+            'order': 4,
+            'kind': 'string',
+            'name': 'report_name',
+            'default': ''
+          }
         },
-        'out': {
-            'sheets': {
-                'tab': {
-                    'field': {
-                        'name': 'tab',
-                        'default': '',
-                        'kind': 'string',
-                        'order': 6
-                    }
-                },
-                'sheet': {
-                    'field': {
-                        'name': 'sheet',
-                        'default': '',
-                        'kind': 'string',
-                        'order': 5
-                    }
-                },
-                'range': 'A1'
-            }
+        'report_id': {
+          'field': {
+            'order': 3,
+            'kind': 'integer',
+            'name': 'report_id',
+            'default': ''
+          }
         },
-        'report': {
-            'report_id': {
-                'field': {
-                    'name': 'report_id',
-                    'default': '',
-                    'kind': 'integer',
-                    'order': 3
-                }
-            },
-            'name': {
-                'field': {
-                    'name': 'report_name',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 4
-                }
-            },
-            'account': {
-                'field': {
-                    'name': 'account',
-                    'default': '',
-                    'kind': 'integer',
-                    'order': 2
-                }
-            }
+        'account': {
+          'field': {
+            'order': 2,
+            'kind': 'integer',
+            'name': 'account',
+            'default': ''
+          }
         }
+      },
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'user'
+        }
+      },
+      'out': {
+        'sheets': {
+          'range': 'A1',
+          'sheet': {
+            'field': {
+              'order': 5,
+              'kind': 'string',
+              'name': 'sheet',
+              'default': ''
+            }
+          },
+          'tab': {
+            'field': {
+              'order': 6,
+              'kind': 'string',
+              'name': 'tab',
+              'default': ''
+            }
+          }
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('dcm_to_sheets', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('dcm_to_sheets', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

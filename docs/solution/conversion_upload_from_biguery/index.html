@@ -252,9 +252,61 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/conversion_upload/run.py" target="_blank">conversion_upload</a>": {
+            "auth": {
+                "field": {
+                    "description": "Credentials used for reading data.",
+                    "order": 1,
+                    "default": "user",
+                    "kind": "authentication",
+                    "name": "auth_read"
+                }
+            },
+            "activity_id": {
+                "field": {
+                    "name": "floodlight_activity_id",
+                    "kind": "integer",
+                    "default": "",
+                    "order": 1
+                }
+            },
+            "account_id": {
+                "field": {
+                    "name": "account",
+                    "kind": "string",
+                    "default": "",
+                    "order": 0
+                }
+            },
+            "bigquery": {
+                "dataset": {
+                    "field": {
+                        "name": "bigquery_dataset",
+                        "kind": "string",
+                        "default": "",
+                        "order": 6
+                    }
+                },
+                "table": {
+                    "field": {
+                        "name": "bigquery_table",
+                        "kind": "string",
+                        "default": "",
+                        "order": 7
+                    }
+                },
+                "legacy": {
+                    "field": {
+                        "name": "bigquery_legacy",
+                        "kind": "boolean",
+                        "default": true,
+                        "order": 8
+                    }
+                }
+            },
             "conversion_type": {
                 "field": {
                     "name": "floodlight_conversion_type",
+                    "kind": "choice",
                     "default": "encryptedUserId",
                     "choices": [
                         "encryptedUserId",
@@ -262,27 +314,14 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "gclid",
                         "mobileDeviceId"
                     ],
-                    "kind": "choice",
                     "order": 2
                 }
             },
             "encryptionInfo": {
-                "encryptionSource": {
-                    "field": {
-                        "name": "encryption_entity_source",
-                        "default": "DATA_TRANSFER",
-                        "choices": [
-                            "AD_SERVING",
-                            "DATA_TRANSFER",
-                            "ENCRYPTION_SCOPE_UNKNOWN"
-                        ],
-                        "kind": "choice",
-                        "order": 5
-                    }
-                },
                 "encryptionEntityType": {
                     "field": {
                         "name": "encryption_entity_type",
+                        "kind": "choice",
                         "default": "DCM_ACCOUNT",
                         "choices": [
                             "ADWORDS_CUSTOMER",
@@ -292,67 +331,28 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "DCM_ADVERTISER",
                             "ENCRYPTION_ENTITY_TYPE_UNKNOWN"
                         ],
-                        "kind": "choice",
                         "order": 4
                     }
                 },
                 "encryptionEntityId": {
                     "field": {
                         "name": "encryption_entity_id",
-                        "default": "",
                         "kind": "integer",
+                        "default": "",
                         "order": 3
                     }
-                }
-            },
-            "activity_id": {
-                "field": {
-                    "name": "floodlight_activity_id",
-                    "default": "",
-                    "kind": "integer",
-                    "order": 1
-                }
-            },
-            "account_id": {
-                "field": {
-                    "name": "account",
-                    "default": "",
-                    "kind": "string",
-                    "order": 0
-                }
-            },
-            "auth": {
-                "field": {
-                    "name": "auth_read",
-                    "order": 1,
-                    "default": "user",
-                    "kind": "authentication",
-                    "description": "Credentials used for reading data."
-                }
-            },
-            "bigquery": {
-                "table": {
-                    "field": {
-                        "name": "bigquery_table",
-                        "default": "",
-                        "kind": "string",
-                        "order": 7
-                    }
                 },
-                "dataset": {
+                "encryptionSource": {
                     "field": {
-                        "name": "bigquery_dataset",
-                        "default": "",
-                        "kind": "string",
-                        "order": 6
-                    }
-                },
-                "legacy": {
-                    "field": {
-                        "name": "bigquery_legacy",
-                        "default": true,
-                        "kind": "boolean",
-                        "order": 8
+                        "name": "encryption_entity_source",
+                        "kind": "choice",
+                        "default": "DATA_TRANSFER",
+                        "choices": [
+                            "AD_SERVING",
+                            "DATA_TRANSFER",
+                            "ENCRYPTION_SCOPE_UNKNOWN"
+                        ],
+                        "order": 5
                     }
                 }
             }

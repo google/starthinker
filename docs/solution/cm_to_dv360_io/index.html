@@ -230,15 +230,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Account Health</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Time Savings</td>
                    <td>
                      <div class="progress">
@@ -252,6 +243,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                    <td>
                      <div class="progress">
                        <div class="determinate" style="width: 100%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Account Health</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 0%"></div>
                      </div>
                    </td>
                  </tr>
@@ -289,7 +289,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Sept. 1, 2020 (1 week, 6 days)</td>
+              <td>Sept. 1, 2020 (3 weeks)</td>
             </tr>
 
             <tr>
@@ -351,81 +351,72 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "auth": "service",
             "dataset": {
                 "field": {
-                    "name": "recipe_slug",
+                    "description": "Place where tables will be created in BigQuery.",
                     "kind": "string",
-                    "description": "Place where tables will be created in BigQuery."
+                    "name": "recipe_slug"
                 }
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
-            "sheet": "BB Demo",
-            "tab": "Rules",
-            "range": "A1:C",
+            "auth": "user",
             "out": {
+                "auth": "service",
                 "bigquery": {
-                    "table": "Rules",
                     "dataset": {
                         "field": {
-                            "name": "recipe_slug",
+                            "description": "Place where tables will be created in BigQuery.",
                             "kind": "string",
-                            "description": "Place where tables will be created in BigQuery."
+                            "name": "recipe_slug"
                         }
-                    }
-                },
-                "auth": "service"
+                    },
+                    "table": "Rules"
+                }
             },
             "header": true,
-            "auth": "user"
+            "tab": "Rules",
+            "sheet": "BB Demo",
+            "range": "A1:C"
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dv360_api/run.py" target="_blank">dv360_api</a>": {
+            "auth": "user",
             "advertisers": {
                 "single_cell": true,
                 "values": {
                     "field": {
-                        "name": "dv360_advertisers",
+                        "description": "Comma seperated.",
                         "kind": "integer_list",
-                        "description": "Comma seperated."
-                    }
-                }
-            },
-            "out": {
-                "auth": "service",
-                "dataset": {
-                    "field": {
-                        "name": "recipe_slug",
-                        "kind": "string",
-                        "description": "Place where tables will be created in BigQuery."
+                        "name": "dv360_advertisers"
                     }
                 }
             },
             "endpoints": [
                 "advertisers.insertionOrders"
             ],
-            "auth": "user"
-        }
-    },
-    {
-        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm_api/run.py" target="_blank">dcm_api</a>": {
-            "accounts": {
-                "values": {
-                    "field": {
-                        "name": "cm_account",
-                        "kind": "integer_list",
-                        "description": "Comma seperated."
-                    }
-                }
-            },
             "out": {
                 "auth": "service",
                 "dataset": {
                     "field": {
-                        "name": "recipe_slug",
+                        "description": "Place where tables will be created in BigQuery.",
                         "kind": "string",
-                        "description": "Place where tables will be created in BigQuery."
+                        "name": "recipe_slug"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm_api/run.py" target="_blank">dcm_api</a>": {
+            "auth": "user",
+            "accounts": {
+                "values": {
+                    "field": {
+                        "description": "Comma seperated.",
+                        "kind": "integer_list",
+                        "name": "cm_account"
                     }
                 }
             },
@@ -434,13 +425,22 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "placements",
                 "placementGroups"
             ],
-            "auth": "user",
             "advertisers": {
                 "values": {
                     "field": {
-                        "name": "cm_advertiser",
+                        "description": "Comma seperated.",
                         "kind": "integer_list",
-                        "description": "Comma seperated."
+                        "name": "cm_advertiser"
+                    }
+                }
+            },
+            "out": {
+                "auth": "service",
+                "dataset": {
+                    "field": {
+                        "description": "Place where tables will be created in BigQuery.",
+                        "kind": "string",
+                        "name": "recipe_slug"
                     }
                 }
             }
@@ -448,132 +448,132 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
-            "to": {
-                "view": "DV360_IO_LOGIC",
-                "dataset": {
-                    "field": {
-                        "name": "recipe_slug",
-                        "kind": "string",
-                        "description": "Place where tables will be created in BigQuery."
-                    }
-                }
-            },
             "auth": "service",
             "from": {
                 "parameters": [
                     {
                         "field": {
-                            "name": "dv360_advertiser",
+                            "description": "Comma seperated.",
                             "kind": "integer_list",
-                            "description": "Comma seperated."
+                            "name": "dv360_advertiser"
                         }
                     },
                     {
                         "field": {
-                            "name": "dv360_campaign",
+                            "description": "Comma seperated.",
                             "kind": "integer_list",
-                            "description": "Comma seperated."
+                            "name": "dv360_campaign"
                         }
                     },
                     {
                         "field": {
-                            "name": "recipe_slug",
+                            "description": "Place where tables will be written in BigQuery.",
                             "kind": "string",
-                            "description": "Place where tables will be written in BigQuery."
+                            "name": "recipe_slug"
                         }
                     },
                     {
                         "field": {
-                            "name": "recipe_slug",
+                            "description": "Place where tables will be written in BigQuery.",
                             "kind": "string",
-                            "description": "Place where tables will be written in BigQuery."
+                            "name": "recipe_slug"
                         }
                     },
                     {
                         "field": {
-                            "name": "recipe_slug",
+                            "description": "Place where tables will be written in BigQuery.",
                             "kind": "string",
-                            "description": "Place where tables will be written in BigQuery."
+                            "name": "recipe_slug"
                         }
                     }
                 ],
-                "query": "SELECT   [PARAMETER] AS advertiserId,   [PARAMETER] AS campaignId,   REGEXP_REPLACE(CM_P.name, '_1X1.*', '') AS displayName,   'ENTITY_STATUS_DRAFT' AS entityStatus,   STRUCT(     'PACING_PERIOD_FLIGHT' AS pacingPeriod,     'PACING_TYPE_AHEAD' AS pacingType   ) AS pacing,   STRUCT(     false AS unlimited,     'TIME_UNIT_DAYS' AS timeUnit,     1 AS timeUnitCount,     CASE       WHEN CM_P.name LIKE '%FF%' AND CM_P.name LIKE '%PZN%'THEN 6       WHEN CM_P.name LIKE '%FF%' THEN 3       WHEN CM_P.name LIKE '%HOL%' THEN 6       WHEN CM_P.name LIKE '%BTC%' THEN 3     END AS maxImpressions   ) AS frequencyCap,   STRUCT(     'PERFORMANCE_GOAL_TYPE_CPM' AS performanceGoalType,     '10' AS performanceGoalAmountMicros   ) AS performanceGoal,   STRUCT(     'BUDGET_UNIT_CURRENCY' AS budgetUnit,     'INSERTION_ORDER_AUTOMATION_TYPE_BUDGET' AS automationType,     [       STRUCT(        '10000' AS budgetAmountMicros,        '' AS description,        STRUCT (          STRUCT (            EXTRACT(YEAR FROM GREATEST(CM_C.startDate, CURRENT_DATE())) AS year,            EXTRACT(MONTH FROM GREATEST(CM_C.startDate, CURRENT_DATE())) AS month,            EXTRACT(DAY FROM GREATEST(CM_C.startDate, CURRENT_DATE())) AS day          ) AS startDate,          STRUCT (            EXTRACT(YEAR FROM CM_C.endDate) AS year,            EXTRACT(MONTH FROM CM_C.endDate) AS month,            EXTRACT(DAY FROM CM_C.endDate) AS day          ) AS endDate        ) AS dateRange       )     ] AS budgetSegments   ) AS budget,   STRUCT(     STRUCT(       '10' AS bidAmountMicros     ) AS fixedBid   ) AS bidStrategy FROM `[PARAMETER].CM_placements` As CM_P LEFT JOIN `[PARAMETER].CM_campaigns` As CM_C ON CM_P.campaignId=CM_C.id LEFT JOIN `[PARAMETER].CM_placementGroups` As CM_G ON CM_P.placementGroupId=CM_G.id WHERE CM_P.advertiserID=4461789 AND CM_P.name LIKE 'PKG%' /*AND CM_G.placementGroupType = 'PACKAGE' */ ORDER BY displayName ;",
-                "legacy": false
+                "legacy": false,
+                "query": "SELECT   [PARAMETER] AS advertiserId,   [PARAMETER] AS campaignId,   REGEXP_REPLACE(CM_P.name, '_1X1.*', '') AS displayName,   'ENTITY_STATUS_DRAFT' AS entityStatus,   STRUCT(     'PACING_PERIOD_FLIGHT' AS pacingPeriod,     'PACING_TYPE_AHEAD' AS pacingType   ) AS pacing,   STRUCT(     false AS unlimited,     'TIME_UNIT_DAYS' AS timeUnit,     1 AS timeUnitCount,     CASE       WHEN CM_P.name LIKE '%FF%' AND CM_P.name LIKE '%PZN%'THEN 6       WHEN CM_P.name LIKE '%FF%' THEN 3       WHEN CM_P.name LIKE '%HOL%' THEN 6       WHEN CM_P.name LIKE '%BTC%' THEN 3     END AS maxImpressions   ) AS frequencyCap,   STRUCT(     'PERFORMANCE_GOAL_TYPE_CPM' AS performanceGoalType,     '10' AS performanceGoalAmountMicros   ) AS performanceGoal,   STRUCT(     'BUDGET_UNIT_CURRENCY' AS budgetUnit,     'INSERTION_ORDER_AUTOMATION_TYPE_BUDGET' AS automationType,     [       STRUCT(        '10000' AS budgetAmountMicros,        '' AS description,        STRUCT (          STRUCT (            EXTRACT(YEAR FROM GREATEST(CM_C.startDate, CURRENT_DATE())) AS year,            EXTRACT(MONTH FROM GREATEST(CM_C.startDate, CURRENT_DATE())) AS month,            EXTRACT(DAY FROM GREATEST(CM_C.startDate, CURRENT_DATE())) AS day          ) AS startDate,          STRUCT (            EXTRACT(YEAR FROM CM_C.endDate) AS year,            EXTRACT(MONTH FROM CM_C.endDate) AS month,            EXTRACT(DAY FROM CM_C.endDate) AS day          ) AS endDate        ) AS dateRange       )     ] AS budgetSegments   ) AS budget,   STRUCT(     STRUCT(       '10' AS bidAmountMicros     ) AS fixedBid   ) AS bidStrategy FROM `[PARAMETER].CM_placements` As CM_P LEFT JOIN `[PARAMETER].CM_campaigns` As CM_C ON CM_P.campaignId=CM_C.id LEFT JOIN `[PARAMETER].CM_placementGroups` As CM_G ON CM_P.placementGroupId=CM_G.id WHERE CM_P.advertiserID=4461789 AND CM_P.name LIKE 'PKG%' /*AND CM_G.placementGroupType = 'PACKAGE' */ ORDER BY displayName ;"
+            },
+            "to": {
+                "dataset": {
+                    "field": {
+                        "description": "Place where tables will be created in BigQuery.",
+                        "kind": "string",
+                        "name": "recipe_slug"
+                    }
+                },
+                "view": "DV360_IO_LOGIC"
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
-            "to": {
-                "view": "DV360_IO_PREVIEW",
-                "dataset": {
-                    "field": {
-                        "name": "recipe_slug",
-                        "kind": "string",
-                        "description": "Place where tables will be created in BigQuery."
-                    }
-                }
-            },
             "auth": "service",
             "from": {
                 "parameters": [
                     {
                         "field": {
-                            "name": "recipe_slug",
+                            "description": "Place where tables will be written in BigQuery.",
                             "kind": "string",
-                            "description": "Place where tables will be written in BigQuery."
+                            "name": "recipe_slug"
                         }
                     }
                 ],
-                "query": "SELECT STRUCT(   ROW_NUMBER() OVER() AS NUMBER,   displayName IN (SELECT displayName FROM `[PARAMETER].DV360_advertisers_insertionOrders`) AS DUPLICATE ) AS PREVIEW, * FROM `[PARAMETER].DV360_IO_LOGIC` ORDER BY displayName ;",
-                "legacy": false
+                "legacy": false,
+                "query": "SELECT STRUCT(   ROW_NUMBER() OVER() AS NUMBER,   displayName IN (SELECT displayName FROM `[PARAMETER].DV360_advertisers_insertionOrders`) AS DUPLICATE ) AS PREVIEW, * FROM `[PARAMETER].DV360_IO_LOGIC` ORDER BY displayName ;"
+            },
+            "to": {
+                "dataset": {
+                    "field": {
+                        "description": "Place where tables will be created in BigQuery.",
+                        "kind": "string",
+                        "name": "recipe_slug"
+                    }
+                },
+                "view": "DV360_IO_PREVIEW"
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
-            "to": {
-                "view": "DV360_IO_INSERT",
-                "dataset": {
-                    "field": {
-                        "name": "recipe_slug",
-                        "kind": "string",
-                        "description": "Place where tables will be created in BigQuery."
-                    }
-                }
-            },
             "auth": "service",
             "from": {
                 "parameters": [
                     {
                         "field": {
-                            "name": "recipe_slug",
+                            "description": "Place where tables will be written in BigQuery.",
                             "kind": "string",
-                            "description": "Place where tables will be written in BigQuery."
+                            "name": "recipe_slug"
                         }
                     }
                 ],
-                "query": " SELECT * EXCEPT(PREVIEW) FROM `[PARAMETER].DV360_IO_PREVIEW` WHERE PREVIEW.NUMBER IN(0,0,0,0,0) AND PREVIEW.DUPLICATE=False LIMIT 1 ;",
-                "legacy": false
+                "legacy": false,
+                "query": " SELECT * EXCEPT(PREVIEW) FROM `[PARAMETER].DV360_IO_PREVIEW` WHERE PREVIEW.NUMBER IN(0,0,0,0,0) AND PREVIEW.DUPLICATE=False LIMIT 1 ;"
+            },
+            "to": {
+                "dataset": {
+                    "field": {
+                        "description": "Place where tables will be created in BigQuery.",
+                        "kind": "string",
+                        "name": "recipe_slug"
+                    }
+                },
+                "view": "DV360_IO_INSERT"
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dv360_api/run.py" target="_blank">dv360_api</a>": {
+            "auth": "user",
+            "insert": "advertisers.insertionOrders",
             "bigquery": {
-                "table": "DV360_IO_INSERT",
-                "as_object": true,
                 "auth": "service",
                 "dataset": {
                     "field": {
-                        "name": "recipe_slug",
+                        "description": "Place where tables will be created in BigQuery.",
                         "kind": "string",
-                        "description": "Place where tables will be created in BigQuery."
+                        "name": "recipe_slug"
                     }
-                }
-            },
-            "insert": "advertisers.insertionOrders",
-            "auth": "user"
+                },
+                "table": "DV360_IO_INSERT",
+                "as_object": true
+            }
         }
     }
 ]</code></pre>

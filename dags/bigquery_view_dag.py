@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -39,79 +41,81 @@ Specify a single query and choose legacy or standard mode.
 For PLX use: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...
 If the view exists, it is unchanged, delete it manually to re-create.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_read': 'user',  # Credentials used for reading data.
-    'query': '',  # SQL with newlines and all.
-    'dataset': '',  # Existing BigQuery dataset.
-    'view': '',  # View to create from this query.
-    'legacy': True,  # Query type must match source tables.
+  'query': '',  # SQL with newlines and all.
+  'auth_read': 'user',  # Credentials used for reading data.
+  'dataset': '',  # Existing BigQuery dataset.
+  'view': '',  # View to create from this query.
+  'legacy': True,  # Query type must match source tables.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'bigquery': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for reading data.',
-                'name': 'auth_read',
-                'default': 'user',
-                'kind': 'authentication',
-                'order': 1
-            }
-        },
-        'to': {
-            'view': {
-                'field': {
-                    'description': 'View to create from this query.',
-                    'name': 'view',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 3
-                }
-            },
-            'dataset': {
-                'field': {
-                    'description': 'Existing BigQuery dataset.',
-                    'name': 'dataset',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 2
-                }
-            }
-        },
-        'from': {
-            'query': {
-                'field': {
-                    'description': 'SQL with newlines and all.',
-                    'name': 'query',
-                    'default': '',
-                    'kind': 'text',
-                    'order': 1
-                }
-            },
-            'legacy': {
-                'field': {
-                    'description': 'Query type must match source tables.',
-                    'name': 'legacy',
-                    'default': True,
-                    'kind': 'boolean',
-                    'order': 4
-                }
-            }
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'user'
         }
+      },
+      'from': {
+        'query': {
+          'field': {
+            'order': 1,
+            'kind': 'text',
+            'name': 'query',
+            'description': 'SQL with newlines and all.',
+            'default': ''
+          }
+        },
+        'legacy': {
+          'field': {
+            'order': 4,
+            'kind': 'boolean',
+            'name': 'legacy',
+            'description': 'Query type must match source tables.',
+            'default': True
+          }
+        }
+      },
+      'to': {
+        'view': {
+          'field': {
+            'order': 3,
+            'kind': 'string',
+            'name': 'view',
+            'description': 'View to create from this query.',
+            'default': ''
+          }
+        },
+        'dataset': {
+          'field': {
+            'order': 2,
+            'kind': 'string',
+            'name': 'dataset',
+            'description': 'Existing BigQuery dataset.',
+            'default': ''
+          }
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('bigquery_view', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('bigquery_view', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

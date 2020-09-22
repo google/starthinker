@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -33,161 +35,155 @@ Before running this Airflow module...
 
 Census Data Correlation
 
-Correlate another table with US Census data.  Expands a data set dimensions by
-finding population segments that correlate with the master table.
+Correlate another table with US Census data.  Expands a data set dimensions by finding population segments that correlate with the master table.
 
 Pre-requisite is Census Normalize, run that at least once.
 Specify JOIN, PASS, SUM, and CORRELATE columns to build the correlation query.
 Define the DATASET and TABLE for the joinable source. Can be a view.
-Choose the significance level.  More significance usually means more NULL
-results, balance quantity and quality using this value.
+Choose the significance level.  More significance usually means more NULL results, balance quantity and quality using this value.
 Specify where to write the results.
-<br>IMPORTANT:</b> If you use VIEWS, you will have to delete them manually if
-the recipe changes.
+<br>IMPORTANT:</b> If you use VIEWS, you will have to delete them manually if the recipe changes.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth': 'service',  # Credentials used for writing data.
-    'join': '',  # Name of column to join on, must match Census Geo_Id column.
-    'pass': [],  # Comma seperated list of columns to pass through.
-    'sum': [],  # Comma seperated list of columns to sum, optional.
-    'correlate': [],  # Comma seperated list of percentage columns to correlate.
-    'from_dataset': '',  # Existing BigQuery dataset.
-    'from_table': '',  # Table to use as join data.
-    'significance': '80',  # Select level of significance to test.
-    'to_dataset': '',  # Existing BigQuery dataset.
-    'type': 'table',  # Write Census_Percent as table or view.
+  'auth': 'service',  # Credentials used for writing data.
+  'join': '',  # Name of column to join on, must match Census Geo_Id column.
+  'pass': [],  # Comma seperated list of columns to pass through.
+  'sum': [],  # Comma seperated list of columns to sum, optional.
+  'correlate': [],  # Comma seperated list of percentage columns to correlate.
+  'from_dataset': '',  # Existing BigQuery dataset.
+  'from_table': '',  # Table to use as join data.
+  'significance': '80',  # Select level of significance to test.
+  'to_dataset': '',  # Existing BigQuery dataset.
+  'type': 'table',  # Write Census_Percent as table or view.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'census': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for writing data.',
-                'name': 'auth',
-                'default': 'service',
-                'kind': 'authentication',
-                'order': 0
-            }
-        },
+      'correlate': {
         'correlate': {
-            'significance': {
-                'field': {
-                    'order': 7,
-                    'name': 'significance',
-                    'default': '80',
-                    'description': 'Select level of significance to test.',
-                    'choices': ['80', '90', '98', '99', '99.5', '99.95'],
-                    'kind': 'choice'
-                }
-            },
-            'correlate': {
-                'field': {
-                    'description':
-                        'Comma seperated list of percentage columns to correlate.',
-                    'name':
-                        'correlate',
-                    'default': [],
-                    'kind':
-                        'string_list',
-                    'order':
-                        4
-                }
-            },
-            'join': {
-                'field': {
-                    'description':
-                        'Name of column to join on, must match Census Geo_Id '
-                        'column.',
-                    'name':
-                        'join',
-                    'default':
-                        '',
-                    'kind':
-                        'string',
-                    'order':
-                        1
-                }
-            },
-            'pass': {
-                'field': {
-                    'description':
-                        'Comma seperated list of columns to pass through.',
-                    'name':
-                        'pass',
-                    'default': [],
-                    'kind':
-                        'string_list',
-                    'order':
-                        2
-                }
-            },
-            'sum': {
-                'field': {
-                    'description':
-                        'Comma seperated list of columns to sum, optional.',
-                    'name':
-                        'sum',
-                    'default': [],
-                    'kind':
-                        'string_list',
-                    'order':
-                        3
-                }
-            },
-            'dataset': {
-                'field': {
-                    'description': 'Existing BigQuery dataset.',
-                    'name': 'from_dataset',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 5
-                }
-            },
-            'table': {
-                'field': {
-                    'description': 'Table to use as join data.',
-                    'name': 'from_table',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 6
-                }
-            }
+          'field': {
+            'order': 4,
+            'kind': 'string_list',
+            'name': 'correlate',
+            'description': 'Comma seperated list of percentage columns to correlate.',
+            'default': [
+            ]
+          }
         },
-        'to': {
-            'dataset': {
-                'field': {
-                    'description': 'Existing BigQuery dataset.',
-                    'name': 'to_dataset',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 9
-                }
-            },
-            'type': {
-                'field': {
-                    'order': 10,
-                    'name': 'type',
-                    'default': 'table',
-                    'description': 'Write Census_Percent as table or view.',
-                    'choices': ['table', 'view'],
-                    'kind': 'choice'
-                }
-            }
+        'join': {
+          'field': {
+            'order': 1,
+            'kind': 'string',
+            'name': 'join',
+            'description': 'Name of column to join on, must match Census Geo_Id column.',
+            'default': ''
+          }
+        },
+        'significance': {
+          'field': {
+            'description': 'Select level of significance to test.',
+            'choices': [
+              '80',
+              '90',
+              '98',
+              '99',
+              '99.5',
+              '99.95'
+            ],
+            'order': 7,
+            'kind': 'choice',
+            'name': 'significance',
+            'default': '80'
+          }
+        },
+        'dataset': {
+          'field': {
+            'order': 5,
+            'kind': 'string',
+            'name': 'from_dataset',
+            'description': 'Existing BigQuery dataset.',
+            'default': ''
+          }
+        },
+        'pass': {
+          'field': {
+            'order': 2,
+            'kind': 'string_list',
+            'name': 'pass',
+            'description': 'Comma seperated list of columns to pass through.',
+            'default': [
+            ]
+          }
+        },
+        'sum': {
+          'field': {
+            'order': 3,
+            'kind': 'string_list',
+            'name': 'sum',
+            'description': 'Comma seperated list of columns to sum, optional.',
+            'default': [
+            ]
+          }
+        },
+        'table': {
+          'field': {
+            'order': 6,
+            'kind': 'string',
+            'name': 'from_table',
+            'description': 'Table to use as join data.',
+            'default': ''
+          }
         }
+      },
+      'auth': {
+        'field': {
+          'order': 0,
+          'kind': 'authentication',
+          'name': 'auth',
+          'description': 'Credentials used for writing data.',
+          'default': 'service'
+        }
+      },
+      'to': {
+        'dataset': {
+          'field': {
+            'order': 9,
+            'kind': 'string',
+            'name': 'to_dataset',
+            'description': 'Existing BigQuery dataset.',
+            'default': ''
+          }
+        },
+        'type': {
+          'field': {
+            'description': 'Write Census_Percent as table or view.',
+            'choices': [
+              'table',
+              'view'
+            ],
+            'order': 10,
+            'kind': 'choice',
+            'name': 'type',
+            'default': 'table'
+          }
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('bigquery_census_correlate', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('bigquery_census_correlate', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

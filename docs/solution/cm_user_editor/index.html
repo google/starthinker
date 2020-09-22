@@ -246,15 +246,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Account Health</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 100%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Time Savings</td>
                    <td>
                      <div class="progress">
@@ -268,6 +259,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                    <td>
                      <div class="progress">
                        <div class="determinate" style="width: 0%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Account Health</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 100%"></div>
                      </div>
                    </td>
                  </tr>
@@ -305,7 +305,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>March 23, 2020 (5 months, 3 weeks)</td>
+              <td>March 23, 2020 (6 months)</td>
             </tr>
 
             <tr>
@@ -352,21 +352,21 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/drive/run.py" target="_blank">drive</a>": {
+            "auth": "user",
             "hour": [],
             "copy": {
-                "source": "https://docs.google.com/spreadsheets/d/1zQDqm3owQMNsx0lvcN1SQWVGOhwfgsWSmirBK54qVL0/",
                 "destination": {
                     "field": {
+                        "prefix": "CM User Editor For ",
                         "default": "",
-                        "order": 1,
-                        "description": "Name of document to deploy to.",
                         "name": "recipe_name",
                         "kind": "string",
-                        "prefix": "CM User Editor For "
+                        "description": "Name of document to deploy to.",
+                        "order": 1
                     }
-                }
-            },
-            "auth": "user"
+                },
+                "source": "https://docs.google.com/spreadsheets/d/1zQDqm3owQMNsx0lvcN1SQWVGOhwfgsWSmirBK54qVL0/"
+            }
         }
     }
 ]</code></pre>

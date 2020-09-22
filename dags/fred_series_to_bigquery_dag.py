@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -35,144 +37,153 @@ Federal Reserve Series Data
 
 Download federal reserve series.
 
-Specify the values for a <a
-href='https://fred.stlouisfed.org/docs/api/fred/series_observations.html'
-target='_blank'>Fred observations API call</a>.
+Specify the values for a <a href='https://fred.stlouisfed.org/docs/api/fred/series_observations.html' target='_blank'>Fred observations API call</a>.
 A table will appear in the dataset.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth': 'service',  # Credentials used for writing data.
-    'fred_api_key': '',  # 32 character alpha-numeric lowercase string.
-    'fred_series_id': '',  # Series ID to pull data from.
-    'fred_units': 'lin',  # A key that indicates a data value transformation.
-    'fred_frequency':
-        '',  # An optional parameter that indicates a lower frequency to aggregate values to.
-    'fred_aggregation_method':
-        'avg',  # A key that indicates the aggregation method used for frequency aggregation.
-    'project': '',  # Existing BigQuery project.
-    'dataset': '',  # Existing BigQuery dataset.
+  'auth': 'service',  # Credentials used for writing data.
+  'fred_api_key': '',  # 32 character alpha-numeric lowercase string.
+  'fred_series_id': '',  # Series ID to pull data from.
+  'fred_units': 'lin',  # A key that indicates a data value transformation.
+  'fred_frequency': '',  # An optional parameter that indicates a lower frequency to aggregate values to.
+  'fred_aggregation_method': 'avg',  # A key that indicates the aggregation method used for frequency aggregation.
+  'project': '',  # Existing BigQuery project.
+  'dataset': '',  # Existing BigQuery dataset.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'fred': {
-        'auth': {
+      'out': {
+        'bigquery': {
+          'project': {
             'field': {
-                'description': 'Credentials used for writing data.',
-                'name': 'auth',
-                'default': 'service',
-                'kind': 'authentication',
-                'order': 0
+              'order': 10,
+              'kind': 'string',
+              'name': 'project',
+              'description': 'Existing BigQuery project.',
+              'default': ''
             }
-        },
-        'frequency': {
+          },
+          'dataset': {
             'field': {
-                'order':
-                    4,
-                'name':
-                    'fred_frequency',
-                'default':
-                    '',
-                'description':
-                    'An optional parameter that indicates a lower frequency to'
-                    ' aggregate values to.',
-                'choices': [
-                    '', 'd', 'w', 'bw', 'm', 'q', 'sa', 'a', 'wef', 'weth',
-                    'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem'
-                ],
-                'kind':
-                    'choice'
+              'order': 11,
+              'kind': 'string',
+              'name': 'dataset',
+              'description': 'Existing BigQuery dataset.',
+              'default': ''
             }
-        },
-        'series': [{
-            'units': {
-                'field': {
-                    'order':
-                        3,
-                    'name':
-                        'fred_units',
-                    'default':
-                        'lin',
-                    'description':
-                        'A key that indicates a data value transformation.',
-                    'choices': [
-                        'lin', 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca',
-                        'log'
-                    ],
-                    'kind':
-                        'choice'
-                }
-            },
-            'series_id': {
-                'field': {
-                    'description': 'Series ID to pull data from.',
-                    'name': 'fred_series_id',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 2
-                }
-            },
-            'aggregation_method': {
-                'field': {
-                    'order':
-                        5,
-                    'name':
-                        'fred_aggregation_method',
-                    'default':
-                        'avg',
-                    'description':
-                        'A key that indicates the aggregation method used for '
-                        'frequency aggregation.',
-                    'choices': ['avg', 'sum', 'eop'],
-                    'kind':
-                        'choice'
-                }
-            }
-        }],
-        'api_key': {
-            'field': {
-                'description': '32 character alpha-numeric lowercase string.',
-                'name': 'fred_api_key',
-                'default': '',
-                'kind': 'string',
-                'order': 1
-            }
-        },
-        'out': {
-            'bigquery': {
-                'project': {
-                    'field': {
-                        'description': 'Existing BigQuery project.',
-                        'name': 'project',
-                        'default': '',
-                        'kind': 'string',
-                        'order': 10
-                    }
-                },
-                'dataset': {
-                    'field': {
-                        'description': 'Existing BigQuery dataset.',
-                        'name': 'dataset',
-                        'default': '',
-                        'kind': 'string',
-                        'order': 11
-                    }
-                }
-            }
+          }
         }
+      },
+      'series': [
+        {
+          'series_id': {
+            'field': {
+              'order': 2,
+              'kind': 'string',
+              'name': 'fred_series_id',
+              'description': 'Series ID to pull data from.',
+              'default': ''
+            }
+          },
+          'units': {
+            'field': {
+              'description': 'A key that indicates a data value transformation.',
+              'choices': [
+                'lin',
+                'chg',
+                'ch1',
+                'pch',
+                'pc1',
+                'pca',
+                'cch',
+                'cca',
+                'log'
+              ],
+              'order': 3,
+              'kind': 'choice',
+              'name': 'fred_units',
+              'default': 'lin'
+            }
+          },
+          'aggregation_method': {
+            'field': {
+              'description': 'A key that indicates the aggregation method used for frequency aggregation.',
+              'choices': [
+                'avg',
+                'sum',
+                'eop'
+              ],
+              'order': 5,
+              'kind': 'choice',
+              'name': 'fred_aggregation_method',
+              'default': 'avg'
+            }
+          }
+        }
+      ],
+      'frequency': {
+        'field': {
+          'description': 'An optional parameter that indicates a lower frequency to aggregate values to.',
+          'choices': [
+            '',
+            'd',
+            'w',
+            'bw',
+            'm',
+            'q',
+            'sa',
+            'a',
+            'wef',
+            'weth',
+            'wew',
+            'wetu',
+            'wem',
+            'wesu',
+            'wesa',
+            'bwew',
+            'bwem'
+          ],
+          'order': 4,
+          'kind': 'choice',
+          'name': 'fred_frequency',
+          'default': ''
+        }
+      },
+      'api_key': {
+        'field': {
+          'order': 1,
+          'kind': 'string',
+          'name': 'fred_api_key',
+          'description': '32 character alpha-numeric lowercase string.',
+          'default': ''
+        }
+      },
+      'auth': {
+        'field': {
+          'order': 0,
+          'kind': 'authentication',
+          'name': 'auth',
+          'description': 'Credentials used for writing data.',
+          'default': 'service'
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('fred_series_to_bigquery', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('fred_series_to_bigquery', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

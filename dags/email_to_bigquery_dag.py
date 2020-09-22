@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -39,143 +41,133 @@ The person executing this recipe must be the recipient of the email.
 Give a regular expression to match the email subject, link or attachment.
 The data downloaded will overwrite the table specified.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_read': 'user',  # Credentials used for reading data.
-    'email_from': '',  # Must match from field.
-    'email_to': '',  # Must match to field.
-    'subject': '',  # Regular expression to match subject.
-    'link': '',  # Regular expression to match email.
-    'attachment': '',  # Regular expression to match atttachment.
-    'dataset': '',  # Existing dataset in BigQuery.
-    'table': '',  # Name of table to be written to.
-    'dbm_schema': '[]',  # Schema provided in JSON list format or empty list.
-    'is_incremental_load':
-        False,  # Append report data to table based on date column, de-duplicates.
+  'email_from': '',  # Must match from field.
+  'auth_read': 'user',  # Credentials used for reading data.
+  'email_to': '',  # Must match to field.
+  'subject': '',  # Regular expression to match subject.
+  'link': '',  # Regular expression to match email.
+  'attachment': '',  # Regular expression to match atttachment.
+  'dataset': '',  # Existing dataset in BigQuery.
+  'table': '',  # Name of table to be written to.
+  'dbm_schema': '[]',  # Schema provided in JSON list format or empty list.
+  'is_incremental_load': False,  # Append report data to table based on date column, de-duplicates.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'email': {
-        'auth': {
+      'out': {
+        'bigquery': {
+          'schema': {
             'field': {
-                'description': 'Credentials used for reading data.',
-                'name': 'auth_read',
-                'default': 'user',
-                'kind': 'authentication',
-                'order': 1
+              'order': 8,
+              'kind': 'json',
+              'name': 'dbm_schema',
+              'description': 'Schema provided in JSON list format or empty list.',
+              'default': '[]'
             }
-        },
-        'read': {
-            'attachment': {
-                'field': {
-                    'description': 'Regular expression to match atttachment.',
-                    'name': 'attachment',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 5
-                }
-            },
-            'link': {
-                'field': {
-                    'description': 'Regular expression to match email.',
-                    'name': 'link',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 4
-                }
-            },
-            'subject': {
-                'field': {
-                    'description': 'Regular expression to match subject.',
-                    'name': 'subject',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 3
-                }
-            },
-            'to': {
-                'field': {
-                    'description': 'Must match to field.',
-                    'name': 'email_to',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 2
-                }
-            },
-            'from': {
-                'field': {
-                    'description': 'Must match from field.',
-                    'name': 'email_from',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 1
-                }
+          },
+          'table': {
+            'field': {
+              'order': 7,
+              'kind': 'string',
+              'name': 'table',
+              'description': 'Name of table to be written to.',
+              'default': ''
             }
-        },
-        'out': {
-            'bigquery': {
-                'is_incremental_load': {
-                    'field': {
-                        'description':
-                            'Append report data to table based on date column,'
-                            ' de-duplicates.',
-                        'name':
-                            'is_incremental_load',
-                        'default':
-                            False,
-                        'kind':
-                            'boolean',
-                        'order':
-                            9
-                    }
-                },
-                'dataset': {
-                    'field': {
-                        'description': 'Existing dataset in BigQuery.',
-                        'name': 'dataset',
-                        'default': '',
-                        'kind': 'string',
-                        'order': 6
-                    }
-                },
-                'schema': {
-                    'field': {
-                        'description':
-                            'Schema provided in JSON list format or empty list.',
-                        'name':
-                            'dbm_schema',
-                        'default':
-                            '[]',
-                        'kind':
-                            'json',
-                        'order':
-                            8
-                    }
-                },
-                'table': {
-                    'field': {
-                        'description': 'Name of table to be written to.',
-                        'name': 'table',
-                        'default': '',
-                        'kind': 'string',
-                        'order': 7
-                    }
-                }
+          },
+          'is_incremental_load': {
+            'field': {
+              'order': 9,
+              'kind': 'boolean',
+              'name': 'is_incremental_load',
+              'description': 'Append report data to table based on date column, de-duplicates.',
+              'default': False
             }
+          },
+          'dataset': {
+            'field': {
+              'order': 6,
+              'kind': 'string',
+              'name': 'dataset',
+              'description': 'Existing dataset in BigQuery.',
+              'default': ''
+            }
+          }
         }
+      },
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'user'
+        }
+      },
+      'read': {
+        'to': {
+          'field': {
+            'order': 2,
+            'kind': 'string',
+            'name': 'email_to',
+            'description': 'Must match to field.',
+            'default': ''
+          }
+        },
+        'subject': {
+          'field': {
+            'order': 3,
+            'kind': 'string',
+            'name': 'subject',
+            'description': 'Regular expression to match subject.',
+            'default': ''
+          }
+        },
+        'link': {
+          'field': {
+            'order': 4,
+            'kind': 'string',
+            'name': 'link',
+            'description': 'Regular expression to match email.',
+            'default': ''
+          }
+        },
+        'attachment': {
+          'field': {
+            'order': 5,
+            'kind': 'string',
+            'name': 'attachment',
+            'description': 'Regular expression to match atttachment.',
+            'default': ''
+          }
+        },
+        'from': {
+          'field': {
+            'order': 1,
+            'kind': 'string',
+            'name': 'email_from',
+            'description': 'Must match from field.',
+            'default': ''
+          }
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('email_to_bigquery', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('email_to_bigquery', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

@@ -238,15 +238,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Account Health</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 100%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Time Savings</td>
                    <td>
                      <div class="progress">
@@ -260,6 +251,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                    <td>
                      <div class="progress">
                        <div class="determinate" style="width: 50%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Account Health</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 100%"></div>
                      </div>
                    </td>
                  </tr>
@@ -346,67 +346,46 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
             "auth": {
                 "field": {
-                    "name": "auth_write",
+                    "description": "Credentials used for writing data.",
                     "order": 1,
                     "default": "service",
                     "kind": "authentication",
-                    "description": "Credentials used for writing data."
+                    "name": "auth_write"
                 }
             },
             "dataset": {
                 "field": {
-                    "name": "dataset",
+                    "description": "BigQuery dataset to write tables for each entity.",
                     "order": 3,
                     "default": "",
                     "kind": "string",
-                    "description": "BigQuery dataset to write tables for each entity."
+                    "name": "dataset"
                 }
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/entity/run.py" target="_blank">entity</a>": {
-            "out": {
-                "bigquery": {
-                    "auth": {
-                        "field": {
-                            "name": "auth_write",
-                            "order": 1,
-                            "default": "service",
-                            "kind": "authentication",
-                            "description": "Credentials used for writing data."
-                        }
-                    },
-                    "dataset": {
-                        "field": {
-                            "name": "dataset",
-                            "order": 3,
-                            "default": "",
-                            "kind": "string",
-                            "description": "BigQuery dataset to write tables for each entity."
-                        }
-                    }
+            "auth": {
+                "field": {
+                    "description": "Credentials used for reading data.",
+                    "order": 1,
+                    "default": "user",
+                    "kind": "authentication",
+                    "name": "auth_read"
                 }
             },
+            "prefix": "Entity",
             "partners": {
                 "single_cell": true,
                 "values": {
                     "field": {
-                        "name": "partners",
+                        "description": "Comma sparated list of DV360 partners.",
                         "order": 1,
                         "default": "[]",
                         "kind": "integer_list",
-                        "description": "Comma sparated list of DV360 partners."
+                        "name": "partners"
                     }
-                }
-            },
-            "auth": {
-                "field": {
-                    "name": "auth_read",
-                    "order": 1,
-                    "default": "user",
-                    "kind": "authentication",
-                    "description": "Credentials used for reading data."
                 }
             },
             "entities": [
@@ -430,7 +409,28 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "Browser",
                 "Isp"
             ],
-            "prefix": "Entity"
+            "out": {
+                "bigquery": {
+                    "auth": {
+                        "field": {
+                            "description": "Credentials used for writing data.",
+                            "order": 1,
+                            "default": "service",
+                            "kind": "authentication",
+                            "name": "auth_write"
+                        }
+                    },
+                    "dataset": {
+                        "field": {
+                            "description": "BigQuery dataset to write tables for each entity.",
+                            "order": 3,
+                            "default": "",
+                            "kind": "string",
+                            "name": "dataset"
+                        }
+                    }
+                }
+            }
         }
     }
 ]</code></pre>

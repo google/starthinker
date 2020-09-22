@@ -248,33 +248,33 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/drive/run.py" target="_blank">drive</a>": {
-            "copy": {
-                "source": {
-                    "field": {
-                        "name": "source",
-                        "order": 1,
-                        "default": "",
-                        "kind": "string",
-                        "description": "Name or URL of document to copy from."
-                    }
-                },
-                "destination": {
-                    "field": {
-                        "name": "destination",
-                        "order": 2,
-                        "default": "",
-                        "kind": "string",
-                        "description": "Name document to copy to."
-                    }
-                }
-            },
             "auth": {
                 "field": {
-                    "name": "auth_read",
+                    "description": "Credentials used for reading data.",
                     "order": 1,
                     "default": "user",
                     "kind": "authentication",
-                    "description": "Credentials used for reading data."
+                    "name": "auth_read"
+                }
+            },
+            "copy": {
+                "destination": {
+                    "field": {
+                        "description": "Name document to copy to.",
+                        "order": 2,
+                        "default": "",
+                        "kind": "string",
+                        "name": "destination"
+                    }
+                },
+                "source": {
+                    "field": {
+                        "description": "Name or URL of document to copy from.",
+                        "order": 1,
+                        "default": "",
+                        "kind": "string",
+                        "name": "source"
+                    }
                 }
             }
         }

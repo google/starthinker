@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Feb. 20, 2019 (1 year, 6 months)</td>
+              <td>Feb. 20, 2019 (1 year, 7 months)</td>
             </tr>
 
             <tr>
@@ -244,8 +244,48 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dv360_api/run.py" target="_blank">dv360_api</a>": {
+            "auth": {
+                "field": {
+                    "description": "Credentials used for writing data.",
+                    "order": 0,
+                    "default": "user",
+                    "kind": "authentication",
+                    "name": "auth_write"
+                }
+            },
+            "bigquery": {
+                "auth": {
+                    "field": {
+                        "description": "Credentials used for reading data.",
+                        "order": 1,
+                        "default": "service",
+                        "kind": "authentication",
+                        "name": "auth_read"
+                    }
+                },
+                "dataset": {
+                    "field": {
+                        "description": "Google BigQuery dataset to create tables in.",
+                        "order": 2,
+                        "default": "",
+                        "kind": "string",
+                        "name": "dataset"
+                    }
+                },
+                "table": {
+                    "field": {
+                        "description": "Google BigQuery dataset to create tables in.",
+                        "order": 3,
+                        "default": "",
+                        "kind": "string",
+                        "name": "table"
+                    }
+                },
+                "as_object": true
+            },
             "patch": {
                 "field": {
+                    "name": "patch",
                     "default": "",
                     "choices": [
                         "advertisers",
@@ -264,47 +304,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "partners.channels",
                         "users"
                     ],
-                    "kind": "choice",
-                    "name": "patch"
-                }
-            },
-            "auth": {
-                "field": {
-                    "name": "auth_write",
-                    "order": 0,
-                    "default": "user",
-                    "kind": "authentication",
-                    "description": "Credentials used for writing data."
-                }
-            },
-            "bigquery": {
-                "table": {
-                    "field": {
-                        "name": "table",
-                        "order": 3,
-                        "default": "",
-                        "kind": "string",
-                        "description": "Google BigQuery dataset to create tables in."
-                    }
-                },
-                "as_object": true,
-                "auth": {
-                    "field": {
-                        "name": "auth_read",
-                        "order": 1,
-                        "default": "service",
-                        "kind": "authentication",
-                        "description": "Credentials used for reading data."
-                    }
-                },
-                "dataset": {
-                    "field": {
-                        "name": "dataset",
-                        "order": 2,
-                        "default": "",
-                        "kind": "string",
-                        "description": "Google BigQuery dataset to create tables in."
-                    }
+                    "kind": "choice"
                 }
             }
         }

@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -37,49 +39,50 @@ Add function to dataset for checking if correlation is significant.
 
 Specify the dataset, and the function will be added and available.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth': 'service',  # Credentials used for writing function.
-    'dataset': '',  # Existing BigQuery dataset.
+  'auth': 'service',  # Credentials used for writing function.
+  'dataset': '',  # Existing BigQuery dataset.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'bigquery': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for writing function.',
-                'name': 'auth',
-                'default': 'service',
-                'kind': 'authentication',
-                'order': 0
-            }
-        },
-        'to': {
-            'dataset': {
-                'field': {
-                    'description': 'Existing BigQuery dataset.',
-                    'name': 'dataset',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 1
-                }
-            }
-        },
-        'function': 'pearson_significance_test'
+      'auth': {
+        'field': {
+          'order': 0,
+          'kind': 'authentication',
+          'name': 'auth',
+          'description': 'Credentials used for writing function.',
+          'default': 'service'
+        }
+      },
+      'function': 'pearson_significance_test',
+      'to': {
+        'dataset': {
+          'field': {
+            'order': 1,
+            'kind': 'string',
+            'name': 'dataset',
+            'description': 'Existing BigQuery dataset.',
+            'default': ''
+          }
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('bigquery_pearson_significance_test',
-                          {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('bigquery_pearson_significance_test', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

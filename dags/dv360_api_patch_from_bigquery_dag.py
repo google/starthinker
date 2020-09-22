@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -38,101 +40,95 @@ Patch DV360 API endpoints.
 Specify the name of the dataset and table.
 Rows will be read and applied as a patch to DV360.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'patch': '',
-    'auth_write': 'user',  # Credentials used for writing data.
-    'auth_read': 'service',  # Credentials used for reading data.
-    'dataset': '',  # Google BigQuery dataset to create tables in.
-    'table': '',  # Google BigQuery dataset to create tables in.
+  'patch': '',
+  'auth_write': 'user',  # Credentials used for writing data.
+  'auth_read': 'service',  # Credentials used for reading data.
+  'dataset': '',  # Google BigQuery dataset to create tables in.
+  'table': '',  # Google BigQuery dataset to create tables in.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'dv360_api': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for writing data.',
-                'name': 'auth_write',
-                'default': 'user',
-                'kind': 'authentication',
-                'order': 0
-            }
-        },
-        'bigquery': {
-            'auth': {
-                'field': {
-                    'description': 'Credentials used for reading data.',
-                    'name': 'auth_read',
-                    'default': 'service',
-                    'kind': 'authentication',
-                    'order': 1
-                }
-            },
-            'as_object': True,
-            'dataset': {
-                'field': {
-                    'description':
-                        'Google BigQuery dataset to create tables in.',
-                    'name':
-                        'dataset',
-                    'default':
-                        '',
-                    'kind':
-                        'string',
-                    'order':
-                        2
-                }
-            },
-            'table': {
-                'field': {
-                    'description':
-                        'Google BigQuery dataset to create tables in.',
-                    'name':
-                        'table',
-                    'default':
-                        '',
-                    'kind':
-                        'string',
-                    'order':
-                        3
-                }
-            }
-        },
-        'patch': {
-            'field': {
-                'name':
-                    'patch',
-                'default':
-                    '',
-                'kind':
-                    'choice',
-                'choices': [
-                    'advertisers', 'advertisers.campaigns',
-                    'advertisers.channels', 'advertisers.channels.sites',
-                    'advertisers.creatives', 'advertisers.insertionOrders',
-                    'advertisers.lineItems', 'advertisers.locationLists',
-                    'advertisers.locationLists.assignedLocations',
-                    'advertisers.negativeKeywordLists',
-                    'advertisers.negativeKeywordLists.negativeKeywords',
-                    'floodlightGroups', 'inventorySourceGroups',
-                    'partners.channels', 'users'
-                ]
-            }
+      'patch': {
+        'field': {
+          'kind': 'choice',
+          'name': 'patch',
+          'default': '',
+          'choices': [
+            'advertisers',
+            'advertisers.campaigns',
+            'advertisers.channels',
+            'advertisers.channels.sites',
+            'advertisers.creatives',
+            'advertisers.insertionOrders',
+            'advertisers.lineItems',
+            'advertisers.locationLists',
+            'advertisers.locationLists.assignedLocations',
+            'advertisers.negativeKeywordLists',
+            'advertisers.negativeKeywordLists.negativeKeywords',
+            'floodlightGroups',
+            'inventorySourceGroups',
+            'partners.channels',
+            'users'
+          ]
         }
+      },
+      'bigquery': {
+        'table': {
+          'field': {
+            'order': 3,
+            'kind': 'string',
+            'name': 'table',
+            'description': 'Google BigQuery dataset to create tables in.',
+            'default': ''
+          }
+        },
+        'dataset': {
+          'field': {
+            'order': 2,
+            'kind': 'string',
+            'name': 'dataset',
+            'description': 'Google BigQuery dataset to create tables in.',
+            'default': ''
+          }
+        },
+        'as_object': True,
+        'auth': {
+          'field': {
+            'order': 1,
+            'kind': 'authentication',
+            'name': 'auth_read',
+            'description': 'Credentials used for reading data.',
+            'default': 'service'
+          }
+        }
+      },
+      'auth': {
+        'field': {
+          'order': 0,
+          'kind': 'authentication',
+          'name': 'auth_write',
+          'description': 'Credentials used for writing data.',
+          'default': 'user'
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('dv360_api_patch_from_bigquery', {'tasks': TASKS},
-                          INPUTS)
+DAG_FACTORY = DAG_Factory('dv360_api_patch_from_bigquery', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

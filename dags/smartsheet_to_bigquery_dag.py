@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -35,119 +37,114 @@ SmartSheet Sheet To BigQuery
 
 Move sheet data into a BigQuery table.
 
-Specify <a href='https://smartsheet-platform.github.io/api-docs/'
-target='_blank'>SmartSheet</a> token.
+Specify <a href='https://smartsheet-platform.github.io/api-docs/' target='_blank'>SmartSheet</a> token.
 Locate the ID of a sheet by viewing its properties.
 Provide a BigQuery dataset ( must exist ) and table to write the data into.
 StarThinker will automatically map the correct schema.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_read': 'user',  # Credentials used for reading data.
-    'auth_write': 'service',  # Credentials used for writing data.
-    'token': '',  # Retrieve from SmartSheet account settings.
-    'sheet': '',  # Retrieve from sheet properties.
-    'dataset': '',  # Existing BigQuery dataset.
-    'table': '',  # Table to create from this report.
-    'schema':
-        '',  # Schema provided in JSON list format or leave empty to auto detect.
-    'link': True,  # Add a link to each row as the first column.
+  'auth_read': 'user',  # Credentials used for reading data.
+  'auth_write': 'service',  # Credentials used for writing data.
+  'token': '',  # Retrieve from SmartSheet account settings.
+  'sheet': '',  # Retrieve from sheet properties.
+  'dataset': '',  # Existing BigQuery dataset.
+  'table': '',  # Table to create from this report.
+  'schema': '',  # Schema provided in JSON list format or leave empty to auto detect.
+  'link': True,  # Add a link to each row as the first column.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'smartsheet': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for reading data.',
-                'name': 'auth_read',
-                'default': 'user',
-                'kind': 'authentication',
-                'order': 0
-            }
-        },
-        'token': {
-            'field': {
-                'description': 'Retrieve from SmartSheet account settings.',
-                'name': 'token',
-                'default': '',
-                'kind': 'string',
-                'order': 2
-            }
-        },
-        'link': {
-            'field': {
-                'description': 'Add a link to each row as the first column.',
-                'name': 'link',
-                'default': True,
-                'kind': 'boolean',
-                'order': 7
-            }
-        },
-        'out': {
-            'bigquery': {
-                'auth': {
-                    'field': {
-                        'description': 'Credentials used for writing data.',
-                        'name': 'auth_write',
-                        'default': 'service',
-                        'kind': 'authentication',
-                        'order': 1
-                    }
-                },
-                'dataset': {
-                    'field': {
-                        'description': 'Existing BigQuery dataset.',
-                        'name': 'dataset',
-                        'default': '',
-                        'kind': 'string',
-                        'order': 4
-                    }
-                },
-                'schema': {
-                    'field': {
-                        'description':
-                            'Schema provided in JSON list format or leave '
-                            'empty to auto detect.',
-                        'name':
-                            'schema',
-                        'kind':
-                            'json',
-                        'order':
-                            6
-                    }
-                },
-                'table': {
-                    'field': {
-                        'description': 'Table to create from this report.',
-                        'name': 'table',
-                        'default': '',
-                        'kind': 'string',
-                        'order': 5
-                    }
-                }
-            }
-        },
-        'sheet': {
-            'field': {
-                'description': 'Retrieve from sheet properties.',
-                'name': 'sheet',
-                'kind': 'string',
-                'order': 3
-            }
+      'auth': {
+        'field': {
+          'order': 0,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'user'
         }
+      },
+      'token': {
+        'field': {
+          'order': 2,
+          'kind': 'string',
+          'name': 'token',
+          'description': 'Retrieve from SmartSheet account settings.',
+          'default': ''
+        }
+      },
+      'sheet': {
+        'field': {
+          'order': 3,
+          'kind': 'string',
+          'name': 'sheet',
+          'description': 'Retrieve from sheet properties.'
+        }
+      },
+      'link': {
+        'field': {
+          'order': 7,
+          'kind': 'boolean',
+          'name': 'link',
+          'description': 'Add a link to each row as the first column.',
+          'default': True
+        }
+      },
+      'out': {
+        'bigquery': {
+          'schema': {
+            'field': {
+              'order': 6,
+              'kind': 'json',
+              'name': 'schema',
+              'description': 'Schema provided in JSON list format or leave empty to auto detect.'
+            }
+          },
+          'table': {
+            'field': {
+              'order': 5,
+              'kind': 'string',
+              'name': 'table',
+              'description': 'Table to create from this report.',
+              'default': ''
+            }
+          },
+          'dataset': {
+            'field': {
+              'order': 4,
+              'kind': 'string',
+              'name': 'dataset',
+              'description': 'Existing BigQuery dataset.',
+              'default': ''
+            }
+          },
+          'auth': {
+            'field': {
+              'order': 1,
+              'kind': 'authentication',
+              'name': 'auth_write',
+              'description': 'Credentials used for writing data.',
+              'default': 'service'
+            }
+          }
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('smartsheet_to_bigquery', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('smartsheet_to_bigquery', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

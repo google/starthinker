@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -38,38 +40,41 @@ Used by tests.
 This should be called by the tests scripts only.
 When run will generate a say hello log.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_read': 'user',  # Credentials used for reading data.
+  'auth_read': 'user',  # Credentials used for reading data.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'hello': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for reading data.',
-                'name': 'auth_read',
-                'default': 'user',
-                'kind': 'authentication',
-                'order': 1
-            }
-        },
-        'sleep': 0,
-        'hour': [],
-        'say': 'Hello Manual'
+      'hour': [
+      ],
+      'sleep': 0,
+      'say': 'Hello Manual',
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'user'
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('manual', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('manual', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

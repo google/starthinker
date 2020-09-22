@@ -246,41 +246,41 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/lineitem/run.py" target="_blank">lineitem</a>": {
             "auth": {
                 "field": {
-                    "name": "auth_read",
+                    "description": "Credentials used for reading data.",
                     "order": 1,
                     "default": "user",
                     "kind": "authentication",
-                    "description": "Credentials used for reading data."
+                    "name": "auth_read"
                 }
             },
             "write": {
+                "dry_run": false,
                 "bigquery": {
-                    "query": {
-                        "field": {
-                            "name": "query",
-                            "default": "SELECT * FROM `Dataset.Table`;",
-                            "kind": "string",
-                            "order": 2
-                        }
-                    },
                     "dataset": {
                         "field": {
                             "name": "dataset",
-                            "default": "",
                             "kind": "string",
+                            "default": "",
                             "order": 1
                         }
                     },
                     "legacy": {
                         "field": {
                             "name": "legacy",
-                            "default": false,
                             "kind": "boolean",
+                            "default": false,
                             "order": 3
                         }
+                    },
+                    "query": {
+                        "field": {
+                            "name": "query",
+                            "kind": "string",
+                            "default": "SELECT * FROM `Dataset.Table`;",
+                            "order": 2
+                        }
                     }
-                },
-                "dry_run": false
+                }
             }
         }
     }

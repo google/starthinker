@@ -217,10 +217,10 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                <tbody>
                
                  <tr>
-                   <td>Account Health</td>
+                   <td>Spend Optimization</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 20%"></div>
+                       <div class="determinate" style="width: 80%"></div>
                      </div>
                    </td>
                  </tr>
@@ -253,19 +253,19 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Spend Growth</td>
+                   <td>Account Health</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 90%"></div>
+                       <div class="determinate" style="width: 20%"></div>
                      </div>
                    </td>
                  </tr>
                
                  <tr>
-                   <td>Spend Optimization</td>
+                   <td>Spend Growth</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 80%"></div>
+                       <div class="determinate" style="width: 90%"></div>
                      </div>
                    </td>
                  </tr>
@@ -294,7 +294,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>May 23, 2019 (1 year, 3 months)</td>
+              <td>May 23, 2019 (1 year, 4 months)</td>
             </tr>
 
             <tr>
@@ -371,47 +371,56 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
             "auth": {
                 "field": {
-                    "name": "auth_write",
+                    "description": "Credentials used for writing data.",
                     "order": 1,
                     "default": "service",
                     "kind": "authentication",
-                    "description": "Credentials used for writing data."
+                    "name": "auth_write"
                 }
             },
+            "description": "Create a dataset where data will be combined and transfored for upload.",
             "dataset": {
                 "field": {
-                    "name": "dataset",
-                    "kind": "string",
+                    "description": "Place where tables will be created in BigQuery.",
                     "order": 1,
-                    "description": "Place where tables will be created in BigQuery."
+                    "kind": "string",
+                    "name": "dataset"
                 }
-            },
-            "description": "Create a dataset where data will be combined and transfored for upload."
+            }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "auth": {
+                "field": {
+                    "description": "Credentials used for reading data.",
+                    "order": 1,
+                    "default": "user",
+                    "kind": "authentication",
+                    "name": "auth_read"
+                }
+            },
             "report": {
                 "body": {
                     "metadata": {
+                        "dataRange": "PREVIOUS_MONTH",
                         "format": "CSV",
                         "title": {
                             "field": {
-                                "name": "recipe_name",
+                                "description": "Name of report in DV360, should be unique.",
+                                "order": 1,
                                 "prefix": "Monthly_Budget_Mover_",
                                 "kind": "string",
-                                "order": 1,
-                                "description": "Name of report in DV360, should be unique."
+                                "name": "recipe_name"
                             }
-                        },
-                        "dataRange": "PREVIOUS_MONTH"
+                        }
                     },
                     "timezoneCode": {
                         "field": {
-                            "name": "recipe_timezone",
-                            "default": "America/Los_Angeles",
+                            "description": "Timezone for report dates.",
                             "kind": "timezone",
-                            "description": "Timezone for report dates."
+                            "default": "America/Los_Angeles",
+                            "name": "recipe_timezone"
                         }
                     },
                     "params": {
@@ -425,99 +434,154 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         ]
                     }
                 },
-                "timeout": 90,
                 "filters": {
                     "FILTER_ADVERTISER": {
                         "values": {
                             "field": {
-                                "name": "filter_ids",
+                                "description": "The comma separated list of Advertiser Ids.",
                                 "order": 7,
                                 "default": "",
                                 "kind": "integer_list",
-                                "description": "The comma separated list of Advertiser Ids."
+                                "name": "filter_ids"
                             }
                         }
                     }
-                }
-            },
-            "auth": {
-                "field": {
-                    "name": "auth_read",
-                    "order": 1,
-                    "default": "user",
-                    "kind": "authentication",
-                    "description": "Credentials used for reading data."
-                }
+                },
+                "timeout": 90
             },
             "delete": false
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/monthly_budget_mover/run.py" target="_blank">monthly_budget_mover</a>": {
-            "out_changes": {
+            "auth": "user",
+            "out_new_sdf": {
                 "bigquery": {
                     "schema": [],
-                    "table": {
-                        "field": {
-                            "name": "recipe_name",
-                            "kind": "string",
-                            "prefix": "SDF_BUDGET_MOVER_LOG_",
-                            "description": ""
-                        }
-                    },
-                    "skip_rows": 0,
                     "dataset": {
                         "field": {
-                            "name": "dataset",
+                            "description": "Dataset that you would like your output tables to be produced in.",
                             "order": 8,
                             "default": "",
                             "kind": "string",
-                            "description": "Dataset that you would like your output tables to be produced in."
+                            "name": "dataset"
                         }
                     },
+                    "table": {
+                        "field": {
+                            "description": "",
+                            "kind": "string",
+                            "prefix": "SDF_NEW_",
+                            "name": "recipe_name"
+                        }
+                    },
+                    "skip_rows": 0,
+                    "disposition": "WRITE_TRUNCATE"
+                },
+                "file": "/content/new_sdf.csv"
+            },
+            "excluded_ios": {
+                "field": {
+                    "description": "A comma separated list of Inserion Order Ids that should be exluded from the budget calculations",
+                    "order": 4,
+                    "kind": "integer_list",
+                    "name": "excluded_ios"
+                }
+            },
+            "report_name": {
+                "field": {
+                    "description": "Name of report in DV360, should be unique.",
+                    "order": 1,
+                    "prefix": "Monthly_Budget_Mover_",
+                    "kind": "string",
+                    "name": "recipe_name"
+                }
+            },
+            "budget_categories": {
+                "field": {
+                    "description": "A dictionary to show which IO Ids go under which Category. {\"CATEGORY1\":[12345,12345,12345], \"CATEGORY2\":[12345,12345]}",
+                    "order": 3,
+                    "default": "{}",
+                    "kind": "json",
+                    "name": "budget_categories"
+                }
+            },
+            "out_changes": {
+                "bigquery": {
+                    "schema": [],
+                    "dataset": {
+                        "field": {
+                            "description": "Dataset that you would like your output tables to be produced in.",
+                            "order": 8,
+                            "default": "",
+                            "kind": "string",
+                            "name": "dataset"
+                        }
+                    },
+                    "table": {
+                        "field": {
+                            "description": "",
+                            "kind": "string",
+                            "prefix": "SDF_BUDGET_MOVER_LOG_",
+                            "name": "recipe_name"
+                        }
+                    },
+                    "skip_rows": 0,
                     "disposition": "WRITE_TRUNCATE"
                 },
                 "file": "/content/log.csv"
             },
-            "budget_categories": {
-                "field": {
-                    "name": "budget_categories",
-                    "order": 3,
-                    "default": "{}",
-                    "kind": "json",
-                    "description": "A dictionary to show which IO Ids go under which Category. {\"CATEGORY1\":[12345,12345,12345], \"CATEGORY2\":[12345,12345]}"
-                }
+            "out_old_sdf": {
+                "bigquery": {
+                    "schema": [],
+                    "dataset": {
+                        "field": {
+                            "description": "Dataset that you would like your output tables to be produced in.",
+                            "order": 8,
+                            "default": "",
+                            "kind": "string",
+                            "name": "dataset"
+                        }
+                    },
+                    "table": {
+                        "field": {
+                            "description": "",
+                            "kind": "string",
+                            "prefix": "SDF_OLD_",
+                            "name": "recipe_name"
+                        }
+                    },
+                    "skip_rows": 0,
+                    "disposition": "WRITE_TRUNCATE"
+                },
+                "file": "/content/old_sdf.csv"
             },
             "is_colab": {
                 "field": {
-                    "name": "is_colab",
+                    "description": "Are you running this in Colab? (This will store the files in Colab instead of Bigquery)",
                     "order": 7,
                     "default": true,
                     "kind": "boolean",
-                    "description": "Are you running this in Colab? (This will store the files in Colab instead of Bigquery)"
+                    "name": "is_colab"
                 }
             },
             "sdf": {
+                "auth": "user",
+                "read": {
+                    "filter_ids": {
+                        "single_cell": true,
+                        "values": {
+                            "field": {
+                                "description": "Comma separated list of filter ids for the request.",
+                                "order": 4,
+                                "default": [],
+                                "kind": "integer_list",
+                                "name": "filter_ids"
+                            }
+                        }
+                    }
+                },
                 "filter_type": "FILTER_TYPE_ADVERTISER_ID",
-                "partner_id": {
-                    "field": {
-                        "name": "partner_id",
-                        "kind": "integer",
-                        "order": 1,
-                        "description": "The sdf file types."
-                    }
-                },
-                "file_types": "INSERTION_ORDER",
-                "time_partitioned_table": false,
-                "dataset": {
-                    "field": {
-                        "name": "dataset",
-                        "order": 6,
-                        "default": "",
-                        "kind": "string",
-                        "description": "Dataset to be written to in BigQuery."
-                    }
-                },
                 "version": {
                     "field": {
                         "default": "5",
@@ -525,98 +589,34 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "SDF_VERSION_5",
                             "SDF_VERSION_5_1"
                         ],
-                        "order": 6,
+                        "kind": "choice",
                         "name": "version",
-                        "description": "The sdf version to be returned.",
-                        "kind": "choice"
+                        "order": 6,
+                        "description": "The sdf version to be returned."
                     }
                 },
-                "create_single_day_table": false,
-                "auth": "user",
-                "read": {
-                    "filter_ids": {
-                        "single_cell": true,
-                        "values": {
-                            "field": {
-                                "name": "filter_ids",
-                                "order": 4,
-                                "default": [],
-                                "kind": "integer_list",
-                                "description": "Comma separated list of filter ids for the request."
-                            }
-                        }
+                "file_types": "INSERTION_ORDER",
+                "time_partitioned_table": false,
+                "dataset": {
+                    "field": {
+                        "description": "Dataset to be written to in BigQuery.",
+                        "order": 6,
+                        "default": "",
+                        "kind": "string",
+                        "name": "dataset"
                     }
                 },
-                "table_suffix": ""
-            },
-            "excluded_ios": {
-                "field": {
-                    "name": "excluded_ios",
-                    "kind": "integer_list",
-                    "order": 4,
-                    "description": "A comma separated list of Inserion Order Ids that should be exluded from the budget calculations"
-                }
-            },
-            "report_name": {
-                "field": {
-                    "name": "recipe_name",
-                    "prefix": "Monthly_Budget_Mover_",
-                    "kind": "string",
-                    "order": 1,
-                    "description": "Name of report in DV360, should be unique."
-                }
-            },
-            "out_old_sdf": {
-                "bigquery": {
-                    "schema": [],
-                    "table": {
-                        "field": {
-                            "name": "recipe_name",
-                            "kind": "string",
-                            "prefix": "SDF_OLD_",
-                            "description": ""
-                        }
-                    },
-                    "skip_rows": 0,
-                    "dataset": {
-                        "field": {
-                            "name": "dataset",
-                            "order": 8,
-                            "default": "",
-                            "kind": "string",
-                            "description": "Dataset that you would like your output tables to be produced in."
-                        }
-                    },
-                    "disposition": "WRITE_TRUNCATE"
+                "table_suffix": "",
+                "partner_id": {
+                    "field": {
+                        "description": "The sdf file types.",
+                        "order": 1,
+                        "kind": "integer",
+                        "name": "partner_id"
+                    }
                 },
-                "file": "/content/old_sdf.csv"
-            },
-            "out_new_sdf": {
-                "bigquery": {
-                    "schema": [],
-                    "table": {
-                        "field": {
-                            "name": "recipe_name",
-                            "kind": "string",
-                            "prefix": "SDF_NEW_",
-                            "description": ""
-                        }
-                    },
-                    "skip_rows": 0,
-                    "dataset": {
-                        "field": {
-                            "name": "dataset",
-                            "order": 8,
-                            "default": "",
-                            "kind": "string",
-                            "description": "Dataset that you would like your output tables to be produced in."
-                        }
-                    },
-                    "disposition": "WRITE_TRUNCATE"
-                },
-                "file": "/content/new_sdf.csv"
-            },
-            "auth": "user"
+                "create_single_day_table": false
+            }
         }
     }
 ]</code></pre>

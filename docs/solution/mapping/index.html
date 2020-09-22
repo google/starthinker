@@ -256,65 +256,65 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/mapping/run.py" target="_blank">mapping</a>": {
-            "sheet": {
-                "field": {
-                    "name": "sheet",
-                    "default": "",
-                    "kind": "string",
-                    "order": 1
-                }
-            },
-            "out": {
-                "view": {
-                    "field": {
-                        "name": "out_view",
-                        "default": "",
-                        "kind": "string",
-                        "order": 8
-                    }
-                },
-                "dataset": {
-                    "field": {
-                        "name": "out_dataset",
-                        "default": "",
-                        "kind": "string",
-                        "order": 7
-                    }
-                }
-            },
             "auth": {
                 "field": {
-                    "name": "auth_read",
+                    "description": "Credentials used for reading data.",
                     "order": 1,
                     "default": "user",
                     "kind": "authentication",
-                    "description": "Credentials used for reading data."
+                    "name": "auth_read"
+                }
+            },
+            "out": {
+                "dataset": {
+                    "field": {
+                        "name": "out_dataset",
+                        "kind": "string",
+                        "default": "",
+                        "order": 7
+                    }
+                },
+                "view": {
+                    "field": {
+                        "name": "out_view",
+                        "kind": "string",
+                        "default": "",
+                        "order": 8
+                    }
+                }
+            },
+            "sheet": {
+                "field": {
+                    "name": "sheet",
+                    "kind": "string",
+                    "default": "",
+                    "order": 1
+                }
+            },
+            "in": {
+                "dataset": {
+                    "field": {
+                        "name": "in_dataset",
+                        "kind": "string",
+                        "default": "",
+                        "order": 3
+                    }
+                },
+                "table": {
+                    "field": {
+                        "name": "in_table",
+                        "kind": "string",
+                        "default": "",
+                        "order": 4
+                    }
                 }
             },
             "tab": {
                 "field": {
                     "name": "tab",
-                    "default": "",
                     "kind": "string",
+                    "default": "",
                     "order": 2
-                }
-            },
-            "in": {
-                "table": {
-                    "field": {
-                        "name": "in_table",
-                        "default": "",
-                        "kind": "string",
-                        "order": 4
-                    }
-                },
-                "dataset": {
-                    "field": {
-                        "name": "in_dataset",
-                        "default": "",
-                        "kind": "string",
-                        "order": 3
-                    }
                 }
             }
         }

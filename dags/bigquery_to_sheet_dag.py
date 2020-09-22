@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -40,107 +42,102 @@ Leave range blank or set to A2 to insert one line down.
 The range is cleared before the sheet is written to.
 To select a table use SELECT * FROM table.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_read': 'user',  # Credentials used for reading data.
-    'sheet': '',  # Either sheet url or sheet name.
-    'tab': '',  # Name of the tab where to put the data.
-    'range':
-        '',  # Range in the sheet to place the data, leave blank for whole sheet.
-    'dataset': '',  # Existing BigQuery dataset.
-    'query': '',  # Query to pull data from the table.
-    'legacy': True,  # Use Legacy SQL
+  'auth_read': 'user',  # Credentials used for reading data.
+  'sheet': '',  # Either sheet url or sheet name.
+  'tab': '',  # Name of the tab where to put the data.
+  'range': '',  # Range in the sheet to place the data, leave blank for whole sheet.
+  'dataset': '',  # Existing BigQuery dataset.
+  'query': '',  # Query to pull data from the table.
+  'legacy': True,  # Use Legacy SQL
 }
 
-TASKS = [{
+TASKS = [
+  {
     'bigquery': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for reading data.',
-                'name': 'auth_read',
-                'default': 'user',
-                'kind': 'authentication',
-                'order': 1
-            }
-        },
-        'to': {
-            'tab': {
-                'field': {
-                    'description': 'Name of the tab where to put the data.',
-                    'name': 'tab',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 2
-                }
-            },
-            'sheet': {
-                'field': {
-                    'description': 'Either sheet url or sheet name.',
-                    'name': 'sheet',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 1
-                }
-            },
-            'range': {
-                'field': {
-                    'description':
-                        'Range in the sheet to place the data, leave blank for'
-                        ' whole sheet.',
-                    'name':
-                        'range',
-                    'default':
-                        '',
-                    'kind':
-                        'string',
-                    'order':
-                        3
-                }
-            }
-        },
-        'from': {
-            'auth': 'service',
-            'query': {
-                'field': {
-                    'description': 'Query to pull data from the table.',
-                    'name': 'query',
-                    'default': '',
-                    'kind': 'text',
-                    'order': 5
-                }
-            },
-            'legacy': {
-                'field': {
-                    'description': 'Use Legacy SQL',
-                    'name': 'legacy',
-                    'default': True,
-                    'kind': 'boolean',
-                    'order': 6
-                }
-            },
-            'dataset': {
-                'field': {
-                    'description': 'Existing BigQuery dataset.',
-                    'name': 'dataset',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 4
-                }
-            }
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'user'
         }
+      },
+      'from': {
+        'query': {
+          'field': {
+            'order': 5,
+            'kind': 'text',
+            'name': 'query',
+            'description': 'Query to pull data from the table.',
+            'default': ''
+          }
+        },
+        'legacy': {
+          'field': {
+            'order': 6,
+            'kind': 'boolean',
+            'name': 'legacy',
+            'description': 'Use Legacy SQL',
+            'default': True
+          }
+        },
+        'dataset': {
+          'field': {
+            'order': 4,
+            'kind': 'string',
+            'name': 'dataset',
+            'description': 'Existing BigQuery dataset.',
+            'default': ''
+          }
+        },
+        'auth': 'service'
+      },
+      'to': {
+        'range': {
+          'field': {
+            'order': 3,
+            'kind': 'string',
+            'name': 'range',
+            'description': 'Range in the sheet to place the data, leave blank for whole sheet.',
+            'default': ''
+          }
+        },
+        'sheet': {
+          'field': {
+            'order': 1,
+            'kind': 'string',
+            'name': 'sheet',
+            'description': 'Either sheet url or sheet name.',
+            'default': ''
+          }
+        },
+        'tab': {
+          'field': {
+            'order': 2,
+            'kind': 'string',
+            'name': 'tab',
+            'description': 'Name of the tab where to put the data.',
+            'default': ''
+          }
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('bigquery_to_sheet', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('bigquery_to_sheet', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

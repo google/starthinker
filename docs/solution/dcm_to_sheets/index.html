@@ -252,60 +252,60 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
+            "auth": {
+                "field": {
+                    "description": "Credentials used for reading data.",
+                    "order": 1,
+                    "default": "user",
+                    "kind": "authentication",
+                    "name": "auth_read"
+                }
+            },
+            "out": {
+                "sheets": {
+                    "sheet": {
+                        "field": {
+                            "name": "sheet",
+                            "kind": "string",
+                            "default": "",
+                            "order": 5
+                        }
+                    },
+                    "range": "A1",
+                    "tab": {
+                        "field": {
+                            "name": "tab",
+                            "kind": "string",
+                            "default": "",
+                            "order": 6
+                        }
+                    }
+                }
+            },
             "report": {
                 "account": {
                     "field": {
                         "name": "account",
-                        "default": "",
                         "kind": "integer",
+                        "default": "",
                         "order": 2
                     }
                 },
                 "report_id": {
                     "field": {
                         "name": "report_id",
-                        "default": "",
                         "kind": "integer",
+                        "default": "",
                         "order": 3
                     }
                 },
                 "name": {
                     "field": {
                         "name": "report_name",
-                        "default": "",
                         "kind": "string",
+                        "default": "",
                         "order": 4
                     }
-                }
-            },
-            "out": {
-                "sheets": {
-                    "range": "A1",
-                    "sheet": {
-                        "field": {
-                            "name": "sheet",
-                            "default": "",
-                            "kind": "string",
-                            "order": 5
-                        }
-                    },
-                    "tab": {
-                        "field": {
-                            "name": "tab",
-                            "default": "",
-                            "kind": "string",
-                            "order": 6
-                        }
-                    }
-                }
-            },
-            "auth": {
-                "field": {
-                    "name": "auth_read",
-                    "order": 1,
-                    "default": "user",
-                    "kind": "authentication",
-                    "description": "Credentials used for reading data."
                 }
             }
         }

@@ -135,8 +135,8 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       
 
   <br/>
-  <h1><i class="medium material-icons">donut_small</i>&nbsp; DV360 API Insert From BigQuery</h1>
-  <p class="flow-text">Insert DV360 API Endpoints.</p>
+  <h1><i class="medium material-icons"></i>&nbsp; </h1>
+  <p class="flow-text"></p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
@@ -163,13 +163,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     
 
     
-      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/dv360_api_insert_from_bigquery.json" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/airflow.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
-      <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv360_api_insert_from_bigquery.ipynb" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/airflow.ipynb" target="_blank">
         <i class="material-icons right">copyright</i>Data Pill Colab
       </a>
-      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/dv360_api_insert_from_bigquery_dag.py" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/airflow_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
       </a>
     
@@ -201,12 +201,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Feb. 20, 2019 (1 year, 7 months)</td>
+              <td>None ()</td>
             </tr>
 
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+DV360+API+Insert+From+BigQuery+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+DV360+API+Insert+From+BigQuery+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fdv360_api_insert_from_bigquery%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:?subject=Request+For+A++StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the++solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fairflow%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank"></a>
               </td>
             </tr>
 
@@ -216,97 +216,46 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     </div>
 
    
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-          <thead>
-              <tr>
-                <th>Instructions</th>
-              </tr>
-             </thead>
-             <tbody>
-             
-               <tr>
-                 <td>Specify the name of the dataset and table.</td>
-               </tr>
-             
-               <tr>
-                 <td>Rows will be read and applied as a insert to DV360.</td>
-               </tr>
-             
-             </tbody>
-          </table>
-        </div>
-       </div>
-     
 
     <div class="col s12 m12 l8">
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
-        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dv360_api/run.py" target="_blank">dv360_api</a>": {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/airflow/run.py" target="_blank">airflow</a>": {
+            "operators": {
+                "bash_operator": {
+                    "BashOperator": {
+                        "bash_command": "date"
+                    }
+                }
+            },
+            "__comment__": "Calls a native Airflow operator."
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/starthinker_airflow/run.py" target="_blank">starthinker_airflow</a>": {
+            "operators": {
+                "hello": {
+                    "Hello": {
+                        "say": "Hi, there!"
+                    }
+                }
+            },
+            "__comment__": "Calls an custom operator, requires import of library."
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/hello/run.py" target="_blank">hello</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
-                    "order": 0,
+                    "description": "Credentials used for reading data.",
+                    "order": 1,
                     "default": "user",
                     "kind": "authentication",
-                    "name": "auth_write"
+                    "name": "auth_read"
                 }
             },
-            "insert": {
-                "field": {
-                    "name": "insert",
-                    "default": "",
-                    "choices": [
-                        "advertisers",
-                        "advertisers.campaigns",
-                        "advertisers.channels",
-                        "advertisers.channels.sites",
-                        "advertisers.creatives",
-                        "advertisers.insertionOrders",
-                        "advertisers.lineItems",
-                        "advertisers.locationLists",
-                        "advertisers.locationLists.assignedLocations",
-                        "advertisers.negativeKeywordLists",
-                        "advertisers.negativeKeywordLists.negativeKeywords",
-                        "floodlightGroups",
-                        "inventorySourceGroups",
-                        "partners.channels",
-                        "users"
-                    ],
-                    "kind": "choice"
-                }
-            },
-            "bigquery": {
-                "auth": {
-                    "field": {
-                        "description": "Credentials used for reading data.",
-                        "order": 1,
-                        "default": "service",
-                        "kind": "authentication",
-                        "name": "auth_read"
-                    }
-                },
-                "dataset": {
-                    "field": {
-                        "description": "Google BigQuery dataset to create tables in.",
-                        "order": 2,
-                        "default": "",
-                        "kind": "string",
-                        "name": "dataset"
-                    }
-                },
-                "table": {
-                    "field": {
-                        "description": "Google BigQuery dataset to create tables in.",
-                        "order": 3,
-                        "default": "",
-                        "kind": "string",
-                        "name": "table"
-                    }
-                },
-                "as_object": true
-            }
+            "__comment__": "Calls a StarThinker task.",
+            "say": "Hello World"
         }
     }
 ]</code></pre>

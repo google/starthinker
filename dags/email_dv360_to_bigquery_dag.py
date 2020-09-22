@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -43,124 +45,106 @@ Ensure this recipe runs after the report is email daily.
 Give a regular expression to match the email subject.
 Configure the destination in BigQuery to write the data.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_read': 'user',  # Credentials used for reading data.
-    'email': '',  # Email address report was sent to.
-    'subject':
-        '.*',  # Regular expression to match subject. Double escape backslashes.
-    'dataset': '',  # Existing dataset in BigQuery.
-    'table': '',  # Name of table to be written to.
-    'dbm_schema': '[]',  # Schema provided in JSON list format or empty list.
-    'is_incremental_load':
-        False,  # Append report data to table based on date column, de-duplicates.
+  'email': '',  # Email address report was sent to.
+  'auth_read': 'user',  # Credentials used for reading data.
+  'subject': '.*',  # Regular expression to match subject. Double escape backslashes.
+  'dataset': '',  # Existing dataset in BigQuery.
+  'table': '',  # Name of table to be written to.
+  'dbm_schema': '[]',  # Schema provided in JSON list format or empty list.
+  'is_incremental_load': False,  # Append report data to table based on date column, de-duplicates.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'email': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for reading data.',
-                'name': 'auth_read',
-                'default': 'user',
-                'kind': 'authentication',
-                'order': 1
-            }
-        },
-        'read': {
-            'attachment': '.*',
-            'link': 'https://storage.googleapis.com/.*',
-            'out': {
-                'bigquery': {
-                    'is_incremental_load': {
-                        'field': {
-                            'description':
-                                'Append report data to table based on date '
-                                'column, de-duplicates.',
-                            'name':
-                                'is_incremental_load',
-                            'default':
-                                False,
-                            'kind':
-                                'boolean',
-                            'order':
-                                6
-                        }
-                    },
-                    'dataset': {
-                        'field': {
-                            'description': 'Existing dataset in BigQuery.',
-                            'name': 'dataset',
-                            'default': '',
-                            'kind': 'string',
-                            'order': 3
-                        }
-                    },
-                    'schema': {
-                        'field': {
-                            'description':
-                                'Schema provided in JSON list format or empty '
-                                'list.',
-                            'name':
-                                'dbm_schema',
-                            'default':
-                                '[]',
-                            'kind':
-                                'json',
-                            'order':
-                                5
-                        }
-                    },
-                    'table': {
-                        'field': {
-                            'description': 'Name of table to be written to.',
-                            'name': 'table',
-                            'default': '',
-                            'kind': 'string',
-                            'order': 4
-                        }
-                    }
-                }
-            },
-            'subject': {
-                'field': {
-                    'description':
-                        'Regular expression to match subject. Double escape '
-                        'backslashes.',
-                    'name':
-                        'subject',
-                    'default':
-                        '.*',
-                    'kind':
-                        'string',
-                    'order':
-                        2
-                }
-            },
-            'to': {
-                'field': {
-                    'description': 'Email address report was sent to.',
-                    'name': 'email',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 1
-                }
-            },
-            'from': 'noreply-dv360@google.com'
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'user'
         }
+      },
+      'read': {
+        'subject': {
+          'field': {
+            'order': 2,
+            'kind': 'string',
+            'name': 'subject',
+            'description': 'Regular expression to match subject. Double escape backslashes.',
+            'default': '.*'
+          }
+        },
+        'attachment': '.*',
+        'from': 'noreply-dv360@google.com',
+        'out': {
+          'bigquery': {
+            'schema': {
+              'field': {
+                'order': 5,
+                'kind': 'json',
+                'name': 'dbm_schema',
+                'description': 'Schema provided in JSON list format or empty list.',
+                'default': '[]'
+              }
+            },
+            'table': {
+              'field': {
+                'order': 4,
+                'kind': 'string',
+                'name': 'table',
+                'description': 'Name of table to be written to.',
+                'default': ''
+              }
+            },
+            'is_incremental_load': {
+              'field': {
+                'order': 6,
+                'kind': 'boolean',
+                'name': 'is_incremental_load',
+                'description': 'Append report data to table based on date column, de-duplicates.',
+                'default': False
+              }
+            },
+            'dataset': {
+              'field': {
+                'order': 3,
+                'kind': 'string',
+                'name': 'dataset',
+                'description': 'Existing dataset in BigQuery.',
+                'default': ''
+              }
+            }
+          }
+        },
+        'link': 'https://storage.googleapis.com/.*',
+        'to': {
+          'field': {
+            'order': 1,
+            'kind': 'string',
+            'name': 'email',
+            'description': 'Email address report was sent to.',
+            'default': ''
+          }
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('email_dv360_to_bigquery', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('email_dv360_to_bigquery', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

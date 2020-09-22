@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -36,177 +38,161 @@ CM Report Replicate
 Replicate a report across multiple networks and advertisers.
 
 Provide the name or ID of an existing report.
-Run the recipe once to generate the input sheet called CM Replicate For
-UNDEFINED.
+Run the recipe once to generate the input sheet called CM Replicate For UNDEFINED.
 Enter network and advertiser ids to replicate the report.
-Data will be written to BigQuery &gt; UNDEFINED &gt; UNDEFINED &gt; [REPORT
-NAME]_All
+Data will be written to BigQuery &gt; UNDEFINED &gt; UNDEFINED &gt; [REPORT NAME]_All
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_read': 'user',  # Credentials used for reading data.
-    'recipe_name': '',  # Sheet to read ids from.
-    'auth_write': 'service',  # Credentials used for writing data.
-    'account': '',  # CM network id.
-    'report_id': '',  # CM template report id, for template
-    'recipe_slug': '',
-    'report_name': '',  # CM template report name, empty if using id instead.
-    'delete': False,  # Use only to reset the reports if setup changes.
-    'Aggregate':
-        False,  # Append report data to existing table, requires Date column.
+  'auth_read': 'user',  # Credentials used for reading data.
+  'auth_write': 'service',  # Credentials used for writing data.
+  'recipe_name': '',  # Sheet to read ids from.
+  'account': '',  # CM network id.
+  'recipe_slug': '',
+  'report_id': '',  # CM template report id, for template
+  'report_name': '',  # CM template report name, empty if using id instead.
+  'delete': False,  # Use only to reset the reports if setup changes.
+  'Aggregate': False,  # Append report data to existing table, requires Date column.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'drive': {
-        'auth': 'user',
-        'copy': {
-            'source':
-                'https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/',
-            'destination': {
-                'field': {
-                    'name': 'recipe_name',
-                    'default': '',
-                    'description': 'Name of document to deploy to.',
-                    'prefix': 'CM Replicate For ',
-                    'kind': 'string',
-                    'order': 1
-                }
-            }
-        }
+      'copy': {
+        'destination': {
+          'field': {
+            'description': 'Name of document to deploy to.',
+            'prefix': 'CM Replicate For ',
+            'order': 1,
+            'kind': 'string',
+            'name': 'recipe_name',
+            'default': ''
+          }
+        },
+        'source': 'https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/'
+      },
+      'auth': 'user'
     }
-}, {
+  },
+  {
     'dataset': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for writing data.',
-                'name': 'auth_write',
-                'default': 'service',
-                'kind': 'authentication',
-                'order': 1
-            }
-        },
-        'dataset': {
-            'field': {
-                'description': 'Name of Google BigQuery dataset to create.',
-                'name': 'recipe_slug',
-                'default': '',
-                'kind': 'string',
-                'order': 2
-            }
+      'dataset': {
+        'field': {
+          'order': 2,
+          'kind': 'string',
+          'name': 'recipe_slug',
+          'description': 'Name of Google BigQuery dataset to create.',
+          'default': ''
         }
+      },
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_write',
+          'description': 'Credentials used for writing data.',
+          'default': 'service'
+        }
+      }
     }
-}, {
+  },
+  {
     'dcm_replicate': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for reading data.',
-                'name': 'auth_read',
-                'default': 'user',
-                'kind': 'authentication',
-                'order': 0
-            }
+      'report': {
+        'id': {
+          'field': {
+            'order': 4,
+            'kind': 'integer',
+            'name': 'report_id',
+            'description': 'CM template report id, for template',
+            'default': ''
+          }
         },
-        'report': {
-            'name': {
-                'field': {
-                    'description':
-                        'CM template report name, empty if using id instead.',
-                    'name':
-                        'report_name',
-                    'default':
-                        '',
-                    'kind':
-                        'string',
-                    'order':
-                        5
-                }
-            },
-            'id': {
-                'field': {
-                    'description': 'CM template report id, for template',
-                    'name': 'report_id',
-                    'default': '',
-                    'kind': 'integer',
-                    'order': 4
-                }
-            },
-            'delete': {
-                'field': {
-                    'description':
-                        'Use only to reset the reports if setup changes.',
-                    'name':
-                        'delete',
-                    'default':
-                        False,
-                    'kind':
-                        'boolean',
-                    'order':
-                        6
-                }
-            },
-            'account': {
-                'field': {
-                    'description': 'CM network id.',
-                    'name': 'account',
-                    'default': '',
-                    'kind': 'integer',
-                    'order': 3
-                }
-            }
+        'name': {
+          'field': {
+            'order': 5,
+            'kind': 'string',
+            'name': 'report_name',
+            'description': 'CM template report name, empty if using id instead.',
+            'default': ''
+          }
         },
-        'out': {
-            'bigquery': {
-                'is_incremental_load': {
-                    'field': {
-                        'description':
-                            'Append report data to existing table, requires '
-                            'Date column.',
-                        'name':
-                            'Aggregate',
-                        'default':
-                            False,
-                        'kind':
-                            'boolean',
-                        'order':
-                            7
-                    }
-                },
-                'dataset': {
-                    'field': {
-                        'name': 'recipe_slug',
-                        'default': '',
-                        'kind': 'string',
-                        'order': 4
-                    }
-                }
-            }
+        'delete': {
+          'field': {
+            'order': 6,
+            'kind': 'boolean',
+            'name': 'delete',
+            'description': 'Use only to reset the reports if setup changes.',
+            'default': False
+          }
         },
-        'in': {
-            'tab': 'Accounts',
-            'sheet': {
-                'field': {
-                    'name': 'recipe_name',
-                    'default': '',
-                    'prefix': 'CM Replicate For ',
-                    'description': 'Sheet to read ids from.',
-                    'kind': 'string',
-                    'order': 1
-                }
-            }
+        'account': {
+          'field': {
+            'order': 3,
+            'kind': 'integer',
+            'name': 'account',
+            'description': 'CM network id.',
+            'default': ''
+          }
         }
+      },
+      'auth': {
+        'field': {
+          'order': 0,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'user'
+        }
+      },
+      'in': {
+        'sheet': {
+          'field': {
+            'description': 'Sheet to read ids from.',
+            'default': '',
+            'order': 1,
+            'kind': 'string',
+            'name': 'recipe_name',
+            'prefix': 'CM Replicate For '
+          }
+        },
+        'tab': 'Accounts'
+      },
+      'out': {
+        'bigquery': {
+          'is_incremental_load': {
+            'field': {
+              'order': 7,
+              'kind': 'boolean',
+              'name': 'Aggregate',
+              'description': 'Append report data to existing table, requires Date column.',
+              'default': False
+            }
+          },
+          'dataset': {
+            'field': {
+              'order': 4,
+              'kind': 'string',
+              'name': 'recipe_slug',
+              'default': ''
+            }
+          }
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('dcm_replicate_to_bigquery', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('dcm_replicate_to_bigquery', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

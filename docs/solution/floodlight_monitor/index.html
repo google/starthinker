@@ -242,15 +242,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Account Health</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 100%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Time Savings</td>
                    <td>
                      <div class="progress">
@@ -264,6 +255,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                    <td>
                      <div class="progress">
                        <div class="determinate" style="width: 0%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Account Health</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 100%"></div>
                      </div>
                    </td>
                  </tr>
@@ -352,42 +352,42 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/floodlight_monitor/run.py" target="_blank">floodlight_monitor</a>": {
+            "auth": {
+                "field": {
+                    "description": "Credentials used for reading data.",
+                    "order": 1,
+                    "default": "user",
+                    "kind": "authentication",
+                    "name": "auth_read"
+                }
+            },
             "account": {
                 "field": {
-                    "name": "dcm_account",
+                    "description": "Specify an account_id as a number.",
                     "order": 1,
                     "default": "",
                     "kind": "string",
-                    "description": "Specify an account_id as a number."
+                    "name": "dcm_account"
                 }
             },
             "sheet": {
-                "range": "A2:B",
                 "sheet": {
                     "field": {
-                        "name": "sheet",
+                        "description": "Full Name or URL to Google Sheet, Floodlight Monitor tab will be added.",
                         "order": 2,
                         "default": "",
                         "kind": "string",
-                        "description": "Full Name or URL to Google Sheet, Floodlight Monitor tab will be added."
+                        "name": "sheet"
                     }
                 },
+                "range": "A2:B",
                 "tab": "Floodlight Monitor"
             },
             "template": {
                 "template": {
-                    "range": "A1",
                     "sheet": "https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing",
+                    "range": "A1",
                     "tab": "Floodlight Monitor"
-                }
-            },
-            "auth": {
-                "field": {
-                    "name": "auth_read",
-                    "order": 1,
-                    "default": "user",
-                    "kind": "authentication",
-                    "description": "Credentials used for reading data."
                 }
             }
         }

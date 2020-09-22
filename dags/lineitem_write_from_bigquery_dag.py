@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -36,72 +38,71 @@ Line Item From BigQuery
 Upload Line Items From BigQuery To DV360.
 
 Specify the table or view where the lineitem data is defined.
-The schema should match <a
-href='https://developers.google.com/bid-manager/guides/entity-write/format'
-target='_blank'>Entity Write Format</a>.
+The schema should match <a href='https://developers.google.com/bid-manager/guides/entity-write/format' target='_blank'>Entity Write Format</a>.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_read': 'user',  # Credentials used for reading data.
-    'dataset': '',
-    'query': 'SELECT * FROM `Dataset.Table`;',
-    'legacy': False,
+  'auth_read': 'user',  # Credentials used for reading data.
+  'dataset': '',
+  'query': 'SELECT * FROM `Dataset.Table`;',
+  'legacy': False,
 }
 
-TASKS = [{
+TASKS = [
+  {
     'lineitem': {
-        'auth': {
+      'write': {
+        'bigquery': {
+          'query': {
             'field': {
-                'description': 'Credentials used for reading data.',
-                'name': 'auth_read',
-                'default': 'user',
-                'kind': 'authentication',
-                'order': 1
+              'order': 2,
+              'kind': 'string',
+              'name': 'query',
+              'default': 'SELECT * FROM `Dataset.Table`;'
             }
+          },
+          'legacy': {
+            'field': {
+              'order': 3,
+              'kind': 'boolean',
+              'name': 'legacy',
+              'default': False
+            }
+          },
+          'dataset': {
+            'field': {
+              'order': 1,
+              'kind': 'string',
+              'name': 'dataset',
+              'default': ''
+            }
+          }
         },
-        'write': {
-            'bigquery': {
-                'query': {
-                    'field': {
-                        'name': 'query',
-                        'default': 'SELECT * FROM `Dataset.Table`;',
-                        'kind': 'string',
-                        'order': 2
-                    }
-                },
-                'legacy': {
-                    'field': {
-                        'name': 'legacy',
-                        'default': False,
-                        'kind': 'boolean',
-                        'order': 3
-                    }
-                },
-                'dataset': {
-                    'field': {
-                        'name': 'dataset',
-                        'default': '',
-                        'kind': 'string',
-                        'order': 1
-                    }
-                }
-            },
-            'dry_run': False
+        'dry_run': False
+      },
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'user'
         }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('lineitem_write_from_bigquery', {'tasks': TASKS},
-                          INPUTS)
+DAG_FACTORY = DAG_Factory('lineitem_write_from_bigquery', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

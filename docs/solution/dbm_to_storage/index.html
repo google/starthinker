@@ -244,64 +244,64 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
-            "report": {
-                "report_id": {
-                    "field": {
-                        "name": "dbm_report_id",
-                        "order": 1,
-                        "default": "",
-                        "kind": "integer",
-                        "description": "DV360 report ID given in UI, not needed if name used."
-                    }
-                },
-                "name": {
-                    "field": {
-                        "name": "dbm_report_name",
-                        "order": 2,
-                        "default": "",
-                        "kind": "string",
-                        "description": "Name of report, not needed if ID used."
-                    }
+            "auth": {
+                "field": {
+                    "description": "Credentials used for reading data.",
+                    "order": 1,
+                    "default": "user",
+                    "kind": "authentication",
+                    "name": "auth_read"
                 }
             },
             "out": {
                 "storage": {
-                    "bucket": {
-                        "field": {
-                            "name": "dbm_bucket",
-                            "order": 3,
-                            "default": "",
-                            "kind": "string",
-                            "description": "Google cloud bucket."
-                        }
-                    },
                     "auth": {
                         "field": {
-                            "name": "auth_write",
+                            "description": "Credentials used for writing data.",
                             "order": 1,
                             "default": "service",
                             "kind": "authentication",
-                            "description": "Credentials used for writing data."
+                            "name": "auth_write"
                         }
                     },
                     "path": {
                         "field": {
-                            "name": "dbm_path",
+                            "description": "Path and filename to write to.",
                             "order": 4,
                             "default": "",
                             "kind": "string",
-                            "description": "Path and filename to write to."
+                            "name": "dbm_path"
+                        }
+                    },
+                    "bucket": {
+                        "field": {
+                            "description": "Google cloud bucket.",
+                            "order": 3,
+                            "default": "",
+                            "kind": "string",
+                            "name": "dbm_bucket"
                         }
                     }
                 }
             },
-            "auth": {
-                "field": {
-                    "name": "auth_read",
-                    "order": 1,
-                    "default": "user",
-                    "kind": "authentication",
-                    "description": "Credentials used for reading data."
+            "report": {
+                "name": {
+                    "field": {
+                        "description": "Name of report, not needed if ID used.",
+                        "order": 2,
+                        "default": "",
+                        "kind": "string",
+                        "name": "dbm_report_name"
+                    }
+                },
+                "report_id": {
+                    "field": {
+                        "description": "DV360 report ID given in UI, not needed if name used.",
+                        "order": 1,
+                        "default": "",
+                        "kind": "integer",
+                        "name": "dbm_report_id"
+                    }
                 }
             }
         }

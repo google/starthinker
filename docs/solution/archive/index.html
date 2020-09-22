@@ -244,47 +244,47 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/archive/run.py" target="_blank">archive</a>": {
-            "storage": {
-                "bucket": {
-                    "field": {
-                        "name": "archive_bucket",
-                        "default": "",
-                        "kind": "string",
-                        "order": 2
-                    }
-                },
-                "path": {
-                    "field": {
-                        "name": "archive_path",
-                        "default": "",
-                        "kind": "string",
-                        "order": 3
-                    }
-                }
-            },
             "auth": {
                 "field": {
-                    "name": "auth_write",
+                    "description": "Credentials used for writing data.",
                     "order": 1,
                     "default": "service",
                     "kind": "authentication",
-                    "description": "Credentials used for writing data."
+                    "name": "auth_write"
                 }
             },
-            "delete": {
-                "field": {
-                    "name": "archive_delete",
-                    "default": false,
-                    "kind": "boolean",
-                    "order": 4
+            "storage": {
+                "path": {
+                    "field": {
+                        "name": "archive_path",
+                        "kind": "string",
+                        "default": "",
+                        "order": 3
+                    }
+                },
+                "bucket": {
+                    "field": {
+                        "name": "archive_bucket",
+                        "kind": "string",
+                        "default": "",
+                        "order": 2
+                    }
                 }
             },
             "days": {
                 "field": {
                     "name": "archive_days",
-                    "default": 7,
                     "kind": "integer",
+                    "default": 7,
                     "order": 1
+                }
+            },
+            "delete": {
+                "field": {
+                    "name": "archive_delete",
+                    "kind": "boolean",
+                    "default": false,
+                    "order": 4
                 }
             }
         }

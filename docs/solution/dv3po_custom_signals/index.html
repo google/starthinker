@@ -234,15 +234,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Account Health</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Time Savings</td>
                    <td>
                      <div class="progress">
@@ -256,6 +247,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                    <td>
                      <div class="progress">
                        <div class="determinate" style="width: 30%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Account Health</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 0%"></div>
                      </div>
                    </td>
                  </tr>
@@ -293,7 +293,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>April 22, 2020 (4 months, 3 weeks)</td>
+              <td>April 22, 2020 (5 months)</td>
             </tr>
 
             <tr>
@@ -364,61 +364,61 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/weather_gov/run.py" target="_blank">weather_gov</a>": {
+            "auth": "user",
             "stations": {
                 "field": {
-                    "name": "station_ids",
+                    "description": "NOAA Weather Station ID",
                     "order": 1,
                     "default": "",
                     "kind": "string_list",
-                    "description": "NOAA Weather Station ID"
+                    "name": "station_ids"
                 }
             },
             "out": {
                 "sheets": {
-                    "range": "A2:K",
-                    "tab": "Weather",
                     "sheet": {
                         "field": {
-                            "name": "sheet_url",
+                            "description": "Feed Sheet URL",
                             "order": 2,
                             "default": "",
                             "kind": "string",
-                            "description": "Feed Sheet URL"
+                            "name": "sheet_url"
                         }
                     },
-                    "delete": true
+                    "range": "A2:K",
+                    "delete": true,
+                    "tab": "Weather"
                 }
-            },
-            "auth": "user"
+            }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/lineitem_beta/run.py" target="_blank">lineitem_beta</a>": {
-            "patch": {},
-            "read": {
-                "sheet": {
-                    "range": "A1:D",
-                    "sheet": {
-                        "field": {
-                            "name": "sheet_url",
-                            "order": 2,
-                            "default": "",
-                            "kind": "string",
-                            "description": "Feed Sheet URL"
-                        }
-                    },
-                    "tab": "Rules"
-                }
-            },
             "auth": {
                 "field": {
-                    "name": "auth_read",
+                    "description": "Credentials used for reading data.",
                     "order": 1,
                     "default": "user",
                     "kind": "authentication",
-                    "description": "Credentials used for reading data."
+                    "name": "auth_read"
                 }
-            }
+            },
+            "read": {
+                "sheet": {
+                    "sheet": {
+                        "field": {
+                            "description": "Feed Sheet URL",
+                            "order": 2,
+                            "default": "",
+                            "kind": "string",
+                            "name": "sheet_url"
+                        }
+                    },
+                    "range": "A1:D",
+                    "tab": "Rules"
+                }
+            },
+            "patch": {}
         }
     }
 ]</code></pre>

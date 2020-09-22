@@ -33,13 +33,11 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-PoliceBot
 
-A tool that helps enforce CM object name conventions by checking names against a set of client-defined patterns, and emailing violations to appropriate agency teams on a daily basis.
 
-Add this card to a recipe and save it.
-Then click <strong>Run Now</strong> to deploy.
-Follow the <a href="https://docs.google.com/document/d/1euSZt5VFmaMfV-vShb6NH6LWfA7a5KSPpSl1hYeNlAA">instructions</a> for setup.
+
+
+
 
 '''
 
@@ -50,33 +48,52 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'recipe_name': '',  # Name of document to deploy to.
+  'auth_read': 'user',  # Credentials used for reading data.
 }
 
 TASKS = [
   {
-    'drive': {
-      'hour': [
-      ],
-      'copy': {
-        'destination': {
-          'field': {
-            'description': 'Name of document to deploy to.',
-            'prefix': 'PoliceBot For ',
-            'order': 1,
-            'kind': 'string',
-            'name': 'recipe_name',
-            'default': ''
+    'airflow': {
+      'operators': {
+        'bash_operator': {
+          'BashOperator': {
+            'bash_command': 'date'
           }
-        },
-        'source': 'https://docs.google.com/spreadsheets/d/1dkESiK2s8YvdC03F3t4Jk_wvxJ0NMNk8CTGxO0HQk6I'
+        }
       },
-      'auth': 'user'
+      '__comment__': 'Calls a native Airflow operator.'
+    }
+  },
+  {
+    'starthinker_airflow': {
+      'operators': {
+        'hello': {
+          'Hello': {
+            'say': 'Hi, there!'
+          }
+        }
+      },
+      '__comment__': 'Calls an custom operator, requires import of library.'
+    }
+  },
+  {
+    'hello': {
+      '__comment__': 'Calls a StarThinker task.',
+      'say': 'Hello World',
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'user'
+        }
+      }
     }
   }
 ]
 
-DAG_FACTORY = DAG_Factory('policebot', { 'tasks':TASKS }, INPUTS)
+DAG_FACTORY = DAG_Factory('airflow', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 

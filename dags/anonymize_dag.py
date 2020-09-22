@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -33,85 +35,86 @@ Before running this Airflow module...
 
 Anonymize Dataset
 
-Copies tables and view from one dataset to another and anynonamizes all rows.
-Used to create sample datasets for dashboards.
+Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.
 
 Ensure you have user access to both datasets.
 Provide the source project and dataset.
 Provide the destination project and dataset.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_read': 'service',  # Credentials used for reading data.
-    'from_project': '',  # Original project to copy from.
-    'from_dataset': '',  # Original dataset to copy from.
-    'to_project': None,  # Anonymous data will be writen to.
-    'to_dataset': '',  # Anonymous data will be writen to.
+  'auth_read': 'service',  # Credentials used for reading data.
+  'from_project': '',  # Original project to copy from.
+  'from_dataset': '',  # Original dataset to copy from.
+  'to_project': None,  # Anonymous data will be writen to.
+  'to_dataset': '',  # Anonymous data will be writen to.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'anonymize': {
-        'auth': {
+      'bigquery': {
+        'from': {
+          'project': {
             'field': {
-                'description': 'Credentials used for reading data.',
-                'name': 'auth_read',
-                'default': 'service',
-                'kind': 'authentication',
-                'order': 1
+              'order': 1,
+              'kind': 'string',
+              'name': 'from_project',
+              'description': 'Original project to copy from.'
             }
+          },
+          'dataset': {
+            'field': {
+              'order': 2,
+              'kind': 'string',
+              'name': 'from_dataset',
+              'description': 'Original dataset to copy from.'
+            }
+          }
         },
-        'bigquery': {
-            'to': {
-                'project': {
-                    'field': {
-                        'description': 'Anonymous data will be writen to.',
-                        'name': 'to_project',
-                        'default': None,
-                        'kind': 'string',
-                        'order': 3
-                    }
-                },
-                'dataset': {
-                    'field': {
-                        'description': 'Anonymous data will be writen to.',
-                        'name': 'to_dataset',
-                        'kind': 'string',
-                        'order': 4
-                    }
-                }
-            },
-            'from': {
-                'project': {
-                    'field': {
-                        'description': 'Original project to copy from.',
-                        'name': 'from_project',
-                        'kind': 'string',
-                        'order': 1
-                    }
-                },
-                'dataset': {
-                    'field': {
-                        'description': 'Original dataset to copy from.',
-                        'name': 'from_dataset',
-                        'kind': 'string',
-                        'order': 2
-                    }
-                }
+        'to': {
+          'project': {
+            'field': {
+              'order': 3,
+              'kind': 'string',
+              'name': 'to_project',
+              'description': 'Anonymous data will be writen to.',
+              'default': None
             }
+          },
+          'dataset': {
+            'field': {
+              'order': 4,
+              'kind': 'string',
+              'name': 'to_dataset',
+              'description': 'Anonymous data will be writen to.'
+            }
+          }
         }
+      },
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'service'
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('anonymize', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('anonymize', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -38,104 +40,101 @@ Move using bucket and path prefix.
 Specify a bucket and path prefix, * suffix is NOT required.
 Every time the job runs it will overwrite the table.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_read': 'user',  # Credentials used for reading data.
-    'bucket': '',  # Google cloud bucket.
-    'auth_write': 'service',  # Credentials used for writing data.
-    'path': '',  # Path prefix to read from, no * required.
-    'dataset': '',  # Existing BigQuery dataset.
-    'table': '',  # Table to create from this query.
-    'schema': '[]',  # Schema provided in JSON list format or empty list.
+  'auth_read': 'user',  # Credentials used for reading data.
+  'auth_write': 'service',  # Credentials used for writing data.
+  'bucket': '',  # Google cloud bucket.
+  'path': '',  # Path prefix to read from, no * required.
+  'dataset': '',  # Existing BigQuery dataset.
+  'table': '',  # Table to create from this query.
+  'schema': '[]',  # Schema provided in JSON list format or empty list.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'bigquery': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for reading data.',
-                'name': 'auth_read',
-                'default': 'user',
-                'kind': 'authentication',
-                'order': 1
-            }
-        },
-        'to': {
-            'auth': {
-                'field': {
-                    'description': 'Credentials used for writing data.',
-                    'name': 'auth_write',
-                    'default': 'service',
-                    'kind': 'authentication',
-                    'order': 1
-                }
-            },
-            'dataset': {
-                'field': {
-                    'description': 'Existing BigQuery dataset.',
-                    'name': 'dataset',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 3
-                }
-            },
-            'table': {
-                'field': {
-                    'description': 'Table to create from this query.',
-                    'name': 'table',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 4
-                }
-            }
-        },
-        'from': {
-            'bucket': {
-                'field': {
-                    'description': 'Google cloud bucket.',
-                    'name': 'bucket',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 1
-                }
-            },
-            'path': {
-                'field': {
-                    'description': 'Path prefix to read from, no * required.',
-                    'name': 'path',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 2
-                }
-            }
-        },
-        'schema': {
-            'field': {
-                'description':
-                    'Schema provided in JSON list format or empty list.',
-                'name':
-                    'schema',
-                'default':
-                    '[]',
-                'kind':
-                    'json',
-                'order':
-                    5
-            }
+      'schema': {
+        'field': {
+          'order': 5,
+          'kind': 'json',
+          'name': 'schema',
+          'description': 'Schema provided in JSON list format or empty list.',
+          'default': '[]'
         }
+      },
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'user'
+        }
+      },
+      'from': {
+        'bucket': {
+          'field': {
+            'order': 1,
+            'kind': 'string',
+            'name': 'bucket',
+            'description': 'Google cloud bucket.',
+            'default': ''
+          }
+        },
+        'path': {
+          'field': {
+            'order': 2,
+            'kind': 'string',
+            'name': 'path',
+            'description': 'Path prefix to read from, no * required.',
+            'default': ''
+          }
+        }
+      },
+      'to': {
+        'table': {
+          'field': {
+            'order': 4,
+            'kind': 'string',
+            'name': 'table',
+            'description': 'Table to create from this query.',
+            'default': ''
+          }
+        },
+        'dataset': {
+          'field': {
+            'order': 3,
+            'kind': 'string',
+            'name': 'dataset',
+            'description': 'Existing BigQuery dataset.',
+            'default': ''
+          }
+        },
+        'auth': {
+          'field': {
+            'order': 1,
+            'kind': 'authentication',
+            'name': 'auth_write',
+            'description': 'Credentials used for writing data.',
+            'default': 'service'
+          }
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('bigquery_storage', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('bigquery_storage', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

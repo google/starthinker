@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 4, 2020 (1 month, 1 week)</td>
+              <td>Aug. 4, 2020 (1 month, 2 weeks)</td>
             </tr>
 
             <tr>
@@ -244,67 +244,56 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/fred/run.py" target="_blank">fred</a>": {
-            "regions": [
-                {
-                    "series_group": {
+            "auth": {
+                "field": {
+                    "description": "Credentials used for writing data.",
+                    "order": 0,
+                    "default": "service",
+                    "kind": "authentication",
+                    "name": "auth"
+                }
+            },
+            "region_type": {
+                "field": {
+                    "default": "county",
+                    "choices": [
+                        "bea",
+                        "msa",
+                        "frb",
+                        "necta",
+                        "state",
+                        "country",
+                        "county",
+                        "censusregion"
+                    ],
+                    "kind": "choice",
+                    "name": "fred_region_type",
+                    "order": 3,
+                    "description": "The region you want want to pull data for."
+                }
+            },
+            "out": {
+                "bigquery": {
+                    "project": {
                         "field": {
-                            "name": "fred_series_group",
-                            "order": 2,
+                            "description": "Existing BigQuery project.",
+                            "order": 10,
                             "default": "",
                             "kind": "string",
-                            "description": "The ID for a group of seriess found in GeoFRED."
+                            "name": "project"
                         }
                     },
-                    "units": {
+                    "dataset": {
                         "field": {
-                            "default": "lin",
-                            "choices": [
-                                "lin",
-                                "chg",
-                                "ch1",
-                                "pch",
-                                "pc1",
-                                "pca",
-                                "cch",
-                                "cca",
-                                "log"
-                            ],
-                            "order": 3,
-                            "name": "fred_units",
-                            "description": "A key that indicates a data value transformation.",
-                            "kind": "choice"
-                        }
-                    },
-                    "season": {
-                        "field": {
-                            "default": "SA",
-                            "choices": [
-                                "SA",
-                                "NSA",
-                                "SSA"
-                            ],
-                            "order": 4,
-                            "name": "fred_season",
-                            "description": "The seasonality of the series group.",
-                            "kind": "choice"
-                        }
-                    },
-                    "aggregation_method": {
-                        "field": {
-                            "default": "avg",
-                            "choices": [
-                                "avg",
-                                "sum",
-                                "eop"
-                            ],
-                            "order": 5,
-                            "name": "fred_aggregation_method",
-                            "description": "A key that indicates the aggregation method used for frequency aggregation.",
-                            "kind": "choice"
+                            "description": "Existing BigQuery dataset.",
+                            "order": 11,
+                            "default": "",
+                            "kind": "string",
+                            "name": "dataset"
                         }
                     }
                 }
-            ],
+            },
             "frequency": {
                 "field": {
                     "default": "",
@@ -327,71 +316,82 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "bwew",
                         "bwem"
                     ],
-                    "order": 4,
+                    "kind": "choice",
                     "name": "fred_frequency",
-                    "description": "An optional parameter that indicates a lower frequency to aggregate values to.",
-                    "kind": "choice"
-                }
-            },
-            "region_type": {
-                "field": {
-                    "default": "county",
-                    "choices": [
-                        "bea",
-                        "msa",
-                        "frb",
-                        "necta",
-                        "state",
-                        "country",
-                        "county",
-                        "censusregion"
-                    ],
-                    "order": 3,
-                    "name": "fred_region_type",
-                    "description": "The region you want want to pull data for.",
-                    "kind": "choice"
-                }
-            },
-            "out": {
-                "bigquery": {
-                    "project": {
-                        "field": {
-                            "name": "project",
-                            "order": 10,
-                            "default": "",
-                            "kind": "string",
-                            "description": "Existing BigQuery project."
-                        }
-                    },
-                    "dataset": {
-                        "field": {
-                            "name": "dataset",
-                            "order": 11,
-                            "default": "",
-                            "kind": "string",
-                            "description": "Existing BigQuery dataset."
-                        }
-                    }
+                    "order": 4,
+                    "description": "An optional parameter that indicates a lower frequency to aggregate values to."
                 }
             },
             "api_key": {
                 "field": {
-                    "name": "fred_api_key",
+                    "description": "32 character alpha-numeric lowercase string.",
                     "order": 1,
                     "default": "",
                     "kind": "string",
-                    "description": "32 character alpha-numeric lowercase string."
+                    "name": "fred_api_key"
                 }
             },
-            "auth": {
-                "field": {
-                    "name": "auth",
-                    "order": 0,
-                    "default": "service",
-                    "kind": "authentication",
-                    "description": "Credentials used for writing data."
+            "regions": [
+                {
+                    "season": {
+                        "field": {
+                            "default": "SA",
+                            "choices": [
+                                "SA",
+                                "NSA",
+                                "SSA"
+                            ],
+                            "kind": "choice",
+                            "name": "fred_season",
+                            "order": 4,
+                            "description": "The seasonality of the series group."
+                        }
+                    },
+                    "series_group": {
+                        "field": {
+                            "description": "The ID for a group of seriess found in GeoFRED.",
+                            "order": 2,
+                            "default": "",
+                            "kind": "string",
+                            "name": "fred_series_group"
+                        }
+                    },
+                    "units": {
+                        "field": {
+                            "default": "lin",
+                            "choices": [
+                                "lin",
+                                "chg",
+                                "ch1",
+                                "pch",
+                                "pc1",
+                                "pca",
+                                "cch",
+                                "cca",
+                                "log"
+                            ],
+                            "kind": "choice",
+                            "name": "fred_units",
+                            "order": 3,
+                            "description": "A key that indicates a data value transformation."
+                        }
+                    },
+                    "aggregation_method": {
+                        "field": {
+                            "default": "avg",
+                            "choices": [
+                                "avg",
+                                "sum",
+                                "eop"
+                            ],
+                            "kind": "choice",
+                            "name": "fred_aggregation_method",
+                            "order": 5,
+                            "description": "A key that indicates the aggregation method used for frequency aggregation."
+                        }
+                    }
                 }
-            }
+            ]
         }
     }
 ]</code></pre>

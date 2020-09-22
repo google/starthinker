@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -38,87 +40,84 @@ Move existing DV360 report into a Sheets tab.
 Specify either report name or report id to move a report.
 The most recent valid file will be moved to the sheet.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_read': 'user',  # Credentials used for reading data.
-    'report_id': '',  # DV360 report ID given in UI, not needed if name used.
-    'report_name': '',  # Name of report, not needed if ID used.
-    'sheet': '',  # Full URL to sheet being written to.
-    'tab': '',  # Existing tab in sheet to write to.
+  'auth_read': 'user',  # Credentials used for reading data.
+  'report_id': '',  # DV360 report ID given in UI, not needed if name used.
+  'report_name': '',  # Name of report, not needed if ID used.
+  'sheet': '',  # Full URL to sheet being written to.
+  'tab': '',  # Existing tab in sheet to write to.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'dbm': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for reading data.',
-                'name': 'auth_read',
-                'default': 'user',
-                'kind': 'authentication',
-                'order': 1
-            }
+      'report': {
+        'name': {
+          'field': {
+            'order': 2,
+            'kind': 'string',
+            'name': 'report_name',
+            'description': 'Name of report, not needed if ID used.',
+            'default': ''
+          }
         },
-        'out': {
-            'sheets': {
-                'tab': {
-                    'field': {
-                        'description': 'Existing tab in sheet to write to.',
-                        'name': 'tab',
-                        'default': '',
-                        'kind': 'string',
-                        'order': 4
-                    }
-                },
-                'sheet': {
-                    'field': {
-                        'description': 'Full URL to sheet being written to.',
-                        'name': 'sheet',
-                        'default': '',
-                        'kind': 'string',
-                        'order': 3
-                    }
-                },
-                'range': 'A1'
-            }
-        },
-        'report': {
-            'report_id': {
-                'field': {
-                    'description':
-                        'DV360 report ID given in UI, not needed if name used.',
-                    'name':
-                        'report_id',
-                    'default':
-                        '',
-                    'kind':
-                        'integer',
-                    'order':
-                        1
-                }
-            },
-            'name': {
-                'field': {
-                    'description': 'Name of report, not needed if ID used.',
-                    'name': 'report_name',
-                    'default': '',
-                    'kind': 'string',
-                    'order': 2
-                }
-            }
+        'report_id': {
+          'field': {
+            'order': 1,
+            'kind': 'integer',
+            'name': 'report_id',
+            'description': 'DV360 report ID given in UI, not needed if name used.',
+            'default': ''
+          }
         }
+      },
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_read',
+          'description': 'Credentials used for reading data.',
+          'default': 'user'
+        }
+      },
+      'out': {
+        'sheets': {
+          'range': 'A1',
+          'sheet': {
+            'field': {
+              'order': 3,
+              'kind': 'string',
+              'name': 'sheet',
+              'description': 'Full URL to sheet being written to.',
+              'default': ''
+            }
+          },
+          'tab': {
+            'field': {
+              'order': 4,
+              'kind': 'string',
+              'name': 'tab',
+              'description': 'Existing tab in sheet to write to.',
+              'default': ''
+            }
+          }
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('dbm_to_sheets', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('dbm_to_sheets', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

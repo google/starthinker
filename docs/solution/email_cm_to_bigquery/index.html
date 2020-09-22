@@ -242,15 +242,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Account Health</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 80%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Time Savings</td>
                    <td>
                      <div class="progress">
@@ -264,6 +255,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                    <td>
                      <div class="progress">
                        <div class="determinate" style="width: 0%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Account Health</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 80%"></div>
                      </div>
                    </td>
                  </tr>
@@ -301,7 +301,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>March 11, 2020 (6 months, 1 week)</td>
+              <td>March 11, 2020 (6 months, 2 weeks)</td>
             </tr>
 
             <tr>
@@ -364,66 +364,66 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/email/run.py" target="_blank">email</a>": {
+            "auth": {
+                "field": {
+                    "description": "Credentials used for reading data.",
+                    "order": 1,
+                    "default": "user",
+                    "kind": "authentication",
+                    "name": "auth_read"
+                }
+            },
             "read": {
-                "attachment": ".*",
                 "out": {
                     "bigquery": {
-                        "table": {
-                            "field": {
-                                "name": "table",
-                                "order": 4,
-                                "default": "",
-                                "kind": "string",
-                                "description": "Name of table to be written to."
-                            }
-                        },
                         "is_incremental_load": {
                             "field": {
-                                "name": "is_incremental_load",
+                                "description": "Append report data to table based on date column, de-duplicates.",
                                 "order": 6,
                                 "default": false,
                                 "kind": "boolean",
-                                "description": "Append report data to table based on date column, de-duplicates."
+                                "name": "is_incremental_load"
                             }
                         },
                         "dataset": {
                             "field": {
-                                "name": "dataset",
+                                "description": "Existing dataset in BigQuery.",
                                 "order": 3,
                                 "default": "",
                                 "kind": "string",
-                                "description": "Existing dataset in BigQuery."
+                                "name": "dataset"
+                            }
+                        },
+                        "table": {
+                            "field": {
+                                "description": "Name of table to be written to.",
+                                "order": 4,
+                                "default": "",
+                                "kind": "string",
+                                "name": "table"
                             }
                         }
                     }
                 },
-                "to": {
-                    "field": {
-                        "name": "email",
-                        "order": 1,
-                        "default": "",
-                        "kind": "string",
-                        "description": "Email address report was sent to."
-                    }
-                },
-                "from": "noreply-cm@google.com",
+                "attachment": ".*",
                 "subject": {
                     "field": {
-                        "name": "subject",
+                        "description": "Regular expression to match subject. Double escape backslashes.",
                         "order": 2,
                         "default": ".*",
                         "kind": "string",
-                        "description": "Regular expression to match subject. Double escape backslashes."
+                        "name": "subject"
                     }
-                }
-            },
-            "auth": {
-                "field": {
-                    "name": "auth_read",
-                    "order": 1,
-                    "default": "user",
-                    "kind": "authentication",
-                    "description": "Credentials used for reading data."
+                },
+                "from": "noreply-cm@google.com",
+                "to": {
+                    "field": {
+                        "description": "Email address report was sent to.",
+                        "order": 1,
+                        "default": "",
+                        "kind": "string",
+                        "name": "email"
+                    }
                 }
             }
         }

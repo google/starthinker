@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -36,172 +38,162 @@ SDF Download
 Download SDF reports into a BigQuery table.
 
 Select your filter types and the filter ideas.
-Enter the <a href='https://developers.google.com/bid-manager/v1.1/sdf/download'
-target='_blank'>file types</a> using commas.
+Enter the <a href='https://developers.google.com/bid-manager/v1.1/sdf/download' target='_blank'>file types</a> using commas.
 SDF_ will be prefixed to all tables and date appended to daily tables.
 File types take the following format: FILE_TYPE_CAMPAIGN, FILE_TYPE_AD_GROUP,...
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'partner_id': '',  # The sdf file types.
-    'auth_write': 'service',  # Credentials used for writing data.
-    'file_types': [],  # The sdf file types.
-    'filter_type': '',  # The filter type for the filter ids.
-    'filter_ids': [],  # Comma separated list of filter ids for the request.
-    'dataset': '',  # Dataset to be written to in BigQuery.
-    'table_suffix':
-        '',  # Optional: Suffix string to put at the end of the table name (Must contain alphanumeric or underscores)
-    'version': '5',  # The sdf version to be returned.
-    'time_partitioned_table': False,  # Is the end table a time partitioned
-    'create_single_day_table':
-        False,  # Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF.
+  'auth_write': 'service',  # Credentials used for writing data.
+  'partner_id': '',  # The sdf file types.
+  'file_types': [],  # The sdf file types.
+  'filter_type': '',  # The filter type for the filter ids.
+  'filter_ids': [],  # Comma separated list of filter ids for the request.
+  'version': '5',  # The sdf version to be returned.
+  'dataset': '',  # Dataset to be written to in BigQuery.
+  'table_suffix': '',  # Optional: Suffix string to put at the end of the table name (Must contain alphanumeric or underscores)
+  'time_partitioned_table': False,  # Is the end table a time partitioned
+  'create_single_day_table': False,  # Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'dataset': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for writing data.',
-                'name': 'auth_write',
-                'default': 'service',
-                'kind': 'authentication',
-                'order': 1
-            }
-        },
-        'dataset': {
-            'field': {
-                'description': 'Dataset to be written to in BigQuery.',
-                'name': 'dataset',
-                'default': '',
-                'kind': 'string',
-                'order': 6
-            }
+      'dataset': {
+        'field': {
+          'order': 6,
+          'kind': 'string',
+          'name': 'dataset',
+          'description': 'Dataset to be written to in BigQuery.',
+          'default': ''
         }
+      },
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_write',
+          'description': 'Credentials used for writing data.',
+          'default': 'service'
+        }
+      }
     }
-}, {
+  },
+  {
     'sdf': {
-        'time_partitioned_table': {
-            'field': {
-                'description': 'Is the end table a time partitioned',
-                'name': 'time_partitioned_table',
-                'default': False,
-                'kind': 'boolean',
-                'order': 7
-            }
-        },
-        'create_single_day_table': {
-            'field': {
-                'description':
-                    'Would you like a separate table for each day? This will '
-                    'result in an extra table each day and the end table with '
-                    'the most up to date SDF.',
-                'name':
-                    'create_single_day_table',
-                'default':
-                    False,
-                'kind':
-                    'boolean',
-                'order':
-                    8
-            }
-        },
-        'version': {
-            'field': {
-                'order': 6,
-                'name': 'version',
-                'default': '5',
-                'description': 'The sdf version to be returned.',
-                'choices': ['SDF_VERSION_5', 'SDF_VERSION_5_1'],
-                'kind': 'choice'
-            }
-        },
-        'read': {
-            'filter_ids': {
-                'single_cell': True,
-                'values': {
-                    'field': {
-                        'description':
-                            'Comma separated list of filter ids for the request.',
-                        'name':
-                            'filter_ids',
-                        'default': [],
-                        'kind':
-                            'integer_list',
-                        'order':
-                            4
-                    }
-                }
-            }
-        },
-        'auth': 'user',
-        'file_types': {
-            'field': {
-                'description': 'The sdf file types.',
-                'name': 'file_types',
-                'default': [],
-                'kind': 'string_list',
-                'order': 2
-            }
-        },
-        'table_suffix': {
-            'field': {
-                'description':
-                    'Optional: Suffix string to put at the end of the table '
-                    'name (Must contain alphanumeric or underscores)',
-                'name':
-                    'table_suffix',
-                'default':
-                    '',
-                'kind':
-                    'string',
-                'order':
-                    6
-            }
-        },
-        'filter_type': {
-            'field': {
-                'order': 3,
-                'name': 'filter_type',
-                'default': '',
-                'description': 'The filter type for the filter ids.',
-                'choices': [
-                    'FILTER_TYPE_ADVERTISER_ID', 'FILTER_TYPE_CAMPAIGN_ID',
-                    'FILTER_TYPE_INSERTION_ORDER_ID',
-                    'FILTER_TYPE_MEDIA_PRODUCT_ID', 'FILTER_TYPE_LINE_ITEM_ID'
-                ],
-                'kind': 'choice'
-            }
-        },
-        'dataset': {
-            'field': {
-                'description': 'Dataset to be written to in BigQuery.',
-                'name': 'dataset',
-                'default': '',
-                'kind': 'string',
-                'order': 6
-            }
-        },
-        'partner_id': {
-            'field': {
-                'description': 'The sdf file types.',
-                'name': 'partner_id',
-                'kind': 'integer',
-                'order': 1
-            }
+      'partner_id': {
+        'field': {
+          'order': 1,
+          'kind': 'integer',
+          'name': 'partner_id',
+          'description': 'The sdf file types.'
         }
+      },
+      'create_single_day_table': {
+        'field': {
+          'order': 8,
+          'kind': 'boolean',
+          'name': 'create_single_day_table',
+          'description': 'Would you like a separate table for each day? This will result in an extra table each day and the end table with the most up to date SDF.',
+          'default': False
+        }
+      },
+      'file_types': {
+        'field': {
+          'order': 2,
+          'kind': 'string_list',
+          'name': 'file_types',
+          'description': 'The sdf file types.',
+          'default': [
+          ]
+        }
+      },
+      'dataset': {
+        'field': {
+          'order': 6,
+          'kind': 'string',
+          'name': 'dataset',
+          'description': 'Dataset to be written to in BigQuery.',
+          'default': ''
+        }
+      },
+      'version': {
+        'field': {
+          'description': 'The sdf version to be returned.',
+          'choices': [
+            'SDF_VERSION_5',
+            'SDF_VERSION_5_1'
+          ],
+          'order': 6,
+          'kind': 'choice',
+          'name': 'version',
+          'default': '5'
+        }
+      },
+      'time_partitioned_table': {
+        'field': {
+          'order': 7,
+          'kind': 'boolean',
+          'name': 'time_partitioned_table',
+          'description': 'Is the end table a time partitioned',
+          'default': False
+        }
+      },
+      'auth': 'user',
+      'table_suffix': {
+        'field': {
+          'order': 6,
+          'kind': 'string',
+          'name': 'table_suffix',
+          'description': 'Optional: Suffix string to put at the end of the table name (Must contain alphanumeric or underscores)',
+          'default': ''
+        }
+      },
+      'read': {
+        'filter_ids': {
+          'values': {
+            'field': {
+              'order': 4,
+              'kind': 'integer_list',
+              'name': 'filter_ids',
+              'description': 'Comma separated list of filter ids for the request.',
+              'default': [
+              ]
+            }
+          },
+          'single_cell': True
+        }
+      },
+      'filter_type': {
+        'field': {
+          'description': 'The filter type for the filter ids.',
+          'choices': [
+            'FILTER_TYPE_ADVERTISER_ID',
+            'FILTER_TYPE_CAMPAIGN_ID',
+            'FILTER_TYPE_INSERTION_ORDER_ID',
+            'FILTER_TYPE_MEDIA_PRODUCT_ID',
+            'FILTER_TYPE_LINE_ITEM_ID'
+          ],
+          'order': 3,
+          'kind': 'choice',
+          'name': 'filter_type',
+          'default': ''
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('sdf_to_bigquery', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('sdf_to_bigquery', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

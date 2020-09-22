@@ -15,7 +15,9 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""--------------------------------------------------------------
+
+'''
+--------------------------------------------------------------
 
 Before running this Airflow module...
 
@@ -37,69 +39,70 @@ Create and permission a bucket in Storage.
 
 Specify the name of the bucket and who will have owner permissions.
 Existing buckets are preserved.
-Adding a permission to the list will update the permissions but removing them
-will not.
+Adding a permission to the list will update the permissions but removing them will not.
 You have to manualy remove grants.
 
-"""
+'''
 
 from starthinker_airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
-USER_CONN_ID = 'starthinker_user'  # The connection to use for user authentication.
-GCP_CONN_ID = 'starthinker_service'  # The connection to use for service authentication.
+USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
+GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-    'auth_write': 'service',  # Credentials used for writing data.
-    'bucket_bucket': '',  # Name of Google Cloud Bucket to create.
-    'bucket_emails': '',  # Comma separated emails.
-    'bucket_groups': '',  # Comma separated groups.
+  'auth_write': 'service',  # Credentials used for writing data.
+  'bucket_bucket': '',  # Name of Google Cloud Bucket to create.
+  'bucket_emails': '',  # Comma separated emails.
+  'bucket_groups': '',  # Comma separated groups.
 }
 
-TASKS = [{
+TASKS = [
+  {
     'bucket': {
-        'auth': {
-            'field': {
-                'description': 'Credentials used for writing data.',
-                'name': 'auth_write',
-                'default': 'service',
-                'kind': 'authentication',
-                'order': 1
-            }
-        },
-        'bucket': {
-            'field': {
-                'description': 'Name of Google Cloud Bucket to create.',
-                'name': 'bucket_bucket',
-                'default': '',
-                'kind': 'string',
-                'order': 2
-            }
-        },
-        'emails': {
-            'field': {
-                'description': 'Comma separated emails.',
-                'name': 'bucket_emails',
-                'default': '',
-                'kind': 'string_list',
-                'order': 3
-            }
-        },
-        'groups': {
-            'field': {
-                'description': 'Comma separated groups.',
-                'name': 'bucket_groups',
-                'default': '',
-                'kind': 'string_list',
-                'order': 4
-            }
+      'bucket': {
+        'field': {
+          'order': 2,
+          'kind': 'string',
+          'name': 'bucket_bucket',
+          'description': 'Name of Google Cloud Bucket to create.',
+          'default': ''
         }
+      },
+      'emails': {
+        'field': {
+          'order': 3,
+          'kind': 'string_list',
+          'name': 'bucket_emails',
+          'description': 'Comma separated emails.',
+          'default': ''
+        }
+      },
+      'groups': {
+        'field': {
+          'order': 4,
+          'kind': 'string_list',
+          'name': 'bucket_groups',
+          'description': 'Comma separated groups.',
+          'default': ''
+        }
+      },
+      'auth': {
+        'field': {
+          'order': 1,
+          'kind': 'authentication',
+          'name': 'auth_write',
+          'description': 'Credentials used for writing data.',
+          'default': 'service'
+        }
+      }
     }
-}]
+  }
+]
 
-DAG_FACTORY = DAG_Factory('bucket', {'tasks': TASKS}, INPUTS)
+DAG_FACTORY = DAG_Factory('bucket', { 'tasks':TASKS }, INPUTS)
 DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

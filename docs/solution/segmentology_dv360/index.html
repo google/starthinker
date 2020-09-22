@@ -205,7 +205,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 13, 2020 (1 month)</td>
+              <td>Aug. 13, 2020 (1 month, 1 week)</td>
             </tr>
 
             <tr>
@@ -260,80 +260,86 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
-            "hour": [
-                4
-            ],
             "auth": {
                 "field": {
-                    "name": "auth_write",
+                    "description": "Credentials used for writing data.",
                     "order": 1,
                     "default": "service",
                     "kind": "authentication",
-                    "description": "Credentials used for writing data."
+                    "name": "auth_write"
                 }
             },
+            "description": "Create a dataset for bigquery tables.",
             "dataset": {
                 "field": {
-                    "name": "recipe_slug",
+                    "description": "Place where tables will be created in BigQuery.",
                     "kind": "string",
-                    "description": "Place where tables will be created in BigQuery."
+                    "name": "recipe_slug"
                 }
             },
-            "description": "Create a dataset for bigquery tables."
+            "hour": [
+                4
+            ]
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
+            "auth": {
+                "field": {
+                    "description": "Credentials used for writing function.",
+                    "order": 1,
+                    "default": "service",
+                    "kind": "authentication",
+                    "name": "auth_write"
+                }
+            },
             "function": "pearson_significance_test",
             "to": {
                 "dataset": {
                     "field": {
-                        "name": "recipe_slug",
+                        "description": "Name of Google BigQuery dataset to create.",
                         "order": 4,
                         "default": "",
                         "kind": "string",
-                        "description": "Name of Google BigQuery dataset to create."
+                        "name": "recipe_slug"
                     }
-                }
-            },
-            "auth": {
-                "field": {
-                    "name": "auth_write",
-                    "order": 1,
-                    "default": "service",
-                    "kind": "authentication",
-                    "description": "Credentials used for writing function."
                 }
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "auth": {
+                "field": {
+                    "description": "Credentials used for reading data.",
+                    "order": 0,
+                    "default": "user",
+                    "kind": "authentication",
+                    "name": "auth_read"
+                }
+            },
             "report": {
                 "body": {
                     "metadata": {
+                        "dataRange": "LAST_30_DAYS",
                         "format": "CSV",
                         "title": {
                             "field": {
-                                "default": "",
-                                "description": "Name of report, not needed if ID used.",
-                                "order": 3,
-                                "name": "recipe_name",
                                 "prefix": "Segmentology ",
-                                "kind": "string"
+                                "default": "",
+                                "name": "recipe_name",
+                                "description": "Name of report, not needed if ID used.",
+                                "kind": "string",
+                                "order": 3
                             }
-                        },
-                        "dataRange": "LAST_30_DAYS"
-                    },
-                    "schedule": {
-                        "frequency": "WEEKLY"
+                        }
                     },
                     "timezoneCode": {
                         "field": {
-                            "name": "recipe_timezone",
-                            "default": "America/Los_Angeles",
+                            "description": "Timezone for report dates.",
                             "kind": "timezone",
-                            "description": "Timezone for report dates."
+                            "default": "America/Los_Angeles",
+                            "name": "recipe_timezone"
                         }
                     },
                     "params": {
@@ -352,258 +358,240 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "METRIC_CLICKS",
                             "METRIC_TOTAL_CONVERSIONS"
                         ]
+                    },
+                    "schedule": {
+                        "frequency": "WEEKLY"
                     }
                 },
                 "filters": {
                     "FILTER_PARTNER": {
                         "values": {
                             "field": {
-                                "name": "partners",
+                                "description": "DV360 partner id.",
                                 "order": 5,
                                 "default": [],
                                 "kind": "integer_list",
-                                "description": "DV360 partner id."
+                                "name": "partners"
                             }
                         }
                     },
                     "FILTER_ADVERTISER": {
                         "values": {
                             "field": {
-                                "name": "advertisers",
+                                "description": "Comma delimited list of DV360 advertiser ids.",
                                 "order": 6,
                                 "default": [],
                                 "kind": "integer_list",
-                                "description": "Comma delimited list of DV360 advertiser ids."
+                                "name": "advertisers"
                             }
                         }
                     }
-                }
-            },
-            "auth": {
-                "field": {
-                    "name": "auth_read",
-                    "order": 0,
-                    "default": "user",
-                    "kind": "authentication",
-                    "description": "Credentials used for reading data."
                 }
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
-            "report": {
-                "name": {
-                    "field": {
-                        "default": "",
-                        "description": "Name of report, not needed if ID used.",
-                        "order": 3,
-                        "name": "recipe_name",
-                        "prefix": "Segmentology ",
-                        "kind": "string"
-                    }
+            "auth": {
+                "field": {
+                    "description": "Credentials used for reading data.",
+                    "order": 0,
+                    "default": "user",
+                    "kind": "authentication",
+                    "name": "auth_read"
                 }
             },
             "out": {
                 "bigquery": {
-                    "schema": [
-                        {
-                            "mode": "REQUIRED",
-                            "type": "INTEGER",
-                            "name": "Partner_Id"
-                        },
-                        {
-                            "mode": "REQUIRED",
-                            "type": "STRING",
-                            "name": "Partner"
-                        },
-                        {
-                            "mode": "REQUIRED",
-                            "type": "INTEGER",
-                            "name": "Advertiser_Id"
-                        },
-                        {
-                            "mode": "REQUIRED",
-                            "type": "STRING",
-                            "name": "Advertiser"
-                        },
-                        {
-                            "mode": "REQUIRED",
-                            "type": "INTEGER",
-                            "name": "Campaign_Id"
-                        },
-                        {
-                            "mode": "REQUIRED",
-                            "type": "STRING",
-                            "name": "Campaign"
-                        },
-                        {
-                            "mode": "NULLABLE",
-                            "type": "STRING",
-                            "name": "Zip"
-                        },
-                        {
-                            "mode": "NULLABLE",
-                            "type": "FLOAT",
-                            "name": "Impressions"
-                        },
-                        {
-                            "mode": "NULLABLE",
-                            "type": "INTEGER",
-                            "name": "Clicks"
-                        },
-                        {
-                            "mode": "NULLABLE",
-                            "type": "FLOAT",
-                            "name": "Conversions"
-                        }
-                    ],
-                    "table": "DV360_KPI",
                     "auth": {
                         "field": {
-                            "name": "auth_write",
+                            "description": "Authorization used for writing data.",
                             "order": 1,
                             "default": "service",
                             "kind": "authentication",
-                            "description": "Authorization used for writing data."
+                            "name": "auth_write"
                         }
                     },
+                    "schema": [
+                        {
+                            "name": "Partner_Id",
+                            "mode": "REQUIRED",
+                            "type": "INTEGER"
+                        },
+                        {
+                            "name": "Partner",
+                            "mode": "REQUIRED",
+                            "type": "STRING"
+                        },
+                        {
+                            "name": "Advertiser_Id",
+                            "mode": "REQUIRED",
+                            "type": "INTEGER"
+                        },
+                        {
+                            "name": "Advertiser",
+                            "mode": "REQUIRED",
+                            "type": "STRING"
+                        },
+                        {
+                            "name": "Campaign_Id",
+                            "mode": "REQUIRED",
+                            "type": "INTEGER"
+                        },
+                        {
+                            "name": "Campaign",
+                            "mode": "REQUIRED",
+                            "type": "STRING"
+                        },
+                        {
+                            "name": "Zip",
+                            "mode": "NULLABLE",
+                            "type": "STRING"
+                        },
+                        {
+                            "name": "Impressions",
+                            "mode": "NULLABLE",
+                            "type": "FLOAT"
+                        },
+                        {
+                            "name": "Clicks",
+                            "mode": "NULLABLE",
+                            "type": "INTEGER"
+                        },
+                        {
+                            "name": "Conversions",
+                            "mode": "NULLABLE",
+                            "type": "FLOAT"
+                        }
+                    ],
                     "dataset": {
                         "field": {
-                            "name": "recipe_slug",
+                            "description": "Name of Google BigQuery dataset to create.",
                             "order": 4,
                             "default": "",
                             "kind": "string",
-                            "description": "Name of Google BigQuery dataset to create."
+                            "name": "recipe_slug"
                         }
-                    }
+                    },
+                    "table": "DV360_KPI"
                 }
             },
-            "auth": {
-                "field": {
-                    "name": "auth_read",
-                    "order": 0,
-                    "default": "user",
-                    "kind": "authentication",
-                    "description": "Credentials used for reading data."
+            "report": {
+                "name": {
+                    "field": {
+                        "prefix": "Segmentology ",
+                        "default": "",
+                        "name": "recipe_name",
+                        "description": "Name of report, not needed if ID used.",
+                        "kind": "string",
+                        "order": 3
+                    }
                 }
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
-            "to": {
-                "view": "DV360_KPI_Normalized",
-                "dataset": {
-                    "field": {
-                        "name": "recipe_slug",
-                        "kind": "string",
-                        "description": "Place where tables will be written in BigQuery."
-                    }
-                }
-            },
             "auth": {
                 "field": {
-                    "name": "auth_write",
+                    "description": "Authorization used for writing data.",
                     "order": 1,
                     "default": "service",
                     "kind": "authentication",
-                    "description": "Authorization used for writing data."
+                    "name": "auth_write"
                 }
             },
             "from": {
                 "parameters": {
                     "project": {
                         "field": {
-                            "name": "recipe_project",
+                            "description": "Project ID hosting dataset.",
                             "kind": "string",
-                            "description": "Project ID hosting dataset."
+                            "name": "recipe_project"
                         }
                     },
                     "dataset": {
                         "field": {
-                            "name": "recipe_slug",
+                            "description": "Place where tables will be created in BigQuery.",
                             "kind": "string",
-                            "description": "Place where tables will be created in BigQuery."
+                            "name": "recipe_slug"
                         }
                     }
                 },
-                "query": "SELECT            Partner_Id,            Partner,            Advertiser_Id,            Advertiser,            Campaign_Id,            Campaign,            Zip,            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression_Percent,            SAFE_DIVIDE(Clicks, Impressions) AS Click_Percent,            SAFE_DIVIDE(Conversions, Impressions) AS Conversion_Percent,            Impressions AS Impressions          FROM            `{project}.{dataset}.DV360_KPI`;        ",
-                "legacy": false
+                "legacy": false,
+                "query": "SELECT            Partner_Id,            Partner,            Advertiser_Id,            Advertiser,            Campaign_Id,            Campaign,            Zip,            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression_Percent,            SAFE_DIVIDE(Clicks, Impressions) AS Click_Percent,            SAFE_DIVIDE(Conversions, Impressions) AS Conversion_Percent,            Impressions AS Impressions          FROM            `{project}.{dataset}.DV360_KPI`;        "
+            },
+            "to": {
+                "dataset": {
+                    "field": {
+                        "description": "Place where tables will be written in BigQuery.",
+                        "kind": "string",
+                        "name": "recipe_slug"
+                    }
+                },
+                "view": "DV360_KPI_Normalized"
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/census/run.py" target="_blank">census</a>": {
-            "to": {
-                "type": "view",
-                "dataset": {
-                    "field": {
-                        "name": "recipe_slug",
-                        "order": 4,
-                        "default": "",
-                        "kind": "string",
-                        "description": "Name of Google BigQuery dataset to create."
-                    }
-                }
-            },
             "auth": {
                 "field": {
-                    "name": "auth_write",
+                    "description": "Authorization used for writing data.",
                     "order": 1,
                     "default": "service",
                     "kind": "authentication",
-                    "description": "Authorization used for writing data."
+                    "name": "auth_write"
                 }
             },
             "normalize": {
-                "census_year": "2018",
                 "census_geography": "zip_codes",
-                "census_span": "5yr"
+                "census_span": "5yr",
+                "census_year": "2018"
+            },
+            "to": {
+                "dataset": {
+                    "field": {
+                        "description": "Name of Google BigQuery dataset to create.",
+                        "order": 4,
+                        "default": "",
+                        "kind": "string",
+                        "name": "recipe_slug"
+                    }
+                },
+                "type": "view"
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/census/run.py" target="_blank">census</a>": {
-            "to": {
-                "type": "view",
-                "dataset": {
-                    "field": {
-                        "name": "recipe_slug",
-                        "order": 4,
-                        "default": "",
-                        "kind": "string",
-                        "description": "Name of Google BigQuery dataset to create."
-                    }
-                }
-            },
             "auth": {
                 "field": {
-                    "name": "auth_write",
+                    "description": "Authorization used for writing data.",
                     "order": 1,
                     "default": "service",
                     "kind": "authentication",
-                    "description": "Authorization used for writing data."
+                    "name": "auth_write"
                 }
             },
             "correlate": {
-                "table": "DV360_KPI_Normalized",
                 "significance": 80,
                 "join": "Zip",
-                "dataset": {
-                    "field": {
-                        "name": "recipe_slug",
-                        "order": 4,
-                        "default": "",
-                        "kind": "string",
-                        "description": "Name of Google BigQuery dataset to create."
-                    }
-                },
                 "correlate": [
                     "Impression_Percent",
                     "Click_Percent",
                     "Conversion_Percent"
                 ],
+                "dataset": {
+                    "field": {
+                        "description": "Name of Google BigQuery dataset to create.",
+                        "order": 4,
+                        "default": "",
+                        "kind": "string",
+                        "name": "recipe_slug"
+                    }
+                },
+                "table": "DV360_KPI_Normalized",
                 "pass": [
                     "Partner_Id",
                     "Partner",
@@ -615,6 +603,18 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "sum": [
                     "Impressions"
                 ]
+            },
+            "to": {
+                "dataset": {
+                    "field": {
+                        "description": "Name of Google BigQuery dataset to create.",
+                        "order": 4,
+                        "default": "",
+                        "kind": "string",
+                        "name": "recipe_slug"
+                    }
+                },
+                "type": "view"
             }
         }
     }

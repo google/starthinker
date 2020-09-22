@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>July 14, 2020 (2 months)</td>
+              <td>July 14, 2020 (2 months, 1 week)</td>
             </tr>
 
             <tr>
@@ -252,69 +252,69 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/smartsheet/run.py" target="_blank">smartsheet</a>": {
-            "report": {
+            "auth": {
                 "field": {
-                    "name": "report",
-                    "kind": "string",
-                    "order": 3,
-                    "description": "Retrieve from report properties."
+                    "description": "Credentials used for reading data.",
+                    "order": 0,
+                    "default": "user",
+                    "kind": "authentication",
+                    "name": "auth_read"
                 }
             },
             "out": {
                 "bigquery": {
-                    "schema": {
-                        "field": {
-                            "name": "schema",
-                            "kind": "json",
-                            "order": 6,
-                            "description": "Schema provided in JSON list format or leave empty to auto detect."
-                        }
-                    },
-                    "table": {
-                        "field": {
-                            "name": "table",
-                            "order": 5,
-                            "default": "",
-                            "kind": "string",
-                            "description": "Table to create from this report."
-                        }
-                    },
                     "auth": {
                         "field": {
-                            "name": "auth_write",
+                            "description": "Credentials used for writing data.",
                             "order": 1,
                             "default": "service",
                             "kind": "authentication",
-                            "description": "Credentials used for writing data."
+                            "name": "auth_write"
+                        }
+                    },
+                    "schema": {
+                        "field": {
+                            "description": "Schema provided in JSON list format or leave empty to auto detect.",
+                            "order": 6,
+                            "kind": "json",
+                            "name": "schema"
                         }
                     },
                     "dataset": {
                         "field": {
-                            "name": "dataset",
+                            "description": "Existing BigQuery dataset.",
                             "order": 4,
                             "default": "",
                             "kind": "string",
-                            "description": "Existing BigQuery dataset."
+                            "name": "dataset"
+                        }
+                    },
+                    "table": {
+                        "field": {
+                            "description": "Table to create from this report.",
+                            "order": 5,
+                            "default": "",
+                            "kind": "string",
+                            "name": "table"
                         }
                     }
                 }
             },
-            "auth": {
+            "report": {
                 "field": {
-                    "name": "auth_read",
-                    "order": 0,
-                    "default": "user",
-                    "kind": "authentication",
-                    "description": "Credentials used for reading data."
+                    "description": "Retrieve from report properties.",
+                    "order": 3,
+                    "kind": "string",
+                    "name": "report"
                 }
             },
             "token": {
                 "field": {
-                    "name": "token",
+                    "description": "Retrieve from SmartSheet account settings.",
                     "order": 2,
                     "default": "",
                     "kind": "string",
-                    "description": "Retrieve from SmartSheet account settings."
+                    "name": "token"
                 }
             }
         }
