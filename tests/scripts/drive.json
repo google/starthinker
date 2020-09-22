@@ -6,30 +6,30 @@
   "tasks":[
     { "drive":{
       "auth":"user",
-      "delete_off":"Test Drive Copy",
+      "delete_off":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"Test Drive", "default": ""}},
       "copy":{
         "source":"StarThinker Template: Sheets Test",
-        "destination":"Test Drive Copy"
+        "destination":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"Test Drive", "default": ""}}
       }
     }},
     { "test":{
       "auth":"user",
       "drive":{
-        "file":"Test Drive Copy"
+        "file":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"Test Drive", "default": ""}}
        }
     }},
     { "drive":{
       "auth":"user",
-      "delete":"Test Drive Copy",
+      "delete":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"Test Drive", "default": ""}},
       "copy":{
         "source":"https://docs.google.com/spreadsheets/d/1DhOoCOC7hf3lUckXWG4ELfZhH28Rsxr74sfhc713T3A/",
-        "destination":"Test Drive Copy"
+        "destination":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"Test Drive", "default": ""}}
       }
     }},
     { "test":{
       "auth":"user",
       "drive":{
-        "file":"Test Drive Copy",
+        "file":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"Test Drive", "default": ""}},
         "delete":true
        }
     }}

@@ -4,6 +4,10 @@
     "copyright":"Copyright 2020 Google LLC"
   },
   "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API", "default": ""}}
+    }},
     { "google_api":{
       "auth":"user",
       "api":"gmail",
@@ -16,7 +20,7 @@
       "out": {
         "bigquery":{
           "auth": "service",
-          "dataset":"Test",
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API", "default": ""}},
           "table":"User_Profile",
           "format":"CSV"
         }
@@ -25,7 +29,7 @@
     { "test": {
       "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API", "default": ""}},
         "table":"User_Profile",
         "schema": [
           {"mode": "NULLABLE", "name": "emailAddress", "type": "STRING"},

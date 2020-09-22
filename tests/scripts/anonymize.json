@@ -6,11 +6,11 @@
   "tasks":[
     { "dataset":{
       "auth":"service",
-      "dataset":"Test_Anonymize_From"
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to read from.", "prefix":"Test_Anonymize_From", "default":""}}
     }},
     { "dataset":{
       "auth":"service",
-      "dataset":"Test_Anonymize_To"
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to write to.", "prefix":"Test_Anonymize_To", "default": "" }}
     }},
     { "bigquery": {
       "auth":"service",
@@ -24,7 +24,7 @@
         ]
       },
       "to":{
-        "dataset":"Test_Anonymize_From",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to read from.", "prefix":"Test_Anonymize_From", "default":""}},
         "table":"Anonymize_Table"
       },
       "schema":[
@@ -37,27 +37,30 @@
     { "bigquery": {
       "auth":"service",
       "from":{
-        "dataset":"Test_Anonymize_From",
-        "query":"SELECT * FROM Test_Anonymize_From.Anonymize_Table;"
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to read from.", "prefix":"Test_Anonymize_From", "default":""}},
+        "query":"SELECT * FROM {dataset_from}.Anonymize_Table;",
+        "parameters": {
+          "dataset_from": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to read from.", "prefix":"Test_Anonymize_From", "default":""}}
+        }
       },
       "to":{
-        "dataset":"Test_Anonymize_From",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to read from.", "prefix":"Test_Anonymize_From", "default":""}},
         "view":"Anonymize_View"
       }
     }},
     { "include":{
       "script":"scripts/anonymize.json",
       "parameters":{
-        "from_project":{"field":{ "name":"project", "kind":"string", "description":"Project where BigQuery dataset is read from." }},
-        "from_dataset":"Test_Anonymize_From",
-        "to_project":{"field":{ "name":"project", "kind":"string", "description":"Project where BigQuery dataset is created." }},
-        "to_dataset":"Test_Anonymize_To"
+        "from_project":{"field":{"name":"project", "kind":"string", "description":"Project where BigQuery dataset is read from."}},
+        "from_dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to read from.", "prefix":"Test_Anonymize_From", "default":""}},
+        "to_project":{"field":{ "name":"project", "kind":"string", "description":"Project where BigQuery dataset is created."}},
+        "to_dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to write to.", "prefix":"Test_Anonymize_To", "default": "" }}
       }
     }},
     { "test": {
       "auth":"service",
       "bigquery":{
-        "dataset":"Test_Anonymize_To",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to write to.", "prefix":"Test_Anonymize_To", "default": "" }},
         "table":"Anonymize_Table",
         "schema":[
           { "name":"Date_Column", "type":"DATE", "mode": "NULLABLE" },
@@ -70,7 +73,7 @@
     { "test": {
       "auth":"service",
       "bigquery":{
-        "dataset":"Test_Anonymize_From",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to read from.", "prefix":"Test_Anonymize_From", "default":""}},
         "table":"Anonymize_View",
         "schema":[
           { "name":"Date_Column", "type":"DATE", "mode": "NULLABLE" },
