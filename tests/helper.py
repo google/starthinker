@@ -72,7 +72,7 @@ def load_tests():
         yield filename, get_project(TEST_DIRECTORY + filename)
 
 
-def configure_tests(scripts, tests, skips):
+def configure_tests(scripts, tests, skips, test_run_id = ''):
   """Initialize all the necessary test files for Starthinker
 
   Args: None
@@ -115,6 +115,12 @@ def configure_tests(scripts, tests, skips):
     f = open(CONFIG_FILE, 'w')
     f.write(json.dumps(fields, sort_keys=True, indent=2))
     f.close()
+
+    # Inject the test run ID to the list of field values that were read from the
+    # test config file. This is done in memory only, so that concrete test run
+    # value are replaced every time a test runs.
+    for script in fields:
+      fields[script]['test_run_id'] = test_run_id
   else:
     print('WARNING CONFIGURATION IS EMPTY, CHECK YOUR PATHS!')
 
@@ -128,9 +134,9 @@ def configure_tests(scripts, tests, skips):
   recipes = []
   for filename, script in scripts:
     name = filename.split('.')[0]
-    if tests and name not in tests: 
+    if tests and name not in tests:
       continue
-    if name in skips: 
+    if name in skips:
       continue
 
     # Set config field values into the script
@@ -273,6 +279,7 @@ def tests():
   parser.add_argument('-t', '--tests', nargs='*', help='Run only these tests, name of test from scripts.')
   parser.add_argument('-s', '--skips', nargs='*', help='Skip these tests, name of test from scripts.')
   parser.add_argument('-i', '--include', help='Create an include file for the script, used in tests.', default=None)
+  parser.add_argument('-r', '--test_run_id', help='Specify a test run ID to inject into the test config fields.')
 
   args = parser.parse_args()
 
@@ -285,11 +292,14 @@ def tests():
     scripts = list(load_tests())
     tests = [t.split('.')[0] for t in (args.tests or [])]
     skips = [t.split('.')[0] for t in (args.skips or [])]
+    test_run_id = ''
+    if args.test_run_id:
+      test_run_id = '_' + args.test_run_id
 
     if args.configure:
-      configure_tests(scripts, tests, skips)
+      configure_tests(scripts, tests, skips, test_run_id)
     else:
-      recipes = configure_tests(scripts, tests, skips)
+      recipes = configure_tests(scripts, tests, skips, test_run_id)
       run_tests(scripts, recipes, tests, skips)
 
 
