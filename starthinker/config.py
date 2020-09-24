@@ -62,5 +62,6 @@ APPLICATION_SCOPES = [
     'https://www.googleapis.com/auth/youtube',
     'https://www.googleapis.com/auth/analytics',
     'https://www.googleapis.com/auth/analytics.readonly',
-    'https://www.googleapis.com/auth/display-video'
+    'https://www.googleapis.com/auth/display-video',
+    'https://www.googleapis.com/auth/adwords'
 ]
