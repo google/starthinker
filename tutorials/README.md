@@ -6,14 +6,14 @@ a StarThinker instance.
 ## Deployment
 
 - [Enterprise](deploy_enterprise.md) - Full browser based UI with multiple user login.
-- [AirFlow](deploy_airflow.md) - Run recipes usng cloud compoer / airflow framework.
+- [AirFlow](deploy_airflow.md) - Run recipes using cloud composer / airflow framework.
 - [Colab](deploy_colab.md) - For Workshops, Data Pill deployment using Google Collaboratory.
 - [Developer](deploy_developer.md) - Command line recipe creation, editing, and testing.
 - [Package](deploy_package.md) - Use StarThinker as a library.
 
 ## UI
 
-- [Running A Recipe](https://google.github.io/starthinker/help/) - How to set up and deploy a recipe using the UI.
+- [Running A Recipe](https://google.github.io/starthinker/help/) - How to setup and deploy a recipe using the UI.
 - [Recipe Gallery](https://google.github.io/starthinker/) - List of packaged solutions.
 - [Logging](logging.md) - All logs are written to StackDriver, you can build dashboards on them.
 - [Testing](testing_ui.md) - How to test the UI and worker.
@@ -48,7 +48,7 @@ a StarThinker instance.
 - [/tutorials](../tutorials/) - Tutorials for using StarThinker code base.
 - [/scripts](../scripts/) - Complete solution templates provided by Google that you can deploy.
 - [/dags](../dags/) - Deploy solutions using Cloud Composer and Airflow.
-- [/colabs](../colabs/) - Deploy solutions using Googles Collaboratory.
+- [/colabs](../colabs/) - Deploy solutions using Google Collaboratory.
 - [/tests](../tests/) - Complete testing harness for all solutions provided by Google that you can use.
 - [/starthinker/util](../starthinker/util/) - Low level library wrappers around Google API with helpers to handle common errors.
 - [/starthinker/task](../starthinker/task/) - Handlers for each task specified in a JSON recipe.
