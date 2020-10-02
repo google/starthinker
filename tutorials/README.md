@@ -37,6 +37,7 @@ a StarThinker instance.
 ## General
 
 - [Architecture](architecture.md) - All the components of this repository explained.
+- [Developer Training Resources](developer_training.md) - Relevant online training courses for developers.
 - [Frequently Asked Questions](faq.md) - Common Google Cloud and StarThinker questions.
 - [Useful Utilities](cheat_sheet.md) - List of common development and production commands.
 - [Data Schemas](data_schemas.md) - Schemas used by various tasks.
