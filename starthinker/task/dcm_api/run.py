@@ -99,7 +99,7 @@ def dcm_api_list(endpoint):
     if 'advertisers' in project.task:
       advertisers = set(get_rows('user', project.task['advertisers']))
       for advertiser in advertisers:
-        kwargs = {'advertiserId': str(advertiser)}
+        kwargs['advertiserIds'] = str(advertiser)
         yield from API_DCM(
             project.task['auth'], iterate=True,
             internal=is_superuser).call(endpoint).list(**kwargs).execute()
