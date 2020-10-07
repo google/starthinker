@@ -5,11 +5,12 @@ a StarThinker instance.
 
 ## Deployment
 
-- [Enterprise](deploy_enterprise.md) - Full browser based UI with multiple user login.
+- [AppEngine](deploy_enterprise.md) - Full browser based UI with multiple user login.
 - [AirFlow](deploy_airflow.md) - Run recipes using cloud composer / airflow framework.
 - [Colab](deploy_colab.md) - For Workshops, Data Pill deployment using Google Collaboratory.
-- [Developer](deploy_developer.md) - Command line recipe creation, editing, and testing.
-- [Package](deploy_package.md) - Use StarThinker as a library.
+- [Developer](deploy_developer.md) - Full test suite in a local development machine.
+- [Command Line](deploy_commandline.md) - Quick easy to install utility for runnning recipes.
+- [PIP Package](deploy_package.md) - Use StarThinker as a Python module.
 
 ## UI
 

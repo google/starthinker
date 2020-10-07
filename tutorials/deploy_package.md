@@ -4,6 +4,11 @@ This deployment is for non-developers who simply wish to use StarThinker.
 
 ## Install StarThinker
 
+To run StarThinker you will need the folowing:
+
+1. A unix / linux command line.
+2. A version of Python 3.7 or greater.
+
 From the command line on any unix/linux machine install StarThinker.  All following examples begin with this step.
 
 ```
@@ -24,10 +29,6 @@ following utility and follow instructions on screen:
 ```
 st_auth -h
 ```
-
-## Run A Helper
-
-There are several [command line helpers](helpers.md) packaged in StarThinker, simply PIP install it and use the comands.
 
 ## Use A Function
 If all you need is one of the [utilities](../starthinker/util/) to build your own data pipe this is the smallest footprint.
@@ -83,6 +84,10 @@ if __name__ == "__main__":
   project.initialize(_recipe=var_recipe, _user=var_user, _service=var_service, _verbose=True)
   project.execute()
 ```
+
+## Additional Resources
+
+There are several [command line helpers](helpers.md) packaged in StarThinker, simply PIP install it and use the comands.
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_package.md)
 
