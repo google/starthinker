@@ -12,7 +12,7 @@ To run StarThinker you will need the folowing:
 From the command line on any unix/linux machine install StarThinker.  All following examples begin with this step.
 
 ```
-pip3 install git+https://github.com/google/starthinker
+python3 -m pip install git+https://github.com/google/starthinker
 ```
 
 - If you get a permission error add: ```--user``` to the above command.
@@ -87,11 +87,11 @@ if __name__ == "__main__":
 
 ## Additional Resources
 
-There are several [command line helpers](helpers.md) packaged in StarThinker, simply PIP install it and use the comands.
+Try this in a few seconds using Google Cloud Shell...
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_package.md)
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_tutorial=tutorials/deploy_package.md)
 
-Next, review list of available tasks in the [Recipe Gallery](https://google.github.io/starthinker/) or [GIT Scripts Folder](../scripts/).
+Next, review list of available tasks in the [Recipe Gallery](https://google.github.io/starthinker/), view [Scripts](../scripts/), or check [Command Line Helpers](helpers.md).
 
 ---
 &copy; 2019 Google LLC - Apache License, Version 2.0
