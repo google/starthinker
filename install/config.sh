@@ -89,9 +89,8 @@ derive_config() {
     STARTHINKER_UI_PRODUCTION_SECRET=$(openssl rand -base64 48)
   fi
 
-  if [ -z "${STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME}" ]; then
-    STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME="${STARTHINKER_ROOT}/starthinker_database/database.sqlite";
-  fi
+  STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME="${STARTHINKER_ROOT}/starthinker_database/database.sqlite";
+
 }
 
 
