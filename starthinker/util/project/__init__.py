@@ -82,6 +82,9 @@ from importlib import import_module
 
 from starthinker.util.debug import starthinker_trace_start
 
+
+EXIT_ERROR = 1
+EXIT_SUCCESS = 0
 RE_UUID = re.compile(r'(\s*)("setup"\s*:\s*{)')
 
 
@@ -591,7 +594,7 @@ class project:
 
     """
 
-    returncode = 0
+    returncode = EXIT_SUCCESS
     instances = {}
     for task in cls.recipe['tasks']:
       script, task = next(iter(task.items()))
@@ -609,7 +612,7 @@ class project:
           python_callable(cls.recipe, instances[script])
         except Exception as e:
           print(str(e))
-          return_code = 1
+          returncode = EXIT_ERROR
       else:
         print(
             'Schedule Skipping: add --force to ignore schedule or run specific task handler'
