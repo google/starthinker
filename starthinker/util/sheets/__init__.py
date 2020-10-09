@@ -314,7 +314,6 @@ def sheets_create(auth,
     created = True
 
   # if creating tab from template
-  print(created, template_sheet, template_tab)
   if (created or tab_id is None) and template_sheet and template_tab:
     if project.verbose:
       print('SHEET TAB COPY', sheet_tab)
