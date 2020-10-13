@@ -19,74 +19,12 @@
 from starthinker.util.project import project
 from starthinker.util.data import put_rows, get_rows
 from starthinker.util.google_api import API_DV360_Beta
-from starthinker.util.google_api.discovery import discovery_schema
-
-DV360_API_TO_RESOURCE = {
-    'advertisers':
-        'Advertiser',
-    'advertisers.campaigns':
-        'Campaign',
-    'advertisers.channels':
-        'Channel',
-    'advertisers.channels.sites':
-        'Site',
-    'advertisers.creatives':
-        'Creative',
-    'advertisers.insertionOrders':
-        'InsertionOrder',
-    'advertisers.lineItems':
-        'LineItem',
-    'advertisers.lineItems.targetingTypes':
-        'TargetingType',
-    'advertisers.locationLists':
-        'LocationList',
-    'advertisers.locationLists.assignedLocations':
-        'AssignedLocation',
-    'advertisers.negativeKeywordLists':
-        'NegativeKeywordList',
-    'advertisers.negativeKeywordLists.negativeKeywords':
-        'NegativeKeyword',
-    'advertisers.targetingTypes.assignedTargetingOptions':
-        'AssignedTargetingOption',
-    'combinedAudiences':
-        'CombinedAudience',
-    'customBiddingAlgorithms':
-        'CustomBiddingAlgorithm',
-    'customLists':
-        'CustomList',
-    'firstAndThirdPartyAudiences':
-        'FirstAndThirdPartyAudience',
-    'floodlightGroups':
-        'FloodlightGroup',
-    'googleAudiences':
-        'GoogleAudience',
-    'inventorySourceGroups':
-        'InventorySourceGroup',
-    'inventorySourceGroups.assignedInventorySources':
-        'AssignedInventorySource',
-    'inventorySources':
-        'InventorySource',
-    'partners':
-        'Partner',
-    'partners.channels':
-        'Channel',
-    'partners.channels.sites':
-        'Site',
-    'floodlightActivityGroups':
-        'FloodlightActivityGroup',
-    'partners.targetingTypes.assignedTargetingOptions':
-        'AssignedTargetingOption',
-    'targetingTypes.targetingOptions':
-        'TargetingOption',
-    'users':
-        'User'
-}
+from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 
 
-def put_data(endpoint):
+def put_data(endpoint, method):
 
-  schema = discovery_schema('displayvideo', 'v1',
-                            DV360_API_TO_RESOURCE.get(endpoint))
+  schema = Discovery_To_BigQuery('displayvideo', 'v1').method_schema(endpoint, method)
 
   out = {}
 
@@ -143,7 +81,6 @@ def dv360_api_patch(endpoint, row):
 
 
 def dv360_api_insert(endpoint, row):
-  print(row)
   kwargs = {'advertiserId': str(row['advertiserId']), 'body': row}
   print(
       API_DV360_Beta(
@@ -161,7 +98,7 @@ def dv360_api():
 
     for endpoint in project.task['endpoints']:
       rows = dv360_api_list(endpoint)
-      put_rows(project.task['out']['auth'], put_data(endpoint), rows)
+      put_rows(project.task['out']['auth'], put_data(endpoint, 'list'), rows)
 
   elif 'patch' in project.task:
     rows = get_rows(project.task['auth'], project.task)

@@ -17,12 +17,13 @@
 ###########################################################################
 
 import argparse
-import textwrap
-import pprint
 import json
+import pprint
+import textwrap
 
-from starthinker.util.project import project
 from starthinker.util.google_api import API
+from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.project import project
 
 
 def main():
@@ -42,24 +43,39 @@ def main():
           - https://developers.google.com/doubleclick-advertisers/v3.3/placements/list
           - python task/google_api/helper.py -api dfareporting -version v3.3 -function placements.list -kwargs '{ "profileId":2782211 }' -u [credentials path]
 
+        - Show schema for Campaign Manager advertiser list endpoint.
+        - https://developers.google.com/doubleclick-advertisers/v3.4/advertisers/list
+        - python starthinker/task/google_api/helper.py -api dfareporting -version v3.4 -function advertisers.list --schema
+
   """))
 
   # get parameters
   parser.add_argument('-api', help='api to run, name of product api')
   parser.add_argument('-version', help='version of api')
   parser.add_argument('-function', help='function to call in api')
-  parser.add_argument('-uri', help='function to call in api', default=None)
+  parser.add_argument('-uri', help='uri to use in api', default=None)
   parser.add_argument(
       '-kwargs',
       help='kwargs to pass to function, json string of name:value pairs')
   parser.add_argument(
-      '--iterate', help='set to true to force iteration', action='store_true')
+      '--iterate', help='force iteration', action='store_true')
+  parser.add_argument(
+      '--schema', help='return schema instead, function = [endpoint.method]', action='store_true')
+
 
   # initialize project ( used to load standard credentials parameters )
   project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v'))
 
-  # the api wrapper takes parameters as JSON
-  job = {
+  # show schema
+  if project.args.schema:
+    endpoint, method = project.args.function.rsplit('.', 1)
+    print(json.dumps(Discovery_To_BigQuery(project.args.api, project.args.version).method_schema(endpoint, method), indent=2, default=str))
+
+  # or fetch results
+  else:
+
+    # the api wrapper takes parameters as JSON
+    job = {
       'auth': 'service' if project.args.service else 'user',
       'api': project.args.api,
       'version': project.args.version,
@@ -67,17 +83,17 @@ def main():
       'uri': project.args.uri,
       'kwargs': json.loads(project.args.kwargs),
       'iterate': project.args.iterate,
-  }
+    }
 
-  # run the API call
-  results = API(job).execute()
+    # run the API call
+    results = API(job).execute()
 
-  # display results
-  if project.args.iterate:
-    for result in results:
-      pprint.PrettyPrinter().pprint(result)
-  else:
-    pprint.PrettyPrinter().pprint(results)
+    # display results
+    if project.args.iterate:
+      for result in results:
+        pprint.PrettyPrinter().pprint(result)
+    else:
+      pprint.PrettyPrinter().pprint(results)
 
 
 if __name__ == '__main__':

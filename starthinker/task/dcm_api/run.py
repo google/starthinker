@@ -18,21 +18,14 @@
 
 import re
 
-from starthinker.util.project import project
-from starthinker.util.google_api import API_DCM
-from starthinker.util.data import put_rows, get_rows
+from starthinker.util.data import get_rows
+from starthinker.util.data import put_rows
 from starthinker.util.dcm import get_profile_for_api
-#from starthinker.util.regexp import epoch_to_datetime
-#from starthinker.task.dcm_api.schema.lookup import DCM_Schema_Lookup
-from starthinker.util.google_api.discovery import discovery_schema
+from starthinker.util.google_api import API_DCM
+from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.project import project
 
 RE_DATETIME = re.compile(r'\d{4}[-/]\d{2}[-/]\d{2}[ T]\d{2}:\d{2}:\d{2}\.?\d+Z')
-
-DCM_API_TO_RESOURCE = {
-    'campaigns': 'Campaign',
-    'placements': 'Placement',
-    'placementGroups': 'PlacementGroup',
-}
 
 
 def bigquery_clean(struct):
@@ -56,12 +49,10 @@ def row_clean(structs):
     yield bigquery_clean(struct)
 
 
-def put_data(endpoint):
+def put_data(endpoint, method):
 
   out = {}
-  #schema = DCM_Schema_Lookup[endpoint]
-  schema = discovery_schema('dfareporting', 'v3.4',
-                            DCM_API_TO_RESOURCE.get(endpoint))
+  schema = Discovery_To_BigQuery('dfareporting', 'v3.4').method_schema(endpoint, method)
 
   if 'dataset' in project.task['out']:
     out['bigquery'] = {
@@ -88,8 +79,11 @@ def dcm_api_list(endpoint):
   accounts = set(get_rows('user', project.task['accounts']))
 
   for account_id in accounts:
-    is_superuser, profile_id = get_profile_for_api(project.task['auth'],
-                                                   account_id)
+    is_superuser, profile_id = get_profile_for_api(
+      project.task['auth'],
+      account_id
+    )
+
     kwargs = {
         'profileId': profile_id,
     }
@@ -121,9 +115,8 @@ def dcm_api():
 
     for endpoint in project.task['endpoints']:
       rows = dcm_api_list(endpoint)
-      rows = row_clean(rows)
-
-      put_rows(project.task['out']['auth'], put_data(endpoint), rows)
+      #rows = row_clean(rows)
+      put_rows(project.task['out']['auth'], put_data(endpoint, 'list'), rows)
 
 
 if __name__ == '__main__':
