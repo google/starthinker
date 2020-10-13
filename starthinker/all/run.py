@@ -16,14 +16,17 @@
 #
 ###########################################################################
 
-import sys
-import textwrap
 import argparse
 import subprocess
+import sys
+import textwrap
 
 from starthinker.config import UI_ROOT
-from starthinker.util.project import get_project, is_scheduled
+from starthinker.util.project import is_scheduled
+from starthinker.util.project import get_project
 
+EXIT_ERROR = 1
+EXIT_SUCCESS = 0
 
 def main():
 
@@ -113,7 +116,7 @@ def main():
   # track per task instance count
   instances = {}
 
-  returncode = 0
+  returncode = EXIT_SUCCESS
   for task in recipe['tasks']:
     script, task = next(iter(task.items()))
 
@@ -123,19 +126,25 @@ def main():
 
     # assemble command ( replace command, use all arguments passed, and add instance )
     command = 'python -W ignore %s/starthinker/task/%s/run.py %s -i %d' % (
-        UI_ROOT, script, ' '.join(sys.argv[1:]), instances[script])
+      UI_ROOT,
+      script,
+      ' '.join(sys.argv[1:]),
+      instances[script]
+    )
 
     # show command so user can run each task
     print(command)
 
     # execute command if schedule, return code
     if args.force or is_scheduled(recipe, task):
-      returncode |= subprocess.Popen(command, shell=True).wait()
+      if subprocess.Popen(command, shell=True).wait() != EXIT_SUCCESS:
+        returncode = EXIT_ERROR
 
     # skip command if not schedule
     else:
       raise SystemExit(
-          'Schedule Skipping: run command manually or add --force to run all')
+        'Schedule Skipping: run command manually or add --force to run all'
+      )
 
   # Set lowest return code from all tasks
   exit(returncode)
