@@ -33,6 +33,50 @@ from starthinker.task.traffic.test import bulkdozer_test
 from starthinker.task.weather_gov.test import weather_gov_test
 
 
+EXIT_ERROR = 1
+EXIT_SUCCESS = 0
+
+
+def test_failed():
+  print('FAILED')
+  return EXIT_ERROR
+
+
+def test_passed():
+  print('PASSED')
+  return EXIT_SUCCESS
+
+
+def schema_compare(expected, actual, path=''):
+  delta = {}
+  matched = set()
+
+  make_path = lambda name: path + ('.' if path else '') + name
+
+  # find matches
+  for expected_column in expected:
+    for actual_column in actual:
+      if expected_column['name'] == actual_column['name']:
+        matched.add(expected_column['name'])
+        if expected_column.get('type') != actual_column.get('type'):
+          delta[make_path(expected_column['name'])] = { 'path':make_path(expected_column['name']), 'error':'type', 'expected':expected_column.get('type'), 'actual':actual_column.get('type')}
+        if expected_column.get('mode') != actual_column.get('mode'):
+          delta[make_path(expected_column['name'])] = { 'path':make_path(expected_column['name']), 'error':'mode', 'expected':expected_column.get('mode'), 'actual':actual_column.get('mode')}
+        delta.update(schema_compare(expected_column.get('fields', []), actual_column.get('fields', []), make_path(expected_column['name'])))
+
+  # find missing
+  for expected_column in expected:
+    if expected_column['name'] not in matched:
+      delta[make_path(expected_column['name'])] = { 'path':make_path(expected_column['name']), 'error':'missing', 'expected':expected_column['name'], 'actual':''}
+
+  # find extra
+  for actual_column in actual:
+    if actual_column['name'] not in matched:
+      delta[make_path(actual_column['name'])] = { 'path':make_path(actual_column['name']), 'error':'extra', 'expected':'', 'actual':actual_column['name']}
+
+  return delta
+
+
 def deep_compare(actual, expected):
 
   if type(actual) != type(expected):
@@ -63,12 +107,12 @@ def object_compare(actual, expected):
   errors = deep_compare(actual, expected)
 
   if errors:
-    print('\nFAILED *******************************************************\n')
+    print('\nOBJECT DELTA *************************************************\n')
     print(errors)
     print('\n**************************************************************\n')
-
+    test_failed()
   else:
-    print('PASSED')
+    test_passed()
 
 
 # check if sheet matches given values
@@ -129,7 +173,15 @@ def bigquery():
     schema = table_to_schema(project.task['auth'], project.id,
                              project.task['bigquery']['dataset'],
                              project.task['bigquery']['table'])
-    object_compare(schema, project.task['bigquery']['schema'])
+    deltas = schema_compare(project.task['bigquery']['schema'], schema, path='')
+
+    if deltas:
+      print('\nFAILED *******************************************************\n')
+      for delta in deltas.values():
+        print('%(path)s: %(error)s ( %(expected)s - %(actual)s)' % delta)
+      print('\n**************************************************************\n')
+    else:
+      print('PASSED')
 
   # if query given check it
   if 'query' in project.task['bigquery']:
@@ -154,16 +206,16 @@ def bigquery():
 
 def asserts():
   print(project.task['assert'])
-  print('PASSED')
+  test_passed()
 
 
 def path_exists():
   if os.path.exists(project.task['path']):
     if project.task.get('delete', False):
       os.remove(project.task['path'])
-    print('PASSED')
+    test_passed()
   else:
-    print('FAILED')
+    test_failed()
 
 
 def storage_exists():
@@ -174,51 +226,61 @@ def storage_exists():
       object_delete(
           project.task['auth'], '%s:%s' %
           (project.task['storage']['bucket'], project.task['storage']['file']))
-    print('PASSED')
+    test_passed()
   else:
-    print('FAILED')
+    test_failed()
 
 
 def drive_exists():
   if file_exists(project.task['auth'], project.task['drive']['file']):
     if project.task.get('delete', False):
       file_delete(project.task['auth'], project.task['drive']['file'])
-    print('PASSED')
+    test_passed()
   else:
-    print('FAILED')
+    test_failed()
 
 
 def weather_gov():
   print('running weather_gov test')
-  weather_gov_test()
+  try:
+    weather_gov_test()
+    test_passed()
+  except Exception as e:
+    print(str(e))
+    test_failed()
 
 
 def traffic():
   print('running Bulkdozer test')
-  bulkdozer_test()
+  try:
+    bulkdozer_test()
+    test_passed()
+  except Exception as e:
+    print(str(e))
+    test_failed()
 
 
 # decide which test to run
 @project.from_parameters
 def test():
   if 'assert' in project.task:
-    asserts()
+    return asserts()
   elif 'path' in project.task:
-    path_exists()
+    return path_exists()
   elif 'storage' in project.task:
     storage_exists()
   elif 'sheets' in project.task:
-    sheets()
+    return sheets()
   elif 'bigquery' in project.task:
-    bigquery()
+    return bigquery()
   elif 'drive' in project.task:
-    drive_exists()
+    return drive_exists()
   elif 'template' in project.task:
-    template()
+    return template()
   elif 'traffic' in project.task:
-    traffic()
+    return traffic()
   elif 'weather_gov' in project.task:
-    weather_gov()
+    return weather_gov()
 
 
 # test should be run like any other task

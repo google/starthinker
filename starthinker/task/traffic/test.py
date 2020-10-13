@@ -21,27 +21,6 @@ from starthinker.util.dcm import get_profile_for_api
 from starthinker.util.project import project, get_project
 
 
-def _fail(message):
-  print('-------------------------')
-  print('*                       *')
-  print('*                       *')
-  print('* Bulkdozer Test Failed *')
-  print('*                       *')
-  print(message)
-  print('*                       *')
-  print('-------------------------')
-
-
-def _passed():
-  print('-------------------------')
-  print('*                       *')
-  print('*                       *')
-  print('* Bulkdozer Test Passed *')
-  print('*                       *')
-  print('*                       *')
-  print('-------------------------')
-
-
 def bulkdozer_test():
   print('testing bulkdozer')
 
@@ -58,8 +37,4 @@ def bulkdozer_test():
 
       for key in values:
         if values[key] != cm_entity[key]:
-          _fail('%s %s expected to be %s, was %s' %
-                (entity['type'], key, values[key], cm_entity[key]))
-          return
-
-    _passed()
+          raise '%s %s expected to be %s, was %s' % (entity['type'], key, values[key], cm_entity[key])
