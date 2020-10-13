@@ -144,6 +144,21 @@ def datasets_create(auth, project_id, dataset_id):
       projectId=project_id, body=body).execute()
 
 
+def datasets_delete(auth, project_id, dataset_id, delete_contents=True):
+
+  try:
+    API_BigQuery(auth).datasets().delete(
+      projectId=project_id,
+      datasetId=dataset_id,
+      deleteContents=delete_contents
+    ).execute()
+    return True
+  except HttpError as e:
+    if e.resp.status != 404:
+      raise
+    return False
+
+
 # roles = READER, WRITER, OWNER
 def datasets_access(auth,
                     project_id,

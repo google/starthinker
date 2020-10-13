@@ -16,8 +16,11 @@
 #
 ###########################################################################
 
+
+from starthinker.util.bigquery import datasets_access
+from starthinker.util.bigquery import datasets_create
+from starthinker.util.bigquery import datasets_delete
 from starthinker.util.project import project
-from starthinker.util.bigquery import datasets_create, datasets_access
 
 
 @project.from_parameters
@@ -25,14 +28,32 @@ def dataset():
   if project.verbose:
     print('DATASET', project.id, project.task['dataset'])
 
-  # create dataset
-  datasets_create(project.task['auth'], project.id, project.task['dataset'])
-  datasets_access(
+  if project.task.get('delete', False):
+    if project.verbose:
+      print('DATASET DELETE')
+    datasets_delete(
       project.task['auth'],
       project.id,
-      project.task['dataset'],
-      emails=project.task.get('emails', []),
-      groups=project.task.get('groups', []))
+      project.task['dataset']
+    )
+
+  if project.verbose:
+    print('DATASET CREATE')
+  datasets_create(
+    project.task['auth'],
+    project.id,
+    project.task['dataset']
+  )
+
+  if project.verbose:
+    print('DATASET ACCESS')
+  datasets_access(
+    project.task['auth'],
+    project.id,
+    project.task['dataset'],
+    emails=project.task.get('emails', []),
+    groups=project.task.get('groups', [])
+  )
 
 
 if __name__ == '__main__':
