@@ -4,215 +4,231 @@
     "copyright":"Copyright 2020 Google LLC"
   },
   "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_API_", "default": "Manual"}},
+      "delete":true
+    }},
     { "dcm_api":{
       "auth":"user",
-      "endpoints_off":["accounts", "subaccounts", "accountUserProfiles", "advertisers", "campaigns", "sites", "userRoles"],
-      "endpoints":["accountUserProfiles"],
+      "endpoints":["accounts", "subaccounts", "advertisers", "sites"],
+      "endpoints_off":["accountUserProfiles"],
       "accounts":{
         "single_cell":true,
         "values":{"field":{ "name":"account_ids", "kind":"integer_list", "default":[] }}
       },
       "out":{
         "auth":"service",
-        "dataset":"Test"
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_API_", "default": "Manual"}}
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset": "Test",
-        "table":"CM_Accounts",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_API_", "default": "Manual"}},
+        "table":"CM_accounts",
         "schema":[
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"name", "type":"STRING" },
-          { "name":"active", "type":"BOOLEAN" },
-          { "name":"description", "type":"STRING" },
-          { "name":"timezone", "type":"STRING" },
-          { "name":"currencyId", "type":"INTEGER" },
-          { "name":"countryId", "type":"INTEGER" },
-          { "name":"locale", "type":"STRING" },
-          { "name":"nielsenOcrEnabled", "type":"BOOLEAN" },
-          { "name":"shareReportsWithTwitter", "type":"BOOLEAN" }
+          { "description": "ACCOUNT_PROFILE_BASIC, ACCOUNT_PROFILE_STANDARD", "name": "accountProfile", "type": "STRING", "mode": "NULLABLE" },
+          { "description": "", "name": "activeViewOptOut", "type": "BOOLEAN", "mode": "NULLABLE" },
+          { "description": "", "name": "currencyId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "nielsenOcrEnabled", "type": "BOOLEAN", "mode": "NULLABLE" },
+          { "description": "", "name": "description", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "reportsConfiguration", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "description": "", "name": "exposureToConversionEnabled", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "name": "lookbackConfiguration", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "description": "", "name": "clickDuration", "type": "INTEGER", "mode": "NULLABLE" },
+                  { "description": "", "name": "postImpressionActivitiesDuration", "type": "INTEGER", "mode": "NULLABLE" }
+                ]
+              },
+              { "description": "", "name": "reportGenerationTimeZoneId", "type": "INTEGER", "mode": "NULLABLE" }
+            ]
+          },
+          { "description": "", "name": "active", "type": "BOOLEAN", "mode": "NULLABLE" },
+          { "description": "", "name": "shareReportsWithTwitter", "type": "BOOLEAN", "mode": "NULLABLE" },
+          { "description": "ACTIVE_ADS_TIER_40K, ACTIVE_ADS_TIER_75K, ACTIVE_ADS_TIER_100K, ACTIVE_ADS_TIER_200K, ACTIVE_ADS_TIER_300K, ACTIVE_ADS_TIER_500K, ACTIVE_ADS_TIER_750K, ACTIVE_ADS_TIER_1M", "name": "activeAdsLimitTier", "type": "STRING", "mode": "NULLABLE" },
+          { "description": "", "name": "teaserSizeLimit", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "name", "type": "STRING", "mode": "NULLABLE" },
+          { "description": "", "name": "defaultCreativeSizeId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "id", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "availablePermissionIds", "type": "INTEGER", "mode": "REPEATED" },
+          { "description": "", "name": "accountPermissionIds", "type": "INTEGER", "mode": "REPEATED" },
+          { "description": "", "name": "maximumImageSize", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" },
+          { "description": "", "name": "locale", "type": "STRING", "mode": "NULLABLE" },
+          { "description": "", "name": "countryId", "type": "INTEGER", "mode": "NULLABLE" }
         ]
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Profiles",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_API_", "default": "Manual"}},
+        "table":"CM_sites",
         "schema":[
-          { "name":"profileId", "type":"INTEGER" },
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"subaccountId", "type":"INTEGER" },
-          { "name":"name", "type":"STRING" },
-          { "name":"email", "type":"STRING" },
-          { "name":"locale", "type":"STRING" },
-          { "name":"userRoleId", "type":"INTEGER" },
-          { "name":"userAccessType", "type":"STRING" },
-          { "name":"active", "type":"BOOLEAN" },
-          { "name":"comments", "type":"STRING" },
-          { "name":"traffickerType", "type":"STRING" }
+          { "description": "", "name": "approved", "type": "BOOLEAN", "mode": "NULLABLE" },
+          { "description": "", "name": "accountId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "keyName", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "siteSettings", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "description": "", "name": "adBlockingOptOut", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "description": "DEFAULT, FLASH, HTML5, BOTH", "name": "vpaidAdapterChoiceTemplate", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "disableNewCookie", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "description": "", "name": "activeViewOptOut", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "name": "tagSetting", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "description": "", "name": "includeClickThroughUrls", "type": "BOOLEAN", "mode": "NULLABLE" },
+                  { "description": "", "name": "includeClickTracking", "type": "BOOLEAN", "mode": "NULLABLE" },
+                  { "description": "", "name": "additionalKeyValues", "type": "STRING", "mode": "NULLABLE" },
+                  { "description": "PLACEHOLDER_WITH_LIST_OF_KEYWORDS, IGNORE, GENERATE_SEPARATE_TAG_FOR_EACH_KEYWORD", "name": "keywordOption", "type": "STRING", "mode": "NULLABLE" }
+                ]
+              },
+              { "description": "", "name": "videoActiveViewOptOutTemplate", "type": "BOOLEAN", "mode": "NULLABLE" }
+            ]
+          },
+          { "description": "", "name": "name", "type": "STRING", "mode": "NULLABLE" },
+          { "description": "", "name": "subaccountId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "directorySiteId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "directorySiteIdDimensionValue", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "description": "", "name": "id", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "value", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "etag", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "dimensionName", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "EXACT, BEGINS_WITH, CONTAINS, WILDCARD_EXPRESSION", "name": "matchType", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "description": "", "name": "id", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "siteContacts", "type": "RECORD", "mode": "REPEATED", "fields": [
+              { "description": "", "name": "phone", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "firstName", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "id", "type": "INTEGER", "mode": "NULLABLE" },
+              { "description": "SALES_PERSON, TRAFFICKER", "name": "contactType", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "lastName", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "email", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "address", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "title", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "videoSettings", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "description": "ANY, LANDSCAPE, PORTRAIT", "name": "orientation", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "companionSettings", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "name": "enabledSizes", "type": "RECORD", "mode": "REPEATED", "fields": [
+                      { "description": "", "name": "iab", "type": "BOOLEAN", "mode": "NULLABLE" },
+                      { "description": "", "name": "height", "type": "INTEGER", "mode": "NULLABLE" },
+                      { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" },
+                      { "description": "", "name": "width", "type": "INTEGER", "mode": "NULLABLE" },
+                      { "description": "", "name": "id", "type": "INTEGER", "mode": "NULLABLE" }
+                    ]
+                  },
+                  { "description": "", "name": "imageOnly", "type": "BOOLEAN", "mode": "NULLABLE" },
+                  { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" },
+                  { "description": "", "name": "companionsDisabled", "type": "BOOLEAN", "mode": "NULLABLE" }
+                ]
+              },
+              { "name": "skippableSettings", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "name": "skipOffset", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                      { "description": "", "name": "offsetPercentage", "type": "INTEGER", "mode": "NULLABLE" },
+                      { "description": "", "name": "offsetSeconds", "type": "INTEGER", "mode": "NULLABLE" }
+                    ]
+                  },
+                  { "name": "progressOffset", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                      { "description": "", "name": "offsetPercentage", "type": "INTEGER", "mode": "NULLABLE" },
+                      { "description": "", "name": "offsetSeconds", "type": "INTEGER", "mode": "NULLABLE" }
+                    ]
+                  },
+                  { "description": "", "name": "skippable", "type": "BOOLEAN", "mode": "NULLABLE" },
+                  { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" }
+                ]
+              },
+              { "name": "obaSettings", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "name": "size", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                      { "description": "", "name": "iab", "type": "BOOLEAN", "mode": "NULLABLE" },
+                      { "description": "", "name": "height", "type": "INTEGER", "mode": "NULLABLE" },
+                      { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" },
+                      { "description": "", "name": "width", "type": "INTEGER", "mode": "NULLABLE" },
+                      { "description": "", "name": "id", "type": "INTEGER", "mode": "NULLABLE" }
+                    ]
+                  },
+                  { "description": "", "name": "iconClickThroughUrl", "type": "STRING", "mode": "NULLABLE" },
+                  { "description": "", "name": "yPosition", "type": "STRING", "mode": "NULLABLE" },
+                  { "description": "", "name": "iconClickTrackingUrl", "type": "STRING", "mode": "NULLABLE" },
+                  { "description": "", "name": "iconViewTrackingUrl", "type": "STRING", "mode": "NULLABLE" },
+                  { "description": "", "name": "xPosition", "type": "STRING", "mode": "NULLABLE" },
+                  { "description": "", "name": "program", "type": "STRING", "mode": "NULLABLE" },
+                  { "description": "", "name": "resourceUrl", "type": "STRING", "mode": "NULLABLE" }
+                ]
+              },
+              { "name": "transcodeSettings", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" },
+                  { "description": "", "name": "enabledVideoFormats", "type": "INTEGER", "mode": "REPEATED" }
+                ]
+              },
+              { "description": "", "name": "obaEnabled", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "idDimensionValue", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "description": "", "name": "id", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "value", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "etag", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "dimensionName", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "EXACT, BEGINS_WITH, CONTAINS, WILDCARD_EXPRESSION", "name": "matchType", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          }
         ]
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Profile_Campaigns",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_API_", "default": "Manual"}},
+        "table":"CM_subaccounts",
         "schema":[
-          { "name":"profileId", "type":"INTEGER" },
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"subaccountId", "type":"INTEGER" },
-          { "name":"campaignId", "type":"INTEGER" }
+          { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" },
+          { "description": "", "name": "availablePermissionIds", "type": "INTEGER", "mode": "REPEATED" },
+          { "description": "", "name": "name", "type": "STRING", "mode": "NULLABLE" },
+          { "description": "", "name": "id", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "accountId", "type": "INTEGER", "mode": "NULLABLE" }
         ]
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Profile_Sites",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_API_", "default": "Manual"}},
+        "table":"CM_advertisers",
         "schema":[
-          { "name":"profileId", "type":"INTEGER" },
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"subaccountId", "type":"INTEGER" },
-          { "name":"siteId", "type":"INTEGER" }
-        ]
-      }
-    }},
-    { "test": {
-      "auth":"user",
-      "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Profile_Roles",
-        "schema":[
-          { "name":"profileId", "type":"INTEGER" },
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"subaccountId", "type":"INTEGER" },
-          { "name":"roleId", "type":"INTEGER" }
-        ]
-      }
-    }},
-    { "test": {
-      "auth":"user",
-      "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Profile_Advertisers",
-        "schema":[
-          { "name":"profileId", "type":"INTEGER" },
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"subaccountId", "type":"INTEGER" },
-          { "name":"advertiserId", "type":"INTEGER" }
-        ]
-      }
-    }},
-    { "test": {
-      "auth":"user",
-      "bigquery":{
-        "dataset":"Test",
-        "table":"CM_SubAccounts",
-        "schema":[
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"subaccountId", "type":"INTEGER" },
-          { "name":"name", "type":"STRING" }
-        ]
-      }
-    }},
-    { "test": {
-      "auth":"user",
-      "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Advertisers",
-        "schema":[
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"subaccountId", "type":"INTEGER" },
-          { "name":"advertiserId", "type":"INTEGER" },
-          { "name":"advertiserGroupId", "type":"INTEGER" },
-          { "name":"name", "type":"STRING" },
-          { "name":"status", "type":"STRING" },
-          { "name":"defaultEmail", "type":"STRING" },
-          { "name":"clickThroughUrlSuffix", "type":"STRING" },
-          { "name":"defaultClickThroughEventTagId", "type":"INTEGER" },
-          { "name":"suspended", "type":"BOOLEAN" },
-          { "name":"floodlightConfigurationId", "type":"INTEGER" },
-          { "name":"originalFloodlightConfigurationId", "type":"INTEGER" }
-        ]
-      }
-    }},
-    { "test": {
-      "auth":"user",
-      "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Campaigns",
-        "schema":[
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"subaccountId", "type":"INTEGER" },
-          { "name":"advertiserId", "type":"INTEGER" },
-          { "name":"advertiserGroupId", "type":"INTEGER" },
-          { "name":"campaignId", "type":"INTEGER" },
-          { "name":"name", "type":"STRING" },
-          { "name":"archived", "type":"BOOLEAN" },
-          { "name":"startDate", "type":"DATE" },
-          { "name":"endDate", "type":"DATE" },
-          { "name":"comment", "type":"STRING" },
-          { "name":"createInfo_time", "type":"STRING" },
-          { "name":"lastModifiedInfo_time", "type":"TIMESTAMP" },
-          { "name":"externalId", "type":"STRING" },
-          { "name":"defaultLandingPageId", "type":"STRING" },
-          { "name":"adBlockingConfiguration_enabled", "type":"BOOLEAN" },
-          { "name":"adBlockingConfiguration_overrideClickThroughUrl", "type":"STRING" },
-          { "name":"adBlockingConfiguration_clickThroughUrl", "type":"STRING" },
-          { "name":"adBlockingConfiguration_creativeBundleId", "type":"STRING" },
-          { "name":"nielsenOcrEnabled", "type":"BOOLEAN" }
-        ]
-      }
-    }},
-    { "test": {
-      "auth":"user",
-      "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Sites",
-        "schema":[
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"subaccountId", "type":"INTEGER" },
-          { "name":"directorySiteId", "type":"INTEGER" },
-          { "name":"siteId", "type":"INTEGER" },
-          { "name":"name", "type":"STRING" },
-          { "name":"keyName", "type":"STRING" },
-          { "name":"approved", "type":"BOOLEAN" },
-          { "name":"orientation", "type":"STRING" },
-          { "name":"siteSettings_disableNewCookie", "type":"BOOLEAN" },
-          { "name":"siteSettings_activeViewOptOut", "type":"BOOLEAN" },
-          { "name":"siteSettings_adBlockingOptOut", "type":"BOOLEAN" },
-          { "name":"siteSettings_videoActiveViewOptOutTemplate", "type":"BOOLEAN" },
-          { "name":"siteSettings_vpaidAdapterChoiceTemplate", "type":"STRING" },
-          { "name":"siteSettings_tagSetting_additionalKeyValues", "type":"STRING" },
-          { "name":"siteSettings_tagSetting_includeClickTracking", "type":"BOOLEAN" },
-          { "name":"siteSettings_tagSetting_includeClickThroughUrls", "type":"BOOLEAN" },
-          { "name":"siteSettings_tagSetting_keywordOption", "type":"STRING" }
-        ]
-      }
-    }},
-    { "test": {
-      "auth":"user",
-      "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Site_Contacts",
-        "schema":[
-          { "name":"accountId", "type":"INTEGER" },
-          { "name":"subaccountId", "type":"INTEGER" },
-          { "name":"directorySiteId", "type":"INTEGER" },
-          { "name":"siteId", "type":"INTEGER" },
-          { "name":"contactId", "type":"INTEGER" },
-          { "name":"email", "type":"STRING" },
-          { "name":"firstName", "type":"STRING" },
-          { "name":"lastName", "type":"STRING" },
-          { "name":"title", "type":"STRING" },
-          { "name":"address", "type":"STRING" },
-          { "name":"phone", "type":"STRING" },
-          { "name":"contactType", "type":"STRING" }
+          { "description": "", "name": "suspended", "type": "BOOLEAN", "mode": "NULLABLE" },
+          { "description": "", "name": "advertiserGroupId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "clickThroughUrlSuffix", "type": "STRING", "mode": "NULLABLE" },
+          { "description": "", "name": "defaultClickThroughEventTagId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "accountId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "defaultEmail", "type": "STRING", "mode": "NULLABLE" },
+          { "description": "", "name": "originalFloodlightConfigurationId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "APPROVED, ON_HOLD", "name": "status", "type": "STRING", "mode": "NULLABLE" },
+          { "description": "", "name": "id", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "subaccountId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "description": "", "name": "floodlightConfigurationId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "idDimensionValue", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "id", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "dimensionName", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "value", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "EXACT, BEGINS_WITH, CONTAINS, WILDCARD_EXPRESSION", "name": "matchType", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "etag", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "floodlightConfigurationIdDimensionValue", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "id", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "dimensionName", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "value", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "EXACT, BEGINS_WITH, CONTAINS, WILDCARD_EXPRESSION", "name": "matchType", "type": "STRING", "mode": "NULLABLE" },
+              { "description": "", "name": "etag", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "description": "", "name": "name", "type": "STRING", "mode": "NULLABLE" },
+          { "description": "", "name": "kind", "type": "STRING", "mode": "NULLABLE" }
         ]
       }
     }}
