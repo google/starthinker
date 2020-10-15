@@ -180,8 +180,10 @@ def bigquery():
       for delta in deltas.values():
         print('%(path)s: %(error)s ( %(expected)s - %(actual)s)' % delta)
       print('\n**************************************************************\n')
+      test_failed()
     else:
-      print('PASSED')
+      test_passed()
+
 
   # if query given check it
   if 'query' in project.task['bigquery']:
