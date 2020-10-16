@@ -16,6 +16,13 @@
 #
 ###########################################################################
 
+'''
+  Fields to pull from Census and use in all transforms.
+
+  Commented out fields DO NOT meet Google Personalized Advertising Policy.
+  See: https://support.google.com/adspolicy/answer/143465?hl=en
+'''
+
 CENSUS_FIELDS = [{
     'category': None,
     'denominator': None,
@@ -33,11 +40,11 @@ CENSUS_FIELDS = [{
     'denominator':
         'total_pop',
     'columns': [
-        'population_1_year_and_over',
-        'population_3_years_over',
-        'pop_5_years_over',
-        'pop_15_and_over',
-        'pop_16_over',
+#        'population_1_year_and_over',
+#        'population_3_years_over',
+#        'pop_5_years_over',
+#        'pop_15_and_over',
+#        'pop_16_over',
         'pop_25_years_over',
         'pop_25_64',
     ]
@@ -47,9 +54,9 @@ CENSUS_FIELDS = [{
     'denominator':
         'total_pop',
     'columns': [
-        'male_5_to_9',
-        'male_10_to_14',
-        'male_15_to_17',
+#        'male_5_to_9',
+#        'male_10_to_14',
+#        'male_15_to_17',
         'male_18_to_19',
         'male_20',
         'male_21',
@@ -74,9 +81,9 @@ CENSUS_FIELDS = [{
     'denominator':
         'total_pop',
     'columns': [
-        'female_5_to_9',
-        'female_10_to_14',
-        'female_15_to_17',
+        #'female_5_to_9',
+        #'female_10_to_14',
+        #'female_15_to_17',
         'female_18_to_19',
         'female_20',
         'female_21',
@@ -95,37 +102,37 @@ CENSUS_FIELDS = [{
         'female_80_to_84',
         'female_85_and_over',
     ]
-}, {
-    'category':
-        'race',
-    'denominator':
-        'total_pop',
-    'columns': [
-        'white_pop',
-        'black_pop',
-        'asian_pop',
-        'hispanic_pop',
-        'amerindian_pop',
-        'other_race_pop',
-        'two_or_more_races_pop',
-        'hispanic_any_race',
-        'not_hispanic_pop',
-    ]
-}, {
-    'category':
-        'race age',
-    'denominator':
-        'total_pop',
-    'columns': [
-        'asian_male_45_54',
-        'asian_male_55_64',
-        'black_male_45_54',
-        'black_male_55_64',
-        'hispanic_male_45_54',
-        'hispanic_male_55_64',
-        'white_male_45_54',
-        'white_male_55_64',
-    ]
+#}, {
+#    'category':
+#        'race',
+#    'denominator':
+#        'total_pop',
+#    'columns': [
+#        'white_pop',
+#        'black_pop',
+#        'asian_pop',
+#        'hispanic_pop',
+#        'amerindian_pop',
+#        'other_race_pop',
+#        'two_or_more_races_pop',
+#        'hispanic_any_race',
+#        'not_hispanic_pop',
+#    ]
+#}, {
+#    'category':
+#        'race age',
+#    'denominator':
+#        'total_pop',
+#    'columns': [
+#        'asian_male_45_54',
+#        'asian_male_55_64',
+#        'black_male_45_54',
+#        'black_male_55_64',
+#        'hispanic_male_45_54',
+#        'hispanic_male_55_64',
+#        'white_male_45_54',
+#        'white_male_55_64',
+#    ]
 }, {
     'category':
         'income',
@@ -149,13 +156,13 @@ CENSUS_FIELDS = [{
         'income_150000_199999',
         'income_200000_or_more',
     ]
-}, {
-    'category': 'poverty',
-    'denominator': None,
-    'columns': [
-        'poverty',
-        'gini_index',
-    ]
+#}, {
+#    'category': 'poverty',
+#    'denominator': None,
+#    'columns': [
+#        'poverty',
+#        'gini_index',
+#    ]
 }, {
     'category':
         'housing type',
@@ -219,15 +226,15 @@ CENSUS_FIELDS = [{
     'category': 'housing rent',
     'denominator': 'housing_units',
     'columns': ['percent_income_spent_on_rent',]
-}, {
-    'category':
-        'housing mobility',
-    'denominator':
-        'housing_units',
-    'columns': [
-        'different_house_year_ago_different_city',
-        'different_house_year_ago_same_city'
-    ]
+#}, {
+#    'category':
+#        'housing mobility',
+#    'denominator':
+#        'housing_units',
+#    'columns': [
+#        'different_house_year_ago_different_city',
+#        'different_house_year_ago_same_city'
+#    ]
 }, {
     'category':
         'family',
@@ -237,20 +244,20 @@ CENSUS_FIELDS = [{
         'married_households',
         'nonfamily_households',
         'family_households',
-        'households_public_asst_or_food_stamps',
+#        'households_public_asst_or_food_stamps',
         'male_male_households',
         'female_female_households',
         'children',
-        'children_in_single_female_hh',
+#        'children_in_single_female_hh',
         'families_with_young_children',
         'two_parent_families_with_young_children',
         'two_parents_in_labor_force_families_with_young_children',
         'two_parents_father_in_labor_force_families_with_young_children',
         'two_parents_mother_in_labor_force_families_with_young_children',
         'two_parents_not_in_labor_force_families_with_young_children',
-        'one_parent_families_with_young_children',
-        'father_one_parent_families_with_young_children',
-        'father_in_labor_force_one_parent_families_with_young_children',
+#        'one_parent_families_with_young_children',
+#        'father_one_parent_families_with_young_children',
+#        'father_in_labor_force_one_parent_families_with_young_children',
     ]
 }, {
     'category':
@@ -317,18 +324,18 @@ CENSUS_FIELDS = [{
         'graduate_professional_degree',
         'some_college_and_associates_degree',
     ]
-}, {
-    'category':
-        'education grade',
-    'denominator':
-        'total_pop',
-    'columns': [
-        'in_school',
-        'in_grades_1_to_4',
-        'in_grades_5_to_8',
-        'in_grades_9_to_12',
-        'in_undergrad_college',
-    ]
+#}, {
+#    'category':
+#        'education grade',
+#    'denominator':
+#        'total_pop',
+#    'columns': [
+#        'in_school',
+#        'in_grades_1_to_4',
+#        'in_grades_5_to_8',
+#        'in_grades_9_to_12',
+#        'in_undergrad_college',
+#    ]
 }, {
     'category':
         'education male age',
@@ -350,7 +357,7 @@ CENSUS_FIELDS = [{
         'total_pop',
     'columns': [
         'employed_pop',
-        'unemployed_pop',
+#        'unemployed_pop',
         'pop_in_labor_force',
         'not_in_labor_force',
         'civilian_labor_force',
@@ -384,14 +391,14 @@ CENSUS_FIELDS = [{
         'management_business_sci_arts_employed',
         'sales_office_employed',
     ]
-}, {
-    'category':
-        'language',
-    'denominator':
-        'total_pop',
-    'columns': [
-        'speak_only_english_at_home',
-        'speak_spanish_at_home',
-        'speak_spanish_at_home_low_english',
-    ]
+#}, {
+#    'category':
+#        'language',
+#    'denominator':
+#        'total_pop',
+#    'columns': [
+#        'speak_only_english_at_home',
+#        'speak_spanish_at_home',
+#        'speak_spanish_at_home_low_english',
+#    ]
 }]
