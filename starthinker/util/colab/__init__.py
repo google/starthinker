@@ -26,7 +26,7 @@ class Colab:
     self.markdown_lines = []
     self.code_lines = []
     self.colab = {
-        'license': 'Apache License, Version 2.0',
+        'license': 'Licensed under the Apache License, Version 2.0',
         'copyright': 'Copyright 2020 Google LLC',
         'nbformat': version.split('.', 1)[0],
         'nbformat_minor': version.split('.', 1)[1],
