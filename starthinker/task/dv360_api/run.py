@@ -24,7 +24,7 @@ from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQu
 
 def put_data(endpoint, method):
 
-  schema = Discovery_To_BigQuery('displayvideo', 'v1').method_schema(endpoint, method)
+  schema = Discovery_To_BigQuery('displayvideo', 'v1').method_schema(endpoint + '.' + method)
 
   out = {}
 

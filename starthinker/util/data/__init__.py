@@ -39,7 +39,7 @@ from starthinker.util.sheets import sheets_read, sheets_write, sheets_clear
 from starthinker.util.csv import rows_to_csv
 
 
-def get_rows(auth, source):
+def get_rows(auth, source, as_object=False, unnest=False):
   """Processes standard read JSON block for dynamic loading of data.
 
   Allows us to quickly pull a column or columns of data from and use it as an
@@ -131,11 +131,13 @@ def get_rows(auth, source):
       )
 
       for row in rows:
-        yield row[0] if source.get('single_cell', False) else row
+        yield row[0] if unnest or source.get('single_cell', False) else row
 
     if 'bigquery' in source:
 
       rows = []
+      as_object = as_object or source['bigquery'].get('as_object', False)
+      unnest = unnest or source.get('single_cell', False)
 
       if 'table' in source['bigquery']:
         rows = table_to_rows(
@@ -143,7 +145,7 @@ def get_rows(auth, source):
             project.id,
             source['bigquery']['dataset'],
             source['bigquery']['table'],
-            as_object=source['bigquery'].get('as_object', False))
+            as_object=as_object or source['bigquery'].get('as_object', False))
 
       else:
         rows = query_to_rows(
@@ -153,10 +155,10 @@ def get_rows(auth, source):
             query_parameters(source['bigquery']['query'],
                              source['bigquery'].get('parameters', {})),
             legacy=source['bigquery'].get('legacy', False),
-            as_object=source['bigquery'].get('as_object', False))
+            as_object=as_object or source['bigquery'].get('as_object', False))
 
       for row in rows:
-        yield row[0] if source.get('single_cell', False) else row
+        yield row[0] if not as_object and unnest else row
 
 
 def put_rows(auth, destination, rows, variant=''):

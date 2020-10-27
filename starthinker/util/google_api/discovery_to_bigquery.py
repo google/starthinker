@@ -17,8 +17,14 @@
 ###########################################################################
 
 import json
+import re
 from urllib import request
+
 from googleapiclient.schema import Schemas
+
+DATETIME_RE = re.compile(r'\d{4}[-/]\d{2}[-/]\d{2}[ T]\d{2}:\d{2}:\d{2}\.?\d+Z')
+DESCRIPTION_LENGTH = 1024
+
 
 class Discovery_To_BigQuery():
 
@@ -26,6 +32,22 @@ class Discovery_To_BigQuery():
     api_url = 'https://%s.googleapis.com/$discovery/rest?version=%s' % (api, version)
     print('DISCOVERY FETCH:', api_url)
     self.api_document = json.load(request.urlopen(api_url))
+
+  @staticmethod
+  def clean(struct):
+    if isinstance(struct, dict):
+      for key, value in struct.items():
+        if isinstance(value, str) and DATETIME_RE.match(value):
+          struct[key] = struct[key].replace('.000Z', 'Z')
+        else:
+          Discovery_To_BigQuery.clean(value)
+    elif isinstance(struct, list):
+      for index, value in enumerate(struct):
+        if isinstance(value, str) and DATETIME_RE.match(value):
+          struct[index] = struct[index].replace('.000Z', 'Z')
+        else:
+          Discovery_To_BigQuery.clean(value)
+    return struct
 
   def to_type(self, entry):
 
@@ -97,18 +119,26 @@ class Discovery_To_BigQuery():
 
           else:
             bigquery_schema.append({
-                'description': ', '.join(value['items'].get('enum', [])),
-                'name': key,
-                'type': self.to_type(value['items']),
-                'mode': 'REPEATED',
+                'description': (', '.join(value['items'].get('enum', [])))
+                               [:DESCRIPTION_LENGTH],
+                'name':
+                    key,
+                'type':
+                    self.to_type(value['items']),
+                'mode':
+                    'REPEATED',
             })
 
         else:
           bigquery_schema.append({
-              'description': ', '.join(value.get('enum', [])),
-              'name': key,
-              'type': self.to_type(value),
-            'mode': 'NULLABLE'
+              'description': (', '.join(value.get('enum', [])))
+                             [:DESCRIPTION_LENGTH],
+              'name':
+                  key,
+              'type':
+                  self.to_type(value),
+              'mode':
+                  'NULLABLE'
           })
 
     return bigquery_schema
@@ -119,15 +149,19 @@ class Discovery_To_BigQuery():
     return self.to_schema(entry)
 
 
-  def method_schema(self, endpoint, method):
+  def method_schema(self, method):
+    endpoint, method = method.rsplit('.', 1)
     resource = self.api_document
 
     for e in endpoint.split('.'):
       resource = resource['resources'][e]
     resource = resource['methods'][method]['response']['$ref']
 
-    if resource.endswith('ListResponse'):
-      resource = self.api_document['schemas'][resource]['properties'][endpoint]['items']['$ref']
+    # List responses wrap their items in a paginated response object
+    # Unroll it to return item schema instead of repsonse schema
+    if 'List' in resource and resource.endswith('Response'):
+      resource = self.api_document['schemas'][resource]['properties'][
+          endpoint.split('.')[-1]]['items']['$ref']
 
     return self.resource_schema(resource)
 

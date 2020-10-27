@@ -50,7 +50,7 @@ def main():
   print(
       json.dumps(
           table_to_schema(auth, project.id, project.args.dataset,
-                          project.args.table)['fields'],
+                          project.args.table),
           indent=2))
 
 

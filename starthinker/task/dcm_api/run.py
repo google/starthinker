@@ -52,7 +52,7 @@ def row_clean(structs):
 def put_data(endpoint, method):
 
   out = {}
-  schema = Discovery_To_BigQuery('dfareporting', 'v3.4').method_schema(endpoint, method)
+  schema = Discovery_To_BigQuery('dfareporting', 'v3.4').method_schema(endpoint + '.' + method)
 
   if 'dataset' in project.task['out']:
     out['bigquery'] = {
