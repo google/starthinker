@@ -17,7 +17,7 @@
         "userId":"me"
       },
       "iterate":false,
-      "out": {
+      "results": {
         "bigquery":{
           "auth": "service",
           "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API", "default": ""}},

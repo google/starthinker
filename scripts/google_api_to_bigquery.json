@@ -29,7 +29,7 @@
           "reportId": 132847265
       }, "description":"Dictionray object of name value pairs." }},
       "iterate":{ "field":{ "name":"iterate", "kind":"boolean", "order":5, "default":false, "description":"Is the result a list?" }},
-      "out": {
+      "results": {
         "bigquery":{
           "dataset":{"field":{ "name":"dataset", "kind":"string", "order":6, "default":"", "description":"Existing dataset in BigQuery." }},
           "table":{ "field":{ "name":"table", "kind":"string", "order":7, "default":"", "description":"Table to write API call results to." }},
