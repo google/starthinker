@@ -233,10 +233,19 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                <tbody>
                
                  <tr>
-                   <td>Csat Improvement</td>
+                   <td>Spend Optimization</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 80%"></div>
+                       <div class="determinate" style="width: 0%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Spend Growth</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 70%"></div>
                      </div>
                    </td>
                  </tr>
@@ -251,15 +260,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Spend Optimization</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Account Health</td>
                    <td>
                      <div class="progress">
@@ -269,10 +269,10 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Spend Growth</td>
+                   <td>Csat Improvement</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 70%"></div>
+                       <div class="determinate" style="width: 80%"></div>
                      </div>
                    </td>
                  </tr>
@@ -301,7 +301,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>March 11, 2020 (6 months, 2 weeks)</td>
+              <td>March 11, 2020 (7 months, 3 weeks)</td>
             </tr>
 
             <tr>
@@ -366,63 +366,63 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/email/run.py" target="_blank">email</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
                 }
             },
             "read": {
+                "from": "noreply-cm@google.com",
+                "to": {
+                    "field": {
+                        "name": "email",
+                        "kind": "string",
+                        "order": 1,
+                        "default": "",
+                        "description": "Email address report was sent to."
+                    }
+                },
+                "subject": {
+                    "field": {
+                        "name": "subject",
+                        "kind": "string",
+                        "order": 2,
+                        "default": ".*",
+                        "description": "Regular expression to match subject. Double escape backslashes."
+                    }
+                },
+                "attachment": ".*",
                 "out": {
                     "bigquery": {
-                        "is_incremental_load": {
-                            "field": {
-                                "description": "Append report data to table based on date column, de-duplicates.",
-                                "order": 6,
-                                "default": false,
-                                "kind": "boolean",
-                                "name": "is_incremental_load"
-                            }
-                        },
                         "dataset": {
                             "field": {
-                                "description": "Existing dataset in BigQuery.",
+                                "name": "dataset",
+                                "kind": "string",
                                 "order": 3,
                                 "default": "",
-                                "kind": "string",
-                                "name": "dataset"
+                                "description": "Existing dataset in BigQuery."
                             }
                         },
                         "table": {
                             "field": {
-                                "description": "Name of table to be written to.",
+                                "name": "table",
+                                "kind": "string",
                                 "order": 4,
                                 "default": "",
-                                "kind": "string",
-                                "name": "table"
+                                "description": "Name of table to be written to."
+                            }
+                        },
+                        "is_incremental_load": {
+                            "field": {
+                                "name": "is_incremental_load",
+                                "kind": "boolean",
+                                "order": 6,
+                                "default": false,
+                                "description": "Append report data to table based on date column, de-duplicates."
                             }
                         }
-                    }
-                },
-                "attachment": ".*",
-                "subject": {
-                    "field": {
-                        "description": "Regular expression to match subject. Double escape backslashes.",
-                        "order": 2,
-                        "default": ".*",
-                        "kind": "string",
-                        "name": "subject"
-                    }
-                },
-                "from": "noreply-cm@google.com",
-                "to": {
-                    "field": {
-                        "description": "Email address report was sent to.",
-                        "order": 1,
-                        "default": "",
-                        "kind": "string",
-                        "name": "email"
                     }
                 }
             }

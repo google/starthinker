@@ -54,111 +54,167 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'recipe_slug': '',  # Place where tables will be created in BigQuery.
-  'dv360_advertiser': '',  # Comma seperated.
-  'cm_account': '',  # Comma seperated.
   'dv360_advertisers': '',  # Comma seperated.
-  'dv360_campaign': '',  # Comma seperated.
+  'cm_account': '',  # Comma seperated.
   'cm_advertiser': '',  # Comma seperated.
+  'dv360_advertiser': '',  # Comma seperated.
+  'dv360_campaign': '',  # Comma seperated.
 }
 
 TASKS = [
   {
     'dataset': {
+      'auth': 'service',
       'dataset': {
         'field': {
-          'kind': 'string',
           'name': 'recipe_slug',
+          'kind': 'string',
           'description': 'Place where tables will be created in BigQuery.'
         }
-      },
-      'auth': 'service'
+      }
     }
   },
   {
     'sheets': {
-      'tab': 'Rules',
       'auth': 'user',
+      'sheet': 'BB Demo',
+      'tab': 'Rules',
       'range': 'A1:C',
+      'header': True,
       'out': {
+        'auth': 'service',
         'bigquery': {
-          'table': 'Rules',
           'dataset': {
             'field': {
-              'kind': 'string',
               'name': 'recipe_slug',
+              'kind': 'string',
               'description': 'Place where tables will be created in BigQuery.'
             }
-          }
-        },
-        'auth': 'service'
-      },
-      'sheet': 'BB Demo',
-      'header': True
+          },
+          'table': 'Rules'
+        }
+      }
     }
   },
   {
     'dv360_api': {
-      'advertisers': {
-        'values': {
-          'field': {
-            'kind': 'integer_list',
-            'name': 'dv360_advertisers',
-            'description': 'Comma seperated.'
-          }
-        },
-        'single_cell': True
-      },
-      'out': {
-        'dataset': {
-          'field': {
-            'kind': 'string',
-            'name': 'recipe_slug',
-            'description': 'Place where tables will be created in BigQuery.'
-          }
-        },
-        'auth': 'service'
-      },
+      'auth': 'user',
       'endpoints': [
         'advertisers.insertionOrders'
       ],
-      'auth': 'user'
+      'advertisers': {
+        'single_cell': True,
+        'values': {
+          'field': {
+            'name': 'dv360_advertisers',
+            'kind': 'integer_list',
+            'description': 'Comma seperated.'
+          }
+        }
+      },
+      'out': {
+        'auth': 'service',
+        'dataset': {
+          'field': {
+            'name': 'recipe_slug',
+            'kind': 'string',
+            'description': 'Place where tables will be created in BigQuery.'
+          }
+        }
+      }
     }
   },
   {
     'dcm_api': {
-      'advertisers': {
-        'values': {
-          'field': {
-            'kind': 'integer_list',
-            'name': 'cm_advertiser',
-            'description': 'Comma seperated.'
-          }
-        }
-      },
-      'accounts': {
-        'values': {
-          'field': {
-            'kind': 'integer_list',
-            'name': 'cm_account',
-            'description': 'Comma seperated.'
-          }
-        }
-      },
       'auth': 'user',
       'endpoints': [
         'campaigns',
         'placements',
         'placementGroups'
       ],
+      'accounts': {
+        'values': {
+          'field': {
+            'name': 'cm_account',
+            'kind': 'integer_list',
+            'description': 'Comma seperated.'
+          }
+        }
+      },
+      'advertisers': {
+        'values': {
+          'field': {
+            'name': 'cm_advertiser',
+            'kind': 'integer_list',
+            'description': 'Comma seperated.'
+          }
+        }
+      },
       'out': {
+        'auth': 'service',
         'dataset': {
           'field': {
-            'kind': 'string',
             'name': 'recipe_slug',
+            'kind': 'string',
+            'description': 'Place where tables will be created in BigQuery.'
+          }
+        }
+      }
+    }
+  },
+  {
+    'bigquery': {
+      'auth': 'service',
+      'from': {
+        'legacy': False,
+        'parameters': [
+          {
+            'field': {
+              'name': 'dv360_advertiser',
+              'kind': 'integer_list',
+              'description': 'Comma seperated.'
+            }
+          },
+          {
+            'field': {
+              'name': 'dv360_campaign',
+              'kind': 'integer_list',
+              'description': 'Comma seperated.'
+            }
+          },
+          {
+            'field': {
+              'name': 'recipe_slug',
+              'kind': 'string',
+              'description': 'Place where tables will be written in BigQuery.'
+            }
+          },
+          {
+            'field': {
+              'name': 'recipe_slug',
+              'kind': 'string',
+              'description': 'Place where tables will be written in BigQuery.'
+            }
+          },
+          {
+            'field': {
+              'name': 'recipe_slug',
+              'kind': 'string',
+              'description': 'Place where tables will be written in BigQuery.'
+            }
+          }
+        ],
+        'query': "SELECT   [PARAMETER] AS advertiserId,   [PARAMETER] AS campaignId,   REGEXP_REPLACE(CM_P.name, '_1X1.*', '') AS displayName,   'ENTITY_STATUS_DRAFT' AS entityStatus,   STRUCT(     'PACING_PERIOD_FLIGHT' AS pacingPeriod,     'PACING_TYPE_AHEAD' AS pacingType   ) AS pacing,   STRUCT(     false AS unlimited,     'TIME_UNIT_DAYS' AS timeUnit,     1 AS timeUnitCount,     CASE       WHEN CM_P.name LIKE '%FF%' AND CM_P.name LIKE '%PZN%'THEN 6       WHEN CM_P.name LIKE '%FF%' THEN 3       WHEN CM_P.name LIKE '%HOL%' THEN 6       WHEN CM_P.name LIKE '%BTC%' THEN 3     END AS maxImpressions   ) AS frequencyCap,   STRUCT(     'PERFORMANCE_GOAL_TYPE_CPM' AS performanceGoalType,     '10' AS performanceGoalAmountMicros   ) AS performanceGoal,   STRUCT(     'BUDGET_UNIT_CURRENCY' AS budgetUnit,     'INSERTION_ORDER_AUTOMATION_TYPE_BUDGET' AS automationType,     [       STRUCT(        '10000' AS budgetAmountMicros,        '' AS description,        STRUCT (          STRUCT (            EXTRACT(YEAR FROM GREATEST(CM_C.startDate, CURRENT_DATE())) AS year,            EXTRACT(MONTH FROM GREATEST(CM_C.startDate, CURRENT_DATE())) AS month,            EXTRACT(DAY FROM GREATEST(CM_C.startDate, CURRENT_DATE())) AS day          ) AS startDate,          STRUCT (            EXTRACT(YEAR FROM CM_C.endDate) AS year,            EXTRACT(MONTH FROM CM_C.endDate) AS month,            EXTRACT(DAY FROM CM_C.endDate) AS day          ) AS endDate        ) AS dateRange       )     ] AS budgetSegments   ) AS budget,   STRUCT(     STRUCT(       '10' AS bidAmountMicros     ) AS fixedBid   ) AS bidStrategy FROM `[PARAMETER].CM_placements` As CM_P LEFT JOIN `[PARAMETER].CM_campaigns` As CM_C ON CM_P.campaignId=CM_C.id LEFT JOIN `[PARAMETER].CM_placementGroups` As CM_G ON CM_P.placementGroupId=CM_G.id WHERE CM_P.advertiserID=4461789 AND CM_P.name LIKE 'PKG%' /*AND CM_G.placementGroupType = 'PACKAGE' */ ORDER BY displayName ;"
+      },
+      'to': {
+        'dataset': {
+          'field': {
+            'name': 'recipe_slug',
+            'kind': 'string',
             'description': 'Place where tables will be created in BigQuery.'
           }
         },
-        'auth': 'service'
+        'view': 'DV360_IO_LOGIC'
       }
     }
   },
@@ -166,55 +222,27 @@ TASKS = [
     'bigquery': {
       'auth': 'service',
       'from': {
-        'query': "SELECT   [PARAMETER] AS advertiserId,   [PARAMETER] AS campaignId,   REGEXP_REPLACE(CM_P.name, '_1X1.*', '') AS displayName,   'ENTITY_STATUS_DRAFT' AS entityStatus,   STRUCT(     'PACING_PERIOD_FLIGHT' AS pacingPeriod,     'PACING_TYPE_AHEAD' AS pacingType   ) AS pacing,   STRUCT(     false AS unlimited,     'TIME_UNIT_DAYS' AS timeUnit,     1 AS timeUnitCount,     CASE       WHEN CM_P.name LIKE '%FF%' AND CM_P.name LIKE '%PZN%'THEN 6       WHEN CM_P.name LIKE '%FF%' THEN 3       WHEN CM_P.name LIKE '%HOL%' THEN 6       WHEN CM_P.name LIKE '%BTC%' THEN 3     END AS maxImpressions   ) AS frequencyCap,   STRUCT(     'PERFORMANCE_GOAL_TYPE_CPM' AS performanceGoalType,     '10' AS performanceGoalAmountMicros   ) AS performanceGoal,   STRUCT(     'BUDGET_UNIT_CURRENCY' AS budgetUnit,     'INSERTION_ORDER_AUTOMATION_TYPE_BUDGET' AS automationType,     [       STRUCT(        '10000' AS budgetAmountMicros,        '' AS description,        STRUCT (          STRUCT (            EXTRACT(YEAR FROM GREATEST(CM_C.startDate, CURRENT_DATE())) AS year,            EXTRACT(MONTH FROM GREATEST(CM_C.startDate, CURRENT_DATE())) AS month,            EXTRACT(DAY FROM GREATEST(CM_C.startDate, CURRENT_DATE())) AS day          ) AS startDate,          STRUCT (            EXTRACT(YEAR FROM CM_C.endDate) AS year,            EXTRACT(MONTH FROM CM_C.endDate) AS month,            EXTRACT(DAY FROM CM_C.endDate) AS day          ) AS endDate        ) AS dateRange       )     ] AS budgetSegments   ) AS budget,   STRUCT(     STRUCT(       '10' AS bidAmountMicros     ) AS fixedBid   ) AS bidStrategy FROM `[PARAMETER].CM_placements` As CM_P LEFT JOIN `[PARAMETER].CM_campaigns` As CM_C ON CM_P.campaignId=CM_C.id LEFT JOIN `[PARAMETER].CM_placementGroups` As CM_G ON CM_P.placementGroupId=CM_G.id WHERE CM_P.advertiserID=4461789 AND CM_P.name LIKE 'PKG%' /*AND CM_G.placementGroupType = 'PACKAGE' */ ORDER BY displayName ;",
         'legacy': False,
         'parameters': [
           {
             'field': {
-              'kind': 'integer_list',
-              'name': 'dv360_advertiser',
-              'description': 'Comma seperated.'
-            }
-          },
-          {
-            'field': {
-              'kind': 'integer_list',
-              'name': 'dv360_campaign',
-              'description': 'Comma seperated.'
-            }
-          },
-          {
-            'field': {
-              'kind': 'string',
               'name': 'recipe_slug',
-              'description': 'Place where tables will be written in BigQuery.'
-            }
-          },
-          {
-            'field': {
               'kind': 'string',
-              'name': 'recipe_slug',
-              'description': 'Place where tables will be written in BigQuery.'
-            }
-          },
-          {
-            'field': {
-              'kind': 'string',
-              'name': 'recipe_slug',
               'description': 'Place where tables will be written in BigQuery.'
             }
           }
-        ]
+        ],
+        'query': 'SELECT STRUCT(   ROW_NUMBER() OVER() AS NUMBER,   displayName IN (SELECT displayName FROM `[PARAMETER].DV360_advertisers_insertionOrders`) AS DUPLICATE ) AS PREVIEW, * FROM `[PARAMETER].DV360_IO_LOGIC` ORDER BY displayName ;'
       },
       'to': {
-        'view': 'DV360_IO_LOGIC',
         'dataset': {
           'field': {
-            'kind': 'string',
             'name': 'recipe_slug',
+            'kind': 'string',
             'description': 'Place where tables will be created in BigQuery.'
           }
-        }
+        },
+        'view': 'DV360_IO_PREVIEW'
       }
     }
   },
@@ -222,74 +250,46 @@ TASKS = [
     'bigquery': {
       'auth': 'service',
       'from': {
-        'query': 'SELECT STRUCT(   ROW_NUMBER() OVER() AS NUMBER,   displayName IN (SELECT displayName FROM `[PARAMETER].DV360_advertisers_insertionOrders`) AS DUPLICATE ) AS PREVIEW, * FROM `[PARAMETER].DV360_IO_LOGIC` ORDER BY displayName ;',
         'legacy': False,
         'parameters': [
           {
             'field': {
-              'kind': 'string',
               'name': 'recipe_slug',
+              'kind': 'string',
               'description': 'Place where tables will be written in BigQuery.'
             }
           }
-        ]
+        ],
+        'query': ' SELECT * EXCEPT(PREVIEW) FROM `[PARAMETER].DV360_IO_PREVIEW` WHERE PREVIEW.NUMBER IN(0,0,0,0,0) AND PREVIEW.DUPLICATE=False LIMIT 1 ;'
       },
       'to': {
-        'view': 'DV360_IO_PREVIEW',
         'dataset': {
           'field': {
-            'kind': 'string',
             'name': 'recipe_slug',
+            'kind': 'string',
             'description': 'Place where tables will be created in BigQuery.'
           }
-        }
-      }
-    }
-  },
-  {
-    'bigquery': {
-      'auth': 'service',
-      'from': {
-        'query': ' SELECT * EXCEPT(PREVIEW) FROM `[PARAMETER].DV360_IO_PREVIEW` WHERE PREVIEW.NUMBER IN(0,0,0,0,0) AND PREVIEW.DUPLICATE=False LIMIT 1 ;',
-        'legacy': False,
-        'parameters': [
-          {
-            'field': {
-              'kind': 'string',
-              'name': 'recipe_slug',
-              'description': 'Place where tables will be written in BigQuery.'
-            }
-          }
-        ]
-      },
-      'to': {
-        'view': 'DV360_IO_INSERT',
-        'dataset': {
-          'field': {
-            'kind': 'string',
-            'name': 'recipe_slug',
-            'description': 'Place where tables will be created in BigQuery.'
-          }
-        }
+        },
+        'view': 'DV360_IO_INSERT'
       }
     }
   },
   {
     'dv360_api': {
-      'insert': 'advertisers.insertionOrders',
+      'auth': 'user',
       'bigquery': {
-        'table': 'DV360_IO_INSERT',
+        'auth': 'service',
         'dataset': {
           'field': {
-            'kind': 'string',
             'name': 'recipe_slug',
+            'kind': 'string',
             'description': 'Place where tables will be created in BigQuery.'
           }
         },
         'as_object': True,
-        'auth': 'service'
+        'table': 'DV360_IO_INSERT'
       },
-      'auth': 'user'
+      'insert': 'advertisers.insertionOrders'
     }
   }
 ]

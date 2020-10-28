@@ -63,58 +63,58 @@ TASKS = [
     'lineitem': {
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'read': {
         'line_items': {
           'single_cell': True,
           'bigquery': {
+            'dataset': {
+              'field': {
+                'name': 'id_dataset',
+                'kind': 'string',
+                'order': 1,
+                'default': ''
+              }
+            },
             'query': {
               'field': {
-                'order': 2,
-                'kind': 'string',
                 'name': 'id_query',
+                'kind': 'string',
+                'order': 2,
                 'default': 'SELECT * FROM `Dataset.Table`;'
               }
             },
             'legacy': {
               'field': {
-                'order': 3,
-                'kind': 'boolean',
                 'name': 'id_legacy',
+                'kind': 'boolean',
+                'order': 3,
                 'default': False
-              }
-            },
-            'dataset': {
-              'field': {
-                'order': 1,
-                'kind': 'string',
-                'name': 'id_dataset',
-                'default': ''
               }
             }
           }
         },
         'out': {
           'bigquery': {
-            'table': {
+            'dataset': {
               'field': {
-                'order': 5,
+                'name': 'destination_dataset',
                 'kind': 'string',
-                'name': 'destination_table',
+                'order': 4,
                 'default': ''
               }
             },
-            'dataset': {
+            'table': {
               'field': {
-                'order': 4,
+                'name': 'destination_table',
                 'kind': 'string',
-                'name': 'destination_dataset',
+                'order': 5,
                 'default': ''
               }
             }

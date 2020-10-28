@@ -55,10 +55,10 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'recipe_slug': '',  # Place where tables will be written in BigQuery.
-  'recipe_name': '',  # Name of report in DV360, should be unique.
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
-  'auth_read': 'user',  # Credentials used for reading data.
+  'recipe_name': '',  # Name of report in DV360, should be unique.
   'auth_write': 'service',  # Credentials used for writing data.
+  'auth_read': 'user',  # Credentials used for reading data.
   'partners': [],  # DV360 partner id.
   'advertisers': [],  # Comma delimited list of DV360 advertiser ids.
 }
@@ -66,84 +66,93 @@ INPUTS = {
 TASKS = [
   {
     'dataset': {
+      'description': 'Create a dataset for bigquery tables.',
       'hour': [
         4
       ],
-      'description': 'Create a dataset for bigquery tables.',
-      'dataset': {
-        'field': {
-          'kind': 'string',
-          'name': 'recipe_slug',
-          'description': 'Place where tables will be created in BigQuery.'
-        }
-      },
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_write',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
+      'dataset': {
+        'field': {
+          'name': 'recipe_slug',
+          'kind': 'string',
+          'description': 'Place where tables will be created in BigQuery.'
         }
       }
     }
   },
   {
     'dbm': {
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      },
+      'description': 'Create a DV360 report.',
       'hour': [
         3
       ],
-      'description': 'Create a DV360 report.',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'report': {
         'filters': {
           'FILTER_PARTNER': {
             'values': {
               'field': {
-                'order': 5,
-                'kind': 'integer_list',
                 'name': 'partners',
-                'description': 'DV360 partner id.',
+                'kind': 'integer_list',
+                'order': 5,
                 'default': [
-                ]
+                ],
+                'description': 'DV360 partner id.'
               }
             }
           },
           'FILTER_ADVERTISER': {
             'values': {
               'field': {
-                'order': 6,
-                'kind': 'integer_list',
                 'name': 'advertisers',
-                'description': 'Comma delimited list of DV360 advertiser ids.',
+                'kind': 'integer_list',
+                'order': 6,
                 'default': [
-                ]
+                ],
+                'description': 'Comma delimited list of DV360 advertiser ids.'
               }
             }
           }
         },
         'body': {
+          'timezoneCode': {
+            'field': {
+              'name': 'recipe_timezone',
+              'kind': 'timezone',
+              'description': 'Timezone for report dates.',
+              'default': 'America/Los_Angeles'
+            }
+          },
           'metadata': {
-            'dataRange': 'LAST_30_DAYS',
             'title': {
               'field': {
-                'kind': 'string',
                 'name': 'recipe_name',
-                'description': 'Name of report in DV360, should be unique.',
-                'prefix': 'Deal Finder For '
+                'kind': 'string',
+                'prefix': 'Deal Finder For ',
+                'description': 'Name of report in DV360, should be unique.'
               }
             },
+            'dataRange': 'LAST_30_DAYS',
             'format': 'CSV'
           },
           'params': {
+            'type': 'TYPE_CROSS_PARTNER',
             'groupBys': [
               'FILTER_PARTNER_NAME',
               'FILTER_PARTNER',
@@ -159,7 +168,6 @@ TASKS = [
               'FILTER_CREATIVE_HEIGHT',
               'FILTER_CREATIVE_TYPE'
             ],
-            'type': 'TYPE_CROSS_PARTNER',
             'metrics': [
               'METRIC_IMPRESSIONS',
               'METRIC_CLICKS',
@@ -169,14 +177,6 @@ TASKS = [
               'METRIC_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS',
               'METRIC_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS'
             ]
-          },
-          'timezoneCode': {
-            'field': {
-              'kind': 'timezone',
-              'name': 'recipe_timezone',
-              'description': 'Timezone for report dates.',
-              'default': 'America/Los_Angeles'
-            }
           }
         }
       }
@@ -184,21 +184,40 @@ TASKS = [
   },
   {
     'dbm': {
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      },
+      'description': 'Copy a DV360 report to BigQuery.',
       'hour': [
         4
       ],
-      'description': 'Copy a DV360 report to BigQuery.',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
+      'report': {
+        'name': {
+          'field': {
+            'name': 'recipe_name',
+            'kind': 'string',
+            'prefix': 'Deal Finder For ',
+            'description': 'Name of report in DV360, should be unique.'
+          }
+        },
+        'timeout': 10
+      },
       'out': {
         'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'recipe_slug',
+              'kind': 'string',
+              'description': 'Place where tables will be written in BigQuery.'
+            }
+          },
+          'table': 'Deal_Finder_DV360_Report',
           'schema': [
             {
               'name': 'Partner',
@@ -284,66 +303,47 @@ TASKS = [
               'name': 'AV_Impressions_Viewable',
               'type': 'INTEGER'
             }
-          ],
-          'table': 'Deal_Finder_DV360_Report',
-          'dataset': {
-            'field': {
-              'kind': 'string',
-              'name': 'recipe_slug',
-              'description': 'Place where tables will be written in BigQuery.'
-            }
-          }
-        }
-      },
-      'report': {
-        'timeout': 10,
-        'name': {
-          'field': {
-            'kind': 'string',
-            'name': 'recipe_name',
-            'description': 'Name of report in DV360, should be unique.',
-            'prefix': 'Deal Finder For '
-          }
+          ]
         }
       }
     }
   },
   {
     'bigquery': {
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
-        }
-      },
+      'description': 'The logic query for Deal Finder, transforms report into view used by datastudio.',
       'hour': [
         4
       ],
-      'description': 'The logic query for Deal Finder, transforms report into view used by datastudio.',
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'from': {
         'query': "SELECT Partner, Partner_ID, Advertiser, Advertiser_ID, Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Size, Always_On, Deal_Impressions, Open_Impressions, Rank_Impressions, Deal_Clicks, Open_Clicks, Rank_Clicks, Deal_Conversions, Open_Conversions, Rank_Conversions, Deal_Impressions_Viewable, Open_Impressions_Viewable, Rank_Impressions_Viewable, Deal_Impressions_Measurable, Open_Impressions_Measurable, Rank_Impressions_Measurable, Deal_Cost, Open_Cost, Rank_Cost, FROM ( SELECT FIRST(Partner) AS Partner, FIRST(Partner_ID) AS Partner_ID, FIRST(Advertiser) AS Advertiser, Advertiser_ID, First(Site) AS Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Width + ' x ' + Creative_Height AS Creative_Size, IF (LEFT(Inventory, 5) == 'AO - ', True, False) AS Always_On, SUM(Deal_Impressions) AS Deal_Impressions, SUM(Open_Impressions) AS Open_Impressions, SUM(Open_Impressions) + SUM(Deal_Impressions) AS Total_Impressions, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions DESC) AS Rank_Impressions, SUM(Deal_Clicks) AS Deal_Clicks, SUM(Open_Clicks) AS Open_Clicks, SUM(Open_Clicks) + SUM(Deal_Clicks) AS Total_Clicks, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Clicks DESC) AS Rank_Clicks, SUM(Deal_Conversions) AS Deal_Conversions, SUM(Open_Conversions) AS Open_Conversions, SUM(Open_Conversions) + SUM(Deal_Conversions) AS Total_Conversions, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Conversions DESC) AS Rank_Conversions, SUM(Deal_Cost) AS Deal_Cost, SUM(Open_Cost) AS Open_Cost, SUM(Open_Cost) + SUM(Deal_Cost) AS Total_Cost, RANK() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Cost DESC) AS Rank_Cost, SUM(Deal_Impressions_Viewable) AS Deal_Impressions_Viewable, SUM(Open_Impressions_Viewable) AS Open_Impressions_Viewable, SUM(Open_Impressions_Viewable) + SUM(Deal_Impressions_Viewable) AS Total_Impressions_Viewable, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions_Viewable DESC) AS Rank_Impressions_Viewable, SUM(Deal_Impressions_Measurable) AS Deal_Impressions_Measurable, SUM(Open_Impressions_Measurable) AS Open_Impressions_Measurable, SUM(Open_Impressions_Measurable) + SUM(Deal_Impressions_Measurable) AS Total_Impressions_Measurable, ROW_NUMBER() OVER (PARTITION BY Advertiser_ID ORDER BY Total_Impressions_Measurable DESC) AS Rank_Impressions_Measurable, FROM ( SELECT Partner, Partner_ID, Advertiser, Advertiser_ID, Site, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Width, Creative_Height, IF(Inventory_ID IS NULL, Impressions, 0) AS Open_Impressions, IF(Inventory_ID IS NULL, 0, Impressions) AS Deal_Impressions, IF(Inventory_ID IS NULL, Clicks, 0) AS Open_Clicks, IF(Inventory_ID IS NULL, 0, Clicks) AS Deal_Clicks, IF(Inventory_ID IS NULL, Conversions, 0) AS Open_Conversions, IF(Inventory_ID IS NULL, 0, Conversions) AS Deal_Conversions, IF(Inventory_ID IS NULL, Cost, 0) AS Open_Cost, IF(Inventory_ID IS NULL, 0, Cost) AS Deal_Cost, IF(Inventory_ID IS NULL, AV_Impressions_Viewable, 0) AS Open_Impressions_Viewable, IF(Inventory_ID IS NULL, 0, AV_Impressions_Viewable) AS Deal_Impressions_Viewable, IF(Inventory_ID IS NULL, AV_Impressions_Measurable, 0) AS Open_Impressions_Measurable, IF(Inventory_ID IS NULL, 0, AV_Impressions_Measurable) AS Deal_Impressions_Measurable, FROM [[PARAMETER].Deal_Finder_DV360_Report] OMIT RECORD IF Site == 'Low volume inventory') GROUP By Advertiser_ID, Site_ID, Inventory, Inventory_Type, Creative_Type, Creative_Size, Always_On) WHERE Rank_Impressions < 100 OR Rank_Clicks < 100 OR Rank_Conversions < 100 OR Rank_Cost < 100;",
         'parameters': [
           {
             'field': {
-              'kind': 'string',
               'name': 'recipe_slug',
+              'kind': 'string',
               'description': 'Place where tables will be written in BigQuery.'
             }
           }
         ]
       },
       'to': {
-        'view': 'Deal_Finder_Dashboard',
         'dataset': {
           'field': {
-            'kind': 'string',
             'name': 'recipe_slug',
+            'kind': 'string',
             'description': 'Place where tables will be written in BigQuery.'
           }
-        }
+        },
+        'view': 'Deal_Finder_Dashboard'
       }
     }
   }

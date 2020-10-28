@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Feb. 20, 2019 (1 year, 7 months)</td>
+              <td>Feb. 20, 2019 (1 year, 8 months)</td>
             </tr>
 
             <tr>
@@ -246,47 +246,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dv360_api/run.py" target="_blank">dv360_api</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
+                    "name": "auth_write",
+                    "kind": "authentication",
                     "order": 0,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_write"
+                    "description": "Credentials used for writing data."
                 }
-            },
-            "bigquery": {
-                "auth": {
-                    "field": {
-                        "description": "Credentials used for reading data.",
-                        "order": 1,
-                        "default": "service",
-                        "kind": "authentication",
-                        "name": "auth_read"
-                    }
-                },
-                "dataset": {
-                    "field": {
-                        "description": "Google BigQuery dataset to create tables in.",
-                        "order": 2,
-                        "default": "",
-                        "kind": "string",
-                        "name": "dataset"
-                    }
-                },
-                "table": {
-                    "field": {
-                        "description": "Google BigQuery dataset to create tables in.",
-                        "order": 3,
-                        "default": "",
-                        "kind": "string",
-                        "name": "table"
-                    }
-                },
-                "as_object": true
             },
             "patch": {
                 "field": {
                     "name": "patch",
-                    "default": "",
+                    "kind": "choice",
                     "choices": [
                         "advertisers",
                         "advertisers.campaigns",
@@ -304,8 +274,38 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "partners.channels",
                         "users"
                     ],
-                    "kind": "choice"
+                    "default": ""
                 }
+            },
+            "bigquery": {
+                "auth": {
+                    "field": {
+                        "name": "auth_read",
+                        "kind": "authentication",
+                        "order": 1,
+                        "default": "service",
+                        "description": "Credentials used for reading data."
+                    }
+                },
+                "dataset": {
+                    "field": {
+                        "name": "dataset",
+                        "kind": "string",
+                        "order": 2,
+                        "default": "",
+                        "description": "Google BigQuery dataset to create tables in."
+                    }
+                },
+                "table": {
+                    "field": {
+                        "name": "table",
+                        "kind": "string",
+                        "order": 3,
+                        "default": "",
+                        "description": "Google BigQuery dataset to create tables in."
+                    }
+                },
+                "as_object": true
             }
         }
     }

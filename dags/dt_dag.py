@@ -65,69 +65,69 @@ TASKS = [
     'dt': {
       'auth': {
         'field': {
-          'order': 0,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 0,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'from': {
-        'paths': {
-          'field': {
-            'order': 3,
-            'kind': 'string_list',
-            'name': 'paths',
-            'description': 'List of prefixes to pull specific DT files.',
-            'default': [
-            ]
-          }
-        },
         'bucket': {
           'field': {
-            'order': 2,
-            'kind': 'string',
             'name': 'bucket',
-            'description': 'Name of bucket where DT files are stored.',
-            'default': ''
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Name of bucket where DT files are stored.'
           }
         },
-        'hours': {
+        'paths': {
           'field': {
-            'order': 5,
-            'kind': 'integer',
-            'name': 'hours',
-            'description': 'Number of hours back to synchronize.',
-            'default': 0
+            'name': 'paths',
+            'kind': 'string_list',
+            'order': 3,
+            'default': [
+            ],
+            'description': 'List of prefixes to pull specific DT files.'
           }
         },
         'days': {
           'field': {
-            'order': 4,
-            'kind': 'integer',
             'name': 'days',
-            'description': 'Number of days back to synchronize.',
-            'default': 2
+            'kind': 'integer',
+            'order': 4,
+            'default': 2,
+            'description': 'Number of days back to synchronize.'
+          }
+        },
+        'hours': {
+          'field': {
+            'name': 'hours',
+            'kind': 'integer',
+            'order': 5,
+            'default': 0,
+            'description': 'Number of hours back to synchronize.'
           }
         }
       },
       'to': {
-        'dataset': {
-          'field': {
-            'order': 6,
-            'kind': 'string',
-            'name': 'dataset',
-            'description': 'Existing dataset in BigQuery.',
-            'default': ''
-          }
-        },
         'auth': {
           'field': {
-            'order': 1,
-            'kind': 'authentication',
             'name': 'auth_write',
-            'description': 'Credentials used for writing data.',
-            'default': 'service'
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
+          }
+        },
+        'dataset': {
+          'field': {
+            'name': 'dataset',
+            'kind': 'string',
+            'order': 6,
+            'default': '',
+            'description': 'Existing dataset in BigQuery.'
           }
         }
       }

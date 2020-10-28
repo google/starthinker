@@ -50,41 +50,41 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'query': '',  # SQL with newlines and all.
   'auth_write': 'service',  # Credentials used for writing data.
+  'query': '',  # SQL with newlines and all.
   'legacy': True,  # Query type must match table and query format.
 }
 
 TASKS = [
   {
     'bigquery': {
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'run': {
         'query': {
           'field': {
-            'order': 1,
-            'kind': 'text',
             'name': 'query',
-            'description': 'SQL with newlines and all.',
-            'default': ''
+            'kind': 'text',
+            'order': 1,
+            'default': '',
+            'description': 'SQL with newlines and all.'
           }
         },
         'legacy': {
           'field': {
-            'order': 2,
-            'kind': 'boolean',
             'name': 'legacy',
-            'description': 'Query type must match table and query format.',
-            'default': True
+            'kind': 'boolean',
+            'order': 2,
+            'default': True,
+            'description': 'Query type must match table and query format.'
           }
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
         }
       }
     }

@@ -50,39 +50,39 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'role': '',  # projects/[project name]/roles/[role name]
   'auth_write': 'service',  # Credentials used for writing data.
+  'role': '',  # projects/[project name]/roles/[role name]
   'email': '',  # Email address to grant role to.
 }
 
 TASKS = [
   {
     'iam': {
-      'email': {
+      'auth': {
         'field': {
-          'order': 2,
-          'kind': 'string',
-          'name': 'email',
-          'description': 'Email address to grant role to.',
-          'default': ''
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
         }
       },
       'role': {
         'field': {
-          'order': 1,
-          'kind': 'string',
           'name': 'role',
-          'description': 'projects/[project name]/roles/[role name]',
-          'default': ''
+          'kind': 'string',
+          'order': 1,
+          'default': '',
+          'description': 'projects/[project name]/roles/[role name]'
         }
       },
-      'auth': {
+      'email': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
+          'name': 'email',
+          'kind': 'string',
+          'order': 2,
+          'default': '',
+          'description': 'Email address to grant role to.'
         }
       }
     }

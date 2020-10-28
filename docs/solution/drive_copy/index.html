@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 28, 2019 (1 year)</td>
+              <td>Aug. 28, 2019 (1 year, 2 months)</td>
             </tr>
 
             <tr>
@@ -250,30 +250,30 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/drive/run.py" target="_blank">drive</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
                 }
             },
             "copy": {
-                "destination": {
-                    "field": {
-                        "description": "Name document to copy to.",
-                        "order": 2,
-                        "default": "",
-                        "kind": "string",
-                        "name": "destination"
-                    }
-                },
                 "source": {
                     "field": {
-                        "description": "Name or URL of document to copy from.",
+                        "name": "source",
+                        "kind": "string",
                         "order": 1,
                         "default": "",
+                        "description": "Name or URL of document to copy from."
+                    }
+                },
+                "destination": {
+                    "field": {
+                        "name": "destination",
                         "kind": "string",
-                        "name": "source"
+                        "order": 2,
+                        "default": "",
+                        "description": "Name document to copy to."
                     }
                 }
             }

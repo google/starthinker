@@ -229,10 +229,19 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                <tbody>
                
                  <tr>
-                   <td>Csat Improvement</td>
+                   <td>Spend Optimization</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 80%"></div>
+                       <div class="determinate" style="width: 50%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Spend Growth</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 20%"></div>
                      </div>
                    </td>
                  </tr>
@@ -247,15 +256,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Spend Optimization</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 50%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Account Health</td>
                    <td>
                      <div class="progress">
@@ -265,10 +265,10 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Spend Growth</td>
+                   <td>Csat Improvement</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 20%"></div>
+                       <div class="determinate" style="width: 80%"></div>
                      </div>
                    </td>
                  </tr>
@@ -297,7 +297,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 14, 2017 (3 years, 1 month)</td>
+              <td>Aug. 14, 2017 (3 years, 2 months)</td>
             </tr>
 
             <tr>
@@ -346,20 +346,20 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
+                    "name": "auth_write",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "service",
-                    "kind": "authentication",
-                    "name": "auth_write"
+                    "description": "Credentials used for writing data."
                 }
             },
             "dataset": {
                 "field": {
-                    "description": "BigQuery dataset to write tables for each entity.",
+                    "name": "dataset",
+                    "kind": "string",
                     "order": 3,
                     "default": "",
-                    "kind": "string",
-                    "name": "dataset"
+                    "description": "BigQuery dataset to write tables for each entity."
                 }
             }
         }
@@ -368,26 +368,14 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/entity/run.py" target="_blank">entity</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
                 }
             },
             "prefix": "Entity",
-            "partners": {
-                "single_cell": true,
-                "values": {
-                    "field": {
-                        "description": "Comma sparated list of DV360 partners.",
-                        "order": 1,
-                        "default": "[]",
-                        "kind": "integer_list",
-                        "name": "partners"
-                    }
-                }
-            },
             "entities": [
                 "Campaign",
                 "LineItem",
@@ -409,24 +397,36 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "Browser",
                 "Isp"
             ],
+            "partners": {
+                "single_cell": true,
+                "values": {
+                    "field": {
+                        "name": "partners",
+                        "kind": "integer_list",
+                        "order": 1,
+                        "default": "[]",
+                        "description": "Comma sparated list of DV360 partners."
+                    }
+                }
+            },
             "out": {
                 "bigquery": {
                     "auth": {
                         "field": {
-                            "description": "Credentials used for writing data.",
+                            "name": "auth_write",
+                            "kind": "authentication",
                             "order": 1,
                             "default": "service",
-                            "kind": "authentication",
-                            "name": "auth_write"
+                            "description": "Credentials used for writing data."
                         }
                     },
                     "dataset": {
                         "field": {
-                            "description": "BigQuery dataset to write tables for each entity.",
+                            "name": "dataset",
+                            "kind": "string",
                             "order": 3,
                             "default": "",
-                            "kind": "string",
-                            "name": "dataset"
+                            "description": "BigQuery dataset to write tables for each entity."
                         }
                     }
                 }

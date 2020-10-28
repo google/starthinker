@@ -66,85 +66,59 @@ INPUTS = {
 TASKS = [
   {
     'conversion_upload': {
-      'activity_id': {
+      'auth': {
         'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
           'order': 1,
-          'kind': 'integer',
-          'name': 'floodlight_activity_id',
-          'default': ''
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'account_id': {
         'field': {
-          'order': 0,
-          'kind': 'string',
           'name': 'account',
+          'kind': 'string',
+          'order': 0,
           'default': ''
         }
       },
-      'bigquery': {
-        'table': {
-          'field': {
-            'order': 7,
-            'kind': 'string',
-            'name': 'bigquery_table',
-            'default': ''
-          }
-        },
-        'legacy': {
-          'field': {
-            'order': 8,
-            'kind': 'boolean',
-            'name': 'bigquery_legacy',
-            'default': True
-          }
-        },
-        'dataset': {
-          'field': {
-            'order': 6,
-            'kind': 'string',
-            'name': 'bigquery_dataset',
-            'default': ''
-          }
+      'activity_id': {
+        'field': {
+          'name': 'floodlight_activity_id',
+          'kind': 'integer',
+          'order': 1,
+          'default': ''
         }
       },
-      'auth': {
+      'conversion_type': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'name': 'floodlight_conversion_type',
+          'kind': 'choice',
+          'order': 2,
+          'choices': [
+            'encryptedUserId',
+            'encryptedUserIdCandidates',
+            'gclid',
+            'mobileDeviceId'
+          ],
+          'default': 'encryptedUserId'
         }
       },
       'encryptionInfo': {
-        'encryptionSource': {
-          'field': {
-            'order': 5,
-            'kind': 'choice',
-            'name': 'encryption_entity_source',
-            'default': 'DATA_TRANSFER',
-            'choices': [
-              'AD_SERVING',
-              'DATA_TRANSFER',
-              'ENCRYPTION_SCOPE_UNKNOWN'
-            ]
-          }
-        },
         'encryptionEntityId': {
           'field': {
-            'order': 3,
-            'kind': 'integer',
             'name': 'encryption_entity_id',
+            'kind': 'integer',
+            'order': 3,
             'default': ''
           }
         },
         'encryptionEntityType': {
           'field': {
-            'order': 4,
-            'kind': 'choice',
             'name': 'encryption_entity_type',
-            'default': 'DCM_ACCOUNT',
+            'kind': 'choice',
+            'order': 4,
             'choices': [
               'ADWORDS_CUSTOMER',
               'DBM_ADVERTISER',
@@ -152,22 +126,48 @@ TASKS = [
               'DCM_ACCOUNT',
               'DCM_ADVERTISER',
               'ENCRYPTION_ENTITY_TYPE_UNKNOWN'
-            ]
+            ],
+            'default': 'DCM_ACCOUNT'
+          }
+        },
+        'encryptionSource': {
+          'field': {
+            'name': 'encryption_entity_source',
+            'kind': 'choice',
+            'order': 5,
+            'choices': [
+              'AD_SERVING',
+              'DATA_TRANSFER',
+              'ENCRYPTION_SCOPE_UNKNOWN'
+            ],
+            'default': 'DATA_TRANSFER'
           }
         }
       },
-      'conversion_type': {
-        'field': {
-          'order': 2,
-          'kind': 'choice',
-          'name': 'floodlight_conversion_type',
-          'default': 'encryptedUserId',
-          'choices': [
-            'encryptedUserId',
-            'encryptedUserIdCandidates',
-            'gclid',
-            'mobileDeviceId'
-          ]
+      'bigquery': {
+        'dataset': {
+          'field': {
+            'name': 'bigquery_dataset',
+            'kind': 'string',
+            'order': 6,
+            'default': ''
+          }
+        },
+        'table': {
+          'field': {
+            'name': 'bigquery_table',
+            'kind': 'string',
+            'order': 7,
+            'default': ''
+          }
+        },
+        'legacy': {
+          'field': {
+            'name': 'bigquery_legacy',
+            'kind': 'boolean',
+            'order': 8,
+            'default': True
+          }
         }
       }
     }

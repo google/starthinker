@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 14, 2017 (3 years, 1 month)</td>
+              <td>Aug. 14, 2017 (3 years, 2 months)</td>
             </tr>
 
             <tr>
@@ -250,11 +250,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
                 }
             },
             "report": {
@@ -262,16 +262,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "account",
                         "kind": "string",
-                        "default": "",
-                        "order": 1
+                        "order": 1,
+                        "default": ""
                     }
                 },
                 "body": {
                     "field": {
                         "name": "body",
                         "kind": "json",
-                        "default": "{}",
-                        "order": 2
+                        "order": 2,
+                        "default": "{}"
                     }
                 }
             },
@@ -279,8 +279,8 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "field": {
                     "name": "delete",
                     "kind": "boolean",
-                    "default": false,
-                    "order": 3
+                    "order": 3,
+                    "default": false
                 }
             }
         }

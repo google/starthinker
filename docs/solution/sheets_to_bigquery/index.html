@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Dec. 5, 2017 (2 years, 9 months)</td>
+              <td>Dec. 5, 2017 (2 years, 10 months)</td>
             </tr>
 
             <tr>
@@ -254,21 +254,53 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 0,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
+                }
+            },
+            "sheet": {
+                "field": {
+                    "name": "sheets_url",
+                    "kind": "string",
+                    "order": 2,
+                    "default": ""
+                }
+            },
+            "tab": {
+                "field": {
+                    "name": "sheets_tab",
+                    "kind": "string",
+                    "order": 3,
+                    "default": ""
+                }
+            },
+            "range": {
+                "field": {
+                    "name": "sheets_range",
+                    "kind": "string",
+                    "order": 4,
+                    "default": ""
+                }
+            },
+            "header": {
+                "field": {
+                    "name": "sheets_header",
+                    "kind": "boolean",
+                    "order": 9,
+                    "default": true
                 }
             },
             "out": {
                 "auth": {
                     "field": {
-                        "description": "Credentials used for writing data.",
+                        "name": "auth_write",
+                        "kind": "authentication",
                         "order": 1,
                         "default": "service",
-                        "kind": "authentication",
-                        "name": "auth_write"
+                        "description": "Credentials used for writing data."
                     }
                 },
                 "bigquery": {
@@ -276,50 +308,18 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "field": {
                             "name": "dataset",
                             "kind": "string",
-                            "default": "",
-                            "order": 5
+                            "order": 5,
+                            "default": ""
                         }
                     },
                     "table": {
                         "field": {
                             "name": "table",
                             "kind": "string",
-                            "default": "",
-                            "order": 6
+                            "order": 6,
+                            "default": ""
                         }
                     }
-                }
-            },
-            "header": {
-                "field": {
-                    "name": "sheets_header",
-                    "kind": "boolean",
-                    "default": true,
-                    "order": 9
-                }
-            },
-            "tab": {
-                "field": {
-                    "name": "sheets_tab",
-                    "kind": "string",
-                    "default": "",
-                    "order": 3
-                }
-            },
-            "sheet": {
-                "field": {
-                    "name": "sheets_url",
-                    "kind": "string",
-                    "default": "",
-                    "order": 2
-                }
-            },
-            "range": {
-                "field": {
-                    "name": "sheets_range",
-                    "kind": "string",
-                    "default": "",
-                    "order": 4
                 }
             }
         }

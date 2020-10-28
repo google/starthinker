@@ -57,22 +57,22 @@ TASKS = [
     'bigquery': {
       'auth': {
         'field': {
-          'order': 0,
-          'kind': 'authentication',
           'name': 'auth',
-          'description': 'Credentials used for writing function.',
-          'default': 'service'
+          'kind': 'authentication',
+          'order': 0,
+          'default': 'service',
+          'description': 'Credentials used for writing function.'
         }
       },
       'function': 'pearson_significance_test',
       'to': {
         'dataset': {
           'field': {
-            'order': 1,
-            'kind': 'string',
             'name': 'dataset',
-            'description': 'Existing BigQuery dataset.',
-            'default': ''
+            'kind': 'string',
+            'order': 1,
+            'default': '',
+            'description': 'Existing BigQuery dataset.'
           }
         }
       }

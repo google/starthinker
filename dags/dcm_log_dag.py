@@ -73,94 +73,94 @@ INPUTS = {
 TASKS = [
   {
     'dataset': {
+      'description': 'The dataset will hold log table, Create it exists.',
       'hour': [
         1
       ],
-      'description': 'The dataset will hold log table, Create it exists.',
-      'dataset': {
-        'field': {
-          'order': 4,
-          'kind': 'string',
-          'name': 'recipe_slug',
-          'description': 'Name of Google BigQuery dataset to create.',
-          'default': ''
-        }
-      },
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_write',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
+      'dataset': {
+        'field': {
+          'name': 'recipe_slug',
+          'kind': 'string',
+          'order': 4,
+          'default': '',
+          'description': 'Name of Google BigQuery dataset to create.'
         }
       }
     }
   },
   {
     'dcm_log': {
+      'description': 'Will create tables with format CM_* to hold each endpoint via a call to the API list function. Exclude reports for its own task.',
       'hour': [
         2
       ],
-      'description': 'Will create tables with format CM_* to hold each endpoint via a call to the API list function. Exclude reports for its own task.',
-      'out': {
-        'project': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 0,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
+      'accounts': {
+        'single_cell': True,
+        'values': {
           'field': {
-            'order': 4,
-            'kind': 'string',
-            'name': 'recipe_project',
-            'description': 'Google BigQuery project to create tables in.',
-            'default': ''
-          }
-        },
-        'dataset': {
-          'field': {
-            'order': 5,
-            'kind': 'string',
-            'name': 'recipe_slug',
-            'description': 'Google BigQuery dataset to create tables in.',
-            'default': ''
-          }
-        },
-        'auth': {
-          'field': {
-            'order': 1,
-            'kind': 'authentication',
-            'name': 'auth_write',
-            'description': 'Credentials used for writing data.',
-            'default': 'service'
+            'name': 'accounts',
+            'kind': 'integer_list',
+            'order': 2,
+            'default': [
+            ],
+            'description': 'Comma separated CM account ids.'
           }
         }
       },
       'days': {
         'field': {
-          'order': 3,
-          'kind': 'integer',
           'name': 'days',
-          'description': 'Number of days to backfill the log, works on first run only.',
-          'default': 7
+          'kind': 'integer',
+          'order': 3,
+          'default': 7,
+          'description': 'Number of days to backfill the log, works on first run only.'
         }
       },
-      'accounts': {
-        'values': {
+      'out': {
+        'auth': {
           'field': {
-            'order': 2,
-            'kind': 'integer_list',
-            'name': 'accounts',
-            'description': 'Comma separated CM account ids.',
-            'default': [
-            ]
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
           }
         },
-        'single_cell': True
-      },
-      'auth': {
-        'field': {
-          'order': 0,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+        'project': {
+          'field': {
+            'name': 'recipe_project',
+            'kind': 'string',
+            'order': 4,
+            'default': '',
+            'description': 'Google BigQuery project to create tables in.'
+          }
+        },
+        'dataset': {
+          'field': {
+            'name': 'recipe_slug',
+            'kind': 'string',
+            'order': 5,
+            'default': '',
+            'description': 'Google BigQuery dataset to create tables in.'
+          }
         }
       }
     }

@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 14, 2017 (3 years, 1 month)</td>
+              <td>Aug. 14, 2017 (3 years, 2 months)</td>
             </tr>
 
             <tr>
@@ -250,78 +250,78 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 0,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
+                }
+            },
+            "report": {
+                "report_id": {
+                    "field": {
+                        "name": "dbm_report_id",
+                        "kind": "integer",
+                        "order": 2,
+                        "default": "",
+                        "description": "DV360 report ID given in UI, not needed if name used."
+                    }
+                },
+                "name": {
+                    "field": {
+                        "name": "dbm_report_name",
+                        "kind": "string",
+                        "order": 3,
+                        "default": "",
+                        "description": "Name of report, not needed if ID used."
+                    }
                 }
             },
             "out": {
                 "bigquery": {
                     "auth": {
                         "field": {
-                            "description": "Authorization used for writing data.",
+                            "name": "auth_write",
+                            "kind": "authentication",
                             "order": 1,
                             "default": "service",
-                            "kind": "authentication",
-                            "name": "auth_write"
-                        }
-                    },
-                    "schema": {
-                        "field": {
-                            "description": "Schema provided in JSON list format or empty value to auto detect.",
-                            "order": 6,
-                            "kind": "json",
-                            "name": "dbm_schema"
+                            "description": "Authorization used for writing data."
                         }
                     },
                     "dataset": {
                         "field": {
-                            "description": "Existing BigQuery dataset.",
+                            "name": "dbm_dataset",
+                            "kind": "string",
                             "order": 4,
                             "default": "",
-                            "kind": "string",
-                            "name": "dbm_dataset"
+                            "description": "Existing BigQuery dataset."
                         }
                     },
                     "table": {
                         "field": {
-                            "description": "Table to create from this report.",
+                            "name": "dbm_table",
+                            "kind": "string",
                             "order": 5,
                             "default": "",
-                            "kind": "string",
-                            "name": "dbm_table"
+                            "description": "Table to create from this report."
+                        }
+                    },
+                    "schema": {
+                        "field": {
+                            "name": "dbm_schema",
+                            "kind": "json",
+                            "order": 6,
+                            "description": "Schema provided in JSON list format or empty value to auto detect."
                         }
                     },
                     "is_incremental_load": {
                         "field": {
-                            "description": "Clear data in destination table during this report's time period, then append report data to destination table.",
+                            "name": "is_incremental_load",
+                            "kind": "boolean",
                             "order": 7,
                             "default": false,
-                            "kind": "boolean",
-                            "name": "is_incremental_load"
+                            "description": "Clear data in destination table during this report's time period, then append report data to destination table."
                         }
-                    }
-                }
-            },
-            "report": {
-                "name": {
-                    "field": {
-                        "description": "Name of report, not needed if ID used.",
-                        "order": 3,
-                        "default": "",
-                        "kind": "string",
-                        "name": "dbm_report_name"
-                    }
-                },
-                "report_id": {
-                    "field": {
-                        "description": "DV360 report ID given in UI, not needed if name used.",
-                        "order": 2,
-                        "default": "",
-                        "kind": "integer",
-                        "name": "dbm_report_id"
                     }
                 }
             }

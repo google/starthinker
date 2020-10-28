@@ -50,8 +50,8 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'auth_read': 'user',  # Credentials used for reading data.
-  'auth_write': 'service',  # Credentials used for writing data.
   'dbm_report_id': '',  # DV360 report ID given in UI, not needed if name used.
+  'auth_write': 'service',  # Credentials used for writing data.
   'dbm_report_name': '',  # Name of report, not needed if ID used.
   'dbm_bucket': '',  # Google cloud bucket.
   'dbm_path': '',  # Path and filename to write to.
@@ -60,62 +60,62 @@ INPUTS = {
 TASKS = [
   {
     'dbm': {
-      'report': {
-        'name': {
-          'field': {
-            'order': 2,
-            'kind': 'string',
-            'name': 'dbm_report_name',
-            'description': 'Name of report, not needed if ID used.',
-            'default': ''
-          }
-        },
-        'report_id': {
-          'field': {
-            'order': 1,
-            'kind': 'integer',
-            'name': 'dbm_report_id',
-            'description': 'DV360 report ID given in UI, not needed if name used.',
-            'default': ''
-          }
-        }
-      },
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
+      'report': {
+        'report_id': {
+          'field': {
+            'name': 'dbm_report_id',
+            'kind': 'integer',
+            'order': 1,
+            'default': '',
+            'description': 'DV360 report ID given in UI, not needed if name used.'
+          }
+        },
+        'name': {
+          'field': {
+            'name': 'dbm_report_name',
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Name of report, not needed if ID used.'
+          }
         }
       },
       'out': {
         'storage': {
+          'auth': {
+            'field': {
+              'name': 'auth_write',
+              'kind': 'authentication',
+              'order': 1,
+              'default': 'service',
+              'description': 'Credentials used for writing data.'
+            }
+          },
           'bucket': {
             'field': {
-              'order': 3,
-              'kind': 'string',
               'name': 'dbm_bucket',
-              'description': 'Google cloud bucket.',
-              'default': ''
+              'kind': 'string',
+              'order': 3,
+              'default': '',
+              'description': 'Google cloud bucket.'
             }
           },
           'path': {
             'field': {
-              'order': 4,
-              'kind': 'string',
               'name': 'dbm_path',
-              'description': 'Path and filename to write to.',
-              'default': ''
-            }
-          },
-          'auth': {
-            'field': {
-              'order': 1,
-              'kind': 'authentication',
-              'name': 'auth_write',
-              'description': 'Credentials used for writing data.',
-              'default': 'service'
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'Path and filename to write to.'
             }
           }
         }

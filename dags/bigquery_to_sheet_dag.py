@@ -65,69 +65,69 @@ TASKS = [
     'bigquery': {
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'from': {
+        'auth': 'service',
+        'dataset': {
+          'field': {
+            'name': 'dataset',
+            'kind': 'string',
+            'order': 4,
+            'default': '',
+            'description': 'Existing BigQuery dataset.'
+          }
+        },
         'query': {
           'field': {
-            'order': 5,
-            'kind': 'text',
             'name': 'query',
-            'description': 'Query to pull data from the table.',
-            'default': ''
+            'kind': 'text',
+            'order': 5,
+            'default': '',
+            'description': 'Query to pull data from the table.'
           }
         },
         'legacy': {
           'field': {
-            'order': 6,
-            'kind': 'boolean',
             'name': 'legacy',
-            'description': 'Use Legacy SQL',
-            'default': True
+            'kind': 'boolean',
+            'order': 6,
+            'default': True,
+            'description': 'Use Legacy SQL'
           }
-        },
-        'dataset': {
-          'field': {
-            'order': 4,
-            'kind': 'string',
-            'name': 'dataset',
-            'description': 'Existing BigQuery dataset.',
-            'default': ''
-          }
-        },
-        'auth': 'service'
+        }
       },
       'to': {
-        'range': {
-          'field': {
-            'order': 3,
-            'kind': 'string',
-            'name': 'range',
-            'description': 'Range in the sheet to place the data, leave blank for whole sheet.',
-            'default': ''
-          }
-        },
         'sheet': {
           'field': {
-            'order': 1,
-            'kind': 'string',
             'name': 'sheet',
-            'description': 'Either sheet url or sheet name.',
-            'default': ''
+            'kind': 'string',
+            'order': 1,
+            'default': '',
+            'description': 'Either sheet url or sheet name.'
           }
         },
         'tab': {
           'field': {
-            'order': 2,
-            'kind': 'string',
             'name': 'tab',
-            'description': 'Name of the tab where to put the data.',
-            'default': ''
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Name of the tab where to put the data.'
+          }
+        },
+        'range': {
+          'field': {
+            'name': 'range',
+            'kind': 'string',
+            'order': 3,
+            'default': '',
+            'description': 'Range in the sheet to place the data, leave blank for whole sheet.'
           }
         }
       }

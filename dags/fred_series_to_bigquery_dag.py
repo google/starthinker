@@ -62,77 +62,30 @@ INPUTS = {
 TASKS = [
   {
     'fred': {
-      'out': {
-        'bigquery': {
-          'project': {
-            'field': {
-              'order': 10,
-              'kind': 'string',
-              'name': 'project',
-              'description': 'Existing BigQuery project.',
-              'default': ''
-            }
-          },
-          'dataset': {
-            'field': {
-              'order': 11,
-              'kind': 'string',
-              'name': 'dataset',
-              'description': 'Existing BigQuery dataset.',
-              'default': ''
-            }
-          }
+      'auth': {
+        'field': {
+          'name': 'auth',
+          'kind': 'authentication',
+          'order': 0,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
         }
       },
-      'series': [
-        {
-          'series_id': {
-            'field': {
-              'order': 2,
-              'kind': 'string',
-              'name': 'fred_series_id',
-              'description': 'Series ID to pull data from.',
-              'default': ''
-            }
-          },
-          'units': {
-            'field': {
-              'description': 'A key that indicates a data value transformation.',
-              'choices': [
-                'lin',
-                'chg',
-                'ch1',
-                'pch',
-                'pc1',
-                'pca',
-                'cch',
-                'cca',
-                'log'
-              ],
-              'order': 3,
-              'kind': 'choice',
-              'name': 'fred_units',
-              'default': 'lin'
-            }
-          },
-          'aggregation_method': {
-            'field': {
-              'description': 'A key that indicates the aggregation method used for frequency aggregation.',
-              'choices': [
-                'avg',
-                'sum',
-                'eop'
-              ],
-              'order': 5,
-              'kind': 'choice',
-              'name': 'fred_aggregation_method',
-              'default': 'avg'
-            }
-          }
+      'api_key': {
+        'field': {
+          'name': 'fred_api_key',
+          'kind': 'string',
+          'order': 1,
+          'default': '',
+          'description': '32 character alpha-numeric lowercase string.'
         }
-      ],
+      },
       'frequency': {
         'field': {
+          'name': 'fred_frequency',
+          'kind': 'choice',
+          'order': 4,
+          'default': '',
           'description': 'An optional parameter that indicates a lower frequency to aggregate values to.',
           'choices': [
             '',
@@ -152,29 +105,76 @@ TASKS = [
             'wesa',
             'bwew',
             'bwem'
-          ],
-          'order': 4,
-          'kind': 'choice',
-          'name': 'fred_frequency',
-          'default': ''
+          ]
         }
       },
-      'api_key': {
-        'field': {
-          'order': 1,
-          'kind': 'string',
-          'name': 'fred_api_key',
-          'description': '32 character alpha-numeric lowercase string.',
-          'default': ''
+      'series': [
+        {
+          'series_id': {
+            'field': {
+              'name': 'fred_series_id',
+              'kind': 'string',
+              'order': 2,
+              'default': '',
+              'description': 'Series ID to pull data from.'
+            }
+          },
+          'units': {
+            'field': {
+              'name': 'fred_units',
+              'kind': 'choice',
+              'order': 3,
+              'default': 'lin',
+              'description': 'A key that indicates a data value transformation.',
+              'choices': [
+                'lin',
+                'chg',
+                'ch1',
+                'pch',
+                'pc1',
+                'pca',
+                'cch',
+                'cca',
+                'log'
+              ]
+            }
+          },
+          'aggregation_method': {
+            'field': {
+              'name': 'fred_aggregation_method',
+              'kind': 'choice',
+              'order': 5,
+              'default': 'avg',
+              'description': 'A key that indicates the aggregation method used for frequency aggregation.',
+              'choices': [
+                'avg',
+                'sum',
+                'eop'
+              ]
+            }
+          }
         }
-      },
-      'auth': {
-        'field': {
-          'order': 0,
-          'kind': 'authentication',
-          'name': 'auth',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
+      ],
+      'out': {
+        'bigquery': {
+          'project': {
+            'field': {
+              'name': 'project',
+              'kind': 'string',
+              'order': 10,
+              'default': '',
+              'description': 'Existing BigQuery project.'
+            }
+          },
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 11,
+              'default': '',
+              'description': 'Existing BigQuery dataset.'
+            }
+          }
         }
       }
     }

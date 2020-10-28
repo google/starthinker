@@ -59,8 +59,8 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'recipe_timezone': 'America/Chicago',  # Timezone for report dates.
-  'dcm_profile_id': '',  # Campaign Manager Profile ID (optional if account id provided)
   'account_id': '',  # Campaign Manager Network ID (optional if profile id provided)
+  'dcm_profile_id': '',  # Campaign Manager Profile ID (optional if account id provided)
   'sheet_url': '',  # Feed Sheet URL
 }
 
@@ -71,38 +71,38 @@ TASKS = [
       ],
       'account_id': {
         'field': {
-          'order': 1,
-          'kind': 'string',
           'name': 'account_id',
+          'kind': 'string',
+          'order': 1,
           'description': 'Campaign Manager Network ID (optional if profile id provided)',
           'default': ''
         }
       },
+      'dcm_profile_id': {
+        'field': {
+          'name': 'dcm_profile_id',
+          'kind': 'string',
+          'order': 1,
+          'description': 'Campaign Manager Profile ID (optional if account id provided)',
+          'default': ''
+        }
+      },
+      'auth': 'user',
       'sheet_url': {
         'field': {
-          'order': 2,
-          'kind': 'string',
           'name': 'sheet_url',
+          'kind': 'string',
+          'order': 2,
           'description': 'Feed Sheet URL',
           'default': ''
         }
       },
       'timezone': {
         'field': {
-          'kind': 'timezone',
           'name': 'recipe_timezone',
+          'kind': 'timezone',
           'description': 'Timezone for report dates.',
           'default': 'America/Chicago'
-        }
-      },
-      'auth': 'user',
-      'dcm_profile_id': {
-        'field': {
-          'order': 1,
-          'kind': 'string',
-          'name': 'dcm_profile_id',
-          'description': 'Campaign Manager Profile ID (optional if account id provided)',
-          'default': ''
         }
       }
     }

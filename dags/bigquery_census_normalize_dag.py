@@ -63,16 +63,20 @@ TASKS = [
     'census': {
       'auth': {
         'field': {
-          'order': 0,
-          'kind': 'authentication',
           'name': 'auth',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
+          'kind': 'authentication',
+          'order': 0,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
         }
       },
       'normalize': {
         'census_geography': {
           'field': {
+            'name': 'census_geography',
+            'kind': 'choice',
+            'order': 1,
+            'default': 'zip_codes',
             'description': 'Census table to get data from.',
             'choices': [
               'zip_codes',
@@ -85,29 +89,15 @@ TASKS = [
               'congressionaldistrict',
               'censustract',
               'cbsa'
-            ],
-            'order': 1,
-            'kind': 'choice',
-            'name': 'census_geography',
-            'default': 'zip_codes'
-          }
-        },
-        'census_span': {
-          'field': {
-            'description': 'Census table to get data from.',
-            'choices': [
-              '1yr',
-              '3yr',
-              '5yr'
-            ],
-            'order': 3,
-            'kind': 'choice',
-            'name': 'census_span',
-            'default': '5yr'
+            ]
           }
         },
         'census_year': {
           'field': {
+            'name': 'census_year',
+            'kind': 'choice',
+            'order': 2,
+            'default': '2018',
             'description': 'Census table to get data from.',
             'choices': [
               2018,
@@ -122,35 +112,45 @@ TASKS = [
               2009,
               2008,
               2007
-            ],
-            'order': 2,
+            ]
+          }
+        },
+        'census_span': {
+          'field': {
+            'name': 'census_span',
             'kind': 'choice',
-            'name': 'census_year',
-            'default': '2018'
+            'order': 3,
+            'default': '5yr',
+            'description': 'Census table to get data from.',
+            'choices': [
+              '1yr',
+              '3yr',
+              '5yr'
+            ]
           }
         }
       },
       'to': {
         'dataset': {
           'field': {
-            'order': 4,
-            'kind': 'string',
             'name': 'dataset',
-            'description': 'Existing BigQuery dataset.',
-            'default': ''
+            'kind': 'string',
+            'order': 4,
+            'default': '',
+            'description': 'Existing BigQuery dataset.'
           }
         },
         'type': {
           'field': {
+            'name': 'type',
+            'kind': 'choice',
+            'order': 5,
+            'default': 'table',
             'description': 'Write Census_Percent as table or view.',
             'choices': [
               'table',
               'view'
-            ],
-            'order': 5,
-            'kind': 'choice',
-            'name': 'type',
-            'default': 'table'
+            ]
           }
         }
       }

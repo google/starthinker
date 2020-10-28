@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 14, 2017 (3 years, 1 month)</td>
+              <td>Aug. 14, 2017 (3 years, 2 months)</td>
             </tr>
 
             <tr>
@@ -254,29 +254,29 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
                 }
             },
             "report": {
                 "field": {
-                    "description": "Report body and filters.",
+                    "name": "report",
+                    "kind": "json",
                     "order": 1,
                     "default": "{}",
-                    "kind": "json",
-                    "name": "report"
+                    "description": "Report body and filters."
                 }
             },
             "delete": {
                 "field": {
-                    "description": "If report exists, delete it before creating a new one.",
+                    "name": "delete",
+                    "kind": "boolean",
                     "order": 2,
                     "default": false,
-                    "kind": "boolean",
-                    "name": "delete"
+                    "description": "If report exists, delete it before creating a new one."
                 }
             }
         }

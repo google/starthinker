@@ -60,66 +60,66 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'dcm_account': '',
-  'auth_write': 'service',  # Credentials used for writing data.
   'auth_read': 'user',  # Credentials used for reading data.
   'configuration_sheet_url': '',
+  'auth_write': 'service',  # Credentials used for writing data.
   'bigquery_dataset': 'dynamic_costs',
 }
 
 TASKS = [
   {
     'dynamic_costs': {
-      'out': {
-        'dataset': {
-          'field': {
-            'order': 2,
-            'kind': 'string',
-            'name': 'bigquery_dataset',
-            'default': 'dynamic_costs'
-          }
-        },
-        'auth': {
-          'field': {
-            'order': 1,
-            'kind': 'authentication',
-            'name': 'auth_write',
-            'description': 'Credentials used for writing data.',
-            'default': 'service'
-          }
-        }
-      },
-      'sheet': {
-        'range': 'A2:B',
-        'tab': 'Dynamic Costs',
-        'template': {
-          'range': 'A1',
-          'tab': 'Dynamic Costs',
-          'url': 'https://docs.google.com/spreadsheets/d/19J-Hjln2wd1E0aeG3JDgKQN9TVGRLWxIEUQSmmQetJc/edit?usp=sharing'
-        },
-        'url': {
-          'field': {
-            'order': 1,
-            'kind': 'string',
-            'name': 'configuration_sheet_url',
-            'default': ''
-          }
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'account': {
         'field': {
-          'order': 0,
-          'kind': 'string',
           'name': 'dcm_account',
+          'kind': 'string',
+          'order': 0,
           'default': ''
         }
       },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+      'sheet': {
+        'template': {
+          'url': 'https://docs.google.com/spreadsheets/d/19J-Hjln2wd1E0aeG3JDgKQN9TVGRLWxIEUQSmmQetJc/edit?usp=sharing',
+          'tab': 'Dynamic Costs',
+          'range': 'A1'
+        },
+        'url': {
+          'field': {
+            'name': 'configuration_sheet_url',
+            'kind': 'string',
+            'order': 1,
+            'default': ''
+          }
+        },
+        'tab': 'Dynamic Costs',
+        'range': 'A2:B'
+      },
+      'out': {
+        'auth': {
+          'field': {
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
+          }
+        },
+        'dataset': {
+          'field': {
+            'name': 'bigquery_dataset',
+            'kind': 'string',
+            'order': 2,
+            'default': 'dynamic_costs'
+          }
         }
       }
     }

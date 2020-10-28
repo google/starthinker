@@ -233,10 +233,19 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                <tbody>
                
                  <tr>
-                   <td>Csat Improvement</td>
+                   <td>Spend Optimization</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 90%"></div>
+                       <div class="determinate" style="width: 0%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Spend Growth</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 0%"></div>
                      </div>
                    </td>
                  </tr>
@@ -251,15 +260,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Spend Optimization</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Account Health</td>
                    <td>
                      <div class="progress">
@@ -269,10 +269,10 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Spend Growth</td>
+                   <td>Csat Improvement</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
+                       <div class="determinate" style="width: 90%"></div>
                      </div>
                    </td>
                  </tr>
@@ -301,7 +301,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>April 3, 2018 (2 years, 5 months)</td>
+              <td>April 3, 2018 (2 years, 6 months)</td>
             </tr>
 
             <tr>
@@ -380,41 +380,41 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/traffic/run.py" target="_blank">traffic</a>": {
+            "hour": [],
+            "account_id": {
+                "field": {
+                    "name": "account_id",
+                    "kind": "string",
+                    "order": 1,
+                    "description": "Campaign Manager Network ID (optional if profile id provided)",
+                    "default": ""
+                }
+            },
+            "dcm_profile_id": {
+                "field": {
+                    "name": "dcm_profile_id",
+                    "kind": "string",
+                    "order": 1,
+                    "description": "Campaign Manager Profile ID (optional if account id provided)",
+                    "default": ""
+                }
+            },
             "auth": "user",
             "sheet_url": {
                 "field": {
-                    "description": "Feed Sheet URL",
+                    "name": "sheet_url",
+                    "kind": "string",
                     "order": 2,
-                    "default": "",
-                    "kind": "string",
-                    "name": "sheet_url"
-                }
-            },
-            "account_id": {
-                "field": {
-                    "description": "Campaign Manager Network ID (optional if profile id provided)",
-                    "order": 1,
-                    "default": "",
-                    "kind": "string",
-                    "name": "account_id"
+                    "description": "Feed Sheet URL",
+                    "default": ""
                 }
             },
             "timezone": {
                 "field": {
-                    "description": "Timezone for report dates.",
+                    "name": "recipe_timezone",
                     "kind": "timezone",
-                    "default": "America/Chicago",
-                    "name": "recipe_timezone"
-                }
-            },
-            "hour": [],
-            "dcm_profile_id": {
-                "field": {
-                    "description": "Campaign Manager Profile ID (optional if account id provided)",
-                    "order": 1,
-                    "default": "",
-                    "kind": "string",
-                    "name": "dcm_profile_id"
+                    "description": "Timezone for report dates.",
+                    "default": "America/Chicago"
                 }
             }
         }

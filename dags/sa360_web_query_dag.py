@@ -56,22 +56,22 @@ INPUTS = {
 TASKS = [
   {
     'drive': {
+      'auth': 'user',
       'hour': [
       ],
       'copy': {
+        'source': 'https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/',
         'destination': {
           'field': {
-            'description': 'Name of document to deploy to.',
-            'prefix': 'CM User Editor For ',
-            'order': 1,
-            'kind': 'string',
             'name': 'recipe_name',
+            'prefix': 'CM User Editor For ',
+            'kind': 'string',
+            'order': 1,
+            'description': 'Name of document to deploy to.',
             'default': ''
           }
-        },
-        'source': 'https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/'
-      },
-      'auth': 'user'
+        }
+      }
     }
   }
 ]

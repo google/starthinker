@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 14, 2017 (3 years, 1 month)</td>
+              <td>Aug. 14, 2017 (3 years, 2 months)</td>
             </tr>
 
             <tr>
@@ -254,79 +254,79 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 0,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
+                }
+            },
+            "report": {
+                "account": {
+                    "field": {
+                        "name": "account",
+                        "kind": "integer",
+                        "order": 2,
+                        "default": "",
+                        "description": "CM network id."
+                    }
+                },
+                "report_id": {
+                    "field": {
+                        "name": "report_id",
+                        "kind": "integer",
+                        "order": 3,
+                        "default": "",
+                        "description": "CM report id, empty if using name ."
+                    }
+                },
+                "name": {
+                    "field": {
+                        "name": "report_name",
+                        "kind": "string",
+                        "order": 4,
+                        "default": "",
+                        "description": "CM report name, empty if using id instead."
+                    }
                 }
             },
             "out": {
                 "bigquery": {
                     "auth": {
                         "field": {
-                            "description": "Credentials used for writing data.",
+                            "name": "auth_write",
+                            "kind": "authentication",
                             "order": 1,
                             "default": "service",
-                            "kind": "authentication",
-                            "name": "auth_write"
-                        }
-                    },
-                    "is_incremental_load": {
-                        "field": {
-                            "description": "Clear data in destination table during this report's time period, then append report data to existing table.",
-                            "order": 7,
-                            "default": false,
-                            "kind": "boolean",
-                            "name": "is_incremental_load"
+                            "description": "Credentials used for writing data."
                         }
                     },
                     "dataset": {
                         "field": {
-                            "description": "Dataset to be written to in BigQuery.",
+                            "name": "dataset",
+                            "kind": "string",
                             "order": 5,
                             "default": "",
-                            "kind": "string",
-                            "name": "dataset"
+                            "description": "Dataset to be written to in BigQuery."
                         }
                     },
                     "table": {
                         "field": {
-                            "description": "Table to be written to in BigQuery.",
+                            "name": "table",
+                            "kind": "string",
                             "order": 6,
                             "default": "",
-                            "kind": "string",
-                            "name": "table"
+                            "description": "Table to be written to in BigQuery."
                         }
-                    }
-                }
-            },
-            "report": {
-                "account": {
-                    "field": {
-                        "description": "CM network id.",
-                        "order": 2,
-                        "default": "",
-                        "kind": "integer",
-                        "name": "account"
-                    }
-                },
-                "report_id": {
-                    "field": {
-                        "description": "CM report id, empty if using name .",
-                        "order": 3,
-                        "default": "",
-                        "kind": "integer",
-                        "name": "report_id"
-                    }
-                },
-                "name": {
-                    "field": {
-                        "description": "CM report name, empty if using id instead.",
-                        "order": 4,
-                        "default": "",
-                        "kind": "string",
-                        "name": "report_name"
+                    },
+                    "is_incremental_load": {
+                        "field": {
+                            "name": "is_incremental_load",
+                            "kind": "boolean",
+                            "order": 7,
+                            "default": false,
+                            "description": "Clear data in destination table during this report's time period, then append report data to existing table."
+                        }
                     }
                 }
             }

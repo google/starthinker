@@ -54,8 +54,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'email': '',  # Email address report was sent to.
   'auth_read': 'user',  # Credentials used for reading data.
+  'email': '',  # Email address report was sent to.
   'subject': '.*',  # Regular expression to match subject. Double escape backslashes.
   'dataset': '',  # Existing dataset in BigQuery.
   'table': '',  # Name of table to be written to.
@@ -67,65 +67,65 @@ TASKS = [
     'email': {
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'read': {
-        'out': {
-          'bigquery': {
-            'table': {
-              'field': {
-                'order': 4,
-                'kind': 'string',
-                'name': 'table',
-                'description': 'Name of table to be written to.',
-                'default': ''
-              }
-            },
-            'is_incremental_load': {
-              'field': {
-                'order': 6,
-                'kind': 'boolean',
-                'name': 'is_incremental_load',
-                'description': 'Append report data to table based on date column, de-duplicates.',
-                'default': False
-              }
-            },
-            'dataset': {
-              'field': {
-                'order': 3,
-                'kind': 'string',
-                'name': 'dataset',
-                'description': 'Existing dataset in BigQuery.',
-                'default': ''
-              }
-            }
+        'from': 'noreply-cm@google.com',
+        'to': {
+          'field': {
+            'name': 'email',
+            'kind': 'string',
+            'order': 1,
+            'default': '',
+            'description': 'Email address report was sent to.'
           }
         },
         'subject': {
           'field': {
-            'order': 2,
-            'kind': 'string',
             'name': 'subject',
-            'description': 'Regular expression to match subject. Double escape backslashes.',
-            'default': '.*'
-          }
-        },
-        'to': {
-          'field': {
-            'order': 1,
             'kind': 'string',
-            'name': 'email',
-            'description': 'Email address report was sent to.',
-            'default': ''
+            'order': 2,
+            'default': '.*',
+            'description': 'Regular expression to match subject. Double escape backslashes.'
           }
         },
         'attachment': '.*',
-        'from': 'noreply-cm@google.com'
+        'out': {
+          'bigquery': {
+            'dataset': {
+              'field': {
+                'name': 'dataset',
+                'kind': 'string',
+                'order': 3,
+                'default': '',
+                'description': 'Existing dataset in BigQuery.'
+              }
+            },
+            'table': {
+              'field': {
+                'name': 'table',
+                'kind': 'string',
+                'order': 4,
+                'default': '',
+                'description': 'Name of table to be written to.'
+              }
+            },
+            'is_incremental_load': {
+              'field': {
+                'name': 'is_incremental_load',
+                'kind': 'boolean',
+                'order': 6,
+                'default': False,
+                'description': 'Append report data to table based on date column, de-duplicates.'
+              }
+            }
+          }
+        }
       }
     }
   }

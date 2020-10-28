@@ -68,28 +68,79 @@ INPUTS = {
 TASKS = [
   {
     'census': {
+      'auth': {
+        'field': {
+          'name': 'auth',
+          'kind': 'authentication',
+          'order': 0,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'correlate': {
-        'correlate': {
-          'field': {
-            'order': 4,
-            'kind': 'string_list',
-            'name': 'correlate',
-            'description': 'Comma seperated list of percentage columns to correlate.',
-            'default': [
-            ]
-          }
-        },
         'join': {
           'field': {
-            'order': 1,
-            'kind': 'string',
             'name': 'join',
-            'description': 'Name of column to join on, must match Census Geo_Id column.',
-            'default': ''
+            'kind': 'string',
+            'order': 1,
+            'default': '',
+            'description': 'Name of column to join on, must match Census Geo_Id column.'
+          }
+        },
+        'pass': {
+          'field': {
+            'name': 'pass',
+            'kind': 'string_list',
+            'order': 2,
+            'default': [
+            ],
+            'description': 'Comma seperated list of columns to pass through.'
+          }
+        },
+        'sum': {
+          'field': {
+            'name': 'sum',
+            'kind': 'string_list',
+            'order': 3,
+            'default': [
+            ],
+            'description': 'Comma seperated list of columns to sum, optional.'
+          }
+        },
+        'correlate': {
+          'field': {
+            'name': 'correlate',
+            'kind': 'string_list',
+            'order': 4,
+            'default': [
+            ],
+            'description': 'Comma seperated list of percentage columns to correlate.'
+          }
+        },
+        'dataset': {
+          'field': {
+            'name': 'from_dataset',
+            'kind': 'string',
+            'order': 5,
+            'default': '',
+            'description': 'Existing BigQuery dataset.'
+          }
+        },
+        'table': {
+          'field': {
+            'name': 'from_table',
+            'kind': 'string',
+            'order': 6,
+            'default': '',
+            'description': 'Table to use as join data.'
           }
         },
         'significance': {
           'field': {
+            'name': 'significance',
+            'kind': 'choice',
+            'order': 7,
+            'default': '80',
             'description': 'Select level of significance to test.',
             'choices': [
               '80',
@@ -98,82 +149,31 @@ TASKS = [
               '99',
               '99.5',
               '99.95'
-            ],
-            'order': 7,
-            'kind': 'choice',
-            'name': 'significance',
-            'default': '80'
-          }
-        },
-        'dataset': {
-          'field': {
-            'order': 5,
-            'kind': 'string',
-            'name': 'from_dataset',
-            'description': 'Existing BigQuery dataset.',
-            'default': ''
-          }
-        },
-        'pass': {
-          'field': {
-            'order': 2,
-            'kind': 'string_list',
-            'name': 'pass',
-            'description': 'Comma seperated list of columns to pass through.',
-            'default': [
             ]
           }
-        },
-        'sum': {
-          'field': {
-            'order': 3,
-            'kind': 'string_list',
-            'name': 'sum',
-            'description': 'Comma seperated list of columns to sum, optional.',
-            'default': [
-            ]
-          }
-        },
-        'table': {
-          'field': {
-            'order': 6,
-            'kind': 'string',
-            'name': 'from_table',
-            'description': 'Table to use as join data.',
-            'default': ''
-          }
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 0,
-          'kind': 'authentication',
-          'name': 'auth',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
         }
       },
       'to': {
         'dataset': {
           'field': {
-            'order': 9,
-            'kind': 'string',
             'name': 'to_dataset',
-            'description': 'Existing BigQuery dataset.',
-            'default': ''
+            'kind': 'string',
+            'order': 9,
+            'default': '',
+            'description': 'Existing BigQuery dataset.'
           }
         },
         'type': {
           'field': {
+            'name': 'type',
+            'kind': 'choice',
+            'order': 10,
+            'default': 'table',
             'description': 'Write Census_Percent as table or view.',
             'choices': [
               'table',
               'view'
-            ],
-            'order': 10,
-            'kind': 'choice',
-            'name': 'type',
-            'default': 'table'
+            ]
           }
         }
       }

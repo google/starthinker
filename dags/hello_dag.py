@@ -58,71 +58,71 @@ INPUTS = {
 TASKS = [
   {
     'hello': {
-      'error': {
+      'auth': {
         'field': {
-          'order': 3,
-          'kind': 'string',
-          'name': 'error',
-          'description': 'Optional error for testing.',
-          'default': ''
-        }
-      },
-      'sleep': {
-        'field': {
-          'order': 4,
-          'kind': 'integer',
-          'name': 'sleep',
-          'description': 'Seconds to sleep.',
-          'default': 0
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'say': {
         'field': {
-          'order': 1,
-          'kind': 'string',
           'name': 'say_first',
-          'description': 'Type in a greeting.',
-          'default': 'Hello Once'
+          'kind': 'string',
+          'order': 1,
+          'default': 'Hello Once',
+          'description': 'Type in a greeting.'
         }
       },
-      'auth': {
+      'error': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'name': 'error',
+          'kind': 'string',
+          'order': 3,
+          'default': '',
+          'description': 'Optional error for testing.'
+        }
+      },
+      'sleep': {
+        'field': {
+          'name': 'sleep',
+          'kind': 'integer',
+          'order': 4,
+          'default': 0,
+          'description': 'Seconds to sleep.'
         }
       }
     }
   },
   {
     'hello': {
-      'sleep': {
+      'auth': {
         'field': {
-          'order': 4,
-          'kind': 'integer',
-          'name': 'sleep',
-          'description': 'Seconds to sleep.',
-          'default': 0
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'say': {
         'field': {
-          'order': 1,
-          'kind': 'string',
           'name': 'say_second',
-          'description': 'Type in a greeting.',
-          'default': 'Hello Twice'
+          'kind': 'string',
+          'order': 1,
+          'default': 'Hello Twice',
+          'description': 'Type in a greeting.'
         }
       },
-      'auth': {
+      'sleep': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'name': 'sleep',
+          'kind': 'integer',
+          'order': 4,
+          'default': 0,
+          'description': 'Seconds to sleep.'
         }
       }
     }

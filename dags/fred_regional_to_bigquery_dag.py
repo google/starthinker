@@ -54,8 +54,8 @@ INPUTS = {
   'fred_series_group': '',  # The ID for a group of seriess found in GeoFRED.
   'fred_region_type': 'county',  # The region you want want to pull data for.
   'fred_units': 'lin',  # A key that indicates a data value transformation.
-  'fred_season': 'SA',  # The seasonality of the series group.
   'fred_frequency': '',  # An optional parameter that indicates a lower frequency to aggregate values to.
+  'fred_season': 'SA',  # The seasonality of the series group.
   'fred_aggregation_method': 'avg',  # A key that indicates the aggregation method used for frequency aggregation.
   'project': '',  # Existing BigQuery project.
   'dataset': '',  # Existing BigQuery dataset.
@@ -64,8 +64,30 @@ INPUTS = {
 TASKS = [
   {
     'fred': {
+      'auth': {
+        'field': {
+          'name': 'auth',
+          'kind': 'authentication',
+          'order': 0,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
+      'api_key': {
+        'field': {
+          'name': 'fred_api_key',
+          'kind': 'string',
+          'order': 1,
+          'default': '',
+          'description': '32 character alpha-numeric lowercase string.'
+        }
+      },
       'frequency': {
         'field': {
+          'name': 'fred_frequency',
+          'kind': 'choice',
+          'order': 4,
+          'default': '',
           'description': 'An optional parameter that indicates a lower frequency to aggregate values to.',
           'choices': [
             '',
@@ -85,46 +107,15 @@ TASKS = [
             'wesa',
             'bwew',
             'bwem'
-          ],
-          'order': 4,
-          'kind': 'choice',
-          'name': 'fred_frequency',
-          'default': ''
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 0,
-          'kind': 'authentication',
-          'name': 'auth',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
-        }
-      },
-      'out': {
-        'bigquery': {
-          'project': {
-            'field': {
-              'order': 10,
-              'kind': 'string',
-              'name': 'project',
-              'description': 'Existing BigQuery project.',
-              'default': ''
-            }
-          },
-          'dataset': {
-            'field': {
-              'order': 11,
-              'kind': 'string',
-              'name': 'dataset',
-              'description': 'Existing BigQuery dataset.',
-              'default': ''
-            }
-          }
+          ]
         }
       },
       'region_type': {
         'field': {
+          'name': 'fred_region_type',
+          'kind': 'choice',
+          'order': 3,
+          'default': 'county',
           'description': 'The region you want want to pull data for.',
           'choices': [
             'bea',
@@ -135,40 +126,26 @@ TASKS = [
             'country',
             'county',
             'censusregion'
-          ],
-          'order': 3,
-          'kind': 'choice',
-          'name': 'fred_region_type',
-          'default': 'county'
-        }
-      },
-      'api_key': {
-        'field': {
-          'order': 1,
-          'kind': 'string',
-          'name': 'fred_api_key',
-          'description': '32 character alpha-numeric lowercase string.',
-          'default': ''
+          ]
         }
       },
       'regions': [
         {
-          'season': {
+          'series_group': {
             'field': {
-              'description': 'The seasonality of the series group.',
-              'choices': [
-                'SA',
-                'NSA',
-                'SSA'
-              ],
-              'order': 4,
-              'kind': 'choice',
-              'name': 'fred_season',
-              'default': 'SA'
+              'name': 'fred_series_group',
+              'kind': 'string',
+              'order': 2,
+              'default': '',
+              'description': 'The ID for a group of seriess found in GeoFRED.'
             }
           },
           'units': {
             'field': {
+              'name': 'fred_units',
+              'kind': 'choice',
+              'order': 3,
+              'default': 'lin',
               'description': 'A key that indicates a data value transformation.',
               'choices': [
                 'lin',
@@ -180,38 +157,61 @@ TASKS = [
                 'cch',
                 'cca',
                 'log'
-              ],
-              'order': 3,
+              ]
+            }
+          },
+          'season': {
+            'field': {
+              'name': 'fred_season',
               'kind': 'choice',
-              'name': 'fred_units',
-              'default': 'lin'
+              'order': 4,
+              'default': 'SA',
+              'description': 'The seasonality of the series group.',
+              'choices': [
+                'SA',
+                'NSA',
+                'SSA'
+              ]
             }
           },
           'aggregation_method': {
             'field': {
+              'name': 'fred_aggregation_method',
+              'kind': 'choice',
+              'order': 5,
+              'default': 'avg',
               'description': 'A key that indicates the aggregation method used for frequency aggregation.',
               'choices': [
                 'avg',
                 'sum',
                 'eop'
-              ],
-              'order': 5,
-              'kind': 'choice',
-              'name': 'fred_aggregation_method',
-              'default': 'avg'
-            }
-          },
-          'series_group': {
-            'field': {
-              'order': 2,
-              'kind': 'string',
-              'name': 'fred_series_group',
-              'description': 'The ID for a group of seriess found in GeoFRED.',
-              'default': ''
+              ]
             }
           }
         }
-      ]
+      ],
+      'out': {
+        'bigquery': {
+          'project': {
+            'field': {
+              'name': 'project',
+              'kind': 'string',
+              'order': 10,
+              'default': '',
+              'description': 'Existing BigQuery project.'
+            }
+          },
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 11,
+              'default': '',
+              'description': 'Existing BigQuery dataset.'
+            }
+          }
+        }
+      }
     }
   }
 ]

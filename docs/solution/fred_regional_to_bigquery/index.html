@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 4, 2020 (1 month, 2 weeks)</td>
+              <td>Aug. 4, 2020 (2 months, 3 weeks)</td>
             </tr>
 
             <tr>
@@ -246,57 +246,29 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/fred/run.py" target="_blank">fred</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
+                    "name": "auth",
+                    "kind": "authentication",
                     "order": 0,
                     "default": "service",
-                    "kind": "authentication",
-                    "name": "auth"
+                    "description": "Credentials used for writing data."
                 }
             },
-            "region_type": {
+            "api_key": {
                 "field": {
-                    "default": "county",
-                    "choices": [
-                        "bea",
-                        "msa",
-                        "frb",
-                        "necta",
-                        "state",
-                        "country",
-                        "county",
-                        "censusregion"
-                    ],
-                    "kind": "choice",
-                    "name": "fred_region_type",
-                    "order": 3,
-                    "description": "The region you want want to pull data for."
-                }
-            },
-            "out": {
-                "bigquery": {
-                    "project": {
-                        "field": {
-                            "description": "Existing BigQuery project.",
-                            "order": 10,
-                            "default": "",
-                            "kind": "string",
-                            "name": "project"
-                        }
-                    },
-                    "dataset": {
-                        "field": {
-                            "description": "Existing BigQuery dataset.",
-                            "order": 11,
-                            "default": "",
-                            "kind": "string",
-                            "name": "dataset"
-                        }
-                    }
+                    "name": "fred_api_key",
+                    "kind": "string",
+                    "order": 1,
+                    "default": "",
+                    "description": "32 character alpha-numeric lowercase string."
                 }
             },
             "frequency": {
                 "field": {
+                    "name": "fred_frequency",
+                    "kind": "choice",
+                    "order": 4,
                     "default": "",
+                    "description": "An optional parameter that indicates a lower frequency to aggregate values to.",
                     "choices": [
                         "",
                         "d",
@@ -315,50 +287,46 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "wesa",
                         "bwew",
                         "bwem"
-                    ],
-                    "kind": "choice",
-                    "name": "fred_frequency",
-                    "order": 4,
-                    "description": "An optional parameter that indicates a lower frequency to aggregate values to."
+                    ]
                 }
             },
-            "api_key": {
+            "region_type": {
                 "field": {
-                    "description": "32 character alpha-numeric lowercase string.",
-                    "order": 1,
-                    "default": "",
-                    "kind": "string",
-                    "name": "fred_api_key"
+                    "name": "fred_region_type",
+                    "kind": "choice",
+                    "order": 3,
+                    "default": "county",
+                    "description": "The region you want want to pull data for.",
+                    "choices": [
+                        "bea",
+                        "msa",
+                        "frb",
+                        "necta",
+                        "state",
+                        "country",
+                        "county",
+                        "censusregion"
+                    ]
                 }
             },
             "regions": [
                 {
-                    "season": {
-                        "field": {
-                            "default": "SA",
-                            "choices": [
-                                "SA",
-                                "NSA",
-                                "SSA"
-                            ],
-                            "kind": "choice",
-                            "name": "fred_season",
-                            "order": 4,
-                            "description": "The seasonality of the series group."
-                        }
-                    },
                     "series_group": {
                         "field": {
-                            "description": "The ID for a group of seriess found in GeoFRED.",
+                            "name": "fred_series_group",
+                            "kind": "string",
                             "order": 2,
                             "default": "",
-                            "kind": "string",
-                            "name": "fred_series_group"
+                            "description": "The ID for a group of seriess found in GeoFRED."
                         }
                     },
                     "units": {
                         "field": {
+                            "name": "fred_units",
+                            "kind": "choice",
+                            "order": 3,
                             "default": "lin",
+                            "description": "A key that indicates a data value transformation.",
                             "choices": [
                                 "lin",
                                 "chg",
@@ -369,29 +337,61 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                                 "cch",
                                 "cca",
                                 "log"
-                            ],
+                            ]
+                        }
+                    },
+                    "season": {
+                        "field": {
+                            "name": "fred_season",
                             "kind": "choice",
-                            "name": "fred_units",
-                            "order": 3,
-                            "description": "A key that indicates a data value transformation."
+                            "order": 4,
+                            "default": "SA",
+                            "description": "The seasonality of the series group.",
+                            "choices": [
+                                "SA",
+                                "NSA",
+                                "SSA"
+                            ]
                         }
                     },
                     "aggregation_method": {
                         "field": {
+                            "name": "fred_aggregation_method",
+                            "kind": "choice",
+                            "order": 5,
                             "default": "avg",
+                            "description": "A key that indicates the aggregation method used for frequency aggregation.",
                             "choices": [
                                 "avg",
                                 "sum",
                                 "eop"
-                            ],
-                            "kind": "choice",
-                            "name": "fred_aggregation_method",
-                            "order": 5,
-                            "description": "A key that indicates the aggregation method used for frequency aggregation."
+                            ]
                         }
                     }
                 }
-            ]
+            ],
+            "out": {
+                "bigquery": {
+                    "project": {
+                        "field": {
+                            "name": "project",
+                            "kind": "string",
+                            "order": 10,
+                            "default": "",
+                            "description": "Existing BigQuery project."
+                        }
+                    },
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "order": 11,
+                            "default": "",
+                            "description": "Existing BigQuery dataset."
+                        }
+                    }
+                }
+            }
         }
     }
 ]</code></pre>

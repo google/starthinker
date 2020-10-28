@@ -55,19 +55,19 @@ INPUTS = {
 TASKS = [
   {
     'hello': {
-      'hour': [
-      ],
-      'sleep': 0,
-      'say': 'Hello Manual',
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
-      }
+      },
+      'hour': [
+      ],
+      'say': 'Hello Manual',
+      'sleep': 0
     }
   }
 ]

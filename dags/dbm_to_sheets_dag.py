@@ -59,56 +59,56 @@ INPUTS = {
 TASKS = [
   {
     'dbm': {
-      'report': {
-        'name': {
-          'field': {
-            'order': 2,
-            'kind': 'string',
-            'name': 'report_name',
-            'description': 'Name of report, not needed if ID used.',
-            'default': ''
-          }
-        },
-        'report_id': {
-          'field': {
-            'order': 1,
-            'kind': 'integer',
-            'name': 'report_id',
-            'description': 'DV360 report ID given in UI, not needed if name used.',
-            'default': ''
-          }
-        }
-      },
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
+      'report': {
+        'report_id': {
+          'field': {
+            'name': 'report_id',
+            'kind': 'integer',
+            'order': 1,
+            'default': '',
+            'description': 'DV360 report ID given in UI, not needed if name used.'
+          }
+        },
+        'name': {
+          'field': {
+            'name': 'report_name',
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Name of report, not needed if ID used.'
+          }
         }
       },
       'out': {
         'sheets': {
-          'range': 'A1',
           'sheet': {
             'field': {
-              'order': 3,
-              'kind': 'string',
               'name': 'sheet',
-              'description': 'Full URL to sheet being written to.',
-              'default': ''
+              'kind': 'string',
+              'order': 3,
+              'default': '',
+              'description': 'Full URL to sheet being written to.'
             }
           },
           'tab': {
             'field': {
-              'order': 4,
-              'kind': 'string',
               'name': 'tab',
-              'description': 'Existing tab in sheet to write to.',
-              'default': ''
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'Existing tab in sheet to write to.'
             }
-          }
+          },
+          'range': 'A1'
         }
       }
     }

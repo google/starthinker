@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>June 10, 2018 (2 years, 3 months)</td>
+              <td>June 10, 2018 (2 years, 4 months)</td>
             </tr>
 
             <tr>
@@ -254,92 +254,92 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/google_api/run.py" target="_blank">google_api</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
-                }
-            },
-            "out": {
-                "bigquery": {
-                    "schema": {
-                        "field": {
-                            "description": "Schema provided in JSON list format or empty list.",
-                            "order": 9,
-                            "default": [],
-                            "kind": "json",
-                            "name": "schema"
-                        }
-                    },
-                    "dataset": {
-                        "field": {
-                            "description": "Existing dataset in BigQuery.",
-                            "order": 6,
-                            "default": "",
-                            "kind": "string",
-                            "name": "dataset"
-                        }
-                    },
-                    "table": {
-                        "field": {
-                            "description": "Table to write API call results to.",
-                            "order": 7,
-                            "default": "",
-                            "kind": "string",
-                            "name": "table"
-                        }
-                    },
-                    "format": "JSON"
-                }
-            },
-            "iterate": {
-                "field": {
-                    "description": "Is the result a list?",
-                    "order": 5,
-                    "default": false,
-                    "kind": "boolean",
-                    "name": "iterate"
-                }
-            },
-            "version": {
-                "field": {
-                    "description": "Must be supported version.",
-                    "order": 2,
-                    "default": "v1",
-                    "kind": "string",
-                    "name": "version"
-                }
-            },
-            "kwargs": {
-                "field": {
-                    "description": "Dictionray object of name value pairs.",
-                    "order": 4,
-                    "default": {
-                        "profileId": 2782211,
-                        "accountId": 7480,
-                        "reportId": 132847265
-                    },
-                    "kind": "json",
-                    "name": "kwargs"
-                }
-            },
-            "function": {
-                "field": {
-                    "description": "Full function dot notation path.",
-                    "order": 3,
-                    "default": "reports.files.list",
-                    "kind": "string",
-                    "name": "function"
+                    "description": "Credentials used for reading data."
                 }
             },
             "api": {
                 "field": {
-                    "description": "See developer guide.",
+                    "name": "api",
+                    "kind": "string",
                     "order": 1,
                     "default": "doubleclickbidmanager",
+                    "description": "See developer guide."
+                }
+            },
+            "version": {
+                "field": {
+                    "name": "version",
                     "kind": "string",
-                    "name": "api"
+                    "order": 2,
+                    "default": "v1",
+                    "description": "Must be supported version."
+                }
+            },
+            "function": {
+                "field": {
+                    "name": "function",
+                    "kind": "string",
+                    "order": 3,
+                    "default": "reports.files.list",
+                    "description": "Full function dot notation path."
+                }
+            },
+            "kwargs": {
+                "field": {
+                    "name": "kwargs",
+                    "kind": "json",
+                    "order": 4,
+                    "default": {
+                        "accountId": 7480,
+                        "profileId": 2782211,
+                        "reportId": 132847265
+                    },
+                    "description": "Dictionray object of name value pairs."
+                }
+            },
+            "iterate": {
+                "field": {
+                    "name": "iterate",
+                    "kind": "boolean",
+                    "order": 5,
+                    "default": false,
+                    "description": "Is the result a list?"
+                }
+            },
+            "results": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "dataset",
+                            "kind": "string",
+                            "order": 6,
+                            "default": "",
+                            "description": "Existing dataset in BigQuery."
+                        }
+                    },
+                    "table": {
+                        "field": {
+                            "name": "table",
+                            "kind": "string",
+                            "order": 7,
+                            "default": "",
+                            "description": "Table to write API call results to."
+                        }
+                    },
+                    "schema": {
+                        "field": {
+                            "name": "schema",
+                            "kind": "json",
+                            "order": 9,
+                            "default": [],
+                            "description": "Schema provided in JSON list format or empty list."
+                        }
+                    },
+                    "format": "JSON"
                 }
             }
         }

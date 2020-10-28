@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>July 31, 2019 (1 year, 1 month)</td>
+              <td>July 31, 2019 (1 year, 3 months)</td>
             </tr>
 
             <tr>
@@ -244,98 +244,98 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
+            "__comment__": "Copy the tamplate sheet to the users sheet.  If it already exists, nothing happens.",
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
                 }
             },
-            "sheet": {
-                "field": {
-                    "description": "Name or URL of sheet.",
-                    "order": 1,
-                    "default": "",
-                    "kind": "string",
-                    "name": "sheet"
-                }
-            },
-            "__comment__": "Copy the tamplate sheet to the users sheet.  If it already exists, nothing happens.",
             "template": {
                 "sheet": "https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit#gid=0",
                 "tab": "Video"
             },
+            "sheet": {
+                "field": {
+                    "name": "sheet",
+                    "kind": "string",
+                    "order": 1,
+                    "default": "",
+                    "description": "Name or URL of sheet."
+                }
+            },
             "tab": {
                 "field": {
-                    "description": "Name of sheet tab.",
+                    "name": "tab",
+                    "kind": "string",
                     "order": 2,
                     "default": "",
-                    "kind": "string",
-                    "name": "tab"
+                    "description": "Name of sheet tab."
                 }
             }
         }
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/video/run.py" target="_blank">video</a>": {
+            "__comment__": "Read video effects and values from sheet and/or bigquery.",
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
+                }
+            },
+            "sheets": {
+                "sheet": {
+                    "field": {
+                        "name": "sheet",
+                        "kind": "string",
+                        "order": 1,
+                        "default": "",
+                        "description": "Name or URL of sheet."
+                    }
+                },
+                "tab": {
+                    "field": {
+                        "name": "tab",
+                        "kind": "string",
+                        "order": 2,
+                        "default": "",
+                        "description": "Name of sheet tab."
+                    }
                 }
             },
             "bigquery": {
                 "project": {
                     "field": {
-                        "description": "Google Cloud Project Identifier.",
+                        "name": "project",
+                        "kind": "string",
                         "order": 3,
                         "default": "",
-                        "kind": "string",
-                        "name": "project"
+                        "description": "Google Cloud Project Identifier."
                     }
                 },
                 "dataset": {
                     "field": {
-                        "description": "Name of dataset.",
+                        "name": "dataset",
+                        "kind": "string",
                         "order": 4,
                         "default": "",
-                        "kind": "string",
-                        "name": "dataset"
+                        "description": "Name of dataset."
                     }
                 },
                 "table": {
                     "field": {
-                        "description": "Name of table.",
+                        "name": "table",
+                        "kind": "string",
                         "order": 5,
                         "default": "",
-                        "kind": "string",
-                        "name": "table"
-                    }
-                }
-            },
-            "__comment__": "Read video effects and values from sheet and/or bigquery.",
-            "sheets": {
-                "sheet": {
-                    "field": {
-                        "description": "Name or URL of sheet.",
-                        "order": 1,
-                        "default": "",
-                        "kind": "string",
-                        "name": "sheet"
-                    }
-                },
-                "tab": {
-                    "field": {
-                        "description": "Name of sheet tab.",
-                        "order": 2,
-                        "default": "",
-                        "kind": "string",
-                        "name": "tab"
+                        "description": "Name of table."
                     }
                 }
             }

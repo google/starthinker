@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>June 6, 2018 (2 years, 3 months)</td>
+              <td>June 6, 2018 (2 years, 4 months)</td>
             </tr>
 
             <tr>
@@ -246,11 +246,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/lineitem/run.py" target="_blank">lineitem</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
                 }
             },
             "write": {
@@ -260,24 +260,24 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "field": {
                             "name": "dataset",
                             "kind": "string",
-                            "default": "",
-                            "order": 1
-                        }
-                    },
-                    "legacy": {
-                        "field": {
-                            "name": "legacy",
-                            "kind": "boolean",
-                            "default": false,
-                            "order": 3
+                            "order": 1,
+                            "default": ""
                         }
                     },
                     "query": {
                         "field": {
                             "name": "query",
                             "kind": "string",
-                            "default": "SELECT * FROM `Dataset.Table`;",
-                            "order": 2
+                            "order": 2,
+                            "default": "SELECT * FROM `Dataset.Table`;"
+                        }
+                    },
+                    "legacy": {
+                        "field": {
+                            "name": "legacy",
+                            "kind": "boolean",
+                            "order": 3,
+                            "default": false
                         }
                     }
                 }

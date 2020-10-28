@@ -66,74 +66,74 @@ TASKS = [
     'smartsheet': {
       'auth': {
         'field': {
-          'order': 0,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 0,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'token': {
         'field': {
-          'order': 2,
-          'kind': 'string',
           'name': 'token',
-          'description': 'Retrieve from SmartSheet account settings.',
-          'default': ''
+          'kind': 'string',
+          'order': 2,
+          'default': '',
+          'description': 'Retrieve from SmartSheet account settings.'
         }
       },
       'sheet': {
         'field': {
-          'order': 3,
-          'kind': 'string',
           'name': 'sheet',
+          'kind': 'string',
+          'order': 3,
           'description': 'Retrieve from sheet properties.'
         }
       },
       'link': {
         'field': {
-          'order': 7,
-          'kind': 'boolean',
           'name': 'link',
-          'description': 'Add a link to each row as the first column.',
-          'default': True
+          'kind': 'boolean',
+          'order': 7,
+          'default': True,
+          'description': 'Add a link to each row as the first column.'
         }
       },
       'out': {
         'bigquery': {
-          'schema': {
+          'auth': {
             'field': {
-              'order': 6,
-              'kind': 'json',
-              'name': 'schema',
-              'description': 'Schema provided in JSON list format or leave empty to auto detect.'
-            }
-          },
-          'table': {
-            'field': {
-              'order': 5,
-              'kind': 'string',
-              'name': 'table',
-              'description': 'Table to create from this report.',
-              'default': ''
+              'name': 'auth_write',
+              'kind': 'authentication',
+              'order': 1,
+              'default': 'service',
+              'description': 'Credentials used for writing data.'
             }
           },
           'dataset': {
             'field': {
-              'order': 4,
-              'kind': 'string',
               'name': 'dataset',
-              'description': 'Existing BigQuery dataset.',
-              'default': ''
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'Existing BigQuery dataset.'
             }
           },
-          'auth': {
+          'table': {
             'field': {
-              'order': 1,
-              'kind': 'authentication',
-              'name': 'auth_write',
-              'description': 'Credentials used for writing data.',
-              'default': 'service'
+              'name': 'table',
+              'kind': 'string',
+              'order': 5,
+              'default': '',
+              'description': 'Table to create from this report.'
+            }
+          },
+          'schema': {
+            'field': {
+              'name': 'schema',
+              'kind': 'json',
+              'order': 6,
+              'description': 'Schema provided in JSON list format or leave empty to auto detect.'
             }
           }
         }

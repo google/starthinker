@@ -49,8 +49,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'archive_days': 7,
   'auth_write': 'service',  # Credentials used for writing data.
+  'archive_days': 7,
   'archive_bucket': '',
   'archive_path': '',
   'archive_delete': False,
@@ -59,47 +59,47 @@ INPUTS = {
 TASKS = [
   {
     'archive': {
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
+      'days': {
+        'field': {
+          'name': 'archive_days',
+          'kind': 'integer',
+          'order': 1,
+          'default': 7
+        }
+      },
       'storage': {
         'bucket': {
           'field': {
-            'order': 2,
-            'kind': 'string',
             'name': 'archive_bucket',
+            'kind': 'string',
+            'order': 2,
             'default': ''
           }
         },
         'path': {
           'field': {
-            'order': 3,
-            'kind': 'string',
             'name': 'archive_path',
+            'kind': 'string',
+            'order': 3,
             'default': ''
           }
         }
       },
       'delete': {
         'field': {
-          'order': 4,
-          'kind': 'boolean',
           'name': 'archive_delete',
+          'kind': 'boolean',
+          'order': 4,
           'default': False
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
-        }
-      },
-      'days': {
-        'field': {
-          'order': 1,
-          'kind': 'integer',
-          'name': 'archive_days',
-          'default': 7
         }
       }
     }

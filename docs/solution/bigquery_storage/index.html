@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>March 15, 2018 (2 years, 6 months)</td>
+              <td>March 15, 2018 (2 years, 7 months)</td>
             </tr>
 
             <tr>
@@ -246,69 +246,69 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
-                }
-            },
-            "schema": {
-                "field": {
-                    "description": "Schema provided in JSON list format or empty list.",
-                    "order": 5,
-                    "default": "[]",
-                    "kind": "json",
-                    "name": "schema"
+                    "description": "Credentials used for reading data."
                 }
             },
             "from": {
-                "path": {
-                    "field": {
-                        "description": "Path prefix to read from, no * required.",
-                        "order": 2,
-                        "default": "",
-                        "kind": "string",
-                        "name": "path"
-                    }
-                },
                 "bucket": {
                     "field": {
-                        "description": "Google cloud bucket.",
+                        "name": "bucket",
+                        "kind": "string",
                         "order": 1,
                         "default": "",
+                        "description": "Google cloud bucket."
+                    }
+                },
+                "path": {
+                    "field": {
+                        "name": "path",
                         "kind": "string",
-                        "name": "bucket"
+                        "order": 2,
+                        "default": "",
+                        "description": "Path prefix to read from, no * required."
                     }
                 }
             },
             "to": {
                 "auth": {
                     "field": {
-                        "description": "Credentials used for writing data.",
+                        "name": "auth_write",
+                        "kind": "authentication",
                         "order": 1,
                         "default": "service",
-                        "kind": "authentication",
-                        "name": "auth_write"
+                        "description": "Credentials used for writing data."
                     }
                 },
                 "dataset": {
                     "field": {
-                        "description": "Existing BigQuery dataset.",
+                        "name": "dataset",
+                        "kind": "string",
                         "order": 3,
                         "default": "",
-                        "kind": "string",
-                        "name": "dataset"
+                        "description": "Existing BigQuery dataset."
                     }
                 },
                 "table": {
                     "field": {
-                        "description": "Table to create from this query.",
+                        "name": "table",
+                        "kind": "string",
                         "order": 4,
                         "default": "",
-                        "kind": "string",
-                        "name": "table"
+                        "description": "Table to create from this query."
                     }
+                }
+            },
+            "schema": {
+                "field": {
+                    "name": "schema",
+                    "kind": "json",
+                    "order": 5,
+                    "default": "[]",
+                    "description": "Schema provided in JSON list format or empty list."
                 }
             }
         }

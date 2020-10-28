@@ -59,39 +59,39 @@ INPUTS = {
 TASKS = [
   {
     'dcm': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'report': {
-        'body': {
-          'field': {
-            'order': 2,
-            'kind': 'json',
-            'name': 'body',
-            'default': '{}'
-          }
-        },
         'account': {
           'field': {
-            'order': 1,
-            'kind': 'string',
             'name': 'account',
+            'kind': 'string',
+            'order': 1,
             'default': ''
+          }
+        },
+        'body': {
+          'field': {
+            'name': 'body',
+            'kind': 'json',
+            'order': 2,
+            'default': '{}'
           }
         }
       },
       'delete': {
         'field': {
-          'order': 3,
-          'kind': 'boolean',
           'name': 'delete',
+          'kind': 'boolean',
+          'order': 3,
           'default': False
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
         }
       }
     }

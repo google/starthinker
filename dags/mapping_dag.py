@@ -64,65 +64,65 @@ INPUTS = {
 TASKS = [
   {
     'mapping': {
-      'out': {
-        'view': {
-          'field': {
-            'order': 8,
-            'kind': 'string',
-            'name': 'out_view',
-            'default': ''
-          }
-        },
-        'dataset': {
-          'field': {
-            'order': 7,
-            'kind': 'string',
-            'name': 'out_dataset',
-            'default': ''
-          }
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'sheet': {
         'field': {
-          'order': 1,
-          'kind': 'string',
           'name': 'sheet',
+          'kind': 'string',
+          'order': 1,
           'default': ''
         }
       },
       'tab': {
         'field': {
-          'order': 2,
-          'kind': 'string',
           'name': 'tab',
+          'kind': 'string',
+          'order': 2,
           'default': ''
         }
       },
       'in': {
-        'table': {
+        'dataset': {
           'field': {
-            'order': 4,
+            'name': 'in_dataset',
             'kind': 'string',
-            'name': 'in_table',
+            'order': 3,
             'default': ''
           }
         },
-        'dataset': {
+        'table': {
           'field': {
-            'order': 3,
+            'name': 'in_table',
             'kind': 'string',
-            'name': 'in_dataset',
+            'order': 4,
             'default': ''
           }
         }
       },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+      'out': {
+        'dataset': {
+          'field': {
+            'name': 'out_dataset',
+            'kind': 'string',
+            'order': 7,
+            'default': ''
+          }
+        },
+        'view': {
+          'field': {
+            'name': 'out_view',
+            'kind': 'string',
+            'order': 8,
+            'default': ''
+          }
         }
       }
     }

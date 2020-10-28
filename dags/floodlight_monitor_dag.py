@@ -59,43 +59,43 @@ INPUTS = {
 TASKS = [
   {
     'floodlight_monitor': {
-      'sheet': {
-        'range': 'A2:B',
-        'sheet': {
-          'field': {
-            'order': 2,
-            'kind': 'string',
-            'name': 'sheet',
-            'description': 'Full Name or URL to Google Sheet, Floodlight Monitor tab will be added.',
-            'default': ''
-          }
-        },
-        'tab': 'Floodlight Monitor'
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
       },
       'account': {
         'field': {
-          'order': 1,
-          'kind': 'string',
           'name': 'dcm_account',
-          'description': 'Specify an account_id as a number.',
-          'default': ''
+          'kind': 'string',
+          'order': 1,
+          'default': '',
+          'description': 'Specify an account_id as a number.'
         }
       },
       'template': {
         'template': {
-          'range': 'A1',
           'sheet': 'https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing',
-          'tab': 'Floodlight Monitor'
+          'tab': 'Floodlight Monitor',
+          'range': 'A1'
         }
       },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
+      'sheet': {
+        'sheet': {
+          'field': {
+            'name': 'sheet',
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Full Name or URL to Google Sheet, Floodlight Monitor tab will be added.'
+          }
+        },
+        'tab': 'Floodlight Monitor',
+        'range': 'A2:B'
       }
     }
   }

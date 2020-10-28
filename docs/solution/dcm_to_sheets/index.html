@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Jan. 29, 2018 (2 years, 7 months)</td>
+              <td>Jan. 29, 2018 (2 years, 9 months)</td>
             </tr>
 
             <tr>
@@ -254,11 +254,37 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
+                }
+            },
+            "report": {
+                "account": {
+                    "field": {
+                        "name": "account",
+                        "kind": "integer",
+                        "order": 2,
+                        "default": ""
+                    }
+                },
+                "report_id": {
+                    "field": {
+                        "name": "report_id",
+                        "kind": "integer",
+                        "order": 3,
+                        "default": ""
+                    }
+                },
+                "name": {
+                    "field": {
+                        "name": "report_name",
+                        "kind": "string",
+                        "order": 4,
+                        "default": ""
+                    }
                 }
             },
             "out": {
@@ -267,45 +293,19 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "field": {
                             "name": "sheet",
                             "kind": "string",
-                            "default": "",
-                            "order": 5
+                            "order": 5,
+                            "default": ""
                         }
                     },
-                    "range": "A1",
                     "tab": {
                         "field": {
                             "name": "tab",
                             "kind": "string",
-                            "default": "",
-                            "order": 6
+                            "order": 6,
+                            "default": ""
                         }
-                    }
-                }
-            },
-            "report": {
-                "account": {
-                    "field": {
-                        "name": "account",
-                        "kind": "integer",
-                        "default": "",
-                        "order": 2
-                    }
-                },
-                "report_id": {
-                    "field": {
-                        "name": "report_id",
-                        "kind": "integer",
-                        "default": "",
-                        "order": 3
-                    }
-                },
-                "name": {
-                    "field": {
-                        "name": "report_name",
-                        "kind": "string",
-                        "default": "",
-                        "order": 4
-                    }
+                    },
+                    "range": "A1"
                 }
             }
         }

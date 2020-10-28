@@ -58,43 +58,43 @@ INPUTS = {
 TASKS = [
   {
     'dcm': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
+      'report_run_only': True,
       'report': {
-        'name': {
+        'account': {
           'field': {
-            'order': 3,
-            'kind': 'string',
-            'name': 'report_name',
-            'description': 'CM report name, empty if using id instead.',
-            'default': ''
+            'name': 'account',
+            'kind': 'integer',
+            'order': 1,
+            'default': '',
+            'description': 'CM network id.'
           }
         },
         'report_id': {
           'field': {
-            'order': 2,
-            'kind': 'integer',
             'name': 'report_id',
-            'description': 'CM report id, empty if using name.',
-            'default': ''
+            'kind': 'integer',
+            'order': 2,
+            'default': '',
+            'description': 'CM report id, empty if using name.'
           }
         },
-        'account': {
+        'name': {
           'field': {
-            'order': 1,
-            'kind': 'integer',
-            'name': 'account',
-            'description': 'CM network id.',
-            'default': ''
+            'name': 'report_name',
+            'kind': 'string',
+            'order': 3,
+            'default': '',
+            'description': 'CM report name, empty if using id instead.'
           }
-        }
-      },
-      'report_run_only': True,
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
         }
       }
     }

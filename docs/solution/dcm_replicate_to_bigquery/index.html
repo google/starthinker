@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>March 3, 2020 (6 months, 3 weeks)</td>
+              <td>March 3, 2020 (7 months, 4 weeks)</td>
             </tr>
 
             <tr>
@@ -254,17 +254,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/drive/run.py" target="_blank">drive</a>": {
             "auth": "user",
             "copy": {
+                "source": "https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/",
                 "destination": {
                     "field": {
-                        "prefix": "CM Replicate For ",
-                        "default": "",
                         "name": "recipe_name",
+                        "prefix": "CM Replicate For ",
                         "kind": "string",
+                        "order": 1,
                         "description": "Name of document to deploy to.",
-                        "order": 1
+                        "default": ""
                     }
-                },
-                "source": "https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/"
+                }
             }
         }
     },
@@ -272,20 +272,20 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
+                    "name": "auth_write",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "service",
-                    "kind": "authentication",
-                    "name": "auth_write"
+                    "description": "Credentials used for writing data."
                 }
             },
             "dataset": {
                 "field": {
-                    "description": "Name of Google BigQuery dataset to create.",
+                    "name": "recipe_slug",
+                    "kind": "string",
                     "order": 2,
                     "default": "",
-                    "kind": "string",
-                    "name": "recipe_slug"
+                    "description": "Name of Google BigQuery dataset to create."
                 }
             }
         }
@@ -294,82 +294,82 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm_replicate/run.py" target="_blank">dcm_replicate</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 0,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
                 }
             },
-            "out": {
-                "bigquery": {
-                    "is_incremental_load": {
-                        "field": {
-                            "description": "Append report data to existing table, requires Date column.",
-                            "order": 7,
-                            "default": false,
-                            "kind": "boolean",
-                            "name": "Aggregate"
-                        }
-                    },
-                    "dataset": {
-                        "field": {
-                            "name": "recipe_slug",
-                            "kind": "string",
-                            "default": "",
-                            "order": 4
-                        }
+            "report": {
+                "account": {
+                    "field": {
+                        "name": "account",
+                        "kind": "integer",
+                        "order": 3,
+                        "default": "",
+                        "description": "CM network id."
+                    }
+                },
+                "id": {
+                    "field": {
+                        "name": "report_id",
+                        "kind": "integer",
+                        "order": 4,
+                        "default": "",
+                        "description": "CM template report id, for template"
+                    }
+                },
+                "name": {
+                    "field": {
+                        "name": "report_name",
+                        "kind": "string",
+                        "order": 5,
+                        "default": "",
+                        "description": "CM template report name, empty if using id instead."
+                    }
+                },
+                "delete": {
+                    "field": {
+                        "name": "delete",
+                        "kind": "boolean",
+                        "order": 6,
+                        "default": false,
+                        "description": "Use only to reset the reports if setup changes."
                     }
                 }
             },
             "in": {
                 "sheet": {
                     "field": {
-                        "prefix": "CM Replicate For ",
-                        "default": "",
                         "name": "recipe_name",
-                        "description": "Sheet to read ids from.",
+                        "prefix": "CM Replicate For ",
                         "kind": "string",
-                        "order": 1
+                        "order": 1,
+                        "default": "",
+                        "description": "Sheet to read ids from."
                     }
                 },
                 "tab": "Accounts"
             },
-            "report": {
-                "account": {
-                    "field": {
-                        "description": "CM network id.",
-                        "order": 3,
-                        "default": "",
-                        "kind": "integer",
-                        "name": "account"
-                    }
-                },
-                "id": {
-                    "field": {
-                        "description": "CM template report id, for template",
-                        "order": 4,
-                        "default": "",
-                        "kind": "integer",
-                        "name": "report_id"
-                    }
-                },
-                "delete": {
-                    "field": {
-                        "description": "Use only to reset the reports if setup changes.",
-                        "order": 6,
-                        "default": false,
-                        "kind": "boolean",
-                        "name": "delete"
-                    }
-                },
-                "name": {
-                    "field": {
-                        "description": "CM template report name, empty if using id instead.",
-                        "order": 5,
-                        "default": "",
-                        "kind": "string",
-                        "name": "report_name"
+            "out": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_slug",
+                            "kind": "string",
+                            "order": 4,
+                            "default": ""
+                        }
+                    },
+                    "is_incremental_load": {
+                        "field": {
+                            "name": "Aggregate",
+                            "kind": "boolean",
+                            "order": 7,
+                            "default": false,
+                            "description": "Append report data to existing table, requires Date column."
+                        }
                     }
                 }
             }

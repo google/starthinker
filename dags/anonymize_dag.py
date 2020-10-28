@@ -60,21 +60,30 @@ INPUTS = {
 TASKS = [
   {
     'anonymize': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'bigquery': {
         'from': {
           'project': {
             'field': {
-              'order': 1,
-              'kind': 'string',
               'name': 'from_project',
+              'kind': 'string',
+              'order': 1,
               'description': 'Original project to copy from.'
             }
           },
           'dataset': {
             'field': {
-              'order': 2,
-              'kind': 'string',
               'name': 'from_dataset',
+              'kind': 'string',
+              'order': 2,
               'description': 'Original dataset to copy from.'
             }
           }
@@ -82,30 +91,21 @@ TASKS = [
         'to': {
           'project': {
             'field': {
-              'order': 3,
-              'kind': 'string',
               'name': 'to_project',
-              'description': 'Anonymous data will be writen to.',
-              'default': None
+              'kind': 'string',
+              'order': 3,
+              'default': None,
+              'description': 'Anonymous data will be writen to.'
             }
           },
           'dataset': {
             'field': {
-              'order': 4,
-              'kind': 'string',
               'name': 'to_dataset',
+              'kind': 'string',
+              'order': 4,
               'description': 'Anonymous data will be writen to.'
             }
           }
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'service'
         }
       }
     }

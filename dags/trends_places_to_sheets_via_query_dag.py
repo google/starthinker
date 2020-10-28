@@ -65,11 +65,28 @@ INPUTS = {
 TASKS = [
   {
     'twitter': {
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'secret': {
         'field': {
-          'order': 1,
-          'kind': 'string',
           'name': 'secret',
+          'kind': 'string',
+          'order': 1,
+          'default': ''
+        }
+      },
+      'key': {
+        'field': {
+          'name': 'key',
+          'kind': 'string',
+          'order': 2,
           'default': ''
         }
       },
@@ -77,69 +94,52 @@ TASKS = [
         'places': {
           'single_cell': True,
           'bigquery': {
+            'dataset': {
+              'field': {
+                'name': 'places_dataset',
+                'kind': 'string',
+                'order': 3,
+                'default': ''
+              }
+            },
             'query': {
               'field': {
-                'order': 4,
-                'kind': 'string',
                 'name': 'places_query',
+                'kind': 'string',
+                'order': 4,
                 'default': ''
               }
             },
             'legacy': {
               'field': {
-                'order': 5,
-                'kind': 'boolean',
                 'name': 'places_legacy',
+                'kind': 'boolean',
+                'order': 5,
                 'default': False
-              }
-            },
-            'dataset': {
-              'field': {
-                'order': 3,
-                'kind': 'string',
-                'name': 'places_dataset',
-                'default': ''
               }
             }
           }
         }
       },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
-        }
-      },
-      'key': {
-        'field': {
-          'order': 2,
-          'kind': 'string',
-          'name': 'key',
-          'default': ''
-        }
-      },
       'out': {
         'sheets': {
-          'range': 'A1',
           'sheet': {
             'field': {
-              'order': 6,
-              'kind': 'string',
               'name': 'destination_sheet',
+              'kind': 'string',
+              'order': 6,
               'default': ''
             }
           },
           'tab': {
             'field': {
-              'order': 7,
-              'kind': 'string',
               'name': 'destination_tab',
+              'kind': 'string',
+              'order': 7,
               'default': ''
             }
-          }
+          },
+          'range': 'A1'
         }
       }
     }

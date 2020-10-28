@@ -54,8 +54,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'email': '',  # Email address report was sent to.
   'auth_read': 'user',  # Credentials used for reading data.
+  'email': '',  # Email address report was sent to.
   'subject': '.*',  # Regular expression to match subject. Double escape backslashes.
   'dataset': '',  # Existing dataset in BigQuery.
   'table': '',  # Name of table to be written to.
@@ -68,73 +68,73 @@ TASKS = [
     'email': {
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'read': {
-        'subject': {
+        'from': 'noreply-dv360@google.com',
+        'to': {
           'field': {
-            'order': 2,
+            'name': 'email',
             'kind': 'string',
-            'name': 'subject',
-            'description': 'Regular expression to match subject. Double escape backslashes.',
-            'default': '.*'
+            'order': 1,
+            'default': '',
+            'description': 'Email address report was sent to.'
           }
         },
+        'subject': {
+          'field': {
+            'name': 'subject',
+            'kind': 'string',
+            'order': 2,
+            'default': '.*',
+            'description': 'Regular expression to match subject. Double escape backslashes.'
+          }
+        },
+        'link': 'https://storage.googleapis.com/.*',
         'attachment': '.*',
-        'from': 'noreply-dv360@google.com',
         'out': {
           'bigquery': {
-            'schema': {
+            'dataset': {
               'field': {
-                'order': 5,
-                'kind': 'json',
-                'name': 'dbm_schema',
-                'description': 'Schema provided in JSON list format or empty list.',
-                'default': '[]'
+                'name': 'dataset',
+                'kind': 'string',
+                'order': 3,
+                'default': '',
+                'description': 'Existing dataset in BigQuery.'
               }
             },
             'table': {
               'field': {
-                'order': 4,
-                'kind': 'string',
                 'name': 'table',
-                'description': 'Name of table to be written to.',
-                'default': ''
+                'kind': 'string',
+                'order': 4,
+                'default': '',
+                'description': 'Name of table to be written to.'
+              }
+            },
+            'schema': {
+              'field': {
+                'name': 'dbm_schema',
+                'kind': 'json',
+                'order': 5,
+                'default': '[]',
+                'description': 'Schema provided in JSON list format or empty list.'
               }
             },
             'is_incremental_load': {
               'field': {
-                'order': 6,
-                'kind': 'boolean',
                 'name': 'is_incremental_load',
-                'description': 'Append report data to table based on date column, de-duplicates.',
-                'default': False
-              }
-            },
-            'dataset': {
-              'field': {
-                'order': 3,
-                'kind': 'string',
-                'name': 'dataset',
-                'description': 'Existing dataset in BigQuery.',
-                'default': ''
+                'kind': 'boolean',
+                'order': 6,
+                'default': False,
+                'description': 'Append report data to table based on date column, de-duplicates.'
               }
             }
-          }
-        },
-        'link': 'https://storage.googleapis.com/.*',
-        'to': {
-          'field': {
-            'order': 1,
-            'kind': 'string',
-            'name': 'email',
-            'description': 'Email address report was sent to.',
-            'default': ''
           }
         }
       }

@@ -213,10 +213,19 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                <tbody>
                
                  <tr>
-                   <td>Csat Improvement</td>
+                   <td>Spend Optimization</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 90%"></div>
+                       <div class="determinate" style="width: 0%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Spend Growth</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 0%"></div>
                      </div>
                    </td>
                  </tr>
@@ -231,15 +240,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Spend Optimization</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
                    <td>Account Health</td>
                    <td>
                      <div class="progress">
@@ -249,10 +249,10 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                  </tr>
                
                  <tr>
-                   <td>Spend Growth</td>
+                   <td>Csat Improvement</td>
                    <td>
                      <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
+                       <div class="determinate" style="width: 90%"></div>
                      </div>
                    </td>
                  </tr>
@@ -281,7 +281,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>July 25, 2019 (1 year, 2 months)</td>
+              <td>July 25, 2019 (1 year, 3 months)</td>
             </tr>
 
             <tr>
@@ -328,31 +328,31 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/ga_settings_download/run.py" target="_blank">ga_settings_download</a>": {
+            "description": "Will create tables with format ga_* to hold each endpoint via a call to the API list function.",
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
-                }
-            },
-            "description": "Will create tables with format ga_* to hold each endpoint via a call to the API list function.",
-            "dataset": {
-                "field": {
-                    "description": "Dataset to be written to in BigQuery.",
-                    "order": 2,
-                    "default": "",
-                    "kind": "string",
-                    "name": "dataset"
+                    "description": "Credentials used for reading data."
                 }
             },
             "accounts": {
                 "field": {
                     "name": "account_ids",
                     "kind": "integer_list",
-                    "default": [],
-                    "order": 1
+                    "order": 1,
+                    "default": []
+                }
+            },
+            "dataset": {
+                "field": {
+                    "name": "dataset",
+                    "kind": "string",
+                    "order": 2,
+                    "default": "",
+                    "description": "Dataset to be written to in BigQuery."
                 }
             }
         }

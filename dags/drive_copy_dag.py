@@ -58,33 +58,33 @@ INPUTS = {
 TASKS = [
   {
     'drive': {
-      'copy': {
-        'destination': {
-          'field': {
-            'order': 2,
-            'kind': 'string',
-            'name': 'destination',
-            'description': 'Name document to copy to.',
-            'default': ''
-          }
-        },
-        'source': {
-          'field': {
-            'order': 1,
-            'kind': 'string',
-            'name': 'source',
-            'description': 'Name or URL of document to copy from.',
-            'default': ''
-          }
-        }
-      },
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
+      'copy': {
+        'source': {
+          'field': {
+            'name': 'source',
+            'kind': 'string',
+            'order': 1,
+            'default': '',
+            'description': 'Name or URL of document to copy from.'
+          }
+        },
+        'destination': {
+          'field': {
+            'name': 'destination',
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Name document to copy to.'
+          }
         }
       }
     }

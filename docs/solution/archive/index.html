@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 14, 2017 (3 years, 1 month)</td>
+              <td>Aug. 14, 2017 (3 years, 2 months)</td>
             </tr>
 
             <tr>
@@ -246,45 +246,45 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/archive/run.py" target="_blank">archive</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
+                    "name": "auth_write",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "service",
-                    "kind": "authentication",
-                    "name": "auth_write"
-                }
-            },
-            "storage": {
-                "path": {
-                    "field": {
-                        "name": "archive_path",
-                        "kind": "string",
-                        "default": "",
-                        "order": 3
-                    }
-                },
-                "bucket": {
-                    "field": {
-                        "name": "archive_bucket",
-                        "kind": "string",
-                        "default": "",
-                        "order": 2
-                    }
+                    "description": "Credentials used for writing data."
                 }
             },
             "days": {
                 "field": {
                     "name": "archive_days",
                     "kind": "integer",
-                    "default": 7,
-                    "order": 1
+                    "order": 1,
+                    "default": 7
+                }
+            },
+            "storage": {
+                "bucket": {
+                    "field": {
+                        "name": "archive_bucket",
+                        "kind": "string",
+                        "order": 2,
+                        "default": ""
+                    }
+                },
+                "path": {
+                    "field": {
+                        "name": "archive_path",
+                        "kind": "string",
+                        "order": 3,
+                        "default": ""
+                    }
                 }
             },
             "delete": {
                 "field": {
                     "name": "archive_delete",
                     "kind": "boolean",
-                    "default": false,
-                    "order": 4
+                    "order": 4,
+                    "default": false
                 }
             }
         }

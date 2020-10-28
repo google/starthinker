@@ -57,40 +57,40 @@ INPUTS = {
 TASKS = [
   {
     'sheets': {
-      'range': {
+      'auth': {
         'field': {
-          'order': 3,
-          'kind': 'string',
-          'name': 'sheets_range',
-          'default': ''
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
-      'clear': True,
       'sheet': {
         'field': {
-          'order': 1,
-          'kind': 'string',
           'name': 'sheets_sheet',
+          'kind': 'string',
+          'order': 1,
           'default': ''
         }
       },
       'tab': {
         'field': {
-          'order': 2,
-          'kind': 'string',
           'name': 'sheets_tab',
+          'kind': 'string',
+          'order': 2,
           'default': ''
         }
       },
-      'auth': {
+      'range': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'name': 'sheets_range',
+          'kind': 'string',
+          'order': 3,
+          'default': ''
         }
-      }
+      },
+      'clear': True
     }
   }
 ]

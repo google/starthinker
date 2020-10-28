@@ -58,32 +58,32 @@ INPUTS = {
 TASKS = [
   {
     'ga_settings_download': {
+      'description': 'Will create tables with format ga_* to hold each endpoint via a call to the API list function.',
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'accounts': {
         'field': {
-          'order': 1,
-          'kind': 'integer_list',
           'name': 'account_ids',
+          'kind': 'integer_list',
+          'order': 1,
           'default': [
           ]
         }
       },
-      'description': 'Will create tables with format ga_* to hold each endpoint via a call to the API list function.',
       'dataset': {
         'field': {
-          'order': 2,
-          'kind': 'string',
           'name': 'dataset',
-          'description': 'Dataset to be written to in BigQuery.',
-          'default': ''
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'string',
+          'order': 2,
+          'default': '',
+          'description': 'Dataset to be written to in BigQuery.'
         }
       }
     }

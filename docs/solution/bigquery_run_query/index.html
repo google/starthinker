@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 14, 2017 (3 years, 1 month)</td>
+              <td>Aug. 14, 2017 (3 years, 2 months)</td>
             </tr>
 
             <tr>
@@ -250,30 +250,30 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
+                    "name": "auth_write",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "service",
-                    "kind": "authentication",
-                    "name": "auth_write"
+                    "description": "Credentials used for writing data."
                 }
             },
             "run": {
-                "legacy": {
-                    "field": {
-                        "description": "Query type must match table and query format.",
-                        "order": 2,
-                        "default": true,
-                        "kind": "boolean",
-                        "name": "legacy"
-                    }
-                },
                 "query": {
                     "field": {
-                        "description": "SQL with newlines and all.",
+                        "name": "query",
+                        "kind": "text",
                         "order": 1,
                         "default": "",
-                        "kind": "text",
-                        "name": "query"
+                        "description": "SQL with newlines and all."
+                    }
+                },
+                "legacy": {
+                    "field": {
+                        "name": "legacy",
+                        "kind": "boolean",
+                        "order": 2,
+                        "default": true,
+                        "description": "Query type must match table and query format."
                     }
                 }
             }

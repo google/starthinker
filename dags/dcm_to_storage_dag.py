@@ -63,66 +63,66 @@ INPUTS = {
 TASKS = [
   {
     'dcm': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'report': {
-        'name': {
+        'account': {
           'field': {
-            'order': 4,
-            'kind': 'string',
-            'name': 'report_name',
+            'name': 'account',
+            'kind': 'integer',
+            'order': 2,
             'default': ''
           }
         },
         'report_id': {
           'field': {
-            'order': 3,
-            'kind': 'integer',
             'name': 'report_id',
+            'kind': 'integer',
+            'order': 3,
             'default': ''
           }
         },
-        'account': {
+        'name': {
           'field': {
-            'order': 2,
-            'kind': 'integer',
-            'name': 'account',
+            'name': 'report_name',
+            'kind': 'string',
+            'order': 4,
             'default': ''
           }
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
         }
       },
       'out': {
         'storage': {
+          'auth': {
+            'field': {
+              'name': 'auth_write',
+              'kind': 'authentication',
+              'order': 1,
+              'default': 'service',
+              'description': 'Credentials used for writing data.'
+            }
+          },
           'bucket': {
             'field': {
-              'order': 5,
-              'kind': 'string',
               'name': 'bucket',
+              'kind': 'string',
+              'order': 5,
               'default': ''
             }
           },
           'path': {
             'field': {
-              'order': 6,
-              'kind': 'string',
               'name': 'path',
+              'kind': 'string',
+              'order': 6,
               'default': 'CM_Report'
-            }
-          },
-          'auth': {
-            'field': {
-              'order': 1,
-              'kind': 'authentication',
-              'name': 'auth_write',
-              'description': 'Credentials used for writing data.',
-              'default': 'service'
             }
           }
         }

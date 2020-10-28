@@ -201,12 +201,12 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>July 13, 2018 (2 years, 2 months)</td>
+              <td>July 13, 2018 (2 years, 3 months)</td>
             </tr>
 
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:aritrab@google.com,kenjora@google.com?subject=Request+For+A+Dynamic+Costs+Reporting+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Dynamic+Costs+Reporting+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fdynamic_costs%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">aritrab@google.com<br/>kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com,aritrab@google.com?subject=Request+For+A+Dynamic+Costs+Reporting+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Dynamic+Costs+Reporting+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fdynamic_costs%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com<br/>aritrab@google.com</a>
               </td>
             </tr>
 
@@ -286,54 +286,54 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dynamic_costs/run.py" target="_blank">dynamic_costs</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
                 }
             },
             "account": {
                 "field": {
                     "name": "dcm_account",
                     "kind": "string",
-                    "default": "",
-                    "order": 0
+                    "order": 0,
+                    "default": ""
                 }
             },
             "sheet": {
-                "range": "A2:B",
                 "template": {
-                    "range": "A1",
                     "url": "https://docs.google.com/spreadsheets/d/19J-Hjln2wd1E0aeG3JDgKQN9TVGRLWxIEUQSmmQetJc/edit?usp=sharing",
-                    "tab": "Dynamic Costs"
+                    "tab": "Dynamic Costs",
+                    "range": "A1"
                 },
                 "url": {
                     "field": {
                         "name": "configuration_sheet_url",
                         "kind": "string",
-                        "default": "",
-                        "order": 1
+                        "order": 1,
+                        "default": ""
                     }
                 },
-                "tab": "Dynamic Costs"
+                "tab": "Dynamic Costs",
+                "range": "A2:B"
             },
             "out": {
                 "auth": {
                     "field": {
-                        "description": "Credentials used for writing data.",
+                        "name": "auth_write",
+                        "kind": "authentication",
                         "order": 1,
                         "default": "service",
-                        "kind": "authentication",
-                        "name": "auth_write"
+                        "description": "Credentials used for writing data."
                     }
                 },
                 "dataset": {
                     "field": {
                         "name": "bigquery_dataset",
                         "kind": "string",
-                        "default": "dynamic_costs",
-                        "order": 2
+                        "order": 2,
+                        "default": "dynamic_costs"
                     }
                 }
             }

@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 4, 2020 (1 month, 2 weeks)</td>
+              <td>Aug. 4, 2020 (2 months, 3 weeks)</td>
             </tr>
 
             <tr>
@@ -246,25 +246,29 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/fred/run.py" target="_blank">fred</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
+                    "name": "auth",
+                    "kind": "authentication",
                     "order": 0,
                     "default": "service",
-                    "kind": "authentication",
-                    "name": "auth"
+                    "description": "Credentials used for writing data."
                 }
             },
             "api_key": {
                 "field": {
-                    "description": "32 character alpha-numeric lowercase string.",
+                    "name": "fred_api_key",
+                    "kind": "string",
                     "order": 1,
                     "default": "",
-                    "kind": "string",
-                    "name": "fred_api_key"
+                    "description": "32 character alpha-numeric lowercase string."
                 }
             },
             "frequency": {
                 "field": {
+                    "name": "fred_frequency",
+                    "kind": "choice",
+                    "order": 4,
                     "default": "",
+                    "description": "An optional parameter that indicates a lower frequency to aggregate values to.",
                     "choices": [
                         "",
                         "d",
@@ -283,27 +287,27 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "wesa",
                         "bwew",
                         "bwem"
-                    ],
-                    "kind": "choice",
-                    "name": "fred_frequency",
-                    "order": 4,
-                    "description": "An optional parameter that indicates a lower frequency to aggregate values to."
+                    ]
                 }
             },
             "series": [
                 {
                     "series_id": {
                         "field": {
-                            "description": "Series ID to pull data from.",
+                            "name": "fred_series_id",
+                            "kind": "string",
                             "order": 2,
                             "default": "",
-                            "kind": "string",
-                            "name": "fred_series_id"
+                            "description": "Series ID to pull data from."
                         }
                     },
                     "units": {
                         "field": {
+                            "name": "fred_units",
+                            "kind": "choice",
+                            "order": 3,
                             "default": "lin",
+                            "description": "A key that indicates a data value transformation.",
                             "choices": [
                                 "lin",
                                 "chg",
@@ -314,25 +318,21 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                                 "cch",
                                 "cca",
                                 "log"
-                            ],
-                            "kind": "choice",
-                            "name": "fred_units",
-                            "order": 3,
-                            "description": "A key that indicates a data value transformation."
+                            ]
                         }
                     },
                     "aggregation_method": {
                         "field": {
+                            "name": "fred_aggregation_method",
+                            "kind": "choice",
+                            "order": 5,
                             "default": "avg",
+                            "description": "A key that indicates the aggregation method used for frequency aggregation.",
                             "choices": [
                                 "avg",
                                 "sum",
                                 "eop"
-                            ],
-                            "kind": "choice",
-                            "name": "fred_aggregation_method",
-                            "order": 5,
-                            "description": "A key that indicates the aggregation method used for frequency aggregation."
+                            ]
                         }
                     }
                 }
@@ -341,20 +341,20 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "bigquery": {
                     "project": {
                         "field": {
-                            "description": "Existing BigQuery project.",
+                            "name": "project",
+                            "kind": "string",
                             "order": 10,
                             "default": "",
-                            "kind": "string",
-                            "name": "project"
+                            "description": "Existing BigQuery project."
                         }
                     },
                     "dataset": {
                         "field": {
-                            "description": "Existing BigQuery dataset.",
+                            "name": "dataset",
+                            "kind": "string",
                             "order": 11,
                             "default": "",
-                            "kind": "string",
-                            "name": "dataset"
+                            "description": "Existing BigQuery dataset."
                         }
                     }
                 }

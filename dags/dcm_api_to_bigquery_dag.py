@@ -60,40 +60,19 @@ INPUTS = {
 TASKS = [
   {
     'dcm_api': {
-      'out': {
-        'dataset': {
-          'field': {
-            'order': 1,
-            'kind': 'string',
-            'name': 'dataset',
-            'description': 'Google BigQuery dataset to create tables in.',
-            'default': ''
-          }
-        },
-        'auth': {
-          'field': {
-            'order': 1,
-            'kind': 'authentication',
-            'name': 'auth_write',
-            'description': 'Credentials used for writing data.',
-            'default': 'service'
-          }
-        }
-      },
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'endpoints': {
         'field': {
-          'kind': 'choice',
           'name': 'endpoint',
-          'default': '',
+          'kind': 'choice',
           'choices': [
             'accountPermissionGroups',
             'accountPermissions',
@@ -145,20 +124,41 @@ TASKS = [
             'userRolePermissions',
             'userRoles',
             'videoFormats'
-          ]
+          ],
+          'default': ''
         }
       },
       'accounts': {
+        'single_cell': True,
         'values': {
           'field': {
-            'order': 2,
-            'kind': 'integer_list',
             'name': 'accounts',
-            'description': 'Comma separated CM account ids.',
-            'default': ''
+            'kind': 'integer_list',
+            'order': 2,
+            'default': '',
+            'description': 'Comma separated CM account ids.'
+          }
+        }
+      },
+      'out': {
+        'auth': {
+          'field': {
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
           }
         },
-        'single_cell': True
+        'dataset': {
+          'field': {
+            'name': 'dataset',
+            'kind': 'string',
+            'order': 1,
+            'default': '',
+            'description': 'Google BigQuery dataset to create tables in.'
+          }
+        }
       }
     }
   }

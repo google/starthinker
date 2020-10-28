@@ -54,41 +54,41 @@ INPUTS = {
 TASKS = [
   {
     'airflow': {
+      '__comment__': 'Calls a native Airflow operator.',
       'operators': {
         'bash_operator': {
           'BashOperator': {
             'bash_command': 'date'
           }
         }
-      },
-      '__comment__': 'Calls a native Airflow operator.'
+      }
     }
   },
   {
     'starthinker_airflow': {
+      '__comment__': 'Calls an custom operator, requires import of library.',
       'operators': {
         'hello': {
           'Hello': {
             'say': 'Hi, there!'
           }
         }
-      },
-      '__comment__': 'Calls an custom operator, requires import of library.'
+      }
     }
   },
   {
     'hello': {
       '__comment__': 'Calls a StarThinker task.',
-      'say': 'Hello World',
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
-      }
+      },
+      'say': 'Hello World'
     }
   }
 ]

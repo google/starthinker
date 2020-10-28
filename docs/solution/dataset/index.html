@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 14, 2017 (3 years, 1 month)</td>
+              <td>Aug. 14, 2017 (3 years, 2 months)</td>
             </tr>
 
             <tr>
@@ -258,38 +258,38 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
+                    "name": "auth_write",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "service",
-                    "kind": "authentication",
-                    "name": "auth_write"
-                }
-            },
-            "emails": {
-                "field": {
-                    "description": "Comma separated emails.",
-                    "order": 2,
-                    "default": [],
-                    "kind": "string_list",
-                    "name": "dataset_emails"
+                    "description": "Credentials used for writing data."
                 }
             },
             "dataset": {
                 "field": {
-                    "description": "Name of Google BigQuery dataset to create.",
+                    "name": "dataset_dataset",
+                    "kind": "string",
                     "order": 1,
                     "default": "",
-                    "kind": "string",
-                    "name": "dataset_dataset"
+                    "description": "Name of Google BigQuery dataset to create."
+                }
+            },
+            "emails": {
+                "field": {
+                    "name": "dataset_emails",
+                    "kind": "string_list",
+                    "order": 2,
+                    "default": [],
+                    "description": "Comma separated emails."
                 }
             },
             "groups": {
                 "field": {
-                    "description": "Comma separated groups.",
+                    "name": "dataset_groups",
+                    "kind": "string_list",
                     "order": 3,
                     "default": [],
-                    "kind": "string_list",
-                    "name": "dataset_groups"
+                    "description": "Comma separated groups."
                 }
             }
         }

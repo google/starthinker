@@ -50,12 +50,12 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'password': '',  # Your Salesforce login password.
-  'username': '',  # Your Salesforce user email.
-  'query': '',  # The query to run in Salesforce.
-  'secret': '',  # Retrieve from a Salesforce App.
   'domain': 'login.salesforce.com',  # Retrieve from a Salesforce Domain.
   'client': '',  # Retrieve from a Salesforce App.
+  'secret': '',  # Retrieve from a Salesforce App.
+  'username': '',  # Your Salesforce user email.
+  'password': '',  # Your Salesforce login password.
+  'query': '',  # The query to run in Salesforce.
   'auth_read': 'user',  # Credentials used for reading data.
   'dataset': '',  # Existing BigQuery dataset.
   'table': '',  # Table to create from this report.
@@ -65,92 +65,92 @@ INPUTS = {
 TASKS = [
   {
     'salesforce': {
-      'query': {
+      'auth': {
         'field': {
-          'kind': 'string',
-          'name': 'query',
-          'description': 'The query to run in Salesforce.',
-          'default': ''
-        }
-      },
-      'password': {
-        'field': {
-          'kind': 'password',
-          'name': 'password',
-          'description': 'Your Salesforce login password.',
-          'default': ''
-        }
-      },
-      'username': {
-        'field': {
-          'kind': 'email',
-          'name': 'username',
-          'description': 'Your Salesforce user email.',
-          'default': ''
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'domain': {
         'field': {
-          'kind': 'string',
           'name': 'domain',
-          'description': 'Retrieve from a Salesforce Domain.',
-          'default': 'login.salesforce.com'
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      },
-      'secret': {
-        'field': {
           'kind': 'string',
-          'name': 'secret',
-          'description': 'Retrieve from a Salesforce App.',
-          'default': ''
-        }
-      },
-      'out': {
-        'bigquery': {
-          'schema': {
-            'field': {
-              'order': 5,
-              'kind': 'json',
-              'name': 'schema',
-              'description': 'Schema provided in JSON list format or empty list.',
-              'default': '[]'
-            }
-          },
-          'table': {
-            'field': {
-              'order': 4,
-              'kind': 'string',
-              'name': 'table',
-              'description': 'Table to create from this report.',
-              'default': ''
-            }
-          },
-          'dataset': {
-            'field': {
-              'order': 3,
-              'kind': 'string',
-              'name': 'dataset',
-              'description': 'Existing BigQuery dataset.',
-              'default': ''
-            }
-          }
+          'default': 'login.salesforce.com',
+          'description': 'Retrieve from a Salesforce Domain.'
         }
       },
       'client': {
         'field': {
-          'kind': 'string',
           'name': 'client',
-          'description': 'Retrieve from a Salesforce App.',
-          'default': ''
+          'kind': 'string',
+          'default': '',
+          'description': 'Retrieve from a Salesforce App.'
+        }
+      },
+      'secret': {
+        'field': {
+          'name': 'secret',
+          'kind': 'string',
+          'default': '',
+          'description': 'Retrieve from a Salesforce App.'
+        }
+      },
+      'username': {
+        'field': {
+          'name': 'username',
+          'kind': 'email',
+          'default': '',
+          'description': 'Your Salesforce user email.'
+        }
+      },
+      'password': {
+        'field': {
+          'name': 'password',
+          'kind': 'password',
+          'default': '',
+          'description': 'Your Salesforce login password.'
+        }
+      },
+      'query': {
+        'field': {
+          'name': 'query',
+          'kind': 'string',
+          'default': '',
+          'description': 'The query to run in Salesforce.'
+        }
+      },
+      'out': {
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 3,
+              'default': '',
+              'description': 'Existing BigQuery dataset.'
+            }
+          },
+          'table': {
+            'field': {
+              'name': 'table',
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'Table to create from this report.'
+            }
+          },
+          'schema': {
+            'field': {
+              'name': 'schema',
+              'kind': 'json',
+              'order': 5,
+              'default': '[]',
+              'description': 'Schema provided in JSON list format or empty list.'
+            }
+          }
         }
       }
     }

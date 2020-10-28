@@ -63,60 +63,60 @@ INPUTS = {
 TASKS = [
   {
     'twitter': {
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'secret': {
         'field': {
-          'order': 1,
-          'kind': 'string',
           'name': 'secret',
+          'kind': 'string',
+          'order': 1,
+          'default': ''
+        }
+      },
+      'key': {
+        'field': {
+          'name': 'key',
+          'kind': 'string',
+          'order': 2,
           'default': ''
         }
       },
       'trends': {
         'places': {
+          'single_cell': True,
           'values': {
             'field': {
-              'order': 3,
-              'kind': 'integer_list',
               'name': 'woeids',
+              'kind': 'integer_list',
+              'order': 3,
               'default': [
               ]
             }
-          },
-          'single_cell': True
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
-        }
-      },
-      'key': {
-        'field': {
-          'order': 2,
-          'kind': 'string',
-          'name': 'key',
-          'default': ''
+          }
         }
       },
       'out': {
         'bigquery': {
-          'table': {
+          'dataset': {
             'field': {
-              'order': 7,
+              'name': 'destination_dataset',
               'kind': 'string',
-              'name': 'destination_table',
+              'order': 6,
               'default': ''
             }
           },
-          'dataset': {
+          'table': {
             'field': {
-              'order': 6,
+              'name': 'destination_table',
               'kind': 'string',
-              'name': 'destination_dataset',
+              'order': 7,
               'default': ''
             }
           }

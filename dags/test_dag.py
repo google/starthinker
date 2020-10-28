@@ -55,126 +55,126 @@ INPUTS = {
 TASKS = [
   {
     'hello': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'hour': [
         1
       ],
-      'sleep': 0,
       'say': 'Hello At 1',
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      }
+      'sleep': 0
     }
   },
   {
     'hello': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'hour': [
         3
       ],
-      'sleep': 0,
       'say': 'Hello At 3',
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      }
+      'sleep': 0
     }
   },
   {
     'hello': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'hour': [
       ],
-      'sleep': 0,
       'say': 'Hello Manual',
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      }
+      'sleep': 0
     }
   },
   {
     'hello': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'hour': [
         23
       ],
-      'sleep': 30,
       'say': 'Hello At 23 Sleep',
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      }
+      'sleep': 30
     }
   },
   {
     'hello': {
-      'sleep': 0,
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'say': 'Hello At Anytime',
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      }
+      'sleep': 0
     }
   },
   {
     'hello': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'hour': [
         1,
         3,
         23
       ],
-      'sleep': 0,
       'say': 'Hello At 1, 3, 23',
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      }
+      'sleep': 0
     }
   },
   {
     'hello': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'hour': [
         3
       ],
-      'sleep': 0,
       'say': 'Hello At 3 Reordered',
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      }
+      'sleep': 0
     }
   }
 ]

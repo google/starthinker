@@ -50,37 +50,47 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'partners': '[]',  # Comma sparated list of DV360 partners.
-  'auth_read': 'user',  # Credentials used for reading data.
   'auth_write': 'service',  # Credentials used for writing data.
+  'auth_read': 'user',  # Credentials used for reading data.
+  'partners': '[]',  # Comma sparated list of DV360 partners.
   'dataset': '',  # BigQuery dataset to write tables for each entity.
 }
 
 TASKS = [
   {
     'dataset': {
-      'dataset': {
-        'field': {
-          'order': 3,
-          'kind': 'string',
-          'name': 'dataset',
-          'description': 'BigQuery dataset to write tables for each entity.',
-          'default': ''
-        }
-      },
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_write',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'service',
+          'description': 'Credentials used for writing data.'
+        }
+      },
+      'dataset': {
+        'field': {
+          'name': 'dataset',
+          'kind': 'string',
+          'order': 3,
+          'default': '',
+          'description': 'BigQuery dataset to write tables for each entity.'
         }
       }
     }
   },
   {
     'entity': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
+      'prefix': 'Entity',
       'entities': [
         'Campaign',
         'LineItem',
@@ -103,45 +113,35 @@ TASKS = [
         'Isp'
       ],
       'partners': {
+        'single_cell': True,
         'values': {
           'field': {
-            'order': 1,
-            'kind': 'integer_list',
             'name': 'partners',
-            'description': 'Comma sparated list of DV360 partners.',
-            'default': '[]'
+            'kind': 'integer_list',
+            'order': 1,
+            'default': '[]',
+            'description': 'Comma sparated list of DV360 partners.'
           }
-        },
-        'single_cell': True
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
         }
       },
-      'prefix': 'Entity',
       'out': {
         'bigquery': {
-          'dataset': {
-            'field': {
-              'order': 3,
-              'kind': 'string',
-              'name': 'dataset',
-              'description': 'BigQuery dataset to write tables for each entity.',
-              'default': ''
-            }
-          },
           'auth': {
             'field': {
-              'order': 1,
-              'kind': 'authentication',
               'name': 'auth_write',
-              'description': 'Credentials used for writing data.',
-              'default': 'service'
+              'kind': 'authentication',
+              'order': 1,
+              'default': 'service',
+              'description': 'Credentials used for writing data.'
+            }
+          },
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 3,
+              'default': '',
+              'description': 'BigQuery dataset to write tables for each entity.'
             }
           }
         }

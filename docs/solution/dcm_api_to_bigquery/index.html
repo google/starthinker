@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Feb. 20, 2019 (1 year, 7 months)</td>
+              <td>Feb. 20, 2019 (1 year, 8 months)</td>
             </tr>
 
             <tr>
@@ -250,29 +250,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm_api/run.py" target="_blank">dcm_api</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
-                }
-            },
-            "accounts": {
-                "single_cell": true,
-                "values": {
-                    "field": {
-                        "description": "Comma separated CM account ids.",
-                        "order": 2,
-                        "default": "",
-                        "kind": "integer_list",
-                        "name": "accounts"
-                    }
+                    "description": "Credentials used for reading data."
                 }
             },
             "endpoints": {
                 "field": {
                     "name": "endpoint",
-                    "default": "",
+                    "kind": "choice",
                     "choices": [
                         "accountPermissionGroups",
                         "accountPermissions",
@@ -325,26 +313,38 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "userRoles",
                         "videoFormats"
                     ],
-                    "kind": "choice"
+                    "default": ""
+                }
+            },
+            "accounts": {
+                "single_cell": true,
+                "values": {
+                    "field": {
+                        "name": "accounts",
+                        "kind": "integer_list",
+                        "order": 2,
+                        "default": "",
+                        "description": "Comma separated CM account ids."
+                    }
                 }
             },
             "out": {
                 "auth": {
                     "field": {
-                        "description": "Credentials used for writing data.",
+                        "name": "auth_write",
+                        "kind": "authentication",
                         "order": 1,
                         "default": "service",
-                        "kind": "authentication",
-                        "name": "auth_write"
+                        "description": "Credentials used for writing data."
                     }
                 },
                 "dataset": {
                     "field": {
-                        "description": "Google BigQuery dataset to create tables in.",
+                        "name": "dataset",
+                        "kind": "string",
                         "order": 1,
                         "default": "",
-                        "kind": "string",
-                        "name": "dataset"
+                        "description": "Google BigQuery dataset to create tables in."
                     }
                 }
             }

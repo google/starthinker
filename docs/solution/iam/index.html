@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Oct. 2, 2018 (1 year, 11 months)</td>
+              <td>Oct. 2, 2018 (2 years)</td>
             </tr>
 
             <tr>
@@ -250,29 +250,29 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/iam/run.py" target="_blank">iam</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
+                    "name": "auth_write",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "service",
-                    "kind": "authentication",
-                    "name": "auth_write"
-                }
-            },
-            "email": {
-                "field": {
-                    "description": "Email address to grant role to.",
-                    "order": 2,
-                    "default": "",
-                    "kind": "string",
-                    "name": "email"
+                    "description": "Credentials used for writing data."
                 }
             },
             "role": {
                 "field": {
-                    "description": "projects/[project name]/roles/[role name]",
+                    "name": "role",
+                    "kind": "string",
                     "order": 1,
                     "default": "",
+                    "description": "projects/[project name]/roles/[role name]"
+                }
+            },
+            "email": {
+                "field": {
+                    "name": "email",
                     "kind": "string",
-                    "name": "role"
+                    "order": 2,
+                    "default": "",
+                    "description": "Email address to grant role to."
                 }
             }
         }

@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>June 6, 2018 (2 years, 3 months)</td>
+              <td>June 6, 2018 (2 years, 4 months)</td>
             </tr>
 
             <tr>
@@ -258,11 +258,58 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/twitter/run.py" target="_blank">twitter</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
+                    "name": "auth_write",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "service",
-                    "kind": "authentication",
-                    "name": "auth_write"
+                    "description": "Credentials used for writing data."
+                }
+            },
+            "secret": {
+                "field": {
+                    "name": "secret",
+                    "kind": "string",
+                    "order": 1,
+                    "default": ""
+                }
+            },
+            "key": {
+                "field": {
+                    "name": "key",
+                    "kind": "string",
+                    "order": 2,
+                    "default": ""
+                }
+            },
+            "trends": {
+                "places": {
+                    "single_cell": true,
+                    "bigquery": {
+                        "dataset": {
+                            "field": {
+                                "name": "places_dataset",
+                                "kind": "string",
+                                "order": 3,
+                                "default": ""
+                            }
+                        },
+                        "query": {
+                            "field": {
+                                "name": "places_query",
+                                "kind": "string",
+                                "order": 4,
+                                "default": ""
+                            }
+                        },
+                        "legacy": {
+                            "field": {
+                                "name": "places_legacy",
+                                "kind": "boolean",
+                                "order": 5,
+                                "default": false
+                            }
+                        }
+                    }
                 }
             },
             "out": {
@@ -271,66 +318,19 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "field": {
                             "name": "destination_sheet",
                             "kind": "string",
-                            "default": "",
-                            "order": 6
+                            "order": 6,
+                            "default": ""
                         }
                     },
-                    "range": "A1",
                     "tab": {
                         "field": {
                             "name": "destination_tab",
                             "kind": "string",
-                            "default": "",
-                            "order": 7
-                        }
-                    }
-                }
-            },
-            "secret": {
-                "field": {
-                    "name": "secret",
-                    "kind": "string",
-                    "default": "",
-                    "order": 1
-                }
-            },
-            "key": {
-                "field": {
-                    "name": "key",
-                    "kind": "string",
-                    "default": "",
-                    "order": 2
-                }
-            },
-            "trends": {
-                "places": {
-                    "bigquery": {
-                        "dataset": {
-                            "field": {
-                                "name": "places_dataset",
-                                "kind": "string",
-                                "default": "",
-                                "order": 3
-                            }
-                        },
-                        "legacy": {
-                            "field": {
-                                "name": "places_legacy",
-                                "kind": "boolean",
-                                "default": false,
-                                "order": 5
-                            }
-                        },
-                        "query": {
-                            "field": {
-                                "name": "places_query",
-                                "kind": "string",
-                                "default": "",
-                                "order": 4
-                            }
+                            "order": 7,
+                            "default": ""
                         }
                     },
-                    "single_cell": true
+                    "range": "A1"
                 }
             }
         }

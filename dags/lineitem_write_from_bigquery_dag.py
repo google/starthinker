@@ -58,42 +58,42 @@ INPUTS = {
 TASKS = [
   {
     'lineitem': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'write': {
+        'dry_run': False,
         'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 1,
+              'default': ''
+            }
+          },
           'query': {
             'field': {
-              'order': 2,
-              'kind': 'string',
               'name': 'query',
+              'kind': 'string',
+              'order': 2,
               'default': 'SELECT * FROM `Dataset.Table`;'
             }
           },
           'legacy': {
             'field': {
-              'order': 3,
-              'kind': 'boolean',
               'name': 'legacy',
+              'kind': 'boolean',
+              'order': 3,
               'default': False
             }
-          },
-          'dataset': {
-            'field': {
-              'order': 1,
-              'kind': 'string',
-              'name': 'dataset',
-              'default': ''
-            }
           }
-        },
-        'dry_run': False
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
         }
       }
     }

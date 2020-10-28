@@ -51,39 +51,39 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'report': '{}',  # Report body and filters.
   'auth_read': 'user',  # Credentials used for reading data.
+  'report': '{}',  # Report body and filters.
   'delete': False,  # If report exists, delete it before creating a new one.
 }
 
 TASKS = [
   {
     'dbm': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'report': {
         'field': {
-          'order': 1,
-          'kind': 'json',
           'name': 'report',
-          'description': 'Report body and filters.',
-          'default': '{}'
+          'kind': 'json',
+          'order': 1,
+          'default': '{}',
+          'description': 'Report body and filters.'
         }
       },
       'delete': {
         'field': {
-          'order': 2,
-          'kind': 'boolean',
           'name': 'delete',
-          'description': 'If report exists, delete it before creating a new one.',
-          'default': False
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'boolean',
+          'order': 2,
+          'default': False,
+          'description': 'If report exists, delete it before creating a new one.'
         }
       }
     }

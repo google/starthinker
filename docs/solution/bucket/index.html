@@ -201,7 +201,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Age</td>
-              <td>Aug. 15, 2017 (3 years, 1 month)</td>
+              <td>Aug. 15, 2017 (3 years, 2 months)</td>
             </tr>
 
             <tr>
@@ -254,38 +254,38 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bucket/run.py" target="_blank">bucket</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for writing data.",
+                    "name": "auth_write",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "service",
-                    "kind": "authentication",
-                    "name": "auth_write"
-                }
-            },
-            "emails": {
-                "field": {
-                    "description": "Comma separated emails.",
-                    "order": 3,
-                    "default": "",
-                    "kind": "string_list",
-                    "name": "bucket_emails"
-                }
-            },
-            "groups": {
-                "field": {
-                    "description": "Comma separated groups.",
-                    "order": 4,
-                    "default": "",
-                    "kind": "string_list",
-                    "name": "bucket_groups"
+                    "description": "Credentials used for writing data."
                 }
             },
             "bucket": {
                 "field": {
-                    "description": "Name of Google Cloud Bucket to create.",
+                    "name": "bucket_bucket",
+                    "kind": "string",
                     "order": 2,
                     "default": "",
-                    "kind": "string",
-                    "name": "bucket_bucket"
+                    "description": "Name of Google Cloud Bucket to create."
+                }
+            },
+            "emails": {
+                "field": {
+                    "name": "bucket_emails",
+                    "kind": "string_list",
+                    "order": 3,
+                    "default": "",
+                    "description": "Comma separated emails."
+                }
+            },
+            "groups": {
+                "field": {
+                    "name": "bucket_groups",
+                    "kind": "string_list",
+                    "order": 4,
+                    "default": "",
+                    "description": "Comma separated groups."
                 }
             }
         }
