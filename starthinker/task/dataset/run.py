@@ -28,16 +28,6 @@ def dataset():
   if project.verbose:
     print('DATASET', project.id, project.task['dataset'])
 
-  if project.task.get('clear', False):
-    if project.verbose:
-      print('DATASET CLEAR')
-    datasets_delete(
-        project.task['auth'],
-        project.id,
-        project.task['dataset'],
-        delete_contents=True
-    )
-
   if project.task.get('delete', False):
     if project.verbose:
       print('DATASET DELETE')
@@ -56,24 +46,34 @@ def dataset():
         project.task['dataset'],
         delete_contents=False
     )
+  else:
+    if project.task.get('clear', False):
+      if project.verbose:
+        print('DATASET CLEAR')
+      datasets_delete(
+          project.task['auth'],
+          project.id,
+          project.task['dataset'],
+          delete_contents=True
+      )
 
-  if project.verbose:
-    print('DATASET CREATE')
-  datasets_create(
-    project.task['auth'],
-    project.id,
-    project.task['dataset']
-  )
+    if project.verbose:
+      print('DATASET CREATE')
+    datasets_create(
+        project.task['auth'],
+        project.id,
+        project.task['dataset']
+    )
 
-  if project.verbose:
-    print('DATASET ACCESS')
-  datasets_access(
-    project.task['auth'],
-    project.id,
-    project.task['dataset'],
-    emails=project.task.get('emails', []),
-    groups=project.task.get('groups', [])
-  )
+    if project.verbose:
+      print('DATASET ACCESS')
+    datasets_access(
+        project.task['auth'],
+        project.id,
+        project.task['dataset'],
+        emails=project.task.get('emails', []),
+        groups=project.task.get('groups', [])
+    )
 
 
 if __name__ == '__main__':
