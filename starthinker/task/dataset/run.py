@@ -28,13 +28,33 @@ def dataset():
   if project.verbose:
     print('DATASET', project.id, project.task['dataset'])
 
+  if project.task.get('clear', False):
+    if project.verbose:
+      print('DATASET CLEAR')
+    datasets_delete(
+        project.task['auth'],
+        project.id,
+        project.task['dataset'],
+        delete_contents=True
+    )
+
   if project.task.get('delete', False):
     if project.verbose:
       print('DATASET DELETE')
+    # In order to fully delete a dataset, it needs to first have all tables
+    # deleted, which is done with the delete_contents=True, and then the actual
+    # dataset can be deleted, which is done with delete_contents=false.
     datasets_delete(
-      project.task['auth'],
-      project.id,
-      project.task['dataset']
+        project.task['auth'],
+        project.id,
+        project.task['dataset'],
+        delete_contents=True
+    )
+    datasets_delete(
+        project.task['auth'],
+        project.id,
+        project.task['dataset'],
+        delete_contents=False
     )
 
   if project.verbose:
