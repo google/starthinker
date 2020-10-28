@@ -28,7 +28,7 @@
         "sheet":"https://docs.google.com/spreadsheets/d/1DhOoCOC7hf3lUckXWG4ELfZhH28Rsxr74sfhc713T3A/",
         "tab":"Sheet_Template"
       },
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"Test Sheets", "default": ""}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
       "tab":"Sheet_Test",
       "range":"A1:C",
       "delete":true
@@ -37,7 +37,7 @@
       "__comment__":"Verify that the copy worked by checking values in the users sheet.",
       "auth":"user",
       "sheets": {
-        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"Test Sheets", "default": ""}},
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
         "tab":"Sheet_Test",
         "range":"A1:C",
         "values":[
@@ -53,7 +53,7 @@
     { "sheets":{
       "__comment__":"Clear a section of the users sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"Test Sheets", "default": ""}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
       "tab":"Sheet_Test",
       "range":"A2:B",
       "clear":true
@@ -62,7 +62,7 @@
       "__comment__":"Verify users sheet was cleared.",
       "auth":"user",
       "sheets": {
-        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"Test Sheets", "default": ""}},
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
         "tab":"Sheet_Test",
         "range":"A1:C",
         "values":[
@@ -78,7 +78,7 @@
     { "sheets":{
       "__comment__":"Write new values to the sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"Test Sheets", "default": ""}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
       "tab":"Sheet_Test",
       "range":"A2:B",
       "write": {
@@ -95,7 +95,7 @@
       "__comment__":"Verify that the write worked by checking values in the users sheet.",
       "auth":"user",
       "sheets": {
-        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"Test Sheets", "default": ""}},
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
         "tab":"Sheet_Test",
         "range":"A1:C",
         "values":[
@@ -111,7 +111,7 @@
     { "sheets":{
       "__comment__":"Write over values in the sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"Test Sheets", "default": ""}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
       "tab":"Sheet_Test",
       "range":"A2:C",
       "write": {
@@ -125,7 +125,7 @@
       "__comment__":"Verify that the write worked by checking values in the users sheet.",
       "auth":"user",
       "sheets": {
-        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"Test Sheets", "default": ""}},
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
         "tab":"Sheet_Test",
         "range":"A1:C",
         "values":[
@@ -141,7 +141,7 @@
     { "sheets":{
       "__comment__":"Append values to the sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"Test Sheets", "default": ""}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
       "tab":"Sheet_Test",
       "range":"A2:C",
       "append": {
@@ -155,7 +155,7 @@
       "__comment__":"Verify that the append worked by checking values in the users sheet.",
       "auth":"user",
       "sheets": {
-        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"Test Sheets", "default": ""}},
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
         "tab":"Sheet_Test",
         "range":"A1:C",
         "values":[
@@ -173,7 +173,8 @@
     { "dataset":{
       "__comment__":"Create a dataset for testing.",
       "auth":"service",
-      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Sheets", "default": ""}}
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Sheets_", "default": "Manual"}},
+      "clear":true
     }},
     { "sheets":{
       "__comment__":"Move sheet data to bigquery table.",
@@ -185,7 +186,7 @@
       "out":{
         "auth": "service",
         "bigquery":{
-          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Sheets", "default": ""}},
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Sheets_", "default": "Manual"}},
           "table":"Sheet_To_BigQuery",
           "schema":[
             { "name":"Animal", "type":"STRING" },
@@ -199,7 +200,7 @@
       "__comment__":"Verify that the data was moved with the proper schema and values.",
       "auth":"service",
       "bigquery":{
-        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Sheets", "default": ""}},
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Sheets_", "default": "Manual"}},
         "table":"Sheet_To_BigQuery",
         "schema":[
           {"name": "Animal", "type": "STRING"},
@@ -214,6 +215,15 @@
           ["dinosaur", 1600, 273.97]
         ]
       }
+    }},
+    { "drive":{
+      "auth":"user",
+      "delete":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}}
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Sheets_", "default": "Manual"}},
+      "delete":true
     }}
   ]
 }

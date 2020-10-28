@@ -6,7 +6,8 @@
   "tasks":[
     { "dataset":{
       "auth":"service",
-      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API", "default": ""}}
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
+      "clear":true
     }},
     { "google_api":{
       "auth":"user",
@@ -20,7 +21,7 @@
       "results": {
         "bigquery":{
           "auth": "service",
-          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API", "default": ""}},
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
           "table":"User_Profile",
           "format":"CSV"
         }
@@ -29,7 +30,7 @@
     { "test": {
       "auth":"service",
       "bigquery":{
-        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API", "default": ""}},
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
         "table":"User_Profile",
         "schema": [
           {"mode": "NULLABLE", "name": "emailAddress", "type": "STRING"},
@@ -38,6 +39,11 @@
           {"mode": "NULLABLE", "name": "historyId", "type": "STRING"}
         ]
       }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
+      "delete":true
     }}
   ]
 }
