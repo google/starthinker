@@ -35,6 +35,7 @@ STARTHINKER_ANALYTICS="UA-167283455-2"
 
 STARTHINKER_PROJECT=""
 STARTHINKER_ZONE="us-west2-b"
+STARTHINKER_DEVELOPER_TOKEN=""
 
 STARTHINKER_UI_PRODUCTION_DOMAIN=""
 STARTHINKER_UI_PRODUCTION_SECRET=""
@@ -136,6 +137,7 @@ save_config() {
 
   echo "export STARTHINKER_PROJECT=\"$STARTHINKER_PROJECT\";" >> "${STARTHINKER_CONFIG}"
   echo "export STARTHINKER_ZONE=\"$STARTHINKER_ZONE\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_DEVELOPER_TOKEN=\"$STARTHINKER_DEVELOPER_TOKEN\";" >> "${STARTHINKER_CONFIG}"
   echo "" >> "${STARTHINKER_CONFIG}"
 
   echo "export STARTHINKER_ROOT=\"$STARTHINKER_ROOT\";" >> "${STARTHINKER_CONFIG}"
@@ -363,6 +365,39 @@ setup_project() {
     fi
   else
     echo "Using Existing Project ID"
+    echo ""
+  fi
+
+  gcloud config set project "${STARTHINKER_PROJECT}" --no-user-output-enabled;
+}
+
+
+setup_developer_token() {
+  forced=$1
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Set Developer Token - ${STARTHINKER_DEVELOPER_TOKEN}"
+  echo "----------------------------------------"
+  echo ""
+
+  if [ "$forced" == "forced" ] || [ "${STARTHINKER_DEVELOPER_TOKEN}" == "" ]; then
+
+    echo "Used for Adwords APIs only. Otherwise leave blank."
+    echo "Retrieve Developer Token from: https://developers.google.com/google-ads/api/docs/first-call/dev-token"
+    echo ""
+
+    read -p "Developer Token ( blank to keep existing ): " developer_token
+
+    if [ "${developer_token}" ]; then
+      STARTHINKER_DEVELOPER_TOKEN="${developer_token}"
+      save_config;
+    else
+      echo "Developer Token Unchanged"
+      echo ""
+    fi
+  else
+    echo "Using Existing Developer Token"
     echo ""
   fi
 

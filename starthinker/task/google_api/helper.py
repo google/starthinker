@@ -55,12 +55,17 @@ def main():
   parser.add_argument('-function', help='function to call in api')
   parser.add_argument('-uri', help='uri to use in api', default=None)
   parser.add_argument(
+      '-developer-token',
+      help='developer token to pass in header',
+      default=None)
+  parser.add_argument(
       '-kwargs',
       help='kwargs to pass to function, json string of name:value pairs')
+  parser.add_argument('--iterate', help='force iteration', action='store_true')
   parser.add_argument(
-      '--iterate', help='force iteration', action='store_true')
-  parser.add_argument(
-      '--schema', help='return schema instead, function = [endpoint.method]', action='store_true')
+      '--schema',
+      help='return schema instead, function = [endpoint.method]',
+      action='store_true')
 
 
   # initialize project ( used to load standard credentials parameters )
@@ -76,13 +81,14 @@ def main():
 
     # the api wrapper takes parameters as JSON
     job = {
-      'auth': 'service' if project.args.service else 'user',
-      'api': project.args.api,
-      'version': project.args.version,
-      'function': project.args.function,
-      'uri': project.args.uri,
-      'kwargs': json.loads(project.args.kwargs),
-      'iterate': project.args.iterate,
+        'auth': 'service' if project.args.service else 'user',
+        'api': project.args.api,
+        'version': project.args.version,
+        'function': project.args.function,
+        'uri': project.args.uri,
+        'kwargs': json.loads(project.args.kwargs),
+        'developer-token': project.args.developer_token,
+        'iterate': project.args.iterate,
     }
 
     # run the API call

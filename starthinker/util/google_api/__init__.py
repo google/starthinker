@@ -287,6 +287,7 @@ class API():
                configuration.get('function', '').split('.')))
     self.function_kwargs = configuration.get('kwargs', {})
     self.iterate = configuration.get('iterate', False)
+    self.developer_token = configuration.get('developer-token', None)
 
     self.function = None
     self.job = None
@@ -316,7 +317,11 @@ class API():
   def execute(self, run=True, iterate=True):
     # start building call sequence with service object
     self.function = get_service(
-        self.api, self.version, self.auth, uri_file=self.uri)
+        api=self.api,
+        version=self.version,
+        auth=self.auth,
+        uri_file=self.uri,
+        developer_token=self.developer_token)
 
     # build calls along stack
     # do not call functions, as the abstract is necessary for iterator page next calls
