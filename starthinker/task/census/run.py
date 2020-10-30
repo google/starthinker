@@ -139,7 +139,7 @@ def census_write(query, table):
     print('%s: %s' % (table, query))
 
   if project.task['to']['type'] == 'table':
-    query_to_view(
+    query_to_table(
         project.task['auth'],
         project.id,
         project.task['to']['dataset'],
