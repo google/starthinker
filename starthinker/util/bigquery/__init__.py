@@ -625,6 +625,26 @@ def table_get(auth, project_id, dataset_id, table_id):
       projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()
 
 
+def table_list(auth, project_id, dataset_id=None):
+  if dataset_id is None:
+    datasets = [
+      d['datasetReference']['datasetId'] for d in API_BigQuery(auth).datasets().list(
+        projectId=project_id,
+        fields='datasets.datasetReference.datasetId, nextPageToken'
+      ).execute()
+    ]
+  else:
+    datasets = [dataset_id]
+
+  for dataset_id in datasets:
+    for table in API_BigQuery(auth, iterate=True).tables().list(
+        projectId=project_id,
+        datasetId=dataset_id,
+        fields='tables.tableReference, tables.type, nextPageToken'
+    ).execute():
+      yield table['tableReference']['datasetId'], table['tableReference']['tableId'], table['type']
+
+
 def table_exists(auth, project_id, dataset_id, table_id):
   try:
     table_get(auth, project_id, dataset_id, table_id)
