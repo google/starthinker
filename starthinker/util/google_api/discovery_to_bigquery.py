@@ -37,7 +37,7 @@ class Discovery_To_BigQuery():
   def preferred_version(api_name):
     api_url = 'https://discovery.googleapis.com/discovery/v1/apis?name=%s&preferred=true' % api_name
     api_info = json.load(request.urlopen(api_url))
-    return api_info['discoveryVersion']
+    return api_info['items'][0]['version']
 
   @staticmethod
   def clean(struct):
