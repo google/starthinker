@@ -23,35 +23,41 @@ from starthinker.util.data import get_rows
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 
+from starthinker.task.google_api.run import google_api_build_errors
+from starthinker.task.google_api.run import google_api_build_results
 from starthinker.task.google_api.run import google_api_execute
 from starthinker.task.google_api.run import google_api_initilaize
 
 
-def build_request_json(endpoint):
+def build_request(endpoint):
   return {
     "bigquery": {
       "dataset": endpoint['dataset'],
-      "table":endpoint['table']
+      "table": endpoint['table']
     }
   }
 
 
-def build_results_json(endpoint):
-  return {
-    "bigquery": {
-      "dataset": endpoint['dataset'],
-      "table": endpoint['table'].replace('BQFlow__', 'BQFlow__RESULTS__')
-    }
-  }
+def build_results(auth, api_call, endpoint):
+  return google_api_build_results(
+      auth, api_call, {
+          'bigquery': {
+              'dataset':
+                  endpoint['dataset'],
+              'table':
+                  endpoint['table'].replace('BQFlow__', 'BQFlow__RESULTS__')
+          }
+      })
 
 
-def build_errors_json(endpoint):
-  return {
-    "bigquery": {
-      "dataset": endpoint['dataset'],
-      "table": endpoint['table'].replace('BQFlow__', 'BQFlow__ERRORS__')
-    }
-  }
+def build_errors(auth, api_call, endpoint):
+  return google_api_build_errors(
+      auth, api_call, {
+          'bigquery': {
+              'dataset': endpoint['dataset'],
+              'table': endpoint['table'].replace('BQFlow__', 'BQFlow__ERRORS__')
+          }
+      })
 
 
 @project.from_parameters
@@ -65,7 +71,7 @@ def bqflow():
   for dataset, table, kind in table_list(project.task['auth'], project.id):
     if table.startswith('BQFlow__') and not table.startswith('BQFlow__RESULTS__') and not table.startswith('BQFlow__ERRORS__'):
       print(table, kind)
-      endpoints.append({'dataset':dataset, kind.lower():table})
+      endpoints.append({'dataset': dataset, kind.lower(): table})
 
   for endpoint in endpoints:
     if 'table' in endpoint:
@@ -73,17 +79,17 @@ def bqflow():
       function = function.replace('__', '.')
 
       api_call = {
-        'auth':'user',
+        'auth': 'user',
         'api': api,
         'version': Discovery_To_BigQuery.preferred_version(api),
         'function': function,
       }
 
       kwargs_list = get_rows(
-        project.task['auth'],
-        build_request_json(endpoint),
-        as_object=True
-      )
+          project.task['auth'], build_request(endpoint), as_object=True)
+
+      results = build_results(project.task['auth'], api_call, endpoint)
+      errors = build_errors(project.task['auth'], api_call, endpoint)
 
       for kwargs in kwargs_list:
         api_call['kwargs'] = kwargs
@@ -91,12 +97,7 @@ def bqflow():
         if project.verbose: print('BQFLOW API CALL:', api_call)
 
         google_api_initilaize(api_call)
-        google_api_execute(
-          project.task['auth'],
-          api_call,
-          build_results_json(endpoint),
-          build_errors_json(endpoint)
-        )
+        google_api_execute(project.task['auth'], api_call, results, errors)
 
 
 if __name__ == '__main__':

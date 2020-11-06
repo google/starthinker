@@ -506,20 +506,7 @@ def io_to_table(auth,
   elif disposition == 'WRITE_TRUNCATE':
     if project.verbose:
       print('BIGQUERY: No data, clearing table.')
-
-    body = {
-        'tableReference': {
-            'projectId': project_id,
-            'datasetId': dataset_id,
-            'tableId': table_id
-        },
-        'schema': {
-            'fields': schema
-        }
-    }
-    # change project_id to be project.id, better yet project.cloud_id from JSON
-    API_BigQuery(auth).tables().insert(
-        projectId=project.id, datasetId=dataset_id, body=body).execute()
+    table_create(auth, project_id, dataset_id, table_id, schema)
 
 
 def incremental_rows_to_table(auth,
@@ -603,21 +590,27 @@ def table_create(auth,
                  project_id,
                  dataset_id,
                  table_id,
+                 schema=None,
+                 overwrite=True,
                  is_time_partition=False):
 
-  body = {
-      'tableReference': {
-          'projectId': project_id,
-          'tableId': table_id,
-          'datasetId': dataset_id,
-      }
-  }
+  if overwrite or not table_exists(auth, project_id, dataset_id, table_id):
+    body = {
+        'tableReference': {
+            'projectId': project_id,
+            'tableId': table_id,
+            'datasetId': dataset_id,
+        }
+    }
 
-  if is_time_partition:
-    body['timePartitioning'] = {'type': 'DAY'}
+    if schema:
+      body['schema'] = {'fields': schema}
 
-  API_BigQuery(auth).tables().insert(
-      projectId=project_id, datasetId=dataset_id, body=body).execute()
+    if is_time_partition:
+      body['timePartitioning'] = {'type': 'DAY'}
+
+    API_BigQuery(auth).tables().insert(
+        projectId=project_id, datasetId=dataset_id, body=body).execute()
 
 
 def table_get(auth, project_id, dataset_id, table_id):
