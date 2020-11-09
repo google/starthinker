@@ -31,6 +31,7 @@ from starthinker.util.project import get_project
 
 # cache scripts in memory
 SCRIPTS = {}
+APACHE_LICENSE_MATCH = 'Licensed under the Apache License, Version 2.0'
 
 
 def load_scripts():
@@ -91,8 +92,7 @@ class Script:
     )
 
   def get_link_client(self):
-    if self.script.get('script', {}).get('license',
-                                         '') == 'Apache License, Version 2.0':
+    if self.script.get('script', {}).get('license', '') == APACHE_LICENSE_MATCH:
       return 'https://google.github.io/starthinker/solution/%s/' % self.tag
     else:
       return ''
@@ -164,8 +164,7 @@ class Script:
     return self.script.get('script', {}).get('documentation', None)
 
   def get_open_source(self):
-    if self.script.get('script', {}).get('license',
-                                         '') == 'Apache License, Version 2.0':
+    if self.script.get('script', {}).get('license', '') == APACHE_LICENSE_MATCH:
       return 'https://github.com/google/starthinker/blob/master' + self.script[
           'path'].replace(UI_ROOT, '', 1)
     else:

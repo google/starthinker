@@ -1,7 +1,7 @@
 {
   "script":{
     "released":"2018-04-03",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_small",
     "title":"Bulkdozer",
@@ -50,7 +50,7 @@
         "dcm_profile_id": {"field":{ "name":"dcm_profile_id", "kind":"string", "order":1, "description":"Campaign Manager Profile ID (optional if account id provided)", "default":"" }},
         "auth": "user",
         "sheet_url":{"field":{ "name":"sheet_url", "kind":"string", "order":2, "description":"Feed Sheet URL", "default":"" }},
-	"timezone":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Chicago" }}
+        "timezone":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Chicago" }}
     }}
   ]
 }

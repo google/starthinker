@@ -49,11 +49,13 @@ class Command(BaseCommand):
 
     directory = '%s/docs/help' % settings.UI_ROOT
     print('Writing:', directory)
+    os.makedirs(directory, exist_ok=True)
     with open('%s/index.html' % directory, 'w') as index_file:
       index_file.write(help(request=None))
 
     directory = '%s/docs/solution' % settings.UI_ROOT
     print('Writing:', directory)
+    os.makedirs(directory, exist_ok=True)
     with open('%s/index.html' % directory, 'w') as index_file:
       index_file.write(solutions(request=None))
 
@@ -61,7 +63,6 @@ class Command(BaseCommand):
       if s.get_open_source():
         directory = '%s/docs/solution/%s' % (settings.UI_ROOT, s.get_tag())
         print('Writing:', directory)
-        if not os.path.exists(directory):
-          os.makedirs(directory)
+        os.makedirs(directory, exist_ok=True)
         with open('%s/index.html' % directory, 'w') as solution_file:
           solution_file.write(solution(request=None, tag=s.get_tag()))

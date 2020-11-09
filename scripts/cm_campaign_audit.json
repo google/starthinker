@@ -1,7 +1,7 @@
 {
   "script":{
     "released":"2020-03-23",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"done_outline",
     "title":"CM Campaign Auditor",

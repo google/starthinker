@@ -1,7 +1,7 @@
 {
   "script":{
     "released":"2020-02-18",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"people",
     "title":"DV360 Audience Analysis",
