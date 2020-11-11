@@ -41,6 +41,7 @@
 """
 
 import argparse
+import fcntl
 import glob
 import json
 import os
@@ -60,6 +61,12 @@ TEST_DIRECTORY = UI_ROOT + '/tests/scripts/'
 RECIPE_DIRECTORY = UI_ROOT + '/tests/recipes/'
 LOG_DIRECTORY = UI_ROOT + '/tests/logs/'
 RE_TEST = re.compile(r'test.*\.json')
+
+
+def make_non_blocking(file_io):
+  fd = file_io.fileno()
+  fl = fcntl.fcntl(fd, fcntl.F_GETFL)
+  fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
 
 
 def json_expand_includes(script):
@@ -261,6 +268,10 @@ def run_tests(tests, recipes, runs, skips):
     jobs.append({
         'recipe':
             recipe,
+        'output':
+            '',
+        'errors':
+            '',
         'process':
             subprocess.Popen(
                 command,
@@ -270,6 +281,10 @@ def run_tests(tests, recipes, runs, skips):
                 stderr=subprocess.PIPE)
     })
 
+    # give ability to read buffers without locking process
+    make_non_blocking(jobs[-1]['process'].stdout)
+    make_non_blocking(jobs[-1]['process'].stderr)
+
   # Monitor each job for completion and write to log
 
   i = len(jobs)
@@ -278,19 +293,29 @@ def run_tests(tests, recipes, runs, skips):
     sleep(10)
 
     i = i - 1
+
+    # read output every time as buffer may fill up and lock process
+    stdout = jobs[i]['process'].stdout.read()
+    if stdout is not None:
+      jobs[i]['output'] += stdout.decode()
+
+    stderr = jobs[i]['process'].stderr.read()
+    if stderr is not None:
+      jobs[i]['errors'] += stderr.decode()
+
     poll = jobs[i]['process'].poll()
+
     if poll is not None:
       job = jobs.pop(i)
 
       print('\nOK:' if poll == 0 else '\nFAILED:', job['recipe'], 'REMAINING:',
             len(jobs), [j['recipe'].replace('.json', '') for j in jobs])
 
-      output, errors = job['process'].communicate()
       with open(
           LOG_DIRECTORY + ('OK_' if poll == 0 else 'FAILED_') +
           job['recipe'].replace('.json', '.log'), 'w') as f:
-        f.write(output.decode())
-        f.write(errors.decode())
+        f.write(job['output'])
+        f.write(job['errors'])
 
     # Start checking jobs from end again
     if i == 0:
