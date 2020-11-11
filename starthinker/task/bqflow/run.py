@@ -79,10 +79,15 @@ def bqflow():
       function = function.replace('__', '.')
 
       api_call = {
-        'auth': 'user',
-        'api': api,
-        'version': Discovery_To_BigQuery.preferred_version(api),
-        'function': function,
+          'auth':
+              'user',
+          'api':
+              api,
+          'version':
+              Discovery_To_BigQuery.preferred_version(api,
+                                                      project.task.get('key')),
+          'function':
+              function,
       }
 
       kwargs_list = get_rows(

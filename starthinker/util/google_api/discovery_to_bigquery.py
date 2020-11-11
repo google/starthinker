@@ -24,18 +24,24 @@ from googleapiclient.schema import Schemas
 
 DATETIME_RE = re.compile(r'\d{4}[-/]\d{2}[-/]\d{2}[ T]\d{2}:\d{2}:\d{2}\.?\d+Z')
 DESCRIPTION_LENGTH = 1024
+RECURSION_DEPTH = 5
 
 
 class Discovery_To_BigQuery():
 
-  def __init__(self, api, version):
-    api_url = 'https://%s.googleapis.com/$discovery/rest?version=%s' % (api, version)
+  def __init__(self, api, version, key=None, recursion_depth=RECURSION_DEPTH):
+    self.key = key or ''
+    self.recursion_depth = recursion_depth
+    api_url = 'https://%s.googleapis.com/$discovery/rest?version=%s&key=%s' % (
+        api, version, self.key)
     print('DISCOVERY FETCH:', api_url)
     self.api_document = json.load(request.urlopen(api_url))
 
   @staticmethod
-  def preferred_version(api_name):
-    api_url = 'https://discovery.googleapis.com/discovery/v1/apis?name=%s&preferred=true' % api_name
+  def preferred_version(api_name, api_key=None):
+    api_url = 'https://discovery.googleapis.com/discovery/v1/apis?name=%s&key=%s&preferred=true' % (
+        api_name, api_key or '')
+    print(api_url)
     api_info = json.load(request.urlopen(api_url))
     return api_info['items'][0]['version']
 
@@ -95,33 +101,50 @@ class Discovery_To_BigQuery():
       return 'STRING'
 
 
-  def to_schema(self, entry):
+  def to_schema(self, entry, parents={}):
     bigquery_schema = []
 
     for key, value in entry.items():
 
       if '$ref' in value:
-        bigquery_schema.append({
-            'name': key,
-            'type': 'RECORD',
-            'mode': 'NULLABLE',
-            'fields': self.to_schema(self.api_document['schemas'][value['$ref']]['properties'])
-        })
+        parents.setdefault(value['$ref'], 0)
+        if parents[value['$ref']] < self.recursion_depth:
+          parents[value['$ref']] += 1
+          bigquery_schema.append({
+              'name':
+                  key,
+              'type':
+                  'RECORD',
+              'mode':
+                  'NULLABLE',
+              'fields':
+                  self.to_schema(
+                      self.api_document['schemas'][value['$ref']]['properties'],
+                      parents)
+          })
+        parents[value['$ref']] -= 1
 
       else:
 
         if value['type'] == 'array':
 
           if '$ref' in value['items']:
-            bigquery_schema.append({
-                'name':
-                    key,
-                'type':
-                    'RECORD',
-                'mode':
-                    'REPEATED',
-                    'fields': self.to_schema(self.api_document['schemas'][value['items']['$ref']]['properties'])
-            })
+            parents.setdefault(value['items']['$ref'], 0)
+            if parents[value['items']['$ref']] < self.recursion_depth:
+              parents[value['items']['$ref']] += 1
+              bigquery_schema.append({
+                  'name':
+                      key,
+                  'type':
+                      'RECORD',
+                  'mode':
+                      'REPEATED',
+                  'fields':
+                      self.to_schema(
+                          self.api_document['schemas'][value['items']['$ref']]
+                          ['properties'], parents)
+              })
+              parents[value['items']['$ref']] -= 1
 
           else:
             bigquery_schema.append({
@@ -163,13 +186,23 @@ class Discovery_To_BigQuery():
       resource = resource['resources'][e]
     resource = resource['methods'][method]['response']['$ref']
 
+    # get schema
+    properties = self.api_document['schemas'][resource]['properties']
+    schema = self.to_schema(properties)
+
     # List responses wrap their items in a paginated response object
     # Unroll it to return item schema instead of repsonse schema
     if 'List' in resource and resource.endswith('Response'):
-      resource = self.api_document['schemas'][resource]['properties'][
-          endpoint.split('.')[-1]]['items']['$ref']
-
-    return self.resource_schema(resource)
+      for entry in schema:
+        if entry['type'] == 'RECORD':
+          return entry['fields']
+        elif entry['mode'] == 'REPEATED':
+          entry['mode'] = 'NULLABLE'
+          return [entry]
+        else:
+          raise ('Unahandled discovery schema.')
+    else:
+      return schema
 
 
 #x = Discovery_To_BigQuery('displayvideo', 'v1').resource_schema('Advertiser')

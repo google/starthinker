@@ -59,7 +59,12 @@ def google_api_build_results(auth, api_call, results):
   if 'bigquery' in results:
     results['bigquery']['schema'] = Discovery_To_BigQuery(
         api_call['api'],
-        api_call['version']).method_schema(api_call['function'])
+        api_call['version'],
+        api_call.get('key', None),
+    ).method_schema(api_call['function'])
+
+    #TODO: Fix format to sometimes be CSV, probably refactor BigQuery to
+    # determine format based on rows or schema
     results['bigquery']['format'] = 'JSON'
     results['bigquery']['skip_rows'] = 0
     results['bigquery']['disposition'] = 'WRITE_TRUNCATE'
@@ -140,6 +145,8 @@ def google_api():
       'version': project.task['version'],
       'function': project.task['function'],
       'iterate': project.task.get('iterate', False),
+      'key': project.task.get('key'),
+      'headers': project.task.get('headers'),
   }
 
   results = google_api_build_results(

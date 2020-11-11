@@ -36,6 +36,7 @@ STARTHINKER_ANALYTICS="UA-167283455-2"
 STARTHINKER_PROJECT=""
 STARTHINKER_ZONE="us-west2-b"
 STARTHINKER_DEVELOPER_TOKEN=""
+STARTHINKER_API_KEY=""
 
 STARTHINKER_UI_PRODUCTION_DOMAIN=""
 STARTHINKER_UI_PRODUCTION_SECRET=""
@@ -138,6 +139,7 @@ save_config() {
   echo "export STARTHINKER_PROJECT=\"$STARTHINKER_PROJECT\";" >> "${STARTHINKER_CONFIG}"
   echo "export STARTHINKER_ZONE=\"$STARTHINKER_ZONE\";" >> "${STARTHINKER_CONFIG}"
   echo "export STARTHINKER_DEVELOPER_TOKEN=\"$STARTHINKER_DEVELOPER_TOKEN\";" >> "${STARTHINKER_CONFIG}"
+  echo "export STARTHINKER_API_KEY=\"$STARTHINKER_API_KEY\";" >> "${STARTHINKER_CONFIG}"
   echo "" >> "${STARTHINKER_CONFIG}"
 
   echo "export STARTHINKER_ROOT=\"$STARTHINKER_ROOT\";" >> "${STARTHINKER_CONFIG}"
@@ -220,6 +222,10 @@ setup_gcloud() {
   echo "----------------------------------------"
   echo ""
   echo "This command line is used to administer your Google Cloud Project."
+  echo ""
+  echo "CAUTION: THIS MUST BE SET TO A USER NOT A SERVICE."
+  echo "  - Deploying App Engine instances requires gcloud to be administered by a user."
+  echo "  - The user will have to have at least editor on the chosen Google Cloud Project."
   echo ""
 
   if [ "$(command -v gcloud)" == "" ]; then
@@ -398,6 +404,39 @@ setup_developer_token() {
     fi
   else
     echo "Using Existing Developer Token"
+    echo ""
+  fi
+
+  gcloud config set project "${STARTHINKER_PROJECT}" --no-user-output-enabled;
+}
+
+
+setup_developer_token() {
+  forced=$1
+
+  echo ""
+  echo "----------------------------------------"
+  echo "Set API Key - ${STARTHINKER_API_KEY}"
+  echo "----------------------------------------"
+  echo ""
+
+  if [ "$forced" == "forced" ] || [ "${STARTHINKER_API_KEY}" == "" ]; then
+
+    echo "Used when API endpoint requires special approval from Google, typically betas. Otherwise leave blank."
+    echo "Retrieve API Key from: https://cloud.google.com/docs/authentication/api-keys"
+    echo ""
+
+    read -p "API Key ( blank to keep existing ): " api_key
+
+    if [ "${api_key}" ]; then
+      STARTHINKER_API_KEY="${api_key}"
+      save_config;
+    else
+      echo "Api Key Unchanged"
+      echo ""
+    fi
+  else
+    echo "Using Existing API Key"
     echo ""
   fi
 
