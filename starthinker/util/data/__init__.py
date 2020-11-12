@@ -76,7 +76,7 @@ def get_rows(auth, source, as_object=False, unnest=False):
           "dataset": [ string ],
           "table": [ string ],
         },
-        "sheet":{
+        "sheets":{
           "sheet":[ string - full URL, suggest using share link ],
           "tab":[ string ],
           "range":[ string - A1:A notation ]
@@ -122,12 +122,24 @@ def get_rows(auth, source, as_object=False, unnest=False):
       else:
         yield source['values']
 
+    # should be sheets, deprecate sheet over next few releases
     if 'sheet' in source:
       rows = sheets_read(
           project.task['auth'],
           source['sheet']['sheet'],
           source['sheet']['tab'],
           source['sheet']['range'],
+      )
+
+      for row in rows:
+        yield row[0] if unnest or source.get('single_cell', False) else row
+
+    if 'sheets' in source:
+      rows = sheets_read(
+          project.task['auth'],
+          source['sheets']['sheet'],
+          source['sheets']['tab'],
+          source['sheets']['range'],
       )
 
       for row in rows:
