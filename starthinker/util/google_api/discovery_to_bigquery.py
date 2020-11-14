@@ -199,8 +199,8 @@ class Discovery_To_BigQuery():
         elif entry['mode'] == 'REPEATED':
           entry['mode'] = 'NULLABLE'
           return [entry]
-        else:
-          raise ('Unahandled discovery schema.')
+      # raise exception after checking all fields for a list
+      raise ('Unahandled discovery schema.')
     else:
       return schema
 
