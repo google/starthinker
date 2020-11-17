@@ -202,7 +202,8 @@ def put_rows(auth, destination, rows, variant=''):
           "sheet":[ string - full URL, suggest using share link ],
           "tab":[ string ],
           "range":[ string - A1:A notation ]
-          "delete": [ boolean - if sheet range should be cleared before writing
+          "append": [ boolean - if sheet range should be appended to ]
+          "delete": [ boolean - if sheet range should be cleared before writing ]
           ]
         },
         "storage":{
@@ -260,8 +261,7 @@ def put_rows(auth, destination, rows, variant=''):
           rows,
           destination['bigquery'].get('schema', []),
           destination['bigquery'].get(
-              'skip_rows',
-              1),  #0 if 'schema' in destination['bigquery'] else 1),
+              'skip_rows', 0 if 'schema' in destination['bigquery'] else 1),
           destination['bigquery'].get('disposition', 'WRITE_APPEND'),
           billing_project_id=project.id)
 
@@ -274,8 +274,7 @@ def put_rows(auth, destination, rows, variant=''):
           rows,
           destination['bigquery'].get('schema', []),
           destination['bigquery'].get(
-              'skip_rows',
-              1),  #0 if 'schema' in destination['bigquery'] else 1),
+              'skip_rows', 0 if 'schema' in destination['bigquery'] else 1),
           destination['bigquery'].get('disposition', 'WRITE_TRUNCATE'),
       )
 
@@ -288,9 +287,14 @@ def put_rows(auth, destination, rows, variant=''):
           destination['sheets']['range'],
       )
 
-    sheets_write(auth, destination['sheets']['sheet'],
-                 destination['sheets']['tab'] + variant,
-                 destination['sheets']['range'], rows)
+    sheets_write(
+        auth,
+        destination['sheets']['sheet'],
+        destination['sheets']['tab'] + variant,
+        destination['sheets']['range'],
+        rows,
+        destination['sheets'].get('append', False),
+    )
 
   if 'file' in destination:
     path_out, file_ext = destination['file'].rsplit('.', 1)

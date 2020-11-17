@@ -594,23 +594,25 @@ def table_create(auth,
                  overwrite=True,
                  is_time_partition=False):
 
-  if overwrite or not table_exists(auth, project_id, dataset_id, table_id):
-    body = {
-        'tableReference': {
-            'projectId': project_id,
-            'tableId': table_id,
-            'datasetId': dataset_id,
-        }
-    }
+  if overwrite:
+    table_delete(auth, project_id, dataset_id, table_id)
 
-    if schema:
-      body['schema'] = {'fields': schema}
+  body = {
+      'tableReference': {
+          'projectId': project_id,
+          'tableId': table_id,
+          'datasetId': dataset_id,
+      }
+  }
 
-    if is_time_partition:
-      body['timePartitioning'] = {'type': 'DAY'}
+  if schema:
+    body['schema'] = {'fields': schema}
 
-    API_BigQuery(auth).tables().insert(
-        projectId=project_id, datasetId=dataset_id, body=body).execute()
+  if is_time_partition:
+    body['timePartitioning'] = {'type': 'DAY'}
+
+  API_BigQuery(auth).tables().insert(
+      projectId=project_id, datasetId=dataset_id, body=body).execute()
 
 
 def table_get(auth, project_id, dataset_id, table_id):
@@ -646,6 +648,18 @@ def table_exists(auth, project_id, dataset_id, table_id):
     if e.resp.status != 404:
       raise
     return False
+
+
+def table_delete(auth, project_id, dataset_id, table_id):
+  try:
+    API_BigQuery(auth).tables().delete(
+        projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()
+    return True
+  except HttpError as e:
+    if e.resp.status != 404:
+      raise
+    return False
+
 
 
 def table_copy(auth, from_project, from_dataset, from_table, to_project,

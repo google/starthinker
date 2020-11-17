@@ -21,6 +21,10 @@ import pytz
 from datetime import date, datetime
 
 
+def lookup_id(lookup):
+  return lookup.rsplit(' - ', 1)[-1]
+
+
 def date_to_str(value):
   if value is None:
     return None

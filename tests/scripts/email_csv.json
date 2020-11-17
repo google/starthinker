@@ -43,6 +43,7 @@
           "bigquery":{
             "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV_", "default": "Manual"}},
             "table":"Email_Attachment",
+            "skip_rows":1,
             "schema":[
               {"name": "Animal", "type": "STRING"},
               {"name": "Age", "type": "INTEGER"},

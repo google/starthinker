@@ -291,3 +291,9 @@ def rows_slice(rows, row_min=0, row_max=100):
       yield row
     if count >= row_max:
       break
+
+
+def rows_pad(rows, length=0, padding=None):
+  for row in rows:
+    yield (row + [padding for i in range(0, length - len(row))]
+          ) if len(row) < length else row
