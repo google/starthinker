@@ -21,7 +21,6 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.google_api import API_DV
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
@@ -35,7 +34,7 @@ from starthinker.task.dv_sheets.patch import patch_preview
 
 
 def integration_detail_clear():
-  sheets_clear(project.task["auth"], project.task["sheet"],
+  sheets_clear(project.task["auth_sheets"], project.task["sheet"],
                "Integration Details", "A2:Z")
 
 
@@ -106,7 +105,7 @@ def integration_detail_load():
       })
 
   put_rows(
-      project.task["auth"], {
+      project.task["auth_sheets"], {
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Integration Details",
@@ -117,7 +116,7 @@ def integration_detail_load():
 
 def integration_detail_audit():
   rows = get_rows(
-      project.task["auth"], {
+      project.task["auth_sheets"], {
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Integration Details",
@@ -209,7 +208,7 @@ def integration_detail_patch(commit=False):
   patches = []
 
   rows = get_rows(
-      project.task["auth"], {
+      project.task["auth_sheets"], {
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Integration Details",

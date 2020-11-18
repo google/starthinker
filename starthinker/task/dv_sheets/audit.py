@@ -35,7 +35,7 @@ from starthinker.task.dv_sheets.segment import segment_audit
 
 
 def audit_clear():
-  sheets_clear(project.task['auth'], project.task['sheet'], 'Audit', 'A2:Z')
+  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Audit', 'A2:Z')
 
 
 def audit_load():
@@ -51,7 +51,7 @@ def audit_load():
   segment_audit()
 
   # write audit to sheet
-  sheets_clear(project.task['auth'], project.task['sheet'], 'Audit', 'A2')
+  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Audit', 'A2')
 
   # write insertion orders to sheet
   rows = get_rows(
@@ -92,7 +92,7 @@ def audit_load():
           }
       })
 
-  put_rows(project.task['auth'], {
+  put_rows(project.task['auth_sheets'], {
       'sheets': {
           'sheet': project.task['sheet'],
           'tab': 'Audit',

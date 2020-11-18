@@ -34,7 +34,7 @@ from starthinker.util.auth import get_service
 from starthinker.util.storage import object_get_chunks
 from starthinker.util.csv import column_header_sanitize, csv_to_rows, rows_to_csv, response_utf8_stream
 from starthinker.util.dbm.schema import LineItem_Write_Schema
-from starthinker.util.google_api import API_DV360_Beta
+from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api import API_DBM
 
 DBM_CHUNKSIZE = int(
@@ -455,7 +455,7 @@ def lineitem_patch_v1(auth, patch, li):
     li: Line item with updates to push
   Returns: Updated Line Item
   """
-  return API_DV360_Beta(auth).advertisers().lineItems().patch(
+  return API_DV360(auth).advertisers().lineItems().patch(
       advertiserId=li['advertiserId'],
       lineItemId=li['lineItemId'],
       updateMask=patch,
@@ -471,7 +471,7 @@ def lineitem_get_v1(auth, advertiser_id, lineitem_id):
     lineitem_id: ID of the line item
   Returns: Line Item from the DV360 API
   """
-  return API_DV360_Beta(auth).advertisers().lineItems().get(
+  return API_DV360(auth).advertisers().lineItems().get(
       advertiserId=advertiser_id, lineItemId=lineitem_id).execute()
 
 

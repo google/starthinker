@@ -20,7 +20,6 @@ from starthinker.util.bigquery import query_to_view
 from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.google_api import API_DV
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
@@ -31,7 +30,7 @@ from starthinker.task.dv_sheets.patch import patch_preview
 
 
 def line_item_map_clear():
-  sheets_clear(project.task['auth'], project.task['sheet'], 'Line Items Map',
+  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Line Items Map',
                'A2:Z')
 
 
@@ -41,7 +40,7 @@ def line_item_map_load():
 
 def line_item_map_audit():
   rows = get_rows(
-      project.task['auth'], {
+      project.task['auth_sheets'], {
           'sheets': {
               'sheet': project.task['sheet'],
               'tab': 'Line Items Map',
@@ -143,7 +142,7 @@ def line_item_map_patch(commit=False):
     }
 
   rows = get_rows(
-      project.task['auth'], {
+      project.task['auth_sheets'], {
           'sheets': {
               'sheet': project.task['sheet'],
               'tab': 'Line Items Map',

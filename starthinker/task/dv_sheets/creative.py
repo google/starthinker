@@ -19,7 +19,7 @@
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.google_api import API_DV
+from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
@@ -38,7 +38,7 @@ def creative_clear():
     ).method_schema("advertisers.creatives.list"),
   )
 
-  sheets_clear(project.task["auth"], project.task["sheet"], "Creatives", "B2:Z")
+  sheets_clear(project.task["auth_sheets"], project.task["sheet"], "Creatives", "B2:Z")
 
 
 def creative_load():
@@ -46,7 +46,7 @@ def creative_load():
   # load multiple partners from user defined sheet
   def creative_load_multiple():
     rows = get_rows(
-      project.task["auth"], {
+      project.task["auth_sheets"], {
         "sheets": {
           "sheet": project.task["sheet"],
           "tab": "Advertisers",
@@ -55,8 +55,8 @@ def creative_load():
     })
 
     for row in rows:
-      yield from API_DV(
-        project.task["auth"], iterate=True).advertisers().creatives().list(
+      yield from API_DV360(
+        project.task["auth_dv"], iterate=True).advertisers().creatives().list(
           advertiserId=lookup_id(row[0])
         ).execute()
 
@@ -111,7 +111,7 @@ def creative_load():
   )
 
   put_rows(
-    project.task["auth"],
+    project.task["auth_sheets"],
     {
       "sheets": {
         "sheet": project.task["sheet"],

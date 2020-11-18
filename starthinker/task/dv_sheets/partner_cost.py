@@ -21,7 +21,6 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.google_api import API_DV
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
@@ -34,7 +33,7 @@ from starthinker.task.dv_sheets.patch import patch_preview
 
 
 def partner_cost_clear():
-  sheets_clear(project.task["auth"], project.task["sheet"], "Partner Costs",
+  sheets_clear(project.task["auth_sheets"], project.task["sheet"], "Partner Costs",
                "A2:Z")
 
 
@@ -103,7 +102,7 @@ def partner_cost_load():
       })
 
   put_rows(
-      project.task["auth"], {
+      project.task["auth_sheets"], {
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Partner Costs",
@@ -114,7 +113,7 @@ def partner_cost_load():
 
 def partner_cost_audit():
   rows = get_rows(
-      project.task["auth"], {
+      project.task["auth_sheets"], {
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Partner Costs",
@@ -235,7 +234,7 @@ def partner_cost_patch(commit=False):
   changed = set()
 
   rows = get_rows(
-      project.task["auth"], {
+      project.task["auth_sheets"], {
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Partner Costs",

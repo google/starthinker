@@ -579,7 +579,7 @@ def API_Cloud(auth, iterate=False):
   return API(configuration)
 
 
-def API_DV360_Beta(auth, iterate=False):
+def API_DV360(auth, iterate=False):
   """Cloud project helper configuration Google API.
 
   Defines agreed upon version.

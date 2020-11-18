@@ -22,7 +22,6 @@ from starthinker.util.bigquery import query_to_view
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.google_api import API_DV
 from starthinker.util.project import project
 from starthinker.util.sheets import sheets_clear
 
@@ -135,11 +134,11 @@ def patch_clear():
   table_create(project.task['auth_bigquery'], project.id,
                project.task['dataset'], 'PATCH_Log', SCHEMA_LOG)
 
-  sheets_clear(project.task['auth'], project.task['sheet'], 'Preview', 'A2:Z')
+  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Preview', 'A2:Z')
 
-  sheets_clear(project.task['auth'], project.task['sheet'], 'Error', 'A2:Z')
+  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Error', 'A2:Z')
 
-  sheets_clear(project.task['auth'], project.task['sheet'], 'Success', 'A2:Z')
+  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Success', 'A2:Z')
 
 
 def patch_mask(patch):
@@ -196,7 +195,7 @@ def patch_log(patch=None):
         }, rows)
 
     put_rows(
-        project.task['auth'], {
+        project.task['auth_sheets'], {
             'sheets': {
                 'sheet': project.task['sheet'],
                 'tab': kind.title(),
@@ -239,7 +238,7 @@ def patch_preview(patches):
         }, rows)
 
     put_rows(
-        project.task['auth'], {
+        project.task['auth_sheets'], {
             'sheets': {
                 'sheet': project.task['sheet'],
                 'tab': 'Preview',

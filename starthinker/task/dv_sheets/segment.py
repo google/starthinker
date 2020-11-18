@@ -21,7 +21,6 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.google_api import API_DV
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
@@ -33,7 +32,7 @@ from starthinker.task.dv_sheets.patch import patch_preview
 
 
 def segment_clear():
-  sheets_clear(project.task["auth"], project.task["sheet"], "Segments", "A2:Z")
+  sheets_clear(project.task["auth_sheets"], project.task["sheet"], "Segments", "A2:Z")
 
 
 def segment_load():
@@ -72,7 +71,7 @@ def segment_load():
           }
       })
 
-  put_rows(project.task["auth"], {
+  put_rows(project.task["auth_sheets"], {
       "sheets": {
           "sheet": project.task["sheet"],
           "tab": "Segments",
@@ -85,7 +84,7 @@ def segment_audit():
 
   # Move Segments To BigQuery
   rows = get_rows(
-      project.task["auth"], {
+      project.task["auth_sheets"], {
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Segments",
@@ -245,7 +244,7 @@ def segment_patch(commit=False):
   changed = set()
 
   rows = get_rows(
-      project.task["auth"], {
+      project.task["auth_sheets"], {
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Segments",

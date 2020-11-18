@@ -19,7 +19,7 @@
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.google_api import API_DV
+from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
@@ -41,7 +41,7 @@ def advertiser_clear():
                             'v1').method_schema('advertisers.list'),
   )
 
-  sheets_clear(project.task['auth'], project.task['sheet'], 'Advertisers',
+  sheets_clear(project.task['auth_dv'], project.task['sheet'], 'Advertisers',
                'B2:Z')
 
 
@@ -50,7 +50,7 @@ def advertiser_load():
   # load multiple partners from user defined sheet
   def advertiser_load_multiple():
     rows = get_rows(
-        project.task['auth'], {
+        project.task['auth_sheets'], {
             'sheets': {
                 'sheet': project.task['sheet'],
                 'tab': 'Partners',
@@ -59,8 +59,8 @@ def advertiser_load():
         })
 
     for row in rows:
-      yield from API_DV(
-          project.task['auth'], iterate=True).advertisers().list(
+      yield from API_DV360(
+          project.task['auth_dv'], iterate=True).advertisers().list(
               partnerId=lookup_id(row[0])).execute()
 
   # write advertisers to database and sheet
@@ -100,7 +100,7 @@ def advertiser_load():
       })
 
   put_rows(
-      project.task['auth'], {
+      project.task['auth_sheets'], {
           'sheets': {
               'sheet': project.task['sheet'],
               'tab': 'Advertisers',
@@ -116,11 +116,11 @@ def advertiser_commit(patches):
     print('API ADVERTISER:', patch['action'], patch['advertiser'])
     try:
       if patch['action'] == 'DELETE':
-        response = API_DV(project.task['auth']).advertisers().delete(
+        response = API_DV360(project.task['auth_dv']).advertisers().delete(
             **patch['parameters']).execute()
         patch['success'] = response
       elif patch['action'] == 'PATCH':
-        response = API_DV(project.task['auth']).advertisers().patch(
+        response = API_DV360(project.task['auth_dv']).advertisers().patch(
             **patch['parameters']).execute()
         patch['success'] = response['advertiserId']
     except Exception as e:

@@ -20,7 +20,6 @@ from starthinker.util.bigquery import query_to_view
 from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.google_api import API_DV
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
@@ -32,7 +31,7 @@ from starthinker.task.dv_sheets.patch import patch_preview
 
 
 def pacing_clear():
-  sheets_clear(project.task["auth"], project.task["sheet"], "Pacing", "A2:Z")
+  sheets_clear(project.task["auth_sheets"], project.task["sheet"], "Pacing", "A2:Z")
 
 
 def pacing_load():
@@ -95,7 +94,7 @@ def pacing_load():
           }
       })
 
-  put_rows(project.task["auth"], {
+  put_rows(project.task["auth_sheets"], {
       "sheets": {
           "sheet": project.task["sheet"],
           "tab": "Pacing",
@@ -105,7 +104,7 @@ def pacing_load():
 
 
 def pacing_audit():
-  rows = get_rows(project.task["auth"], {
+  rows = get_rows(project.task["auth_sheets"], {
       "sheets": {
           "sheet": project.task["sheet"],
           "tab": "Pacing",
@@ -216,7 +215,7 @@ def pacing_patch(commit=False):
 
   patches = []
 
-  rows = get_rows(project.task["auth"], {
+  rows = get_rows(project.task["auth_sheets"], {
       "sheets": {
           "sheet": project.task["sheet"],
           "tab": "Pacing",

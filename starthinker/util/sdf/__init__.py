@@ -30,7 +30,7 @@ from starthinker.util.data import get_rows
 from starthinker.util.csv import column_header_sanitize, csv_to_rows
 from starthinker.util.bigquery import rows_to_table, table_create, table_exists
 from starthinker.util.sdf.schema.Lookup import SDF_Field_Lookup
-from starthinker.util.google_api import API_DV360_Beta
+from starthinker.util.google_api import API_DV360
 
 
 # Desired file name: InsertionOrders, LineItems, *Camel case of the filetype
@@ -72,11 +72,10 @@ def sdf_download(auth, version, partner_id, file_types, filter_type,
       'idFilter': None
   }
 
-  operation = API_DV360_Beta(auth).sdfdownloadtasks().create(
-      body=body).execute()
+  operation = API_DV360(auth).sdfdownloadtasks().create(body=body).execute()
 
   if operation and 'name' in operation:
-    request = API_DV360_Beta(auth).sdfdownloadtasks().operations().get(
+    request = API_DV360(auth).sdfdownloadtasks().operations().get(
         name=operation['name'])
 
     # This is the eng recommended way of getting the operation
@@ -173,7 +172,7 @@ def download_media(auth, resource_name):
   if project.verbose:
     print('SDF: Start Download')
 
-  downloadRequest = API_DV360_Beta(auth).media().download_media(
+  downloadRequest = API_DV360(auth).media().download_media(
       resourceName=resource_name).execute(run=False)
 
   # Create output stream for downloaded file

@@ -153,7 +153,7 @@ def dv_sheets():
     integration_detail_clear()
     line_item_clear()
 
-  elif project.task['command'] == 'Clear Audits':
+  elif project.task['command'] == 'Clear Preview':
     audit_clear()
 
   elif project.task['command'] == 'Clear Patch':

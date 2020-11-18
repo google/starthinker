@@ -21,7 +21,7 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.google_api import API_DV
+from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
@@ -43,7 +43,7 @@ def line_item_clear():
                             "v1").method_schema("advertisers.lineItems.list"),
   )
 
-  sheets_clear(project.task["auth"], project.task["sheet"], "Line Items",
+  sheets_clear(project.task["auth_sheets"], project.task["sheet"], "Line Items",
                "A2:Z")
 
 
@@ -52,7 +52,7 @@ def line_item_load():
   # load multiple partners from user defined sheet
   def line_item_load_multiple():
     rows = get_rows(
-        project.task["auth"], {
+        project.task["auth_sheets"], {
             "sheets": {
                 "sheet": project.task["sheet"],
                 "tab": "Advertisers",
@@ -61,8 +61,8 @@ def line_item_load():
         })
 
     for row in rows:
-      yield from API_DV(
-          project.task["auth"], iterate=True).advertisers().lineItems().list(
+      yield from API_DV360(
+          project.task["auth_dv"], iterate=True).advertisers().lineItems().list(
               advertiserId=lookup_id(row[0])).execute()
 
   # write line_items to database
@@ -132,7 +132,7 @@ def line_item_load():
       })
 
   put_rows(
-      project.task["auth"], {
+      project.task["auth_sheets"], {
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Line Items",
@@ -144,7 +144,7 @@ def line_item_load():
 def line_item_audit():
 
   rows = get_rows(
-      project.task["auth"], {
+      project.task["auth_sheets"], {
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Line Items",
@@ -301,7 +301,7 @@ def line_item_patch(commit=False):
   patches = []
 
   rows = get_rows(
-      project.task["auth"], {
+      project.task["auth_sheets"], {
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Line Items",
@@ -386,12 +386,12 @@ def line_item_commit(patches):
     print("API LINE ITEM:", patch["action"], patch["line_item"])
     try:
       if patch["action"] == "DELETE":
-        response = API_DV(
-            project.task["auth"]).advertisers().lineItems().delete(
+        response = API_DV360(
+            project.task["auth_dv"]).advertisers().lineItems().delete(
                 **patch["parameters"]).execute()
         patch["success"] = response
       elif patch["action"] == "PATCH":
-        response = API_DV(project.task["auth"]).advertisers().lineItems().patch(
+        response = API_DV360(project.task["auth_dv"]).advertisers().lineItems().patch(
             **patch["parameters"]).execute()
         patch["success"] = response["lineItemId"]
     except Exception as e:
