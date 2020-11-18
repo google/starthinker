@@ -282,12 +282,13 @@ class API():
     self.version = configuration['version']
     self.auth = configuration['auth']
     self.uri = configuration.get('uri', None)
+    self.key = configuration.get('key', None)
     self.function_stack = list(
         filter(None,
                configuration.get('function', '').split('.')))
     self.function_kwargs = configuration.get('kwargs', {})
     self.iterate = configuration.get('iterate', False)
-    self.developer_token = configuration.get('developer-token', None)
+    self.headers = configuration.get('headers', {})
 
     self.function = None
     self.job = None
@@ -320,8 +321,9 @@ class API():
         api=self.api,
         version=self.version,
         auth=self.auth,
-        uri_file=self.uri,
-        developer_token=self.developer_token)
+        headers=self.headers,
+        api_key=self.key,
+        uri_file=self.uri)
 
     # build calls along stack
     # do not call functions, as the abstract is necessary for iterator page next calls

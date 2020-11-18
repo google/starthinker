@@ -59,6 +59,12 @@ def main():
       help='developer token to pass in header',
       default=None)
   parser.add_argument(
+      '-api-key', help='Api Key to use when fetching resources', default=None)
+  parser.add_argument(
+      '-login-customer-id',
+      help='customer to log in with when manipulating an MCC',
+      default=None)
+  parser.add_argument(
       '-kwargs',
       help='kwargs to pass to function, json string of name:value pairs')
   parser.add_argument('--iterate', help='force iteration', action='store_true')
@@ -85,11 +91,18 @@ def main():
         'api': project.args.api,
         'version': project.args.version,
         'function': project.args.function,
+        'key': project.args.api_key,
         'uri': project.args.uri,
         'kwargs': json.loads(project.args.kwargs),
-        'developer-token': project.args.developer_token,
+        'headers': {},
         'iterate': project.args.iterate,
     }
+
+    if project.args.developer_token:
+      job['headers']['developer-token'] = project.args.developer_token
+
+    if project.args.login_customer_id:
+      job['headers']['login-customer-id'] = project.args.login_customer_id
 
     # run the API call
     results = API(job).execute()

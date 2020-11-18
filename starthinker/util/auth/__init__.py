@@ -100,15 +100,16 @@ def get_service(api='gmail',
                 version='v1',
                 auth='service',
                 scopes=None,
-                uri_file=None,
-                developer_token=None):
+                headers=None,
+                api_key=None,
+                uri_file=None):
   global DISCOVERY_CACHE
 
   class HttpRequestCustom(HttpRequest):
 
     def __init__(self, *args, **kwargs):
-      if developer_token:
-        kwargs['headers']['developer-token'] = developer_token
+      if headers:
+        kwargs['headers'].update(headers)
       super(HttpRequestCustom, self).__init__(*args, **kwargs)
 
   key = api + version + auth + str(threading.current_thread().ident)
@@ -119,18 +120,23 @@ def get_service(api='gmail',
       uri_file = uri_file.strip()
       if uri_file.startswith('{'):
         DISCOVERY_CACHE[key] = discovery.build_from_document(
-            uri_file, credentials=credentials, requestBuilder=HttpRequestCustom)
+            uri_file,
+            credentials=credentials,
+            developerKey=api_key,
+            requestBuilder=HttpRequestCustom)
       else:
         with open(uri_file, 'r') as cache_file:
           DISCOVERY_CACHE[key] = discovery.build_from_document(
               cache_file.read(),
               credentials=credentials,
+              developerKey=api_key,
               requestBuilder=HttpRequestCustom)
     else:
       DISCOVERY_CACHE[key] = discovery.build(
           api,
           version,
           credentials=credentials,
+          developerKey=api_key,
           requestBuilder=HttpRequestCustom)
 
   return DISCOVERY_CACHE[key]
