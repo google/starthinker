@@ -125,7 +125,7 @@ def get_rows(auth, source, as_object=False, unnest=False):
     # should be sheets, deprecate sheet over next few releases
     if 'sheet' in source:
       rows = sheets_read(
-          project.task['auth'],
+          auth,
           source['sheet']['sheet'],
           source['sheet']['tab'],
           source['sheet']['range'],
@@ -136,7 +136,7 @@ def get_rows(auth, source, as_object=False, unnest=False):
 
     if 'sheets' in source:
       rows = sheets_read(
-          project.task['auth'],
+          auth,
           source['sheets']['sheet'],
           source['sheets']['tab'],
           source['sheets']['range'],
