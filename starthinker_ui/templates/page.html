@@ -72,6 +72,8 @@
       i.right { margin: 0px 15px; font-size: 1.5rem;}
       .collapsible-body { padding: 0px; }
 
+      body { overflow: auto !important; }
+
       {% block css %}{% endblock %}
     </style>
 
@@ -157,7 +159,7 @@
 
   <script type="text/javascript">
     $(document).ready(function() {
-      M.AutoInit();
+      M.AutoInit(context=document.getElementById("form_recipe"));
     });
   </script>
 
