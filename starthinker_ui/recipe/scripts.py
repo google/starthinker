@@ -37,15 +37,14 @@ APACHE_LICENSE_MATCH = 'Licensed under the Apache License, Version 2.0'
 def load_scripts():
   if not SCRIPTS:
     for root, dirs, files in os.walk(UI_ROOT + '/scripts/'):
-      for filename in files:
+      for filename in sorted(files):
         if filename.endswith('.json'):
           try:
             script = get_project(root + filename)
             if not 'script' in script:
               continue
             script['path'] = root + filename
-            SCRIPTS[filename.replace('script_', '', 1).replace('.json', '',
-                                                               1)] = script
+            SCRIPTS[filename.replace('.json', '', 1)] = script
             print('OK', filename)
           except Exception as e:
             print('ERROR:', filename, str(e))
@@ -60,7 +59,7 @@ try:
   )
 # If it fails, load the scripts directly from the json files
 except ImportError as e:
-  print('Loading From: script_.*\.json')
+  print('Loading From: scripts/*.json')
   load_scripts()
 
 
