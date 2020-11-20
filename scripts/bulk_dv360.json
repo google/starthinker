@@ -1,0 +1,92 @@
+{
+  "script":{
+    "released":"2020-11-15",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"cleaning_services",
+    "title":"Bulk Editor For DV360",
+    "description":"Allows bulk editing DV360 through Sheets and BigQuery.",
+    "image":"https://github.com/google/starthinker/raw/master/tutorials/images/bulk_dv360.png",
+    "sample":"https://docs.google.com/spreadsheets/d/10ByZKMIPZQQOEwJlskzggRhhQqe44on_ebUxkjmZI_w/",
+    "from":["sheets", "bigquery" ],
+    "to":["dv360"],
+    "pitches":[
+      "Speed up bulk editing.",
+      "Add custom validation rules using BQ."
+    ],
+    "impacts":{
+      "spend optimization":20,
+      "spend growth":0,
+      "time savings":90,
+      "account health":100,
+      "csat improvement":90
+    },
+    "instructions":[
+      "Select <b>Create Sheet</b> and run the recipe.",
+      "Fill in <i>Partners</i> tab filter.",
+      "Run <b>Load Advertisers</b>.",
+      "Fill in <i>Advertisers</i> tab filter.",
+      "Run <b>Load Insertion Orders</b> or <b>Load Line Items</b> or <b>Load Creatives</b>.",
+      "Fill in changes on all tabs with colored fields.",
+      "Select <i>Audit</i> and run the recipe.",
+      "Check the <b>Audit</b> and <b>Preview</b> tabs.",
+      "Select <i>Patch</i> and run the recipe.",
+      "Check the <b>Success</b> and <b>Error</b> tabs.",
+      "Patch can be run multiple times.",
+      "Patch ONLY changes edited fields."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+   "setup":{
+    "day":[],
+    "hour":[]
+  },
+  "tasks":[
+    { "dataset":{
+      "__comment__":"Ensure dataset exists.",
+      "auth":{"field":{ "name":"auth_bigquery", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+      "dataset":{"field":{ "name":"recipe_slug", "prefix":"DV_Sheet_", "kind":"string", "order":2, "default":"", "description":"Name of Google BigQuery dataset to create." }}
+    }},
+    { "drive":{
+      "__comment__":"Copy the default template to sheet with the recipe name",
+      "auth":{"field":{ "name":"auth_sheet", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "copy":{
+        "source":"https://docs.google.com/spreadsheets/d/10ByZKMIPZQQOEwJlskzggRhhQqe44on_ebUxkjmZI_w/",
+        "destination":{"field":{ "name":"recipe_slug", "prefix":"DV Sheet ", "kind":"string", "order":3, "default":"", "description":"Name of Google Sheet to create." }}
+      }
+    }},
+    { "dv_sheets": {
+      "__comment":"Depending on users choice, execute a different part of the solution.",
+      "auth_dv": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for dv." }},
+      "auth_sheets": {"field":{ "name":"auth_sheet", "kind":"authentication", "order":2, "default":"user", "description":"Credentials used for sheet." }},
+      "auth_bigquery": {"field":{ "name":"auth_bigquery", "kind":"authentication", "order":3, "default":"service", "description":"Credentials used for bigquery." }},
+      "sheet":{"field":{ "name":"recipe_slug", "prefix":"DV Sheet ", "kind":"string", "order":4, "default":"", "description":"Name of Google Sheet to create." }},
+      "dataset":{"field":{ "name":"recipe_slug", "prefix":"DV_Sheet_", "kind":"string", "order":5, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+      "command":{"field":{
+        "name":"command",
+        "kind":"choice",
+        "choices":[
+          "Clear Partners",
+          "Clear Advertisers",
+          "Clear Campaigns",
+          "Clear Creatives",
+          "Clear Insertion Orders",
+          "Clear Line Items",
+          "Clear Preview",
+          "Clear Patch",
+          "Load Partners",
+          "Load Advertisers",
+          "Load Campaigns",
+          "Load Creatives",
+          "Load Insertion Orders",
+          "Load Line Items",
+          "Preview",
+          "Patch"
+        ],
+        "order":6,
+        "default":"",
+        "description":"Action to take."
+      }}
+    }}
+  ]
+}
