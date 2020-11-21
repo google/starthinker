@@ -29,14 +29,24 @@ class ProjectForm(forms.ModelForm):
 
   class Meta:
     model = Project
-    fields = ['service', 'share']
+    fields = ['service', 'key', 'share']
 
   def __init__(self, account, *args, **kwargs):
     super(ProjectForm, self).__init__(*args, **kwargs)
     self.instance.account = account
+    self.fields['service'].label = 'Service JSON'
+    self.fields['service'].help_text = mark_safe(
+      'Optional, paste service JSON here.'
+    )
+
+    self.fields['key'].label = 'API Key'
+    self.fields['key'].help_text = mark_safe(
+      'Optional, ensures billing and may be required for some API calls.'
+    )
+
     self.fields['share'].label = 'Share'
     self.fields['share'].help_text = mark_safe(
-        'WARNING: Sharing with DOMAIN or GLOBAL will allow other users to use, but not view, your <a href="https://console.cloud.google.com/iam-admin/iam" target="_blank">service credentials and project permissions</a> in their recipes.'
+      'WARNING: Sharing with DOMAIN or GLOBAL will allow other users to use, but not view, your service credentials and project permissions.'
     )
 
     domain = account.get_domain()

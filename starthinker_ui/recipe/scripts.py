@@ -198,8 +198,17 @@ class Script:
     return self.script.get('setup', {}).get('day', None) == []
 
   @staticmethod
-  def get_json(uuid, project_id, credentials_user, credentials_service,
-               timezone, days, hours, values):
+  def get_json(
+    uuid,
+    project_id,
+    project_key,
+    credentials_user,
+    credentials_service,
+    timezone,
+    days,
+    hours,
+    values
+    ):
     tasks = []
     hours = set(hours)
     for v in values:
@@ -215,6 +224,7 @@ class Script:
         'setup': {
             'uuid': uuid,
             'id': project_id,
+            'key': project_key,
             'timezone': timezone,
             'day': days,
             'hour': sorted(hours),

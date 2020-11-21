@@ -26,7 +26,8 @@ from starthinker_ui.account.models import Account
 class Project(models.Model):
   account = models.ForeignKey(Account, on_delete=models.PROTECT, null=True)
   identifier = models.CharField(max_length=255)
-  service = models.TextField()
+  service = models.TextField(default='')
+  key = models.CharField(max_length=50, default='')
   share = models.CharField(max_length=50, default='')
 
   def __str__(self):

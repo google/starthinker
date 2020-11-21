@@ -224,6 +224,9 @@ class Recipe(models.Model):
   def get_project_identifier(self):
     return self.project.get_project_id() if self.project else ''
 
+  def get_project_key(self):
+    return self.project.key if self.project else ''
+
   def get_scripts(self):
     for value in self.get_values():
       yield Script(value['tag'])
@@ -235,10 +238,13 @@ class Recipe(models.Model):
 
   def get_json(self, credentials=True):
     return Script.get_json(
-        self.uid(), self.get_project_identifier(),
-        self.get_credentials_user() if credentials else '',
-        self.get_credentials_service() if credentials else '', self.timezone,
-        self.get_days(), self.get_hours(), self.get_values())
+      self.uid(),
+      self.get_project_identifier(),
+      self.get_project_key() if credentials else '',
+      self.get_credentials_user() if credentials else '',
+      self.get_credentials_service() if credentials else '', self.timezone,
+      self.get_days(), self.get_hours(), self.get_values()
+    )
 
   def activate(self):
     self.active = True

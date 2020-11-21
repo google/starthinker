@@ -36,8 +36,14 @@ def project_create(share=''):
       'r') as f:
     service = f.read()
 
+  key = os.environ.get('STARTHINKER_API_KEY', 'MISSING RUN deploy.sh TO SET'),
+
   project = Project.objects.create(
-      account=account_create(), service=service, share=share)
+      account=account_create(),
+      service=service,
+      key=key,
+      share=share
+  )
 
   return project
 
