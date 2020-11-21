@@ -3,38 +3,52 @@
     "released":"2018-06-10",
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
-    "open":true,
     "icon":"settings_input_component",
-    "title":"API To BigQuery",
-    "description":"Execute a Google API function and store results to BigQuery.",
-    "from":["google api"],
+    "title":"Google API To BigQuery",
+    "description":"Execute any Google API function and store results to BigQuery.",
+    "from":["google_api"],
     "to":["bigquery"],
     "instructions":[
       "Enter an api name and version.",
-      "Specify the function using dot notation and arguments using json.",
-      "If nextPageToken can be in response check iterate.",
-      "Give BigQuery dataset and table where response will be written."
+      "Specify the function using dot notation.",
+      "Specify the arguments using json.",
+      "Iterate is optional, use if API returns a list of items that are not unpacking correctly.",
+      "The <a href='https://cloud.google.com/docs/authentication/api-keys' target='_blank'>API Key</a> may be required for some calls.",
+      "The <a href='https://developers.google.com/google-ads/api/docs/first-call/dev-token' target='_blank'>Developer Token</a> may be required for some calls.",
+      "Give BigQuery dataset and table where response will be written.",
+      "All API calls are based on <a href='https://developers.google.com/discovery/v1/reference'  target='_blank'>discovery document</a>, for example the <a href='https://developers.google.com/display-video/api/reference/rest/v1/advertisers/list' target='_blank'>Campaign Manager API</a>."
     ],
+    "pitches":[
+      "Call any Google API ednpoint.",
+      "Move results into BigQuery."
+    ],
+    "impacts":{
+      "spend optimization":0,
+      "spend growth":0,
+      "time savings":100,
+      "account health":50,
+      "csat improvement":80
+    },
     "authors":["kenjora@google.com"]
   },
   "tasks":[
     { "google_api":{
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
-      "api":{ "field":{ "name":"api", "kind":"string", "order":1, "default":"doubleclickbidmanager", "description":"See developer guide." }},
+      "api":{ "field":{ "name":"api", "kind":"string", "order":1, "default":"displayvideo", "description":"See developer guide." }},
       "version": { "field":{ "name":"version", "kind":"string", "order":2, "default":"v1", "description":"Must be supported version." }},
-      "function":{ "field":{ "name":"function", "kind":"string", "order":3, "default":"reports.files.list", "description":"Full function dot notation path." }},
+      "function":{ "field":{ "name":"function", "kind":"string", "order":3, "default":"advertisers.list", "description":"Full function dot notation path." }},
       "kwargs":{ "field":{ "name":"kwargs", "kind":"json", "order":4, "default":{
-          "accountId": 7480,
-          "profileId": 2782211,
-          "reportId": 132847265
+          "partnerId": 234340
       }, "description":"Dictionray object of name value pairs." }},
-      "iterate":{ "field":{ "name":"iterate", "kind":"boolean", "order":5, "default":false, "description":"Is the result a list?" }},
+      "key":{ "field":{ "name":"api_key", "kind":"string", "order":4, "default":"", "description":"Associated with a Google Cloud Project." }},
+      "headers":{
+        "developer-token":{ "field":{ "name":"developer_token", "kind":"string", "order":5, "default":"", "description":"Associated with your organization." }},
+        "login-customer-id":{ "field":{ "name":"login_customer_id", "kind":"string", "order":6, "default":"", "description":"Associated with your Adwords account." }}
+      },
       "results": {
         "bigquery":{
-          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":6, "default":"", "description":"Existing dataset in BigQuery." }},
-          "table":{ "field":{ "name":"table", "kind":"string", "order":7, "default":"", "description":"Table to write API call results to." }},
-          "schema":{ "field":{ "name":"schema", "kind":"json", "order":9, "default":[], "description":"Schema provided in JSON list format or empty list." }},
-          "format":"JSON"
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":7, "default":"", "description":"Existing dataset in BigQuery." }},
+          "table":{ "field":{ "name":"table", "kind":"string", "order":8, "default":"", "description":"Table to write API call results to." }}
         }
       }
     }}
