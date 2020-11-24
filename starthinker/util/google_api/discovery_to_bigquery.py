@@ -38,9 +38,9 @@ class Discovery_To_BigQuery():
     self.api_document = json.load(request.urlopen(api_url))
 
   @staticmethod
-  def preferred_version(api_name, api_key=None):
+  def preferred_version(api_name, key=None):
     api_url = 'https://discovery.googleapis.com/discovery/v1/apis?name=%s&key=%s&preferred=true' % (
-        api_name, api_key or '')
+        api_name, key or '')
     print(api_url)
     api_info = json.load(request.urlopen(api_url))
     return api_info['items'][0]['version']

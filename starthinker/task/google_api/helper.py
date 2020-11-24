@@ -59,8 +59,6 @@ def main():
       help='developer token to pass in header',
       default=None)
   parser.add_argument(
-      '-api-key', help='Api Key to use when fetching resources', default=None)
-  parser.add_argument(
       '-login-customer-id',
       help='customer to log in with when manipulating an MCC',
       default=None)
@@ -75,7 +73,7 @@ def main():
 
 
   # initialize project ( used to load standard credentials parameters )
-  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v'))
+  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-k', '-v'))
 
   # show schema
   if project.args.schema:
@@ -87,15 +85,15 @@ def main():
 
     # the api wrapper takes parameters as JSON
     job = {
-        'auth': 'service' if project.args.service else 'user',
-        'api': project.args.api,
-        'version': project.args.version,
-        'function': project.args.function,
-        'key': project.args.api_key,
-        'uri': project.args.uri,
-        'kwargs': json.loads(project.args.kwargs),
-        'headers': {},
-        'iterate': project.args.iterate,
+      'auth': 'service' if project.args.service else 'user',
+      'api': project.args.api,
+      'version': project.args.version,
+      'function': project.args.function,
+      'key': project.args.key,
+      'uri': project.args.uri,
+      'kwargs': json.loads(project.args.kwargs),
+      'headers': {},
+      'iterate': project.args.iterate,
     }
 
     if project.args.developer_token:

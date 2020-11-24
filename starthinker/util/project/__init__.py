@@ -39,15 +39,14 @@ three important concepts:
 
     Credentials can be specified in one of three ways for maximum flexibility:
 
-    A. Specify credentials on command line ( highest priority if given )
+    A. Specify credentials on command line (highest priority if given)
        --user / -u = user credentials path
-       --client / -c = client credentials path ( requires user credentials path
-       )
+       --client / -c = client credentials path (requires user credentials path)
        --service / -s = service credentials path
 
-    B. Define credentials paths in JSON ( overruled by command line )
-       In each json file create the following entry ( client, or user, or
-       service )
+    B. Define credentials paths in JSON (overruled by command line)
+       In each json file create the following entry (client, or user, or
+       service)
 
          ```
          {
@@ -64,10 +63,9 @@ three important concepts:
 
     C. Use default credentials ( lowest priority, last resort )
        If neither the json not the command line provides a path, the
-       environmental
-       variable GOOGLE_APPLICATION_CREDENTIALS will be used for service
-       accounts.
-       It is created by google cloud utilities.
+       environmental variable GOOGLE_APPLICATION_CREDENTIALS will be
+       used for service accounts.  It is created by google cloud
+       utilities.
 """
 
 import os
@@ -150,15 +148,17 @@ def is_scheduled(recipe, task={}):
   """
 
   tz = pytz.timezone(
-      recipe.get('setup', {}).get('timezone', 'America/Los_Angeles'))
+    recipe.get('setup', {}).get('timezone', 'America/Los_Angeles')
+  )
   now_tz = datetime.now(tz)
   day_tz = now_tz.strftime('%a')
   hour_tz = now_tz.hour
 
   days = recipe.get('setup', {}).get('day', [])
   hours = [
-      int(h) for h in task.get('hour',
-                               recipe.get('setup', {}).get('hour', []))
+    int(h) for h in task.get(
+      'hour', recipe.get('setup', {}).get('hour', [])
+    )
   ]
 
   if days == [] or day_tz in days:
@@ -335,6 +335,12 @@ class project:
           '-p',
           help='Cloud ID of Google Cloud Project.',
           default=None)
+    if arguments is None or '-k' in arguments:
+      parser.add_argument(
+          '--key',
+          '-k',
+          help='API Key of Google Cloud Project.',
+          default=None)
     if arguments is None or '-u' in arguments:
       parser.add_argument(
           '--user',
@@ -392,13 +398,20 @@ class project:
 
     # initialize the project singleton with passed in parameters
     cls.initialize(
-        get_project(cls.args.json) if hasattr(cls.args, 'json') else {}, _task,
-        getattr(cls.args, 'instance', None), getattr(cls.args, 'project', None),
-        getattr(cls.args, 'user', None), getattr(cls.args, 'service', None),
-        getattr(cls.args, 'client', None), getattr(cls.args, 'json', None),
-        getattr(cls.args, 'verbose', None), getattr(cls.args, 'force', None),
+        get_project(cls.args.json) if hasattr(cls.args, 'json') else {},
+        _task,
+        getattr(cls.args, 'instance', None),
+        getattr(cls.args, 'project', None),
+        getattr(cls.args, 'user', None),
+        getattr(cls.args, 'service', None),
+        getattr(cls.args, 'client', None),
+        getattr(cls.args, 'json', None),
+        getattr(cls.args, 'key', None),
+        getattr(cls.args, 'verbose', None),
+        getattr(cls.args, 'force', None),
         getattr(cls.args, 'trace_print', None),
-        getattr(cls.args, 'trace_file', None))
+        getattr(cls.args, 'trace_file', None)
+    )
 
   @classmethod
   def get_task_index(cls):
@@ -470,6 +483,7 @@ class project:
                  _service=None,
                  _client=None,
                  _filepath=None,
+                 _key=None,
                  _verbose=False,
                  _force=False,
                  _trace_print=False,
@@ -491,8 +505,12 @@ class project:
          user = 'user.json'
          service = 'service.json'
          recipe = {'setup':..., 'tasks':.... }
-         project.initialize(_recipe=recipe, _user=user, _service=service,
-         _verbose=True)
+         project.initialize(
+           _recipe=recipe,
+           _user=user,
+           _service=service,
+           _verbose=True
+         )
     ```
 
     Args:
@@ -504,6 +522,7 @@ class project:
       - _user: (string) See module description.
       - _service: (string) See module description.
       - _client: (string) See module description.
+      - _key: (string) See module description.
       - _verbose: (boolean) See module description.
       - _force: (boolean) See module description.
       - _trace_print: (boolean) True if writing execution trace to stdout.
@@ -547,16 +566,25 @@ class project:
     # if project id given, use it
     if _project:
       cls.recipe['setup']['id'] = _project
+
+    if _key:
+      cls.recipe['setup']['key'] = _key
+
     # TBD: if project id not given, use service credentials
     #elif not cls.recipe['setup'].get('id') and cls.recipe['setup']['auth'].get('service'):
     # TBD: if project id not given, use client credentials
     #elif not cls.recipe['setup'].get('id') and cls.recipe['setup']['auth'].get('client'):
 
     cls.id = cls.recipe['setup'].get('id')
+    cls.key = cls.recipe['setup'].get('key')
 
     # find date based on timezone
-    cls.timezone = pytz.timezone(cls.recipe['setup'].get(
-        'timezone', 'America/Los_Angeles'))
+    cls.timezone = pytz.timezone(
+      cls.recipe['setup'].get(
+        'timezone',
+        'America/Los_Angeles'
+      )
+    )
     cls.now = datetime.now(cls.timezone)
     cls.date = cls.now.date()
     cls.hour = cls.now.hour
@@ -585,8 +613,12 @@ class project:
         ]
       }
 
-      project.initialize(_recipe=var_recipe, _user=var_user,
-      _service=var_service, _verbose=True)
+      project.initialize(
+        _recipe=var_recipe,
+        _user=var_user,
+        _service=var_service,
+        _verbose=True
+      )
       project.execute()
     ```
 
@@ -608,14 +640,16 @@ class project:
       if _force or cls.force or is_scheduled(cls.recipe, task):
         try:
           python_callable = getattr(
-              import_module('starthinker.task.%s.run' % script), script)
+            import_module('starthinker.task.%s.run' % script),
+            script
+          )
           python_callable(cls.recipe, instances[script])
         except Exception as e:
           print(str(e))
           returncode = EXIT_ERROR
       else:
         print(
-            'Schedule Skipping: add --force to ignore schedule or run specific task handler'
+          'Schedule Skipping: add --force to ignore schedule or run specific task handler'
         )
 
     return returncode

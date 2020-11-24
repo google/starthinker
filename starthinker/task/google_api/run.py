@@ -145,7 +145,7 @@ def google_api():
       'version': project.task['version'],
       'function': project.task['function'],
       'iterate': project.task.get('iterate', False),
-      'key': project.task.get('key'),
+      'key': project.key,
       'headers': project.task.get('headers'),
   }
 

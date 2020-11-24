@@ -80,6 +80,11 @@ def main():
       '-c',
       help='path to client credentials json file, defaults None',
       default=None)
+  parser.add_argument(
+      '--key',
+      '-k',
+      help='Google Cloud API key, also known as developer_key, defaults None',
+      default=None)
 
   parser.add_argument(
       '--verbose',

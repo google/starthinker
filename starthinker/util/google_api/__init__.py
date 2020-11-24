@@ -322,7 +322,7 @@ class API():
         version=self.version,
         auth=self.auth,
         headers=self.headers,
-        api_key=self.key,
+        key=self.key,
         uri_file=self.uri)
 
     # build calls along stack
