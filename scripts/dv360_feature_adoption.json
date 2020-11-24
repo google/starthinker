@@ -157,6 +157,7 @@
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Feature_Spend",
           "is_incremental_load":true,
+          "header":true,
           "schema": [
             { "name": "Advertiser_Id", "type": "INTEGER" },
             { "name": "Advertiser", "type": "STRING" },
@@ -194,6 +195,7 @@
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Feature_Environment",
           "is_incremental_load":true,
+          "header":true,
           "schema": [
             { "name": "Advertiser_Id", "type": "INTEGER" },
             { "name": "Advertiser", "type": "STRING" },

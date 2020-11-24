@@ -96,6 +96,7 @@
         "bigquery": {
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Audience_Performance",
+          "header":true,
           "schema": [
             { "mode": "REQUIRED", "name": "advertiser", "type": "STRING" },
             { "mode": "REQUIRED", "name": "advertiser_id", "type": "INT64" },
@@ -161,6 +162,7 @@
         "bigquery": {
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_First_Party_Audience",
+          "header":true,
           "schema": [
             { "mode": "REQUIRED", "name": "advertiser", "type": "STRING" },
             { "mode": "REQUIRED", "name": "advertiser_id", "type": "INT64" },
@@ -221,6 +223,7 @@
         "bigquery": {
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Google_Audience",
+          "header":true,
           "schema": [
             { "mode": "REQUIRED", "name": "advertiser", "type": "STRING" },
             { "mode": "REQUIRED", "name": "advertiser_id", "type": "INT64" },
@@ -281,6 +284,7 @@
         "bigquery": {
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Third_Party_Audience",
+          "header":true,
           "schema": [
             { "mode": "REQUIRED", "name": "advertiser", "type": "STRING" },
             { "mode": "REQUIRED", "name": "advertiser_id", "type": "INT64" },

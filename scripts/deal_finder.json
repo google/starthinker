@@ -109,6 +109,7 @@
         "bigquery": {
           "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be written in BigQuery." }},
           "table":"Deal_Finder_DV360_Report",
+          "header":true,
           "schema":[
             { "name":"Partner", "type":"STRING" },
             { "name":"Partner_ID", "type":"INTEGER" },

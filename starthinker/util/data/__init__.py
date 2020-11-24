@@ -195,7 +195,7 @@ def put_rows(auth, destination, rows, variant=''):
           "dataset": [ string ],
           "table": [ string ]
           "schema": [ json - standard bigquery schema json ],
-          "skip_rows": [ integer - for removing header ]
+          "header": [ boolean - true if header exists in rows ]
           "disposition": [ string - same as BigQuery documentation ]
         },
         "sheets":{
@@ -240,6 +240,7 @@ def put_rows(auth, destination, rows, variant=''):
 """
 
   if 'bigquery' in destination:
+    skip_rows = 1 if destination['bigquery'].get('header') and destination['bigquery'].get('schema') else 0
 
     if destination['bigquery'].get('format', 'CSV') == 'JSON':
       json_to_table(
@@ -260,12 +261,12 @@ def put_rows(auth, destination, rows, variant=''):
           destination['bigquery']['table'] + variant,
           rows,
           destination['bigquery'].get('schema', []),
-          destination['bigquery'].get(
-              'skip_rows', 0 if 'schema' in destination['bigquery'] else 1),
+          destination['bigquery'].get('skip_rows', skip_rows),
           destination['bigquery'].get('disposition', 'WRITE_APPEND'),
           billing_project_id=project.id)
 
     else:
+
       rows_to_table(
           destination['bigquery'].get('auth', auth),
           destination['bigquery'].get('project_id', project.id),
@@ -273,8 +274,7 @@ def put_rows(auth, destination, rows, variant=''):
           destination['bigquery']['table'] + variant,
           rows,
           destination['bigquery'].get('schema', []),
-          destination['bigquery'].get(
-              'skip_rows', 0 if 'schema' in destination['bigquery'] else 1),
+          destination['bigquery'].get('skip_rows', skip_rows),
           destination['bigquery'].get('disposition', 'WRITE_TRUNCATE'),
       )
 

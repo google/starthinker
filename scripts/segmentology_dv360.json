@@ -84,6 +84,7 @@
           "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Authorization used for writing data." }},
           "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
           "table":"DV360_KPI",
+          "header":true,
           "schema":[
             { "name": "Partner_Id", "type": "INTEGER", "mode": "REQUIRED" },
             { "name": "Partner", "type": "STRING", "mode": "REQUIRED" },
