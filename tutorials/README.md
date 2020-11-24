@@ -60,7 +60,7 @@ a StarThinker instance.
 - [/starthinker/auth](../starthinker/auth/) - Developer command line for testing user credential setup.
 - [/starthinker_ui](../starthinker_ui/) - UI code deployed on AppEngine powered by Django.
 - [/starthinker_assets](../starthinker_assets/) - Holds all configuration files when you launch StarThinker.
-- [/starthinker_airflow](../starthinker_airflow/) - Factory for airflow.
+- [/starthinker/airflow](../starthinker/airflow/) - Factory for airflow.
 - starthinker_virtualenv/ - After deploy, holds virtual environment libraries on setup.
 - starthinker_database/ - After deploy, holds local development database on setup.
 - starthinker_cron/ - After deploy, holds recipes executing using local cron on setup.

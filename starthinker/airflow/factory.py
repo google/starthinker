@@ -58,7 +58,7 @@ class DAG_Factory():
   Sample calling wrapper, save this in your AirFlow dag directory:
 
     ```
-    from starthinker_airflow.factory import DAG_Factory
+    from starthinker.airflow.factory import DAG_Factory
     dag = DAG_Factory([StarThinker recipe JSON]).execute()
     ```
 

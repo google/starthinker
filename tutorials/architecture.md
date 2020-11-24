@@ -57,7 +57,7 @@ Connector for deploying recipes to Apache Airflow.
 
    1. [Dag Recipes](../dags/) - List of all StarThinker recipes as Airflow DAGs.
    1. [Dag Generator](../starthinker_ui/website/management/commands/airflow.py) - Utility for generating Dags from recipes.
-   1. [Dag Factory](../starthinker_airflow/factory.py) - Python function doing the actual translation of JSON into a DAG.
+   1. [Dag Factory](../starthinker/airflow/factory.py) - Python function doing the actual translation of JSON into a DAG.
    1. [Dag](https://cloud.google.com/composer/docs/how-to/using/writing-dags) - A wrapper for a python function in Airflow.
    1. [Cloud Composer](https://cloud.google.com/composer/) - Google Cloud instance of Apache Airflow.
    1. [Airflow Framework](https://airflow.apache.org/) - Project documentation and tutorials.

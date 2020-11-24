@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 \'\'\'
 
-from starthinker_airflow.factory import DAG_Factory
+from starthinker.airflow.factory import DAG_Factory
 
 # Add the following credentials to your Airflow configuration.
 USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.

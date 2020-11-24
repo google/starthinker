@@ -6,7 +6,7 @@ StarThinker can be easily deployed to [Apache Airflow](https://airflow.apache.or
 
 Airflow can wrap any Python function in a [PythonOperator](https://airflow.apache.org/howto/operator/python.html).  Because
 [StarThinker tasks](../starthinker/task/) are just python functions with [JSON parameters](../scripts/), they can be quickly
-[deployed to Airflow](../starthinker_airflow/operators/) using a simple [DAG factory](../starthinker_airflow/factory.py).
+[deployed to Airflow](../starthinker/airflow/operators/) using a simple [DAG factory](../starthinker/airflow/factory.py).
 
 ## Instructions
 
