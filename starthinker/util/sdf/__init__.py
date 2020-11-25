@@ -24,7 +24,6 @@ import io
 from datetime import date
 
 from starthinker.util.project import project
-from starthinker.util.auth import get_service
 from googleapiclient.http import MediaIoBaseDownload
 from starthinker.util.data import get_rows
 from starthinker.util.csv import column_header_sanitize, csv_to_rows

@@ -30,7 +30,6 @@ from urllib.request import urlopen
 from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
 from starthinker.util.data import get_rows
-from starthinker.util.auth import get_service
 from starthinker.util.storage import object_get_chunks
 from starthinker.util.csv import column_header_sanitize, csv_to_rows, rows_to_csv, response_utf8_stream
 from starthinker.util.dbm.schema import LineItem_Write_Schema

@@ -28,8 +28,7 @@ from googleapiclient.errors import HttpError
 
 from starthinker.config import BUFFER_SCALE
 from starthinker.util.project import project
-from starthinker.util.auth import get_service
-from starthinker.util.google_api import API_Storage, API_Retry
+from starthinker.util.google_api import API_Storage
 from starthinker.util.csv import find_utf8_split
 
 CHUNKSIZE = int(200 * 1024000 *
@@ -116,9 +115,8 @@ def media_download(request, chunksize, encoding=None):
 
 def object_exists(auth, path):
   bucket, filename = path.split(':', 1)
-  service = get_service('storage', 'v1', auth)
   try:
-    service.objects().get(bucket=bucket, object=filename).execute()
+    API_Storage(auth).objects().get(bucket=bucket, object=filename).execute()
     return True
   except:
     return False
@@ -126,27 +124,23 @@ def object_exists(auth, path):
 
 def object_get(auth, path):
   bucket, filename = path.split(':', 1)
-  service = get_service('storage', 'v1', auth)
-  return service.objects().get_media(bucket=bucket, object=filename).execute()
+  return API_Storage(auth).objects().get_media(bucket=bucket, object=filename).execute()
 
 
 def object_get_chunks(auth, path, chunksize=CHUNKSIZE, encoding=None):
   bucket, filename = path.split(':', 1)
-  service = get_service('storage', 'v1', auth)
-
   data = BytesIO()
-  request = service.objects().get_media(bucket=bucket, object=filename)
+  request = API_Storage(auth).objects().get_media(bucket=bucket, object=filename).execute(run=False)
   yield from media_download(request, chunksize, encoding)
 
 
 def object_put(auth, path, data, mimetype='application/octet-stream'):
   bucket, filename = path.split(':', 1)
-  service = get_service('storage', 'v1', auth)
 
   media = MediaIoBaseUpload(
       data, mimetype=mimetype, chunksize=CHUNKSIZE, resumable=True)
-  request = service.objects().insert(
-      bucket=bucket, name=filename, media_body=media)
+  request = API_Storage(auth).objects().insert(
+      bucket=bucket, name=filename, media_body=media).execute(run=False)
 
   response = None
   errors = 0
@@ -192,19 +186,18 @@ def object_copy(auth, path_from, path_to):
       'storageClass': 'REGIONAL',
   }
 
-  service = get_service('storage', 'v1', auth)
-  return service.objects().rewrite(
+  return API_Storage(auth).objects().rewrite(
       sourceBucket=from_bucket,
       sourceObject=from_filename,
       destinationBucket=to_bucket,
       destinationObject=to_filename,
-      body=body).execute()
+      body=body
+  ).execute()
 
 
 def object_delete(auth, path):
   bucket, filename = path.split(':', 1)
-  service = get_service('storage', 'v1', auth)
-  return service.objects().delete(bucket=bucket, object=filename).execute()
+  return API_Storage(auth).objects().delete(bucket=bucket, object=filename).execute()
 
 
 def object_move(auth, path_from, path_to):
@@ -213,9 +206,8 @@ def object_move(auth, path_from, path_to):
 
 
 def bucket_get(auth, name):
-  service = get_service('storage', 'v1', auth)
   try:
-    return service.buckets().get(bucket=name).execute()
+    return API_Storage(auth).buckets().get(bucket=name).execute()
   except HttpError as e:
     if e.resp.status == 404:
       return None
@@ -233,10 +225,9 @@ def bucket_create(auth, project, name, location='us-west1'):
         'storageClass': 'REGIONAL',
         'location': location,
     }
-    service = get_service('storage', 'v1', auth)
 
     try:
-      return service.buckets().insert(project=project, body=body).execute()
+      return API_Storage(auth).buckets().insert(project=project, body=body).execute()
       sleep(1)
     except HttpError as e:
       if e.resp.status in [403, 500, 503]:
@@ -248,8 +239,7 @@ def bucket_create(auth, project, name, location='us-west1'):
 
 
 def bucket_delete(auth, name):
-  service = get_service('storage', 'v1', auth)
-  return service.buckets().delete(bucket=name).execute()
+  return API_Storage(auth).buckets().delete(bucket=name).execute()
 
 
 #role = OWNER, READER, WRITER
@@ -261,7 +251,6 @@ def bucket_access(auth,
                   groups=[],
                   services=[],
                   domains=[]):
-  service = get_service('storage', 'v1', auth)
 
   entities = map(lambda e: 'user-%s' % e, emails) + \
     map(lambda e: 'group-%s' % e, groups) + \
@@ -275,7 +264,7 @@ def bucket_access(auth,
         'entity': entity,
         'role': role
     }
-    API_Retry(service.bucketAccessControls().insert(bucket=name, body=body))
+    API_Storage(auth).bucketAccessControls().insert(bucket=name, body=body).execute()
 
 
 # Alternative for managing permissions ( overkill? )
