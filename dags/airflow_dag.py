@@ -65,7 +65,7 @@ TASKS = [
     }
   },
   {
-    'starthinker_airflow': {
+    'starthinker.airflow': {
       '__comment__': 'Calls an custom operator, requires import of library.',
       'operators': {
         'hello': {

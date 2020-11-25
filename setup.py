@@ -44,7 +44,7 @@ REQUIREMENTS = [
 
 setup(
     name='starthinker',
-    version='1.0.4',
+    version='1.0.6',
     description='StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components.',
     long_description='StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components. To make it easier for partners and clients to work with some of our advertsing solutions, the gTech team has open sourced this framework as a reference implementation.  Our goal is to make managing data workflows using Google Cloud as fast and re-usable as possible, allowing teams to focus on building advertising solutions.',
     author='Paul Kenjora',
@@ -73,9 +73,9 @@ setup(
     zip_safe=False,
     keywords='starthinker',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache License',
+        'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
     ]

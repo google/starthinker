@@ -42,9 +42,10 @@ AIRFLOW_TEMPLATE = """##########################################################
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer:
 
-    pip install git+https://github.com/google/starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
 
   Or push local code to the cloud composer plugins directory:
 
@@ -54,26 +55,39 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-%s
+{title}
 
-%s
+{description}
 
-%s
+{instructions}
 
 \'\'\'
 
 from starthinker.airflow.factory import DAG_Factory
 
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+# If the recipe has "auth" set to "user" add user credentials:
+#  1. Alternatively change all "user" values to "service" and set USER_CONN_ID = None.
+#  2. Visit Airflow UI > Admin > Connections.
+#  3. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+#    - Conn Type: Google Cloud Platform
+#    - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+#    - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+USER_CONN_ID = "starthinker_user"
 
-INPUTS = %s
+# If the recipe has "auth" set to "service" add service credentials:
+#  1. Visit Airflow UI > Admin > Connections.
+#  2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+#    - Conn Type: Google Cloud Platform
+#    - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+#    - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+SERVICE_CONN_ID = "starthinker_service"
 
-TASKS = %s
+INPUTS = {inputs}
 
-DAG_FACTORY = DAG_Factory('%s', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
+RECIPE = {recipe}
+
+DAG_FACTORY = DAG_Factory('{dag}', RECIPE, INPUTS)
+DAG_FACTORY.apply_credentails(USER_CONN_ID, SERVICE_CONN_ID)
 DAG = DAG_FACTORY.execute()
 
 if __name__ == "__main__":
@@ -85,9 +99,19 @@ def script_to_dag(dag_name,
                   title,
                   description,
                   instructions,
-                  tasks,
+                  script,
                   parameters={}):
-  return AIRFLOW_TEMPLATE % (title, description, '\n'.join(instructions),
-                             fields_to_string(
-                                 json_get_fields(tasks), parameters),
-                             dict_to_string(tasks, skip=('fields',)), dag_name)
+  return AIRFLOW_TEMPLATE.format(**{
+    'title':title,
+    'description':description,
+    'instructions':'\n'.join(instructions),
+    'inputs':fields_to_string(
+      json_get_fields(script),
+      parameters
+    ),
+    'recipe':dict_to_string(
+      script,
+      skip=('fields',)
+    ),
+    'dag':dag_name
+  })

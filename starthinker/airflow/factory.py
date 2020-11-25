@@ -18,28 +18,24 @@
 """AirFlow connector for StarThinker, builds airflow workflow from json recipe.
 
 Connector between AirFlow and StarThinker that turns all tasks into
-PythonOperators.
-In future, as AirFlow matures and becomes more reliable, some handlers will
-migrate from
-StarThinker tasks to native AirFlow calls.
+PythonOperators.  In future, as AirFlow matures and becomes more reliable,
+some handlers will migrate from StarThinker tasks to native AirFlow calls.
 
 Any StarThinker task immediately becomes available as an Airflow endpoint using
-this code.
-The DAG ID will be set to the the path of the JSON template with non
-alphanumeric characters
-set to '.', to mimic python dot notation.
+this code. The DAG ID will be set to the the path of the JSON template with non
+alphanumeric characters set to '.', to mimic python dot notation.
 
 """
 
-from airflow.operators.bash_operator import BashOperator
 
-import re
 from datetime import datetime, date
 from importlib import import_module
+from random import randint
 
 from airflow import DAG
 from airflow.hooks.base_hook import BaseHook
 from airflow.operators.python_operator import PythonOperator
+from airflow.operators.bash_operator import BashOperator
 
 from starthinker.script.parse import json_set_fields
 
@@ -70,6 +66,7 @@ class DAG_Factory():
     if _script_parameters:
       json_set_fields(self.recipe, _script_parameters)
     self.dag = None
+
 
   def apply_credentails(self,
                         user_conn_id=None,
@@ -111,15 +108,18 @@ class DAG_Factory():
           if keyfile_dict_json and keyfile_dict_json['project_id']:
             self.recipe['setup']['id'] = keyfile_dict_json['project_id']
         except Exception as e:
-          self.log.error('Failed parsing the Keyfile JSON for gcp_conn_id=%s',
-                         self.gcp_conn_id)
-          raise e
+          # for now silently ignore this, if no service then asume no project id
+          pass
+          #raise e
       if service_connection_extra['extra__google_cloud_platform__project']:
         self.recipe['setup']['id'] = service_connection_extra[
             'extra__google_cloud_platform__project']
 
+    return self
+
+
   def python_task(self, function, instance):
-    print('ST TASK:', function, instance)
+    print('STARTHINKER TASK:', function, instance)
 
     PythonOperator(
         task_id='%s_%d' % (function, instance),
@@ -131,8 +131,11 @@ class DAG_Factory():
         },
         dag=self.dag)
 
+    return self
+
+
   def airflow_task(self, task, instance, parameters):
-    print('AF TASK:', task, instance)
+    print('STARTHINKER AIRFLOW TASK:', task, instance)
 
     def airflow_import_unroll(definition):
       return next(iter([i for i in definition.items() if i[0] != '__comment__']))
@@ -148,16 +151,39 @@ class DAG_Factory():
 
     operator(**af_parameters)
 
+    return self
+
+
+  def airflow_start(self):
+    return datetime.now(self.recipe.get('setup', {}).get('timezone'))
+
+
+  def airflow_schedule(self):
+    recipe_day = self.recipe.get('setup', {}).get('day', [])
+    recipe_hour = [str(h) for h in self.recipe.get('setup', {}).get('hour', [])]
+
+    airflow_schedule = None
+    if recipe_day or recipe_hour:
+      airflow_schedule = '{minutes} {hours} {day_of_month} {month} {day_of_week}'.format(**{
+        'minutes':randint(0, 15),
+        'hours':','.join(recipe_hour) or '*',
+        'day_of_month':'*',
+        'month':'*',
+        'day_of_week':','.join(recipe_day) or '*'
+      })
+
+    return airflow_schedule
+
   def execute(self):
-    print('DAG:', self.dag_name)
+    print('STARTHINKER DAG:', self.dag_name)
 
     self.dag = DAG(
         dag_id=self.dag_name,
         default_args={
             'owner': 'airflow',
-            'start_date': datetime.now()
+            'start_date': self.airflow_start()
         },
-        schedule_interval=None,
+        schedule_interval=self.airflow_schedule(),
         catchup=False)
 
     instances = {}
@@ -168,25 +194,25 @@ class DAG_Factory():
       instances.setdefault(function, 0)
       instances[function] += 1
 
-      # if airflow operator
-      if function in ('airflow', 'starthinker_airflow'):
+      # if airflow function ( product )
+      if function == 'airflow':
+        self.airflow_task(function, instances[function], task[function])
+
+      # if airflow function ( local )
+      elif function == 'starthinker.airflow':
         self.airflow_task(function, instances[function], task[function])
 
       # if native python operator
       else:
         self.python_task(function, instances[function])
 
-    print('DONE')
     return self.dag
 
-  def schedule(self):
-    # for now simplest case is to execute all tasks sequentially
-    pass
 
   def print_commandline(self):
 
     print('')
-    print('DAG: %s' % self.dag_name)
+    print('STARTHINKER COMMANDLINE: %s' % self.dag_name)
     print('')
 
     instances = {}
@@ -199,4 +225,4 @@ class DAG_Factory():
 
       print('airflow test "%s" %s_%d %s' %
             (self.dag_name, function, instances[function], str(date.today())))
-      print('')
+    print('')

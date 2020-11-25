@@ -184,6 +184,12 @@ class Script:
   def get_tasks(self):
     return deepcopy(self.script.get('tasks', []))
 
+  def get_tasks_and_setup(self):
+    s = deepcopy(self.script)
+    if 'script' in s: del s['script']
+    if 'path' in s: del s['path']
+    return s
+
   def get_tasks_linked(self):
     tasks = self.get_tasks()
     data = json.dumps(tasks, indent=4)
