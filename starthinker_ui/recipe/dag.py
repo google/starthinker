@@ -42,16 +42,44 @@ AIRFLOW_TEMPLATE = """##########################################################
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer:
+  Install StarThinker in cloud composer ( recommended ):
 
-    From Open Source: pip install git+https://github.com/google/starthinker
     From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
     l) Install All
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
 
 --------------------------------------------------------------
 
@@ -61,39 +89,26 @@ Before running this Airflow module...
 
 {instructions}
 
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
+
 \'\'\'
 
 from starthinker.airflow.factory import DAG_Factory
-
-# If the recipe has "auth" set to "user" add user credentials:
-#  1. Alternatively change all "user" values to "service" and set USER_CONN_ID = None.
-#  2. Visit Airflow UI > Admin > Connections.
-#  3. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
-#    - Conn Type: Google Cloud Platform
-#    - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
-#    - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
-USER_CONN_ID = "starthinker_user"
-
-# If the recipe has "auth" set to "service" add service credentials:
-#  1. Visit Airflow UI > Admin > Connections.
-#  2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
-#    - Conn Type: Google Cloud Platform
-#    - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
-#    - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
-SERVICE_CONN_ID = "starthinker_service"
 
 INPUTS = {inputs}
 
 RECIPE = {recipe}
 
 DAG_FACTORY = DAG_Factory('{dag}', RECIPE, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, SERVICE_CONN_ID)
-DAG = DAG_FACTORY.execute()
+DAG = DAG_FACTORY.generate()
 
 if __name__ == "__main__":
   DAG_FACTORY.print_commandline()
 """
-
 
 def script_to_dag(dag_name,
                   title,
@@ -104,7 +119,7 @@ def script_to_dag(dag_name,
   return AIRFLOW_TEMPLATE.format(**{
     'title':title,
     'description':description,
-    'instructions':'\n'.join(instructions),
+    'instructions':'  - ' + '\n  - '.join(instructions),
     'inputs':fields_to_string(
       json_get_fields(script),
       parameters

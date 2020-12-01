@@ -39,6 +39,9 @@ from airflow.operators.bash_operator import BashOperator
 
 from starthinker.script.parse import json_set_fields
 
+CONNECTION_SERVICE = "starthinker_service"
+CONNECTION_USER = "starthinker_user"
+
 
 class DAG_Factory():
   """A class factory that generates AirFlow Dag definitions from StarThinker JSON recipes.
@@ -55,7 +58,7 @@ class DAG_Factory():
 
     ```
     from starthinker.airflow.factory import DAG_Factory
-    dag = DAG_Factory([StarThinker recipe JSON]).execute()
+    dag = DAG_Factory([StarThinker recipe JSON]).generate()
     ```
 
   """
@@ -67,55 +70,48 @@ class DAG_Factory():
       json_set_fields(self.recipe, _script_parameters)
     self.dag = None
 
-
-  def apply_credentails(self,
-                        user_conn_id=None,
-                        gcp_conn_id='google_cloud_default'):
-    """
-       user_conn_id: The connection to use for user authentication.
-       gcp_conn_id: The connection to use for service authentication.
-    """
-
     self.recipe.setdefault('setup', {}).setdefault('auth', {})
 
-    # If supplied, load "user" auth information into the recipe
-    if user_conn_id:
-      user_connection_extra = BaseHook.get_connection(user_conn_id).extra_dejson
-      if user_connection_extra['extra__google_cloud_platform__key_path']:
-        self.recipe['setup']['auth']['user'] = user_connection_extra[
+    # If not given in recipe, try "user" auth information from connection
+    if not self.recipe['setup']['auth'].get('user'):
+      try:
+        user_connection_extra = BaseHook.get_connection(CONNECTION_USER).extra_dejson
+        if user_connection_extra['extra__google_cloud_platform__key_path']:
+          self.recipe['setup']['auth']['user'] = user_connection_extra[
             'extra__google_cloud_platform__key_path']
-      elif user_connection_extra['extra__google_cloud_platform__keyfile_dict']:
-        self.recipe['setup']['auth']['user'] = user_connection_extra[
+        elif user_connection_extra['extra__google_cloud_platform__keyfile_dict']:
+          self.recipe['setup']['auth']['user'] = user_connection_extra[
             'extra__google_cloud_platform__keyfile_dict']
-      if user_connection_extra['extra__google_cloud_platform__project']:
-        self.recipe['setup']['id'] = user_connection_extra[
-            'extra__google_cloud_platform__project']
 
-    # Load "service" auth information into the recipe
-    if gcp_conn_id:
-      service_connection_extra = BaseHook.get_connection(
-          gcp_conn_id).extra_dejson
-      if service_connection_extra['extra__google_cloud_platform__key_path']:
-        self.recipe['setup']['auth']['service'] = service_connection_extra[
+        if user_connection_extra['extra__google_cloud_platform__project']:
+          self.recipe['setup']['id'] = user_connection_extra[
+            'extra__google_cloud_platform__project']
+      except Exception as e:
+        pass
+
+    # If not given in recipe, try "service" auth information from connection
+    if not self.recipe['setup']['auth'].get('service'):
+      try:
+        service_connection_extra = BaseHook.get_connection(
+          CONNECTION_SERVICE).extra_dejson
+        if service_connection_extra['extra__google_cloud_platform__key_path']:
+          self.recipe['setup']['auth']['service'] = service_connection_extra[
             'extra__google_cloud_platform__key_path']
-      elif service_connection_extra[
+        elif service_connection_extra[
           'extra__google_cloud_platform__keyfile_dict']:
-        self.recipe['setup']['auth']['service'] = service_connection_extra[
+          self.recipe['setup']['auth']['service'] = service_connection_extra[
             'extra__google_cloud_platform__keyfile_dict']
-        try:
           keyfile_dict_json = json.loads(service_connection_extra[
-              'extra__google_cloud_platform__keyfile_dict'])
-          if keyfile_dict_json and keyfile_dict_json['project_id']:
+            'extra__google_cloud_platform__keyfile_dict']
+          )
+          if keyfile_dict_json and keyfile_dict_json.get('project_id'):
             self.recipe['setup']['id'] = keyfile_dict_json['project_id']
-        except Exception as e:
-          # for now silently ignore this, if no service then asume no project id
-          pass
-          #raise e
-      if service_connection_extra['extra__google_cloud_platform__project']:
-        self.recipe['setup']['id'] = service_connection_extra[
-            'extra__google_cloud_platform__project']
 
-    return self
+        if service_connection_extra['extra__google_cloud_platform__project']:
+          self.recipe['setup']['id'] = service_connection_extra[
+            'extra__google_cloud_platform__project']
+      except Exception as e:
+        pass
 
 
   def python_task(self, function, instance):
@@ -174,7 +170,7 @@ class DAG_Factory():
 
     return airflow_schedule
 
-  def execute(self):
+  def generate(self):
     print('STARTHINKER DAG:', self.dag_name)
 
     self.dag = DAG(
