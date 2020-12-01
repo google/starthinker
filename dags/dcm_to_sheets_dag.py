@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,22 +34,52 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
 CM To Sheets
 
 Move existing CM report into a Sheet tab.
 
-Specify an account id.
-Specify either report name or report id to move a report.
-The most recent valid file will be moved to the sheet.
-Schema is pulled from the official CM specification.
+  - Specify an account id.
+  - Specify either report name or report id to move a report.
+  - The most recent valid file will be moved to the sheet.
+  - Schema is pulled from the official CM specification.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'auth_read': 'user',  # Credentials used for reading data.
@@ -59,72 +90,73 @@ INPUTS = {
   'tab': '',
 }
 
-TASKS = [
-  {
-    'dcm': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'report': {
-        'account': {
+RECIPE = {
+  'tasks': [
+    {
+      'dcm': {
+        'auth': {
           'field': {
-            'name': 'account',
-            'kind': 'integer',
-            'order': 2,
-            'default': ''
+            'name': 'auth_read',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
           }
         },
-        'report_id': {
-          'field': {
-            'name': 'report_id',
-            'kind': 'integer',
-            'order': 3,
-            'default': ''
-          }
-        },
-        'name': {
-          'field': {
-            'name': 'report_name',
-            'kind': 'string',
-            'order': 4,
-            'default': ''
-          }
-        }
-      },
-      'out': {
-        'sheets': {
-          'sheet': {
+        'report': {
+          'account': {
             'field': {
-              'name': 'sheet',
-              'kind': 'string',
-              'order': 5,
+              'name': 'account',
+              'kind': 'integer',
+              'order': 2,
               'default': ''
             }
           },
-          'tab': {
+          'report_id': {
             'field': {
-              'name': 'tab',
-              'kind': 'string',
-              'order': 6,
+              'name': 'report_id',
+              'kind': 'integer',
+              'order': 3,
               'default': ''
             }
           },
-          'range': 'A1'
+          'name': {
+            'field': {
+              'name': 'report_name',
+              'kind': 'string',
+              'order': 4,
+              'default': ''
+            }
+          }
+        },
+        'out': {
+          'sheets': {
+            'sheet': {
+              'field': {
+                'name': 'sheet',
+                'kind': 'string',
+                'order': 5,
+                'default': ''
+              }
+            },
+            'tab': {
+              'field': {
+                'name': 'tab',
+                'kind': 'string',
+                'order': 6,
+                'default': ''
+              }
+            },
+            'range': 'A1'
+          }
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('dcm_to_sheets', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+DAG_FACTORY = DAG_Factory('dcm_to_sheets', RECIPE, INPUTS)
+DAG = DAG_FACTORY.generate()
 
 if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

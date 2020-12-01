@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,22 +34,52 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
 CM To BigQuery
 
 Move existing CM report into a BigQuery table.
 
-Specify an account id.
-Specify either report name or report id to move a report.
-The most recent valid file will overwrite the table.
-Schema is pulled from the official CM specification.
+  - Specify an account id.
+  - Specify either report name or report id to move a report.
+  - The most recent valid file will overwrite the table.
+  - Schema is pulled from the official CM specification.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'auth_read': 'user',  # Credentials used for reading data.
@@ -61,94 +92,96 @@ INPUTS = {
   'is_incremental_load': False,  # Clear data in destination table during this report's time period, then append report data to existing table.
 }
 
-TASKS = [
-  {
-    'dcm': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 0,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'report': {
-        'account': {
+RECIPE = {
+  'tasks': [
+    {
+      'dcm': {
+        'auth': {
           'field': {
-            'name': 'account',
-            'kind': 'integer',
-            'order': 2,
-            'default': '',
-            'description': 'CM network id.'
+            'name': 'auth_read',
+            'kind': 'authentication',
+            'order': 0,
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
           }
         },
-        'report_id': {
-          'field': {
-            'name': 'report_id',
-            'kind': 'integer',
-            'order': 3,
-            'default': '',
-            'description': 'CM report id, empty if using name .'
+        'report': {
+          'account': {
+            'field': {
+              'name': 'account',
+              'kind': 'integer',
+              'order': 2,
+              'default': '',
+              'description': 'CM network id.'
+            }
+          },
+          'report_id': {
+            'field': {
+              'name': 'report_id',
+              'kind': 'integer',
+              'order': 3,
+              'default': '',
+              'description': 'CM report id, empty if using name .'
+            }
+          },
+          'name': {
+            'field': {
+              'name': 'report_name',
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'CM report name, empty if using id instead.'
+            }
           }
         },
-        'name': {
-          'field': {
-            'name': 'report_name',
-            'kind': 'string',
-            'order': 4,
-            'default': '',
-            'description': 'CM report name, empty if using id instead.'
-          }
-        }
-      },
-      'out': {
-        'bigquery': {
-          'auth': {
-            'field': {
-              'name': 'auth_write',
-              'kind': 'authentication',
-              'order': 1,
-              'default': 'service',
-              'description': 'Credentials used for writing data.'
-            }
-          },
-          'dataset': {
-            'field': {
-              'name': 'dataset',
-              'kind': 'string',
-              'order': 5,
-              'default': '',
-              'description': 'Dataset to be written to in BigQuery.'
-            }
-          },
-          'table': {
-            'field': {
-              'name': 'table',
-              'kind': 'string',
-              'order': 6,
-              'default': '',
-              'description': 'Table to be written to in BigQuery.'
-            }
-          },
-          'is_incremental_load': {
-            'field': {
-              'name': 'is_incremental_load',
-              'kind': 'boolean',
-              'order': 7,
-              'default': False,
-              'description': "Clear data in destination table during this report's time period, then append report data to existing table."
+        'out': {
+          'bigquery': {
+            'auth': {
+              'field': {
+                'name': 'auth_write',
+                'kind': 'authentication',
+                'order': 1,
+                'default': 'service',
+                'description': 'Credentials used for writing data.'
+              }
+            },
+            'dataset': {
+              'field': {
+                'name': 'dataset',
+                'kind': 'string',
+                'order': 5,
+                'default': '',
+                'description': 'Dataset to be written to in BigQuery.'
+              }
+            },
+            'table': {
+              'field': {
+                'name': 'table',
+                'kind': 'string',
+                'order': 6,
+                'default': '',
+                'description': 'Table to be written to in BigQuery.'
+              }
+            },
+            'header': True,
+            'is_incremental_load': {
+              'field': {
+                'name': 'is_incremental_load',
+                'kind': 'boolean',
+                'order': 7,
+                'default': False,
+                'description': "Clear data in destination table during this report's time period, then append report data to existing table."
+              }
             }
           }
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('dcm_to_bigquery', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+DAG_FACTORY = DAG_Factory('dcm_to_bigquery', RECIPE, INPUTS)
+DAG = DAG_FACTORY.generate()
 
 if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

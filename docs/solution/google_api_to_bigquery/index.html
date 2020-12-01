@@ -61,6 +61,8 @@
       i.right { margin: 0px 15px; font-size: 1.5rem;}
       .collapsible-body { padding: 0px; }
 
+      body { overflow: auto !important; }
+
       
   #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; }
@@ -135,8 +137,8 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       
 
   <br/>
-  <h1><i class="medium material-icons">settings_input_component</i>&nbsp; API To BigQuery</h1>
-  <p class="flow-text">Execute a Google API function and store results to BigQuery.</p>
+  <h1><i class="medium material-icons">settings_input_component</i>&nbsp; Google API To BigQuery</h1>
+  <p class="flow-text">Execute any Google API function and store results to BigQuery.</p>
 
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   
@@ -180,7 +182,91 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <div class="row">
     
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <table class="bordered">
+            <thead>
+              <tr>
+                <th>Value Proposition</th>
+              </tr>
+             </thead>
+             <tbody>
+             
+               <tr>
+                 <td>Call any Google API ednpoint.</td>
+               </tr>
+             
+               <tr>
+                 <td>Move results into BigQuery.</td>
+               </tr>
+             
+             </tbody>
+          </table>
+        </div>
+      </div>
+    
 
+    
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <table class="bordered">
+            <thead>
+              <tr>
+                <th>Impact</th>
+                <th>Level</th>
+              </tr>
+             </thead>
+               <tbody>
+               
+                 <tr>
+                   <td>Spend Optimization</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 0%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Spend Growth</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 0%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Time Savings</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 100%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Account Health</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 50%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+                 <tr>
+                   <td>Csat Improvement</td>
+                   <td>
+                     <div class="progress">
+                       <div class="determinate" style="width: 80%"></div>
+                     </div>
+                   </td>
+                 </tr>
+               
+             </tbody>
+          </table>
+        </div>
+      </div>
     
 
     <div class="col s12 m6 l4">
@@ -206,7 +292,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+API+To+BigQuery+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+API+To+BigQuery+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fgoogle_api_to_bigquery%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Google+API+To+BigQuery+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Google+API+To+BigQuery+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fgoogle_api_to_bigquery%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
 
@@ -231,15 +317,31 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                </tr>
              
                <tr>
-                 <td>Specify the function using dot notation and arguments using json.</td>
+                 <td>Specify the function using dot notation.</td>
                </tr>
              
                <tr>
-                 <td>If nextPageToken can be in response check iterate.</td>
+                 <td>Specify the arguments using json.</td>
+               </tr>
+             
+               <tr>
+                 <td>Iterate is optional, use if API returns a list of items that are not unpacking correctly.</td>
+               </tr>
+             
+               <tr>
+                 <td>The <a href='https://cloud.google.com/docs/authentication/api-keys' target='_blank'>API Key</a> may be required for some calls.</td>
+               </tr>
+             
+               <tr>
+                 <td>The <a href='https://developers.google.com/google-ads/api/docs/first-call/dev-token' target='_blank'>Developer Token</a> may be required for some calls.</td>
                </tr>
              
                <tr>
                  <td>Give BigQuery dataset and table where response will be written.</td>
+               </tr>
+             
+               <tr>
+                 <td>All API calls are based on <a href='https://developers.google.com/discovery/v1/reference'  target='_blank'>discovery document</a>, for example the <a href='https://developers.google.com/display-video/api/reference/rest/v1/advertisers/list' target='_blank'>Campaign Manager API</a>.</td>
                </tr>
              
              </tbody>
@@ -266,7 +368,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "name": "api",
                     "kind": "string",
                     "order": 1,
-                    "default": "doubleclickbidmanager",
+                    "default": "displayvideo",
                     "description": "See developer guide."
                 }
             },
@@ -284,7 +386,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "name": "function",
                     "kind": "string",
                     "order": 3,
-                    "default": "reports.files.list",
+                    "default": "advertisers.list",
                     "description": "Full function dot notation path."
                 }
             },
@@ -294,20 +396,38 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "kind": "json",
                     "order": 4,
                     "default": {
-                        "accountId": 7480,
-                        "profileId": 2782211,
-                        "reportId": 132847265
+                        "partnerId": 234340
                     },
                     "description": "Dictionray object of name value pairs."
                 }
             },
-            "iterate": {
+            "key": {
                 "field": {
-                    "name": "iterate",
-                    "kind": "boolean",
-                    "order": 5,
-                    "default": false,
-                    "description": "Is the result a list?"
+                    "name": "api_key",
+                    "kind": "string",
+                    "order": 4,
+                    "default": "",
+                    "description": "Associated with a Google Cloud Project."
+                }
+            },
+            "headers": {
+                "developer-token": {
+                    "field": {
+                        "name": "developer_token",
+                        "kind": "string",
+                        "order": 5,
+                        "default": "",
+                        "description": "Associated with your organization."
+                    }
+                },
+                "login-customer-id": {
+                    "field": {
+                        "name": "login_customer_id",
+                        "kind": "string",
+                        "order": 6,
+                        "default": "",
+                        "description": "Associated with your Adwords account."
+                    }
                 }
             },
             "results": {
@@ -316,7 +436,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "field": {
                             "name": "dataset",
                             "kind": "string",
-                            "order": 6,
+                            "order": 7,
                             "default": "",
                             "description": "Existing dataset in BigQuery."
                         }
@@ -325,21 +445,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "field": {
                             "name": "table",
                             "kind": "string",
-                            "order": 7,
+                            "order": 8,
                             "default": "",
                             "description": "Table to write API call results to."
                         }
-                    },
-                    "schema": {
-                        "field": {
-                            "name": "schema",
-                            "kind": "json",
-                            "order": 9,
-                            "default": [],
-                            "description": "Schema provided in JSON list format or empty list."
-                        }
-                    },
-                    "format": "JSON"
+                    }
                 }
             }
         }
@@ -383,7 +493,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 
   <script type="text/javascript">
     $(document).ready(function() {
-      M.AutoInit();
+      M.AutoInit(context=document.getElementById("form_recipe"));
     });
   </script>
 

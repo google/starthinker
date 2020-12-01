@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,20 +34,50 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
 DV360 To Storage
 
 Move existing DV360 report into a Storage bucket.
 
-Specify either report name or report id to move a report.
-The most recent valid file will be moved to the bucket.
+  - Specify either report name or report id to move a report.
+  - The most recent valid file will be moved to the bucket.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'auth_read': 'user',  # Credentials used for reading data.
@@ -57,76 +88,77 @@ INPUTS = {
   'dbm_path': '',  # Path and filename to write to.
 }
 
-TASKS = [
-  {
-    'dbm': {
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'report': {
-        'report_id': {
+RECIPE = {
+  'tasks': [
+    {
+      'dbm': {
+        'auth': {
           'field': {
-            'name': 'dbm_report_id',
-            'kind': 'integer',
+            'name': 'auth_read',
+            'kind': 'authentication',
             'order': 1,
-            'default': '',
-            'description': 'DV360 report ID given in UI, not needed if name used.'
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
           }
         },
-        'name': {
-          'field': {
-            'name': 'dbm_report_name',
-            'kind': 'string',
-            'order': 2,
-            'default': '',
-            'description': 'Name of report, not needed if ID used.'
-          }
-        }
-      },
-      'out': {
-        'storage': {
-          'auth': {
+        'report': {
+          'report_id': {
             'field': {
-              'name': 'auth_write',
-              'kind': 'authentication',
+              'name': 'dbm_report_id',
+              'kind': 'integer',
               'order': 1,
-              'default': 'service',
-              'description': 'Credentials used for writing data.'
+              'default': '',
+              'description': 'DV360 report ID given in UI, not needed if name used.'
             }
           },
-          'bucket': {
+          'name': {
             'field': {
-              'name': 'dbm_bucket',
+              'name': 'dbm_report_name',
               'kind': 'string',
-              'order': 3,
+              'order': 2,
               'default': '',
-              'description': 'Google cloud bucket.'
+              'description': 'Name of report, not needed if ID used.'
             }
-          },
-          'path': {
-            'field': {
-              'name': 'dbm_path',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Path and filename to write to.'
+          }
+        },
+        'out': {
+          'storage': {
+            'auth': {
+              'field': {
+                'name': 'auth_write',
+                'kind': 'authentication',
+                'order': 1,
+                'default': 'service',
+                'description': 'Credentials used for writing data.'
+              }
+            },
+            'bucket': {
+              'field': {
+                'name': 'dbm_bucket',
+                'kind': 'string',
+                'order': 3,
+                'default': '',
+                'description': 'Google cloud bucket.'
+              }
+            },
+            'path': {
+              'field': {
+                'name': 'dbm_path',
+                'kind': 'string',
+                'order': 4,
+                'default': '',
+                'description': 'Path and filename to write to.'
+              }
             }
           }
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('dbm_to_storage', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+DAG_FACTORY = DAG_Factory('dbm_to_storage', RECIPE, INPUTS)
+DAG = DAG_FACTORY.generate()
 
 if __name__ == "__main__":
   DAG_FACTORY.print_commandline()

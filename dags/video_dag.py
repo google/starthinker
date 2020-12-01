@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,20 +34,50 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
 Video Overlay
 
 Add images, text, and audio to videos.
 
-Provide either a sheet or a BigQuery table.
-Each video edit will be read from the sheet or table.
+  - Provide either a sheet or a BigQuery table.
+  - Each video edit will be read from the sheet or table.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'auth_read': 'user',  # Credentials used for reading data.
@@ -57,56 +88,30 @@ INPUTS = {
   'table': '',  # Name of table.
 }
 
-TASKS = [
-  {
-    'sheets': {
-      '__comment__': 'Copy the tamplate sheet to the users sheet.  If it already exists, nothing happens.',
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
-      'template': {
-        'sheet': 'https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit#gid=0',
-        'tab': 'Video'
-      },
-      'sheet': {
-        'field': {
-          'name': 'sheet',
-          'kind': 'string',
-          'order': 1,
-          'default': '',
-          'description': 'Name or URL of sheet.'
-        }
-      },
-      'tab': {
-        'field': {
-          'name': 'tab',
-          'kind': 'string',
-          'order': 2,
-          'default': '',
-          'description': 'Name of sheet tab.'
-        }
-      }
-    }
+RECIPE = {
+  'setup': {
+    'day': [
+    ],
+    'hour': [
+    ]
   },
-  {
-    'video': {
-      '__comment__': 'Read video effects and values from sheet and/or bigquery.',
-      'auth': {
-        'field': {
-          'name': 'auth_read',
-          'kind': 'authentication',
-          'order': 1,
-          'default': 'user',
-          'description': 'Credentials used for reading data.'
-        }
-      },
+  'tasks': [
+    {
       'sheets': {
+        '__comment__': 'Copy the tamplate sheet to the users sheet.  If it already exists, nothing happens.',
+        'auth': {
+          'field': {
+            'name': 'auth_read',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
+          }
+        },
+        'template': {
+          'sheet': 'https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit#gid=0',
+          'tab': 'Video'
+        },
         'sheet': {
           'field': {
             'name': 'sheet',
@@ -125,43 +130,76 @@ TASKS = [
             'description': 'Name of sheet tab.'
           }
         }
-      },
-      'bigquery': {
-        'project': {
+      }
+    },
+    {
+      'video': {
+        '__comment__': 'Read video effects and values from sheet and/or bigquery.',
+        'auth': {
           'field': {
-            'name': 'project',
-            'kind': 'string',
-            'order': 3,
-            'default': '',
-            'description': 'Google Cloud Project Identifier.'
+            'name': 'auth_read',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
           }
         },
-        'dataset': {
-          'field': {
-            'name': 'dataset',
-            'kind': 'string',
-            'order': 4,
-            'default': '',
-            'description': 'Name of dataset.'
+        'sheets': {
+          'sheet': {
+            'field': {
+              'name': 'sheet',
+              'kind': 'string',
+              'order': 1,
+              'default': '',
+              'description': 'Name or URL of sheet.'
+            }
+          },
+          'tab': {
+            'field': {
+              'name': 'tab',
+              'kind': 'string',
+              'order': 2,
+              'default': '',
+              'description': 'Name of sheet tab.'
+            }
           }
         },
-        'table': {
-          'field': {
-            'name': 'table',
-            'kind': 'string',
-            'order': 5,
-            'default': '',
-            'description': 'Name of table.'
+        'bigquery': {
+          'project': {
+            'field': {
+              'name': 'project',
+              'kind': 'string',
+              'order': 3,
+              'default': '',
+              'description': 'Google Cloud Project Identifier.'
+            }
+          },
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'Name of dataset.'
+            }
+          },
+          'table': {
+            'field': {
+              'name': 'table',
+              'kind': 'string',
+              'order': 5,
+              'default': '',
+              'description': 'Name of table.'
+            }
           }
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('video', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+DAG_FACTORY = DAG_Factory('video', RECIPE, INPUTS)
+DAG = DAG_FACTORY.generate()
 
 if __name__ == "__main__":
   DAG_FACTORY.print_commandline()
