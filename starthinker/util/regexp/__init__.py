@@ -21,8 +21,10 @@ import pytz
 from datetime import date, datetime
 
 
+RE_LOOKUP = re.compile(r' - (\d+)$')
 def lookup_id(lookup):
-  return lookup.rsplit(' - ', 1)[-1]
+  result = RE_LOOKUP.search(lookup)
+  return result.group(1) if result else None
 
 
 def date_to_str(value):

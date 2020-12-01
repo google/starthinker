@@ -93,10 +93,20 @@ def line_item_load():
          CONCAT(P.displayName, ' - ', P.partnerId),
          CONCAT(A.displayName, ' - ', A.advertiserId),
          CONCAT(C.displayName, ' - ', C.campaignId),
+         CONCAT(I.displayName, ' - ', I.insertionOrderId),
          CONCAT(L.displayName, ' - ', L.lineItemId),
          'PATCH',
          L.entityStatus,
          ARRAY_TO_STRING(L.warningMessages, '\\n'),
+
+         L.flight.flightDateType,
+         L.flight.flightDateType,
+         CONCAT(L.flight.dateRange.startDate.year, '-', L.flight.dateRange.startDate.month, '-', L.flight.dateRange.startDate.day),
+         CONCAT(L.flight.dateRange.startDate.year, '-', L.flight.dateRange.startDate.month, '-', L.flight.dateRange.startDate.day),
+         CONCAT(L.flight.dateRange.endDate.year, '-', L.flight.dateRange.endDate.month, '-', L.flight.dateRange.endDate.day),
+         CONCAT(L.flight.dateRange.endDate.year, '-', L.flight.dateRange.endDate.month, '-', L.flight.dateRange.endDate.day),
+         L.flight.triggerId,
+         L.flight.triggerId,
 
          L.budget.budgetAllocationType,
          L.budget.budgetAllocationType,
@@ -122,7 +132,9 @@ def line_item_load():
          LEFT JOIN `{dataset}.DV_Advertisers` AS A
          ON L.advertiserId=A.advertiserId
          LEFT JOIN `{dataset}.DV_Campaigns` AS C
-         ON C.advertiserId=A.advertiserId
+         ON L.advertiserId=C.advertiserId
+         LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
+         ON L.advertiserId=I.advertiserId
          LEFT JOIN `{dataset}.DV_Partners` AS P
          ON A.partnerId=P.partnerId
        """.format(**project.task),
@@ -158,98 +170,38 @@ def line_item_audit():
               "dataset": project.task["dataset"],
               "table": "SHEET_LineItems",
               "schema": [
-                  {
-                      "name": "Partner",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Advertiser",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Campaign",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Line_Item",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Action",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Status",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Warning",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Budget_Allocation_Type",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Budget_Allocation_Type_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Budget_Unit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Budget_Unit_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Budget_Max",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Budget_Max_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Partner_Revenue_Model",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Partner_Revenue_Model_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Partner_Markup",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Partner_Markup_Edit",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Conversion_Percent",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Conversion_Percent_Edit",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Targeting_Expansion_Level",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Targeting_Expansion_Level_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Exclude_1P",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Exclude_1P_Edit",
-                      "type": "STRING"
-                  },
+                  { "name": "Partner", "type": "STRING" },
+                  { "name": "Advertiser", "type": "STRING" },
+                  { "name": "Campaign", "type": "STRING" },
+                  { "name": "Insertion_Order", "type": "STRING" },
+                  { "name": "Line_Item", "type": "STRING" },
+                  { "name": "Action", "type": "STRING" },
+                  { "name": "Status", "type": "STRING" },
+                  { "name": "Warning", "type": "STRING" },
+                  { "name": "Flight_Data_Type", "type": "STRING" },
+                  { "name": "Flight_Data_Type_Edit", "type": "STRING" },
+                  { "name": "Flight_Start_Date", "type": "STRING" },
+                  { "name": "Flight_Start_Date_Edit", "type": "STRING" },
+                  { "name": "Flight_End_Date", "type": "STRING" },
+                  { "name": "Flight_End_Date_Edit", "type": "STRING" },
+                  { "name": "Flight_Trigger", "type": "STRING" },
+                  { "name": "Flight_Trigger_Edit", "type": "STRING" },
+                  { "name": "Budget_Allocation_Type", "type": "STRING" },
+                  { "name": "Budget_Allocation_Type_Edit", "type": "STRING" },
+                  { "name": "Budget_Unit", "type": "STRING" },
+                  { "name": "Budget_Unit_Edit", "type": "STRING" },
+                  { "name": "Budget_Max", "type": "FLOAT" },
+                  { "name": "Budget_Max_Edit", "type": "FLOAT" },
+                  { "name": "Partner_Revenue_Model", "type": "STRING" },
+                  { "name": "Partner_Revenue_Model_Edit", "type": "STRING" },
+                  { "name": "Partner_Markup", "type": "FLOAT" },
+                  { "name": "Partner_Markup_Edit", "type": "FLOAT" },
+                  { "name": "Conversion_Percent", "type": "FLOAT" },
+                  { "name": "Conversion_Percent_Edit", "type": "FLOAT" },
+                  { "name": "Targeting_Expansion_Level", "type": "STRING" },
+                  { "name": "Targeting_Expansion_Level_Edit", "type": "STRING" },
+                  { "name": "Exclude_1P", "type": "STRING" },
+                  { "name": "Exclude_1P_Edit", "type": "STRING" },
               ],
               "format": "CSV"
           }
@@ -298,6 +250,10 @@ def line_item_audit():
 
 def line_item_patch(commit=False):
 
+  def date_edited(value):
+    y, m, d = value.split("-")
+    return {"year": y, "month": m, "day": d}
+
   patches = []
 
   rows = get_rows(
@@ -305,11 +261,11 @@ def line_item_patch(commit=False):
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Line Items",
-              "range": "A2:Z"
+              "range": "A2:AZ"
           }
       })
 
-  rows = rows_pad(rows, 23, "")
+  rows = rows_pad(rows, 31, "")
 
   for row in rows:
     if row[4] == "DELETE":
@@ -319,42 +275,54 @@ def line_item_patch(commit=False):
           "partner": row[0],
           "advertiser": row[1],
           "campaign": row[2],
-          "line_item": row[3],
+          "line_item": row[4],
           "parameters": {
               "advertiserId": lookup_id(row[1]),
-              "lineItemId": lookup_id(row[3])
+              "lineItemId": lookup_id(row[4])
           }
       })
 
-    elif row[4] == "PATCH":
+    elif row[5] == "PATCH":
       line_item = {}
 
-      if row[7] != row[8]:
+      if row[8] != row[9]:
+        line_item.setdefault("flight", {})
+        line_item["flight"]["flightDateType"] = row[9]
+      if row[10] != row[11]:
+        line_item.setdefault("flight", {}).setdefault("dateRange", {})
+        line_item["flight"]["dateRange"]["startDate"] = date_edited(row[11])
+      if row[12] != row[13]:
+        line_item.setdefault("flight", {}).setdefault("endDate", {})
+        line_item["flight"]["dateRange"]["endDate"] = date_edited(row[13])
+      if row[14] != row[15]:
+        line_item.setdefault("flight", {})
+        line_item["flight"]["triggerId"] = row[15]
+      if row[16] != row[17]:
         line_item.setdefault("budget", {})
-        line_item["budget"]["budgetAllocationType"] = row[8]
-      if row[9] != row[10]:
+        line_item["budget"]["budgetAllocationType"] = row[17]
+      if row[18] != row[19]:
         line_item.setdefault("budget", {})
-        line_item["budget"]["budgetUnit"] = row[10]
-      if row[11] != row[12]:
+        line_item["budget"]["budgetUnit"] = row[19]
+      if row[20] != row[21]:
         line_item.setdefault("budget", {})
-        line_item["budget"]["maxAmount"] = int(float(row[12]) * 1000000)
-      if row[13] != row[14]:
+        line_item["budget"]["maxAmount"] = int(float(row[21]) * 1000000)
+      if row[22] != row[23]:
         line_item.setdefault("partnerRevenueModel", {})
-        line_item["partnerRevenueModel"]["markupType"] = row[14]
-      if row[15] != row[16]:
+        line_item["partnerRevenueModel"]["markupType"] = row[23]
+      if row[24] != row[25]:
         line_item.setdefault("partnerRevenueModel", {})
         line_item["partnerRevenueModel"]["markupAmount"] = int(
-            float(row[16]) * 1000000)
-      if row[17] != row[18]:
+            float(row[25]) * 1000000)
+      if row[26] != row[27]:
         line_item.setdefault("conversionCounting", {})
         line_item["conversionCounting"]["postViewCountPercentageMillis"] = int(
-            float(row[18]) * 1000)
-      if row[19] != row[20]:
+            float(row[27]) * 1000)
+      if row[28] != row[29]:
         line_item.setdefault("targetingExpansion", {})
-        line_item["targetingExpansion"]["targetingExpansionLevel"] = row[20]
-      if row[21] != row[22]:
+        line_item["targetingExpansion"]["targetingExpansionLevel"] = row[29]
+      if row[30] != row[31]:
         line_item.setdefault("targetingExpansion", {})
-        line_item["targetingExpansion"]["excludeFirstPartyAudience"] = row[22]
+        line_item["targetingExpansion"]["excludeFirstPartyAudience"] = row[31]
 
       if line_item:
         patches.append({
@@ -363,10 +331,10 @@ def line_item_patch(commit=False):
             "partner": row[0],
             "advertiser": row[1],
             "campaign": row[2],
-            "line_item": row[3],
+            "line_item": row[4],
             "parameters": {
                 "advertiserId": lookup_id(row[1]),
-                "lineItemId": lookup_id(row[3]),
+                "lineItemId": lookup_id(row[4]),
                 "body": line_item
             }
         })
@@ -379,6 +347,38 @@ def line_item_patch(commit=False):
     patch_preview(patches)
 
 
+def line_item_insert(commit=False):
+  inserts = []
+
+  rows = get_rows(
+    project.task["auth_bigquery"],
+    { "bigquery": {
+      "dataset": project.task["dataset"],
+      "table":"INSERT_LineItems",
+    }},
+    as_object=True
+  )
+
+  for row in rows:
+    inserts.append({
+      "operation": "Line Items",
+      "action": "INSERT",
+      "partner": None,
+      "advertiser": row['advertiserId'],
+      "campaign": row['campaignId'],
+      "line_item": row['displayName'],
+      "parameters": {
+        "advertiserId": row['advertiserId'],
+        "body":row
+      }
+    })
+
+  if commit:
+    line_item_commit(inserts)
+  else:
+    patch_preview(inserts)
+
+
 def line_item_commit(patches):
   for patch in patches:
     if not patch.get("line_item"):
@@ -387,12 +387,24 @@ def line_item_commit(patches):
     try:
       if patch["action"] == "DELETE":
         response = API_DV360(
-            project.task["auth_dv"]).advertisers().lineItems().delete(
-                **patch["parameters"]).execute()
+          project.task["auth_dv"]
+        ).advertisers().lineItems().delete(
+          **patch["parameters"]
+        ).execute()
         patch["success"] = response
       elif patch["action"] == "PATCH":
-        response = API_DV360(project.task["auth_dv"]).advertisers().lineItems().patch(
-            **patch["parameters"]).execute()
+        response = API_DV360(
+          project.task["auth_dv"]
+        ).advertisers().lineItems().patch(
+          **patch["parameters"]
+        ).execute()
+        patch["success"] = response["lineItemId"]
+      elif patch["action"] == "INSERT":
+        response = API_DV360(
+          project.task["auth_dv"]
+        ).advertisers().lineItems().create(
+          **patch["parameters"]
+        ).execute()
         patch["success"] = response["lineItemId"]
     except Exception as e:
       patch["error"] = str(e)

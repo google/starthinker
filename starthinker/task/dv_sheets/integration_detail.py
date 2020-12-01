@@ -219,6 +219,8 @@ def integration_detail_patch(commit=False):
   rows = rows_pad(rows, 9, "")
 
   for row in rows:
+    if not lookup_id(row[4]) and not lookup_id(row[3]) and not lookup_id(row[1]): continue
+
     integration_details = {}
 
     if row[5] != row[6]:

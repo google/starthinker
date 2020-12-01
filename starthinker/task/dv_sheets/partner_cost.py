@@ -245,6 +245,10 @@ def partner_cost_patch(commit=False):
   rows = rows_pad(rows, 21, "")
 
   for row in rows:
+
+    # inserts do not have an ID, skip them
+    if not lookup_id(row[4]) and not lookup_id(row[3]): continue
+
     lookup = row[4] or row[3]
 
     patches.setdefault(

@@ -252,6 +252,10 @@ def frequency_cap_patch(commit=False):
   rows = rows_pad(rows, 21, "")
 
   for row in rows:
+
+    # inserts do not have an ID, skip them
+    if not lookup_id(row[4]) and not lookup_id(row[3]): continue
+
     frequency_cap = {}
 
     if row[5] != row[6]:

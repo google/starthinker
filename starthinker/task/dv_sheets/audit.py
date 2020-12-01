@@ -53,7 +53,7 @@ def audit_load():
   # write audit to sheet
   sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Audit', 'A2')
 
-  # write insertion orders to sheet
+  # write audits to sheet
   rows = get_rows(
       project.task['auth_bigquery'], {
           'bigquery': {
