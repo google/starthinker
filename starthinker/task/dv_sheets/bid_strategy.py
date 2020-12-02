@@ -18,7 +18,6 @@
 
 from starthinker.util.bigquery import query_to_view
 from starthinker.util.bigquery import table_create
-from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
@@ -52,20 +51,20 @@ def bid_strategy_load():
          CONCAT(C.displayName, ' - ', C.campaignId),
          CONCAT(I.displayName, ' - ', I.insertionOrderId),
          NULL,
-         I.bidStrategy.fixedBid.bidAmountMicros / 1000000,
-         I.bidStrategy.fixedBid.bidAmountMicros / 1000000,
+         I.bidStrategy.fixedBid.bidAmountMicros / 100000,
+         I.bidStrategy.fixedBid.bidAmountMicros / 100000,
          I.bidStrategy.maximizeSpendAutoBid.performanceGoalType,
          I.bidStrategy.maximizeSpendAutoBid.performanceGoalType,
-         I.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 1000000,
-         I.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 1000000,
+         I.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 100000,
+         I.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 100000,
          I.bidStrategy.maximizeSpendAutoBid.customBiddingAlgorithmId,
          I.bidStrategy.maximizeSpendAutoBid.customBiddingAlgorithmId,
          I.bidStrategy.performanceGoalAutoBid.performanceGoalType,
          I.bidStrategy.performanceGoalAutoBid.performanceGoalType,
-         I.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 1000000,
-         I.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 1000000,
-         I.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 1000000,
-         I.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 1000000,
+         I.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 100000,
+         I.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 100000,
+         I.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 100000,
+         I.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 100000,
          I.bidStrategy.performanceGoalAutoBid.customBiddingAlgorithmId,
          I.bidStrategy.performanceGoalAutoBid.customBiddingAlgorithmId
        FROM `{dataset}.DV_InsertionOrders` AS I
@@ -82,20 +81,20 @@ def bid_strategy_load():
          CONCAT(C.displayName, ' - ', C.campaignId),
          CONCAT(I.displayName, ' - ', I.insertionOrderId),
          CONCAT(L.displayName, ' - ', L.lineItemId),
-         L.bidStrategy.fixedBid.bidAmountMicros / 1000000,
-         L.bidStrategy.fixedBid.bidAmountMicros / 1000000,
+         L.bidStrategy.fixedBid.bidAmountMicros / 100000,
+         L.bidStrategy.fixedBid.bidAmountMicros / 100000,
          L.bidStrategy.maximizeSpendAutoBid.performanceGoalType,
          L.bidStrategy.maximizeSpendAutoBid.performanceGoalType,
-         L.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 1000000,
-         L.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 1000000,
+         L.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 100000,
+         L.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 100000,
          L.bidStrategy.maximizeSpendAutoBid.customBiddingAlgorithmId,
          L.bidStrategy.maximizeSpendAutoBid.customBiddingAlgorithmId,
          L.bidStrategy.performanceGoalAutoBid.performanceGoalType,
          L.bidStrategy.performanceGoalAutoBid.performanceGoalType,
-         L.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 1000000,
-         L.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 1000000,
-         L.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 1000000,
-         L.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 1000000,
+         L.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 100000,
+         L.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 100000,
+         L.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 100000,
+         L.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 100000,
          L.bidStrategy.performanceGoalAutoBid.customBiddingAlgorithmId,
          L.bidStrategy.performanceGoalAutoBid.customBiddingAlgorithmId
        FROM `{dataset}.DV_LineItems` AS L
@@ -139,90 +138,27 @@ def bid_strategy_audit():
               "dataset": project.task["dataset"],
               "table": "SHEET_BidStrategy",
               "schema": [
-                  {
-                      "name": "Partner",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Advertiser",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Campaign",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Insertion_Order",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Line_Item",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Fixed_Bid",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Fixed_Bid_Edit",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Auto_Bid_Goal",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Auto_Bid_Goal_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Auto_Bid_Amount",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Auto_Bid_Amount_Edit",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Auto_Bid_Algorithm",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Auto_Bid_Algorithm_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Performance_Goal_Type",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Performance_Goal_Type_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Performance_Goal_Amount",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Performance_Goal_Amount_Edit",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Performance_Goal_Average_CPM_Bid",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Performance_Goal_Average_CPM_Bid_Edit",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Performance_Goal_Algorithm",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Performance_Goal_Algorithm_Edit",
-                      "type": "STRING"
-                  },
+                  { "name": "Partner", "type": "STRING" },
+                  { "name": "Advertiser", "type": "STRING" },
+                  { "name": "Campaign", "type": "STRING" },
+                  { "name": "Insertion_Order", "type": "STRING" },
+                  { "name": "Line_Item", "type": "STRING" },
+                  { "name": "Fixed_Bid", "type": "FLOAT" },
+                  { "name": "Fixed_Bid_Edit", "type": "FLOAT" },
+                  { "name": "Auto_Bid_Goal", "type": "STRING" },
+                  { "name": "Auto_Bid_Goal_Edit", "type": "STRING" },
+                  { "name": "Auto_Bid_Amount", "type": "FLOAT" },
+                  { "name": "Auto_Bid_Amount_Edit", "type": "FLOAT" },
+                  { "name": "Auto_Bid_Algorithm", "type": "STRING" },
+                  { "name": "Auto_Bid_Algorithm_Edit", "type": "STRING" },
+                  { "name": "Performance_Goal_Type", "type": "STRING" },
+                  { "name": "Performance_Goal_Type_Edit", "type": "STRING" },
+                  { "name": "Performance_Goal_Amount", "type": "FLOAT" },
+                  { "name": "Performance_Goal_Amount_Edit", "type": "FLOAT" },
+                  { "name": "Performance_Goal_Average_CPM_Bid", "type": "FLOAT" },
+                  { "name": "Performance_Goal_Average_CPM_Bid_Edit", "type": "FLOAT" },
+                  { "name": "Performance_Goal_Algorithm", "type": "STRING" },
+                  { "name": "Performance_Goal_Algorithm_Edit", "type": "STRING" },
               ],
               "format": "CSV"
           }
@@ -262,80 +198,100 @@ def bid_strategy_audit():
     """.format(**project.task),
       legacy=False)
 
+  query_to_view(
+    project.task["auth_bigquery"],
+    project.id,
+    project.task["dataset"],
+    "PATCH_BidStrategy",
+    """SELECT *
+      FROM `DV_Patch_Demo.SHEET_BidStrategy`
+      WHERE (
+        REGEXP_CONTAINS(Insertion_Order, r" - (\d+)$")
+        OR REGEXP_CONTAINS(Line_Item, r" - (\d+)$")
+      )
+      AND Line_Item NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_BidStrategy` WHERE Severity='ERROR')
+      AND Insertion_Order NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_BidStrategy` WHERE Severity='ERROR')
+    """.format(**project.task),
+    legacy=False
+  )
+
 
 def bid_strategy_patch(commit=False):
   patches = []
 
   rows = get_rows(
-      project.task["auth_sheets"], {
-          "sheets": {
-              "sheet": project.task["sheet"],
-              "tab": "Bid Strategy",
-              "range": "A2:Z"
-          }
-      })
-
-  rows = rows_pad(rows, 21, "")
+    project.task["auth_bigquery"],
+    { "bigquery": {
+      "dataset": project.task["dataset"],
+      "table":"PATCH_BidStrategy",
+    }},
+    as_object=True
+  )
 
   for row in rows:
 
-    # inserts do not have an ID, skip them
-    if not lookup_id(row[4]) and not lookup_id(row[3]): continue
-
     bid_strategy = {}
 
-    if row[5] != row[6]:
+    if row['Fixed_Bid'] != row['Fixed_Bid_Edit']:
       bid_strategy.setdefault("bidStrategy", {"fixedBid": {}})
       bid_strategy["bidStrategy"]["fixedBid"]["bidAmountMicros"] = int(
-          float(row[6]) * 1000000)
-    if row[7] != row[8]:
+        float(row['Fixed_Bid_Edit']) * 100000
+      )
+
+    if row['Auto_Bid_Goal'] != row['Auto_Bid_Goal_Edit']:
       bid_strategy.setdefault("bidStrategy", {"maximizeSpendAutoBid": {}})
       bid_strategy["bidStrategy"]["maximizeSpendAutoBid"][
-          "performanceGoalType"] = row[8]
-    if row[9] != row[10]:
+       "performanceGoalType"] = row['Auto_Bid_Goal_Edit']
+
+    if row['Auto_Bid_Amount'] != row['Auto_Bid_Amount_Edit']:
       bid_strategy.setdefault("bidStrategy", {"maximizeSpendAutoBid": {}})
       bid_strategy["bidStrategy"]["maximizeSpendAutoBid"][
-          "maxAverageCpmBidAmountMicros"] = int(float(row[10]) * 1000000)
-    if row[11] != row[12]:
+        "maxAverageCpmBidAmountMicros"] = int(float(row['Auto_Bid_Amount_Edit']) * 100000)
+
+    if row['Auto_Bid_Algorithm'] != row['Auto_Bid_Algorithm_Edit']:
       bid_strategy.setdefault("bidStrategy", {"maximizeSpendAutoBid": {}})
       bid_strategy["bidStrategy"]["maximizeSpendAutoBid"][
-          "customBiddingAlgorithmId"] = row[12]
-    if row[13] != row[14]:
+        "customBiddingAlgorithmId"] = row['Auto_Bid_Algorithm_Edit']
+
+    if row['Performance_Goal_Type'] != row['Performance_Goal_Type_Edit']:
       bid_strategy.setdefault("bidStrategy", {"performanceGoalAutoBid": {}})
       bid_strategy["bidStrategy"]["performanceGoalAutoBid"][
-          "performanceGoalType"] = row[14]
-    if row[15] != row[16]:
+          "performanceGoalType"] = row['Performance_Goal_Type_Edit']
+
+    if row['Performance_Goal_Amount'] != row['Performance_Goal_Amount_Edit']:
       bid_strategy.setdefault("bidStrategy", {"performanceGoalAutoBid": {}})
       bid_strategy["bidStrategy"]["performanceGoalAutoBid"][
-          "performanceGoalAmountMicros"] = int(float(row[16]) * 1000000)
-    if row[17] != row[18]:
+          "performanceGoalAmountMicros"] = int(float(row['Performance_Goal_Amount_Edit']) * 100000)
+
+    if row['Performance_Goal_Average_CPM_Bid'] != row['Performance_Goal_Average_CPM_Bid_Edit']:
       bid_strategy.setdefault("bidStrategy", {"performanceGoalAutoBid": {}})
       bid_strategy["bidStrategy"]["performanceGoalAutoBid"][
-          "maxAverageCpmBidAmountMicros"] = int(float(row[18]) * 1000000)
-    if row[19] != row[20]:
+          "maxAverageCpmBidAmountMicros"] = int(float(row['Performance_Goal_Average_CPM_Bid_Edit']) * 100000)
+
+    if row['Performance_Goal_Algorithm'] != row['Performance_Goal_Algorithm_Edit']:
       bid_strategy.setdefault("bidStrategy", {"performanceGoalAutoBid": {}})
       bid_strategy["bidStrategy"]["performanceGoalAutoBid"][
-          "customBiddingAlgorithmId"] = row[20]
+          "customBiddingAlgorithmId"] = row['Performance_Goal_Algorithm_Edit']
 
     if bid_strategy:
       patch = {
           "operation": "Bid Strategy",
           "action": "PATCH",
-          "partner": row[0],
-          "advertiser": row[1],
-          "campaign": row[2],
+          "partner": row['Partner'],
+          "advertiser": row['Advertiser'],
+          "campaign": row['Campaign'],
           "parameters": {
-              "advertiserId": lookup_id(row[1]),
+              "advertiserId": lookup_id(row['Advertiser']),
               "body": bid_strategy
           }
       }
 
-      if row[4]:
-        patch["line_item"] = row[4]
-        patch["parameters"]["lineItemId"] = lookup_id(row[4])
+      if row['Line_Item']:
+        patch["line_item"] = row['Line_Item']
+        patch["parameters"]["lineItemId"] = lookup_id(row['Line_Item'])
       else:
-        patch["insertion_order"] = row[3]
-        patch["parameters"]["insertionOrderId"] = lookup_id(row[3])
+        patch["insertion_order"] = row['Insertion_Order']
+        patch["parameters"]["insertionOrderId"] = lookup_id(row['Insertion_Order'])
 
       patches.append(patch)
 

@@ -18,7 +18,6 @@
 
 from starthinker.util.bigquery import query_to_view
 from starthinker.util.bigquery import table_create
-from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
@@ -282,7 +281,9 @@ def insertion_order_audit():
       LEFT JOIN `{dataset}.SHEET_FrequencyCaps` As S_FC ON S_IO.Insertion_Order=S_FC.Insertion_Order
       LEFT JOIN `{dataset}.SHEET_IntegrationDetails` As S_ID ON S_IO.Insertion_Order=S_ID.Insertion_Order
       LEFT JOIN `{dataset}.SHEET_BidStrategy` As S_BS ON S_IO.Insertion_Order=S_BS.Insertion_Order
-      WHERE S_IO.Action="INSERT";
+      LEFT JOIN `{dataset}.DV_InsertionOrders` As DV_IO ON S_IO.Insertion_Order=DV_IO.displayName
+      WHERE S_IO.Action="INSERT"
+      AND DV_IO IS NULL
     """.format(**project.task),
     legacy=False
   )
@@ -319,10 +320,36 @@ def insertion_order_audit():
         )
         WHERE
           Error IS NOT NULL
+      ),
+      /* Check duplicate inserts */
+      DUPLICATE_ERRORS AS (
+        SELECT
+          'Insertion_Order' AS Operation,
+          'Duplicate Insertion Order name, insert will be ignored.' AS Error,
+          'WARNING' AS Severity,
+          COALESCE(S_IO.Insertion_Order, 'BLANK') AS Id
+        FROM `{dataset}.SHEET_InsertionOrders` As S_IO
+        LEFT JOIN `{dataset}.DV_InsertionOrders` AS DV_IO ON S_IO.Insertion_Order=DV_IO.displayName
+        WHERE S_IO.Action="INSERT"
+        AND DV_IO IS NOT NULL
       )
 
       SELECT * FROM INPUT_ERRORS
+      UNION ALL
+      SELECT * FROM DUPLICATE_ERRORS
       ;
+    """.format(**project.task),
+    legacy=False
+  )
+
+  query_to_view(
+    project.task["auth_bigquery"],
+    project.id,
+    project.task["dataset"],
+    "PATCH_InsertionOrders",
+    """SELECT *
+      FROM `DV_Patch_Demo.SHEET_InsertionOrders`
+      WHERE Insertion_Order NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_InsertionOrders` WHERE Severity='ERROR')
     """.format(**project.task),
     legacy=False
   )
@@ -333,68 +360,74 @@ def insertion_order_patch(commit=False):
   patches = []
 
   rows = get_rows(
-    project.task["auth_sheets"],
-    { "sheets": {
-      "sheet": project.task["sheet"],
-      "tab": "Insertion Orders",
-      "range": "A2:Z"
-    }}
+    project.task["auth_bigquery"],
+    { "bigquery": {
+      "dataset": project.task["dataset"],
+      "table":"PATCH_InsertionOrders",
+    }},
+    as_object=True
   )
 
-  rows = rows_pad(rows, 20, "")
-
   for row in rows:
-    if row[4] == "DELETE":
+    if row['Action'] == "DELETE":
       patches.append({
         "operation": "Insertion Orders",
         "action": "DELETE",
-        "partner": row[0],
-        "advertiser": row[1],
-        "campaign": row[2],
-        "insertion_order": row[3],
+        "partner": row['Partner'],
+        "advertiser": row['Advertiser'],
+        "campaign": row['Campaign'],
+        "insertion_order": row['Insertion_Order'],
         "parameters": {
-          "advertiserId": lookup_id(row[1]),
-          "insertionOrderId": lookup_id(row[3])
+          "advertiserId": lookup_id(row['Advertiser']),
+          "insertionOrderId": lookup_id(row['Insertion_Order'])
         }
       })
 
-    elif row[4] == "PATCH":
+    elif row['Action'] == "PATCH":
       insertion_order = {}
 
-      if row[6] != row[7]:
-        insertion_order["displayName"] = row[7]
-      if row[8] != row[9]:
+      if row['Name'] != row['Name_Edit']:
+        insertion_order["displayName"] = row['Name_Edit']
+
+      if row['Budget_Unit'] != row['Budget_Unit_Edit']:
         insertion_order.setdefault("budget", {})
-        insertion_order["budget"]["budgetUnit"] = row[9]
-      if row[10] != row[11]:
+        insertion_order["budget"]["budgetUnit"] = row['Budget_Unit_Edit']
+
+      if row['Budget_Automation'] != row['Budget_Automation_Edit']:
         insertion_order.setdefault("budget", {})
-        insertion_order["budget"]["automationType"] = row[11]
-      if row[12] != row[13]:
+        insertion_order["budget"]["automationType"] = row['Budget_Automation_Edit']
+
+      if row['Performance_Goal_Type'] != row['Performance_Goal_Type_Edit']:
         insertion_order.setdefault("performanceGoal", {})
-        insertion_order["performanceGoal"]["performanceGoalType"] = row[13]
-      if row[14] != row[15]:
+        insertion_order["performanceGoal"]["performanceGoalType"] = row['Performance_Goal_Type_Edit']
+
+      if row['Performance_Goal_Amount'] != row['Performance_Goal_Amount_Edit']:
         insertion_order.setdefault("performanceGoal", {})
         insertion_order["performanceGoal"]["performanceGoalAmountMicros"] = int(
-            float(row[15]) * 1000000)
-      if row[16] != row[17]:
+          float(row['Performance_Goal_Amount_Edit']) * 1000000
+        )
+
+      if row['Performance_Goal_Percent'] != row['Performance_Goal_Percent_Edit']:
         insertion_order.setdefault("performanceGoal", {})
-        insertion_order["performanceGoal"][
-            "performanceGoalPercentageMicros"] = int(float(row[15]) * 1000000)
-      if row[18] != row[19]:
+        insertion_order["performanceGoal"]["performanceGoalPercentageMicros"] = int(
+          float(row['Performance_Goal_Percent_Edit']) * 1000000
+        )
+
+      if row['Performance_Goal_String'] != row['Performance_Goal_String_Edit']:
         insertion_order.setdefault("performanceGoal", {})
-        insertion_order["performanceGoal"]["performanceGoalString"] = row[15]
+        insertion_order["performanceGoal"]["performanceGoalString"] = row['Performance_Goal_String_Edit']
 
       if insertion_order:
         patches.append({
           "operation": "Insertion Orders",
           "action": "PATCH",
-          "partner": row[0],
-          "advertiser": row[1],
-          "campaign": row[2],
-          "insertion_order": row[3],
+          "partner": row['Partner'],
+          "advertiser": row['Advertiser'],
+          "campaign": row['Campaign'],
+          "insertion_order": row['Insertion_Order'],
           "parameters": {
-            "advertiserId": lookup_id(row[1]),
-            "insertionOrderId": lookup_id(row[3]),
+            "advertiserId": lookup_id(row['Advertiser']),
+            "insertionOrderId": lookup_id(row['Insertion_Order']),
             "body": insertion_order
           }
         })

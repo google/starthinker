@@ -18,7 +18,6 @@
 
 from starthinker.util.bigquery import query_to_view
 from starthinker.util.bigquery import table_create
-from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
@@ -58,8 +57,8 @@ def partner_cost_load():
          PC.feeType,
          PC.invoiceType,
          PC.invoiceType,
-         PC.feeAmount / 1000000,
-         PC.feeAmount / 1000000,
+         PC.feeAmount / 100000,
+         PC.feeAmount / 100000,
          PC.feePercentageMillis / 1000,
          PC.feePercentageMillis / 1000
        FROM `{dataset}.DV_InsertionOrders` AS I, UNNEST(partnerCosts) AS PC
@@ -82,8 +81,8 @@ def partner_cost_load():
          PC.feeType,
          PC.invoiceType,
          PC.invoiceType,
-         PC.feeAmount / 1000000,
-         PC.feeAmount / 1000000,
+         PC.feeAmount / 100000,
+         PC.feeAmount / 100000,
          PC.feePercentageMillis / 1000,
          PC.feePercentageMillis / 1000
        FROM `{dataset}.DV_LineItems` AS L, UNNEST(partnerCosts) AS PC
@@ -127,66 +126,21 @@ def partner_cost_audit():
               "dataset": project.task["dataset"],
               "table": "SHEET_PartnerCosts",
               "schema": [
-                  {
-                      "name": "Partner",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Advertiser",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Campaign",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Insertion_Order",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Line_Item",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Cost_Type",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Cost_Type_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Fee_Type",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Fee_Type_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Invoice_Type",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Invoice_Type_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Fee_Amount",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Fee_Amount_Edit",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Fee_Percent",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Fee_Percent_Edit",
-                      "type": "FLOAT"
-                  },
+                  { "name": "Partner", "type": "STRING" },
+                  { "name": "Advertiser", "type": "STRING" },
+                  { "name": "Campaign", "type": "STRING" },
+                  { "name": "Insertion_Order", "type": "STRING" },
+                  { "name": "Line_Item", "type": "STRING" },
+                  { "name": "Cost_Type", "type": "STRING" },
+                  { "name": "Cost_Type_Edit", "type": "STRING" },
+                  { "name": "Fee_Type", "type": "STRING" },
+                  { "name": "Fee_Type_Edit", "type": "STRING" },
+                  { "name": "Invoice_Type", "type": "STRING" },
+                  { "name": "Invoice_Type_Edit", "type": "STRING" },
+                  { "name": "Fee_Amount", "type": "FLOAT" },
+                  { "name": "Fee_Amount_Edit", "type": "FLOAT" },
+                  { "name": "Fee_Percent", "type": "FLOAT" },
+                  { "name": "Fee_Percent_Edit", "type": "FLOAT" },
               ],
               "format": "CSV"
           }
@@ -228,61 +182,76 @@ def partner_cost_audit():
     """.format(**project.task),
       legacy=False)
 
+  query_to_view(
+    project.task["auth_bigquery"],
+    project.id,
+    project.task["dataset"],
+    "PATCH_PartnerCosts",
+    """SELECT *
+      FROM `DV_Patch_Demo.SHEET_PartnerCosts`
+      WHERE (
+        REGEXP_CONTAINS(Insertion_Order, r" - (\d+)$")
+        OR REGEXP_CONTAINS(Line_Item, r" - (\d+)$")
+      )
+      AND Line_Item NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_PartnerCosts` WHERE Severity='ERROR')
+      AND Insertion_Order NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_PartnerCosts` WHERE Severity='ERROR')
+    """.format(**project.task),
+    legacy=False
+  )
+
 
 def partner_cost_patch(commit=False):
   patches = {}
   changed = set()
 
   rows = get_rows(
-      project.task["auth_sheets"], {
-          "sheets": {
-              "sheet": project.task["sheet"],
-              "tab": "Partner Costs",
-              "range": "A2:Z"
-          }
-      })
-
-  rows = rows_pad(rows, 21, "")
+    project.task["auth_bigquery"],
+    { "bigquery": {
+      "dataset": project.task["dataset"],
+      "table":"PATCH_PartnerCosts",
+    }},
+    as_object=True
+  )
 
   for row in rows:
 
-    # inserts do not have an ID, skip them
-    if not lookup_id(row[4]) and not lookup_id(row[3]): continue
-
-    lookup = row[4] or row[3]
+    lookup = row['Line_Item'] or row['Insertion_Order']
 
     patches.setdefault(
         lookup, {
             "operation": "Partner Costs",
             "action": "PATCH",
-            "partner": row[0],
-            "advertiser": row[1],
-            "campaign": row[2],
+            "partner": row['Partner'],
+            "advertiser": row['Advertiser'],
+            "campaign": row['Campaign'],
             "parameters": {
-                "advertiserId": lookup_id(row[1]),
+                "advertiserId": lookup_id(row['Advertiser']),
                 "body": {
                     "partnerCosts": []
                 }
             }
         })
 
-    if row[4]:
-      patches[lookup]["line_item"] = row[4]
-      patches[lookup]["parameters"]["lineItemId"] = lookup_id(row[4])
+    if row['Line_Item']:
+      patches[lookup]["line_item"] = row['Line_Item']
+      patches[lookup]["parameters"]["lineItemId"] = lookup_id(row['Line_Item'])
     else:
-      patches[lookup]["insertion_order"] = row[3]
-      patches[lookup]["parameters"]["insertionOrderId"] = lookup_id(row[3])
+      patches[lookup]["insertion_order"] = row['Insertion_Order']
+      patches[lookup]["parameters"]["insertionOrderId"] = lookup_id(row['Insertion_Order'])
 
     patches[lookup]["parameters"]["body"]["partnerCosts"].append({
-        "costType": row[6],
-        "feeType": row[8],
-        "invoiceType": row[10],
-        "feeAmount": int(float(row[12]) * 1000000) if row[12] else None,
-        "feePercentageMillis": int(float(row[14]) * 1000) if row[14] else None
+        "costType": row['Cost_Type_Edit'],
+        "feeType": row['Fee_Type_Edit'],
+        "invoiceType": row['Invoice_Type_Edit'],
+        "feeAmount": int(float(row['Fee_Amount_Edit']) * 100000) if row['Fee_Amount_Edit'] else None,
+        "feePercentageMillis": int(float(row['Fee_Percent_Edit']) * 1000) if row['Fee_Percent_Edit'] else None
     })
 
-    if row[5] != row[6] or row[7] != row[8] or row[9] != row[10] or row[
-        11] != row[12] or row[13] != row[14]:
+    if row['Cost_Type'] != row['Cost_Type_Edit'] \
+      or row['Fee_Type'] != row['Fee_Type_Edit'] \
+      or row['Invoice_Type'] != row['Invoice_Type_Edit'] \
+      or row['Fee_Amount'] != row['Fee_Amount_Edit'] \
+      or row['Fee_Percent'] != row['Fee_Percent_Edit']:
       changed.add(lookup)
 
   # Remove any patches where partner costs have not changed

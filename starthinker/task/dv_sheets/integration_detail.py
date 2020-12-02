@@ -18,7 +18,6 @@
 
 from starthinker.util.bigquery import query_to_view
 from starthinker.util.bigquery import table_create
-from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
@@ -130,42 +129,15 @@ def integration_detail_audit():
               "dataset": project.task["dataset"],
               "table": "SHEET_IntegrationDetails",
               "schema": [
-                  {
-                      "name": "Partner",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Advertiser",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Campaign",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Insertion_Order",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Line_Item",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Integration_Code",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Integration_Code_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Details",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Details_Edit",
-                      "type": "STRING"
-                  },
+                  { "name": "Partner", "type": "STRING" },
+                  { "name": "Advertiser", "type": "STRING" },
+                  { "name": "Campaign", "type": "STRING" },
+                  { "name": "Insertion_Order", "type": "STRING" },
+                  { "name": "Line_Item", "type": "STRING" },
+                  { "name": "Integration_Code", "type": "STRING" },
+                  { "name": "Integration_Code_Edit", "type": "STRING" },
+                  { "name": "Details", "type": "STRING" },
+                  { "name": "Details_Edit", "type": "STRING" },
               ],
               "format": "CSV"
           }
@@ -203,53 +175,66 @@ def integration_detail_audit():
     """.format(**project.task),
       legacy=False)
 
+  query_to_view(
+    project.task["auth_bigquery"],
+    project.id,
+    project.task["dataset"],
+    "PATCH_IntegrationDetails",
+    """SELECT *
+      FROM `DV_Patch_Demo.SHEET_IntegrationDetails`
+      WHERE Line_Item NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_IntegrationDetails` WHERE Severity='ERROR')
+      AND Insertion_Order NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_IntegrationDetails` WHERE Severity='ERROR')
+      AND Campaign NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_IntegrationDetails` WHERE Severity='ERROR')
+    """.format(**project.task),
+    legacy=False
+  )
+
 
 def integration_detail_patch(commit=False):
   patches = []
 
   rows = get_rows(
-      project.task["auth_sheets"], {
-          "sheets": {
-              "sheet": project.task["sheet"],
-              "tab": "Integration Details",
-              "range": "A2:Z"
-          }
-      })
-
-  rows = rows_pad(rows, 9, "")
+    project.task["auth_bigquery"],
+    { "bigquery": {
+      "dataset": project.task["dataset"],
+      "table":"PATCH_IntegrationDetails",
+    }},
+    as_object=True
+  )
 
   for row in rows:
-    if not lookup_id(row[4]) and not lookup_id(row[3]) and not lookup_id(row[1]): continue
 
     integration_details = {}
 
-    if row[5] != row[6]:
+    if row['Integration_Code'] != row['Integration_Code_Edit']:
       integration_details.setdefault("integrationDetails", {})
-      integration_details["integrationDetails"]["integrationCode"] = row[6]
-    if row[7] != row[8]:
+      integration_details["integrationDetails"]["integrationCode"] = row['Integration_Code_Edit']
+    if row['Details'] != row['Details_Edit']:
       integration_details.setdefault("integrationDetails", {})
-      integration_details["integrationDetails"]["details"] = row[8]
+      integration_details["integrationDetails"]["details"] = row['Details_Edit']
 
     if integration_details:
       patch = {
           "operation": "Pacing",
           "action": "PATCH",
-          "partner": row[0],
+          "partner": row['Partner'],
           "parameters": {
-              "advertiserId": lookup_id(row[1]),
+              "advertiserId": lookup_id(row['Advertiser']),
               "body": integration_details
           }
       }
 
-      if row[4]:
-        patch["line_item"] = row[4]
-        patch["parameters"]["lineItemId"] = lookup_id(row[4])
-      elif row[3]:
-        patch["insertion_order"] = row[3]
-        patch["parameters"]["insertionOrderId"] = lookup_id(row[3])
+      if row['Line_Item']:
+        patch["line_item"] = row['Line_Item']
+        patch["parameters"]["lineItemId"] = lookup_id(row['Line_Item'])
+
+      elif row['Insertion_Order']:
+        patch["insertion_order"] = row['Insertion_Order']
+        patch["parameters"]["insertionOrderId"] = lookup_id(row['Insertion_Order'])
+
       else:
-        patch["advertiser"] = row[1]
-        patch["parameters"]["advertiserId"] = lookup_id(row[1])
+        patch["advertiser"] = row['Advertiser']
+        patch["parameters"]["advertiserId"] = lookup_id(row['Advertiser'])
 
       patches.append(patch)
 

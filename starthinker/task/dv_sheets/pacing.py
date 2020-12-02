@@ -17,7 +17,6 @@
 ###########################################################################
 
 from starthinker.util.bigquery import query_to_view
-from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.project import project
@@ -53,8 +52,8 @@ def pacing_load():
          I.pacing.pacingPeriod,
          I.pacing.pacingType,
          I.pacing.pacingType,
-         CAST(I.pacing.dailyMaxMicros AS INT64) / 1000000,
-         CAST(I.pacing.dailyMaxMicros AS INT64) / 1000000,
+         CAST(I.pacing.dailyMaxMicros AS INT64) / 100000,
+         CAST(I.pacing.dailyMaxMicros AS INT64) / 100000,
          I.pacing.dailyMaxImpressions,
          I.pacing.dailyMaxImpressions
        FROM `{dataset}.DV_InsertionOrders` AS I
@@ -75,8 +74,8 @@ def pacing_load():
          L.pacing.pacingPeriod,
          L.pacing.pacingType,
          L.pacing.pacingType,
-         CAST(L.pacing.dailyMaxMicros AS INT64) / 1000000,
-         CAST(L.pacing.dailyMaxMicros AS INT64) / 1000000,
+         CAST(L.pacing.dailyMaxMicros AS INT64) / 100000,
+         CAST(L.pacing.dailyMaxMicros AS INT64) / 100000,
          L.pacing.dailyMaxImpressions,
          L.pacing.dailyMaxImpressions
        FROM `{dataset}.DV_LineItems` AS L
@@ -118,58 +117,19 @@ def pacing_audit():
               "dataset": project.task["dataset"],
               "table": "SHEET_Pacing",
               "schema": [
-                  {
-                      "name": "Partner",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Advertiser",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Campaign",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Insertion_Order",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Line_Item",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Period",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Period_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Type",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Type_Edit",
-                      "type": "STRING"
-                  },
-                  {
-                      "name": "Daily_Budget",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Daily_Budget_Edit",
-                      "type": "FLOAT"
-                  },
-                  {
-                      "name": "Daily_Impressions",
-                      "type": "INTEGER"
-                  },
-                  {
-                      "name": "Daily_Impressions_edit",
-                      "type": "INTEGER"
-                  },
+                  { "name": "Partner", "type": "STRING" },
+                  { "name": "Advertiser", "type": "STRING" },
+                  { "name": "Campaign", "type": "STRING" },
+                  { "name": "Insertion_Order", "type": "STRING" },
+                  { "name": "Line_Item", "type": "STRING" },
+                  { "name": "Period", "type": "STRING" },
+                  { "name": "Period_Edit", "type": "STRING" },
+                  { "name": "Type", "type": "STRING" },
+                  { "name": "Type_Edit", "type": "STRING" },
+                  { "name": "Daily_Budget", "type": "FLOAT" },
+                  { "name": "Daily_Budget_Edit", "type": "FLOAT" },
+                  { "name": "Daily_Impressions", "type": "INTEGER" },
+                  { "name": "Daily_Impressions_Edit", "type": "INTEGER" },
               ],
               "format": "CSV"
           }
@@ -191,8 +151,6 @@ def pacing_audit():
             CASE
               WHEN Period_Edit IS NULL THEN 'Missing Period.'
               WHEN Type_Edit IS NULL THEN 'Missing Type.'
-              WHEN Daily_Budget_Edit IS NULL THEN 'Missing Daily Budget.'
-              WHEN Daily_Impressions_Edit IS NULL THEN 'Missing Daily Impressions.'
             ELSE
               NULL
             END AS Error,
@@ -210,60 +168,76 @@ def pacing_audit():
     """.format(**project.task),
       legacy=False)
 
+  query_to_view(
+    project.task["auth_bigquery"],
+    project.id,
+    project.task["dataset"],
+    "PATCH_Pacing",
+    """SELECT *
+      FROM `DV_Patch_Demo.SHEET_Pacing`
+      WHERE (
+        REGEXP_CONTAINS(Insertion_Order, r" - (\d+)$")
+        OR REGEXP_CONTAINS(Line_Item, r" - (\d+)$")
+      )
+      AND Line_Item NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_Pacing` WHERE Severity='ERROR')
+      AND Insertion_Order NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_Pacing` WHERE Severity='ERROR')
+    """.format(**project.task),
+    legacy=False
+  )
+
 
 def pacing_patch(commit=False):
 
   patches = []
 
-  rows = get_rows(project.task["auth_sheets"], {
-      "sheets": {
-          "sheet": project.task["sheet"],
-          "tab": "Pacing",
-          "range": "A2:Z"
-      }
-  })
-
-  rows = rows_pad(rows, 23, "")
+  rows = get_rows(
+    project.task["auth_bigquery"],
+    { "bigquery": {
+      "dataset": project.task["dataset"],
+      "table":"PATCH_Pacing",
+    }},
+    as_object=True
+  )
 
   for row in rows:
 
-    # inserts do not have an ID, skip them
-    if not lookup_id(row[4]) and not lookup_id(row[3]): continue
-
     pacing = {}
 
-    if row[5] != row[6]:
+    if row['Period'] != row['Period_Edit']:
       pacing.setdefault("pacing", {})
-      pacing["pacing"]["pacingPeriod"] = row[6]
-    if row[7] != row[8]:
+      pacing["pacing"]["pacingPeriod"] = row['Period_Edit']
+
+    if row['Type'] != row['Type_Edit']:
       pacing.setdefault("pacing", {})
-      pacing["pacing"]["pacingType"] = row[8]
-    if row[9] != row[10]:
+      pacing["pacing"]["pacingType"] = row['Type_Edit']
+
+    if row['Daily_Budget'] != row['Daily_Budget_Edit']:
       pacing.setdefault("pacing", {})
-      pacing["pacing"]["dailyMaxMicros"] = int(float(row[10]) * 1000000)
-    if row[11] != row[12]:
+      pacing["pacing"]["dailyMaxMicros"] = int(float(row['Daily_Budget_Edit']) * 100000)
+
+    if row['Daily_Impressions'] != row['Daily_Impressions_Edit']:
       pacing.setdefault("pacing", {})
-      pacing["pacing"]["dailyMaxImpressions"] = row[12]
+      pacing["pacing"]["dailyMaxImpressions"] = row['Daily_Impressions_Edit']
 
     if pacing:
       patch = {
           "operation": "Pacing",
           "action": "PATCH",
-          "partner": row[0],
-          "advertiser": row[1],
-          "campaign": row[2],
+          "partner": row['Partner'],
+          "advertiser": row['Advertiser'],
+          "campaign": row['Campaign'],
           "parameters": {
-              "advertiserId": lookup_id(row[1]),
+              "advertiserId": lookup_id(row['Advertiser']),
               "body": pacing
           }
       }
 
-      if row[4]:
-        patch["line_item"] = row[4]
-        patch["parameters"]["lineItemId"] = lookup_id(row[4])
+      if row['Line_Item']:
+        patch["line_item"] = row['Line_Item']
+        patch["parameters"]["lineItemId"] = lookup_id(row['Line_Item'])
       else:
-        patch["insertion_order"] = row[3]
-        patch["parameters"]["insertionOrderId"] = lookup_id(row[3])
+        patch["insertion_order"] = row['Insertion_Order']
+        patch["parameters"]["insertionOrderId"] = lookup_id(row['Insertion_Order'])
 
       patches.append(patch)
 
