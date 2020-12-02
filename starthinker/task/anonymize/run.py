@@ -16,17 +16,24 @@
 #
 ###########################################################################
 
+from datetime import date, datetime, timedelta
 import re
 import random
+
 from googleapiclient.errors import HttpError
 
-from starthinker.util.project import project
+from starthinker.util.bigquery import json_to_table
+from starthinker.util.bigquery import query_to_view
+from starthinker.util.bigquery import rows_to_table
+from starthinker.util.bigquery import table_to_rows
 from starthinker.util.google_api import API_BigQuery
-from starthinker.util.bigquery import table_to_rows, rows_to_table, query_to_view
+from starthinker.util.project import project
 
 RE_EMAIL = re.compile(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')
 INTEGER_MULTIPLY = random.randint(2, 9)
 INTEGER_OFFSET = random.randint(17, 99)
+DATE_OFFSET = timedelta(days=random.randint(3, 13), weeks=random.randint(3, 23))
+
 STRING_IDS = {}
 
 
@@ -37,10 +44,11 @@ def anonymize_string(cell, column):
 
   # email
   if RE_EMAIL.match(cell):
-    return '%s_%d@email.com' % (column, STRING_IDS[column][cell])
+    return '%s_%d@email.com' % (column.rsplit('.',
+                                              1)[-1], STRING_IDS[column][cell])
   # any string
   else:
-    return '%s_%d' % (column, STRING_IDS[column][cell])
+    return '%s_%d' % (column.rsplit('.', 1)[-1], STRING_IDS[column][cell])
 
 
 def anonymize_integer(cell, column):
@@ -60,18 +68,63 @@ def anonymize_float(cell, column):
   ]))
 
 
-def anonymize_rows(rows, schema):
+def anonymize_date(cell, column):
+  # shift date back in time to prevent future dates
+  # convert to string because its being written back to BigQuery
+  return str(cell - DATE_OFFSET)
+
+
+def anonymize_value(value, column):
+  if isinstance(value, int):
+    return anonymize_integer(value, column)
+  elif isinstance(value, str):
+    return anonymize_string(value, column)
+  elif isinstance(value, float):
+    return anonymize_float(value, column)
+  elif isinstance(value, date):
+    return anonymize_date(value, column)
+  elif isinstance(value, datetime):
+    return anonymize_date(value, column)
+
+
+def anonymize_json(struct, parent=None):
+  if isinstance(struct, dict):
+    for key, value in struct.items():
+      if isinstance(value, (dict, list)):
+        anonymize_json(value, '.'.join((parent, key)) if parent else key)
+      else:
+        struct[key] = anonymize_value(
+            value, '.'.join((parent, key)) if parent else key)
+  elif isinstance(struct, list):
+    for index, value in enumerate(struct):
+      if isinstance(value, (dict, list)):
+        anonymize_json(value, parent)
+      else:
+        struct[index] = anonymize_value(value, parent)
+
+  return struct
+
+
+def anonymize_csv(row, schema):
+  for index, cell in enumerate(row):
+    if cell is not None:
+      if schema[index]['type'] == 'STRING':
+        row[index] = anonymize_string(cell, schema[index]['name'])
+      elif schema[index]['type'] in ('INTEGER', 'INT64', 'NUMERIC'):
+        row[index] = anonymize_integer(cell, schema[index]['name'])
+      elif schema[index]['type'] in ('FLOAT', 'FLOAT64'):
+        row[index] = anonymize_float(cell, schema[index]['name'])
+      elif schema[index]['type'] in ('DATE', 'DATETIME'):
+        row[index] = anonymize_date(cell, schema[index]['name'])
+  return row
+
+
+def anonymize_rows(rows, schema, is_object):
   for row in rows:
-    for index, cell in enumerate(row):
-      if cell is not None:
-        if schema[index]['type'] == 'STRING':
-          row[index] = anonymize_string(cell, schema[index]['name'])
-        elif schema[index]['type'] in ('INTEGER', 'INT64', 'NUMERIC'):
-          row[index] = anonymize_integer(cell, schema[index]['name'])
-        elif schema[index]['type'] in ('FLOAT', 'FLOAT64'):
-          row[index] = anonymize_float(cell, schema[index]['name'])
-          row[index] = (cell * INTEGER_MULTIPLY) + INTEGER_OFFSET
-    yield row
+    if is_object:
+      yield anonymize_json(row)
+    else:
+      yield anonymize_csv(row, schema)
 
 
 def anonymize_table(table_id):
@@ -85,21 +138,36 @@ def anonymize_table(table_id):
       datasetId=project.task['bigquery']['from']['dataset'],
       tableId=table_id).execute()['schema']['fields']
 
-  rows = table_to_rows(project.task['auth'],
-                       project.task['bigquery']['from']['project'],
-                       project.task['bigquery']['from']['dataset'], table_id)
+  is_object = any([s['type'] == 'RECORD' for s in schema])
 
-  rows = anonymize_rows(rows, schema)
-
-  rows_to_table(
+  rows = table_to_rows(
       project.task['auth'],
-      project.task['bigquery']['to']['project'],
-      project.task['bigquery']['to']['dataset'],
+      project.task['bigquery']['from']['project'],
+      project.task['bigquery']['from']['dataset'],
       table_id,
-      rows,
-      schema,
-      skip_rows=0,
-      disposition='WRITE_TRUNCATE')
+      as_object=is_object)
+
+  rows = anonymize_rows(rows, schema, is_object)
+
+  if is_object:
+    json_to_table(
+        project.task['auth'],
+        project.task['bigquery']['to']['project'],
+        project.task['bigquery']['to']['dataset'],
+        table_id,
+        rows,
+        schema,
+        disposition='WRITE_TRUNCATE')
+  else:
+    rows_to_table(
+        project.task['auth'],
+        project.task['bigquery']['to']['project'],
+        project.task['bigquery']['to']['dataset'],
+        table_id,
+        rows,
+        schema,
+        skip_rows=0,
+        disposition='WRITE_TRUNCATE')
 
 
 def copy_view(view_id):
@@ -117,8 +185,7 @@ def copy_view(view_id):
       project_dataset_template % (project.task['bigquery']['from']['project'],
                                   project.task['bigquery']['from']['dataset']),
       project_dataset_template % (project.task['bigquery']['to']['project'],
-                                  project.task['bigquery']['to']['dataset']),
-  )
+                                  project.task['bigquery']['to']['dataset']))
 
   query_to_view(
       project.task['auth'],
