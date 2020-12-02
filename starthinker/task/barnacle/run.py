@@ -19,6 +19,7 @@
 import re
 
 from starthinker.util.project import project
+from starthinker.util.bigquery import table_create
 from starthinker.util.google_api import API_DCM
 from starthinker.util.data import put_rows, get_rows
 from starthinker.util.dcm import get_profile_for_api, id_to_timezone
@@ -1043,18 +1044,26 @@ def barnacle():
   put_rows(project.task['out']['auth'], put_json('CM_Roles', ROLES_SCHEMA),
            rows)
 
-  if project.task.get('reports', False) == True:
-    # Reports
-    rows = get_reports(accounts)
-    put_rows(project.task['out']['auth'], put_json('CM_Reports',
-                                                   REPORTS_SCHEMA), rows)
+  # Reports
+  if project.verbose:
+    print('DCM Reports')
 
-    # Reports Deliveries
-    if project.verbose:
-      print('DCM Deliveries')
-    put_rows(project.task['out']['auth'],
-             put_json('CM_Report_Deliveries', REPORT_DELIVERIES_SCHEMA),
-             REPORT_DELIVERIES)
+  if project.task.get('reports', False):
+    rows = get_reports(accounts)
+  else:
+    rows = []
+
+  put_rows(
+    project.task['out']['auth'],
+    put_json('CM_Reports', REPORTS_SCHEMA),
+    rows
+  )
+
+  put_rows(
+    project.task['out']['auth'],
+    put_json('CM_Report_Deliveries', REPORT_DELIVERIES_SCHEMA),
+    REPORT_DELIVERIES
+  )
 
 
 if __name__ == '__main__':
