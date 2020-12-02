@@ -17,6 +17,7 @@
 ###########################################################################
 
 import os
+import re
 
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
@@ -24,6 +25,7 @@ from django.core.management.base import BaseCommand, CommandError
 from starthinker_ui.recipe.scripts import Script
 from website.views import solutions, solution, help
 
+RE_TRAILING_WHITESPACE = re.compile(r'\s+$', re.MULTILINE)
 
 class Command(BaseCommand):
   help = 'Generate HTML For GitHub'
@@ -38,6 +40,9 @@ class Command(BaseCommand):
         help='Google analytics tag.',
     )
 
+  def strip_trailing_whitespace(self, value):
+    return RE_TRAILING_WHITESPACE.sub('', value) + '\n'
+
   def handle(self, *args, **kwargs):
 
     settings.GOOGLE_ANALYTICS = kwargs['analytics']
@@ -45,19 +50,19 @@ class Command(BaseCommand):
     directory = '%s/docs' % settings.UI_ROOT
     print('Writing:', directory)
     with open('%s/index.html' % directory, 'w') as index_file:
-      index_file.write(solutions(request=None))
+      index_file.write(self.strip_trailing_whitespace(solutions(request=None)))
 
     directory = '%s/docs/help' % settings.UI_ROOT
     print('Writing:', directory)
     os.makedirs(directory, exist_ok=True)
     with open('%s/index.html' % directory, 'w') as index_file:
-      index_file.write(help(request=None))
+      index_file.write(self.strip_trailing_whitespace(help(request=None)))
 
     directory = '%s/docs/solution' % settings.UI_ROOT
     print('Writing:', directory)
     os.makedirs(directory, exist_ok=True)
     with open('%s/index.html' % directory, 'w') as index_file:
-      index_file.write(solutions(request=None))
+      index_file.write(self.strip_trailing_whitespace(solutions(request=None)))
 
     for s in Script.get_scripts():
       if s.get_open_source():
@@ -65,4 +70,4 @@ class Command(BaseCommand):
         print('Writing:', directory)
         os.makedirs(directory, exist_ok=True)
         with open('%s/index.html' % directory, 'w') as solution_file:
-          solution_file.write(solution(request=None, tag=s.get_tag()))
+          solution_file.write(self.strip_trailing_whitespace(solution(request=None, tag=s.get_tag())))

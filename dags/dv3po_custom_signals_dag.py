@@ -62,9 +62,9 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-[DV-3PO] Custom Signals
+DV-3PO Custom Signals
 
-[DV-3PO] Custom Signals allows automated changes to be made to DV360 campaigns based on external signals from weather and social media trends. In the future it will also support news, disaster alerts, stocks, sports, custom APIs, etc. 
+DV-3PO Custom Signals allows automated changes to be made to DV360 campaigns based on external signals from weather and social media trends. In the future it will also support news, disaster alerts, stocks, sports, custom APIs, etc.
 
   - Open the template sheet: <a target='_blank' href='https://docs.google.com/spreadsheets/d/1xl2bknsn9ptCKwg1sZqTBpmRFDdcG3ATdp2f4C2CQ2U/edit#gid=1579485492'>[DV-3PO] Custom Signals Configs</a>.
   - Make a copy of the sheet through the menu File -> Make a copy, for clarity we suggest you rename the copy to a meaningful name describing the usage of this copy.
