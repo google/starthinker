@@ -4,6 +4,11 @@
     "copyright":"Copyright 2020 Google LLC"
   },
   "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DT_", "default": "Manual"}},
+      "clear":true
+    }},
     { "dt": {
       "auth": "user",
       "bucket":{"field":{ "name":"bucket", "kind":"string", "order":1, "default":"", "description":"Name of bucket where DT files are stored."}},
@@ -12,13 +17,13 @@
       "hours":{"field":{ "name":"hours", "kind":"integer", "order":3, "default":60, "description":"Number of hours back to synchronize."}},
       "to": {
         "auth": "service",
-        "dataset":"Test"
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DT_", "default": "Manual"}}
       }
     }},
     { "test": {
         "auth":"user",
         "bigquery":{
-          "dataset":"Test",
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DT_", "default": "Manual"}},
           "table":{"field":{ "name":"table", "kind":"string", "order":2, "default":"", "description":"Wildcard table name for checking schema."}},
           "schema":[
             {"mode":"NULLABLE", "name": "Event_Time", "type": "INTEGER"},
@@ -127,6 +132,11 @@
             {"mode":"NULLABLE", "name": "Dbm_Billable_Cost_Advertiser_Currency", "type": "INTEGER"}
           ]
         }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DT_", "default": "Manual"}},
+      "delete":true
     }}
   ]
 }
