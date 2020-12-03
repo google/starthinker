@@ -26,9 +26,9 @@ from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
-from starthinker.task.dv_sheets.insertion_order import insertion_order_commit
-from starthinker.task.dv_sheets.patch import patch_masks
-from starthinker.task.dv_sheets.patch import patch_preview
+from starthinker.task.dv_editor.insertion_order import insertion_order_commit
+from starthinker.task.dv_editor.patch import patch_masks
+from starthinker.task.dv_editor.patch import patch_preview
 
 
 def segment_clear():

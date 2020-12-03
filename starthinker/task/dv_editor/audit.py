@@ -23,15 +23,15 @@ from starthinker.util.data import put_rows
 from starthinker.util.project import project
 from starthinker.util.sheets import sheets_clear
 
-from starthinker.task.dv_sheets.bid_strategy import bid_strategy_audit
-from starthinker.task.dv_sheets.frequency_cap import frequency_cap_audit
-from starthinker.task.dv_sheets.integration_detail import integration_detail_audit
-from starthinker.task.dv_sheets.insertion_order import insertion_order_audit
-from starthinker.task.dv_sheets.line_item import line_item_audit
-from starthinker.task.dv_sheets.line_item_map import line_item_map_audit
-from starthinker.task.dv_sheets.pacing import pacing_audit
-from starthinker.task.dv_sheets.partner_cost import partner_cost_audit
-from starthinker.task.dv_sheets.segment import segment_audit
+from starthinker.task.dv_editor.bid_strategy import bid_strategy_audit
+from starthinker.task.dv_editor.frequency_cap import frequency_cap_audit
+from starthinker.task.dv_editor.integration_detail import integration_detail_audit
+from starthinker.task.dv_editor.insertion_order import insertion_order_audit
+from starthinker.task.dv_editor.line_item import line_item_audit
+from starthinker.task.dv_editor.line_item_map import line_item_map_audit
+from starthinker.task.dv_editor.pacing import pacing_audit
+from starthinker.task.dv_editor.partner_cost import partner_cost_audit
+from starthinker.task.dv_editor.segment import segment_audit
 
 
 def audit_clear():

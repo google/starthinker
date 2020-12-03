@@ -25,10 +25,10 @@ from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
-from starthinker.task.dv_sheets.insertion_order import insertion_order_commit
-from starthinker.task.dv_sheets.line_item import line_item_commit
-from starthinker.task.dv_sheets.patch import patch_masks
-from starthinker.task.dv_sheets.patch import patch_preview
+from starthinker.task.dv_editor.insertion_order import insertion_order_commit
+from starthinker.task.dv_editor.line_item import line_item_commit
+from starthinker.task.dv_editor.patch import patch_masks
+from starthinker.task.dv_editor.patch import patch_preview
 
 
 def partner_cost_clear():
@@ -188,13 +188,13 @@ def partner_cost_audit():
     project.task["dataset"],
     "PATCH_PartnerCosts",
     """SELECT *
-      FROM `DV_Patch_Demo.SHEET_PartnerCosts`
+      FROM `{dataset}.SHEET_PartnerCosts`
       WHERE (
         REGEXP_CONTAINS(Insertion_Order, r" - (\d+)$")
         OR REGEXP_CONTAINS(Line_Item, r" - (\d+)$")
       )
-      AND Line_Item NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_PartnerCosts` WHERE Severity='ERROR')
-      AND Insertion_Order NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_PartnerCosts` WHERE Severity='ERROR')
+      AND Line_Item NOT IN (SELECT Id FROM `{dataset}.AUDIT_PartnerCosts` WHERE Severity='ERROR')
+      AND Insertion_Order NOT IN (SELECT Id FROM `{dataset}.AUDIT_PartnerCosts` WHERE Severity='ERROR')
     """.format(**project.task),
     legacy=False
   )

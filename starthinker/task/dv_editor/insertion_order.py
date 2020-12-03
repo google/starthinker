@@ -26,10 +26,10 @@ from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
-from starthinker.task.dv_sheets.patch import patch_clear
-from starthinker.task.dv_sheets.patch import patch_log
-from starthinker.task.dv_sheets.patch import patch_masks
-from starthinker.task.dv_sheets.patch import patch_preview
+from starthinker.task.dv_editor.patch import patch_clear
+from starthinker.task.dv_editor.patch import patch_log
+from starthinker.task.dv_editor.patch import patch_masks
+from starthinker.task.dv_editor.patch import patch_preview
 
 
 def insertion_order_clear():
@@ -348,8 +348,8 @@ def insertion_order_audit():
     project.task["dataset"],
     "PATCH_InsertionOrders",
     """SELECT *
-      FROM `DV_Patch_Demo.SHEET_InsertionOrders`
-      WHERE Insertion_Order NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_InsertionOrders` WHERE Severity='ERROR')
+      FROM `{dataset}.SHEET_InsertionOrders`
+      WHERE Insertion_Order NOT IN (SELECT Id FROM `{dataset}.AUDIT_InsertionOrders` WHERE Severity='ERROR')
     """.format(**project.task),
     legacy=False
   )

@@ -24,9 +24,9 @@ from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
-from starthinker.task.dv_sheets.line_item import line_item_commit
-from starthinker.task.dv_sheets.patch import patch_masks
-from starthinker.task.dv_sheets.patch import patch_preview
+from starthinker.task.dv_editor.line_item import line_item_commit
+from starthinker.task.dv_editor.patch import patch_masks
+from starthinker.task.dv_editor.patch import patch_preview
 
 
 def line_item_map_clear():

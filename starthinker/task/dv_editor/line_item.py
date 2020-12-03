@@ -26,10 +26,10 @@ from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
-from starthinker.task.dv_sheets.patch import patch_clear
-from starthinker.task.dv_sheets.patch import patch_log
-from starthinker.task.dv_sheets.patch import patch_masks
-from starthinker.task.dv_sheets.patch import patch_preview
+from starthinker.task.dv_editor.patch import patch_clear
+from starthinker.task.dv_editor.patch import patch_log
+from starthinker.task.dv_editor.patch import patch_masks
+from starthinker.task.dv_editor.patch import patch_preview
 
 
 def line_item_clear():
@@ -374,8 +374,8 @@ def line_item_audit():
     project.task["dataset"],
     "PATCH_LineItems",
     """SELECT *
-      FROM `DV_Patch_Demo.SHEET_LineItems`
-      WHERE Line_Item NOT IN (SELECT Id FROM `DV_Patch_Demo.AUDIT_LineItems` WHERE Severity='ERROR')
+      FROM `{dataset}.SHEET_LineItems`
+      WHERE Line_Item NOT IN (SELECT Id FROM `{dataset}.AUDIT_LineItems` WHERE Severity='ERROR')
     """.format(**project.task),
     legacy=False
   )

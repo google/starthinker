@@ -7,7 +7,7 @@
     "title":"Bulk Editor For DV360",
     "description":"Allows bulk editing DV360 through Sheets and BigQuery.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/bulk_dv360.png",
-    "sample":"https://docs.google.com/spreadsheets/d/10ByZKMIPZQQOEwJlskzggRhhQqe44on_ebUxkjmZI_w/",
+    "sample":"https://docs.google.com/spreadsheets/d/18G6cGo4j5SsY08H8P53R22D_Pm6m-zkE6APd3EDLf2c/",
     "from":["sheets", "bigquery" ],
     "to":["dv360"],
     "pitches":[
@@ -22,7 +22,7 @@
       "csat improvement":90
     },
     "instructions":[
-      "Select <b>Create Sheet</b> and run the recipe.",
+      "Select <b>Load Partners</b> and run the recipe. A Sheet called DV_Sheet_{field:recipe_name} will be created.",
       "Fill in <i>Partners</i> tab filter.",
       "Run <b>Load Advertisers</b>.",
       "Fill in <i>Advertisers</i> tab filter.",
@@ -51,11 +51,11 @@
       "__comment__":"Copy the default template to sheet with the recipe name",
       "auth":{"field":{ "name":"auth_sheet", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "copy":{
-        "source":"https://docs.google.com/spreadsheets/d/10ByZKMIPZQQOEwJlskzggRhhQqe44on_ebUxkjmZI_w/",
+        "source":"https://docs.google.com/spreadsheets/d/18G6cGo4j5SsY08H8P53R22D_Pm6m-zkE6APd3EDLf2c/",
         "destination":{"field":{ "name":"recipe_slug", "prefix":"DV Sheet ", "kind":"string", "order":3, "default":"", "description":"Name of Google Sheet to create." }}
       }
     }},
-    { "dv_sheets": {
+    { "dv_editor": {
       "__comment":"Depending on users choice, execute a different part of the solution.",
       "auth_dv": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for dv." }},
       "auth_sheets": {"field":{ "name":"auth_sheet", "kind":"authentication", "order":2, "default":"user", "description":"Credentials used for sheet." }},
@@ -84,7 +84,7 @@
           "Patch"
         ],
         "order":6,
-        "default":"",
+        "default":"Load Partners",
         "description":"Action to take."
       }}
     }}
