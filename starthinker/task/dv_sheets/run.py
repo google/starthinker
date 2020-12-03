@@ -34,6 +34,7 @@ from starthinker.task.dv_sheets.frequency_cap import frequency_cap_load
 from starthinker.task.dv_sheets.frequency_cap import frequency_cap_patch
 from starthinker.task.dv_sheets.insertion_order import insertion_order_audit
 from starthinker.task.dv_sheets.insertion_order import insertion_order_clear
+from starthinker.task.dv_sheets.insertion_order import insertion_order_insert
 from starthinker.task.dv_sheets.insertion_order import insertion_order_load
 from starthinker.task.dv_sheets.insertion_order import insertion_order_patch
 from starthinker.task.dv_sheets.integration_detail import integration_detail_clear
@@ -41,6 +42,7 @@ from starthinker.task.dv_sheets.integration_detail import integration_detail_loa
 from starthinker.task.dv_sheets.integration_detail import integration_detail_patch
 from starthinker.task.dv_sheets.line_item import line_item_audit
 from starthinker.task.dv_sheets.line_item import line_item_clear
+from starthinker.task.dv_sheets.line_item import line_item_insert
 from starthinker.task.dv_sheets.line_item import line_item_load
 from starthinker.task.dv_sheets.line_item import line_item_patch
 from starthinker.task.dv_sheets.line_item_map import line_item_map_patch
@@ -71,8 +73,6 @@ def dv_sheets():
     advertiser_load()
 
   elif project.task['command'] == 'Load Campaigns':
-    frequency_cap_clear()
-    frequency_cap_load()
     campaign_clear()
     campaign_load()
 
@@ -124,6 +124,9 @@ def dv_sheets():
     integration_detail_patch(commit=project.task['command'] == 'Patch')
     line_item_map_patch(commit=project.task['command'] == 'Patch')
 
+    line_item_insert(commit=project.task['command'] == 'Patch')
+    insertion_order_insert(commit=project.task['command'] == 'Patch')
+
   elif project.task['command'] == 'Clear Partners':
     partner_clear()
 
@@ -131,7 +134,7 @@ def dv_sheets():
     advertiser_clear()
 
   elif project.task['command'] == 'Clear Campaigns':
-    advertiser_clear()
+    campaign_clear()
 
   elif project.task['command'] == 'Clear Creatives':
     creative_clear()

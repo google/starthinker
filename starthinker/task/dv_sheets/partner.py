@@ -36,7 +36,7 @@ def partner_clear():
                             'v1').method_schema('partners.list'),
   )
 
-  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Partners', 'A2:Z')
+  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Partners', 'B2:Z')
 
 
 def partner_load():

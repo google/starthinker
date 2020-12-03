@@ -41,7 +41,7 @@ def advertiser_clear():
                             'v1').method_schema('advertisers.list'),
   )
 
-  sheets_clear(project.task['auth_dv'], project.task['sheet'], 'Advertisers',
+  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Advertisers',
                'B2:Z')
 
 
