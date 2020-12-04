@@ -42,13 +42,13 @@ def audit_load():
 
   bid_strategy_audit()
   integration_detail_audit()
-  insertion_order_audit()
   frequency_cap_audit()
-  line_item_audit()
   line_item_map_audit()
   pacing_audit()
   partner_cost_audit()
   segment_audit()
+  insertion_order_audit()
+  line_item_audit()
 
   # write audit to sheet
   sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Audit', 'A2')
