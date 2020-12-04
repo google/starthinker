@@ -111,6 +111,27 @@ def dv_editor():
     integration_detail_clear()
     integration_detail_load()
 
+  elif project.task['command'] == 'Load Insertion Orders and Line Items':
+    insertion_order_clear()
+    insertion_order_load()
+    line_item_clear()
+    line_item_load()
+    segment_clear()
+    segment_load()
+    pacing_clear()
+    pacing_load()
+    bid_strategy_clear()
+    bid_strategy_load()
+    frequency_cap_clear()
+    frequency_cap_load()
+    partner_cost_clear()
+    partner_cost_load()
+    integration_detail_clear()
+    integration_detail_load()
+    # Also loads creatives
+    creative_clear()   
+    creative_load()
+
   elif project.task['command'] in ('Preview', 'Patch'):
     audit_clear()
     patch_clear()
