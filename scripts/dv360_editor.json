@@ -81,6 +81,7 @@
           "Load Creatives",
           "Load Insertion Orders",
           "Load Line Items",
+          "Load Insertion Orders and Line Items",
           "Preview",
           "Patch"
         ],
