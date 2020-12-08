@@ -66,52 +66,81 @@ class DAG_Factory():
   def __init__(self, _dag_name, _script, _script_parameters=None):
     self.dag_name = _dag_name
     self.recipe = _script
+    self.dag = None
+
     if _script_parameters:
       json_set_fields(self.recipe, _script_parameters)
-    self.dag = None
 
     self.recipe.setdefault('setup', {}).setdefault('auth', {})
 
+    # If user credentials given in recipe, skip load from connection
+    if self.recipe['setup']['auth'].get('user'):
+      print('Loaded User Credentials From: RECIPE JSON')
+
     # If not given in recipe, try "user" auth information from connection
-    if not self.recipe['setup']['auth'].get('user'):
+    else:
       try:
         user_connection_extra = BaseHook.get_connection(CONNECTION_USER).extra_dejson
         if user_connection_extra['extra__google_cloud_platform__key_path']:
           self.recipe['setup']['auth']['user'] = user_connection_extra[
             'extra__google_cloud_platform__key_path']
+          print('Loaded User Credentials From: %s, Keyfile Path' % CONNECTION_USER)
         elif user_connection_extra['extra__google_cloud_platform__keyfile_dict']:
           self.recipe['setup']['auth']['user'] = user_connection_extra[
             'extra__google_cloud_platform__keyfile_dict']
-
-        if user_connection_extra['extra__google_cloud_platform__project']:
-          self.recipe['setup']['id'] = user_connection_extra[
-            'extra__google_cloud_platform__project']
+          print('Loaded User Credentials From: %s, Keyfile JSON ' % CONNECTION_USER)
       except Exception as e:
         pass
 
+    # If service credentials given in recipe, skip load from connection
+    if self.recipe['setup']['auth'].get('service'):
+      print('Loaded Service Credentials From RECIPE JSON')
     # If not given in recipe, try "service" auth information from connection
-    if not self.recipe['setup']['auth'].get('service'):
+    else:
       try:
-        service_connection_extra = BaseHook.get_connection(
-          CONNECTION_SERVICE).extra_dejson
+        service_connection_extra = BaseHook.get_connection(CONNECTION_SERVICE).extra_dejson
         if service_connection_extra['extra__google_cloud_platform__key_path']:
           self.recipe['setup']['auth']['service'] = service_connection_extra[
             'extra__google_cloud_platform__key_path']
+          print('Loaded Service Credentials From: %s, Keyfile Path' % CONNECTION_SERVICE)
         elif service_connection_extra[
           'extra__google_cloud_platform__keyfile_dict']:
           self.recipe['setup']['auth']['service'] = service_connection_extra[
             'extra__google_cloud_platform__keyfile_dict']
-          keyfile_dict_json = json.loads(service_connection_extra[
-            'extra__google_cloud_platform__keyfile_dict']
-          )
-          if keyfile_dict_json and keyfile_dict_json.get('project_id'):
-            self.recipe['setup']['id'] = keyfile_dict_json['project_id']
-
-        if service_connection_extra['extra__google_cloud_platform__project']:
-          self.recipe['setup']['id'] = service_connection_extra[
-            'extra__google_cloud_platform__project']
+          print('Loaded Service Credentials From: %s, Keyfile JSON' % CONNECTION_SERVICE)
       except Exception as e:
         pass
+
+    # If project id given in recipe, skip load from connection
+    if self.recipe['setup'].get('id'):
+      print('Loaded Project ID From: RECIPE JSON')
+    # If not given in recipe, try project id fetch from connections
+    else:
+      # check user
+      try:
+        user_connection_extra = BaseHook.get_connection(CONNECTION_USER).extra_dejson
+        self.recipe['setup']['id'] = user_connection_extra.get('extra__google_cloud_platform__project')
+      except: pass
+
+      if self.recipe['setup'].get('id'):
+        print('Loaded Project ID From: %s, Project Id' % CONNECTION_USER)
+      else:
+        # check service
+        try:
+
+          service_connection_extra = BaseHook.get_connection(CONNECTION_SERVICE).extra_dejson
+          self.recipe['setup']['id'] = service_connection_extra.get('extra__google_cloud_platform__project')
+
+          # check service json
+          if self.recipe['setup'].get('id'):
+            print('Loaded Project ID From: %s, Project Id' % CONNECTION_SERVICE)
+          else:
+            self.recipe['setup']['id'] = json.loads(
+              service_connection_extra['extra__google_cloud_platform__keyfile_dict']
+            )['project_id']
+            print('Loaded Project ID From: %s, Keyfile JSON' % CONNECTION_SERVICE)
+
+        except: pass
 
 
   def python_task(self, function, instance):
