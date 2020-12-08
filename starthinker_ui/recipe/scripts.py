@@ -92,21 +92,24 @@ class Script:
 
   def get_link_client(self):
     if self.script.get('script', {}).get('license', '') == APACHE_LICENSE_MATCH:
-      return 'https://google.github.io/starthinker/solution/%s/' % self.tag
+      return 'https://google.github.io/starthinker/solution/%s/' % self.get_tag()
     else:
       return ''
 
   def get_link_ui(self):
-    return '/recipe/%s/?script=%s' % ('manual' if self.is_manual() else 'edit',
-                                      self.get_tag())
+    return '/recipe/%s/?script=%s' % ('manual' if self.is_manual() else 'edit', self.get_tag())
 
   def get_link_colab(self):
-    return 'https://colab.research.google.com/github/google/starthinker/blob/master/colabs/%s.ipynb' % self.get_tag(
-    )
+    return 'https://colab.research.google.com/github/google/starthinker/blob/master/colabs/%s.ipynb' % self.get_tag()
 
   def get_link_airflow(self):
-    return 'https://github.com/google/starthinker/blob/master/dags/%s_dag.py' % self.get_tag(
-    )
+    return 'https://github.com/google/starthinker/blob/master/dags/%s_dag.py' % self.get_tag()
+
+  def get_open_source(self):
+    if self.script.get('script', {}).get('license', '') == APACHE_LICENSE_MATCH:
+      return 'https://github.com/google/starthinker/blob/master/scripts/%s.json' % self.get_tag()
+    else:
+      return ''
 
   def get_released(self):
     try:
@@ -161,13 +164,6 @@ class Script:
 
   def get_documentation(self):
     return self.script.get('script', {}).get('documentation', None)
-
-  def get_open_source(self):
-    if self.script.get('script', {}).get('license', '') == APACHE_LICENSE_MATCH:
-      return 'https://github.com/google/starthinker/blob/master' + self.script[
-          'path'].replace(UI_ROOT, '', 1)
-    else:
-      return ''
 
   def get_from(self):
     return self.script.get('script', {}).get('from', [])
