@@ -205,7 +205,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </tr>
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:aallamang@google.com,terwilleger@google.com?subject=Request+For+A+ITP+Audit+Dashboard+%28+2020+%29+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+ITP+Audit+Dashboard+%28+2020+%29+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Fkenjora.c.googlers.com%3A8000%2Fsolution%2Fitp_audit%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">aallamang@google.com<br/>terwilleger@google.com</a>
+              <td><a href="mailto:terwilleger@google.com,aallamang@google.com?subject=Request+For+A+ITP+Audit+Dashboard+%28+2020+%29+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+ITP+Audit+Dashboard+%28+2020+%29+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fitp_audit%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">terwilleger@google.com<br/>aallamang@google.com</a>
               </td>
             </tr>
           </tbody>
@@ -327,22 +327,52 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                                 "description": "Name of report in DV360, should be unique."
                             }
                         },
-                        "dataRange": "LAST_365_DAYS",
+                        "dataRange": {
+                            "field": {
+                                "name": "date_range",
+                                "kind": "choice",
+                                "order": 3,
+                                "default": "LAST_365_DAYS",
+                                "choices": [
+                                    "LAST_7_DAYS",
+                                    "LAST_14_DAYS",
+                                    "LAST_30_DAYS",
+                                    "LAST_365_DAYS",
+                                    "LAST_60_DAYS",
+                                    "LAST_7_DAYS",
+                                    "LAST_90_DAYS",
+                                    "MONTH_TO_DATE",
+                                    "PREVIOUS_MONTH",
+                                    "PREVIOUS_QUARTER",
+                                    "PREVIOUS_WEEK",
+                                    "PREVIOUS_YEAR",
+                                    "QUARTER_TO_DATE",
+                                    "WEEK_TO_DATE",
+                                    "YEAR_TO_DATE"
+                                ],
+                                "description": "Timeframe to run the ITP report for."
+                            }
+                        },
                         "format": "CSV"
                     },
                     "params": {
                         "type": "TYPE_GENERAL",
                         "groupBys": [
+                            "FILTER_PARTNER",
+                            "FILTER_PARTNER_NAME",
                             "FILTER_ADVERTISER",
+                            "FILTER_ADVERTISER_NAME",
                             "FILTER_ADVERTISER_CURRENCY",
                             "FILTER_MEDIA_PLAN",
+                            "FILTER_MEDIA_PLAN_NAME",
                             "FILTER_INSERTION_ORDER",
+                            "FILTER_INSERTION_ORDER_NAME",
                             "FILTER_LINE_ITEM",
+                            "FILTER_LINE_ITEM_NAME",
                             "FILTER_PAGE_LAYOUT",
                             "FILTER_WEEK",
                             "FILTER_MONTH",
                             "FILTER_YEAR",
-                            "FILTER_PARTNER",
                             "FILTER_LINE_ITEM_TYPE",
                             "FILTER_DEVICE_TYPE",
                             "FILTER_BROWSER"
@@ -552,7 +582,32 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "criteria": {
                         "dateRange": {
                             "kind": "dfareporting#dateRange",
-                            "relativeDateRange": "LAST_365_DAYS"
+                            "relativeDateRange": {
+                                "field": {
+                                    "name": "date_range",
+                                    "kind": "choice",
+                                    "order": 3,
+                                    "default": "LAST_365_DAYS",
+                                    "choices": [
+                                        "LAST_7_DAYS",
+                                        "LAST_14_DAYS",
+                                        "LAST_30_DAYS",
+                                        "LAST_365_DAYS",
+                                        "LAST_60_DAYS",
+                                        "LAST_7_DAYS",
+                                        "LAST_90_DAYS",
+                                        "MONTH_TO_DATE",
+                                        "PREVIOUS_MONTH",
+                                        "PREVIOUS_QUARTER",
+                                        "PREVIOUS_WEEK",
+                                        "PREVIOUS_YEAR",
+                                        "QUARTER_TO_DATE",
+                                        "WEEK_TO_DATE",
+                                        "YEAR_TO_DATE"
+                                    ],
+                                    "description": "Timeframe to run the ITP report for."
+                                }
+                            }
                         },
                         "dimensions": [
                             {
@@ -910,7 +965,134 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "description": "BigQuery dataset for store dashboard tables."
                         }
                     },
-                    "table": "z_Dv360_Browser_Report_Dirty"
+                    "table": "z_Dv360_Browser_Report_Dirty",
+                    "header": true,
+                    "schema": [
+                        {
+                            "name": "Partner_Id",
+                            "type": "INTEGER"
+                        },
+                        {
+                            "name": "Partner",
+                            "type": "STRING"
+                        },
+                        {
+                            "name": "Advertiser_Id",
+                            "type": "INTEGER"
+                        },
+                        {
+                            "name": "Advertiser",
+                            "type": "STRING"
+                        },
+                        {
+                            "name": "Advertiser_Currency",
+                            "type": "STRING"
+                        },
+                        {
+                            "name": "Campaign_Id",
+                            "type": "INTEGER"
+                        },
+                        {
+                            "name": "Campaign",
+                            "type": "STRING"
+                        },
+                        {
+                            "name": "Insertion_Order_Id",
+                            "type": "INTEGER"
+                        },
+                        {
+                            "name": "Insertion_Order",
+                            "type": "STRING"
+                        },
+                        {
+                            "name": "Line_Item_Id",
+                            "type": "INTEGER"
+                        },
+                        {
+                            "name": "Line_Item",
+                            "type": "STRING"
+                        },
+                        {
+                            "name": "Environment",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Week",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Month",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Year",
+                            "type": "INTEGER",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Line_Item_Type",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Device_Type",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Browser",
+                            "type": "STRING",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Media_Cost_Advertiser_Currency",
+                            "type": "FLOAT",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Impressions",
+                            "type": "INTEGER",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Clicks",
+                            "type": "INTEGER",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Total_Conversions",
+                            "type": "FLOAT",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Post_Click_Conversions",
+                            "type": "FLOAT",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Post_View_Conversions",
+                            "type": "FLOAT",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Cm_Post_Click_Revenue",
+                            "type": "FLOAT",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Cm_Post_View_Revenue",
+                            "type": "FLOAT",
+                            "mode": "NULLABLE"
+                        },
+                        {
+                            "name": "Revenue_Adv_Currency",
+                            "type": "FLOAT",
+                            "mode": "NULLABLE"
+                        }
+                    ]
                 }
             }
         }

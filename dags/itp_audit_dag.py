@@ -85,6 +85,7 @@ INPUTS = {
   'recipe_slug': 'ITP_Audit_Dashboard',  # BigQuery dataset for store dashboard tables.
   'auth_read': 'user',  # Credentials used for reading data.
   'cm_account_id': '',  # Campaign Manager Account Id.
+  'date_range': 'LAST_365_DAYS',  # Timeframe to run the ITP report for.
   'cm_advertiser_ids': '',  # Optional: Comma delimited list of CM advertiser ids.
   'floodlight_configuration_id': '',  # Floodlight Configuration Id for the Campaign Manager floodlight report.
   'dv360_partner_ids': '',  # Comma delimited list of DV360 Partner ids.
@@ -199,22 +200,52 @@ RECIPE = {
                   'description': 'Name of report in DV360, should be unique.'
                 }
               },
-              'dataRange': 'LAST_365_DAYS',
+              'dataRange': {
+                'field': {
+                  'name': 'date_range',
+                  'kind': 'choice',
+                  'order': 3,
+                  'default': 'LAST_365_DAYS',
+                  'choices': [
+                    'LAST_7_DAYS',
+                    'LAST_14_DAYS',
+                    'LAST_30_DAYS',
+                    'LAST_365_DAYS',
+                    'LAST_60_DAYS',
+                    'LAST_7_DAYS',
+                    'LAST_90_DAYS',
+                    'MONTH_TO_DATE',
+                    'PREVIOUS_MONTH',
+                    'PREVIOUS_QUARTER',
+                    'PREVIOUS_WEEK',
+                    'PREVIOUS_YEAR',
+                    'QUARTER_TO_DATE',
+                    'WEEK_TO_DATE',
+                    'YEAR_TO_DATE'
+                  ],
+                  'description': 'Timeframe to run the ITP report for.'
+                }
+              },
               'format': 'CSV'
             },
             'params': {
               'type': 'TYPE_GENERAL',
               'groupBys': [
+                'FILTER_PARTNER',
+                'FILTER_PARTNER_NAME',
                 'FILTER_ADVERTISER',
+                'FILTER_ADVERTISER_NAME',
                 'FILTER_ADVERTISER_CURRENCY',
                 'FILTER_MEDIA_PLAN',
+                'FILTER_MEDIA_PLAN_NAME',
                 'FILTER_INSERTION_ORDER',
+                'FILTER_INSERTION_ORDER_NAME',
                 'FILTER_LINE_ITEM',
+                'FILTER_LINE_ITEM_NAME',
                 'FILTER_PAGE_LAYOUT',
                 'FILTER_WEEK',
                 'FILTER_MONTH',
                 'FILTER_YEAR',
-                'FILTER_PARTNER',
                 'FILTER_LINE_ITEM_TYPE',
                 'FILTER_DEVICE_TYPE',
                 'FILTER_BROWSER'
@@ -424,7 +455,32 @@ RECIPE = {
             'criteria': {
               'dateRange': {
                 'kind': 'dfareporting#dateRange',
-                'relativeDateRange': 'LAST_365_DAYS'
+                'relativeDateRange': {
+                  'field': {
+                    'name': 'date_range',
+                    'kind': 'choice',
+                    'order': 3,
+                    'default': 'LAST_365_DAYS',
+                    'choices': [
+                      'LAST_7_DAYS',
+                      'LAST_14_DAYS',
+                      'LAST_30_DAYS',
+                      'LAST_365_DAYS',
+                      'LAST_60_DAYS',
+                      'LAST_7_DAYS',
+                      'LAST_90_DAYS',
+                      'MONTH_TO_DATE',
+                      'PREVIOUS_MONTH',
+                      'PREVIOUS_QUARTER',
+                      'PREVIOUS_WEEK',
+                      'PREVIOUS_YEAR',
+                      'QUARTER_TO_DATE',
+                      'WEEK_TO_DATE',
+                      'YEAR_TO_DATE'
+                    ],
+                    'description': 'Timeframe to run the ITP report for.'
+                  }
+                }
               },
               'dimensions': [
                 {
@@ -783,7 +839,134 @@ RECIPE = {
                 'description': 'BigQuery dataset for store dashboard tables.'
               }
             },
-            'table': 'z_Dv360_Browser_Report_Dirty'
+            'table': 'z_Dv360_Browser_Report_Dirty',
+            'header': True,
+            'schema': [
+              {
+                'name': 'Partner_Id',
+                'type': 'INTEGER'
+              },
+              {
+                'name': 'Partner',
+                'type': 'STRING'
+              },
+              {
+                'name': 'Advertiser_Id',
+                'type': 'INTEGER'
+              },
+              {
+                'name': 'Advertiser',
+                'type': 'STRING'
+              },
+              {
+                'name': 'Advertiser_Currency',
+                'type': 'STRING'
+              },
+              {
+                'name': 'Campaign_Id',
+                'type': 'INTEGER'
+              },
+              {
+                'name': 'Campaign',
+                'type': 'STRING'
+              },
+              {
+                'name': 'Insertion_Order_Id',
+                'type': 'INTEGER'
+              },
+              {
+                'name': 'Insertion_Order',
+                'type': 'STRING'
+              },
+              {
+                'name': 'Line_Item_Id',
+                'type': 'INTEGER'
+              },
+              {
+                'name': 'Line_Item',
+                'type': 'STRING'
+              },
+              {
+                'name': 'Environment',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Week',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Month',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Year',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Line_Item_Type',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Device_Type',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Browser',
+                'type': 'STRING',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Media_Cost_Advertiser_Currency',
+                'type': 'FLOAT',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Impressions',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Clicks',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Total_Conversions',
+                'type': 'FLOAT',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Post_Click_Conversions',
+                'type': 'FLOAT',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Post_View_Conversions',
+                'type': 'FLOAT',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Cm_Post_Click_Revenue',
+                'type': 'FLOAT',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Cm_Post_View_Revenue',
+                'type': 'FLOAT',
+                'mode': 'NULLABLE'
+              },
+              {
+                'name': 'Revenue_Adv_Currency',
+                'type': 'FLOAT',
+                'mode': 'NULLABLE'
+              }
+            ]
           }
         }
       }

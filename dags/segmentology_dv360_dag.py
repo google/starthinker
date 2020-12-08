@@ -66,10 +66,10 @@ Segmentology DV360
 
 DV360 funnel analysis using Census data.
 
-  - Wait for <b>BigQuery->UNDEFINED->UNDEFINED->Census_Pivot</b> to be created.
+  - Wait for <b>BigQuery->UNDEFINED->UNDEFINED->Census_Join</b> to be created.
   - Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
   - Copy <a href='https://datastudio.google.com/c/u/0/reporting/4a908845-fdba-4023-9bb7-68666202bafb/page/K15YB/' target='_blank'>DV360 Segmentology</a>. Leave the Data Source as is, you will change it in the next step.
-  - Click Edit Connection, and change to <b>BigQuery->UNDEFINED->(field:recipe_slug}->Census_Pivot</b>.
+  - Click Edit Connection, and change to <b>BigQuery->UNDEFINED->(field:recipe_slug}->Census_Join</b>.
   - Or give these intructions to the client.
 
 --------------------------------------------------------------
