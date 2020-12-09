@@ -43,6 +43,7 @@ a StarThinker instance.
 - [Useful Utilities](cheat_sheet.md) - List of common development and production commands.
 - [Data Schemas](data_schemas.md) - Schemas used by various tasks.
 - [Estimated Costs](cost_sheet.md) - Operating expense estimates for StarThinker UI and Workers.
+- [White Label](white_label.md) - Instructions on how to re-brand StarThinker.
 
 ## Table Of Contents
 

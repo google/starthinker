@@ -12,10 +12,10 @@ Airflow can wrap any Python function in a [PythonOperator](https://airflow.apach
 
 1. First [install airflow](https://airflow.apache.org/docs/stable/start.html) and the [StarThinker package](deploy_package.md).
 
-```
-pip install apache-airflow
-pip3 install git+https://github.com/google/starthinker
-```
+  ```
+  apache-airflow
+  starthinker
+  ```
 
 1. Copy a [StarThinker DAG](../dags/) to your Airflow folder or bucket.
 1. Modify the copied file.
