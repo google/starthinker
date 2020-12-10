@@ -360,7 +360,11 @@ class PlacementDAO(BaseDAO):
       result['compatibility'] = 'IN_STREAM_VIDEO'
       result['size'] = {'width': '0', 'height': '0'}
       result['tagFormats'] = ['PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH']
-    else:
+   elif feed_item[FieldMap.PLACEMENT_TYPE] == 'IN_STREAM_AUDIO':
+      result['compatibility'] = 'IN_STREAM_AUDIO'
+      result['size'] = {'width': '0', 'height': '0'}
+      result['tagFormats'] = ['PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH']
+   else:
       result['compatibility'] = 'DISPLAY'
       width = 1
       height = 1
