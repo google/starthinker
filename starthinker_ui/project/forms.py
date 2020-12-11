@@ -40,6 +40,7 @@ class ProjectForm(forms.ModelForm):
     )
 
     self.fields['key'].label = 'API Key'
+    self.fields['key'].required = False
     self.fields['key'].help_text = mark_safe(
       'Optional, ensures billing and may be required for some API calls.'
     )
