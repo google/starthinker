@@ -40,6 +40,24 @@ def census_normalize(census_geography, census_year, census_span):
   return query
 
 
+def census_pivot(dataset, table):
+  query = 'SELECT Geo_Id, [\n'
+
+  for segment in CENSUS_FIELDS:
+    if segment['category']:
+      for column_a in segment['columns']:
+        query += '    STRUCT(\n'
+        query += '      "%s" AS Percentage,\n' % column_a.title()
+        query += '      "%s" AS Dimension,\n' % segment['category']
+        query += '      "%s" AS Segment\n' % column_a.title()
+        query += '      ),\n'
+
+  query = query[:-2] + '\n  ] AS Correlation\n'
+  query += 'FROM `%s.%s`;' % (dataset, table)
+
+  return query
+
+
 def census_correlate(column_join, column_pass, column_sum, column_correlate,
                      dataset, table):
 
@@ -95,12 +113,12 @@ def census_significance(column_join, column_pass, column_sum, column_correlate,
               column_b,
           )
 
-  query += 'FROM  `%s.%s.Census_Correlated`;' % (project.id, dataset)
+  query += 'FROM `%s.%s.Census_Correlated`;' % (project.id, dataset)
 
   return query
 
 
-def census_pivot(column_join, column_pass, column_sum, column_correlate,
+def census_join(column_join, column_pass, column_sum, column_correlate,
                  dataset):
 
   query = 'SELECT\n'
@@ -127,9 +145,8 @@ def census_pivot(column_join, column_pass, column_sum, column_correlate,
         query += '      ),\n'
 
   query = query[:-2] + '\n  ] AS Correlation\n'
-  query += 'FROM  `%s.%s.Census_Significant`;' % (project.id, dataset)
+  query += 'FROM `%s.%s.Census_Significant`;' % (project.id, dataset)
 
-  print(query)
   return query
 
 
@@ -167,6 +184,10 @@ def census():
     )
     census_write(query, 'Census_Normalized')
 
+  if project.task.get('pivot'):
+    query = census_pivot(project.task['to']['dataset'], 'Census_Normalized')
+    census_write(query, 'Census_Pivoted')
+
   if 'correlate' in project.task:
     query = census_correlate(
         project.task['correlate']['join'],
@@ -188,12 +209,12 @@ def census():
     )
     census_write(query, 'Census_Significant')
 
-    query = census_pivot(project.task['correlate']['join'],
+    query = census_join(project.task['correlate']['join'],
                          project.task['correlate']['pass'],
                          project.task['correlate']['sum'],
                          project.task['correlate']['correlate'],
                          project.task['correlate']['dataset'])
-    census_write(query, 'Census_Pivot')
+    census_write(query, 'Census_Join')
 
 
 #WITH data AS (
