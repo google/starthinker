@@ -132,7 +132,7 @@ def line_item_load():
         LEFT JOIN `{dataset}.DV_Advertisers` AS A
         ON L.advertiserId=A.advertiserId
         LEFT JOIN `{dataset}.DV_Campaigns` AS C
-        ON L.advertiserId=C.advertiserId
+        ON L.campaignId=C.campaignId
         LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
         ON L.insertionOrderId=I.insertionOrderId
         LEFT JOIN `{dataset}.DV_Partners` AS P

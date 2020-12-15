@@ -142,8 +142,11 @@ def get_rows(auth, source, as_object=False, unnest=False):
           source['sheets']['range'],
       )
 
-      for row in rows:
-        yield row[0] if unnest or source.get('single_cell', False) else row
+      if rows:
+        for row in rows:
+          yield row[0] if unnest or source.get('single_cell', False) else row
+      else:
+        print("No rows in source.")
 
     if 'bigquery' in source:
 
@@ -238,6 +241,11 @@ def put_rows(auth, destination, rows, variant=''):
     If single_cell is False: Returns a list of row values [[v1], [v2], ... ]
     If single_cell is True: Returns a list of values [v1, v2, ...]
 """
+
+  if not rows:
+    if project.verbose:
+      print('No rows provided to put_rows')
+    return
 
   if 'bigquery' in destination:
     skip_rows = 1 if destination['bigquery'].get('header') and destination['bigquery'].get('schema') else 0
