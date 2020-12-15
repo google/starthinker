@@ -30,8 +30,8 @@ class Colab:
     self.colab = {
         'license': 'Licensed under the Apache License, Version 2.0',
         'copyright': 'Copyright 2020 Google LLC',
-        'nbformat': version.split('.', 1)[0],
-        'nbformat_minor': version.split('.', 1)[1],
+        'nbformat': int(version.split('.', 1)[0]),
+        'nbformat_minor': int(version.split('.', 1)[1]),
         'metadata': {
             'colab': {
                 'name': name,
