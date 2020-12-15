@@ -28,7 +28,7 @@ alphanumeric characters set to '.', to mimic python dot notation.
 """
 
 
-from datetime import datetime, date
+from datetime import timedelta, datetime, date
 from importlib import import_module
 from random import randint
 
@@ -180,7 +180,7 @@ class DAG_Factory():
 
 
   def airflow_start(self):
-    return datetime.now(self.recipe.get('setup', {}).get('timezone'))
+    return datetime.now(self.recipe.get('setup', {}).get('timezone')) - timedelta(days=7)
 
 
   def airflow_schedule(self):
