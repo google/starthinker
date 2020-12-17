@@ -19,6 +19,7 @@
 
 from starthinker.task.traffic.dao import BaseDAO
 from starthinker.task.traffic.feed import FieldMap
+from starthinker.task.traffic.store import store
 
 
 class DynamicTargetingKeyDAO(BaseDAO):
@@ -94,10 +95,21 @@ class DynamicTargetingKeyDAO(BaseDAO):
             feed_item.get(FieldMap.DYNAMIC_TARGETING_KEY_NAME, None),
             'OBJECT_ADVERTISER', feed_item.get(FieldMap.ADVERTISER_ID, None))
 
+      object_type = feed_item.get(FieldMap.DYNAMIC_TARGETING_KEY_OBJECT_TYPE, None)
+      entity_id = feed_item.get(FieldMap.DYNAMIC_TARGETING_KEY_OBJECT_ID, None)
+
+      if object_type and len(object_type) > 7:
+        entity = object_type[7:]
+        translated_id = store.translate(entity, entity_id)
+        entity_id = translated_id or entity_id
+
       self._create_key(
           feed_item.get(FieldMap.DYNAMIC_TARGETING_KEY_NAME, None),
-          feed_item.get(FieldMap.DYNAMIC_TARGETING_KEY_OBJECT_TYPE, None),
-          feed_item.get(FieldMap.DYNAMIC_TARGETING_KEY_OBJECT_ID, None))
+          object_type,
+          entity_id)
+
+      feed_item[FieldMap.DYNAMIC_TARGETING_KEY_OBJECT_ID] = entity_id
+
     else:
       raise Exception(
           'Dynamic targeting key, %s and %s are required' %
