@@ -4,16 +4,29 @@
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_large",
-    "title":"Segmentology DV360",
+    "title":"DV360 Segmentology",
     "description":"DV360 funnel analysis using Census data.",
-    "image":"https://storage.googleapis.com/starthinker-ui/deal_finder.png",
-    "sample":"https://datastudio.google.com/c/u/0/reporting/4a908845-fdba-4023-9bb7-68666202bafb/page/K15YB/",
+    "image":"https://github.com/google/starthinker/raw/master/tutorials/images/segmentology_dv.png",
+    "sample":"https://datastudio.google.com/c/u/0/reporting/3673497b-f36f-4448-8fb9-3e05ea51842f/",
     "from":["dv360", "census"],
     "to":["bigquery", "datastudio"],
+    "pitches":[
+      "Optimize creatives and landing pages for engaged demographics.",
+      "Examine DV360 funnel in terms of demographics.",
+      "Discover missed marketing opportunities.",
+      "Run continously to measure impact of funnel changes."
+    ],
+    "impacts":{
+      "spend optimization":100,
+      "spend growth":100,
+      "time savings":80,
+      "account health":90,
+      "csat improvement":100
+    },
     "instructions":[
       "Wait for <b>BigQuery->{field:recipe_project}->{field:recipe_slug}->Census_Join</b> to be created.",
       "Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets",
-      "Copy <a href='https://datastudio.google.com/c/u/0/reporting/4a908845-fdba-4023-9bb7-68666202bafb/page/K15YB/' target='_blank'>DV360 Segmentology</a>. Leave the Data Source as is, you will change it in the next step.",
+      "Copy <a href='https://datastudio.google.com/c/u/0/reporting/3673497b-f36f-4448-8fb9-3e05ea51842f/' target='_blank'>DV360 Segmentology Sample</a>. Leave the Data Source as is, you will change it in the next step.",
       "Click Edit Connection, and change to <b>BigQuery->{field:recipe_project}->(field:recipe_slug}->Census_Join</b>.",
       "Or give these intructions to the client."
     ],
