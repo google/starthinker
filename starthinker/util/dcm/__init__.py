@@ -179,15 +179,18 @@ def report_get(auth, account, report_id=None, name=None):
   account_id, advertiser_ids = parse_account(auth, account)
   is_superuser, profile_id = get_profile_for_api(auth, account_id)
   kwargs = {
-      'profileId': profile_id,
-      'accountId': account_id
+    'profileId': profile_id,
+    'accountId': account_id
   } if is_superuser else {
-      'profileId': profile_id
+    'profileId': profile_id
   }
 
   if name:
     for r in API_DCM(
-        auth, internal=is_superuser).reports().list(**kwargs).execute():
+      auth,
+      iterate=True,
+      internal=is_superuser
+    ).reports().list(**kwargs).execute():
       if r['name'] == name:
         report = r
         break
@@ -195,7 +198,9 @@ def report_get(auth, account, report_id=None, name=None):
   elif report_id:
     kwargs['reportId'] = report_id
     report = API_DCM(
-        auth, internal=is_superuser).reports().get(**kwargs).execute()
+      auth,
+      internal=is_superuser
+    ).reports().get(**kwargs).execute()
 
   return report
 
@@ -594,13 +599,16 @@ def report_list(auth, account):
   account_id, advertiser_id = parse_account(auth, account)
   is_superuser, profile_id = get_profile_for_api(auth, account_id)
   kwargs = {
-      'profileId': profile_id,
-      'accountId': account_id
+    'profileId': profile_id,
+    'accountId': account_id
   } if is_superuser else {
-      'profileId': profile_id
+    'profileId': profile_id
   }
   for report in API_DCM(
-      auth, internal=is_superuser).reports().list(**kwargs).execute():
+    auth,
+    iterate=True,
+    internal=is_superuser
+  ).reports().list(**kwargs).execute():
     yield report
 
 
@@ -623,14 +631,17 @@ def report_files(auth, account, report_id):
   account_id, advertiser_id = parse_account(auth, account)
   is_superuser, profile_id = get_profile_for_api(auth, account_id)
   kwargs = {
-      'profileId': profile_id,
-      'accountId': account_id
+    'profileId': profile_id,
+    'accountId': account_id
   } if is_superuser else {
-      'profileId': profile_id
+    'profileId': profile_id
   }
   kwargs['reportId'] = report_id
   for report_file in API_DCM(
-      auth, internal=is_superuser).reports().files().list(**kwargs).execute():
+    auth,
+    iterate=True,
+    internal=is_superuser
+  ).reports().files().list(**kwargs).execute():
     yield report_file
 
 

@@ -43,7 +43,8 @@ def google_api_initilaize(api_call, alias=None):
 
   if api_call['api'] == 'dfareporting':
     is_superuser, profile_id = get_profile_for_api(
-        api_call['auth'], api_call['kwargs']['accountId'])
+      api_call['auth'], api_call['kwargs']['accountId']
+    )
 
     api_call['kwargs']['profileId'] = profile_id
 
@@ -58,24 +59,25 @@ def google_api_initilaize(api_call, alias=None):
 def google_api_build_results(auth, api_call, results):
   if 'bigquery' in results:
     results['bigquery']['schema'] = Discovery_To_BigQuery(
-        api_call['api'],
-        api_call['version'],
-        api_call.get('key', None),
+      api_call['api'],
+      api_call['version'],
+      api_call.get('key', None),
     ).method_schema(api_call['function'])
 
     #TODO: Fix format to sometimes be CSV, probably refactor BigQuery to
     # determine format based on rows or schema
     results['bigquery']['format'] = 'JSON'
     results['bigquery']['skip_rows'] = 0
-    results['bigquery']['disposition'] = 'WRITE_TRUNCATE'
+    #results['bigquery']['disposition'] = 'WRITE_TRUNCATE'
 
     table_create(
-        results['bigquery'].get('auth', auth),
-        project.id,
-        results['bigquery']['dataset'],
-        results['bigquery']['table'],
-        results['bigquery']['schema'],
-        overwrite=False)
+      results['bigquery'].get('auth', auth),
+      project.id,
+      results['bigquery']['dataset'],
+      results['bigquery']['table'],
+      results['bigquery']['schema'],
+      overwrite=False
+    )
 
   return results
 
@@ -88,17 +90,19 @@ def google_api_build_errors(auth, api_call, errors):
     errors['bigquery']['disposition'] = 'WRITE_TRUNCATE'
 
     table_create(
-        errors['bigquery'].get('auth', auth),
-        project.id,
-        errors['bigquery']['dataset'],
-        errors['bigquery']['table'],
-        errors['bigquery']['schema'],
-        overwrite=False)
+      errors['bigquery'].get('auth', auth),
+      project.id,
+      errors['bigquery']['dataset'],
+      errors['bigquery']['table'],
+      errors['bigquery']['schema'],
+      overwrite=False
+    )
 
   return errors
 
 
-def google_api_execute(auth, api_call, results, errors):
+def google_api_execute(auth, api_call, results, errors, limit=None):
+
   try:
     rows = API(api_call).execute()
 
@@ -106,6 +110,7 @@ def google_api_execute(auth, api_call, results, errors):
       # check if single object needs conversion to rows
       if isinstance(rows, dict):
         rows = [rows]
+
       rows = map(lambda r: Discovery_To_BigQuery.clean(r), rows)
       put_rows(auth, results, rows)
 
@@ -136,17 +141,22 @@ def google_api_execute(auth, api_call, results, errors):
 def google_api():
 
   if project.verbose:
-    print('GOOGLE_API', project.task['api'], project.task['version'],
-          project.task['function'])
+    print(
+      'GOOGLE_API',
+      project.task['api'],
+      project.task['version'],
+      project.task['function']
+    )
 
   api_call = {
-      'auth': project.task['auth'],
-      'api': project.task['api'],
-      'version': project.task['version'],
-      'function': project.task['function'],
-      'iterate': project.task.get('iterate', False),
-      'key': project.key,
-      'headers': project.task.get('headers'),
+    'auth': project.task['auth'],
+    'api': project.task['api'],
+    'version': project.task['version'],
+    'function': project.task['function'],
+    'iterate': project.task.get('iterate', False),
+    'limit': project.task.get('limit', None),
+    'key': project.key,
+    'headers': project.task.get('headers'),
   }
 
   results = google_api_build_results(
@@ -161,22 +171,29 @@ def google_api():
     project.task.get('errors', {})
   )
 
+  # get parameters from JSON
   if 'kwargs' in project.task:
     kwargs_list = project.task['kwargs'] if isinstance(
-        project.task['kwargs'], (list, tuple)) else [project.task['kwargs']]
+      project.task['kwargs'], (list, tuple)
+    ) else [project.task['kwargs']]
+
+  # get parameters from remote location ( such as BigQuery )
   elif 'kwargs_remote' in project.task:
     kwargs_list = get_rows(
-        project.task['auth'], project.task['kwargs_remote'], as_object=True)
+      project.task['auth'],
+      project.task['kwargs_remote'],
+      as_object=True
+    )
+
+  # no parameters, ensures at least one call is made
   else:
     kwargs_list = [{}]
 
+  # loop through paramters and make possibly multiple API calls
   for kwargs in kwargs_list:
-
     api_call['kwargs'] = kwargs
-
     google_api_initilaize(api_call, project.task.get('alias'))
-
-    google_api_execute(project.task['auth'], api_call, results, errors)
+    google_api_execute(project.task['auth'], api_call, results, errors, project.task.get('limit'))
 
 
 if __name__ == '__main__':
