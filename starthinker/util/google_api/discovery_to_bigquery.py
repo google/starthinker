@@ -18,6 +18,7 @@
 
 import json
 import re
+from copy import deepcopy
 from urllib import request
 
 from googleapiclient.schema import Schemas
@@ -111,16 +112,13 @@ class Discovery_To_BigQuery():
         if parents[value['$ref']] < self.recursion_depth:
           parents[value['$ref']] += 1
           bigquery_schema.append({
-              'name':
-                  key,
-              'type':
-                  'RECORD',
-              'mode':
-                  'NULLABLE',
-              'fields':
-                  self.to_schema(
-                      self.api_document['schemas'][value['$ref']]['properties'],
-                      parents)
+            'name':key,
+            'type':'RECORD',
+            'mode':'NULLABLE',
+            'fields':self.to_schema(
+              self.api_document['schemas'][value['$ref']]['properties'],
+              parents
+            )
           })
         parents[value['$ref']] -= 1
 
@@ -133,49 +131,120 @@ class Discovery_To_BigQuery():
             if parents[value['items']['$ref']] < self.recursion_depth:
               parents[value['items']['$ref']] += 1
               bigquery_schema.append({
-                  'name':
-                      key,
-                  'type':
-                      'RECORD',
-                  'mode':
-                      'REPEATED',
-                  'fields':
-                      self.to_schema(
-                          self.api_document['schemas'][value['items']['$ref']]
-                          ['properties'], parents)
+                'name':key,
+                'type':'RECORD',
+                'mode':'REPEATED',
+                'fields':self.to_schema(
+                  self.api_document['schemas'][value['items']['$ref']]
+                  ['properties'],
+                  parents
+                )
               })
               parents[value['items']['$ref']] -= 1
 
           else:
             bigquery_schema.append({
-                'description': (', '.join(value['items'].get('enum', [])))
-                               [:DESCRIPTION_LENGTH],
-                'name':
-                    key,
-                'type':
-                    self.to_type(value['items']),
-                'mode':
-                    'REPEATED',
+              'description':(
+                ','.join(value['items'].get('enum', []))
+              )[:DESCRIPTION_LENGTH],
+              'name':key,
+              'type':self.to_type(value['items']),
+              'mode':'REPEATED',
             })
 
         else:
           bigquery_schema.append({
-              'description': (', '.join(value.get('enum', [])))
-                             [:DESCRIPTION_LENGTH],
-              'name':
-                  key,
-              'type':
-                  self.to_type(value),
-              'mode':
-                  'NULLABLE'
+            'description':(
+              ','.join(value.get('enum', []))
+            )[:DESCRIPTION_LENGTH],
+            'name':key,
+            'type':self.to_type(value),
+            'mode':'NULLABLE'
           })
 
     return bigquery_schema
 
 
+  def to_json(self, from_api=None, from_json=None, parents={}):
+    if from_api:
+      from_json = deepcopy(from_api)
+
+    for key, value in from_json.items():
+      if isinstance(value, dict):
+        if '$ref' in value:
+          ref = value['$ref']
+          parents.setdefault(ref, 0)
+
+          if parents[ref] < self.recursion_depth:
+            parents[ref] += 1
+            from_json[key] = self.to_json(from_api=self.api_document['schemas'][ref]['properties'], parents=parents)
+            parents[ref] -= 1
+          else:
+            from_json[key] = None
+
+        else:
+          self.to_json(from_json=value, parents=parents)
+
+    return from_json
+
+
+  def to_struct(self, from_api=None, from_json=None, indent=2):
+    if from_api:
+      from_json = self.to_json(from_api=from_api)
+
+    fields = []
+    spaces = ' ' * indent
+
+    for key, value in from_json.items():
+      if isinstance(value, dict):
+        if value.get('type', 'record') == 'record':
+          fields.append('%sSTRUCT(\n%s\n%s) AS %s' % (
+            spaces,
+            self.to_struct(from_json=value, indent=indent+2),
+            spaces,
+            key
+          ))
+        elif value['type'] == 'array':
+          if 'enum' in value['items']:
+            fields.append('%s[%s\n%s] AS %s' % (
+              spaces,
+              'STRING',
+              spaces,
+              key
+            ))
+          #elif len(value['items']) == 1:
+          #  fields.append('%s[\n%s\n%s] AS %s' % (
+          #    spaces,
+          #    self.to_struct(from_json=value['items'], indent=indent+2),
+          #    spaces,
+          #    key
+          #  ))
+          else:
+            fields.append('%s[STRUCT(\n%s\n%s)] AS %s' % (
+              spaces,
+              self.to_struct(from_json=value['items'], indent=indent+2),
+              spaces,
+              key
+            ))
+        else:
+          fields.append('%s%s AS %s' % (spaces, value['type'].upper(), key))
+
+    return ',\n'.join(fields)
+
+
+  def resource_json(self, resource):
+    resource = self.api_document['schemas'][resource]['properties']
+    return self.to_json(from_api=resource)
+
+
   def resource_schema(self, resource):
     entry = self.api_document['schemas'][resource]['properties']
     return self.to_schema(entry)
+
+
+  def resource_struct(self, resource):
+    resource = self.api_document['schemas'][resource]['properties']
+    return self.to_struct(from_api=resource)
 
 
   def method_schema(self, method):

@@ -25,6 +25,9 @@ from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
+from starthinker.task.dv_editor.patch import patch_log
+from starthinker.task.dv_editor.patch import patch_preview
+
 
 def partner_clear():
   table_create(
@@ -79,3 +82,31 @@ def partner_load():
           'range': 'B2'
       }
   }, rows)
+
+
+def partner_commit(patches):
+  for patch in patches:
+    if not patch.get('partner'):
+      continue
+    print('API ADVERTISER:', patch['action'], patch['partner'])
+    try:
+      if patch['action'] == 'DELETE':
+        response = API_DV360(project.task['auth_dv']).partners().delete(
+            **patch['parameters']).execute()
+        patch['success'] = response
+      elif patch['action'] == 'PATCH':
+        response = API_DV360(project.task['auth_dv']).partners().patch(
+            **patch['parameters']).execute()
+        patch['success'] = response['partnerId']
+      elif patch["action"] == "TARGETING":
+        response = API_DV360(
+          project.task["auth_dv"]
+        ).partners().bulkEditAdvertiserAssignedTargetingOptions(
+          **patch["parameters"]
+        ).execute()
+        patch["success"] = len(response["createdAssignedTargetingOptions"])
+    except Exception as e:
+      patch['error'] = str(e)
+    finally:
+      patch_log(patch)
+  patch_log()

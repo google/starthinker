@@ -25,9 +25,7 @@ from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
-from starthinker.task.dv_editor.patch import patch_clear
 from starthinker.task.dv_editor.patch import patch_log
-from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
@@ -123,6 +121,13 @@ def advertiser_commit(patches):
         response = API_DV360(project.task['auth_dv']).advertisers().patch(
             **patch['parameters']).execute()
         patch['success'] = response['advertiserId']
+      elif patch["action"] == "TARGETING":
+        response = API_DV360(
+          project.task["auth_dv"]
+        ).advertisers().bulkEditAdvertiserAssignedTargetingOptions(
+          **patch["parameters"]
+        ).execute()
+        patch["success"] = len(response["createdAssignedTargetingOptions"])
     except Exception as e:
       patch['error'] = str(e)
     finally:
