@@ -175,7 +175,7 @@ def segment_audit():
           SELECT
             'Segments' AS Operation,
             CASE
-              WHEN SAFE_CAST(Budget_Edit AS FLOAT64) > 1000 THEN 'Segment has excessive spend.'
+              WHEN SAFE_CAST(Budget_Edit AS FLOAT64) > 100000 THEN 'Segment has excessive spend.'
               WHEN SAFE_CAST(Start_Date AS DATE) < CURRENT_DATE() THEN 'Segment starts in past.'
               WHEN SAFE_CAST(End_Date AS DATE) < CURRENT_DATE() THEN 'Segment ends in past.'
             ELSE

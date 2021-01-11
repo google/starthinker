@@ -334,8 +334,6 @@ def line_item_audit():
             CASE
               WHEN Budget_Allocation_Type_Edit IS NULL THEN 'Missing Budget Allocation Type.'
               WHEN Budget_Unit_Edit IS NULL THEN 'Missing Budget Unit.'
-              WHEN Budget_Max_Edit IS NULL THEN 'Missing Budget Max.'
-              WHEN Partner_Revenue_Model_Edit IS NULL THEN 'Missing Partner Revenue Model.'
             ELSE
               NULL
             END AS Error,

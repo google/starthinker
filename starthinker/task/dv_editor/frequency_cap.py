@@ -174,13 +174,12 @@ def frequency_cap_audit():
         FROM (
           SELECT
             'Frequency Caps' AS Operation,
-            CASE
-              WHEN Unlimited_Edit IS NULL THEN 'Missing Unlimited.'
-              WHEN Time_Unit_Edit IS NULL THEN 'Missing Time Unit.'
-              WHEN Time_Count_Edit IS NULL THEN 'Missing Time Count.'
-              WHEN Max_Impressions_Edit IS NULL THEN 'Missing Max Impressions.'
+            CASE WHEN Unlimited_Edit IS TRUE THEN
+              CASE WHEN Time_Unit_Edit IS NOT NULL OR Time_Count_Edit IS NOT NULL OR Max_Impressions_Edit IS NOT NULL THEN 'Time Unit and the Other Options are Mutually Exclusive.'
+              ELSE NULL
+             END
             ELSE
-              NULL
+              IF(Time_Unit_Edit IS NULL OR Time_Count_Edit IS NULL OR Max_Impressions_Edit IS NULL, 'If Time Unit is FALSE, the other options are required.', NULL)
             END AS Error,
             'ERROR' AS Severity,
           COALESCE(Line_Item, Insertion_Order, 'BLANK') AS Id

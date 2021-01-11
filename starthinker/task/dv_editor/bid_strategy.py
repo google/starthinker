@@ -172,31 +172,37 @@ def bid_strategy_audit():
       project.task["dataset"],
       "AUDIT_BidStrategy",
       """WITH
-      /* Check if sheet values are set */
-      INPUT_ERRORS AS (
+        /* Check if sheet values are set */ INPUT_ERRORS AS (
         SELECT
-        *
+          *
         FROM (
           SELECT
             'Bid Strategy' AS Operation,
             CASE
-              WHEN Fixed_Bid_Edit IS NULL THEN 'Missing Fixed Bid.'
-              WHEN Auto_Bid_Goal_Edit IS NULL THEN 'Missing Auto Bid Goal.'
-              WHEN Auto_Bid_Algorithm_Edit IS NULL THEN 'Missing Auto Bid Algorithm.'
+              WHEN Insertion_Order IS NOT NULL AND Line_Item IS NOT NULL THEN
+                CASE
+                  WHEN Fixed_Bid_Edit IS NOT NULL AND Auto_Bid_Goal_Edit IS NULL AND Auto_Bid_Algorithm_Edit IS NOT NULL THEN 'Both Fixed Bid and Bid Algorithm exist.'
+                  WHEN Fixed_Bid_Edit IS NULL AND Auto_Bid_Goal_Edit IS NOT NULL AND Auto_Bid_Algorithm_Edit IS NOT NULL THEN 'Both Bid Goal and Bid Algorithm exist.'
+                  WHEN Fixed_Bid_Edit IS NOT NULL AND Auto_Bid_Goal_Edit IS NOT NULL AND Auto_Bid_Algorithm_Edit IS NULL THEN 'Both Fixed Bid and Bid Goal exist.'
+                  WHEN Fixed_Bid_Edit IS NOT NULL AND Auto_Bid_Goal_Edit IS NOT NULL AND Auto_Bid_Algorithm_Edit IS NOT NULL THEN 'All bid fields exist.'
+                  ELSE NULL
+                END
             ELSE
-              NULL
-            END AS Error,
+            NULL
+          END
+            AS Error,
             'ERROR' AS Severity,
-          COALESCE(Line_Item, Insertion_Order, 'BLANK') AS Id
-        FROM
-          `{dataset}.SHEET_BidStrategy`
-        )
+            COALESCE(Line_Item,
+              Insertion_Order,
+              'BLANK') AS Id
+          FROM
+            `{dataset}.SHEET_BidStrategy` )
         WHERE
-          Error IS NOT NULL
-      )
-
-      SELECT * FROM INPUT_ERRORS
-      ;
+          Error IS NOT NULL )
+      SELECT
+        *
+      FROM
+        INPUT_ERRORS ;
     """.format(**project.task),
       legacy=False)
 
