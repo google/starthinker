@@ -486,8 +486,6 @@ def line_item_patch(commit=False):
           }
         })
 
-  patch_masks(patches)
-
   if commit:
     line_item_commit(patches)
   else:
