@@ -232,7 +232,24 @@ def bid_strategy_patch(commit=False):
 
     bid_strategy = {}
 
-    if row['Fixed_Bid'] != row['Fixed_Bid_Edit']:
+    # If we are trying to switch from fixed bid to another bid type
+    if row['Fixed_Bid_Edit'] is None and row['Fixed_Bid'] is not None:
+      # If we switched from fixed to goal
+      if row['Auto_Bid_Goal'] != row['Auto_Bid_Goal_Edit']:
+        if project.verbose:
+          print("Switching from Fixed Bid to Auto Bid Goal.")
+        bid_strategy.setdefault("bidStrategy", {"maximizeSpendAutoBid": {}})
+        bid_strategy["bidStrategy"]["maximizeSpendAutoBid"][
+          "performanceGoalType"] = row['Auto_Bid_Goal_Edit']
+      # If we switched from fixed to algorithm
+      elif row['Auto_Bid_Algorithm'] != row['Auto_Bid_Algorithm_Edit']:
+        if project.verbose:
+          print("Switching from Fixed Bid to Bid Algorithm.")
+        bid_strategy.setdefault("bidStrategy", {"maximizeSpendAutoBid": {}})
+        bid_strategy["bidStrategy"]["maximizeSpendAutoBid"][
+          "customBiddingAlgorithmId"] = row['Auto_Bid_Algorithm_Edit']
+      
+    elif row['Fixed_Bid'] != row['Fixed_Bid_Edit']:
       bid_strategy.setdefault("bidStrategy", {"fixedBid": {}})
       bid_strategy["bidStrategy"]["fixedBid"]["bidAmountMicros"] = int(
         float(row['Fixed_Bid_Edit']) * 100000
