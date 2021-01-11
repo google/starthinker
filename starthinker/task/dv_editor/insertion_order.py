@@ -121,6 +121,7 @@ def insertion_order_load():
         ON I.advertiserId=A.advertiserId
         LEFT JOIN `{dataset}.DV_Partners` AS P
         ON A.partnerId=P.partnerId
+        ORDER BY I.displayName
       """.format(**project.task),
       "legacy": False
     }}

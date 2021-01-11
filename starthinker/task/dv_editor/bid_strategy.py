@@ -45,11 +45,12 @@ def bid_strategy_load():
               "dataset":
                   project.task["dataset"],
               "query":
-                  """SELECT
+                  """SELECT * FROM (
+          SELECT
          CONCAT(P.displayName, ' - ', P.partnerId),
          CONCAT(A.displayName, ' - ', A.advertiserId),
          CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId),
+         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
          NULL,
          I.bidStrategy.fixedBid.bidAmountMicros / 100000,
          I.bidStrategy.fixedBid.bidAmountMicros / 100000,
@@ -79,7 +80,7 @@ def bid_strategy_load():
          CONCAT(P.displayName, ' - ', P.partnerId),
          CONCAT(A.displayName, ' - ', A.advertiserId),
          CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId),
+         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
          CONCAT(L.displayName, ' - ', L.lineItemId),
          L.bidStrategy.fixedBid.bidAmountMicros / 100000,
          L.bidStrategy.fixedBid.bidAmountMicros / 100000,
@@ -105,7 +106,8 @@ def bid_strategy_load():
        LEFT JOIN `{dataset}.DV_Advertisers` AS A
        ON L.advertiserId=A.advertiserId
        LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
+       ON A.partnerId=P.partnerId )
+       ORDER BY IO_Display
        """.format(**project.task),
               "legacy":
                   False

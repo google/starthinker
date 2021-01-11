@@ -96,6 +96,7 @@ def campaign_load():
          ON C.advertiserId=A.advertiserId
          LEFT JOIN `{dataset}.DV_Partners` AS P
          ON A.partnerId=P.partnerId
+         ORDER BY C.displayName
        """.format(**project.task),
               'legacy':
                   False

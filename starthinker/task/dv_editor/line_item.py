@@ -135,6 +135,7 @@ def line_item_load():
         ON L.insertionOrderId=I.insertionOrderId
         LEFT JOIN `{dataset}.DV_Partners` AS P
         ON A.partnerId=P.partnerId
+        ORDER BY I.displayName, L.displayName
       """.format(**project.task),
       "legacy": False
     }}
