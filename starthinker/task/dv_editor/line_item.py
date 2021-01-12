@@ -86,55 +86,65 @@ def line_item_load():
       "dataset": project.task["dataset"],
       "query": """SELECT
         CONCAT(P.displayName, ' - ', P.partnerId),
-        CONCAT(A.displayName, ' - ', A.advertiserId),
-        CONCAT(C.displayName, ' - ', C.campaignId),
-        CONCAT(I.displayName, ' - ', I.insertionOrderId),
-        CONCAT(L.displayName, ' - ', L.lineItemId),
-        'PATCH',
-        L.entityStatus,
-        ARRAY_TO_STRING(L.warningMessages, '\\n'),
-
-        L.lineItemType,
-        L.lineItemType,
-
-        L.flight.flightDateType,
-        L.flight.flightDateType,
-        CONCAT(L.flight.dateRange.startDate.year, '-', L.flight.dateRange.startDate.month, '-', L.flight.dateRange.startDate.day),
-        CONCAT(L.flight.dateRange.startDate.year, '-', L.flight.dateRange.startDate.month, '-', L.flight.dateRange.startDate.day),
-        CONCAT(L.flight.dateRange.endDate.year, '-', L.flight.dateRange.endDate.month, '-', L.flight.dateRange.endDate.day),
-        CONCAT(L.flight.dateRange.endDate.year, '-', L.flight.dateRange.endDate.month, '-', L.flight.dateRange.endDate.day),
-        L.flight.triggerId,
-        L.flight.triggerId,
-
-        L.budget.budgetAllocationType,
-        L.budget.budgetAllocationType,
-        L.budget.budgetUnit,
-        L.budget.budgetUnit,
-        L.budget.maxAmount / 100000,
-        L.budget.maxAmount / 100000,
-
-        L.partnerRevenueModel.markupType,
-        L.partnerRevenueModel.markupType,
-        CAST(L.partnerRevenueModel.markupAmount AS FLOAT64) / 100000,
-        CAST(L.partnerRevenueModel.markupAmount AS FLOAT64) / 100000,
-
-        CAST(L.conversionCounting.postViewCountPercentageMillis AS Float64) / 1000,
-        CAST(L.conversionCounting.postViewCountPercentageMillis AS Float64) / 1000,
-
-        L.targetingExpansion.targetingExpansionLevel,
-        L.targetingExpansion.targetingExpansionLevel,
-        L.targetingExpansion.excludeFirstPartyAudience,
-        L.targetingExpansion.excludeFirstPartyAudience,
-
-        FROM `{dataset}.DV_LineItems` AS L
-        LEFT JOIN `{dataset}.DV_Advertisers` AS A
-        ON L.advertiserId=A.advertiserId
-        LEFT JOIN `{dataset}.DV_Campaigns` AS C
-        ON L.campaignId=C.campaignId
-        LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
-        ON L.insertionOrderId=I.insertionOrderId
-        LEFT JOIN `{dataset}.DV_Partners` AS P
-        ON A.partnerId=P.partnerId
+          CONCAT(A.displayName, ' - ', A.advertiserId),
+          CONCAT(C.displayName, ' - ', C.campaignId) AS Campaign_Display,
+          CONCAT(I.displayName, ' - ', I.insertionOrderId),
+          CONCAT(L.displayName, ' - ', L.lineItemId),
+          'PATCH',
+          L.entityStatus,
+          ARRAY_TO_STRING(L.warningMessages, '\\n'),
+          L.lineItemType,
+          L.lineItemType,
+          L.flight.flightDateType,
+          L.flight.flightDateType,
+          CONCAT(L.flight.dateRange.startDate.year, '-', L.flight.dateRange.startDate.month, '-', L.flight.dateRange.startDate.day),
+          CONCAT(L.flight.dateRange.startDate.year, '-', L.flight.dateRange.startDate.month, '-', L.flight.dateRange.startDate.day),
+          CONCAT(L.flight.dateRange.endDate.year, '-', L.flight.dateRange.endDate.month, '-', L.flight.dateRange.endDate.day),
+          CONCAT(L.flight.dateRange.endDate.year, '-', L.flight.dateRange.endDate.month, '-', L.flight.dateRange.endDate.day),
+          L.flight.triggerId,
+          L.flight.triggerId,
+          L.budget.budgetAllocationType,
+          L.budget.budgetAllocationType,
+          L.budget.budgetUnit,
+          L.budget.budgetUnit,
+          L.budget.maxAmount / 100000,
+          L.budget.maxAmount / 100000,
+          L.partnerRevenueModel.markupType,
+          L.partnerRevenueModel.markupType,
+          CAST(L.partnerRevenueModel.markupAmount AS FLOAT64) / 100000,
+          CAST(L.partnerRevenueModel.markupAmount AS FLOAT64) / 100000,
+          CAST(L.conversionCounting.postViewCountPercentageMillis AS Float64) / 1000,
+          CAST(L.conversionCounting.postViewCountPercentageMillis AS Float64) / 1000,
+          L.targetingExpansion.targetingExpansionLevel,
+          L.targetingExpansion.targetingExpansionLevel,
+          L.targetingExpansion.excludeFirstPartyAudience,
+          L.targetingExpansion.excludeFirstPartyAudience,
+        FROM
+          `{dataset}.DV_LineItems` AS L
+        LEFT JOIN
+          `{dataset}.DV_Advertisers` AS A
+        ON
+          L.advertiserId=A.advertiserId
+        LEFT JOIN
+          `{dataset}.DV_Campaigns` AS C
+        ON
+          L.campaignId=C.campaignId
+        LEFT JOIN
+          `{dataset}.DV_InsertionOrders` AS I
+        ON
+          L.insertionOrderId=I.insertionOrderId
+        LEFT JOIN
+          `{dataset}.DV_Partners` AS P
+        ON
+          A.partnerId=P.partnerId
+        LEFT JOIN
+          `{dataset}.SHEET_Campaigns` AS S_C
+        ON
+          C.campaignId = CAST(SPLIT(S_C.Filter ,'-')[OFFSET(1)] AS INT64)
+        WHERE
+          S_C.Filter IS NOT NULL
+        ORDER BY
+          Campaign_Display
       """.format(**project.task),
       "legacy": False
     }}
