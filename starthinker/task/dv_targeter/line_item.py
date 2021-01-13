@@ -17,12 +17,35 @@
 ###########################################################################
 
 
+from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
+
+
+def line_item_clear():
+  table_create(
+    project.task["auth_bigquery"],
+    project.id,
+    project.task["dataset"],
+    "DV_LineItems",
+    Discovery_To_BigQuery(
+      "displayvideo",
+      "v1"
+    ).method_schema(
+      "advertisers.lineItems.list"
+    )
+  )
+
+  sheets_clear(
+    project.task["auth_sheets"],
+    project.task["sheet"],
+    "Line Items",
+    "A2:Z"
+  )
 
 
 def line_item_load():
@@ -101,7 +124,7 @@ def line_item_load():
   )
 
 
-def line_item_targeting_load():
+def line_item_load_targeting():
 
   def load_bulk():
     # TODO: incorporate filters into line item fetch
@@ -148,7 +171,3 @@ def line_item_targeting_load():
     }},
     load_bulk()
   )
-
-
-def line_item_targeting_patch():
-  pass

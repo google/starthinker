@@ -23,7 +23,6 @@ from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
-from starthinker.util.sheets import sheets_clear
 
 
 def negative_keyword_list_clear():
@@ -39,13 +38,6 @@ def negative_keyword_list_clear():
     ).method_schema(
       'advertisers.negativeKeywordLists.list'
     )
-  )
-
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Negative Keyword Lists',
-    'A2:Z'
   )
 
 
@@ -88,27 +80,24 @@ def negative_keyword_list_load():
   )
 
   # write inventorys to sheet
-  rows = get_rows(
-    project.task['auth_bigquery'],
-    { 'bigquery': {
-      'dataset': project.task['dataset'],
-      'query': """SELECT
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(L.displayName, ' - ', L.negativeKeywordListId),
-         FROM `{dataset}.DV_Negative_Keywod_Lists` AS L
-         LEFT JOIN `{dataset}.DV_Advertisers` AS A
-         ON L.advertiserId=A.advertiserId
-      """.format(**project.task),
-      'legacy': False
-    }}
-  )
-
   put_rows(
     project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
-      'tab': 'Negative Keyword Lists',
-      'range': 'A2'
+      'tab': 'Targeting Options',
+      'range': 'J2'
     }},
-    rows
+    get_rows(
+      project.task['auth_bigquery'],
+      { 'bigquery': {
+        'dataset': project.task['dataset'],
+        'query': """SELECT
+           CONCAT(A.displayName, ' - ', A.advertiserId, ' > ', L.displayName, ' - ', L.negativeKeywordListId),
+           FROM `{dataset}.DV_Negative_Keywod_Lists` AS L
+           LEFT JOIN `{dataset}.DV_Advertisers` AS A
+           ON L.advertiserId=A.advertiserId
+        """.format(**project.task),
+        'legacy': False
+      }}
+    )
   )

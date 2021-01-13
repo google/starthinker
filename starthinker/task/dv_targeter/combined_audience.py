@@ -23,7 +23,6 @@ from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
-from starthinker.util.sheets import sheets_clear
 
 
 def combined_audience_clear():
@@ -39,13 +38,6 @@ def combined_audience_clear():
     ).method_schema(
       'combinedAudiences.list'
     )
-  )
-
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Combined Audiences',
-    'A2:Z'
   )
 
 
@@ -88,26 +80,24 @@ def combined_audience_load():
   )
 
   # write audience to sheet
-  rows = get_rows(
-    project.task['auth_bigquery'],
-    { 'bigquery': {
-      'dataset': project.task['dataset'],
-      'query': """SELECT
-         CONCAT(I.displayName, ' - ', I.combinedAudienceId),
-         FROM `{dataset}.DV_Combined_Audiences` AS I
-         GROUP BY 1
-         ORDER BY 1
-      """.format(**project.task),
-      'legacy': False
-    }}
-  )
-
   put_rows(
     project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
-      'tab': 'Combined Audiences',
-      'range': 'A2'
+      'tab': 'Targeting Options',
+      'range': 'O2'
     }},
-    rows
+    get_rows(
+      project.task['auth_bigquery'],
+      { 'bigquery': {
+        'dataset': project.task['dataset'],
+        'query': """SELECT
+           CONCAT(I.displayName, ' - ', I.combinedAudienceId),
+           FROM `{dataset}.DV_Combined_Audiences` AS I
+           GROUP BY 1
+           ORDER BY 1
+        """.format(**project.task),
+        'legacy': False
+      }}
+    )
   )

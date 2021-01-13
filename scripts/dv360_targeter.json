@@ -1,0 +1,82 @@
+{
+  "script":{
+    "released":"2021-01-12",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"gps_fixed",
+    "title":"Bulk Targeter For DV360",
+    "description":"Allows bulk targeting DV360 through Sheets and BigQuery.",
+    "image":"https://github.com/google/starthinker/raw/master/tutorials/images/dv360_targeter.png",
+    "sample":"https://docs.google.com/spreadsheets/d/1ARkIvh0D-gltZeiwniUonMNrm0Mi1s2meZ9FUjutXOE/",
+    "from":["dv360"],
+    "to":["sheets", "bigquery" ],
+    "pitches":[
+      "Speed up bulk targeting."
+    ],
+    "impacts":{
+      "spend optimization":100,
+      "spend growth":80,
+      "time savings":100,
+      "account health":100,
+      "csat improvement":100
+    },
+    "instructions":[
+      "Select <b>Load Partners</b>, <b>save</b> the recipe, then run. A Sheet called DV_Targeter_{field:recipe_name} will be created.",
+      "In the 'Partners' sheet tab, fill in <i>Partners</i> tab filter.",
+      "Select <b>Load Advertisers</b>, <b>save</b> the recipe, then run.",
+      "In the 'Advertisers' sheet tab, fill in <i>Advertisers</i> tab filter.",
+      "Now, select <b>Load Line Items</b>, <b>save</b> the recipe, then run.",
+      "To update, fill in changes on all tabs with colored fields (RED FIELDS ARE NOT IMPLEMENTED, IGNORE).",
+      "Select <i>Preview</i>, <b>save</b> the recipe, then run the recipe.",
+      "Check the <b>Preview</b> tabs.",
+      "To commit updates, select <i>Update</i>, <b>save</b> the recipe, then run.",
+      "Check the <b>Success</b> and <b>Error</b> tabs.",
+      "Update can be run multiple times.",
+      "Update ONLY changes edited fields."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "day":[],
+    "hour":[]
+  },
+  "tasks":[
+    { "dataset":{
+      "__comment__":"Ensure dataset exists.",
+      "auth":{"field":{ "name":"auth_bigquery", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+      "dataset":{"field":{ "name":"recipe_slug", "prefix":"DV_Targeter_", "kind":"string", "order":2, "default":"", "description":"Name of Google BigQuery dataset to create." }}
+    }},
+    { "drive":{
+      "__comment__":"Copy the default template to sheet with the recipe name",
+      "auth":{"field":{ "name":"auth_sheet", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "copy":{
+        "source":"https://docs.google.com/spreadsheets/d/1ARkIvh0D-gltZeiwniUonMNrm0Mi1s2meZ9FUjutXOE/",
+        "destination":{"field":{ "name":"recipe_slug", "prefix":"DV Targeter ", "kind":"string", "order":3, "default":"", "description":"Name of Google Sheet to create." }}
+      }
+    }},
+    { "dv_editor": {
+      "__comment":"Depending on users choice, execute a different part of the solution.",
+      "auth_dv": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for dv." }},
+      "auth_sheets": {"field":{ "name":"auth_sheet", "kind":"authentication", "order":2, "default":"user", "description":"Credentials used for sheet." }},
+      "auth_bigquery": {"field":{ "name":"auth_bigquery", "kind":"authentication", "order":3, "default":"service", "description":"Credentials used for bigquery." }},
+      "sheet":{"field":{ "name":"recipe_slug", "prefix":"DV Targeter ", "kind":"string", "order":4, "default":"", "description":"Name of Google Sheet to create." }},
+      "dataset":{"field":{ "name":"recipe_slug", "prefix":"DV_Targeter_", "kind":"string", "order":5, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+      "command":{"field":{
+        "name":"command",
+        "kind":"choice",
+        "choices":[
+          "Clear",
+          "Load Partners",
+          "Load Advertisers",
+          "Load Line Items",
+          "Load Targeting",
+          "Preview",
+          "Update"
+        ],
+        "order":6,
+        "default":"Load Partners",
+        "description":"Action to take."
+      }}
+    }}
+  ]
+}

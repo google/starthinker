@@ -87,7 +87,7 @@ def inventory_source_load():
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
-  # write inventorys to database and sheet
+  # write to database
   put_rows(
     project.task['auth_bigquery'],
     { 'bigquery': {
@@ -104,28 +104,7 @@ def inventory_source_load():
     load_multiple()
   )
 
-  # write inventorys to sheet
-  rows = get_rows(
-    project.task['auth_bigquery'],
-    { 'bigquery': {
-      'dataset': project.task['dataset'],
-      'query': """SELECT
-         CONCAT(I.displayName, ' - ', I.inventorySourceId),
-         inventorySourceType,
-         status.entityStatus,
-         status.sellerStatus,
-         status.configStatus,
-         exchange,
-         publisherName,
-         dealId
-         FROM `{dataset}.DV_Inventory_Sources` AS I
-         GROUP BY 1,2,3,4,5,6,7,8
-         ORDER BY 1
-      """.format(**project.task),
-      'legacy': False
-    }}
-  )
-
+  # write to sheet
   put_rows(
     project.task['auth_sheets'],
     { 'sheets': {
@@ -133,5 +112,24 @@ def inventory_source_load():
       'tab': 'Inventory Sources',
       'range': 'A2'
     }},
-    rows
+    get_rows(
+      project.task['auth_bigquery'],
+      { 'bigquery': {
+        'dataset': project.task['dataset'],
+        'query': """SELECT
+           CONCAT(I.displayName, ' - ', I.inventorySourceId),
+           inventorySourceType,
+           status.entityStatus,
+           status.sellerStatus,
+           status.configStatus,
+           exchange,
+           publisherName,
+           dealId
+           FROM `{dataset}.DV_Inventory_Sources` AS I
+           GROUP BY 1,2,3,4,5,6,7,8
+           ORDER BY 1
+        """.format(**project.task),
+        'legacy': False
+      }}
+    )
   )

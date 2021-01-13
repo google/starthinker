@@ -28,9 +28,10 @@ from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
-from starthinker.task.dv_editor.patch import patch_preview
-from starthinker.task.dv_editor.line_item import line_item_commit
-from starthinker.task.dv_targeter.assigned_targeting import Assigned_Targeting
+from starthinker.task.dv_targeter.edit import edit_log
+from starthinker.task.dv_targeter.edit import edit_preview
+
+from starthinker.util.dbm.targeting import Assigned_Targeting
 
 
 TARGETING_TYPES = [
@@ -39,39 +40,7 @@ TARGETING_TYPES = [
 ]
 
 
-def targeting_audit_clear():
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Audit',
-    'A2:Z'
-  )
-
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Preview',
-    'A2:Z'
-  )
-
-
-def targeting_assigned_clear():
-  table_create(
-    project.task['auth_bigquery'],
-    project.id,
-    project.task['dataset'],
-    'DV_Targeting_Assigned',
-    Discovery_To_BigQuery(
-      'displayvideo',
-      'v1'
-    ).resource_schema(
-      'AssignedTargetingOption'
-    )
-  )
-
-
 def targeting_clear():
-
   table_create(
     project.task['auth_bigquery'],
     project.id,
@@ -89,6 +58,68 @@ def targeting_clear():
     project.task['auth_sheets'],
     project.task['sheet'],
     'Targeting Options',
+    'A2:Z'
+  )
+
+  table_create(
+    project.task['auth_bigquery'],
+    project.id,
+    project.task['dataset'],
+    'DV_Targeting_Assigned',
+    Discovery_To_BigQuery(
+      'displayvideo',
+      'v1'
+    ).resource_schema(
+      'AssignedTargetingOption'
+    )
+  )
+
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Destination Targeting',
+    'A2:Z'
+  )
+
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Brand Safety Targeting',
+    'A2:Z'
+  )
+
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Demographic Targeting',
+    'A2:Z'
+  )
+
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Audience Targeting',
+    'A2:Z'
+  )
+
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Device Targeting',
+    'A2:Z'
+  )
+
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Geography Targeting',
+    'A2:Z'
+  )
+
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Viewability Targeting',
     'A2:Z'
   )
 
@@ -311,7 +342,7 @@ def targeting_load():
   )
 
 
-def targeting_audit():
+def targeting_combine():
 
   # read destination targeting
   put_rows(
@@ -511,7 +542,7 @@ def targeting_audit():
     )
   )
 
-  # read geography targeting
+  # read viewability targeting
   put_rows(
     project.task["auth_bigquery"],
     { "bigquery": {
@@ -594,9 +625,11 @@ def targeting_audit():
   )
 
 
-def targeting_patch(commit=False):
-  patches = []
+def targeting_edit(commit=False):
+  edits = []
   targetings = {}
+
+  targeting_combine()
 
   rows = get_rows(
     project.task["auth_bigquery"],
@@ -900,23 +933,56 @@ def targeting_patch(commit=False):
       parameters = {'body':body}
 
       if layer == 'Partner':
-        parameters['partnerId'] = targeting.partner
+        parameters['partnerId'] = str(targeting.partner)
       elif layer == 'Advertiser':
-        parameters['advertiserId'] = targeting.advertiser
+        parameters['advertiserId'] = str(targeting.advertiser)
       elif layer == 'LineItem':
-        parameters['advertiserId'] = targeting.advertiser
-        parameters['lineItemId'] = targeting.lineitem
+        parameters['advertiserId'] = str(targeting.advertiser)
+        parameters['lineItemId'] = str(targeting.lineitem)
 
-      patches.append({
-        "operation": layer,
-        "action": "PATCH",
+      edits.append({
+        "layer": layer,
         "partner": name if layer == 'Partner' else '',
         "advertiser": name if layer == 'Advertiser' else '',
         "line_item": name if layer == 'LineItem' else '',
         "parameters": parameters
       })
 
-  #if commit:
-  #  line_item_commit(patches)
-  #else:
-  #  patch_preview(patches)
+  edit_preview(edits)
+
+  if commit:
+    targeting_commit(edits)
+
+
+def targeting_commit(edits):
+  for edit in edits:
+    try:
+      if edit.get("line_item"):
+        print("API LINE ITEM:", edit["line_item"])
+        response = API_DV360(
+          project.task["auth_dv"]
+        ).advertisers().lineItems().bulkEditLineItemAssignedTargetingOptions(
+          **edit["parameters"]
+        ).execute()
+        edit["success"] = len(response["createdAssignedTargetingOptions"])
+      elif edit.get("advertiser"):
+        print("API ADVERTISER:", edit["advertiser"])
+        response = API_DV360(
+          project.task["auth_dv"]
+        ).advertisers().bulkEditAdvertiserAssignedTargetingOptions(
+          **edit["parameters"]
+        ).execute()
+        edit["success"] = len(response["createdAssignedTargetingOptions"])
+      elif edit.get("partners"):
+        print("API PARTNER:", edit["partner"])
+        response = API_DV360(
+          project.task["auth_dv"]
+        ).partners().bulkEditPartnerAssignedTargetingOptions(
+          **edit["parameters"]
+        ).execute()
+        edit["success"] = len(response["createdAssignedTargetingOptions"])
+    except Exception as e:
+      edit["error"] = str(e)
+    finally:
+      edit_log(edit)
+  edit_log()

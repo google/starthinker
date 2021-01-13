@@ -23,11 +23,9 @@ from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
-from starthinker.util.sheets import sheets_clear
 
 
 def location_list_clear():
-
   table_create(
     project.task['auth_bigquery'],
     project.id,
@@ -39,13 +37,6 @@ def location_list_clear():
     ).method_schema(
       'advertisers.locationLists.list'
     )
-  )
-
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Location Lists',
-    'A2:Z'
   )
 
 
@@ -87,29 +78,51 @@ def location_list_load():
     load_multiple()
   )
 
-  # write inventorys to sheet
-  rows = get_rows(
-    project.task['auth_bigquery'],
-    { 'bigquery': {
-      'dataset': project.task['dataset'],
-      'query': """SELECT
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(L.displayName, ' - ', L.locationListId),
-         locationType
-         FROM `{dataset}.DV_Location_Lists` AS L
-         LEFT JOIN `{dataset}.DV_Advertisers` AS A
-         ON L.advertiserId=A.advertiserId
-      """.format(**project.task),
-      'legacy': False
-    }}
+  # write to sheet
+  put_rows(
+    project.task['auth_sheets'],
+    { 'sheets': {
+      'sheet': project.task['sheet'],
+      'tab': 'Targeting Options',
+      'range': 'K2'
+    }},
+    get_rows(
+      project.task['auth_bigquery'],
+      { 'bigquery': {
+        'dataset': project.task['dataset'],
+        'query': """SELECT
+           CONCAT(A.displayName, ' - ', A.advertiserId, ' > ', L.displayName, ' - ', L.locationListId)
+           FROM `{dataset}.DV_Location_Lists` AS L
+           LEFT JOIN `{dataset}.DV_Advertisers` AS A
+           ON L.advertiserId=A.advertiserId
+           WHERE locationType='TARGETING_LOCATION_TYPE_PROXIMITY'
+           ORDER BY 1
+        """.format(**project.task),
+        'legacy': False
+      }}
+    )
   )
 
   put_rows(
     project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
-      'tab': 'Location Lists',
-      'range': 'A2'
+      'tab': 'Targeting Options',
+      'range': 'L2'
     }},
-    rows
+    get_rows(
+      project.task['auth_bigquery'],
+      { 'bigquery': {
+        'dataset': project.task['dataset'],
+        'query': """SELECT
+           CONCAT(A.displayName, ' - ', A.advertiserId, ' > ', L.displayName, ' - ', L.locationListId)
+           FROM `{dataset}.DV_Location_Lists` AS L
+           LEFT JOIN `{dataset}.DV_Advertisers` AS A
+           ON L.advertiserId=A.advertiserId
+           WHERE locationType='TARGETING_LOCATION_TYPE_REGIONAL'
+           ORDER BY 1
+        """.format(**project.task),
+        'legacy': False
+      }}
+    )
   )

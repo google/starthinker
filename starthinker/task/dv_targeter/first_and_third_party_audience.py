@@ -23,11 +23,9 @@ from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
-from starthinker.util.sheets import sheets_clear
 
 
 def first_and_third_party_audience_clear():
-
   table_create(
     project.task['auth_bigquery'],
     project.id,
@@ -39,13 +37,6 @@ def first_and_third_party_audience_clear():
     ).method_schema(
       'firstAndThirdPartyAudiences.list'
     )
-  )
-
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'First And Third Party Audiences',
-    'A2:Z'
   )
 
 
@@ -87,7 +78,7 @@ def first_and_third_party_audience_load():
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
-  # write inventorys to database and sheet
+  # write to database
   put_rows(
     project.task['auth_bigquery'],
     { 'bigquery': {
@@ -104,37 +95,29 @@ def first_and_third_party_audience_load():
     load_multiple()
   )
 
-  # write inventorys to sheet
-  rows = get_rows(
-    project.task['auth_bigquery'],
-    { 'bigquery': {
-      'dataset': project.task['dataset'],
-      'query': """SELECT
-         CONCAT(A.displayName, ' - ', A.firstAndThirdPartyAudienceId),
-         firstAndThirdPartyAudienceType,
-         audienceType,
-         audienceSource,
-         displayAudienceSize,
-         activeDisplayAudienceSize,
-         youtubeAudienceSize,
-         gmailAudienceSize,
-         displayMobileAppAudienceSize,
-         displayMobileWebAudienceSize,
-         displayDesktopAudienceSize
-         FROM `{dataset}.DV_First_And_Third_Party_Audiences` AS A
-         GROUP BY 1,2,3,4,5,6,7,8,9,10,11
-         ORDER BY 1
-      """.format(**project.task),
-      'legacy': False
-    }}
-  )
-
+  # write to sheet
   put_rows(
     project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
-      'tab': 'First And Third Party Audiences',
-      'range': 'A2'
+      'tab': 'Targeting Options',
+      'range': 'Q2'
     }},
-    rows
+    get_rows(
+      project.task['auth_bigquery'],
+      { 'bigquery': {
+        'dataset': project.task['dataset'],
+        'query': """SELECT
+           CONCAT(
+             SUBSTR(A.firstAndThirdPartyAudienceType, 37), ' > ',
+             A.audienceType, ' > ',
+             COALESCE(A.audienceSource, 'UNSPECIFIED'), ' > ',
+             A.displayName, ' - ', A.firstAndThirdPartyAudienceId
+           ),
+           FROM `{dataset}.DV_First_And_Third_Party_Audiences` AS A
+           ORDER BY 1
+        """.format(**project.task),
+        'legacy': False
+      }}
+    )
   )

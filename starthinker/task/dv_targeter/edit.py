@@ -24,79 +24,22 @@ from starthinker.util.project import project
 from starthinker.util.sheets import sheets_clear
 
 SCHEMA_PREVIEW = [
-  {
-    'name': 'Operation',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
-  {
-    'name': 'Layer',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
-  {
-    'name': 'Partner',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
-  {
-    'name': 'Advertiser',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
-  {
-    'name': 'Line_Item',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
-  {
-    'name': 'Parameters',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
+  { 'name': 'Operation', 'type': 'STRING', 'mode': 'NULLABLE' },
+  { 'name': 'Layer', 'type': 'STRING', 'mode': 'NULLABLE' },
+  { 'name': 'Partner', 'type': 'STRING', 'mode': 'NULLABLE' },
+  { 'name': 'Advertiser', 'type': 'STRING', 'mode': 'NULLABLE' },
+  { 'name': 'Line_Item', 'type': 'STRING', 'mode': 'NULLABLE' },
+  { 'name': 'Parameters', 'type': 'STRING', 'mode': 'NULLABLE' },
 ]
 
 SCHEMA_LOG = [
-  {
-    'name': 'Layer',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
-  {
-    'name': 'Action',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
-  {
-    'name': 'Partner',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
-  {
-    'name': 'Advertiser',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
-  {
-    'name': 'Line_Item',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
-  {
-    'name': 'Parameters',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
-  {
-    'name': 'Status',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
-  {
-    'name': 'Error',
-    'type': 'STRING',
-    'mode': 'NULLABLE'
-  },
+  { 'name': 'Layer', 'type': 'STRING', 'mode': 'NULLABLE' },
+  { 'name': 'Partner', 'type': 'STRING', 'mode': 'NULLABLE' },
+  { 'name': 'Advertiser', 'type': 'STRING', 'mode': 'NULLABLE' },
+  { 'name': 'Line_Item', 'type': 'STRING', 'mode': 'NULLABLE' },
+  { 'name': 'Parameters', 'type': 'STRING', 'mode': 'NULLABLE' },
+  { 'name': 'Status', 'type': 'STRING', 'mode': 'NULLABLE' },
+  { 'name': 'Error', 'type': 'STRING', 'mode': 'NULLABLE' },
 ]
 
 BUFFER_ERROR = []
@@ -201,7 +144,6 @@ def edit_preview(edits):
   if edits:
     rows = [(
       p['layer'],
-      p['action'],
       p.get('partner'),
       p.get('advertiser'),
       p.get('line_item'),

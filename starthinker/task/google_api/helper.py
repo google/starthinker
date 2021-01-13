@@ -46,7 +46,8 @@ def main():
         - Show schema for Campaign Manager advertiser list endpoint.
         - https://developers.google.com/doubleclick-advertisers/v3.4/advertisers/list
         - python starthinker/task/google_api/helper.py -api dfareporting -version v3.4 -function advertisers.list --schema
-        - python starthinker/task/google_api/helper.py -api dfareporting -version v3.4 -function advertisers.list --json
+        - python starthinker/task/google_api/helper.py -api dfareporting -version v3.4 -function Advertiser --object
+        - python starthinker/task/google_api/helper.py -api dfareporting -version v3.4 -function Advertiser --struct
 
   """))
 

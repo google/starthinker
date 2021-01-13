@@ -23,7 +23,6 @@ from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
-from starthinker.util.sheets import sheets_clear
 
 
 def inventory_group_clear():
@@ -39,13 +38,6 @@ def inventory_group_clear():
     ).method_schema(
       'inventorySourceGroups.list'
     )
-  )
-
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Inventory Groups',
-    'A2:Z'
   )
 
 
@@ -87,7 +79,7 @@ def inventory_group_load():
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
-  # write inventorys to database and sheet
+  # write inventorys to database
   put_rows(
     project.task['auth_bigquery'],
     { 'bigquery': {
@@ -105,24 +97,23 @@ def inventory_group_load():
   )
 
   # write inventorys to sheet
-  rows = get_rows(
-    project.task['auth_bigquery'],
-    { 'bigquery': {
-      'dataset': project.task['dataset'],
-      'query': """SELECT
-         CONCAT(I.displayName, ' - ', I.inventorySourceGroupId),
-         FROM `{dataset}.DV_Inventory_Groups` AS I
-      """.format(**project.task),
-      'legacy': False
-    }}
-  )
-
   put_rows(
     project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
-      'tab': 'Inventory Groups',
-      'range': 'A2'
+      'tab': 'Targeting Options',
+      'range': 'M2'
     }},
-    rows
+    get_rows(
+      project.task['auth_bigquery'],
+      { 'bigquery': {
+        'dataset': project.task['dataset'],
+        'query': """SELECT
+           CONCAT(I.displayName, ' - ', I.inventorySourceGroupId),
+           FROM `{dataset}.DV_Inventory_Groups` AS I
+           ORDER BY 1
+        """.format(**project.task),
+        'legacy': False
+      }}
+    )
   )

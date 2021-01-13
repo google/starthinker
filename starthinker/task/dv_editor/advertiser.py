@@ -31,16 +31,24 @@ from starthinker.task.dv_editor.patch import patch_preview
 
 def advertiser_clear():
   table_create(
-      project.task['auth_bigquery'],
-      project.id,
-      project.task['dataset'],
-      'DV_Advertisers',
-      Discovery_To_BigQuery('displayvideo',
-                            'v1').method_schema('advertisers.list'),
+    project.task['auth_bigquery'],
+    project.id,
+    project.task['dataset'],
+    'DV_Advertisers',
+    Discovery_To_BigQuery(
+      'displayvideo',
+      'v1'
+    ).method_schema(
+      'advertisers.list'
+    )
   )
 
-  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Advertisers',
-               'B2:Z')
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Advertisers',
+    'B2:Z'
+  )
 
 
 def advertiser_load():

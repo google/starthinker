@@ -23,7 +23,6 @@ from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
-from starthinker.util.sheets import sheets_clear
 
 
 def channel_clear():
@@ -39,13 +38,6 @@ def channel_clear():
     ).method_schema(
       'advertisers.channels.list'
     )
-  )
-
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Channels',
-    'A2:Z'
   )
 
 
@@ -87,7 +79,7 @@ def channel_load():
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
-  # write channels to database and sheet
+  # write channels to database
   put_rows(
     project.task['auth_bigquery'],
     { 'bigquery': {
@@ -105,30 +97,30 @@ def channel_load():
   )
 
   # write channels to sheet
-  rows = get_rows(
-    project.task['auth_bigquery'],
-    { 'bigquery': {
-      'dataset': project.task['dataset'],
-      'query': """SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(C.displayName, ' - ', C.channelId),
-         FROM `{dataset}.DV_Channels` AS C
-         LEFT JOIN `{dataset}.DV_Partners` AS P
-         ON C.partnerId=P.partnerId
-         LEFT JOIN `{dataset}.DV_Advertisers` AS A
-         ON C.advertiserId=A.advertiserId
-      """.format(**project.task),
-      'legacy': False
-    }}
-  )
-
   put_rows(
     project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
-      'tab': 'Channels',
-      'range': 'A2'
+      'tab': 'Targeting Options',
+      'range': 'I2'
     }},
-    rows
+    get_rows(
+      project.task['auth_bigquery'],
+      { 'bigquery': {
+        'dataset': project.task['dataset'],
+        'query': """SELECT
+           CASE
+             WHEN C.partnerId IS NOT NULL THEN CONCAT('PARTNER: ', P.displayName, ' - ', P.partnerId, ' > ', C.displayName, ' - ', C.channelId)
+             ELSE CONCAT('ADVERTISER: ', A.displayName, ' - ', A.advertiserId, ' > ', C.displayName, ' - ', C.channelId)
+           END
+           FROM `{dataset}.DV_Channels` AS C
+           LEFT JOIN `{dataset}.DV_Partners` AS P
+           ON C.partnerId=P.partnerId
+           LEFT JOIN `{dataset}.DV_Advertisers` AS A
+           ON C.advertiserId=A.advertiserId
+           ORDER BY 1
+        """.format(**project.task),
+        'legacy': False
+      }}
+    )
   )

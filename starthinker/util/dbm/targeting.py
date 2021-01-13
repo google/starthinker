@@ -149,8 +149,12 @@ class Assigned_Targeting:
         if option['inventorySourceGroupDetails']['inventorySourceGroupId'] == args[0]:
           return option[key]
       elif option['targetingType'] == 'TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION':
-        if option['digitalContentLabelExclusionDetails']['contentRatingTier'] == args[0]:
-          return option[key]
+        if 'digitalContentLabelExclusionDetails' in option:
+          if option['digitalContentLabelExclusionDetails']['contentRatingTier'] == args[0]:
+            return option[key]
+        else:
+          if option['digitalContentLabelDetails']['contentRatingTier'] == args[0]:
+            return option[key]
       elif option['targetingType'] == 'TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION':
         if option['sensitiveCategoryExclusionDetails']['sensitiveCategory'] == args[0]:
           return option[key]
@@ -253,9 +257,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_AUTHORIZED_SELLER_STATUS'):
       self.delete_authorized_seller()
       self.create_requests.setdefault('TARGETING_TYPE_AUTHORIZED_SELLER_STATUS', [])
-      self.create_requests['TARGETING_TYPE_AUTHORIZED_SELLER_STATUS'].append({
+      self.create_requests['TARGETING_TYPE_AUTHORIZED_SELLER_STATUS'].append({ 'authorizedSellerStatusDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_AUTHORIZED_SELLER_STATUS', authorizedSellerStatus)
-      })
+      }})
 
 
   def delete_authorized_seller(self):
@@ -266,9 +270,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_USER_REWARDED_CONTENT'):
       self.delete_user_rewarded_content()
       self.create_requests.setdefault('TARGETING_TYPE_USER_REWARDED_CONTENT', [])
-      self.create_requests['TARGETING_TYPE_USER_REWARDED_CONTENT'].append({
+      self.create_requests['TARGETING_TYPE_USER_REWARDED_CONTENT'].append({ 'userRewardedContentDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_AUTHORIZED_SELLER_STATUS', userRewardedContent)
-      })
+      }})
 
 
   def delete_user_rewarded_content(self):
@@ -279,9 +283,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_EXCHANGE', exchange):
       self.delete_exchange(exchange)
       self.create_requests.setdefault('TARGETING_TYPE_EXCHANGE', [])
-      self.create_requests['TARGETING_TYPE_EXCHANGE'].append({
+      self.create_requests['TARGETING_TYPE_EXCHANGE'].append({ 'exchangeDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_AUTHORIZED_SELLER_STATUS', exchange)
-      })
+      }})
 
 
   def delete_exchange(self, exchange):
@@ -292,9 +296,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_SUB_EXCHANGE', subExchange):
       self.delete_sub_exchange(subExchange)
       self.create_requests.setdefault('TARGETING_TYPE_SUB_EXCHANGE', [])
-      self.create_requests['TARGETING_TYPE_SUB_EXCHANGE'].append({
+      self.create_requests['TARGETING_TYPE_SUB_EXCHANGE'].append({ 'subExchangeDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_AUTHORIZED_SELLER_STATUS', subExchange)
-      })
+      }})
 
 
   def delete_sub_exchange(self, subExchange):
@@ -305,10 +309,10 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_CHANNEL', channelId):
       self.delete_channel(channelId)
       self.create_requests.setdefault('TARGETING_TYPE_CHANNEL', [])
-      self.create_requests['TARGETING_TYPE_CHANNEL'].append({
+      self.create_requests['TARGETING_TYPE_CHANNEL'].append({ 'channelDetails':{
         'channelId': channelId,
         'negative':negative
-      })
+      }})
 
 
   def delete_channel(self, channelId):
@@ -319,9 +323,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_INVENTORY_SOURCE', inventorySourceId):
       self.delete_inventory_source(inventorySourceId)
       self.create_requests.setdefault('TARGETING_TYPE_INVENTORY_SOURCE', [])
-      self.create_requests['TARGETING_TYPE_INVENTORY_SOURCE'].append({
+      self.create_requests['TARGETING_TYPE_INVENTORY_SOURCE'].append({ 'inventorySourceDetails':{
         'inventorySourceId': inventorySourceId,
-      })
+      }})
 
 
   def delete_inventory_source(self, inventorySourceId):
@@ -332,9 +336,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_INVENTORY_SOURCE_GROUP', inventorySourceGroupId):
       self.delete_inventory_source_group(inventorySourceGroupId)
       self.create_requests.setdefault('TARGETING_TYPE_INVENTORY_SOURCE_GROUP', [])
-      self.create_requests['TARGETING_TYPE_INVENTORY_SOURCE_GROUP'].append({
+      self.create_requests['TARGETING_TYPE_INVENTORY_SOURCE_GROUP'].append({ 'inventorySourceGroupDetails':{
         'inventorySourceGroupId': inventorySourceGroupId
-      })
+      }})
 
 
   def delete_inventory_group(self, inventorySourceGroupId):
@@ -345,10 +349,10 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_URL', url):
       self.delete_url(url)
       self.create_requests.setdefault('TARGETING_TYPE_URL', [])
-      self.create_requests['TARGETING_TYPE_URL'].append({
+      self.create_requests['TARGETING_TYPE_URL'].append({ 'urlDetails':{
         'url': url,
         'negative':negative
-      })
+      }})
 
 
   def delete_url(self, url):
@@ -359,10 +363,10 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_APP', app):
       self.delete_app(app)
       self.create_requests.setdefault('TARGETING_TYPE_APP', [])
-      self.create_requests['TARGETING_TYPE_APP'].append({
+      self.create_requests['TARGETING_TYPE_APP'].append({ 'appDetails':{
         'appId': app,
         'negative':negative
-      })
+      }})
 
 
   def delete_app(self, app):
@@ -370,13 +374,13 @@ class Assigned_Targeting:
 
 
   def add_app_category(self, displayName, negative):
-    if not self.already_added('TARGETING_TYPE_APP_CATEGORY'):
+    if not self.already_added('TARGETING_TYPE_APP_CATEGORY', displayName):
       self.delete_app_category(displayName)
       self.create_requests.setdefault('TARGETING_TYPE_APP_CATEGORY', [])
-      self.create_requests['TARGETING_TYPE_APP_CATEGORY'].append({
+      self.create_requests['TARGETING_TYPE_APP_CATEGORY'].append({ 'appCategoryDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_APP_CATEGORY', displayName),
         'negative':negative
-      })
+      }})
 
 
   def delete_app_category(self):
@@ -384,25 +388,26 @@ class Assigned_Targeting:
 
 
   def add_content_label(self, contentRatingTier):
-    if not self.already_added('TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION'):
+    if not self.already_added('TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION', contentRatingTier):
       self.delete_content_label(contentRatingTier)
       self.create_requests.setdefault('TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION', [])
-      self.create_requests['TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION'].append({
-        'excludedTargetingOptionId': self.get_option_id('TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION', contentRatingTier)
-      })
+      self.create_requests['TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION'].append({ 'digitalContentLabelExclusionDetails':{
+        'targetingOptionId': self.get_option_id('TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION', contentRatingTier)
+        #'excludedTargetingOptionId': self.get_option_id('TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION', contentRatingTier)
+      }})
 
 
-  def delete_content_label(self):
-    self._delete('TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION')
+  def delete_content_label(self, contentRatingTier):
+    self._delete('TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION', contentRatingTier)
 
 
   def add_sensitive_category(self, sensitiveCategory):
     if not self.already_added('TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION'):
       self.delete_sensitive_category()
       self.create_requests.setdefault('TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION', [])
-      self.create_requests['TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION'].append({
+      self.create_requests['TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION'].append({ 'sensitiveCategoryExclusionDetails':{
         'excludedTargetingOptionId': self.get_option_id('TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION', sensitiveCategory)
-      })
+      }})
 
 
   def delete_sensitive_category(self):
@@ -413,9 +418,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_NEGATIVE_KEYWORD_LIST', negativeKeywordListId):
       self.delete_negative_keyword_list(negativeKeywordListId)
       self.create_requests.setdefault('TARGETING_TYPE_NEGATIVE_KEYWORD_LIST', [])
-      self.create_requests['TARGETING_TYPE_NEGATIVE_KEYWORD_LIST'].append({
+      self.create_requests['TARGETING_TYPE_NEGATIVE_KEYWORD_LIST'].append({ 'negativeKeywordListDetails':{
         'negativeKeywordListId': negativeKeywordListId
-      })
+      }})
 
 
   def delete_negative_keyword_list(self, negativeKeywordListId):
@@ -423,27 +428,27 @@ class Assigned_Targeting:
 
 
   def add_category(self, displayName, negative):
-    if not self.already_added('TARGETING_TYPE_APP_CATEGORY'):
+    if not self.already_added('TARGETING_TYPE_CATEGORY'):
       self.delete_category(displayName)
-      self.create_requests.setdefault('TARGETING_TYPE_APP_CATEGORY', [])
-      self.create_requests['TARGETING_TYPE_APP_CATEGORY'].append({
-        'targetingOptionId': self.get_option_id('TARGETING_TYPE_APP_CATEGORY', displayName),
+      self.create_requests.setdefault('TARGETING_TYPE_CATEGORY', [])
+      self.create_requests['TARGETING_TYPE_CATEGORY'].append({ 'categoryDetails':{
+        'targetingOptionId': self.get_option_id('TARGETING_TYPE_CATEGORY', displayName),
         'negative': negative
-      })
+      }})
 
 
   def delete_category(self, displayName):
-    self._delete('TARGETING_TYPE_APP_CATEGORY', displayName)
+    self._delete('TARGETING_TYPE_CATEGORY', displayName)
 
 
   def add_keyword(self, keyword, negative):
     if not self.already_added('TARGETING_TYPE_KEYWORD'):
       self.delete_keyword(keyword)
       self.create_requests.setdefault('TARGETING_TYPE_KEYWORD', [])
-      self.create_requests['TARGETING_TYPE_KEYWORD'].append({
+      self.create_requests['TARGETING_TYPE_KEYWORD'].append({ 'keywordDetails':{
         'keyword': keyword,
         'negative': negative
-      })
+      }})
 
 
   def delete_keyword(self, keyword):
@@ -454,9 +459,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_AGE_RANGE', ageRange):
       self.delete_age_range(ageRange)
       self.create_requests.setdefault('TARGETING_TYPE_AGE_RANGE', [])
-      self.create_requests['TARGETING_TYPE_AGE_RANGE'].append({
+      self.create_requests['TARGETING_TYPE_AGE_RANGE'].append({ 'ageRangeDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_AGE_RANGE', ageRange)
-      })
+      }})
 
 
   def delete_age_range(self, ageRange):
@@ -467,9 +472,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_GENDER'):
       self.delete_gender(gender)
       self.create_requests.setdefault('TARGETING_TYPE_GENDER', [])
-      self.create_requests['TARGETING_TYPE_GENDER'].append({
+      self.create_requests['TARGETING_TYPE_GENDER'].append({ 'genderDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_GENDER', gender)
-      })
+      }})
 
 
   def delete_gender(self, gender):
@@ -480,9 +485,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_PARENTAL_STATUS'):
       self.delete_parental_status(parentalStatus)
       self.create_requests.setdefault('TARGETING_TYPE_PARENTAL_STATUS', [])
-      self.create_requests['TARGETING_TYPE_PARENTAL_STATUS'].append({
+      self.create_requests['TARGETING_TYPE_PARENTAL_STATUS'].append({ 'parentalStatusDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_PARENTAL_STATUS', parentalStatus)
-      })
+      }})
 
 
   def delete_parental_status(self, parentalStatus):
@@ -493,9 +498,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_HOUSEHOLD_INCOME'):
       self.delete_household_income(householdIncome)
       self.create_requests.setdefault('TARGETING_TYPE_HOUSEHOLD_INCOME', [])
-      self.create_requests['TARGETING_TYPE_HOUSEHOLD_INCOME'].append({
+      self.create_requests['TARGETING_TYPE_HOUSEHOLD_INCOME'].append({ 'householdIncomeDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_HOUSEHOLD_INCOME', householdIncome)
-      })
+      }})
 
 
   def delete_household_income(self, householdIncome):
@@ -506,10 +511,10 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_LANGUAGE'):
       self.delete_language()
       self.create_requests.setdefault('TARGETING_TYPE_LANGUAGE', [])
-      self.create_requests['TARGETING_TYPE_LANGUAGE'].append({
+      self.create_requests['TARGETING_TYPE_LANGUAGE'].append({ 'languageDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_LANGUAGE', displayName),
         'negative':negative
-      })
+      }})
 
 
   def delete_language(self, displayName):
@@ -638,10 +643,10 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_DEVICE_TYPE'):
       self.delete_device_type()
       self.create_requests.setdefault('TARGETING_TYPE_DEVICE_TYPE', [])
-      self.create_requests['TARGETING_TYPE_DEVICE_TYPE'].append({
+      self.create_requests['TARGETING_TYPE_DEVICE_TYPE'].append({ 'deviceTypeDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_DEVICE_TYPE', deviceType),
         'negative':negative
-      })
+      }})
 
 
   def delete_device_type(self):
@@ -652,10 +657,10 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_OPERATING_SYSTEM'):
       self.delete_operating_system()
       self.create_requests.setdefault('TARGETING_TYPE_OPERATING_SYSTEM', [])
-      self.create_requests['TARGETING_TYPE_OPERATING_SYSTEM'].append({
+      self.create_requests['TARGETING_TYPE_OPERATING_SYSTEM'].append({ 'operatingSystemDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_OPERATING_SYSTEM', displayName),
         'negative':negative
-      })
+      }})
 
 
   def delete_operating_system(self):
@@ -666,53 +671,53 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_BROWSER'):
       self.delete_browser()
       self.create_requests.setdefault('TARGETING_TYPE_BROWSER', [])
-      self.create_requests['TARGETING_TYPE_BROWSER'].append({
+      self.create_requests['TARGETING_TYPE_BROWSER'].append({ 'browserDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_BROWSER', displayName),
         'negative':negative
-      })
+      }})
 
 
-  def delete_browser(self):
-    self._delete('TARGETING_TYPE_BROWSER')
+  def delete_browser(self, displayName):
+    self._delete('TARGETING_TYPE_BROWSER', displayName)
 
 
   def add_environment(self, environment):
     if not self.already_added('TARGETING_TYPE_ENVIRONMENT'):
       self.delete_environment()
       self.create_requests.setdefault('TARGETING_TYPE_ENVIRONMENT', [])
-      self.create_requests['TARGETING_TYPE_ENVIRONMENT'].append({
+      self.create_requests['TARGETING_TYPE_ENVIRONMENT'].append({ 'environmentDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_ENVIRONMENT', environment),
-      })
+      }})
 
 
-  def delete_environment(self):
-    self._delete('TARGETING_TYPE_ENVIRONMENT')
+  def delete_environment(self, environment):
+    self._delete('TARGETING_TYPE_ENVIRONMENT', environment)
 
 
   def add_carrier_and_isp(self, displayName, negative):
     if not self.already_added('TARGETING_TYPE_CARRIER_AND_ISP'):
       self.delete_carrier_and_isp()
       self.create_requests.setdefault('TARGETING_TYPE_CARRIER_AND_ISP', [])
-      self.create_requests['TARGETING_TYPE_CARRIER_AND_ISP'].append({
+      self.create_requests['TARGETING_TYPE_CARRIER_AND_ISP'].append({ 'carrierAndIspDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_CARRIER_AND_ISP', displayName),
         'negative':negative
-      })
+      }})
 
 
-  def delete_carrier_and_isp(self):
-    self._delete('TARGETING_TYPE_CARRIER_AND_ISP')
+  def delete_carrier_and_isp(self, displayName):
+    self._delete('TARGETING_TYPE_CARRIER_AND_ISP', displayName)
 
 
   def add_day_and_time(self, dayOfWeek, startHour, endHour, timeZoneResolution):
     if not self.already_added('TARGETING_TYPE_DAY_AND_TIME', dayOfWeek):
       self.delete_day_of_week(dayOfWeek)
       self.create_requests.setdefault('TARGETING_TYPE_DAY_AND_TIME', [])
-      self.create_requests['TARGETING_TYPE_DAY_AND_TIME'].append({
+      self.create_requests['TARGETING_TYPE_DAY_AND_TIME'].append({ 'dayAndTimeDetails':{
         'dayOfWeek': dayOfWeek,
         'startHour': startHour,
         'endHour': endHour,
         'timeZoneResolution': timeZoneResolution
-      })
+      }})
 
 
   def delete_and_time(self, dayOfWeek):
@@ -723,10 +728,10 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_GEO_REGION', displayName):
       self.delete_geo_region(displayName)
       self.create_requests.setdefault('TARGETING_TYPE_GEO_REGION', [])
-      self.create_requests['TARGETING_TYPE_GEO_REGION'].append({
+      self.create_requests['TARGETING_TYPE_GEO_REGION'].append({ 'geoRegionDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_GEO_REGION', displayName, geoRegionType),
         'negative':negative
-      })
+      }})
 
 
   def delete_geo_region(self, displayName):
@@ -737,10 +742,10 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_PROXIMITY_LOCATION_LIST', proximityLocationListId):
       self.delete_proximity_location_list(proximityLocationListId)
       self.create_requests.setdefault('TARGETING_TYPE_PROXIMITY_LOCATION_LIST', [])
-      self.create_requests['TARGETING_TYPE_PROXIMITY_LOCATION_LIST'].append({
+      self.create_requests['TARGETING_TYPE_PROXIMITY_LOCATION_LIST'].append({ 'proximityLocationListDetails':{
         'proximityLocationListId':proximityLocationListId,
         'proximityRadiusRange':proximityRadiusRange
-      })
+      }})
 
 
   def delete_proximity_location_list(self, proximityLocationListId):
@@ -751,10 +756,10 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_REGIONAL_LOCATION_LIST', regionalLocationListId):
       self.delete_regional_location_list(regionalLocationListId)
       self.create_requests.setdefault('TARGETING_TYPE_REGIONAL_LOCATION_LIST', [])
-      self.create_requests['TARGETING_TYPE_REGIONAL_LOCATION_LIST'].append({
+      self.create_requests['TARGETING_TYPE_REGIONAL_LOCATION_LIST'].append({ 'regionalLocationListDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_REGIONAL_LOCATION_LIST', regionalLocationListId),
         'negative':negative
-      })
+      }})
 
 
   def delete_regional_location_list(self, regionalLocationListId):
@@ -765,9 +770,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_VIDEO_PLAYER_SIZE'):
       self.delete_video_player_size()
       self.create_requests.setdefault('TARGETING_TYPE_VIDEO_PLAYER_SIZE', [])
-      self.create_requests['TARGETING_TYPE_VIDEO_PLAYER_SIZE'].append({
+      self.create_requests['TARGETING_TYPE_VIDEO_PLAYER_SIZE'].append({ 'videoPlayerSizeDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_VIDEO_PLAYER_SIZE', videoPlayerSize)
-      })
+      }})
 
 
   def delete_video_player_size(self):
@@ -778,9 +783,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_CONTENT_INSTREAM_POSITION'):
       self.delete_in_stream_position()
       self.create_requests.setdefault('TARGETING_TYPE_CONTENT_INSTREAM_POSITION', [])
-      self.create_requests['TARGETING_TYPE_CONTENT_INSTREAM_POSITION'].append({
+      self.create_requests['TARGETING_TYPE_CONTENT_INSTREAM_POSITION'].append({ 'contentInstreamPositionDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_CONTENT_INSTREAM_POSITION', contentInstreamPosition)
-      })
+      }})
 
 
   def delete_in_stream_position(self):
@@ -791,9 +796,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_CONTENT_OUTSTREAM_POSITION'):
       self.delete_out_stream_position()
       self.create_requests.setdefault('TARGETING_TYPE_CONTENT_OUTSTREAM_POSITION', [])
-      self.create_requests['TARGETING_TYPE_CONTENT_OUTSTREAM_POSITION'].append({
+      self.create_requests['TARGETING_TYPE_CONTENT_OUTSTREAM_POSITION'].append({ 'contentOutstreamPositionDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_CONTENT_INSTREAM_POSITION', contentOutstreamPosition)
-      })
+      }})
 
 
   def delete_out_stream_position(self):
@@ -804,9 +809,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_ON_SCREEN_POSITION'):
       self.delete_on_screen_position()
       self.create_requests.setdefault('TARGETING_TYPE_ON_SCREEN_POSITION', [])
-      self.create_requests['TARGETING_TYPE_ON_SCREEN_POSITION'].append({
+      self.create_requests['TARGETING_TYPE_ON_SCREEN_POSITION'].append({ 'onScreenPositionDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_ON_SCREEN_POSITION', onScreenPosition)
-      })
+      }})
 
 
   def delete_on_screen_position(self):
@@ -817,9 +822,9 @@ class Assigned_Targeting:
     if not self.already_added('TARGETING_TYPE_VIEWABILITY'):
       self.delete_viewability()
       self.create_requests.setdefault('TARGETING_TYPE_VIEWABILITY', [])
-      self.create_requests['TARGETING_TYPE_VIEWABILITY'].append({
+      self.create_requests['TARGETING_TYPE_VIEWABILITY'].append({ 'viewabilityDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_VIEWABILITY', viewability)
-      })
+      }})
 
 
   def delete_viewability(self):
