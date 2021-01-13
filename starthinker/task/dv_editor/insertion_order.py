@@ -65,12 +65,15 @@ def insertion_order_load():
       }}
     )
 
+    # String for filtering which entityStatus enums we want to see in the sheet
+    filter_string = 'entityStatus = "ENTITY_STATUS_ARCHIVED" OR entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
     for row in rows:
       yield from API_DV360(
         project.task["auth_dv"],
         iterate=True
       ).advertisers().insertionOrders().list(
-        advertiserId=lookup_id(row[0])
+        advertiserId=lookup_id(row[0]),
+        filter=filter_string
       ).execute()
 
   # write insertion orders to database and sheet
@@ -99,6 +102,7 @@ def insertion_order_load():
         CONCAT(C.displayName, ' - ', C.campaignId),
         CONCAT(I.displayName, ' - ', I.insertionOrderId),
         'PATCH',
+        I.entityStatus,
         I.entityStatus,
         I.displayName,
         I.displayName,
@@ -162,6 +166,7 @@ def insertion_order_audit():
           { "name": "Insertion_Order", "type": "STRING" },
           { "name": "Action", "type": "STRING" },
           { "name": "Status", "type": "STRING" },
+          { "name": "Status_Edit", "type": "STRING" },
           { "name": "Name", "type": "STRING" },
           { "name": "Name_Edit", "type": "STRING" },
           { "name": "Budget_Unit", "type": "STRING" },
@@ -193,7 +198,7 @@ def insertion_order_audit():
       REGEXP_EXTRACT(S_IO.Advertiser, r' - (\d+)$') AS advertiserId,
       REGEXP_EXTRACT(S_IO.Campaign, r' - (\d+)$') AS campaignId,
       S_IO.Insertion_Order AS displayName,
-      'ENTITY_STATUS_DRAFT' AS entityStatus,
+      S_IO.Status_Edit AS entityStatus,
       STRUCT(
         S_PC.Cost_Type_Edit As costType,
         S_PC.Fee_Type_Edit As feeType,
@@ -388,6 +393,9 @@ def insertion_order_patch(commit=False):
 
       if row['Name'] != row['Name_Edit']:
         insertion_order["displayName"] = row['Name_Edit']
+
+      if row['Status'] != row['Status_Edit']:
+        insertion_order['entityStatus'] = row['Status_Edit']
 
       if row['Budget_Unit'] != row['Budget_Unit_Edit']:
         insertion_order.setdefault("budget", {})
