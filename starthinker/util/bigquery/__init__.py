@@ -798,6 +798,30 @@ def query_to_rows(auth,
       break
 
 
+def query_to_schema(auth, project_id, dataset_id, query, legacy=True):
+
+  if project.verbose:
+    print('BIGQUERY QUERY SCHEMA:', project_id, dataset_id)
+
+  body = {
+    'kind': 'bigquery#queryRequest',
+    'query': query,
+    'timeoutMs': 10000,
+    'dryRun': True,
+    'useLegacySql': legacy
+  }
+
+  if dataset_id:
+    body['defaultDataset'] = {'projectId': project_id, 'datasetId': dataset_id}
+
+  response = API_BigQuery(auth).jobs().query(
+    projectId=project_id,
+    body=body
+  ).execute()
+
+  return response['schema'].get('fields', [])
+
+
 def make_schema(header):
   return [{
       'name': name,
