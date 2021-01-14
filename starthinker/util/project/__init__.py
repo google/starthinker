@@ -15,6 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
+
 """The core singleton class of StarThinker that translates json to python.
 
 Project loads JSON and parameters and combines them for execturion.  It handles
@@ -86,40 +87,38 @@ EXIT_SUCCESS = 0
 RE_UUID = re.compile(r'(\s*)("setup"\s*:\s*{)')
 
 
-def get_project(filepath):
-  """Loads json for Project Class.  Intended for this module only.
+def get_project(filepath=None, stringcontent=None):
+  """Loads json for Project Class.  Available as helper.
 
-  Available as helper.
+    Able to load JSON with newlines ( strips all newlines before load ).
 
-     Able to load JSON with newlines ( strips all newlines before load ).
+    Args:
+     - filepath: (string) The local file path to the recipe json file to load.
 
-     Args:
-      - filepath: (string) The local file path to the recipe json file to load.
-
-     Returns:
-      Json of recipe file.
+    Returns:
+     Json of recipe file.
   """
 
-  with open(filepath) as data_file:
-    data = data_file.read().replace('\n', ' ')
+  if filepath:
+    with open(filepath) as recipe_file:
+      stringcontent = recipe_file.read()
 
-    try:
-      return json.loads(data)
-
-    except ValueError as e:
-      with open(filepath) as data_file:
-        pos = 0
-        for count, line in enumerate(data_file.readlines(), 1):
-          pos += len(
-              line
-          )  # do not add newlines, e.pos was run on a version wher enewlines were removed
-          if pos >= e.pos:
-            e.lineno = count
-            e.pos = pos
-            e.args = (
-                'JSON ERROR: %s LINE: %s CHARACTER: %s ERROR: %s LINE: %s' %
-                (filepath, count, pos - e.pos, str(e.msg), line.strip()),)
-            raise
+  try:
+    # allow the json to contain newlines for formatting queries and such
+    return json.loads(stringcontent.replace('\n', ' '))
+  except ValueError as e:
+    pos = 0
+    for count, line in enumerate(stringcontent.splitlines(), 1):
+      # do not add newlines, e.pos was run on a version where newlines were removed
+      pos += len(line)
+      if pos >= e.pos:
+        e.lineno = count
+        e.pos = pos
+        e.args = (
+          'JSON ERROR: %s LINE: %s CHARACTER: %s ERROR: %s LINE: %s' %
+          (filepath, count, pos - e.pos, str(e.msg), line.strip()),
+        )
+        raise
 
 
 def utc_to_timezone(timestamp, timezone):
@@ -255,6 +254,7 @@ class project:
   now = None
   date = None
   hour = None
+
 
   @classmethod
   def from_commandline(cls, _task=None, parser=None, arguments=None):
@@ -413,6 +413,7 @@ class project:
         getattr(cls.args, 'trace_file', None)
     )
 
+
   @classmethod
   def get_task_index(cls):
     i = 0
@@ -423,6 +424,7 @@ class project:
           return c
     return None
 
+
   @classmethod
   def get_task(cls):
     #if cls.task is None:
@@ -430,6 +432,7 @@ class project:
     cls.task = None if i is None else next(
         iter(cls.recipe['tasks'][i].values()))
     return cls.task
+
 
   @classmethod
   def set_task(cls, function, parameters):
@@ -472,6 +475,7 @@ class project:
       func()
 
     return from_parameters_wrapper
+
 
   @classmethod
   def initialize(cls,
@@ -593,6 +597,7 @@ class project:
       print('TASK:', _task or 'all')
       print('DATE:', cls.now.date())
       print('HOUR:', cls.now.hour)
+
 
   @classmethod
   def execute(cls, _force=False):
