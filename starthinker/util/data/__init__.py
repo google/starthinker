@@ -47,12 +47,11 @@ def get_rows(auth, source, as_object=False, unnest=False):
   into a script. For example pull a list of ids from bigquery and act on each
   one.
 
-  - When pulling a single column specify single_cell = True. Returns list AKA
+  - When pulling a single column specify unnest = True. Returns list AKA
   values.
-  - When pulling a multiple columns specify single_cell = False. Returns list of
+  - When pulling a multiple columns specify unnest = False. Returns list of
   lists AKA rows.
-  - Values are always given as a list ( single_cell will trigger necessary
-  wrapping ).
+  - Values are always given as a list ( unnest will trigger necessary wrapping ).
   - Values, bigquery, sheet are optional, if multiple given result is one
   continous iterator.
   - Extensible, add a handler to define a new source ( be kind update the
@@ -65,18 +64,21 @@ def get_rows(auth, source, as_object=False, unnest=False):
 
     var_json = {
       "in":{
-        "single_cell":[ boolean ],
+        "unnest":[ boolean ],
         "values": [ integer list ],
         "bigquery":{
+          "auth":"[ user or service ]",
           "dataset": [ string ],
           "query": [ string ],
           "legacy":[ boolean ]
         },
         "bigquery":{
+          "auth":"[ user or service ]",
           "dataset": [ string ],
           "table": [ string ],
         },
         "sheets":{
+          "auth":"[ user or service ]",
           "sheet":[ string - full URL, suggest using share link ],
           "tab":[ string ],
           "range":[ string - A1:A notation ]
@@ -103,8 +105,8 @@ def get_rows(auth, source, as_object=False, unnest=False):
     source: (json) A json block resembling var_json described above.
 
   Returns:
-    If single_cell is False: Returns a list of row values [[v1], [v2], ... ]
-    If single_cell is True: Returns a list of values [v1, v2, ...]
+    If unnest is False: Returns a list of row values [[v1], [v2], ... ]
+    If unnest is True: Returns a list of values [v1, v2, ...]
 """
 
   # if handler points to list, concatenate all the values from various sources into one list
@@ -125,18 +127,18 @@ def get_rows(auth, source, as_object=False, unnest=False):
     # should be sheets, deprecate sheet over next few releases
     if 'sheet' in source:
       rows = sheets_read(
-          auth,
+          source['sheet'].get('auth', auth),
           source['sheet']['sheet'],
           source['sheet']['tab'],
           source['sheet']['range'],
       )
 
       for row in rows:
-        yield row[0] if unnest or source.get('single_cell', False) else row
+        yield row[0] if unnest or source.get('single_cell', False) or source.get('unnest', False) else row
 
     if 'sheets' in source:
       rows = sheets_read(
-          auth,
+          source['sheets'].get('auth', auth),
           source['sheets']['sheet'],
           source['sheets']['tab'],
           source['sheets']['range'],
@@ -144,7 +146,7 @@ def get_rows(auth, source, as_object=False, unnest=False):
 
       if rows:
         for row in rows:
-          yield row[0] if unnest or source.get('single_cell', False) else row
+          yield row[0] if unnest or source.get('single_cell', False) or source.get('unnest', False) else row
       else:
         print("No rows in source.")
 
@@ -152,7 +154,7 @@ def get_rows(auth, source, as_object=False, unnest=False):
 
       rows = []
       as_object = as_object or source['bigquery'].get('as_object', False)
-      unnest = unnest or source.get('single_cell', False)
+      unnest = unnest or source.get('single_cell', False) or source.get('unnest', False)
 
       if 'table' in source['bigquery']:
         rows = table_to_rows(
@@ -195,6 +197,7 @@ def put_rows(auth, destination, rows, variant=''):
     var_json = {
       "out":{
         "bigquery":{
+          "auth":"[ user or service ]",
           "dataset": [ string ],
           "table": [ string ]
           "schema": [ json - standard bigquery schema json ],
@@ -202,6 +205,7 @@ def put_rows(auth, destination, rows, variant=''):
           "disposition": [ string - same as BigQuery documentation ]
         },
         "sheets":{
+          "auth":"[ user or service ]",
           "sheet":[ string - full URL, suggest using share link ],
           "tab":[ string ],
           "range":[ string - A1:A notation ]
@@ -210,6 +214,7 @@ def put_rows(auth, destination, rows, variant=''):
           ]
         },
         "storage":{
+          "auth":"[ user or service ]",
           "bucket": [ string ],
           "path": [ string ]
         },
@@ -238,13 +243,13 @@ def put_rows(auth, destination, rows, variant=''):
       to destination to differentieate multiple objects
 
   Returns:
-    If single_cell is False: Returns a list of row values [[v1], [v2], ... ]
-    If single_cell is True: Returns a list of values [v1, v2, ...]
+    If unnest is False: Returns a list of row values [[v1], [v2], ... ]
+    If unnest is True: Returns a list of values [v1, v2, ...]
 """
 
-  if not rows:
+  if rows is None:
     if project.verbose:
-      print('No rows provided to put_rows')
+      print('PUT ROWS: Rows is None, ignoring write.')
     return
 
   if 'bigquery' in destination:
@@ -289,14 +294,14 @@ def put_rows(auth, destination, rows, variant=''):
   if 'sheets' in destination:
     if destination['sheets'].get('delete', False):
       sheets_clear(
-          auth,
+          destination['sheets'].get('auth', auth),
           destination['sheets']['sheet'],
           destination['sheets']['tab'] + variant,
           destination['sheets']['range'],
       )
 
     sheets_write(
-        auth,
+        destination['sheets'].get('auth', auth),
         destination['sheets']['sheet'],
         destination['sheets']['tab'] + variant,
         destination['sheets']['range'],
@@ -315,8 +320,11 @@ def put_rows(auth, destination, rows, variant=''):
 
   if 'storage' in destination and destination['storage'].get(
       'bucket') and destination['storage'].get('path'):
-    # create the bucket
-    bucket_create(auth, project.id, destination['storage']['bucket'])
+    bucket_create(
+      destination['storage'].get('auth', auth),
+      project.id,
+      destination['storage']['bucket']
+    )
 
     # put the file
     file_out = destination['storage']['bucket'] + ':' + destination['storage'][
