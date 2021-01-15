@@ -1,0 +1,24 @@
+{
+  "setup":{
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DV360_Targeter_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "include":{
+      "script":"scripts/dv360_targeter.json",
+      "parameters":{
+        "auth_dv":{"field":{ "name":"auth_dv", "kind":"authentication", "description":"Credentials used for dv." }},
+        "auth_sheet":{"field":{ "name":"auth_sheet", "kind":"authentication", "description":"Credentials used for sheet." }},
+        "auth_bigquery":{"field":{ "name":"auth_bigquery", "kind":"authentication", "description":"Credentials used for bigquery." }},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV360_Targeter_", "default": "Manual"}},
+        "command":"Load"
+      }
+    }}
+  ]
+}
+

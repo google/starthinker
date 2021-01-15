@@ -24,6 +24,7 @@ from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
+from starthinker.util.sheets import sheets_clear
 
 
 def partner_clear():

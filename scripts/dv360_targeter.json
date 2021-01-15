@@ -21,18 +21,20 @@
       "csat improvement":100
     },
     "instructions":[
-      "Select <b>Load Partners</b>, <b>save</b> the recipe, then run. A Sheet called DV_Targeter_{field:recipe_name} will be created.",
-      "In the 'Partners' sheet tab, fill in <i>Partners</i> tab filter.",
-      "Select <b>Load Advertisers</b>, <b>save</b> the recipe, then run.",
-      "In the 'Advertisers' sheet tab, fill in <i>Advertisers</i> tab filter.",
-      "Now, select <b>Load Line Items</b>, <b>save</b> the recipe, then run.",
-      "To update, fill in changes on all tabs with colored fields (RED FIELDS ARE NOT IMPLEMENTED, IGNORE).",
-      "Select <i>Preview</i>, <b>save</b> the recipe, then run the recipe.",
+      "A Sheet called <b>DV Targeter {field:recipe_name}</b> will be created.",
+      "Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.",
+      "In the 'Partners' sheet tab, fill in <i>Filter</i> column.",
+      "Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.",
+      "In the 'Advertisers' sheet tab, fill in <i>Filter</i> column.",
+      "Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.",
+      "In the 'Line Items' sheet tab, fill in <i>Filter</i> column.",
+      "Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.",
+      "Make updates, fill in changes on all tabs with colored fields (RED FIELDS ARE NOT IMPLEMENTED, IGNORE).",
+      "Select <i>Preview</i>, <b>Save</b> , then <b>Run<b>.",
       "Check the <b>Preview</b> tabs.",
-      "To commit updates, select <i>Update</i>, <b>save</b> the recipe, then run.",
+      "Select <b>Update</b> as the command, click <b>Save</b>, then <b>Run<b>.",
       "Check the <b>Success</b> and <b>Error</b> tabs.",
-      "Update can be run multiple times.",
-      "Update ONLY changes edited fields."
+      "Load and Update can be run multiple times."
     ],
     "authors":["kenjora@google.com"]
   },
@@ -54,7 +56,7 @@
         "destination":{"field":{ "name":"recipe_slug", "prefix":"DV Targeter ", "kind":"string", "order":3, "default":"", "description":"Name of Google Sheet to create." }}
       }
     }},
-    { "dv_editor": {
+    { "dv_targeter": {
       "__comment":"Depending on users choice, execute a different part of the solution.",
       "auth_dv": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for dv." }},
       "auth_sheets": {"field":{ "name":"auth_sheet", "kind":"authentication", "order":2, "default":"user", "description":"Credentials used for sheet." }},
@@ -66,15 +68,12 @@
         "kind":"choice",
         "choices":[
           "Clear",
-          "Load Partners",
-          "Load Advertisers",
-          "Load Line Items",
-          "Load Targeting",
+          "Load",
           "Preview",
           "Update"
         ],
         "order":6,
-        "default":"Load Partners",
+        "default":"Load",
         "description":"Action to take."
       }}
     }}

@@ -24,6 +24,7 @@ from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
+from starthinker.util.sheets import sheets_clear
 
 
 def line_item_clear():
@@ -44,7 +45,7 @@ def line_item_clear():
     project.task["auth_sheets"],
     project.task["sheet"],
     "Line Items",
-    "A2:Z"
+    "B2:Z"
   )
 
 

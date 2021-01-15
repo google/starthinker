@@ -91,15 +91,15 @@ def dv_targeter():
     advertiser_clear()
     partner_clear()
 
-  elif project.task['command'] == 'Load Partners':
+  if project.task['command'] in ('Load', 'Load Partners'):
     partner_clear()
     partner_load()
 
-  elif project.task['command'] == 'Load Advertisers':
+  if project.task['command'] in ('Load', 'Load Advertisers'):
     advertiser_clear()
     advertiser_load()
 
-  elif project.task['command'] == 'Load Line Items':
+  if project.task['command'] in ('Load', 'Load Line Items'):
     campaign_clear()
     campaign_load()
     insertion_order_clear()
@@ -107,7 +107,7 @@ def dv_targeter():
     line_item_clear()
     line_item_load()
 
-  elif project.task['command'] == 'Load Targeting':
+  if project.task['command'] in ('Load', 'Load Targeting'):
 
     targeting_clear()
 
@@ -142,7 +142,7 @@ def dv_targeter():
     advertiser_load_targeting()
     line_item_load_targeting()
 
-  elif project.task['command'] in ('Preview', 'Update'):
+  if project.task['command'] in ('Preview', 'Update'):
     edit_clear()
     targeting_edit(commit=project.task['command'] == 'Update')
 
