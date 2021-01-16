@@ -159,6 +159,9 @@ class Script:
   def get_sample(self):
     return self.script.get('script', {}).get('sample', None)
 
+  def get_setup(self):
+    return self.script.get('setup', {})
+
   def get_test(self):
     return self.script.get('script', {}).get('test', None)
 

@@ -23,42 +23,41 @@
 {% load website_app %}
 
 {% block css %}
-  #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
+  #solution_image { margin: 10px auto; width: 100%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; }
   .col { margin-right: auto; }
-  pre.expand_code { height: 70vh; overflow: hidden; }
-  pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
-{% endblock %}
-
-{% block js %}
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('span.expand_code').on('click tap', function() {
-        $('pre.expand_code').css('height', 'auto');
-        $(this).hide();
-      });
-    });
-  </script>
+  pre { overflow: scroll; }
 {% endblock %}
 
 {% block content %}
 
-  <br/>
-  <h1><i class="medium material-icons">{{ script.get_icon }}</i>&nbsp; {{ script.get_name }}</h1>
-  <p class="flow-text">{{ script.get_description|safe }}</p>
-
+  <br/><br/>
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="{% if external %}/starthinker{% endif %}/solution/">All</a>
+  {% for c in script.get_categories %}
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="{% if external %}/starthinker{% endif %}/solution/?category={{ c|slugify }}">{{ c }}</a>
+  {% endfor %}
   {% for c in script.get_requirements %}
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="{% if external %}/starthinker{% endif %}/solution/?category={{ c|slugify }}">{{ c }}</a>
   {% endfor %}
 
   <br/><br/>
-  {% for c in script.get_categories %}
-    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="{% if external %}/starthinker{% endif %}/solution/?category={{ c|slugify }}">{{ c }}</a>
-  {% endfor %}
 
-  {% if script.get_image %}<img id="solution_image" src="{{ script.get_image }}"/>{% endif %}
+  {% if script.get_image %}
+    <div class="row">
+      <div class="col s12 m6 l4">
+        <i class="large material-icons">{{ script.get_icon }}</i><h1>{{ script.get_name }}</h1>
+        <p class="flow-text">{{ script.get_description|safe }}</p>
+      </div>
+      <div class="col s12 m6 l8">
+        {% if script.get_image %}<img id="solution_image" src="{{ script.get_image }}"/>{% endif %}
+      </div>
+    </div>
+  {% else %}
+    <h1><i class="large material-icons">{{ script.get_icon }}</i>&nbsp;{{ script.get_name }}</h1>
+    <p class="flow-text">{{ script.get_description|safe }}</p>
+  {% endif %}
 
+  <br/><br/>
   <div class="buttons">
 
     <a class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
@@ -83,8 +82,6 @@
       </a>
     {% endif %}
 
-    <br/>
-
     {% if not external %}
       <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_ui }}" target="_blank">
         <i class="material-icons right">play_circle_outline</i>Run Now
@@ -106,71 +103,63 @@
   </div>
 
   <br/><br/>
-
   <div class="row">
-    {% if script.get_pitches %}
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-            <thead>
-              <tr>
-                <th>Value Proposition</th>
-              </tr>
-             </thead>
-             <tbody>
-             {% for pitch in script.get_pitches %}
-               <tr>
-                 <td>{{ pitch }}</td>
-               </tr>
-             {% endfor %}
-             </tbody>
-          </table>
-        </div>
-      </div>
-    {% endif %}
-
-    {% if script.get_impacts %}
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-            <thead>
-              <tr>
-                <th>Impact</th>
-                <th>Level</th>
-              </tr>
-             </thead>
-               <tbody>
-               {% for impact, value in script.get_impacts.items %}
-                 <tr>
-                   <td>{{ impact|title }}</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: {{ value }}%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               {% endfor %}
-             </tbody>
-          </table>
-        </div>
-      </div>
-    {% endif %}
-
     <div class="col s12 m6 l4">
       <div class="card">
+        <br/>
+        {% if script.get_impacts %}
+          <h4>Impact Level</h4>
+          <table class="bordered">
+            <tbody>
+              {% for impact, value in script.get_impacts.items %}
+              <tr>
+                <td width="50%">{{ impact|title }}</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: {{ value }}%"></div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+
+        {% if script.get_pitches %}
+          <h4>Value Proposition</h4>
+          <table class="bordered">
+            <tbody>
+              {% for pitch in script.get_pitches %}
+              <tr>
+                <td>{{ pitch }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+
+        {% if script.get_instructions %}
+          <h4>Instructions</h4>
+          <table class="bordered">
+            <tbody>
+              {% for instruction in script.get_instructions %}
+              <tr>
+                <td>{{ instruction|safe }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+
+
+        <h4>Details</h4>
         <table class="bordered">
-          <thead>
-            <tr>
-              <th colspan="2">Details</th>
-            </tr>
-           </thead>
           <tbody>
 
-            {% if script.get_open_source %}
             <tr>
-              <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
+              <td>Open Source</td>
+              <td>{% if script.get_open_source %}YES{% else %}NO{% endif %}
             </tr>
-            {% endif %}
 
             <tr>
               <td>Age</td>
@@ -183,34 +172,32 @@
               </td>
             </tr>
 
+            {% with script.get_setup as setup %}
+              {% if script.is_manual %}
+                <tr>
+                  <td>Manual</td>
+                  <td>Triggered on demand by user.</td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td>Shedule Days</td>
+                  <td>{% if setup.days %}{{ setup.day|join:", " }}{% else %}Configured by user.{% endif %}</td>
+                </tr>
+                <tr>
+                  <td>Shedule Hours</td>
+                  <td>{% if setup.hour %}{{ setup.hour|join:", " }}{% else %}Configured by user.{% endif %}</td>
+                </tr>
+              {% endif %}
+            {% endwith %}
+
           </tbody>
         </table>
+
       </div>
     </div>
 
-   {% if script.get_instructions %}
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-          <thead>
-              <tr>
-                <th>Instructions</th>
-              </tr>
-             </thead>
-             <tbody>
-             {% for instruction in script.get_instructions %}
-               <tr>
-                 <td>{{ instruction|safe }}</td>
-               </tr>
-             {% endfor %}
-             </tbody>
-          </table>
-        </div>
-       </div>
-     {% endif %}
-
-    <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">{{ script.get_tasks_linked|safe }}</code></pre>
+    <div class="col s12 m6 l8">
+      <pre id="code-workflow" class="card left-align"><code class="language-json">{{ script.get_tasks_linked|safe }}</code></pre>
     </div>
 
   </div>
