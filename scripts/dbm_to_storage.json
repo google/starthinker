@@ -6,7 +6,7 @@
     "icon":"donut_large",
     "from":["dv360"],
     "to":["storage"],
-    "title":"DV360 To Storage",
+    "title":"DV360 Report To Storage",
     "description":"Move existing DV360 report into a Storage bucket.",
     "instructions":[
       "Specify either report name or report id to move a report.",

@@ -4,7 +4,7 @@
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"file_upload",
-    "title":"Conversion Upload Sheets",
+    "title":"CM360 Conversion Upload From Sheets",
     "description":"Move form Sheets to CM.",
     "from":["sheets"],
     "to":["bigquery"],

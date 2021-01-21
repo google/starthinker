@@ -6,7 +6,7 @@
     "icon":"donut_large",
     "from":["dv360"],
     "to":["sheets"],
-    "title":"DV360 To Sheets",
+    "title":"DV360 Report To Sheets",
     "description":"Move existing DV360 report into a Sheets tab.",
     "instructions":[
       "Specify either report name or report id to move a report.",

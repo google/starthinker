@@ -6,7 +6,7 @@
     "icon":"arrow_forward",
     "from":["bigquery"],
     "to":["sheets"],
-    "title":"Query to Sheet",
+    "title":"BigQuery Query to Sheet",
     "description":"Copy the contents of a query into a Google Sheet.",
     "instructions":[
       "Specify the sheet and the query.",

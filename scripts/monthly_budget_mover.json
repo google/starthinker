@@ -4,7 +4,7 @@
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"perm_phone_msg",
-    "title":"Monthly Budget Mover",
+    "title":"DV360 Monthly Budget Mover",
     "image": "https://storage.googleapis.com/starthinker-ui/MonthlyBudgetMover.png",
     "description":"Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.",
     "from":["dv360"],

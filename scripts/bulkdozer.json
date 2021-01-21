@@ -4,7 +4,7 @@
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_small",
-    "title":"Bulkdozer",
+    "title":"CM360 Bulkdozer Editor",
     "description":"Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/bulkdozer.png",
     "sample":"https://docs.google.com/spreadsheets/d/10YewffRUP1gCxTY0ZLTkVEfzmOQ1gPXPxp7qev3w8xk/edit?usp=sharing",

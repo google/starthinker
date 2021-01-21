@@ -4,7 +4,7 @@
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"security",
-    "title":"CM User Editor",
+    "title":"CM360 Bulk User Editor",
     "description":"A tool for rapidly bulk editing Campaign Manager profiles, roles, and sub accounts.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/cm_user_edit.png",
     "sample":"https://docs.google.com/spreadsheets/d/1Mw4kDJfaWVloyjSayJSkgE8i28Svoj1756fyQtIpmRE/",

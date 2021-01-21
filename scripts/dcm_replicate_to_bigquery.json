@@ -6,7 +6,7 @@
     "icon":"donut_small",
     "from":["cm", "sheets"],
     "to":["bigquery"],
-    "title":"CM Report Replicate",
+    "title":"CM360 Report Replicate",
     "description":"Replicate a report across multiple networks and advertisers.",
     "instructions":[
       "Provide the name or ID of an existing report.",

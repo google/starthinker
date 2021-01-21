@@ -4,7 +4,7 @@
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_large",
-    "title":"DV360 To BigQuery",
+    "title":"DV360 Report To BigQuery",
     "description":"Move existing DV360 reports into a BigQuery table.",
     "from":["dv360"],
     "to":["bigquery"],

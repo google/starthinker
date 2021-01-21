@@ -6,7 +6,7 @@
     "icon":"donut_small",
     "from":["cm"],
     "to":["cm"],
-    "title":"CM Report Run",
+    "title":"CM360 Report Run",
     "description":"Trigger a CM report run",
     "instructions":[
       "Specify an account id.",

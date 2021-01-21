@@ -6,7 +6,7 @@
     "icon":"donut_small",
     "from":["cm"],
     "to":["bigquery"],
-    "title":"CM To BigQuery",
+    "title":"CM360 Report To BigQuery",
     "description":"Move existing CM report into a BigQuery table.",
     "instructions":[
       "Specify an account id.",

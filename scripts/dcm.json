@@ -6,7 +6,7 @@
     "icon":"donut_small",
     "from":["cm"],
     "to":["cm"],
-    "title":"CM Report",
+    "title":"CM360 Report",
     "description":"Create a CM report from a JSON definition.",
     "instructions":[
       "Add a an account as [account_id]@[profile_id]",

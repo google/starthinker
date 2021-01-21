@@ -4,7 +4,7 @@
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"fingerprint",
-    "title":"Transparency Dashboard",
+    "title":"CM360 Domain And App Transparency",
     "description":"Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domains and apps are misconfigured by publisher resulting in underreporting.",
     "image":"https://storage.googleapis.com/starthinker-ui/transparency.png",
     "sample":"https://datastudio.google.com/c/u/0/reporting/1foircGRxgYCL_PR8gfdmYOleBacnPKwB/page/QCXj",

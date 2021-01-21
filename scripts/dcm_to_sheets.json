@@ -6,7 +6,7 @@
     "icon":"donut_small",
     "from":["cm"],
     "to":["sheets"],
-    "title":"CM To Sheets",
+    "title":"CM360 Report To Sheets",
     "description":"Move existing CM report into a Sheet tab.",
     "instructions":[
       "Specify an account id.",

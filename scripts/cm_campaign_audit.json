@@ -4,7 +4,7 @@
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"done_outline",
-    "title":"CM Campaign Auditor",
+    "title":"CM360 Campaign Auditor",
     "description":"A tool for rapidly bulk checking Campaign Manager campaigns",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/cm_user_edit.png",
     "sample":"https://docs.google.com/spreadsheets/d/1tt597dMsAaxYXaJdifwKYNVzJrIl6E9Pe8GysfVrWOs/",

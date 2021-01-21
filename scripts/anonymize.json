@@ -4,7 +4,7 @@
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"waves",
-    "title":"Anonymize Dataset",
+    "title":"BigQuery Anonymize Dataset",
     "description":"Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.",
     "instructions":[
        "Ensure you have user access to both datasets.",
