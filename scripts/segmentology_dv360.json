@@ -41,7 +41,7 @@
     }},
     { "bigquery":{
       "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing function." }},
-      "function":"pearson_significance_test",
+      "function":"Pearson Significance Test",
       "to":{
         "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }}
       }

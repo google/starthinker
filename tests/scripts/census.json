@@ -12,7 +12,7 @@
     { "include":{
       "script":"scripts/bigquery_census_normalize.json",
       "parameters":{
-        "auth":"user",
+        "auth":"service",
         "census_geography":"zip_codes",
         "census_year":"2018",
         "census_span":"5yr",
@@ -21,7 +21,7 @@
       }
     }},
     { "bigquery": {
-      "auth":"user",
+      "auth":"service",
       "from":{
         "values":[
           [1234, "Partner 1", 456, "Advertiser 1", 789, "Campaign 1", 58755, 0.48, 0.25, 0.11, 779],
@@ -55,16 +55,17 @@
       ]
     }},
     { "include":{
-      "script":"scripts/bigquery_pearson_significance_test.json",
+      "script":"scripts/bigquery_function.json",
+      "function":"Pearson Significance Test",
       "parameters":{
-        "auth":"user",
+        "auth":"service",
         "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Census_", "default": "Manual"}}
       }
     }},
     { "include":{
       "script":"scripts/bigquery_census_normalize.json",
       "parameters":{
-        "auth":"user",
+        "auth":"service",
         "census_geography":"zip_codes",
         "census_year":"2018",
         "census_span":"5yr",
@@ -75,7 +76,7 @@
     { "include":{
       "script":"scripts/bigquery_census_correlate.json",
       "parameters":{
-        "auth":"user",
+        "auth":"service",
         "join":"Zip_Code",
         "pass":["Partner_Id", "Partner", "Advertiser_Id", "Advertiser", "Campaign_Id", "Campaign"],
         "sum":["Impressions"],

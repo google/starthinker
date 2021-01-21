@@ -195,6 +195,7 @@ def bigquery():
         project.task['bigquery']['dataset'],
         query_parameters(project.task['bigquery']['query'],
                          project.task['bigquery'].get('parameters')),
+        legacy=project.task['bigquery'].get('legacy', True)
     )
 
     object_compare(sorted(rows), sorted(project.task['bigquery']['values']))
