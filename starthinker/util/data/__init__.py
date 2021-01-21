@@ -238,6 +238,7 @@ def put_rows(auth, destination, rows, variant=''):
 
   Args:
     auth: (string) The type of authentication to use, user or service.
+    rows: ( iterator ) The list of rows to be written, if NULL no action is performed.
     destination: (json) A json block resembling var_json described above. rows (
       list ) The data being written as a list object. variant (string) Appended
       to destination to differentieate multiple objects
