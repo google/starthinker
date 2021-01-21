@@ -49,7 +49,7 @@
         <p class="flow-text">{{ script.get_description|safe }}</p>
       </div>
       <div class="col s12 m6 l8">
-        {% if script.get_image %}<img id="solution_image" src="{{ script.get_image }}"/>{% endif %}
+        {% if script.get_image %}<img id="solution_image" src="{{ script.get_image }}" alt="{{ script.get_name|escape }} Sample Screenshot"/>{% endif %}
       </div>
     </div>
   {% else %}

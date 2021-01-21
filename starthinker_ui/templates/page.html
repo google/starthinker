@@ -86,7 +86,7 @@
     <nav class="blue darken-1">
       <div class="nav-wrapper">
         <a href="{% if not external %}/{% else %}/starthinker/{% endif %}" class="brand-logo">
-          <img src="{% static 'StarThinker.png' %}"/>
+          <img src="{% static 'StarThinker.png' %}" alt="StarThinker Logo"/>
           <span class="brand-title">StarThinker</span>
         </a>
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -100,7 +100,7 @@
             <li><a href="/logout/">Logout</a></li>
             <li>
               <div class="chip">
-                <img src="{{ request.user.picture }}" alt="{{ request.user.name }}">
+                <img src="{{ request.user.picture }}" alt="{{ request.user.name|escape }} Avatar">
                 {{ request.user.name }}
               </div>
             </li>
@@ -113,7 +113,7 @@
       {% if request.user.is_authenticated %}
         <li>
           <div class="chip" style="margin: 0px 30px;">
-            <img src="{{ request.user.picture }}" alt="{{ request.user.name }}">
+            <img src="{{ request.user.picture }}" alt="{{ request.user.name|escape }} Avatar">
             {{ request.user.name }}
           </div>
         </li>
