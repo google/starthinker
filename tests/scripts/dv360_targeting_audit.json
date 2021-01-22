@@ -6,13 +6,13 @@
   "tasks":[
     { "dataset":{
       "auth":"service",
-      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DV360_Targeting_Audit", "default": "Manual"}},
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DV360_Targeting_Audit_", "default": "Manual"}},
       "clear":true
     }},
     { "include":{
       "script":"scripts/dv360_targeting_audit.json",
       "parameters":{
-        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV360_Targeting_Audit", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV360_Targeting_Audit_", "default": "Manual"}},
         "auth_dv":"user",
         "auth_bigquery":"service",
         "partner":{"field":{ "name":"partner", "kind":"integer", "description":"The partner ID to run this for.", "default": ""}}
@@ -21,7 +21,7 @@
     { "test": {
       "auth":"service",
       "bigquery":{
-        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DV360_Targeting_Audit", "default": "Manual"}},
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DV360_Targeting_Audit_", "default": "Manual"}},
         "table":"Targeting_Audit",
         "schema":[
           { "name": "Channel", "type": "STRING", "mode": "NULLABLE" },
@@ -345,7 +345,7 @@
     }},
     { "dataset":{
       "auth":"service",
-      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DV360_Targeting_Audit", "default": "Manual"}},
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DV360_Targeting_Audit_", "default": "Manual"}},
       "delete":true
     }}
   ]
