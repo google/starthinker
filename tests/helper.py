@@ -128,15 +128,14 @@ def configure_tests(tests, runs, skips, test_run_id):
       old_fields = json.load(f)
 
   # Get new fields from test files and merge in old values
-
   fields = {}
   for filename, script in tests:
     script_fields = json_get_fields(script)
     script_name = filename.split('.')[0]
 
+    fields.setdefault(script_name, {})
     for field in script_fields:
       if field['name'] == 'test_run_id': continue
-      fields.setdefault(script_name, {})
       fields[script_name][field['name']] = old_fields.get(script_name, {}).get(
           field['name'], field.get('default', ''))
       fields[script_name][
@@ -152,18 +151,17 @@ def configure_tests(tests, runs, skips, test_run_id):
     f = open(CONFIG_FILE, 'w')
     f.write(json.dumps(fields, sort_keys=True, indent=2))
     f.close()
-
-    if test_run_id:
-      # Inject the test run ID to the list of field values that were read from the
-      # test config file. This is done in memory only, so that concrete test run
-      # value are replaced every time a test runs.
-      for script in fields:
-        fields[script]['test_run_id'] = test_run_id
   else:
     print('WARNING CONFIGURATION IS EMPTY, CHECK YOUR PATHS!')
 
-  # Create recipe directory
+  # Inject the test run ID to the list of field values that were read from the
+  # test config file. This is done in memory only, so that concrete test run
+  # value are replaced every time a test runs.
+  if test_run_id:
+    for script in fields:
+      fields[script]['test_run_id'] = test_run_id
 
+  # Create recipe directory
   print('GENERATE RECIPES')
   os.makedirs(RECIPE_DIRECTORY, exist_ok=True)
 
