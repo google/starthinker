@@ -24,9 +24,10 @@
       #message i { font-size: 2em; margin: 10px; }
       #message ul, #message li { display: inline; margin-left: 10px; }
       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
-      div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+      div.nav-wrapper { padding-left: 10%; padding-right: 10%; }
       h1 a i.material-icons { font-size: 4rem; }
       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+      span.brand-title { vertical-align: middle; padding-left: 10px;}
       ol li { line-height: 1.8em; }
       textarea { margin-top: 7px; height: 10rem; }
       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
@@ -45,19 +46,19 @@
       i.right { margin: 0px 15px; font-size: 1.5rem;}
       .collapsible-body { padding: 0px; }
       body { overflow: auto !important; }
-  #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
+  #solution_image { margin: 10px auto; width: 100%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; }
   .col { margin-right: auto; }
-  pre.expand_code { height: 70vh; overflow: hidden; }
-  pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
+  pre { overflow: scroll; }
     </style>
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
-    <nav class="green lighten-0">
+    <nav class="blue darken-1">
       <div class="nav-wrapper">
         <a href="/starthinker/" class="brand-logo">
-          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png" alt="StarThinker Logo"/>
+          <span class="brand-title">StarThinker</span>
         </a>
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -66,7 +67,7 @@
         </ul>
       </div>
     </nav>
-    <ul class="sidenav green lighten-1" id="mobile-menu">
+    <ul class="sidenav blue darken-2" id="mobile-menu">
       <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
       <li><a class="white-text" href="/starthinker/help/">Help</a></li>
     </ul>
@@ -91,16 +92,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 </noscript>
 <!-- End of Floodlight Tag: Please do not remove -->
     <div id="page" class="center">
-  <br/>
-  <h1><i class="medium material-icons">analytics</i>&nbsp; Federal Reserve Regional Data</h1>
-  <p class="flow-text">Download federal reserve region.</p>
+  <br/><br/>
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
+  <br/><br/>
+    <h1><i class="large material-icons">analytics</i>&nbsp;Federal Reserve Regional Data</h1>
+    <p class="flow-text">Download federal reserve region.</p>
   <br/><br/>
   <div class="buttons">
     <a class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
       <i class="material-icons right">lock_open</i>Get Access
     </a>
-    <br/>
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/fred_regional_to_bigquery.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
@@ -115,50 +116,48 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   <div class="row">
     <div class="col s12 m6 l4">
       <div class="card">
+        <br/>
+          <h4>Instructions</h4>
+          <table class="bordered">
+            <tbody>
+              <tr>
+                <td>Specify the values for a <a href='https://research.stlouisfed.org/docs/api/geofred/regional_data.html' target='_blank'>Fred observations API call</a>.</td>
+              </tr>
+              <tr>
+                <td>A table will appear in the dataset.</td>
+              </tr>
+            </tbody>
+          </table>
+        <h4>Details</h4>
         <table class="bordered">
-          <thead>
-            <tr>
-              <th colspan="2">Details</th>
-            </tr>
-           </thead>
           <tbody>
             <tr>
-              <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
+              <td>Open Source</td>
+              <td>YES
             </tr>
             <tr>
               <td>Age</td>
-              <td>Aug. 4, 2020 (4 months)</td>
+              <td>Aug. 4, 2020 (5 months, 2 weeks)</td>
             </tr>
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Federal+Reserve+Regional+Data+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Federal+Reserve+Regional+Data+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Ffred_regional_to_bigquery%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Federal+Reserve+Regional+Data+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Federal+Reserve+Regional+Data+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Fkenjora.c.googlers.com%3A8000%2Fsolution%2Ffred_regional_to_bigquery%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
+                <tr>
+                  <td>Shedule Days</td>
+                  <td>Configured by user.</td>
+                </tr>
+                <tr>
+                  <td>Shedule Hours</td>
+                  <td>Configured by user.</td>
+                </tr>
           </tbody>
         </table>
       </div>
     </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-          <thead>
-              <tr>
-                <th>Instructions</th>
-              </tr>
-             </thead>
-             <tbody>
-               <tr>
-                 <td>Specify the values for a <a href='https://research.stlouisfed.org/docs/api/geofred/regional_data.html' target='_blank'>Fred observations API call</a>.</td>
-               </tr>
-               <tr>
-                 <td>A table will appear in the dataset.</td>
-               </tr>
-             </tbody>
-          </table>
-        </div>
-       </div>
-    <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
+    <div class="col s12 m6 l8">
+      <pre id="code-workflow" class="card left-align"><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/fred/run.py" target="_blank">fred</a>": {
             "auth": {
@@ -330,24 +329,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   </p>
     </div>
   </body>
-<footer class="page-footer red lighten-1">
+<footer class="page-footer blue">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google LLC
+      &copy; 2019 Google LLC
     </div>
   </div>
 </footer>
   <script type="text/javascript">
     $(document).ready(function() {
       M.AutoInit(context=document.getElementById("form_recipe"));
-    });
-  </script>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('span.expand_code').on('click tap', function() {
-        $('pre.expand_code').css('height', 'auto');
-        $(this).hide();
-      });
     });
   </script>
 </html>

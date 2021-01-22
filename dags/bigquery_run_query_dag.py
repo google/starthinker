@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Query Run
+BigQuery Query Run
 
 Run query on a project.
 
@@ -124,8 +124,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('bigquery_run_query', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('bigquery_run_query', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

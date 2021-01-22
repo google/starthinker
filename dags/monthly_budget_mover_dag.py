@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Monthly Budget Mover
+DV360 Monthly Budget Mover
 
 Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.
 
@@ -89,7 +89,7 @@ from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
-  'recipe_name': '',  # 
+  'recipe_name': '',  # Table to write to.
   'auth_write': 'service',  # Credentials used for writing data.
   'auth_read': 'user',  # Credentials used for reading data.
   'partner_id': '',  # The sdf file types.
@@ -320,7 +320,7 @@ RECIPE = {
                 'name': 'recipe_name',
                 'kind': 'string',
                 'prefix': 'SDF_OLD_',
-                'description': ''
+                'description': 'Table to write to.'
               }
             },
             'schema': [
@@ -346,7 +346,7 @@ RECIPE = {
                 'name': 'recipe_name',
                 'kind': 'string',
                 'prefix': 'SDF_NEW_',
-                'description': ''
+                'description': 'Table to write to.'
               }
             },
             'schema': [
@@ -372,7 +372,7 @@ RECIPE = {
                 'name': 'recipe_name',
                 'kind': 'string',
                 'prefix': 'SDF_BUDGET_MOVER_LOG_',
-                'description': ''
+                'description': 'Table to write to.'
               }
             },
             'schema': [
@@ -387,8 +387,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('monthly_budget_mover', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('monthly_budget_mover', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

@@ -110,7 +110,7 @@
         "out_old_sdf":{
           "bigquery":{
             "dataset": {"field":{"name":"dataset", "kind":"string","order":8, "default":"", "description":"Dataset that you would like your output tables to be produced in."}},
-            "table": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"SDF_OLD_", "description":"" }},
+            "table": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"SDF_OLD_", "description":"Table to write to." }},
             "schema": [],
             "skip_rows": 0,
             "disposition": "WRITE_TRUNCATE"
@@ -120,7 +120,7 @@
         "out_new_sdf":{
           "bigquery":{
             "dataset": {"field":{"name":"dataset", "kind":"string","order":8, "default":"", "description":"Dataset that you would like your output tables to be produced in."}},
-            "table": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"SDF_NEW_", "description":"" }},
+            "table": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"SDF_NEW_", "description":"Table to write to." }},
             "schema": [],
             "skip_rows": 0,
             "disposition": "WRITE_TRUNCATE"
@@ -130,7 +130,7 @@
         "out_changes":{
           "bigquery":{
             "dataset": {"field":{"name":"dataset", "kind":"string","order":8, "default":"", "description":"Dataset that you would like your output tables to be produced in."}},
-            "table": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"SDF_BUDGET_MOVER_LOG_", "description":"" }},
+            "table": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"SDF_BUDGET_MOVER_LOG_", "description":"Table to write to." }},
             "schema": [],
             "skip_rows": 0,
             "disposition": "WRITE_TRUNCATE"

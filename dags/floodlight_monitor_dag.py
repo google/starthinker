@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Floodlight Monitor
+CM360 Floodlight Monitor
 
 Monitor floodlight impressions specified in sheet and send email alerts.
 
@@ -134,8 +134,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('floodlight_monitor', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('floodlight_monitor', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

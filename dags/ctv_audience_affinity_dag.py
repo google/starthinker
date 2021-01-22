@@ -217,7 +217,8 @@ RECIPE = {
                 'mode': 'NULLABLE'
               }
             ],
-            'table': 'us_country_app'
+            'table': 'us_country_app',
+            'header': True
           }
         }
       }
@@ -297,7 +298,8 @@ RECIPE = {
                 'mode': 'NULLABLE'
               }
             ],
-            'table': 'us_country_baseline'
+            'table': 'us_country_baseline',
+            'header': True
           }
         }
       }
@@ -398,7 +400,8 @@ RECIPE = {
                 'mode': 'NULLABLE'
               }
             ],
-            'table': 'us_audience_baseline'
+            'table': 'us_audience_baseline',
+            'header': True
           }
         }
       }
@@ -509,7 +512,8 @@ RECIPE = {
                 'mode': 'NULLABLE'
               }
             ],
-            'table': 'us_audience_app'
+            'table': 'us_audience_app',
+            'header': True
           }
         }
       }
@@ -690,8 +694,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('ctv_audience_affinity', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('ctv_audience_affinity', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

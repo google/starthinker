@@ -62,19 +62,20 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Bulk Editor For DV360
+DV360 Bulk Editor
 
 Allows bulk editing DV360 through Sheets and BigQuery.
 
-  - Select <b>Load Partners</b> and run the recipe. A Sheet called DV_Sheet_UNDEFINED will be created.
-  - Fill in <i>Partners</i> tab filter.
-  - Run <b>Load Advertisers</b>.
-  - Fill in <i>Advertisers</i> tab filter.
-  - Run <b>Load Insertion Orders</b> or <b>Load Line Items</b> or <b>Load Creatives</b>.
-  - Fill in changes on all tabs with colored fields.
-  - Select <i>Audit</i> and run the recipe.
+  - Select <b>Load Partners</b>, <b>save</b> the recipe, then run. A Sheet called DV_Sheet_UNDEFINED will be created.
+  - In the 'Partners' sheet tab, fill in <i>Partners</i> tab filter.
+  - Select <b>Load Advertisers</b>, <b>save</b> the recipe, then run.
+  - In the 'Advertisers' sheet tab, fill in <i>Advertisers</i> tab filter.
+  - Select <b>Load Campaigns</b>, <b>save</b> the recipe, then run. Filtering by campaigns is optional.
+  - Now, select <b>Load Insertion Orders and Line Items</b>, <b>save</b> the recipe, then run.
+  - To patch, fill in changes on all tabs with colored fields.
+  - Select <i>Preview</i>, <b>save</b> the recipe, then run the recipe.
   - Check the <b>Audit</b> and <b>Preview</b> tabs.
-  - Select <i>Patch</i> and run the recipe.
+  - To Patch, select <i>Patch</i>, <b>save</b> the recipe, then run.
   - Check the <b>Success</b> and <b>Error</b> tabs.
   - Patch can be run multiple times.
   - Patch ONLY changes edited fields.
@@ -225,6 +226,7 @@ RECIPE = {
               'Load Creatives',
               'Load Insertion Orders',
               'Load Line Items',
+              'Load Insertion Orders and Line Items',
               'Preview',
               'Patch'
             ],
@@ -238,8 +240,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('dv360_editor', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('dv360_editor', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

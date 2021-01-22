@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-CM Campaign Auditor
+CM360 Campaign Auditor
 
 A tool for rapidly bulk checking Campaign Manager campaigns
 
@@ -115,8 +115,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('cm_campaign_audit', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('cm_campaign_audit', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

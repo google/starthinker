@@ -62,13 +62,13 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-CM User Editor
+CM360 Bulk User Editor
 
 A tool for rapidly bulk editing Campaign Manager profiles, roles, and sub accounts.
 
   - Add this card to a recipe and save it.
   - Then click <strong>Run Now</strong> to deploy.
-  - Follow the <a href="https://docs.google.com/spreadsheets/d/1zQDqm3owQMNsx0lvcN1SQWVGOhwfgsWSmirBK54qVL0/">instructions</a> for setup.
+  - Follow the <a href="https://docs.google.com/spreadsheets/d/1Mw4kDJfaWVloyjSayJSkgE8i28Svoj1756fyQtIpmRE/">instructions</a> for setup.
 
 --------------------------------------------------------------
 
@@ -98,7 +98,7 @@ RECIPE = {
         'hour': [
         ],
         'copy': {
-          'source': 'https://docs.google.com/spreadsheets/d/1zQDqm3owQMNsx0lvcN1SQWVGOhwfgsWSmirBK54qVL0/',
+          'source': 'https://docs.google.com/spreadsheets/d/1Mw4kDJfaWVloyjSayJSkgE8i28Svoj1756fyQtIpmRE/',
           'destination': {
             'field': {
               'name': 'recipe_name',
@@ -115,8 +115,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('cm_user_editor', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('cm_user_editor', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

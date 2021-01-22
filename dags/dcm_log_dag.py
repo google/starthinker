@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-CM Log Audit
+CM360 Log Audit
 
 Downloads Campaign manager logs and allows audits.
 
@@ -215,8 +215,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('dcm_log', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('dcm_log', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

@@ -24,9 +24,10 @@
       #message i { font-size: 2em; margin: 10px; }
       #message ul, #message li { display: inline; margin-left: 10px; }
       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
-      div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+      div.nav-wrapper { padding-left: 10%; padding-right: 10%; }
       h1 a i.material-icons { font-size: 4rem; }
       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+      span.brand-title { vertical-align: middle; padding-left: 10px;}
       ol li { line-height: 1.8em; }
       textarea { margin-top: 7px; height: 10rem; }
       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
@@ -45,19 +46,19 @@
       i.right { margin: 0px 15px; font-size: 1.5rem;}
       .collapsible-body { padding: 0px; }
       body { overflow: auto !important; }
-  #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
+  #solution_image { margin: 10px auto; width: 100%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; }
   .col { margin-right: auto; }
-  pre.expand_code { height: 70vh; overflow: hidden; }
-  pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
+  pre { overflow: scroll; }
     </style>
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
-    <nav class="green lighten-0">
+    <nav class="blue darken-1">
       <div class="nav-wrapper">
         <a href="/starthinker/" class="brand-logo">
-          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png" alt="StarThinker Logo"/>
+          <span class="brand-title">StarThinker</span>
         </a>
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -66,7 +67,7 @@
         </ul>
       </div>
     </nav>
-    <ul class="sidenav green lighten-1" id="mobile-menu">
+    <ul class="sidenav blue darken-2" id="mobile-menu">
       <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
       <li><a class="white-text" href="/starthinker/help/">Help</a></li>
     </ul>
@@ -91,10 +92,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 </noscript>
 <!-- End of Floodlight Tag: Please do not remove -->
     <div id="page" class="center">
-  <br/>
-  <h1><i class="medium material-icons">security</i>&nbsp; SA360 Web Query Report</h1>
-  <p class="flow-text">Download SA360 reports into a Google Sheet.</p>
+  <br/><br/>
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
+  <br/><br/>
+    <h1><i class="large material-icons">security</i>&nbsp;SA360 Web Query Report</h1>
+    <p class="flow-text">Download SA360 reports into a Google Sheet.</p>
   <br/><br/>
   <div class="buttons">
     <a class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
@@ -103,7 +105,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <a class="btn-large blue waves-effect waves-light" href="https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/" target="_blank">
         <i class="material-icons right">directions_bike</i>Sample
       </a>
-    <br/>
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/sa360_web_query.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
@@ -116,131 +117,108 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   </div>
   <br/><br/>
   <div class="row">
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-            <thead>
-              <tr>
-                <th>Value Proposition</th>
-              </tr>
-             </thead>
-             <tbody>
-               <tr>
-                 <td>Download reports.</td>
-               </tr>
-               <tr>
-                 <td>Build custom analysis.</td>
-               </tr>
-               <tr>
-                 <td>Save time on account audits.</td>
-               </tr>
-             </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-            <thead>
-              <tr>
-                <th>Impact</th>
-                <th>Level</th>
-              </tr>
-             </thead>
-               <tbody>
-                 <tr>
-                   <td>Spend Optimization</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-                 <tr>
-                   <td>Spend Growth</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-                 <tr>
-                   <td>Time Savings</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 100%"></div>
-                     </div>
-                   </td>
-                 </tr>
-                 <tr>
-                   <td>Account Health</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 100%"></div>
-                     </div>
-                   </td>
-                 </tr>
-                 <tr>
-                   <td>Csat Improvement</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 100%"></div>
-                     </div>
-                   </td>
-                 </tr>
-             </tbody>
-          </table>
-        </div>
-      </div>
     <div class="col s12 m6 l4">
       <div class="card">
+        <br/>
+          <h4>Impact Level</h4>
+          <table class="bordered">
+            <tbody>
+              <tr>
+                <td width="50%">Spend Optimization</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 0%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%">Spend Growth</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 0%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%">Time Savings</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 100%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%">Account Health</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 100%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%">Csat Improvement</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 100%"></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h4>Value Proposition</h4>
+          <table class="bordered">
+            <tbody>
+              <tr>
+                <td>Download reports.</td>
+              </tr>
+              <tr>
+                <td>Build custom analysis.</td>
+              </tr>
+              <tr>
+                <td>Save time on account audits.</td>
+              </tr>
+            </tbody>
+          </table>
+          <h4>Instructions</h4>
+          <table class="bordered">
+            <tbody>
+              <tr>
+                <td>Add this card to a recipe and save it.</td>
+              </tr>
+              <tr>
+                <td>Then click <strong>Run Now</strong> to deploy.</td>
+              </tr>
+              <tr>
+                <td>Follow the <a href="https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/">instructions</a> for setup.</td>
+              </tr>
+            </tbody>
+          </table>
+        <h4>Details</h4>
         <table class="bordered">
-          <thead>
-            <tr>
-              <th colspan="2">Details</th>
-            </tr>
-           </thead>
           <tbody>
             <tr>
-              <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
+              <td>Open Source</td>
+              <td>YES
             </tr>
             <tr>
               <td>Age</td>
-              <td>Dec. 2, 2019 (1 year)</td>
+              <td>Dec. 2, 2019 (1 year, 1 month)</td>
             </tr>
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:syb@google.com?subject=Request+For+A+SA360+Web+Query+Report+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+SA360+Web+Query+Report+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fsa360_web_query%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">syb@google.com</a>
+              <td><a href="mailto:syb@google.com?subject=Request+For+A+SA360+Web+Query+Report+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+SA360+Web+Query+Report+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Fkenjora.c.googlers.com%3A8000%2Fsolution%2Fsa360_web_query%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">syb@google.com</a>
               </td>
             </tr>
+                <tr>
+                  <td>Manual</td>
+                  <td>Triggered on demand by user.</td>
+                </tr>
           </tbody>
         </table>
       </div>
     </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-          <thead>
-              <tr>
-                <th>Instructions</th>
-              </tr>
-             </thead>
-             <tbody>
-               <tr>
-                 <td>Add this card to a recipe and save it.</td>
-               </tr>
-               <tr>
-                 <td>Then click <strong>Run Now</strong> to deploy.</td>
-               </tr>
-               <tr>
-                 <td>Follow the <a href="https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/">instructions</a> for setup.</td>
-               </tr>
-             </tbody>
-          </table>
-        </div>
-       </div>
-    <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
+    <div class="col s12 m6 l8">
+      <pre id="code-workflow" class="card left-align"><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/drive/run.py" target="_blank">drive</a>": {
             "auth": "user",
@@ -279,24 +257,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   </p>
     </div>
   </body>
-<footer class="page-footer red lighten-1">
+<footer class="page-footer blue">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google LLC
+      &copy; 2019 Google LLC
     </div>
   </div>
 </footer>
   <script type="text/javascript">
     $(document).ready(function() {
       M.AutoInit(context=document.getElementById("form_recipe"));
-    });
-  </script>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('span.expand_code').on('click tap', function() {
-        $('pre.expand_code').css('height', 'auto');
-        $(this).hide();
-      });
     });
   </script>
 </html>

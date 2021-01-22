@@ -103,11 +103,11 @@ INPUTS = {inputs}
 
 RECIPE = {recipe}
 
-DAG_FACTORY = DAG_Factory('{dag}', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('{dag}', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()
 """
 
 def script_to_dag(dag_name,

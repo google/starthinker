@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Query To Table
+BigQuery Query To Table
 
 Save query results into a BigQuery table.
 
@@ -146,8 +146,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('bigquery_query', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('bigquery_query', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

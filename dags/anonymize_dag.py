@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Anonymize Dataset
+BigQuery Anonymize Dataset
 
 Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.
 
@@ -81,9 +81,9 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'service',  # Credentials used for reading data.
-  'from_project': '',  # Original project to copy from.
-  'from_dataset': '',  # Original dataset to copy from.
+  'auth_read': 'service',  # Credentials used.
+  'from_project': '',  # Original project to read from.
+  'from_dataset': '',  # Original dataset to read from.
   'to_project': None,  # Anonymous data will be writen to.
   'to_dataset': '',  # Anonymous data will be writen to.
 }
@@ -102,9 +102,9 @@ RECIPE = {
           'field': {
             'name': 'auth_read',
             'kind': 'authentication',
-            'order': 1,
+            'order': 0,
             'default': 'service',
-            'description': 'Credentials used for reading data.'
+            'description': 'Credentials used.'
           }
         },
         'bigquery': {
@@ -114,7 +114,7 @@ RECIPE = {
                 'name': 'from_project',
                 'kind': 'string',
                 'order': 1,
-                'description': 'Original project to copy from.'
+                'description': 'Original project to read from.'
               }
             },
             'dataset': {
@@ -122,7 +122,7 @@ RECIPE = {
                 'name': 'from_dataset',
                 'kind': 'string',
                 'order': 2,
-                'description': 'Original dataset to copy from.'
+                'description': 'Original dataset to read from.'
               }
             }
           },
@@ -151,8 +151,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('anonymize', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('anonymize', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-CM To Storage
+CM360 Report To Storage
 
 Move existing CM report into a Storage bucket.
 
@@ -164,8 +164,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('dcm_to_storage', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('dcm_to_storage', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

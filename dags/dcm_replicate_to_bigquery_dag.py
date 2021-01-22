@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-CM Report Replicate
+CM360 Report Replicate
 
 Replicate a report across multiple networks and advertisers.
 
@@ -223,8 +223,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('dcm_replicate_to_bigquery', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('dcm_replicate_to_bigquery', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

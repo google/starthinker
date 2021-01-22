@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DV360 To Sheets
+DV360 Report To Sheets
 
 Move existing DV360 report into a Sheets tab.
 
@@ -148,8 +148,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('dbm_to_sheets', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('dbm_to_sheets', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

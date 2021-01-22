@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DT To Table
+CM360 Data Transfer To Bigquery
 
 Move data from a DT bucket into a BigQuery table.
 
@@ -171,8 +171,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('dt', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('dt', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

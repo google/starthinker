@@ -24,9 +24,10 @@
       #message i { font-size: 2em; margin: 10px; }
       #message ul, #message li { display: inline; margin-left: 10px; }
       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
-      div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+      div.nav-wrapper { padding-left: 10%; padding-right: 10%; }
       h1 a i.material-icons { font-size: 4rem; }
       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+      span.brand-title { vertical-align: middle; padding-left: 10px;}
       ol li { line-height: 1.8em; }
       textarea { margin-top: 7px; height: 10rem; }
       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
@@ -45,19 +46,19 @@
       i.right { margin: 0px 15px; font-size: 1.5rem;}
       .collapsible-body { padding: 0px; }
       body { overflow: auto !important; }
-  #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
+  #solution_image { margin: 10px auto; width: 100%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; }
   .col { margin-right: auto; }
-  pre.expand_code { height: 70vh; overflow: hidden; }
-  pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
+  pre { overflow: scroll; }
     </style>
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
-    <nav class="green lighten-0">
+    <nav class="blue darken-1">
       <div class="nav-wrapper">
         <a href="/starthinker/" class="brand-logo">
-          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png" alt="StarThinker Logo"/>
+          <span class="brand-title">StarThinker</span>
         </a>
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -66,7 +67,7 @@
         </ul>
       </div>
     </nav>
-    <ul class="sidenav green lighten-1" id="mobile-menu">
+    <ul class="sidenav blue darken-2" id="mobile-menu">
       <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
       <li><a class="white-text" href="/starthinker/help/">Help</a></li>
     </ul>
@@ -91,12 +92,19 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 </noscript>
 <!-- End of Floodlight Tag: Please do not remove -->
     <div id="page" class="center">
-  <br/>
-  <h1><i class="medium material-icons">donut_small</i>&nbsp; Bulkdozer</h1>
-  <p class="flow-text">Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.</p>
+  <br/><br/>
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   <br/><br/>
-  <img id="solution_image" src="https://github.com/google/starthinker/raw/master/tutorials/images/bulkdozer.png"/>
+    <div class="row">
+      <div class="col s12 m6 l4">
+        <i class="large material-icons">donut_small</i><h1>CM360 Bulkdozer Editor</h1>
+        <p class="flow-text">Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.</p>
+      </div>
+      <div class="col s12 m6 l8">
+        <img id="solution_image" src="https://github.com/google/starthinker/raw/master/tutorials/images/bulkdozer.png" alt="CM360 Bulkdozer Editor Sample Screenshot"/>
+      </div>
+    </div>
+  <br/><br/>
   <div class="buttons">
     <a class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
       <i class="material-icons right">lock_open</i>Get Access
@@ -107,7 +115,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md" target="_blank">
         <i class="material-icons right">list</i>Documentation
       </a>
-    <br/>
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/bulkdozer.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
@@ -120,158 +127,135 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   </div>
   <br/><br/>
   <div class="row">
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-            <thead>
-              <tr>
-                <th>Value Proposition</th>
-              </tr>
-             </thead>
-             <tbody>
-               <tr>
-                 <td>Reduce time to market of campaigns and provide the agility to respond quickly to changes.</td>
-               </tr>
-               <tr>
-                 <td>Quality of campaigns increases as fewer manual steps lead to fewer errors, and the visualization that Bulkdozer provides is invaluable to validate and audit campaigns.</td>
-               </tr>
-               <tr>
-                 <td>More efficiency means more time and resources available to focus on higher value tasks.</td>
-               </tr>
-               <tr>
-                 <td>Leads to better media decisions and better ROAS.</td>
-               </tr>
-             </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-            <thead>
-              <tr>
-                <th>Impact</th>
-                <th>Level</th>
-              </tr>
-             </thead>
-               <tbody>
-                 <tr>
-                   <td>Spend Optimization</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-                 <tr>
-                   <td>Spend Growth</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-                 <tr>
-                   <td>Time Savings</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 90%"></div>
-                     </div>
-                   </td>
-                 </tr>
-                 <tr>
-                   <td>Account Health</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-                 <tr>
-                   <td>Csat Improvement</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 90%"></div>
-                     </div>
-                   </td>
-                 </tr>
-             </tbody>
-          </table>
-        </div>
-      </div>
     <div class="col s12 m6 l4">
       <div class="card">
+        <br/>
+          <h4>Impact Level</h4>
+          <table class="bordered">
+            <tbody>
+              <tr>
+                <td width="50%">Spend Optimization</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 0%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%">Spend Growth</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 0%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%">Time Savings</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 90%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%">Account Health</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 0%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%">Csat Improvement</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 90%"></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h4>Value Proposition</h4>
+          <table class="bordered">
+            <tbody>
+              <tr>
+                <td>Reduce time to market of campaigns and provide the agility to respond quickly to changes.</td>
+              </tr>
+              <tr>
+                <td>Quality of campaigns increases as fewer manual steps lead to fewer errors, and the visualization that Bulkdozer provides is invaluable to validate and audit campaigns.</td>
+              </tr>
+              <tr>
+                <td>More efficiency means more time and resources available to focus on higher value tasks.</td>
+              </tr>
+              <tr>
+                <td>Leads to better media decisions and better ROAS.</td>
+              </tr>
+            </tbody>
+          </table>
+          <h4>Instructions</h4>
+          <table class="bordered">
+            <tbody>
+              <tr>
+                <td>Open the <a href='https://docs.google.com/spreadsheets/d/10YewffRUP1gCxTY0ZLTkVEfzmOQ1gPXPxp7qev3w8xk/edit?usp=sharing' target='_blank'>Bulkdozer 0.27</a> feed.</td>
+              </tr>
+              <tr>
+                <td>Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed.</td>
+              </tr>
+              <tr>
+                <td>Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version.</td>
+              </tr>
+              <tr>
+                <td>Under the Account ID field below, enter the your Campaign Manager Network ID.</td>
+              </tr>
+              <tr>
+                <td>Under Sheet URL, enter the URL of your copy of the feed that you just created in the steps above.</td>
+              </tr>
+              <tr>
+                <td>Go to the Store tab of your new feed, and enter your profile ID in the profileId field (cell B2). Your profile ID is visible in Campaign Manager by clicking your avatar on the top right corner.</td>
+              </tr>
+              <tr>
+                <td>Click the 'Save' button below.</td>
+              </tr>
+              <tr>
+                <td>After clicking 'Save', copy this page's URL from your browser address bar, and paste it in the Store tab for the recipe_url field (cell B5) your sheet.</td>
+              </tr>
+              <tr>
+                <td>Bulkdozer is ready for use</td>
+              </tr>
+              <tr>
+                <td>Stay up to date on new releases and other general anouncements by joining <a href='https://groups.google.com/forum/#!forum/bulkdozer-announcements' target='_blank'>Bulkdozer announcements</a>.</td>
+              </tr>
+              <tr>
+                <td>Review the <a href='https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md' target='_blank'>Bulkdozer documentation</a>.</td>
+              </tr>
+            </tbody>
+          </table>
+        <h4>Details</h4>
         <table class="bordered">
-          <thead>
-            <tr>
-              <th colspan="2">Details</th>
-            </tr>
-           </thead>
           <tbody>
             <tr>
-              <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
+              <td>Open Source</td>
+              <td>YES
             </tr>
             <tr>
               <td>Age</td>
-              <td>April 3, 2018 (2 years, 8 months)</td>
+              <td>April 3, 2018 (2 years, 9 months)</td>
             </tr>
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:mauriciod@google.com?subject=Request+For+A+Bulkdozer+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Bulkdozer+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fbulkdozer%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">mauriciod@google.com</a>
+              <td><a href="mailto:mauriciod@google.com?subject=Request+For+A+CM360+Bulkdozer+Editor+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+CM360+Bulkdozer+Editor+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Fkenjora.c.googlers.com%3A8000%2Fsolution%2Fbulkdozer%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">mauriciod@google.com</a>
               </td>
             </tr>
+                <tr>
+                  <td>Manual</td>
+                  <td>Triggered on demand by user.</td>
+                </tr>
           </tbody>
         </table>
       </div>
     </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-          <thead>
-              <tr>
-                <th>Instructions</th>
-              </tr>
-             </thead>
-             <tbody>
-               <tr>
-                 <td>Open the <a href='https://docs.google.com/spreadsheets/d/10YewffRUP1gCxTY0ZLTkVEfzmOQ1gPXPxp7qev3w8xk/edit?usp=sharing' target='_blank'>Bulkdozer 0.27</a> feed.</td>
-               </tr>
-               <tr>
-                 <td>Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed.</td>
-               </tr>
-               <tr>
-                 <td>Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version.</td>
-               </tr>
-               <tr>
-                 <td>Under the Account ID field below, enter the your Campaign Manager Network ID.</td>
-               </tr>
-               <tr>
-                 <td>Under Sheet URL, enter the URL of your copy of the feed that you just created in the steps above.</td>
-               </tr>
-               <tr>
-                 <td>Go to the Store tab of your new feed, and enter your profile ID in the profileId field (cell B2). Your profile ID is visible in Campaign Manager by clicking your avatar on the top right corner.</td>
-               </tr>
-               <tr>
-                 <td>Click the 'Save' button below.</td>
-               </tr>
-               <tr>
-                 <td>After clicking 'Save', copy this page's URL from your browser address bar, and paste it in the Store tab for the recipe_url field (cell B5) your sheet.</td>
-               </tr>
-               <tr>
-                 <td>Bulkdozer is ready for use</td>
-               </tr>
-               <tr>
-                 <td>Stay up to date on new releases and other general anouncements by joining <a href='https://groups.google.com/forum/#!forum/bulkdozer-announcements' target='_blank'>Bulkdozer announcements</a>.</td>
-               </tr>
-               <tr>
-                 <td>Review the <a href='https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md' target='_blank'>Bulkdozer documentation</a>.</td>
-               </tr>
-             </tbody>
-          </table>
-        </div>
-       </div>
-    <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
+    <div class="col s12 m6 l8">
+      <pre id="code-workflow" class="card left-align"><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/traffic/run.py" target="_blank">traffic</a>": {
             "hour": [],
@@ -332,24 +316,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   </p>
     </div>
   </body>
-<footer class="page-footer red lighten-1">
+<footer class="page-footer blue">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google LLC
+      &copy; 2019 Google LLC
     </div>
   </div>
 </footer>
   <script type="text/javascript">
     $(document).ready(function() {
       M.AutoInit(context=document.getElementById("form_recipe"));
-    });
-  </script>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('span.expand_code').on('click tap', function() {
-        $('pre.expand_code').css('height', 'auto');
-        $(this).hide();
-      });
     });
   </script>
 </html>

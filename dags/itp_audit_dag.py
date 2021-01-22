@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-ITP Audit Dashboard ( 2020 )
+DV360 ITP Audit
 
 Dashboard that shows performance metrics across browser to see the impact of ITP.
 
@@ -88,8 +88,8 @@ INPUTS = {
   'date_range': 'LAST_365_DAYS',  # Timeframe to run the ITP report for.
   'cm_advertiser_ids': '',  # Optional: Comma delimited list of CM advertiser ids.
   'floodlight_configuration_id': '',  # Floodlight Configuration Id for the Campaign Manager floodlight report.
-  'dv360_partner_ids': '',  # Comma delimited list of DV360 Partner ids.
-  'dv360_advertiser_ids': '',  # Optional: Comma delimited list of DV360 Advertiser ids.
+  'dv360_partner_ids': [],  # Comma delimited list of DV360 Partner ids.
+  'dv360_advertiser_ids': [],  # Optional: Comma delimited list of DV360 Advertiser ids.
 }
 
 RECIPE = {
@@ -164,7 +164,8 @@ RECIPE = {
                   'name': 'dv360_advertiser_ids',
                   'kind': 'integer_list',
                   'order': 6,
-                  'default': '',
+                  'default': [
+                  ],
                   'description': 'Optional: Comma delimited list of DV360 Advertiser ids.'
                 }
               }
@@ -175,7 +176,8 @@ RECIPE = {
                   'name': 'dv360_partner_ids',
                   'kind': 'integer_list',
                   'order': 5,
-                  'default': '',
+                  'default': [
+                  ],
                   'description': 'Comma delimited list of DV360 Partner ids.'
                 }
               }
@@ -283,7 +285,7 @@ RECIPE = {
           'account': {
             'field': {
               'name': 'cm_account_id',
-              'kind': 'string',
+              'kind': 'integer',
               'order': 2,
               'default': '',
               'description': 'Campaign Manager Account Id.'
@@ -409,7 +411,7 @@ RECIPE = {
           'account': {
             'field': {
               'name': 'cm_account_id',
-              'kind': 'string',
+              'kind': 'integer',
               'order': 2,
               'default': '',
               'description': 'Campaign Manager Account Id.'
@@ -431,16 +433,6 @@ RECIPE = {
           'body': {
             'kind': 'dfareporting#report',
             'name': {
-              'field': {
-                'name': 'recipe_name',
-                'kind': 'string',
-                'order': 1,
-                'prefix': 'ITP_Audit_Browser_',
-                'default': 'ITP_Audit_Dashboard_Browser',
-                'description': 'Name of the Campaign Manager browser report.'
-              }
-            },
-            'fileName': {
               'field': {
                 'name': 'recipe_name',
                 'kind': 'string',
@@ -977,7 +969,7 @@ RECIPE = {
         'account': {
           'field': {
             'name': 'cm_account_id',
-            'kind': 'string',
+            'kind': 'integer',
             'order': 2,
             'default': '',
             'description': 'Campaign Manager Account Id.'
@@ -1008,8 +1000,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('itp_audit', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('itp_audit', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

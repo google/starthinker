@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Deal Finder
+DV360 Deal Finder
 
 Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.
 
@@ -398,8 +398,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('deal_finder', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('deal_finder', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

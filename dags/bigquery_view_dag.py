@@ -62,7 +62,7 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Query To View
+BigQuery Query To View
 
 Create a BigQuery view.
 
@@ -146,8 +146,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('bigquery_view', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('bigquery_view', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

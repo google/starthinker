@@ -249,8 +249,8 @@ RECIPE = {
   ]
 }
 
-DAG_FACTORY = DAG_Factory('fred_regional_to_bigquery', RECIPE, INPUTS)
-DAG = DAG_FACTORY.generate()
+dag_maker = DAG_Factory('fred_regional_to_bigquery', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()
