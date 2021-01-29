@@ -110,6 +110,7 @@ def dv_targeter():
   if project.task['command'] in ('Load', 'Load Targeting'):
 
     targeting_clear()
+    targeting_load()
 
     inventory_source_clear()
     inventory_source_load()

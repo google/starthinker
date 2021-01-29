@@ -37,6 +37,14 @@ from starthinker.util.dbm.targeting import Assigned_Targeting
 TARGETING_TYPES = [
   'TARGETING_TYPE_EXCHANGE',
   'TARGETING_TYPE_SUB_EXCHANGE',
+  'TARGETING_TYPE_BROWSER',
+  'TARGETING_TYPE_LANGUAGE',
+  'TARGETING_TYPE_DEVICE_MAKE_MODEL',
+  'TARGETING_TYPE_OPERATING_SYSTEM',
+  'TARGETING_TYPE_LANGUAGE',
+  'TARGETING_TYPE_CARRIER_AND_ISP',
+  'TARGETING_TYPE_CATEGORY',
+  'TARGETING_TYPE_APP_CATEGORY',
 ]
 
 
@@ -74,54 +82,55 @@ def targeting_clear():
     )
   )
 
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Destination Targeting',
-    'A2:Z'
-  )
+  # TODO: In future CL maybe move to another stand alone function for clearing user data.
+  #sheets_clear(
+  #  project.task['auth_sheets'],
+  #  project.task['sheet'],
+  #  'Destination Targeting',
+  #  'A2:Z'
+  #)
 
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Brand Safety Targeting',
-    'A2:Z'
-  )
+  #sheets_clear(
+  #  project.task['auth_sheets'],
+  #  project.task['sheet'],
+  #  'Brand Safety Targeting',
+  #  'A2:Z'
+  #)
 
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Demographic Targeting',
-    'A2:Z'
-  )
+  #sheets_clear(
+  #  project.task['auth_sheets'],
+  #  project.task['sheet'],
+  #  'Demographic Targeting',
+  #  'A2:Z'
+  #)
 
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Audience Targeting',
-    'A2:Z'
-  )
+  #sheets_clear(
+  #  project.task['auth_sheets'],
+  #  project.task['sheet'],
+  #  'Audience Targeting',
+  #  'A2:Z'
+  #)
 
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Device Targeting',
-    'A2:Z'
-  )
+  #sheets_clear(
+  #  project.task['auth_sheets'],
+  #  project.task['sheet'],
+  #  'Device Targeting',
+  #  'A2:Z'
+  #)
 
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Geography Targeting',
-    'A2:Z'
-  )
+  #sheets_clear(
+  #  project.task['auth_sheets'],
+  #  project.task['sheet'],
+  #  'Geography Targeting',
+  #  'A2:Z'
+  #)
 
-  sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
-    'Viewability Targeting',
-    'A2:Z'
-  )
+  #sheets_clear(
+  #  project.task['auth_sheets'],
+  #  project.task['sheet'],
+  #  'Viewability Targeting',
+  #  'A2:Z'
+  #)
 
 
 def targeting_load():
@@ -133,7 +142,7 @@ def targeting_load():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Advertisers',
-        'range': 'A1:A'
+        'range': 'A2:A'
       }}
     )
 
@@ -143,7 +152,7 @@ def targeting_load():
           project.task['auth_dv'],
           iterate=True
         ).targetingTypes().targetingOptions().list(
-          advertiserId=lookup_id(advertiser[0]),
+          advertiserId=str(lookup_id(advertiser[0])),
           targetingType=targeting_type
         ).execute()
 
@@ -454,6 +463,7 @@ def targeting_combine():
         { "name": "Partner", "type": "STRING" },
         { "name": "Advertiser", "type": "STRING" },
         { "name": "LineItem", "type": "STRING" },
+        { "name": "Included_1P_And_3P_Group", "type": "INTEGER" },
         { "name": "Included_1P_And_3P", "type": "STRING" },
         { "name": "Included_1P_And_3P_Recency", "type": "STRING" },
         { "name": "Excluded_1P_And_3P", "type": "STRING" },
@@ -495,6 +505,7 @@ def targeting_combine():
         { "name": "Browser_Negative", "type": "BOOLEAN" },
         { "name": "Environment", "type": "STRING" },
         { "name": "Carrier_And_ISP", "type": "STRING" },
+        { "name": "Carrier_And_ISP_Negative", "type": "BOOLEAN" },
       ],
       "format": "CSV"
     }},
@@ -529,6 +540,7 @@ def targeting_combine():
         { "name": "Proximity_Location_List", "type": "STRING" },
         { "name": "Proximity_Location_List_Radius_Range", "type": "STRING" },
         { "name": "Regional_Location_List", "type": "STRING" },
+        { "name": "Regional_Location_List_Negative", "type": "BOOLEAN" },
       ],
       "format": "CSV"
     }},
@@ -577,49 +589,59 @@ def targeting_combine():
     project.task["dataset"],
     "SHEET_Combined_Targeting",
     """SELECT
-        L.advertiserId AS Advertiser_Lookup,
-        *
+        COALESCE(
+          L.advertiserId,
+          A.advertiserId,
+          CAST(REGEXP_EXTRACT(Advertiser, r' - (\d+)$') AS INT64)
+        ) AS Advertiser_Lookup,
+        T.*
       FROM (
-      SELECT
-        COALESCE(A.Action,B.Action,C.Action,D.Action,E.Action,F.Action,G.Action) AS Action,
-        COALESCE(A.partner,B.Partner,C.Partner,D.partner,E.Partner,F.Partner,G.Partner) AS Partner,
-        COALESCE(A.Advertiser,B.Advertiser,C.Advertiser,D.Advertiser,E.Advertiser,F.Advertiser,G.Advertiser) AS Advertiser,
-        COALESCE(A.LineItem,B.LineItem,C.LineItem,D.LineItem,E.LineItem,F.LineItem,G.LineItem) AS LineItem,
-        * EXCEPT (Action, Partner, Advertiser, LineItem)
-      FROM `DV_Target_Demo.SHEET_Destination_Targeting` AS A
-      FULL OUTER JOIN `DV_Target_Demo.SHEET_Brand_Safety_Targeting` AS B
-      ON A.Action=B.Action
-      AND A.Partner=B.Partner
-      AND A.Advertiser=B.Advertiser
-      AND A.LineItem=B.LineItem
-      FULL OUTER JOIN `DV_Target_Demo.SHEET_Demographic_Targeting` AS C
-      ON A.Action=C.Action
-      AND A.Partner=C.Partner
-      AND A.Advertiser=C.Advertiser
-      AND A.LineItem=C.LineItem
-      FULL OUTER JOIN `DV_Target_Demo.SHEET_Audience_Targeting` AS D
-      ON A.Action=D.Action
-      AND A.Partner=D.Partner
-      AND A.Advertiser=D.Advertiser
-      AND A.LineItem=D.LineItem
-      FULL OUTER JOIN `DV_Target_Demo.SHEET_Device_Targeting` AS E
-      ON A.Action=E.Action
-      AND A.Partner=E.Partner
-      AND A.Advertiser=E.Advertiser
-      AND A.LineItem=E.LineItem
-      FULL OUTER JOIN `DV_Target_Demo.SHEET_Geography_Targeting` AS F
-      ON A.Action=F.Action
-      AND A.Partner=F.Partner
-      AND A.Advertiser=F.Advertiser
-      AND A.LineItem=F.LineItem
-      FULL OUTER JOIN `DV_Target_Demo.SHEET_Viewability_Targeting` AS G
-      ON A.Action=G.Action
-      AND A.Partner=G.Partner
-      AND A.Advertiser=G.Advertiser
-      AND A.LineItem=G.LineItem
+        SELECT
+          COALESCE(A.Action,B.Action,C.Action,D.Action,E.Action,F.Action,G.Action) AS Action,
+          COALESCE(A.partner,B.Partner,C.Partner,D.partner,E.Partner,F.Partner,G.Partner) AS Partner,
+          COALESCE(A.Advertiser,B.Advertiser,C.Advertiser,D.Advertiser,E.Advertiser,F.Advertiser,G.Advertiser) AS Advertiser,
+          COALESCE(A.LineItem,B.LineItem,C.LineItem,D.LineItem,E.LineItem,F.LineItem,G.LineItem) AS LineItem,
+          * EXCEPT (Action, Partner, Advertiser, LineItem)
+        FROM `{dataset}.SHEET_Destination_Targeting` AS A
+        FULL OUTER JOIN `{dataset}.SHEET_Brand_Safety_Targeting` AS B
+        ON A.Action=B.Action
+        AND A.Partner=B.Partner
+        AND A.Advertiser=B.Advertiser
+        AND A.LineItem=B.LineItem
+        FULL OUTER JOIN `{dataset}.SHEET_Demographic_Targeting` AS C
+        ON A.Action=C.Action
+        AND A.Partner=C.Partner
+        AND A.Advertiser=C.Advertiser
+        AND A.LineItem=C.LineItem
+        FULL OUTER JOIN `{dataset}.SHEET_Audience_Targeting` AS D
+        ON A.Action=D.Action
+        AND A.Partner=D.Partner
+        AND A.Advertiser=D.Advertiser
+        AND A.LineItem=D.LineItem
+        FULL OUTER JOIN `{dataset}.SHEET_Device_Targeting` AS E
+        ON A.Action=E.Action
+        AND A.Partner=E.Partner
+        AND A.Advertiser=E.Advertiser
+        AND A.LineItem=E.LineItem
+        FULL OUTER JOIN `{dataset}.SHEET_Geography_Targeting` AS F
+        ON A.Action=F.Action
+        AND A.Partner=F.Partner
+        AND A.Advertiser=F.Advertiser
+        AND A.LineItem=F.LineItem
+        FULL OUTER JOIN `{dataset}.SHEET_Viewability_Targeting` AS G
+        ON A.Action=G.Action
+        AND A.Partner=G.Partner
+        AND A.Advertiser=G.Advertiser
+        AND A.LineItem=G.LineItem
       ) AS T
       LEFT JOIN `{dataset}.DV_LineItems` AS L
       ON CAST(REGEXP_EXTRACT(T.LineItem, r' - (\d+)$') AS INT64)=L.lineItemId
+      LEFT JOIN (
+        SELECT partnerId, advertiserId
+        FROM `{dataset}.DV_Advertisers`
+        GROUP BY 1,2
+      ) AS A
+      ON CAST(REGEXP_EXTRACT(T.Partner, r' - (\d+)$') AS INT64)=A.partnerId
     """.format(**project.task),
     legacy=False
   )
@@ -652,6 +674,7 @@ def targeting_edit(commit=False):
 
         if layer == 'Partner':
           partner = lookup_id(row['Partner'])
+          advertiser = row['Advertiser_Lookup']
         if layer == 'Advertiser':
           advertiser = lookup_id(row['Advertiser'])
         if layer == 'LineItem':
@@ -668,7 +691,7 @@ def targeting_edit(commit=False):
           )
         )
 
-      if targeting:
+      if targeting and row['Action']:
         if row['Authorized_Seller']:
           if row['Action'].upper() == 'ADD':
             targeting.add_authorized_seller(row['Authorized_Seller'])
@@ -716,7 +739,7 @@ def targeting_edit(commit=False):
 
         if row['URL']:
           if row['Action'].upper() == 'ADD':
-            targeting.add_url(row['URL'], row['Url_Negative'] or False)
+            targeting.add_url(row['URL'], row['URL_Negative'] or False)
           elif row['Action'].upper() == 'DELETE':
             targeting.delete_url(row['URL'])
 
@@ -782,6 +805,25 @@ def targeting_edit(commit=False):
           elif row['Action'].upper() == 'DELETE':
             targeting.delete_parental_status(row['Parental_Status'])
 
+        if row['Geo_Region']:
+          if row['Action'].upper() == 'ADD':
+            targeting.add_geo_region(row['Geo_Region'], row['Geo_Region_Type'], row['Geo_Region_Negative'] or False)
+          elif row['Action'].upper() == 'DELETE':
+            targeting.delete_geo_region(row['Geo_Region'])
+
+        if row['Proximity_Location_List']:
+          if row['Action'].upper() == 'ADD':
+            targeting.add_proximity_location_list(row['Proximity_Location_List'], row['Proximity_Location_List_Radius_Range'])
+          elif row['Action'].upper() == 'DELETE':
+            targeting.delete_proximity_location_list(row['Proximity_Location_List'])
+
+        if row['Regional_Location_List']:
+          identifier = lookup_id(row['Regional_Location_List'])
+          if row['Action'].upper() == 'ADD':
+            targeting.add_regional_location_list(identifier, row['Regional_Location_List_Negative'] or False)
+          elif row['Action'].upper() == 'DELETE':
+            targeting.delete_regional_location_list(identifier)
+
         if row['Household_Income']:
           if row['Action'].upper() == 'ADD':
             targeting.add_household_income(row['Household_Income'])
@@ -797,16 +839,16 @@ def targeting_edit(commit=False):
         if row['Included_1P_And_3P']:
           identifier = lookup_id(row['Included_1P_And_3P'])
           if row['Action'].upper() == 'ADD':
-            targeting.add_included_1p_and_3p_audience(identifier, row['Included_1P_And_3P_Recency'])
+            targeting.add_included_1p_and_3p_audience(identifier, row['Included_1P_And_3P_Recency'], row['Included_1P_And_3P_Group'])
           elif row['Action'].upper() == 'DELETE':
-            targeting.delete_included_1p_and_3p_audience(identifier)
+            targeting.delete_included_1p_and_3p_audience(identifier, row['Included_1P_And_3P_Recency'], row['Included_1P_And_3P_Group'])
 
         if row['Excluded_1P_And_3P']:
           identifier = lookup_id(row['Excluded_1P_And_3P'])
           if row['Action'].upper() == 'ADD':
             targeting.add_excluded_1p_and_3p_audience(identifier, row['Excluded_1P_And_3P_Recency'])
           elif row['Action'].upper() == 'DELETE':
-            targeting.delete_excluded_1p_and_3p_audience(identifier)
+            targeting.delete_excluded_1p_and_3p_audience(identifier, row['Excluded_1P_And_3P_Recency'])
 
         if row['Included_Google']:
           identifier = lookup_id(row['Included_Google'])
@@ -840,13 +882,13 @@ def targeting_edit(commit=False):
           if row['Action'].upper() == 'ADD':
             targeting.add_device_type(row['Device_Type'])
           elif row['Action'].upper() == 'DELETE':
-            targeting.delete_device_type()
+            targeting.delete_device_type(row['Device_Type'])
 
         if row['Make_Model']:
           if row['Action'].upper() == 'ADD':
             targeting.add_make_model(row['Make_Model'], row['Make_Model_Negative'] or False)
           elif row['Action'].upper() == 'DELETE':
-            targeting.delete_make_model()
+            targeting.delete_make_model(row['Make_Model'])
 
         if row['Operating_System']:
           if row['Action'].upper() == 'ADD':
@@ -868,7 +910,7 @@ def targeting_edit(commit=False):
 
         if row['Carrier_And_ISP']:
           if row['Action'].upper() == 'ADD':
-            targeting.add_carrier_and_isp(row['Carrier_And_ISP'])
+            targeting.add_carrier_and_isp(row['Carrier_And_ISP'], row['Carrier_And_ISP_Negative'])
           elif row['Action'].upper() == 'DELETE':
             targeting.delete_carrier_and_isp(row['Carrier_And_ISP'])
 
@@ -876,25 +918,7 @@ def targeting_edit(commit=False):
           if row['Action'].upper() == 'ADD':
             targeting.add_day_and_time(row['Day_Of_Week'], row['Hour_Start'], row['Hour_End'], row['Timezone'])
           elif row['Action'].upper() == 'DELETE':
-            targeting.delete_day_and_time(row['Day_Of_Week'])
-
-        if row['Geo_Region']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_geo_region(row['Geo_Region'], row['Geo_Region_Type'], row['Geo_Region_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_geo_region(row['Geo_Region'])
-
-        if row['Proximity_Location_List']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_proximity_location_list(row['Proximity_Location_List'], row['Proximity_Location_List_Radius_Range'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_proximity_location_list(row['Proximity_Location_List'])
-
-        if row['Regional_Location_List']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_regional_location_list(row['Regional_Location_List'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_regional_location_list(row['Regional_Location_List'])
+            targeting.delete_day_and_time(row['Day_Of_Week'], row['Hour_Start'], row['Hour_End'], row['Timezone'])
 
         if row['Video_Player_Size']:
           if row['Action'].upper() == 'ADD':
@@ -964,7 +988,7 @@ def targeting_commit(edits):
         ).advertisers().lineItems().bulkEditLineItemAssignedTargetingOptions(
           **edit["parameters"]
         ).execute()
-        edit["success"] = len(response["createdAssignedTargetingOptions"])
+        edit["success"] = len(response.get("createdAssignedTargetingOptions", []))
       elif edit.get("advertiser"):
         print("API ADVERTISER:", edit["advertiser"])
         response = API_DV360(
@@ -972,15 +996,15 @@ def targeting_commit(edits):
         ).advertisers().bulkEditAdvertiserAssignedTargetingOptions(
           **edit["parameters"]
         ).execute()
-        edit["success"] = len(response["createdAssignedTargetingOptions"])
-      elif edit.get("partners"):
+        edit["success"] = len(response.get("createdAssignedTargetingOptions", []))
+      elif edit.get("partner"):
         print("API PARTNER:", edit["partner"])
         response = API_DV360(
           project.task["auth_dv"]
         ).partners().bulkEditPartnerAssignedTargetingOptions(
           **edit["parameters"]
         ).execute()
-        edit["success"] = len(response["createdAssignedTargetingOptions"])
+        edit["success"] = len(response.get("createdAssignedTargetingOptions", []))
     except Exception as e:
       edit["error"] = str(e)
     finally:

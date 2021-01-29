@@ -53,7 +53,7 @@
       "auth":{"field":{ "name":"auth_sheet", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "copy":{
         "source":"https://docs.google.com/spreadsheets/d/1ARkIvh0D-gltZeiwniUonMNrm0Mi1s2meZ9FUjutXOE/",
-        "destination":{"field":{ "name":"recipe_slug", "prefix":"DV Targeter ", "kind":"string", "order":3, "default":"", "description":"Name of Google Sheet to create." }}
+        "destination":{"field":{ "name":"recipe_name", "prefix":"DV Targeter ", "kind":"string", "order":3, "default":"", "description":"Name of Google Sheet to create." }}
       }
     }},
     { "dv_targeter": {
@@ -61,7 +61,7 @@
       "auth_dv": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for dv." }},
       "auth_sheets": {"field":{ "name":"auth_sheet", "kind":"authentication", "order":2, "default":"user", "description":"Credentials used for sheet." }},
       "auth_bigquery": {"field":{ "name":"auth_bigquery", "kind":"authentication", "order":3, "default":"service", "description":"Credentials used for bigquery." }},
-      "sheet":{"field":{ "name":"recipe_slug", "prefix":"DV Targeter ", "kind":"string", "order":4, "default":"", "description":"Name of Google Sheet to create." }},
+      "sheet":{"field":{ "name":"recipe_name", "prefix":"DV Targeter ", "kind":"string", "order":4, "default":"", "description":"Name of Google Sheet to create." }},
       "dataset":{"field":{ "name":"recipe_slug", "prefix":"DV_Targeter_", "kind":"string", "order":5, "default":"", "description":"Name of Google BigQuery dataset to create." }},
       "command":{"field":{
         "name":"command",

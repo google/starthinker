@@ -16,9 +16,13 @@
 #
 ###########################################################################
 
+import re
+import json
+
 from googleapiclient.errors import HttpError
 from starthinker.util.google_api import API_DV360
 
+RE_URL = re.compile(r'^.*://')
 
 class Assigned_Targeting:
 
@@ -39,10 +43,13 @@ class Assigned_Targeting:
     self.create_requests = {}
 
 
-  def _delete(self, targeting_type, value=''):
+  def _url_domain(self, url):
+    return '.'.join(RE_URL.sub('', url).split('.')[-2:])
+
+  def _delete(self, targeting_type, *args):
     try:
-      if not self.already_deleted(targeting_type, value):
-        targeting_id = self.get_assigned_id(targeting_type, value)
+      if not self.already_deleted(targeting_type, json.dumps(args)):
+        targeting_id = self.get_assigned_id(targeting_type, *args)
         if targeting_id is not None:
           self.delete_requests.setdefault(targeting_type, []).append(targeting_id)
     except HttpError:
@@ -111,7 +118,7 @@ class Assigned_Targeting:
         if option['onScreenPositionDetails']['onScreenPosition'] == args[0]:
           return option[key]
       elif option['targetingType'] == 'TARGETING_TYPE_CARRIER_AND_ISP':
-        if option['carrierAndIspDetails']['displayName'] == args[0]:
+        if option['carrierAndIspDetails']['displayName'] == args[0] and option['carrierAndIspDetails']['type'] == args[1]:
           return option[key]
       elif option['targetingType'] == 'TARGETING_TYPE_KEYWORD':
         if option['keywordDetails']['keyword'] == args[0]:
@@ -156,10 +163,12 @@ class Assigned_Targeting:
           if option['digitalContentLabelDetails']['contentRatingTier'] == args[0]:
             return option[key]
       elif option['targetingType'] == 'TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION':
-        if option['sensitiveCategoryExclusionDetails']['sensitiveCategory'] == args[0]:
+        if 'sensitiveCategoryExclusionDetails' in option and option['sensitiveCategoryExclusionDetails']['sensitiveCategory'] == args[0]:
+          return option[key]
+        elif 'sensitiveCategoryDetails' in option and option['sensitiveCategoryDetails']['sensitiveCategory'] == args[0]:
           return option[key]
       elif option['targetingType'] == 'TARGETING_TYPE_EXCHANGE':
-        if option['exchangeDetails']['exchange'] == args[0]:
+        if option['exchangeDetails'].get('exchange') == args[0]:
           return option[key]
       elif option['targetingType'] == 'TARGETING_TYPE_SUB_EXCHANGE':
         if option['subExchangeDetails']['displayName'] == args[0]:
@@ -171,8 +180,8 @@ class Assigned_Targeting:
     return None
 
 
-  def already_added(self, targeting_type, value=''):
-    token = '%s%s' % (targeting_type, value)
+  def already_added(self, targeting_type, *args):
+    token = '%s%s' % (targeting_type, json.dumps(args))
     if token in self.add_cache:
       return True
     else:
@@ -180,8 +189,8 @@ class Assigned_Targeting:
       return False
 
 
-  def already_deleted(self, targeting_type, value=''):
-    token = '%s%s' % (targeting_type, value)
+  def already_deleted(self, targeting_type, *args):
+    token = '%s%s' % (targeting_type, json.dumps(args))
     if token in self.delete_cache:
       return True
     else:
@@ -220,14 +229,6 @@ class Assigned_Targeting:
           advertiserId=str(self.advertiser),
           targetingType=targeting_type
         ).execute())
-      elif self.advertiser:
-        self.assigneds_cache[targeting_type] = list(API_DV360(
-          self.auth,
-          iterate=True
-        ).advertisers().targetingTypes().assignedTargetingOptions().list(
-          advertiserId=str(self.advertiser),
-          targetingType=targeting_type
-        ).execute())
       elif self.partner:
         self.assigneds_cache[targeting_type] = list(API_DV360(
           self.auth,
@@ -236,15 +237,25 @@ class Assigned_Targeting:
           partnerId=str(self.partner),
           targetingType=targeting_type
         ).execute())
+      elif self.advertiser:
+        self.assigneds_cache[targeting_type] = list(API_DV360(
+          self.auth,
+          iterate=True
+        ).advertisers().targetingTypes().assignedTargetingOptions().list(
+          advertiserId=str(self.advertiser),
+          targetingType=targeting_type
+        ).execute())
     return self.assigneds_cache[targeting_type]
 
 
   def get_assigned_id(self, targeting_type, *args):
-    return self._get_id(
-      self.get_assigned_list(targeting_type),
-      'assignedTargetingOptionId',
-      *args
-    )
+    if targeting_type == 'TARGETING_TYPE_AUDIENCE_GROUP': return 'audienceGroup'
+    else:
+      return self._get_id(
+        self.get_assigned_list(targeting_type),
+        'assignedTargetingOptionId',
+        *args
+      )
 
 
   def get_assigned_audience(self):
@@ -271,7 +282,7 @@ class Assigned_Targeting:
       self.delete_user_rewarded_content()
       self.create_requests.setdefault('TARGETING_TYPE_USER_REWARDED_CONTENT', [])
       self.create_requests['TARGETING_TYPE_USER_REWARDED_CONTENT'].append({ 'userRewardedContentDetails':{
-        'targetingOptionId': self.get_option_id('TARGETING_TYPE_AUTHORIZED_SELLER_STATUS', userRewardedContent)
+        'targetingOptionId': self.get_option_id('TARGETING_TYPE_USER_REWARDED_CONTENT', userRewardedContent)
       }})
 
 
@@ -284,7 +295,7 @@ class Assigned_Targeting:
       self.delete_exchange(exchange)
       self.create_requests.setdefault('TARGETING_TYPE_EXCHANGE', [])
       self.create_requests['TARGETING_TYPE_EXCHANGE'].append({ 'exchangeDetails':{
-        'targetingOptionId': self.get_option_id('TARGETING_TYPE_AUTHORIZED_SELLER_STATUS', exchange)
+        'targetingOptionId': self.get_option_id('TARGETING_TYPE_EXCHANGE', exchange)
       }})
 
 
@@ -297,7 +308,7 @@ class Assigned_Targeting:
       self.delete_sub_exchange(subExchange)
       self.create_requests.setdefault('TARGETING_TYPE_SUB_EXCHANGE', [])
       self.create_requests['TARGETING_TYPE_SUB_EXCHANGE'].append({ 'subExchangeDetails':{
-        'targetingOptionId': self.get_option_id('TARGETING_TYPE_AUTHORIZED_SELLER_STATUS', subExchange)
+        'targetingOptionId': self.get_option_id('TARGETING_TYPE_SUB_EXCHANGE', subExchange)
       }})
 
 
@@ -346,6 +357,7 @@ class Assigned_Targeting:
 
 
   def add_url(self, url, negative):
+    url = self._url_domain(url)
     if not self.already_added('TARGETING_TYPE_URL', url):
       self.delete_url(url)
       self.create_requests.setdefault('TARGETING_TYPE_URL', [])
@@ -356,6 +368,7 @@ class Assigned_Targeting:
 
 
   def delete_url(self, url):
+    url = self._url_domain(url)
     self._delete('TARGETING_TYPE_URL', url)
 
 
@@ -383,8 +396,8 @@ class Assigned_Targeting:
       }})
 
 
-  def delete_app_category(self):
-    self._delete('TARGETING_TYPE_APP_CATEGORY')
+  def delete_app_category(self, displayName):
+    self._delete('TARGETING_TYPE_APP_CATEGORY', displayName)
 
 
   def add_content_label(self, contentRatingTier):
@@ -392,8 +405,7 @@ class Assigned_Targeting:
       self.delete_content_label(contentRatingTier)
       self.create_requests.setdefault('TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION', [])
       self.create_requests['TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION'].append({ 'digitalContentLabelExclusionDetails':{
-        'targetingOptionId': self.get_option_id('TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION', contentRatingTier)
-        #'excludedTargetingOptionId': self.get_option_id('TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION', contentRatingTier)
+        'excludedTargetingOptionId': self.get_option_id('TARGETING_TYPE_DIGITAL_CONTENT_LABEL_EXCLUSION', contentRatingTier)
       }})
 
 
@@ -402,16 +414,16 @@ class Assigned_Targeting:
 
 
   def add_sensitive_category(self, sensitiveCategory):
-    if not self.already_added('TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION'):
-      self.delete_sensitive_category()
+    if not self.already_added('TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION', sensitiveCategory):
+      self.delete_sensitive_category(sensitiveCategory)
       self.create_requests.setdefault('TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION', [])
       self.create_requests['TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION'].append({ 'sensitiveCategoryExclusionDetails':{
         'excludedTargetingOptionId': self.get_option_id('TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION', sensitiveCategory)
       }})
 
 
-  def delete_sensitive_category(self):
-    self._delete('TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION')
+  def delete_sensitive_category(self, sensitiveCategory):
+    self._delete('TARGETING_TYPE_SENSITIVE_CATEGORY_EXCLUSION', sensitiveCategory)
 
 
   def add_negative_keyword_list(self, negativeKeywordListId):
@@ -508,8 +520,9 @@ class Assigned_Targeting:
 
 
   def add_language(self, displayName, negative):
-    if not self.already_added('TARGETING_TYPE_LANGUAGE'):
-      self.delete_language()
+    displayName = displayName.title()
+    if not self.already_added('TARGETING_TYPE_LANGUAGE', displayName):
+      self.delete_language(displayName)
       self.create_requests.setdefault('TARGETING_TYPE_LANGUAGE', [])
       self.create_requests['TARGETING_TYPE_LANGUAGE'].append({ 'languageDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_LANGUAGE', displayName),
@@ -518,144 +531,181 @@ class Assigned_Targeting:
 
 
   def delete_language(self, displayName):
+    displayName = displayName.title()
     self._delete('TARGETING_TYPE_LANGUAGE', displayName)
 
 
-  def add_included_1p_and_3p_audience(self, firstAndThirdPartyAudienceId, recency):
-    print('Sorry not built yet.')
-    #if not self.already_added('TARGETING_TYPE_AUDIENCE_GROUP+1P_AND_3P', firstAndThirdPartyAudienceId):
+  def add_included_1p_and_3p_audience(self, firstAndThirdPartyAudienceId, recency, group):
+    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences.setdefault('includedFirstAndThirdPartyAudienceGroups', [])
+
+    audience = { "firstAndThirdPartyAudienceId": firstAndThirdPartyAudienceId, "recency": recency }
+    group = min(max(group, 1), 10)
+
+    while len(audiences['includedFirstAndThirdPartyAudienceGroups']) < group:
+      audiences['includedFirstAndThirdPartyAudienceGroups'].append({'settings':[]})
+
+    if audience not in audiences['includedFirstAndThirdPartyAudienceGroups'][group - 1]['settings']:
+      audiences['includedFirstAndThirdPartyAudienceGroups'][group - 1]['settings'].append(audience)
+      self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP'] = { 'audienceGroupDetails':audiences }
 
 
-  def delete_included_1p_and_3p_audience(self, firstAndThirdPartyAudienceId, recency):
-    print('Sorry not built yet.')
-    #self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
+  def delete_included_1p_and_3p_audience(self, firstAndThirdPartyAudienceId, recency, group):
+    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences.setdefault('includedFirstAndThirdPartyAudienceGroups', [])
+
+    audience = { "firstAndThirdPartyAudienceId": firstAndThirdPartyAudienceId, "recency": recency }
+    group = min(max(group, 1), 10)
+
+    while len(audiences['includedFirstAndThirdPartyAudienceGroups']) < group:
+      audiences['includedFirstAndThirdPartyAudienceGroups'].append({'settings':[]})
+
+    if audience in audiences['includedFirstAndThirdPartyAudienceGroups'][group - 1]['settings']:
+      audiences['includedFirstAndThirdPartyAudienceGroups'][group - 1]['settings'].remove(audience)
+      self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP'] = { 'audienceGroupDetails':audiences }
+
 
 
   def add_excluded_1p_and_3p_audience(self, firstAndThirdPartyAudienceId, recency):
-    if not self.already_added('TARGETING_TYPE_AUDIENCE_GROUP+1P_AND_3P', firstAndThirdPartyAudienceId):
+    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences.setdefault('excludedFirstAndThirdPartyAudienceGroup', { 'settings':[] })
+
+    audience = { "firstAndThirdPartyAudienceId": firstAndThirdPartyAudienceId, "recency": recency }
+    if audience not in audiences['excludedFirstAndThirdPartyAudienceGroup']['settings']:
+      audiences['excludedFirstAndThirdPartyAudienceGroup']['settings'].append(audience)
+      self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP'] = { 'audienceGroupDetails':audiences }
       self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
-      self.create_requests.setdefault('TARGETING_TYPE_AUDIENCE_GROUP', self.get_assigned_audience())
-
-      exists = False
-      for audience in self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['excludedFirstAndThirdPartyAudienceGroup']['settings']:
-        if firstAndThirdPartyAudienceId == audience['firstAndThirdPartyAudienceId']:
-          audience['recency'] = recency
-          exists = True
-          break
-
-      if not exists:
-        self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['excludedFirstAndThirdPartyAudienceGroup']['settings'].append({
-          "firstAndThirdPartyAudienceId": firstAndThirdPartyAudienceId,
-          "recency": recency
-        })
 
 
-  def delete_excluded_1p_and_3p_audience(self, firstAndThirdPartyAudienceId):
-    if not self.already_deleted('TARGETING_TYPE_AUDIENCE_GROUP+1P_AND_3P', firstAndThirdPartyAudienceId):
-      self.create_requests.setdefault('TARGETING_TYPE_AUDIENCE_GROUP', self.get_assigned_audience())
+  def delete_excluded_1p_and_3p_audience(self, firstAndThirdPartyAudienceId, recency):
+    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences.setdefault('excludedFirstAndThirdPartyAudienceGroup', { 'settings':[] })
 
-      try:
-        self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['excludedFirstAndThirdPartyAudienceGroup']['settings'].remove({
-          "firstAndThirdPartyAudienceId": firstAndThirdPartyAudienceId,
-          "recency": recency
-        })
-      except ValueError:
-        pass
+    audience = { "firstAndThirdPartyAudienceId": firstAndThirdPartyAudienceId, "recency": recency }
+    if audience in audiences['excludedFirstAndThirdPartyAudienceGroup']['settings']:
+      audiences['excludedFirstAndThirdPartyAudienceGroup']['settings'].remove(audience)
+      self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP'] = { 'audienceGroupDetails':audiences }
+      self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
 
 
   def add_included_google_audience(self, googleAudienceId):
-    if not self.already_added('TARGETING_TYPE_AUDIENCE_GROUP+GOOGLE', googleAudienceId):
-      self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
-      self.create_requests.setdefault('TARGETING_TYPE_AUDIENCE_GROUP', self.get_assigned_audience())
+    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences.setdefault('includedGoogleAudienceGroup', { 'settings':[] })
 
-      audience = { 'googleAudienceId':googleAudienceId }
-      if audience not in self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['includedGoogleAudienceGroup']['settings']:
-        self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['includedGoogleAudienceGroup']['settings'].append(audience)
+    audience = { 'googleAudienceId':googleAudienceId }
+    if audience not in audiences['includedGoogleAudienceGroup']['settings']:
+      audiences['includedGoogleAudienceGroup']['settings'].append(audience)
+      self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP'] = { 'audienceGroupDetails':audiences }
+      self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
 
 
   def delete_included_google_audience(self, googleAudienceId):
-    if not self.already_deleted('TARGETING_TYPE_AUDIENCE_GROUP+GOOGLE', googleAudience):
-      self.create_requests.setdefault('TARGETING_TYPE_AUDIENCE_GROUP', self.get_assigned_audience())
+    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences.setdefault('includedGoogleAudienceGroup', { 'settings':[] })
 
-      audience = { 'googleAudienceId':googleAudienceId }
-      if audience in self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['includedGoogleAudienceGroup']['settings']:
-        self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['includedGoogleAudienceGroup']['settings'].remove(audience)
+    audience = { 'googleAudienceId':googleAudienceId }
+    if audience in audiences['includedGoogleAudienceGroup']['settings']:
+      audiences['includedGoogleAudienceGroup']['settings'].remove(audience)
+      self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP'] = { 'audienceGroupDetails':audiences }
+      self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
 
 
   def add_excluded_google_audience(self, googleAudienceId):
-    if not self.already_added('TARGETING_TYPE_AUDIENCE_GROUP+GOOGLE', googleAudienceId):
-      self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
-      self.create_requests.setdefault('TARGETING_TYPE_AUDIENCE_GROUP', self.get_assigned_audience())
+    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences.setdefault('excludedGoogleAudienceGroup', { 'settings':[] })
 
-      audience = { 'googleAudienceId':googleAudienceId }
-      if audience not in self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['excludedGoogleAudienceGroup']['settings']:
-        self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['excludedGoogleAudienceGroup']['settings'].append(audience)
+    audience = { 'googleAudienceId':googleAudienceId }
+    if audience not in audiences['excludedGoogleAudienceGroup']['settings']:
+      audiences['excludedGoogleAudienceGroup']['settings'].append(audience)
+      self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP'] = { 'audienceGroupDetails':audiences }
+      self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
 
 
   def delete_excluded_google_audience(self, googleAudienceId):
-    if not self.already_deleted('TARGETING_TYPE_AUDIENCE_GROUP+GOOGLE', googleAudience):
-      self.create_requests.setdefault('TARGETING_TYPE_AUDIENCE_GROUP', self.get_assigned_audience())
+    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences.setdefault('excludedGoogleAudienceGroup', { 'settings':[] })
 
-      audience = { 'googleAudienceId':googleAudienceId }
-      if audience in self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['excludedGoogleAudienceGroup']['settings']:
-        self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['excludedGoogleAudienceGroup']['settings'].remove(audience)
+    audience = { 'googleAudienceId':googleAudienceId }
+    if audience in audiences['excludedGoogleAudienceGroup']['settings']:
+      audiences['excludedGoogleAudienceGroup']['settings'].remove(audience)
+      self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP'] = { 'audienceGroupDetails':audiences }
+      self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
 
 
   def add_included_custom_list(self, customListId):
-    if not self.already_added('TARGETING_TYPE_AUDIENCE_GROUP+CUSTOM', customListId):
+    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences.setdefault('includedCustomListGroup', { 'settings':[] })
+
+    audience = { 'customListId':customListId }
+    if audience not in audiences['includedCustomListGroup']['settings']:
+      audiences['includedCustomListGroup']['settings'].append(audience)
+      self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP'] = { 'audienceGroupDetails':audiences }
       self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
-      self.create_requests.setdefault('TARGETING_TYPE_AUDIENCE_GROUP', self.get_assigned_audience())
-
-      audience = { 'customListId':customListId }
-      if audience not in self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['includedCustomListGroup']['settings']:
-        self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['includedCustomListGroup']['settings'].append(audience)
 
 
-  def delete_included_custom_audience(self, customListId):
-    if not self.already_deleted('TARGETING_TYPE_AUDIENCE_GROUP+CUSTOM', customListId):
-      self.create_requests.setdefault('TARGETING_TYPE_AUDIENCE_GROUP', self.get_assigned_audience())
+  def delete_included_custom_list(self, customListId):
+    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences.setdefault('includedCustomListGroup', { 'settings':[] })
 
-      audience = { 'customListId':customListId }
-      if audience in self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['includedCustomListGroup']['settings']:
-        self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['includedCustomListGroup']['settings'].remove(audience)
+    audience = { 'customListId':customListId }
+    if audience in audiences['includedCustomListGroup']['settings']:
+      audiences['includedCustomListGroup']['settings'].remove(audience)
+      self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP'] = { 'audienceGroupDetails':audiences }
+      self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
 
 
   def add_included_combined_audience(self, combinedAudienceId):
-    if not self.already_added('TARGETING_TYPE_AUDIENCE_GROUP+CUSTOM', combinedAudienceId):
-      self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
-      self.create_requests.setdefault('TARGETING_TYPE_AUDIENCE_GROUP', self.get_assigned_audience())
+    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences.setdefault('includedCombinedAudienceGroup', { 'settings':[] })
 
-      audience = { 'combinedAudienceId':combinedAudienceId }
-      if audience not in self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['includedCombinedAudienceGroup']['settings']:
-        self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['includedCombinedAudienceGroup']['settings'].append(audience)
+    audience = { 'combinedAudienceId':combinedAudienceId }
+    if audience not in audiences['includedCombinedAudienceGroup']['settings']:
+      audiences['includedCombinedAudienceGroup']['settings'].append(audience)
+      self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP'] = { 'audienceGroupDetails':audiences }
+      self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
 
 
   def delete_included_combined_audience(self, combinedAudienceId):
-    if not self.already_deleted('TARGETING_TYPE_AUDIENCE_GROUP+CUSTOM', combinedAudienceId):
-      self.create_requests.setdefault('TARGETING_TYPE_AUDIENCE_GROUP', self.get_assigned_audience())
+    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences.setdefault('includedCombinedAudienceGroup', { 'settings':[] })
 
-      audience = { 'combinedAudienceId':combinedAudienceId }
-      if audience in self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['includedCombinedAudienceGroup']['settings']:
-        self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP']['includedCombinedAudienceGroup']['settings'].remove(audience)
+    audience = { 'combinedAudienceId':combinedAudienceId }
+    if audience in audiences['includedCombinedAudienceGroup']['settings']:
+      audiences['includedCombinedAudienceGroup']['settings'].remove(audience)
+      self.create_requests['TARGETING_TYPE_AUDIENCE_GROUP'] = { 'audienceGroupDetails':audiences }
+      self._delete('TARGETING_TYPE_AUDIENCE_GROUP')
 
 
-  def add_device_type(self, deviceType, negative):
-    if not self.already_added('TARGETING_TYPE_DEVICE_TYPE'):
-      self.delete_device_type()
+  def add_device_type(self, deviceType):
+    if not self.already_added('TARGETING_TYPE_DEVICE_TYPE', deviceType):
+      self.delete_device_type(deviceType)
       self.create_requests.setdefault('TARGETING_TYPE_DEVICE_TYPE', [])
       self.create_requests['TARGETING_TYPE_DEVICE_TYPE'].append({ 'deviceTypeDetails':{
-        'targetingOptionId': self.get_option_id('TARGETING_TYPE_DEVICE_TYPE', deviceType),
+        'targetingOptionId': self.get_option_id('TARGETING_TYPE_DEVICE_TYPE', deviceType)
+      }})
+
+
+  def delete_device_type(self, deviceType):
+    self._delete('TARGETING_TYPE_DEVICE_TYPE', deviceType)
+
+
+  def add_make_model(self, displayName, negative):
+    if not self.already_added('TARGETING_TYPE_DEVICE_MAKE_MODEL', displayName):
+      self.delete_make_model(displayName)
+      self.create_requests.setdefault('TARGETING_TYPE_DEVICE_MAKE_MODEL', [])
+      self.create_requests['TARGETING_TYPE_DEVICE_MAKE_MODEL'].append({ 'deviceMakeModelDetails':{
+        'targetingOptionId': self.get_option_id('TARGETING_TYPE_DEVICE_MAKE_MODEL', displayName),
         'negative':negative
       }})
 
 
-  def delete_device_type(self):
-    self._delete('TARGETING_TYPE_DEVICE_TYPE')
+  def delete_make_model(self, displayName):
+    self._delete('TARGETING_TYPE_DEVICE_MAKE_MODEL', displayName)
 
 
-  def add_operating_system(self, displayName):
-    if not self.already_added('TARGETING_TYPE_OPERATING_SYSTEM'):
-      self.delete_operating_system()
+  def add_operating_system(self, displayName, negative):
+    if not self.already_added('TARGETING_TYPE_OPERATING_SYSTEM', displayName):
+      self.delete_operating_system(displayName)
       self.create_requests.setdefault('TARGETING_TYPE_OPERATING_SYSTEM', [])
       self.create_requests['TARGETING_TYPE_OPERATING_SYSTEM'].append({ 'operatingSystemDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_OPERATING_SYSTEM', displayName),
@@ -663,13 +713,13 @@ class Assigned_Targeting:
       }})
 
 
-  def delete_operating_system(self):
-    self._delete('TARGETING_TYPE_OPERATING_SYSTEM')
+  def delete_operating_system(self, displayName):
+    self._delete('TARGETING_TYPE_OPERATING_SYSTEM', displayName)
 
 
   def add_browser(self, displayName, negative):
-    if not self.already_added('TARGETING_TYPE_BROWSER'):
-      self.delete_browser()
+    if not self.already_added('TARGETING_TYPE_BROWSER', displayName):
+      self.delete_browser(displayName)
       self.create_requests.setdefault('TARGETING_TYPE_BROWSER', [])
       self.create_requests['TARGETING_TYPE_BROWSER'].append({ 'browserDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_BROWSER', displayName),
@@ -682,8 +732,8 @@ class Assigned_Targeting:
 
 
   def add_environment(self, environment):
-    if not self.already_added('TARGETING_TYPE_ENVIRONMENT'):
-      self.delete_environment()
+    if not self.already_added('TARGETING_TYPE_ENVIRONMENT', environment):
+      self.delete_environment(environment)
       self.create_requests.setdefault('TARGETING_TYPE_ENVIRONMENT', [])
       self.create_requests['TARGETING_TYPE_ENVIRONMENT'].append({ 'environmentDetails':{
         'targetingOptionId': self.get_option_id('TARGETING_TYPE_ENVIRONMENT', environment),
@@ -695,22 +745,28 @@ class Assigned_Targeting:
 
 
   def add_carrier_and_isp(self, displayName, negative):
-    if not self.already_added('TARGETING_TYPE_CARRIER_AND_ISP'):
-      self.delete_carrier_and_isp()
+    lookupName, lookupType = displayName.rsplit(' - ',1)
+    lookupType = 'CARRIER_AND_ISP_TYPE_%s' % lookupType
+
+    if not self.already_added('TARGETING_TYPE_CARRIER_AND_ISP', displayName):
+      self.delete_carrier_and_isp(displayName)
       self.create_requests.setdefault('TARGETING_TYPE_CARRIER_AND_ISP', [])
       self.create_requests['TARGETING_TYPE_CARRIER_AND_ISP'].append({ 'carrierAndIspDetails':{
-        'targetingOptionId': self.get_option_id('TARGETING_TYPE_CARRIER_AND_ISP', displayName),
+        'targetingOptionId': self.get_option_id('TARGETING_TYPE_CARRIER_AND_ISP', lookupName, lookupType),
         'negative':negative
       }})
 
 
   def delete_carrier_and_isp(self, displayName):
-    self._delete('TARGETING_TYPE_CARRIER_AND_ISP', displayName)
+    lookupName, lookupType = displayName.rsplit(' - ',1)
+    lookupType = 'CARRIER_AND_ISP_TYPE_%s' % lookupType
+
+    self._delete('TARGETING_TYPE_CARRIER_AND_ISP', lookupName, lookupType)
 
 
   def add_day_and_time(self, dayOfWeek, startHour, endHour, timeZoneResolution):
-    if not self.already_added('TARGETING_TYPE_DAY_AND_TIME', dayOfWeek):
-      self.delete_day_of_week(dayOfWeek)
+    if not self.already_added('TARGETING_TYPE_DAY_AND_TIME', dayOfWeek, startHour, endHour, timeZoneResolution):
+      self.delete_day_and_time(dayOfWeek, startHour, endHour, timeZoneResolution)
       self.create_requests.setdefault('TARGETING_TYPE_DAY_AND_TIME', [])
       self.create_requests['TARGETING_TYPE_DAY_AND_TIME'].append({ 'dayAndTimeDetails':{
         'dayOfWeek': dayOfWeek,
@@ -720,8 +776,8 @@ class Assigned_Targeting:
       }})
 
 
-  def delete_and_time(self, dayOfWeek):
-    self._delete('TARGETING_TYPE_DAY_AND_TIME', dayOfWeek)
+  def delete_day_and_time(self, dayOfWeek, startHour, endHour, timeZoneResolution):
+    self._delete('TARGETING_TYPE_DAY_AND_TIME', dayOfWeek, startHour, endHour, timeZoneResolution)
 
 
   def add_geo_region(self, displayName, geoRegionType, negative):
@@ -757,7 +813,7 @@ class Assigned_Targeting:
       self.delete_regional_location_list(regionalLocationListId)
       self.create_requests.setdefault('TARGETING_TYPE_REGIONAL_LOCATION_LIST', [])
       self.create_requests['TARGETING_TYPE_REGIONAL_LOCATION_LIST'].append({ 'regionalLocationListDetails':{
-        'targetingOptionId': self.get_option_id('TARGETING_TYPE_REGIONAL_LOCATION_LIST', regionalLocationListId),
+        'regionalLocationListId': regionalLocationListId,
         'negative':negative
       }})
 
@@ -857,15 +913,15 @@ class Assigned_Targeting:
           lineItemId=str(self.lineitem),
           advertiserId=str(self.advertiser),
         ).execute()
-      elif self.advertiser:
-        return API_DV360(
-          self.auth,
-        ).advertisers().bulkEditAdvertiserAssignedTargetingOptions(
-          advertiserId=str(self.advertiser),
-        ).execute()
       elif self.partner:
         return API_DV360(
           self.auth
         ).partners().bulkEditPartnerAssignedTargetingOptions(
           partnerId=str(self.partner),
+        ).execute()
+      elif self.advertiser:
+        return API_DV360(
+          self.auth,
+        ).advertisers().bulkEditAdvertiserAssignedTargetingOptions(
+          advertiserId=str(self.advertiser),
         ).execute()
