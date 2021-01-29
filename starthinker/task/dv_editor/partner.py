@@ -26,7 +26,6 @@ from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 from starthinker.task.dv_editor.patch import patch_log
-from starthinker.task.dv_editor.patch import patch_preview
 
 
 def partner_clear():

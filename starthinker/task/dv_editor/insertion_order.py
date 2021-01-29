@@ -26,7 +26,6 @@ from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
-from starthinker.task.dv_editor.patch import patch_clear
 from starthinker.task.dv_editor.patch import patch_log
 from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
@@ -100,6 +99,7 @@ def insertion_order_load():
         CONCAT(I.displayName, ' - ', I.insertionOrderId),
         'PATCH',
         I.entityStatus,
+        I.entityStatus,
         I.displayName,
         I.displayName,
         I.budget.budgetUnit,
@@ -162,6 +162,7 @@ def insertion_order_audit():
           { "name": "Insertion_Order", "type": "STRING" },
           { "name": "Action", "type": "STRING" },
           { "name": "Status", "type": "STRING" },
+          { "name": "Status_Edit", "type": "STRING" },
           { "name": "Name", "type": "STRING" },
           { "name": "Name_Edit", "type": "STRING" },
           { "name": "Budget_Unit", "type": "STRING" },
@@ -433,11 +434,10 @@ def insertion_order_patch(commit=False):
         })
 
   patch_masks(patches)
+  patch_preview(patches)
 
   if commit:
     insertion_order_commit(patches)
-  else:
-    patch_preview(patches)
 
 
 def insertion_order_insert(commit=False):

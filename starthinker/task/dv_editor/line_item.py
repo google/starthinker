@@ -27,6 +27,7 @@ from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 from starthinker.task.dv_editor.patch import patch_log
+from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
@@ -91,6 +92,7 @@ def line_item_load():
         CONCAT(I.displayName, ' - ', I.insertionOrderId),
         CONCAT(L.displayName, ' - ', L.lineItemId),
         'PATCH',
+        L.entityStatus,
         L.entityStatus,
         ARRAY_TO_STRING(L.warningMessages, '\\n'),
 
@@ -175,6 +177,7 @@ def line_item_audit():
         { "name": "Line_Item", "type": "STRING" },
         { "name": "Action", "type": "STRING" },
         { "name": "Status", "type": "STRING" },
+        { "name": "Status_Edit", "type": "STRING" },
         { "name": "Warning", "type": "STRING" },
         { "name": "Line_Item_Type", "type": "STRING" },
         { "name": "Line_Item_Type_Edit", "type": "STRING" },
@@ -488,11 +491,10 @@ def line_item_patch(commit=False):
         })
 
   patch_masks(patches)
+  patch_preview(patches)
 
   if commit:
     line_item_commit(patches)
-  else:
-    patch_preview(patches)
 
 
 def line_item_insert(commit=False):
@@ -521,10 +523,10 @@ def line_item_insert(commit=False):
       }
     })
 
+  patch_preview(inserts)
+
   if commit:
     line_item_commit(inserts)
-  else:
-    patch_preview(inserts)
 
 
 def line_item_commit(patches):

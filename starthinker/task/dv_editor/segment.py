@@ -269,8 +269,7 @@ def segment_patch(commit=False):
   patches = list(patches.values())
 
   patch_masks(patches)
+  patch_preview(patches)
 
   if commit:
     insertion_order_commit(patches)
-  else:
-    patch_preview(patches)
