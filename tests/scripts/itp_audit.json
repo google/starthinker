@@ -4,21 +4,28 @@
     "day": [ "Mon" ]
   },
   "tasks": [
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_ITP_Audit_", "default": "Manual"}},
+      "clear":true
+    }},
     { "include":{
       "script":"scripts/itp_audit.json",
       "parameters":{
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_ITP_Audit_", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_ITP_Audit_", "default": "Manual"}},
+        "date_range":"LAST_7_DAYS",
         "cm_account_id":{"field":{ "name":"cm_account_id", "kind":"string", "description":"Campaign Manager Account Id." }},
         "floodlight_configuration_id":{"field":{ "name":"floodlight_configuration_id", "kind":"integer", "description":"Floodlight Configuration Id for the Campaign Manager floodlight report." }},
         "cm_advertiser_ids":{"field":{ "name":"cm_advertiser_ids", "kind":"integer_list", "description":"Optional: Comma delimited list of DCM advertiser ids." }},
         "dv360_partner_ids":{"field":{ "name":"dv360_partner_ids", "kind":"integer_list", "description":"Comma delimited list of DV360 Partner ids." }},
-        "dv360_advertiser_ids":{"field":{ "name":"dv360_advertiser_ids", "kind":"integer_list", "description":"Optional: Comma delimited list of DV360 Advertiser ids." }},
-        "recipe_name":{"field":{ "name":"recipe_name", "kind":"string", "description":"Name of document to deploy to." }}
+        "dv360_advertiser_ids":{"field":{ "name":"dv360_advertiser_ids", "kind":"integer_list", "description":"Optional: Comma delimited list of DV360 Advertiser ids." }}
       }
     }},
     { "test": {
       "auth":"user",
       "bigquery":{
-        "dataset":"test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_ITP_Audit_", "default": "Manual"}},
         "table":"CM_Floodlight_Multichart",
         "schema":[
           { "name":"browser_platform", "type":"STRING", "mode":"NULLABLE" },
@@ -27,6 +34,11 @@
           { "name":"share_of_floodlight_conversions", "type":"FLOAT", "mode":"NULLABLE" }
         ]
       }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_ITP_Audit_", "default": "Manual"}},
+      "delete":true
     }}
   ]
 }

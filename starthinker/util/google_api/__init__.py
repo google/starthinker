@@ -143,7 +143,7 @@ def API_Retry(job, key=None, retries=3, wait=31):
       raise
 
 
-def API_Iterator(function, kwargs, results=None):
+def API_Iterator(function, kwargs, results=None, limit=None):
   """ See below API_Iterator_Instance for documentaion, this is just an iter wrapper.
 
       Returns:
@@ -178,16 +178,21 @@ def API_Iterator(function, kwargs, results=None):
           instance. kwargs" (dict) arguments to be passed to the function on
           each fetch results (json) optional, the first set of results given (
           if already fetched )
+       kwargs: (dict) arguments to pass to fucntion when making call.
+       results: (object) optional / used recursively, prior call results to continue.
+       limit: (int) maximum number of records to return
 
     Returns:
       Iterator over JSON objects.
     """
 
-    def __init__(self, function, kwargs, results=None):
+    def __init__(self, function, kwargs, results=None, limit=None):
       self.function = function
       self.kwargs = kwargs
+      self.limit = limit
       self.results = results
       self.position = 0
+      self.count = 0
       self.iterable = None
       self.__find_tag__()
 
@@ -233,17 +238,25 @@ def API_Iterator(function, kwargs, results=None):
         else:
           raise StopIteration
 
-      # if results remain, return them
-      if self.iterable and self.position < len(self.results[self.iterable]):
+      # if results remain, return them ( sometimes the iterable is missing )
+      if self.iterable and self.position < len(self.results.get(self.iterable, 0)):
         value = self.results[self.iterable][self.position]
         self.position += 1
+
+        # if reached limit, stop
+        if self.limit is not None:
+          self.count += 1
+          if self.count > self.limit:
+            raise StopIteration
+
+        # otherwise return next value
         return value
 
       # if pages and results exhausted, stop
       else:
         raise StopIteration
 
-  return iter(API_Iterator_Instance(function, kwargs, results))
+  return iter(API_Iterator_Instance(function, kwargs, results, limit))
 
 
 class API():
@@ -282,11 +295,14 @@ class API():
     self.version = configuration['version']
     self.auth = configuration['auth']
     self.uri = configuration.get('uri', None)
+    self.key = configuration.get('key', None)
     self.function_stack = list(
         filter(None,
                configuration.get('function', '').split('.')))
     self.function_kwargs = configuration.get('kwargs', {})
     self.iterate = configuration.get('iterate', False)
+    self.limit = configuration.get('limit', None)
+    self.headers = configuration.get('headers', {})
 
     self.function = None
     self.job = None
@@ -313,10 +329,15 @@ class API():
     return self
 
   # matches API execute with built in iteration and retry handlers
-  def execute(self, run=True, iterate=True):
+  def execute(self, run=True, iterate=False, limit=None):
     # start building call sequence with service object
     self.function = get_service(
-        self.api, self.version, self.auth, uri_file=self.uri)
+        api=self.api,
+        version=self.version,
+        auth=self.auth,
+        headers=self.headers,
+        key=self.key,
+        uri_file=self.uri)
 
     # build calls along stack
     # do not call functions, as the abstract is necessary for iterator page next calls
@@ -332,12 +353,11 @@ class API():
     if run:
       self.response = API_Retry(self.job)
 
-      # if paginated, automatically iterate
-      if (iterate and (self.iterate or (isinstance(self.response, dict) and
-                                        'nextPageToken' in self.response))):
-        return API_Iterator(self.function, self.function_kwargs, self.response)
+      # if expect to iterate through records
+      if iterate or self.iterate:
+        return API_Iterator(self.function, self.function_kwargs, self.response, limit or self.limit)
 
-      # if not paginated, return object as is
+      # if basic response, return object as is
       else:
         return self.response
 
@@ -572,7 +592,7 @@ def API_Cloud(auth, iterate=False):
   return API(configuration)
 
 
-def API_DV360_Beta(auth, iterate=False):
+def API_DV360(auth, iterate=False):
   """Cloud project helper configuration Google API.
 
   Defines agreed upon version.

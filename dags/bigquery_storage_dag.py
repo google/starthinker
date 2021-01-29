@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,108 +34,139 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
 Storage To Table
 
 Move using bucket and path prefix.
 
-Specify a bucket and path prefix, * suffix is NOT required.
-Every time the job runs it will overwrite the table.
+  - Specify a bucket and path prefix, * suffix is NOT required.
+  - Every time the job runs it will overwrite the table.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'auth_read': 'user',  # Credentials used for reading data.
-  'auth_write': 'service',  # Credentials used for writing data.
   'bucket': '',  # Google cloud bucket.
+  'auth_write': 'service',  # Credentials used for writing data.
   'path': '',  # Path prefix to read from, no * required.
   'dataset': '',  # Existing BigQuery dataset.
   'table': '',  # Table to create from this query.
   'schema': '[]',  # Schema provided in JSON list format or empty list.
 }
 
-TASKS = [
-  {
-    'bigquery': {
-      'schema': {
-        'field': {
-          'order': 5,
-          'kind': 'json',
-          'name': 'schema',
-          'description': 'Schema provided in JSON list format or empty list.',
-          'default': '[]'
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      },
-      'from': {
-        'bucket': {
-          'field': {
-            'order': 1,
-            'kind': 'string',
-            'name': 'bucket',
-            'description': 'Google cloud bucket.',
-            'default': ''
-          }
-        },
-        'path': {
-          'field': {
-            'order': 2,
-            'kind': 'string',
-            'name': 'path',
-            'description': 'Path prefix to read from, no * required.',
-            'default': ''
-          }
-        }
-      },
-      'to': {
-        'table': {
-          'field': {
-            'order': 4,
-            'kind': 'string',
-            'name': 'table',
-            'description': 'Table to create from this query.',
-            'default': ''
-          }
-        },
-        'dataset': {
-          'field': {
-            'order': 3,
-            'kind': 'string',
-            'name': 'dataset',
-            'description': 'Existing BigQuery dataset.',
-            'default': ''
-          }
-        },
+RECIPE = {
+  'tasks': [
+    {
+      'bigquery': {
         'auth': {
           'field': {
-            'order': 1,
+            'name': 'auth_read',
             'kind': 'authentication',
-            'name': 'auth_write',
-            'description': 'Credentials used for writing data.',
-            'default': 'service'
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
+          }
+        },
+        'from': {
+          'bucket': {
+            'field': {
+              'name': 'bucket',
+              'kind': 'string',
+              'order': 1,
+              'default': '',
+              'description': 'Google cloud bucket.'
+            }
+          },
+          'path': {
+            'field': {
+              'name': 'path',
+              'kind': 'string',
+              'order': 2,
+              'default': '',
+              'description': 'Path prefix to read from, no * required.'
+            }
+          }
+        },
+        'to': {
+          'auth': {
+            'field': {
+              'name': 'auth_write',
+              'kind': 'authentication',
+              'order': 1,
+              'default': 'service',
+              'description': 'Credentials used for writing data.'
+            }
+          },
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 3,
+              'default': '',
+              'description': 'Existing BigQuery dataset.'
+            }
+          },
+          'table': {
+            'field': {
+              'name': 'table',
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'Table to create from this query.'
+            }
+          }
+        },
+        'schema': {
+          'field': {
+            'name': 'schema',
+            'kind': 'json',
+            'order': 5,
+            'default': '[]',
+            'description': 'Schema provided in JSON list format or empty list.'
           }
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('bigquery_storage', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('bigquery_storage', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

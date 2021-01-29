@@ -200,6 +200,69 @@ install_developer() {
   make_cron;
 }
 
+generate_assets() {
+  echo ""
+  echo "----------------------------------------------------------------------"
+  echo "Generate StarThinker Assets"
+  echo "----------------------------------------------------------------------"
+  echo ""
+
+  python3 -m pip install --upgrade setuptools wheel
+  source "${STARTHINKER_ROOT}/starthinker_assets/development.sh";
+  python3 starthinker_ui/manage.py colab
+  python3 starthinker_ui/manage.py airflow
+  python3 starthinker_ui/manage.py github --analytics UA-167283455-3
+  deactivate
+
+  echo ""
+  echo "Done"
+  echo ""
+}
+
+
+function deploy_pypi() {
+
+  echo ""
+  echo "----------------------------------------------------------------------"
+  echo "PyPi StarThinker $1"
+  echo "----------------------------------------------------------------------"
+  echo ""
+  echo "Optional, create the following configuration to avoid a password ask:"
+  echo "vim ~/.pipyrc"
+  echo "chmod 600 ~/.pipyrc"
+  echo ""
+  echo "File contents:"
+  echo ""
+  echo "[distutils]"
+  echo "  index-servers="
+  echo "    pypi"
+  echo "    testpypi"
+  echo ""
+  echo "[pypi]"
+  echo "  username: __token__"
+  echo "  password: ???"
+  echo ""
+  echo "[testpypi]"
+  echo "  repository: https://test.pypi.org/legacy/"
+  echo "  username: __token__"
+  echo "  password: ???"
+  echo ""
+
+  repository="testpypi"
+  if [ $1 = "--production" ]; then
+    repository="pypi"
+  fi
+
+  python3 -m pip install --upgrade setuptools wheel
+  python3 setup.py sdist bdist_wheel
+  python3 -m pip install --upgrade twine
+  python3 -m twine upload --verbose --skip-existing --repository ${repository} dist/*
+
+  echo ""
+  echo "Done"
+  echo ""
+}
+
 
 setup_developer() {
   echo ""
@@ -235,7 +298,7 @@ setup_developer() {
   echo ""
 
   developer_done=0
-  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Launch Cloud Shell UI" "Developer Worker - Single" "Developer Worker - Peristent" "Test UI" "Test Tasks")
+  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Launch Cloud Shell UI" "Developer Worker - Single" "Developer Worker - Peristent" "Test UI" "Test Tasks" "Generate Dags Colabs And Docs" "Deploy Test PyPi", "Deploy Production PyPi")
 
   while (( !developer_done ))
   do
@@ -254,6 +317,9 @@ setup_developer() {
         5) launch_developer_worker ""; break;;
         6) test_ui; break;;
         7) test_tasks; break;;
+        8) generate_assets; break;;
+        9) deploy_pypi "--test"; break;;
+        10) deploy_pypi "--production"; break;;
         q) developer_done=1; break;;
         *) echo "What's that?";;
       esac

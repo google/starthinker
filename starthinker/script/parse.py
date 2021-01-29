@@ -194,7 +194,7 @@ def text_set_fields(text, variables):
   for field in RE_TEXT_FIELD.findall(text):
     parts = dict([p.strip().split(':') for p in field.split(',', 1)])
     value = (parts.get('prefix', '') + variables[parts['field']]
-            ) if parts['field'] in variables else 'UNDEFINED'
+            ) if parts.get('field') in variables else 'UNDEFINED'
     text = text.replace('{' + field + '}', value)
   return text
 

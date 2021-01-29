@@ -7,7 +7,7 @@
     { "dataset":{
       "auth":"service",
       "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
-      "delete":true
+      "clear":true
     }},
     { "bigquery": {
       "auth":"service",
@@ -153,6 +153,15 @@
           ["dog", 7, 67]
         ]
       }
+    }},
+    { "drive":{
+      "auth":"user",
+      "delete":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Test BigQuery ", "default": "Manual"}}
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
+      "delete":true
     }}
   ]
 }

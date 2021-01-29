@@ -4,19 +4,24 @@
     "copyright":"Copyright 2020 Google LLC"
   },
   "tasks":[
-   { "include":{
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "include":{
       "script":"scripts/barnacle.json",
       "parameters":{
-        "recipe_slug":"Test",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "recipe_project":{"field":{ "name":"recipe_project", "kind":"string", "description":"Project where BigQuery dataset will be created." }},
         "accounts":{"field":{ "name":"accounts", "kind":"integer_list", "description":"Comma separated DCM account ids." }},
-        "reports":true
+        "reports":false
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_Accounts",
         "schema":[
           { "name":"accountId", "type":"INTEGER" },
@@ -33,9 +38,9 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_Profiles",
         "schema":[
           { "name":"profileId", "type":"INTEGER" },
@@ -53,9 +58,9 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_Profile_Campaigns",
         "schema":[
           { "name":"profileId", "type":"INTEGER" },
@@ -66,9 +71,9 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_Profile_Sites",
         "schema":[
           { "name":"profileId", "type":"INTEGER" },
@@ -79,9 +84,9 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_Profile_Roles",
         "schema":[
           { "name":"profileId", "type":"INTEGER" },
@@ -92,9 +97,9 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_Profile_Advertisers",
         "schema":[
           { "name":"profileId", "type":"INTEGER" },
@@ -105,9 +110,9 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_SubAccounts",
         "schema":[
           { "name":"accountId", "type":"INTEGER" },
@@ -117,9 +122,9 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_Advertisers",
         "schema":[
           { "name":"accountId", "type":"INTEGER" },
@@ -138,9 +143,9 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_Campaigns",
         "schema":[
           { "name":"accountId", "type":"INTEGER" },
@@ -166,9 +171,9 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_Sites",
         "schema":[
           { "name":"accountId", "type":"INTEGER" },
@@ -192,9 +197,9 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_Site_Contacts",
         "schema":[
           { "name":"accountId", "type":"INTEGER" },
@@ -213,9 +218,9 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_Reports",
         "schema":[
           { "name":"profileId", "type":"INTEGER" },
@@ -240,9 +245,9 @@
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
         "table":"CM_Report_Deliveries",
         "schema":[
           { "name":"profileId", "type":"INTEGER" },
@@ -256,6 +261,11 @@
           { "name":"deliveryType", "type":"STRING" }
         ]
       }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+      "delete":true
     }}
   ]
 }

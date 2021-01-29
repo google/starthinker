@@ -1,7 +1,7 @@
 {
   "script":{
     "released":"2020-02-06",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"cloud_queue",
     "title":"DV360 Feature Adoption Dashboard",
@@ -157,6 +157,7 @@
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Feature_Spend",
           "is_incremental_load":true,
+          "header":true,
           "schema": [
             { "name": "Advertiser_Id", "type": "INTEGER" },
             { "name": "Advertiser", "type": "STRING" },
@@ -194,6 +195,7 @@
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Feature_Environment",
           "is_incremental_load":true,
+          "header":true,
           "schema": [
             { "name": "Advertiser_Id", "type": "INTEGER" },
             { "name": "Advertiser", "type": "STRING" },

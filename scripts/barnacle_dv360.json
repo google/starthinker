@@ -1,0 +1,177 @@
+{
+  "script":{
+    "released":"2020-09-30",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"security",
+    "title":"DV360 User Audit",
+    "description":"Gives DV clients ability to see which users have access to which parts of an account. Loads DV user profile mappings using the API into BigQuery and connects to a DataStudio dashboard.",
+    "image":"https://github.com/google/starthinker/raw/master/tutorials/images/barnacle_dv.png",
+    "sample":"https://datastudio.google.com/c/u/0/reporting/9f6b9e62-43ec-4027-849a-287e9c1911bd",
+    "documentation":"https://medium.com/starthinker/display-video-360-user-audit-solution-fea607ae3ecc",
+    "from":["dv360"],
+    "to":["datastudio", "bigquery" ],
+    "pitches":[
+      "Meet contractual access reporting information.",
+      "Reduce unauthorized use of DV accounts and assets.",
+      "Audit user access within DV.",
+      "Prevent malicious user access / behavior."
+    ],
+    "impacts":{
+      "spend optimization":0,
+      "spend growth":0,
+      "time savings":90,
+      "account health":100,
+      "csat improvement":90
+    },
+    "instructions":[
+      "DV360 only permits SERVICE accounts to access the user list API endpoint, be sure to provide and permission one.",
+      "Wait for <b>BigQuery->{field:recipe_project}->{field:recipe_slug}->DV_*</b> to be created.",
+      "Wait for <b>BigQuery->{field:recipe_project}->{field:recipe_slug}->Barnacle_*</b> to be created, then copy and connect the following data sources.",
+      "Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets",
+      "Copy <a href='https://datastudio.google.com/c/u/0/reporting/9f6b9e62-43ec-4027-849a-287e9c1911bd' target='_blank'>Barnacle DV Report</a>.",
+      "Click Edit->Resource->Manage added data sources, then edit each connection to connect to your new tables above.",
+      "Or give these intructions to the client."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+   "setup":{
+    "day":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "hour":[3, 15]
+  },
+  "tasks": [
+   { "dataset":{
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+      "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }}
+    }},
+    { "google_api": {
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for writing data." }},
+      "api": "doubleclickbidmanager",
+      "version": "v1.1",
+      "function": "queries.listqueries",
+      "alias":"list",
+      "results": {
+        "bigquery": {
+          "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+          "table": "DV_Reports"
+        }
+      }
+    }},
+    { "google_api": {
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for writing data." }},
+      "api": "displayvideo",
+      "version": "v1",
+      "function": "partners.list",
+      "kwargs": {"fields":"partners.displayName,partners.partnerId,nextPageToken"},
+      "results": {
+        "bigquery": {
+          "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+          "table": "DV_Partners"
+        }
+      }
+    }},
+    { "google_api": {
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for writing data." }},
+      "api": "displayvideo",
+      "version": "v1",
+      "function": "advertisers.list",
+      "kwargs": {
+        "partnerId": {"field":{ "name":"partner", "kind":"integer", "order":2, "default":"", "description":"Partner ID to run user audit on." }},
+        "fields":"advertisers.displayName,advertisers.advertiserId,nextPageToken"
+      },
+      "results": {
+        "bigquery": {
+          "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+          "table": "DV_Advertisers"
+        }
+      }
+    }},
+    { "google_api": {
+      "auth":"service",
+      "api": "displayvideo",
+      "version": "v1",
+      "function": "users.list",
+      "kwargs": {},
+      "results": {
+        "bigquery": {
+          "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+          "table": "DV_Users"
+        }
+      }
+    }},
+    { "bigquery":{
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+      "from":{
+        "query":"SELECT
+          U.userId,
+          U.name,
+          U.email,
+          U.displayName,
+          REGEXP_EXTRACT(U.email, r'@(.+)') AS Domain,
+          IF (ENDS_WITH(U.email, '.gserviceaccount.com'), 'Service', 'User') AS Authentication,
+          IF((Select COUNT(advertiserId) from UNNEST(U.assignedUserRoles)) = 0, 'Partner', 'Advertiser') AS Scope,
+          STRUCT(
+            AUR.partnerId,
+            P.displayName AS partnerName,
+            AUR.userRole,
+            AUR.advertiserId,
+            A.displayName AS advertiserName,
+            AUR.assignedUserRoleId
+          ) AS assignedUserRoles,
+          FROM `{dataset}.DV_Users` AS U,
+          UNNEST(assignedUserRoles) AS AUR
+          LEFT JOIN `{dataset}.DV_Partners` AS P
+          ON AUR.partnerId=P.partnerId
+          LEFT JOIN `{dataset}.DV_Advertisers` AS A
+          ON AUR.advertiserId=A.advertiserId
+        ",
+        "parameters":{
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }}
+        },
+        "legacy":false
+      },
+      "to":{
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+        "view":"Barnacle_User_Roles"
+      }
+    }},
+    { "bigquery":{
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+      "from":{
+        "query":"SELECT
+          R.*,
+          P.displayName AS partnerName,
+          A.displayName AS advertiserName,
+          FROM (
+          SELECT
+            queryId,
+            (SELECT CAST(value AS INT64) FROM UNNEST(R.params.filters) WHERE type = 'FILTER_PARTNER' LIMIT 1) AS partnerId,
+            (SELECT CAST(value AS INT64) FROM UNNEST(R.params.filters) WHERE type = 'FILTER_ADVERTISER' LIMIT 1) AS advertiserId,
+            R.schedule.frequency,
+            R.params.metrics,
+            R.params.type,
+            R.metadata.dataRange,
+            R.metadata.sendNotification,
+            DATE(TIMESTAMP_MILLIS(R.metadata.latestReportRunTimeMS)) AS latestReportRunTime,
+          FROM `{dataset}.DV_Reports` AS R) AS R
+          LEFT JOIN `{dataset}.DV_Partners` AS P
+          ON R.partnerId=P.partnerId
+          LEFT JOIN `{dataset}.DV_Advertisers` AS A
+          ON R.advertiserId=A.advertiserId
+        ",
+        "parameters":{
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }}
+        },
+        "legacy":false
+      },
+      "to":{
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+        "view":"Barnacle_Reports"
+      }
+    }}
+  ]
+}

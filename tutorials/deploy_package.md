@@ -10,8 +10,10 @@ To run StarThinker you will need the folowing:
 2. A version of Python 3.7 or greater.
 
 From the command line on any unix/linux machine install StarThinker.  All following examples begin with this step.
+Choose only one of the following, the first one is recommended for most users:
 
 ```
+python3 -m pip install starthinker
 python3 -m pip install git+https://github.com/google/starthinker
 ```
 

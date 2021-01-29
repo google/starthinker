@@ -41,6 +41,7 @@
 """
 
 import argparse
+import fcntl
 import glob
 import json
 import os
@@ -60,6 +61,12 @@ TEST_DIRECTORY = UI_ROOT + '/tests/scripts/'
 RECIPE_DIRECTORY = UI_ROOT + '/tests/recipes/'
 LOG_DIRECTORY = UI_ROOT + '/tests/logs/'
 RE_TEST = re.compile(r'test.*\.json')
+
+
+def make_non_blocking(file_io):
+  fd = file_io.fileno()
+  fl = fcntl.fcntl(fd, fcntl.F_GETFL)
+  fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
 
 
 def json_expand_includes(script):
@@ -121,15 +128,14 @@ def configure_tests(tests, runs, skips, test_run_id):
       old_fields = json.load(f)
 
   # Get new fields from test files and merge in old values
-
   fields = {}
   for filename, script in tests:
     script_fields = json_get_fields(script)
     script_name = filename.split('.')[0]
 
+    fields.setdefault(script_name, {})
     for field in script_fields:
       if field['name'] == 'test_run_id': continue
-      fields.setdefault(script_name, {})
       fields[script_name][field['name']] = old_fields.get(script_name, {}).get(
           field['name'], field.get('default', ''))
       fields[script_name][
@@ -145,18 +151,17 @@ def configure_tests(tests, runs, skips, test_run_id):
     f = open(CONFIG_FILE, 'w')
     f.write(json.dumps(fields, sort_keys=True, indent=2))
     f.close()
-
-    if test_run_id:
-      # Inject the test run ID to the list of field values that were read from the
-      # test config file. This is done in memory only, so that concrete test run
-      # value are replaced every time a test runs.
-      for script in fields:
-        fields[script]['test_run_id'] = test_run_id
   else:
     print('WARNING CONFIGURATION IS EMPTY, CHECK YOUR PATHS!')
 
-  # Create recipe directory
+  # Inject the test run ID to the list of field values that were read from the
+  # test config file. This is done in memory only, so that concrete test run
+  # value are replaced every time a test runs.
+  if test_run_id:
+    for script in fields:
+      fields[script]['test_run_id'] = test_run_id
 
+  # Create recipe directory
   print('GENERATE RECIPES')
   os.makedirs(RECIPE_DIRECTORY, exist_ok=True)
 
@@ -261,6 +266,10 @@ def run_tests(tests, recipes, runs, skips):
     jobs.append({
         'recipe':
             recipe,
+        'output':
+            '',
+        'errors':
+            '',
         'process':
             subprocess.Popen(
                 command,
@@ -270,6 +279,10 @@ def run_tests(tests, recipes, runs, skips):
                 stderr=subprocess.PIPE)
     })
 
+    # give ability to read buffers without locking process
+    make_non_blocking(jobs[-1]['process'].stdout)
+    make_non_blocking(jobs[-1]['process'].stderr)
+
   # Monitor each job for completion and write to log
 
   i = len(jobs)
@@ -278,19 +291,29 @@ def run_tests(tests, recipes, runs, skips):
     sleep(10)
 
     i = i - 1
+
+    # read output every time as buffer may fill up and lock process
+    stdout = jobs[i]['process'].stdout.read()
+    if stdout is not None:
+      jobs[i]['output'] += stdout.decode()
+
+    stderr = jobs[i]['process'].stderr.read()
+    if stderr is not None:
+      jobs[i]['errors'] += stderr.decode()
+
     poll = jobs[i]['process'].poll()
+
     if poll is not None:
       job = jobs.pop(i)
 
       print('\nOK:' if poll == 0 else '\nFAILED:', job['recipe'], 'REMAINING:',
             len(jobs), [j['recipe'].replace('.json', '') for j in jobs])
 
-      output, errors = job['process'].communicate()
       with open(
           LOG_DIRECTORY + ('OK_' if poll == 0 else 'FAILED_') +
           job['recipe'].replace('.json', '.log'), 'w') as f:
-        f.write(output.decode())
-        f.write(errors.decode())
+        f.write(job['output'])
+        f.write(job['errors'])
 
     # Start checking jobs from end again
     if i == 0:

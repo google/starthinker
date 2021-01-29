@@ -1,12 +1,7 @@
 
-
-
-
-
 <!DOCTYPE html>
 <html>
   <head>
-
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167283455-3"></script>
     <script>
@@ -15,101 +10,71 @@
       gtag('js', new Date());
       gtag('config', 'UA-167283455-3');
     </script>
-
     <link rel="shortcut icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
     <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
-
     <!--Import Google Icon Font-->
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     <!--Import materialize.css-->
     <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize-1.0.0.min.css">
-
     <style>
       html { color: rgba(68,68,68,1); font-family: Roboto, sans-serif; }
-
       .material-icons { line-height: normal; vertical-align: middle; }
-
       #message { justify-content: center; font-size: 2em;}
       #message i { font-size: 2em; margin: 10px; }
       #message ul, #message li { display: inline; margin-left: 10px; }
       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
-
-      div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+      div.nav-wrapper { padding-left: 10%; padding-right: 10%; }
       h1 a i.material-icons { font-size: 4rem; }
       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+      span.brand-title { vertical-align: middle; padding-left: 10px;}
       ol li { line-height: 1.8em; }
       textarea { margin-top: 7px; height: 10rem; }
       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
-
       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
-
       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
       div.card h4 { width 100%; padding: 20px;}
       div.card h4 i.material-icons { font-size: 2.28rem; }
       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
-
       .card .card-content .card-title { word-wrap: break-word; }
       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
-
       div.switch { padding-top: 1rem; padding-bottom: 1rem; }
       div.switch label { font-size: 1.05rem; }
       div.switch label:first-child { font-size: 1.3rem; margin-right: 40px; }
-
       p.flow-text { font-weight: 100; }
       i.right { margin: 0px 15px; font-size: 1.5rem;}
       .collapsible-body { padding: 0px; }
-
-      
-  #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
+      body { overflow: auto !important; }
+  #solution_image { margin: 10px auto; width: 100%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; }
   .col { margin-right: auto; }
-  pre.expand_code { height: 70vh; overflow: hidden; }
-  pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
-
+  pre { overflow: scroll; }
     </style>
-
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
-
-  
-    <nav class="green lighten-0">
+    <nav class="blue darken-1">
       <div class="nav-wrapper">
         <a href="/starthinker/" class="brand-logo">
-          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png" alt="StarThinker Logo"/>
+          <span class="brand-title">StarThinker</span>
         </a>
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          
-          
           <li><a href="/starthinker/solution/">Solutions</a></li>
           <li><a href="/starthinker/help/">Help</a></li>
-          
         </ul>
       </div>
     </nav>
-
-    <ul class="sidenav green lighten-1" id="mobile-menu">
-      
-      
-      
+    <ul class="sidenav blue darken-2" id="mobile-menu">
       <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
       <li><a class="white-text" href="/starthinker/help/">Help</a></li>
-      
     </ul>
-  
-
   <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize-1.0.0.min.js"></script>
-
-    
-
-
 <!--
 Start of Floodlight Tag: Please do not remove
 Activity name of this tag: Gallery Conversions
@@ -126,43 +91,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 <img src="https://ad.doubleclick.net/ddm/activity/src=8657867;type=github;cat=galle0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=1?" width="1" height="1" alt=""/>
 </noscript>
 <!-- End of Floodlight Tag: Please do not remove -->
-
-
-
-    
-
     <div id="page" class="center">
-      
-
-  <br/>
-  <h1><i class="medium material-icons">donut_small</i>&nbsp; [DV-3PO] Custom Signals</h1>
-  <p class="flow-text">[DV-3PO] Custom Signals allows automated changes to be made to DV360 campaigns based on external signals from weather and social media trends. In the future it will also support news, disaster alerts, stocks, sports, custom APIs, etc. </p>
-
-  <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
-  
-
   <br/><br/>
-  
-
-  
-
+  <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
+  <br/><br/>
+    <h1><i class="large material-icons">donut_small</i>&nbsp;DV-3PO Custom Signals</h1>
+    <p class="flow-text">DV-3PO Custom Signals allows automated changes to be made to DV360 campaigns based on external signals from weather and social media trends. In the future it will also support news, disaster alerts, stocks, sports, custom APIs, etc.</p>
+  <br/><br/>
   <div class="buttons">
-
     <a class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
       <i class="material-icons right">lock_open</i>Get Access
     </a>
-
-    
-
-    
-
-    
-
-    <br/>
-
-    
-
-    
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/dv3po_custom_signals.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
@@ -172,222 +111,162 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/dv3po_custom_signals_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
       </a>
-    
-
   </div>
-
   <br/><br/>
-
   <div class="row">
-    
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-            <thead>
-              <tr>
-                <th>Value Proposition</th>
-              </tr>
-             </thead>
-             <tbody>
-             
-               <tr>
-                 <td>Automatically react to custom signals and analytics</td>
-               </tr>
-             
-               <tr>
-                 <td>Budget is better allocated based on business rules and priorities.</td>
-               </tr>
-             
-               <tr>
-                 <td>Shortest possible reaction time to external events.</td>
-               </tr>
-             
-               <tr>
-                 <td>Minimize manual work.</td>
-               </tr>
-             
-             </tbody>
-          </table>
-        </div>
-      </div>
-    
-
-    
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-            <thead>
-              <tr>
-                <th>Impact</th>
-                <th>Level</th>
-              </tr>
-             </thead>
-               <tbody>
-               
-                 <tr>
-                   <td>Csat Improvement</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 90%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
-                   <td>Time Savings</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 90%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
-                   <td>Spend Optimization</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 30%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
-                   <td>Account Health</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-                 <tr>
-                   <td>Spend Growth</td>
-                   <td>
-                     <div class="progress">
-                       <div class="determinate" style="width: 0%"></div>
-                     </div>
-                   </td>
-                 </tr>
-               
-             </tbody>
-          </table>
-        </div>
-      </div>
-    
-
     <div class="col s12 m6 l4">
       <div class="card">
+        <br/>
+          <h4>Impact Level</h4>
+          <table class="bordered">
+            <tbody>
+              <tr>
+                <td width="50%">Spend Optimization</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 30%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%">Spend Growth</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 0%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%">Time Savings</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 90%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%">Account Health</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 0%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%">Csat Improvement</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: 90%"></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h4>Value Proposition</h4>
+          <table class="bordered">
+            <tbody>
+              <tr>
+                <td>Automatically react to custom signals and analytics</td>
+              </tr>
+              <tr>
+                <td>Budget is better allocated based on business rules and priorities.</td>
+              </tr>
+              <tr>
+                <td>Shortest possible reaction time to external events.</td>
+              </tr>
+              <tr>
+                <td>Minimize manual work.</td>
+              </tr>
+            </tbody>
+          </table>
+          <h4>Instructions</h4>
+          <table class="bordered">
+            <tbody>
+              <tr>
+                <td>Open the template sheet: <a target='_blank' href='https://docs.google.com/spreadsheets/d/1xl2bknsn9ptCKwg1sZqTBpmRFDdcG3ATdp2f4C2CQ2U/edit#gid=1579485492'>[DV-3PO] Custom Signals Configs</a>.</td>
+              </tr>
+              <tr>
+                <td>Make a copy of the sheet through the menu File -> Make a copy, for clarity we suggest you rename the copy to a meaningful name describing the usage of this copy.</td>
+              </tr>
+              <tr>
+                <td>In the Station IDs field below enter a comma separated list of NOAA weather station IDs. Most major airports are stations and their ID typically is K followed by the 3 letter airport code, e.g. KORD for Chicago O'Hare International Airport, KSFO for San Francisco international airport, etc. You can get a full list of stations <a target='_blank' href='https://www1.ncdc.noaa.gov/pub/data/noaa/isd-history.txt'>here</a>, the station ID to use is the 'CALL' column of this list.</td>
+              </tr>
+              <tr>
+                <td>In the Sheet URL field below, enter the URL of the copy of the config sheet you've created.</td>
+              </tr>
+              <tr>
+                <td>Go to the sheet and configure the rules you'd like to be applied in the Rules tab.</td>
+              </tr>
+              <tr>
+                <td>In the Advertiser ID column, enter the advertiser ID of the line items you'd like to automatically update.</td>
+              </tr>
+              <tr>
+                <td>In the Line Item ID colunn, enter the line item ID of the line item you'd like to automatically update.</td>
+              </tr>
+              <tr>
+                <td>The 'Active' column of the Rules tab allows you to control if the line item should be active or paused. If this field is TRUE the line item will be set to active, if this field is FALSE the line item will be set to inactive. You can use a formula to take weather data into consideration to update this field, e.g. =IF(Weather!C2>30, TRUE, FALSE) will cause the line item to be activated if the temperature of the first station in the Weather tab is above 30 degrees. Leave this field empty if you don't want it to be modified by the tool.</td>
+              </tr>
+              <tr>
+                <td>The 'Fixed Bid' column of the Rules tab allows you to control the fixed bid amount of the line item. The value set to this field will be applied to the specified line item. You can use a formula to take weather data into consideration to update this field, e.g. =IF(Weather!G2>3, 0.7, 0.4) will cause bid to be set to $0.7 if the wind speed of the first line in the Weather tab is greater than 3 mph, or $0.4 otherwise. Leave this field empty if you don't want it to be modified by the tool.</td>
+              </tr>
+            </tbody>
+          </table>
+        <h4>Details</h4>
         <table class="bordered">
-          <thead>
-            <tr>
-              <th colspan="2">Details</th>
-            </tr>
-           </thead>
           <tbody>
-
-            
             <tr>
-              <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
+              <td>Open Source</td>
+              <td>YES
             </tr>
-            
-
             <tr>
               <td>Age</td>
-              <td>April 22, 2020 (5 months)</td>
+              <td>April 22, 2020 (9 months)</td>
             </tr>
-
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:mauriciod@google.com?subject=Request+For+A+%5BDV-3PO%5D+Custom+Signals+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+%5BDV-3PO%5D+Custom+Signals+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fdv3po_custom_signals%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">mauriciod@google.com</a>
+              <td><a href="mailto:mauriciod@google.com?subject=Request+For+A+DV-3PO+Custom+Signals+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+DV-3PO+Custom+Signals+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Fkenjora.c.googlers.com%3A8000%2Fsolution%2Fdv3po_custom_signals%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">mauriciod@google.com</a>
               </td>
             </tr>
-
+                <tr>
+                  <td>Shedule Days</td>
+                  <td>Configured by user.</td>
+                </tr>
+                <tr>
+                  <td>Shedule Hours</td>
+                  <td>0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23</td>
+                </tr>
           </tbody>
         </table>
       </div>
     </div>
-
-   
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-          <thead>
-              <tr>
-                <th>Instructions</th>
-              </tr>
-             </thead>
-             <tbody>
-             
-               <tr>
-                 <td>Open the template sheet: <a target='_blank' href='https://docs.google.com/spreadsheets/d/1xl2bknsn9ptCKwg1sZqTBpmRFDdcG3ATdp2f4C2CQ2U/edit#gid=1579485492'>[DV-3PO] Custom Signals Configs</a>.</td>
-               </tr>
-             
-               <tr>
-                 <td>Make a copy of the sheet through the menu File -> Make a copy, for clarity we suggest you rename the copy to a meaningful name describing the usage of this copy.</td>
-               </tr>
-             
-               <tr>
-                 <td>In the Station IDs field below enter a comma separated list of NOAA weather station IDs. Most major airports are stations and their ID typically is K followed by the 3 letter airport code, e.g. KORD for Chicago O'Hare International Airport, KSFO for San Francisco international airport, etc. You can get a full list of stations <a target='_blank' href='https://www1.ncdc.noaa.gov/pub/data/noaa/isd-history.txt'>here</a>, the station ID to use is the 'CALL' column of this list.</td>
-               </tr>
-             
-               <tr>
-                 <td>In the Sheet URL field below, enter the URL of the copy of the config sheet you've created.</td>
-               </tr>
-             
-               <tr>
-                 <td>Go to the sheet and configure the rules you'd like to be applied in the Rules tab.</td>
-               </tr>
-             
-               <tr>
-                 <td>In the Advertiser ID column, enter the advertiser ID of the line items you'd like to automatically update.</td>
-               </tr>
-             
-               <tr>
-                 <td>In the Line Item ID colunn, enter the line item ID of the line item you'd like to automatically update.</td>
-               </tr>
-             
-               <tr>
-                 <td>The 'Active' column of the Rules tab allows you to control if the line item should be active or paused. If this field is TRUE the line item will be set to active, if this field is FALSE the line item will be set to inactive. You can use a formula to take weather data into consideration to update this field, e.g. =IF(Weather!C2>30, TRUE, FALSE) will cause the line item to be activated if the temperature of the first station in the Weather tab is above 30 degrees. Leave this field empty if you don't want it to be modified by the tool.</td>
-               </tr>
-             
-               <tr>
-                 <td>The 'Fixed Bid' column of the Rules tab allows you to control the fixed bid amount of the line item. The value set to this field will be applied to the specified line item. You can use a formula to take weather data into consideration to update this field, e.g. =IF(Weather!G2>3, 0.7, 0.4) will cause bid to be set to $0.7 if the wind speed of the first line in the Weather tab is greater than 3 mph, or $0.4 otherwise. Leave this field empty if you don't want it to be modified by the tool.</td>
-               </tr>
-             
-             </tbody>
-          </table>
-        </div>
-       </div>
-     
-
-    <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
+    <div class="col s12 m6 l8">
+      <pre id="code-workflow" class="card left-align"><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/weather_gov/run.py" target="_blank">weather_gov</a>": {
             "auth": "user",
             "stations": {
                 "field": {
-                    "description": "NOAA Weather Station ID",
-                    "order": 1,
-                    "default": "",
+                    "name": "station_ids",
                     "kind": "string_list",
-                    "name": "station_ids"
+                    "order": 1,
+                    "description": "NOAA Weather Station ID",
+                    "default": ""
                 }
             },
             "out": {
                 "sheets": {
                     "sheet": {
                         "field": {
-                            "description": "Feed Sheet URL",
-                            "order": 2,
-                            "default": "",
+                            "name": "sheet_url",
                             "kind": "string",
-                            "name": "sheet_url"
+                            "order": 2,
+                            "description": "Feed Sheet URL",
+                            "default": ""
                         }
                     },
+                    "tab": "Weather",
                     "range": "A2:K",
-                    "delete": true,
-                    "tab": "Weather"
+                    "delete": true
                 }
             }
         }
@@ -396,26 +275,26 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/lineitem_beta/run.py" target="_blank">lineitem_beta</a>": {
             "auth": {
                 "field": {
-                    "description": "Credentials used for reading data.",
+                    "name": "auth_read",
+                    "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "kind": "authentication",
-                    "name": "auth_read"
+                    "description": "Credentials used for reading data."
                 }
             },
             "read": {
                 "sheet": {
                     "sheet": {
                         "field": {
-                            "description": "Feed Sheet URL",
-                            "order": 2,
-                            "default": "",
+                            "name": "sheet_url",
                             "kind": "string",
-                            "name": "sheet_url"
+                            "order": 2,
+                            "description": "Feed Sheet URL",
+                            "default": ""
                         }
                     },
-                    "range": "A1:D",
-                    "tab": "Rules"
+                    "tab": "Rules",
+                    "range": "A1:D"
                 }
             },
             "patch": {}
@@ -423,9 +302,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     }
 ]</code></pre>
     </div>
-
   </div>
-
   <br/><br/>
   <h3 id="code-tasks">Run This Workflow In Minutes On Google Cloud</h3>
   <p class="flow-text">Everything from a quick Google Cloud UI to reference developer code for your team in one GitHub repository.</p>
@@ -440,39 +317,18 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       UI How To<i class="material-icons right">laptop</i>
     </a>
   </p>
-
-
-
     </div>
-
   </body>
-
-  
-
-<footer class="page-footer red lighten-1">
+<footer class="page-footer blue">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google LLC
+      &copy; 2019 Google LLC
     </div>
   </div>
 </footer>
-
-
   <script type="text/javascript">
     $(document).ready(function() {
-      M.AutoInit();
+      M.AutoInit(context=document.getElementById("form_recipe"));
     });
   </script>
-
-  
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('span.expand_code').on('click tap', function() {
-        $('pre.expand_code').css('height', 'auto');
-        $(this).hide();
-      });
-    });
-  </script>
-
-
 </html>

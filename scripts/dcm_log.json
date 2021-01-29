@@ -1,10 +1,10 @@
 {
   "script":{
     "released":"2019-08-24",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"security",
-    "title":"CM Log Audit",
+    "title":"CM360 Log Audit",
     "description":"Downloads Campaign manager logs and allows audits.",
     "image":"https://storage.googleapis.com/starthinker-ui/barnacle.png",
     "sample":"https://datastudio.google.com/open/1gjxHm0jUlQUd0jMuxaOlmrl8gOX1kyKT",

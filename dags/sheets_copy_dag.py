@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,21 +34,51 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
 Sheet Copy
 
 Copy tab from a sheet to a sheet.
 
-Provide the full edit URL for both sheets.
-Provide the tab name for both sheets.
-The tab will only be copied if it does not already exist.
+  - Provide the full edit URL for both sheets.
+  - Provide the tab name for both sheets.
+  - The tab will only be copied if it does not already exist.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'auth_read': 'user',  # Credentials used for reading data.
@@ -57,59 +88,60 @@ INPUTS = {
   'to_tab': '',
 }
 
-TASKS = [
-  {
-    'sheets': {
-      'sheet': {
-        'field': {
-          'order': 3,
-          'kind': 'string',
-          'name': 'to_sheet',
-          'default': ''
-        }
-      },
-      'tab': {
-        'field': {
-          'order': 4,
-          'kind': 'string',
-          'name': 'to_tab',
-          'default': ''
-        }
-      },
-      'template': {
+RECIPE = {
+  'tasks': [
+    {
+      'sheets': {
+        'auth': {
+          'field': {
+            'name': 'auth_read',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
+          }
+        },
+        'template': {
+          'sheet': {
+            'field': {
+              'name': 'from_sheet',
+              'kind': 'string',
+              'order': 1,
+              'default': ''
+            }
+          },
+          'tab': {
+            'field': {
+              'name': 'from_tab',
+              'kind': 'string',
+              'order': 2,
+              'default': ''
+            }
+          }
+        },
         'sheet': {
           'field': {
-            'order': 1,
+            'name': 'to_sheet',
             'kind': 'string',
-            'name': 'from_sheet',
+            'order': 3,
             'default': ''
           }
         },
         'tab': {
           'field': {
-            'order': 2,
+            'name': 'to_tab',
             'kind': 'string',
-            'name': 'from_tab',
+            'order': 4,
             'default': ''
           }
         }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('sheets_copy', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('sheets_copy', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

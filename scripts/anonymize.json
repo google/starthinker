@@ -1,10 +1,10 @@
 {
   "script":{
     "released":"2019-02-27",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"waves",
-    "title":"Anonymize Dataset",
+    "title":"BigQuery Anonymize Dataset",
     "description":"Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.",
     "instructions":[
        "Ensure you have user access to both datasets.",
@@ -35,11 +35,11 @@
   },
   "tasks":[
     { "anonymize":{
-      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"service", "description":"Credentials used." }},
       "bigquery":{
         "from":{
-          "project":{"field":{ "name":"from_project", "kind":"string", "order":1, "description":"Original project to copy from." }},
-          "dataset":{"field":{ "name":"from_dataset", "kind":"string", "order":2, "description":"Original dataset to copy from." }}
+          "project":{"field":{ "name":"from_project", "kind":"string", "order":1, "description":"Original project to read from." }},
+          "dataset":{"field":{ "name":"from_dataset", "kind":"string", "order":2, "description":"Original dataset to read from." }}
         },
         "to":{
           "project":{"field":{ "name":"to_project", "kind":"string", "order":3, "default":null, "description":"Anonymous data will be writen to." }},

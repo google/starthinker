@@ -116,6 +116,7 @@
         var repeat_blank = $('#' + this.id.replace('button', 'blank'));
         $('#insert_here').before(repeat_blank.html().replace(/\[BLANK\]/g, forms));
         updateTasks();
+        M.AutoInit(context=document.getElementById("form_recipe"));
       });
 
       var move = null;
@@ -150,7 +151,7 @@
 
 {% block content %}
 
-  <form action="." method="post">
+  <form action="." method="post" id="form_recipe">
     {% csrf_token %}
 
     {% with recipe=form_script.setup.instance %}

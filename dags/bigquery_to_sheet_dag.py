@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,22 +34,52 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Query to Sheet
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
+BigQuery Query to Sheet
 
 Copy the contents of a query into a Google Sheet.
 
-Specify the sheet and the query.
-Leave range blank or set to A2 to insert one line down.
-The range is cleared before the sheet is written to.
-To select a table use SELECT * FROM table.
+  - Specify the sheet and the query.
+  - Leave range blank or set to A2 to insert one line down.
+  - The range is cleared before the sheet is written to.
+  - To select a table use SELECT * FROM table.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'auth_read': 'user',  # Credentials used for reading data.
@@ -60,84 +91,85 @@ INPUTS = {
   'legacy': True,  # Use Legacy SQL
 }
 
-TASKS = [
-  {
-    'bigquery': {
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      },
-      'from': {
-        'query': {
+RECIPE = {
+  'tasks': [
+    {
+      'bigquery': {
+        'auth': {
           'field': {
-            'order': 5,
-            'kind': 'text',
-            'name': 'query',
-            'description': 'Query to pull data from the table.',
-            'default': ''
-          }
-        },
-        'legacy': {
-          'field': {
-            'order': 6,
-            'kind': 'boolean',
-            'name': 'legacy',
-            'description': 'Use Legacy SQL',
-            'default': True
-          }
-        },
-        'dataset': {
-          'field': {
-            'order': 4,
-            'kind': 'string',
-            'name': 'dataset',
-            'description': 'Existing BigQuery dataset.',
-            'default': ''
-          }
-        },
-        'auth': 'service'
-      },
-      'to': {
-        'range': {
-          'field': {
-            'order': 3,
-            'kind': 'string',
-            'name': 'range',
-            'description': 'Range in the sheet to place the data, leave blank for whole sheet.',
-            'default': ''
-          }
-        },
-        'sheet': {
-          'field': {
+            'name': 'auth_read',
+            'kind': 'authentication',
             'order': 1,
-            'kind': 'string',
-            'name': 'sheet',
-            'description': 'Either sheet url or sheet name.',
-            'default': ''
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
           }
         },
-        'tab': {
-          'field': {
-            'order': 2,
-            'kind': 'string',
-            'name': 'tab',
-            'description': 'Name of the tab where to put the data.',
-            'default': ''
+        'from': {
+          'auth': 'service',
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'Existing BigQuery dataset.'
+            }
+          },
+          'query': {
+            'field': {
+              'name': 'query',
+              'kind': 'text',
+              'order': 5,
+              'default': '',
+              'description': 'Query to pull data from the table.'
+            }
+          },
+          'legacy': {
+            'field': {
+              'name': 'legacy',
+              'kind': 'boolean',
+              'order': 6,
+              'default': True,
+              'description': 'Use Legacy SQL'
+            }
+          }
+        },
+        'to': {
+          'sheet': {
+            'field': {
+              'name': 'sheet',
+              'kind': 'string',
+              'order': 1,
+              'default': '',
+              'description': 'Either sheet url or sheet name.'
+            }
+          },
+          'tab': {
+            'field': {
+              'name': 'tab',
+              'kind': 'string',
+              'order': 2,
+              'default': '',
+              'description': 'Name of the tab where to put the data.'
+            }
+          },
+          'range': {
+            'field': {
+              'name': 'range',
+              'kind': 'string',
+              'order': 3,
+              'default': '',
+              'description': 'Range in the sheet to place the data, leave blank for whole sheet.'
+            }
           }
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('bigquery_to_sheet', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('bigquery_to_sheet', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

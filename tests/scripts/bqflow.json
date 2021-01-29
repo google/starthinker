@@ -1,0 +1,11 @@
+{
+  "setup":{
+    "license":"Licensed under Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "bqflow":{
+      "auth":"service"
+    }}
+  ]
+}

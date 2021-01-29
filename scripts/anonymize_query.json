@@ -1,0 +1,52 @@
+{
+  "script":{
+    "released":"2021-01-01",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"waves",
+    "title":"BigQuery Anonymize Query",
+    "description":"Runs a query and anynonamizes all rows.  Used to create sample table for dashboards.",
+    "instructions":[
+       "Ensure you have user access to both datasets.",
+       "Provide the source project, dataset and query.",
+       "Provide the destination project, dataset, and table."
+    ],
+    "image":"https://storage.googleapis.com/starthinker-ui/anonymize_dataset.png",
+    "test":"https://github.com/google/starthinker/blob/master/tests/scripts/anonymize.json",
+    "from":["bigquery"],
+    "to":["bigquery"],
+    "pitches":[
+      "Create anonymous tables for demos.",
+      "Anonymize dashboard data."
+    ],
+    "impacts":{
+      "spend optimization":0,
+      "spend growth":0,
+      "time savings":100,
+      "account health":0,
+      "csat improvement":100
+    },
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
+    "day":[],
+    "hour":[]
+  },
+  "tasks":[
+    { "anonymize":{
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"service", "description":"Credentials used." }},
+      "bigquery":{
+        "from":{
+          "project":{"field":{ "name":"from_project", "kind":"string", "order":1, "description":"Original project to read from." }},
+          "dataset":{"field":{ "name":"from_dataset", "kind":"string", "order":2, "description":"Original dataset to read from." }},
+          "query":{"field":{ "name":"from_query", "kind":"string", "order":3, "description":"Query to read data." }}
+        },
+        "to":{
+          "project":{"field":{ "name":"to_project", "kind":"string", "order":4, "default":null, "description":"Anonymous data will be writen to." }},
+          "dataset":{"field":{ "name":"to_dataset", "kind":"string", "order":5, "description":"Anonymous data will be writen to." }},
+          "table":{"field":{ "name":"to_table", "kind":"string", "order":6, "description":"Anonymous data will be writen to." }}
+        }
+      }
+    }}
+  ]
+}

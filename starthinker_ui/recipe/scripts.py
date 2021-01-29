@@ -31,20 +31,20 @@ from starthinker.util.project import get_project
 
 # cache scripts in memory
 SCRIPTS = {}
+APACHE_LICENSE_MATCH = 'Licensed under the Apache License, Version 2.0'
 
 
 def load_scripts():
   if not SCRIPTS:
     for root, dirs, files in os.walk(UI_ROOT + '/scripts/'):
-      for filename in files:
+      for filename in sorted(files):
         if filename.endswith('.json'):
           try:
             script = get_project(root + filename)
             if not 'script' in script:
               continue
             script['path'] = root + filename
-            SCRIPTS[filename.replace('script_', '', 1).replace('.json', '',
-                                                               1)] = script
+            SCRIPTS[filename.replace('.json', '', 1)] = script
             print('OK', filename)
           except Exception as e:
             print('ERROR:', filename, str(e))
@@ -59,7 +59,7 @@ try:
   )
 # If it fails, load the scripts directly from the json files
 except ImportError as e:
-  print('Loading From: script_.*\.json')
+  print('Loading From: scripts/*.json')
   load_scripts()
 
 
@@ -91,23 +91,25 @@ class Script:
     )
 
   def get_link_client(self):
-    if self.script.get('script', {}).get('license',
-                                         '') == 'Apache License, Version 2.0':
-      return 'https://google.github.io/starthinker/solution/%s/' % self.tag
+    if self.script.get('script', {}).get('license', '') == APACHE_LICENSE_MATCH:
+      return 'https://google.github.io/starthinker/solution/%s/' % self.get_tag()
     else:
       return ''
 
   def get_link_ui(self):
-    return '/recipe/%s/?script=%s' % ('manual' if self.is_manual() else 'edit',
-                                      self.get_tag())
+    return '/recipe/%s/?script=%s' % ('manual' if self.is_manual() else 'edit', self.get_tag())
 
   def get_link_colab(self):
-    return 'https://colab.research.google.com/github/google/starthinker/blob/master/colabs/%s.ipynb' % self.get_tag(
-    )
+    return 'https://colab.research.google.com/github/google/starthinker/blob/master/colabs/%s.ipynb' % self.get_tag()
 
   def get_link_airflow(self):
-    return 'https://github.com/google/starthinker/blob/master/dags/%s_dag.py' % self.get_tag(
-    )
+    return 'https://github.com/google/starthinker/blob/master/dags/%s_dag.py' % self.get_tag()
+
+  def get_open_source(self):
+    if self.script.get('script', {}).get('license', '') == APACHE_LICENSE_MATCH:
+      return 'https://github.com/google/starthinker/blob/master/scripts/%s.json' % self.get_tag()
+    else:
+      return ''
 
   def get_released(self):
     try:
@@ -157,19 +159,14 @@ class Script:
   def get_sample(self):
     return self.script.get('script', {}).get('sample', None)
 
+  def get_setup(self):
+    return self.script.get('setup', {})
+
   def get_test(self):
     return self.script.get('script', {}).get('test', None)
 
   def get_documentation(self):
     return self.script.get('script', {}).get('documentation', None)
-
-  def get_open_source(self):
-    if self.script.get('script', {}).get('license',
-                                         '') == 'Apache License, Version 2.0':
-      return 'https://github.com/google/starthinker/blob/master' + self.script[
-          'path'].replace(UI_ROOT, '', 1)
-    else:
-      return ''
 
   def get_from(self):
     return self.script.get('script', {}).get('from', [])
@@ -186,6 +183,12 @@ class Script:
   def get_tasks(self):
     return deepcopy(self.script.get('tasks', []))
 
+  def get_tasks_and_setup(self):
+    s = deepcopy(self.script)
+    if 'script' in s: del s['script']
+    if 'path' in s: del s['path']
+    return s
+
   def get_tasks_linked(self):
     tasks = self.get_tasks()
     data = json.dumps(tasks, indent=4)
@@ -200,8 +203,17 @@ class Script:
     return self.script.get('setup', {}).get('day', None) == []
 
   @staticmethod
-  def get_json(uuid, project_id, credentials_user, credentials_service,
-               timezone, days, hours, values):
+  def get_json(
+    uuid,
+    project_id,
+    project_key,
+    credentials_user,
+    credentials_service,
+    timezone,
+    days,
+    hours,
+    values
+    ):
     tasks = []
     hours = set(hours)
     for v in values:
@@ -217,6 +229,7 @@ class Script:
         'setup': {
             'uuid': uuid,
             'id': project_id,
+            'key': project_key,
             'timezone': timezone,
             'day': days,
             'hour': sorted(hours),

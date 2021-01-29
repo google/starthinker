@@ -72,15 +72,22 @@ def bigquery_date(value):
   return value.strftime('%Y%m%d')
 
 
-def excel_to_rows(excel_bytes):
-  book = Workbook(excel_bytes)
+def excel_to_sheets(excel_file):
+  excel_book = Workbook(excel_file)
+  for excel_sheet in excel_book:
+    yield excel_sheet.name
+
+
+def excel_to_rows(excel_file, sheet=None):
+  excel_book = Workbook(excel_file)
   # load all sheets in document
-  for sheet in book:
-    # load all rows from sheet
-    rows = []
-    for row_number, cells in sheet.rowsIter():
-      rows.append(map(lambda cell: cell.value or cell.formula, cells))
-    yield sheet.name, rows
+  for excel_sheet in excel_book:
+    if sheet is None or sheet == excel_sheet.name:
+      # load all rows from excel_sheet
+      rows = []
+      for row_number, cells in excel_sheet.rowsIter():
+        rows.append(map(lambda cell: cell.value or cell.formula, cells))
+      yield excel_sheet.name, rows
 
 
 def csv_to_rows(csv_string):
@@ -101,7 +108,11 @@ def csv_to_rows(csv_string):
 def rows_to_csv(rows):
   csv_string = StringIO()
   writer = csv.writer(
-      csv_string, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+      csv_string,
+      delimiter=',',
+      quotechar='"',
+      quoting=csv.QUOTE_MINIMAL,
+      lineterminator='\n')
   count = 0
   for row_number, row in enumerate(rows):
     try:
@@ -280,3 +291,9 @@ def rows_slice(rows, row_min=0, row_max=100):
       yield row
     if count >= row_max:
       break
+
+
+def rows_pad(rows, length=0, padding=None):
+  for row in rows:
+    yield (row + [padding for i in range(0, length - len(row))]
+          ) if len(row) < length else row

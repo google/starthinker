@@ -16,8 +16,9 @@
 #
 ###########################################################################
 
+
+import hashlib
 import json
-#from random import choice
 
 
 class Colab:
@@ -25,11 +26,12 @@ class Colab:
   def __init__(self, name, version='4.0'):
     self.markdown_lines = []
     self.code_lines = []
+    self.id = 0
     self.colab = {
-        'license': 'Apache License, Version 2.0',
+        'license': 'Licensed under the Apache License, Version 2.0',
         'copyright': 'Copyright 2020 Google LLC',
-        'nbformat': version.split('.', 1)[0],
-        'nbformat_minor': version.split('.', 1)[1],
+        'nbformat': int(version.split('.', 1)[0]),
+        'nbformat_minor': int(version.split('.', 1)[1]),
         'metadata': {
             'colab': {
                 'name': name,
@@ -45,12 +47,16 @@ class Colab:
         'cells': []
     }
 
+  def _next_id(self):
+   self.id += 1
+   return "{}-{:03d}".format(hashlib.md5(self.colab['metadata']['colab']['name'].encode('utf-8')).hexdigest()[-8:], self.id)
+
   def _code(self):
     if self.code_lines:
       self.colab['cells'].append({
           'cell_type': 'code',
           'metadata': {
-              #"id": ''.join([choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') for i in range(12)]),
+              "id": self._next_id(),
               'colab_type': 'code'
           },
           'source': self.code_lines
@@ -62,7 +68,7 @@ class Colab:
       self.colab['cells'].append({
           'cell_type': 'markdown',
           'metadata': {
-              #"id": ''.join([choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') for i in range(12)]),
+              "id": self._next_id(),
               'colab_type': 'text'
           },
           'source': self.markdown_lines
@@ -96,4 +102,4 @@ class Colab:
   def render(self):
     self._code()
     self._markdown()
-    return json.dumps(self.colab, indent=2)
+    return json.dumps(self.colab, indent=2) + '\n'

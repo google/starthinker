@@ -49,7 +49,7 @@ class Command(BaseCommand):
 
       readme_file.write('---\n')
       readme_file.write(
-          '&copy; 2019 Google Inc. - Apache License, Version 2.0\n')
+          '&copy; 2019 Google LLC - Apache License, Version 2.0\n')
 
     for script in Script.get_scripts():
       if script.get_open_source():

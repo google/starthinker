@@ -19,6 +19,7 @@
 import os
 import json
 from difflib import Differ
+from time import sleep
 
 from starthinker.util.project import project
 from starthinker.util.bigquery import table_to_rows
@@ -59,20 +60,20 @@ def schema_compare(expected, actual, path=''):
       if expected_column['name'] == actual_column['name']:
         matched.add(expected_column['name'])
         if expected_column.get('type') != actual_column.get('type'):
-          delta[make_path(expected_column['name'])] = { 'path':make_path(expected_column['name']), 'error':'type', 'expected':expected_column.get('type'), 'actual':actual_column.get('type')}
+          delta[make_path(expected_column['name'])] = { 'path': make_path(expected_column['name']), 'error': 'type', 'expected': expected_column.get('type'), 'actual': actual_column.get('type')}
         if expected_column.get('mode') != actual_column.get('mode'):
-          delta[make_path(expected_column['name'])] = { 'path':make_path(expected_column['name']), 'error':'mode', 'expected':expected_column.get('mode'), 'actual':actual_column.get('mode')}
+          delta[make_path(expected_column['name'])] = { 'path': make_path(expected_column['name']), 'error': 'mode', 'expected': expected_column.get('mode'), 'actual': actual_column.get('mode')}
         delta.update(schema_compare(expected_column.get('fields', []), actual_column.get('fields', []), make_path(expected_column['name'])))
 
   # find missing
   for expected_column in expected:
     if expected_column['name'] not in matched:
-      delta[make_path(expected_column['name'])] = { 'path':make_path(expected_column['name']), 'error':'missing', 'expected':expected_column['name'], 'actual':''}
+      delta[make_path(expected_column['name'])] = { 'path': make_path(expected_column['name']), 'error': 'missing', 'expected': expected_column['name'], 'actual': ''}
 
   # find extra
   for actual_column in actual:
     if actual_column['name'] not in matched:
-      delta[make_path(actual_column['name'])] = { 'path':make_path(actual_column['name']), 'error':'extra', 'expected':'', 'actual':actual_column['name']}
+      delta[make_path(actual_column['name'])] = { 'path': make_path(actual_column['name']), 'error': 'extra', 'expected': '', 'actual': actual_column['name']}
 
   return delta
 
@@ -103,7 +104,6 @@ def deep_compare(actual, expected):
 
 # display results of list comparison
 def object_compare(actual, expected):
-
   errors = deep_compare(actual, expected)
 
   if errors:
@@ -135,6 +135,7 @@ def object_compare(actual, expected):
 
 
 def sheets():
+  print('TEST: sheets')
 
   rows = sheets_read(project.task['auth'], project.task['sheets']['sheet'],
                      project.task['sheets']['tab'],
@@ -167,6 +168,7 @@ def sheets():
 
 
 def bigquery():
+  print('TEST: bigquery')
 
   # check schema if given ( check independent of values )
   if 'schema' in project.task['bigquery']:
@@ -193,6 +195,7 @@ def bigquery():
         project.task['bigquery']['dataset'],
         query_parameters(project.task['bigquery']['query'],
                          project.task['bigquery'].get('parameters')),
+        legacy=project.task['bigquery'].get('legacy', True)
     )
 
     object_compare(sorted(rows), sorted(project.task['bigquery']['values']))
@@ -207,11 +210,13 @@ def bigquery():
 
 
 def asserts():
+  print('TEST: asserts')
   print(project.task['assert'])
   test_passed()
 
 
 def path_exists():
+  print('TEST: path_exists')
   if os.path.exists(project.task['path']):
     if project.task.get('delete', False):
       os.remove(project.task['path'])
@@ -221,6 +226,7 @@ def path_exists():
 
 
 def storage_exists():
+  print('TEST: storage_exists')
   if object_exists(
       project.task['auth'], '%s:%s' %
       (project.task['storage']['bucket'], project.task['storage']['file'])):
@@ -234,6 +240,7 @@ def storage_exists():
 
 
 def drive_exists():
+  print('TEST: drive')
   if file_exists(project.task['auth'], project.task['drive']['file']):
     if project.task.get('delete', False):
       file_delete(project.task['auth'], project.task['drive']['file'])
@@ -242,8 +249,13 @@ def drive_exists():
     test_failed()
 
 
+def test_sleep():
+  print('TEST: sleep ', project.task['sleep'])
+  sleep(project.task['sleep'])
+
+
 def weather_gov():
-  print('running weather_gov test')
+  print('TEST: weather_gov')
   try:
     weather_gov_test()
     test_passed()
@@ -253,7 +265,7 @@ def weather_gov():
 
 
 def traffic():
-  print('running Bulkdozer test')
+  print('TEST: Bulkdozer')
   try:
     bulkdozer_test()
     test_passed()
@@ -277,6 +289,8 @@ def test():
     return bigquery()
   elif 'drive' in project.task:
     return drive_exists()
+  elif 'sleep' in project.task:
+    return test_sleep()
   elif 'template' in project.task:
     return template()
   elif 'traffic' in project.task:

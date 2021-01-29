@@ -4,6 +4,11 @@
     "copyright":"Copyright 2020 Google LLC"
   },
   "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV_", "default": "Manual"}},
+      "clear":true
+    }},
     { "email":{
       "auth":"user",
       "send":{
@@ -26,10 +31,6 @@
         }
       }
     }},
-    { "dataset":{
-      "auth":"service",
-      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV", "default": ""}}
-    }},
     { "email":{
       "auth":"user",
       "read":{
@@ -40,8 +41,9 @@
         "out":{
           "auth": "service",
           "bigquery":{
-            "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV", "default": ""}},
+            "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV_", "default": "Manual"}},
             "table":"Email_Attachment",
+            "skip_rows":1,
             "schema":[
               {"name": "Animal", "type": "STRING"},
               {"name": "Age", "type": "INTEGER"},
@@ -54,7 +56,7 @@
     { "test": {
       "auth":"service",
       "bigquery":{
-        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV", "default": ""}},
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV_", "default": "Manual"}},
         "table":"Email_Attachment",
         "schema":[
           {"name": "Animal", "type": "STRING"},
@@ -69,6 +71,11 @@
           ["dinosaur", 1600, 273.97]
         ]
       }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV_", "default": "Manual"}},
+      "delete":true
     }}
   ]
 }

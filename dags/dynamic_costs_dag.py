@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,102 +34,133 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
 Dynamic Costs Reporting
 
 Calculate DV360 cost at the dynamic creative combination level.
 
-Add a sheet URL. This is where you will enter advertiser and campaign level details.
-Specify the CM network ID.
-Click run now once, and a tab called <strong>Dynamic Costs</strong> will be added to the sheet with instructions.
-Follow the instructions on the sheet; this will be your configuration.
-StarThinker will create two or three (depending on the case) reports in CM named <strong>Dynamic Costs - ...</strong>.
-Wait for <b>BigQuery->UNDEFINED->UNDEFINED->Dynamic_Costs_Analysis</b> to be created or click Run Now.
-Copy <a href='https://datastudio.google.com/open/1vBvBEiMbqCbBuJTsBGpeg8vCLtg6ztqA' target='_blank'>Dynamic Costs Sample Data ( Copy From This )</a>.
-Click Edit Connection, and Change to <b>BigQuery->UNDEFINED->UNDEFINED->Dynamic_Costs_Analysis</b>.
-Copy <a href='https://datastudio.google.com/open/1xulBAdx95SnvjnUzFP6r14lhkvvVbsP8' target='_blank'>Dynamic Costs Sample Report ( Copy From This )</a>.
-When prompted, choose the new data source you just created.
-Edit the table to include or exclude columns as desired.
-Or, give the dashboard connection intructions to the client.
+  - Add a sheet URL. This is where you will enter advertiser and campaign level details.
+  - Specify the CM network ID.
+  - Click run now once, and a tab called <strong>Dynamic Costs</strong> will be added to the sheet with instructions.
+  - Follow the instructions on the sheet; this will be your configuration.
+  - StarThinker will create two or three (depending on the case) reports in CM named <strong>Dynamic Costs - ...</strong>.
+  - Wait for <b>BigQuery->UNDEFINED->UNDEFINED->Dynamic_Costs_Analysis</b> to be created or click Run Now.
+  - Copy <a href='https://datastudio.google.com/open/1vBvBEiMbqCbBuJTsBGpeg8vCLtg6ztqA' target='_blank'>Dynamic Costs Sample Data ( Copy From This )</a>.
+  - Click Edit Connection, and Change to <b>BigQuery->UNDEFINED->UNDEFINED->Dynamic_Costs_Analysis</b>.
+  - Copy <a href='https://datastudio.google.com/open/1xulBAdx95SnvjnUzFP6r14lhkvvVbsP8' target='_blank'>Dynamic Costs Sample Report ( Copy From This )</a>.
+  - When prompted, choose the new data source you just created.
+  - Edit the table to include or exclude columns as desired.
+  - Or, give the dashboard connection intructions to the client.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'dcm_account': '',
-  'auth_write': 'service',  # Credentials used for writing data.
   'auth_read': 'user',  # Credentials used for reading data.
   'configuration_sheet_url': '',
+  'auth_write': 'service',  # Credentials used for writing data.
   'bigquery_dataset': 'dynamic_costs',
 }
 
-TASKS = [
-  {
-    'dynamic_costs': {
-      'out': {
-        'dataset': {
-          'field': {
-            'order': 2,
-            'kind': 'string',
-            'name': 'bigquery_dataset',
-            'default': 'dynamic_costs'
-          }
-        },
+RECIPE = {
+  'tasks': [
+    {
+      'dynamic_costs': {
         'auth': {
           'field': {
-            'order': 1,
+            'name': 'auth_read',
             'kind': 'authentication',
-            'name': 'auth_write',
-            'description': 'Credentials used for writing data.',
-            'default': 'service'
-          }
-        }
-      },
-      'sheet': {
-        'range': 'A2:B',
-        'tab': 'Dynamic Costs',
-        'template': {
-          'range': 'A1',
-          'tab': 'Dynamic Costs',
-          'url': 'https://docs.google.com/spreadsheets/d/19J-Hjln2wd1E0aeG3JDgKQN9TVGRLWxIEUQSmmQetJc/edit?usp=sharing'
-        },
-        'url': {
-          'field': {
             'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
+          }
+        },
+        'account': {
+          'field': {
+            'name': 'dcm_account',
             'kind': 'string',
-            'name': 'configuration_sheet_url',
+            'order': 0,
             'default': ''
           }
-        }
-      },
-      'account': {
-        'field': {
-          'order': 0,
-          'kind': 'string',
-          'name': 'dcm_account',
-          'default': ''
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+        },
+        'sheet': {
+          'template': {
+            'url': 'https://docs.google.com/spreadsheets/d/19J-Hjln2wd1E0aeG3JDgKQN9TVGRLWxIEUQSmmQetJc/edit?usp=sharing',
+            'tab': 'Dynamic Costs',
+            'range': 'A1'
+          },
+          'url': {
+            'field': {
+              'name': 'configuration_sheet_url',
+              'kind': 'string',
+              'order': 1,
+              'default': ''
+            }
+          },
+          'tab': 'Dynamic Costs',
+          'range': 'A2:B'
+        },
+        'out': {
+          'auth': {
+            'field': {
+              'name': 'auth_write',
+              'kind': 'authentication',
+              'order': 1,
+              'default': 'service',
+              'description': 'Credentials used for writing data.'
+            }
+          },
+          'dataset': {
+            'field': {
+              'name': 'bigquery_dataset',
+              'kind': 'string',
+              'order': 2,
+              'default': 'dynamic_costs'
+            }
+          }
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('dynamic_costs', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('dynamic_costs', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

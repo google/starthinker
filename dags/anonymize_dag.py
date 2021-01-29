@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,88 +34,125 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Anonymize Dataset
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
+BigQuery Anonymize Dataset
 
 Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.
 
-Ensure you have user access to both datasets.
-Provide the source project and dataset.
-Provide the destination project and dataset.
+  - Ensure you have user access to both datasets.
+  - Provide the source project and dataset.
+  - Provide the destination project and dataset.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'service',  # Credentials used for reading data.
-  'from_project': '',  # Original project to copy from.
-  'from_dataset': '',  # Original dataset to copy from.
+  'auth_read': 'service',  # Credentials used.
+  'from_project': '',  # Original project to read from.
+  'from_dataset': '',  # Original dataset to read from.
   'to_project': None,  # Anonymous data will be writen to.
   'to_dataset': '',  # Anonymous data will be writen to.
 }
 
-TASKS = [
-  {
-    'anonymize': {
-      'bigquery': {
-        'from': {
-          'project': {
-            'field': {
-              'order': 1,
-              'kind': 'string',
-              'name': 'from_project',
-              'description': 'Original project to copy from.'
-            }
-          },
-          'dataset': {
-            'field': {
-              'order': 2,
-              'kind': 'string',
-              'name': 'from_dataset',
-              'description': 'Original dataset to copy from.'
-            }
+RECIPE = {
+  'setup': {
+    'day': [
+    ],
+    'hour': [
+    ]
+  },
+  'tasks': [
+    {
+      'anonymize': {
+        'auth': {
+          'field': {
+            'name': 'auth_read',
+            'kind': 'authentication',
+            'order': 0,
+            'default': 'service',
+            'description': 'Credentials used.'
           }
         },
-        'to': {
-          'project': {
-            'field': {
-              'order': 3,
-              'kind': 'string',
-              'name': 'to_project',
-              'description': 'Anonymous data will be writen to.',
-              'default': None
+        'bigquery': {
+          'from': {
+            'project': {
+              'field': {
+                'name': 'from_project',
+                'kind': 'string',
+                'order': 1,
+                'description': 'Original project to read from.'
+              }
+            },
+            'dataset': {
+              'field': {
+                'name': 'from_dataset',
+                'kind': 'string',
+                'order': 2,
+                'description': 'Original dataset to read from.'
+              }
             }
           },
-          'dataset': {
-            'field': {
-              'order': 4,
-              'kind': 'string',
-              'name': 'to_dataset',
-              'description': 'Anonymous data will be writen to.'
+          'to': {
+            'project': {
+              'field': {
+                'name': 'to_project',
+                'kind': 'string',
+                'order': 3,
+                'default': None,
+                'description': 'Anonymous data will be writen to.'
+              }
+            },
+            'dataset': {
+              'field': {
+                'name': 'to_dataset',
+                'kind': 'string',
+                'order': 4,
+                'description': 'Anonymous data will be writen to.'
+              }
             }
           }
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'service'
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('anonymize', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('anonymize', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

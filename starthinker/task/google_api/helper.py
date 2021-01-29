@@ -46,30 +46,59 @@ def main():
         - Show schema for Campaign Manager advertiser list endpoint.
         - https://developers.google.com/doubleclick-advertisers/v3.4/advertisers/list
         - python starthinker/task/google_api/helper.py -api dfareporting -version v3.4 -function advertisers.list --schema
+        - python starthinker/task/google_api/helper.py -api dfareporting -version v3.4 -function Advertiser --object
+        - python starthinker/task/google_api/helper.py -api dfareporting -version v3.4 -function Advertiser --struct
 
   """))
 
   # get parameters
   parser.add_argument('-api', help='api to run, name of product api')
   parser.add_argument('-version', help='version of api')
-  parser.add_argument('-function', help='function to call in api')
+  parser.add_argument('-function', help='function or resource to call in api')
   parser.add_argument('-uri', help='uri to use in api', default=None)
+  parser.add_argument(
+      '-developer-token',
+      help='developer token to pass in header',
+      default=None)
+  parser.add_argument(
+      '-login-customer-id',
+      help='customer to log in with when manipulating an MCC',
+      default=None)
   parser.add_argument(
       '-kwargs',
       help='kwargs to pass to function, json string of name:value pairs')
+  parser.add_argument('--iterate', help='force iteration', action='store_true')
+  parser.add_argument('--limit', type=int, help='optional, number of records to return', default=None)
   parser.add_argument(
-      '--iterate', help='force iteration', action='store_true')
+      '--schema',
+      help='return function as BigQuery schema, function = [endpoint.method]',
+      action='store_true')
   parser.add_argument(
-      '--schema', help='return schema instead, function = [endpoint.method]', action='store_true')
+    '--object',
+    help='return resource as JSON discovery document, function = [resource]',
+    action='store_true'
+  )
+  parser.add_argument(
+    '--struct',
+    help='return resource as BigQuery structure, function = [resource]',
+    action='store_true'
+  )
+
 
 
   # initialize project ( used to load standard credentials parameters )
-  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v'))
+  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-k', '-v'))
 
   # show schema
-  if project.args.schema:
-    endpoint, method = project.args.function.rsplit('.', 1)
-    print(json.dumps(Discovery_To_BigQuery(project.args.api, project.args.version).method_schema(endpoint, method), indent=2, default=str))
+  if project.args.object:
+    print(json.dumps(Discovery_To_BigQuery(project.args.api, project.args.version).resource_json(project.args.function), indent=2, default=str))
+
+  elif project.args.struct:
+    print(Discovery_To_BigQuery(project.args.api, project.args.version).resource_struct(project.args.function))
+
+  # show schema
+  elif project.args.schema:
+    print(json.dumps(Discovery_To_BigQuery(project.args.api, project.args.version).method_schema(project.args.function), indent=2, default=str))
 
   # or fetch results
   else:
@@ -80,10 +109,19 @@ def main():
       'api': project.args.api,
       'version': project.args.version,
       'function': project.args.function,
+      'key': project.args.key,
       'uri': project.args.uri,
       'kwargs': json.loads(project.args.kwargs),
+      'headers': {},
       'iterate': project.args.iterate,
+      'limit': project.args.limit,
     }
+
+    if project.args.developer_token:
+      job['headers']['developer-token'] = project.args.developer_token
+
+    if project.args.login_customer_id:
+      job['headers']['login-customer-id'] = project.args.login_customer_id
 
     # run the API call
     results = API(job).execute()

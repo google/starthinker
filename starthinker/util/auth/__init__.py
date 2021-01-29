@@ -21,18 +21,19 @@ import socket
 import threading
 
 from googleapiclient import discovery
-from googleapiclient import discovery
+from googleapiclient.http import HttpRequest
 
-from starthinker.util.auth.wrapper import CredentialsUserWrapper, CredentialsServiceWrapper, CredentialsFlowWrapper
+from starthinker.util.auth.wrapper import CredentialsFlowWrapper
+from starthinker.util.auth.wrapper import CredentialsServiceWrapper
+from starthinker.util.auth.wrapper import CredentialsUserWrapper
+from starthinker.util.project import project
 
-CREDENTIALS_USER_CACHE = None  # WARNING:  possible issue if switching user credentials mid recipe, not in scope but possible ( need to address using hash? )
+# WARNING:  possible issue if switching user credentials mid recipe, not in scope but possible ( need to address using hash? )
+CREDENTIALS_USER_CACHE = None
 DISCOVERY_CACHE = {}
 
 # set timeout to 10 minutes ( reduce socket.timeout: The read operation timed out )
 socket.setdefaulttimeout(600)
-
-from starthinker.util.project import project
-
 
 def clear_credentials_cache():
   global CREDENTIALS_USER_CACHE
@@ -46,8 +47,9 @@ def get_credentials(auth):
     if CREDENTIALS_USER_CACHE is None:
       try:
         CREDENTIALS_USER_CACHE = CredentialsUserWrapper(
-            project.recipe['setup']['auth']['user'],
-            project.recipe['setup']['auth'].get('client'))
+          project.recipe['setup']['auth']['user'],
+          project.recipe['setup']['auth'].get('client')
+        )
       except (KeyError, ValueError):
         print('')
         print(
@@ -75,7 +77,8 @@ def get_credentials(auth):
   elif auth == 'service':
     try:
       return CredentialsServiceWrapper(
-          project.recipe['setup']['auth']['service'])
+        project.recipe['setup']['auth']['service']
+      )
     except (KeyError, ValueError):
       print('')
       print(
@@ -100,27 +103,49 @@ def get_service(api='gmail',
                 version='v1',
                 auth='service',
                 scopes=None,
+                headers=None,
+                key=None,
                 uri_file=None):
   global DISCOVERY_CACHE
 
-  key = api + version + auth + str(threading.current_thread().ident)
+  class HttpRequestCustom(HttpRequest):
 
-  if key not in DISCOVERY_CACHE:
+    def __init__(self, *args, **kwargs):
+      if headers:
+        kwargs['headers'].update(headers)
+      super(HttpRequestCustom, self).__init__(*args, **kwargs)
+
+  if not key:
+    key = project.recipe['setup'].get(key, '')
+
+  cache_key = api + version + auth + key + str(threading.current_thread().ident)
+
+  if cache_key not in DISCOVERY_CACHE:
     credentials = get_credentials(auth)
     if uri_file:
       uri_file = uri_file.strip()
       if uri_file.startswith('{'):
-        DISCOVERY_CACHE[key] = discovery.build_from_document(
-            uri_file, credentials=credentials)
+        DISCOVERY_CACHE[cache_key] = discovery.build_from_document(
+            uri_file,
+            credentials=credentials,
+            developerKey=key,
+            requestBuilder=HttpRequestCustom)
       else:
         with open(uri_file, 'r') as cache_file:
-          DISCOVERY_CACHE[key] = discovery.build_from_document(
-              cache_file.read(), credentials=credentials)
+          DISCOVERY_CACHE[cache_key] = discovery.build_from_document(
+              cache_file.read(),
+              credentials=credentials,
+              developerKey=key,
+              requestBuilder=HttpRequestCustom)
     else:
-      DISCOVERY_CACHE[key] = discovery.build(
-          api, version, credentials=credentials)
+      DISCOVERY_CACHE[cache_key] = discovery.build(
+          api,
+          version,
+          credentials=credentials,
+          developerKey=key,
+          requestBuilder=HttpRequestCustom)
 
-  return DISCOVERY_CACHE[key]
+  return DISCOVERY_CACHE[cache_key]
 
 
 def get_client_type(credentials):

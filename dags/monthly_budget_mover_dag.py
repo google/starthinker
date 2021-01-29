@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,35 +34,65 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-Monthly Budget Mover
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
+DV360 Monthly Budget Mover
 
 Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.
 
-No changes made can be made in DV360 from the start to the end of this process
-Make sure there is budget information for the current and previous month's IOs in DV360
-Make sure the provided spend report has spend data for every IO in the previous month
-Spend report must contain 'Revenue (Adv Currency)' and 'Insertion Order ID'
-There are no duplicate IO Ids in the categories outlined below
-This process must be ran during the month of the budget it is updating
-If you receive a 502 error then you must separate your jobs into two, because there is too much information being pulled in the sdf
-Manually run this job
-Once the job has completed go to the table for the new sdf and export to a csv
-Take the new sdf and upload it into DV360
+  - No changes made can be made in DV360 from the start to the end of this process
+  - Make sure there is budget information for the current and previous month's IOs in DV360
+  - Make sure the provided spend report has spend data for every IO in the previous month
+  - Spend report must contain 'Revenue (Adv Currency)' and 'Insertion Order ID'
+  - There are no duplicate IO Ids in the categories outlined below
+  - This process must be ran during the month of the budget it is updating
+  - If you receive a 502 error then you must separate your jobs into two, because there is too much information being pulled in the sdf
+  - Manually run this job
+  - Once the job has completed go to the table for the new sdf and export to a csv
+  - Take the new sdf and upload it into DV360
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'recipe_name': '',  # 
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
+  'recipe_name': '',  # Table to write to.
   'auth_write': 'service',  # Credentials used for writing data.
-  'partner_id': '',  # The sdf file types.
   'auth_read': 'user',  # Credentials used for reading data.
+  'partner_id': '',  # The sdf file types.
   'budget_categories': '{}',  # A dictionary to show which IO Ids go under which Category. {"CATEGORY1":[12345,12345,12345], "CATEGORY2":[12345,12345]}
   'filter_ids': [],  # Comma separated list of filter ids for the request.
   'excluded_ios': '',  # A comma separated list of Inserion Order Ids that should be exluded from the budget calculations
@@ -70,268 +101,294 @@ INPUTS = {
   'dataset': '',  # Dataset that you would like your output tables to be produced in.
 }
 
-TASKS = [
-  {
-    'dataset': {
-      'description': 'Create a dataset where data will be combined and transfored for upload.',
+RECIPE = {
+  'setup': {
+    'day': [
+      'Mon',
+      'Tue',
+      'Wed',
+      'Thu',
+      'Fri',
+      'Sat',
+      'Sun'
+    ],
+    'hour': [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24
+    ]
+  },
+  'tasks': [
+    {
       'dataset': {
-        'field': {
-          'order': 1,
-          'kind': 'string',
-          'name': 'dataset',
-          'description': 'Place where tables will be created in BigQuery.'
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
-        }
-      }
-    }
-  },
-  {
-    'dbm': {
-      'report': {
-        'timeout': 90,
-        'filters': {
-          'FILTER_ADVERTISER': {
-            'values': {
-              'field': {
-                'order': 7,
-                'kind': 'integer_list',
-                'name': 'filter_ids',
-                'description': 'The comma separated list of Advertiser Ids.',
-                'default': ''
-              }
-            }
-          }
-        },
-        'body': {
-          'metadata': {
-            'dataRange': 'PREVIOUS_MONTH',
-            'title': {
-              'field': {
-                'order': 1,
-                'kind': 'string',
-                'name': 'recipe_name',
-                'description': 'Name of report in DV360, should be unique.',
-                'prefix': 'Monthly_Budget_Mover_'
-              }
-            },
-            'format': 'CSV'
-          },
-          'params': {
-            'groupBys': [
-              'FILTER_ADVERTISER_CURRENCY',
-              'FILTER_INSERTION_ORDER'
-            ],
-            'type': 'TYPE_GENERAL',
-            'metrics': [
-              'METRIC_REVENUE_ADVERTISER'
-            ]
-          },
-          'timezoneCode': {
-            'field': {
-              'kind': 'timezone',
-              'name': 'recipe_timezone',
-              'description': 'Timezone for report dates.',
-              'default': 'America/Los_Angeles'
-            }
-          }
-        }
-      },
-      'delete': False,
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      }
-    }
-  },
-  {
-    'monthly_budget_mover': {
-      'report_name': {
-        'field': {
-          'order': 1,
-          'kind': 'string',
-          'name': 'recipe_name',
-          'description': 'Name of report in DV360, should be unique.',
-          'prefix': 'Monthly_Budget_Mover_'
-        }
-      },
-      'sdf': {
-        'partner_id': {
+        'description': 'Create a dataset where data will be combined and transfored for upload.',
+        'auth': {
           'field': {
+            'name': 'auth_write',
+            'kind': 'authentication',
             'order': 1,
-            'kind': 'integer',
-            'name': 'partner_id',
-            'description': 'The sdf file types.'
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
           }
         },
-        'create_single_day_table': False,
-        'file_types': 'INSERTION_ORDER',
         'dataset': {
           'field': {
-            'order': 6,
-            'kind': 'string',
             'name': 'dataset',
-            'description': 'Dataset to be written to in BigQuery.',
-            'default': ''
+            'kind': 'string',
+            'order': 1,
+            'description': 'Place where tables will be created in BigQuery.'
           }
-        },
-        'version': {
+        }
+      }
+    },
+    {
+      'dbm': {
+        'auth': {
           'field': {
-            'description': 'The sdf version to be returned.',
-            'choices': [
-              'SDF_VERSION_5',
-              'SDF_VERSION_5_1'
-            ],
-            'order': 6,
-            'kind': 'choice',
-            'name': 'version',
-            'default': '5'
+            'name': 'auth_read',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
           }
         },
-        'time_partitioned_table': False,
-        'auth': 'user',
-        'table_suffix': '',
-        'read': {
-          'filter_ids': {
-            'values': {
+        'report': {
+          'timeout': 90,
+          'filters': {
+            'FILTER_ADVERTISER': {
+              'values': {
+                'field': {
+                  'name': 'filter_ids',
+                  'kind': 'integer_list',
+                  'order': 7,
+                  'default': '',
+                  'description': 'The comma separated list of Advertiser Ids.'
+                }
+              }
+            }
+          },
+          'body': {
+            'timezoneCode': {
               'field': {
-                'order': 4,
-                'kind': 'integer_list',
-                'name': 'filter_ids',
-                'description': 'Comma separated list of filter ids for the request.',
-                'default': [
-                ]
+                'name': 'recipe_timezone',
+                'kind': 'timezone',
+                'description': 'Timezone for report dates.',
+                'default': 'America/Los_Angeles'
               }
             },
-            'single_cell': True
+            'metadata': {
+              'title': {
+                'field': {
+                  'name': 'recipe_name',
+                  'kind': 'string',
+                  'prefix': 'Monthly_Budget_Mover_',
+                  'order': 1,
+                  'description': 'Name of report in DV360, should be unique.'
+                }
+              },
+              'dataRange': 'PREVIOUS_MONTH',
+              'format': 'CSV'
+            },
+            'params': {
+              'type': 'TYPE_GENERAL',
+              'groupBys': [
+                'FILTER_ADVERTISER_CURRENCY',
+                'FILTER_INSERTION_ORDER'
+              ],
+              'metrics': [
+                'METRIC_REVENUE_ADVERTISER'
+              ]
+            }
           }
         },
-        'filter_type': 'FILTER_TYPE_ADVERTISER_ID'
-      },
-      'is_colab': {
-        'field': {
-          'order': 7,
-          'kind': 'boolean',
-          'name': 'is_colab',
-          'description': 'Are you running this in Colab? (This will store the files in Colab instead of Bigquery)',
-          'default': True
-        }
-      },
-      'out_old_sdf': {
-        'file': '/content/old_sdf.csv',
-        'bigquery': {
-          'schema': [
-          ],
-          'table': {
+        'delete': False
+      }
+    },
+    {
+      'monthly_budget_mover': {
+        'auth': 'user',
+        'is_colab': {
+          'field': {
+            'name': 'is_colab',
+            'kind': 'boolean',
+            'default': True,
+            'order': 7,
+            'description': 'Are you running this in Colab? (This will store the files in Colab instead of Bigquery)'
+          }
+        },
+        'report_name': {
+          'field': {
+            'name': 'recipe_name',
+            'kind': 'string',
+            'prefix': 'Monthly_Budget_Mover_',
+            'order': 1,
+            'description': 'Name of report in DV360, should be unique.'
+          }
+        },
+        'budget_categories': {
+          'field': {
+            'name': 'budget_categories',
+            'kind': 'json',
+            'order': 3,
+            'default': '{}',
+            'description': 'A dictionary to show which IO Ids go under which Category. {"CATEGORY1":[12345,12345,12345], "CATEGORY2":[12345,12345]}'
+          }
+        },
+        'excluded_ios': {
+          'field': {
+            'name': 'excluded_ios',
+            'kind': 'integer_list',
+            'order': 4,
+            'description': 'A comma separated list of Inserion Order Ids that should be exluded from the budget calculations'
+          }
+        },
+        'sdf': {
+          'auth': 'user',
+          'version': {
             'field': {
-              'kind': 'string',
-              'name': 'recipe_name',
-              'description': '',
-              'prefix': 'SDF_OLD_'
+              'name': 'version',
+              'kind': 'choice',
+              'order': 6,
+              'default': '5',
+              'description': 'The sdf version to be returned.',
+              'choices': [
+                'SDF_VERSION_5',
+                'SDF_VERSION_5_1'
+              ]
             }
           },
-          'disposition': 'WRITE_TRUNCATE',
+          'partner_id': {
+            'field': {
+              'name': 'partner_id',
+              'kind': 'integer',
+              'order': 1,
+              'description': 'The sdf file types.'
+            }
+          },
+          'file_types': 'INSERTION_ORDER',
+          'filter_type': 'FILTER_TYPE_ADVERTISER_ID',
+          'read': {
+            'filter_ids': {
+              'single_cell': True,
+              'values': {
+                'field': {
+                  'name': 'filter_ids',
+                  'kind': 'integer_list',
+                  'order': 4,
+                  'default': [
+                  ],
+                  'description': 'Comma separated list of filter ids for the request.'
+                }
+              }
+            }
+          },
+          'time_partitioned_table': False,
+          'create_single_day_table': False,
           'dataset': {
             'field': {
-              'order': 8,
-              'kind': 'string',
               'name': 'dataset',
-              'description': 'Dataset that you would like your output tables to be produced in.',
-              'default': ''
-            }
-          },
-          'skip_rows': 0
-        }
-      },
-      'out_changes': {
-        'file': '/content/log.csv',
-        'bigquery': {
-          'schema': [
-          ],
-          'table': {
-            'field': {
               'kind': 'string',
-              'name': 'recipe_name',
-              'description': '',
-              'prefix': 'SDF_BUDGET_MOVER_LOG_'
+              'order': 6,
+              'default': '',
+              'description': 'Dataset to be written to in BigQuery.'
             }
           },
-          'disposition': 'WRITE_TRUNCATE',
-          'dataset': {
-            'field': {
-              'order': 8,
-              'kind': 'string',
-              'name': 'dataset',
-              'description': 'Dataset that you would like your output tables to be produced in.',
-              'default': ''
-            }
+          'table_suffix': ''
+        },
+        'out_old_sdf': {
+          'bigquery': {
+            'dataset': {
+              'field': {
+                'name': 'dataset',
+                'kind': 'string',
+                'order': 8,
+                'default': '',
+                'description': 'Dataset that you would like your output tables to be produced in.'
+              }
+            },
+            'table': {
+              'field': {
+                'name': 'recipe_name',
+                'kind': 'string',
+                'prefix': 'SDF_OLD_',
+                'description': 'Table to write to.'
+              }
+            },
+            'schema': [
+            ],
+            'skip_rows': 0,
+            'disposition': 'WRITE_TRUNCATE'
           },
-          'skip_rows': 0
-        }
-      },
-      'auth': 'user',
-      'budget_categories': {
-        'field': {
-          'order': 3,
-          'kind': 'json',
-          'name': 'budget_categories',
-          'description': 'A dictionary to show which IO Ids go under which Category. {"CATEGORY1":[12345,12345,12345], "CATEGORY2":[12345,12345]}',
-          'default': '{}'
-        }
-      },
-      'out_new_sdf': {
-        'file': '/content/new_sdf.csv',
-        'bigquery': {
-          'schema': [
-          ],
-          'table': {
-            'field': {
-              'kind': 'string',
-              'name': 'recipe_name',
-              'description': '',
-              'prefix': 'SDF_NEW_'
-            }
+          'file': '/content/old_sdf.csv'
+        },
+        'out_new_sdf': {
+          'bigquery': {
+            'dataset': {
+              'field': {
+                'name': 'dataset',
+                'kind': 'string',
+                'order': 8,
+                'default': '',
+                'description': 'Dataset that you would like your output tables to be produced in.'
+              }
+            },
+            'table': {
+              'field': {
+                'name': 'recipe_name',
+                'kind': 'string',
+                'prefix': 'SDF_NEW_',
+                'description': 'Table to write to.'
+              }
+            },
+            'schema': [
+            ],
+            'skip_rows': 0,
+            'disposition': 'WRITE_TRUNCATE'
           },
-          'disposition': 'WRITE_TRUNCATE',
-          'dataset': {
-            'field': {
-              'order': 8,
-              'kind': 'string',
-              'name': 'dataset',
-              'description': 'Dataset that you would like your output tables to be produced in.',
-              'default': ''
-            }
+          'file': '/content/new_sdf.csv'
+        },
+        'out_changes': {
+          'bigquery': {
+            'dataset': {
+              'field': {
+                'name': 'dataset',
+                'kind': 'string',
+                'order': 8,
+                'default': '',
+                'description': 'Dataset that you would like your output tables to be produced in.'
+              }
+            },
+            'table': {
+              'field': {
+                'name': 'recipe_name',
+                'kind': 'string',
+                'prefix': 'SDF_BUDGET_MOVER_LOG_',
+                'description': 'Table to write to.'
+              }
+            },
+            'schema': [
+            ],
+            'skip_rows': 0,
+            'disposition': 'WRITE_TRUNCATE'
           },
-          'skip_rows': 0
-        }
-      },
-      'excluded_ios': {
-        'field': {
-          'order': 4,
-          'kind': 'integer_list',
-          'name': 'excluded_ios',
-          'description': 'A comma separated list of Inserion Order Ids that should be exluded from the budget calculations'
+          'file': '/content/log.csv'
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('monthly_budget_mover', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('monthly_budget_mover', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

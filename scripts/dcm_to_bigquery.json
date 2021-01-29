@@ -1,12 +1,12 @@
 {
   "script":{
     "released":"2017-08-14",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_small",
     "from":["cm"],
     "to":["bigquery"],
-    "title":"CM To BigQuery",
+    "title":"CM360 Report To BigQuery",
     "description":"Move existing CM report into a BigQuery table.",
     "instructions":[
       "Specify an account id.",
@@ -29,6 +29,7 @@
           "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
           "dataset":{"field":{ "name":"dataset", "kind":"string", "order":5, "default":"", "description":"Dataset to be written to in BigQuery." }},
           "table":{"field":{ "name":"table", "kind":"string", "order":6, "default":"", "description":"Table to be written to in BigQuery." }},
+          "header":true,
           "is_incremental_load":{"field":{ "name":"is_incremental_load", "kind":"boolean", "order":7, "default":false, "description":"Clear data in destination table during this report's time period, then append report data to existing table." }}
         }
       }

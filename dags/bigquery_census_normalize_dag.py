@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,21 +34,51 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
 Census Data Normalized
 
 Convert given census table to percent of population, normalizing it.
 
-Specify the geography, year, and span that make up the <a href='https://pantheon.corp.google.com/bigquery?redirect_from_classic=true&p=bigquery-public-data&d=census_bureau_acs&page=dataset' target='_blank'>census table names</a>.
-Not every combination of geography, year, and span exists or contains all the required fields.
-Every time the query runs it will overwrite the table.
+  - Specify the geography, year, and span that make up the <a href='https://pantheon.corp.google.com/bigquery?redirect_from_classic=true&p=bigquery-public-data&d=census_bureau_acs&page=dataset' target='_blank'>census table names</a>.
+  - Not every combination of geography, year, and span exists or contains all the required fields.
+  - Every time the query runs it will overwrite the table.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'auth': 'service',  # Credentials used for writing data.
@@ -58,109 +89,110 @@ INPUTS = {
   'type': 'table',  # Write Census_Percent as table or view.
 }
 
-TASKS = [
-  {
-    'census': {
-      'auth': {
-        'field': {
-          'order': 0,
-          'kind': 'authentication',
-          'name': 'auth',
-          'description': 'Credentials used for writing data.',
-          'default': 'service'
-        }
-      },
-      'normalize': {
-        'census_geography': {
+RECIPE = {
+  'tasks': [
+    {
+      'census': {
+        'auth': {
           'field': {
-            'description': 'Census table to get data from.',
-            'choices': [
-              'zip_codes',
-              'state',
-              'zcta5',
-              'schooldistrictunified',
-              'puma',
-              'place',
-              'county',
-              'congressionaldistrict',
-              'censustract',
-              'cbsa'
-            ],
-            'order': 1,
-            'kind': 'choice',
-            'name': 'census_geography',
-            'default': 'zip_codes'
+            'name': 'auth',
+            'kind': 'authentication',
+            'order': 0,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
           }
         },
-        'census_span': {
-          'field': {
-            'description': 'Census table to get data from.',
-            'choices': [
-              '1yr',
-              '3yr',
-              '5yr'
-            ],
-            'order': 3,
-            'kind': 'choice',
-            'name': 'census_span',
-            'default': '5yr'
+        'normalize': {
+          'census_geography': {
+            'field': {
+              'name': 'census_geography',
+              'kind': 'choice',
+              'order': 1,
+              'default': 'zip_codes',
+              'description': 'Census table to get data from.',
+              'choices': [
+                'zip_codes',
+                'state',
+                'zcta5',
+                'schooldistrictunified',
+                'puma',
+                'place',
+                'county',
+                'congressionaldistrict',
+                'censustract',
+                'cbsa'
+              ]
+            }
+          },
+          'census_year': {
+            'field': {
+              'name': 'census_year',
+              'kind': 'choice',
+              'order': 2,
+              'default': '2018',
+              'description': 'Census table to get data from.',
+              'choices': [
+                2018,
+                2017,
+                2016,
+                2015,
+                2014,
+                2013,
+                2012,
+                2011,
+                2010,
+                2009,
+                2008,
+                2007
+              ]
+            }
+          },
+          'census_span': {
+            'field': {
+              'name': 'census_span',
+              'kind': 'choice',
+              'order': 3,
+              'default': '5yr',
+              'description': 'Census table to get data from.',
+              'choices': [
+                '1yr',
+                '3yr',
+                '5yr'
+              ]
+            }
           }
         },
-        'census_year': {
-          'field': {
-            'description': 'Census table to get data from.',
-            'choices': [
-              2018,
-              2017,
-              2016,
-              2015,
-              2014,
-              2013,
-              2012,
-              2011,
-              2010,
-              2009,
-              2008,
-              2007
-            ],
-            'order': 2,
-            'kind': 'choice',
-            'name': 'census_year',
-            'default': '2018'
-          }
-        }
-      },
-      'to': {
-        'dataset': {
-          'field': {
-            'order': 4,
-            'kind': 'string',
-            'name': 'dataset',
-            'description': 'Existing BigQuery dataset.',
-            'default': ''
-          }
-        },
-        'type': {
-          'field': {
-            'description': 'Write Census_Percent as table or view.',
-            'choices': [
-              'table',
-              'view'
-            ],
-            'order': 5,
-            'kind': 'choice',
-            'name': 'type',
-            'default': 'table'
+        'to': {
+          'dataset': {
+            'field': {
+              'name': 'dataset',
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'Existing BigQuery dataset.'
+            }
+          },
+          'type': {
+            'field': {
+              'name': 'type',
+              'kind': 'choice',
+              'order': 5,
+              'default': 'table',
+              'description': 'Write Census_Percent as table or view.',
+              'choices': [
+                'table',
+                'view'
+              ]
+            }
           }
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('bigquery_census_normalize', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('bigquery_census_normalize', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

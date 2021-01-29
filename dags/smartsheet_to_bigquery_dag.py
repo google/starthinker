@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,22 +34,52 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
 SmartSheet Sheet To BigQuery
 
 Move sheet data into a BigQuery table.
 
-Specify <a href='https://smartsheet-platform.github.io/api-docs/' target='_blank'>SmartSheet</a> token.
-Locate the ID of a sheet by viewing its properties.
-Provide a BigQuery dataset ( must exist ) and table to write the data into.
-StarThinker will automatically map the correct schema.
+  - Specify <a href='https://smartsheet-platform.github.io/api-docs/' target='_blank'>SmartSheet</a> token.
+  - Locate the ID of a sheet by viewing its properties.
+  - Provide a BigQuery dataset ( must exist ) and table to write the data into.
+  - StarThinker will automatically map the correct schema.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'auth_read': 'user',  # Credentials used for reading data.
@@ -61,90 +92,91 @@ INPUTS = {
   'link': True,  # Add a link to each row as the first column.
 }
 
-TASKS = [
-  {
-    'smartsheet': {
-      'auth': {
-        'field': {
-          'order': 0,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      },
-      'token': {
-        'field': {
-          'order': 2,
-          'kind': 'string',
-          'name': 'token',
-          'description': 'Retrieve from SmartSheet account settings.',
-          'default': ''
-        }
-      },
-      'sheet': {
-        'field': {
-          'order': 3,
-          'kind': 'string',
-          'name': 'sheet',
-          'description': 'Retrieve from sheet properties.'
-        }
-      },
-      'link': {
-        'field': {
-          'order': 7,
-          'kind': 'boolean',
-          'name': 'link',
-          'description': 'Add a link to each row as the first column.',
-          'default': True
-        }
-      },
-      'out': {
-        'bigquery': {
-          'schema': {
-            'field': {
-              'order': 6,
-              'kind': 'json',
-              'name': 'schema',
-              'description': 'Schema provided in JSON list format or leave empty to auto detect.'
-            }
-          },
-          'table': {
-            'field': {
-              'order': 5,
-              'kind': 'string',
-              'name': 'table',
-              'description': 'Table to create from this report.',
-              'default': ''
-            }
-          },
-          'dataset': {
-            'field': {
-              'order': 4,
-              'kind': 'string',
-              'name': 'dataset',
-              'description': 'Existing BigQuery dataset.',
-              'default': ''
-            }
-          },
-          'auth': {
-            'field': {
-              'order': 1,
-              'kind': 'authentication',
-              'name': 'auth_write',
-              'description': 'Credentials used for writing data.',
-              'default': 'service'
+RECIPE = {
+  'tasks': [
+    {
+      'smartsheet': {
+        'auth': {
+          'field': {
+            'name': 'auth_read',
+            'kind': 'authentication',
+            'order': 0,
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
+          }
+        },
+        'token': {
+          'field': {
+            'name': 'token',
+            'kind': 'string',
+            'order': 2,
+            'default': '',
+            'description': 'Retrieve from SmartSheet account settings.'
+          }
+        },
+        'sheet': {
+          'field': {
+            'name': 'sheet',
+            'kind': 'string',
+            'order': 3,
+            'description': 'Retrieve from sheet properties.'
+          }
+        },
+        'link': {
+          'field': {
+            'name': 'link',
+            'kind': 'boolean',
+            'order': 7,
+            'default': True,
+            'description': 'Add a link to each row as the first column.'
+          }
+        },
+        'out': {
+          'bigquery': {
+            'auth': {
+              'field': {
+                'name': 'auth_write',
+                'kind': 'authentication',
+                'order': 1,
+                'default': 'service',
+                'description': 'Credentials used for writing data.'
+              }
+            },
+            'dataset': {
+              'field': {
+                'name': 'dataset',
+                'kind': 'string',
+                'order': 4,
+                'default': '',
+                'description': 'Existing BigQuery dataset.'
+              }
+            },
+            'table': {
+              'field': {
+                'name': 'table',
+                'kind': 'string',
+                'order': 5,
+                'default': '',
+                'description': 'Table to create from this report.'
+              }
+            },
+            'schema': {
+              'field': {
+                'name': 'schema',
+                'kind': 'json',
+                'order': 6,
+                'description': 'Schema provided in JSON list format or leave empty to auto detect.'
+              }
             }
           }
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('smartsheet_to_bigquery', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('smartsheet_to_bigquery', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

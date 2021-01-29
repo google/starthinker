@@ -352,12 +352,6 @@ def rows_to_table(auth,
       quoting=csv.QUOTE_MINIMAL)
   has_rows = False
 
-  if rows == []:
-    if project.verbose:
-      print('BigQuery Zero Rows')
-    return io_to_table(auth, project_id, dataset_id, table_id, buffer_data,
-                       'CSV', schema, skip_rows, disposition, wait)
-
   for is_last, row in flag_last(rows):
 
     # write row to csv buffer
@@ -381,8 +375,6 @@ def rows_to_table(auth,
 
   # if no rows, clear table to simulate empty write
   if not has_rows:
-    if project.verbose:
-      print('BigQuery Zero Rows')
     return io_to_table(auth, project_id, dataset_id, table_id, buffer_data,
                        'CSV', schema, skip_rows, disposition, wait)
 
@@ -428,8 +420,6 @@ def json_to_table(auth,
 
   # if no rows, clear table to simulate empty write
   if not has_rows:
-    if project.verbose:
-      print('BigQuery Zero Rows')
     return io_to_table(auth, project_id, dataset_id, table_id, buffer_data,
                        'NEWLINE_DELIMITED_JSON', schema, 0, disposition, wait)
 
@@ -506,20 +496,7 @@ def io_to_table(auth,
   elif disposition == 'WRITE_TRUNCATE':
     if project.verbose:
       print('BIGQUERY: No data, clearing table.')
-
-    body = {
-        'tableReference': {
-            'projectId': project_id,
-            'datasetId': dataset_id,
-            'tableId': table_id
-        },
-        'schema': {
-            'fields': schema
-        }
-    }
-    # change project_id to be project.id, better yet project.cloud_id from JSON
-    API_BigQuery(auth).tables().insert(
-        projectId=project.id, datasetId=dataset_id, body=body).execute()
+    table_create(auth, project_id, dataset_id, table_id, schema)
 
 
 def incremental_rows_to_table(auth,
@@ -603,7 +580,12 @@ def table_create(auth,
                  project_id,
                  dataset_id,
                  table_id,
+                 schema=None,
+                 overwrite=True,
                  is_time_partition=False):
+
+  if overwrite:
+    table_delete(auth, project_id, dataset_id, table_id)
 
   body = {
       'tableReference': {
@@ -612,6 +594,9 @@ def table_create(auth,
           'datasetId': dataset_id,
       }
   }
+
+  if schema:
+    body['schema'] = {'fields': schema}
 
   if is_time_partition:
     body['timePartitioning'] = {'type': 'DAY'}
@@ -625,6 +610,26 @@ def table_get(auth, project_id, dataset_id, table_id):
       projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()
 
 
+def table_list(auth, project_id, dataset_id=None):
+  if dataset_id is None:
+    datasets = [
+      d['datasetReference']['datasetId'] for d in API_BigQuery(auth).datasets().list(
+        projectId=project_id,
+        fields='datasets.datasetReference.datasetId, nextPageToken'
+      ).execute()
+    ]
+  else:
+    datasets = [dataset_id]
+
+  for dataset_id in datasets:
+    for table in API_BigQuery(auth, iterate=True).tables().list(
+        projectId=project_id,
+        datasetId=dataset_id,
+        fields='tables.tableReference, tables.type, nextPageToken'
+    ).execute():
+      yield table['tableReference']['datasetId'], table['tableReference']['tableId'], table['type']
+
+
 def table_exists(auth, project_id, dataset_id, table_id):
   try:
     table_get(auth, project_id, dataset_id, table_id)
@@ -633,6 +638,18 @@ def table_exists(auth, project_id, dataset_id, table_id):
     if e.resp.status != 404:
       raise
     return False
+
+
+def table_delete(auth, project_id, dataset_id, table_id):
+  try:
+    API_BigQuery(auth).tables().delete(
+        projectId=project_id, datasetId=dataset_id, tableId=table_id).execute()
+    return True
+  except HttpError as e:
+    if e.resp.status != 404:
+      raise
+    return False
+
 
 
 def table_copy(auth, from_project, from_dataset, from_table, to_project,
@@ -769,6 +786,30 @@ def query_to_rows(auth,
           startIndex=row_count).execute(iterate=False)
     else:
       break
+
+
+def query_to_schema(auth, project_id, dataset_id, query, legacy=True):
+
+  if project.verbose:
+    print('BIGQUERY QUERY SCHEMA:', project_id, dataset_id)
+
+  body = {
+    'kind': 'bigquery#queryRequest',
+    'query': query,
+    'timeoutMs': 10000,
+    'dryRun': True,
+    'useLegacySql': legacy
+  }
+
+  if dataset_id:
+    body['defaultDataset'] = {'projectId': project_id, 'datasetId': dataset_id}
+
+  response = API_BigQuery(auth).jobs().query(
+    projectId=project_id,
+    body=body
+  ).execute()
+
+  return response['schema'].get('fields', [])
 
 
 def make_schema(header):

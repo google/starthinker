@@ -23,9 +23,9 @@ import re
 from googleapiclient.errors import HttpError
 
 from starthinker.util.project import project
-from starthinker.util.auth import get_service
-from starthinker.util.google_api import API_Retry
-from starthinker.util.drive import file_find, file_delete
+from starthinker.util.google_api import API_Sheets
+from starthinker.util.drive import file_delete
+from starthinker.util.drive import file_find
 
 
 def sheets_id(auth, url_or_name):
@@ -70,8 +70,7 @@ def sheets_tab_range(sheet_tab, sheet_range):
 def sheets_get(auth, sheet_url_or_name):
   sheet_id = sheets_id(auth, sheet_url_or_name)
   if sheet_id:
-    service = get_service('sheets', 'v4', auth)
-    return API_Retry(service.spreadsheets().get(spreadsheetId=sheet_id))
+    return API_Sheets(auth).spreadsheets().get(spreadsheetId=sheet_id).execute()
   else:
     return None
 
@@ -92,17 +91,14 @@ def sheets_tab_id(auth, sheet_url_or_name, sheet_tab):
 def sheets_read(auth, sheet_url_or_name, sheet_tab, sheet_range='', retries=10):
   if project.verbose:
     print('SHEETS READ', sheet_url_or_name, sheet_tab, sheet_range)
-  service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(auth, sheet_url_or_name)
   if sheet_id is None:
     raise (OSError('Sheet does not exist: %s' % sheet_url_or_name))
   else:
-    return API_Retry(
-        service.spreadsheets().values().get(
-            spreadsheetId=sheet_id,
-            range=sheets_tab_range(sheet_tab, sheet_range)),
-        'values',
-        retries=retries)
+    return API_Sheets(auth).spreadsheets().values().get(
+      spreadsheetId=sheet_id,
+      range=sheets_tab_range(sheet_tab, sheet_range)
+    ).execute().get('values')
 
 
 # TIP: Specify sheet_range as 'Tab!A1' coordinate, the API will figure out length and height based on data
@@ -115,35 +111,36 @@ def sheets_write(auth,
                  valueInputOption='RAW'):
   if project.verbose:
     print('SHEETS WRITE', sheet_url_or_name, sheet_tab, sheet_range)
-  service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(auth, sheet_url_or_name)
   range = sheets_tab_range(sheet_tab, sheet_range)
   body = {'values': list(data)}
 
   if append:
-    API_Retry(service.spreadsheets().values().append(
-        spreadsheetId=sheet_id,
-        range=range,
-        body=body,
-        valueInputOption=valueInputOption,
-        insertDataOption='OVERWRITE'))
+    API_Sheets(auth).spreadsheets().values().append(
+      spreadsheetId=sheet_id,
+      range=range,
+      body=body,
+      valueInputOption=valueInputOption,
+      insertDataOption='OVERWRITE'
+    ).execute()
   else:
-    API_Retry(service.spreadsheets().values().update(
-        spreadsheetId=sheet_id,
-        range=range,
-        body=body,
-        valueInputOption=valueInputOption))
+    API_Sheets(auth).spreadsheets().values().update(
+      spreadsheetId=sheet_id,
+      range=range,
+      body=body,
+      valueInputOption=valueInputOption
+    ).execute()
 
 
 def sheets_clear(auth, sheet_url_or_name, sheet_tab, sheet_range):
   if project.verbose:
     print('SHEETS CLEAR', sheet_url_or_name, sheet_tab, sheet_range)
-  service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(auth, sheet_url_or_name)
-  API_Retry(service.spreadsheets().values().clear(
-      spreadsheetId=sheet_id,
-      range=sheets_tab_range(sheet_tab, sheet_range),
-      body={}))
+  API_Sheets(auth).spreadsheets().values().clear(
+    spreadsheetId=sheet_id,
+    range=sheets_tab_range(sheet_tab, sheet_range),
+    body={}
+  ).execute()
 
 
 def sheets_tab_copy(auth,
@@ -155,7 +152,6 @@ def sheets_tab_copy(auth,
   if project.verbose:
     print('SHEETS COPY', from_sheet_url_or_name, from_sheet_tab,
           to_sheet_url_or_name, to_sheet_tab)
-  service = get_service('sheets', 'v4', auth)
 
   # convert human readable to ids
   from_sheet_id, from_tab_id = sheets_tab_id(auth, from_sheet_url_or_name,
@@ -167,12 +163,13 @@ def sheets_tab_copy(auth,
   if overwrite or to_tab_id is None:
 
     # copy tab between sheets, the name changes to be "Copy of [from_sheet_tab]"
-    copy_sheet = API_Retry(service.spreadsheets().sheets().copyTo(
-        spreadsheetId=from_sheet_id,
-        sheetId=from_tab_id,
-        body={
-            'destinationSpreadsheetId': to_sheet_id,
-        }))
+    copy_sheet = API_Sheets(auth).spreadsheets().sheets().copyTo(
+      spreadsheetId=from_sheet_id,
+      sheetId=from_tab_id,
+      body={
+        'destinationSpreadsheetId': to_sheet_id,
+      }
+    ).execute()
 
     body = {'requests': []}
 
@@ -191,22 +188,26 @@ def sheets_tab_copy(auth,
         }
     })
 
-    API_Retry(service.spreadsheets().batchUpdate(
-        spreadsheetId=to_sheet_id, body=body))
+    API_Sheets(auth).spreadsheets().batchUpdate(
+      spreadsheetId=to_sheet_id,
+      body=body
+    ).execute()
 
 
 def sheets_batch_update(auth, sheet_url_or_name, data):
-  service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(auth, sheet_url_or_name)
-  API_Retry(service.spreadsheets().batchUpdate(
-      spreadsheetId=sheet_id, body=data))
+  API_Sheets(auth).spreadsheets().batchUpdate(
+    spreadsheetId=sheet_id,
+    body=data
+  ).execute()
 
 
 def sheets_values_batch_update(auth, sheet_url_or_name, data):
-  service = get_service('sheets', 'v4', auth)
   sheet_id = sheets_id(auth, sheet_url_or_name)
-  API_Retry(service.spreadsheets().values().batchUpdate(
-      spreadsheetId=sheet_id, body=data))
+  API_Sheets(auth).spreadsheets().values().batchUpdate(
+    spreadsheetId=sheet_id,
+    body=data
+  ).execute()
 
 
 def sheets_tab_create(auth, sheet_url_or_name, sheet_tab):
@@ -307,8 +308,7 @@ def sheets_create(auth,
             }
         }]
     }
-    service = get_service('sheets', 'v4', auth)
-    spreadsheet = API_Retry(service.spreadsheets().create(body=body))
+    spreadsheet = API_Sheets(auth).spreadsheets().create(body=body).execute()
     sheet_id = spreadsheet['spreadsheetId']
     tab_id = spreadsheet['sheets'][0]['properties']['title']
     created = True

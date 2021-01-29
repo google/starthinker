@@ -1,7 +1,7 @@
 {
   "script": {
     "released":"2020-04-08",
-    "license": "Apache License, Version 2.0",
+    "license": "Licensed under the Apache License, Version 2.0",
     "copyright": "Copyright 2020 Google LLC",
     "open": true,
     "icon": "donut_large",
@@ -101,7 +101,8 @@
                 "mode": "NULLABLE"
               }
             ],
-            "table": "us_country_app"
+            "table": "us_country_app",
+            "header":true
           }
         }
       }
@@ -167,7 +168,8 @@
                 "mode": "NULLABLE"
               }
             ],
-            "table": "us_country_baseline"
+            "table": "us_country_baseline",
+            "header":true
           }
         }
       }
@@ -260,7 +262,8 @@
                 "mode": "NULLABLE"
               }
             ],
-            "table": "us_audience_baseline"
+            "table": "us_audience_baseline",
+            "header":true
           }
         }
       }
@@ -363,7 +366,8 @@
                 "mode": "NULLABLE"
               }
             ],
-            "table": "us_audience_app"
+            "table": "us_audience_app",
+            "header":true
           }
         }
       }

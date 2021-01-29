@@ -61,46 +61,19 @@ INPUTS = {
 TASKS = [
   {
     'dv360_api': {
-      'advertisers': {
-        'values': {
-          'field': {
-            'order': 2,
-            'kind': 'integer_list',
-            'name': 'advertisers',
-            'description': 'Comma separated advertisers ids.',
-            'default': [
-            ]
-          }
-        },
-        'single_cell': True
-      },
-      'partners': {
-        'values': {
-          'field': {
-            'order': 2,
-            'kind': 'integer_list',
-            'name': 'partners',
-            'description': 'Comma separated partners ids.',
-            'default': [
-            ]
-          }
-        },
-        'single_cell': True
-      },
       'auth': {
         'field': {
-          'order': 1,
-          'kind': 'authentication',
           'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
         }
       },
       'endpoints': {
         'field': {
-          'kind': 'choice',
           'name': 'endpoint',
-          'default': '',
+          'kind': 'choice',
           'choices': [
             'advertisers',
             'advertisers.campaigns',
@@ -131,26 +104,53 @@ TASKS = [
             'partners.targetingTypes.assignedTargetingOptions',
             'targetingTypes.targetingOptions',
             'users'
-          ]
+          ],
+          'default': ''
+        }
+      },
+      'partners': {
+        'single_cell': True,
+        'values': {
+          'field': {
+            'name': 'partners',
+            'kind': 'integer_list',
+            'order': 2,
+            'default': [
+            ],
+            'description': 'Comma separated partners ids.'
+          }
+        }
+      },
+      'advertisers': {
+        'single_cell': True,
+        'values': {
+          'field': {
+            'name': 'advertisers',
+            'kind': 'integer_list',
+            'order': 2,
+            'default': [
+            ],
+            'description': 'Comma separated advertisers ids.'
+          }
         }
       },
       'out': {
-        'dataset': {
-          'field': {
-            'order': 1,
-            'kind': 'string',
-            'name': 'dataset',
-            'description': 'Google BigQuery dataset to create tables in.',
-            'default': ''
-          }
-        },
         'auth': {
           'field': {
-            'order': 1,
-            'kind': 'authentication',
             'name': 'auth_write',
-            'description': 'Credentials used for writing data.',
-            'default': 'service'
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
+          }
+        },
+        'dataset': {
+          'field': {
+            'name': 'dataset',
+            'kind': 'string',
+            'order': 1,
+            'default': '',
+            'description': 'Google BigQuery dataset to create tables in.'
           }
         }
       }

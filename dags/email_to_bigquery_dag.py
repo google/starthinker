@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,25 +34,55 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
 Email Fetch
 
 Import emailed CM report, Dv360 report, csv, or excel into a BigQuery table.
 
-The person executing this recipe must be the recipient of the email.
-Give a regular expression to match the email subject, link or attachment.
-The data downloaded will overwrite the table specified.
+  - The person executing this recipe must be the recipient of the email.
+  - Give a regular expression to match the email subject, link or attachment.
+  - The data downloaded will overwrite the table specified.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'email_from': '',  # Must match from field.
   'auth_read': 'user',  # Credentials used for reading data.
+  'email_from': '',  # Must match from field.
   'email_to': '',  # Must match to field.
   'subject': '',  # Regular expression to match subject.
   'link': '',  # Regular expression to match email.
@@ -62,112 +93,113 @@ INPUTS = {
   'is_incremental_load': False,  # Append report data to table based on date column, de-duplicates.
 }
 
-TASKS = [
-  {
-    'email': {
-      'out': {
-        'bigquery': {
-          'schema': {
-            'field': {
-              'order': 8,
-              'kind': 'json',
-              'name': 'dbm_schema',
-              'description': 'Schema provided in JSON list format or empty list.',
-              'default': '[]'
-            }
-          },
-          'table': {
-            'field': {
-              'order': 7,
-              'kind': 'string',
-              'name': 'table',
-              'description': 'Name of table to be written to.',
-              'default': ''
-            }
-          },
-          'is_incremental_load': {
-            'field': {
-              'order': 9,
-              'kind': 'boolean',
-              'name': 'is_incremental_load',
-              'description': 'Append report data to table based on date column, de-duplicates.',
-              'default': False
-            }
-          },
-          'dataset': {
-            'field': {
-              'order': 6,
-              'kind': 'string',
-              'name': 'dataset',
-              'description': 'Existing dataset in BigQuery.',
-              'default': ''
-            }
-          }
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      },
-      'read': {
-        'to': {
+RECIPE = {
+  'tasks': [
+    {
+      'email': {
+        'auth': {
           'field': {
-            'order': 2,
-            'kind': 'string',
-            'name': 'email_to',
-            'description': 'Must match to field.',
-            'default': ''
-          }
-        },
-        'subject': {
-          'field': {
-            'order': 3,
-            'kind': 'string',
-            'name': 'subject',
-            'description': 'Regular expression to match subject.',
-            'default': ''
-          }
-        },
-        'link': {
-          'field': {
-            'order': 4,
-            'kind': 'string',
-            'name': 'link',
-            'description': 'Regular expression to match email.',
-            'default': ''
-          }
-        },
-        'attachment': {
-          'field': {
-            'order': 5,
-            'kind': 'string',
-            'name': 'attachment',
-            'description': 'Regular expression to match atttachment.',
-            'default': ''
-          }
-        },
-        'from': {
-          'field': {
+            'name': 'auth_read',
+            'kind': 'authentication',
             'order': 1,
-            'kind': 'string',
-            'name': 'email_from',
-            'description': 'Must match from field.',
-            'default': ''
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
+          }
+        },
+        'read': {
+          'from': {
+            'field': {
+              'name': 'email_from',
+              'kind': 'string',
+              'order': 1,
+              'default': '',
+              'description': 'Must match from field.'
+            }
+          },
+          'to': {
+            'field': {
+              'name': 'email_to',
+              'kind': 'string',
+              'order': 2,
+              'default': '',
+              'description': 'Must match to field.'
+            }
+          },
+          'subject': {
+            'field': {
+              'name': 'subject',
+              'kind': 'string',
+              'order': 3,
+              'default': '',
+              'description': 'Regular expression to match subject.'
+            }
+          },
+          'link': {
+            'field': {
+              'name': 'link',
+              'kind': 'string',
+              'order': 4,
+              'default': '',
+              'description': 'Regular expression to match email.'
+            }
+          },
+          'attachment': {
+            'field': {
+              'name': 'attachment',
+              'kind': 'string',
+              'order': 5,
+              'default': '',
+              'description': 'Regular expression to match atttachment.'
+            }
+          }
+        },
+        'out': {
+          'bigquery': {
+            'dataset': {
+              'field': {
+                'name': 'dataset',
+                'kind': 'string',
+                'order': 6,
+                'default': '',
+                'description': 'Existing dataset in BigQuery.'
+              }
+            },
+            'table': {
+              'field': {
+                'name': 'table',
+                'kind': 'string',
+                'order': 7,
+                'default': '',
+                'description': 'Name of table to be written to.'
+              }
+            },
+            'schema': {
+              'field': {
+                'name': 'dbm_schema',
+                'kind': 'json',
+                'order': 8,
+                'default': '[]',
+                'description': 'Schema provided in JSON list format or empty list.'
+              }
+            },
+            'is_incremental_load': {
+              'field': {
+                'name': 'is_incremental_load',
+                'kind': 'boolean',
+                'order': 9,
+                'default': False,
+                'description': 'Append report data to table based on date column, de-duplicates.'
+              }
+            }
           }
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('email_to_bigquery', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('email_to_bigquery', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

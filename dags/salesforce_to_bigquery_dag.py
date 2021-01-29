@@ -21,11 +21,12 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
     4) Composer Menu
@@ -33,133 +34,164 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
 Salesforce To BigQuery
 
 Move query results into a BigQuery table.
 
-Specify <a href='https://developer.salesforce.com/' target='_blank'>Salesforce</a> credentials.
-Specify the query youd like to execute.
-Specify a <a href='https://cloud.google.com/bigquery/docs/schemas#creating_a_json_schema_file' target='_blank'>SCHEMA</a> for that query ( optional ).
+  - Specify <a href='https://developer.salesforce.com/' target='_blank'>Salesforce</a> credentials.
+  - Specify the query youd like to execute.
+  - Specify a <a href='https://cloud.google.com/bigquery/docs/schemas#creating_a_json_schema_file' target='_blank'>SCHEMA</a> for that query ( optional ).
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'password': '',  # Your Salesforce login password.
-  'username': '',  # Your Salesforce user email.
-  'query': '',  # The query to run in Salesforce.
-  'secret': '',  # Retrieve from a Salesforce App.
   'domain': 'login.salesforce.com',  # Retrieve from a Salesforce Domain.
   'client': '',  # Retrieve from a Salesforce App.
+  'secret': '',  # Retrieve from a Salesforce App.
+  'username': '',  # Your Salesforce user email.
+  'password': '',  # Your Salesforce login password.
+  'query': '',  # The query to run in Salesforce.
   'auth_read': 'user',  # Credentials used for reading data.
   'dataset': '',  # Existing BigQuery dataset.
   'table': '',  # Table to create from this report.
   'schema': '[]',  # Schema provided in JSON list format or empty list.
 }
 
-TASKS = [
-  {
-    'salesforce': {
-      'query': {
-        'field': {
-          'kind': 'string',
-          'name': 'query',
-          'description': 'The query to run in Salesforce.',
-          'default': ''
-        }
-      },
-      'password': {
-        'field': {
-          'kind': 'password',
-          'name': 'password',
-          'description': 'Your Salesforce login password.',
-          'default': ''
-        }
-      },
-      'username': {
-        'field': {
-          'kind': 'email',
-          'name': 'username',
-          'description': 'Your Salesforce user email.',
-          'default': ''
-        }
-      },
-      'domain': {
-        'field': {
-          'kind': 'string',
-          'name': 'domain',
-          'description': 'Retrieve from a Salesforce Domain.',
-          'default': 'login.salesforce.com'
-        }
-      },
-      'auth': {
-        'field': {
-          'order': 1,
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'description': 'Credentials used for reading data.',
-          'default': 'user'
-        }
-      },
-      'secret': {
-        'field': {
-          'kind': 'string',
-          'name': 'secret',
-          'description': 'Retrieve from a Salesforce App.',
-          'default': ''
-        }
-      },
-      'out': {
-        'bigquery': {
-          'schema': {
-            'field': {
-              'order': 5,
-              'kind': 'json',
-              'name': 'schema',
-              'description': 'Schema provided in JSON list format or empty list.',
-              'default': '[]'
-            }
-          },
-          'table': {
-            'field': {
-              'order': 4,
-              'kind': 'string',
-              'name': 'table',
-              'description': 'Table to create from this report.',
-              'default': ''
-            }
-          },
-          'dataset': {
-            'field': {
-              'order': 3,
-              'kind': 'string',
-              'name': 'dataset',
-              'description': 'Existing BigQuery dataset.',
-              'default': ''
+RECIPE = {
+  'tasks': [
+    {
+      'salesforce': {
+        'auth': {
+          'field': {
+            'name': 'auth_read',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
+          }
+        },
+        'domain': {
+          'field': {
+            'name': 'domain',
+            'kind': 'string',
+            'default': 'login.salesforce.com',
+            'description': 'Retrieve from a Salesforce Domain.'
+          }
+        },
+        'client': {
+          'field': {
+            'name': 'client',
+            'kind': 'string',
+            'default': '',
+            'description': 'Retrieve from a Salesforce App.'
+          }
+        },
+        'secret': {
+          'field': {
+            'name': 'secret',
+            'kind': 'string',
+            'default': '',
+            'description': 'Retrieve from a Salesforce App.'
+          }
+        },
+        'username': {
+          'field': {
+            'name': 'username',
+            'kind': 'email',
+            'default': '',
+            'description': 'Your Salesforce user email.'
+          }
+        },
+        'password': {
+          'field': {
+            'name': 'password',
+            'kind': 'password',
+            'default': '',
+            'description': 'Your Salesforce login password.'
+          }
+        },
+        'query': {
+          'field': {
+            'name': 'query',
+            'kind': 'string',
+            'default': '',
+            'description': 'The query to run in Salesforce.'
+          }
+        },
+        'out': {
+          'bigquery': {
+            'dataset': {
+              'field': {
+                'name': 'dataset',
+                'kind': 'string',
+                'order': 3,
+                'default': '',
+                'description': 'Existing BigQuery dataset.'
+              }
+            },
+            'table': {
+              'field': {
+                'name': 'table',
+                'kind': 'string',
+                'order': 4,
+                'default': '',
+                'description': 'Table to create from this report.'
+              }
+            },
+            'schema': {
+              'field': {
+                'name': 'schema',
+                'kind': 'json',
+                'order': 5,
+                'default': '[]',
+                'description': 'Schema provided in JSON list format or empty list.'
+              }
             }
           }
         }
-      },
-      'client': {
-        'field': {
-          'kind': 'string',
-          'name': 'client',
-          'description': 'Retrieve from a Salesforce App.',
-          'default': ''
-        }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('salesforce_to_bigquery', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('salesforce_to_bigquery', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()
