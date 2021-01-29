@@ -78,6 +78,8 @@ def dv_editor():
     campaign_load()
 
   elif project.task['command'] == 'Load Insertion Orders and Line Items':
+    creative_clear()
+    creative_load()
     insertion_order_clear()
     insertion_order_load()
     line_item_clear()
@@ -94,8 +96,6 @@ def dv_editor():
     partner_cost_load()
     integration_detail_clear()
     integration_detail_load()
-    creative_clear()
-    creative_load()
 
   elif project.task['command'] in ('Preview', 'Patch'):
     audit_clear()
@@ -125,10 +125,9 @@ def dv_editor():
   elif project.task['command'] == 'Clear Campaigns':
     campaign_clear()
 
-  elif project.task['command'] == 'Clear Creatives':
+  elif project.task['command'] == 'Clear Insertion Orders and Line Items':
     creative_clear()
 
-  elif project.task['command'] == 'Clear Insertion Orders':
     segment_clear()
     pacing_clear()
     bid_strategy_clear()
@@ -137,14 +136,6 @@ def dv_editor():
     integration_detail_clear()
 
     insertion_order_clear()
-
-  elif project.task['command'] == 'Clear Line Items':
-    pacing_clear()
-    bid_strategy_clear()
-    frequency_cap_clear()
-    partner_cost_clear()
-    integration_detail_clear()
-
     line_item_map_clear()
     line_item_clear()
 
