@@ -1,0 +1,34 @@
+{
+  "script":{
+    "released":"2020-07-07",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"addchart",
+    "title":"BigQuery Function",
+    "description":"Add a custom function or table to a dataset.",
+    "to":["bigquery"],
+    "from":["bigquery"],
+    "instructions":[
+      "Specify the dataset, and the function or table will be added.",
+      "Pearson Significance Test: Check if a correlation is significant.",
+      "US Geography: Add a table mapping Postal, FIPS, County, State, and DMA."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "bigquery":{
+      "auth":{"field":{ "name":"auth", "kind":"authentication", "order":0, "default":"service", "description":"Credentials used for writing function." }},
+      "function":{"field":{
+        "name":"function",
+        "kind":"choice",
+        "order":1,
+        "choices":["Pearson Significance Test", "US Geography"],
+        "default":"Pearson Significance Test",
+        "description":"Function or table to create."
+      }},
+      "to":{
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Existing BigQuery dataset." }}
+      }
+    }}
+  ]
+}

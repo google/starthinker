@@ -1,7 +1,7 @@
 {
   "script":{
     "released":"2020-02-18",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"people",
     "title":"DV360 Audience Analysis",
@@ -96,6 +96,7 @@
         "bigquery": {
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Audience_Performance",
+          "header":true,
           "schema": [
             { "mode": "REQUIRED", "name": "advertiser", "type": "STRING" },
             { "mode": "REQUIRED", "name": "advertiser_id", "type": "INT64" },
@@ -161,6 +162,7 @@
         "bigquery": {
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_First_Party_Audience",
+          "header":true,
           "schema": [
             { "mode": "REQUIRED", "name": "advertiser", "type": "STRING" },
             { "mode": "REQUIRED", "name": "advertiser_id", "type": "INT64" },
@@ -221,6 +223,7 @@
         "bigquery": {
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Google_Audience",
+          "header":true,
           "schema": [
             { "mode": "REQUIRED", "name": "advertiser", "type": "STRING" },
             { "mode": "REQUIRED", "name": "advertiser_id", "type": "INT64" },
@@ -281,6 +284,7 @@
         "bigquery": {
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
           "table": "DV360_Third_Party_Audience",
+          "header":true,
           "schema": [
             { "mode": "REQUIRED", "name": "advertiser", "type": "STRING" },
             { "mode": "REQUIRED", "name": "advertiser_id", "type": "INT64" },

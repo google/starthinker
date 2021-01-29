@@ -1,12 +1,12 @@
 {
   "script":{
     "released":"2018-01-29",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_small",
     "from":["cm"],
     "to":["sheets"],
-    "title":"CM To Sheets",
+    "title":"CM360 Report To Sheets",
     "description":"Move existing CM report into a Sheet tab.",
     "instructions":[
       "Specify an account id.",

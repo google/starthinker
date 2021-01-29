@@ -28,8 +28,9 @@ from starthinker_ui.project.forms import ProjectForm
 
 
 def project_list(request):
-  projects = request.user.project_set.all() if request.user.is_authenticated else None
-  return render(request, "project/project_list.html", { 'projects':projects })
+  projects = request.user.project_set.all(
+  ) if request.user.is_authenticated else None
+  return render(request, 'project/project_list.html', {'projects': projects})
 
 
 @permission_admin()
@@ -48,7 +49,9 @@ def project_edit(request, pk=None):
   else:
     form_project = ProjectForm(request.user, instance=project)
 
-  return render(request, "project/project_edit.html", { 'form_project':form_project })
+  return render(request, 'project/project_edit.html',
+                {'form_project': form_project})
+
 
 @permission_admin()
 def project_delete(request, pk=None):

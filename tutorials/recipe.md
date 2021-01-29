@@ -186,7 +186,15 @@ scripts/script_hello.json
   - pitches - Optional, list of short sentences describing value propositions.
   - instructions - Required, instructions for manual steps, supports embedded HTML and links.
 
-### 5. Continue to the [testing tutorial](testing.md)...
+### 5. Tips For Adding Fields
+  - Use recipe_name where possible to reduce inputs and improve naming affinity.
+  - Use prefix to create unique tables from the same input.
+  - Use recipe_slug for values that require only letters, numbers, and underscores.
+  - Define reports incide the recipe where possible.
+  - For derived values, leverage [get_rows](https://github.com/google/starthinker/blob/master/starthinker/util/data/__init__.py#L66)
+  - Use the [Google API](https://github.com/google/starthinker/blob/master/scripts/google_api_to_bigquery.json) task where possible for accessing Google endpoints.
+
+### 6. Continue to the [testing tutorial](testing.md)...
 
 ### Notes
 - You will need to re-start the UI to pick up new scripts.

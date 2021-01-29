@@ -17,24 +17,29 @@
 ###########################################################################
 
 ApprovalStatus_Schema = [
-  { "name":"auditor",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"status",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"feedback",
-    "type":"STRING",
-    "mode":"NULLABLE",
-  },
-  { "name":"sync_time",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"external_id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
+    {
+        'name': 'auditor',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'status',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'feedback',
+        'type': 'STRING',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'sync_time',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'external_id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
 ]

@@ -17,20 +17,24 @@
 ###########################################################################
 
 PartnerRevenueModel_Schema = [
-  { "name":"type",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"amount_advertiser_micros",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"media_cost_markup_percent_millis",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"post_view_conversion_tracking_fraction",
-    "type":"FLOAT",
-    "mode":"NULLABLE",
-  },
+    {
+        'name': 'type',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'amount_advertiser_micros',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'media_cost_markup_percent_millis',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'post_view_conversion_tracking_fraction',
+        'type': 'FLOAT',
+        'mode': 'NULLABLE',
+    },
 ]

@@ -28,7 +28,7 @@ Before running this Airflow module...
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
@@ -49,8 +49,8 @@ USER_CONN_ID = "starthinker_user" # The connection to use for user authenticatio
 GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
 
 INPUTS = {
-  'insert': '',
   'auth_write': 'user',  # Credentials used for writing data.
+  'insert': '',
   'auth_read': 'service',  # Credentials used for reading data.
   'dataset': '',  # Google BigQuery dataset to create tables in.
   'table': '',  # Google BigQuery dataset to create tables in.
@@ -59,8 +59,19 @@ INPUTS = {
 TASKS = [
   {
     'dv360_api': {
+      'auth': {
+        'field': {
+          'name': 'auth_write',
+          'kind': 'authentication',
+          'order': 0,
+          'default': 'user',
+          'description': 'Credentials used for writing data.'
+        }
+      },
       'insert': {
         'field': {
+          'name': 'insert',
+          'kind': 'choice',
           'choices': [
             'advertisers',
             'advertisers.campaigns',
@@ -78,49 +89,38 @@ TASKS = [
             'partners.channels',
             'users'
           ],
-          'name': 'insert',
-          'default': '',
-          'kind': 'choice'
+          'default': ''
         }
       },
       'bigquery': {
-        'as_object': True,
         'auth': {
           'field': {
-            'description': 'Credentials used for reading data.',
-            'kind': 'authentication',
             'name': 'auth_read',
+            'kind': 'authentication',
             'order': 1,
-            'default': 'service'
+            'default': 'service',
+            'description': 'Credentials used for reading data.'
           }
         },
         'dataset': {
           'field': {
-            'description': 'Google BigQuery dataset to create tables in.',
-            'kind': 'string',
             'name': 'dataset',
+            'kind': 'string',
             'order': 2,
-            'default': ''
+            'default': '',
+            'description': 'Google BigQuery dataset to create tables in.'
           }
         },
         'table': {
           'field': {
-            'description': 'Google BigQuery dataset to create tables in.',
-            'kind': 'string',
             'name': 'table',
+            'kind': 'string',
             'order': 3,
-            'default': ''
+            'default': '',
+            'description': 'Google BigQuery dataset to create tables in.'
           }
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 0,
-          'default': 'user'
-        }
+        },
+        'as_object': True
       }
     }
   }

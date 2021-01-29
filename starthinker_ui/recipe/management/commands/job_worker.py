@@ -38,14 +38,15 @@ from starthinker_ui.recipe.log import log_job_timeout, log_job_error, log_job_st
 from starthinker_ui.recipe.log import log_verbose, get_instance_name
 from starthinker_ui.recipe.compute import group_instances_delete
 
-
 MANAGER_ON = True
 MANAGER_HEALTHY = True
-IDLE_INTERVAL = 5 * 60 # if worker is idle for 5 minutes, shut it down
+IDLE_INTERVAL = 5 * 60  # if worker is idle for 5 minutes, shut it down
+
 
 def signal_exit(self, signum):
   global MANAGER_ON
   MANAGER_ON = False
+
 
 signal.signal(signal.SIGINT, signal_exit)
 signal.signal(signal.SIGTERM, signal_exit)
@@ -54,24 +55,27 @@ signal.signal(signal.SIGTERM, signal_exit)
 def worker_ping(worker_uid, recipe_uids):
   # update recipes that belong to this worker
   if recipe_uids:
-    Recipe.objects.filter(worker_uid=worker_uid, id__in=recipe_uids).update(worker_utm=utc_milliseconds())
+    Recipe.objects.filter(
+        worker_uid=worker_uid,
+        id__in=recipe_uids).update(worker_utm=utc_milliseconds())
 
 
-def worker_status(worker_uid, recipe_uid, script, instance, hour, event, stdout, stderr):
+def worker_status(worker_uid, recipe_uid, script, instance, hour, event, stdout,
+                  stderr):
   try:
     job = Recipe.objects.get(worker_uid=worker_uid, id=recipe_uid)
     job.set_task(script, instance, hour, event, stdout, stderr)
   except Recipe.DoesNotExist:
-    print('Expired Worker Job:', worker_uid, recipe_uid, script, instance, hour, event)
+    print('Expired Worker Job:', worker_uid, recipe_uid, script, instance, hour,
+          event)
 
 
 def worker_pull(worker_uid, jobs=1):
-  '''Atomic reservation of worker in jobs.
+  """Atomic reservation of worker in jobs.
 
-  Args:
-    - worker_uid ( string ) - identifies a unique worker, must be same for every call from same worker.
-    - jobs ( integer ) - number of jobs to pull
-  '''
+  Args: - worker_uid ( string ) - identifies a unique worker, must be same for
+  every call from same worker. - jobs ( integer ) - number of jobs to pull
+  """
 
   jobs_all = []
   jobs_new = []
@@ -85,19 +89,22 @@ def worker_pull(worker_uid, jobs=1):
 
       # find recipes that are available but have not been pinged recently from all workers ( pulls from pool )
       where = Recipe.objects.filter(
-        active=True,
-        worker_utm__lte=worker_lookback,
-        job_utm__lte=worker_utm,
-      ).exclude(job_utm=0).select_for_update(skip_locked=True).order_by('worker_utm').values_list('id', flat=True)[:jobs]
+          active=True,
+          worker_utm__lte=worker_lookback,
+          job_utm__lte=worker_utm,
+      ).exclude(job_utm=0).select_for_update(
+          skip_locked=True).order_by('worker_utm').values_list(
+              'id', flat=True)[:jobs]
 
       # mark those recipes as belonging to this worker
-      Recipe.objects.filter(id__in=where).update(worker_uid=worker_uid, worker_utm=worker_utm)
+      Recipe.objects.filter(id__in=where).update(
+          worker_uid=worker_uid, worker_utm=worker_utm)
 
   # find all recipes that belong to this worker and check if they have new tasks
   for job in Recipe.objects.filter(active=True, worker_uid=worker_uid):
     jobs_all.append(job.id)
-    task = job.get_task() # also resets status
-    if job.worker_utm == worker_utm and task: # jobs with current timestamp are new ( odds of a ping matching this worker_utm? ), isolate evens and odds?
+    task = job.get_task()  # also resets status
+    if job.worker_utm == worker_utm and task:  # jobs with current timestamp are new ( odds of a ping matching this worker_utm? ), isolate evens and odds?
       jobs_new.append(task)
 
   return jobs_all, jobs_new
@@ -134,7 +141,6 @@ class Workers():
   def available(self):
     return self.jobs_maximum - len(self.jobs)
 
-
   def pull(self):
 
     self.lock_thread.acquire()
@@ -160,22 +166,22 @@ class Workers():
     # shut down all removed jobs
     try:
       for job in jobs_remove:
-        if job.get('job', {}).get('process'): job['job']['process'].kill()
+        if job.get('job', {}).get('process'):
+          job['job']['process'].kill()
         self.cleanup(job)
         log_job_cancel(job)
     except Exception as e:
       log_manager_error(traceback.format_exc())
-
 
   def run(self, job, force=False):
 
     job['recipe']['setup'].setdefault('timeout_seconds', self.timeout_seconds)
 
     job['job'] = {
-      'worker':self.uid,
-      'id':str(uuid.uuid1()),
-      'process':None,
-      'utc':datetime.utcnow(),
+        'worker': self.uid,
+        'id': str(uuid.uuid1()),
+        'process': None,
+        'utc': datetime.utcnow(),
     }
 
     filename = '%s/%s.json' % (settings.UI_CRON, job['job']['id'])
@@ -184,39 +190,46 @@ class Workers():
       job_file.write(json.dumps(job['recipe'], default=str))
 
     command = [
-      '%s/starthinker_virtualenv/bin/python' % settings.UI_ROOT,
-      '-u', '-W', 'ignore',
-      '%s/starthinker/task/%s/run.py' % (settings.UI_ROOT, job['script']),
-      filename,
-      '-i', str(job['instance']),
-      '--verbose',
+        '%s/starthinker_virtualenv/bin/python' % settings.UI_ROOT,
+        '-u',
+        '-W',
+        'ignore',
+        '%s/starthinker/task/%s/run.py' % (settings.UI_ROOT, job['script']),
+        filename,
+        '-i',
+        str(job['instance']),
+        '--verbose',
     ]
 
-    if self.trace: command.append('--trace_file')
+    if self.trace:
+      command.append('--trace_file')
 
-    job['job']['process'] = subprocess.Popen(command, shell=False, cwd=settings.UI_ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    job['job']['process'] = subprocess.Popen(
+        command,
+        shell=False,
+        cwd=settings.UI_ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
 
     make_non_blocking(job['job']['process'].stdout)
     make_non_blocking(job['job']['process'].stderr)
-
 
   def cleanup(self, job):
     filename = '%s/%s.json' % (settings.UI_CRON, job['job']['id'])
     if os.path.exists(filename):
       os.remove(filename)
 
-
   def ping(self):
     global MANAGER_HEALTHY
     while MANAGER_HEALTHY and not self.ping_event.wait(JOB_INTERVAL_MS / 1000):
       self.lock_thread.acquire()
       try:
-        worker_ping(self.uid, [job['recipe']['setup']['uuid'] for job in self.jobs])
+        worker_ping(self.uid,
+                    [job['recipe']['setup']['uuid'] for job in self.jobs])
       except Exception as e:
         log_manager_error(traceback.format_exc())
         MANAGER_HEALTHY = False
       self.lock_thread.release()
-
 
   def poll(self):
 
@@ -239,16 +252,19 @@ class Workers():
 
         # read any incremental data from the process ( made non-blocking at construction )
         stdout = job['job']['process'].stdout.read()
-        if stdout is not None: stdout = stdout.decode()
+        if stdout is not None:
+          stdout = stdout.decode()
         stderr = job['job']['process'].stderr.read()
-        if stderr is not None: stderr = stderr.decode()
+        if stderr is not None:
+          stderr = stderr.decode()
 
         # if process still running, check timeout or ping keep alive
         poll = job['job']['process'].poll()
         if poll is None:
 
           # check if task is a timeout
-          if (datetime.utcnow() - job['job']['utc']).total_seconds() > job['recipe']['setup']['timeout_seconds']:
+          if (datetime.utcnow() - job['job']['utc']
+             ).total_seconds() > job['recipe']['setup']['timeout_seconds']:
             status = 'JOB_TIMEOUT'
             job['job']['process'].kill()
             self.cleanup(job)
@@ -277,33 +293,27 @@ class Workers():
 
       # if status is set, send it to the database
       if status:
-        worker_status(
-          job['job']['worker'],
-          job['recipe']['setup']['uuid'],
-          job['script'],
-          job['instance'],
-          job['hour'],
-          status,
-          stdout,
-          stderr
-        )
+        worker_status(job['job']['worker'], job['recipe']['setup']['uuid'],
+                      job['script'], job['instance'], job['hour'], status,
+                      stdout, stderr)
 
     # remove all workers without a process, they are done
     if self.jobs:
       self.lock_thread.acquire()
-      self.jobs = [job for job in self.jobs if job['job']['process'] is not None]
+      self.jobs = [
+          job for job in self.jobs if job['job']['process'] is not None
+      ]
       self.lock_thread.release()
 
     # update the busy time if jobs exist
-    if len(self.jobs) != 0: self.busy_time = datetime.utcnow()
+    if len(self.jobs) != 0:
+      self.busy_time = datetime.utcnow()
 
     # if workers remain, return True
     return bool(self.jobs)
 
-
   def idle(self):
     return (datetime.utcnow() - self.busy_time).seconds > IDLE_INTERVAL
-
 
   def shutdown(self):
     # wait for jobs to finish
@@ -319,53 +329,53 @@ class Command(BaseCommand):
 
   def add_arguments(self, parser):
     parser.add_argument(
-      '--worker',
-      action='store',
-      dest='worker',
-      default='',
-      help='Name of worker to use when requesting jobs.',
+        '--worker',
+        action='store',
+        dest='worker',
+        default='',
+        help='Name of worker to use when requesting jobs.',
     )
 
     parser.add_argument(
-      '--jobs',
-      action='store',
-      dest='jobs',
-      default=3,
-      type=int,
-      help='Maximum number of jobs simlutanelous processes to start within this worker.',
+        '--jobs',
+        action='store',
+        dest='jobs',
+        default=3,
+        type=int,
+        help='Maximum number of jobs simlutanelous processes to start within this worker.',
     )
 
     parser.add_argument(
-      '--timeout',
-      action='store',
-      dest='timeout',
-      default=60 * 60 * 12, # 12 hours
-      type=int,
-      help='Default seconds to allow a task to run before timing it out, also controlled by recipe.',
+        '--timeout',
+        action='store',
+        dest='timeout',
+        default=60 * 60 * 12,  # 12 hours
+        type=int,
+        help='Default seconds to allow a task to run before timing it out, also controlled by recipe.',
     )
 
     parser.add_argument(
-      '--verbose',
-      action='store_true',
-      dest='verbose',
-      default=False,
-      help='Causes log messages to also print.',
+        '--verbose',
+        action='store_true',
+        dest='verbose',
+        default=False,
+        help='Causes log messages to also print.',
     )
 
     parser.add_argument(
-      '--trace',
-      action='store_true',
-      dest='trace',
-      default=False,
-      help='Create an execution trace in /tmp/starthinker_trace.log.',
+        '--trace',
+        action='store_true',
+        dest='trace',
+        default=False,
+        help='Create an execution trace in /tmp/starthinker_trace.log.',
     )
 
     parser.add_argument(
-      '--test',
-      action='store_true',
-      dest='test',
-      default=False,
-      help='Set test mode to execute loop only once and return workers.',
+        '--test',
+        action='store_true',
+        dest='test',
+        default=False,
+        help='Set test mode to execute loop only once and return workers.',
     )
 
   def handle(self, *args, **kwargs):
@@ -375,19 +385,22 @@ class Command(BaseCommand):
     MANAGER_ON = True
     MANAGER_HEALTHY = True
 
-    if kwargs['test']: print('Starting Up...')
+    if kwargs['test']:
+      print('Starting Up...')
 
-    if kwargs['verbose']: log_verbose()
+    if kwargs['verbose']:
+      log_verbose()
 
     log_manager_start()
 
-    if kwargs['test']: print('Initializing Workers...')
+    if kwargs['test']:
+      print('Initializing Workers...')
 
     workers = Workers(
-      kwargs['worker'],
-      kwargs['jobs'],
-      kwargs['timeout'],
-      kwargs['trace'],
+        kwargs['worker'],
+        kwargs['jobs'],
+        kwargs['timeout'],
+        kwargs['trace'],
     )
 
     try:
@@ -416,11 +429,13 @@ class Command(BaseCommand):
       MANAGER_ON = False
 
     except Exception as e:
-      if kwargs['test']: print(str(e))
+      if kwargs['test']:
+        print(str(e))
       log_manager_error(traceback.format_exc())
 
     if MANAGER_HEALTHY:
-      if kwargs['test']: print('Shutting Down...')
+      if kwargs['test']:
+        print('Shutting Down...')
       workers.shutdown()
 
     log_manager_end()

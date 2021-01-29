@@ -19,6 +19,7 @@
 
 from starthinker.task.traffic.dao import BaseDAO
 from starthinker.task.traffic.feed import FieldMap
+from starthinker.task.traffic.store import store
 
 
 class DynamicTargetingKeyDAO(BaseDAO):
@@ -46,17 +47,17 @@ class DynamicTargetingKeyDAO(BaseDAO):
 
   def _api(self, iterate=False):
     """Returns an DCM API instance for this DAO."""
-    return super(DynamicTargetingKeyDAO, self)._api(iterate).dynamicTargetingKeys()
+    return super(DynamicTargetingKeyDAO,
+                 self)._api(iterate).dynamicTargetingKeys()
 
   def _key_exists(self, advertiser_id, key_name):
     cache_key = str(advertiser_id) + key_name
 
     if not cache_key in self._key_cache:
       keys = self._api().list(
-        profileId=self.profile_id,
-        advertiserId=advertiser_id,
-        names=[key_name]
-     ).execute()
+          profileId=self.profile_id,
+          advertiserId=advertiser_id,
+          names=[key_name]).execute()
 
       self._key_cache[cache_key] = 'dynamicTargetingKeys' in keys and len(
           keys['dynamicTargetingKeys']) > 0
@@ -64,16 +65,9 @@ class DynamicTargetingKeyDAO(BaseDAO):
     return self._key_cache[cache_key]
 
   def _create_key(self, key_name, object_type, object_id):
-    key = {
-        'name': key_name,
-        'objectId': object_id,
-        'objectType': object_type
-    }
+    key = {'name': key_name, 'objectId': object_id, 'objectType': object_type}
 
-    self._api().insert(
-      profileId=self.profile_id,
-      body=key
-    ).execute()
+    self._api().insert(profileId=self.profile_id, body=key).execute()
 
     if object_type == 'OBJECT_ADVERTISER':
       cache_key = str(object_id) + key_name
@@ -101,10 +95,21 @@ class DynamicTargetingKeyDAO(BaseDAO):
             feed_item.get(FieldMap.DYNAMIC_TARGETING_KEY_NAME, None),
             'OBJECT_ADVERTISER', feed_item.get(FieldMap.ADVERTISER_ID, None))
 
+      object_type = feed_item.get(FieldMap.DYNAMIC_TARGETING_KEY_OBJECT_TYPE, None)
+      entity_id = feed_item.get(FieldMap.DYNAMIC_TARGETING_KEY_OBJECT_ID, None)
+
+      if object_type and len(object_type) > 7:
+        entity = object_type[7:]
+        translated_id = store.translate(entity, entity_id)
+        entity_id = translated_id or entity_id
+
       self._create_key(
           feed_item.get(FieldMap.DYNAMIC_TARGETING_KEY_NAME, None),
-          feed_item.get(FieldMap.DYNAMIC_TARGETING_KEY_OBJECT_TYPE, None),
-          feed_item.get(FieldMap.DYNAMIC_TARGETING_KEY_OBJECT_ID, None))
+          object_type,
+          entity_id)
+
+      feed_item[FieldMap.DYNAMIC_TARGETING_KEY_OBJECT_ID] = entity_id
+
     else:
       raise Exception(
           'Dynamic targeting key, %s and %s are required' %

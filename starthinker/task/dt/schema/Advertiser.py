@@ -16,11 +16,28 @@
 #
 ###########################################################################
 
-Advertiser_Schema = [
-  { "name":"Advertiser", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Advertiser_Group", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Advertiser_Group_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Advertiser_Schema = [{
+    'name': 'Advertiser',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Advertiser_Group',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Advertiser_Group_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Advertiser_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Config_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Account_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

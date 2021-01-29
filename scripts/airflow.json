@@ -1,7 +1,35 @@
 {
-  "setup":{
-    "license":"Apache License, Version 2.0",
+  "script":{
+    "released":"2019-02-22",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
+    "icon":"donut_small",
+    "title":"Airflow Composer Example",
+    "description":"Demonstration that uses Airflow/Composer native, Airflow/Composer local, and StarThinker tasks in the same generated DAG.",
+    "documentation":"",
+    "from":["airflow/composer"],
+    "to":["airflow/composer"],
+    "pitches":[
+      "Build Airflow / Composer workflows using StarThinker.",
+      "Deploy any existing recipe as a DAG.",
+      "Refrence Service and User Credential integration.",
+      "Minimize manual DAG coding work."
+    ],
+    "impacts":{
+      "spend optimization":0,
+      "spend growth":0,
+      "time savings":100,
+      "account health":30,
+      "csat improvement":100
+    },
+    "instructions": [
+      "Execute this using Airflow or Composer, the Colab and UI recipe is for refence only.",
+      "This is an example DAG that will execute and print dates and text.",
+      "Run it once to ensure everything works, then customize it."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "setup":{
     "week":["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     "hour":[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
   },
@@ -16,13 +44,15 @@
         }
       }
     }},
-    { "operator":{
+    { "starthinker.airflow":{
       "__comment__":"Calls an custom operator, requires import of library.",
-      "hello":{
-        "Hello":{
-          "say":"Hi, there!"
+      "operators":{
+        "hello":{
+          "Hello":{
+            "say":"Hi, there!"
+          }
         }
-      }
+     }
     }},
     { "hello":{
       "__comment__":"Calls a StarThinker task.",

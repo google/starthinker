@@ -17,16 +17,19 @@
 ###########################################################################
 
 Isp_Schema = [
-  { "name":"id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"name",
-    "type":"STRING",
-    "mode":"NULLABLE",
-  },
-  { "name":"is_mobile",
-    "type":"BOOLEAN",
-    "mode":"NULLABLE",
-  },
+    {
+        'name': 'id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'name',
+        'type': 'STRING',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'is_mobile',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE',
+    },
 ]

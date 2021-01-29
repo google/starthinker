@@ -16,7 +16,12 @@
 #
 ###########################################################################
 
-Path_To_Conversion_Report_Metrics_Schema = [
-  { "name":"Total_Conversions", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Total_Revenue", "type":"FLOAT", "mode":"NULLABLE" }
-]
+Path_To_Conversion_Report_Metrics_Schema = [{
+    'name': 'Total_Conversions',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Total_Revenue',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}]

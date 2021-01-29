@@ -16,16 +16,65 @@
 #
 ###########################################################################
 
+
+from starthinker.util.bigquery import datasets_access
+from starthinker.util.bigquery import datasets_create
+from starthinker.util.bigquery import datasets_delete
 from starthinker.util.project import project
-from starthinker.util.bigquery import datasets_create, datasets_access
+
 
 @project.from_parameters
 def dataset():
-  if project.verbose: print("DATASET", project.id, project.task['dataset'])
+  if project.verbose:
+    print('DATASET', project.id, project.task['dataset'])
 
-  # create dataset
-  datasets_create(project.task['auth'], project.id, project.task['dataset'])
-  datasets_access(project.task['auth'], project.id, project.task['dataset'], emails=project.task.get('emails', []), groups=project.task.get('groups', []))
+  if project.task.get('delete', False):
+    if project.verbose:
+      print('DATASET DELETE')
+    # In order to fully delete a dataset, it needs to first have all tables
+    # deleted, which is done with the delete_contents=True, and then the actual
+    # dataset can be deleted, which is done with delete_contents=false.
+    datasets_delete(
+        project.task['auth'],
+        project.id,
+        project.task['dataset'],
+        delete_contents=True
+    )
+    datasets_delete(
+        project.task['auth'],
+        project.id,
+        project.task['dataset'],
+        delete_contents=False
+    )
+  else:
+    if project.task.get('clear', False):
+      if project.verbose:
+        print('DATASET CLEAR')
+      datasets_delete(
+          project.task['auth'],
+          project.id,
+          project.task['dataset'],
+          delete_contents=True
+      )
 
-if __name__ == "__main__":
+    if project.verbose:
+      print('DATASET CREATE')
+    datasets_create(
+        project.task['auth'],
+        project.id,
+        project.task['dataset']
+    )
+
+    if project.verbose:
+      print('DATASET ACCESS')
+    datasets_access(
+        project.task['auth'],
+        project.id,
+        project.task['dataset'],
+        emails=project.task.get('emails', []),
+        groups=project.task.get('groups', [])
+    )
+
+
+if __name__ == '__main__':
   dataset()

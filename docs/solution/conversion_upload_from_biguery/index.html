@@ -1,12 +1,7 @@
 
-
-
-
-
 <!DOCTYPE html>
 <html>
   <head>
-
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167283455-3"></script>
     <script>
@@ -15,101 +10,71 @@
       gtag('js', new Date());
       gtag('config', 'UA-167283455-3');
     </script>
-
     <link rel="shortcut icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
     <link rel="icon" href="https://storage.googleapis.com/starthinker-ui/favicon.ico" type="image/x-icon">
-
     <!--Import Google Icon Font-->
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     <!--Import materialize.css-->
     <link rel="stylesheet" href="https://storage.googleapis.com/starthinker-ui/css/materialize-1.0.0.min.css">
-
     <style>
       html { color: rgba(68,68,68,1); font-family: Roboto, sans-serif; }
-
       .material-icons { line-height: normal; vertical-align: middle; }
-
       #message { justify-content: center; font-size: 2em;}
       #message i { font-size: 2em; margin: 10px; }
       #message ul, #message li { display: inline; margin-left: 10px; }
       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
-
-      div.nav-wrapper { padding-left: 1%; padding-right: 1%; }
+      div.nav-wrapper { padding-left: 10%; padding-right: 10%; }
       h1 a i.material-icons { font-size: 4rem; }
       a.brand-logo img { vertical-align: middle; width: 40px; height: 40px; }
+      span.brand-title { vertical-align: middle; padding-left: 10px;}
       ol li { line-height: 1.8em; }
       textarea { margin-top: 7px; height: 10rem; }
       table.list { width: 96%; max-width: 800px; margin: 1vh auto; line-height: 1.8em; }
       a.menu_link, span.menu_link { display: inline-block; margin: 8px; }
-
       div.row { display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
-
       #cards div.card { width: 300px; margin: 20px; padding: 0.1px; text-align: left; }
       div.card h4 { width 100%; padding: 20px;}
       div.card h4 i.material-icons { font-size: 2.28rem; }
       div.card table { margin: 0px 5% 30px 5%; width: 90%; }
-
       .card .card-content .card-title { word-wrap: break-word; }
       div.input-field { padding-top: 0.1px; margin-top: 2.4em;}
-
       div.switch { padding-top: 1rem; padding-bottom: 1rem; }
       div.switch label { font-size: 1.05rem; }
       div.switch label:first-child { font-size: 1.3rem; margin-right: 40px; }
-
       p.flow-text { font-weight: 100; }
       i.right { margin: 0px 15px; font-size: 1.5rem;}
       .collapsible-body { padding: 0px; }
-
-      
-  #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
+      body { overflow: auto !important; }
+  #solution_image { margin: 10px auto; width: 100%; max-width: 800px; height: auto; display: block; }
   .btn-large { margin: 1vh 1vw; }
   .col { margin-right: auto; }
-  pre.expand_code { height: 70vh; overflow: hidden; }
-  pre.expand_code span { position: absolute; right: 0px; margin: 15px; cursor: pointer; }
-
+  pre { overflow: scroll; }
     </style>
-
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
-
-  
-    <nav class="green lighten-0">
+    <nav class="blue darken-1">
       <div class="nav-wrapper">
         <a href="/starthinker/" class="brand-logo">
-          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png"/>&nbsp;StarThinker
+          <img src="https://storage.googleapis.com/starthinker-ui/StarThinker.png" alt="StarThinker Logo"/>
+          <span class="brand-title">StarThinker</span>
         </a>
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          
-          
           <li><a href="/starthinker/solution/">Solutions</a></li>
           <li><a href="/starthinker/help/">Help</a></li>
-          
         </ul>
       </div>
     </nav>
-
-    <ul class="sidenav green lighten-1" id="mobile-menu">
-      
-      
-      
+    <ul class="sidenav blue darken-2" id="mobile-menu">
       <li><a class="white-text" href="/starthinker/solution/">Solutions</a></li>
       <li><a class="white-text" href="/starthinker/help/">Help</a></li>
-      
     </ul>
-  
-
   <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="https://storage.googleapis.com/starthinker-ui/js/materialize-1.0.0.min.js"></script>
-
-    
-
-
 <!--
 Start of Floodlight Tag: Please do not remove
 Activity name of this tag: Gallery Conversions
@@ -126,43 +91,17 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
 <img src="https://ad.doubleclick.net/ddm/activity/src=8657867;type=github;cat=galle0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=1?" width="1" height="1" alt=""/>
 </noscript>
 <!-- End of Floodlight Tag: Please do not remove -->
-
-
-
-    
-
     <div id="page" class="center">
-      
-
-  <br/>
-  <h1><i class="medium material-icons">file_upload</i>&nbsp; Conversion Upload BigQuery</h1>
-  <p class="flow-text">Move from BigQuery to CM.</p>
-
-  <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
-  
-
   <br/><br/>
-  
-
-  
-
+  <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
+  <br/><br/>
+    <h1><i class="large material-icons">file_upload</i>&nbsp;CM360 Conversion Upload From BigQuery</h1>
+    <p class="flow-text">Move from BigQuery to CM.</p>
+  <br/><br/>
   <div class="buttons">
-
     <a class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
       <i class="material-icons right">lock_open</i>Get Access
     </a>
-
-    
-
-    
-
-    
-
-    <br/>
-
-    
-
-    
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/conversion_upload_from_biguery.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
@@ -172,91 +111,114 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/conversion_upload_from_biguery_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
       </a>
-    
-
   </div>
-
   <br/><br/>
-
   <div class="row">
-    
-
-    
-
     <div class="col s12 m6 l4">
       <div class="card">
+        <br/>
+          <h4>Instructions</h4>
+          <table class="bordered">
+            <tbody>
+              <tr>
+                <td>Specify a CM Account ID, Floodligh Activity ID and Conversion Type.</td>
+              </tr>
+              <tr>
+                <td>Include BigQuery dataset and table.</td>
+              </tr>
+              <tr>
+                <td>Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId</td>
+              </tr>
+              <tr>
+                <td>Include encryption information if using encryptedUserId or encryptedUserIdCandidates.</td>
+              </tr>
+            </tbody>
+          </table>
+        <h4>Details</h4>
         <table class="bordered">
-          <thead>
-            <tr>
-              <th colspan="2">Details</th>
-            </tr>
-           </thead>
           <tbody>
-
-            
             <tr>
-              <td colspan="2">This solution has anonymized data and is OK to share with clients.</td>
+              <td>Open Source</td>
+              <td>YES
             </tr>
-            
-
             <tr>
               <td>Age</td>
-              <td>March 16, 2018 (2 years, 5 months)</td>
+              <td>March 16, 2018 (2 years, 10 months)</td>
             </tr>
-
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Conversion+Upload+BigQuery+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Conversion+Upload+BigQuery+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fconversion_upload_from_biguery%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+CM360+Conversion+Upload+From+BigQuery+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+CM360+Conversion+Upload+From+BigQuery+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Fkenjora.c.googlers.com%3A8000%2Fsolution%2Fconversion_upload_from_biguery%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
-
+                <tr>
+                  <td>Shedule Days</td>
+                  <td>Configured by user.</td>
+                </tr>
+                <tr>
+                  <td>Shedule Hours</td>
+                  <td>Configured by user.</td>
+                </tr>
           </tbody>
         </table>
       </div>
     </div>
-
-   
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <table class="bordered">
-          <thead>
-              <tr>
-                <th>Instructions</th>
-              </tr>
-             </thead>
-             <tbody>
-             
-               <tr>
-                 <td>Specify a CM Account ID, Floodligh Activity ID and Conversion Type.</td>
-               </tr>
-             
-               <tr>
-                 <td>Include BigQuery dataset and table.</td>
-               </tr>
-             
-               <tr>
-                 <td>Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId</td>
-               </tr>
-             
-               <tr>
-                 <td>Include encryption information if using encryptedUserId or encryptedUserIdCandidates.</td>
-               </tr>
-             
-             </tbody>
-          </table>
-        </div>
-       </div>
-     
-
-    <div class="col s12 m12 l8">
-      <pre class="card expand_code left-align"><span class="expand_code waves-light">Workflow<i class="material-icons medium">expand_more</i></span><code class="language-json">[
+    <div class="col s12 m6 l8">
+      <pre id="code-workflow" class="card left-align"><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/conversion_upload/run.py" target="_blank">conversion_upload</a>": {
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
+            "account_id": {
+                "field": {
+                    "name": "account",
+                    "kind": "string",
+                    "order": 0,
+                    "default": ""
+                }
+            },
+            "activity_id": {
+                "field": {
+                    "name": "floodlight_activity_id",
+                    "kind": "integer",
+                    "order": 1,
+                    "default": ""
+                }
+            },
+            "conversion_type": {
+                "field": {
+                    "name": "floodlight_conversion_type",
+                    "kind": "choice",
+                    "order": 2,
+                    "choices": [
+                        "encryptedUserId",
+                        "encryptedUserIdCandidates",
+                        "gclid",
+                        "mobileDeviceId"
+                    ],
+                    "default": "encryptedUserId"
+                }
+            },
             "encryptionInfo": {
+                "encryptionEntityId": {
+                    "field": {
+                        "name": "encryption_entity_id",
+                        "kind": "integer",
+                        "order": 3,
+                        "default": ""
+                    }
+                },
                 "encryptionEntityType": {
                     "field": {
-                        "default": "DCM_ACCOUNT",
                         "name": "encryption_entity_type",
+                        "kind": "choice",
+                        "order": 4,
                         "choices": [
                             "ADWORDS_CUSTOMER",
                             "DBM_ADVERTISER",
@@ -265,94 +227,46 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "DCM_ADVERTISER",
                             "ENCRYPTION_ENTITY_TYPE_UNKNOWN"
                         ],
-                        "kind": "choice",
-                        "order": 4
-                    }
-                },
-                "encryptionEntityId": {
-                    "field": {
-                        "default": "",
-                        "name": "encryption_entity_id",
-                        "kind": "integer",
-                        "order": 3
+                        "default": "DCM_ACCOUNT"
                     }
                 },
                 "encryptionSource": {
                     "field": {
-                        "default": "DATA_TRANSFER",
                         "name": "encryption_entity_source",
+                        "kind": "choice",
+                        "order": 5,
                         "choices": [
                             "AD_SERVING",
                             "DATA_TRANSFER",
                             "ENCRYPTION_SCOPE_UNKNOWN"
                         ],
-                        "kind": "choice",
-                        "order": 5
+                        "default": "DATA_TRANSFER"
                     }
-                }
-            },
-            "account_id": {
-                "field": {
-                    "default": "",
-                    "name": "account",
-                    "kind": "string",
-                    "order": 0
-                }
-            },
-            "activity_id": {
-                "field": {
-                    "default": "",
-                    "name": "floodlight_activity_id",
-                    "kind": "integer",
-                    "order": 1
-                }
-            },
-            "conversion_type": {
-                "field": {
-                    "default": "encryptedUserId",
-                    "name": "floodlight_conversion_type",
-                    "choices": [
-                        "encryptedUserId",
-                        "encryptedUserIdCandidates",
-                        "gclid",
-                        "mobileDeviceId"
-                    ],
-                    "kind": "choice",
-                    "order": 2
-                }
-            },
-            "auth": {
-                "field": {
-                    "description": "Credentials used for reading data.",
-                    "default": "user",
-                    "name": "auth_read",
-                    "kind": "authentication",
-                    "order": 1
                 }
             },
             "bigquery": {
                 "dataset": {
                     "field": {
-                        "default": "",
                         "name": "bigquery_dataset",
                         "kind": "string",
-                        "order": 6
+                        "order": 6,
+                        "default": ""
                     }
                 },
                 "table": {
                     "field": {
-                        "default": "",
                         "name": "bigquery_table",
                         "kind": "string",
-                        "order": 7
+                        "order": 7,
+                        "default": ""
                     }
                 },
                 "legacy": {
                     "field": {
-                        "default": true,
                         "name": "bigquery_legacy",
                         "kind": "boolean",
-                        "order": 8
+                        "order": 8,
+                        "default": true
                     }
                 }
             }
@@ -360,9 +274,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     }
 ]</code></pre>
     </div>
-
   </div>
-
   <br/><br/>
   <h3 id="code-tasks">Run This Workflow In Minutes On Google Cloud</h3>
   <p class="flow-text">Everything from a quick Google Cloud UI to reference developer code for your team in one GitHub repository.</p>
@@ -377,39 +289,18 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       UI How To<i class="material-icons right">laptop</i>
     </a>
   </p>
-
-
-
     </div>
-
   </body>
-
-  
-
-<footer class="page-footer red lighten-1">
+<footer class="page-footer blue">
   <div class="footer-copyright">
     <div class="container center">
-    &copy; 2019 Google LLC
+      &copy; 2019 Google LLC
     </div>
   </div>
 </footer>
-
-
   <script type="text/javascript">
     $(document).ready(function() {
-      M.AutoInit();
+      M.AutoInit(context=document.getElementById("form_recipe"));
     });
   </script>
-
-  
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('span.expand_code').on('click tap', function() {
-        $('pre.expand_code').css('height', 'auto');
-        $(this).hide();
-      });
-    });
-  </script>
-
-
 </html>

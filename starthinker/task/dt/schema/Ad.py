@@ -16,16 +16,48 @@
 #
 ###########################################################################
 
-Ad_Schema = [
-  { "name":"Ad", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Ad_Click_Url", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Ad_Comments", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Ad_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Ad_Type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Ad_Type_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Campaign_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Creative_Size", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Ad_Schema = [{
+    'name': 'Ad',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Ad_Click_Url',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Ad_Comments',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Ad_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Ad_Type',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Ad_Type_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Advertiser_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Campaign_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Creative_Size',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Config_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Account_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""Handles creation and updates of Ads.
-
-"""
+"""Handles creation and updates of Ads."""
 
 from starthinker.task.traffic.dao import BaseDAO
 from starthinker.task.traffic.campaign import CampaignDAO
@@ -54,7 +52,6 @@ class EventTagDAO(BaseDAO):
     """Returns an DCM API instance for this DAO."""
     return super(EventTagDAO, self)._api(iterate).eventTags()
 
-
   def pre_fetch(self, feed):
     """Pre-fetches all required items to be update into the cache.
 
@@ -67,9 +64,9 @@ class EventTagDAO(BaseDAO):
 
   def _get_base_search_args(self, search_string):
     return {
-      'profileId': self.profile_id,
-      'searchString': search_string,
-      'sortField': 'NAME'
+        'profileId': self.profile_id,
+        'searchString': search_string,
+        'sortField': 'NAME'
     }
 
   def _process_update(self, item, feed_item):

@@ -19,15 +19,15 @@
 from starthinker.util.project import project, get_project
 from starthinker.util.data import get_rows
 
+
 def weather_gov_test():
   print('testing weather_gov connector')
 
   if 'verify' in project.task['weather_gov']:
-    rows = get_rows(project.task['auth'], project.task['weather_gov']['verify']['read'])
+    rows = get_rows(project.task['auth'],
+                    project.task['weather_gov']['verify']['read'])
     station_ids = project.task['weather_gov']['verify']['station_ids']
 
     for idx, row in enumerate(rows):
       if row[1] != station_ids[idx]:
         raise 'Station weather data not loaded correctly'
-
-

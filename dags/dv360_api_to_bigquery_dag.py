@@ -28,7 +28,7 @@ Before running this Airflow module...
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
@@ -51,18 +51,29 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'endpoint': '',
-  'dataset': '',  # Google BigQuery dataset to create tables in.
   'auth_read': 'user',  # Credentials used for reading data.
   'auth_write': 'service',  # Credentials used for writing data.
-  'advertisers': [],  # Comma separated advertisers ids.
+  'dataset': '',  # Google BigQuery dataset to create tables in.
   'partners': [],  # Comma separated partners ids.
+  'advertisers': [],  # Comma separated advertisers ids.
 }
 
 TASKS = [
   {
     'dv360_api': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'endpoints': {
         'field': {
+          'name': 'endpoint',
+          'kind': 'choice',
           'choices': [
             'advertisers',
             'advertisers.campaigns',
@@ -94,65 +105,54 @@ TASKS = [
             'targetingTypes.targetingOptions',
             'users'
           ],
-          'name': 'endpoint',
-          'default': '',
-          'kind': 'choice'
+          'default': ''
         }
       },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
+      'partners': {
+        'single_cell': True,
+        'values': {
+          'field': {
+            'name': 'partners',
+            'kind': 'integer_list',
+            'order': 2,
+            'default': [
+            ],
+            'description': 'Comma separated partners ids.'
+          }
+        }
+      },
+      'advertisers': {
+        'single_cell': True,
+        'values': {
+          'field': {
+            'name': 'advertisers',
+            'kind': 'integer_list',
+            'order': 2,
+            'default': [
+            ],
+            'description': 'Comma separated advertisers ids.'
+          }
         }
       },
       'out': {
         'auth': {
           'field': {
-            'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
             'name': 'auth_write',
+            'kind': 'authentication',
             'order': 1,
-            'default': 'service'
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
           }
         },
         'dataset': {
           'field': {
-            'description': 'Google BigQuery dataset to create tables in.',
-            'kind': 'string',
             'name': 'dataset',
+            'kind': 'string',
             'order': 1,
-            'default': ''
+            'default': '',
+            'description': 'Google BigQuery dataset to create tables in.'
           }
         }
-      },
-      'partners': {
-        'values': {
-          'field': {
-            'description': 'Comma separated partners ids.',
-            'kind': 'integer_list',
-            'name': 'partners',
-            'order': 2,
-            'default': [
-            ]
-          }
-        },
-        'single_cell': True
-      },
-      'advertisers': {
-        'values': {
-          'field': {
-            'description': 'Comma separated advertisers ids.',
-            'kind': 'integer_list',
-            'name': 'advertisers',
-            'order': 2,
-            'default': [
-            ]
-          }
-        },
-        'single_cell': True
       }
     }
   }

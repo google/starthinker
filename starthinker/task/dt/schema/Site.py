@@ -16,10 +16,24 @@
 #
 ###########################################################################
 
-Site_Schema = [
-  { "name":"Site", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Site_Directory", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Site_Directory_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Site_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Site_Schema = [{
+    'name': 'Site',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Site_Directory',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Site_Directory_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Site_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Account_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

@@ -4,10 +4,17 @@ This deployment is for non-developers who simply wish to use StarThinker.
 
 ## Install StarThinker
 
+To run StarThinker you will need the folowing:
+
+1. A unix / linux command line.
+2. A version of Python 3.7 or greater.
+
 From the command line on any unix/linux machine install StarThinker.  All following examples begin with this step.
+Choose only one of the following, the first one is recommended for most users:
 
 ```
-pip3 install git+https://github.com/google/starthinker
+python3 -m pip install starthinker
+python3 -m pip install git+https://github.com/google/starthinker
 ```
 
 - If you get a permission error add: ```--user``` to the above command.
@@ -24,10 +31,6 @@ following utility and follow instructions on screen:
 ```
 st_auth -h
 ```
-
-## Run A Helper
-
-There are several [command line helpers](helpers.md) packaged in StarThinker, simply PIP install it and use the comands.
 
 ## Use A Function
 If all you need is one of the [utilities](../starthinker/util/) to build your own data pipe this is the smallest footprint.
@@ -84,9 +87,13 @@ if __name__ == "__main__":
   project.execute()
 ```
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_package.md)
+## Additional Resources
 
-Next, review list of available tasks in the [Recipe Gallery](https://google.github.io/starthinker/) or [GIT Scripts Folder](../scripts/).
+Try this in a few seconds using Google Cloud Shell...
+
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_tutorial=tutorials/deploy_package.md)
+
+Next, review list of available tasks in the [Recipe Gallery](https://google.github.io/starthinker/), view [Scripts](../scripts/), or check [Command Line Helpers](helpers.md).
 
 ---
 &copy; 2019 Google LLC - Apache License, Version 2.0

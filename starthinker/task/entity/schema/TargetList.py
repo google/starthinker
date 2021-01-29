@@ -17,252 +17,359 @@
 ###########################################################################
 
 TargetList_Schema = [
-  { "name":"inventory_sources",
-    "type":"RECORD",
-    "mode":"REPEATED",
-    "fields":[
-      { "name":"criteria_id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"geo_locations",
-    "type":"RECORD",
-    "mode":"REPEATED",
-    "fields":[
-      { "name":"criteria_id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"ad_position",
-    "type":"RECORD",
-    "mode":"NULLABLE",
-    "fields":[
-      { "name":"criteria_id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"net_speed",
-    "type":"RECORD",
-    "mode":"NULLABLE",
-    "fields":[
-      { "name":"criteria_id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"browsers",
-    "type":"RECORD",
-    "mode":"NULLABLE",
-    "fields":[
-      { "name":"union",
-        "type":"RECORD",
-        "mode":"REPEATED",
-        "fields":[
-          { "name":"criteria_id",
-            "type":"INTEGER",
-            "mode":"NULLABLE",
-          },
-          { "name":"parameter",
-            "type":"STRING",
-            "mode":"NULLABLE",
-          },
+    {
+        'name':
+            'inventory_sources',
+        'type':
+            'RECORD',
+        'mode':
+            'REPEATED',
+        'fields': [
+            {
+                'name': 'criteria_id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
         ]
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"device_criteria",
-    "type":"RECORD",
-    "mode":"REPEATED",
-    "fields":[
-      { "name":"criteria_id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"languages",
-    "type":"RECORD",
-    "mode":"NULLABLE",
-    "fields":[
-      { "name":"union",
-        "type":"RECORD",
-        "mode":"REPEATED",
-        "fields":[
-          { "name":"criteria_id",
-            "type":"INTEGER",
-            "mode":"NULLABLE",
-          },
-          { "name":"parameter",
-            "type":"STRING",
-            "mode":"NULLABLE",
-          },
+    },
+    {
+        'name':
+            'geo_locations',
+        'type':
+            'RECORD',
+        'mode':
+            'REPEATED',
+        'fields': [
+            {
+                'name': 'criteria_id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
         ]
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"day_parting",
-    "type":"RECORD",
-    "mode":"NULLABLE",
-    "fields":[
-      { "name":"union",
-        "type":"RECORD",
-        "mode":"REPEATED",
-        "fields":[
-          { "name":"criteria_id",
-            "type":"INTEGER",
-            "mode":"NULLABLE",
-          },
-          { "name":"parameter",
-            "type":"STRING",
-            "mode":"NULLABLE",
-          },
+    },
+    {
+        'name':
+            'ad_position',
+        'type':
+            'RECORD',
+        'mode':
+            'NULLABLE',
+        'fields': [
+            {
+                'name': 'criteria_id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
         ]
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"audience_intersect",
-    "type":"RECORD",
-    "mode":"REPEATED",
-    "fields":[
-      { "name":"union",
-        "type":"RECORD",
-        "mode":"REPEATED",
-        "fields":[
-          { "name":"criteria_id",
-            "type":"INTEGER",
-            "mode":"NULLABLE",
-          },
-          { "name":"parameter",
-            "type":"STRING",
-            "mode":"NULLABLE",
-          },
+    },
+    {
+        'name':
+            'net_speed',
+        'type':
+            'RECORD',
+        'mode':
+            'NULLABLE',
+        'fields': [
+            {
+                'name': 'criteria_id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
         ]
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"keywords",
-    "type":"RECORD",
-    "mode":"REPEATED",
-    "fields":[
-      { "name":"criteria_id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"parameter",
-        "type":"STRING",
-        "mode":"NULLABLE",
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"kct_include_uncrawled_sites",
-    "type":"BOOLEAN",
-    "mode":"NULLABLE",
-  },
-  { "name":"page_categories",
-    "type":"RECORD",
-    "mode":"REPEATED",
-    "fields":[
-      { "name":"criteria_id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"universal_channels",
-    "type":"RECORD",
-    "mode":"REPEATED",
-    "fields":[
-      { "name":"criteria_id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"sites",
-    "type":"RECORD",
-    "mode":"REPEATED",
-    "fields":[
-      { "name":"criteria_id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"parameter",
-        "type":"STRING",
-        "mode":"NULLABLE",
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"brand_safety",
-    "type":"RECORD",
-    "mode":"NULLABLE",
-    "fields":[
-      { "name":"criteria_id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"excluded",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
+    },
+    {
+        'name':
+            'browsers',
+        'type':
+            'RECORD',
+        'mode':
+            'NULLABLE',
+        'fields': [
+            {
+                'name':
+                    'union',
+                'type':
+                    'RECORD',
+                'mode':
+                    'REPEATED',
+                'fields': [
+                    {
+                        'name': 'criteria_id',
+                        'type': 'INTEGER',
+                        'mode': 'NULLABLE',
+                    },
+                    {
+                        'name': 'parameter',
+                        'type': 'STRING',
+                        'mode': 'NULLABLE',
+                    },
+                ]
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
+    {
+        'name':
+            'device_criteria',
+        'type':
+            'RECORD',
+        'mode':
+            'REPEATED',
+        'fields': [
+            {
+                'name': 'criteria_id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
+    {
+        'name':
+            'languages',
+        'type':
+            'RECORD',
+        'mode':
+            'NULLABLE',
+        'fields': [
+            {
+                'name':
+                    'union',
+                'type':
+                    'RECORD',
+                'mode':
+                    'REPEATED',
+                'fields': [
+                    {
+                        'name': 'criteria_id',
+                        'type': 'INTEGER',
+                        'mode': 'NULLABLE',
+                    },
+                    {
+                        'name': 'parameter',
+                        'type': 'STRING',
+                        'mode': 'NULLABLE',
+                    },
+                ]
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
+    {
+        'name':
+            'day_parting',
+        'type':
+            'RECORD',
+        'mode':
+            'NULLABLE',
+        'fields': [
+            {
+                'name':
+                    'union',
+                'type':
+                    'RECORD',
+                'mode':
+                    'REPEATED',
+                'fields': [
+                    {
+                        'name': 'criteria_id',
+                        'type': 'INTEGER',
+                        'mode': 'NULLABLE',
+                    },
+                    {
+                        'name': 'parameter',
+                        'type': 'STRING',
+                        'mode': 'NULLABLE',
+                    },
+                ]
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
+    {
+        'name':
+            'audience_intersect',
+        'type':
+            'RECORD',
+        'mode':
+            'REPEATED',
+        'fields': [
+            {
+                'name':
+                    'union',
+                'type':
+                    'RECORD',
+                'mode':
+                    'REPEATED',
+                'fields': [
+                    {
+                        'name': 'criteria_id',
+                        'type': 'INTEGER',
+                        'mode': 'NULLABLE',
+                    },
+                    {
+                        'name': 'parameter',
+                        'type': 'STRING',
+                        'mode': 'NULLABLE',
+                    },
+                ]
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
+    {
+        'name':
+            'keywords',
+        'type':
+            'RECORD',
+        'mode':
+            'REPEATED',
+        'fields': [
+            {
+                'name': 'criteria_id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'parameter',
+                'type': 'STRING',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
+    {
+        'name': 'kct_include_uncrawled_sites',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name':
+            'page_categories',
+        'type':
+            'RECORD',
+        'mode':
+            'REPEATED',
+        'fields': [
+            {
+                'name': 'criteria_id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
+    {
+        'name':
+            'universal_channels',
+        'type':
+            'RECORD',
+        'mode':
+            'REPEATED',
+        'fields': [
+            {
+                'name': 'criteria_id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
+    {
+        'name':
+            'sites',
+        'type':
+            'RECORD',
+        'mode':
+            'REPEATED',
+        'fields': [
+            {
+                'name': 'criteria_id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'parameter',
+                'type': 'STRING',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
+    {
+        'name':
+            'brand_safety',
+        'type':
+            'RECORD',
+        'mode':
+            'NULLABLE',
+        'fields': [
+            {
+                'name': 'criteria_id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'excluded',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
 ]

@@ -17,12 +17,14 @@
 ###########################################################################
 
 SelectionTarget_Schema = [
-  { "name":"criteria_id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"excluded",
-    "type":"BOOLEAN",
-    "mode":"NULLABLE",
-  },
+    {
+        'name': 'criteria_id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'excluded',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE',
+    },
 ]

@@ -16,14 +16,40 @@
 #
 ###########################################################################
 
-Placement_Cost_Schema = [
-  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Placement_Comments", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Placement_End_Date", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Placement_Rate", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Placement_Start_Date", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Placement_Total_Booked_Units", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Placement_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Placement_Cost_Schema = [{
+    'name': 'Advertiser_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_Comments',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_End_Date',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_Rate',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_Start_Date',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_Total_Booked_Units',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Placement_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Config_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Account_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

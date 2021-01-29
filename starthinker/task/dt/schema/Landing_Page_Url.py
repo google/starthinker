@@ -16,8 +16,16 @@
 #
 ###########################################################################
 
-Landing_Page_Url_Schema = [
-  { "name":"Landing_Page_Url", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Landing_Page_Url_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Landing_Page_Url_Schema = [{
+    'name': 'Landing_Page_Url',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Landing_Page_Url_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Account_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

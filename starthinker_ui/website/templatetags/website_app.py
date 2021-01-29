@@ -28,9 +28,10 @@ from django.utils.html import mark_safe
 from django.forms.widgets import CheckboxInput
 from django.template.loader_tags import do_include
 
-
-try: from django.utils.encoding import force_unicode
-except: from django.utils.encoding import force_text as force_unicode
+try:
+  from django.utils.encoding import force_unicode
+except:
+  from django.utils.encoding import force_text as force_unicode
 
 from starthinker_ui.recipe.forms_json import json_get_fields as json_get_fields_imported
 from starthinker_ui.recipe.forms_fields import SwitchField
@@ -48,13 +49,16 @@ class SearchScriptsTag(template.Node):
     scripts = sorted(Script.get_scripts(ui=True), key=lambda x: x.get_name())
 
     if self.filter == 'SOME':
-      scripts = [s for s in scripts if s.is_manual() == context.get('manual', False)]
+      scripts = [
+          s for s in scripts if s.is_manual() == context.get('manual', False)
+      ]
 
     if context.get('external', False):
       scripts = [s for s in scripts if s.get_open_source()]
 
     context['scripts'] = scripts
-    context['agos'] = sorted(set(chain.from_iterable([s.get_released_ago() for s in scripts])))
+    context['agos'] = sorted(
+        set(chain.from_iterable([s.get_released_ago() for s in scripts])))
 
     categories = {}
     for s in scripts:
@@ -86,24 +90,19 @@ def icon(value):
 
 @register.simple_tag
 def request_solution(script):
-  subject = "Request For A %s StarThinker Solution" % script.get_name()
-  body = "Hi,\n\nI'd like to learn more about the %s solution.\n\nStarThinker Link: %s\n\nCan we set up some time to over it?\n\nThanks" % (
-    script.get_name(),
-    script.get_link()
-  )
-  return mark_safe('mailto:%s?subject=%s&body=%s' % (
-    ','.join(script.get_authors()).replace(' ', ''),
-    quote_plus(subject),
-    quote_plus(body)
-  ))
+  subject = 'Request For A %s StarThinker Solution' % script.get_name()
+  body = ("Hi,\n\nI'd like to learn more about the %s solution.\n\nStarThinker "
+          "Link: %s\n\nCan we set up some time to over it?\n\nThanks") % (
+      script.get_name(), script.get_link())
+  return mark_safe(
+      'mailto:%s?subject=%s&body=%s' % (','.join(script.get_authors()).replace(
+          ' ', ''), quote_plus(subject), quote_plus(body)))
+
 
 @register.simple_tag
 def mailto(emails, subject='', body=''):
-  return mark_safe('mailto:%s?subject=%s&body=%s' % (
-    ','.join(emails).replace(' ', ''),
-    quote_plus(subject),
-    quote_plus(body)
-  ))
+  return mark_safe('mailto:%s?subject=%s&body=%s' % (','.join(emails).replace(
+      ' ', ''), quote_plus(subject), quote_plus(body)))
 
 
 @register.filter
@@ -124,7 +123,7 @@ def is_switch(field):
 
 @register.filter
 def multiply(value, arg):
-  return value*arg
+  return value * arg
 
 
 @register.filter
@@ -135,25 +134,37 @@ def json_get_fields(value):
 @register.filter
 def task_status_icon(event):
 
-  if event == 'JOB_TIMEOUT': icon = 'alarm_off'
-  elif event == 'JOB_ERROR': icon = 'error'
-  elif event == 'JOB_END': icon = 'done_outline'
-  elif event == 'JOB_START': icon = 'directions_walk'
-  elif event == 'JOB_PENDING': icon = 'hourglass_empty'
-  else: icon = 'hourglass_empty'
+  if event == 'JOB_TIMEOUT':
+    icon = 'alarm_off'
+  elif event == 'JOB_ERROR':
+    icon = 'error'
+  elif event == 'JOB_END':
+    icon = 'done_outline'
+  elif event == 'JOB_START':
+    icon = 'directions_walk'
+  elif event == 'JOB_PENDING':
+    icon = 'hourglass_empty'
+  else:
+    icon = 'hourglass_empty'
 
-  return mark_safe('<i class="small material-icons-outlined" style="vertical-align: middle;">%s</i>&nbsp;&nbsp;' % icon)
+  return mark_safe(
+      '<i class="small material-icons-outlined" style="vertical-align: middle;">%s</i>&nbsp;&nbsp;'
+      % icon)
 
 
 @register.filter
 def calvin_id(name):
-  return (5*10**10) + int(hashlib.sha256(name.encode('utf-8')).hexdigest(), 16) % 10**9 # 5 + 9 digits
+  return (5 *
+          10**10) + int(hashlib.sha256(name.encode('utf-8')).hexdigest(),
+                        16) % 10**9  # 5 + 9 digits
 
 
 @register.filter
 def email_to_ldap(email):
-  try: return email.split('@')[0].lower()
-  except: return ''
+  try:
+    return email.split('@')[0].lower()
+  except:
+    return ''
 
 
 class GaplessNode(template.Node):
@@ -162,7 +173,8 @@ class GaplessNode(template.Node):
     self.nodelist = nodelist
 
   def render(self, context):
-    return re.sub(r'\n\s*\n+', '\n', force_unicode(self.nodelist.render(context).strip()))
+    return re.sub(r'\n\s*\n+', '\n',
+                  force_unicode(self.nodelist.render(context).strip()))
 
 
 @register.tag
@@ -173,6 +185,7 @@ def gapless(parser, token):
 
 
 class TryIncludeNode(template.Node):
+
   def __init__(self, parser, token):
     self.include_node = do_include(parser, token)
 
@@ -191,13 +204,13 @@ def try_include(parser, token):
 @register.simple_tag
 def google_analytics():
   if settings.GOOGLE_ANALYTICS:
-    return mark_safe('''<!-- Global site tag (gtag.js) - Google Analytics -->
+    return mark_safe("""<!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', '%s');
-    </script>''' % (settings.GOOGLE_ANALYTICS, settings.GOOGLE_ANALYTICS))
+    </script>""" % (settings.GOOGLE_ANALYTICS, settings.GOOGLE_ANALYTICS))
   else:
     return ''

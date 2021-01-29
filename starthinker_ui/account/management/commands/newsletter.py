@@ -25,50 +25,50 @@ from starthinker.util.project import project
 from starthinker.util.email import send_email
 from starthinker.util.email.template import EmailTemplate
 from starthinker_ui.account.models import Account
+"""python starthinker_ui/manage.py newsletter --from kenjora@google.com --template starthinker/task/newsletter/internal/2019_12_03.json --to kenjora@google.com"""
 
-'''python starthinker_ui/manage.py newsletter --from kenjora@google.com --template starthinker/task/newsletter/internal/2019_12_03.json --to kenjora@google.com'''
 
 class Command(BaseCommand):
   help = 'Send email status to users'
 
   def add_arguments(self, parser):
     parser.add_argument(
-      '--template',
-      action='store',
-      dest='template',
-      help='Template to use for email construction.',
+        '--template',
+        action='store',
+        dest='template',
+        help='Template to use for email construction.',
     )
 
     parser.add_argument(
-      '--from',
-      action='store',
-      dest='email_from',
-      help='Email to send from ( must match an account).',
+        '--from',
+        action='store',
+        dest='email_from',
+        help='Email to send from ( must match an account).',
     )
 
     parser.add_argument(
-      '--to',
-      action='store',
-      dest='email_to',
-      default=None,
-      help='Email to send to ( if not givem sends to all ).',
+        '--to',
+        action='store',
+        dest='email_to',
+        default=None,
+        help='Email to send to ( if not givem sends to all ).',
     )
 
     parser.add_argument(
-      '--ignore',
-      action='store',
-      nargs='+',
-      dest='ignore',
-      default=[],
-      help='Email to send to ( if not givem sends to all ).',
+        '--ignore',
+        action='store',
+        nargs='+',
+        dest='ignore',
+        default=[],
+        help='Email to send to ( if not givem sends to all ).',
     )
 
     parser.add_argument(
-      '--test',
-      action='store_true',
-      dest='test',
-      default=False,
-      help='Test print emails instead of sending them.',
+        '--test',
+        action='store_true',
+        dest='test',
+        default=False,
+        help='Test print emails instead of sending them.',
     )
 
   def handle(self, *args, **kwargs):
@@ -82,7 +82,7 @@ class Command(BaseCommand):
         user = account.get_credentials_path()
 
     if user:
-      print("SEND USER FOUND")
+      print('SEND USER FOUND')
 
       # initialize project
       project.initialize(_user=user)
@@ -105,5 +105,7 @@ class Command(BaseCommand):
               print(email.get_html())
             else:
               # send message via email
-              send_email('user', account.email, kwargs['email_from'], None, email.get_subject(), email.get_text(), email.get_html())
+              send_email('user', account.email, kwargs['email_from'], None,
+                         email.get_subject(), email.get_text(),
+                         email.get_html())
               sleep(1)

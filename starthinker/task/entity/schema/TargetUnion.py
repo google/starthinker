@@ -17,22 +17,29 @@
 ###########################################################################
 
 TargetUnion_Schema = [
-  { "name":"union",
-    "type":"RECORD",
-    "mode":"REPEATED",
-    "fields":[
-      { "name":"criteria_id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"parameter",
-        "type":"STRING",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"excluded",
-    "type":"BOOLEAN",
-    "mode":"NULLABLE",
-  },
+    {
+        'name':
+            'union',
+        'type':
+            'RECORD',
+        'mode':
+            'REPEATED',
+        'fields': [
+            {
+                'name': 'criteria_id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'parameter',
+                'type': 'STRING',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
+    {
+        'name': 'excluded',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE',
+    },
 ]

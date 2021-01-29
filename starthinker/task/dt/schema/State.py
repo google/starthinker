@@ -16,7 +16,12 @@
 #
 ###########################################################################
 
-State_Schema = [
-  { "name":"Region", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Region_Full_Name", "type":"STRING", "mode":"NULLABLE" }
-]
+State_Schema = [{
+    'name': 'Region',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Region_Full_Name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

@@ -31,6 +31,7 @@ from starthinker.config import UI_SERVICE
 
 RE_CREDENTIALS_JSON = re.compile(r'^\s*\{.*\}\s*$', re.DOTALL)
 
+
 def _credentials_storage_service():
 
   if RE_CREDENTIALS_JSON.match(UI_SERVICE):
@@ -53,13 +54,15 @@ def _credentials_retry(job, retries=3, wait=1):
 
 
 def credentials_storage_get(cloud_path):
-  bucket, filename = cloud_path.split(':',1)
-  data = _credentials_retry(_credentials_storage_service().objects().get_media(bucket=bucket, object=filename))
+  bucket, filename = cloud_path.split(':', 1)
+  data = _credentials_retry(_credentials_storage_service().objects().get_media(
+      bucket=bucket, object=filename))
   return json.loads(base64.b64decode(data.decode()).decode())
 
 
 def credentials_storage_put(cloud_path, credentials):
-  bucket, filename = cloud_path.split(':',1)
+  bucket, filename = cloud_path.split(':', 1)
   data = BytesIO(base64.b64encode(json.dumps(credentials).encode()))
-  media = MediaIoBaseUpload(data, mimetype="text/json")
-  _credentials_retry(_credentials_storage_service().objects().insert(bucket=bucket, name=filename, media_body=media))
+  media = MediaIoBaseUpload(data, mimetype='text/json')
+  _credentials_retry(_credentials_storage_service().objects().insert(
+      bucket=bucket, name=filename, media_body=media))

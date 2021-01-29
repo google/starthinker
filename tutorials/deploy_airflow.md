@@ -6,47 +6,49 @@ StarThinker can be easily deployed to [Apache Airflow](https://airflow.apache.or
 
 Airflow can wrap any Python function in a [PythonOperator](https://airflow.apache.org/howto/operator/python.html).  Because
 [StarThinker tasks](../starthinker/task/) are just python functions with [JSON parameters](../scripts/), they can be quickly
-[deployed to Airflow](../starthinker_airflow/operators/) using a simple [DAG factory](../starthinker_airflow/factory.py).
+[deployed to Airflow](../starthinker/airflow/operators/) using a simple [DAG factory](../starthinker/airflow/factory.py).
 
 ## Instructions
 
-1. First install airflow and the StarThinker libraries.
+1. First [install airflow](https://airflow.apache.org/docs/stable/start.html) and the [StarThinker package](deploy_package.md).
 
-```
-pip install apache-airflow
-pip install git+https://github.com/google/starthinker
-```
+  ```
+  apache-airflow
+  starthinker
+  ```
 
-1. Copy a [StarThinker DAG](../dags/) to your airflow folder or bucket.
+1. Copy a [StarThinker DAG](../dags/) to your Airflow folder or bucket.
 1. Modify the copied file.
-1. Execute the DAG like any other airflow DAG.
+1. Execute the DAG like any other Airflow DAG.
 
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_enterprise.md)
 
 ## Sample DAG Recipe
 
 The [airflow.json](../scripts/airflow.json) recipe has three tasks in it.
-You can edit the underlying JSON recipe without re-generating the connector,
-this connector generates the DAG in real time whenever AirFlow calls it.
+These three tasks represent the three possible ways to use ST with Airflow.
+1. Using a native Airflow Operator in a recipe.
+1. Using a custom Airflow Operator in a recipe.
+1. Using any StarThinker task in a recipe.
 
 ```
-cp startinker/dags/say_hello.py ~/airflow/dags/say_hello.py
+cp dags/airflow.py ~/airflow/dags/say_hello.py
 python ~/airflow/dags/say_hello.py
-```
-
-1. Run a StarThinker native python function as a task from the recipe:
-```
-airflow test "scripts.say.hello.json" hello_1 2019-05-10
 ```
 
 1. Run a native Airflow Operator as a task from the recipe:
 ```
-airflow test "scripts.say.hello.json" airflow_1 2019-05-10
+airflow test "airflow" airflow_1 2020-09-14
 ```
 
-5. Run a custom Airflow Operator as a task from the recipe:
+1. Run a custom Airflow Operator as a task from the recipe:
 ```
-airflow test "scripts.say.hello.json" concerto_1 2019-05-10
+airflow test "airflow" starthinker_airflow_1 2020-09-14
+```
+
+1. Run a StarThinker native python function as a task from the recipe:
+```
+airflow test "airflow" hello_1 2020-09-14
 ```
 
 ## Cloud Resources
@@ -57,4 +59,4 @@ airflow test "scripts.say.hello.json" concerto_1 2019-05-10
   - [Google Cloud Billing](https://console.cloud.google.com/billing/linkedaccount) - examine costs in real time.
 
 ---
-&copy; 2019 Google Inc. - Apache License, Version 2.0
+&copy; 2019 Google LLC - Apache License, Version 2.0

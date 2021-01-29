@@ -1,12 +1,12 @@
 {
   "script":{
     "released":"2019-08-07",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"arrow_forward",
     "from":["bigquery"],
     "to":["sheets"],
-    "title":"Query to Sheet",
+    "title":"BigQuery Query to Sheet",
     "description":"Copy the contents of a query into a Google Sheet.",
     "instructions":[
       "Specify the sheet and the query.",

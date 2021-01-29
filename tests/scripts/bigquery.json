@@ -6,7 +6,8 @@
   "tasks":[
     { "dataset":{
       "auth":"service",
-      "dataset":"Test"
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
+      "clear":true
     }},
     { "bigquery": {
       "auth":"service",
@@ -20,7 +21,7 @@
         ]
       },
       "to":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
         "table":"BQ_Values"
       },
       "schema":[
@@ -33,7 +34,7 @@
     { "test": {
       "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
         "table":"BQ_Values",
         "schema":[
           { "name":"Date_Column", "type":"DATE" },
@@ -57,9 +58,10 @@
       "range":"A1:C",
       "header":true,
       "out":{
+        "auth": "service",
         "bigquery":{
           "auth": "service",
-          "dataset":"Test",
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
           "table":"Sheet_To_BigQuery",
           "schema":[
             { "name":"Animal", "type":"STRING" },
@@ -72,7 +74,7 @@
     { "test": {
       "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
         "table":"Sheet_To_BigQuery",
         "schema":[
           {"name": "Animal", "type": "STRING"},
@@ -91,8 +93,11 @@
     { "test": {
       "auth":"service",
       "bigquery":{
-        "dataset":"Test",
-        "query":"SELECT * FROM Test.Sheet_To_BigQuery;",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
+        "query":"SELECT * FROM {test_dataset}.Sheet_To_BigQuery;",
+        "parameters": {
+          "test_dataset": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}}
+        },
         "values":[
           ["dog", 7, 67.0],
           ["cat", 5, 1.5],
@@ -105,8 +110,11 @@
     { "test": {
       "auth":"service",
       "bigquery":{
-        "dataset":"Test",
-        "query":"SELECT * FROM Test.Sheet_To_BigQuery WHERE Animal='dog';",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
+        "query":"SELECT * FROM {test_dataset}.Sheet_To_BigQuery WHERE Animal='dog';",
+        "parameters": {
+          "test_dataset": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}}
+        },
         "values":[
           ["dog", 7, 67.0]
         ]
@@ -114,7 +122,7 @@
     }},
     { "sheets":{
       "auth":"user",
-      "sheet":"StarThinker BigQuery Test",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test BigQuery ", "default": "Manual"}},
       "tab":"BigQuery_Test",
       "delete":true,
       "template":{}
@@ -122,12 +130,15 @@
     { "bigquery": {
       "auth":"service",
       "from":{
-        "dataset":"Test",
-        "query":"SELECT * FROM Test.Sheet_To_BigQuery WHERE Animal IN ('dog', 'cat') ORDER BY Animal;"
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
+        "query":"SELECT * FROM {test_dataset}.Sheet_To_BigQuery WHERE Animal IN ('dog', 'cat') ORDER BY Animal;",
+        "parameters": {
+          "test_dataset": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}}
+        }
       },
       "to":{
         "auth": "user",
-        "sheet":"StarThinker BigQuery Test",
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test BigQuery ", "default": "Manual"}},
         "tab":"BigQuery_Test",
         "range":"A1:C"
       }
@@ -135,7 +146,7 @@
     { "test": {
       "auth":"user",
       "sheets": {
-        "sheet":"StarThinker BigQuery Test",
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test BigQuery ", "default": "Manual"}},
         "tab":"BigQuery_Test",
         "range":"A1:C",
         "values":[
@@ -143,6 +154,15 @@
           ["dog", 7, 67]
         ]
       }
+    }},
+    { "drive":{
+      "auth":"user",
+      "delete":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Test BigQuery ", "default": "Manual"}}
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
+      "delete":true
     }}
   ]
 }

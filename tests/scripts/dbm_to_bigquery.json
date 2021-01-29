@@ -52,6 +52,7 @@
         "bigquery":{
           "dataset":"Test",
           "table":"DBM_Report",
+          "header":true,
           "schema":[
             { "name":"Report_Day", "type":"DATE" },
             { "name":"Advertiser", "type":"STRING" },

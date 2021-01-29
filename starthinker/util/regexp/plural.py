@@ -17,42 +17,45 @@
 ###########################################################################
 
 ABERRANT_PLURAL_MAP = {
-  'appendix': 'appendices',
-  'barracks': 'barracks',
-  'cactus': 'cacti',
-  'child': 'children',
-  'criterion': 'criteria',
-  'deer': 'deer',
-  'echo': 'echoes',
-  'elf': 'elves',
-  'embargo': 'embargoes',
-  'focus': 'foci',
-  'fungus': 'fungi',
-  'goose': 'geese',
-  'hero': 'heroes',
-  'hoof': 'hooves',
-  'index': 'indices',
-  'knife': 'knives',
-  'leaf': 'leaves',
-  'life': 'lives',
-  'man': 'men',
-  'mouse': 'mice',
-  'nucleus': 'nuclei',
-  'person': 'people',
-  'phenomenon': 'phenomena',
-  'potato': 'potatoes',
-  'self': 'selves',
-  'syllabus': 'syllabi',
-  'tomato': 'tomatoes',
-  'torpedo': 'torpedoes',
-  'veto': 'vetoes',
-  'woman': 'women',
-  }
+    'appendix': 'appendices',
+    'barracks': 'barracks',
+    'cactus': 'cacti',
+    'child': 'children',
+    'criterion': 'criteria',
+    'deer': 'deer',
+    'echo': 'echoes',
+    'elf': 'elves',
+    'embargo': 'embargoes',
+    'focus': 'foci',
+    'fungus': 'fungi',
+    'goose': 'geese',
+    'hero': 'heroes',
+    'hoof': 'hooves',
+    'index': 'indices',
+    'knife': 'knives',
+    'leaf': 'leaves',
+    'life': 'lives',
+    'man': 'men',
+    'mouse': 'mice',
+    'nucleus': 'nuclei',
+    'person': 'people',
+    'phenomenon': 'phenomena',
+    'potato': 'potatoes',
+    'self': 'selves',
+    'syllabus': 'syllabi',
+    'tomato': 'tomatoes',
+    'torpedo': 'torpedoes',
+    'veto': 'vetoes',
+    'woman': 'women',
+}
 
 VOWELS = set('aeiou')
 
+
 def pluralize(singular):
-  """Return plural form of given lowercase singular word (English only). Based on
+  """Return plural form of given lowercase singular word (English only).
+
+  Based on
   ActiveState recipe http://code.activestate.com/recipes/413172/
 
   >>> pluralize('')
@@ -109,6 +112,7 @@ def pluralize(singular):
     suffix = 's'
   plural = root + suffix
   return plural
+
 
 if __name__ == '__main__':
   import doctest

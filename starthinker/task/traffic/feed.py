@@ -98,8 +98,10 @@ class FieldMap:
   BACKUP_IMAGE_FEATURES = 'Backup Image Features'
   BACKUP_IMAGE_TARGET_WINDOW_OPTION = 'Backup Image Target Window Option'
   BACKUP_IMAGE_CUSTOM_HTML = 'Backup Image Custom HTML'
-  BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_ID = 'Backup Image Click Through Landing Page ID'
-  BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_NAME = 'Backup Image Click Through Landing Page Name'
+  BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_ID = ('Backup Image Click Through '
+                                                'Landing Page ID')
+  BACKUP_IMAGE_CLICK_THROUGH_LANDING_PAGE_NAME = ('Backup Image Click Through '
+                                                  'Landing Page Name')
   CLICK_TAGS = 'clickTags'
   CLICK_TAG_NAME = 'Click Tag Name'
   CLICK_TAG_EVENT = 'Click Tag Event'
@@ -174,10 +176,9 @@ class FieldMap:
   DYNAMIC_TARGETING_KEY_OBJECT_TYPE = 'Object Type'
   DYNAMIC_TARGETING_KEY_OBJECT_ID = 'Object ID'
 
-class Feed:
-  """Maps Bulkdozer feed items to and from dictionaries.
 
-  """
+class Feed:
+  """Maps Bulkdozer feed items to and from dictionaries."""
   """Maps of internal feed names and Bulkdozer feed tabs.
 
   Each value is a list because if the first options is not found, it falls back
@@ -214,7 +215,13 @@ class Feed:
       'dynamic_targeting_key_feed': ['Dynamic Targeting Keys']
   }
 
-  def __init__(self, auth, trix_id, feed_name, parse=True, spreadsheet=None, timezone=None):
+  def __init__(self,
+               auth,
+               trix_id,
+               feed_name,
+               parse=True,
+               spreadsheet=None,
+               timezone=None):
     """Initializes the feed with parameters.
 
     Args:
@@ -247,13 +254,12 @@ class Feed:
     self.feed = self._feed_to_dict(parse=self._parse)
 
   def update(self):
-    """Updates the related Bulkdozer feed item with the values in this object.
-
-    """
+    """Updates the related Bulkdozer feed item with the values in this object."""
     new_feed = self._dict_to_feed(parse=self._parse)
 
     if len(new_feed) > 1:
-      sheets_write(self.auth, self.trix_id, self.tab_name, self.trix_range, new_feed)
+      sheets_write(self.auth, self.trix_id, self.tab_name, self.trix_range,
+                   new_feed)
 
   def _get_feed(self):
     """Fetches the feed based on initialization parameters.
@@ -268,7 +274,8 @@ class Feed:
         for sheet in self.spreadsheet['sheets']:
           if sheet['properties']['title'] == tab_name:
             self.tab_name = tab_name
-            return sheets_read(self.auth, self.trix_id, tab_name, self.trix_range)
+            return sheets_read(self.auth, self.trix_id, tab_name,
+                               self.trix_range)
 
     return [[]]
 
@@ -311,9 +318,7 @@ class Feed:
       return None
 
   def _convert_float(self, value):
-    """Conversta a value into a float.
-
-    """
+    """Conversta a value into a float."""
     try:
       return float(value)
     except:

@@ -16,7 +16,12 @@
 #
 ###########################################################################
 
-Activity_Filters_Schema = [
-  { "name":"Activity", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Activity_Group", "type":"STRING", "mode":"NULLABLE" }
-]
+Activity_Filters_Schema = [{
+    'name': 'Activity',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Activity_Group',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}]

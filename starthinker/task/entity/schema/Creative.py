@@ -17,76 +17,99 @@
 ###########################################################################
 
 Creative_Schema = [
-  { "name":"common_data",
-    "type":"RECORD",
-    "mode":"NULLABLE",
-    "fields":[
-      { "name":"id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"name",
-        "type":"STRING",
-        "mode":"NULLABLE",
-      },
-      { "name":"active",
-        "type":"BOOLEAN",
-        "mode":"NULLABLE",
-      },
-      { "name":"integration_code",
-        "type":"STRING",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"advertiser_id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"dcm_placement_id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"width_pixels",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"height_pixels",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"approval_status",
-    "type":"RECORD",
-    "mode":"REPEATED",
-    "fields":[
-      { "name":"auditor",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"status",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"feedback",
-        "type":"STRING",
-        "mode":"NULLABLE",
-      },
-      { "name":"sync_time",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-      { "name":"external_id",
-        "type":"INTEGER",
-        "mode":"NULLABLE",
-      },
-    ]
-  },
-  { "name":"expanding_direction",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"creative_type",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
+    {
+        'name':
+            'common_data',
+        'type':
+            'RECORD',
+        'mode':
+            'NULLABLE',
+        'fields': [
+            {
+                'name': 'id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'name',
+                'type': 'STRING',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'active',
+                'type': 'BOOLEAN',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'integration_code',
+                'type': 'STRING',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
+    {
+        'name': 'advertiser_id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'dcm_placement_id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'width_pixels',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'height_pixels',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name':
+            'approval_status',
+        'type':
+            'RECORD',
+        'mode':
+            'REPEATED',
+        'fields': [
+            {
+                'name': 'auditor',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'status',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'feedback',
+                'type': 'STRING',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'sync_time',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+            {
+                'name': 'external_id',
+                'type': 'INTEGER',
+                'mode': 'NULLABLE',
+            },
+        ]
+    },
+    {
+        'name': 'expanding_direction',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'creative_type',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
 ]

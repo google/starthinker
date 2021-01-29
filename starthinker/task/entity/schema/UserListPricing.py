@@ -17,16 +17,19 @@
 ###########################################################################
 
 UserListPricing_Schema = [
-  { "name":"cost_type",
-    "type":"STRING",
-    "mode":"NULLABLE",
-  },
-  { "name":"currency_code",
-    "type":"STRING",
-    "mode":"NULLABLE",
-  },
-  { "name":"cost_micros",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
+    {
+        'name': 'cost_type',
+        'type': 'STRING',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'currency_code',
+        'type': 'STRING',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'cost_micros',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
 ]

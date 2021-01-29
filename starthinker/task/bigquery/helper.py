@@ -16,36 +16,126 @@
 #
 ###########################################################################
 
-
 import json
 import textwrap
 import argparse
 
 from starthinker.util.project import project
+from starthinker.util.bigquery import get_schema
+from starthinker.util.bigquery import rows_to_table
 from starthinker.util.bigquery import table_to_schema
+from starthinker.util.csv import csv_to_rows
+from starthinker.util.csv import excel_to_rows
+
 
 def main():
   # get parameters
   parser = argparse.ArgumentParser(
     formatter_class=argparse.RawDescriptionHelpFormatter,
-    description=textwrap.dedent('''\
-      Command line to get table schema from BigQuery.
-      This is a helper to help developers debug and create tables.
+    description=textwrap.dedent("""\
+    Command line to get table schema from BigQuery.
 
-      Example: `python helper.py --project [id] --dataset [name] --table [name] -s [credentials]`
+    Helps developers upload data to BigQuery and pull schemas.  These are the
+    most common BigQuery tasks when developing solutions.
 
-  '''))
+    Examples:
+      Display table schema: `python helper.py --project [id] --dataset [name] --table [name] -s [credentials]`
+      Upload csv table: `python helper.py --project [id] --dataset [name] --table [name] --csv [file] --schema [file] -s [credentials]`
+      Upload excel sheet: `python helper.py --project [id] --dataset [name] --table [name] --excel_file [file] --excel_sheet [name] --schema [file] -s [credentials]`
 
-  parser.add_argument('--dataset', '-d', help='name of BigQuery dataset', default=None)
-  parser.add_argument('--table', '-t', help='name of BigQuery table', default=None)
+  """))
+
+  parser.add_argument(
+    '--dataset',
+    help='name of BigQuery dataset',
+    default=None
+  )
+  parser.add_argument(
+    '--table',
+    help='name of BigQuery table',
+    default=None
+  )
+  parser.add_argument(
+    '--csv',
+    help='CSV file path',
+    default=None
+  )
+  parser.add_argument(
+    '--schema',
+    help='SCHEMA file path',
+    default=None
+  )
+  parser.add_argument(
+    '--excel_workbook',
+    help='Excel file path',
+    default=None
+  )
+  parser.add_argument(
+    '--excel_sheet',
+    help='Excel sheet name',
+    default=None
+  )
 
   # initialize project
-  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v', '-p'))
+  project.from_commandline(
+    parser=parser,
+    arguments=('-u', '-c', '-s', '-v', '-p')
+  )
+
   auth = 'service' if project.args.service else 'user'
 
-  # print schema
-  print(json.dumps(table_to_schema(auth, project.id, project.args.dataset, project.args.table)['fields'], indent=2))
+  schema = json.loads(project.args.schema) if project.args.schema else None
 
+  if project.args.csv:
 
-if __name__ == "__main__":
+    with open(project.args.csv, 'r') as csv_file:
+      rows = csv_to_rows(csv_file.read())
+
+      if not schema:
+        rows, schema = get_schema(rows)
+        print('DETECETED SCHEMA', json.dumps(schema))
+        print('Please run again with the above schema provided.')
+        exit()
+
+      rows_to_table(
+        auth,
+        project.id,
+        project.args.dataset,
+        project.args.table,
+        rows,
+        schema
+      )
+
+  elif project.args.excel_workbook and project.args.excel_sheet:
+    with open(project.args.excel_workbook, 'r') as excel_file:
+      rows = excel_to_rows(excel_file, project.args.excel_sheet)
+
+      if not schema:
+        rows, schema = get_schema(rows)
+        print('DETECETED SCHEMA', json.dumps(schema))
+        print('Please run again with the above schema provided.')
+        exit()
+
+      rows_to_table(
+        auth,
+        project.id,
+        project.args.dataset,
+        project.args.table,
+        rows,
+        schema
+      )
+
+  else:
+    # print schema
+    print(json.dumps(
+      table_to_schema(
+        auth,
+        project.id,
+        project.args.dataset,
+        project.args.table
+      ),
+      indent=2
+    ))
+
+if __name__ == '__main__':
   main()

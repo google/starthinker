@@ -17,16 +17,19 @@
 ###########################################################################
 
 FreeFormTarget_Schema = [
-  { "name":"criteria_id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"parameter",
-    "type":"STRING",
-    "mode":"NULLABLE",
-  },
-  { "name":"excluded",
-    "type":"BOOLEAN",
-    "mode":"NULLABLE",
-  },
+    {
+        'name': 'criteria_id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'parameter',
+        'type': 'STRING',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'excluded',
+        'type': 'BOOLEAN',
+        'mode': 'NULLABLE',
+    },
 ]

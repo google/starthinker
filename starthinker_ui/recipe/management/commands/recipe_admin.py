@@ -27,34 +27,36 @@ class Command(BaseCommand):
 
   def add_arguments(self, parser):
     parser.add_argument(
-      '--recipe',
-      action='store',
-      dest='recipe',
-      default=None,
-      help='Run a specific recipe.',
+        '--recipe',
+        action='store',
+        dest='recipe',
+        default=None,
+        help='Run a specific recipe.',
     )
 
     parser.add_argument(
-      '--activate',
-      action='store_true',
-      dest='activate',
-      default=False,
-      help='Activate specified recipe.',
+        '--activate',
+        action='store_true',
+        dest='activate',
+        default=False,
+        help='Activate specified recipe.',
     )
 
     parser.add_argument(
-      '--deactivate',
-      action='store_true',
-      dest='deactivate',
-      default=False,
-      help='Deactivate specified recipe.',
+        '--deactivate',
+        action='store_true',
+        dest='deactivate',
+        default=False,
+        help='Deactivate specified recipe.',
     )
 
   def handle(self, *args, **kwargs):
-    for recipe in (Recipe.objects.filter(pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.filter(active=True)):
+    for recipe in (Recipe.objects.filter(pk=kwargs['recipe'])
+                   if kwargs['recipe'] else Recipe.objects.filter(active=True)):
       try:
         if kwargs['activate'] == kwargs['deactivate']:
-          raise Exception('Specify one of the supported flags --activate or --deactivate')
+          raise Exception(
+              'Specify one of the supported flags --activate or --deactivate')
         elif kwargs['activate']:
           recipe.activate()
         elif kwargs['deactivate']:

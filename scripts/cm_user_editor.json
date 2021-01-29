@@ -1,18 +1,19 @@
 {
   "script":{
     "released":"2020-03-23",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"security",
-    "title":"CM User Editor",
+    "title":"CM360 Bulk User Editor",
     "description":"A tool for rapidly bulk editing Campaign Manager profiles, roles, and sub accounts.",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/cm_user_edit.png",
-    "sample":"https://docs.google.com/spreadsheets/d/1zQDqm3owQMNsx0lvcN1SQWVGOhwfgsWSmirBK54qVL0/",
+    "sample":"https://docs.google.com/spreadsheets/d/1Mw4kDJfaWVloyjSayJSkgE8i28Svoj1756fyQtIpmRE/",
     "documentation":"https://docs.google.com/spreadsheets/d/1zQDqm3owQMNsx0lvcN1SQWVGOhwfgsWSmirBK54qVL0/",
     "from":["cm", "apps script"],
     "to":["sheets"],
     "pitches":[
-      "Change multiple profile access.",
+      "Create and edit profiles in bulk.",
+      "Create and edit roles in bulk.",
       "Redefine bulk role permissions.",
       "Update sub account permissions.",
       "Add entire teams to an Advertiser, Campaign, or Role.",
@@ -28,7 +29,7 @@
     "instructions":[
       "Add this card to a recipe and save it.",
       "Then click <strong>Run Now</strong> to deploy.",
-      "Follow the <a href=\"https://docs.google.com/spreadsheets/d/1zQDqm3owQMNsx0lvcN1SQWVGOhwfgsWSmirBK54qVL0/\">instructions</a> for setup."
+      "Follow the <a href=\"https://docs.google.com/spreadsheets/d/1Mw4kDJfaWVloyjSayJSkgE8i28Svoj1756fyQtIpmRE/\">instructions</a> for setup."
     ],
     "authors":["kenjora@google.com"]
   },
@@ -41,7 +42,7 @@
         "auth": "user",
         "hour":[],
         "copy":{
-          "source":"https://docs.google.com/spreadsheets/d/1zQDqm3owQMNsx0lvcN1SQWVGOhwfgsWSmirBK54qVL0/",
+          "source":"https://docs.google.com/spreadsheets/d/1Mw4kDJfaWVloyjSayJSkgE8i28Svoj1756fyQtIpmRE/",
           "destination":{"field":{ "name":"recipe_name", "prefix":"CM User Editor For ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }}
         }
     }}

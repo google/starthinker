@@ -29,37 +29,38 @@ class Command(BaseCommand):
 
   def add_arguments(self, parser):
     parser.add_argument(
-      '--remote',
-      action='store_true',
-      dest='remote',
-      default=False,
-      help='Run jobs remotely using pub sub.',
+        '--remote',
+        action='store_true',
+        dest='remote',
+        default=False,
+        help='Run jobs remotely using pub sub.',
     )
 
     parser.add_argument(
-      '--recipe',
-      action='store',
-      dest='recipe',
-      default=None,
-      help='Run a specific recipe.',
+        '--recipe',
+        action='store',
+        dest='recipe',
+        default=None,
+        help='Run a specific recipe.',
     )
 
     parser.add_argument(
-      '--force',
-      action='store_true',
-      dest='force',
-      default=False,
-      help='Force execution regardless of schedule.',
+        '--force',
+        action='store_true',
+        dest='force',
+        default=False,
+        help='Force execution regardless of schedule.',
     )
-
 
   def handle(self, *args, **kwargs):
 
-    for recipe in (Recipe.objects.filter(pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.filter(active=True)):
+    for recipe in (Recipe.objects.filter(pk=kwargs['recipe'])
+                   if kwargs['recipe'] else Recipe.objects.filter(active=True)):
       try:
         if kwargs['remote']:
           print('Dispatch: %s' % recipe.uid())
-          if kwargs['force']: recipe.force()
+          if kwargs['force']:
+            recipe.force()
         elif settings.UI_CRON:
           print('Write: %s/recipe_%d.json' % (settings.UI_CRON, recipe.pk))
           with open(settings.UI_CRON + '/recipe_%d.json' % recipe.pk, 'w') as f:

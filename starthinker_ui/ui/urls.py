@@ -19,8 +19,8 @@
 from django.conf.urls import url, include
 
 urlpatterns = [
-  url(r'', include('starthinker_ui.account.urls')),
-  url(r'', include('starthinker_ui.recipe.urls')),
-  url(r'', include('starthinker_ui.project.urls')),
-  url(r'', include('starthinker_ui.website.urls')),
+    url(r'', include('starthinker_ui.account.urls')),
+    url(r'', include('starthinker_ui.recipe.urls')),
+    url(r'', include('starthinker_ui.project.urls')),
+    url(r'', include('starthinker_ui.website.urls')),
 ]

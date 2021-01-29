@@ -16,21 +16,68 @@
 #
 ###########################################################################
 
-Paid_Search_Schema = [
-  { "name":"Ad_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Campaign_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Ad_Group", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Ad_Group_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Ad_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Bid_Strategy", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Bid_Strategy_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Campaign", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Campaign_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Landing_Page_Url", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Legacy_Keyword_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Keyword", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Keyword_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Paid_Search_Match_Type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Paid_Search_Schema = [{
+    'name': 'Ad_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Advertiser_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Campaign_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Ad_Group',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Ad_Group_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Ad_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Bid_Strategy',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Bid_Strategy_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Campaign',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Campaign_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Landing_Page_Url',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Legacy_Keyword_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Keyword',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Keyword_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Paid_Search_Match_Type',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Config_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

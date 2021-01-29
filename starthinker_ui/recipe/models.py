@@ -31,27 +31,32 @@ from starthinker_ui.account.models import Account, token_generate
 from starthinker_ui.project.models import Project
 from starthinker_ui.recipe.scripts import Script
 
-JOB_INTERVAL_MS = float(1600) # milliseconds
-JOB_LOOKBACK_MS = 5 * JOB_INTERVAL_MS # 8 seconds ( must guarantee to span several pings )
-JOB_RECHECK_MS = 30 * 60 * 1000 # 30 minutes
+JOB_INTERVAL_MS = float(1600)  # milliseconds
+JOB_LOOKBACK_MS = 5 * JOB_INTERVAL_MS  # 8 seconds ( must guarantee to span several pings )
+JOB_RECHECK_MS = 30 * 60 * 1000  # 30 minutes
 
 RE_SLUG = re.compile(r'[^\w]')
 
 
 def utc_milliseconds(utc_timestamp=None):
-  if utc_timestamp is None: utc_timestamp = datetime.utcnow()
+  if utc_timestamp is None:
+    utc_timestamp = datetime.utcnow()
   utc_epoch = datetime.utcfromtimestamp(0)
   return int((utc_timestamp - utc_epoch) / timedelta(milliseconds=1))
 
+
 def utc_milliseconds_to_timezone(utm, timezone):
-  return utc_to_timezone(datetime.utcfromtimestamp(int(utm/1000)), timezone)
+  return utc_to_timezone(datetime.utcfromtimestamp(int(utm / 1000)), timezone)
+
 
 def utc_to_timezone(utc_timestamp, timezone):
   tz = pytz.timezone(timezone)
   return tz.normalize(utc_timestamp.replace(tzinfo=pytz.utc).astimezone(tz))
 
+
 def timezone_to_utc(tz_timestamp):
   return tz_timestamp.astimezone(pytz.utc).replace(tzinfo=None)
+
 
 def time_ago(timestamp):
   ago = ''
@@ -66,11 +71,16 @@ def time_ago(timestamp):
     h, m = divmod(m, 60)
     d, h = divmod(h, 60)
 
-    if d: ago += '%d Days ' % d
-    if h: ago += '%d Hours ' % h
-    if m: ago += '%d Minutes ' % m
-    if ago == '' and s: ago = '1 Minute Ago'
-    else: ago += 'Ago'
+    if d:
+      ago += '%d Days ' % d
+    if h:
+      ago += '%d Hours ' % h
+    if m:
+      ago += '%d Minutes ' % m
+    if ago == '' and s:
+      ago = '1 Minute Ago'
+    else:
+      ago += 'Ago'
 
   return ago
 
@@ -78,21 +88,27 @@ def time_ago(timestamp):
 def reference_default():
   return token_generate(Recipe, 'token', 32)
 
+
 class Recipe(models.Model):
   account = models.ForeignKey(Account, on_delete=models.PROTECT, null=True)
   token = models.CharField(max_length=8, unique=True)
-  reference = models.CharField(max_length=32, unique=True, default=reference_default)
+  reference = models.CharField(
+      max_length=32, unique=True, default=reference_default)
 
-  project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
+  project = models.ForeignKey(
+      Project, on_delete=models.SET_NULL, null=True, blank=True)
 
   name = models.CharField(max_length=64)
   active = models.BooleanField(default=True)
   manual = models.BooleanField(default=False)
 
-  week = models.CharField(max_length=64, default=json.dumps(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']))
+  week = models.CharField(
+      max_length=64,
+      default=json.dumps(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']))
   hour = models.CharField(max_length=128, default=json.dumps([3]))
 
-  timezone = models.CharField(max_length=32, blank=True, default='America/Los_Angeles')
+  timezone = models.CharField(
+      max_length=32, blank=True, default='America/Los_Angeles')
 
   tasks = models.TextField()
 
@@ -154,25 +170,36 @@ class Recipe(models.Model):
     return self.get_log()['status'] == 'RUNNING'
 
   def get_token(self):
-    if not self.token: self.token = token_generate(Recipe, 'token')
+    if not self.token:
+      self.token = token_generate(Recipe, 'token')
     return self.token
 
   def get_reference(self):
-    if not self.reference: self.reference = token_generate(Recipe, 'reference', 32)
+    if not self.reference:
+      self.reference = token_generate(Recipe, 'reference', 32)
     return self.reference
 
   def get_values(self):
     constants = {
-      'recipe_project':self.get_project_identifier(),
-      'recipe_name':self.name,
-      'recipe_slug':self.slug(),
-      'recipe_token':self.get_token(),
-      'recipe_timezone':self.timezone,
-      'recipe_email':self.account.email if self.account else None,
-      'recipe_email_token': self.account.email.replace('@', '+%s@' % self.get_token()) if self.account else None,
+        'recipe_project':
+            self.get_project_identifier(),
+        'recipe_name':
+            self.name,
+        'recipe_slug':
+            self.slug(),
+        'recipe_token':
+            self.get_token(),
+        'recipe_timezone':
+            self.timezone,
+        'recipe_email':
+            self.account.email if self.account else None,
+        'recipe_email_token':
+            self.account.email.replace('@', '+%s@' % self.get_token())
+            if self.account else None,
     }
     tasks = json.loads(self.tasks or '[]')
-    for task in tasks: task['values'].update(constants)
+    for task in tasks:
+      task['values'].update(constants)
     return tasks
 
   def set_values(self, scripts):
@@ -182,9 +209,11 @@ class Recipe(models.Model):
     return [int(h) for h in json.loads(self.hour or '[]')]
 
   def get_days(self):
-    return json.loads(self.week or '[]') or ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    return json.loads(
+        self.week or '[]') or ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-  def get_icon(self): return '' #get_icon('')
+  def get_icon(self):
+    return ''  #get_icon('')
 
   def get_credentials_user(self):
     return self.account.get_credentials_path() if self.account else '{}'
@@ -195,24 +224,27 @@ class Recipe(models.Model):
   def get_project_identifier(self):
     return self.project.get_project_id() if self.project else ''
 
+  def get_project_key(self):
+    return self.project.key if self.project else ''
+
   def get_scripts(self):
-    for value in self.get_values():  yield Script(value['tag'])
+    for value in self.get_values():
+      yield Script(value['tag'])
 
   def get_tasks(self):
-    for task in chain.from_iterable(map(lambda s: s.get_tasks(), self.get_scripts())):
-      yield next(iter(task.items())) # script, task
+    for task in chain.from_iterable(
+        map(lambda s: s.get_tasks(), self.get_scripts())):
+      yield next(iter(task.items()))  # script, task
 
   def get_json(self, credentials=True):
     return Script.get_json(
-        self.uid(),
-        self.get_project_identifier(),
-        self.get_credentials_user() if credentials else '',
-        self.get_credentials_service() if credentials else '',
-        self.timezone,
-        self.get_days(),
-        self.get_hours(),
-        self.get_values()
-      )
+      self.uid(),
+      self.get_project_identifier(),
+      self.get_project_key() if credentials else '',
+      self.get_credentials_user() if credentials else '',
+      self.get_credentials_service() if credentials else '', self.timezone,
+      self.get_days(), self.get_hours(), self.get_values()
+    )
 
   def activate(self):
     self.active = True
@@ -227,13 +259,13 @@ class Recipe(models.Model):
 
   def force(self):
     status = self.get_status(force=True)
-    self.worker_uid = '' # forces current worker to cancel job
+    self.worker_uid = ''  # forces current worker to cancel job
     self.save(update_fields=['worker_uid'])
     return status
 
   def cancel(self):
     status = self.get_status(cancel=True)
-    self.worker_uid = '' # forces current worker to cancel job
+    self.worker_uid = ''  # forces current worker to cancel job
     self.save(update_fields=['worker_uid'])
     return status
 
@@ -241,10 +273,11 @@ class Recipe(models.Model):
     now_tz = utc_to_timezone(datetime.utcnow(), self.timezone)
 
     # check if tasks remain for today
-    hour =  None
+    hour = None
     if now_tz.strftime('%a') in self.get_days():
       for task in status['tasks']:
-        if task['done']: continue
+        if task['done']:
+          continue
         else:
           hour = task['hour']
           break
@@ -253,13 +286,17 @@ class Recipe(models.Model):
     if hour is None:
       now_tz += timedelta(hours=24)
       for i in range(0, 7):
-        if now_tz.strftime('%a') in self.get_days(): break
-        else: now_tz += timedelta(hours=24)
+        if now_tz.strftime('%a') in self.get_days():
+          break
+        else:
+          now_tz += timedelta(hours=24)
 
       # get the first hour ( if tasks exist, lame use of for loop but works )
       for script, task in self.get_tasks():
-        try: hour = task.get('hour', self.get_hours())[0]
-        except IndexError: hour = 0
+        try:
+          hour = task.get('hour', self.get_hours())[0]
+        except IndexError:
+          hour = 0
         break
 
     now_tz = now_tz.replace(hour=hour or 0, minute=0, second=0, microsecond=0)
@@ -272,8 +309,10 @@ class Recipe(models.Model):
     date_tz = str(now_tz.date())
 
     # load prior status
-    try: status = json.loads(self.job_status)
-    except ValueError: status = {}
+    try:
+      status = json.loads(self.job_status)
+    except ValueError:
+      status = {}
 
     # create default status for new recipes
     status.setdefault('date_tz', date_tz)
@@ -293,7 +332,7 @@ class Recipe(models.Model):
 
       self.job_utm = self.get_job_utm(status)
       self.job_status = json.dumps(status)
-      self.worker_uid = '' # forces current worker to cancel job
+      self.worker_uid = ''  # forces current worker to cancel job
       self.save(update_fields=['job_status', 'job_utm', 'worker_uid'])
 
     # if manual and all task are done set the utm to be ignored in worker pulls
@@ -303,10 +342,11 @@ class Recipe(models.Model):
         self.save(update_fields=['job_utm'])
 
     # if updating, modify the status
-    elif force or update or (date_tz > status['date_tz'] and now_tz.strftime('%a') in self.get_days()):
+    elif force or update or (date_tz > status['date_tz'] and
+                             now_tz.strftime('%a') in self.get_days()):
       status = {
-        'date_tz':date_tz,
-        'tasks':[],
+          'date_tz': date_tz,
+          'tasks': [],
       }
 
       # create task list based on recipe json
@@ -322,32 +362,38 @@ class Recipe(models.Model):
           instances[script] += 1
           for hour in hours:
             status['tasks'].append({
-              'order':order,
-              'script':script,
-              'instance':instances[script],
-              'hour':hour,
-              'utc':str(datetime.utcnow()),
-              'event':'JOB_NEW' if update else 'JOB_PENDING',
-              'stdout':'',
-              'stderr':'',
-              'done':update # if saved by user, write as done for that day, user must force run first time
+                'order': order,
+                'script': script,
+                'instance': instances[script],
+                'hour': hour,
+                'utc': str(datetime.utcnow()),
+                'event': 'JOB_NEW' if update else 'JOB_PENDING',
+                'stdout': '',
+                'stderr': '',
+                'done':
+                    update  # if saved by user, write as done for that day, user must force run first time
             })
 
       # sort new order by first by hour and second by order
       def queue_compare(left, right):
-        if left['hour'] < right['hour']: return -1
-        elif left['hour'] > right['hour']: return 1
+        if left['hour'] < right['hour']:
+          return -1
+        elif left['hour'] > right['hour']:
+          return 1
         else:
-          if left['order'] < right['order']: return -1
-          elif left['order'] > right['order']: return 1
-          else: return 0
+          if left['order'] < right['order']:
+            return -1
+          elif left['order'] > right['order']:
+            return 1
+          else:
+            return 0
 
       status['tasks'].sort(key=functools.cmp_to_key(queue_compare))
 
       self.job_utm = self.get_job_utm(status)
       self.job_status = json.dumps(status)
       if force or update:
-        self.worker_uid = '' # cancel all current workers
+        self.worker_uid = ''  # cancel all current workers
         self.save(update_fields=['job_status', 'job_utm', 'worker_uid'])
       else:
         self.save(update_fields=['job_status', 'job_utm'])
@@ -359,7 +405,6 @@ class Recipe(models.Model):
         self.save(update_fields=['job_utm'])
 
     return status
-
 
   def get_task(self):
     status = self.get_status()
@@ -374,24 +419,26 @@ class Recipe(models.Model):
 
     return None
 
-
   def set_task(self, script, instance, hour, event, stdout, stderr):
     status = self.get_status()
 
     for task in status['tasks']:
-      if task['script'] == script and task['instance'] == instance and task['hour'] == hour:
+      if task['script'] == script and task['instance'] == instance and task[
+          'hour'] == hour:
         task['utc'] = str(datetime.utcnow())
         task['event'] = event
-        if stdout: task['stdout'] += stdout
-        if stderr: task['stderr'] += stderr
+        if stdout:
+          task['stdout'] += stdout
+        if stderr:
+          task['stderr'] += stderr
         task['done'] = (event != 'JOB_START')
 
         self.job_status = json.dumps(status)
         self.job_utm = self.get_job_utm(status)
-        self.worker_utm=utc_milliseconds() # give worker some time to clean up
+        self.worker_utm = utc_milliseconds(
+        )  # give worker some time to clean up
         self.save(update_fields=['worker_utm', 'job_utm', 'job_status'])
         break
-
 
   def get_log(self):
     if self._cache_log is None:
@@ -402,21 +449,30 @@ class Recipe(models.Model):
       new = False
       done = 0
       for task in self._cache_log['tasks']:
-        task['utc'] = datetime.strptime(task['utc'].split('.', 1)[0], "%Y-%m-%d %H:%M:%S")
+        task['utc'] = datetime.strptime(task['utc'].split('.', 1)[0],
+                                        '%Y-%m-%d %H:%M:%S')
         task['ltc'] = utc_to_timezone(task['utc'], self.timezone)
         task['ago'] = time_ago(task['utc'])
 
-        if task['done'] and task['event'] != 'JOB_NEW': done += 1
-        if self._cache_log.get('utc', task['utc']) <= task['utc']: self._cache_log['utc'] = task['utc']
+        if task['done'] and task['event'] != 'JOB_NEW':
+          done += 1
+        if self._cache_log.get('utc', task['utc']) <= task['utc']:
+          self._cache_log['utc'] = task['utc']
 
-        if task['event'] == 'JOB_TIMEOUT': timeout = True
-        elif task['event'] == 'JOB_NEW': new = True
-        elif task['event'] not in ('JOB_PENDING', 'JOB_START', 'JOB_END'): error = True
+        if task['event'] == 'JOB_TIMEOUT':
+          timeout = True
+        elif task['event'] == 'JOB_NEW':
+          new = True
+        elif task['event'] not in ('JOB_PENDING', 'JOB_START', 'JOB_END'):
+          error = True
 
-      if 'utc' not in self._cache_log: self._cache_log['utc'] = datetime.utcnow()
-      self._cache_log['utl'] = utc_to_timezone(self._cache_log['utc'], self.timezone)
+      if 'utc' not in self._cache_log:
+        self._cache_log['utc'] = datetime.utcnow()
+      self._cache_log['utl'] = utc_to_timezone(self._cache_log['utc'],
+                                               self.timezone)
       self._cache_log['ago'] = time_ago(self._cache_log['utc'])
-      self._cache_log['percent'] = int(( done * 100 ) / ( len(self._cache_log['tasks']) or 1 ))
+      self._cache_log['percent'] = int(
+          (done * 100) / (len(self._cache_log['tasks']) or 1))
       self._cache_log['uid'] = self.uid()
 
       if timeout:
@@ -425,7 +481,8 @@ class Recipe(models.Model):
         self._cache_log['status'] = 'NEW'
       elif error:
         self._cache_log['status'] = 'ERROR'
-      elif not self._cache_log['tasks'] or all(task['done'] for task in self._cache_log['tasks']):
+      elif not self._cache_log['tasks'] or all(
+          task['done'] for task in self._cache_log['tasks']):
         self._cache_log['status'] = 'FINISHED'
       elif utc_milliseconds() - self.worker_utm < JOB_LOOKBACK_MS:
         self._cache_log['status'] = 'RUNNING'

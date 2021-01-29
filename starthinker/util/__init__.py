@@ -15,8 +15,6 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-
 """Generic utilities that do not belong in any specific sub module.
 
 Add general utility functions that are used across many modules.  Do

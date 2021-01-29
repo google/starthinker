@@ -16,7 +16,6 @@
 #
 ###########################################################################
 
-
 import re
 import zlib
 import gzip
@@ -30,8 +29,7 @@ from starthinker.util.storage import object_list, object_get_chunks
 from starthinker.util.csv import column_header_sanitize
 from starthinker.task.dt.schema.Lookup import DT_Field_Lookup
 
-
-HEADER_SIZE = 1024 * 10 # 10K should be enough for longest possible DT header
+HEADER_SIZE = 1024 * 10  # 10K should be enough for longest possible DT header
 RE_DT_TIME = re.compile(r'.+?_(\d+)_\d+_\d+_\d+\.csv\.gz')
 
 
@@ -40,15 +38,16 @@ def dt_schema(header):
   for h in header:
     h = column_header_sanitize(h)
     schema.append({
-      'name':h,
-      'type':DT_Field_Lookup.get(h, 'STRING'),
-      'mode':'NULLABLE'
+        'name': h,
+        'type': DT_Field_Lookup.get(h, 'STRING'),
+        'mode': 'NULLABLE'
     })
   return schema
 
 
 def dt_header(dt_file):
-  if project.verbose: print("DT HEADER")
+  if project.verbose:
+    print('DT HEADER')
 
   # find first dt file to match pattern
   path = '%s:%s' % (project.task['bucket'], dt_file)
@@ -68,13 +67,18 @@ def dt_timestamp(dt_filepath):
 
   if parts:
     dt_time = parts.groups()[0]
-    if len(dt_time) == 10: dt_time = project.timezone.localize(datetime.strptime(dt_time, '%Y%m%d%H'))
-    else: dt_time = project.timezone.localize(datetime.strptime(dt_time, '%Y%m%d'))
+    if len(dt_time) == 10:
+      dt_time = project.timezone.localize(
+          datetime.strptime(dt_time, '%Y%m%d%H'))
+    else:
+      dt_time = project.timezone.localize(datetime.strptime(dt_time, '%Y%m%d'))
 
   return dt_time
 
+
 def dt_move_large(dt_file, dt_partition, jobs):
-  if project.verbose: print("DT TO TABLE LARGE", dt_partition)
+  if project.verbose:
+    print('DT TO TABLE LARGE', dt_partition)
 
   delimiter = '\n'
   disposition = 'WRITE_TRUNCATE'
@@ -87,7 +91,8 @@ def dt_move_large(dt_file, dt_partition, jobs):
   view = ''
 
   # loop all chunks of file, decompress, and find row delimiter
-  for data_gz in object_get_chunks(project.task['auth'], '%s:%s' % (project.task['bucket'], dt_file)):
+  for data_gz in object_get_chunks(project.task['auth'],
+                                   '%s:%s' % (project.task['bucket'], dt_file)):
 
     view += gz_handler.decompress(data_gz.read()).decode('utf-8')
 
@@ -99,42 +104,29 @@ def dt_move_large(dt_file, dt_partition, jobs):
 
     end = view.rfind(delimiter)
 
-    jobs.append(io_to_table(
-      project.task['auth'],
-      project.id,
-      project.task['to']['dataset'],
-      dt_partition,
-      BytesIO(view[:end].encode()),
-      'CSV',
-      schema,
-      0,
-      disposition,
-      False
-    ))
+    jobs.append(
+        io_to_table(project.task['auth'], project.id,
+                    project.task['to']['dataset'], dt_partition,
+                    BytesIO(view[:end].encode()), 'CSV', schema, 0, disposition,
+                    False))
     disposition = 'WRITE_APPEND'
     view = view[min(end + 1, len(view)):]
 
 
 def dt_move_small(dt_file, dt_partition, jobs):
-  if project.verbose: print("DT TO TABLE SMALL", dt_partition)
+  if project.verbose:
+    print('DT TO TABLE SMALL', dt_partition)
 
-  jobs.append(storage_to_table(
-    project.task['auth'],
-    project.id,
-    project.task['to']['dataset'],
-    dt_partition,
-    '%s:%s*' % (project.task['bucket'], dt_file),
-    dt_schema(dt_header(dt_file)),
-    1,
-    'CSV',
-    'WRITE_TRUNCATE',
-    False
-  ))
+  jobs.append(
+      storage_to_table(project.task['auth'], project.id,
+                       project.task['to']['dataset'], dt_partition,
+                       '%s:%s*' % (project.task['bucket'], dt_file),
+                       dt_schema(dt_header(dt_file)), 1, 'CSV',
+                       'WRITE_TRUNCATE', False))
 
 
 def dt_move(dt_object, dt_partition, jobs):
-  ''' Due to BQ limit, files over 5 GB need to be transfered using inline decompression ( slower but works 100% of the time )
-  '''
+  """ Due to BQ limit, files over 5 GB need to be transfered using inline decompression ( slower but works 100% of the time )"""
   if int(dt_object['size']) > 5000000:
     dt_move_large(dt_object['name'], dt_partition, jobs)
   else:
@@ -145,10 +137,12 @@ def dt_move(dt_object, dt_partition, jobs):
 def dt():
   jobs = []
 
-  if project.verbose: print("DT To BigQuery")
+  if project.verbose:
+    print('DT To BigQuery')
 
   # legacy deprecated ( do not use )
-  if 'path' in project.task: project.task['paths'] = [project.task['path']]
+  if 'path' in project.task:
+    project.task['paths'] = [project.task['path']]
 
   # loop all dt files to match pattern or match any pattern
   print('PATHS', project.task['paths'])
@@ -156,22 +150,31 @@ def dt():
   for path in (project.task['paths'] or ['']):
 
     print(path)
-    for dt_object in object_list(project.task['auth'], '%s:%s' % (project.task['bucket'], path), raw=True):
+    for dt_object in object_list(
+        project.task['auth'],
+        '%s:%s' % (project.task['bucket'], path),
+        raw=True):
       dt_size = dt_object['size']
       dt_file = dt_object['name']
       dt_time = dt_timestamp(dt_file)
 
       dt_partition = dt_file.split('.', 1)[0]
-      if ((project.task.get('days') is None and project.task.get('hours') is None) or (dt_time > project.now - timedelta(days=project.task.get('days', 60), hours=project.task.get('hours', 0)))):
-        if not table_exists(project.task['to']['auth'], project.id, project.task['to']['dataset'], dt_partition):
-           dt_move(dt_object, dt_partition, jobs)
+      if ((project.task.get('days') is None and
+           project.task.get('hours') is None) or
+          (dt_time > project.now - timedelta(
+              days=project.task.get('days', 60),
+              hours=project.task.get('hours', 0)))):
+        if not table_exists(project.task['to']['auth'], project.id,
+                            project.task['to']['dataset'], dt_partition):
+          dt_move(dt_object, dt_partition, jobs)
         else:
-          if project.verbose: print ('DT Partition Exists:', dt_partition)
+          if project.verbose:
+            print('DT Partition Exists:', dt_partition)
 
   for count, job in enumerate(jobs):
     print('Waiting For Job: %d of %d' % (count + 1, len(jobs)))
     job_wait(project.task['to']['auth'], job)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   dt()

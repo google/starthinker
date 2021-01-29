@@ -24,32 +24,31 @@ from starthinker.util.storage import object_list, object_move, object_delete
 
 @project.from_parameters
 def archive():
-  if project.verbose: print('ARCHIVE')
+  if project.verbose:
+    print('ARCHIVE')
 
   day = project.date - timedelta(days=abs(project.task['days']))
 
   for object in object_list(
-    project.task['auth'],
-    project.task['storage']['bucket'] + ':' + project.task['storage']['path'],
-    files_only=True,
-    raw=True
-  ):
-    object_day = datetime.strptime(object['updated'], '%Y-%m-%dT%H:%M:%S.%fZ').date()
+      project.task['auth'],
+      project.task['storage']['bucket'] + ':' + project.task['storage']['path'],
+      files_only=True,
+      raw=True):
+    object_day = datetime.strptime(object['updated'],
+                                   '%Y-%m-%dT%H:%M:%S.%fZ').date()
     if object_day <= day:
       if project.task.get('delete', False) == False:
-        if project.verbose: print('ARCHIVING FILE:', object['name'])
-        object_move(
-          project.task['auth'],
-          '%s:%s' % (object['bucket'], object['name']),
-          '%s:archive/%s' % (object['bucket'], object['name'])
-        )
+        if project.verbose:
+          print('ARCHIVING FILE:', object['name'])
+        object_move(project.task['auth'],
+                    '%s:%s' % (object['bucket'], object['name']),
+                    '%s:archive/%s' % (object['bucket'], object['name']))
       else:
-        if project.verbose: print('DELETING FILE:', )
-        object_delete(
-          project.task['auth'],
-          '%s:%s' % (object['bucket'], object['name'])
-        )
+        if project.verbose:
+          print('DELETING FILE:',)
+        object_delete(project.task['auth'],
+                      '%s:%s' % (object['bucket'], object['name']))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   archive()

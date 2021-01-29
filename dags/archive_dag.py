@@ -21,94 +21,126 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
 
-Archive
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
+Storage Archive
 
 Wipe old information from a Storage bucket based on last update time.
 
-Specify how many days back to retain data and which buckets and paths to purge.
-Everything under a path will be moved to archive or deleted depending on your choice.
+  - Specify how many days back to retain data and which buckets and paths to purge.
+  - Everything under a path will be moved to archive or deleted depending on your choice.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'archive_days': 7,
   'auth_write': 'service',  # Credentials used for writing data.
+  'archive_days': 7,
   'archive_bucket': '',
   'archive_path': '',
   'archive_delete': False,
 }
 
-TASKS = [
-  {
-    'archive': {
-      'storage': {
-        'bucket': {
+RECIPE = {
+  'tasks': [
+    {
+      'archive': {
+        'auth': {
           'field': {
-            'order': 2,
-            'name': 'archive_bucket',
-            'default': '',
-            'kind': 'string'
+            'name': 'auth_write',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
           }
         },
-        'path': {
+        'days': {
           'field': {
-            'order': 3,
-            'name': 'archive_path',
-            'default': '',
-            'kind': 'string'
+            'name': 'archive_days',
+            'kind': 'integer',
+            'order': 1,
+            'default': 7
           }
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for writing data.',
-          'kind': 'authentication',
-          'name': 'auth_write',
-          'order': 1,
-          'default': 'service'
-        }
-      },
-      'delete': {
-        'field': {
-          'order': 4,
-          'name': 'archive_delete',
-          'default': False,
-          'kind': 'boolean'
-        }
-      },
-      'days': {
-        'field': {
-          'order': 1,
-          'name': 'archive_days',
-          'default': 7,
-          'kind': 'integer'
+        },
+        'storage': {
+          'bucket': {
+            'field': {
+              'name': 'archive_bucket',
+              'kind': 'string',
+              'order': 2,
+              'default': ''
+            }
+          },
+          'path': {
+            'field': {
+              'name': 'archive_path',
+              'kind': 'string',
+              'order': 3,
+              'default': ''
+            }
+          }
+        },
+        'delete': {
+          'field': {
+            'name': 'archive_delete',
+            'kind': 'boolean',
+            'order': 4,
+            'default': False
+          }
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('archive', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('archive', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

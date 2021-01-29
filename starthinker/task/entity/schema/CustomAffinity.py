@@ -17,20 +17,24 @@
 ###########################################################################
 
 CustomAffinity_Schema = [
-  { "name":"id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"name",
-    "type":"STRING",
-    "mode":"NULLABLE",
-  },
-  { "name":"description",
-    "type":"STRING",
-    "mode":"NULLABLE",
-  },
-  { "name":"advertiser_id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
+    {
+        'name': 'id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'name',
+        'type': 'STRING',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'description',
+        'type': 'STRING',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'advertiser_id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
 ]

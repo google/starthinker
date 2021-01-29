@@ -21,7 +21,11 @@ from django.conf.urls import url
 from starthinker_ui.project import views
 
 urlpatterns = [
-  url(r'^project/edit/(?P<pk>\d+)?/?$', views.project_edit, name='project.edit'),
-  url(r'^project/delete/(?P<pk>\d+)?/?$', views.project_delete, name='project.delete'),
-  url(r'^project/$', views.project_list, name='project.list'),
+    url(r'^project/edit/(?P<pk>\d+)?/?$',
+        views.project_edit,
+        name='project.edit'),
+    url(r'^project/delete/(?P<pk>\d+)?/?$',
+        views.project_delete,
+        name='project.delete'),
+    url(r'^project/$', views.project_list, name='project.list'),
 ]

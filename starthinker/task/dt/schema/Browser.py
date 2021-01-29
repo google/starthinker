@@ -16,7 +16,12 @@
 #
 ###########################################################################
 
-Browser_Schema = [
-  { "name":"Browser_Platform", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Browser_Platform_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Browser_Schema = [{
+    'name': 'Browser_Platform',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Browser_Platform_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

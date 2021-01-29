@@ -16,12 +16,32 @@
 #
 ###########################################################################
 
-Custom_Rich_Media_Schema = [
-  { "name":"Advertiser_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Rich_Media_Event_Name", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Rich_Media_Event_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Rich_Media_Event_Type_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Rich_Media_Event_Type", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Floodlight_Config_Id", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Custom_Rich_Media_Schema = [{
+    'name': 'Advertiser_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Rich_Media_Event_Name',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Rich_Media_Event_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Rich_Media_Event_Type_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Rich_Media_Event_Type',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Floodlight_Config_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Account_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

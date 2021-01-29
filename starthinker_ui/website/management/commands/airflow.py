@@ -22,21 +22,27 @@ from django.conf import settings
 from starthinker_ui.recipe.scripts import Script
 from starthinker_ui.recipe.dag import script_to_dag
 
+
 class Command(BaseCommand):
   help = 'Generate Templates For Airflow'
 
   def handle(self, *args, **kwargs):
-
     for script in Script.get_scripts():
       if script.get_open_source():
-
         print('Writing: %s_dag.py' % script.get_tag())
-
-        with open('%s/dags/%s_dag.py' % (settings.UI_ROOT, script.get_tag()), 'w') as dag_file:
-          dag_file.write(script_to_dag(
-            script.get_tag(),
-            script.get_name(),
-            script.get_description(),
-            script.get_instructions(),
-            script.get_tasks()
-          ))
+        with open(
+          '%s/dags/%s_dag.py' % (
+            settings.UI_ROOT,
+            script.get_tag()
+          ),
+          'w'
+        ) as dag_file:
+          dag_file.write(
+            script_to_dag(
+              script.get_tag(),
+              script.get_name(),
+              script.get_description(),
+              script.get_instructions(),
+              script.get_tasks_and_setup()
+            )
+          )

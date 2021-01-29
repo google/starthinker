@@ -38,22 +38,27 @@ from starthinker_ui.recipe.compute import group_instances_list, group_instances_
 
 def recipe_list(request):
   recipes = {
-    'running':[],
-    'paused':[],
-    'finished':[],
-    'errors':[],
-    'manual':[]
+      'running': [],
+      'paused': [],
+      'finished': [],
+      'errors': [],
+      'manual': []
   }
 
   if request.user.is_authenticated:
     for recipe in request.user.recipe_set.all():
-      if recipe.manual: recipes['manual'].append(recipe)
-      elif not recipe.active or recipe.get_log()['status'] == 'NEW': recipes['paused'].append(recipe)
-      elif recipe.get_log()['status'] == 'FINISHED': recipes['finished'].append(recipe)
-      elif recipe.get_log()['status'] == 'ERROR': recipes['errors'].append(recipe)
-      else: recipes['running'].append(recipe)
+      if recipe.manual:
+        recipes['manual'].append(recipe)
+      elif not recipe.active or recipe.get_log()['status'] == 'NEW':
+        recipes['paused'].append(recipe)
+      elif recipe.get_log()['status'] == 'FINISHED':
+        recipes['finished'].append(recipe)
+      elif recipe.get_log()['status'] == 'ERROR':
+        recipes['errors'].append(recipe)
+      else:
+        recipes['running'].append(recipe)
 
-  return render(request, "recipe/recipe_list.html", { 'recipes':recipes })
+  return render(request, 'recipe/recipe_list.html', {'recipes': recipes})
 
 
 @permission_admin()
@@ -71,11 +76,17 @@ def recipe_edit(request, pk=None, manual=False):
       messages.success(request, 'Recipe updated.')
       return HttpResponseRedirect(form_script.instance.link_edit())
     else:
-      messages.error(request, 'Recipe Script Errors: %s' % ' '.join(form_script.get_errors()))
+      messages.error(
+          request,
+          'Recipe Script Errors: %s' % ' '.join(form_script.get_errors()))
   else:
-    form_script = ScriptForm(manual, recipe, request.user, scripts=request.GET.get('scripts', ''))
+    form_script = ScriptForm(
+        manual, recipe, request.user, scripts=request.GET.get('scripts', ''))
 
-  return render(request, "recipe/recipe_edit.html", { 'form_script':form_script, 'manual':manual })
+  return render(request, 'recipe/recipe_edit.html', {
+      'form_script': form_script,
+      'manual': manual
+  })
 
 
 @permission_admin()
@@ -95,9 +106,12 @@ def recipe_run(request, pk):
   try:
     recipe = request.user.recipe_set.get(pk=pk)
     if recipe.is_running():
-      messages.success(request, 'Recipe dispatched, will run once in progress task completes.')
+      messages.success(
+          request,
+          'Recipe dispatched, will run once in progress task completes.')
     else:
-      messages.success(request, 'Recipe dispatched, give it a few minutes to start.')
+      messages.success(request,
+                       'Recipe dispatched, give it a few minutes to start.')
     recipe.force()
   except Recipe.DoesNotExist as e:
     messages.error(request, str(e))
@@ -109,7 +123,8 @@ def recipe_cancel(request, pk):
   try:
     recipe = request.user.recipe_set.get(pk=pk)
     if recipe.is_running():
-      messages.success(request, 'Recipe cancelled, active task will stop shortly.')
+      messages.success(request,
+                       'Recipe cancelled, active task will stop shortly.')
     else:
       messages.success(request, 'Recipe cancelled, no tasks are running.')
     recipe.cancel()
@@ -123,42 +138,47 @@ def recipe_status(request, pk):
   try:
     recipe = request.user.recipe_set.get(pk=pk)
     log = recipe.get_log()
-    log['report'] = render_to_string("recipe/log.html", { 'log': log })
+    log['report'] = render_to_string('recipe/log.html', {'log': log})
   except Recipe.DoesNotExist:
     log = {}
   return JsonResponse(log)
 
+
 @csrf_exempt
 def recipe_start(request):
   try:
-    recipe = Recipe.objects.get(reference=request.POST.get('reference', 'invalid'))
+    recipe = Recipe.objects.get(
+        reference=request.POST.get('reference', 'invalid'))
     if recipe.is_running():
-      response = HttpResponse('RECIPE INTERRUPTED', content_type="text/plain")
+      response = HttpResponse('RECIPE INTERRUPTED', content_type='text/plain')
     else:
-      response = HttpResponse('RECIPE STARTED', content_type="text/plain")
+      response = HttpResponse('RECIPE STARTED', content_type='text/plain')
     recipe.force()
   except Recipe.DoesNotExist as e:
-    response = HttpResponseNotFound('RECIPE NOT FOUND', content_type="text/plain")
+    response = HttpResponseNotFound(
+        'RECIPE NOT FOUND', content_type='text/plain')
   return response
 
 
 @csrf_exempt
 def recipe_stop(request):
   try:
-    recipe = Recipe.objects.get(reference=request.POST.get('reference', 'invalid'))
+    recipe = Recipe.objects.get(
+        reference=request.POST.get('reference', 'invalid'))
     if recipe.is_running():
-      response = HttpResponse('RECIPE INTERRUPTED', content_type="text/plain")
+      response = HttpResponse('RECIPE INTERRUPTED', content_type='text/plain')
     else:
-      response = HttpResponse('RECIPE STOPPED', content_type="text/plain")
+      response = HttpResponse('RECIPE STOPPED', content_type='text/plain')
     recipe.cancel()
   except Recipe.DoesNotExist as e:
-    response = HttpResponseNotFound('RECIPE NOT FOUND', content_type="text/plain")
+    response = HttpResponseNotFound(
+        'RECIPE NOT FOUND', content_type='text/plain')
   return response
 
 
 @permission_admin()
 def recipe_download(request, pk):
-  return render(request, "recipe/download.html", { 'recipe':pk })
+  return render(request, 'recipe/download.html', {'recipe': pk})
 
 
 @permission_admin()
@@ -166,8 +186,11 @@ def recipe_json(request, pk):
   try:
     recipe = request.user.recipe_set.get(pk=pk)
     data = recipe.get_json(credentials=False)
-    response = HttpResponse(json.dumps(data, indent=2), content_type='application/json')
-    response['Content-Disposition'] = 'attachment; filename=recipe_%s.json' % recipe.slug()
+    response = HttpResponse(
+        json.dumps(data, indent=2), content_type='application/json')
+    response[
+        'Content-Disposition'] = 'attachment; filename=recipe_%s.json' % recipe.slug(
+        )
     return response
   except Exception as e:
     recipe = None
@@ -180,18 +203,16 @@ def recipe_json(request, pk):
 def recipe_colab(request, pk):
   try:
     recipe = request.user.recipe_set.get(pk=pk)
-    data = script_to_colab(
-      recipe.slug(),
-      '',
-      [],
-      recipe.get_json(credentials=False)['tasks']
-    )
+    data = script_to_colab(recipe.slug(), '', [],
+                           recipe.get_json(credentials=False)['tasks'])
     response = HttpResponse(data, content_type='application/vnd.jupyter')
-    response['Content-Disposition'] = 'attachment; filename=colab_%s.ipynb' % recipe.slug()
+    response[
+        'Content-Disposition'] = 'attachment; filename=colab_%s.ipynb' % recipe.slug(
+        )
     return response
   except Exception as e:
     messages.error(request, str(e))
-    raise(e)
+    raise (e)
   return HttpResponseRedirect('/recipe/download/%s/' % pk)
 
 
@@ -199,40 +220,42 @@ def recipe_colab(request, pk):
 def recipe_airflow(request, pk):
   try:
     recipe = request.user.recipe_set.get(pk=pk)
-    data = script_to_dag(
-      recipe.slug(),
-      recipe.name,
-      '',
-      [],
-      recipe.get_json(credentials=False)['tasks']
-    )
+    data = script_to_dag(recipe.slug(), recipe.name, '', [],
+                         recipe.get_json(credentials=False)['tasks'])
     response = HttpResponse(data, content_type='application/vnd.jupyter')
-    response['Content-Disposition'] = 'attachment; filename=airflow_%s.py' % recipe.slug()
+    response[
+        'Content-Disposition'] = 'attachment; filename=airflow_%s.py' % recipe.slug(
+        )
     return response
   except Exception as e:
     messages.error(request, str(e))
-    raise(e)
+    raise (e)
   return HttpResponseRedirect('/recipe/download/%s/' % pk)
 
 
 def autoscale(request):
 
   scale = {
-    'jobs':0,
-    'workers':{
-      'jobs':settings.WORKER_JOBS,
-      'max':settings.WORKER_MAX,
-      'existing':0,
-      'required':0
-    }
+      'jobs': 0,
+      'workers': {
+          'jobs': settings.WORKER_JOBS,
+          'max': settings.WORKER_MAX,
+          'existing': 0,
+          'required': 0
+      }
   }
 
   # get task and worker list
-  scale['jobs'] = Recipe.objects.filter(active=True, job_utm__lt=utc_milliseconds()).exclude(job_utm=0).count()
-  scale['workers']['existing'] = 3 if request == 'TEST' else sum(1 for instance in group_instances_list(('PROVISIONING', 'STAGING', 'RUNNING')))
-  scale['workers']['required'] = min(settings.WORKER_MAX, math.ceil(scale['jobs'] / scale['workers']['jobs']))
+  scale['jobs'] = Recipe.objects.filter(
+      active=True, job_utm__lt=utc_milliseconds()).exclude(job_utm=0).count()
+  scale['workers']['existing'] = 3 if request == 'TEST' else sum(
+      1 for instance in group_instances_list(('PROVISIONING', 'STAGING',
+                                              'RUNNING')))
+  scale['workers']['required'] = min(
+      settings.WORKER_MAX, math.ceil(scale['jobs'] / scale['workers']['jobs']))
 
-  if request != 'TEST' and scale['workers']['required'] > scale['workers']['existing']:
+  if request != 'TEST' and scale['workers']['required'] > scale['workers'][
+      'existing']:
     group_instances_resize(scale['workers']['required'])
 
   # log the scaling operation

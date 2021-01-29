@@ -27,8 +27,8 @@ from starthinker.util.auth import get_profile
 def main():
 
   parser = argparse.ArgumentParser(
-    formatter_class=argparse.RawDescriptionHelpFormatter,
-    description=textwrap.dedent('''\
+      formatter_class=argparse.RawDescriptionHelpFormatter,
+      description=textwrap.dedent("""\
       Creates USER credentials from Google Cloud Project CLIENT Credentials and displays profile information if it worked.
       CLIENT credentials are required to run this script, to obtain the JSON file...
 
@@ -59,7 +59,7 @@ def main():
           C. The user profile will be printed to the screen
 
         Example: python helper.py -u [CLIENT file path] -c [USER file path]
-'''))
+"""))
 
   # initialize project, enable only some default arguments
   project.from_commandline(parser=parser, arguments=('-c', '-u'))
@@ -68,5 +68,5 @@ def main():
   print('Profile:', json.dumps(get_profile(), indent=2, sort_keys=True))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   main()

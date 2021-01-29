@@ -16,9 +16,20 @@
 #
 ###########################################################################
 
-Reach_by_Frequency_Metrics_Schema = [
-  { "name":"Active_View_Viewable_Impression_Cookie_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Click_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Impression_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Total_Reach", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Reach_by_Frequency_Metrics_Schema = [{
+    'name': 'Active_View_Viewable_Impression_Cookie_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Click_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Impression_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Total_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

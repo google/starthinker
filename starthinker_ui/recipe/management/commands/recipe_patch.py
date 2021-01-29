@@ -23,41 +23,41 @@ from django.conf import settings
 from starthinker_ui.recipe.models import Recipe
 from django.core import serializers
 
+
 class Command(BaseCommand):
   help = 'Replace task or field in recipes with new value.'
 
   def add_arguments(self, parser):
     parser.add_argument(
-      '--task',
-      action='store',
-      dest='task',
-      default=None,
-      help='Task to edit.',
+        '--task',
+        action='store',
+        dest='task',
+        default=None,
+        help='Task to edit.',
     )
 
     parser.add_argument(
-      '--field',
-      action='store',
-      dest='field',
-      default=None,
-      help='Task to edit.',
+        '--field',
+        action='store',
+        dest='field',
+        default=None,
+        help='Task to edit.',
     )
 
     parser.add_argument(
-      '--replacement',
-      action='store',
-      dest='replacement',
-      default=None,
-      help='Key to replace with.',
+        '--replacement',
+        action='store',
+        dest='replacement',
+        default=None,
+        help='Key to replace with.',
     )
 
     parser.add_argument(
-      '--write',
-      action='store_true',
-      dest='write',
-      default=False,
-      help='Key to replace with.'
-    )
+        '--write',
+        action='store_true',
+        dest='write',
+        default=False,
+        help='Key to replace with.')
 
   def handle(self, *args, **kwargs):
     for recipe in (Recipe.objects.all()):
@@ -73,7 +73,8 @@ class Command(BaseCommand):
         for task in tasks:
           if kwargs['field']:
             if kwargs['field'] in task['values']:
-              task['values'][kwargs['replacement']] = task['values'][kwargs['field']]
+              task['values'][kwargs['replacement']] = task['values'][
+                  kwargs['field']]
               del task['values'][kwargs['field']]
               changed = True
           else:

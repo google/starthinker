@@ -23,15 +23,18 @@ from django.core.management.base import BaseCommand, CommandError
 from starthinker_ui.recipe.views import autoscale
 from starthinker_ui.recipe.models import Recipe, utc_milliseconds, JOB_LOOKBACK_MS
 
+
 class Command(BaseCommand):
   help = 'Autoscale workers.'
 
   def handle(self, *args, **kwargs):
     print(json.dumps(json.loads(autoscale(None).content), indent=2))
 
-    for recipe in Recipe.objects.filter(active=True, job_utm__lt=utc_milliseconds()).exclude(job_utm=0):
+    for recipe in Recipe.objects.filter(
+        active=True, job_utm__lt=utc_milliseconds()).exclude(job_utm=0):
       print(recipe.id, recipe.name, recipe.get_days())
       print('---')
 
-    for recipe in Recipe.objects.filter(active=True, worker_utm__gte=utc_milliseconds() - JOB_LOOKBACK_MS):
+    for recipe in Recipe.objects.filter(
+        active=True, worker_utm__gte=utc_milliseconds() - JOB_LOOKBACK_MS):
       print(recipe.id, recipe.name, recipe.worker_uid)

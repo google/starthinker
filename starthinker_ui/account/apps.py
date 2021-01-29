@@ -22,13 +22,17 @@ from django.conf import settings
 from starthinker.util.project import project
 from starthinker.util.storage import bucket_create
 
-USER_BUCKET = "%s-starthinker-credentials" % settings.UI_PROJECT.split(':', 1)[-1] # remove domain: part
-USER_LOCATION = settings.UI_ZONE.rsplit('-', 1)[0] # take only region part of zone
+USER_BUCKET = '%s-starthinker-credentials' % settings.UI_PROJECT.split(
+    ':', 1)[-1]  # remove domain: part
+USER_LOCATION = settings.UI_ZONE.rsplit('-',
+                                        1)[0]  # take only region part of zone
+
 
 class AccountConfig(AppConfig):
   name = 'starthinker_ui.account'
 
   def ready(self):
     print('CHECKING IF USER BUCKET EXISTS:', USER_BUCKET, USER_LOCATION)
-    project.initialize(_project=settings.UI_PROJECT, _service=settings.UI_SERVICE)
+    project.initialize(
+        _project=settings.UI_PROJECT, _service=settings.UI_SERVICE)
     bucket_create('service', settings.UI_PROJECT, USER_BUCKET, USER_LOCATION)

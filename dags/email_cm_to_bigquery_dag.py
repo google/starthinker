@@ -21,119 +21,152 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
 
-CM Report Emailed To BigQuery
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
+CM360 Report Emailed To BigQuery
 
 Pulls a CM Report from a gMail powered email account into BigQuery.
 
-The person executing this recipe must be the recipient of the email.
-Schedule a CM report to be sent to <b>UNDEFINED</b>.
-Or set up a redirect rule to forward a report you already receive.
-The report must be sent as an attachment.
-Ensure this recipe runs after the report is email daily.
-Give a regular expression to match the email subject.
-Configure the destination in BigQuery to write the data.
+  - The person executing this recipe must be the recipient of the email.
+  - Schedule a CM report to be sent to <b>UNDEFINED</b>.
+  - Or set up a redirect rule to forward a report you already receive.
+  - The report must be sent as an attachment.
+  - Ensure this recipe runs after the report is email daily.
+  - Give a regular expression to match the email subject.
+  - Configure the destination in BigQuery to write the data.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'email': '',  # Email address report was sent to.
   'auth_read': 'user',  # Credentials used for reading data.
+  'email': '',  # Email address report was sent to.
   'subject': '.*',  # Regular expression to match subject. Double escape backslashes.
   'dataset': '',  # Existing dataset in BigQuery.
   'table': '',  # Name of table to be written to.
   'is_incremental_load': False,  # Append report data to table based on date column, de-duplicates.
 }
 
-TASKS = [
-  {
-    'email': {
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
-        }
-      },
-      'read': {
-        'from': 'noreply-cm@google.com',
-        'to': {
+RECIPE = {
+  'tasks': [
+    {
+      'email': {
+        'auth': {
           'field': {
-            'description': 'Email address report was sent to.',
-            'kind': 'string',
-            'name': 'email',
+            'name': 'auth_read',
+            'kind': 'authentication',
             'order': 1,
-            'default': ''
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
           }
         },
-        'subject': {
-          'field': {
-            'description': 'Regular expression to match subject. Double escape backslashes.',
-            'kind': 'string',
-            'name': 'subject',
-            'order': 2,
-            'default': '.*'
-          }
-        },
-        'out': {
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'description': 'Existing dataset in BigQuery.',
-                'kind': 'string',
-                'name': 'dataset',
-                'order': 3,
-                'default': ''
-              }
-            },
-            'table': {
-              'field': {
-                'description': 'Name of table to be written to.',
-                'kind': 'string',
-                'name': 'table',
-                'order': 4,
-                'default': ''
-              }
-            },
-            'is_incremental_load': {
-              'field': {
-                'description': 'Append report data to table based on date column, de-duplicates.',
-                'kind': 'boolean',
-                'name': 'is_incremental_load',
-                'order': 6,
-                'default': False
+        'read': {
+          'from': 'noreply-cm@google.com',
+          'to': {
+            'field': {
+              'name': 'email',
+              'kind': 'string',
+              'order': 1,
+              'default': '',
+              'description': 'Email address report was sent to.'
+            }
+          },
+          'subject': {
+            'field': {
+              'name': 'subject',
+              'kind': 'string',
+              'order': 2,
+              'default': '.*',
+              'description': 'Regular expression to match subject. Double escape backslashes.'
+            }
+          },
+          'attachment': '.*',
+          'out': {
+            'bigquery': {
+              'dataset': {
+                'field': {
+                  'name': 'dataset',
+                  'kind': 'string',
+                  'order': 3,
+                  'default': '',
+                  'description': 'Existing dataset in BigQuery.'
+                }
+              },
+              'table': {
+                'field': {
+                  'name': 'table',
+                  'kind': 'string',
+                  'order': 4,
+                  'default': '',
+                  'description': 'Name of table to be written to.'
+                }
+              },
+              'header': True,
+              'is_incremental_load': {
+                'field': {
+                  'name': 'is_incremental_load',
+                  'kind': 'boolean',
+                  'order': 6,
+                  'default': False,
+                  'description': 'Append report data to table based on date column, de-duplicates.'
+                }
               }
             }
           }
-        },
-        'attachment': '.*'
+        }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('email_cm_to_bigquery', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('email_cm_to_bigquery', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

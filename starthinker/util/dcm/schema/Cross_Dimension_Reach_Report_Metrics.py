@@ -16,24 +16,80 @@
 #
 ###########################################################################
 
-Cross_Dimension_Reach_Report_Metrics_Schema = [
-  { "name":"Cookie_Reach_Average_Impression_Frequency", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Click_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Duplicate_Click_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Duplicate_Click_Reach_Percent", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Duplicate_Impression_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Duplicate_Impression_Reach_Percent", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Duplicate_Total_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Duplicate_Total_Reach_Percent", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Exclusive_Click_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Exclusive_Click_Reach_Percent", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Exclusive_Impression_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Exclusive_Impression_Reach_Percent", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Exclusive_Total_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Exclusive_Total_Reach_Percent", "type":"FLOAT", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Impression_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Incremental_Click_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Incremental_Impression_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Incremental_Total_Reach", "type":"INTEGER", "mode":"NULLABLE" },
-  { "name":"Cookie_Reach_Total_Reach", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Cross_Dimension_Reach_Report_Metrics_Schema = [{
+    'name': 'Cookie_Reach_Average_Impression_Frequency',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Click_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Duplicate_Click_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Duplicate_Click_Reach_Percent',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Duplicate_Impression_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Duplicate_Impression_Reach_Percent',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Duplicate_Total_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Duplicate_Total_Reach_Percent',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Exclusive_Click_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Exclusive_Click_Reach_Percent',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Exclusive_Impression_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Exclusive_Impression_Reach_Percent',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Exclusive_Total_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Exclusive_Total_Reach_Percent',
+    'type': 'FLOAT',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Impression_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Incremental_Click_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Incremental_Impression_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Incremental_Total_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Cookie_Reach_Total_Reach',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

@@ -15,9 +15,7 @@
 #  limitations under the License.
 #
 ###########################################################################
-"""Handles logging actions back to the Bulkdozer feed Log tab.
-
-"""
+"""Handles logging actions back to the Bulkdozer feed Log tab."""
 
 import datetime
 
@@ -26,19 +24,18 @@ from starthinker.util.sheets import sheets_write, sheets_clear
 
 
 class Timer(object):
-  """Timer class responsible for measuring run time for performance profiling and optimization.
-  """
+  """Timer class responsible for measuring run time for performance profiling and optimization."""
 
   def __init__(self):
-    """Constructor.
-    """
+    """Constructor."""
     self._timers = {}
 
   def start_timer(self, timer_name):
     """Initializes a new timer.
 
     Args:
-      timer_name: name of the timer to initialize, if not unique will reset existing timer.
+      timer_name: name of the timer to initialize, if not unique will reset
+        existing timer.
     """
     self._timers[timer_name] = datetime.datetime.now()
 
@@ -46,20 +43,21 @@ class Timer(object):
     """Checks and prints the elapsed time of a given timer.
 
     Args:
-      timer_name: Name of the timer to check and print, it must have been initialized with start_timer.
+      timer_name: Name of the timer to check and print, it must have been
+        initialized with start_timer.
     """
     if timer_name in self._timers:
       elapsed = datetime.datetime.now() - self._timers[timer_name]
 
-      print('%s: %d.%d' % (timer_name, elapsed.seconds, (elapsed.microseconds - (elapsed.seconds * 60 * 1000000)) / 1000))
+      print('%s: %d.%d' % (timer_name, elapsed.seconds,
+                           (elapsed.microseconds -
+                            (elapsed.seconds * 60 * 1000000)) / 1000))
     else:
       print('timer %s not defined' % timer_name)
 
 
 class Logger(object):
-  """Logger class responsible for logging data into the Bulkdozer feed's Log tab.
-
-  """
+  """Logger class responsible for logging data into the Bulkdozer feed's Log tab."""
 
   def __init__(self, flush_threshold=10):
     """Initializes the logger object.
@@ -76,9 +74,7 @@ class Logger(object):
     self._flush_threshold = flush_threshold
 
   def clear(self):
-    """Clears the log tab in the Bulkdozer feed, useful when a new execution is starting.
-
-    """
+    """Clears the log tab in the Bulkdozer feed, useful when a new execution is starting."""
     sheets_clear(self.auth, self.trix_id, 'Log', 'A1:B')
     self._row = 1
 
@@ -92,15 +88,15 @@ class Logger(object):
     self._buffer.append(
         [datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000%z'), message])
 
-    if not self.buffered or (self._flush_threshold and len(self._buffer) >= self._flush_threshold):
+    if not self.buffered or (self._flush_threshold and
+                             len(self._buffer) >= self._flush_threshold):
       self.flush()
 
   def flush(self):
-    """Flushes the message buffer writing buffered messages to the sheet.
-
-    """
+    """Flushes the message buffer writing buffered messages to the sheet."""
     if self._buffer:
-      sheets_write(self.auth, self.trix_id, 'Log', 'A1', self._buffer, append=True)
+      sheets_write(
+          self.auth, self.trix_id, 'Log', 'A1', self._buffer, append=True)
 
       self._row += len(self._buffer)
 

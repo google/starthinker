@@ -24,29 +24,30 @@ from django.conf import settings
 from starthinker_ui.recipe.models import Recipe
 from django.core import serializers
 
+
 class Command(BaseCommand):
   help = 'Shows status of recipes'
 
   def add_arguments(self, parser):
     parser.add_argument(
-      '--recipe',
-      action='store',
-      dest='recipe',
-      default=None,
-      help='Run a specific recipe.',
+        '--recipe',
+        action='store',
+        dest='recipe',
+        default=None,
+        help='Run a specific recipe.',
     )
 
     parser.add_argument(
-      '--raw',
-      action='store_true',
-      dest='raw',
-      default=False,
-      help='Raw recipe log.',
+        '--raw',
+        action='store_true',
+        dest='raw',
+        default=False,
+        help='Raw recipe log.',
     )
 
-
   def handle(self, *args, **kwargs):
-    for recipe in (Recipe.objects.filter(pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.all()):
+    for recipe in (Recipe.objects.filter(
+        pk=kwargs['recipe']) if kwargs['recipe'] else Recipe.objects.all()):
       status = json.loads(recipe.job_status)
 
       print('---------------------------------------')

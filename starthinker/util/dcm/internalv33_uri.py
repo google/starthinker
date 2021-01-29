@@ -18,7 +18,7 @@
 
 # https://cs.corp.google.com/piper///depot/google3/apiserving/discoverydata/dfareporting/dfareporting.internalv3_3.rest.json?g=0
 
-URI = '''{
+URI = """{
  "kind": "discovery#restDescription",
  "etag": "\\"J3WqvAcMk4eQjJXvfSI4Yr8VouA/dlVhm7l_mXhYjrVFBxpy1FrGfcE\\"",
  "discoveryVersion": "v1",
@@ -21263,4 +21263,4 @@ URI = '''{
   }
  }
 }
-'''
+"""

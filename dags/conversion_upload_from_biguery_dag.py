@@ -21,34 +21,65 @@
 
 Before running this Airflow module...
 
-  Install StarThinker in cloud composer from open source:
+  Install StarThinker in cloud composer ( recommended ):
 
-    pip install git+https://github.com/google/starthinker
+    From Release: pip install starthinker
+    From Open Source: pip install git+https://github.com/google/starthinker
 
-  Or push local code to the cloud composer plugins directory:
+  Or push local code to the cloud composer plugins directory ( if pushing local code changes ):
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
 
-Conversion Upload BigQuery
+  If any recipe task has "auth" set to "user" add user credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['user'] = [User Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_user", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
+
+--------------------------------------------------------------
+
+  If any recipe task has "auth" set to "service" add service credentials:
+
+    1. Ensure an RECIPE['setup']['auth']['service'] = [Service Credentials JSON]
+
+  OR
+
+    1. Visit Airflow UI > Admin > Connections.
+    2. Add an Entry called "starthinker_service", fill in the following fields. Last step paste JSON from authentication.
+      - Conn Type: Google Cloud Platform
+      - Project: Get from https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md
+      - Keyfile JSON: Get from: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
+
+--------------------------------------------------------------
+
+CM360 Conversion Upload From BigQuery
 
 Move from BigQuery to CM.
 
-Specify a CM Account ID, Floodligh Activity ID and Conversion Type.
-Include BigQuery dataset and table.
-Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId
-Include encryption information if using encryptedUserId or encryptedUserIdCandidates.
+  - Specify a CM Account ID, Floodligh Activity ID and Conversion Type.
+  - Include BigQuery dataset and table.
+  - Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId
+  - Include encryption information if using encryptedUserId or encryptedUserIdCandidates.
+
+--------------------------------------------------------------
+
+This StarThinker DAG can be extended with any additional tasks from the following sources:
+  - https://google.github.io/starthinker/
+  - https://github.com/google/starthinker/tree/master/dags
 
 '''
 
-from starthinker_airflow.factory import DAG_Factory
-
-# Add the following credentials to your Airflow configuration.
-USER_CONN_ID = "starthinker_user" # The connection to use for user authentication.
-GCP_CONN_ID = "starthinker_service" # The connection to use for service authentication.
+from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'account': '',
@@ -63,120 +94,121 @@ INPUTS = {
   'bigquery_legacy': True,
 }
 
-TASKS = [
-  {
-    'conversion_upload': {
-      'encryptionInfo': {
-        'encryptionEntityType': {
+RECIPE = {
+  'tasks': [
+    {
+      'conversion_upload': {
+        'auth': {
           'field': {
+            'name': 'auth_read',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
+          }
+        },
+        'account_id': {
+          'field': {
+            'name': 'account',
+            'kind': 'string',
+            'order': 0,
+            'default': ''
+          }
+        },
+        'activity_id': {
+          'field': {
+            'name': 'floodlight_activity_id',
+            'kind': 'integer',
+            'order': 1,
+            'default': ''
+          }
+        },
+        'conversion_type': {
+          'field': {
+            'name': 'floodlight_conversion_type',
+            'kind': 'choice',
+            'order': 2,
             'choices': [
-              'ADWORDS_CUSTOMER',
-              'DBM_ADVERTISER',
-              'DBM_PARTNER',
-              'DCM_ACCOUNT',
-              'DCM_ADVERTISER',
-              'ENCRYPTION_ENTITY_TYPE_UNKNOWN'
+              'encryptedUserId',
+              'encryptedUserIdCandidates',
+              'gclid',
+              'mobileDeviceId'
             ],
-            'order': 4,
-            'name': 'encryption_entity_type',
-            'default': 'DCM_ACCOUNT',
-            'kind': 'choice'
+            'default': 'encryptedUserId'
           }
         },
-        'encryptionEntityId': {
-          'field': {
-            'order': 3,
-            'name': 'encryption_entity_id',
-            'default': '',
-            'kind': 'integer'
+        'encryptionInfo': {
+          'encryptionEntityId': {
+            'field': {
+              'name': 'encryption_entity_id',
+              'kind': 'integer',
+              'order': 3,
+              'default': ''
+            }
+          },
+          'encryptionEntityType': {
+            'field': {
+              'name': 'encryption_entity_type',
+              'kind': 'choice',
+              'order': 4,
+              'choices': [
+                'ADWORDS_CUSTOMER',
+                'DBM_ADVERTISER',
+                'DBM_PARTNER',
+                'DCM_ACCOUNT',
+                'DCM_ADVERTISER',
+                'ENCRYPTION_ENTITY_TYPE_UNKNOWN'
+              ],
+              'default': 'DCM_ACCOUNT'
+            }
+          },
+          'encryptionSource': {
+            'field': {
+              'name': 'encryption_entity_source',
+              'kind': 'choice',
+              'order': 5,
+              'choices': [
+                'AD_SERVING',
+                'DATA_TRANSFER',
+                'ENCRYPTION_SCOPE_UNKNOWN'
+              ],
+              'default': 'DATA_TRANSFER'
+            }
           }
         },
-        'encryptionSource': {
-          'field': {
-            'choices': [
-              'AD_SERVING',
-              'DATA_TRANSFER',
-              'ENCRYPTION_SCOPE_UNKNOWN'
-            ],
-            'order': 5,
-            'name': 'encryption_entity_source',
-            'default': 'DATA_TRANSFER',
-            'kind': 'choice'
+        'bigquery': {
+          'dataset': {
+            'field': {
+              'name': 'bigquery_dataset',
+              'kind': 'string',
+              'order': 6,
+              'default': ''
+            }
+          },
+          'table': {
+            'field': {
+              'name': 'bigquery_table',
+              'kind': 'string',
+              'order': 7,
+              'default': ''
+            }
+          },
+          'legacy': {
+            'field': {
+              'name': 'bigquery_legacy',
+              'kind': 'boolean',
+              'order': 8,
+              'default': True
+            }
           }
-        }
-      },
-      'bigquery': {
-        'legacy': {
-          'field': {
-            'order': 8,
-            'name': 'bigquery_legacy',
-            'default': True,
-            'kind': 'boolean'
-          }
-        },
-        'dataset': {
-          'field': {
-            'order': 6,
-            'name': 'bigquery_dataset',
-            'default': '',
-            'kind': 'string'
-          }
-        },
-        'table': {
-          'field': {
-            'order': 7,
-            'name': 'bigquery_table',
-            'default': '',
-            'kind': 'string'
-          }
-        }
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
-        }
-      },
-      'activity_id': {
-        'field': {
-          'order': 1,
-          'name': 'floodlight_activity_id',
-          'default': '',
-          'kind': 'integer'
-        }
-      },
-      'account_id': {
-        'field': {
-          'order': 0,
-          'name': 'account',
-          'default': '',
-          'kind': 'string'
-        }
-      },
-      'conversion_type': {
-        'field': {
-          'choices': [
-            'encryptedUserId',
-            'encryptedUserIdCandidates',
-            'gclid',
-            'mobileDeviceId'
-          ],
-          'order': 2,
-          'name': 'floodlight_conversion_type',
-          'default': 'encryptedUserId',
-          'kind': 'choice'
         }
       }
     }
-  }
-]
+  ]
+}
 
-DAG_FACTORY = DAG_Factory('conversion_upload_from_biguery', { 'tasks':TASKS }, INPUTS)
-DAG_FACTORY.apply_credentails(USER_CONN_ID, GCP_CONN_ID)
-DAG = DAG_FACTORY.execute()
+dag_maker = DAG_Factory('conversion_upload_from_biguery', RECIPE, INPUTS)
+dag = dag_maker.generate()
 
 if __name__ == "__main__":
-  DAG_FACTORY.print_commandline()
+  dag_maker.print_commandline()

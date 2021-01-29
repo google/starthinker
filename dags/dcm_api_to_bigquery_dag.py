@@ -28,7 +28,7 @@ Before running this Airflow module...
   Or push local code to the cloud composer plugins directory:
 
     source install/deploy.sh
-    4) Composer Menu	
+    4) Composer Menu
     l) Install All
 
 --------------------------------------------------------------
@@ -51,8 +51,8 @@ GCP_CONN_ID = "starthinker_service" # The connection to use for service authenti
 
 INPUTS = {
   'endpoint': '',
-  'auth_write': 'service',  # Credentials used for writing data.
   'auth_read': 'user',  # Credentials used for reading data.
+  'auth_write': 'service',  # Credentials used for writing data.
   'dataset': '',  # Google BigQuery dataset to create tables in.
   'accounts': '',  # Comma separated CM account ids.
 }
@@ -60,8 +60,19 @@ INPUTS = {
 TASKS = [
   {
     'dcm_api': {
+      'auth': {
+        'field': {
+          'name': 'auth_read',
+          'kind': 'authentication',
+          'order': 1,
+          'default': 'user',
+          'description': 'Credentials used for reading data.'
+        }
+      },
       'endpoints': {
         'field': {
+          'name': 'endpoint',
+          'kind': 'choice',
           'choices': [
             'accountPermissionGroups',
             'accountPermissions',
@@ -114,49 +125,38 @@ TASKS = [
             'userRoles',
             'videoFormats'
           ],
-          'name': 'endpoint',
-          'default': '',
-          'kind': 'choice'
+          'default': ''
         }
       },
       'accounts': {
+        'single_cell': True,
         'values': {
           'field': {
-            'description': 'Comma separated CM account ids.',
-            'kind': 'integer_list',
             'name': 'accounts',
+            'kind': 'integer_list',
             'order': 2,
-            'default': ''
+            'default': '',
+            'description': 'Comma separated CM account ids.'
           }
-        },
-        'single_cell': True
-      },
-      'auth': {
-        'field': {
-          'description': 'Credentials used for reading data.',
-          'kind': 'authentication',
-          'name': 'auth_read',
-          'order': 1,
-          'default': 'user'
         }
       },
       'out': {
         'auth': {
           'field': {
-            'description': 'Credentials used for writing data.',
-            'kind': 'authentication',
             'name': 'auth_write',
+            'kind': 'authentication',
             'order': 1,
-            'default': 'service'
+            'default': 'service',
+            'description': 'Credentials used for writing data.'
           }
         },
         'dataset': {
           'field': {
-            'description': 'Google BigQuery dataset to create tables in.',
-            'kind': 'string',
             'name': 'dataset',
+            'kind': 'string',
             'order': 1,
-            'default': ''
+            'default': '',
+            'description': 'Google BigQuery dataset to create tables in.'
           }
         }
       }

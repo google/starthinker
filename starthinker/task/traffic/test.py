@@ -20,40 +20,21 @@ from starthinker.util.google_api import API_DCM
 from starthinker.util.dcm import get_profile_for_api
 from starthinker.util.project import project, get_project
 
-def _fail(message):
-  print('-------------------------')
-  print('*                       *')
-  print('*                       *')
-  print('* Bulkdozer Test Failed *')
-  print('*                       *')
-  print(message)
-  print('*                       *')
-  print('-------------------------')
-
-def _passed():
-  print('-------------------------')
-  print('*                       *')
-  print('*                       *')
-  print('* Bulkdozer Test Passed *')
-  print('*                       *')
-  print('*                       *')
-  print('-------------------------')
 
 def bulkdozer_test():
   print('testing bulkdozer')
 
   if 'verify' in project.task['traffic']:
-    is_admin, profile_id = get_profile_for_api(project.task['auth'], project.task['traffic']['account_id'])
+    is_admin, profile_id = get_profile_for_api(
+        project.task['auth'], project.task['traffic']['account_id'])
 
     for entity in project.task['traffic']['verify']:
-      service = getattr(API_DCM(project.task['auth'], internal=is_admin), entity['type'])
+      service = getattr(
+          API_DCM(project.task['auth'], internal=is_admin), entity['type'])
       cm_entity = service().get(profileId=profile_id, id=entity['id']).execute()
 
       values = entity['values']
 
       for key in values:
         if values[key] != cm_entity[key]:
-          _fail('%s %s expected to be %s, was %s' % (entity['type'], key, values[key], cm_entity[key]))
-          return
-
-    _passed()
+          raise '%s %s expected to be %s, was %s' % (entity['type'], key, values[key], cm_entity[key])

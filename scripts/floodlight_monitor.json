@@ -1,10 +1,10 @@
 {
   "script":{
     "released":"2018-06-15",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"add_alert",
-    "title":"Floodlight Monitor",
+    "title":"CM360 Floodlight Monitor",
     "description":"Monitor floodlight impressions specified in sheet and send email alerts.",
     "image":"https://storage.googleapis.com/starthinker-ui/floodlight_monitor.png",
     "sample":"https://docs.google.com/spreadsheets/d/1tjF5styxMvFJsNETEa5x2F5DSmqleGl71cmujB7Ier8/edit?usp=sharing",

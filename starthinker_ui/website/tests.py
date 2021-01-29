@@ -18,6 +18,7 @@
 
 from django.test import TestCase
 
+
 class WebsiteTest(TestCase):
 
   def test_ui_solution(self):

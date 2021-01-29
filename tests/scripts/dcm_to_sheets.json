@@ -7,7 +7,7 @@
     { "sheets":{
       "__comment__":"Create a blank sheet for this test. The tab is deleted if exists and re-created.",
       "auth":"user",
-      "sheet":"StarThinker DCM Test",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test CM Report ", "default": "Manual"}},
       "tab":"Report",
       "range":"A1",
       "delete":true,
@@ -30,7 +30,7 @@
           "delivery": {"emailOwner": false},
           "format": "CSV",
           "kind": "dfareporting#report",
-          "name": "Test Report Also ( StarThinker )"
+          "name": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test Sheet Report ", "default": "Manual"}}
         }
       },
       "delete":true
@@ -40,12 +40,12 @@
       "auth":"user",
       "report":{
         "account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
-        "name":"Test Report Also ( StarThinker )",
+        "name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test Sheet Report ", "default": "Manual"}},
         "timeout":5
       },
       "out":{
        "sheets":{
-          "sheet":"Starthinker DCM Test",
+          "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test CM Report ", "default": "Manual"}},
           "tab":"Report",
           "range":"A1"
         }
@@ -55,7 +55,7 @@
       "__comment__":"Check if sheet headers are valid. Rest of rows are random.",
       "auth":"user",
       "sheets": {
-        "sheet":"Starthinker DCM Test",
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test CM Report ", "default": "Manual"}},
         "tab":"Report",
         "range":"A1:C1",
         "values":[

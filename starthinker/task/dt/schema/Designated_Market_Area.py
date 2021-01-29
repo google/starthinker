@@ -16,7 +16,12 @@
 #
 ###########################################################################
 
-Designated_Market_Area_Schema = [
-  { "name":"Dma_Region", "type":"STRING", "mode":"NULLABLE" },
-  { "name":"Dma_Region_Id", "type":"INTEGER", "mode":"NULLABLE" }
-]
+Designated_Market_Area_Schema = [{
+    'name': 'Dma_Region',
+    'type': 'STRING',
+    'mode': 'NULLABLE'
+}, {
+    'name': 'Dma_Region_Id',
+    'type': 'INTEGER',
+    'mode': 'NULLABLE'
+}]

@@ -17,16 +17,19 @@
 ###########################################################################
 
 ExchangeSettings_Schema = [
-  { "name":"exchange_id",
-    "type":"INTEGER",
-    "mode":"NULLABLE",
-  },
-  { "name":"seat_id",
-    "type":"STRING",
-    "mode":"NULLABLE",
-  },
-  { "name":"seat_user_name",
-    "type":"STRING",
-    "mode":"NULLABLE",
-  },
+    {
+        'name': 'exchange_id',
+        'type': 'INTEGER',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'seat_id',
+        'type': 'STRING',
+        'mode': 'NULLABLE',
+    },
+    {
+        'name': 'seat_user_name',
+        'type': 'STRING',
+        'mode': 'NULLABLE',
+    },
 ]
