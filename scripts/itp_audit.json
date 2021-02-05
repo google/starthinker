@@ -4,7 +4,7 @@
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_small",
-    "title":"ITP Audit Dashboard ( 2020 )",
+    "title":"DV360 ITP Audit",
     "description":"Dashboard that shows performance metrics across browser to see the impact of ITP.",
     "document":"https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/",
     "test": "https://github.com/google/starthinker/blob/master/tests/scripts/itp_audit.json",
@@ -53,10 +53,10 @@
         "timeout": 90,
         "filters": {
           "FILTER_ADVERTISER": {
-            "values":{"field":{ "name":"dv360_advertiser_ids", "kind":"integer_list", "order":6, "default":"", "description":"Optional: Comma delimited list of DV360 Advertiser ids." }}
+            "values":{"field":{ "name":"dv360_advertiser_ids", "kind":"integer_list", "order":6, "default":[], "description":"Optional: Comma delimited list of DV360 Advertiser ids." }}
           },
           "FILTER_PARTNER": {
-            "values":{"field":{ "name":"dv360_partner_ids", "kind":"integer_list", "order":5, "default":"", "description":"Comma delimited list of DV360 Partner ids." }}
+            "values":{"field":{ "name":"dv360_partner_ids", "kind":"integer_list", "order":5, "default":[], "description":"Comma delimited list of DV360 Partner ids." }}
           }
         },
         "body":{
@@ -108,7 +108,7 @@
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "timeout": 90,
-        "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default": "", "description":"Campaign Manager Account Id." }},
+        "account": {"field":{ "name":"cm_account_id", "kind":"integer", "order":2, "default": "", "description":"Campaign Manager Account Id." }},
         "body":{
          "kind": "dfareporting#report",
          "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Floodlight_", "order":1, "description":"Name of report in DV360, should be unique." }},
@@ -190,7 +190,7 @@
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "timeout": 90,
-        "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default": "", "description":"Campaign Manager Account Id." }},
+        "account": {"field":{ "name":"cm_account_id", "kind":"integer", "order":2, "default": "", "description":"Campaign Manager Account Id." }},
         "filters": {
           "dfa:advertiser": {
             "values":{"field":{ "name":"cm_advertiser_ids", "kind":"integer_list", "order":3, "default":"", "description":"Optional: Comma delimited list of CM advertiser ids." }}
@@ -199,7 +199,6 @@
         "body":{
           "kind": "dfareporting#report",
           "name": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "prefix":"ITP_Audit_Browser_", "default": "ITP_Audit_Dashboard_Browser", "description":"Name of the Campaign Manager browser report." }},
-          "fileName": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "prefix":"ITP_Audit_Browser_", "default": "ITP_Audit_Dashboard_Browser", "description":"Name of the Campaign Manager browser report." }},
           "format": "CSV",
           "type": "STANDARD",
           "criteria": {
@@ -388,7 +387,7 @@
     {
       "itp_audit": {
         "auth": "service",
-        "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default":"", "description":"Campaign Manager Account Id." }},
+        "account": {"field":{ "name":"cm_account_id", "kind":"integer", "order":2, "default":"", "description":"Campaign Manager Account Id." }},
         "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
         "timeout": 60
