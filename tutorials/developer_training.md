@@ -100,7 +100,8 @@ For building and developing new low level tasks in StarThinker and the UI, the f
 
 # Find A Certified Google Developer
 
-Leverage the [Google Developers Certification Directory](https://developers.google.com/certification/directory) to find a developer.
+Leverage the [Google Cloud Certificatied Directory](https://googlecloudcertified.credential.net/) to find a cloud expert to help deploy StarThinker, or a developer to help
+modify a recipe.
 
 ---
 &copy; 2020 Google LLC - Apache License, Version 2.0
