@@ -34,18 +34,13 @@ from starthinker.task.traffic.test import bulkdozer_test
 from starthinker.task.weather_gov.test import weather_gov_test
 
 
-EXIT_ERROR = 1
-EXIT_SUCCESS = 0
-
-
 def test_failed():
   print('FAILED')
-  return EXIT_ERROR
+  raise AssertionError('Test failed.')
 
 
 def test_passed():
   print('PASSED')
-  return EXIT_SUCCESS
 
 
 def schema_compare(expected, actual, path=''):
@@ -241,10 +236,12 @@ def storage_exists():
 
 def drive_exists():
   print('TEST: drive')
-  if file_exists(project.task['auth'], project.task['drive']['file']):
-    if project.task.get('delete', False):
-      file_delete(project.task['auth'], project.task['drive']['file'])
-    test_passed()
+  if 'file' in project.task['drive']:
+    if file_exists(project.task['auth'], project.task['drive']['file']):
+      test_passed()
+  elif 'not_file' in project.task['drive']:
+    if not file_exists(project.task['auth'], project.task['drive']['not_file']):
+      test_passed()
   else:
     test_failed()
 

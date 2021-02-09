@@ -74,22 +74,11 @@
         "range":"A1:R1",
         "values":[
           [ "Report_Day",
-            "Advertiser",
             "Advertiser_Id",
-            "Advertiser_Status",
-            "Advertiser_Integration_Code",
-            "Insertion_Order",
             "Insertion_Order_Id",
-            "Insertion_Order_Status",
-            "Insertion_Order_Integration_Code",
-            "Creative",
             "Creative_Id",
-            "Dcm_Placement_Id",
-            "Creative_Status",
-            "Creative_Source",
-            "Creative_Integration_Code",
             "Advertiser_Currency",
-            "Revenue",
+            "Revenue_Adv_Currency",
             "Impressions"
           ]
         ]

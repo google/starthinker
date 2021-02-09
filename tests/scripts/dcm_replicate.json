@@ -21,23 +21,25 @@
           "delivery": {"emailOwner": false},
           "format": "CSV",
           "kind": "dfareporting#report",
-          "name": "CM Replicate Test"
+          "name": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test CM Replicate ", "default": "Manual"}}
         }
       },
       "delete":true
     }},
-    { "drive": {
-      "__comment__":"Create the test sheet ahead of time and populate the test accounts.",
-      "auth": "user",
-      "copy":{
-        "source":"https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/",
-        "destination":"CM Replicate Test"
+    { "include":{
+      "script":"scripts/dcm_replicate_to_bigquery.json",
+      "parameters":{
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The report to use for the test.", "prefix":"StarThinker Test CM Replicate ", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Replicate_", "default": "Manual"}},
+        "report_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test CM Replicate ", "default": "Manual"}},
+        "account":{"field":{ "name":"account_id", "kind":"integer", "default":"" }},
+        "delete":true
       }
     }},
     { "sheets":{
       "__comment__":"Write account values to the sheet.",
       "auth":"user",
-      "sheet":"CM Replicate Test",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test CM Replicate ", "default": "Manual"}},
       "tab":"Accounts",
       "range":"B1:C",
       "write": {
@@ -51,9 +53,9 @@
     { "include":{
       "script":"scripts/dcm_replicate_to_bigquery.json",
       "parameters":{
-        "recipe_name":"Test",
-        "recipe_slug":"Test",
-        "report_name":"CM Replicate Test",
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The report to use for the test.", "prefix":"StarThinker Test CM Replicate ", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Replicate_", "default": "Manual"}},
+        "report_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test CM Replicate ", "default": "Manual"}},
         "account":{"field":{ "name":"account_id", "kind":"integer", "default":"" }},
         "delete":true
       }
@@ -61,13 +63,13 @@
     { "test": {
       "auth":"user",
       "bigquery":{
-        "dataset":"Test",
-        "table":"CM_Replicate_Test_All",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Replicate_", "default": "Manual"}},
+        "table":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Replicate_", "suffix":"_All", "default": "Manual"}},
         "schema":[
-          { "name":"Account_Id", "type":"INTEGER" },
-          { "name":"Report_Day", "type":"DATE" },
-          { "name":"Platform_Type", "type":"STRING" },
-          { "name":"Impressions", "type":"INTEGER" }
+          { "name":"Account_Id", "type":"INTEGER", "mode":"NULLABLE"},
+          { "name":"Report_Day", "type":"DATE", "mode":"NULLABLE"},
+          { "name":"Platform_Type", "type":"STRING", "mode":"NULLABLE"},
+          { "name":"Impressions", "type":"INTEGER", "mode":"NULLABLE"}
         ]
       }
     }}

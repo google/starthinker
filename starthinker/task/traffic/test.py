@@ -37,4 +37,4 @@ def bulkdozer_test():
 
       for key in values:
         if values[key] != cm_entity[key]:
-          raise '%s %s expected to be %s, was %s' % (entity['type'], key, values[key], cm_entity[key])
+          raise ValueError('%s %s expected to be %s, was %s' % (entity['type'], key, values[key], cm_entity[key]))

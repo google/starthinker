@@ -35,7 +35,7 @@
           {"mode": "NULLABLE", "name": "Rank_Impressions", "type": "INTEGER"},
           {"mode": "NULLABLE", "name": "Deal_Clicks", "type": "INTEGER"},
           {"mode": "NULLABLE", "name": "Open_Clicks", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Rank_Clicks", "type": "INTEGER"},
+          {"mode": "REQUIRED", "name": "Rank_Clicks", "type": "INTEGER"},
           {"mode": "NULLABLE", "name": "Deal_Conversions", "type": "FLOAT"},
           {"mode": "NULLABLE", "name": "Open_Conversions", "type": "FLOAT"},
           {"mode": "NULLABLE", "name": "Rank_Conversions", "type": "INTEGER"},

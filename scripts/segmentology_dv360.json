@@ -107,7 +107,7 @@
             { "name": "Campaign", "type": "STRING", "mode": "REQUIRED" },
             { "name": "Zip", "type": "STRING", "mode": "NULLABLE" },
             { "name": "Impressions", "type": "FLOAT", "mode": "NULLABLE" },
-            { "name": "Clicks", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Clicks", "type": "FLOAT", "mode": "NULLABLE" },
             { "name": "Conversions", "type": "FLOAT", "mode": "NULLABLE" }
           ]
         }

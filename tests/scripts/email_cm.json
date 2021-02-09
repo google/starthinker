@@ -4,6 +4,11 @@
     "copyright":"Copyright 2020 Google LLC"
   },
   "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Email_CM_", "default": "Manual"}},
+      "clear":true
+    }},
     { "dcm":{
       "auth":"user",
       "report":{
@@ -48,14 +53,14 @@
       "parameters":{
         "email":{"field":{ "name":"email", "kind":"string", "description":"Email address to send and read report." }},
         "subject":".*Test Email Report \\( StarThinker \\).*",
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Email_CM_", "default": "Manual"}},
         "table":"Email_Attachment"
       }
     }},
     { "test": {
       "auth":"user",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Email_CM_", "default": "Manual"}},
         "table":"Email_Attachment",
         "schema":[
           { "name":"Report_Day", "type":"DATE", "mode":"NULLABLE" },
@@ -63,6 +68,11 @@
           { "name":"Impressions", "type":"INTEGER", "mode":"NULLABLE" }
         ]
       }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Email_CM_", "default": "Manual"}},
+      "delete":true
     }}
   ]
 }

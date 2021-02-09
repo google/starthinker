@@ -16,10 +16,31 @@
 #
 ###########################################################################
 
+"""Transaltes Google API Discovery Documents into BigQuery schema.
+
+See documentation at:
+  - https://developers.google.com/discovery/v1/reference/apis
+  - https://cloud.google.com/bigquery/docs/schemas#standard_sql_data_types
+
+For example:
+
+  print(json.dumps(
+    Discovery_To_BigQuery('displayvideo', 'v1').resource_schema('Advertiser'),
+    indent=2
+  ))
+
+  print(json.dumps(
+    Discovery_To_BigQuery('dfareporting', 'v3.4').method_schema('sites', 'list'),
+    indent=2
+  ))
+
+"""
+
 import json
 import re
 from copy import deepcopy
 from urllib import request
+from typing import Union
 
 from googleapiclient.schema import Schemas
 
@@ -29,25 +50,80 @@ RECURSION_DEPTH = 5
 
 
 class Discovery_To_BigQuery():
+  """Collection of Discovery to BigQuery operations on a given API version.
 
-  def __init__(self, api, version, key=None, recursion_depth=RECURSION_DEPTH):
+  Class is required to maintain a cache between method calls.  The constructor
+  sets up the API endpoint, all other calls translate data.
+  """
+
+  def __init__(self, api_name:str, api_version:str, key:str=None, recursion_depth:int=RECURSION_DEPTH) -> None:
+    """Initialize the API endpoint.
+
+    Args:
+      api_name: The API endpoint name, for example dfareporting.
+      api_version: The API endpoint version, for example v3.4.
+      key: Optional Google API Key: https://cloud.google.com/docs/authentication/api-keys
+      recursion_depth: If a schem is recursive, how deep to nest.
+
+    Returns:
+      None
+
+    Raises:
+      HttpError: If the wrong API values are specified.
+    """
+
     self.key = key or ''
     self.recursion_depth = recursion_depth
     api_url = 'https://%s.googleapis.com/$discovery/rest?version=%s&key=%s' % (
-        api, version, self.key)
+      api_name,
+      api_version,
+      self.key
+    )
     print('DISCOVERY FETCH:', api_url)
     self.api_document = json.load(request.urlopen(api_url))
 
+
   @staticmethod
-  def preferred_version(api_name, key=None):
+  def preferred_version(api_name:str, key:str=None) -> str:
+    """Helper to get default API version.
+
+    Args:
+      api_name: The API endpoint name, for example dfareporting.
+      key: Optional Google API Key: https://cloud.google.com/docs/authentication/api-keys
+
+    Returns (str):
+      The API version.
+
+    Raises:
+      HttpError: If the wrong API values are specified.
+    """
+
     api_url = 'https://discovery.googleapis.com/discovery/v1/apis?name=%s&key=%s&preferred=true' % (
-        api_name, key or '')
-    print(api_url)
+      api_name,
+      key or ''
+    )
+    print('DISCOVERY FETCH:', api_url)
     api_info = json.load(request.urlopen(api_url))
     return api_info['items'][0]['version']
 
+
   @staticmethod
-  def clean(struct):
+  def clean(struct:Union[dict, list]) -> Union[dict, list]:
+    """Helper to recursively clean up dates for BigQuery.
+
+    Usually applied to the data iterator being written to the BigQuery table.
+    Right now only cleans the date by stripping the '.000Z'
+
+    Args:
+      struct: The object or row being cleaned up.
+
+    Returns:
+      The object or row with the offending data cleaned up.
+
+    Raises:
+      HttpError: If the wrong API values are specified.
+    """
+
     if isinstance(struct, dict):
       for key, value in struct.items():
         if isinstance(value, str) and DATETIME_RE.match(value):
@@ -62,10 +138,18 @@ class Discovery_To_BigQuery():
           Discovery_To_BigQuery.clean(value)
     return struct
 
-  def to_type(self, entry):
 
-    # https://developers.google.com/discovery/v1/type-format
-    # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
+  def to_type(self, entry:dict) -> str:
+    """Convert a Discovery API Document type to a BigQuery type.
+
+    Called internally but exposed for convenience.
+
+    Args:
+      entry: discovery type format: https://developers.google.com/discovery/v1/type-format
+
+    Returns:
+      Bigquery type: https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
+    """
 
     t = entry.get('type')
     f = entry.get('format')
@@ -80,7 +164,7 @@ class Discovery_To_BigQuery():
       return 'INT64'
     elif t == 'number':
       if f == 'double':
-        return 'NUMBER'
+        return 'FLOAT64'
       else:
         return 'FLOAT'
     elif t == 'object':
@@ -102,7 +186,20 @@ class Discovery_To_BigQuery():
       return 'STRING'
 
 
-  def to_schema(self, entry, parents={}):
+  def to_schema(self, entry:dict, parents:dict={}) -> list:
+    """Convert a Discovery API Document schema to a BigQuery schema.
+
+    Recursively crawls the discovery document reference tree to build schema.
+    Leverages recursion depth passed in constructor to stop if necessary.
+
+    Args:
+      entry: a discovery document schema definition.
+      parents: used to track recursion depth for a specific schema branch
+
+    Returns:
+      A BigQuery schema object.
+    """
+
     bigquery_schema = []
 
     for key, value in entry.items():
@@ -165,7 +262,21 @@ class Discovery_To_BigQuery():
     return bigquery_schema
 
 
-  def to_json(self, from_api=None, from_json=None, parents={}):
+  def to_json(self, from_api:dict=None, from_json:dict=None, parents:dict={}) -> dict:
+    """Returns a Discovery API Document schema with all refrences extrapolated.
+
+    Recursively crawls the discovery document reference tree to build document.
+    Leverages recursion depth passed in constructor to stop if necessary.
+
+    Args:
+      from_api: the api schema to extrapolate
+      from_json: new object with references replaced, not passed by caller
+      parents: used to track recursion depth for a specific schema branch
+
+    Returns:
+      A Discovery API Document schema object.
+    """
+
     if from_api:
       from_json = deepcopy(from_api)
 
@@ -188,7 +299,21 @@ class Discovery_To_BigQuery():
     return from_json
 
 
-  def to_struct(self, from_api=None, from_json=None, indent=2):
+  def to_struct(self, from_api:dict=None, from_json:dict=None, indent:int=2) -> str:
+    """Translates a Discovery API Document schema to a BigQuery STRUCT.
+
+    Recursively crawls the discovery document reference tree to build struct.
+    Leverages recursion depth passed in constructor to stop if necessary.
+
+    Args:
+      from_api: the api schema to extrapolate
+      from_json: new object with references replaced, not passed by caller
+      parents: used to track recursion depth for a specific schema branch
+
+    Returns:
+      A BigQuery STRUCT object that can be pasted into a query.
+    """
+
     if from_api:
       from_json = self.to_json(from_api=from_api)
 
@@ -212,13 +337,6 @@ class Discovery_To_BigQuery():
               spaces,
               key
             ))
-          #elif len(value['items']) == 1:
-          #  fields.append('%s[\n%s\n%s] AS %s' % (
-          #    spaces,
-          #    self.to_struct(from_json=value['items'], indent=indent+2),
-          #    spaces,
-          #    key
-          #  ))
           else:
             fields.append('%s[STRUCT(\n%s\n%s)] AS %s' % (
               spaces,
@@ -232,22 +350,62 @@ class Discovery_To_BigQuery():
     return ',\n'.join(fields)
 
 
-  def resource_json(self, resource):
+  def resource_json(self, resource:str) -> dict:
+    """Return Discovery API Document json for a resource.
+
+    Expands all the references.
+
+    Args:
+      resource: the name of the Google API resource
+
+    Returns:
+      A dictionary representation of the resource.
+    """
+
     resource = self.api_document['schemas'][resource]['properties']
     return self.to_json(from_api=resource)
 
 
-  def resource_schema(self, resource):
+  def resource_schema(self, resource:str) -> dict:
+    """Return BigQuery schema for a Discovery API resource.
+
+    Args:
+      resource: the name of the Google API resource
+
+    Returns:
+      A dictionary representation of the resource.
+    """
+
     entry = self.api_document['schemas'][resource]['properties']
     return self.to_schema(entry)
 
 
-  def resource_struct(self, resource):
+  def resource_struct(self, resource:str) -> str:
+    """Return BigQuery STRUCT for a Discovery API resource.
+
+    Args:
+      resource: the name of the Google API resource
+
+    Returns:
+      A string STRUCT of the resource ready to be used in a query.
+    """
+
     resource = self.api_document['schemas'][resource]['properties']
     return self.to_struct(from_api=resource)
 
 
-  def method_schema(self, method):
+  def method_schema(self, method:str) -> dict:
+    """Return BigQuery schema for a Discovery API function.
+
+    Use the full dot notation of the rest API function.
+
+    Args:
+      method: the dot notation name of the Google API function
+
+    Returns:
+      A dictionary representation of the resource.
+    """
+
     endpoint, method = method.rsplit('.', 1)
     resource = self.api_document
 
@@ -272,8 +430,3 @@ class Discovery_To_BigQuery():
       raise ('Unahandled discovery schema.')
     else:
       return schema
-
-
-#x = Discovery_To_BigQuery('displayvideo', 'v1').resource_schema('Advertiser')
-#x = Discovery_To_BigQuery('dfareporting', 'v3.4').method_schema('sites', 'list')
-#print(json.dumps(x, indent=2))

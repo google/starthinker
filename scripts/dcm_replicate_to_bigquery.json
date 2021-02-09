@@ -10,10 +10,20 @@
     "description":"Replicate a report across multiple networks and advertisers.",
     "instructions":[
       "Provide the name or ID of an existing report.",
-      "Run the recipe once to generate the input sheet called CM Replicate For {field:recipe_name}.",
+      "Run the recipe once to generate the input sheet called {recipe_name}.",
       "Enter network and advertiser ids to replicate the report.",
-      "Data will be written to BigQuery &gt; {field:recipe_project} &gt; {field:recipe_slug} &gt; [REPORT NAME]_All"
+      "Data will be written to BigQuery &gt; {recipe_project} &gt; {recipe_slug} &gt; {recipe_slug}_All"
     ],
+    "es":{
+      "title":"CM360 Informe Replicado",
+      "description":"Replica un informe en varias redes y anunciantes.",
+      "instructions":[
+        "Proporcione el nombre o la identificación de un informe existente.",
+        "Ejecute la receta una vez para generar la hoja de entrada llamada {recipe_name}.",
+        "Ingrese los ID de red y de anunciante para replicar el informe.",
+        "Los datos se escribirán en BigQuery &gt; {recipe_project} &gt; {recipe_slug} &gt; {recipe_slug}_All"
+      ]
+    },
     "authors":["kenjora@google.com"]
   },
   "tasks":[
@@ -21,7 +31,7 @@
       "auth": "user",
       "copy":{
         "source":"https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/",
-        "destination":{"field":{ "name":"recipe_name", "prefix":"CM Replicate For ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }}
+        "destination":{"field":{ "name":"recipe_name", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }}
       }
     }},
     { "dataset":{
@@ -37,7 +47,7 @@
         "delete":{"field":{ "name":"delete", "kind":"boolean", "order":6, "default":false, "description":"Use only to reset the reports if setup changes." }}
       },
       "in":{
-        "sheet":{"field":{ "name":"recipe_name", "prefix":"CM Replicate For ", "kind":"string", "order":1, "default":"", "description":"Sheet to read ids from." }},
+        "sheet":{"field":{ "name":"recipe_name", "kind":"string", "order":1, "default":"", "description":"Sheet to read ids from." }},
         "tab":"Accounts"
       },
       "out":{

@@ -22,8 +22,7 @@
         "bigquery":{
           "auth": "service",
           "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
-          "table":"User_Profile",
-          "format":"CSV"
+          "table":"User_Profile"
         }
       }
     }},
@@ -36,7 +35,7 @@
           {"mode": "NULLABLE", "name": "emailAddress", "type": "STRING"},
           {"mode": "NULLABLE", "name": "messagesTotal", "type": "INTEGER"},
           {"mode": "NULLABLE", "name": "threadsTotal", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "historyId", "type": "STRING"}
+          {"mode": "NULLABLE", "name": "historyId", "type": "INTEGER"}
         ]
       }
     }},
