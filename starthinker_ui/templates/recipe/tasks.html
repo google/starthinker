@@ -18,6 +18,7 @@
 ###########################################################################
 {% endcomment %}
 
+{% load i18n %}
 {% load website_app %}
 {% search_scripts SOME %}
 
@@ -31,7 +32,7 @@
     <div class="col s6 m3 l3 right-align" style="overflow-x: hidden; overflow-y: scroll;">
       <ul class="collapsible">
         <li>
-          <div class="collapsible-header"><i class="material-icons">mediation</i><a href="#!" class="trigger_category collection-item" id="trigger_category_all">All</a></div>
+          <div class="collapsible-header"><i class="material-icons">mediation</i><a href="#!" class="trigger_category collection-item" id="trigger_category_all">{% trans "All" %}</a></div>
         </li>
         {% for from, tos in categories %}
           <li>
@@ -57,10 +58,10 @@
 
     <div id="task_add_details" class="col s12 m6 l6" style="overflow-x: hidden;overflow-y: scroll;" >
       <div class="center-align" style="margin-top:60px;">
-        <h3>Add A Script To Your Recipe Workflow</h3>
+        <h3>{% trans "Add A Script To Your Recipe Workflow" %}</h3>
         <i class="material-icons large blue-text">add_circle</i>
-        <p class="flow-text center-align">Use the filters on the left to find a script, then click the add icon to add it to the end of the workflow.</p>
-        <p class="center-align">This filters scroll <i class="small material-icons">swap_vert</i>.</p>
+        <p class="flow-text center-align">{% trans "Use the filters on the left to find a script, then click the add icon to add it to the end of the workflow." %}</p>
+        <p class="center-align">{% trans 'This filters scroll <i class="small material-icons">swap_vert</i>.' %}</p>
       </div>
       {% for script in scripts %}
         <div id="task_add_detail_{{ script.get_tag }}" class="center-align" style="display:none;margin-top:60px;">
@@ -93,31 +94,31 @@
           <br/><br/>
           {% if script.get_sample %}
             <a class="btn blue waves-effect waves-light" href="{{ script.get_sample }}" target="_blank">
-              <i class="material-icons right">directions_bike</i>Sample
+              <i class="material-icons right">directions_bike</i>{% trans "Sample " %}
             </a>
           {% endif %}
 
           {% if script.get_test %}
             <a class="btn blue waves-effect waves-light" href="{{ script.get_test }}" target="_blank">
-              <i class="material-icons right">thumb_up</i>Example Test
+              <i class="material-icons right">thumb_up</i>{% trans "Example Test" %}
             </a>
           {% endif %}
 
           {% if script.get_documentation %}
             <a class="btn blue waves-effect waves-light" href="{{ script.get_documentation }}" target="_blank">
-              <i class="material-icons right">list</i>Documentation
+              <i class="material-icons right">list</i>{% trans "Documentation" %}
             </a>
           {% endif %}
 
           {% if script.get_open_source %}
             <a class="menu_link btn blue waves-effect waves-light" href="{{ script.get_open_source }}" target="_blank">
-              <i class="material-icons right">list</i>Git Hub
+              <i class="material-icons right">list</i>{% trans "Git Hub" %}
             </a>
             <a class="menu_link btn blue waves-effect waves-light" href="{{ script.get_link_colab }}" target="_blank">
-              <i class="material-icons right">copyright</i>Data Pill Colab
+              <i class="material-icons right">copyright</i>{% trans "Data Pill Colab" %}
             </a>
             <a class="menu_link btn blue waves-effect waves-light" href="{{ script.get_link_airflow }}" target="_blank">
-              <i class="material-icons right">copyright</i>Airflow DAG
+              <i class="material-icons right">copyright</i>{% trans "Airflow DAG" %}
             </a>
           {% endif %}
           <br/>

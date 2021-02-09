@@ -20,6 +20,8 @@
 ###########################################################################
 {% endcomment %}
 
+{% load i18n %}
+
 {% block content %}
 
   <form action="." method="post">
@@ -30,37 +32,37 @@
         <br/>
         <p class="right-align">
           <a href="https://cloud.google.com/" target="_blank" class="waves-effect waves-light btn blue form_button">
-            Create Cloud Project <i class="material-icons right">build</i>
+            {% trans "Create Cloud Project" %} <i class="material-icons right">build</i>
           </a>
         </p>
         <p class="right-align">
           <a href="https://console.cloud.google.com/iam-admin/serviceaccounts/create" target="_blank" class="waves-effect waves-light btn blue form_button">
-            Create Service JSON <i class="material-icons right">android</i>
+            {% trans "Create Service JSON" %} <i class="material-icons right">android</i>
           </a>
         </p>
         <p class="right-align">
           <a href="https://console.cloud.google.com/iam-admin/iam" target="_blank" class="waves-effect waves-light btn blue form_button">
-            Permission Service<i class="material-icons right">security</i>
+            {% trans "Permission Service" %}<i class="material-icons right">security</i>
           </a>
         </p>
         <p class="right-align">
           <a href="https://cloud.google.com/docs/authentication/api-keys" target="_blank" class="waves-effect waves-light btn blue form_button">
-            API Key<i class="material-icons right">vpn_key</i>
+            {% trans "API Key" %}<i class="material-icons right">vpn_key</i>
           </a>
         </p>
         <p class="right-align">
           <button class="btn green waves-effect waves-light" type="submit" name="action">
-            Save <i class="material-icons right">save</i>
+            {% trans "Save" %}<i class="material-icons right">save</i>
           </button>
         </p>
 
         <br/>
-        <p class="right-align"><strong>Roles we recommend:</strong>
-          <br/>bigquery.jobs.create
-          <br/>bigquery.jobs.get
-          <br/>bigquery.tables.create
-          <br/>bigquery.tables.update
-          <br/>bigquery.tables.updateData
+        <p class="right-align"><strong>{% trans "Roles we recommend:" %}</strong>
+          <br/>{% trans "bigquery.jobs.create" %}
+          <br/>{% trans "bigquery.jobs.get" %}
+          <br/>{% trans "bigquery.tables.create" %}
+          <br/>{% trans "bigquery.tables.update" %}
+          <br/>{% trans "bigquery.tables.updateData" %}
         </p>
 
       </div>
@@ -68,8 +70,8 @@
       <div class="col s12 m8 l9 left-align">
 
           <div class="card-panel">
-            <h3>Edit Project</h3>
-            <p class="flow-text">Copy and paste the JSON service credentials here.  You will be able to select this project for each recipe that requires Google Cloud resources.</p>
+            <h3>{% trans "Edit Project" %}</h3>
+            <p class="flow-text">{% trans "Copy and paste the JSON service credentials here.  You will be able to select this project for each recipe that requires Google Cloud resources." %}</p>
             {% with fields=form_project %}
               {% include "form_fields.html" %}
             {% endwith %}
@@ -78,7 +80,7 @@
 
           {% if form_project.instance.pk %}
             <a class="btn waves-effect waves-light red darken-2 right" href="{{ form_project.instance.link_delete }}">
-              Delete <i class="material-icons right">delete</i>
+              {% trans "Delete" %} <i class="material-icons right">delete</i>
             </a>
           {% endif %}
 

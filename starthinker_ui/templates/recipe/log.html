@@ -18,6 +18,7 @@
 ###########################################################################
 {% endcomment %}
 
+{% load i18n %}
 {% load website_app %}
 
 <p class="center-align"><strong>{{ log.status }} - {{ log.percent }}%</strong></p>
@@ -26,9 +27,9 @@
 <table id="stats_accounts" class="responsive-table list">
   <thead>
     <tr>
-      <th style="min-width:30px;" class="center">Hour</th>
-      <th style="min-width:120px;">Task</th>
-      <th>Output / Error</th>
+      <th style="min-width:30px;" class="center">{% trans "Hour" %}</th>
+      <th style="min-width:120px;">{% trans "Task" %}</th>
+      <th>{% trans "Output / Error" %}</th>
     </tr>
   </thead>
   <tbody>
@@ -42,10 +43,10 @@
           <br/>{{ task.event }}
           <br/>{{ task.ago }}
           {% if task.hours %}
-            <br/>Hours: {{ task.hours|join:"," }}
+            <br/>{% trans "Hours:" %} {{ task.hours|join:"," }}
           {% endif %}
         </td>
-        <td class="left-align"><pre>{{ task.stdout }}</pre></pre>{{ task.stderr }}</pre></td>
+        <td class="left-align"><pre>{{ task.stdout }}</pre><pre>{{ task.stderr }}</pre></td>
       </tr>
     {% endfor %}
   </tbody>

@@ -20,6 +20,7 @@
 ###########################################################################
 {% endcomment %}
 
+{% load i18n %}
 {% load website_app %}
 
 {% block css %}
@@ -30,62 +31,62 @@
 
 {% block content %}
 
-  <h1>Script Download
+  <h1>{% trans "Script Download" %}
     <a href="/recipe/edit/{{ recipe }}/"><i class="material-icons blue-text">arrow_back</i></a>
   </h1>
-  <p class="flow-text">Share your recipe with anyone outside of your organization using Google Cloud...</p>
+  <p class="flow-text">{% trans "Share your recipe with anyone outside of your organization using Google Cloud..." %}</p>
 
   <div class="deploy">
-    <h3>JSON</h3>
-    <h4>Raw Script</h4>
+    <h3>{% trans "JSON" %}</h3>
+    <h4>{% trans "Raw Script" %}</h4>
     <p>
       <a id="solution_button" class="btn-large blue waves-effect waves-light" href="/recipe/download/json/{{ recipe }}/">
-        Download <i class="material-icons right">file_download</i>
+        {% trans "Download" %} <i class="material-icons right">file_download</i>
       </a>
     </p>
-    <p>Then follow <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_developer.md" target="_blank"> developer deploy</a> or <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_package.md" target="_blank">package deploy</a> instructions to execute.</p>
+    <p>{% trans 'Then follow <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_developer.md" target="_blank">developer deploy</a> or <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_package.md" target="_blank">package deploy</a> instructions to execute.' %}</p>
     <hr/>
     <ul>
-      <li>Best for <strong>developer / operations / modification</strong>.</li>
-      <li>Access to a <a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project</a>.</li>
-      <li>Ability to install, troubleshoot, and run Python.</li>
+      <li>{% trans "Best for <strong>developer / operations / modification</strong>." %}</li>
+      <li>{% trans 'Access to a <a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project</a>.' %}</li>
+      <li>{% trans "Ability to install, troubleshoot, and run Python." %}</li>
     </ul>
   </div>
 
   <div class="deploy">
-    <h3>Collaboratory</h3>
-    <h4>Data Pill</h4>
+    <h3>{% trans "Collaboratory" %}</h3>
+    <h4>{% trans "Data Pill" %}</h4>
     <p>
       <a id="solution_button" class="btn-large blue waves-effect waves-light" href="/recipe/download/colab/{{ recipe }}/">
-        Download <i class="material-icons right">file_download</i>
+        {% trans "Download" %} <i class="material-icons right">file_download</i>
       </a>
     </p>
-    <p>Then visit <a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a> and open the downloaded notebook.</p>
+    <p>{% trans "Then visit <a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a> and open the downloaded notebook." %}</p>
     <hr/>
     <ul>
-      <li>Best for <strong>trade desk / analyst / workshop</strong>.</li>
-      <li>Access to a <a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project</a>.</li>
-      <li>Access to <a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a>.</li>
+      <li>{% trans "Best for <strong>trade desk / analyst / workshop</strong>." %}</li>
+      <li>{% trans 'Access to a <a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project</a>.' %}</li>
+      <li>{% trans 'Access to <a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a>.' %}</li>
     </ul>
   </div>
 
   <div class="deploy">
-    <h3>Composer</h3>
-    <h4>Airflow DAG</h4>
+    <h3>{% trans "Composer" %}</h3>
+    <h4>{% trans "Airflow DAG" %}</h4>
     <p>
       <a id="solution_button" class="btn-large blue waves-effect waves-light" href="/recipe/download/airflow/{{ recipe }}/">
-        Download <i class="material-icons right">file_download</i>
+        {% trans "Download" %} <i class="material-icons right">file_download</i>
       </a>
-    <p>For exection as a DAG using Apache Airflow and Google Cloud Composer. Follow StarThinker <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_airflow.md" target="_blank"> airflow deploy</a> instructions.</p>
+    <p>{% trans 'For exection as a DAG using Apache Airflow and Google Cloud Composer. Follow StarThinker <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_airflow.md" target="_blank">airflow deploy</a> instructions.' %}</p>
     <hr/>
     <ul>
-      <li>Best for <strong>developer / partner / production</strong>.</h4>
-      <li>Access to a <a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project</a>.</li>
-      <li>Access to <a href="https://cloud.google.com/composer/" target="_blank">Google Cloud Composer</a>.</li>
+      <li>{% trans "Best for <strong>developer / partner / production</strong>." %}</h4>
+      <li>{% trans 'Access to a <a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project"</a>.' %}</li>
+      <li>{% trans 'Access to <a href="https://cloud.google.com/composer/" target="_blank">Google Cloud Composer</a>.' %}</li>
     </ul>
   </div>
 
-  <h3 id="code-tasks">More Documentation On GitHub</h3>
-  <p class="flow-text">See <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md">StarThinker Tutorials</a> for complete documentation.</p>
+  <h3 id="code-tasks">{% trans "More Documentation On GitHub" %}</h3>
+  <p class="flow-text">{% trans 'See <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md">StarThinker Tutorials</a> for complete documentation.' %}</p>
 
 {% endblock %}

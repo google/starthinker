@@ -19,6 +19,7 @@
 import json
 
 from django.db import models
+from django.utils.translation import gettext as _
 
 from starthinker_ui.account.models import Account
 
@@ -32,11 +33,11 @@ class Project(models.Model):
 
   def __str__(self):
     if self.share == 'domain':
-      return 'DOMAIN: %s | CAUTION: Be sure you trust this project.' % self.identifier
+      return _('DOMAIN: %s | CAUTION: Be sure you trust this project.' % self.identifier)
     elif self.share == 'global':
-      return 'GLOBAL: %s | CAUTION: Be sure you trust this project.' % self.identifier
+      return _('GLOBAL: %s | CAUTION: Be sure you trust this project.' % self.identifier)
     else:
-      return 'USER: %s | SAFE: Only you are using this service account.' % self.identifier
+      return _('USER: %s | SAFE: Only you are using this service account.' % self.identifier)
 
   def link_edit(self):
     return '/project/edit/%d/' % self.pk

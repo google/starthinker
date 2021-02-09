@@ -19,6 +19,9 @@
 # General StarThinker constants that can also be used from the command line interface
 from starthinker.config import UI_ROOT, UI_PROJECT, UI_CLIENT, UI_SERVICE, UI_CRON, UI_ZONE, DEVELOPMENT_MODE
 
+# See available translations (this is just the default if browser does not provide)
+LANGUAGE_CODE = 'en-us'
+
 # Load all technical settings
 from starthinker_ui.ui.framework import *
 
@@ -31,9 +34,6 @@ DEBUG = DEVELOPMENT_MODE
 
 # Optional tracking parameter
 GOOGLE_ANALYTICS = os.environ.get('STARTHINKER_ANALYTICS', '')
-
-# Currently StarThinker is in English, internationalization TBD
-LANGUAGE_CODE = 'en-us'
 
 # Only affects logging on local server, all times in UI are recipe specific.
 TIME_ZONE = 'America/Los_Angeles'

@@ -1,0 +1,1122 @@
+# StarThinker UI Translations
+# Copyright (C) 2021 Google LLC
+# Licensed under the Apache License, Version 2.0
+# Help <starthinker-help@google.com>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-09 10:04-0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: project/models.py:36
+#, python-format
+msgid "DOMAIN: %s | CAUTION: Be sure you trust this project."
+msgstr ""
+
+#: project/models.py:38
+#, python-format
+msgid "GLOBAL: %s | CAUTION: Be sure you trust this project."
+msgstr ""
+
+#: project/models.py:40
+#, python-format
+msgid "USER: %s | SAFE: Only you are using this service account."
+msgstr ""
+
+#: recipe/forms.py:28
+msgid "Monday"
+msgstr ""
+
+#: recipe/forms.py:29
+msgid "Tuesday"
+msgstr ""
+
+#: recipe/forms.py:30
+msgid "Wednesday"
+msgstr ""
+
+#: recipe/forms.py:31
+msgid "Thursday"
+msgstr ""
+
+#: recipe/forms.py:32
+msgid "Friday"
+msgstr ""
+
+#: recipe/forms.py:33
+msgid "Saturday"
+msgstr ""
+
+#: recipe/forms.py:34
+msgid "Sunday"
+msgstr ""
+
+#: recipe/forms.py:66
+msgid "Identify this recipe in list of recipes."
+msgstr ""
+
+#: recipe/forms.py:67
+msgid ""
+"Choose a <b>Google Cloud Project Service Credential</b> uploaded to Projects."
+msgstr ""
+
+#: recipe/forms.py:68
+msgid "Frame of reference for all recipe times."
+msgstr ""
+
+#: recipe/forms.py:69
+msgid "Days of week to execute recipe."
+msgstr ""
+
+#: recipe/forms.py:70
+msgid "Hours of day to execute recipe."
+msgstr ""
+
+#: recipe/forms.py:71
+msgid "To pause recipe, uncheck this."
+msgstr ""
+
+#: recipe/forms.py:74
+#, python-format
+msgid "%s Recipe"
+msgstr ""
+
+#: recipe/forms.py:93
+msgid "Schedule"
+msgstr ""
+
+#: recipe/models_fields.py:37 recipe/models_fields.py:50
+msgid "Bad JSON string."
+msgstr ""
+
+#: templates/input_checkbox_multiple.html:26
+msgid "Off"
+msgstr ""
+
+#: templates/input_checkbox_multiple.html:29
+msgid "On"
+msgstr ""
+
+#: templates/page.html:90
+msgid "Logo"
+msgstr ""
+
+#: templates/page.html:96 templates/page.html:122
+#: templates/project/project_list.html:35 templates/recipe/recipe_list.html:43
+msgid "Recipes"
+msgstr ""
+
+#: templates/page.html:97
+msgid "Projects"
+msgstr ""
+
+#: templates/page.html:98 templates/page.html:124
+msgid "Solutions"
+msgstr ""
+
+#: templates/page.html:99 templates/page.html:125
+msgid "Help"
+msgstr ""
+
+#: templates/page.html:101 templates/page.html:127
+msgid "Logout"
+msgstr ""
+
+#: templates/page.html:104 templates/page.html:117
+msgid "Avatar"
+msgstr ""
+
+#: templates/page.html:123 templates/project/project_list.html:33
+msgid "Project"
+msgstr ""
+
+#: templates/project/project_edit.html:35
+msgid "Create Cloud Project"
+msgstr ""
+
+#: templates/project/project_edit.html:40
+msgid "Create Service JSON"
+msgstr ""
+
+#: templates/project/project_edit.html:45
+msgid "Permission Service"
+msgstr ""
+
+#: templates/project/project_edit.html:50
+msgid "API Key"
+msgstr ""
+
+#: templates/project/project_edit.html:55 templates/recipe/recipe_edit.html:180
+#: templates/website/help.html:133
+msgid "Save"
+msgstr ""
+
+#: templates/project/project_edit.html:60
+msgid "Roles we recommend:"
+msgstr ""
+
+#: templates/project/project_edit.html:61
+msgid "bigquery.jobs.create"
+msgstr ""
+
+#: templates/project/project_edit.html:62
+msgid "bigquery.jobs.get"
+msgstr ""
+
+#: templates/project/project_edit.html:63
+msgid "bigquery.tables.create"
+msgstr ""
+
+#: templates/project/project_edit.html:64
+msgid "bigquery.tables.update"
+msgstr ""
+
+#: templates/project/project_edit.html:65
+msgid "bigquery.tables.updateData"
+msgstr ""
+
+#: templates/project/project_edit.html:73
+msgid "Edit Project"
+msgstr ""
+
+#: templates/project/project_edit.html:74
+msgid ""
+"Copy and paste the JSON service credentials here.  You will be able to "
+"select this project for each recipe that requires Google Cloud resources."
+msgstr ""
+
+#: templates/project/project_edit.html:83 templates/recipe/recipe_edit.html:214
+msgid "Delete"
+msgstr ""
+
+#: templates/project/project_list.html:28
+msgid "Create a project and use it to deploy recipes."
+msgstr ""
+
+#: templates/project/project_list.html:44
+msgid "LEVEL SHARE"
+msgstr ""
+
+#: templates/recipe/download.html:34
+msgid "Script Download"
+msgstr ""
+
+#: templates/recipe/download.html:37
+msgid ""
+"Share your recipe with anyone outside of your organization using Google "
+"Cloud..."
+msgstr ""
+
+#: templates/recipe/download.html:40
+msgid "JSON"
+msgstr ""
+
+#: templates/recipe/download.html:41
+msgid "Raw Script"
+msgstr ""
+
+#: templates/recipe/download.html:44 templates/recipe/download.html:61
+#: templates/recipe/download.html:78 templates/recipe/recipe_edit.html:209
+#: templates/website/help.html:137
+msgid "Download"
+msgstr ""
+
+#: templates/recipe/download.html:47
+msgid ""
+"Then follow <a href=\"https://github.com/google/starthinker/blob/master/"
+"tutorials/deploy_developer.md\" target=\"_blank\">developer deploy</a> or <a "
+"href=\"https://github.com/google/starthinker/blob/master/tutorials/"
+"deploy_package.md\" target=\"_blank\">package deploy</a> instructions to "
+"execute."
+msgstr ""
+
+#: templates/recipe/download.html:50
+msgid "Best for <strong>developer / operations / modification</strong>."
+msgstr ""
+
+#: templates/recipe/download.html:51 templates/recipe/download.html:68
+msgid ""
+"Access to a <a href=\"https://github.com/google/starthinker/blob/master/"
+"tutorials/cloud_project.md\" target=\"_blank\">Google Cloud Project</a>."
+msgstr ""
+
+#: templates/recipe/download.html:52
+msgid "Ability to install, troubleshoot, and run Python."
+msgstr ""
+
+#: templates/recipe/download.html:57
+msgid "Collaboratory"
+msgstr ""
+
+#: templates/recipe/download.html:58
+msgid "Data Pill"
+msgstr ""
+
+#: templates/recipe/download.html:64
+msgid "Then visit <a href="
+msgstr ""
+
+#: templates/recipe/download.html:67
+msgid "Best for <strong>trade desk / analyst / workshop</strong>."
+msgstr ""
+
+#: templates/recipe/download.html:69
+msgid ""
+"Access to <a href=\"https://colab.research.google.com/\" target=\"_blank"
+"\">Google Collaboratory</a>."
+msgstr ""
+
+#: templates/recipe/download.html:74
+msgid "Composer"
+msgstr ""
+
+#: templates/recipe/download.html:75 templates/recipe/tasks.html:121
+msgid "Airflow DAG"
+msgstr ""
+
+#: templates/recipe/download.html:80
+msgid ""
+"For exection as a DAG using Apache Airflow and Google Cloud Composer. Follow "
+"StarThinker <a href=\"https://github.com/google/starthinker/blob/master/"
+"tutorials/deploy_airflow.md\" target=\"_blank\">airflow deploy</a> "
+"instructions."
+msgstr ""
+
+#: templates/recipe/download.html:83
+msgid "Best for <strong>developer / partner / production</strong>."
+msgstr ""
+
+#: templates/recipe/download.html:84
+msgid ""
+"Access to a <a href=\"https://github.com/google/starthinker/blob/master/"
+"tutorials/cloud_project.md\" target=\"_blank\">Google Cloud Project\"</a>."
+msgstr ""
+
+#: templates/recipe/download.html:85
+msgid ""
+"Access to <a href=\"https://cloud.google.com/composer/\" target=\"_blank"
+"\">Google Cloud Composer</a>."
+msgstr ""
+
+#: templates/recipe/download.html:89
+msgid "More Documentation On GitHub"
+msgstr ""
+
+#: templates/recipe/download.html:90
+msgid ""
+"See <a href=\"https://github.com/google/starthinker/blob/master/tutorials/"
+"README.md\">StarThinker Tutorials</a> for complete documentation."
+msgstr ""
+
+#: templates/recipe/log.html:30
+msgid "Hour"
+msgstr ""
+
+#: templates/recipe/log.html:31
+msgid "Task"
+msgstr ""
+
+#: templates/recipe/log.html:32
+msgid "Output / Error"
+msgstr ""
+
+#: templates/recipe/log.html:46
+msgid "Hours:"
+msgstr ""
+
+#: templates/recipe/recipe_edit.html:177 templates/website/help.html:130
+msgid "Add"
+msgstr ""
+
+#: templates/recipe/recipe_edit.html:187 templates/website/help.html:135
+msgid "Run"
+msgstr ""
+
+#: templates/recipe/recipe_edit.html:193
+msgid "Cancel"
+msgstr ""
+
+#: templates/recipe/recipe_edit.html:198 templates/website/help.html:136
+msgid "Log"
+msgstr ""
+
+#: templates/recipe/recipe_edit.html:222
+msgid ""
+"Click <a href=\"/recipe/edit/\"><i class=\"material-icons blue-text"
+"\">access_time</i></a> for scheduled recipes."
+msgstr ""
+
+#: templates/recipe/recipe_edit.html:224
+msgid ""
+"Click <a href=\"/recipe/manual/\"><i class=\"material-icons blue-text"
+"\">build</i></a> for manual recipes."
+msgstr ""
+
+#: templates/recipe/recipe_edit.html:227
+msgid ""
+"To move a step click <i class=\"material-icons blue-text\">drag_handle</i> "
+"to select a card. Then click another <i class=\"material-icons blue-text"
+"\">drag_handle</i> to place it above that card."
+msgstr ""
+
+#: templates/recipe/recipe_edit.html:228
+msgid ""
+"To delete a step click <i class=\"material-icons blue-text\">delete</i> to "
+"mark a step for deletion. Then click save to commit the delete."
+msgstr ""
+
+#: templates/recipe/recipe_list.html:44
+msgid "Assemble recipes that run on a schedule or are triggered manually."
+msgstr ""
+
+#: templates/recipe/recipe_list.html:48
+msgid "Add Scheduled"
+msgstr ""
+
+#: templates/recipe/recipe_list.html:51
+msgid "Add Manual"
+msgstr ""
+
+#: templates/recipe/recipe_list.html:57 templates/recipe/tasks.html:35
+#: templates/website/solution.html:36 templates/website/solutions.html:78
+#: templates/website/solutions.html:98
+msgid "All"
+msgstr ""
+
+#: templates/recipe/recipe_list.html:60 templates/website/help.html:161
+msgid "Running"
+msgstr ""
+
+#: templates/recipe/recipe_list.html:63 templates/website/help.html:166
+msgid "Finished"
+msgstr ""
+
+#: templates/recipe/recipe_list.html:66
+msgid "Errors"
+msgstr ""
+
+#: templates/recipe/recipe_list.html:69 templates/website/help.html:171
+msgid "Paused"
+msgstr ""
+
+#: templates/recipe/recipe_list.html:72
+msgid "Manual"
+msgstr ""
+
+#: templates/recipe/recipe_list.html:97
+msgid "Need A Custom Task?"
+msgstr ""
+
+#: templates/recipe/recipe_list.html:98
+msgid ""
+"Ask Google gTech to write one for you <a href=\"mailto:starthinker-"
+"help@google.com?subject=Custom+StarThinker+Recipe\">starthinker-help@google."
+"com</a>."
+msgstr ""
+
+#: templates/recipe/tasks.html:61
+msgid "Add A Script To Your Recipe Workflow"
+msgstr ""
+
+#: templates/recipe/tasks.html:63
+msgid ""
+"Use the filters on the left to find a script, then click the add icon to add "
+"it to the end of the workflow."
+msgstr ""
+
+#: templates/recipe/tasks.html:64
+msgid "This filters scroll <i class=\"small material-icons\">swap_vert</i>."
+msgstr ""
+
+#: templates/recipe/tasks.html:97
+msgid "Sample "
+msgstr ""
+
+#: templates/recipe/tasks.html:103
+msgid "Example Test"
+msgstr ""
+
+#: templates/recipe/tasks.html:109
+msgid "Documentation"
+msgstr ""
+
+#: templates/recipe/tasks.html:115
+msgid "Git Hub"
+msgstr ""
+
+#: templates/recipe/tasks.html:118
+msgid "Data Pill Colab"
+msgstr ""
+
+#: templates/website/help.html:37
+msgid "Setup"
+msgstr ""
+
+#: templates/website/help.html:41
+msgid "Recipe"
+msgstr ""
+
+#: templates/website/help.html:45
+msgid "Sharing"
+msgstr ""
+
+#: templates/website/help.html:49 templates/website/help.html:149
+msgid "Status"
+msgstr ""
+
+#: templates/website/help.html:53 templates/website/help.html:244
+msgid "Warnings"
+msgstr ""
+
+#: templates/website/help.html:57 templates/website/help.html:308
+msgid "Debugging"
+msgstr ""
+
+#: templates/website/help.html:63
+msgid "Setup Project"
+msgstr ""
+
+#: templates/website/help.html:66
+msgid ""
+"Almost every recipe in StarThinker uses a <a href=\"http://cloud.google.com"
+"\" target=\"_blank\">Google Cloud Project</a> to store data.  ALL DATA COSTS "
+"ARE BILLED TO THE GOOGLE CLOUD SERVICE CREDENTIALS SPECIFIED IN EACH RECIPE."
+msgstr ""
+
+#: templates/website/help.html:68
+msgid ""
+"To add a Google Cloud Project for billing and permissions, create a <a href="
+"\"https://console.cloud.google.com/iam-admin/serviceaccounts/create\" target="
+"\"_blank\">Service Credentials</a>, download it, and enter the JSON into the "
+"<a href=\"https://raw.githubusercontent.com/google/starthinker/master/"
+"tutorials/images/ui_project.png\">StarThinker Project page</a>."
+msgstr ""
+
+#: templates/website/help.html:70
+msgid ""
+"To add a Google Cloud Project for billing and permissions, create a <a href="
+"\"https://console.cloud.google.com/iam-admin/serviceaccounts/create\" target="
+"\"_blank\">Service Credentials</a>, download it, and enter the JSON into the "
+"<a href=\"/project/edit/\">StarThinker Project page</a>."
+msgstr ""
+
+#: templates/website/help.html:76
+msgid ""
+"https://github.com/google/starthinker/raw/master/tutorials/images/"
+"cloud_service.png"
+msgstr ""
+
+#: templates/website/help.html:76
+msgid "Cloud service setup diagram."
+msgstr ""
+
+#: templates/website/help.html:79
+msgid ""
+"https://github.com/google/starthinker/raw/master/tutorials/images/ui_project."
+"png"
+msgstr ""
+
+#: templates/website/help.html:79
+msgid "Screenshot of StarThinker Edit Project page."
+msgstr ""
+
+#: templates/website/help.html:82
+msgid "Getting Service Credentials"
+msgstr ""
+
+#: templates/website/help.html:83
+msgid ""
+"Each user should have their own Google Cloud Project to avoid accidental "
+"data sharing and allow easier auditing."
+msgstr ""
+
+#: templates/website/help.html:85
+msgid ""
+"Visit Google Cloud Project &gt; APIs & Services &gt; Credentials &gt; Create "
+"Credentials &gt; Service Account Key &gt; New Service Account"
+msgstr ""
+
+#: templates/website/help.html:86
+msgid "Service Account Name is starthinker."
+msgstr ""
+
+#: templates/website/help.html:87
+msgid "Click Create."
+msgstr ""
+
+#: templates/website/help.html:88
+msgid ""
+"The most robust role is Project Editor, review your role choice with your "
+"security team."
+msgstr ""
+
+#: templates/website/help.html:89
+msgid "Click Continue."
+msgstr ""
+
+#: templates/website/help.html:90
+msgid "Click Create Key."
+msgstr ""
+
+#: templates/website/help.html:91
+msgid "Key Type is JSON."
+msgstr ""
+
+#: templates/website/help.html:92
+msgid "Click Create and open the downloaded JSON file."
+msgstr ""
+
+#: templates/website/help.html:94
+msgid ""
+"Copy the contents and paste into the <a href=\"https://raw.githubusercontent."
+"com/google/starthinker/master/tutorials/images/ui_project.png\"> StarThinker "
+"Project page Service field</a>."
+msgstr ""
+
+#: templates/website/help.html:96
+msgid ""
+"Copy the contents and paste into the <a href=\"/project/edit/\"> StarThinker "
+"Project page Service field</a>."
+msgstr ""
+
+#: templates/website/help.html:98
+msgid "Click save."
+msgstr ""
+
+#: templates/website/help.html:100
+msgid ""
+"The new project will become a dropdown option on <a href=\"https://raw."
+"githubusercontent.com/google/starthinker/master/tutorials/images/ui_recipe."
+"png\"> StarThinker Recipe pages</a>."
+msgstr ""
+
+#: templates/website/help.html:102
+msgid ""
+"The new project will become a dropdown option on <a href=\"/recipe/edit/\"> "
+"StarThinker Recipe pages</a>."
+msgstr ""
+
+#: templates/website/help.html:105
+msgid "WARNING:"
+msgstr ""
+
+#: templates/website/help.html:105
+msgid ""
+"If you share your service credentials, other users will be able to use them "
+"in their recipes but not download or view them. Sharing the service "
+"credentials grants other users <a href=\"https://console.cloud.google.com/"
+"iam-admin/iam\" target=\"_blank\"> all the permissions your service account "
+"has</a>, use extreme caution."
+msgstr ""
+
+#: templates/website/help.html:111
+msgid "Run Recipe"
+msgstr ""
+
+#: templates/website/help.html:112
+msgid ""
+"All recipes run as the logged in user and leverage the selected <a href="
+"\"#help_setup\">Service Account</a> to write to Google Cloud endpoints. "
+"StarThinker DOES NOT grant any additional permissions or access to any "
+"products or endpoints used in the recipe."
+msgstr ""
+
+#: templates/website/help.html:115
+msgid ""
+"https://github.com/google/starthinker/raw/master/tutorials/images/ui_recipe."
+"png"
+msgstr ""
+
+#: templates/website/help.html:115
+msgid "Screenshot of StarThinker Edit Recipe page."
+msgstr ""
+
+#: templates/website/help.html:118
+msgid "Creating A Recipe Workflow"
+msgstr ""
+
+#: templates/website/help.html:119
+msgid ""
+"Recipes can be manual, initiated by the user and run only once, or "
+"scheduled, running at set times on set days. Other than the schedule, all "
+"steps are the same."
+msgstr ""
+
+#: templates/website/help.html:122
+msgid ""
+"Visit the <a href=\"https://raw.githubusercontent.com/google/starthinker/"
+"master/tutorials/images/ui_recipe.png\">scheduled</a> or <a href=\"https://"
+"raw.githubusercontent.com/google/starthinker/master/tutorials/images/"
+"ui_manual.png\">manual</a> recipe page."
+msgstr ""
+
+#: templates/website/help.html:124
+msgid ""
+"Visit the <a href=\"/recipe/edit/\">scheduled</a> or <a href=\"/recipe/"
+"manual/\">manual</a> recipe page."
+msgstr ""
+
+#: templates/website/help.html:126
+msgid ""
+"Name the recipe, the name is often used to create assets such as Sheets and "
+"Dataset by some recipes, choose the name to reflect an account or client. If "
+"changed, already created assets may become disconnected."
+msgstr ""
+
+#: templates/website/help.html:127
+msgid ""
+"If the recipe writes to Google Cloud, select the Google Cloud Project "
+"Service Account, <a href=\"#help_setup\">set up earlier</a>."
+msgstr ""
+
+#: templates/website/help.html:128
+msgid ""
+"For scheduled recipes, choose the timezone, days, and hours to run every "
+"task in the recipe.  All task times and assets created by the recipe will "
+"use the timezone selected as a refrence."
+msgstr ""
+
+#: templates/website/help.html:130 templates/website/help.html:133
+#: templates/website/help.html:135 templates/website/help.html:136
+#: templates/website/help.html:137
+msgid "Click"
+msgstr ""
+
+#: templates/website/help.html:131
+msgid ""
+"Use the left side filters to search for the specific task to be added to the "
+"recipe. The filters scroll up and down. Most tasks provide a description, "
+"samples, and links to assets for review on this page. Click <i class="
+"\"material-icons blue-text small\">add_circle</i> to add the task to the end "
+"of the recipe. A <i class=\"material-icons green-text small\">check_circle</"
+"i> will appear with a count of this task in the recipe. Continue adding "
+"tasks, or close the task filter window."
+msgstr ""
+
+#: templates/website/help.html:132
+msgid ""
+"Each task has a card with its own instructions, inputs, and fields.  Fields "
+"are marked optional or required.  Some have default values. All values are "
+"derived from the API endpoints for that product."
+msgstr ""
+
+#: templates/website/help.html:133
+msgid ", the recipe is now ready to run, and will run on schedule."
+msgstr ""
+
+#: templates/website/help.html:135
+msgid ""
+"to execute the recipe immediately, if workers are busy there may be a delay. "
+"The <a href=\"#help_status\">Job Status</a> and log update every 10 seconds."
+msgstr ""
+
+#: templates/website/help.html:136
+msgid "to view recipe task events including errors and completes."
+msgstr ""
+
+#: templates/website/help.html:137
+msgid "to <a href=\"#help_share\">share the recipe</a> with a client."
+msgstr ""
+
+#: templates/website/help.html:145
+msgid ""
+"Each task in a recipe workflow is executed in sequence one at a time.  Some "
+"recipes have tasks executing at different times, and some tasks executing "
+"multiple times a day.  Job status is updated automatically by workers as the "
+"job is processed.  The UI updates the log and status every 10 seconds."
+msgstr ""
+
+#: templates/website/help.html:150
+msgid "Definition"
+msgstr ""
+
+#: templates/website/help.html:151
+msgid "Action"
+msgstr ""
+
+#: templates/website/help.html:156
+msgid "Queued"
+msgstr ""
+
+#: templates/website/help.html:157
+msgid "The recipe is waiting for workers to pick up the next task."
+msgstr ""
+
+#: templates/website/help.html:158
+msgid ""
+"Wait for the next scheduled task to execute.  If workers are busy, the next "
+"taks may be executed after its scheduled time."
+msgstr ""
+
+#: templates/website/help.html:162
+msgid "A task in the recipe is currently executing."
+msgstr ""
+
+#: templates/website/help.html:163
+msgid ""
+"Wait for the task to execute or cancel a running recipe. Check the logs to "
+"see which task is running and see real time task updates."
+msgstr ""
+
+#: templates/website/help.html:167
+msgid "All tasks in the recipe completed without error."
+msgstr ""
+
+#: templates/website/help.html:168
+msgid ""
+"The task will resume again the next day as controlled by its timezone "
+"setting."
+msgstr ""
+
+#: templates/website/help.html:172
+msgid "No tasks in the recipe will be run."
+msgstr ""
+
+#: templates/website/help.html:173
+msgid "Unpause the recipe to resume execution."
+msgstr ""
+
+#: templates/website/help.html:176
+msgid "Timeout"
+msgstr ""
+
+#: templates/website/help.html:177
+msgid "The task exceeded its 8 hour limit for execution and was terminated."
+msgstr ""
+
+#: templates/website/help.html:178
+msgid ""
+"Check the logs, Edit the task to process less data and complete sooner.  "
+"Some timeouts may be acceptable, for example a report was not ready, "
+"typically these tasks are scheduled multiple times in a workflow and "
+"eventually work."
+msgstr ""
+
+#: templates/website/help.html:181
+msgid "Error"
+msgstr ""
+
+#: templates/website/help.html:182
+msgid ""
+"The task failed to execute.  The error will be printed in the log, usually "
+"near the bottom  for that task."
+msgstr ""
+
+#: templates/website/help.html:183
+msgid ""
+"Correct the error, and click Run Now to re-execute the recipe.  "
+"Alternatively some errors may be acceptable, for example an error prone "
+"endpoint may be pulled from multiple times a day in a task, eventually one "
+"works."
+msgstr ""
+
+#: templates/website/help.html:190
+msgid "Share Recipe"
+msgstr ""
+
+#: templates/website/help.html:191
+msgid ""
+"Why share instructions when you can share a working workflow.  Every custom "
+"recipe created in the StarThinker UI can be shared with clients.  Create a "
+"recipe then click the Download button. DO NOT INCLUDE PASSWORDS OR "
+"CONFIDENTIAL INFORMATION IN SHARED RECIPES.  Shared recipes can be executed "
+"via <a href=\"https://colab.research.google.com/\" target=\"_blank\">Google "
+"Collaboratory</a>, <a href=\"https://github.com/google/starthinker/blob/"
+"master/tutorials/deploy_airflow.md\" target=\"_blank\">Airflow/Composer</a>, "
+"<a href=\"https://github.com/google/starthinker/blob/master/tutorials/"
+"deploy_package.md\" target=\"_blank\">Python</a>, or <a href=\"https://"
+"github.com/google/starthinker/blob/master/tutorials/deploy_enterprise.md\" "
+"target=\"_blank\">UI</a>."
+msgstr ""
+
+#: templates/website/help.html:194
+msgid ""
+"https://github.com/google/starthinker/raw/master/tutorials/images/"
+"ui_download.png"
+msgstr ""
+
+#: templates/website/help.html:194
+msgid "Screenshot of StarThinker Download Recipe page."
+msgstr ""
+
+#: templates/website/help.html:201
+msgid "Google Collaboratory"
+msgstr ""
+
+#: templates/website/help.html:202
+msgid ""
+"Ideal for non-technical clients who want to execute the recipe on demand."
+msgstr ""
+
+#: templates/website/help.html:204
+msgid "Use for demos and workshops."
+msgstr ""
+
+#: templates/website/help.html:205 templates/website/help.html:215
+msgid "Allows customization."
+msgstr ""
+
+#: templates/website/help.html:206
+msgid "No coding necessary."
+msgstr ""
+
+#: templates/website/help.html:207 templates/website/help.html:227
+msgid "Requires a free Google Cloud Project for credentials."
+msgstr ""
+
+#: templates/website/help.html:211
+msgid "Airflow/Composer"
+msgstr ""
+
+#: templates/website/help.html:212
+msgid ""
+"Ideal for highly technical clients with engineering teams already using "
+"Airflow/Composer."
+msgstr ""
+
+#: templates/website/help.html:214
+msgid "Use for long running jobs using Airflow."
+msgstr ""
+
+#: templates/website/help.html:216 templates/website/help.html:226
+msgid "Extensive coding required."
+msgstr ""
+
+#: templates/website/help.html:217
+msgid "Requires a paid Google Cloud Composer instance."
+msgstr ""
+
+#: templates/website/help.html:221
+msgid "Python"
+msgstr ""
+
+#: templates/website/help.html:222
+msgid ""
+"Ideal for highly technical clients who want a minimal deployment footprint."
+msgstr ""
+
+#: templates/website/help.html:224
+msgid "Use for custom infrastructure integration."
+msgstr ""
+
+#: templates/website/help.html:225
+msgid "Allows minimal customization."
+msgstr ""
+
+#: templates/website/help.html:231
+msgid "UI"
+msgstr ""
+
+#: templates/website/help.html:232
+msgid ""
+"Ideal for teams wanting to build recipes at scale for multiple accounts."
+msgstr ""
+
+#: templates/website/help.html:234
+msgid "Use for entire teams ( same UI as this one )."
+msgstr ""
+
+#: templates/website/help.html:235
+msgid "Support no-coding UI recipe builder."
+msgstr ""
+
+#: templates/website/help.html:236
+msgid "Operations and support required."
+msgstr ""
+
+#: templates/website/help.html:237
+msgid "Requires a paid Google Cloud Project."
+msgstr ""
+
+#: templates/website/help.html:245
+msgid ""
+"StarThinker will do what you tell it to.  IT RUNS AS YOU, if you have access "
+"it will do it, be careful about overwriting, creating, sharing, or deleting "
+"data. Double check everything before running tasks.  Undo is not a feature."
+msgstr ""
+
+#: templates/website/help.html:249
+msgid "DATASETS ARE NOT DELETED when a recipe is deleted."
+msgstr ""
+
+#: templates/website/help.html:251
+msgid "You will have to manually delete the dataset."
+msgstr ""
+
+#: templates/website/help.html:252
+msgid "You will have to verify dataset contains what you want before sharing."
+msgstr ""
+
+#: templates/website/help.html:258
+msgid "Changing DBM / DCM report definition requires delete of report."
+msgstr ""
+
+#: templates/website/help.html:260
+msgid "You will have to go into DBM / DCM and delete the report."
+msgstr ""
+
+#: templates/website/help.html:261
+msgid "StarThinker will then create the new report definition."
+msgstr ""
+
+#: templates/website/help.html:267
+msgid "BigQuery views are not modified by StarThinker if they exist."
+msgstr ""
+
+#: templates/website/help.html:269
+msgid "This is to protect any customizations you may have added."
+msgstr ""
+
+#: templates/website/help.html:270
+msgid "You will have to delete the view for StarThinker to recreate it."
+msgstr ""
+
+#: templates/website/help.html:276
+msgid "All tasks in a recipe are executed, even if ones prior fail."
+msgstr ""
+
+#: templates/website/help.html:278
+msgid "This allows retries of the same task later in the day."
+msgstr ""
+
+#: templates/website/help.html:279
+msgid "For mission critical data flows, check your data before acting on it."
+msgstr ""
+
+#: templates/website/help.html:285
+msgid "All errors and fields come from the API documentation."
+msgstr ""
+
+#: templates/website/help.html:287
+msgid ""
+"When looking for field values or formats consult the approriate API "
+"documentation."
+msgstr ""
+
+#: templates/website/help.html:288
+msgid ""
+"When errors are thrown, the log shows them, consult the API documents to "
+"resolve the error."
+msgstr ""
+
+#: templates/website/help.html:294
+msgid "StarThinker does not gurantee exact task execution time."
+msgstr ""
+
+#: templates/website/help.html:296
+msgid "All tasks are executed in sequence."
+msgstr ""
+
+#: templates/website/help.html:297
+msgid "Tasks run at or after the scheduled hour, depending on worker load."
+msgstr ""
+
+#: templates/website/help.html:298
+msgid "If a task fails, remianing tasks are still executed."
+msgstr ""
+
+#: templates/website/help.html:309
+msgid ""
+"Errors in StarThinker can range from a misconfigured field value to a bug in "
+"the code.  To promptly resolve most issues please follow these debugging "
+"steps."
+msgstr ""
+
+#: templates/website/help.html:310
+msgid ""
+"When working with StarThinker administrators, please include the recipe "
+"number, found in the recipe edit URL, in all communications."
+msgstr ""
+
+#: templates/website/help.html:312
+msgid ""
+"Consult the log and reference the error in the API documentation relevant to "
+"the product used in the task."
+msgstr ""
+
+#: templates/website/help.html:313
+msgid "Ensure the service account used in the recipe exists and is valid."
+msgstr ""
+
+#: templates/website/help.html:314
+msgid ""
+"Try logging out and logging back in to refresh user credentials and access "
+"to APIs."
+msgstr ""
+
+#: templates/website/help.html:315
+msgid ""
+"Contact the administrator of the StarThinker UI where the recipe was "
+"deployed."
+msgstr ""
+
+#: templates/website/help.html:316
+msgid ""
+"Contact the owner of the solution listed on the <a href=\"https://google."
+"github.io/starthinker/\" target=\"_blank\">Solution Gallery Page</a>."
+msgstr ""
+
+#: templates/website/help.html:317
+msgid ""
+"Contact <a href=\"mailto:starthinker-help@google.com\">starthinker-"
+"help@google.com</a>."
+msgstr ""
+
+#: templates/website/solution.html:53
+msgid "Sample Screenshot"
+msgstr ""
+
+#: templates/website/solutions.html:76
+msgid ""
+"These recipes are entire workflows that deploy end to end solutions for "
+"clients."
+msgstr ""
+
+#: templates/website/solutions.html:80 templates/website/solutions.html:83
+#: templates/website/solutions.html:86
+msgid "days"
+msgstr ""
+
+#: templates/website/solutions.html:89
+msgid "older"
+msgstr ""
+
+#: templates/website/solutions.html:154
+msgid "Run These Workflows In Minutes On Google Cloud"
+msgstr ""
+
+#: templates/website/solutions.html:155
+msgid ""
+"Everything from a quick Google Cloud UI to reference developer code for your "
+"team in one GitHub repository."
+msgstr ""
+
+#: templates/website/solutions.html:158
+msgid "Deployment Steps"
+msgstr ""
+
+#: templates/website/solutions.html:161
+msgid "Developer Guide"
+msgstr ""
+
+#: templates/website/solutions.html:164
+msgid "UI How To"
+msgstr ""
+
+#: ui/framework.py:108
+msgid "English"
+msgstr ""
+
+#: ui/framework.py:109
+msgid "Spanish"
+msgstr ""

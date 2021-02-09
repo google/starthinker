@@ -17,10 +17,11 @@
 ###########################################################################
 
 import re
+from collections import defaultdict
 
 from starthinker.util.project import get_project
 
-RE_TEXT_FIELD = re.compile(r'\{(.*?:.*?)\}')
+RE_TEXT_FIELD = re.compile(r'\{\w+:(\w+)(, .*?)?}')
 
 
 def fields_to_string(fields, values={}):
@@ -126,6 +127,8 @@ def get_field_value(field, variables):
     value = variables.get(field['name'], field.get('default'))
     if value is not None and 'prefix' in field:
       value = '%s%s' % (field['prefix'], value)
+    if value is not None and 'suffix' in field:
+      value = '%s%s' % (value, field['suffix'])
   except KeyError:
     pass
 
@@ -174,29 +177,23 @@ def json_set_fields(struct, variables):
 def text_set_fields(text, variables):
   """Replaces fields in text with values from recipe.
 
-     Fields are {field:[string]} or {field:[string], prefix:[string]} where
-     field is a key in variables
-     and prefix is a string value that gets appended to the value from
-     variables.
+     Fields in text are just are {field}, where field is a name of the variable.
+     Missing fields default to blanks.
 
      Args:
-       text (string) A paragraph containing {field:[string]} or {field:[string],
-         prefix:[string]}.
-       variables: (dict) The keys mapping to field, and values to replace those
-         fields.
+       text (string) A paragraph possible containing {field} entries
+       variables: (dict) The keys mapping to field, and values to replace
 
      Returns:
-       A string with all the {field:[string]} or {field:[string],
-       prefix:[string]} values replaced by actual values from variables.
+       A string with all values replaced. Or if an error occurs, original text.
 
   """
 
-  for field in RE_TEXT_FIELD.findall(text):
-    parts = dict([p.strip().split(':') for p in field.split(',', 1)])
-    value = (parts.get('prefix', '') + variables[parts['field']]
-            ) if parts.get('field') in variables else 'UNDEFINED'
-    text = text.replace('{' + field + '}', value)
-  return text
+  text = RE_TEXT_FIELD.sub(r'{\1}', text)
+  try:
+    return text.format_map(defaultdict(str, variables))
+  except ValueError:
+    return text
 
 
 def json_set_instructions(struct, variables):
@@ -205,7 +202,7 @@ def json_set_instructions(struct, variables):
      Checks if struct['script']['instructions'] exist.  The replaces all %(???)s
      variables
      with values provided.  Note: %(???)s must match { "field":{ "name":"???" }}
-     in JOSN.
+     in JSON.
 
     Args:
       struct: (dict) A dictionary representation of the JSON script.

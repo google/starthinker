@@ -20,6 +20,7 @@
 ###########################################################################
 {% endcomment %}
 
+{% load i18n %}
 {% load website_app %}
 
 {% block css %}
@@ -32,7 +33,7 @@
 {% block content %}
 
   <br/><br/>
-  <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="{% if external %}/starthinker{% endif %}/solution/">All</a>
+  <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="{% if external %}/starthinker{% endif %}/solution/">{% trans 'All' %}</a>
   {% for c in script.get_categories %}
     <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="{% if external %}/starthinker{% endif %}/solution/?category={{ c|slugify }}">{{ c }}</a>
   {% endfor %}
@@ -49,7 +50,7 @@
         <p class="flow-text">{{ script.get_description|safe }}</p>
       </div>
       <div class="col s12 m6 l8">
-        {% if script.get_image %}<img id="solution_image" src="{{ script.get_image }}" alt="{{ script.get_name|escape }} Sample Screenshot"/>{% endif %}
+        {% if script.get_image %}<img id="solution_image" src="{{ script.get_image }}" alt="{{ script.get_name|escape }} {% trans 'Sample Screenshot' %}"/>{% endif %}
       </div>
     </div>
   {% else %}

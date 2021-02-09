@@ -20,6 +20,8 @@
 ###########################################################################
 {% endcomment %}
 
+{% load i18n %}
+
 {% block js %}
   <script type="text/javascript">
     $(document).ready(function() {
@@ -38,36 +40,36 @@
 
 {% block content %}
 
-  <h1>Recipes</h1>
-  <p class="flow-text">Assemble recipes that run on a schedule or are triggered manually.</p>
+  <h1>{% trans "Recipes" %}</h1>
+  <p class="flow-text">{% trans "Assemble recipes that run on a schedule or are triggered manually." %}</p>
 
   <p>
     <a href="/recipe/edit/" class="waves-effect waves-light btn blue form_button modal-trigger">
-      Add Scheduled <i class="material-icons right">access_time</i>
+      {% trans "Add Scheduled" %} <i class="material-icons right">access_time</i>
     </a>
     <a href="/recipe/manual/" class="waves-effect waves-light btn green form_button modal-trigger">
-      Add Manual <i class="material-icons right">construction</i>
+      {% trans "Add Manual" %} <i class="material-icons right">construction</i>
     </a>
   </p>
 
   <p>
     {% if recipes.running or recipes.finished or recipes.paused or recipes.manual or recipes.errors %}
-      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_all">All</span>
+      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_all">{% trans "All" %}</span>
     {% endif %}
     {% if recipes.running %}
-      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_running">{{ recipes.running|length }} Running</span>
+      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_running">{{ recipes.running|length }} {% trans "Running" %}</span>
     {% endif %}
     {% if recipes.finished %}
-      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_finished">{{ recipes.finished|length }} Finished</span>
+      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_finished">{{ recipes.finished|length }} {% trans "Finished" %}</span>
     {% endif %}
     {% if recipes.errors %}
-      <span class="trigger_category menu_link waves-effect waves-light btn red" id="trigger_category_errors">{{ recipes.errors|length }} Errors</span>
+      <span class="trigger_category menu_link waves-effect waves-light btn red" id="trigger_category_errors">{{ recipes.errors|length }} {% trans "Errors" %}</span>
     {% endif %}
     {% if recipes.paused %}
-      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_paused">{{ recipes.paused|length }} Paused</span>
+      <span class="trigger_category menu_link waves-effect waves-light btn blue" id="trigger_category_paused">{{ recipes.paused|length }} {% trans "Paused" %}</span>
     {% endif %}
     {% if recipes.manual %}
-      <span class="trigger_category menu_link waves-effect waves-light btn green" id="trigger_category_manual">{{ recipes.manual|length }} Manual</span>
+      <span class="trigger_category menu_link waves-effect waves-light btn green" id="trigger_category_manual">{{ recipes.manual|length }} {% trans "Manual" %}</span>
     {% endif %}
   </p>
 
@@ -92,7 +94,7 @@
   {% endwith %}
 
   <br/><br/>
-  <h3 id="code-tasks">Need A Custom Task?</h3>
-  <p class="flow-text">Ask Google gTech to write one for you <a href="mailto:starthinker-help@google.com?subject=Custom+StarThinker+Recipe">starthinker-help@google.com</a></p>
+  <h3 id="code-tasks">{% trans "Need A Custom Task?" %}</h3>
+  <p class="flow-text">{% trans 'Ask Google gTech to write one for you <a href="mailto:starthinker-help@google.com?subject=Custom+StarThinker+Recipe">starthinker-help@google.com</a>.' %}</p>
 
 {% endblock %}

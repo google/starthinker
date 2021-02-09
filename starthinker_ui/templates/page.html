@@ -18,6 +18,7 @@
 ###########################################################################
 {% endcomment %}
 
+{% load i18n %}
 {% load static %}
 {% load website_app %}
 
@@ -86,21 +87,21 @@
     <nav class="blue darken-1">
       <div class="nav-wrapper">
         <a href="{% if not external %}/{% else %}/starthinker/{% endif %}" class="brand-logo">
-          <img src="{% static 'StarThinker.png' %}" alt="StarThinker Logo"/>
+          <img src="{% static 'StarThinker.png' %}" alt="StarThinker {% trans 'Logo' %}"/>
           <span class="brand-title">StarThinker</span>
         </a>
         <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          {% if not external %}<li><a href="/">Recipes</a></li>{% endif %}
-          {% if not external %}<li><a href="/project/">Projects</a></li>{% endif %}
-          <li><a href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
-          <li><a href="{% if external %}/starthinker{% endif %}/help/">Help</a></li>
+          {% if not external %}<li><a href="/">{% trans "Recipes" %}</a></li>{% endif %}
+          {% if not external %}<li><a href="/project/">{% trans "Projects" %}</a></li>{% endif %}
+          <li><a href="{% if external %}/starthinker{% endif %}/solution/">{% trans "Solutions" %}</a></li>
+          <li><a href="{% if external %}/starthinker{% endif %}/help/">{% trans "Help" %}</a></li>
           {% if request.user.is_authenticated %}
-            <li><a href="/logout/">Logout</a></li>
+            <li><a href="/logout/">{% trans "Logout" %}</a></li>
             <li>
               <div class="chip">
-                <img src="{{ request.user.picture }}" alt="{{ request.user.name|escape }} Avatar">
+                <img src="{{ request.user.picture }}" alt="{{ request.user.name|escape }} {% trans 'Avatar' %}">
                 {{ request.user.name }}
               </div>
             </li>
@@ -113,17 +114,17 @@
       {% if request.user.is_authenticated %}
         <li>
           <div class="chip" style="margin: 0px 30px;">
-            <img src="{{ request.user.picture }}" alt="{{ request.user.name|escape }} Avatar">
+            <img src="{{ request.user.picture }}" alt="{{ request.user.name|escape }} {% trans 'Avatar' %}">
             {{ request.user.name }}
           </div>
         </li>
       {% endif %}
-      {% if not external %}<li><a class="white-text" href="/">Recipes</a></li>{% endif %}
-      {% if not external %}<li><a class="white-text" href="/project/">Project</a></li>{% endif %}
-      <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/solution/">Solutions</a></li>
-      <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/help/">Help</a></li>
+      {% if not external %}<li><a class="white-text" href="/">{% trans "Recipes" %}</a></li>{% endif %}
+      {% if not external %}<li><a class="white-text" href="/project/">{% trans "Project" %}</a></li>{% endif %}
+      <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/solution/">{% trans "Solutions" %}</a></li>
+      <li><a class="white-text" href="{% if external %}/starthinker{% endif %}/help/">{% trans "Help" %}</a></li>
       {% if request.user.is_authenticated %}
-        <li><a class="white-text" href="/logout/">Logout</a></li>
+        <li><a class="white-text" href="/logout/">{% trans "Logout" %}</a></li>
       {% endif %}
     </ul>
   {% endblock %}

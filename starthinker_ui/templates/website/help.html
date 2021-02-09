@@ -20,6 +20,8 @@
 ###########################################################################
 {% endcomment %}
 
+{% load i18n %}
+
 {% block css %}
   #help_menu a { display: block; margin: 10px 0px; width: 100%;}
 {% endblock %}
@@ -32,86 +34,107 @@
     <div id="help_menu" class="col s12 m3 l2 right-align">
 
       <a href="#help_setup" class="recipe_link waves-effect waves-light btn blue topic_select">
-        Setup<i class="material-icons right">build</i>
+        {% trans "Setup" %}<i class="material-icons right">build</i>
       </a>
 
       <a href="#help_recipe" class="recipe_link waves-effect waves-light btn blue topic_select">
-        Recipe<i class="material-icons right">view_list</i>
+        {% trans "Recipe" %}<i class="material-icons right">view_list</i>
       </a>
 
       <a href="#help_share" class="recipe_link waves-effect waves-light btn blue topic_select">
-        Sharing<i class="material-icons right">share</i>
+        {% trans "Sharing" %}<i class="material-icons right">share</i>
       </a>
 
       <a href="#help_status" class="recipe_link waves-effect waves-light btn blue topic_select">
-        Status<i class="material-icons right">network_check</i>
+        {% trans "Status" %}<i class="material-icons right">network_check</i>
       </a>
 
       <a href="#help_warnings" class="recipe_link waves-effect waves-light btn blue topic_select">
-        Warnings<i class="material-icons right">report_problem</i>
+        {% trans "Warnings" %}<i class="material-icons right">report_problem</i>
       </a>
 
       <a href="#help_debug" class="recipe_link waves-effect waves-light btn blue topic_select">
-        Debugging<i class="material-icons right">help</i>
+        {% trans "Debugging" %}<i class="material-icons right">help</i>
       </a>
 
     </div>
 
     <div id="help_setup" class="col s12 m9 l10 left-align">
-      <h1><i class="material-icons large">build</i> Setup Project</h1>
-      <p class="flow-text">Almost every recipe in StarThinker uses a <a href="http://cloud.google.com" target="_blank">Google Cloud Project</a> to store data.  ALL DATA COSTS ARE BILLED TO THE GOOGLE CLOUD SERVICE CREDENTIALS SPECIFIED IN EACH RECIPE.  To add a Google Cloud Project for billing and permissions, create a <a href="https://console.cloud.google.com/iam-admin/serviceaccounts/create" target="_blank">Service Credentials</a>, download it, and enter the JSON into the <a href="{% if external %}https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_project.png{% else %}/project/edit/{% endif %}">StarThinker Project page</a>.</p>
+      <h1><i class="material-icons large">build</i> {% trans "Setup Project" %}</h1>
+
+      <p class="flow-text">
+      {% trans 'Almost every recipe in StarThinker uses a <a href="http://cloud.google.com" target="_blank">Google Cloud Project</a> to store data.  ALL DATA COSTS ARE BILLED TO THE GOOGLE CLOUD SERVICE CREDENTIALS SPECIFIED IN EACH RECIPE.' %}
+      {% if external %}
+        {% trans 'To add a Google Cloud Project for billing and permissions, create a <a href="https://console.cloud.google.com/iam-admin/serviceaccounts/create" target="_blank">Service Credentials</a>, download it, and enter the JSON into the <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_project.png">StarThinker Project page</a>.' %}
+      {% else %}
+        {% trans 'To add a Google Cloud Project for billing and permissions, create a <a href="https://console.cloud.google.com/iam-admin/serviceaccounts/create" target="_blank">Service Credentials</a>, download it, and enter the JSON into the <a href="/project/edit/">StarThinker Project page</a>.' %}
+      {% endif %}
+      </p>
+
       <div class="row">
         <div class="col s12 m6 l6 right-align">
-          <img src="https://github.com/google/starthinker/raw/master/tutorials/images/cloud_service.png" style="width:100%;"/>
+          <img src="{% trans "https://github.com/google/starthinker/raw/master/tutorials/images/cloud_service.png" %}" style="width:100%;" alt="{% trans 'Cloud service setup diagram.' %}"/>
           <br/>
           <br/>
-          <img src="https://github.com/google/starthinker/raw/master/tutorials/images/ui_project.png" style="width:100%;"/>
+          <img src="{% trans "https://github.com/google/starthinker/raw/master/tutorials/images/ui_project.png" %}" style="width:100%;" alt="{% trans 'Screenshot of StarThinker Edit Project page.' %}"/>
         </div>
         <div class="col s12 m6 l6 left-align">
-          <h5>Getting Service Credentials</h5>
-          <p>Each user should have their own Google Cloud Project to avoid accidental data sharing and allow easier auditing.</p>
+          <h5>{% trans "Getting Service Credentials" %}</h5>
+          <p>{% trans "Each user should have their own Google Cloud Project to avoid accidental data sharing and allow easier auditing." %}</p>
           <ol>
-            <li><a href="https://console.cloud.google.com/iam-admin/serviceaccounts/create" target="_blank">Visit Google Cloud Project &gt; APIs & Services &gt; Credentials &gt; Create Credentials &gt; Service Account Key &gt; New Service Account</a>.</li>
-            <li>Service Account Name is starthinker.</li>
-            <li>Click Create.</li>
-            <li>The most robust role is Project Editor, review your role choice with your security team.</li>
-            <li>Click Continue.</li>
-            <li>Click Create Key.</li>
-            <li>Key Type is JSON.</li>
-            <li>Click Create and open the downloaded JSON file.</li>
-            <li>Copy the contents and paste into the <a href="{% if external %}https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_project.png{% else %}/project/edit/{% endif %}">StarThinker Project page Service field</a>.</li>
-            <li>Click save.</li>
-            <li>The new project will become a dropdown option on <a href="{% if external %}https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_recipe.png{% else %}/recipe/edit/{% endif %}">StarThinker Recipe pages</a>.</li>
+            <li><a href="https://console.cloud.google.com/iam-admin/serviceaccounts/create" target="_blank">{% trans "Visit Google Cloud Project &gt; APIs & Services &gt; Credentials &gt; Create Credentials &gt; Service Account Key &gt; New Service Account" %}</a>.</li>
+            <li>{% trans "Service Account Name is starthinker." %}</li>
+            <li>{% trans "Click Create." %}</li>
+            <li>{% trans "The most robust role is Project Editor, review your role choice with your security team." %}</li>
+            <li>{% trans "Click Continue." %}</li>
+            <li>{% trans "Click Create Key." %}</li>
+            <li>{% trans "Key Type is JSON." %}</li>
+            <li>{% trans "Click Create and open the downloaded JSON file." %}</li>
+            {% if external %}
+              <li>{% trans 'Copy the contents and paste into the <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_project.png"> StarThinker Project page Service field</a>.' %}</li>
+            {% else %}
+              <li>{% trans 'Copy the contents and paste into the <a href="/project/edit/"> StarThinker Project page Service field</a>.' %}</li>
+            {% endif %}
+            <li>{% trans "Click save." %}</li>
+            {% if external %}
+              <li>{% trans 'The new project will become a dropdown option on <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_recipe.png"> StarThinker Recipe pages</a>.' %}</li>
+            {% else %}
+              <li>{% trans 'The new project will become a dropdown option on <a href="/recipe/edit/"> StarThinker Recipe pages</a>.' %}</li>
+            {% endif %}
           </ol>
-          <p><strong>WARNING:</strong> If you share your service credentials, other users will be able to use them in their recipes but not download or view them. Sharing the service credentials grants other users <a href="https://console.cloud.google.com/iam-admin/iam" target="_blank">all the permissions your service account has</a>, use extreme caution.</p>
+          <p><strong>{% trans "WARNING:" %}</strong> {% trans 'If you share your service credentials, other users will be able to use them in their recipes but not download or view them. Sharing the service credentials grants other users <a href="https://console.cloud.google.com/iam-admin/iam" target="_blank"> all the permissions your service account has</a>, use extreme caution.' %}</p>
         </div>
       </div>
     </div>
 
     <div id="help_recipe" class="col s12 m9 l10 left-align">
-      <h1><i class="material-icons large">view_list</i> Run Recipe</h1>
-      <p class="flow-text">All recipes run as the logged in user and leverage the selected <a href="#help_setup">Service Account</a> to write to Google Cloud endpoints. StarThinker DOES NOT grant any additional permissions or access to any products or endpoints used in the recipe.</p>
+      <h1><i class="material-icons large">view_list</i> {% trans "Run Recipe" %}</h1>
+      <p class="flow-text">{% trans 'All recipes run as the logged in user and leverage the selected <a href="#help_setup">Service Account</a> to write to Google Cloud endpoints. StarThinker DOES NOT grant any additional permissions or access to any products or endpoints used in the recipe.' %}</p>
       <div class="row">
         <div class="col s12 m6 l6 right-align">
-          <img src="https://github.com/google/starthinker/raw/master/tutorials/images/ui_recipe.png" style="width:100%;"/>
+          <img src="{% trans 'https://github.com/google/starthinker/raw/master/tutorials/images/ui_recipe.png' %}" style="width:100%;" alt="{% trans 'Screenshot of StarThinker Edit Recipe page.' %}"/>
         </div>
         <div class="col s12 m6 l6 left-align">
-          <h5>Creating A Recipe Workflow</h5>
-          <p>Recipes can be manual, initiated by the user and run only once, or scheduled, running at set times on set days. Other than the schedule, all steps are the same.</p>
+          <h5>{% trans "Creating A Recipe Workflow" %}</h5>
+          <p>{% trans "Recipes can be manual, initiated by the user and run only once, or scheduled, running at set times on set days. Other than the schedule, all steps are the same." %}</p>
           <ol>
-            <li>Visit the <a href="{% if external %}https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_recipe.png{% else %}/recipe/edit/{% endif %}">scheduled</a> or <a href="{% if external %}https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_manual.png{% else %}/recipe/manual/{% endif %}">manual</a> recipe page.</li>
-            <li>Name the recipe, the name is often used to create assets such as Sheets and Dataset by some recipes, choose the name to reflect an account or client. If changed, already created assets may become disconnected.</li>
-            <li>If the recipe writes to Google Cloud, select the Google Cloud Project Service Account, <a href="#help_setup">set up earlier</a>.</li>
-            <li>For scheduled recipes, choose the timezone, days, and hours to run every task in the recipe.  All task times and assets created by the recipe will use the timezone selected as a refrence.</li>
+            {% if external %}
+              <li>{% trans 'Visit the <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_recipe.png">scheduled</a> or <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_manual.png">manual</a> recipe page.' %}</li>
+            {% else %}
+              <li>{% trans 'Visit the <a href="/recipe/edit/">scheduled</a> or <a href="/recipe/manual/">manual</a> recipe page.' %}</li>
+            {% endif %}
+            <li>{% trans "Name the recipe, the name is often used to create assets such as Sheets and Dataset by some recipes, choose the name to reflect an account or client. If changed, already created assets may become disconnected." %}</li>
+            <li>{% trans 'If the recipe writes to Google Cloud, select the Google Cloud Project Service Account, <a href="#help_setup">set up earlier</a>.' %}</li>
+            <li>{% trans "For scheduled recipes, choose the timezone, days, and hours to run every task in the recipe.  All task times and assets created by the recipe will use the timezone selected as a refrence." %}</li>
             <hr/>
-            <li>Click <strong>Add</strong>.</a>
-            <li>Use the left side filters to search for the specific task to be added to the recipe. The filters scroll up and down. Most tasks provide a description, samples, and links to assets for review on this page. Click <i class="material-icons blue-text small">add_circle</i> to add the task to the end of the recipe. A <i class="material-icons green-text small">check_circle</i> will appear with a count of this task in the recipe. Continue adding tasks, or close the task filter window.</li>
-            <li>Each task has a card with its own instructions, inputs, and fields.  Fields are marked optional or required.  Some have default values. All values are derived from the API endpoints for that product.</li>
-            <li>Click <strong>Save</strong>, the recipe is now ready to run, and will run on schedule.</li>
+            <li>{% trans "Click" %} <strong>{% trans "Add" %}</strong>.</a>
+            <li>{% trans 'Use the left side filters to search for the specific task to be added to the recipe. The filters scroll up and down. Most tasks provide a description, samples, and links to assets for review on this page. Click <i class="material-icons blue-text small">add_circle</i> to add the task to the end of the recipe. A <i class="material-icons green-text small">check_circle</i> will appear with a count of this task in the recipe. Continue adding tasks, or close the task filter window.' %}</li>
+            <li>{% trans "Each task has a card with its own instructions, inputs, and fields.  Fields are marked optional or required.  Some have default values. All values are derived from the API endpoints for that product." %}</li>
+            <li>{% trans "Click" %} <strong>{% trans "Save" %}</strong>{% trans ", the recipe is now ready to run, and will run on schedule." %}</li>
             <hr/>
-            <li>Click <strong>Run</strong> to execute the recipe immediately, if workers are busy there may be a delay. The <a href="#help_status">Job Status</a> and log update every 10 seconds.</a></li>
-            <li>Click <strong>Log</strong> to view recipe task events including errors and completes.</li>
-            <li>Click <strong>Download</strong> to <a href="#help_share">share the recipe</a> with a client.</li>
+            <li>{% trans "Click" %} <strong>{% trans "Run" %}</strong> {% trans 'to execute the recipe immediately, if workers are busy there may be a delay. The <a href="#help_status">Job Status</a> and log update every 10 seconds.' %}</li>
+            <li>{% trans "Click" %} <strong>{% trans "Log" %}</strong> {% trans "to view recipe task events including errors and completes." %}</li>
+            <li>{% trans "Click" %} <strong>{% trans "Download" %}</strong> {% trans 'to <a href="#help_share">share the recipe</a> with a client.' %}</li>
           </ol>
         </div>
       </div>
@@ -119,160 +142,160 @@
 
     <div id="help_status" class="col s12 m9 l10 left-align">
       <h1><i class="material-icons large">network_check</i> Job Status</h1>
-      <p class="flow-text left-align">Each task in a recipe workflow is executed in sequence one at a time.  Some recipes have tasks executing at different times, and some tasks executing multiple times a day.  Job status is updated automatically by workers as the job is processed.  The UI updates the log and status every 10 seconds.</p>
+      <p class="flow-text left-align">{% trans "Each task in a recipe workflow is executed in sequence one at a time.  Some recipes have tasks executing at different times, and some tasks executing multiple times a day.  Job status is updated automatically by workers as the job is processed.  The UI updates the log and status every 10 seconds." %}</p>
       <table class="striped">
         <thead>
           <tr>
-              <th>Status</th>
-              <th>Definition</th>
-              <th>Action</th>
+              <th>{% trans "Status" %}</th>
+              <th>{% trans "Definition" %}</th>
+              <th>{% trans "Action" %}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th>Queued</th>
-            <td>The recipe is waiting for workers to pick up the next task.</td>
-            <td>Wait for the next scheduled task to execute.  If workers are busy, the next taks may be executed after its scheduled time.</td>
+            <th>{% trans "Queued" %}</th>
+            <td>{% trans "The recipe is waiting for workers to pick up the next task." %}</td>
+            <td>{% trans "Wait for the next scheduled task to execute.  If workers are busy, the next taks may be executed after its scheduled time." %}</td>
           </tr>
           <tr>
-            <th>Running</th>
-            <td>A task in the recipe is currently executing.</td>
-            <td>Wait for the task to execute or cancel a running recipe. Check the logs to see which task is running and see real time task updates.</td>
+            <th>{% trans "Running" %}</th>
+            <td>{% trans "A task in the recipe is currently executing." %}</td>
+            <td>{% trans "Wait for the task to execute or cancel a running recipe. Check the logs to see which task is running and see real time task updates." %}</td>
           </tr>
           <tr>
-            <th>Finished</th>
-            <td>All tasks in the recipe completed without error.</td>
-            <td>The task will resume again the next day as controlled by its timezone setting.</td>
+            <th>{% trans "Finished" %}</th>
+            <td>{% trans "All tasks in the recipe completed without error." %}</td>
+            <td>{% trans "The task will resume again the next day as controlled by its timezone setting." %}</td>
           </tr>
           <tr>
-            <th>Paused</th>
-            <td>No tasks in the recipe will be run.</td>
-            <td>Unpause the recipe to resume execution.</td>
+            <th>{% trans "Paused" %}</th>
+            <td>{% trans "No tasks in the recipe will be run." %}</td>
+            <td>{% trans "Unpause the recipe to resume execution." %}</td>
           </tr>
           <tr>
-            <th>Timeout</th>
-            <td>The task exceeded its 8 hour limit for execution and was terminated.</td>
-            <td>Check the logs, Edit the task to process less data and complete sooner.  Some timeouts may be acceptable, for example a report was not ready, typically these tasks are scheduled multiple times in a workflow and eventually work.</td>
+            <th>{% trans "Timeout" %}</th>
+            <td>{% trans "The task exceeded its 8 hour limit for execution and was terminated." %}</td>
+            <td>{% trans "Check the logs, Edit the task to process less data and complete sooner.  Some timeouts may be acceptable, for example a report was not ready, typically these tasks are scheduled multiple times in a workflow and eventually work." %}</td>
           </tr>
           <tr>
-            <th>Error</th>
-            <td>The task failed to execute.  The error will be printed in the log, usually near the bottom  for that task.</td>
-            <td>Correct the error, and click Run Now to re-execute the recipe.  Alternatively some errors may be acceptable, for example an error prone endpoint may be pulled from multiple times a day in a task, eventually one works.</td>
+            <th>{% trans "Error" %}</th>
+            <td>{% trans "The task failed to execute.  The error will be printed in the log, usually near the bottom  for that task." %}</td>
+            <td>{% trans "Correct the error, and click Run Now to re-execute the recipe.  Alternatively some errors may be acceptable, for example an error prone endpoint may be pulled from multiple times a day in a task, eventually one works." %}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div id="help_share" class="col s12 m9 l10 left-align">
-      <h1><i class="material-icons large">share</i> Share Recipe</h1>
-      <p class="flow-text">Why share instructions when you can share a working workflow.  Every custom recipe created in the StarThinker UI can be shared with clients.  Create a recipe then click the Download button. DO NOT INCLUDE PASSWORDS OR CONFIDENTIAL INFORMATION IN SHARED RECIPES.  Shared recipes can be executed via <a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a>, <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_airflow.md" target="_blank">Airflow/Composer</a>, <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_package.md" target="_blank">Python</a>, or <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_enterprise.md" target="_blank">UI</a>.</p>
+      <h1><i class="material-icons large">share</i> {% trans "Share Recipe" %}</h1>
+      <p class="flow-text">{% trans 'Why share instructions when you can share a working workflow.  Every custom recipe created in the StarThinker UI can be shared with clients.  Create a recipe then click the Download button. DO NOT INCLUDE PASSWORDS OR CONFIDENTIAL INFORMATION IN SHARED RECIPES.  Shared recipes can be executed via <a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a>, <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_airflow.md" target="_blank">Airflow/Composer</a>, <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_package.md" target="_blank">Python</a>, or <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_enterprise.md" target="_blank">UI</a>.' %}</p>
       <div class="center-align">
         <br/>
-        <img src="https://github.com/google/starthinker/raw/master/tutorials/images/ui_download.png" style="max-width: 400px;width:100%;height:auto;"/>
+        <img src="{% trans 'https://github.com/google/starthinker/raw/master/tutorials/images/ui_download.png' %}" style="max-width: 400px;width:100%;height:auto;" alt="{% trans 'Screenshot of StarThinker Download Recipe page.' %}"/>
         <br/>
         <br/>
       </div>
 
       <div class="row">
         <div class="col s12 m6 l6 left-align">
-          <h5><a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a></h5>
-          <p>Ideal for non-technical clients who want to execute the recipe on demand.</p>
+          <h5><a href="https://colab.research.google.com/" target="_blank">{% trans "Google Collaboratory" %}</a></h5>
+          <p>{% trans "Ideal for non-technical clients who want to execute the recipe on demand." %}</p>
           <ol>
-            <li>Use for demos and workshops.</li>
-            <li>Allows customization.</li>
-            <li>No coding necessary.</li>
-            <li>Requires a free Google Cloud Project for credentials.</li>
+            <li>{% trans "Use for demos and workshops." %}</li>
+            <li>{% trans "Allows customization." %}</li>
+            <li>{% trans "No coding necessary." %}</li>
+            <li>{% trans "Requires a free Google Cloud Project for credentials." %}</li>
           </ol>
         </div>
         <div class="col s12 m6 l6 left-align">
-          <h5><a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_airflow.md" target="_blank">Airflow/Composer</a></h5>
-          <p>Ideal for highly technical clients with engineering teams already using Airflow/Composer.</p>
+          <h5><a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_airflow.md" target="_blank">{% trans "Airflow/Composer" %}</a></h5>
+          <p>{% trans "Ideal for highly technical clients with engineering teams already using Airflow/Composer." %}</p>
           <ol>
-            <li>Use for long running jobs using Airflow.</li>
-            <li>Allows customization.</li>
-            <li>Extensive coding required.</li>
-            <li>Requires a paid Google Cloud Composer instance.</li>
+            <li>{% trans "Use for long running jobs using Airflow." %}</li>
+            <li>{% trans "Allows customization." %}</li>
+            <li>{% trans "Extensive coding required." %}</li>
+            <li>{% trans "Requires a paid Google Cloud Composer instance." %}</li>
           </ol>
         </div>
         <div class="col s12 m6 l6 left-align">
-          <h5><a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_package.md" target="_blank">Python</a></h5>
-          <p>Ideal for highly technical clients who want a minimal deployment footprint.</p>
+          <h5><a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_package.md" target="_blank">{% trans "Python" %}</a></h5>
+          <p>{% trans "Ideal for highly technical clients who want a minimal deployment footprint." %}</p>
           <ol>
-            <li>Use for custom infrastructure integration.</li>
-            <li>Allows minimal customization.</li>
-            <li>Extensive coding required.</li>
-            <li>Requires a free Google Cloud Project for credentials.</li>
+            <li>{% trans "Use for custom infrastructure integration." %}</li>
+            <li>{% trans "Allows minimal customization." %}</li>
+            <li>{% trans "Extensive coding required." %}</li>
+            <li>{% trans "Requires a free Google Cloud Project for credentials." %}</li>
           </ol>
         </div>
         <div class="col s12 m6 l6 left-align">
-          <h5><a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_enterprise.md" target="_blank">UI</a></h5>
-          <p>Ideal for teams wanting to build recipes at scale for multiple accounts.</p>
+          <h5><a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_enterprise.md" target="_blank">{% trans "UI" %}</a></h5>
+          <p>{% trans "Ideal for teams wanting to build recipes at scale for multiple accounts." %}</p>
           <ol>
-            <li>Use for entire teams ( same UI as this one ).</li>
-            <li>Support no-coding UI recipe builder.</li>
-            <li>Operations and support required.</li>
-            <li>Requires a paid Google Cloud Project.</li>
+            <li>{% trans "Use for entire teams ( same UI as this one )." %}</li>
+            <li>{% trans "Support no-coding UI recipe builder." %}</li>
+            <li>{% trans "Operations and support required." %}</li>
+            <li>{% trans "Requires a paid Google Cloud Project." %}</li>
           </ol>
         </div>
       </div>
     </div>
 
     <div id="help_warnings" class="col s12 m9 l10 left-align">
-      <h1><i class="material-icons large">report_problem</i> Warnings</h1>
-      <p class="flow-text left-align">StarThinker will do what you tell it to.  IT RUNS AS YOU, if you have access it will do it, be careful about overwriting, creating, sharing, or deleting data. Double check everything before running tasks.  Undo is not a feature.</p>
+      <h1><i class="material-icons large">report_problem</i> {% trans "Warnings" %}</h1>
+      <p class="flow-text left-align">{% trans "StarThinker will do what you tell it to.  IT RUNS AS YOU, if you have access it will do it, be careful about overwriting, creating, sharing, or deleting data. Double check everything before running tasks.  Undo is not a feature." %}</p>
 
       <div class="row">
         <ul class="col s6 m6 l6 left-align">
-          <li><strong>DATASETS ARE NOT DELETED when a recipe is deleted.</strong>
+          <li><strong>{% trans "DATASETS ARE NOT DELETED when a recipe is deleted." %}</strong>
             <ol>
-              <li>You will have to manually delete the dataset.</li>
-              <li>You will have to verify dataset contains what you want before sharing.</li>
+              <li>{% trans "You will have to manually delete the dataset." %}</li>
+              <li>{% trans "You will have to verify dataset contains what you want before sharing." %}</li>
             </ol>
           </li>
         </ul>
 
         <ul class="col s6 m6 l6 left-align">
-          <li><strong>Changing DBM / DCM report definition requires delete of report.</strong>
+          <li><strong>{% trans "Changing DBM / DCM report definition requires delete of report." %}</strong>
             <ol>
-              <li>You will have to go into DBM / DCM and delete the report.</li>
-              <li>StarThinker will then create the new report definition.</li>
+              <li>{% trans "You will have to go into DBM / DCM and delete the report." %}</li>
+              <li>{% trans "StarThinker will then create the new report definition." %}</li>
             </ol>
           </li>
         </ul>
 
         <ul class="col s6 m6 l6 left-align">
-          <li><strong>BigQuery views are not modified by StarThinker if they exist.</strong>
+          <li><strong>{% trans "BigQuery views are not modified by StarThinker if they exist." %}</strong>
             <ol>
-              <li>This is to protect any customizations you may have added.</li>
-              <li>You will have to delete the view for StarThinker to recreate it.</li>
+              <li>{% trans "This is to protect any customizations you may have added." %}</li>
+              <li>{% trans "You will have to delete the view for StarThinker to recreate it." %}</li>
             </ol>
           </li>
         </ul>
 
         <ul class="col s6 m6 l6 left-align">
-          <li><strong>All tasks in a recipe are executed, even if ones prior fail.</strong>
+          <li><strong>{% trans "All tasks in a recipe are executed, even if ones prior fail." %}</strong>
             <ol>
-              <li>This allows retries of the same task later in the day.</li>
-              <li>For mission critical data flows, check your data before acting on it.</li>
+              <li>{% trans "This allows retries of the same task later in the day." %}</li>
+              <li>{% trans "For mission critical data flows, check your data before acting on it." %}</li>
             </ol>
           </li>
         </ul>
 
         <ul class="col s6 m6 l6 left-align">
-          <li><strong>All errors and fields come from the API documentation.</strong>
+          <li><strong>{% trans "All errors and fields come from the API documentation." %}</strong>
             <ol>
-              <li>When looking for field values or formats consult the approriate API documentation.</li>
-              <li>When errors are thrown, the log shows them, consult the API documents to resolve the error.</li>
+              <li>{% trans "When looking for field values or formats consult the approriate API documentation." %}</li>
+              <li>{% trans "When errors are thrown, the log shows them, consult the API documents to resolve the error." %}</li>
             </ol>
           </li>
         </ul>
 
         <ul class="col s6 m6 l6 left-align">
-          <li><strong>StarThinker does not gurantee exact task execution time.</strong>
+          <li><strong>{% trans "StarThinker does not gurantee exact task execution time." %}</strong>
             <ol>
-              <li>All tasks are executed in sequence.</li>
-              <li>Tasks run at or after the scheduled hour, depending on worker load.</li>
-              <li>If a task fails, remianing tasks are still executed.</li>
+              <li>{% trans "All tasks are executed in sequence." %}</li>
+              <li>{% trans "Tasks run at or after the scheduled hour, depending on worker load." %}</li>
+              <li>{% trans "If a task fails, remianing tasks are still executed." %}</li>
             </ol>
           </li>
         </ul>
@@ -282,16 +305,16 @@
     </div>
 
     <div id="help_debug" class="col s12 m9 l10 left-align">
-      <h1><i class="material-icons large">help</i> Debugging</h1>
-      <p class="flow-text">Errors in StarThinker can range from a misconfigured field value to a bug in the code.  To promptly resolve most issues please follow these debugging steps.</p>
-      <p>When working with StarThinker administrators, please include the recipe number ( found in the recipe edit URL ) in all communications.</p>
+      <h1><i class="material-icons large">help</i> {% trans "Debugging" %}</h1>
+      <p class="flow-text">{% trans "Errors in StarThinker can range from a misconfigured field value to a bug in the code.  To promptly resolve most issues please follow these debugging steps." %}</p>
+      <p>{% trans "When working with StarThinker administrators, please include the recipe number, found in the recipe edit URL, in all communications." %}</p>
       <ol>
-        <li>Consult the log and reference the error in the API documentation relevant to the product used in the task.</li>
-        <li>Ensure the service account used in the recipe exists and is valid.</li>
-        <li>Try logging out and logging back in to refresh user credentials and access to APIs.</li>
-        <li>Contact the administrator of the StarThinker UI where the recipe was deployed.</li>
-        <li>Contact the owner of the solution listed on the <a href="https://google.github.io/starthinker/" target="_blank">Solution Gallery Page</a>.</li>
-        <li>Contact <a href="mailto:starthinker-help@google.com">starthinker-help@google.com</a>.</li>
+        <li>{% trans "Consult the log and reference the error in the API documentation relevant to the product used in the task." %}</li>
+        <li>{% trans "Ensure the service account used in the recipe exists and is valid." %}</li>
+        <li>{% trans "Try logging out and logging back in to refresh user credentials and access to APIs." %}</li>
+        <li>{% trans "Contact the administrator of the StarThinker UI where the recipe was deployed." %}</li>
+        <li>{% trans 'Contact the owner of the solution listed on the <a href="https://google.github.io/starthinker/" target="_blank">Solution Gallery Page</a>.' %}</li>
+        <li>{% trans 'Contact <a href="mailto:starthinker-help@google.com">starthinker-help@google.com</a>.' %}</li>
       </ol>
     </div>
 

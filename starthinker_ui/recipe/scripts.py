@@ -24,6 +24,7 @@ from copy import deepcopy
 from datetime import datetime, date
 
 from django.conf import settings
+from django.utils.translation import get_language
 
 from starthinker.config import UI_ROOT
 from starthinker.script.parse import json_set_fields, text_set_fields
@@ -76,7 +77,7 @@ class Script:
 
   def __init__(self, tag):
     self.tag = tag
-    self.script = SCRIPTS.get(tag, {})
+    self.script = deepcopy(SCRIPTS.get(tag, {}))
 
   def exists(self):
     return self.script != {}
@@ -134,24 +135,36 @@ class Script:
     return agos
 
   def get_name(self):
-    return self.script.get('script', {}).get('title', '')
+    script_buffer = self.script.get('script', {})
+    return script_buffer.get(get_language(), script_buffer).get('title', '')
+
+  def get_description(self, variables={}):
+    script_buffer = self.script.get('script', {})
+    return text_set_fields(
+      script_buffer.get(get_language(), script_buffer).get('description', ''),
+      variables
+    )
+
+  def get_instructions(self, variables={}):
+    script_buffer = self.script.get('script', {})
+    return [
+      text_set_fields(instruction, variables)
+      for instruction in script_buffer.get(get_language(), script_buffer).get('instructions', '')
+    ]
+
+  def get_documentation(self):
+    script_buffer = self.script.get('script', {})
+    return script_buffer.get(get_language(), script_buffer).get('documentation', None)
 
   def get_icon(self):
     return self.script.get('script', {}).get('icon', '')
 
-  def get_description(self, variables={}):
-    return text_set_fields(
-        self.script.get('script', {}).get('description', ''), variables)
-
-  def get_instructions(self, variables={}):
-    return [
-        text_set_fields(instruction, variables)
-        for instruction in self.script.get('script', {}).get(
-            'instructions', [])
-    ]
+  def get_pitches(self):
+    script_buffer = self.script.get('script', {})
+    return script_buffer.get(get_language(), script_buffer).get('pitches', [])
 
   def get_authors(self):
-    return set(deepcopy(self.script.get('script', {}).get('authors', [])))
+    return set(self.script.get('script', {}).get('authors', []))
 
   def get_image(self):
     return self.script.get('script', {}).get('image', None)
@@ -165,29 +178,22 @@ class Script:
   def get_test(self):
     return self.script.get('script', {}).get('test', None)
 
-  def get_documentation(self):
-    return self.script.get('script', {}).get('documentation', None)
-
   def get_from(self):
     return self.script.get('script', {}).get('from', [])
 
   def get_to(self):
     return self.script.get('script', {}).get('to', [])
 
-  def get_pitches(self):
-    return self.script.get('script', {}).get('pitches', [])
-
   def get_impacts(self):
     return self.script.get('script', {}).get('impacts', {})
 
   def get_tasks(self):
-    return deepcopy(self.script.get('tasks', []))
+    return self.script.get('tasks', [])
 
   def get_tasks_and_setup(self):
-    s = deepcopy(self.script)
-    if 'script' in s: del s['script']
-    if 'path' in s: del s['path']
-    return s
+    if 'script' in self.script: del self.script['script']
+    if 'path' in self.script: del self.script['path']
+    return self.script
 
   def get_tasks_linked(self):
     tasks = self.get_tasks()

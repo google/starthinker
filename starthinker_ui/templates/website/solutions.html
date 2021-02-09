@@ -20,6 +20,7 @@
 ###########################################################################
 {% endcomment %}
 
+{% load i18n %}
 {% load website_app %}
 
 {% block css %}
@@ -72,20 +73,20 @@
     Packaged Solutions
     <a id="category_link" href="?catgegory=all"><i class="material-icons blue-text">link</i></a>
   </h1>
-  <p class="flow-text">These recipes are entire workflows that deploy end to end solutions for clients.</p>
+  <p class="flow-text">{% trans "These recipes are entire workflows that deploy end to end solutions for clients." %}</p>
 
-  <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_all">All</a>
+  <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_all">{% trans "All" %}</a>
   {% if '7 days' in agos %}
-     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_7-days">7 days</a>
+     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_7-days">7 {% trans "days" %}</a>
   {% endif %}
   {% if '30 days' in agos %}
-     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_30-days">30 days</a>
+     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_30-days">30 {% trans "days" %}</a>
   {% endif %}
   {% if '90 days' in agos %}
-     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_90-days">90 days</a>
+     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_90-days">90 {% trans "days" %}</a>
   {% endif %}
   {% if 'older' in agos %}
-     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_older">older</a>
+     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_older">{% trans "older" %}</a>
   {% endif %}
 
   <br/><br/>
@@ -94,7 +95,7 @@
     <div class="col s6 m4 l3 right-align">
       <ul class="collapsible">
         <li>
-          <div class="collapsible-header"><i class="material-icons">mediation</i><a href="#!" class="trigger_category collection-item" id="trigger_category_all">All</a></div>
+          <div class="collapsible-header"><i class="material-icons">mediation</i><a href="#!" class="trigger_category collection-item" id="trigger_category_all">{% trans "All" %}</a></div>
         </li>
         {% for from, tos in categories %}
           <li>
@@ -150,17 +151,17 @@
 
   <br/><br/>
 
-  <h3 id="code-tasks">Run These Workflows In Minutes On Google Cloud</h3>
-  <p class="flow-text">Everything from a quick Google Cloud UI to reference developer code for your team in one GitHub repository.</p>
+  <h3 id="code-tasks">{% trans "Run These Workflows In Minutes On Google Cloud" %}</h3>
+  <p class="flow-text">{% trans "Everything from a quick Google Cloud UI to reference developer code for your team in one GitHub repository." %}</p>
   <p>
     <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#deployment" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
-      Deployment Steps<i class="material-icons right">launch</i>
+      {% trans "Deployment Steps" %}<i class="material-icons right">launch</i>
     </a>
     <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
-      Developer Guide<i class="material-icons right">build</i>
+      {% trans "Developer Guide" %}<i class="material-icons right">build</i>
     </a>
     <a href="{% if external %}https://google.github.io/starthinker/help/{% else %}/help/{% endif %}" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
-      UI How To<i class="material-icons right">laptop</i>
+      {% trans "UI How To" %}<i class="material-icons right">laptop</i>
     </a>
   </p>
 

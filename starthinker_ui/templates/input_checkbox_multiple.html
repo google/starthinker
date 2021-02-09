@@ -18,13 +18,15 @@
 ###########################################################################
 {% endcomment %}
 
+{% load i18n %}
+
 {% for value, name in field.choices %}
   <div class="switch">
     <label>
-    Off
+    {% trans "Off" %}
       <input type="checkbox" id="{{ field.id }}" value="{{ y }}" {% if field.value == value %} chekced{% endif %}>
       <span class="lever"></span>
-      On
+      {% trans "On" %}
     </label>
   </div>
 {% endfor %}

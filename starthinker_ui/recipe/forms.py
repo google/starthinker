@@ -18,18 +18,22 @@
 
 from django import forms
 from django.db.models import Q
+from django.utils.translation import gettext as _
 
 from starthinker_ui.recipe.models import Recipe
 from starthinker_ui.project.models import Project
 from starthinker_ui.recipe.forms_fields import ListChoiceField, ListChoiceIntegerField, TimezoneField
 
 DAYS = [
-    'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
+  _('Monday'),
+  _('Tuesday'),
+  _('Wednesday'),
+  _('Thursday'),
+  _('Friday'),
+  _('Saturday'),
+  _('Sunday')
 ]
-HOURS = [
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-    21, 22, 23
-]
+HOURS = list(range(0, 24))
 
 
 # This form is always constructed with an object, so initial data doesn't really work here, need to set defaults at the model
@@ -59,18 +63,15 @@ class SetupForm(forms.ModelForm):
     self.fields['project'].queryset = Project.objects.filter(query).order_by(
         'share', 'identifier')
 
-    self.fields['name'].help_text = 'Identify this recipe in list of recipes.'
-    self.fields[
-        'project'].help_text = ('Choose a <b>Google Cloud Project Service '
-                                'Credential</b> uploaded to Projects.')
-    self.fields[
-        'timezone'].help_text = 'Frame of reference for all recipe times.'
-    self.fields['week'].help_text = 'Days of week to execute recipe.'
-    self.fields['hour'].help_text = 'Hours of day to execute recipe.'
-    self.fields['active'].help_text = 'To pause recipe, uncheck this.'
+    self.fields['name'].help_text = _('Identify this recipe in list of recipes.')
+    self.fields['project'].help_text = _('Choose a <b>Google Cloud Project Service Credential</b> uploaded to Projects.')
+    self.fields['timezone'].help_text = _('Frame of reference for all recipe times.')
+    self.fields['week'].help_text = _('Days of week to execute recipe.')
+    self.fields['hour'].help_text = _('Hours of day to execute recipe.')
+    self.fields['active'].help_text = _('To pause recipe, uncheck this.')
 
     self.structure = [{
-        'title': '%s Recipe' % self.instance.name.title(),
+        'title': _('%s Recipe') % self.instance.name.title(),
         'description': '',
         'fields': [self['name'], self['project']]
     }]
@@ -89,10 +90,8 @@ class SetupForm(forms.ModelForm):
 
     else:
       self.structure.append({
-          'title':
-              'Schedule',
-          'description':
-              '',
+          'title': _('Schedule'),
+          'description': '',
           'fields': [
               self['timezone'],
               self['week'],

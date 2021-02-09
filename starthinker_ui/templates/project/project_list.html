@@ -20,17 +20,19 @@
 ###########################################################################
 {% endcomment %}
 
+{% load i18n %}
+
 {% block content %}
 
   <h1>Projects <a href="/project/edit/"><i class="material-icons blue-text">add_circle</i></a></h1>
-  <p class="flow-text">Create a project and use it to deploy recipes.</p>
+  <p class="flow-text">{% trans "Create a project and use it to deploy recipes." %}</p>
 
   <table class="bordered highlight list">
     <thead>
       <tr>
-        <th>Project</th>
+        <th>{% trans "Project" %}</th>
         <th></th>
-        <th class="center">Recipes</th>
+        <th class="center">{% trans "Recipes" %}</th>
       </tr>
      </thead>
      <tbody>
@@ -39,7 +41,7 @@
            <td class="center"><a href="{{ project.link_edit }}"><i class="material-icons medium blue-text">cloud</i></a></td>
            <td>
              <a href="{{ project.link_edit }}">{{ project.identifier }}</a>
-             <br/>{{ project.get_project_id }}{% if project.share %} | {{ project.share.upper|default:"USER" }} LEVEL SHARE{% endif %}
+             <br/>{{ project.get_project_id }}{% if project.share %} | {{ project.share.upper|default:"USER" }} {% trans "LEVEL SHARE" %}{% endif %}
            </td>
            <td class="center">{{ project.recipe_set.count }}</td>
          </tr>

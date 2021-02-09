@@ -124,9 +124,6 @@ class Recipe(models.Model):
   def __str__(self):
     return self.name
 
-  def __unicode__(self):
-    return self.name
-
   def slug(self):
     return RE_SLUG.sub('_', self.name)
 
