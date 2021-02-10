@@ -304,6 +304,7 @@ class Recipe(models.Model):
     now_utc = datetime.utcnow()
     now_tz = utc_to_timezone(now_utc, self.timezone)
     date_tz = str(now_tz.date())
+    date_day =  now_tz.strftime('%a')
 
     # load prior status
     try:
@@ -340,10 +341,11 @@ class Recipe(models.Model):
 
     # if updating, modify the status
     elif force or update or (date_tz > status['date_tz'] and
-                             now_tz.strftime('%a') in self.get_days()):
+                             date_day in self.get_days()):
       status = {
           'date_tz': date_tz,
           'tasks': [],
+          'days':[date_day] if force else self.get_days()
       }
 
       # create task list based on recipe json
@@ -408,7 +410,7 @@ class Recipe(models.Model):
 
     # if not done return next task prior or equal to current time zone hour
     now_tz = utc_to_timezone(datetime.utcnow(), self.timezone)
-    if now_tz.strftime('%a') in self.get_days():
+    if now_tz.strftime('%a') in status.get('days', self.get_days()):
       for task in status['tasks']:
         if not task['done'] and task['hour'] <= now_tz.hour:
           task['recipe'] = self.get_json()
