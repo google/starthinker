@@ -62,15 +62,15 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-DV360 Segmentology
+GoogleAds Segmentology
 
-DV360 funnel analysis using Census data.
+GoogleAds funnel analysis using Census data.
 
   - Wait for <b>BigQuery->->->Census_Join</b> to be created.
   - Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
-  - Copy <a href='https://datastudio.google.com/c/u/0/reporting/3673497b-f36f-4448-8fb9-3e05ea51842f/' target='_blank'>DV360 Segmentology Sample</a>. Leave the Data Source as is, you will change it in the next step.
+  - Copy <a href='https://datastudio.google.com/c/u/0/reporting/3673497b-f36f-4448-8fb9-3e05ea51842f/' target='_blank'>GoogleAds Segmentology Sample</a>. Leave the Data Source as is, you will change it in the next step.
   - Click Edit Connection, and change to <b>BigQuery->->->Census_Join</b>.
-  - Or give these intructions to the client.
+  - Or give these instructions to the client.
 
 --------------------------------------------------------------
 
@@ -84,13 +84,12 @@ from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'auth_read': 'user',  # Credentials used for reading data.
-  'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
+  'customer_id': '',  # Google Ads customer.
+  'developer_token': '',  # Google Ads developer token.
+  'login_id': '',  # Google Ads login.
   'recipe_project': '',  # Project ID hosting dataset.
   'auth_write': 'service',  # Authorization used for writing data.
-  'recipe_name': '',  # Name of report, not needed if ID used.
   'recipe_slug': '',  # Name of Google BigQuery dataset to create.
-  'partners': [],  # DV360 partner id.
-  'advertisers': [],  # Comma delimited list of DV360 advertiser ids.
 }
 
 RECIPE = {
@@ -145,7 +144,7 @@ RECIPE = {
       }
     },
     {
-      'dbm': {
+      'google_api': {
         'auth': {
           'field': {
             'name': 'auth_read',
@@ -155,114 +154,43 @@ RECIPE = {
             'description': 'Credentials used for reading data.'
           }
         },
-        'report': {
-          'filters': {
-            'FILTER_PARTNER': {
-              'values': {
-                'field': {
-                  'name': 'partners',
-                  'kind': 'integer_list',
-                  'order': 5,
-                  'default': [
-                  ],
-                  'description': 'DV360 partner id.'
-                }
-              }
-            },
-            'FILTER_ADVERTISER': {
-              'values': {
-                'field': {
-                  'name': 'advertisers',
-                  'kind': 'integer_list',
-                  'order': 6,
-                  'default': [
-                  ],
-                  'description': 'Comma delimited list of DV360 advertiser ids.'
-                }
-              }
+        'api': 'googleads',
+        'version': 'v5',
+        'function': 'customers.googleAds.search',
+        'kwargs': {
+          'customerId': {
+            'field': {
+              'name': 'customer_id',
+              'kind': 'string',
+              'description': 'Google Ads customer.',
+              'default': ''
             }
           },
           'body': {
-            'timezoneCode': {
-              'field': {
-                'name': 'recipe_timezone',
-                'kind': 'timezone',
-                'description': 'Timezone for report dates.',
-                'default': 'America/Los_Angeles'
-              }
-            },
-            'metadata': {
-              'title': {
-                'field': {
-                  'name': 'recipe_name',
-                  'kind': 'string',
-                  'order': 3,
-                  'prefix': 'Segmentology ',
-                  'default': '',
-                  'description': 'Name of report, not needed if ID used.'
-                }
-              },
-              'dataRange': 'LAST_30_DAYS',
-              'format': 'CSV'
-            },
-            'params': {
-              'type': 'TYPE_CROSS_PARTNER',
-              'groupBys': [
-                'FILTER_PARTNER',
-                'FILTER_PARTNER_NAME',
-                'FILTER_ADVERTISER',
-                'FILTER_ADVERTISER_NAME',
-                'FILTER_MEDIA_PLAN',
-                'FILTER_MEDIA_PLAN_NAME',
-                'FILTER_ZIP_POSTAL_CODE'
-              ],
-              'metrics': [
-                'METRIC_BILLABLE_IMPRESSIONS',
-                'METRIC_CLICKS',
-                'METRIC_TOTAL_CONVERSIONS'
-              ]
-            },
-            'schedule': {
-              'frequency': 'WEEKLY'
-            }
-          }
-        }
-      }
-    },
-    {
-      'dbm': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 0,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
+            'query': 'SELECT           campaign.name,           ad_group.name,           segments.geo_target_postal_code,           metrics.impressions,           metrics.clicks,           metrics.conversions,           metrics.interactions           FROM user_location_view         '
           }
         },
-        'report': {
-          'name': {
+        'headers': {
+          'developer-token': {
             'field': {
-              'name': 'recipe_name',
+              'name': 'developer_token',
               'kind': 'string',
-              'order': 3,
-              'prefix': 'Segmentology ',
-              'default': '',
-              'description': 'Name of report, not needed if ID used.'
+              'description': 'Google Ads developer token.',
+              'default': ''
+            }
+          },
+          'login-customer-id': {
+            'field': {
+              'name': 'login_id',
+              'kind': 'string',
+              'description': 'Google Ads login.',
+              'default': ''
             }
           }
         },
-        'out': {
+        'iterate': True,
+        'results': {
           'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_write',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Authorization used for writing data.'
-              }
-            },
             'dataset': {
               'field': {
                 'name': 'recipe_slug',
@@ -272,59 +200,13 @@ RECIPE = {
                 'description': 'Name of Google BigQuery dataset to create.'
               }
             },
-            'table': 'DV360_KPI',
-            'header': True,
+            'table': 'GoogleAds_KPI',
             'schema': [
-              {
-                'name': 'Partner_Id',
-                'type': 'INTEGER',
-                'mode': 'REQUIRED'
-              },
-              {
-                'name': 'Partner',
-                'type': 'STRING',
-                'mode': 'REQUIRED'
-              },
-              {
-                'name': 'Advertiser_Id',
-                'type': 'INTEGER',
-                'mode': 'REQUIRED'
-              },
-              {
-                'name': 'Advertiser',
-                'type': 'STRING',
-                'mode': 'REQUIRED'
-              },
-              {
-                'name': 'Campaign_Id',
-                'type': 'INTEGER',
-                'mode': 'REQUIRED'
-              },
-              {
-                'name': 'Campaign',
-                'type': 'STRING',
-                'mode': 'REQUIRED'
-              },
-              {
-                'name': 'Zip',
-                'type': 'STRING',
-                'mode': 'NULLABLE'
-              },
-              {
-                'name': 'Impressions',
-                'type': 'FLOAT',
-                'mode': 'NULLABLE'
-              },
-              {
-                'name': 'Clicks',
-                'type': 'FLOAT',
-                'mode': 'NULLABLE'
-              },
-              {
-                'name': 'Conversions',
-                'type': 'FLOAT',
-                'mode': 'NULLABLE'
-              }
+              {'name': 'userLocationView','type': 'RECORD','mode': 'NULLABLE','fields': [{'name': 'resourceName','type': 'STRING','mode': 'NULLABLE'}]},
+              {'name': 'segments','type': 'RECORD','mode': 'NULLABLE','fields': [{'name': 'geoTargetPostalCode','type': 'STRING','mode': 'NULLABLE'}]},
+              {'name': 'metrics','type': 'RECORD','mode': 'NULLABLE','fields': [{'name': 'interactions','type': 'INTEGER','mode': 'NULLABLE'},{'name': 'impressions','type': 'INTEGER','mode': 'NULLABLE'},{'name': 'conversions','type': 'INTEGER','mode': 'NULLABLE'},{'name': 'clicks','type': 'INTEGER','mode': 'NULLABLE'}]},
+              {'name': 'adGroup','type': 'RECORD','mode': 'NULLABLE','fields': [{'name': 'name','type': 'STRING','mode': 'NULLABLE'},{'name': 'resourceName','type': 'STRING','mode': 'NULLABLE'}]},
+              {'name': 'campaign','type': 'RECORD','mode': 'NULLABLE','fields': [{'name': 'name','type': 'STRING','mode': 'NULLABLE'},{'name': 'resourceName','type': 'STRING','mode': 'NULLABLE'}]}
             ]
           }
         }
@@ -342,7 +224,7 @@ RECIPE = {
           }
         },
         'from': {
-          'query': 'SELECT            Partner_Id,            Partner,            Advertiser_Id,            Advertiser,            Campaign_Id,            Campaign,            Zip,            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression_Percent,            SAFE_DIVIDE(Clicks, Impressions) AS Click_Percent,            SAFE_DIVIDE(Conversions, Impressions) AS Conversion_Percent,            Impressions AS Impressions          FROM            `{project}.{dataset}.DV360_KPI`;        ',
+          'query': 'SELECT            campaign.name AS Campaign,            adGRoup.name AS Ad_Group,            segments.geoTargetPostalCode AS Postal_Code,            SAFE_DIVIDE(metrics.impressions, SUM(metrics.impressions) OVER()) AS Impression_Percent,            SAFE_DIVIDE(metrics.clicks, metrics.impressions) AS Click_Percent,            SAFE_DIVIDE(metrics.conversions, metrics.impressions) AS Conversion_Percent,            SAFE_DIVIDE(metrics.interactions, metrics.impressions) AS Interaction_Percent,            metrics.impressions AS Impressions          FROM            `{project}.{dataset}.GoogleAds_KPI`;        ',
           'parameters': {
             'project': {
               'field': {
@@ -369,7 +251,7 @@ RECIPE = {
               'description': 'Place where tables will be written in BigQuery.'
             }
           },
-          'view': 'DV360_KPI_Normalized'
+          'view': 'GoogleAds_KPI_Normalized'
         }
       }
     },
@@ -415,14 +297,10 @@ RECIPE = {
           }
         },
         'correlate': {
-          'join': 'Zip',
+          'join': 'Postal_Code',
           'pass': [
-            'Partner_Id',
-            'Partner',
-            'Advertiser_Id',
-            'Advertiser',
-            'Campaign_Id',
-            'Campaign'
+            'Campaign',
+            'Ad_Group'
           ],
           'sum': [
             'Impressions'
@@ -430,7 +308,8 @@ RECIPE = {
           'correlate': [
             'Impression_Percent',
             'Click_Percent',
-            'Conversion_Percent'
+            'Conversion_Percent',
+            'Interaction_Percent'
           ],
           'dataset': {
             'field': {
@@ -441,7 +320,7 @@ RECIPE = {
               'description': 'Name of Google BigQuery dataset to create.'
             }
           },
-          'table': 'DV360_KPI_Normalized',
+          'table': 'GoogleAds_KPI_Normalized',
           'significance': 80
         },
         'to': {
@@ -461,7 +340,7 @@ RECIPE = {
   ]
 }
 
-dag_maker = DAG_Factory('segmentology_dv360', RECIPE, INPUTS)
+dag_maker = DAG_Factory('google_ads_segmentology', RECIPE, INPUTS)
 dag = dag_maker.generate()
 
 if __name__ == "__main__":

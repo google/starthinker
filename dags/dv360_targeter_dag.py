@@ -66,7 +66,7 @@ DV360 Bulk Targeting Editor
 
 Allows bulk targeting DV360 through Sheets and BigQuery.
 
-  - A Sheet called <b>DV Targeter UNDEFINED</b> will be created.
+  - A Sheet called <b>DV Targeter </b> will be created.
   - Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.
   - In the 'Partners' sheet tab, fill in <i>Filter</i> column.
   - Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.
@@ -95,6 +95,7 @@ INPUTS = {
   'auth_dv': 'user',  # Credentials used for dv.
   'auth_sheet': 'user',  # Credentials used for sheet.
   'auth_bigquery': 'service',  # Credentials used for bigquery.
+  'recipe_name': '',  # Name of Google Sheet to create.
   'recipe_slug': '',  # Name of Google BigQuery dataset to create.
   'command': 'Load',  # Action to take.
 }
@@ -147,7 +148,7 @@ RECIPE = {
           'source': 'https://docs.google.com/spreadsheets/d/1ARkIvh0D-gltZeiwniUonMNrm0Mi1s2meZ9FUjutXOE/',
           'destination': {
             'field': {
-              'name': 'recipe_slug',
+              'name': 'recipe_name',
               'prefix': 'DV Targeter ',
               'kind': 'string',
               'order': 3,
@@ -190,7 +191,7 @@ RECIPE = {
         },
         'sheet': {
           'field': {
-            'name': 'recipe_slug',
+            'name': 'recipe_name',
             'prefix': 'DV Targeter ',
             'kind': 'string',
             'order': 4,

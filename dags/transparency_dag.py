@@ -66,7 +66,7 @@ CM360 Domain And App Transparency
 
 Reports the percentage of CM impressions that can be attributed to a specific domain or application.  Allows diagnostic of which domains and apps are misconfigured by publisher resulting in underreporting.
 
-  - Wait for <a href='https://console.cloud.google.com/bigquery?project=UNDEFINED&d=UNDEFINED' target='_blank'>BigQuery : UNDEFINED</a> : UNDEFINED : UNDEFINED</a> to be created.
+  - Wait for <a href='https://console.cloud.google.com/bigquery?project=&d=' target='_blank'>BigQuery : </a> :  : </a> to be created.
   - Copy DataStudio <a href='https://datastudio.google.com/c/u/0/datasources/1Az6d9loAHo69GSIyKUfusrtyf_IDqTVs' target='_blank'>Transparency Combined KPI</a> and connect.
   - Copy DataStudio <a href='https://datastudio.google.com/c/u/0/reporting/1foircGRxgYCL_PR8gfdmYOleBacnPKwB/page/QCXj' target='_blank'>Transparency Breakdown</a>.
   - When prompted choose the new data source you just created.

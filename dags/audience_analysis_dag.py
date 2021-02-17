@@ -66,10 +66,10 @@ DV360 Audience Analysis
 
 The Audience Wizard Dashboard helps you to track the audience performance across all audiences on Display.
 
-  - Wait for <b>BigQuery->UNDEFINED->UNDEFINED->DV360_Audience_Analysis</b> to be created.
+  - Wait for <b>BigQuery->->->DV360_Audience_Analysis</b> to be created.
   - Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
   - Copy <a href='https://datastudio.google.com/open/1d2vlf4C1roN95NsdsvWNZqKFcYN8N9Jg' target='_blank'>Sample DV360 Audience Analysis Dataset</a>.
-  - Click Edit Connection, and change to <b>BigQuery->UNDEFINED->UNDEFINED->DV360_Audience_Analysis</b>.
+  - Click Edit Connection, and change to <b>BigQuery->->->DV360_Audience_Analysis</b>.
   - Copy <a href='https://datastudio.google.com/open/1Ij_RluqolElm7Nny9fBrIAPRB9ObUl0M' target='_blank'>Sample DV360 Audience Analysis Report</a>.
   - When prompted choose the new data source you just created.
   - Or give these intructions to the client.

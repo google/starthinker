@@ -67,7 +67,7 @@ CM360 Report Emailed To BigQuery
 Pulls a CM Report from a gMail powered email account into BigQuery.
 
   - The person executing this recipe must be the recipient of the email.
-  - Schedule a CM report to be sent to <b>UNDEFINED</b>.
+  - Schedule a CM report to be sent to <b></b>.
   - Or set up a redirect rule to forward a report you already receive.
   - The report must be sent as an attachment.
   - Ensure this recipe runs after the report is email daily.

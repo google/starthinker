@@ -66,7 +66,7 @@ DV360 Bulk Editor
 
 Allows bulk editing DV360 through Sheets and BigQuery.
 
-  - Select <b>Load Partners</b>, <b>save</b> the recipe, then run. A Sheet called DV_Sheet_UNDEFINED will be created.
+  - Select <b>Load Partners</b>, <b>save</b> the recipe, then run. A Sheet called DV_Editor_ will be created.
   - In the 'Partners' sheet tab, fill in <i>Partners</i> tab filter.
   - Select <b>Load Advertisers</b>, <b>save</b> the recipe, then run.
   - In the 'Advertisers' sheet tab, fill in <i>Advertisers</i> tab filter.
@@ -94,6 +94,7 @@ INPUTS = {
   'auth_dv': 'user',  # Credentials used for dv.
   'auth_sheet': 'user',  # Credentials used for sheet.
   'auth_bigquery': 'service',  # Credentials used for bigquery.
+  'recipe_name': '',  # Name of Google Sheet to create.
   'recipe_slug': '',  # Name of Google BigQuery dataset to create.
   'command': 'Load Partners',  # Action to take.
 }
@@ -121,7 +122,7 @@ RECIPE = {
         'dataset': {
           'field': {
             'name': 'recipe_slug',
-            'prefix': 'DV_Sheet_',
+            'prefix': 'DV_Editor_',
             'kind': 'string',
             'order': 2,
             'default': '',
@@ -146,8 +147,8 @@ RECIPE = {
           'source': 'https://docs.google.com/spreadsheets/d/18G6cGo4j5SsY08H8P53R22D_Pm6m-zkE6APd3EDLf2c/',
           'destination': {
             'field': {
-              'name': 'recipe_slug',
-              'prefix': 'DV Sheet ',
+              'name': 'recipe_name',
+              'prefix': 'DV Editor ',
               'kind': 'string',
               'order': 3,
               'default': '',
@@ -189,8 +190,8 @@ RECIPE = {
         },
         'sheet': {
           'field': {
-            'name': 'recipe_slug',
-            'prefix': 'DV Sheet ',
+            'name': 'recipe_name',
+            'prefix': 'DV Editor ',
             'kind': 'string',
             'order': 4,
             'default': '',
@@ -200,7 +201,7 @@ RECIPE = {
         'dataset': {
           'field': {
             'name': 'recipe_slug',
-            'prefix': 'DV_Sheet_',
+            'prefix': 'DV_Editor_',
             'kind': 'string',
             'order': 5,
             'default': '',
@@ -215,17 +216,12 @@ RECIPE = {
               'Clear Partners',
               'Clear Advertisers',
               'Clear Campaigns',
-              'Clear Creatives',
-              'Clear Insertion Orders',
-              'Clear Line Items',
+              'Clear Insertion Orders and Line Items',
               'Clear Preview',
               'Clear Patch',
               'Load Partners',
               'Load Advertisers',
               'Load Campaigns',
-              'Load Creatives',
-              'Load Insertion Orders',
-              'Load Line Items',
               'Load Insertion Orders and Line Items',
               'Preview',
               'Patch'

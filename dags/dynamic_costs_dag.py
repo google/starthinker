@@ -71,9 +71,9 @@ Calculate DV360 cost at the dynamic creative combination level.
   - Click run now once, and a tab called <strong>Dynamic Costs</strong> will be added to the sheet with instructions.
   - Follow the instructions on the sheet; this will be your configuration.
   - StarThinker will create two or three (depending on the case) reports in CM named <strong>Dynamic Costs - ...</strong>.
-  - Wait for <b>BigQuery->UNDEFINED->UNDEFINED->Dynamic_Costs_Analysis</b> to be created or click Run Now.
+  - Wait for <b>BigQuery->->->Dynamic_Costs_Analysis</b> to be created or click Run Now.
   - Copy <a href='https://datastudio.google.com/open/1vBvBEiMbqCbBuJTsBGpeg8vCLtg6ztqA' target='_blank'>Dynamic Costs Sample Data ( Copy From This )</a>.
-  - Click Edit Connection, and Change to <b>BigQuery->UNDEFINED->UNDEFINED->Dynamic_Costs_Analysis</b>.
+  - Click Edit Connection, and Change to <b>BigQuery->->->Dynamic_Costs_Analysis</b>.
   - Copy <a href='https://datastudio.google.com/open/1xulBAdx95SnvjnUzFP6r14lhkvvVbsP8' target='_blank'>Dynamic Costs Sample Report ( Copy From This )</a>.
   - When prompted, choose the new data source you just created.
   - Edit the table to include or exclude columns as desired.

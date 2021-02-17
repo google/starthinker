@@ -67,9 +67,9 @@ CM360 Report Replicate
 Replicate a report across multiple networks and advertisers.
 
   - Provide the name or ID of an existing report.
-  - Run the recipe once to generate the input sheet called CM Replicate For UNDEFINED.
+  - Run the recipe once to generate the input sheet called .
   - Enter network and advertiser ids to replicate the report.
-  - Data will be written to BigQuery &gt; UNDEFINED &gt; UNDEFINED &gt; [REPORT NAME]_All
+  - Data will be written to BigQuery &gt;  &gt;  &gt; _All
 
 --------------------------------------------------------------
 
@@ -103,7 +103,6 @@ RECIPE = {
           'destination': {
             'field': {
               'name': 'recipe_name',
-              'prefix': 'CM Replicate For ',
               'kind': 'string',
               'order': 1,
               'description': 'Name of document to deploy to.',
@@ -188,7 +187,6 @@ RECIPE = {
           'sheet': {
             'field': {
               'name': 'recipe_name',
-              'prefix': 'CM Replicate For ',
               'kind': 'string',
               'order': 1,
               'default': '',

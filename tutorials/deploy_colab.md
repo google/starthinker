@@ -53,7 +53,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [CM360 Floodlight Monitor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/floodlight_monitor.ipynb) - Monitor floodlight impressions specified in sheet and send email alerts.
 * [Federal Reserve Regional Data](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/fred_regional_to_bigquery.ipynb) - Download federal reserve region.
 * [Federal Reserve Series Data](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/fred_series_to_bigquery.ipynb) - Download federal reserve series.
-* [Google Analytics Timeline](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/ga_timeline.ipynb) - Download Google Analytics settings to a BigQuery table.
+* [GoogleAds Segmentology](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/google_ads_segmentology.ipynb) - GoogleAds funnel analysis using Census data.
 * [Google API To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/google_api_to_bigquery.ipynb) - Execute any Google API function and store results to BigQuery.
 * [Say Hello](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/hello.ipynb) - Recipe template for say hello.
 * [Project IAM](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/iam.ipynb) - Sets project permissions for an email.

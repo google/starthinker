@@ -113,13 +113,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     </div>
     <div id="help_setup" class="col s12 m9 l10 left-align">
       <h1><i class="material-icons large">build</i> Setup Project</h1>
-      <p class="flow-text">Almost every recipe in StarThinker uses a <a href="http://cloud.google.com" target="_blank">Google Cloud Project</a> to store data.  ALL DATA COSTS ARE BILLED TO THE GOOGLE CLOUD SERVICE CREDENTIALS SPECIFIED IN EACH RECIPE.  To add a Google Cloud Project for billing and permissions, create a <a href="https://console.cloud.google.com/iam-admin/serviceaccounts/create" target="_blank">Service Credentials</a>, download it, and enter the JSON into the <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_project.png">StarThinker Project page</a>.</p>
+      <p class="flow-text">
+      Almost every recipe in StarThinker uses a <a href="http://cloud.google.com" target="_blank">Google Cloud Project</a> to store data.  ALL DATA COSTS ARE BILLED TO THE GOOGLE CLOUD SERVICE CREDENTIALS SPECIFIED IN EACH RECIPE.
+        To add a Google Cloud Project for billing and permissions, create a <a href="https://console.cloud.google.com/iam-admin/serviceaccounts/create" target="_blank">Service Credentials</a>, download it, and enter the JSON into the <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_project.png">StarThinker Project page</a>.
+      </p>
       <div class="row">
         <div class="col s12 m6 l6 right-align">
-          <img src="https://github.com/google/starthinker/raw/master/tutorials/images/cloud_service.png" style="width:100%;"/>
+          <img src="https://github.com/google/starthinker/raw/master/tutorials/images/cloud_service.png" style="width:100%;" alt="Cloud service setup diagram."/>
           <br/>
           <br/>
-          <img src="https://github.com/google/starthinker/raw/master/tutorials/images/ui_project.png" style="width:100%;"/>
+          <img src="https://github.com/google/starthinker/raw/master/tutorials/images/ui_project.png" style="width:100%;" alt="Screenshot of StarThinker Edit Project page."/>
         </div>
         <div class="col s12 m6 l6 left-align">
           <h5>Getting Service Credentials</h5>
@@ -133,11 +136,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             <li>Click Create Key.</li>
             <li>Key Type is JSON.</li>
             <li>Click Create and open the downloaded JSON file.</li>
-            <li>Copy the contents and paste into the <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_project.png">StarThinker Project page Service field</a>.</li>
+              <li>Copy the contents and paste into the <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_project.png"> StarThinker Project page Service field</a>.</li>
             <li>Click save.</li>
-            <li>The new project will become a dropdown option on <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_recipe.png">StarThinker Recipe pages</a>.</li>
+              <li>The new project will become a dropdown option on <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_recipe.png"> StarThinker Recipe pages</a>.</li>
           </ol>
-          <p><strong>WARNING:</strong> If you share your service credentials, other users will be able to use them in their recipes but not download or view them. Sharing the service credentials grants other users <a href="https://console.cloud.google.com/iam-admin/iam" target="_blank">all the permissions your service account has</a>, use extreme caution.</p>
+          <p><strong>WARNING:</strong> If you share your service credentials, other users will be able to use them in their recipes but not download or view them. Sharing the service credentials grants other users <a href="https://console.cloud.google.com/iam-admin/iam" target="_blank"> all the permissions your service account has</a>, use extreme caution.</p>
         </div>
       </div>
     </div>
@@ -146,13 +149,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <p class="flow-text">All recipes run as the logged in user and leverage the selected <a href="#help_setup">Service Account</a> to write to Google Cloud endpoints. StarThinker DOES NOT grant any additional permissions or access to any products or endpoints used in the recipe.</p>
       <div class="row">
         <div class="col s12 m6 l6 right-align">
-          <img src="https://github.com/google/starthinker/raw/master/tutorials/images/ui_recipe.png" style="width:100%;"/>
+          <img src="https://github.com/google/starthinker/raw/master/tutorials/images/ui_recipe.png" style="width:100%;" alt="Screenshot of StarThinker Edit Recipe page."/>
         </div>
         <div class="col s12 m6 l6 left-align">
           <h5>Creating A Recipe Workflow</h5>
           <p>Recipes can be manual, initiated by the user and run only once, or scheduled, running at set times on set days. Other than the schedule, all steps are the same.</p>
           <ol>
-            <li>Visit the <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_recipe.png">scheduled</a> or <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_manual.png">manual</a> recipe page.</li>
+              <li>Visit the <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_recipe.png">scheduled</a> or <a href="https://raw.githubusercontent.com/google/starthinker/master/tutorials/images/ui_manual.png">manual</a> recipe page.</li>
             <li>Name the recipe, the name is often used to create assets such as Sheets and Dataset by some recipes, choose the name to reflect an account or client. If changed, already created assets may become disconnected.</li>
             <li>If the recipe writes to Google Cloud, select the Google Cloud Project Service Account, <a href="#help_setup">set up earlier</a>.</li>
             <li>For scheduled recipes, choose the timezone, days, and hours to run every task in the recipe.  All task times and assets created by the recipe will use the timezone selected as a refrence.</li>
@@ -162,7 +165,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             <li>Each task has a card with its own instructions, inputs, and fields.  Fields are marked optional or required.  Some have default values. All values are derived from the API endpoints for that product.</li>
             <li>Click <strong>Save</strong>, the recipe is now ready to run, and will run on schedule.</li>
             <hr/>
-            <li>Click <strong>Run</strong> to execute the recipe immediately, if workers are busy there may be a delay. The <a href="#help_status">Job Status</a> and log update every 10 seconds.</a></li>
+            <li>Click <strong>Run</strong> to execute the recipe immediately, if workers are busy there may be a delay. The <a href="#help_status">Job Status</a> and log update every 10 seconds.</li>
             <li>Click <strong>Log</strong> to view recipe task events including errors and completes.</li>
             <li>Click <strong>Download</strong> to <a href="#help_share">share the recipe</a> with a client.</li>
           </ol>
@@ -219,7 +222,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <p class="flow-text">Why share instructions when you can share a working workflow.  Every custom recipe created in the StarThinker UI can be shared with clients.  Create a recipe then click the Download button. DO NOT INCLUDE PASSWORDS OR CONFIDENTIAL INFORMATION IN SHARED RECIPES.  Shared recipes can be executed via <a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a>, <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_airflow.md" target="_blank">Airflow/Composer</a>, <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_package.md" target="_blank">Python</a>, or <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_enterprise.md" target="_blank">UI</a>.</p>
       <div class="center-align">
         <br/>
-        <img src="https://github.com/google/starthinker/raw/master/tutorials/images/ui_download.png" style="max-width: 400px;width:100%;height:auto;"/>
+        <img src="https://github.com/google/starthinker/raw/master/tutorials/images/ui_download.png" style="max-width: 400px;width:100%;height:auto;" alt="Screenshot of StarThinker Download Recipe page."/>
         <br/>
         <br/>
       </div>
@@ -324,7 +327,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <div id="help_debug" class="col s12 m9 l10 left-align">
       <h1><i class="material-icons large">help</i> Debugging</h1>
       <p class="flow-text">Errors in StarThinker can range from a misconfigured field value to a bug in the code.  To promptly resolve most issues please follow these debugging steps.</p>
-      <p>When working with StarThinker administrators, please include the recipe number ( found in the recipe edit URL ) in all communications.</p>
+      <p>When working with StarThinker administrators, please include the recipe number, found in the recipe edit URL, in all communications.</p>
       <ol>
         <li>Consult the log and reference the error in the API documentation relevant to the product used in the task.</li>
         <li>Ensure the service account used in the recipe exists and is valid.</li>

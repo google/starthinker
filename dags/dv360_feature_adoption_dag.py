@@ -67,7 +67,7 @@ DV360 Feature Adoption Dashboard
 Tracks revenue spent on various DV360 features and compares to performance metrics.
 
   - IMPORTANT: You must add Advertiser IDS, we're still working on a partner level report.
-  - Wait for <b>BigQuery->UNDEFINED->UNDEFINED->DV360_Feature_Analysis</b> dataset to be created.
+  - Wait for <b>BigQuery->->->DV360_Feature_Analysis</b> dataset to be created.
   - Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
   - Copy <a href='https://datastudio.google.com/c/u/0/datasources/1IPh_zqjFeZTemq6iTUvc3JvZqD0Frneo' target='_blank'>Sample DV360 Feature Adoption Analysis</a>.
   - Click Edit Connection, find above dataset, and choose <b>Sample DV360 Feature Adoption Analysis</b>.
