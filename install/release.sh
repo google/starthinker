@@ -41,6 +41,8 @@ if [ -d "${PWD}/install" ]; then
       source ${THIS_DIR}/install/developer.sh;
       source ${THIS_DIR}/install/enterprise.sh;
 
+      source ${THIS_DIR}/starthinker_assets/production.sh
+
       generate_assets;
       setup_worker;
       setup_appengine;
@@ -51,7 +53,7 @@ if [ -d "${PWD}/install" ]; then
   else
 
     echo ""
-    echo "This script require a bash shell."
+    echo "This script requires a bash shell."
     echo "Run: /bin/bash"
     echo "Then run this script again."
     echo ""
