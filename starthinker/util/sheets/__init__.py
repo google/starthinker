@@ -92,13 +92,13 @@ def sheets_read(auth, sheet_url_or_name, sheet_tab, sheet_range='', retries=10):
   if project.verbose:
     print('SHEETS READ', sheet_url_or_name, sheet_tab, sheet_range)
   sheet_id = sheets_id(auth, sheet_url_or_name)
-  if sheet_id is None:
-    raise (OSError('Sheet does not exist: %s' % sheet_url_or_name))
-  else:
+  if sheet_id:
     return API_Sheets(auth).spreadsheets().values().get(
       spreadsheetId=sheet_id,
       range=sheets_tab_range(sheet_tab, sheet_range)
     ).execute().get('values')
+  else:
+    raise ValueError('Sheet does not exist for %s: %s' % (auth, sheet_url_or_name))
 
 
 # TIP: Specify sheet_range as 'Tab!A1' coordinate, the API will figure out length and height based on data
@@ -136,11 +136,14 @@ def sheets_clear(auth, sheet_url_or_name, sheet_tab, sheet_range):
   if project.verbose:
     print('SHEETS CLEAR', sheet_url_or_name, sheet_tab, sheet_range)
   sheet_id = sheets_id(auth, sheet_url_or_name)
-  API_Sheets(auth).spreadsheets().values().clear(
-    spreadsheetId=sheet_id,
-    range=sheets_tab_range(sheet_tab, sheet_range),
-    body={}
-  ).execute()
+  if sheet_id:
+    API_Sheets(auth).spreadsheets().values().clear(
+      spreadsheetId=sheet_id,
+      range=sheets_tab_range(sheet_tab, sheet_range),
+      body={}
+    ).execute()
+  else:
+    raise ValueError('Sheet does not exist for %s: %s' % (auth, sheet_url_or_name))
 
 
 def sheets_tab_copy(auth,
