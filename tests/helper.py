@@ -41,13 +41,18 @@
 """
 
 import argparse
-import fcntl
 import glob
 import json
 import os
 import subprocess
 import re
 from time import sleep
+
+# does not exist on WINDOWS, ignore
+try:
+  import fcntl
+except ImportError:
+  pass
 
 from starthinker.config import UI_PROJECT
 from starthinker.config import UI_ROOT
@@ -64,9 +69,13 @@ RE_TEST = re.compile(r'test.*\.json')
 
 
 def make_non_blocking(file_io):
-  fd = file_io.fileno()
-  fl = fcntl.fcntl(fd, fcntl.F_GETFL)
-  fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+  # does not exist on WINDOWS, ignore
+  try:
+    fd = file_io.fileno()
+    fl = fcntl.fcntl(fd, fcntl.F_GETFL)
+    fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+  except:
+     pass
 
 
 def json_expand_includes(script):

@@ -17,7 +17,6 @@
 ###########################################################################
 
 import os
-import fcntl
 import json
 import math
 import uuid
@@ -27,6 +26,12 @@ import traceback
 import subprocess
 import threading
 from datetime import datetime
+
+# does not exist on WINDOWS, ignore
+try:
+  import fcntl
+except ImportError:
+  pass
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db import connection, transaction
@@ -117,9 +122,13 @@ def worker_downscale():
 
 
 def make_non_blocking(file_io):
-  fd = file_io.fileno()
-  fl = fcntl.fcntl(fd, fcntl.F_GETFL)
-  fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+  # does not exist on WINDOWS, ignore
+  try:
+    fd = file_io.fileno()
+    fl = fcntl.fcntl(fd, fcntl.F_GETFL)
+    fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+  except:
+    pass
 
 
 class Workers():
