@@ -58,10 +58,13 @@ def line_item_load():
             }
         })
 
+    # String for filtering which entityStatus enums we want to see in the sheet
+    filter_string = 'entityStatus = "ENTITY_STATUS_ARCHIVED" OR entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
     for row in rows:
       yield from API_DV360(
           project.task["auth_dv"], iterate=True).advertisers().lineItems().list(
-              advertiserId=lookup_id(row[0])).execute()
+              advertiserId=lookup_id(row[0]),
+              filter=filter_string).execute()
 
   # write line_items to database
   put_rows(
@@ -223,7 +226,7 @@ def line_item_audit():
       REGEXP_EXTRACT(S_LI.Insertion_Order, r' - (\d+)$') AS insertionOrderId,
       S_LI.Line_Item AS displayName,
       S_LI.Line_Item_Type_Edit AS lineItemType,
-      'ENTITY_STATUS_DRAFT' AS entityStatus,
+      S_LI.Status_Edit AS entityStatus,
       STRUCT(
         S_PC.Cost_Type_Edit As costType,
         S_PC.Fee_Type_Edit As feeType,
@@ -420,6 +423,9 @@ def line_item_patch(commit=False):
 
       if row['Line_Item_Type'] != row['Line_Item_Type_Edit']:
         line_item["lineItemType"] = row['Line_Item_Type_Edit']
+
+      if row['Status'] != row['Status_Edit']:
+        line_item['entityStatus'] = row['Status_Edit']
 
       if row['Flight_Data_Type'] != row['Flight_Data_Type_Edit']:
         line_item.setdefault("flight", {})
