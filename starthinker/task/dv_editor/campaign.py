@@ -130,6 +130,7 @@ def campaign_commit(patches):
       patch_log(patch)
   patch_log()
 
+
 # Load campaign tab into a BQ table after user has specified filter conditions
 def campaign_sheet_to_table():
   # Specifying the schema for the campaigns tab in JSON

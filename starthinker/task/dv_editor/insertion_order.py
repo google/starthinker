@@ -96,35 +96,48 @@ def insertion_order_load():
     { "bigquery": {
       "dataset": project.task["dataset"],
       "query": """SELECT
-        CONCAT(P.displayName, ' - ', P.partnerId),
-        CONCAT(A.displayName, ' - ', A.advertiserId),
-        CONCAT(C.displayName, ' - ', C.campaignId),
-        CONCAT(I.displayName, ' - ', I.insertionOrderId),
-        'PATCH',
-        I.entityStatus,
-        I.entityStatus,
-        I.displayName,
-        I.displayName,
-        I.budget.budgetUnit,
-        I.budget.budgetUnit,
-        I.budget.automationType,
-        I.budget.automationType,
-        I.performanceGoal.performanceGoalType,
-        I.performanceGoal.performanceGoalType,
-        I.performanceGoal.performanceGoalAmountMicros / 1000000,
-        I.performanceGoal.performanceGoalAmountMicros / 1000000,
-        I.performanceGoal.performanceGoalPercentageMicros / 1000000,
-        I.performanceGoal.performanceGoalPercentageMicros / 1000000,
-        I.performanceGoal.performanceGoalString,
-        I.performanceGoal.performanceGoalString
-        FROM `{dataset}.DV_InsertionOrders` AS I
-        LEFT JOIN `{dataset}.DV_Campaigns` AS C
-        ON I.campaignId=C.campaignId
-        LEFT JOIN `{dataset}.DV_Advertisers` AS A
-        ON I.advertiserId=A.advertiserId
-        LEFT JOIN `{dataset}.DV_Partners` AS P
-        ON A.partnerId=P.partnerId
-        ORDER BY I.displayName
+          CONCAT(P.displayName, ' - ', P.partnerId),
+          CONCAT(A.displayName, ' - ', A.advertiserId),
+          CONCAT(C.displayName, ' - ', C.campaignId),
+          CONCAT(I.displayName, ' - ', I.insertionOrderId),
+          'PATCH',
+          I.entityStatus,
+          I.displayName,
+          I.displayName,
+          I.budget.budgetUnit,
+          I.budget.budgetUnit,
+          I.budget.automationType,
+          I.budget.automationType,
+          I.performanceGoal.performanceGoalType,
+          I.performanceGoal.performanceGoalType,
+          I.performanceGoal.performanceGoalAmountMicros / 1000000,
+          I.performanceGoal.performanceGoalAmountMicros / 1000000,
+          I.performanceGoal.performanceGoalPercentageMicros / 1000000,
+          I.performanceGoal.performanceGoalPercentageMicros / 1000000,
+          I.performanceGoal.performanceGoalString,
+          I.performanceGoal.performanceGoalString
+        FROM
+          `{dataset}.DV_InsertionOrders` AS I
+        LEFT JOIN
+          `{dataset}.DV_Campaigns` AS C
+        ON
+          I.campaignId=C.campaignId
+        LEFT JOIN
+          `{dataset}.DV_Advertisers` AS A
+        ON
+          I.advertiserId=A.advertiserId
+        LEFT JOIN
+          `{dataset}.DV_Partners` AS P
+        ON
+          A.partnerId=P.partnerId
+        LEFT JOIN
+          `{dataset}.SHEET_Campaigns` AS S_C
+        ON
+          C.campaignId = CAST(SPLIT(S_C.Filter ,'-')[OFFSET(1)] AS INT64)
+        WHERE
+          S_C.Filter IS NOT NULL
+        ORDER BY
+          I.displayName
       """.format(**project.task),
       "legacy": False
     }}
