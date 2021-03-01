@@ -129,3 +129,41 @@ def campaign_commit(patches):
     finally:
       patch_log(patch)
   patch_log()
+
+# Load campaign tab into a BQ table after user has specified filter conditions
+def campaign_sheet_to_table():
+  # Specifying the schema for the campaigns tab in JSON
+  tab_schema = [{"description": "Filter applied on the campaigns tab",
+                 "name": "Filter", "type": "STRING", "mode": "NULLABLE"},
+                {"description": "Partner name and ID associated with the campaign",
+                 "name": "Partner", "type": "STRING", "mode": "NULLABLE"},
+                {"description": "Advertiser name and ID associated with the campaign",
+                 "name": "Advertiser", "type": "STRING", "mode": "NULLABLE"},
+                {"description": "Campaign name and ID", "name": "Campaign",
+                 "type": "STRING", "mode": "NULLABLE"},
+                {"description": "Campaign status", "name": "Status",
+                 "type": "STRING", "mode": "NULLABLE"}]
+
+  # Get the rows from the campaigns tab
+  rows = get_rows(
+        project.task['auth_sheets'], {
+            'sheets': {
+                'sheet': project.task['sheet'],
+                'tab': 'Campaigns',
+                'range': 'A2:Z'
+            }
+        })
+
+  # Load the data into a BQ table
+  put_rows(
+      project.task['auth_bigquery'], {
+          'bigquery': {
+              'dataset':
+                  project.task['dataset'],
+              'table':
+                  'SHEET_Campaigns',
+              'schema': tab_schema,
+              'format':
+                  'CSV'
+          }
+      }, rows)

@@ -25,6 +25,7 @@ from starthinker.task.dv_editor.audit import audit_load
 from starthinker.task.dv_editor.bid_strategy import bid_strategy_clear
 from starthinker.task.dv_editor.bid_strategy import bid_strategy_load
 from starthinker.task.dv_editor.bid_strategy import bid_strategy_patch
+from starthinker.task.dv_editor.campaign import campaign_sheet_to_table
 from starthinker.task.dv_editor.campaign import campaign_clear
 from starthinker.task.dv_editor.campaign import campaign_load
 from starthinker.task.dv_editor.creative import creative_clear
@@ -80,6 +81,23 @@ def dv_editor():
   elif project.task['command'] == 'Load Insertion Orders and Line Items':
     creative_clear()
     creative_load()
+    insertion_order_clear()
+    insertion_order_load()
+    line_item_clear()
+    line_item_load()
+    pacing_clear()
+    pacing_load()
+    bid_strategy_clear()
+    bid_strategy_load()
+    frequency_cap_clear()
+    frequency_cap_load()
+    partner_cost_clear()
+    partner_cost_load()
+    integration_detail_clear()
+    integration_detail_load()
+
+  elif project.task['command'] == 'Load Insertion Orders and Line Items':
+    campaign_sheet_to_table()
     insertion_order_clear()
     insertion_order_load()
     line_item_clear()
