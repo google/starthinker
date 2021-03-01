@@ -42,11 +42,12 @@ def pacing_load():
               "dataset":
                   project.task["dataset"],
               "query":
-                  """SELECT
+                  """SELECT * FROM (
+                  SELECT
          CONCAT(P.displayName, ' - ', P.partnerId),
          CONCAT(A.displayName, ' - ', A.advertiserId),
          CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId),
+         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
          NULL,
          I.pacing.pacingPeriod,
          I.pacing.pacingPeriod,
@@ -68,7 +69,7 @@ def pacing_load():
          CONCAT(P.displayName, ' - ', P.partnerId),
          CONCAT(A.displayName, ' - ', A.advertiserId),
          CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId),
+         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
          CONCAT(L.displayName, ' - ', L.lineItemId),
          L.pacing.pacingPeriod,
          L.pacing.pacingPeriod,
@@ -86,7 +87,8 @@ def pacing_load():
        LEFT JOIN `{dataset}.DV_Advertisers` AS A
        ON L.advertiserId=A.advertiserId
        LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
+       ON A.partnerId=P.partnerId )
+       ORDER BY IO_Display
        """.format(**project.task),
               "legacy":
                   False

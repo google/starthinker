@@ -45,11 +45,12 @@ def partner_cost_load():
               "dataset":
                   project.task["dataset"],
               "query":
-                  """SELECT
+                  """SELECT * FROM (
+                  SELECT
          CONCAT(P.displayName, ' - ', P.partnerId),
          CONCAT(A.displayName, ' - ', A.advertiserId),
          CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId),
+         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
          NULL,
          PC.costType,
          PC.costType,
@@ -73,7 +74,7 @@ def partner_cost_load():
          CONCAT(P.displayName, ' - ', P.partnerId),
          CONCAT(A.displayName, ' - ', A.advertiserId),
          CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId),
+         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
          CONCAT(L.displayName, ' - ', L.lineItemId),
          PC.costType,
          PC.costType,
@@ -93,7 +94,8 @@ def partner_cost_load():
        LEFT JOIN `{dataset}.DV_Advertisers` AS A
        ON L.advertiserId=A.advertiserId
        LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
+       ON A.partnerId=P.partnerId )
+       ORDER BY IO_Display
        """.format(**project.task),
               "legacy":
                   False
@@ -152,10 +154,9 @@ def partner_cost_audit():
       project.task["dataset"],
       "AUDIT_PartnerCosts",
       """WITH
-      /* Check if sheet values are set */
-      INPUT_ERRORS AS (
+        /* Check if sheet values are set */ INPUT_ERRORS AS (
         SELECT
-        *
+          *
         FROM (
           SELECT
             'Partner Costs' AS Operation,
@@ -163,22 +164,27 @@ def partner_cost_audit():
               WHEN Cost_Type_Edit IS NULL THEN 'Missing Cost Type.'
               WHEN Fee_Type_Edit IS NULL THEN 'Missing Fee Type.'
               WHEN Invoice_Type_Edit IS NULL THEN 'Missing Invoice Type.'
-              WHEN Fee_Amount_Edit IS NULL THEN 'Missing Fee Amount.'
-              WHEN Fee_Percent_Edit IS NULL THEN 'Missing Fee Percent.'
-            ELSE
-              NULL
-            END AS Error,
+              WHEN Fee_Amount_Edit IS NULL
+            AND Fee_Percent_Edit IS NULL THEN 'You must select a Fee Amount OR Fee Percent'
+            ELSE IF
+            (Fee_Amount_Edit IS NOT NULL
+              AND Fee_Percent_Edit IS NOT NULL,
+              'You must select a Fee Amount OR Fee Percent, not both',
+              NULL)
+          END
+            AS Error,
             'ERROR' AS Severity,
-          COALESCE(Line_Item, Insertion_Order, 'BLANK') AS Id
-        FROM
-          `{dataset}.SHEET_PartnerCosts`
-        )
+            COALESCE(Line_Item,
+              Insertion_Order,
+              'BLANK') AS Id
+          FROM
+            `{dataset}.SHEET_PartnerCosts` )
         WHERE
-          Error IS NOT NULL
-      )
-
-      SELECT * FROM INPUT_ERRORS
-      ;
+          Error IS NOT NULL )
+      SELECT
+        *
+      FROM
+        INPUT_ERRORS ;
     """.format(**project.task),
       legacy=False)
 

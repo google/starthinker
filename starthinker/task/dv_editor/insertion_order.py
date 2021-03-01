@@ -124,6 +124,7 @@ def insertion_order_load():
         ON I.advertiserId=A.advertiserId
         LEFT JOIN `{dataset}.DV_Partners` AS P
         ON A.partnerId=P.partnerId
+        ORDER BY I.displayName
       """.format(**project.task),
       "legacy": False
     }}
@@ -311,9 +312,14 @@ def insertion_order_audit():
               WHEN Budget_Unit_Edit IS NULL THEN 'Missing Budget Unit.'
               WHEN Budget_Automation_Edit IS NULL THEN 'Missing Budget Automation.'
               WHEN Performance_Goal_Type_Edit IS NULL THEN 'Missing Goal Type.'
-              WHEN Performance_Goal_Amount_Edit IS NULL
-              AND Performance_Goal_Percent_Edit IS NULL
-              AND Performance_Goal_String_Edit IS NULL THEN 'Missing Goal Amount / Percent / String.'
+              WHEN Performance_Goal_Amount_Edit IS NULL AND Performance_Goal_Percent_Edit IS NULL AND Performance_Goal_String_Edit IS NULL THEN 'Missing Goal Amount / Percent / String.'
+              WHEN Performance_Goal_Amount_Edit IS NOT NULL
+                AND Performance_Goal_Percent_Edit IS NOT NULL
+                AND Performance_Goal_String_Edit IS NOT NULL THEN 'Amount / Percent / String all exist when there can only be 1.'
+              WHEN Performance_Goal_Amount_Edit IS NOT NULL AND Performance_Goal_Percent_Edit IS NOT NULL THEN 'Cannot have both Goal Amount and Percent'
+              WHEN Performance_Goal_Amount_Edit IS NOT NULL
+                AND Performance_Goal_String_Edit IS NOT NULL THEN 'Cannot have both Goal Amount and String'
+              WHEN Performance_Goal_Percent_Edit IS NOT NULL AND Performance_Goal_String_Edit IS NOT NULL THEN 'Cannot have both Percent Amount and String'
             ELSE
               NULL
             END AS Error,

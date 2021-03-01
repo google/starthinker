@@ -45,11 +45,12 @@ def bid_strategy_load():
               "dataset":
                   project.task["dataset"],
               "query":
-                  """SELECT
+                  """SELECT * FROM (
+          SELECT
          CONCAT(P.displayName, ' - ', P.partnerId),
          CONCAT(A.displayName, ' - ', A.advertiserId),
          CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId),
+         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
          NULL,
          I.bidStrategy.fixedBid.bidAmountMicros / 100000,
          I.bidStrategy.fixedBid.bidAmountMicros / 100000,
@@ -79,7 +80,7 @@ def bid_strategy_load():
          CONCAT(P.displayName, ' - ', P.partnerId),
          CONCAT(A.displayName, ' - ', A.advertiserId),
          CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId),
+         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
          CONCAT(L.displayName, ' - ', L.lineItemId),
          L.bidStrategy.fixedBid.bidAmountMicros / 100000,
          L.bidStrategy.fixedBid.bidAmountMicros / 100000,
@@ -105,7 +106,8 @@ def bid_strategy_load():
        LEFT JOIN `{dataset}.DV_Advertisers` AS A
        ON L.advertiserId=A.advertiserId
        LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
+       ON A.partnerId=P.partnerId )
+       ORDER BY IO_Display
        """.format(**project.task),
               "legacy":
                   False
@@ -170,31 +172,37 @@ def bid_strategy_audit():
       project.task["dataset"],
       "AUDIT_BidStrategy",
       """WITH
-      /* Check if sheet values are set */
-      INPUT_ERRORS AS (
+        /* Check if sheet values are set */ INPUT_ERRORS AS (
         SELECT
-        *
+          *
         FROM (
           SELECT
             'Bid Strategy' AS Operation,
             CASE
-              WHEN Fixed_Bid_Edit IS NULL THEN 'Missing Fixed Bid.'
-              WHEN Auto_Bid_Goal_Edit IS NULL THEN 'Missing Auto Bid Goal.'
-              WHEN Auto_Bid_Algorithm_Edit IS NULL THEN 'Missing Auto Bid Algorithm.'
+              WHEN Insertion_Order IS NOT NULL AND Line_Item IS NOT NULL THEN
+                CASE
+                  WHEN Fixed_Bid_Edit IS NOT NULL AND Auto_Bid_Goal_Edit IS NULL AND Auto_Bid_Algorithm_Edit IS NOT NULL THEN 'Both Fixed Bid and Bid Algorithm exist.'
+                  WHEN Fixed_Bid_Edit IS NULL AND Auto_Bid_Goal_Edit IS NOT NULL AND Auto_Bid_Algorithm_Edit IS NOT NULL THEN 'Both Bid Goal and Bid Algorithm exist.'
+                  WHEN Fixed_Bid_Edit IS NOT NULL AND Auto_Bid_Goal_Edit IS NOT NULL AND Auto_Bid_Algorithm_Edit IS NULL THEN 'Both Fixed Bid and Bid Goal exist.'
+                  WHEN Fixed_Bid_Edit IS NOT NULL AND Auto_Bid_Goal_Edit IS NOT NULL AND Auto_Bid_Algorithm_Edit IS NOT NULL THEN 'All bid fields exist.'
+                  ELSE NULL
+                END
             ELSE
-              NULL
-            END AS Error,
+            NULL
+          END
+            AS Error,
             'ERROR' AS Severity,
-          COALESCE(Line_Item, Insertion_Order, 'BLANK') AS Id
-        FROM
-          `{dataset}.SHEET_BidStrategy`
-        )
+            COALESCE(Line_Item,
+              Insertion_Order,
+              'BLANK') AS Id
+          FROM
+            `{dataset}.SHEET_BidStrategy` )
         WHERE
-          Error IS NOT NULL
-      )
-
-      SELECT * FROM INPUT_ERRORS
-      ;
+          Error IS NOT NULL )
+      SELECT
+        *
+      FROM
+        INPUT_ERRORS ;
     """.format(**project.task),
       legacy=False)
 
@@ -232,7 +240,24 @@ def bid_strategy_patch(commit=False):
 
     bid_strategy = {}
 
-    if row['Fixed_Bid'] != row['Fixed_Bid_Edit']:
+    # If we are trying to switch from fixed bid to another bid type
+    if row['Fixed_Bid_Edit'] is None and row['Fixed_Bid'] is not None:
+      # If we switched from fixed to goal
+      if row['Auto_Bid_Goal'] != row['Auto_Bid_Goal_Edit']:
+        if project.verbose:
+          print("Switching from Fixed Bid to Auto Bid Goal.")
+        bid_strategy.setdefault("bidStrategy", {"maximizeSpendAutoBid": {}})
+        bid_strategy["bidStrategy"]["maximizeSpendAutoBid"][
+          "performanceGoalType"] = row['Auto_Bid_Goal_Edit']
+      # If we switched from fixed to algorithm
+      elif row['Auto_Bid_Algorithm'] != row['Auto_Bid_Algorithm_Edit']:
+        if project.verbose:
+          print("Switching from Fixed Bid to Bid Algorithm.")
+        bid_strategy.setdefault("bidStrategy", {"maximizeSpendAutoBid": {}})
+        bid_strategy["bidStrategy"]["maximizeSpendAutoBid"][
+          "customBiddingAlgorithmId"] = row['Auto_Bid_Algorithm_Edit']
+
+    elif row['Fixed_Bid'] != row['Fixed_Bid_Edit']:
       bid_strategy.setdefault("bidStrategy", {"fixedBid": {}})
       bid_strategy["bidStrategy"]["fixedBid"]["bidAmountMicros"] = int(
         float(row['Fixed_Bid_Edit']) * 100000
