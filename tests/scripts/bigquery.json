@@ -60,6 +60,7 @@
       "out":{
         "auth": "service",
         "bigquery":{
+          "auth": "service",
           "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
           "table":"Sheet_To_BigQuery",
           "schema":[
