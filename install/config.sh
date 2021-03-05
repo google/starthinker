@@ -582,15 +582,17 @@ setup_credentials_service() {
     return_code=$?
     if [ !$return_code ]; then
 
+      service=$(echo "${STARTHINKER_PROJECT}"  | sed -r "s/(google.com):(.*)/\2.\1/g")
+
       gcloud projects add-iam-policy-binding "${STARTHINKER_PROJECT}" \
-      --member=serviceAccount:starthinker@${STARTHINKER_PROJECT}.iam.gserviceaccount.com \
+      --member=serviceAccount:starthinker@${service}.iam.gserviceaccount.com \
       --role='roles/editor'
 
       return_code=$?
       if [ !$return_code ]; then
 
         gcloud iam service-accounts keys create ${STARTHINKER_ROOT}/starthinker_assets/service.json \
-        --iam-account=starthinker@${STARTHINKER_PROJECT}.iam.gserviceaccount.com \
+        --iam-account=starthinker@${service}.iam.gserviceaccount.com \
         --key-file-type=json
 
       else
