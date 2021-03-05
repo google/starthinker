@@ -47,8 +47,17 @@ def line_item_clear():
 
 def line_item_load():
 
-  # load multiple partners from user defined sheet
+  # load multiple advertisers from user defined sheet
   def line_item_load_multiple():
+    campaigns = set([lookup_id(row[0]) for row in get_rows(
+      project.task["auth_sheets"],
+      { "sheets": {
+        "sheet": project.task["sheet"],
+        "tab": "Campaigns",
+        "range": "A2:A"
+      }}
+    )])
+
     rows = get_rows(
         project.task["auth_sheets"], {
             "sheets": {
@@ -59,12 +68,16 @@ def line_item_load():
         })
 
     # String for filtering which entityStatus enums we want to see in the sheet
-    filter_string = 'entityStatus = "ENTITY_STATUS_ARCHIVED" OR entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
     for row in rows:
-      yield from API_DV360(
-          project.task["auth_dv"], iterate=True).advertisers().lineItems().list(
-              advertiserId=lookup_id(row[0]),
-              filter=filter_string).execute()
+      for record in API_DV360(
+        project.task["auth_dv"],
+        iterate=True
+      ).advertisers().lineItems().list(
+        advertiserId=lookup_id(row[0]),
+        filter='entityStatus = "ENTITY_STATUS_ARCHIVED" OR entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
+      ).execute():
+        if not campaigns or record['campaignId'] in campaigns:
+          yield record
 
   # write line_items to database
   put_rows(

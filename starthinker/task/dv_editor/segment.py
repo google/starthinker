@@ -17,8 +17,6 @@
 ###########################################################################
 
 from starthinker.util.bigquery import query_to_view
-from starthinker.util.bigquery import table_create
-from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
@@ -43,37 +41,6 @@ def segment_clear():
 def segment_load():
 
   # write segments to sheet
-  rows = get_rows(
-    project.task["auth_bigquery"],
-    { "bigquery": {
-      "dataset": project.task["dataset"],
-      "query": """SELECT
-        CONCAT(P.displayName, ' - ', P.partnerId),
-        CONCAT(A.displayName, ' - ', A.advertiserId),
-        CONCAT(C.displayName, ' - ', C.campaignId),
-        CONCAT(I.displayName, ' - ', I.insertionOrderId),
-        'PATCH',
-        CONCAT(BS.dateRange.startDate.year, '-', BS.dateRange.startDate.month, '-', BS.dateRange.startDate.day),
-        CONCAT(BS.dateRange.startDate.year, '-', BS.dateRange.startDate.month, '-', BS.dateRange.startDate.day),
-        CONCAT(BS.dateRange.endDate.year, '-', BS.dateRange.endDate.month, '-', BS.dateRange.endDate.day),
-        CONCAT(BS.dateRange.endDate.year, '-', BS.dateRange.endDate.month, '-', BS.dateRange.endDate.day),
-        BS.budgetAmountMicros / 100000,
-        BS.budgetAmountMicros / 100000,
-        BS.description,
-        BS.description
-        FROM `{dataset}.DV_InsertionOrders` AS I, UNNEST( budget.budgetSegments) AS BS
-        LEFT JOIN `{dataset}.DV_Campaigns` AS C
-        ON I.campaignId=C.campaignId
-        LEFT JOIN `{dataset}.DV_Advertisers` AS A
-        ON I.advertiserId=A.advertiserId
-        LEFT JOIN `{dataset}.DV_Partners` AS P
-        ON A.partnerId=P.partnerId
-        ORDER BY I.displayName
-      """.format(**project.task),
-      "legacy":False
-    }}
-  )
-
   put_rows(
     project.task["auth_sheets"],
     { "sheets": {
@@ -81,22 +48,42 @@ def segment_load():
       "tab": "Segments",
       "range": "A2"
     }},
-    rows
+    get_rows(
+      project.task["auth_bigquery"],
+      { "bigquery": {
+        "dataset": project.task["dataset"],
+        "query": """SELECT
+          CONCAT(P.displayName, ' - ', P.partnerId),
+          CONCAT(A.displayName, ' - ', A.advertiserId),
+          CONCAT(C.displayName, ' - ', C.campaignId),
+          CONCAT(I.displayName, ' - ', I.insertionOrderId),
+          'PATCH',
+          CONCAT(BS.dateRange.startDate.year, '-', BS.dateRange.startDate.month, '-', BS.dateRange.startDate.day),
+          CONCAT(BS.dateRange.startDate.year, '-', BS.dateRange.startDate.month, '-', BS.dateRange.startDate.day),
+          CONCAT(BS.dateRange.endDate.year, '-', BS.dateRange.endDate.month, '-', BS.dateRange.endDate.day),
+          CONCAT(BS.dateRange.endDate.year, '-', BS.dateRange.endDate.month, '-', BS.dateRange.endDate.day),
+          BS.budgetAmountMicros / 100000,
+          BS.budgetAmountMicros / 100000,
+          BS.description,
+          BS.description
+          FROM `{dataset}.DV_InsertionOrders` AS I, UNNEST( budget.budgetSegments) AS BS
+          LEFT JOIN `{dataset}.DV_Campaigns` AS C
+          ON I.campaignId=C.campaignId
+          LEFT JOIN `{dataset}.DV_Advertisers` AS A
+          ON I.advertiserId=A.advertiserId
+          LEFT JOIN `{dataset}.DV_Partners` AS P
+          ON A.partnerId=P.partnerId
+          ORDER BY I.displayName
+        """.format(**project.task),
+        "legacy":False
+      }}
+    )
   )
 
 
 def segment_audit():
 
   # Move Segments To BigQuery
-  rows = get_rows(
-    project.task["auth_sheets"],
-    { "sheets": {
-      "sheet": project.task["sheet"],
-      "tab": "Segments",
-      "range": "A2:M"
-    }}
-  )
-
   put_rows(
     project.task["auth_bigquery"],
     { "bigquery": {
@@ -119,7 +106,14 @@ def segment_audit():
       ],
       "format": "CSV"
     }},
-    rows
+    get_rows(
+      project.task["auth_sheets"],
+      { "sheets": {
+        "sheet": project.task["sheet"],
+        "tab": "Segments",
+        "range": "A2:M"
+      }}
+    )
   )
 
   # Create Audit View And Write To Sheets
@@ -176,8 +170,8 @@ def segment_audit():
             'Segments' AS Operation,
             CASE
               WHEN SAFE_CAST(Budget_Edit AS FLOAT64) > 100000 THEN 'Segment has excessive spend.'
-              WHEN SAFE_CAST(Start_Date AS DATE) < CURRENT_DATE() THEN 'Segment starts in past.'
-              WHEN SAFE_CAST(End_Date AS DATE) < CURRENT_DATE() THEN 'Segment ends in past.'
+              WHEN SAFE_CAST(Start_Date AS DATE) != SAFE_CAST(Start_Date_Edit AS DATE) AND SAFE_CAST(Start_Date_Edit AS DATE) < CURRENT_DATE() THEN 'Segment starts in past.'
+              WHEN SAFE_CAST(End_Date AS DATE) != SAFE_CAST(End_Date_Edit AS DATE) AND SAFE_CAST(End_Date_Edit AS DATE) < CURRENT_DATE() THEN 'Segment ends in past.'
             ELSE
             NULL
           END
@@ -201,6 +195,18 @@ def segment_audit():
     legacy=False
   )
 
+  query_to_view(
+    project.task["auth_bigquery"],
+    project.id,
+    project.task["dataset"],
+    "PATCH_Segments",
+    """SELECT *
+      FROM `{dataset}.SHEET_Segments`
+      WHERE Insertion_Order NOT IN (SELECT Id FROM `{dataset}.AUDIT_Segments` WHERE Severity='ERROR')
+    """.format(**project.task),
+    legacy=False
+  )
+
 
 def segment_patch(commit=False):
 
@@ -212,33 +218,31 @@ def segment_patch(commit=False):
   changed = set()
 
   rows = get_rows(
-    project.task["auth_sheets"],
-    { "sheets": {
-      "sheet": project.task["sheet"],
-      "tab": "Segments",
-      "range": "A2:Z"
-    }}
+    project.task["auth_bigquery"],
+    { "bigquery": {
+      "dataset": project.task["dataset"],
+      "table":"PATCH_Segments",
+    }},
+    as_object=True
   )
-
-  rows = rows_pad(rows, 13, "")
 
   # Build list of segements skipping only deletes, track changes
   for row in rows:
 
     # inserts do not have an ID, skip them
-    if not lookup_id(row[3]): continue
+    if not lookup_id(row["Insertion_Order"]): continue
 
     patches.setdefault(
-      row[3],
+      row["Insertion_Order"],
       { "operation": "Segments",
         "action": "PATCH",
-        "partner": row[0],
-        "advertiser": row[1],
-        "campaign": row[2],
-        "insertion_order": row[3],
+        "partner": row["Partner"],
+        "advertiser": row["Advertiser"],
+        "campaign": row["Campaign"],
+        "insertion_order": row["Insertion_Order"],
         "parameters": {
-          "advertiserId": lookup_id(row[1]),
-          "insertionOrderId": lookup_id(row[3]),
+          "advertiserId": lookup_id(row["Advertiser"]),
+          "insertionOrderId": lookup_id(row["Insertion_Order"]),
           "body": {
             "budget": {
               "budgetSegments": []
@@ -248,20 +252,20 @@ def segment_patch(commit=False):
       }
     )
 
-    if row[4] == "DELETE":
-      changed.add(row[3])
+    if row['Action'] == "DELETE":
+      changed.add(row["Insertion_Order"])
     else:
-      patches[row[3]]["parameters"]["body"]["budget"]["budgetSegments"].append({
+      patches[row["Insertion_Order"]]["parameters"]["body"]["budget"]["budgetSegments"].append({
         "dateRange": {
-          "startDate": date_edited(row[6]),
-          "endDate": date_edited(row[8])
+          "startDate": date_edited(row["Start_Date_Edit"]),
+          "endDate": date_edited(row["End_Date_Edit"])
         },
-        "budgetAmountMicros": float(row[10]) * 100000,
-        "description": row[12]
+        "budgetAmountMicros": float(row["Budget_Edit"]) * 100000,
+        "description": row["Description_Edit"]
       })
 
-      if row[5] != row[6] or row[7] != row[8] or row[9] != row[10] or row[11] != row[12]:
-        changed.add(row[3])
+      if row["Start_Date"] != row["Start_Date_Edit"] or row["End_Date"] != row["End_Date_Edit"] or row["Budget"] != row["Budget_Edit"] or row["Description"] != row["Description_Edit"]:
+        changed.add(row["Insertion_Order"])
 
   # Remove any patches where segments have not changed
   for io in list(patches.keys()):

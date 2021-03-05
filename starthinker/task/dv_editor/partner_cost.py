@@ -32,161 +32,164 @@ from starthinker.task.dv_editor.patch import patch_preview
 
 
 def partner_cost_clear():
-  sheets_clear(project.task["auth_sheets"], project.task["sheet"], "Partner Costs",
-               "A2:Z")
+  sheets_clear(
+    project.task["auth_sheets"],
+    project.task["sheet"],
+    "Partner Costs",
+    "A2:Z"
+  )
 
 
 def partner_cost_load():
 
   # write partner_costs to sheet
-  rows = get_rows(
-      project.task["auth_bigquery"], {
-          "bigquery": {
-              "dataset":
-                  project.task["dataset"],
-              "query":
-                  """SELECT * FROM (
-                  SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
-         NULL,
-         PC.costType,
-         PC.costType,
-         PC.feeType,
-         PC.feeType,
-         PC.invoiceType,
-         PC.invoiceType,
-         PC.feeAmount / 100000,
-         PC.feeAmount / 100000,
-         PC.feePercentageMillis / 1000,
-         PC.feePercentageMillis / 1000
-       FROM `{dataset}.DV_InsertionOrders` AS I, UNNEST(partnerCosts) AS PC
-       LEFT JOIN `{dataset}.DV_Campaigns` AS C
-       ON I.campaignId=C.campaignId
-       LEFT JOIN `{dataset}.DV_Advertisers` AS A
-       ON I.advertiserId=A.advertiserId
-       LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
-       UNION ALL
-       SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
-         CONCAT(L.displayName, ' - ', L.lineItemId),
-         PC.costType,
-         PC.costType,
-         PC.feeType,
-         PC.feeType,
-         PC.invoiceType,
-         PC.invoiceType,
-         PC.feeAmount / 100000,
-         PC.feeAmount / 100000,
-         PC.feePercentageMillis / 1000,
-         PC.feePercentageMillis / 1000
-       FROM `{dataset}.DV_LineItems` AS L, UNNEST(partnerCosts) AS PC
-       LEFT JOIN `{dataset}.DV_Campaigns` AS C
-       ON L.campaignId=C.campaignId
-       LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
-       ON L.insertionOrderId=I.insertionOrderId
-       LEFT JOIN `{dataset}.DV_Advertisers` AS A
-       ON L.advertiserId=A.advertiserId
-       LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId )
-       ORDER BY IO_Display
-       """.format(**project.task),
-              "legacy":
-                  False
-          }
-      })
-
   put_rows(
-      project.task["auth_sheets"], {
-          "sheets": {
-              "sheet": project.task["sheet"],
-              "tab": "Partner Costs",
-              "range": "A2"
-          }
-      }, rows)
+    project.task["auth_sheets"],
+    { "sheets": {
+      "sheet": project.task["sheet"],
+      "tab": "Partner Costs",
+      "range": "A2"
+    }},
+    get_rows(
+      project.task["auth_bigquery"],
+      { "bigquery": {
+        "dataset": project.task["dataset"],
+        "query": """SELECT * FROM (
+           SELECT
+           CONCAT(P.displayName, ' - ', P.partnerId),
+           CONCAT(A.displayName, ' - ', A.advertiserId),
+           CONCAT(C.displayName, ' - ', C.campaignId),
+           CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
+           CAST(NULL AS STRING),
+           CONCAT(REGEXP_REPLACE(PC.feeType, r'^PARTNER_COST_FEE_TYPE_(.*)_FEE', '\\\\1'),' ', ROW_NUMBER() OVER (PARTITION BY I.insertionOrderId, PC.feeType ORDER BY PO)),
+           PC.costType,
+           PC.costType,
+           PC.feeType,
+           PC.feeType,
+           PC.invoiceType,
+           PC.invoiceType,
+           PC.feeAmount / 100000,
+           PC.feeAmount / 100000,
+           PC.feePercentageMillis / 1000,
+           PC.feePercentageMillis / 1000
+         FROM `{dataset}.DV_InsertionOrders` AS I, UNNEST(partnerCosts) AS PC WITH OFFSET AS PO
+         LEFT JOIN `{dataset}.DV_Campaigns` AS C
+         ON I.campaignId=C.campaignId
+         LEFT JOIN `{dataset}.DV_Advertisers` AS A
+         ON I.advertiserId=A.advertiserId
+         LEFT JOIN `{dataset}.DV_Partners` AS P
+         ON A.partnerId=P.partnerId
+         UNION ALL
+         SELECT
+           CONCAT(P.displayName, ' - ', P.partnerId),
+           CONCAT(A.displayName, ' - ', A.advertiserId),
+           CONCAT(C.displayName, ' - ', C.campaignId),
+           CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
+           CONCAT(L.displayName, ' - ', L.lineItemId),
+           CONCAT(REGEXP_REPLACE(PC.feeType, r'^PARTNER_COST_FEE_TYPE_(.*)_FEE', '\\\\1'),' ', ROW_NUMBER() OVER (PARTITION BY L.lineItemId, PC.feeType ORDER BY PO)),
+           PC.costType,
+           PC.costType,
+           PC.feeType,
+           PC.feeType,
+           PC.invoiceType,
+           PC.invoiceType,
+           PC.feeAmount / 100000,
+           PC.feeAmount / 100000,
+           PC.feePercentageMillis / 1000,
+           PC.feePercentageMillis / 1000
+         FROM `{dataset}.DV_LineItems` AS L, UNNEST(partnerCosts) AS PC WITH OFFSET AS PO
+         LEFT JOIN `{dataset}.DV_Campaigns` AS C
+         ON L.campaignId=C.campaignId
+         LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
+         ON L.insertionOrderId=I.insertionOrderId
+         LEFT JOIN `{dataset}.DV_Advertisers` AS A
+         ON L.advertiserId=A.advertiserId
+         LEFT JOIN `{dataset}.DV_Partners` AS P
+         ON A.partnerId=P.partnerId )
+         ORDER BY IO_Display
+        """.format(**project.task),
+        "legacy":False
+      }}
+    )
+  )
 
 
 def partner_cost_audit():
-  rows = get_rows(
-      project.task["auth_sheets"], {
-          "sheets": {
-              "sheet": project.task["sheet"],
-              "tab": "Partner Costs",
-              "range": "A2:Z"
-          }
-      })
-
   put_rows(
-      project.task["auth_bigquery"], {
-          "bigquery": {
-              "dataset": project.task["dataset"],
-              "table": "SHEET_PartnerCosts",
-              "schema": [
-                  { "name": "Partner", "type": "STRING" },
-                  { "name": "Advertiser", "type": "STRING" },
-                  { "name": "Campaign", "type": "STRING" },
-                  { "name": "Insertion_Order", "type": "STRING" },
-                  { "name": "Line_Item", "type": "STRING" },
-                  { "name": "Cost_Type", "type": "STRING" },
-                  { "name": "Cost_Type_Edit", "type": "STRING" },
-                  { "name": "Fee_Type", "type": "STRING" },
-                  { "name": "Fee_Type_Edit", "type": "STRING" },
-                  { "name": "Invoice_Type", "type": "STRING" },
-                  { "name": "Invoice_Type_Edit", "type": "STRING" },
-                  { "name": "Fee_Amount", "type": "FLOAT" },
-                  { "name": "Fee_Amount_Edit", "type": "FLOAT" },
-                  { "name": "Fee_Percent", "type": "FLOAT" },
-                  { "name": "Fee_Percent_Edit", "type": "FLOAT" },
-              ],
-              "format": "CSV"
-          }
-      }, rows)
+    project.task["auth_bigquery"],
+    { "bigquery": {
+      "dataset": project.task["dataset"],
+      "table": "SHEET_PartnerCosts",
+      "schema": [
+        { "name": "Partner", "type": "STRING" },
+        { "name": "Advertiser", "type": "STRING" },
+        { "name": "Campaign", "type": "STRING" },
+        { "name": "Insertion_Order", "type": "STRING" },
+        { "name": "Line_Item", "type": "STRING" },
+        { "name": "Label", "type": "STRING" },
+        { "name": "Cost_Type", "type": "STRING" },
+        { "name": "Cost_Type_Edit", "type": "STRING" },
+        { "name": "Fee_Type", "type": "STRING" },
+        { "name": "Fee_Type_Edit", "type": "STRING" },
+        { "name": "Invoice_Type", "type": "STRING" },
+        { "name": "Invoice_Type_Edit", "type": "STRING" },
+        { "name": "Fee_Amount", "type": "FLOAT" },
+        { "name": "Fee_Amount_Edit", "type": "FLOAT" },
+        { "name": "Fee_Percent", "type": "FLOAT" },
+        { "name": "Fee_Percent_Edit", "type": "FLOAT" },
+      ],
+      "format": "CSV"
+    }},
+    get_rows(
+      project.task["auth_sheets"],
+      { "sheets": {
+        "sheet": project.task["sheet"],
+        "tab": "Partner Costs",
+        "range": "A2:Z"
+      }}
+    )
+  )
 
   query_to_view(
-      project.task["auth_bigquery"],
-      project.id,
-      project.task["dataset"],
-      "AUDIT_PartnerCosts",
-      """WITH
-        /* Check if sheet values are set */ INPUT_ERRORS AS (
-        SELECT
-          *
-        FROM (
-          SELECT
-            'Partner Costs' AS Operation,
-            CASE
-              WHEN Cost_Type_Edit IS NULL THEN 'Missing Cost Type.'
-              WHEN Fee_Type_Edit IS NULL THEN 'Missing Fee Type.'
-              WHEN Invoice_Type_Edit IS NULL THEN 'Missing Invoice Type.'
-              WHEN Fee_Amount_Edit IS NULL
-            AND Fee_Percent_Edit IS NULL THEN 'You must select a Fee Amount OR Fee Percent'
-            ELSE IF
-            (Fee_Amount_Edit IS NOT NULL
-              AND Fee_Percent_Edit IS NOT NULL,
-              'You must select a Fee Amount OR Fee Percent, not both',
-              NULL)
-          END
-            AS Error,
-            'ERROR' AS Severity,
-            COALESCE(Line_Item,
-              Insertion_Order,
-              'BLANK') AS Id
-          FROM
-            `{dataset}.SHEET_PartnerCosts` )
-        WHERE
-          Error IS NOT NULL )
+    project.task["auth_bigquery"],
+    project.id,
+    project.task["dataset"],
+    "AUDIT_PartnerCosts",
+    """WITH
+      /* Check if sheet values are set */ INPUT_ERRORS AS (
       SELECT
         *
-      FROM
-        INPUT_ERRORS ;
+      FROM (
+        SELECT
+          'Partner Costs' AS Operation,
+          CASE
+            WHEN Cost_Type_Edit IS NULL THEN 'Missing Cost Type.'
+            WHEN Fee_Type_Edit IS NULL THEN 'Missing Fee Type.'
+            WHEN Invoice_Type_Edit IS NULL THEN 'Missing Invoice Type.'
+            WHEN Fee_Amount_Edit IS NULL
+          AND Fee_Percent_Edit IS NULL THEN 'You must select a Fee Amount OR Fee Percent'
+          ELSE IF
+          (Fee_Amount_Edit IS NOT NULL
+            AND Fee_Percent_Edit IS NOT NULL,
+            'You must select a Fee Amount OR Fee Percent, not both',
+            NULL)
+        END
+          AS Error,
+          'ERROR' AS Severity,
+          COALESCE(Line_Item,
+            Insertion_Order,
+            'BLANK') AS Id
+        FROM
+          `{dataset}.SHEET_PartnerCosts` )
+      WHERE
+        Error IS NOT NULL )
+    SELECT
+      *
+    FROM
+      INPUT_ERRORS ;
     """.format(**project.task),
-      legacy=False)
+    legacy=False
+  )
 
   query_to_view(
     project.task["auth_bigquery"],
@@ -201,6 +204,7 @@ def partner_cost_audit():
       )
       AND Line_Item NOT IN (SELECT Id FROM `{dataset}.AUDIT_PartnerCosts` WHERE Severity='ERROR')
       AND Insertion_Order NOT IN (SELECT Id FROM `{dataset}.AUDIT_PartnerCosts` WHERE Severity='ERROR')
+      ORDER BY Insertion_Order, Line_Item, Label
     """.format(**project.task),
     legacy=False
   )
@@ -224,19 +228,20 @@ def partner_cost_patch(commit=False):
     lookup = row['Line_Item'] or row['Insertion_Order']
 
     patches.setdefault(
-        lookup, {
-            "operation": "Partner Costs",
-            "action": "PATCH",
-            "partner": row['Partner'],
-            "advertiser": row['Advertiser'],
-            "campaign": row['Campaign'],
-            "parameters": {
-                "advertiserId": lookup_id(row['Advertiser']),
-                "body": {
-                    "partnerCosts": []
-                }
-            }
-        })
+      lookup,
+      { "operation": "Partner Costs",
+        "action": "PATCH",
+        "partner": row['Partner'],
+        "advertiser": row['Advertiser'],
+        "campaign": row['Campaign'],
+        "parameters": {
+          "advertiserId": lookup_id(row['Advertiser']),
+          "body": {
+            "partnerCosts": []
+          }
+        }
+      }
+    )
 
     if row['Line_Item']:
       patches[lookup]["line_item"] = row['Line_Item']
@@ -246,11 +251,11 @@ def partner_cost_patch(commit=False):
       patches[lookup]["parameters"]["insertionOrderId"] = lookup_id(row['Insertion_Order'])
 
     patches[lookup]["parameters"]["body"]["partnerCosts"].append({
-        "costType": row['Cost_Type_Edit'],
-        "feeType": row['Fee_Type_Edit'],
-        "invoiceType": row['Invoice_Type_Edit'],
-        "feeAmount": int(float(row['Fee_Amount_Edit']) * 100000) if row['Fee_Amount_Edit'] else None,
-        "feePercentageMillis": int(float(row['Fee_Percent_Edit']) * 1000) if row['Fee_Percent_Edit'] else None
+      "costType": row['Cost_Type_Edit'],
+      "feeType": row['Fee_Type_Edit'],
+      "invoiceType": row['Invoice_Type_Edit'],
+      "feeAmount": int(float(row['Fee_Amount_Edit']) * 100000) if row['Fee_Amount_Edit'] else None,
+      "feePercentageMillis": int(float(row['Fee_Percent_Edit']) * 1000) if row['Fee_Percent_Edit'] else None
     })
 
     if row['Cost_Type'] != row['Cost_Type_Edit'] \

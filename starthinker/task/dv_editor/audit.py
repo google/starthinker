@@ -16,8 +16,6 @@
 #
 ###########################################################################
 
-from starthinker.util.bigquery import query_to_view
-from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.project import project
@@ -35,11 +33,15 @@ from starthinker.task.dv_editor.segment import segment_audit
 
 
 def audit_clear():
-  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Audit', 'A2:Z')
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Audit',
+    'A2:Z'
+  )
 
 
 def audit_load():
-
   bid_strategy_audit()
   integration_detail_audit()
   frequency_cap_audit()
@@ -50,52 +52,46 @@ def audit_load():
   insertion_order_audit()
   line_item_audit()
 
-  # write audit to sheet
-  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Audit', 'A2')
-
   # write audits to sheet
-  rows = get_rows(
-      project.task['auth_bigquery'], {
-          'bigquery': {
-              'dataset':
-                  project.task['dataset'],
-              'query':
-                  """SELECT Operation, Severity, Id, Error
-        FROM `{dataset}.AUDIT_InsertionOrders`
-      UNION ALL
-        SELECT Operation, Severity, Id, Error
-        FROM `{dataset}.AUDIT_Segments`
-      UNION ALL
-        SELECT Operation, Severity, Id, Error
-        FROM `{dataset}.AUDIT_LineItems`
-      UNION ALL
-        SELECT Operation, Severity, Id, Error
-        FROM `{dataset}.AUDIT_LineItemMaps`
-      UNION ALL
-        SELECT Operation, Severity, Id, Error
-        FROM `{dataset}.AUDIT_Pacing`
-      UNION ALL
-        SELECT Operation, Severity, Id, Error
-        FROM `{dataset}.AUDIT_BidStrategy`
-      UNION ALL
-        SELECT Operation, Severity, Id, Error
-        FROM `{dataset}.AUDIT_FrequencyCaps`
-      UNION ALL
-        SELECT Operation, Severity, Id, Error
-        FROM `{dataset}.AUDIT_PartnerCosts`
-      UNION ALL
-        SELECT Operation, Severity, Id, Error
-        FROM `{dataset}.AUDIT_IntegrationDetails`
-      """.format(**project.task),
-              'legacy':
-                  False
-          }
-      })
-
-  put_rows(project.task['auth_sheets'], {
-      'sheets': {
-          'sheet': project.task['sheet'],
-          'tab': 'Audit',
-          'range': 'A2'
-      }
-  }, rows)
+  put_rows(
+    project.task['auth_sheets'],
+    { 'sheets': {
+      'sheet': project.task['sheet'],
+      'tab': 'Audit',
+      'range': 'A2'
+    }},
+    get_rows(
+      project.task['auth_bigquery'],
+      { 'bigquery': {
+        'dataset': project.task['dataset'],
+        'query': """SELECT Operation, Severity, Id, Error
+            FROM `{dataset}.AUDIT_InsertionOrders`
+          UNION ALL
+            SELECT Operation, Severity, Id, Error
+            FROM `{dataset}.AUDIT_Segments`
+          UNION ALL
+            SELECT Operation, Severity, Id, Error
+            FROM `{dataset}.AUDIT_LineItems`
+          UNION ALL
+            SELECT Operation, Severity, Id, Error
+            FROM `{dataset}.AUDIT_LineItemMaps`
+          UNION ALL
+            SELECT Operation, Severity, Id, Error
+            FROM `{dataset}.AUDIT_Pacing`
+          UNION ALL
+            SELECT Operation, Severity, Id, Error
+            FROM `{dataset}.AUDIT_BidStrategy`
+          UNION ALL
+            SELECT Operation, Severity, Id, Error
+            FROM `{dataset}.AUDIT_FrequencyCaps`
+          UNION ALL
+            SELECT Operation, Severity, Id, Error
+            FROM `{dataset}.AUDIT_PartnerCosts`
+          UNION ALL
+            SELECT Operation, Severity, Id, Error
+            FROM `{dataset}.AUDIT_IntegrationDetails`
+        """.format(**project.task),
+        "legacy": False
+      }}
+    )
+  )

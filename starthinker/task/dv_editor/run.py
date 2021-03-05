@@ -25,7 +25,6 @@ from starthinker.task.dv_editor.audit import audit_load
 from starthinker.task.dv_editor.bid_strategy import bid_strategy_clear
 from starthinker.task.dv_editor.bid_strategy import bid_strategy_load
 from starthinker.task.dv_editor.bid_strategy import bid_strategy_patch
-from starthinker.task.dv_editor.campaign import campaign_sheet_to_table
 from starthinker.task.dv_editor.campaign import campaign_clear
 from starthinker.task.dv_editor.campaign import campaign_load
 from starthinker.task.dv_editor.creative import creative_clear
@@ -33,7 +32,6 @@ from starthinker.task.dv_editor.creative import creative_load
 from starthinker.task.dv_editor.frequency_cap import frequency_cap_clear
 from starthinker.task.dv_editor.frequency_cap import frequency_cap_load
 from starthinker.task.dv_editor.frequency_cap import frequency_cap_patch
-from starthinker.task.dv_editor.insertion_order import insertion_order_audit
 from starthinker.task.dv_editor.insertion_order import insertion_order_clear
 from starthinker.task.dv_editor.insertion_order import insertion_order_insert
 from starthinker.task.dv_editor.insertion_order import insertion_order_load
@@ -41,7 +39,6 @@ from starthinker.task.dv_editor.insertion_order import insertion_order_patch
 from starthinker.task.dv_editor.integration_detail import integration_detail_clear
 from starthinker.task.dv_editor.integration_detail import integration_detail_load
 from starthinker.task.dv_editor.integration_detail import integration_detail_patch
-from starthinker.task.dv_editor.line_item import line_item_audit
 from starthinker.task.dv_editor.line_item import line_item_clear
 from starthinker.task.dv_editor.line_item import line_item_insert
 from starthinker.task.dv_editor.line_item import line_item_load
@@ -69,6 +66,7 @@ def dv_editor():
   if project.task['command'] == 'Load Partners':
     partner_clear()
     partner_load()
+    pass
 
   elif project.task['command'] == 'Load Advertisers':
     advertiser_clear()
@@ -81,23 +79,6 @@ def dv_editor():
   elif project.task['command'] == 'Load Insertion Orders and Line Items':
     creative_clear()
     creative_load()
-    insertion_order_clear()
-    insertion_order_load()
-    line_item_clear()
-    line_item_load()
-    pacing_clear()
-    pacing_load()
-    bid_strategy_clear()
-    bid_strategy_load()
-    frequency_cap_clear()
-    frequency_cap_load()
-    partner_cost_clear()
-    partner_cost_load()
-    integration_detail_clear()
-    integration_detail_load()
-
-  elif project.task['command'] == 'Load Insertion Orders and Line Items':
-    campaign_sheet_to_table()
     insertion_order_clear()
     insertion_order_load()
     line_item_clear()

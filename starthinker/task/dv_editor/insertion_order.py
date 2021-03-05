@@ -55,6 +55,15 @@ def insertion_order_load():
 
   # load multiple partners from user defined sheet
   def insertion_order_load_multiple():
+    campaigns = set([lookup_id(row[0]) for row in get_rows(
+      project.task["auth_sheets"],
+      { "sheets": {
+        "sheet": project.task["sheet"],
+        "tab": "Campaigns",
+        "range": "A2:A"
+      }}
+    )])
+
     rows = get_rows(
       project.task["auth_sheets"],
       { "sheets": {
@@ -65,15 +74,16 @@ def insertion_order_load():
     )
 
     # String for filtering which entityStatus enums we want to see in the sheet
-    filter_string = 'entityStatus = "ENTITY_STATUS_ARCHIVED" OR entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
     for row in rows:
-      yield from API_DV360(
+      for record in API_DV360(
         project.task["auth_dv"],
         iterate=True
       ).advertisers().insertionOrders().list(
         advertiserId=lookup_id(row[0]),
-        filter=filter_string
-      ).execute()
+        filter='entityStatus = "ENTITY_STATUS_ARCHIVED" OR entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
+      ).execute():
+        if not campaigns or record['campaignId'] in campaigns:
+          yield record
 
   # write insertion orders to database and sheet
   put_rows(
@@ -91,58 +101,6 @@ def insertion_order_load():
   )
 
   # write insertion orders to sheet
-  rows = get_rows(
-    project.task["auth_bigquery"],
-    { "bigquery": {
-      "dataset": project.task["dataset"],
-      "query": """SELECT
-          CONCAT(P.displayName, ' - ', P.partnerId),
-          CONCAT(A.displayName, ' - ', A.advertiserId),
-          CONCAT(C.displayName, ' - ', C.campaignId),
-          CONCAT(I.displayName, ' - ', I.insertionOrderId),
-          'PATCH',
-          I.entityStatus,
-          I.displayName,
-          I.displayName,
-          I.budget.budgetUnit,
-          I.budget.budgetUnit,
-          I.budget.automationType,
-          I.budget.automationType,
-          I.performanceGoal.performanceGoalType,
-          I.performanceGoal.performanceGoalType,
-          I.performanceGoal.performanceGoalAmountMicros / 1000000,
-          I.performanceGoal.performanceGoalAmountMicros / 1000000,
-          I.performanceGoal.performanceGoalPercentageMicros / 1000000,
-          I.performanceGoal.performanceGoalPercentageMicros / 1000000,
-          I.performanceGoal.performanceGoalString,
-          I.performanceGoal.performanceGoalString
-        FROM
-          `{dataset}.DV_InsertionOrders` AS I
-        LEFT JOIN
-          `{dataset}.DV_Campaigns` AS C
-        ON
-          I.campaignId=C.campaignId
-        LEFT JOIN
-          `{dataset}.DV_Advertisers` AS A
-        ON
-          I.advertiserId=A.advertiserId
-        LEFT JOIN
-          `{dataset}.DV_Partners` AS P
-        ON
-          A.partnerId=P.partnerId
-        LEFT JOIN
-          `{dataset}.SHEET_Campaigns` AS S_C
-        ON
-          C.campaignId = CAST(SPLIT(S_C.Filter ,'-')[OFFSET(1)] AS INT64)
-        WHERE
-          S_C.Filter IS NOT NULL
-        ORDER BY
-          I.displayName
-      """.format(**project.task),
-      "legacy": False
-    }}
-  )
-
   put_rows(
     project.task["auth_sheets"],
     { "sheets": {
@@ -150,7 +108,44 @@ def insertion_order_load():
       "tab": "Insertion Orders",
       "range": "A2"
     }},
-    rows
+    get_rows(
+      project.task["auth_bigquery"],
+      { "bigquery": {
+        "dataset": project.task["dataset"],
+        "query": """SELECT
+            CONCAT(P.displayName, ' - ', P.partnerId),
+            CONCAT(A.displayName, ' - ', A.advertiserId),
+            CONCAT(C.displayName, ' - ', C.campaignId),
+            CONCAT(I.displayName, ' - ', I.insertionOrderId),
+            'PATCH',
+            I.entityStatus,
+            I.entityStatus,
+            I.displayName,
+            I.displayName,
+            I.budget.budgetUnit,
+            I.budget.budgetUnit,
+            I.budget.automationType,
+            I.budget.automationType,
+            I.performanceGoal.performanceGoalType,
+            I.performanceGoal.performanceGoalType,
+            I.performanceGoal.performanceGoalAmountMicros / 1000000,
+            I.performanceGoal.performanceGoalAmountMicros / 1000000,
+            I.performanceGoal.performanceGoalPercentageMicros / 1000000,
+            I.performanceGoal.performanceGoalPercentageMicros / 1000000,
+            I.performanceGoal.performanceGoalString,
+            I.performanceGoal.performanceGoalString
+          FROM `{dataset}.DV_InsertionOrders` AS I
+          LEFT JOIN `{dataset}.DV_Campaigns` AS C
+          ON I.campaignId=C.campaignId
+          LEFT JOIN `{dataset}.DV_Advertisers` AS A
+          ON I.advertiserId=A.advertiserId
+          LEFT JOIN `{dataset}.DV_Partners` AS P
+          ON A.partnerId=P.partnerId
+          ORDER BY I.displayName
+        """.format(**project.task),
+        "legacy": False
+      }}
+    )
   )
 
 

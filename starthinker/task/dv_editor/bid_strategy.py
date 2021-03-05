@@ -51,7 +51,7 @@ def bid_strategy_load():
          CONCAT(A.displayName, ' - ', A.advertiserId),
          CONCAT(C.displayName, ' - ', C.campaignId),
          CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
-         NULL,
+         CAST(NULL AS STRING),
          I.bidStrategy.fixedBid.bidAmountMicros / 100000,
          I.bidStrategy.fixedBid.bidAmountMicros / 100000,
          I.bidStrategy.maximizeSpendAutoBid.performanceGoalType,
