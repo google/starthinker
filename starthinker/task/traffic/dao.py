@@ -63,6 +63,9 @@ class BaseDAO(object):
     for key in null_keys:
       del item[key]
 
+    if 'adBlockingOptOut' in item and not item['adBlockingOptOut']:
+      item['adBlockingOptOut'] = False
+
     return item
 
   def _get(self, feed_item):
