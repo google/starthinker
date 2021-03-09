@@ -17,11 +17,14 @@
 ###########################################################################
 
 import json
+import re
 
 from django.db import models
 from django.utils.translation import gettext as _
 
 from starthinker_ui.account.models import Account
+
+RE_IDENTIFIER = re.compile(r'@(.*?)(\.google)?\.iam\.gserviceaccount\.com', re.DOTALL)
 
 
 class Project(models.Model):
@@ -32,12 +35,33 @@ class Project(models.Model):
   share = models.CharField(max_length=50, default='')
 
   def __str__(self):
+    label = self.get_project_id()
+    client_email = self.get_client_email()
+
+    if client_email:
+      label += ' / ' + client_email
+
+    if self.key:
+      label += _(' / API Key')
+
     if self.share == 'domain':
-      return _('DOMAIN: %s | CAUTION: Be sure you trust this project.' % self.identifier)
+      return _('%s / Domain Visible' % label)
     elif self.share == 'global':
-      return _('GLOBAL: %s | CAUTION: Be sure you trust this project.' % self.identifier)
+      return _('%s / Global Visible' % label)
     else:
-      return _('USER: %s | SAFE: Only you are using this service account.' % self.identifier)
+      return _('%s / User Visible' % label)
+
+  def save(self, *args, **kwargs):
+    if self.service is None:
+       self.service = ''
+
+    if not self.identifier and self.service:
+      try:
+        self.identifier = json.loads(self.service)['project_id']
+      except:
+        pass
+
+    super(Project, self).save(*args, **kwargs)
 
   def link_edit(self):
     return '/project/edit/%d/' % self.pk
@@ -52,4 +76,11 @@ class Project(models.Model):
     return json.loads(self.get_credentials_service()).get('client_email', '')
 
   def get_project_id(self):
-    return json.loads(self.get_credentials_service()).get('project_id', '')
+    # temporary transitional, phase out in ~6 months
+    # current: identifier is project id
+    # legacy: identifier is service account email
+    results = RE_IDENTIFIER.search(self.identifier)
+    if results:
+      return results.group(1)
+    else:
+      return self.identifier

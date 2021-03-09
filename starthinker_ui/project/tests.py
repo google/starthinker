@@ -32,8 +32,9 @@ from starthinker_ui.project.models import Project
 def project_create(share=''):
 
   with open(
-      os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET'),
-      'r') as f:
+    os.environ.get('STARTHINKER_SERVICE', 'MISSING RUN deploy.sh TO SET'),
+    'r'
+  ) as f:
     service = f.read()
 
   key = os.environ.get('STARTHINKER_API_KEY', 'MISSING RUN deploy.sh TO SET'),
@@ -95,7 +96,9 @@ class ProjectTest(TestCase):
     self.assertEqual(resp.status_code, 302)
 
     self.client.force_login(
-        self.account, backend=settings.AUTHENTICATION_BACKENDS[0])
+      self.account,
+      backend=settings.AUTHENTICATION_BACKENDS[0]
+    )
 
     # logged in ( projects in form )
     resp = self.client.get('/recipe/edit/')
@@ -103,3 +106,49 @@ class ProjectTest(TestCase):
     self.assertContains(resp, self.project_user)
     self.assertContains(resp, self.project_domain)
     self.assertContains(resp, self.project_global)
+
+
+  def test_identifier_and_service(self):
+    project = Project.objects.create(
+      account=self.account,
+      identifier='starthinker@project-12.iam.gserviceaccount.com',
+      service=None
+    )
+    self.assertEqual(project.get_project_id(), 'project-12')
+
+    project = Project.objects.create(
+      account=self.account,
+      identifier='starthinker@project-34.google.iam.gserviceaccount.com',
+      service=None
+    )
+    self.assertEqual(project.get_project_id(), 'project-34')
+
+    project = Project.objects.create(
+      account=self.account,
+      identifier='project-56',
+      service=None
+    )
+    self.assertEqual(project.get_project_id(), 'project-56')
+
+    project = Project.objects.create(
+      account=self.account,
+      identifier='',
+      service='{"project_id":"project-78"}'
+    )
+    self.assertEqual(project.get_project_id(), 'project-78')
+
+    project = Project.objects.create(
+      account=self.account,
+      identifier='project-90',
+      service='{"project_id":"project-90"}'
+    )
+    self.assertEqual(project.get_project_id(), 'project-90')
+
+    project = Project.objects.create(
+      account=self.account,
+      identifier='project-90',
+      service='{"project_id":"project-90"}'
+    )
+    self.assertEqual(project.get_project_id(), 'project-90')
+
+    self.assertEqual(Project.objects.filter(identifier='project-90').count(), 2)

@@ -40,8 +40,15 @@
          <tr>
            <td class="center"><a href="{{ project.link_edit }}"><i class="material-icons medium blue-text">cloud</i></a></td>
            <td>
-             <a href="{{ project.link_edit }}">{{ project.identifier }}</a>
-             <br/>{{ project.get_project_id }}{% if project.share %} | {{ project.share.upper|default:"USER" }} {% trans "LEVEL SHARE" %}{% endif %}
+             <a href="{{ project.link_edit }}">{{ project.get_project_id }}</a>
+             {% with project.get_client_email as client_email %}
+               {% if client_email %}
+                 <br/>{{ client_email }}
+               {% endif %}
+             {% endwith %}
+             {% if project.share %}
+               <br/>{{ project.share.upper|default:"USER" }} {% trans "LEVEL SHARE" %}
+             {% endif %}
            </td>
            <td class="center">{{ project.recipe_set.count }}</td>
          </tr>

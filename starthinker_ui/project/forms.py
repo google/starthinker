@@ -29,12 +29,21 @@ class ProjectForm(forms.ModelForm):
 
   class Meta:
     model = Project
-    fields = ['service', 'key', 'share']
+    fields = ['identifier', 'service', 'key', 'share']
 
   def __init__(self, account, *args, **kwargs):
     super(ProjectForm, self).__init__(*args, **kwargs)
     self.instance.account = account
+
+    self.fields['identifier'].label = 'Project Identifier'
+    self.fields['identifier'].required = False
+    self.fields['identifier'].help_text = mark_safe(
+      'Project to bill for data transfers.'
+    )
+
+
     self.fields['service'].label = 'Service JSON'
+    self.fields['service'].required = False
     self.fields['service'].help_text = mark_safe(
       'Optional, paste service JSON here.'
     )
@@ -42,7 +51,7 @@ class ProjectForm(forms.ModelForm):
     self.fields['key'].label = 'API Key'
     self.fields['key'].required = False
     self.fields['key'].help_text = mark_safe(
-      'Optional, ensures billing and may be required for some API calls.'
+      'Optional, ensures access and may be required for some API calls.'
     )
 
     self.fields['share'].label = 'Share'
@@ -58,22 +67,15 @@ class ProjectForm(forms.ModelForm):
         % domain), ('global', 'GLOBAL | CAUTION: Anyone logging in can use it.'
                    )) if domain else (('user', 'User'), ('global', 'Global'))
 
+
   def clean_service(self):
-    try:
-      service = self.cleaned_data['service']
-      self.instance.identifier = json.loads(service)['client_email']
-    except:
-      raise forms.ValidationError('Service credentials must be proper JSON.')
+    if self.cleaned_data['service']:
+      try:
+        service_json = json.loads(self.cleaned_data['service'])['project_id']
+      except:
+        raise 'Service credentials must be proper JSON.'
+    return self.cleaned_data['service']
 
-    if Project.objects.filter(
-        account=self.instance.account,
-        identifier=self.instance.identifier).exclude(
-            pk=self.instance.pk).exists():
-      raise forms.ValidationError(
-          'You already have service credentails for %s, this is a duplicate.' %
-          self.instance.identifier)
-
-    return service
 
   def get_errors(self):
     return self.errors
