@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-09 10:04-0800\n"
+"POT-Creation-Date: 2021-03-05 11:41-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -263,7 +263,9 @@ msgid "Data Pill"
 msgstr ""
 
 #: templates/recipe/download.html:64
-msgid "Then visit <a href="
+msgid ""
+"Then visit <a href=\"https://colab.research.google.com/\" target=\"_blank"
+"\">Google Collaboratory</a> and open the downloaded notebook."
 msgstr ""
 
 #: templates/recipe/download.html:67
