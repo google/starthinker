@@ -546,6 +546,20 @@ def API_Analytics(auth, iterate=False):
   }
   return API(configuration)
 
+def API_AnalyticsReporting(auth, iterate=False):
+  """AnalyticsReporting helper configuration Google API.
+
+  Defines agreed upon version for use in all tasks.
+  """
+
+  configuration = {
+      'api': 'analyticsreporting',
+      'version': 'v4',
+      'auth': auth,
+      'iterate': iterate
+  }
+  return API(configuration)
+
 
 def API_YouTube(auth, iterate=False):
   """YouTube helper configuration Google API.
@@ -645,6 +659,21 @@ def API_Compute(auth, iterate=False):
 
   configuration = {
       'api': 'compute',
+      'version': 'v1',
+      'auth': auth,
+      'iterate': iterate
+  }
+  return API(configuration)
+
+
+def API_Vision(auth, iterate=False):
+  """Vision helper configuration Google API.
+
+    https://cloud.google.com/vision/docs/reference/rest
+  """
+
+  configuration = {
+      'api': 'vision',
       'version': 'v1',
       'auth': auth,
       'iterate': iterate
