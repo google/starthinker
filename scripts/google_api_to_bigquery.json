@@ -40,15 +40,16 @@
       "kwargs":{ "field":{ "name":"kwargs", "kind":"json", "order":4, "default":{
           "partnerId": 234340
       }, "description":"Dictionray object of name value pairs." }},
-      "key":{ "field":{ "name":"api_key", "kind":"string", "order":4, "default":"", "description":"Associated with a Google Cloud Project." }},
+      "kwargs_remote":{ "field":{ "name":"kwargs_remote", "kind":"json", "order":5, "default":{}, "description":"Fetch arguments from remote source." }},
+      "key":{ "field":{ "name":"api_key", "kind":"string", "order":6, "default":"", "description":"Associated with a Google Cloud Project." }},
       "headers":{
-        "developer-token":{ "field":{ "name":"developer_token", "kind":"string", "order":5, "default":"", "description":"Associated with your organization." }},
-        "login-customer-id":{ "field":{ "name":"login_customer_id", "kind":"string", "order":6, "default":"", "description":"Associated with your Adwords account." }}
+        "developer-token":{ "field":{ "name":"developer_token", "kind":"string", "order":7, "default":"", "description":"Associated with your organization." }},
+        "login-customer-id":{ "field":{ "name":"login_customer_id", "kind":"string", "order":8, "default":"", "description":"Associated with your Adwords account." }}
       },
       "results": {
         "bigquery":{
-          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":7, "default":"", "description":"Existing dataset in BigQuery." }},
-          "table":{ "field":{ "name":"table", "kind":"string", "order":8, "default":"", "description":"Table to write API call results to." }}
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":9, "default":"", "description":"Existing dataset in BigQuery." }},
+          "table":{ "field":{ "name":"table", "kind":"string", "order":10, "default":"", "description":"Table to write API call results to." }}
         }
       }
     }}
