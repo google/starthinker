@@ -10,7 +10,7 @@
       "clear":true
     }},
     { "include":{
-      "script":"scripts/segmentology_dv360.json",
+      "script":"scripts/dv360_segmentology.json",
       "parameters":{
         "auth_read":"user",
         "auth_write":"service",
@@ -49,7 +49,7 @@
     { "dataset":{
       "auth":"service",
       "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Segmentology_DV_", "default": "Manual"}},
-      "delete":false
+      "delete":true
     }}
   ]
 }
