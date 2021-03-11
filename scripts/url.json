@@ -1,0 +1,33 @@
+{
+  "script":{
+    "released":"2021-03-10",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"link",
+    "from":["internet"],
+    "to":["bigquery"],
+    "title":"URL",
+    "description":"Pull URL information.",
+    "instructions":[
+      "Specify a list of URLs.",
+      "Check bigquery destination for list of information."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "url":{
+      "auth":{"field":{ "name":"auth", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+      "status":{"field":{ "name":"status", "kind":"boolean", "order":2, "default":true, "description":"Pull status of HTTP request." }},
+      "read":{"field":{ "name":"read", "kind":"boolean", "order":3, "default":false, "description":"Pull data from HTTP request." }},
+      "urls":{
+        "values":{"field":{ "name":"urls", "kind":"string_list", "order":1, "default":"service", "description":"Credentials used for writing data." }}
+      },
+      "to":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Name of Google BigQuery dataset to write." }},
+          "table":{"field":{ "name":"table", "kind":"string", "order":1, "default":"", "description":"Name of Google BigQuery dataset to write." }}
+        }
+      }
+    }}
+  ]
+}
