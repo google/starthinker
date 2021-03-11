@@ -178,7 +178,7 @@ def get_rows(auth, source, as_object=False, unnest=False):
         yield row[0] if not as_object and unnest else row
 
 
-def put_rows(auth, destination, rows, variant=''):
+def put_rows(auth, destination, rows, schema=None, variant=''):
   """Processes standard write JSON block for dynamic export of data.
 
   Allows us to quickly write the results of a script to a destination.  For
@@ -239,6 +239,7 @@ def put_rows(auth, destination, rows, variant=''):
   Args:
     auth: (string) The type of authentication to use, user or service.
     rows: ( iterator ) The list of rows to be written, if NULL no action is performed.
+    schema: (json) A bigquery schema definition.
     destination: (json) A json block resembling var_json described above. rows (
       list ) The data being written as a list object. variant (string) Appended
       to destination to differentieate multiple objects
@@ -254,7 +255,11 @@ def put_rows(auth, destination, rows, variant=''):
     return
 
   if 'bigquery' in destination:
-    skip_rows = 1 if destination['bigquery'].get('header') and destination['bigquery'].get('schema') else 0
+
+    if not schema:
+      schema = destination['bigquery'].get('schema')
+
+    skip_rows = 1 if destination['bigquery'].get('header') and schema else 0
 
     if destination['bigquery'].get('format', 'CSV') == 'JSON':
       json_to_table(
@@ -263,7 +268,7 @@ def put_rows(auth, destination, rows, variant=''):
           destination['bigquery']['dataset'],
           destination['bigquery']['table'] + variant,
           rows,
-          destination['bigquery'].get('schema', []),
+          schema,
           destination['bigquery'].get('disposition', 'WRITE_TRUNCATE'),
       )
 
@@ -274,7 +279,7 @@ def put_rows(auth, destination, rows, variant=''):
           destination['bigquery']['dataset'],
           destination['bigquery']['table'] + variant,
           rows,
-          destination['bigquery'].get('schema', []),
+          schema,
           destination['bigquery'].get('skip_rows', skip_rows),
           destination['bigquery'].get('disposition', 'WRITE_APPEND'),
           billing_project_id=project.id)
@@ -287,7 +292,7 @@ def put_rows(auth, destination, rows, variant=''):
           destination['bigquery']['dataset'],
           destination['bigquery']['table'] + variant,
           rows,
-          destination['bigquery'].get('schema', []),
+          schema,
           destination['bigquery'].get('skip_rows', skip_rows),
           destination['bigquery'].get('disposition', 'WRITE_TRUNCATE'),
       )
