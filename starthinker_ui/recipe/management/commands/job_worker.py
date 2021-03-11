@@ -450,4 +450,5 @@ class Command(BaseCommand):
     log_manager_end()
 
     # worker will terminate itself in a group safe way
-    worker_downscale()
+    if not kwargs['test']:
+      worker_downscale()

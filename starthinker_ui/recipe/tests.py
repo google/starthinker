@@ -1408,12 +1408,12 @@ class WorkerTest(TransactionTestCase):
         job_utm=test_job_utm(0, 1))
     self.RECIPE_DONE = self.job_done.uid()
 
-  def test_ui_autoscale(self):
-    resp = self.client.get('/recipe/autoscale/')
-    self.assertEqual(resp.status_code, 200)
+  #def test_ui_autoscale(self):
+  #  resp = self.client.get('/recipe/autoscale/')
+  #  self.assertEqual(resp.status_code, 200)
 
-  def test_worker_downscale(self):
-    self.assertIsNone(worker_downscale())
+  #def test_worker_downscale(self):
+  #  self.assertIsNone(worker_downscale())
 
   def test_worker_upscale_zero_jobs(self):
     self.assertJSONEqual(
