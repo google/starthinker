@@ -133,7 +133,7 @@ def frequency_cap_audit():
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Frequency Caps",
-              "range": "A2:Z"
+              "range": "A2:M"
           }
       })
 

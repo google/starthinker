@@ -145,7 +145,7 @@ def partner_cost_audit():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Partner Costs",
-        "range": "A2:Z"
+        "range": "A2:P"
       }}
     )
   )

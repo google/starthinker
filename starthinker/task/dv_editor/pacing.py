@@ -109,7 +109,7 @@ def pacing_audit():
       "sheets": {
           "sheet": project.task["sheet"],
           "tab": "Pacing",
-          "range": "A2:Z"
+          "range": "A2:M"
       }
   })
 

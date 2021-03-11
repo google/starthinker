@@ -157,7 +157,7 @@ def insertion_order_audit():
       "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Insertion Orders",
-        "range": "A2:Z"
+        "range": "A2:U"
       }
     }
   )

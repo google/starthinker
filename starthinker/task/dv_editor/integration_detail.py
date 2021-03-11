@@ -119,7 +119,7 @@ def integration_detail_audit():
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Integration Details",
-              "range": "A2:Z"
+              "range": "A2:I"
           }
       })
 
