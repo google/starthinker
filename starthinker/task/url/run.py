@@ -16,6 +16,15 @@
 #
 ###########################################################################
 
+""" Recipe handler for "url" task.
+
+Allows a list of URLs to be pulled from the web and places into a table or sheet.
+Leverages get_rows and put_rows JSON pattern for IO. See docs.
+For sample use see scripts/url.json. Allows flagging status and or content in response.
+
+"""
+
+from typing import Iterator
 from urllib import request
 from urllib.error import HTTPError
 
@@ -30,7 +39,17 @@ URL_SCHEMA = [
   { 'name': 'Read', 'type': 'BYTES', 'mode': 'NULLABLE' }
 ]
 
-def url_fetch():
+
+def url_fetch() -> Iterator[dict]:
+  """Fetch URL list and return both status code and/or contents.
+
+  Takes no parameters, it operates on recipe JSON directly. Core
+  function is to call urlopen on each passed in URL.
+
+  Returns:
+    Produces a dictionary generator with record matching URL_SCHEMA.
+
+  """
 
   for url in get_rows(project.task['auth'], project.task['urls'], unnest=True):
 
@@ -60,7 +79,13 @@ def url_fetch():
 
 
 @project.from_parameters
-def url():
+def url() -> None:
+  """Entry point for URL task, which pulls URL information from web.
+
+  Designed solely to fetch status and/or content from a list of URLs.
+  Leverages url_fetch as generator to preserve memory.
+
+  """
 
   # Eventually add format detection or parameters to put_rows
   if 'bigquery' in project.task['to']:
