@@ -69,7 +69,7 @@ if [ -d "${PWD}/install" ]; then
       echo ""
 
       main_done=0
-      main_options=("Developer Menu" "Enterprise Menu" "Composer Setup Menu" "Change gCloud User" "Change gCloud Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials" "Change Analytics Token" "Change API Key" "Change Developer Token")
+      main_options=("Developer Menu" "Enterprise Menu" "Composer Setup Menu" "Deploy Cloud Function" "Change gCloud User" "Change gCloud Project" "Change Service Credentials" "Change User Credentials" "Change UI Credentials" "Change Analytics Token" "Change API Key" "Change Developer Token")
 
       while (( !main_done ))
       do
@@ -84,14 +84,15 @@ if [ -d "${PWD}/install" ]; then
             1) setup_developer; break ;;
             2) setup_enterprise; break ;;
             3) setup_composer; break ;;
-            4) setup_gcloud "forced"; save_config; break ;;
-            5) setup_project "forced"; save_config; break ;;
-            6) setup_credentials_service "forced"; save_config; break ;;
-            7) setup_credentials_commandline "forced"; setup_credentials_user "forced"; save_config; break ;;
-            8) setup_credentials_ui "forced"; save_config; break ;;
-            9) setup_analytics "forced"; save_config; break ;;
-            10) setup_developer_token "forced"; save_config; break ;;
-            11) setup_api_key "forced"; save_config; break ;;
+            4) setup_cloud_function; break ;;
+            5) setup_gcloud "forced"; save_config; break ;;
+            6) setup_project "forced"; save_config; break ;;
+            7) setup_credentials_service "forced"; save_config; break ;;
+            8) setup_credentials_commandline "forced"; setup_credentials_user "forced"; save_config; break ;;
+            9) setup_credentials_ui "forced"; save_config; break ;;
+            10) setup_analytics "forced"; save_config; break ;;
+            11) setup_developer_token "forced"; save_config; break ;;
+            12) setup_api_key "forced"; save_config; break ;;
             q) main_done=1; break;;
             *) echo "What's that?" ;;
           esac

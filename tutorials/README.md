@@ -6,6 +6,7 @@ a StarThinker instance.
 ## Deployment
 
 - [AppEngine](deploy_enterprise.md) - Full browser based UI with multiple user login.
+- [Cloud Function](deploy_cloudfunction.md) - Serverless deployment to Google Cloud Functions.
 - [AirFlow](deploy_airflow.md) - Run recipes using cloud composer / airflow framework.
 - [Colab](deploy_colab.md) - For Workshops, Data Pill deployment using Google Collaboratory.
 - [Developer](deploy_developer.md) - Full test suite in a local development machine.

@@ -285,6 +285,46 @@ migrate_database_enterprise() {
 }
 
 
+setup_cloud_function() {
+
+  gcloud services enable cloudfunctions.googleapis.com
+  gcloud services enable cloudscheduler.googleapis.com
+
+  echo ""
+  echo "------------------------------------------------------------------------------"
+  echo ""
+  echo "Cloud Function Setup"
+  echo ""
+  echo "------------------------------------------------------------------------------"
+  echo ""
+  echo "A single cloud function can run all StarThinker recipes, simply pass a different JSON in the request."
+  echo "Setting up cloud function..."
+
+  gcloud alpha functions deploy starthinker --entry-point run --runtime python38 --trigger-http --security-level secure-always --memory 4096MB --source "$STARTHINKER_ROOT/cloud_function" --timeout 540s
+
+  echo ""
+  echo "Deploying sample scheduled job..."
+
+  trigger=$(gcloud functions describe starthinker --format 'value(httpsTrigger.url)')
+  service=$(echo "${STARTHINKER_PROJECT}"  | sed -r "s/(google.com):(.*)/\2.\1/g")
+
+  gcloud scheduler jobs create http starthinker_sample --schedule "0 3 * * *" --uri "${trigger}" --http-method POST --message-body='{ "setup":{ "id":"${STARTHINKER_PROJECT}", "auth":{ "service":{}, "user":{} } }, "tasks":[ { "hello":{ "auth":"user", "say":"Hello World" }} ] }' --oidc-token-audience "${trigger}" --oidc-service-account-email "starthinker@${service}.iam.gserviceaccount.com" --time-zone "Etc/UTC"
+
+  echo ""
+  echo "The trigger URL is: ${trigger}"
+  echo "Done"
+  echo ""
+
+  echo "Quick Start"
+  echo " - A sample cloud scheduler job is ready: https://console.cloud.google.com/cloudscheduler"
+  echo " - It will run a simple hello world task: https://github.com/google/starthinker/tree/master/starthinker/task/hello"
+  echo " - Extend the sample with scripts from: https://github.com/google/starthinker/tree/master/scripts"
+  echo ' - Convert a script to a recipe, replaces {"field":{...}} with values: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#run-a-script'
+  echo " - If you need service cerdentials see: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md"
+  echo " - If you need user cerdentials see: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials"
+  echo ""
+}
+
 setup_enterprise() {
 
   echo ""
