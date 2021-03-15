@@ -121,6 +121,11 @@
         M.AutoInit(context=document.getElementById("form_recipe"));
       });
 
+      $('#form_submit_run').on('click tap', function() {
+        $('#save_and_run').val(1);
+        $('#form_recipe').submit();
+      });
+
       var move = null;
       $(document).on('click tap', 'i.form_move', function() {
         if (move === null) {
@@ -155,6 +160,7 @@
 
   <form action="." method="post" id="form_recipe">
     {% csrf_token %}
+    <input type="hidden" id="save_and_run" name="save_and_run" value="0"/>
 
     {% with recipe=form_script.setup.instance %}
     {% with log=recipe.get_log %}
@@ -179,6 +185,11 @@
           <button id="form_submit" class="btn recipe_link blue waves-effect waves-light" type="submit" name="save">
             {% trans "Save" %} <i class="material-icons right">save</i>
           </button>
+
+          <button id="form_submit_run" class="btn recipe_link blue waves-effect waves-light" type="button" name="save_and_run">
+            {% trans "Save" %} + {% trans "Run" %} <i class="material-icons right">offline_bolt</i>
+          </button>
+
 
           {% if recipe.pk %}
 

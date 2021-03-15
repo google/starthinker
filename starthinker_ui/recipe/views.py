@@ -74,11 +74,15 @@ def recipe_edit(request, pk=None, manual=False):
     if form_script.is_valid():
       form_script.save()
       messages.success(request, 'Recipe updated.')
-      return HttpResponseRedirect(form_script.instance.link_edit())
+      if request.POST.get('save_and_run') == '1':
+        return recipe_run(request, pk)
+      else:
+        return HttpResponseRedirect(form_script.instance.link_edit())
     else:
       messages.error(
-          request,
-          'Recipe Script Errors: %s' % ' '.join(form_script.get_errors()))
+        request,
+        'Recipe Script Errors: %s' % ' '.join(form_script.get_errors())
+      )
   else:
     form_script = ScriptForm(
         manual, recipe, request.user, scripts=request.GET.get('scripts', ''))
