@@ -62,8 +62,8 @@ def segment_load():
           CONCAT(BS.dateRange.startDate.year, '-', BS.dateRange.startDate.month, '-', BS.dateRange.startDate.day),
           CONCAT(BS.dateRange.endDate.year, '-', BS.dateRange.endDate.month, '-', BS.dateRange.endDate.day),
           CONCAT(BS.dateRange.endDate.year, '-', BS.dateRange.endDate.month, '-', BS.dateRange.endDate.day),
-          BS.budgetAmountMicros / 100000,
-          BS.budgetAmountMicros / 100000,
+          BS.budgetAmountMicros / 1000000,
+          BS.budgetAmountMicros / 1000000,
           BS.description,
           BS.description
           FROM `{dataset}.DV_InsertionOrders` AS I, UNNEST( budget.budgetSegments) AS BS
@@ -169,7 +169,7 @@ def segment_audit():
           SELECT
             'Segments' AS Operation,
             CASE
-              WHEN SAFE_CAST(Budget_Edit AS FLOAT64) > 100000 THEN 'Segment has excessive spend.'
+              WHEN SAFE_CAST(Budget_Edit AS FLOAT64) > 1000000 THEN 'Segment has excessive spend.'
               WHEN SAFE_CAST(Start_Date AS DATE) != SAFE_CAST(Start_Date_Edit AS DATE) AND SAFE_CAST(Start_Date_Edit AS DATE) < CURRENT_DATE() THEN 'Segment starts in past.'
               WHEN SAFE_CAST(End_Date AS DATE) != SAFE_CAST(End_Date_Edit AS DATE) AND SAFE_CAST(End_Date_Edit AS DATE) < CURRENT_DATE() THEN 'Segment ends in past.'
             ELSE
@@ -260,7 +260,7 @@ def segment_patch(commit=False):
           "startDate": date_edited(row["Start_Date_Edit"]),
           "endDate": date_edited(row["End_Date_Edit"])
         },
-        "budgetAmountMicros": float(row["Budget_Edit"]) * 100000,
+        "budgetAmountMicros": float(row["Budget_Edit"]) * 1000000,
         "description": row["Description_Edit"]
       })
 

@@ -141,14 +141,49 @@ def patch_clear():
   sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Success', 'A2:Z')
 
 
-def patch_mask(patch):
+def patch_mask(patch:dict) -> dict:
+  """Adds an update mask to a patch based on keys in patch.
 
-  def _patch_mask(body):
+  Operates under assumption that all fields prsent in update will be updated.
+  Immediately wraps a nested function to perform actual patch logic using generator.
+
+  Args:
+    patch: {
+      "operation": IGNORED,
+      "action": IGNORED,
+      "partner": IGNORED,
+      "advertiser": IGNORED,
+      "campaign": IGNORED,
+      "parameters": {
+        "body": { PATCH IS CONSTRUCTED FROM THIS }
+      }
+    }
+
+  Returns:
+    Patch with ['parameters']['updateMask'] added.
+
+  """
+
+  def _patch_mask(body:dict) -> list:
+    """Loop through dictionary defining API body and create patch mask on keys.
+
+    Each patch mask has format parent.child repreated. Each leaf has a full path
+    describing the patch. Exceptions are budgetSegments, and partnerCosts which
+    are lists with an order and changed at the parent level not the leaves.
+
+    Args:
+      body: Any REST API call dictionary, defined by API endpoint.
+
+    Returns:
+      A list of sctrings representing full path to each leaf key.
+
+    """
+
     mask = set()
     if isinstance(body, dict):
       for parent, value in body.items():
         children = _patch_mask(value)
-        if children:
+        if children and parent not in ('budgetSegments', 'partnerCosts'):
           for child in children:
             mask.add(parent + '.' + child)
         else:
@@ -165,7 +200,16 @@ def patch_mask(patch):
   return patch
 
 
-def patch_masks(patches):
+def patch_masks(patches:dict) -> None:
+  """Wraps patch mask function for list of patches.
+
+  Modifies in place. Executes patch_mask for multiple patches.
+
+  Args:
+    patches: A list of patch objects to annotate.
+
+  """
+
   for patch in patches:
     patch_mask(patch)
 

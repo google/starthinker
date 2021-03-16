@@ -80,7 +80,7 @@ def insertion_order_load():
         iterate=True
       ).advertisers().insertionOrders().list(
         advertiserId=lookup_id(row[0]),
-        filter='entityStatus = "ENTITY_STATUS_ARCHIVED" OR entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
+        filter='entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
       ).execute():
         if not campaigns or record['campaignId'] in campaigns:
           yield record
@@ -232,8 +232,8 @@ def insertion_order_audit():
       ) AS integrationDetails,
       STRUCT(
         S_IO.Performance_Goal_Type_Edit AS performanceGoalType,
-        S_IO.Performance_Goal_Amount_Edit * 100000 AS performanceGoalAmountMicros,
-        S_IO.Performance_Goal_Percent_Edit * 100000 AS performanceGoalPercentageMicros,
+        S_IO.Performance_Goal_Amount_Edit * 1000000 AS performanceGoalAmountMicros,
+        S_IO.Performance_Goal_Percent_Edit * 1000000 AS performanceGoalPercentageMicros,
         S_IO.Performance_Goal_String_Edit AS performanceGoalString
       ) AS performanceGoal,
       STRUCT(
@@ -242,7 +242,7 @@ def insertion_order_audit():
         (SELECT ARRAY(
           SELECT
             STRUCT(
-             S_S.Budget_Edit * 100000 AS budgetAmountMicros,
+             S_S.Budget_Edit * 1000000 AS budgetAmountMicros,
              S_S.Description_Edit AS description,
              STRUCT (
                STRUCT (
@@ -264,14 +264,14 @@ def insertion_order_audit():
       STRUCT(
         IF(S_BS.Fixed_Bid_Edit IS NOT NULL,
           STRUCT(
-            S_BS.Fixed_Bid_Edit * 100000 AS bidAmountMicros
+            S_BS.Fixed_Bid_Edit * 1000000 AS bidAmountMicros
           ),
           NULL
         ) AS fixedBid,
         IF(S_BS.Auto_Bid_Goal_Edit IS NOT NULL,
           STRUCT(
             S_BS.Auto_Bid_Goal_Edit AS performanceGoalType,
-            S_BS.Auto_Bid_Amount_Edit * 100000 AS maxAverageCpmBidAmountMicros,
+            S_BS.Auto_Bid_Amount_Edit * 1000000 AS maxAverageCpmBidAmountMicros,
             S_BS.Auto_Bid_Algorithm_Edit AS customBiddingAlgorithmId
           ),
           NULL
@@ -279,8 +279,8 @@ def insertion_order_audit():
         IF(S_BS.Performance_Goal_Type_Edit IS NOT NULL,
           STRUCT(
             S_BS.Performance_Goal_Type_Edit AS performanceGoalType,
-            S_BS.Performance_Goal_Amount_Edit * 100000 AS performanceGoalAmountMicros,
-            S_BS.Performance_Goal_Average_CPM_Bid_Edit * 100000 AS maxAverageCpmBidAmountMicros,
+            S_BS.Performance_Goal_Amount_Edit * 1000000 AS performanceGoalAmountMicros,
+            S_BS.Performance_Goal_Average_CPM_Bid_Edit * 1000000 AS maxAverageCpmBidAmountMicros,
             S_BS.Performance_Goal_Algorithm_Edit AS customBiddingAlgorithmId
           ),
           NULL

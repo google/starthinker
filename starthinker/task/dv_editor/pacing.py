@@ -53,8 +53,8 @@ def pacing_load():
          I.pacing.pacingPeriod,
          I.pacing.pacingType,
          I.pacing.pacingType,
-         CAST(I.pacing.dailyMaxMicros AS INT64) / 100000,
-         CAST(I.pacing.dailyMaxMicros AS INT64) / 100000,
+         CAST(I.pacing.dailyMaxMicros AS INT64) / 1000000,
+         CAST(I.pacing.dailyMaxMicros AS INT64) / 1000000,
          I.pacing.dailyMaxImpressions,
          I.pacing.dailyMaxImpressions
        FROM `{dataset}.DV_InsertionOrders` AS I
@@ -75,8 +75,8 @@ def pacing_load():
          L.pacing.pacingPeriod,
          L.pacing.pacingType,
          L.pacing.pacingType,
-         CAST(L.pacing.dailyMaxMicros AS INT64) / 100000,
-         CAST(L.pacing.dailyMaxMicros AS INT64) / 100000,
+         CAST(L.pacing.dailyMaxMicros AS INT64) / 1000000,
+         CAST(L.pacing.dailyMaxMicros AS INT64) / 1000000,
          L.pacing.dailyMaxImpressions,
          L.pacing.dailyMaxImpressions
        FROM `{dataset}.DV_LineItems` AS L

@@ -68,8 +68,8 @@ def partner_cost_load():
            PC.feeType,
            PC.invoiceType,
            PC.invoiceType,
-           PC.feeAmount / 100000,
-           PC.feeAmount / 100000,
+           PC.feeAmount / 1000000,
+           PC.feeAmount / 1000000,
            PC.feePercentageMillis / 1000,
            PC.feePercentageMillis / 1000
          FROM `{dataset}.DV_InsertionOrders` AS I, UNNEST(partnerCosts) AS PC WITH OFFSET AS PO
@@ -93,8 +93,8 @@ def partner_cost_load():
            PC.feeType,
            PC.invoiceType,
            PC.invoiceType,
-           PC.feeAmount / 100000,
-           PC.feeAmount / 100000,
+           PC.feeAmount / 1000000,
+           PC.feeAmount / 1000000,
            PC.feePercentageMillis / 1000,
            PC.feePercentageMillis / 1000
          FROM `{dataset}.DV_LineItems` AS L, UNNEST(partnerCosts) AS PC WITH OFFSET AS PO
