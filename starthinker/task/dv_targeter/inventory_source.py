@@ -87,6 +87,8 @@ def inventory_source_load():
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
+  inventory_source_clear()
+
   # write to database
   put_rows(
     project.task['auth_bigquery'],

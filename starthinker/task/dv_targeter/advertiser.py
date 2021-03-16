@@ -17,6 +17,7 @@
 ###########################################################################
 
 
+from starthinker.util import has_values
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
@@ -45,7 +46,7 @@ def advertiser_clear():
     project.task['auth_sheets'],
     project.task['sheet'],
     'Advertisers',
-    'B2:Z'
+    'B2:D'
   )
 
 
@@ -53,98 +54,72 @@ def advertiser_load():
 
   # load multiple partners from user defined sheet
   def load_multiple():
-    rows = get_rows(
+    for row in get_rows(
       project.task['auth_sheets'],
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Partners',
         'range': 'A2:A'
       }}
-    )
+    ):
+      if row:
+        yield from API_DV360(
+          project.task['auth_dv'],
+          iterate=True).advertisers().list(
+          partnerId=lookup_id(row[0])
+        ).execute()
 
-    for row in rows:
-      yield from API_DV360(
-        project.task['auth_dv'],
-        iterate=True).advertisers().list(
-        partnerId=lookup_id(row[0])
-      ).execute()
-
-  # write advertisers to database
-  put_rows(
-    project.task['auth_bigquery'],
-    { 'bigquery': {
-      'dataset': project.task['dataset'],
-      'table': 'DV_Advertisers',
-      'schema': Discovery_To_BigQuery(
-        'displayvideo',
-        'v1'
-      ).method_schema(
-        'advertisers.list'
-      ),
-      'format':
-      'JSON'
-    }},
-    load_multiple()
-  )
-
-  # write advertisers to sheet
-  put_rows(
+  # only load if filters are missing
+  if not has_values(get_rows(
     project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Advertisers',
-      'range': 'B2'
-    }},
-    get_rows(
+      'range': 'A2:A'
+    }}
+  )):
+
+    advertiser_clear()
+
+    # write advertisers to database
+    put_rows(
       project.task['auth_bigquery'],
       { 'bigquery': {
         'dataset': project.task['dataset'],
-        'query': """SELECT
-           CONCAT(P.displayName, ' - ', P.partnerId),
-           CONCAT(A.displayName, ' - ', A.advertiserId),
-           A.entityStatus
-           FROM `{dataset}.DV_Advertisers` AS A
-           LEFT JOIN `{dataset}.DV_Partners` AS P
-           ON A.partnerId=P.partnerId
-        """.format(**project.task),
-        'legacy': False
-      }}
+        'table': 'DV_Advertisers',
+        'schema': Discovery_To_BigQuery(
+          'displayvideo',
+          'v1'
+        ).method_schema(
+          'advertisers.list'
+        ),
+        'format':
+        'JSON'
+      }},
+      load_multiple()
     )
-  )
 
-def advertiser_load_targeting():
-
-  def load_bulk():
-    advertisers = [lookup_id(p[0]) for p in get_rows(
+    # write advertisers to sheet
+    put_rows(
       project.task['auth_sheets'],
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Advertisers',
-        'range': 'A2:A'
-      }}
-    )]
-
-    for advertiser in advertisers:
-      yield from API_DV360(
-        project.task["auth_dv"],
-        iterate=True
-      ).advertisers().bulkListAdvertiserAssignedTargetingOptions(
-        advertiserId=str(advertiser)
-      ).execute()
-
-  put_rows(
-    project.task['auth_bigquery'],
-    { 'bigquery': {
-      'dataset': project.task['dataset'],
-      'table': 'DV_Targeting',
-      'schema': Discovery_To_BigQuery(
-        'displayvideo',
-        'v1'
-      ).resource_schema(
-        'AssignedTargetingOption'
-      ),
-      'disposition':'WRITE_APPEND',
-      'format': 'JSON'
-    }},
-    load_bulk()
-  )
+        'range': 'B2'
+      }},
+      get_rows(
+        project.task['auth_bigquery'],
+        { 'bigquery': {
+          'dataset': project.task['dataset'],
+          'query': """SELECT
+             CONCAT(P.displayName, ' - ', P.partnerId),
+             CONCAT(A.displayName, ' - ', A.advertiserId),
+             A.entityStatus
+             FROM `{dataset}.DV_Advertisers` AS A
+             LEFT JOIN `{dataset}.DV_Partners` AS P
+             ON A.partnerId=P.partnerId
+          """.format(**project.task),
+          'legacy': False
+        }}
+      )
+    )

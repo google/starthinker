@@ -17,6 +17,7 @@
 ###########################################################################
 
 
+from starthinker.util import has_values
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
@@ -45,86 +46,56 @@ def partner_clear():
     project.task['auth_sheets'],
     project.task['sheet'],
     'Partners',
-    'B2:Z'
+    'B2:D'
   )
 
 
 def partner_load():
-  # write partners to BQ
-  rows = API_DV360(
-    project.task['auth_dv'],
-    iterate=True
-  ).partners().list().execute()
 
-  put_rows(
-    project.task['auth_bigquery'],
-    { 'bigquery': {
-      'dataset': project.task['dataset'],
-      'table': 'DV_Partners',
-      'schema': Discovery_To_BigQuery(
-        'displayvideo',
-        'v1'
-      ).method_schema('partners.list'),
-      'format':
-      'JSON'
-    }},
-    rows
-  )
-
-  # write partners to sheet
-  put_rows(project.task['auth_sheets'],
+  # only load if filters missing
+  if not has_values(get_rows(
+    project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Partners',
-      'range': 'B2'
-    }},
-    get_rows(
+      'range': 'A2:A'
+    }}
+  )):
+
+    partner_clear()
+
+    # write partners to BQ
+    put_rows(
       project.task['auth_bigquery'],
       { 'bigquery': {
         'dataset': project.task['dataset'],
-        'query': "SELECT CONCAT(displayName, ' - ', partnerId), entityStatus  FROM `%s.DV_Partners`" % project.task['dataset'],
-        'legacy': False
-      }}
+        'table': 'DV_Partners',
+        'schema': Discovery_To_BigQuery(
+          'displayvideo',
+          'v1'
+        ).method_schema('partners.list'),
+        'format':
+        'JSON'
+      }},
+      API_DV360(
+        project.task['auth_dv'],
+        iterate=True
+      ).partners().list().execute()
     )
-  )
 
-
-def partner_load_targeting():
-
-  def load_bulk():
-    partners = [lookup_id(p[0]) for p in get_rows(
-      project.task['auth_sheets'],
+    # write partners to sheet
+    put_rows(project.task['auth_sheets'],
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Partners',
-        'range': 'A2:A'
-      }}
-    )]
-
-    for partner in partners:
-      yield from API_DV360(
-        project.task["auth_dv"],
-        iterate=True
-      ).partners().targetingTypes().assignedTargetingOptions().list(
-        partnerId=str(partner),
-        targetingType='TARGETING_TYPE_CHANNEL'
-      ).execute()
-
-  put_rows(
-    project.task['auth_bigquery'],
-    { 'bigquery': {
-      'dataset': project.task['dataset'],
-      'table': 'DV_Targeting',
-      'schema': Discovery_To_BigQuery(
-        'displayvideo',
-        'v1'
-      ).resource_schema(
-        'AssignedTargetingOption'
-      ),
-      'disposition':'WRITE_APPEND',
-      'format': 'JSON'
-    }},
-    load_bulk()
-  )
-
-
+        'range': 'B2'
+      }},
+      get_rows(
+        project.task['auth_bigquery'],
+        { 'bigquery': {
+          'dataset': project.task['dataset'],
+          'query': "SELECT CONCAT(displayName, ' - ', partnerId), entityStatus  FROM `%s.DV_Partners`" % project.task['dataset'],
+          'legacy': False
+        }}
+      )
+    )

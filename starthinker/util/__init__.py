@@ -51,3 +51,23 @@ def flag_last(o):
     except StopIteration:
       yield (True, e)
       break
+
+
+def has_values(o):
+  """Converts iterator to a boolean.
+
+  Destroys iterator but returns True if at least one value is present.
+
+  Args:
+    * o: An iterator instance.
+
+  Returns:
+    * True if at least one instance or False if none.
+
+  """
+
+  try:
+    next(o)
+    return True
+  except StopIteration:
+    return False

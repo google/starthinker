@@ -62,6 +62,8 @@ def combined_audience_load():
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
+  combined_audience_clear()
+
   # write audience to database and sheet
   put_rows(
     project.task['auth_bigquery'],

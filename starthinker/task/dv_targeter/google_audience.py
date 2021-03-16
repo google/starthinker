@@ -79,6 +79,8 @@ def google_audience_load():
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
+  google_audience_clear()
+
   # write inventorys to database and sheet
   put_rows(
     project.task['auth_bigquery'],

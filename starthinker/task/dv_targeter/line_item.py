@@ -17,6 +17,7 @@
 ###########################################################################
 
 
+from starthinker.util import has_values
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
@@ -45,7 +46,7 @@ def line_item_clear():
     project.task["auth_sheets"],
     project.task["sheet"],
     "Line Items",
-    "B2:Z"
+    "B2:H"
   )
 
 
@@ -53,122 +54,83 @@ def line_item_load():
 
   # load multiple partners from user defined sheet
   def load_multiple():
-    rows = get_rows(
+    for row in get_rows(
       project.task["auth_sheets"],
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Advertisers",
         "range": "A2:A"
       }}
-    )
+    ):
+      if row:
+        yield from API_DV360(
+          project.task["auth_dv"],
+          iterate=True
+        ).advertisers().lineItems().list(
+          advertiserId=lookup_id(row[0])
+          filter='entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
+        ).execute()
 
-    for row in rows:
-      yield from API_DV360(
-        project.task["auth_dv"],
-        iterate=True
-      ).advertisers().lineItems().list(
-        advertiserId=lookup_id(row[0])
-      ).execute()
-
-  # write line_items to database
-  put_rows(
-    project.task["auth_bigquery"],
-    { "bigquery": {
-      "dataset": project.task["dataset"],
-      "table": "DV_LineItems",
-      "schema": Discovery_To_BigQuery(
-        "displayvideo",
-        "v1"
-      ).method_schema(
-        "advertisers.lineItems.list"
-      ),
-      "format":"JSON"
-    }},
-    load_multiple()
-  )
-
-  # write line items to sheet
-  rows = get_rows(
-    project.task["auth_bigquery"],
-    { "bigquery": {
-      "dataset": project.task["dataset"],
-      "query": """SELECT
-        CONCAT(P.displayName, ' - ', P.partnerId),
-        CONCAT(A.displayName, ' - ', A.advertiserId),
-        CONCAT(C.displayName, ' - ', C.campaignId),
-        CONCAT(I.displayName, ' - ', I.insertionOrderId),
-        CONCAT(L.displayName, ' - ', L.lineItemId),
-        L.entityStatus,
-        ARRAY_TO_STRING(L.warningMessages, '\\n'),
-        FROM `{dataset}.DV_LineItems` AS L
-        LEFT JOIN `{dataset}.DV_Advertisers` AS A
-        ON L.advertiserId=A.advertiserId
-        LEFT JOIN `{dataset}.DV_Campaigns` AS C
-        ON L.advertiserId=C.advertiserId
-        LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
-        ON L.insertionOrderId=I.insertionOrderId
-        LEFT JOIN `{dataset}.DV_Partners` AS P
-        ON A.partnerId=P.partnerId
-      """.format(**project.task),
-      "legacy": False
+  # only load if filters are missing
+  if not has_values(get_rows(
+    project.task['auth_sheets'],
+    { 'sheets': {
+      'sheet': project.task['sheet'],
+      'tab': 'Line Items',
+      'range': 'A2:A'
     }}
-  )
+  )):
 
-  put_rows(
-    project.task["auth_sheets"],
-    { "sheets": {
-      "sheet": project.task["sheet"],
-      "tab": "Line Items",
-      "range": "B2"
-    }},
-    rows
-  )
+    line_item_clear()
 
-
-def line_item_load_targeting():
-
-  def load_bulk():
-    # TODO: incorporate filters into line item fetch
-    line_items = [lookup_id(p[0]) for p in get_rows(
-      project.task['auth_sheets'],
-      { 'sheets': {
-        'sheet': project.task['sheet'],
-        'tab': 'Line Items',
-        'range': 'A2:A'
-      }}
-    )]
-
-    parameters = get_rows(
+    # write line_items to database
+    put_rows(
       project.task["auth_bigquery"],
       { "bigquery": {
         "dataset": project.task["dataset"],
-        "query":"SELECT advertiserId, lineItemId FROM `{dataset}.DV_LineItems`".format(**project.task)
+        "table": "DV_LineItems",
+        "schema": Discovery_To_BigQuery(
+          "displayvideo",
+          "v1"
+        ).method_schema(
+          "advertisers.lineItems.list"
+        ),
+        "format":"JSON"
       }},
-      as_object=True
+      load_multiple()
     )
 
-    for parameter in parameters:
-      yield from API_DV360(
-        project.task["auth_dv"],
-        iterate=True
-      ).advertisers().lineItems().bulkListLineItemAssignedTargetingOptions(
-        advertiserId=str(parameter['advertiserId']),
-        lineItemId=str(parameter['lineItemId']),
-      ).execute()
-
-  put_rows(
-    project.task['auth_bigquery'],
-    { 'bigquery': {
-      'dataset': project.task['dataset'],
-      'table': 'DV_Targeting',
-      'schema': Discovery_To_BigQuery(
-        'displayvideo',
-        'v1'
-      ).resource_schema(
-        'AssignedTargetingOption'
-      ),
-      'disposition':'WRITE_APPEND',
-      'format': 'JSON'
-    }},
-    load_bulk()
-  )
+    # write line items to sheet
+    put_rows(
+      project.task["auth_sheets"],
+      { "sheets": {
+        "sheet": project.task["sheet"],
+        "tab": "Line Items",
+        "range": "B2"
+      }},
+      get_rows(
+        project.task["auth_bigquery"],
+        { "bigquery": {
+          "dataset": project.task["dataset"],
+          "query": """SELECT
+            CONCAT(P.displayName, ' - ', P.partnerId),
+            CONCAT(A.displayName, ' - ', A.advertiserId),
+            CONCAT(C.displayName, ' - ', C.campaignId),
+            CONCAT(I.displayName, ' - ', I.insertionOrderId),
+            CONCAT(L.displayName, ' - ', L.lineItemId),
+            L.entityStatus,
+            ARRAY_TO_STRING(L.warningMessages, '\\n'),
+            FROM `{dataset}.DV_LineItems` AS L
+            LEFT JOIN `{dataset}.DV_Advertisers` AS A
+            ON L.advertiserId=A.advertiserId
+            LEFT JOIN `{dataset}.DV_Campaigns` AS C
+            ON L.campaignId=C.campaignId
+            LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
+            ON L.insertionOrderId=I.insertionOrderId
+            LEFT JOIN `{dataset}.DV_Partners` AS P
+            ON A.partnerId=P.partnerId
+          """.format(**project.task),
+          "legacy": False
+        }}
+      )
+    )

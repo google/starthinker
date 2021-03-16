@@ -79,6 +79,8 @@ def channel_load():
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
+  channel_clear()
+
   # write channels to database
   put_rows(
     project.task['auth_bigquery'],

@@ -82,55 +82,56 @@ def targeting_clear():
     )
   )
 
-  # TODO: In future CL maybe move to another stand alone function for clearing user data.
-  #sheets_clear(
-  #  project.task['auth_sheets'],
-  #  project.task['sheet'],
-  #  'Destination Targeting',
-  #  'A2:Z'
-  #)
 
-  #sheets_clear(
-  #  project.task['auth_sheets'],
-  #  project.task['sheet'],
-  #  'Brand Safety Targeting',
-  #  'A2:Z'
-  #)
+def targeting_clear_changes():
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Destination Targeting',
+    'A2:Z'
+  )
 
-  #sheets_clear(
-  #  project.task['auth_sheets'],
-  #  project.task['sheet'],
-  #  'Demographic Targeting',
-  #  'A2:Z'
-  #)
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Brand Safety Targeting',
+    'A2:Z'
+  )
 
-  #sheets_clear(
-  #  project.task['auth_sheets'],
-  #  project.task['sheet'],
-  #  'Audience Targeting',
-  #  'A2:Z'
-  #)
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Demographic Targeting',
+    'A2:Z'
+  )
 
-  #sheets_clear(
-  #  project.task['auth_sheets'],
-  #  project.task['sheet'],
-  #  'Device Targeting',
-  #  'A2:Z'
-  #)
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Audience Targeting',
+    'A2:Z'
+  )
 
-  #sheets_clear(
-  #  project.task['auth_sheets'],
-  #  project.task['sheet'],
-  #  'Geography Targeting',
-  #  'A2:Z'
-  #)
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Device Targeting',
+    'A2:Z'
+  )
 
-  #sheets_clear(
-  #  project.task['auth_sheets'],
-  #  project.task['sheet'],
-  #  'Viewability Targeting',
-  #  'A2:Z'
-  #)
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Geography Targeting',
+    'A2:Z'
+  )
+
+  sheets_clear(
+    project.task['auth_sheets'],
+    project.task['sheet'],
+    'Viewability Targeting',
+    'A2:Z'
+  )
 
 
 def targeting_load():
@@ -155,6 +156,8 @@ def targeting_load():
           advertiserId=str(lookup_id(advertiser[0])),
           targetingType=targeting_type
         ).execute()
+
+  targeting_clear()
 
   # write to database
   put_rows(

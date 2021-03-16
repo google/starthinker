@@ -6,7 +6,7 @@
   "tasks":[
     { "dataset":{
       "auth":"service",
-      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"DV_Targeter_StarThinker_Test_", "default": "Manual"}},
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
       "clear":true
     }},
     { "include":{
@@ -15,15 +15,15 @@
         "auth_dv":"user",
         "auth_sheet":"user",
         "auth_bigquery":"service",
-        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
         "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
-        "command":"Load Partners"
+        "command":"Load"
       }
     }},
     { "sheets":{
       "__comment__":"Write partner values to the sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test ", "default": "Manual"}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test DV Targeter", "default": "Manual"}},
       "tab":"Partners",
       "range":"A2:A",
       "write": {
@@ -38,15 +38,15 @@
         "auth_dv":"user",
         "auth_sheet":"user",
         "auth_bigquery":"service",
-        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
         "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
-        "command":"Load Advertisers"
+        "command":"Load"
       }
     }},
     { "sheets":{
       "__comment__":"Write advertiser values to the sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test ", "default": "Manual"}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test  DV Targeter", "default": "Manual"}},
       "tab":"Advertisers",
       "range":"A2:A",
       "write": {
@@ -61,15 +61,15 @@
         "auth_dv":"user",
         "auth_sheet":"user",
         "auth_bigquery":"service",
-        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
         "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
-        "command":"Load Line Items"
+        "command":"Load"
       }
     }},
     { "sheets":{
       "__comment__":"Write line item values to the sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test ", "default": "Manual"}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test DV Targeter", "default": "Manual"}},
       "tab":"Line Items",
       "range":"A2:A",
       "write": {
@@ -85,15 +85,15 @@
         "auth_dv":"user",
         "auth_sheet":"user",
         "auth_bigquery":"service",
-        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
         "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
-        "command":"Load Targeting"
+        "command":"Load"
       }
     }},
     { "sheets":{
       "__comment__":"Write destination targeting values to the sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test ", "default": "Manual"}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test DV Targeter", "default": "Manual"}},
       "tab":"Destination Targeting",
       "range":"A2",
       "write": {
@@ -108,7 +108,7 @@
     { "sheets":{
       "__comment__":"Write destination targeting values to the sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test ", "default": "Manual"}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test DV Targeter", "default": "Manual"}},
       "tab":"Brand Safety Targeting",
       "range":"A2",
       "write": {
@@ -122,7 +122,7 @@
     { "sheets":{
       "__comment__":"Write destination targeting values to the sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test ", "default": "Manual"}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test DV Targeter", "default": "Manual"}},
       "tab":"Demographic Targeting",
       "range":"A2",
       "write": {
@@ -135,7 +135,7 @@
     { "sheets":{
       "__comment__":"Write destination targeting values to the sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test ", "default": "Manual"}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test DV Targeter", "default": "Manual"}},
       "tab":"Audience Targeting",
       "range":"A2",
       "write": {
@@ -148,7 +148,7 @@
     { "sheets":{
       "__comment__":"Write destination targeting values to the sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test ", "default": "Manual"}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test DV Targeter", "default": "Manual"}},
       "tab":"Device Targeting",
       "range":"A2",
       "write": {
@@ -160,7 +160,7 @@
     { "sheets":{
       "__comment__":"Write destination targeting values to the sheet.",
       "auth":"user",
-      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Targeter StarThinker Test ", "default": "Manual"}},
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test DV Targeter", "default": "Manual"}},
       "tab":"Geography Targeting",
       "range":"A2",
       "write": {
@@ -176,8 +176,8 @@
         "auth_dv":"user",
         "auth_sheet":"user",
         "auth_bigquery":"service",
-        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
-        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test", "default": "Manual"}},
         "command":"Preview"
       }
     }},
@@ -187,8 +187,8 @@
         "auth_dv":"user",
         "auth_sheet":"user",
         "auth_bigquery":"service",
-        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
-        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test", "default": "Manual"}},
         "command":"Update"
       }
     }}

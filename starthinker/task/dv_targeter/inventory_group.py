@@ -79,6 +79,8 @@ def inventory_group_load():
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
+  inventory_group_clear()
+
   # write inventorys to database
   put_rows(
     project.task['auth_bigquery'],

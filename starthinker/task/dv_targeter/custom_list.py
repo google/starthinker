@@ -62,6 +62,8 @@ def custom_list_load():
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
+  custom_list_clear()
+
   # write audience to database and sheet
   put_rows(
     project.task['auth_bigquery'],

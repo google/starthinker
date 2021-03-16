@@ -78,6 +78,8 @@ def first_and_third_party_audience_load():
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
+  first_and_third_party_audience_clear()
+
   # write to database
   put_rows(
     project.task['auth_bigquery'],

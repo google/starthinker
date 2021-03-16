@@ -62,6 +62,8 @@ def negative_keyword_list_load():
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
+  negative_keyword_list_clear()
+
   # write inventorys to database and sheet
   put_rows(
     project.task['auth_bigquery'],
