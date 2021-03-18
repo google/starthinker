@@ -75,7 +75,7 @@ def recipe_edit(request, pk=None, manual=False):
       form_script.save()
       messages.success(request, 'Recipe updated.')
       if request.POST.get('save_and_run') == '1':
-        return recipe_run(request, pk)
+        return recipe_run(request, form_script.instance.pk)
       else:
         return HttpResponseRedirect(form_script.instance.link_edit())
     else:
