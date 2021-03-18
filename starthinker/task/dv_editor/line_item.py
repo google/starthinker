@@ -33,16 +33,24 @@ from starthinker.task.dv_editor.patch import patch_preview
 
 def line_item_clear():
   table_create(
-      project.task["auth_bigquery"],
-      project.id,
-      project.task["dataset"],
-      "DV_LineItems",
-      Discovery_To_BigQuery("displayvideo",
-                            "v1").method_schema("advertisers.lineItems.list"),
+    project.task["auth_bigquery"],
+    project.id,
+    project.task["dataset"],
+    "DV_LineItems",
+    Discovery_To_BigQuery(
+      "displayvideo",
+      "v1"
+    ).method_schema(
+      "advertisers.lineItems.list"
+    )
   )
 
-  sheets_clear(project.task["auth_sheets"], project.task["sheet"], "Line Items",
-               "A2:Z")
+  sheets_clear(
+    project.task["auth_sheets"],
+    project.task["sheet"],
+    "Line Items",
+    "A2:AI"
+  )
 
 
 def line_item_load():
@@ -59,13 +67,13 @@ def line_item_load():
     )])
 
     rows = get_rows(
-        project.task["auth_sheets"], {
-            "sheets": {
-                "sheet": project.task["sheet"],
-                "tab": "Advertisers",
-                "range": "A2:A"
-            }
-        })
+      project.task["auth_sheets"],
+      { "sheets": {
+        "sheet": project.task["sheet"],
+        "tab": "Advertisers",
+        "range": "A2:A"
+      }}
+    )
 
     # String for filtering which entityStatus enums we want to see in the sheet
     for row in rows:
@@ -74,91 +82,30 @@ def line_item_load():
         iterate=True
       ).advertisers().lineItems().list(
         advertiserId=lookup_id(row[0]),
-        filter='entityStatus = "ENTITY_STATUS_ARCHIVED" OR entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
+        filter='entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
       ).execute():
         if not campaigns or record['campaignId'] in campaigns:
           yield record
 
   # write line_items to database
   put_rows(
-      project.task["auth_bigquery"], {
-          "bigquery": {
-              "dataset":
-                  project.task["dataset"],
-              "table":
-                  "DV_LineItems",
-              "schema":
-                  Discovery_To_BigQuery(
-                      "displayvideo",
-                      "v1").method_schema("advertisers.lineItems.list"),
-              "format":
-                  "JSON"
-          }
-      }, line_item_load_multiple())
-
-  # write line_items to sheet
-  rows = get_rows(
     project.task["auth_bigquery"],
-    { "bigquery": {
+    {
+      "bigquery": {
       "dataset": project.task["dataset"],
-      "query": """SELECT
-        CONCAT(P.displayName, ' - ', P.partnerId),
-        CONCAT(A.displayName, ' - ', A.advertiserId),
-        CONCAT(C.displayName, ' - ', C.campaignId),
-        CONCAT(I.displayName, ' - ', I.insertionOrderId),
-        CONCAT(L.displayName, ' - ', L.lineItemId),
-        'PATCH',
-        L.entityStatus,
-        L.entityStatus,
-        ARRAY_TO_STRING(L.warningMessages, '\\n'),
-
-        L.lineItemType,
-        L.lineItemType,
-
-        L.flight.flightDateType,
-        L.flight.flightDateType,
-        CONCAT(L.flight.dateRange.startDate.year, '-', L.flight.dateRange.startDate.month, '-', L.flight.dateRange.startDate.day),
-        CONCAT(L.flight.dateRange.startDate.year, '-', L.flight.dateRange.startDate.month, '-', L.flight.dateRange.startDate.day),
-        CONCAT(L.flight.dateRange.endDate.year, '-', L.flight.dateRange.endDate.month, '-', L.flight.dateRange.endDate.day),
-        CONCAT(L.flight.dateRange.endDate.year, '-', L.flight.dateRange.endDate.month, '-', L.flight.dateRange.endDate.day),
-        L.flight.triggerId,
-        L.flight.triggerId,
-
-        L.budget.budgetAllocationType,
-        L.budget.budgetAllocationType,
-        L.budget.budgetUnit,
-        L.budget.budgetUnit,
-        L.budget.maxAmount / 100000,
-        L.budget.maxAmount / 100000,
-
-        L.partnerRevenueModel.markupType,
-        L.partnerRevenueModel.markupType,
-        CAST(L.partnerRevenueModel.markupAmount AS FLOAT64) / 100000,
-        CAST(L.partnerRevenueModel.markupAmount AS FLOAT64) / 100000,
-
-        CAST(L.conversionCounting.postViewCountPercentageMillis AS Float64) / 1000,
-        CAST(L.conversionCounting.postViewCountPercentageMillis AS Float64) / 1000,
-
-        L.targetingExpansion.targetingExpansionLevel,
-        L.targetingExpansion.targetingExpansionLevel,
-        L.targetingExpansion.excludeFirstPartyAudience,
-        L.targetingExpansion.excludeFirstPartyAudience,
-
-        FROM `{dataset}.DV_LineItems` AS L
-        LEFT JOIN `{dataset}.DV_Advertisers` AS A
-        ON L.advertiserId=A.advertiserId
-        LEFT JOIN `{dataset}.DV_Campaigns` AS C
-        ON L.campaignId=C.campaignId
-        LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
-        ON L.insertionOrderId=I.insertionOrderId
-        LEFT JOIN `{dataset}.DV_Partners` AS P
-        ON A.partnerId=P.partnerId
-        ORDER BY I.displayName, L.displayName
-      """.format(**project.task),
-      "legacy": False
-    }}
+      "table": "DV_LineItems",
+      "schema": Discovery_To_BigQuery(
+        "displayvideo",
+        "v1"
+      ).method_schema(
+        "advertisers.lineItems.list"
+      ),
+      "format": "JSON"
+    }},
+    line_item_load_multiple()
   )
 
+  # write line_items to sheet
   put_rows(
     project.task["auth_sheets"],
     { "sheets": {
@@ -166,20 +113,71 @@ def line_item_load():
       "tab": "Line Items",
       "range": "A2"
     }},
-    rows
+    get_rows(
+      project.task["auth_bigquery"],
+      { "bigquery": {
+        "dataset": project.task["dataset"],
+        "query": """SELECT
+          CONCAT(P.displayName, ' - ', P.partnerId),
+          CONCAT(A.displayName, ' - ', A.advertiserId),
+          CONCAT(C.displayName, ' - ', C.campaignId),
+          CONCAT(I.displayName, ' - ', I.insertionOrderId),
+          CONCAT(L.displayName, ' - ', L.lineItemId),
+          'PATCH',
+          L.entityStatus,
+          L.entityStatus,
+          ARRAY_TO_STRING(L.warningMessages, '\\n'),
+
+          L.lineItemType,
+          L.lineItemType,
+
+          L.flight.flightDateType,
+          L.flight.flightDateType,
+          CONCAT(L.flight.dateRange.startDate.year, '-', L.flight.dateRange.startDate.month, '-', L.flight.dateRange.startDate.day),
+          CONCAT(L.flight.dateRange.startDate.year, '-', L.flight.dateRange.startDate.month, '-', L.flight.dateRange.startDate.day),
+          CONCAT(L.flight.dateRange.endDate.year, '-', L.flight.dateRange.endDate.month, '-', L.flight.dateRange.endDate.day),
+          CONCAT(L.flight.dateRange.endDate.year, '-', L.flight.dateRange.endDate.month, '-', L.flight.dateRange.endDate.day),
+          L.flight.triggerId,
+          L.flight.triggerId,
+
+          L.budget.budgetAllocationType,
+          L.budget.budgetAllocationType,
+          L.budget.budgetUnit,
+          L.budget.budgetUnit,
+          L.budget.maxAmount / 1000000,
+          L.budget.maxAmount / 1000000,
+
+          L.partnerRevenueModel.markupType,
+          L.partnerRevenueModel.markupType,
+          CAST(L.partnerRevenueModel.markupAmount AS FLOAT64) / IF(L.partnerRevenueModel.markupType='PARTNER_REVENUE_MODEL_MARKUP_TYPE_CPM', 1000000, 1000),
+          CAST(L.partnerRevenueModel.markupAmount AS FLOAT64) / IF(L.partnerRevenueModel.markupType='PARTNER_REVENUE_MODEL_MARKUP_TYPE_CPM', 1000000, 1000),
+
+          CAST(L.conversionCounting.postViewCountPercentageMillis AS Float64) / 1000,
+          CAST(L.conversionCounting.postViewCountPercentageMillis AS Float64) / 1000,
+
+          L.targetingExpansion.targetingExpansionLevel,
+          L.targetingExpansion.targetingExpansionLevel,
+          L.targetingExpansion.excludeFirstPartyAudience,
+          L.targetingExpansion.excludeFirstPartyAudience,
+
+          FROM `{dataset}.DV_LineItems` AS L
+          LEFT JOIN `{dataset}.DV_Advertisers` AS A
+          ON L.advertiserId=A.advertiserId
+          LEFT JOIN `{dataset}.DV_Campaigns` AS C
+          ON L.campaignId=C.campaignId
+          LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
+          ON L.insertionOrderId=I.insertionOrderId
+          LEFT JOIN `{dataset}.DV_Partners` AS P
+          ON A.partnerId=P.partnerId
+          ORDER BY I.displayName, L.displayName
+        """.format(**project.task),
+        "legacy": False
+      }}
+    )
   )
 
 
 def line_item_audit():
-
-  rows = get_rows(
-    project.task["auth_sheets"],
-    { "sheets": {
-      "sheet": project.task["sheet"],
-      "tab": "Line Items",
-      "range": "A2:Z"
-    }}
-  )
 
   put_rows(
     project.task["auth_bigquery"],
@@ -212,10 +210,10 @@ def line_item_audit():
         { "name": "Budget_Unit_Edit", "type": "STRING" },
         { "name": "Budget_Max", "type": "FLOAT" },
         { "name": "Budget_Max_Edit", "type": "FLOAT" },
-        { "name": "Partner_Revenue_Model", "type": "STRING" },
-        { "name": "Partner_Revenue_Model_Edit", "type": "STRING" },
-        { "name": "Partner_Markup", "type": "FLOAT" },
-        { "name": "Partner_Markup_Edit", "type": "FLOAT" },
+        { "name": "Partner_Revenue_Model_Type", "type": "STRING" },
+        { "name": "Partner_Revenue_Model_Type_Edit", "type": "STRING" },
+        { "name": "Partner_Revenue_Model_Markup_Percent", "type": "FLOAT" },
+        { "name": "Partner_Revenue_Model_Markup_Percent_Edit", "type": "FLOAT" },
         { "name": "Conversion_Percent", "type": "FLOAT" },
         { "name": "Conversion_Percent_Edit", "type": "FLOAT" },
         { "name": "Targeting_Expansion_Level", "type": "STRING" },
@@ -225,7 +223,14 @@ def line_item_audit():
       ],
       "format": "CSV"
     }},
-    rows
+    get_rows(
+      project.task["auth_sheets"],
+      { "sheets": {
+        "sheet": project.task["sheet"],
+        "tab": "Line Items",
+        "range": "A2:AI"
+      }}
+    )
   )
 
   # Create Insert View
@@ -267,7 +272,7 @@ def line_item_audit():
       STRUCT(
         S_LI.Budget_Allocation_Type_Edit AS budgetAllocationType,
         S_LI.Budget_Unit_Edit AS budgetUnit,
-        S_LI.Budget_Max_Edit * 100000 AS maxAmount
+        S_LI.Budget_Max_Edit * 1000000 AS maxAmount
       ) AS budget,
       STRUCT(
         S_P.Period_Edit As pacingPeriod,
@@ -282,8 +287,8 @@ def line_item_audit():
         S_FC.Max_impressions_Edit AS maxImpressions
       ) AS frequencyCap,
       STRUCT(
-        S_LI.Partner_Revenue_Model_Edit AS markupType,
-        S_LI.Partner_Markup_Edit * 100000 AS markupAmount
+        S_LI.Partner_Revenue_Model_Type_Edit AS markupType,
+        S_LI.Partner_Revenue_Model_Markup_Percent_Edit * IF(S_LI.Partner_Revenue_Model_Type_Edit='PARTNER_REVENUE_MODEL_MARKUP_TYPE_CPM', 1000000, 1000) AS markupAmount
       ) AS partnerRevenueModel,
       STRUCT(
         S_LI. Conversion_Percent_Edit * 1000 AS postViewCountPercentageMillis,
@@ -292,14 +297,14 @@ def line_item_audit():
       STRUCT(
         IF(S_BS.Fixed_Bid_Edit IS NOT NULL,
           STRUCT(
-            S_BS.Fixed_Bid_Edit * 100000 AS bidAmountMicros
+            S_BS.Fixed_Bid_Edit * 1000000 AS bidAmountMicros
           ),
           NULL
         ) AS fixedBid,
         IF(S_BS.Auto_Bid_Goal_Edit IS NOT NULL,
           STRUCT(
             S_BS.Auto_Bid_Goal_Edit AS performanceGoalType,
-            S_BS.Auto_Bid_Amount_Edit * 100000 AS maxAverageCpmBidAmountMicros,
+            S_BS.Auto_Bid_Amount_Edit * 1000000 AS maxAverageCpmBidAmountMicros,
             S_BS.Auto_Bid_Algorithm_Edit AS customBiddingAlgorithmId
           ),
           NULL
@@ -307,8 +312,8 @@ def line_item_audit():
         IF(S_BS.Performance_Goal_Type_Edit IS NOT NULL,
           STRUCT(
             S_BS.Performance_Goal_Type_Edit AS performanceGoalType,
-            S_BS.Performance_Goal_Amount_Edit * 100000 AS performanceGoalAmountMicros,
-            S_BS.Performance_Goal_Average_CPM_Bid_Edit * 100000 AS maxAverageCpmBidAmountMicros,
+            S_BS.Performance_Goal_Amount_Edit * 1000000 AS performanceGoalAmountMicros,
+            S_BS.Performance_Goal_Average_CPM_Bid_Edit * 1000000 AS maxAverageCpmBidAmountMicros,
             S_BS.Performance_Goal_Algorithm_Edit AS customBiddingAlgorithmId
           ),
           NULL
@@ -448,7 +453,7 @@ def line_item_patch(commit=False):
         line_item["flight"]["dateRange"]["startDate"] = date_edited(row['Flight_Start_Date_Edit'])
 
       if row['Flight_End_Date'] != row['Flight_End_Date_Edit']:
-        line_item.setdefault("flight", {}).setdefault("endDate", {})
+        line_item.setdefault("flight", {}).setdefault("dateRange", {})
         line_item["flight"]["dateRange"]["endDate"] = date_edited(row['Flight_End_Date_Edit'])
 
       if row['Flight_Trigger'] != row['Flight_Trigger_Edit']:
@@ -469,14 +474,16 @@ def line_item_patch(commit=False):
           float(row['Budget_Max_Edit']) * 100000
         )
 
-      if row['Partner_Revenue_Model'] != row['Partner_Revenue_Model_Edit']:
+      if row['Partner_Revenue_Model_Type'] != row['Partner_Revenue_Model_Type_Edit']:
         line_item.setdefault("partnerRevenueModel", {})
-        line_item["partnerRevenueModel"]["markupType"] = row['Partner_Revenue_Model_Edit']
+        line_item["partnerRevenueModel"]["markupType"] = row['Partner_Revenue_Model_Type_Edit']
 
-      if row['Partner_Markup'] != row['Partner_Markup_Edit']:
+      if row['Partner_Revenue_Model_Markup_Percent'] != row['Partner_Revenue_Model_Markup_Percent_Edit']:
         line_item.setdefault("partnerRevenueModel", {})
         line_item["partnerRevenueModel"]["markupAmount"] = int(
-          float(row['Partner_Markup_Edit']) * 100000
+          float(row['Partner_Revenue_Model_Markup_Percent_Edit']) * (
+            100000 if row['Partner_Revenue_Model_Type_Edit'] == 'PARTNER_REVENUE_MODEL_MARKUP_TYPE_CPM' else 1000
+          )
         )
 
       if row['Conversion_Percent'] != row['Conversion_Percent_Edit']:
