@@ -134,7 +134,7 @@
         "auth_bigquery":"service",
         "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
         "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
-        "command":"Patch"
+        "command":"Update"
       }
     }},
     { "google_api": {

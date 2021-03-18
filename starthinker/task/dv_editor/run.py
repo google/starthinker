@@ -96,24 +96,24 @@ def dv_editor():
     integration_detail_clear()
     integration_detail_load()
 
-  elif project.task['command'] in ('Preview', 'Patch'):
+  elif project.task['command'] in ('Preview', 'Update'):
     audit_clear()
     patch_clear()
     audit_load()
 
-    line_item_insert(commit=project.task['command'] == 'Patch')
-    insertion_order_insert(commit=project.task['command'] == 'Patch')
+    line_item_insert(commit=project.task['command'] == 'Update')
+    insertion_order_insert(commit=project.task['command'] == 'Update')
 
-    insertion_order_patch(commit=project.task['command'] == 'Patch')
-    line_item_patch(commit=project.task['command'] == 'Patch')
-    line_item_map_patch(commit=project.task['command'] == 'Patch')
+    insertion_order_patch(commit=project.task['command'] == 'Update')
+    line_item_patch(commit=project.task['command'] == 'Update')
+    line_item_map_patch(commit=project.task['command'] == 'Update')
 
-    segment_patch(commit=project.task['command'] == 'Patch')
-    pacing_patch(commit=project.task['command'] == 'Patch')
-    bid_strategy_patch(commit=project.task['command'] == 'Patch')
-    frequency_cap_patch(commit=project.task['command'] == 'Patch')
-    partner_cost_patch(commit=project.task['command'] == 'Patch')
-    integration_detail_patch(commit=project.task['command'] == 'Patch')
+    segment_patch(commit=project.task['command'] == 'Update')
+    pacing_patch(commit=project.task['command'] == 'Update')
+    bid_strategy_patch(commit=project.task['command'] == 'Update')
+    frequency_cap_patch(commit=project.task['command'] == 'Update')
+    partner_cost_patch(commit=project.task['command'] == 'Update')
+    integration_detail_patch(commit=project.task['command'] == 'Update')
 
   elif project.task['command'] == 'Clear Partners':
     partner_clear()
@@ -141,7 +141,7 @@ def dv_editor():
   elif project.task['command'] == 'Clear Preview':
     audit_clear()
 
-  elif project.task['command'] == 'Clear Patch':
+  elif project.task['command'] == 'Clear Update':
     patch_clear()
 
   elif project.task['command'] == 'Clear All':

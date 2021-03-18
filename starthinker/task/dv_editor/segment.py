@@ -229,9 +229,6 @@ def segment_patch(commit=False):
   # Build list of segements skipping only deletes, track changes
   for row in rows:
 
-    # inserts do not have an ID, skip them
-    if not lookup_id(row["Insertion_Order"]): continue
-
     patches.setdefault(
       row["Insertion_Order"],
       { "operation": "Segments",
@@ -264,7 +261,12 @@ def segment_patch(commit=False):
         "description": row["Description_Edit"]
       })
 
-      if row["Start_Date"] != row["Start_Date_Edit"] or row["End_Date"] != row["End_Date_Edit"] or row["Budget"] != row["Budget_Edit"] or row["Description"] != row["Description_Edit"]:
+      if (row['Action'] == "INSERT"
+        or row["Start_Date"] != row["Start_Date_Edit"]
+        or row["End_Date"] != row["End_Date_Edit"]
+        or row["Budget"] != row["Budget_Edit"]
+        or row["Description"] != row["Description_Edit"]
+      ):
         changed.add(row["Insertion_Order"])
 
   # Remove any patches where segments have not changed
