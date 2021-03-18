@@ -64,7 +64,7 @@ def custom_list_load():
 
   custom_list_clear()
 
-  # write audience to database and sheet
+  # write to database
   put_rows(
     project.task['auth_bigquery'],
     { 'bigquery': {
@@ -81,13 +81,13 @@ def custom_list_load():
     load_multiple()
   )
 
-  # write audience to sheet
+  # write to sheet
   put_rows(
     project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'P2'
+      'range': 'P2:P'
     }},
     get_rows(
       project.task['auth_bigquery'],

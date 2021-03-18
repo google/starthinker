@@ -21,20 +21,17 @@
       "csat improvement":100
     },
     "instructions":[
-      "A Sheet called <b>DV Targeter {field:recipe_name}</b> will be created.",
-      "Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run</b>.",
-      "In the 'Partners' sheet tab, fill in <i>Filter</i> column.",
-      "Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run</b>.",
-      "In the 'Advertisers' sheet tab, fill in <i>Filter</i> column.",
-      "Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run</b>.",
-      "In the 'Line Items' sheet tab, fill in <i>Filter</i> column.",
-      "Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run</b>.",
-      "Make updates, fill in changes on all tabs with colored fields (RED FIELDS ARE NOT IMPLEMENTED, IGNORE).",
-      "Select <i>Preview</i>, <b>Save</b> , then <b>Run</b>.",
-      "Check the <b>Preview</b> tabs.",
-      "Select <b>Update</b> as the command, click <b>Save</b>, then <b>Run</b>.",
-      "Check the <b>Success</b> and <b>Error</b> tabs.",
-      "Load and Update can be run multiple times."
+      "Select <b>Load</b>, click <b>Save + Run</b>, a sheet called <b>DV Targeter {recipe_name}</b> will be created.",
+      "In the <b>Partners</b> sheet tab, fill in <i>Filter</i> column then select <b>Load</b>, click <b>Save + Run</b>.",
+      "In the <b>Advertisers</b> sheet tab, fill in <i>Filter</i> column. then select <b>Load</b>, click <b>Save + Run</b>.",
+      "On the <b>Line Items</b> sheet tab, the <i>Filter</i> is used only to limit drop down choices in the rest of the tool.",
+      "Optionally edit or filter the <i>Targeting Options</i> or <i>Inventory Sources</i> sheets to limit choices.",
+      "Make targeting updates, fill in changes on all tabs with colored fields (RED FIELDS ARE NOT IMPLEMENTED, IGNORE).",
+      "Select <i>Preview</i>, click <b>Save + Run</b> then check the <b>Preview</b> tabs.",
+      "Select <b>Update</b>, click <b>Save + Run</b> then check the <b>Success</b> and <b>Error</b> tabs.",
+      "Load and Update can be run multiple times.",
+      "If an update fails, all parts of the update failed, break it up into multiple updates.",
+      "To refresh the Partner, Advertiser, or Line Item list, remove the filters and run load."
     ],
     "authors":["kenjora@google.com"]
   },
@@ -53,7 +50,7 @@
       "auth":{"field":{ "name":"auth_sheet", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
       "copy":{
         "source":"https://docs.google.com/spreadsheets/d/1ARkIvh0D-gltZeiwniUonMNrm0Mi1s2meZ9FUjutXOE/",
-        "destination":{"field":{ "name":"recipe_name", "Suffix":" DV Targeter", "kind":"string", "order":3, "default":"", "description":"Name of Google Sheet to create." }}
+        "destination":{"field":{ "name":"recipe_name", "suffix":" DV Targeter", "kind":"string", "order":3, "default":"", "description":"Name of Google Sheet to create." }}
       }
     }},
     { "dv_targeter": {

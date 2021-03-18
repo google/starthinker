@@ -81,7 +81,7 @@ def google_audience_load():
 
   google_audience_clear()
 
-  # write inventorys to database and sheet
+  # write to database
   put_rows(
     project.task['auth_bigquery'],
     { 'bigquery': {
@@ -104,7 +104,7 @@ def google_audience_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'N2'
+      'range': 'N2:N'
     }},
     get_rows(
       project.task['auth_bigquery'],

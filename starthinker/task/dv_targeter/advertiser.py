@@ -17,7 +17,6 @@
 ###########################################################################
 
 
-from starthinker.util import has_values
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
@@ -69,57 +68,47 @@ def advertiser_load():
           partnerId=lookup_id(row[0])
         ).execute()
 
-  # only load if filters are missing
-  if not has_values(get_rows(
+  advertiser_clear()
+
+  # write advertisers to database
+  put_rows(
+    project.task['auth_bigquery'],
+    { 'bigquery': {
+      'dataset': project.task['dataset'],
+      'table': 'DV_Advertisers',
+      'schema': Discovery_To_BigQuery(
+        'displayvideo',
+        'v1'
+      ).method_schema(
+        'advertisers.list'
+      ),
+      'format':
+      'JSON'
+    }},
+    load_multiple()
+  )
+
+  # write advertisers to sheet
+  put_rows(
     project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Advertisers',
-      'range': 'A2:A'
-    }}
-  )):
-
-    advertiser_clear()
-
-    # write advertisers to database
-    put_rows(
+      'range': 'B2'
+    }},
+    get_rows(
       project.task['auth_bigquery'],
       { 'bigquery': {
         'dataset': project.task['dataset'],
-        'table': 'DV_Advertisers',
-        'schema': Discovery_To_BigQuery(
-          'displayvideo',
-          'v1'
-        ).method_schema(
-          'advertisers.list'
-        ),
-        'format':
-        'JSON'
-      }},
-      load_multiple()
+        'query': """SELECT
+           CONCAT(P.displayName, ' - ', P.partnerId),
+           CONCAT(A.displayName, ' - ', A.advertiserId),
+           A.entityStatus
+           FROM `{dataset}.DV_Advertisers` AS A
+           LEFT JOIN `{dataset}.DV_Partners` AS P
+           ON A.partnerId=P.partnerId
+        """.format(**project.task),
+        'legacy': False
+      }}
     )
-
-    # write advertisers to sheet
-    put_rows(
-      project.task['auth_sheets'],
-      { 'sheets': {
-        'sheet': project.task['sheet'],
-        'tab': 'Advertisers',
-        'range': 'B2'
-      }},
-      get_rows(
-        project.task['auth_bigquery'],
-        { 'bigquery': {
-          'dataset': project.task['dataset'],
-          'query': """SELECT
-             CONCAT(P.displayName, ' - ', P.partnerId),
-             CONCAT(A.displayName, ' - ', A.advertiserId),
-             A.entityStatus
-             FROM `{dataset}.DV_Advertisers` AS A
-             LEFT JOIN `{dataset}.DV_Partners` AS P
-             ON A.partnerId=P.partnerId
-          """.format(**project.task),
-          'legacy': False
-        }}
-      )
-    )
+  )

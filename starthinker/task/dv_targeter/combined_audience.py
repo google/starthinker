@@ -64,7 +64,7 @@ def combined_audience_load():
 
   combined_audience_clear()
 
-  # write audience to database and sheet
+  # write to database
   put_rows(
     project.task['auth_bigquery'],
     { 'bigquery': {
@@ -81,13 +81,13 @@ def combined_audience_load():
     load_multiple()
   )
 
-  # write audience to sheet
+  # write to sheet
   put_rows(
     project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'O2'
+      'range': 'O2:O'
     }},
     get_rows(
       project.task['auth_bigquery'],

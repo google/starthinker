@@ -66,7 +66,7 @@ def targeting_clear():
     project.task['auth_sheets'],
     project.task['sheet'],
     'Targeting Options',
-    'A2:Z'
+    'A2:Q'
   )
 
   table_create(
@@ -182,7 +182,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'A1'
+      'range': 'A2:A'
     }},
     get_rows(
       project.task['auth_bigquery'],
@@ -204,7 +204,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'B1'
+      'range': 'B2:B'
     }},
     get_rows(
       project.task['auth_bigquery'],
@@ -226,7 +226,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'C1'
+      'range': 'C2:C'
     }},
     get_rows(
       project.task['auth_bigquery'],
@@ -248,7 +248,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'D1'
+      'range': 'D2:D'
     }},
     get_rows(
       project.task['auth_bigquery'],
@@ -270,7 +270,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'E1'
+      'range': 'E2:E'
     }},
     get_rows(
       project.task['auth_bigquery'],
@@ -292,7 +292,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'F1'
+      'range': 'F2:F'
     }},
     get_rows(
       project.task['auth_bigquery'],
@@ -314,7 +314,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'G1'
+      'range': 'G2:G'
     }},
     get_rows(
       project.task['auth_bigquery'],
@@ -336,7 +336,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'H1'
+      'range': 'H2:H'
     }},
     get_rows(
       project.task['auth_bigquery'],

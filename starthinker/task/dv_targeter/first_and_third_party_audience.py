@@ -44,23 +44,6 @@ def first_and_third_party_audience_load():
 
   # load multiple from user defined sheet
   def load_multiple():
-    #partners = get_rows(
-    #  project.task['auth_sheets'],
-    #  { 'sheets': {
-    #    'sheet': project.task['sheet'],
-    #    'tab': 'Partners',
-    #    'range': 'A2:A'
-    #  }}
-    #)
-
-    #for partner in partners:
-    #  yield from API_DV360(
-    #    project.task['auth_dv'],
-    #    iterate=True
-    #  ).firstAndThirdPartyAudiences().list(
-    #    partnerId=lookup_id(partner[0])
-    #  ).execute()
-
     advertisers = get_rows(
       project.task['auth_sheets'],
       { 'sheets': {
@@ -103,7 +86,7 @@ def first_and_third_party_audience_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'Q2'
+      'range': 'Q2:Q'
     }},
     get_rows(
       project.task['auth_bigquery'],

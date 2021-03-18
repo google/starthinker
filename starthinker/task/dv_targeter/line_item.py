@@ -17,7 +17,6 @@
 ###########################################################################
 
 
-from starthinker.util import has_values
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
@@ -67,70 +66,60 @@ def line_item_load():
           project.task["auth_dv"],
           iterate=True
         ).advertisers().lineItems().list(
-          advertiserId=lookup_id(row[0])
+          advertiserId=lookup_id(row[0]),
           filter='entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
         ).execute()
 
-  # only load if filters are missing
-  if not has_values(get_rows(
-    project.task['auth_sheets'],
-    { 'sheets': {
-      'sheet': project.task['sheet'],
-      'tab': 'Line Items',
-      'range': 'A2:A'
-    }}
-  )):
+  line_item_clear()
 
-    line_item_clear()
+  # write to database
+  put_rows(
+    project.task["auth_bigquery"],
+    { "bigquery": {
+      "dataset": project.task["dataset"],
+      "table": "DV_LineItems",
+      "schema": Discovery_To_BigQuery(
+        "displayvideo",
+        "v1"
+      ).method_schema(
+        "advertisers.lineItems.list"
+      ),
+      "format":"JSON"
+    }},
+    load_multiple()
+  )
 
-    # write line_items to database
-    put_rows(
+  # write to sheet
+  put_rows(
+    project.task["auth_sheets"],
+    { "sheets": {
+      "sheet": project.task["sheet"],
+      "tab": "Line Items",
+      "range": "B2"
+    }},
+    get_rows(
       project.task["auth_bigquery"],
       { "bigquery": {
         "dataset": project.task["dataset"],
-        "table": "DV_LineItems",
-        "schema": Discovery_To_BigQuery(
-          "displayvideo",
-          "v1"
-        ).method_schema(
-          "advertisers.lineItems.list"
-        ),
-        "format":"JSON"
-      }},
-      load_multiple()
+        "query": """SELECT
+          CONCAT(P.displayName, ' - ', P.partnerId),
+          CONCAT(A.displayName, ' - ', A.advertiserId),
+          CONCAT(C.displayName, ' - ', C.campaignId),
+          CONCAT(I.displayName, ' - ', I.insertionOrderId),
+          CONCAT(L.displayName, ' - ', L.lineItemId),
+          L.entityStatus,
+          ARRAY_TO_STRING(L.warningMessages, '\\n'),
+          FROM `{dataset}.DV_LineItems` AS L
+          LEFT JOIN `{dataset}.DV_Advertisers` AS A
+          ON L.advertiserId=A.advertiserId
+          LEFT JOIN `{dataset}.DV_Campaigns` AS C
+          ON L.campaignId=C.campaignId
+          LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
+          ON L.insertionOrderId=I.insertionOrderId
+          LEFT JOIN `{dataset}.DV_Partners` AS P
+          ON A.partnerId=P.partnerId
+        """.format(**project.task),
+        "legacy": False
+      }}
     )
-
-    # write line items to sheet
-    put_rows(
-      project.task["auth_sheets"],
-      { "sheets": {
-        "sheet": project.task["sheet"],
-        "tab": "Line Items",
-        "range": "B2"
-      }},
-      get_rows(
-        project.task["auth_bigquery"],
-        { "bigquery": {
-          "dataset": project.task["dataset"],
-          "query": """SELECT
-            CONCAT(P.displayName, ' - ', P.partnerId),
-            CONCAT(A.displayName, ' - ', A.advertiserId),
-            CONCAT(C.displayName, ' - ', C.campaignId),
-            CONCAT(I.displayName, ' - ', I.insertionOrderId),
-            CONCAT(L.displayName, ' - ', L.lineItemId),
-            L.entityStatus,
-            ARRAY_TO_STRING(L.warningMessages, '\\n'),
-            FROM `{dataset}.DV_LineItems` AS L
-            LEFT JOIN `{dataset}.DV_Advertisers` AS A
-            ON L.advertiserId=A.advertiserId
-            LEFT JOIN `{dataset}.DV_Campaigns` AS C
-            ON L.campaignId=C.campaignId
-            LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
-            ON L.insertionOrderId=I.insertionOrderId
-            LEFT JOIN `{dataset}.DV_Partners` AS P
-            ON A.partnerId=P.partnerId
-          """.format(**project.task),
-          "legacy": False
-        }}
-      )
-    )
+  )

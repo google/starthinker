@@ -64,7 +64,7 @@ def negative_keyword_list_load():
 
   negative_keyword_list_clear()
 
-  # write inventorys to database and sheet
+  # write to database
   put_rows(
     project.task['auth_bigquery'],
     { 'bigquery': {
@@ -81,13 +81,13 @@ def negative_keyword_list_load():
     load_multiple()
   )
 
-  # write inventorys to sheet
+  # write to sheet
   put_rows(
     project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'J2'
+      'range': 'J2:J'
     }},
     get_rows(
       project.task['auth_bigquery'],

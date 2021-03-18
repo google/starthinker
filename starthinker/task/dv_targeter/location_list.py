@@ -63,7 +63,7 @@ def location_list_load():
 
   location_list_clear()
 
-  # write inventorys to database and sheet
+  # write to database
   put_rows(
     project.task['auth_bigquery'],
     { 'bigquery': {
@@ -86,7 +86,7 @@ def location_list_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'K2'
+      'range': 'K2:K'
     }},
     get_rows(
       project.task['auth_bigquery'],
@@ -110,7 +110,7 @@ def location_list_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'L2'
+      'range': 'L2:L'
     }},
     get_rows(
       project.task['auth_bigquery'],

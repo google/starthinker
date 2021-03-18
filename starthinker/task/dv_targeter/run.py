@@ -16,6 +16,8 @@
 #
 ###########################################################################
 
+from starthinker.util import has_values
+from starthinker.util.data import get_rows
 from starthinker.util.project import project
 
 from starthinker.task.dv_targeter.advertiser import advertiser_clear
@@ -92,21 +94,44 @@ def dv_targeter():
     partner_clear()
 
   if project.task['command'] == 'Load':
-    partner_load()
-    advertiser_load()
-    campaign_load()
-    insertion_order_load()
-    line_item_load()
-    inventory_source_load()
-    inventory_group_load()
-    location_list_load()
-    negative_keyword_list_load()
-    channel_load()
-    google_audience_load()
-    custom_list_load()
-    combined_audience_load()
-    first_and_third_party_audience_load()
-    targeting_load()
+
+    # load if partner filters are missing
+    if not has_values(get_rows(
+      project.task['auth_sheets'],
+      { 'sheets': {
+        'sheet': project.task['sheet'],
+        'tab': 'Partners',
+        'range': 'A2:A'
+      }}
+    )):
+      partner_load()
+
+    # load if advertiser filters are missing
+    if not has_values(get_rows(
+      project.task['auth_sheets'],
+      { 'sheets': {
+        'sheet': project.task['sheet'],
+        'tab': 'Advertisers',
+        'range': 'A2:A'
+      }}
+    )):
+      advertiser_load()
+
+    # load if advertiser filters are present
+    else:
+      campaign_load()
+      insertion_order_load()
+      line_item_load()
+      targeting_load()
+      inventory_source_load()
+      inventory_group_load()
+      location_list_load()
+      negative_keyword_list_load()
+      channel_load()
+      google_audience_load()
+      custom_list_load()
+      combined_audience_load()
+      first_and_third_party_audience_load()
 
   if project.task['command'] in ('Preview', 'Update'):
     edit_clear()

@@ -17,7 +17,6 @@
 ###########################################################################
 
 
-from starthinker.util import has_values
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
@@ -62,31 +61,21 @@ def campaign_load():
           advertiserId=lookup_id(row[0])
         ).execute()
 
-  # only load if filters are missing
-  if not has_values(get_rows(
-    project.task['auth_sheets'],
-    { 'sheets': {
-      'sheet': project.task['sheet'],
-      'tab': 'Line Items',
-      'range': 'A2:A'
-    }}
-  )):
+  campaign_clear()
 
-    campaign_clear()
-
-    # write campaigns to database
-    put_rows(
-      project.task['auth_bigquery'],
-      { 'bigquery': {
-        'dataset': project.task['dataset'],
-        'table': 'DV_Campaigns',
-        'schema': Discovery_To_BigQuery(
-          'displayvideo',
-          'v1'
-        ).method_schema(
-          'advertisers.campaigns.list'
-        ),
-        'format': 'JSON'
-      }},
-      campaign_load_multiple()
-    )
+  # write to database
+  put_rows(
+    project.task['auth_bigquery'],
+    { 'bigquery': {
+      'dataset': project.task['dataset'],
+      'table': 'DV_Campaigns',
+      'schema': Discovery_To_BigQuery(
+        'displayvideo',
+        'v1'
+      ).method_schema(
+        'advertisers.campaigns.list'
+      ),
+      'format': 'JSON'
+    }},
+    campaign_load_multiple()
+  )

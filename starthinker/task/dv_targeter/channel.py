@@ -81,7 +81,7 @@ def channel_load():
 
   channel_clear()
 
-  # write channels to database
+  # write to database
   put_rows(
     project.task['auth_bigquery'],
     { 'bigquery': {
@@ -98,13 +98,13 @@ def channel_load():
     load_multiple()
   )
 
-  # write channels to sheet
+  # write to sheet
   put_rows(
     project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
-      'range': 'I2'
+      'range': 'I2:I'
     }},
     get_rows(
       project.task['auth_bigquery'],

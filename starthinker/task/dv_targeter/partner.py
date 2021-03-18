@@ -17,7 +17,6 @@
 ###########################################################################
 
 
-from starthinker.util import has_values
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
@@ -52,50 +51,40 @@ def partner_clear():
 
 def partner_load():
 
-  # only load if filters missing
-  if not has_values(get_rows(
-    project.task['auth_sheets'],
+  partner_clear()
+
+  # write partners to BQ
+  put_rows(
+    project.task['auth_bigquery'],
+    { 'bigquery': {
+      'dataset': project.task['dataset'],
+      'table': 'DV_Partners',
+      'schema': Discovery_To_BigQuery(
+        'displayvideo',
+        'v1'
+      ).method_schema('partners.list'),
+      'format':
+      'JSON'
+    }},
+    API_DV360(
+      project.task['auth_dv'],
+      iterate=True
+    ).partners().list().execute()
+  )
+
+  # write partners to sheet
+  put_rows(project.task['auth_sheets'],
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Partners',
-      'range': 'A2:A'
-    }}
-  )):
-
-    partner_clear()
-
-    # write partners to BQ
-    put_rows(
+      'range': 'B2'
+    }},
+    get_rows(
       project.task['auth_bigquery'],
       { 'bigquery': {
         'dataset': project.task['dataset'],
-        'table': 'DV_Partners',
-        'schema': Discovery_To_BigQuery(
-          'displayvideo',
-          'v1'
-        ).method_schema('partners.list'),
-        'format':
-        'JSON'
-      }},
-      API_DV360(
-        project.task['auth_dv'],
-        iterate=True
-      ).partners().list().execute()
+        'query': "SELECT CONCAT(displayName, ' - ', partnerId), entityStatus  FROM `%s.DV_Partners`" % project.task['dataset'],
+        'legacy': False
+      }}
     )
-
-    # write partners to sheet
-    put_rows(project.task['auth_sheets'],
-      { 'sheets': {
-        'sheet': project.task['sheet'],
-        'tab': 'Partners',
-        'range': 'B2'
-      }},
-      get_rows(
-        project.task['auth_bigquery'],
-        { 'bigquery': {
-          'dataset': project.task['dataset'],
-          'query': "SELECT CONCAT(displayName, ' - ', partnerId), entityStatus  FROM `%s.DV_Partners`" % project.task['dataset'],
-          'legacy': False
-        }}
-      )
-    )
+  )
