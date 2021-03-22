@@ -138,7 +138,7 @@ def google_api_initilaize(api_call, alias=None):
 
   if api_call['api'] == 'dfareporting':
     is_superuser, profile_id = get_profile_for_api(
-      api_call['auth'], api_call['kwargs']['accountId']
+      api_call['auth'], api_call['kwargs']['id'] if api_call['function'] == 'accounts.get' else api_call['kwargs']['accountId']
     )
 
     api_call['kwargs']['profileId'] = profile_id
@@ -147,7 +147,7 @@ def google_api_initilaize(api_call, alias=None):
       from starthinker.util.dcm.internalv33_uri import URI as DCM_URI
       api_call['version'] = 'internalv3.3'
       api_call['uri'] = DCM_URI
-    else:
+    elif 'accountId' in api_call['kwargs']:
       del api_call['kwargs']['accountId']
 
 
