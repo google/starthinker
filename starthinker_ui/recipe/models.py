@@ -446,6 +446,7 @@ class Recipe(models.Model):
       error = False
       timeout = False
       new = False
+      cancel = False
       done = 0
       for task in self._cache_log['tasks']:
         task['utc'] = datetime.strptime(task['utc'].split('.', 1)[0],
@@ -462,6 +463,8 @@ class Recipe(models.Model):
           timeout = True
         elif task['event'] == 'JOB_NEW':
           new = True
+        elif task['event'] == 'JOB_CANCEL':
+          cancel = True
         elif task['event'] not in ('JOB_PENDING', 'JOB_START', 'JOB_END'):
           error = True
 
@@ -478,6 +481,8 @@ class Recipe(models.Model):
         self._cache_log['status'] = 'TIMEOUT'
       elif new:
         self._cache_log['status'] = 'NEW'
+      elif cancel:
+        self._cache_log['status'] = 'CANCELLED'
       elif error:
         self._cache_log['status'] = 'ERROR'
       elif not self._cache_log['tasks'] or all(
