@@ -26,6 +26,7 @@ import traceback
 import subprocess
 import threading
 from datetime import datetime
+from googleapiclient.errors import HttpError
 
 # does not exist on WINDOWS, ignore
 try:
@@ -116,9 +117,10 @@ def worker_pull(worker_uid, jobs=1):
 
 
 def worker_downscale():
-  name = get_instance_name()
-  if name != 'UNKNOWN':
-    group_instances_delete(name)
+  try:
+    group_instances_delete(get_instance_name())
+  except HttpError as e:
+    log_manager_error('WORKER DOWNSCALE NOT AVAILABLE: %s' % str(e))
 
 
 def make_non_blocking(file_io):
@@ -450,5 +452,4 @@ class Command(BaseCommand):
     log_manager_end()
 
     # worker will terminate itself in a group safe way
-    if not kwargs['test']:
-      worker_downscale()
+    worker_downscale()
