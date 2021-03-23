@@ -411,7 +411,7 @@ setup_developer_token() {
 }
 
 
-setup_developer_token() {
+setup_api_key() {
   forced=$1
 
   echo ""
