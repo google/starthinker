@@ -274,7 +274,7 @@ class API():
 
     configuration = {
       "api":"doubleclickbidmanager",
-      "version":"v1",
+      "version":"v1.1",
       "auth":"user",
       "iterate":False
     }

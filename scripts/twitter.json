@@ -146,6 +146,7 @@
       }
     }},
     { "lineitem":{
+      "__comment__":"DEPRECATED: Future update will use DV360 adcertiser.lineitems.patch endpoint",
       "description":"Write lineitem settings to DV360 after transformation.",
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for reading data." }},
       "write":{
