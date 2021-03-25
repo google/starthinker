@@ -122,6 +122,8 @@ def dv_targeter():
       campaign_load()
       insertion_order_load()
       line_item_load()
+
+      # all write to the same sheet ( targeting_load must be first as it clears the sheet )
       targeting_load()
       inventory_source_load()
       inventory_group_load()
@@ -131,7 +133,11 @@ def dv_targeter():
       google_audience_load()
       custom_list_load()
       combined_audience_load()
-      first_and_third_party_audience_load()
+
+      # clear to create empty table, load only if selected by user (very slow for some accounts)
+      first_and_third_party_audience_clear()
+      if project.task.get('first_and_third'):
+        first_and_third_party_audience_load()
 
   if project.task['command'] in ('Preview', 'Update'):
     edit_clear()

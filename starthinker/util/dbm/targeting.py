@@ -42,18 +42,25 @@ class Assigned_Targeting:
     self.delete_requests = {}
     self.create_requests = {}
 
+    self.errors = []
+
 
   def _url_domain(self, url):
     return '.'.join(RE_URL.sub('', url).split('.')[-2:])
 
   def _delete(self, targeting_type, *args):
     try:
-      if not self.already_deleted(targeting_type, json.dumps(args)):
+      if self.already_deleted(targeting_type, json.dumps(args)):
+        self.errors.append('Duplicate %s delete request, safe to ignore.' % targeting_type)
+      else:
         targeting_id = self.get_assigned_id(targeting_type, *args)
-        if targeting_id is not None:
+        if targeting_id is None:
+          self.errors.append('Delete %s is not avialable, maybe set at different layer?' % targeting_type)
+        else:
           self.delete_requests.setdefault(targeting_type, []).append(targeting_id)
-    except HttpError:
-      pass
+          return True
+    except HttpError as e:
+      self.errors.append('Targeting Error: %s' % str(e))
 
 
   def _get_id(self, options, key, *args):
@@ -885,6 +892,10 @@ class Assigned_Targeting:
 
   def delete_viewability(self):
     self._delete('TARGETING_TYPE_VIEWABILITY')
+
+
+  def get_errors(self):
+    return self.errors
 
 
   def get_body(self):

@@ -953,9 +953,12 @@ def targeting_edit(commit=False):
           elif row['Action'].upper() == 'DELETE':
             targeting.delete_viewability()
 
+
   for layer_and_name, targeting in targetings.items():
     layer, name = layer_and_name
     body = targeting.get_body()
+    errors = targeting.get_errors()
+
     if body:
       parameters = {'body':body}
 
@@ -974,6 +977,15 @@ def targeting_edit(commit=False):
         "line_item": name if layer == 'LineItem' else '',
         "parameters": parameters
       })
+
+    if errors:
+      edit_log({
+        "layer": layer,
+        "partner": name if layer == 'Partner' else '',
+        "advertiser": name if layer == 'Advertiser' else '',
+        "line_item": name if layer == 'LineItem' else '',
+        "error": "\n".join(errors)
+     })
 
   edit_preview(edits)
 
