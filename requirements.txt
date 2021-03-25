@@ -22,6 +22,7 @@ google-auth
 google-auth-oauthlib
 google-auth-httplib2
 google-cloud-bigquery
+google-cloud-vision
 pysftp
 pytz
 tzlocal
@@ -38,6 +39,6 @@ smartsheet-python-sdk
 wheel
 gunicorn
 jsonpickle
-django==2.2.13
+django==2.2.18
 psycopg2-binary
 contextlib2
