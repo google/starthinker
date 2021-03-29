@@ -12,6 +12,7 @@
     "sample": "https://datastudio.google.com/reporting/3008bdb5-03a7-4f18-99ae-038d803a7dc3",
     "from":["dv360"],
     "to":["datastudio", "bigquery"],
+    "status":"NEEDS FIX - tests not passing.",
     "pitches": ["Identify cTV apps to potentially reach desired audiences"],
     "impacts": {
       "cTV Targeting": 50

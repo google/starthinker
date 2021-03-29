@@ -8,6 +8,7 @@
     "description":"Calculate DV360 cost at the dynamic creative combination level.",
     "from":["cm", "sheets"],
     "to":["bigquery"],
+    "status":"NEEDS FIX - test not passing.",
     "instructions":[
       "Add a sheet URL. This is where you will enter advertiser and campaign level details.",
       "Specify the CM network ID.",

@@ -10,6 +10,7 @@
     "sample":"https://datastudio.google.com/open/1Ij_RluqolElm7Nny9fBrIAPRB9ObUl0M",
     "from":[ "dv360"],
     "to":["datastudio", "bigquery"],
+    "status":"NEEDS FIX - tests not passing.",
     "pitches":[
       "Historical audience performance insights.",
       "Performance by audience type + audience category.",

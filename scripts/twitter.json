@@ -10,6 +10,7 @@
     "sample":"https://docs.google.com/spreadsheets/d/1iYCGa2NKOZiL2mdT4yiDfV_SWV9C7SUosXdIr4NAEXE/edit?usp=sharing",
     "from":["twitter", "sheets"],
     "to":["bigquery", "dv360"],
+    "status":"NEEDS FIX - last step of workflow needs to be migrated from SDF to API calls.",
     "pitches":[
       "Create campaigns that respond to twitter trends.",
       "Activate spend when a specific tag trends.",

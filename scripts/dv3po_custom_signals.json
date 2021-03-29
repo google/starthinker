@@ -11,6 +11,7 @@
     "documentation":"",
     "from":["weather", "sheets"],
     "to":["dv360"],
+    "status":"NEEDS FIX - needs to be migrated from SDF to API calls.",
     "pitches":[
       "Automatically react to custom signals and analytics",
       "Budget is better allocated based on business rules and priorities.",
