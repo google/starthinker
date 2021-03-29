@@ -29,6 +29,7 @@ This does not change or augment the standard API calls other than the following:
 
 """
 
+import base64
 import json
 import traceback
 import httplib2
@@ -36,6 +37,7 @@ from time import sleep
 from googleapiclient.errors import HttpError
 from googleapiclient.discovery import Resource
 from ssl import SSLError
+from typing import Union
 
 try:
   import httplib
@@ -299,7 +301,7 @@ class API():
     self.function_stack = list(
         filter(None,
                configuration.get('function', '').split('.')))
-    self.function_kwargs = configuration.get('kwargs', {})
+    self.function_kwargs = API.__clean__(configuration.get('kwargs', {}))
     self.iterate = configuration.get('iterate', False)
     self.limit = configuration.get('limit', None)
     self.headers = configuration.get('headers', {})
@@ -317,10 +319,40 @@ class API():
     self.function_stack.append(function_name)
 
     def function_call(**kwargs):
-      self.function_kwargs = kwargs
+      self.function_kwargs = API.__clean__(kwargs)
       return self
 
     return function_call
+
+  @staticmethod
+  def __clean__(struct:Union[dict, list]) -> Union[dict, list]:
+    """Helper to recursively clean up JSON data for API call.
+
+    Converts bytes -> base64.
+    TODO: Add Converts dates -> string.
+
+    Args:
+      struct: The kwargs being cleaned up.
+
+    Returns:
+      struct: The kwargs with replacments.
+
+    """
+
+    if isinstance(struct, dict):
+      for key, value in struct.items():
+        if isinstance(value, bytes):
+          struct[key] = base64.standard_b64encode(value).decode("ascii")
+        else:
+          API.__clean__(value)
+    elif isinstance(struct, list):
+      for index, value in enumerate(struct):
+        if isinstance(value, bytes):
+          struct[index] = base64.standard_b64encode(value).decode("ascii")
+        else:
+          API.__clean__(value)
+    return struct
+
 
   # for calling function via string ( chain using dot notation )
   def call(self, function_chain):
