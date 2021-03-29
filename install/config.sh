@@ -489,8 +489,18 @@ setup_credentials_commandline() {
     if [ "${read_multiline_return}" ];then
       printf "%s" "$read_multiline_return" > "${STARTHINKER_CLIENT_INSTALLED}"
     fi
+
   else
     echo "Using Existing Client Credentials"
+  fi
+
+  if [ -s "${STARTHINKER_ROOT}/starthinker_assets/client_installed.json" ]; then
+    rm "${STARTHINKER_ROOT}/starthinker_assets/client_installed.json"
+    echo "Failed To Create Client Desktop Credentials, Fix Then Run This Script Again"
+    echo " 1. Check permissions of gcloud user."
+    echo " 2. Check if service accounts are enabled for the project."
+    echo " 3. Manually paste service JSON credentials into: /starthinker_assets/service.json"
+    exit 1;
   fi
 
   echo "Done"
@@ -556,6 +566,15 @@ setup_credentials_ui() {
     echo "Using Existing Client Credentials"
   fi
 
+  if [ -s "${STARTHINKER_ROOT}/starthinker_assets/client_web.json" ]; then
+     rm "${STARTHINKER_ROOT}/starthinker_assets/client_web.json"
+     echo "Failed To Create Client Web Credentials, Fix Then Run This Script Again"
+     echo " 1. Check permissions of gcloud user."
+     echo " 2. Check if service accounts are enabled for the project."
+     echo " 3. Manually paste service JSON credentials into: /starthinker_assets/service.json"
+     exit 1;
+  fi
+
   echo "Done"
   echo ""
 }
@@ -598,13 +617,13 @@ setup_credentials_service() {
       else
 
         echo "Failed to create keys."
-        return
+        exit 1;
 
       fi
 
     else
       echo "Failed to create file."
-      return
+      exit 1;
 
     fi
 
@@ -612,7 +631,15 @@ setup_credentials_service() {
     echo "Using Existing Service Credentials"
   fi
 
-  echo ""
+  if [ -s "${STARTHINKER_ROOT}/starthinker_assets/service.json" ]; then
+     rm "${STARTHINKER_ROOT}/starthinker_assets/service.json"
+     echo "Failed To Create Service Credentials, Fix Then Run This Script Again"
+     echo " 1. Check permissions of gcloud user."
+     echo " 2. Check if service accounts are enabled for the project."
+     echo " 3. Manually paste service JSON credentials into: /starthinker_assets/service.json"
+     exit 1;
+  fi
+
   echo "Done"
   echo ""
 }
@@ -835,6 +862,25 @@ install_proxy_linux() {
   else
     wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.386 -O "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy"
   fi
+}
+
+
+generate_translations() {
+  echo ""
+  echo "----------------------------------------"
+  echo "Generate Translations"
+  echo "----------------------------------------"
+  echo ""
+
+  source "${STARTHINKER_ROOT}/starthinker_assets/production.sh";
+  cd "${STARTHINKER_ROOT}/starthinker_ui"
+  python3 manage.py makemessages;
+  python3 manage.py compilemessages;
+  cd "${STARTHINKER_ROOT}"
+  deactivate
+
+  echo "Done"
+  echo ""
 }
 
 
