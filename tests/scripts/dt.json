@@ -13,8 +13,8 @@
       "auth": "user",
       "bucket":{"field":{ "name":"bucket", "kind":"string", "order":1, "default":"", "description":"Name of bucket where DT files are stored."}},
       "paths":{"field":{ "name":"paths", "kind":"string_list", "order":2, "default":[], "description":"List of prefixes to pull specific DT files."}},
-      "days":{"field":{ "name":"days", "kind":"integer", "order":3, "default":60, "description":"Number of days back to synchronize."}},
-      "hours":{"field":{ "name":"hours", "kind":"integer", "order":3, "default":60, "description":"Number of hours back to synchronize."}},
+      "days":7,
+      "hours":0,
       "to": {
         "auth": "service",
         "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DT_", "default": "Manual"}}

@@ -94,7 +94,7 @@ def dt_move_large(dt_file, dt_partition, jobs):
   for data_gz in object_get_chunks(project.task['auth'],
                                    '%s:%s' % (project.task['bucket'], dt_file)):
 
-    view += gz_handler.decompress(data_gz.read()).decode('utf-8')
+    view += gz_handler.decompress(data_gz).decode('utf-8')
 
     if first_row:
       end = view.find(delimiter)
