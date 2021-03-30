@@ -137,18 +137,20 @@ def google_api_initilaize(api_call, alias=None):
     api_call['iterate'] = True
 
   if api_call['api'] == 'dfareporting':
-    is_superuser, profile_id = get_profile_for_api(
-      api_call['auth'], api_call['kwargs']['id'] if api_call['function'] == 'accounts.get' else api_call['kwargs']['accountId']
-    )
 
-    api_call['kwargs']['profileId'] = profile_id
+    if not api_call['function'].startswith('userProfiles'):
 
-    if is_superuser:
-      from starthinker.util.dcm.internalv33_uri import URI as DCM_URI
-      api_call['version'] = 'internalv3.3'
-      api_call['uri'] = DCM_URI
-    elif 'accountId' in api_call['kwargs']:
-      del api_call['kwargs']['accountId']
+      is_superuser, profile_id = get_profile_for_api(
+        api_call['auth'], api_call['kwargs']['id'] if api_call['function'] == 'accounts.get' else api_call['kwargs']['accountId']
+      )
+      api_call['kwargs']['profileId'] = profile_id
+
+      if is_superuser:
+        from starthinker.util.dcm.internalv33_uri import URI as DCM_URI
+        api_call['version'] = 'internalv3.3'
+        api_call['uri'] = DCM_URI
+      elif 'accountId' in api_call['kwargs']:
+        del api_call['kwargs']['accountId']
 
 
 def google_api_build_results(auth, api_call, results):
@@ -176,7 +178,10 @@ def google_api_build_results(auth, api_call, results):
         api_call['api'],
         api_call['version'],
         api_call.get('key', None),
-      ).method_schema(api_call['function'])
+      ).method_schema(
+        api_call['function'],
+        api_call.get('iterate', False)
+      )
 
     if 'format' not in results['bigquery']:
       results['bigquery']['format'] = 'JSON'

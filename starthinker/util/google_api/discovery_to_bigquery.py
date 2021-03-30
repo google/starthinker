@@ -46,7 +46,7 @@ from googleapiclient.schema import Schemas
 
 DATETIME_RE = re.compile(r'\d{4}[-/]\d{2}[-/]\d{2}[ T]\d{2}:\d{2}:\d{2}\.?\d+Z')
 DESCRIPTION_LENGTH = 1024
-RECURSION_DEPTH = 5
+RECURSION_DEPTH = 2
 
 
 class Discovery_To_BigQuery():
@@ -175,7 +175,7 @@ class Discovery_To_BigQuery():
       elif f == 'date':
         return 'DATE'
       elif f == 'date-time':
-        return 'DATETIME'
+        return 'TIMESTAMP'
       elif f == 'int64':
         return 'INT64'
       elif f == 'uint64':
@@ -204,6 +204,10 @@ class Discovery_To_BigQuery():
 
     for key, value in entry.items():
 
+      # when the entry is { "type":"object", "someObject":{..} }, this ignores "type" artifact
+      if not isinstance(value, dict): continue
+
+      # struct with ref
       if '$ref' in value:
         parents.setdefault(value['$ref'], 0)
         if parents[value['$ref']] < self.recursion_depth:
@@ -219,45 +223,58 @@ class Discovery_To_BigQuery():
           })
         parents[value['$ref']] -= 1
 
-      else:
+      elif 'items' in value:
 
-        if value['type'] == 'array':
-
-          if '$ref' in value['items']:
-            parents.setdefault(value['items']['$ref'], 0)
-            if parents[value['items']['$ref']] < self.recursion_depth:
-              parents[value['items']['$ref']] += 1
-              bigquery_schema.append({
-                'name':key,
-                'type':'RECORD',
-                'mode':'REPEATED',
-                'fields':self.to_schema(
-                  self.api_document['schemas'][value['items']['$ref']]
-                  ['properties'],
-                  parents
-                )
-              })
-              parents[value['items']['$ref']] -= 1
-
-          else:
+        # array with ref
+        if '$ref' in value['items']:
+          parents.setdefault(value['items']['$ref'], 0)
+          if parents[value['items']['$ref']] < self.recursion_depth:
+            parents[value['items']['$ref']] += 1
             bigquery_schema.append({
-              'description':(
-                ','.join(value['items'].get('enum', []))
-              )[:DESCRIPTION_LENGTH],
               'name':key,
-              'type':self.to_type(value['items']),
+              'type':'RECORD',
               'mode':'REPEATED',
+              'fields':self.to_schema(
+                self.api_document['schemas'][value['items']['$ref']]
+                ['properties'],
+                parents
+              )
             })
+            parents[value['items']['$ref']] -= 1
 
+        # array with struct
+        elif value['items']['type'] == 'object':
+          bigquery_schema.append({
+            'name':key,
+            'type':'RECORD',
+            'mode':'NULLABLE',
+            'fields':self.to_schema(
+              value['items'],
+              parents
+            )
+          })
+
+        # array with scalar
         else:
           bigquery_schema.append({
             'description':(
-              ','.join(value.get('enum', []))
+              ','.join(value['items'].get('enum', []))
             )[:DESCRIPTION_LENGTH],
             'name':key,
-            'type':self.to_type(value),
-            'mode':'NULLABLE'
+            'type':self.to_type(value['items']),
+            'mode':'REPEATED',
           })
+
+      # scalar
+      else:
+        bigquery_schema.append({
+          'description':(
+            ','.join(value.get('enum', []))
+          )[:DESCRIPTION_LENGTH],
+          'name':key,
+          'type':self.to_type(value),
+          'mode':'NULLABLE'
+        })
 
     return bigquery_schema
 
@@ -281,20 +298,23 @@ class Discovery_To_BigQuery():
       from_json = deepcopy(from_api)
 
     for key, value in from_json.items():
-      if isinstance(value, dict):
-        if '$ref' in value:
-          ref = value['$ref']
-          parents.setdefault(ref, 0)
 
-          if parents[ref] < self.recursion_depth:
-            parents[ref] += 1
-            from_json[key] = self.to_json(from_api=self.api_document['schemas'][ref]['properties'], parents=parents)
-            parents[ref] -= 1
-          else:
-            from_json[key] = None
+      # when the entry is { "type":"object", "someObject":{..} }, this ignores "type" artifact
+      if not isinstance(value, dict): continue
 
+      if '$ref' in value:
+        ref = value['$ref']
+        parents.setdefault(ref, 0)
+
+        if parents[ref] < self.recursion_depth:
+          parents[ref] += 1
+          from_json[key] = self.to_json(from_api=self.api_document['schemas'][ref]['properties'], parents=parents)
+          parents[ref] -= 1
         else:
-          self.to_json(from_json=value, parents=parents)
+          from_json[key] = None
+
+      else:
+        self.to_json(from_json=value, parents=parents)
 
     return from_json
 
@@ -321,31 +341,34 @@ class Discovery_To_BigQuery():
     spaces = ' ' * indent
 
     for key, value in from_json.items():
-      if isinstance(value, dict):
-        if value.get('type', 'record') == 'record':
-          fields.append('%sSTRUCT(\n%s\n%s) AS %s' % (
+
+      # when the entry is { "type":"object", "someObject":{..} }, this ignores "type" artifact
+      if not isinstance(value, dict): continue
+
+      if value.get('type', 'record') == 'record':
+        fields.append('%sSTRUCT(\n%s\n%s) AS %s' % (
+          spaces,
+          self.to_struct(from_json=value, indent=indent+2),
+          spaces,
+          key
+        ))
+      elif value['type'] == 'array':
+        if 'enum' in value['items']:
+          fields.append('%s[%s\n%s] AS %s' % (
             spaces,
-            self.to_struct(from_json=value, indent=indent+2),
+            'STRING',
             spaces,
             key
           ))
-        elif value['type'] == 'array':
-          if 'enum' in value['items']:
-            fields.append('%s[%s\n%s] AS %s' % (
-              spaces,
-              'STRING',
-              spaces,
-              key
-            ))
-          else:
-            fields.append('%s[STRUCT(\n%s\n%s)] AS %s' % (
-              spaces,
-              self.to_struct(from_json=value['items'], indent=indent+2),
-              spaces,
-              key
-            ))
         else:
-          fields.append('%s%s AS %s' % (spaces, value['type'].upper(), key))
+          fields.append('%s[STRUCT(\n%s\n%s)] AS %s' % (
+            spaces,
+            self.to_struct(from_json=value['items'], indent=indent+2),
+            spaces,
+            key
+          ))
+      else:
+        fields.append('%s%s AS %s' % (spaces, value['type'].upper(), key))
 
     return ',\n'.join(fields)
 
@@ -394,13 +417,14 @@ class Discovery_To_BigQuery():
     return self.to_struct(from_api=resource)
 
 
-  def method_schema(self, method:str) -> dict:
+  def method_schema(self, method:str, iterate:bool=False) -> dict:
     """Return BigQuery schema for a Discovery API function.
 
     Use the full dot notation of the rest API function.
 
     Args:
       method: the dot notation name of the Google API function
+      iterate: if true, return only iterable schema
 
     Returns:
       A dictionary representation of the resource.
@@ -419,7 +443,7 @@ class Discovery_To_BigQuery():
 
     # List responses wrap their items in a paginated response object
     # Unroll it to return item schema instead of repsonse schema
-    if 'List' in resource and resource.endswith('Response'):
+    if iterate or ('List' in resource and resource.endswith('Response')):
       for entry in schema:
         if entry['type'] == 'RECORD':
           return entry['fields']
