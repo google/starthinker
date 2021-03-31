@@ -1,0 +1,1403 @@
+# StarThinker UI Translations
+# Copyright (C) 2021 Google LLC
+# Licensed under the Apache License, Version 2.0
+# Help <starthinker-help@google.com>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-03-29 14:25-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: project/models.py:45
+#, fuzzy
+#| msgid "API Key"
+msgid " / API Key"
+msgstr "API (एपीआई) कुंजी"
+
+#: project/models.py:48
+#, python-format
+msgid "%s / Domain Visible"
+msgstr ""
+
+#: project/models.py:50
+#, python-format
+msgid "%s / Global Visible"
+msgstr ""
+
+#: project/models.py:52
+#, python-format
+msgid "%s / User Visible"
+msgstr ""
+
+#: recipe/forms.py:28
+msgid "Monday"
+msgstr "सोमवार"
+
+#: recipe/forms.py:29
+msgid "Tuesday"
+msgstr "मंगलवार"
+
+#: recipe/forms.py:30
+msgid "Wednesday"
+msgstr "बुधवार"
+
+#: recipe/forms.py:31
+msgid "Thursday"
+msgstr "गुरुवार"
+
+#: recipe/forms.py:32
+msgid "Friday"
+msgstr "शुक्रवार"
+
+#: recipe/forms.py:33
+msgid "Saturday"
+msgstr "शनिवार"
+
+#: recipe/forms.py:34
+msgid "Sunday"
+msgstr "रविवार"
+
+#: recipe/forms.py:66
+msgid "Identify this recipe in list of recipes."
+msgstr "रेसिपी वाली लिस्ट में से, इस रेसिपी की पहचान करें."
+
+#: recipe/forms.py:67
+msgid ""
+"Choose a <b>Google Cloud Project Service Credential</b> uploaded to Projects."
+msgstr ""
+"प्रोजेक्ट के लिए अपलोड किया गया <b>Google Cloud Project की सेवा का क्रेडेंशियल</b> चुनें."
+
+#: recipe/forms.py:68
+msgid "Frame of reference for all recipe times."
+msgstr "सभी रेसिपी की समयावधि का फ़्रेम ऑफ़ रेफ़रंस."
+
+#: recipe/forms.py:69
+msgid "Days of week to execute recipe."
+msgstr "हफ़्ते में कौनसे दिन कौनसी रेसिपी को बनाना है, यह तय करने के लिए."
+
+#: recipe/forms.py:70
+msgid "Hours of day to execute recipe."
+msgstr "दिनों के घंटों के हिसाब से किस रेसिपी को कब बनाना है, यह तय करने के लिए."
+
+#: recipe/forms.py:71
+msgid "To pause recipe, uncheck this."
+msgstr "जिस रेसिपी को नहीं बनाना है उस पर से सही का निशान हटाएं."
+
+#: recipe/forms.py:74
+#, python-format
+msgid "%s Recipe"
+msgstr "%s रेसिपी"
+
+#: recipe/forms.py:93
+msgid "Schedule"
+msgstr "शेड्यूल"
+
+#: recipe/models_fields.py:37 recipe/models_fields.py:50
+msgid "Bad JSON string."
+msgstr "JSON फ़ाइल फ़ॉर्मैट की खराब स्ट्रिंग."
+
+#: templates/input_checkbox_multiple.html:26
+msgid "Off"
+msgstr "बंद है"
+
+#: templates/input_checkbox_multiple.html:29
+msgid "On"
+msgstr "चालू है"
+
+#: templates/page.html:90
+msgid "Logo"
+msgstr "लोगो"
+
+#: templates/page.html:96 templates/page.html:122
+#: templates/project/project_list.html:35 templates/recipe/recipe_list.html:43
+msgid "Recipes"
+msgstr "रेसिपी"
+
+#: templates/page.html:97
+msgid "Projects"
+msgstr "प्रोजेक्ट"
+
+#: templates/page.html:98 templates/page.html:124
+msgid "Solutions"
+msgstr "सॉल्यूशन"
+
+#: templates/page.html:99 templates/page.html:125
+msgid "Help"
+msgstr "सहायता"
+
+#: templates/page.html:101 templates/page.html:127
+msgid "Logout"
+msgstr "लॉग आउट करें"
+
+#: templates/page.html:104 templates/page.html:117
+msgid "Avatar"
+msgstr "अवतार"
+
+#: templates/page.html:123 templates/project/project_list.html:33
+msgid "Project"
+msgstr "प्रोजेक्ट"
+
+#: templates/project/project_edit.html:35
+msgid "Create Cloud Project"
+msgstr "कोई क्लाउड प्रोजेक्ट बनाएं"
+
+#: templates/project/project_edit.html:40
+msgid "Create Service JSON"
+msgstr "कोई JSON फ़ाइल फ़ॉर्मैट सेवा बनाएं"
+
+#: templates/project/project_edit.html:45
+msgid "Permission Service"
+msgstr "अनुमति वाली सेवा"
+
+#: templates/project/project_edit.html:50
+msgid "API Key"
+msgstr "API (एपीआई) कुंजी"
+
+#: templates/project/project_edit.html:55 templates/recipe/recipe_edit.html:186
+#: templates/recipe/recipe_edit.html:190 templates/website/help.html:133
+msgid "Save"
+msgstr "सेव करें"
+
+#: templates/project/project_edit.html:60
+msgid "Roles we recommend:"
+msgstr "हमारा सुझाव है कि ये नौकरियां आपके लिए हो सकती हैं:"
+
+#: templates/project/project_edit.html:61
+msgid "bigquery.jobs.create"
+msgstr "bigquery.jobs.create"
+
+#: templates/project/project_edit.html:62
+msgid "bigquery.jobs.get"
+msgstr "bigquery.jobs.get"
+
+#: templates/project/project_edit.html:63
+msgid "bigquery.tables.create"
+msgstr "bigquery.tables.create"
+
+#: templates/project/project_edit.html:64
+msgid "bigquery.tables.update"
+msgstr "bigquery.tables.update"
+
+#: templates/project/project_edit.html:65
+msgid "bigquery.tables.updateData"
+msgstr "bigquery.tables.updateData"
+
+#: templates/project/project_edit.html:73
+msgid "Edit Project"
+msgstr "प्रोजेक्ट में बदलाव करें"
+
+#: templates/project/project_edit.html:74
+#, fuzzy
+#| msgid ""
+#| "Copy and paste the JSON service credentials here.  You will be able to "
+#| "select this project for each recipe that requires Google Cloud resources."
+msgid ""
+"Copy and paste the Service JSON credentials here.  You will be able to "
+"select this project for each recipe that requires Google Cloud resources."
+msgstr ""
+"JSON फ़ाइल फ़ॉर्मैट सेवा के लिए दिए जाने वाले क्रेडेंशियल, यहां कॉपी करें और चिपकाएं.  आप हर "
+"एक रेसिपी के लिए, इस प्रोजेक्ट को चुन सकते हैं. ऐसा आप तभी कर सकते हैं, जब रेसिपी के लिए "
+"Google Cloud के संसाधनों के इस्तेमाल की ज़रूरत हो."
+
+#: templates/project/project_edit.html:83 templates/recipe/recipe_edit.html:225
+msgid "Delete"
+msgstr "मिटाएं"
+
+#: templates/project/project_list.html:28
+msgid "Create a project and use it to deploy recipes."
+msgstr "कोई प्रोजेक्ट बनाएं और रेसिपी डिप्लॉय करने के लिए इसका इस्तेमाल करें."
+
+#: templates/project/project_list.html:50
+msgid "LEVEL SHARE"
+msgstr "LEVEL SHARE"
+
+#: templates/recipe/download.html:34
+msgid "Script Download"
+msgstr "स्क्रिप्ट डाउनलोड"
+
+#: templates/recipe/download.html:37
+msgid ""
+"Share your recipe with anyone outside of your organization using Google "
+"Cloud..."
+msgstr ""
+"Google Cloud का इस्तेमाल करके, आप किसी ऐसे व्यक्ति के साथ अपनी रेसिपी शेयर करें जो आपके "
+"संगठन का नहीं है."
+
+#: templates/recipe/download.html:40
+msgid "JSON"
+msgstr "JSON"
+
+#: templates/recipe/download.html:41
+msgid "Raw Script"
+msgstr "अधूरा स्क्रिप्ट"
+
+#: templates/recipe/download.html:44 templates/recipe/download.html:61
+#: templates/recipe/download.html:78 templates/recipe/recipe_edit.html:220
+#: templates/website/help.html:137
+msgid "Download"
+msgstr "डाउनलोड करें"
+
+#: templates/recipe/download.html:47
+msgid ""
+"Then follow <a href=\"https://github.com/google/starthinker/blob/master/"
+"tutorials/deploy_developer.md\" target=\"_blank\">developer deploy</a> or <a "
+"href=\"https://github.com/google/starthinker/blob/master/tutorials/"
+"deploy_package.md\" target=\"_blank\">package deploy</a> instructions to "
+"execute."
+msgstr ""
+"इसके बाद, रेसिपी डिप्लॉय करने के लिए, <a href=\"https://github.com/google/"
+"starthinker/blob/master/tutorials/deploy_developer.md\" target=\"_blank"
+"\">डेवलपर डिप्लॉय</a> or <a href=\"https://github.com/google/starthinker/blob/"
+"master/tutorials/deploy_package.md\" target=\"_blank\">पैकेज डिप्लॉय</a> करने के "
+"लिए दिए गए निर्देशों को फ़ॉलो करें."
+
+#: templates/recipe/download.html:50
+msgid "Best for <strong>developer / operations / modification</strong>."
+msgstr "<strong>developer / operations / modification</strong> के लिए बेहतर है."
+
+#: templates/recipe/download.html:51 templates/recipe/download.html:68
+msgid ""
+"Access to a <a href=\"https://github.com/google/starthinker/blob/master/"
+"tutorials/cloud_project.md\" target=\"_blank\">Google Cloud Project</a>."
+msgstr ""
+"किसी <a href=\"https://github.com/google/starthinker/blob/master/tutorials/"
+"cloud_project.md\" target=\"_blank\">Google Cloud Project</a> का ऐक्सेस."
+
+#: templates/recipe/download.html:52
+msgid "Ability to install, troubleshoot, and run Python."
+msgstr "Python को इंस्टॉल करने, इससे जुड़ी समस्याएं ठीक करने, और इसे चलाने की सुविधा."
+
+#: templates/recipe/download.html:57
+msgid "Collaboratory"
+msgstr "Colaboratory"
+
+#: templates/recipe/download.html:58
+msgid "Data Pill"
+msgstr "डेटा पिल"
+
+#: templates/recipe/download.html:64
+msgid ""
+"Then visit <a href=\"https://colab.research.google.com/\" target=\"_blank"
+"\">Google Collaboratory</a> and open the downloaded notebook."
+msgstr ""
+"इसके बाद, <a href=\"https://colab.research.google.com/\" target=\"_blank"
+"\">Google Colaboratory</a> पर जाएं और डाउनलोड किया गया notebook खोलें."
+
+#: templates/recipe/download.html:67
+msgid "Best for <strong>trade desk / analyst / workshop</strong>."
+msgstr "<strong>trade desk / analyst / workshop</strong> के लिए बेहतर है."
+
+#: templates/recipe/download.html:69
+msgid ""
+"Access to <a href=\"https://colab.research.google.com/\" target=\"_blank"
+"\">Google Collaboratory</a>."
+msgstr ""
+"<a href=\"https://colab.research.google.com/\" target=\"_blank\">Google "
+"Colaboratory</a> का ऐक्सेस."
+
+#: templates/recipe/download.html:74
+msgid "Composer"
+msgstr "Composer"
+
+#: templates/recipe/download.html:75 templates/recipe/tasks.html:121
+msgid "Airflow DAG"
+msgstr "Airflow DAG"
+
+#: templates/recipe/download.html:80
+#, fuzzy
+#| msgid ""
+#| "For exection as a DAG using Apache Airflow and Google Cloud Composer. "
+#| "Follow StarThinker <a href=\"https://github.com/google/starthinker/blob/"
+#| "master/tutorials/deploy_airflow.md\" target=\"_blank\">airflow deploy</a> "
+#| "instructions."
+msgid ""
+"For execution as a DAG using Apache Airflow and Google Cloud Composer. "
+"Follow StarThinker <a href=\"https://github.com/google/starthinker/blob/"
+"master/tutorials/deploy_airflow.md\" target=\"_blank\">airflow deploy</a> "
+"instructions."
+msgstr ""
+"Apache Airflow और Google Cloud Composer का इस्तेमाल करके, DAG के तौर पर चलाने के "
+"लिए. StarThinker <a href=\"https://github.com/google/starthinker/blob/master/"
+"tutorials/deploy_airflow.md\" target=\"_blank\">airflow डिप्लॉय</a> करने के लिए "
+"दिए गए निर्देशों को फ़ॉलो करें."
+
+#: templates/recipe/download.html:83
+msgid "Best for <strong>developer / partner / production</strong>."
+msgstr "<strong>developer / partner / production</strong> के लिए बेहतर है."
+
+#: templates/recipe/download.html:84
+msgid ""
+"Access to a <a href=\"https://github.com/google/starthinker/blob/master/"
+"tutorials/cloud_project.md\" target=\"_blank\">Google Cloud Project\"</a>."
+msgstr ""
+"<a href=\"https://github.com/google/starthinker/blob/master/tutorials/"
+"cloud_project.md\" target=\"_blank\">Google Cloud Project\"</a> का ऐक्सेस."
+
+#: templates/recipe/download.html:85
+msgid ""
+"Access to <a href=\"https://cloud.google.com/composer/\" target=\"_blank"
+"\">Google Cloud Composer</a>."
+msgstr ""
+"<a href=\"https://cloud.google.com/composer/\" target=\"_blank\">Google "
+"Cloud Composer</a> का ऐक्सेस."
+
+#: templates/recipe/download.html:89
+msgid "More Documentation On GitHub"
+msgstr "GitHub पर ज़्यादा दस्तावेज़"
+
+#: templates/recipe/download.html:90
+msgid ""
+"See <a href=\"https://github.com/google/starthinker/blob/master/tutorials/"
+"README.md\">StarThinker Tutorials</a> for complete documentation."
+msgstr ""
+"पूरे दस्तावेज़ के बारे में जानने के लिए, <a href=\"https://github.com/google/"
+"starthinker/blob/master/tutorials/README.md\">StarThinker के ट्यूटोरियल</a> को "
+"देखें."
+
+#: templates/recipe/log.html:30
+msgid "Hour"
+msgstr "घंटा"
+
+#: templates/recipe/log.html:31
+msgid "Task"
+msgstr "टास्क"
+
+#: templates/recipe/log.html:32
+msgid "Output / Error"
+msgstr "आउटपुट / गड़बड़ी"
+
+#: templates/recipe/log.html:46
+msgid "Hours:"
+msgstr "घंटे:"
+
+#: templates/recipe/recipe_edit.html:183 templates/website/help.html:130
+msgid "Add"
+msgstr "जोड़ें"
+
+#: templates/recipe/recipe_edit.html:190 templates/recipe/recipe_edit.html:198
+#: templates/website/help.html:135
+msgid "Run"
+msgstr "चलाएं"
+
+#: templates/recipe/recipe_edit.html:204
+msgid "Cancel"
+msgstr "रद्द करें"
+
+#: templates/recipe/recipe_edit.html:209 templates/website/help.html:136
+msgid "Log"
+msgstr "लॉग"
+
+#: templates/recipe/recipe_edit.html:233
+msgid ""
+"Click <a href=\"/recipe/edit/\"><i class=\"material-icons blue-text"
+"\">access_time</i></a> for scheduled recipes."
+msgstr ""
+"शेड्यूल की गई सभी रेसिपी के बारे में जानने के लिए, <a href=\"/recipe/edit/\"><i class="
+"\"material-icons blue-text\">access_time</i></a> पर क्लिक करें."
+
+#: templates/recipe/recipe_edit.html:235
+msgid ""
+"Click <a href=\"/recipe/manual/\"><i class=\"material-icons blue-text"
+"\">build</i></a> for manual recipes."
+msgstr ""
+"मैन्युअल तौर पर सेट की गई रेसिपी के बारे में जानने के लिए, <a href=\"/recipe/manual/"
+"\"><i class=\"material-icons blue-text\">build</i></a> पर क्लिक करें."
+
+#: templates/recipe/recipe_edit.html:238
+msgid ""
+"To move a step click <i class=\"material-icons blue-text\">drag_handle</i> "
+"to select a card. Then click another <i class=\"material-icons blue-text"
+"\">drag_handle</i> to place it above that card."
+msgstr ""
+"किसी कार्ड को चुनने के लिए, <i class=\"material-icons blue-text\">drag_handle</"
+"i> पर क्लिक करें और एक कदम आगे बढ़ें. इसके बाद, इस कार्ड के ऊपर कोई नया कार्ड लगाने के "
+"लिए किसी दूसरे <i class=\"material-icons blue-text\">drag_handle</i> पर क्लिक "
+"करें."
+
+#: templates/recipe/recipe_edit.html:239
+msgid ""
+"To delete a step click <i class=\"material-icons blue-text\">delete</i> to "
+"mark a step for deletion. Then click save to commit the delete."
+msgstr ""
+"किसी कदम को मार्क करके मिटाने के लिए, <i class=\"material-icons blue-text"
+"\">मिटाएं</i> पर क्लिक करें. इसके बाद, पूरी तरह से मिटाने के लिए, 'सेव करें' पर क्लिक करें."
+
+#: templates/recipe/recipe_list.html:44
+msgid "Assemble recipes that run on a schedule or are triggered manually."
+msgstr ""
+"उन सभी रेसिपी को इकट्ठा करें जिन्हें शेड्यूल किया गया है या मैन्युअल तौर पर ट्रिगर किया गया "
+"है."
+
+#: templates/recipe/recipe_list.html:48
+msgid "Add Scheduled"
+msgstr "शेड्यूल की गई कोई रेसिपी जोड़ें"
+
+#: templates/recipe/recipe_list.html:51
+msgid "Add Manual"
+msgstr "मैन्युअल तौर पर कोई रेसिपी जोड़ें"
+
+#: templates/recipe/recipe_list.html:57 templates/recipe/tasks.html:35
+#: templates/website/solution.html:36 templates/website/solutions.html:78
+#: templates/website/solutions.html:98
+msgid "All"
+msgstr "सभी"
+
+#: templates/recipe/recipe_list.html:60 templates/website/help.html:161
+msgid "Running"
+msgstr "चालू"
+
+#: templates/recipe/recipe_list.html:63 templates/website/help.html:166
+msgid "Finished"
+msgstr "खत्म हो गया"
+
+#: templates/recipe/recipe_list.html:66
+msgid "Errors"
+msgstr "गड़बड़ियां"
+
+#: templates/recipe/recipe_list.html:69 templates/website/help.html:171
+msgid "Paused"
+msgstr "रोकी गई"
+
+#: templates/recipe/recipe_list.html:72
+msgid "Manual"
+msgstr "मैन्युअल"
+
+#: templates/recipe/recipe_list.html:97
+msgid "Need A Custom Task?"
+msgstr "क्या आप मनमुताबिक टास्क वाली सुविधा का इस्तेमाल करना चाहते हैं?"
+
+#: templates/recipe/recipe_list.html:98
+msgid ""
+"Ask Google gTech to write one for you <a href=\"mailto:starthinker-"
+"help@google.com?subject=Custom+StarThinker+Recipe\">starthinker-help@google."
+"com</a>."
+msgstr ""
+"कोई टास्क पाने के लिए, Google gTech की मदद लें <a href=\"mailto:starthinker-"
+"help@google.com?subject=Custom+StarThinker+Recipe\">starthinker-help@google."
+"com</a>."
+
+#: templates/recipe/tasks.html:61
+msgid "Add A Script To Your Recipe Workflow"
+msgstr "अपने रेसिपी वर्कफ़्लो के लिए, कोई स्क्रिप्ट जोड़ें"
+
+#: templates/recipe/tasks.html:63
+msgid ""
+"Use the filters on the left to find a script, then click the add icon to add "
+"it to the end of the workflow."
+msgstr ""
+"किसी स्क्रिप्ट को खोजने के लिए, बाईं ओर दिए गए फ़िल्टर का इस्तेमाल करें. इसके बाद, इसे "
+"वर्कफ़्लो के आखिरी में जोड़ने के लिए, 'जोड़ें' आइकॉन पर क्लिक करें."
+
+#: templates/recipe/tasks.html:64
+#, fuzzy
+#| msgid "This filters scroll <i class=\"small material-icons\">swap_vert</i>."
+msgid ""
+"The lists on the left scroll <i class=\"small material-icons\">swap_vert</i>."
+msgstr ""
+"ये फ़िल्टर <i class=\"small material-icons\">swap_vert</i> को स्क्रोल करते हैं."
+
+#: templates/recipe/tasks.html:97
+msgid "Sample "
+msgstr "नमूना "
+
+#: templates/recipe/tasks.html:103
+msgid "Example Test"
+msgstr "उदाहरण टेस्ट"
+
+#: templates/recipe/tasks.html:109
+msgid "Documentation"
+msgstr "दस्तावेज़"
+
+#: templates/recipe/tasks.html:115
+msgid "Git Hub"
+msgstr "Git Hub"
+
+#: templates/recipe/tasks.html:118
+msgid "Data Pill Colab"
+msgstr "Colab में Data Pill"
+
+#: templates/website/help.html:37
+msgid "Setup"
+msgstr "सेटअप"
+
+#: templates/website/help.html:41
+msgid "Recipe"
+msgstr "रेसिपी"
+
+#: templates/website/help.html:45
+msgid "Sharing"
+msgstr "शेयर करें"
+
+#: templates/website/help.html:49 templates/website/help.html:149
+msgid "Status"
+msgstr "स्थिति"
+
+#: templates/website/help.html:53 templates/website/help.html:244
+msgid "Warnings"
+msgstr "चेतावनियां"
+
+#: templates/website/help.html:57 templates/website/help.html:308
+msgid "Debugging"
+msgstr "डीबग करना"
+
+#: templates/website/help.html:63
+msgid "Setup Project"
+msgstr "प्रोजेक्ट सेट अप करें"
+
+#: templates/website/help.html:66
+msgid ""
+"Almost every recipe in StarThinker uses a <a href=\"http://cloud.google.com"
+"\" target=\"_blank\">Google Cloud Project</a> to store data.  ALL DATA COSTS "
+"ARE BILLED TO THE GOOGLE CLOUD SERVICE CREDENTIALS SPECIFIED IN EACH RECIPE."
+msgstr ""
+"डेटा सेव करने के लिए, StarThinker में सभी रेसिपी <a href=\"http://cloud.google.com"
+"\" target=\"_blank\">Google Cloud Project</a> का इस्तेमाल करती हैं.  ALL DATA "
+"COSTS ARE BILLED TO THE GOOGLE CLOUD SERVICE CREDENTIALS SPECIFIED IN EACH "
+"RECIPE."
+
+#: templates/website/help.html:68
+msgid ""
+"To add a Google Cloud Project for billing and permissions, create a <a href="
+"\"https://console.cloud.google.com/iam-admin/serviceaccounts/create\" target="
+"\"_blank\">Service Credentials</a>, download it, and enter the JSON into the "
+"<a href=\"https://raw.githubusercontent.com/google/starthinker/master/"
+"tutorials/images/ui_project.png\">StarThinker Project page</a>."
+msgstr ""
+"अगर आप <a href=\"https://console.cloud.google.com/iam-admin/serviceaccounts/"
+"create\" target=\"_blank\">सेवा क्रेडेंशियल</a>, बनाकर इन्हें डाउनलोड करते हैं और इसके "
+"बाद, JSON फ़ाइल फ़ॉर्मैट को <a href=\"https://raw.githubusercontent.com/google/"
+"starthinker/master/tutorials/images/ui_project.png\">StarThinker Project के "
+"पेज</a> में जाकर डालते हैं, तो बिलिंग और अनुमतियों के लिए, आप Google Cloud Project जोड़ "
+"सकते हैं."
+
+#: templates/website/help.html:70
+msgid ""
+"To add a Google Cloud Project for billing and permissions, create a <a href="
+"\"https://console.cloud.google.com/iam-admin/serviceaccounts/create\" target="
+"\"_blank\">Service Credentials</a>, download it, and enter the JSON into the "
+"<a href=\"/project/edit/\">StarThinker Project page</a>."
+msgstr ""
+"अगर आप <a href=\"https://console.cloud.google.com/iam-admin/serviceaccounts/"
+"create\" target=\"_blank\">सेवा क्रेडेंशियल</a>, बनाकर इन्हें डाउनलोड करते हैं और इसके "
+"बाद, JSON फ़ाइल फ़ॉर्मैट को <a href=\"/project/edit/\">StarThinker Project के पेज</"
+"a> में जाकर डालते हैं, तो बिलिंग और अनुमतियों के लिए, आप Google Cloud Project जोड़ सकते "
+"हैं."
+
+#: templates/website/help.html:76
+msgid ""
+"https://github.com/google/starthinker/raw/master/tutorials/images/"
+"cloud_service.png"
+msgstr ""
+"https://github.com/google/starthinker/raw/master/tutorials/images/"
+"cloud_service.png"
+
+#: templates/website/help.html:76
+msgid "Cloud service setup diagram."
+msgstr "क्लाउड सेवा को सेट अप करने वाला डायग्राम."
+
+#: templates/website/help.html:79
+msgid ""
+"https://github.com/google/starthinker/raw/master/tutorials/images/ui_project."
+"png"
+msgstr ""
+"https://github.com/google/starthinker/raw/master/tutorials/images/ui_project."
+"png"
+
+#: templates/website/help.html:79
+msgid "Screenshot of StarThinker Edit Project page."
+msgstr "StarThinker के प्रोजेक्ट में बदलाव करने वाले पेज का स्क्रीनशॉट."
+
+#: templates/website/help.html:82
+msgid "Getting Service Credentials"
+msgstr "सेवा के क्रेडेंशियल पाना"
+
+#: templates/website/help.html:83
+msgid ""
+"Each user should have their own Google Cloud Project to avoid accidental "
+"data sharing and allow easier auditing."
+msgstr ""
+"हर उपयोगकर्ता के पास उसका अपना Google Cloud Project होना चाहिए. इसकी मदद से, वह "
+"अनजाने में डेटा शेयर होने वाली समस्या से बच सकता है. साथ ही, वह प्रोजेक्ट में काफ़ी आसानी से "
+"बदलाव भी कर सकता है."
+
+#: templates/website/help.html:85
+msgid ""
+"Visit Google Cloud Project &gt; APIs & Services &gt; Credentials &gt; Create "
+"Credentials &gt; Service Account Key &gt; New Service Account"
+msgstr ""
+"Google Cloud Project &gt; एपीआई और सेवाएं &gt; क्रेडेंशियल &gt; क्रेडेंशियल बनाएं &gt; "
+"सेवा खाता की &gt; नया सेवा खाता पर जाएं"
+
+#: templates/website/help.html:86
+msgid "Service Account Name is starthinker."
+msgstr "सेवा खाते का नाम starthinker है."
+
+#: templates/website/help.html:87
+msgid "Click Create."
+msgstr "'बनाएं' पर क्लिक करें."
+
+#: templates/website/help.html:88
+msgid ""
+"The most robust role is Project Editor, review your role choice with your "
+"security team."
+msgstr ""
+"सबसे भरोसेमंद रोल, प्रोजेक्ट एडिटर का होता है. आप जो भी रोल चुन रहे हैं उसकी समीक्षा "
+"अपनी, सुरक्षा टीम के साथ करें."
+
+#: templates/website/help.html:89
+msgid "Click Continue."
+msgstr "'जारी रखें' पर क्लिक करें."
+
+#: templates/website/help.html:90
+msgid "Click Create Key."
+msgstr "'की बनाएं' पर क्लिक करें."
+
+#: templates/website/help.html:91
+msgid "Key Type is JSON."
+msgstr "की, JSON फ़ाइल फ़ॉर्मैट की तरह है."
+
+#: templates/website/help.html:92
+msgid "Click Create and open the downloaded JSON file."
+msgstr "'बनाएं' पर क्लिक करें और डाउनलोड की गई JSON फ़ॉर्मैट वाली फ़ाइल खोलें."
+
+#: templates/website/help.html:94
+msgid ""
+"Copy the contents and paste into the <a href=\"https://raw.githubusercontent."
+"com/google/starthinker/master/tutorials/images/ui_project.png\"> StarThinker "
+"Project page Service field</a>."
+msgstr ""
+"कॉन्टेंट कॉपी करें और <a href=\"https://raw.githubusercontent.com/google/"
+"starthinker/master/tutorials/images/ui_project.png\"> StarThinker Project पेज "
+"के सेवा फ़ील्ड</a> में चिपकाएं."
+
+#: templates/website/help.html:96
+msgid ""
+"Copy the contents and paste into the <a href=\"/project/edit/\"> StarThinker "
+"Project page Service field</a>."
+msgstr ""
+"कॉन्टेंट कॉपी करें और <a href=\"/project/edit/\"> StarThinker Project पेज के सेवा "
+"फ़ील्ड</a> में चिपकाएं."
+
+#: templates/website/help.html:98
+msgid "Click save."
+msgstr "'सेव करें' पर क्लिक करें."
+
+#: templates/website/help.html:100
+msgid ""
+"The new project will become a dropdown option on <a href=\"https://raw."
+"githubusercontent.com/google/starthinker/master/tutorials/images/ui_recipe."
+"png\"> StarThinker Recipe pages</a>."
+msgstr ""
+"नया प्रोजेक्ट, <a href=\"https://raw.githubusercontent.com/google/starthinker/"
+"master/tutorials/images/ui_recipe.png\"> StarThinker रेसिपी के पेज </a> पर, एक "
+"ड्रॉपडाउन विकल्प के तौर पर दिखेगा."
+
+#: templates/website/help.html:102
+msgid ""
+"The new project will become a dropdown option on <a href=\"/recipe/edit/\"> "
+"StarThinker Recipe pages</a>."
+msgstr ""
+"नया प्रोजेक्ट, <a href=\"/recipe/edit/\"> StarThinker रेसिपी के पेज </a> पर, एक "
+"ड्रॉपडाउन विकल्प के तौर पर दिखेगा."
+
+#: templates/website/help.html:105
+msgid "WARNING:"
+msgstr "WARNING:"
+
+#: templates/website/help.html:105
+msgid ""
+"If you share your service credentials, other users will be able to use them "
+"in their recipes but not download or view them. Sharing the service "
+"credentials grants other users <a href=\"https://console.cloud.google.com/"
+"iam-admin/iam\" target=\"_blank\"> all the permissions your service account "
+"has</a>, use extreme caution."
+msgstr ""
+"अगर आप अपने सेवा के क्रेडेंशियल शेयर करते हैं, तो लोग अपनी रेसिपी के लिए, इसका इस्तेमाल कर "
+"सकते हैं. हालांकि, लोगों के पास सेवा के क्रेडेंशियल डाउनलोड करने या देखने की सुविधा उपलब्ध "
+"नहीं होगी. सेवा के क्रेडेंशियल शेयर करने से, दूसरे उपयोगकर्ताओं के पास <a href=\"https://"
+"console.cloud.google.com/iam-admin/iam\" target=\"_blank\"> आपके सेवा खाते के "
+"लिए मिली सभी अनुमतियों का ऐक्सेस मिल जाता है</a>. इसलिए, इसका इस्तेमाल बहुत सावधानी "
+"से करें."
+
+#: templates/website/help.html:111
+msgid "Run Recipe"
+msgstr "रेसिपी चलाएं"
+
+#: templates/website/help.html:112
+#, fuzzy
+#| msgid ""
+#| "All recipes run as the logged in user and leverage the selected <a href="
+#| "\"#help_setup\">Service Account</a> to write to Google Cloud endpoints. "
+#| "StarThinker DOES NOT grant any additional permissions or access to any "
+#| "products or endpoints used in the recipe."
+msgid ""
+"All recipes run as the logged in user or selected <a href=\"#help_setup"
+"\">service account</a>. StarThinker DOES NOT grant any additional "
+"permissions or access to any products or endpoints used in the recipe."
+msgstr ""
+"सभी रेसिपी, लॉग इन किए गए उपयोगकर्ता के तौर पर चलाएंं जाते हैं. साथ ही, Google Cloud "
+"के एंडपॉइंट को लिखने के लिए, चुने गए <a href=\"#help_setup\">सेवा खाते</a> की मदद लें. "
+"StarThinker, किसी प्रॉडक्ट या रेसिपी में इस्तेमाल किए जा चुके एंडपॉइंट के लिए, अतिरिक्त "
+"अनुमतियों या ऐक्सेस करने की आधिकार नहीं देता है."
+
+#: templates/website/help.html:115
+msgid ""
+"https://github.com/google/starthinker/raw/master/tutorials/images/ui_recipe."
+"png"
+msgstr ""
+"https://github.com/google/starthinker/raw/master/tutorials/images/ui_recipe."
+"png"
+
+#: templates/website/help.html:115
+msgid "Screenshot of StarThinker Edit Recipe page."
+msgstr "StarThinker की रेसिपी में बदलाव करने वाले पेज का स्क्रीनशॉट."
+
+#: templates/website/help.html:118
+msgid "Creating A Recipe Workflow"
+msgstr "कोई रेसिपी वर्कफ़्लो बनाएं"
+
+#: templates/website/help.html:119
+msgid ""
+"Recipes can be manual, initiated by the user and run only once, or "
+"scheduled, running at set times on set days. Other than the schedule, all "
+"steps are the same."
+msgstr ""
+"उपयोगकर्ताओं की शुरू की गई रेसिपी को मैन्युअल तौर पर तैयार किया जा सकता है. इन रेसिपी "
+"को या तो एक बार इस्तेमाल किया जाता है या एक बार शेड्यूल किया जाता है. इसके अलावा, "
+"दिन के हिसाब से सेट किए समय मुताबिक, रेसिपी चलाई जाती हैं. सिर्फ़ शेड्यूल की गई रेसिपी को "
+"छोड़ दें, तो बाकी की रेसिपी एक ही तरीके से तैयार की जाती हैं."
+
+#: templates/website/help.html:122
+msgid ""
+"Visit the <a href=\"https://raw.githubusercontent.com/google/starthinker/"
+"master/tutorials/images/ui_recipe.png\">scheduled</a> or <a href=\"https://"
+"raw.githubusercontent.com/google/starthinker/master/tutorials/images/"
+"ui_manual.png\">manual</a> recipe page."
+msgstr ""
+"<a href=\"https://raw.githubusercontent.com/google/starthinker/master/"
+"tutorials/images/ui_recipe.png\">शेड्यूल किए गए</a> or <a href=\"https://raw."
+"githubusercontent.com/google/starthinker/master/tutorials/images/ui_manual."
+"png\">मैन्युअल तौर पर</a> रेसिपी तैयार करने से जुड़ी जानकारी देने वाले पेज पर जाएं."
+
+#: templates/website/help.html:124
+msgid ""
+"Visit the <a href=\"/recipe/edit/\">scheduled</a> or <a href=\"/recipe/"
+"manual/\">manual</a> recipe page."
+msgstr ""
+"<a href=\"/recipe/edit/\">शेड्यूल किए गए</a> or <a href=\"/recipe/manual/"
+"\">मैन्युअल तौर पर</a> रेसिपी तैयार करने से जुड़ी जानकारी देने वाले पेज पर जाएं."
+
+#: templates/website/help.html:126
+msgid ""
+"Name the recipe, the name is often used to create assets such as Sheets and "
+"Dataset by some recipes, choose the name to reflect an account or client. If "
+"changed, already created assets may become disconnected."
+msgstr ""
+"रेसिपी का नाम रखें. इस नाम का इस्तेमाल, उन Sheets और डेटासेट के लिए किया जाता है "
+"जिनका इस्तेमाल कुछ रेसिपी में होता है. किसी खाते या क्लाइंट की पहचान करने के लिए, इस नाम "
+"को चुनें. अगर नाम को बदल दिया गया है, तो पहले से बनाए गए एसेट, डिसकनेक्ट किए जा सकते हैं."
+
+#: templates/website/help.html:127
+msgid ""
+"If the recipe writes to Google Cloud, select the Google Cloud Project "
+"Service Account, <a href=\"#help_setup\">set up earlier</a>."
+msgstr ""
+"अगर रेसिपी को Google Cloud के लिए लिखा जा रहा है, तो Google Cloud Project के लिए "
+"बनाए गए सेवा खाते को चुनें, <a href=\"#help_setup\">पहले से ही सेट अप किया गया</a>."
+
+#: templates/website/help.html:128
+msgid ""
+"For scheduled recipes, choose the timezone, days, and hours to run every "
+"task in the recipe.  All task times and assets created by the recipe will "
+"use the timezone selected as a refrence."
+msgstr ""
+"शेड्यूल की गई रेसिपी के लिए, समयक्षेत्र, दिन, और घंटे चुनें. ऐसा करके, आप रेसिपी के लिए "
+"इस्तेमाल होने वाले सभी टास्क चला सकते हैं.  रेसिपी के बनाए गए टास्क के सभी समय और एसेट, "
+"उस समयक्षेत्र का इस्तेमाल करते हैं जो रेफ़रंस के तौर पर चुना गया है."
+
+#: templates/website/help.html:130 templates/website/help.html:133
+#: templates/website/help.html:135 templates/website/help.html:136
+#: templates/website/help.html:137
+msgid "Click"
+msgstr "क्लिक"
+
+#: templates/website/help.html:131
+msgid ""
+"Use the left side filters to search for the specific task to be added to the "
+"recipe. The filters scroll up and down. Most tasks provide a description, "
+"samples, and links to assets for review on this page. Click <i class="
+"\"material-icons blue-text small\">add_circle</i> to add the task to the end "
+"of the recipe. A <i class=\"material-icons green-text small\">check_circle</"
+"i> will appear with a count of this task in the recipe. Continue adding "
+"tasks, or close the task filter window."
+msgstr ""
+"रेसिपी में जोड़े जाने वाले किसी खास टास्क को खोजने के लिए, बाईं ओर दिए गए फ़िल्टर इस्तेमाल "
+"कर सकते हैं. फ़िल्टर, ऊपर और नीचे स्क्रोल किए जा सकते हैं. ज़्यादातर टास्क, एसेट के बारे में, "
+"जानकारी, नमूने, और लिंक देते हैं, ताकि इस पेज पर एसेट की समीक्षा की जा सके. रेसिपी के "
+"आखिरी में कोई टास्क जोड़ने के लिए, <i class=\"material-icons blue-text small"
+"\">add_circle</i> पर क्लिक करें. रेसिपी में इस टास्क की गिनती के साथ, A <i class="
+"\"material-icons green-text small\">check_circle</i> भी दिखेगा. टास्क जोड़ना "
+"जारी रखें या टास्क को फ़िल्टर करने वाली विंडो बंद करें."
+
+#: templates/website/help.html:132
+msgid ""
+"Each task has a card with its own instructions, inputs, and fields.  Fields "
+"are marked optional or required.  Some have default values. All values are "
+"derived from the API endpoints for that product."
+msgstr ""
+"हर टास्क के लिए एक कार्ड बना होता है. इस कार्ड में टास्क के बारे में निर्देश, इनपुट, और "
+"फ़ील्ड दिए गए होते हैं.  फ़ील्ड या तो विकल्प के तौर पर मार्क किया गया होता है या ज़रूरी है "
+"के तौर पर.  कुछ टास्क की डिफ़ॉल्ट वैल्यू होती हैं. किसी प्रॉडक्ट के लिए, एपीआई एंडपॉइंट से "
+"मिली या हासिल की गई जानकारी के मुताबिक, सभी वैल्यू तय की जाती हैं."
+
+#: templates/website/help.html:133
+msgid ", the recipe is now ready to run, and will run on schedule."
+msgstr ", रेसिपी अब चलाई जा सकती है. यह शेड्यूल किए गए समय पर ही चलेगी."
+
+#: templates/website/help.html:135
+msgid ""
+"to execute the recipe immediately, if workers are busy there may be a delay. "
+"The <a href=\"#help_status\">Job Status</a> and log update every 10 seconds."
+msgstr ""
+"अगर वर्कर व्यस्त हैं, तो रेसिपी को लागू करने में देरी हो सकती है. इसे जल्द से जल्द लागू करने के "
+"लिए. <a href=\"#help_status\">काम की स्थिति</a> और लॉग हर 10 सेकंड में अपडेट होता "
+"है."
+
+#: templates/website/help.html:136
+msgid "to view recipe task events including errors and completes."
+msgstr ""
+"रेसिपी के सभी टास्क इंवेंट देखने के लिए. इसमें, समस्याएं और पूरे किए जा चुके इवेंट भी शामिल हैं."
+
+#: templates/website/help.html:137
+msgid "to <a href=\"#help_share\">share the recipe</a> with a client."
+msgstr "क्लाइंट के साथ <a href=\"#help_share\">रेसिपी शेयर करने</a> के लिए."
+
+#: templates/website/help.html:145
+msgid ""
+"Each task in a recipe workflow is executed in sequence one at a time.  Some "
+"recipes have tasks executing at different times, and some tasks executing "
+"multiple times a day.  Job status is updated automatically by workers as the "
+"job is processed.  The UI updates the log and status every 10 seconds."
+msgstr ""
+"रेसिपी वर्कफ़्लो के हर टास्क को, एक समय पर एक-एक करके क्रम से लागू किया गया है.  कुछ "
+"रेसिपी में ऐसे टास्क भी होते हैं जिन्हें अलग-अलग समय पर लागू किया जाता है. साथ ही, कुछ "
+"टास्क ऐसे भी होते हैं जिन्हें दिन में कई बार लागू किया जाता है.  काम की प्रोसेस होने के बाद, "
+"वर्कर काम की स्थिति को अपने-आप अपडेट कर देते हैं.  हर 10 सेकंड में यूज़र इंटरफ़ेस (यूआई), लॉग "
+"और स्थिति को अपडेट करते रहते हैं."
+
+#: templates/website/help.html:150
+msgid "Definition"
+msgstr "परिभाषा"
+
+#: templates/website/help.html:151
+msgid "Action"
+msgstr "कार्रवाई"
+
+#: templates/website/help.html:156
+msgid "Queued"
+msgstr "बनाई गई सूची"
+
+#: templates/website/help.html:157
+msgid "The recipe is waiting for workers to pick up the next task."
+msgstr "रेसिपी, इंतज़ार में है कि वर्कर अगले टास्क पर कब काम शुरू करेंगे."
+
+#: templates/website/help.html:158
+msgid ""
+"Wait for the next scheduled task to execute.  If workers are busy, the next "
+"taks may be executed after its scheduled time."
+msgstr ""
+"शेड्यूल किए गए अगले टास्क के लागू होने का इंतज़ार करें.  अगर वर्कर व्यस्त हैं, तो अगला टास्क "
+"अपने शेड्यूल समय के बाद लागू हो सकता है."
+
+#: templates/website/help.html:162
+msgid "A task in the recipe is currently executing."
+msgstr "फ़िलहाल, रेसिपी के किसी टास्क को लागू किया जा रहा है."
+
+#: templates/website/help.html:163
+msgid ""
+"Wait for the task to execute or cancel a running recipe. Check the logs to "
+"see which task is running and see real time task updates."
+msgstr ""
+"चल रही किसी रेसिपी को लागू या रद्द करने के लिए, टास्क का इंतज़ार करें. कौनसा टास्क चल "
+"रहा है और टास्क के बारे में रीयल-टाइम अपडेट देखने के लिए, लॉग देखें."
+
+#: templates/website/help.html:167
+msgid "All tasks in the recipe completed without error."
+msgstr "सभी टास्क बिना किसी गड़बड़ी के पूरे हो गए हैं."
+
+#: templates/website/help.html:168
+msgid ""
+"The task will resume again the next day as controlled by its timezone "
+"setting."
+msgstr ""
+"अगर टास्क, समयक्षेत्र की अपनी सेटिंग के कंट्रोल में है, तो यह अगले दिन फिर से शुरू होगा."
+
+#: templates/website/help.html:172
+msgid "No tasks in the recipe will be run."
+msgstr "रेसिपी में मौजूद किसी भी टास्क को नहीं चलाया जाएगा."
+
+#: templates/website/help.html:173
+msgid "Unpause the recipe to resume execution."
+msgstr "रेसिपी को फिर से लागू करने के लिए, इसे जहां पर रोका था वहां से फिर चलाएं."
+
+#: templates/website/help.html:176
+msgid "Timeout"
+msgstr "विज्ञापन दिखने से पहले का समय अंतर (टाइम आउट)"
+
+#: templates/website/help.html:177
+msgid "The task exceeded its 8 hour limit for execution and was terminated."
+msgstr ""
+"टास्क, तय किए गए अपने आठ घंटे के बाद भी लागू नहीं हुआ. इसलिए, इसे बंद कर दिया गया."
+
+#: templates/website/help.html:178
+msgid ""
+"Check the logs, Edit the task to process less data and complete sooner.  "
+"Some timeouts may be acceptable, for example a report was not ready, "
+"typically these tasks are scheduled multiple times in a workflow and "
+"eventually work."
+msgstr ""
+"लॉग देखें, टास्क में कम डेटा खर्च करने और जल्दी पूरा करने के लिए, टास्क में बदलाव करें.  अगर "
+"रिपोर्ट तैयार नहीं है, तो ऐसे उदाहरण के लिए कुछ टाइम आउट स्वीकार किए जा सकते हैं. आम "
+"तौर पर, ये टास्क, वर्कफ़्लो में कई बार शेड्यूल किए जा सकते हैं. साथ ही, ऐसे मौके पर ये टास्क "
+"काम भी करते हैं."
+
+#: templates/website/help.html:181
+msgid "Error"
+msgstr "गड़बड़ी"
+
+#: templates/website/help.html:182
+msgid ""
+"The task failed to execute.  The error will be printed in the log, usually "
+"near the bottom  for that task."
+msgstr ""
+"टास्क लागू नहीं किया जा सका.  गड़बड़ी को लॉग में प्रिंट कर दिया जाएगा. आम तौर पर, इस "
+"टास्क के लिए प्रिंट, लॉग के नीचे दिखता है."
+
+#: templates/website/help.html:183
+#, fuzzy
+#| msgid ""
+#| "Correct the error, and click Run Now to re-execute the recipe.  "
+#| "Alternatively some errors may be acceptable, for example an error prone "
+#| "endpoint may be pulled from multiple times a day in a task, eventually "
+#| "one works."
+msgid ""
+"Correct the error, and click Run Now to re-execute the recipe.  "
+"Alternatively some errors may be acceptable, for example, a task may run "
+"multiple times a day, return errors until eventually one execution works."
+msgstr ""
+"गड़बड़ी को ठीक करके, रेसिपी को फिर से लागू करने के लिए, 'अभी चलाएं' पर क्लिक करें.  "
+"विकल्प के तौर पर कुछ गड़बड़ियां स्वीकार की जा सकती हैं. जैसे, किसी टास्क में पूरे दिन क्या "
+"गड़बड़ी हो सकती है, उसके एंडपॉइंट की पहचान कई बार की जाती है. हालांकि, ऐसे मौके पर यह "
+"टास्क काम भी करता है."
+
+#: templates/website/help.html:190
+msgid "Share Recipe"
+msgstr "रेसिपी शेयर करें"
+
+#: templates/website/help.html:191
+msgid ""
+"Why share instructions when you can share a working workflow.  Every custom "
+"recipe created in the StarThinker UI can be shared with clients.  Create a "
+"recipe then click the Download button. DO NOT INCLUDE PASSWORDS OR "
+"CONFIDENTIAL INFORMATION IN SHARED RECIPES.  Shared recipes can be executed "
+"via <a href=\"https://colab.research.google.com/\" target=\"_blank\">Google "
+"Collaboratory</a>, <a href=\"https://github.com/google/starthinker/blob/"
+"master/tutorials/deploy_airflow.md\" target=\"_blank\">Airflow/Composer</a>, "
+"<a href=\"https://github.com/google/starthinker/blob/master/tutorials/"
+"deploy_package.md\" target=\"_blank\">Python</a>, or <a href=\"https://"
+"github.com/google/starthinker/blob/master/tutorials/deploy_enterprise.md\" "
+"target=\"_blank\">UI</a>."
+msgstr ""
+"जब आप काम के तौर पर इस्तेमाल होने वाले किसी वर्कफ़्लो को शेयर कर सकते हैं, तो निर्देश शेयर "
+"करने की क्या ज़रूरत है.  StarThinker यूज़र इंटरफ़ेस (यूआई) में बनाई गई हर एक कस्टम रेसिपी "
+"को क्लाइंट के साथ शेयर किया जा सकता है.  कोई रेसिपी बनाएं. इसके बाद, 'डाउनलोड करें' "
+"बटन पर क्लिक करें. DO NOT INCLUDE PASSWORDS OR CONFIDENTIAL INFORMATION IN "
+"SHARED RECIPES.  शेयर की गई रेसिपी, <a href=\"https://colab.research.google."
+"com/\" target=\"_blank\">Google Collaboratory</a>, <a href=\"https://github."
+"com/google/starthinker/blob/master/tutorials/deploy_airflow.md\" target="
+"\"_blank\">Airflow/Composer</a>, <a href=\"https://github.com/google/"
+"starthinker/blob/master/tutorials/deploy_package.md\" target=\"_blank"
+"\">Python</a>, or <a href=\"https://github.com/google/starthinker/blob/"
+"master/tutorials/deploy_enterprise.md\" target=\"_blank\">UI</a> की मदद से "
+"लागू की जा सकती हैं."
+
+#: templates/website/help.html:194
+msgid ""
+"https://github.com/google/starthinker/raw/master/tutorials/images/"
+"ui_download.png"
+msgstr ""
+"https://github.com/google/starthinker/raw/master/tutorials/images/"
+"ui_download.png"
+
+#: templates/website/help.html:194
+msgid "Screenshot of StarThinker Download Recipe page."
+msgstr "StarThinker की रेसिपी में डाउनलोड करने वाले पेज का स्क्रीनशॉट."
+
+#: templates/website/help.html:201
+msgid "Google Collaboratory"
+msgstr "Google Colaboratory"
+
+#: templates/website/help.html:202
+msgid ""
+"Ideal for non-technical clients who want to execute the recipe on demand."
+msgstr ""
+"Google Colaboratory, उन क्लाइंट के लिए काफ़ी बेहतर माना जाता है जो तकनीक के बारे में "
+"ज़्यादा नहीं जानते और मांग पर रेसिपी लागू करना चाहते हैं."
+
+#: templates/website/help.html:204
+msgid "Use for demos and workshops."
+msgstr "डेमो और वर्कशॉप के लिए, Google Colaboratory का इस्तेमाल करें."
+
+#: templates/website/help.html:205 templates/website/help.html:215
+msgid "Allows customization."
+msgstr "कस्टमाइज़ेशन की अनुमति देता है."
+
+#: templates/website/help.html:206
+msgid "No coding necessary."
+msgstr "कोडिंग की ज़रूरत नहीं होती."
+
+#: templates/website/help.html:207 templates/website/help.html:227
+msgid "Requires a free Google Cloud Project for credentials."
+msgstr "क्रेडेंशियल के लिए, मुफ़्त Google Cloud Project की ज़रूरत है."
+
+#: templates/website/help.html:211
+msgid "Airflow/Composer"
+msgstr "Airflow/Composer"
+
+#: templates/website/help.html:212
+msgid ""
+"Ideal for highly technical clients with engineering teams already using "
+"Airflow/Composer."
+msgstr ""
+"Google Colaboratory, तकनीकी तौर पर काफ़ी अच्छे माने जाने वाले उन क्लाइंट के लिए, बहुत "
+"बेहतर माना जाता है जिनके पास पेशेवर इंजीनियर की टीम है और वे पहले से ही Airflow/"
+"Composer का इस्तेमाल कर रहे हैं."
+
+#: templates/website/help.html:214
+msgid "Use for long running jobs using Airflow."
+msgstr ""
+"Airflow का इस्तेमाल करते हुए, काम को लंबे समय तक चलाने के लिए, Google Colaboratory "
+"को आज़माएं."
+
+#: templates/website/help.html:216 templates/website/help.html:226
+msgid "Extensive coding required."
+msgstr "कोडिंग के ज़्यादा इस्तेमाल की ज़रूरत है."
+
+#: templates/website/help.html:217
+msgid "Requires a paid Google Cloud Composer instance."
+msgstr ""
+"सिर्फ़ एक काम के लिए भी Google Cloud Composer को पैसे देकर इस्तेमाल करने की ज़रूरत है."
+
+#: templates/website/help.html:221
+msgid "Python"
+msgstr "Python"
+
+#: templates/website/help.html:222
+msgid ""
+"Ideal for highly technical clients who want a minimal deployment footprint."
+msgstr ""
+"Python, तकनीकी तौर पर काफ़ी अच्छे माने जाने वाले उन क्लाइंट के लिए बहुत बेहतर माना जाता "
+"है जो कम से कम लोगों के साथ रेसिपी शेयर करना चाहते हैं."
+
+#: templates/website/help.html:224
+msgid "Use for custom infrastructure integration."
+msgstr "कस्टम इन्फ़्रास्ट्रक्चर इंटिग्रेशन के लिए, Python का इस्तेमाल करें."
+
+#: templates/website/help.html:225
+msgid "Allows minimal customization."
+msgstr "Python, कम से कम कस्टमाइज़ेशन की अनुमति देता है."
+
+#: templates/website/help.html:231
+msgid "UI"
+msgstr "यूज़र इंटरफ़ेस (यूआई)"
+
+#: templates/website/help.html:232
+msgid ""
+"Ideal for teams wanting to build recipes at scale for multiple accounts."
+msgstr ""
+"Python, उन टीमों के लिए काफ़ी बेहतर माना जाता है जो कई खातों के लिए, रेसिपी बनाने की "
+"मांग करते हैं."
+
+#: templates/website/help.html:234
+msgid "Use one UI for entire team."
+msgstr ""
+
+#: templates/website/help.html:235
+msgid "Support no-coding UI recipe builder."
+msgstr "बिना कोडिंग के यूज़र इंटरफ़ेस (यूआई) रेसिपी बिल्डर के लिए सहायता."
+
+#: templates/website/help.html:236
+msgid "Operations and support required."
+msgstr "कार्रवाई और सहायता ज़रूरी है."
+
+#: templates/website/help.html:237
+msgid "Requires a paid Google Cloud Project."
+msgstr "पेसे देकर Google Cloud Project इस्तेमाल करने की ज़रूरत है."
+
+#: templates/website/help.html:245
+msgid ""
+"StarThinker will do what you tell it to.  IT RUNS AS YOU, if you have access "
+"it will do it, be careful about overwriting, creating, sharing, or deleting "
+"data. Double check everything before running tasks.  Undo is not a feature."
+msgstr ""
+"आप जो कहेंगे, StarThinker वही करेगा.  IT RUNS AS YOU, अगर आप StarThinker का "
+"इस्तेमाल करते हैं, तो आपका बाकी काम यह खुद कर देगा. हालांकि, डेटा को ओवरराइट करने, उसे "
+"बनाने, शेयर करने, और उसे मिटाने जैसी बातों का ध्यान ज़रूर रखें. टास्क चलाने से पहले, सभी "
+"चीज़ों को फिर से जांच लें.  'पहले जैसा करें' एक सुविधा नहीं है."
+
+#: templates/website/help.html:249
+msgid "DATASETS ARE NOT DELETED when a recipe is deleted."
+msgstr "DATASETS ARE NOT DELETED जब किसी रेसिपी को मिटाया जाता है."
+
+#: templates/website/help.html:251
+msgid "You will have to manually delete the dataset."
+msgstr "आपको मैन्युअल तरीके से डेटासेट मिटाना होगा."
+
+#: templates/website/help.html:252
+msgid "You will have to verify dataset contains what you want before sharing."
+msgstr ""
+"शेयर करने से पहले, आप जो चाहते हैं उसके लिए आपको डेटासेट में दी गई जानकारी की पुष्टि करनी "
+"होगी."
+
+#: templates/website/help.html:258
+msgid "Changing DBM / DCM report definition requires delete of report."
+msgstr "DBM / DCM रिपोर्ट की परिभाषा बदलने के लिए, रिपोर्ट को हटाना ज़रूरी है."
+
+#: templates/website/help.html:260
+msgid "You will have to go into DBM / DCM and delete the report."
+msgstr "आपको DBM / DCM में जाना होगा और रिपोर्ट को हटाना होगा."
+
+#: templates/website/help.html:261
+msgid "StarThinker will then create the new report definition."
+msgstr "StarThinker तब एक नई रिपोर्ट की परिभाषा बनाएगा."
+
+#: templates/website/help.html:267
+msgid "BigQuery views are not modified by StarThinker if they exist."
+msgstr ""
+"अगर BigQuery के व्यू मौजूद हैं, तो इसका मतलब है कि उनमें StarThinker की मदद से बदलाव "
+"नहीं किया गया है."
+
+#: templates/website/help.html:269
+msgid "This is to protect any customizations you may have added."
+msgstr "आपने जो भी कस्टमाइज़ेशन जोड़े हैं, यह उन्हें सुरक्षित रखने के लिए है."
+
+#: templates/website/help.html:270
+msgid "You will have to delete the view for StarThinker to recreate it."
+msgstr "आपको इसे फिर से बनाने के लिए, StarThinker के व्यू को हटाना होगा."
+
+#: templates/website/help.html:276
+msgid "All tasks in a recipe are executed, even if ones prior fail."
+msgstr "किसी रेसिपी के सभी टास्क लागू किए जाते हैं, भले ही पहले लागू न हो पाए हों."
+
+#: templates/website/help.html:278
+msgid "This allows retries of the same task later in the day."
+msgstr "यह एक दिन में उसी टास्क को फिर से कोशिश करने की अनुमति देता है."
+
+#: templates/website/help.html:279
+msgid "For mission critical data flows, check your data before acting on it."
+msgstr ""
+"Mission Critical के डेटा फ़्लो के लिए, उस टास्क पर काम करने से पहले अपने डेटा की जांच करें."
+
+#: templates/website/help.html:285
+msgid "All errors and fields come from the API documentation."
+msgstr "सभी गड़बड़ी और फ़ील्ड, एपीआई दस्तावेज़ के तहत आते हैं."
+
+#: templates/website/help.html:287
+msgid ""
+"When looking for field values or formats consult the approriate API "
+"documentation."
+msgstr ""
+"आप जब फ़ील्ड वैल्यू और फ़ॉर्मैट खोज कर रहे हों, तो उस एपीआई दस्तावेज़ की मदद लें जिसमें, इसके "
+"बारे में सलाह दी गई है."
+
+#: templates/website/help.html:288
+msgid ""
+"When errors are thrown, the log shows them, consult the API documents to "
+"resolve the error."
+msgstr ""
+"जब सभी गड़बड़ी हटा दी जाती हैं, तो लॉग उन्हें दिखाता है. गड़बड़ी को ठीक करने के लिए, उन "
+"एपीआई दस्तावेज़ की मदद लें जिनमें इसके बारे में सलाह दी गई है."
+
+#: templates/website/help.html:294
+msgid "StarThinker does not gurantee exact task execution time."
+msgstr "StarThinker, टास्क के लागू होने के सटीक समय की जानकारी नहीं देता है."
+
+#: templates/website/help.html:296
+msgid "All tasks are executed in sequence."
+msgstr "सभी टास्क क्रम से लागू किए जाते हैं."
+
+#: templates/website/help.html:297
+msgid "Tasks run at or after the scheduled hour, depending on worker load."
+msgstr "वर्कर लोड के हिसाब से, टास्क शेड्यूल किए गए घंटे पर या उसके बाद चलता है."
+
+#: templates/website/help.html:298
+msgid "If a task fails, remianing tasks are still executed."
+msgstr ""
+"अगर कोई टास्क लागू नहीं हो पाया है, तो बाकी बचे टास्क अब भी लागू किए जा सकते हैं."
+
+#: templates/website/help.html:309
+msgid ""
+"Errors in StarThinker can range from a misconfigured field value to a bug in "
+"the code.  To promptly resolve most issues please follow these debugging "
+"steps."
+msgstr ""
+"StarThinker में आई सभी गड़बड़ी, एक गलत कॉन्फ़िगरेशन फ़ील्ड वैल्यू से लेकर किसी बग तक की हो "
+"सकती हैं.  ज़्यादातर समस्याओं को तुरंत ठीक करने के लिए, कृपया डीबग करने के ये तरीके आज़माएं."
+
+#: templates/website/help.html:310
+msgid ""
+"When working with StarThinker administrators, please include the recipe "
+"number, found in the recipe edit URL, in all communications."
+msgstr ""
+"जब आप StarThinker एडमिन के साथ काम करते हैं, तो कृपया सभी कम्यूनिकेशन के लिए, रेसिपी "
+"एडिट यूआरएल में पाया गया रेसिपी नंबर शामिल करें."
+
+#: templates/website/help.html:312
+msgid ""
+"Consult the log and reference the error in the API documentation relevant to "
+"the product used in the task."
+msgstr ""
+"लॉग से सलाह लें और टास्क में इस्तेमाल किए गए प्रॉडक्ट के लिए क्या मददगार होगा इसके लिए, "
+"एपीआई दस्तावेज़ में गड़बड़ी का रेफ़रंस लें."
+
+#: templates/website/help.html:313
+msgid "Ensure the service account used in the recipe exists and is valid."
+msgstr "पक्का करें कि रेसिपी में इस्तेमाल किया गया सेवा खाता, मौजूद है और मान्य है."
+
+#: templates/website/help.html:314
+msgid ""
+"Try logging out and logging back in to refresh user credentials and access "
+"to APIs."
+msgstr ""
+"उपयोगकर्ता के क्रेडेंशियल रीफ़्रेश करने के साथ-साथ एपीआई ऐक्सेस करने के लिए, लॉग आउट और फिर "
+"से लॉग इन करने की कोशिश करें."
+
+#: templates/website/help.html:315
+msgid ""
+"Contact the administrator of the StarThinker UI where the recipe was "
+"deployed."
+msgstr ""
+"StarThinker यूज़र इंटरफ़ेस (यूआई) के एडमिन से संपर्क करें, जहां रेसिपी को डिप्लॉय किया गया "
+"था."
+
+#: templates/website/help.html:316
+msgid ""
+"Contact the owner of the solution listed on the <a href=\"https://google."
+"github.io/starthinker/\" target=\"_blank\">Solution Gallery Page</a>."
+msgstr ""
+"<a href=\"https://google.github.io/starthinker/\" target=\"_blank\">समाधान "
+"गैलरी पेज</a> पर दी गई सूची की मदद से, सॉल्यूशन के मालिक से संपर्क करें."
+
+#: templates/website/help.html:317
+msgid ""
+"Contact <a href=\"mailto:starthinker-help@google.com\">starthinker-"
+"help@google.com</a>."
+msgstr ""
+"<a href=\"mailto:starthinker-help@google.com\">starthinker-help@google.com</"
+"a> से संपर्क करें."
+
+#: templates/website/solution.html:53
+msgid "Sample Screenshot"
+msgstr "सैंपल स्क्रीनशॉट"
+
+#: templates/website/solutions.html:76
+msgid ""
+"These recipes are entire workflows that deploy end to end solutions for "
+"clients."
+msgstr ""
+"ये रेसिपी पूरे वर्कफ़्लो की तरह हैं, जो क्लाइंट के लिए एंड-टू-एंड सॉल्यूशन को डिप्लॉय करती हैं."
+
+#: templates/website/solutions.html:80 templates/website/solutions.html:83
+#: templates/website/solutions.html:86
+msgid "days"
+msgstr "दिन"
+
+#: templates/website/solutions.html:89
+msgid "older"
+msgstr "पुराना"
+
+#: templates/website/solutions.html:154
+msgid "Run These Workflows In Minutes On Google Cloud"
+msgstr "Google Cloud पर मिनटों में ये वर्कफ़्लो चलाएं"
+
+#: templates/website/solutions.html:155
+msgid ""
+"Everything from a quick Google Cloud UI to reference developer code for your "
+"team in one GitHub repository."
+msgstr ""
+"एक GitHub डेटा स्टोर करने की जगह में अपनी टीम के लिए डेवलपर कोड का रेफ़रंस देने सहित और "
+"भी कई काम, पहले से ज़्यादा तेज़ Google Cloud यूज़र इंटरफ़ेस (यूआई) की मदद से कर सकते हैं."
+
+#: templates/website/solutions.html:158
+msgid "Deployment Steps"
+msgstr "डिप्लॉयमेंट के कदम"
+
+#: templates/website/solutions.html:161
+msgid "Developer Guide"
+msgstr "डेवलपर गाइड"
+
+#: templates/website/solutions.html:164
+msgid "UI How To"
+msgstr "यूज़र इंटरफ़ेस (यूआई) कैसे बनाएं"
+
+#: ui/framework.py:108
+msgid "English"
+msgstr "अंग्रेज़ी"
+
+#: ui/framework.py:109
+msgid "Spanish"
+msgstr "स्पैनिश"
+
+#: ui/framework.py:110
+#, fuzzy
+#| msgid "Spanish"
+msgid "Spanish - LATAM"
+msgstr "स्पैनिश"
+
+#: ui/framework.py:111
+msgid "French"
+msgstr ""
+
+#: ui/framework.py:112
+msgid "French Candian"
+msgstr ""
+
+#: ui/framework.py:113
+msgid "Hinid"
+msgstr ""
+
+#: ui/framework.py:114
+#, fuzzy
+#| msgid "English"
+msgid "Polish"
+msgstr "अंग्रेज़ी"
+
+#: ui/framework.py:115
+msgid "Portuguese - Brazil"
+msgstr ""
+
+#, python-format
+#~ msgid "DOMAIN: %s | CAUTION: Be sure you trust this project."
+#~ msgstr "DOMAIN: %s | CAUTION: पक्का करें कि आप इस प्रोजेक्ट पर भरोसा करते हों."
+
+#, python-format
+#~ msgid "GLOBAL: %s | CAUTION: Be sure you trust this project."
+#~ msgstr "GLOBAL: %s | CAUTION: पक्का करें कि आप इस प्रोजेक्ट पर भरोसा करते हों."
+
+#, python-format
+#~ msgid "USER: %s | SAFE: Only you are using this service account."
+#~ msgstr "USER: %s | SAFE: सिर्फ़ आप, इस सेवा खाते का इस्तेमाल कर सकते हैं."
+
+#~ msgid "Use for entire teams ( same UI as this one )."
+#~ msgstr ""
+#~ "पूरी टीम के लिए Python का इस्तेमाल करें (उसी यूज़र इंटरफ़ेस (यूआई) से, जैसा कि यह है)."

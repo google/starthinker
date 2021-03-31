@@ -304,7 +304,7 @@ setup_developer() {
   echo ""
 
   developer_done=0
-  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Launch Cloud Shell UI" "Developer Worker - Single" "Developer Worker - Peristent" "Test UI" "Test Tasks" "Generate Dags Colabs And Docs" "Deploy Test PyPi", "Deploy Production PyPi")
+  developer_options=("Install Developer StarThinker" "Launch Developer UI" "Launch Cloud Shell UI" "Developer Worker - Single" "Developer Worker - Peristent" "Test UI" "Test Tasks" "Generate Dags Colabs And Docs" "Generate Translations" "Deploy Test PyPi", "Deploy Production PyPi")
 
   while (( !developer_done ))
   do
@@ -324,8 +324,9 @@ setup_developer() {
         6) test_ui; break;;
         7) test_tasks; break;;
         8) generate_assets; break;;
-        9) deploy_pypi "--test"; break;;
-        10) deploy_pypi "--production"; break;;
+        9) generate_translations; break;;
+        10) deploy_pypi "--test"; break;;
+        11) deploy_pypi "--production"; break;;
         q) developer_done=1; break;;
         *) echo "What's that?";;
       esac

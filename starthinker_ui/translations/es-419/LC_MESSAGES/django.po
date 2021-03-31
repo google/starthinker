@@ -75,45 +75,45 @@ msgstr "Identifica esta receta en la lista de recetas."
 msgid ""
 "Choose a <b>Google Cloud Project Service Credential</b> uploaded to Projects."
 msgstr ""
-"Elige una <b>credencial de servicio del proyecto de Google Cloud</b> que se "
-"haya subido a Proyectos."
+"Elige una <b>Credencial de servicio para el proyecto de Google Cloud</b> que "
+"esté subida a Proyectos."
 
 #: recipe/forms.py:68
 msgid "Frame of reference for all recipe times."
-msgstr "Referencia de todas las fechas y horas de la receta."
+msgstr "Marco de referencia para todos los tiempos de receta."
 
 #: recipe/forms.py:69
 msgid "Days of week to execute recipe."
-msgstr "Días de la semana de ejecución de la receta."
+msgstr "Días de la semana para ejecutar la receta."
 
 #: recipe/forms.py:70
 msgid "Hours of day to execute recipe."
-msgstr "Horas del día de ejecución de la receta."
+msgstr "Horas de la semana para ejecutar la receta."
 
 #: recipe/forms.py:71
 msgid "To pause recipe, uncheck this."
-msgstr "Para pausar la receta, desmarca esta opción."
+msgstr "Para detener la receta, desmarca esto."
 
 #: recipe/forms.py:74
 #, python-format
 msgid "%s Recipe"
-msgstr "Receta %s"
+msgstr "Receta de %s"
 
 #: recipe/forms.py:93
 msgid "Schedule"
-msgstr "Programación"
+msgstr "Programar"
 
 #: recipe/models_fields.py:37 recipe/models_fields.py:50
 msgid "Bad JSON string."
-msgstr "Cadena JSON incorrecta."
+msgstr "String de JSON no válida."
 
 #: templates/input_checkbox_multiple.html:26
 msgid "Off"
-msgstr "Desactivado"
+msgstr "Desactivada"
 
 #: templates/input_checkbox_multiple.html:29
 msgid "On"
-msgstr "Activar"
+msgstr "Sí"
 
 #: templates/page.html:90
 msgid "Logo"
@@ -138,7 +138,7 @@ msgstr "Ayuda"
 
 #: templates/page.html:101 templates/page.html:127
 msgid "Logout"
-msgstr "Cerrar sesión"
+msgstr "Salir"
 
 #: templates/page.html:104 templates/page.html:117
 msgid "Avatar"
@@ -154,11 +154,11 @@ msgstr "Crear proyecto de Cloud"
 
 #: templates/project/project_edit.html:40
 msgid "Create Service JSON"
-msgstr "Crear servicio JSON"
+msgstr "Crear JSON de servicio"
 
 #: templates/project/project_edit.html:45
 msgid "Permission Service"
-msgstr "Servicio de permisos"
+msgstr "Servicio de permiso"
 
 #: templates/project/project_edit.html:50
 msgid "API Key"
@@ -171,7 +171,7 @@ msgstr "Guardar"
 
 #: templates/project/project_edit.html:60
 msgid "Roles we recommend:"
-msgstr "Roles recomendados:"
+msgstr "Funciones que recomendamos:"
 
 #: templates/project/project_edit.html:61
 msgid "bigquery.jobs.create"
@@ -195,7 +195,7 @@ msgstr "bigquery.tables.updateData"
 
 #: templates/project/project_edit.html:73
 msgid "Edit Project"
-msgstr "Editar proyecto"
+msgstr "Editar el proyecto"
 
 #: templates/project/project_edit.html:74
 #, fuzzy
@@ -206,32 +206,32 @@ msgid ""
 "Copy and paste the Service JSON credentials here.  You will be able to "
 "select this project for each recipe that requires Google Cloud resources."
 msgstr ""
-"Copia y pega las credenciales del servicio JSON aquí.  Podrás seleccionar "
-"este proyecto para cada receta que necesite recursos de Google Cloud."
+"Copia y pega aquí las credenciales del JSON de servicio.  Podrás seleccionar "
+"este proyecto para cada receta que requiera recursos de Google Cloud."
 
 #: templates/project/project_edit.html:83 templates/recipe/recipe_edit.html:225
 msgid "Delete"
-msgstr "Eliminar"
+msgstr "Borrar"
 
 #: templates/project/project_list.html:28
 msgid "Create a project and use it to deploy recipes."
-msgstr "Crea un proyecto y úsalo para desplegar recetas."
+msgstr "Crea un proyecto y úsalo para implementar recetas."
 
 #: templates/project/project_list.html:50
 msgid "LEVEL SHARE"
-msgstr "NIVEL DE USO COMPARTIDO"
+msgstr "NIVELES DE USO COMPARTIDO"
 
 #: templates/recipe/download.html:34
 msgid "Script Download"
-msgstr "Descargar secuencia de comandos"
+msgstr "Descarga de la secuencia de comandos"
 
 #: templates/recipe/download.html:37
 msgid ""
 "Share your recipe with anyone outside of your organization using Google "
 "Cloud..."
 msgstr ""
-"Comparte tu receta con cualquier usuario ajeno a tu organización mediante "
-"Google Cloud..."
+"Comparte tu receta con cualquier persona fuera de tu organización con "
+"Google Cloud…"
 
 #: templates/recipe/download.html:40
 msgid "JSON"
@@ -255,29 +255,29 @@ msgid ""
 "deploy_package.md\" target=\"_blank\">package deploy</a> instructions to "
 "execute."
 msgstr ""
-"Después, sigue las instrucciones del <a href=\"https://github.com/google/"
-"starthinker/blob/master/tutorials/deploy_developer.md\" target=\"_blank"
-"\">despliegue para desarrolladores</a> o del <a href=\"https://github.com/"
-"google/starthinker/blob/master/tutorials/deploy_package.md\" target=\"_blank"
-"\">despliegue del paquete</a> para ejecutarlo."
+"Luego, sigue las instrucciones para <a href=\"https://github.com/google/"
+"starthinker/blob/master/tutorials/deploy_developer.md\" target=\"_blank\">la "
+"implementación por parte del desarrollador</a> o <a href=\"https://github."
+"com/google/starthinker/blob/master/tutorials/deploy_package.md\" target="
+"\"_blank\">la implementación como paquete</a> a fin de ejecutar el código."
 
 #: templates/recipe/download.html:50
 msgid "Best for <strong>developer / operations / modification</strong>."
-msgstr ""
-"Ideal para los equipos de <strong>desarrollo, operaciones o modificaciones</"
-"strong>."
+msgstr "Ideal para <strong>desarrolladores/operaciones/modificación</strong>"
 
 #: templates/recipe/download.html:51 templates/recipe/download.html:68
 msgid ""
 "Access to a <a href=\"https://github.com/google/starthinker/blob/master/"
 "tutorials/cloud_project.md\" target=\"_blank\">Google Cloud Project</a>."
 msgstr ""
-"Accede a un <a href=\"https://github.com/google/starthinker/blob/master/"
-"tutorials/cloud_project.md\" target=\"_blank\">proyecto de Google Cloud</a>."
+"Acceso a un <a href=\"https://github.com/google/starthinker/blob/master/"
+"tutorials/cloud_project.md\" target=\"_blank\">proyecto de Google Cloud</a>"
 
 #: templates/recipe/download.html:52
 msgid "Ability to install, troubleshoot, and run Python."
-msgstr "Capacidad para instalar, corregir y ejecutar código en Python."
+msgstr ""
+"Capacidad de instalar y ejecutar Python, así como de solucionar problemas "
+"relacionados"
 
 #: templates/recipe/download.html:57
 msgid "Collaboratory"
@@ -285,32 +285,31 @@ msgstr "Colaboratory"
 
 #: templates/recipe/download.html:58
 msgid "Data Pill"
-msgstr "Data Pill"
+msgstr "Data Pill"
 
 #: templates/recipe/download.html:64
 msgid ""
 "Then visit <a href=\"https://colab.research.google.com/\" target=\"_blank"
 "\">Google Collaboratory</a> and open the downloaded notebook."
 msgstr ""
-"A continuación, ve a <a href=\"https://colab.research.google.com/\" target="
-"\"_blank\">Google Colaboratory</a> y abre el cuaderno descargado."
+"Luego, visita <a href=\"https://colab.research.google.com/\" target=\"_blank"
+"\">Google Colaboratory</a> y abre el notebook descargado."
 
 #: templates/recipe/download.html:67
 msgid "Best for <strong>trade desk / analyst / workshop</strong>."
-msgstr ""
-"Ideal para equipos de <strong>trading desks, analistas o talleres</strong>."
+msgstr "Ideal para <strong>mesas de operaciones/analistas/talleres</strong>"
 
 #: templates/recipe/download.html:69
 msgid ""
 "Access to <a href=\"https://colab.research.google.com/\" target=\"_blank"
 "\">Google Collaboratory</a>."
 msgstr ""
-"Accede a <a href=\"https://colab.research.google.com/\" target=\"_blank"
-"\">Google Colaboratory</a>."
+"Acceso a <a href=\"https://colab.research.google.com/\" target=\"_blank"
+"\">Google Colaboratory</a>"
 
 #: templates/recipe/download.html:74
 msgid "Composer"
-msgstr "Composición"
+msgstr "Compositor"
 
 #: templates/recipe/download.html:75 templates/recipe/tasks.html:121
 msgid "Airflow DAG"
@@ -329,32 +328,30 @@ msgid ""
 "master/tutorials/deploy_airflow.md\" target=\"_blank\">airflow deploy</a> "
 "instructions."
 msgstr ""
-"Para ejecutarlo como un DAG con Apache Airflow y Google Cloud Composer, "
+"Si deseas ejecutar un DAG utilizando Apache Airflow y Google Cloud Composer, "
 "sigue las instrucciones para <a href=\"https://github.com/google/starthinker/"
-"blob/master/tutorials/deploy_airflow.md\" target=\"_blank\">desplegar "
-"StarThinker en Airflow</a>."
+"blob/master/tutorials/deploy_airflow.md\" target=\"_blank\">la "
+"implementación de Airflow</a> correspondientes a StarThinker."
 
 #: templates/recipe/download.html:83
 msgid "Best for <strong>developer / partner / production</strong>."
-msgstr ""
-"Ideal para equipos de <strong>desarrolladores, partners o producción</"
-"strong>."
+msgstr "Ideal para <strong>desarrolladores/socios/producción</strong>"
 
 #: templates/recipe/download.html:84
 msgid ""
 "Access to a <a href=\"https://github.com/google/starthinker/blob/master/"
 "tutorials/cloud_project.md\" target=\"_blank\">Google Cloud Project\"</a>."
 msgstr ""
-"Accede a un <a href=\"https://github.com/google/starthinker/blob/master/"
-"tutorials/cloud_project.md\" target=\"_blank\">proyecto de Google Cloud</a>."
+"Acceso a un <a href=\"https://github.com/google/starthinker/blob/master/"
+"tutorials/cloud_project.md\" target=\"_blank\">proyecto de Google Cloud\"</a>"
 
 #: templates/recipe/download.html:85
 msgid ""
 "Access to <a href=\"https://cloud.google.com/composer/\" target=\"_blank"
 "\">Google Cloud Composer</a>."
 msgstr ""
-"Accede a <a href=\"https://cloud.google.com/composer/\" target=\"_blank"
-"\">Google Cloud Composer</a>."
+"Acceso a <a href=\"https://cloud.google.com/composer/\" target=\"_blank"
+"\">Google Cloud Composer</a>"
 
 #: templates/recipe/download.html:89
 msgid "More Documentation On GitHub"
@@ -365,9 +362,9 @@ msgid ""
 "See <a href=\"https://github.com/google/starthinker/blob/master/tutorials/"
 "README.md\">StarThinker Tutorials</a> for complete documentation."
 msgstr ""
-"Para consultar la documentación completa, accede a los <a href=\"https://"
-"github.com/google/starthinker/blob/master/tutorials/README.md\">tutoriales "
-"de StarThinker</a>."
+"Consulta <a href=\"https://github.com/google/starthinker/blob/master/"
+"tutorials/README.md\">Instructivos de StarThinker</a> para ver toda la "
+"documentación."
 
 #: templates/recipe/log.html:30
 msgid "Hour"
@@ -387,7 +384,7 @@ msgstr "Horas:"
 
 #: templates/recipe/recipe_edit.html:183 templates/website/help.html:130
 msgid "Add"
-msgstr "Añadir"
+msgstr "Agregar"
 
 #: templates/recipe/recipe_edit.html:190 templates/recipe/recipe_edit.html:198
 #: templates/website/help.html:135
@@ -400,7 +397,7 @@ msgstr "Cancelar"
 
 #: templates/recipe/recipe_edit.html:209 templates/website/help.html:136
 msgid "Log"
-msgstr "Registro"
+msgstr "Ir al registro"
 
 #: templates/recipe/recipe_edit.html:233
 msgid ""
@@ -408,7 +405,7 @@ msgid ""
 "\">access_time</i></a> for scheduled recipes."
 msgstr ""
 "Haz clic en <a href=\"/recipe/edit/\"><i class=\"material-icons blue-text"
-"\">access_time</i></a> para ver las recetas programadas."
+"\">access_time</i></a> para ver recetas programadas."
 
 #: templates/recipe/recipe_edit.html:235
 msgid ""
@@ -416,7 +413,7 @@ msgid ""
 "\">build</i></a> for manual recipes."
 msgstr ""
 "Haz clic en <a href=\"/recipe/manual/\"><i class=\"material-icons blue-text"
-"\">build</i></a> para ver las recetas manuales."
+"\">build</i></a> para ver recetas manuales."
 
 #: templates/recipe/recipe_edit.html:238
 msgid ""
@@ -424,53 +421,55 @@ msgid ""
 "to select a card. Then click another <i class=\"material-icons blue-text"
 "\">drag_handle</i> to place it above that card."
 msgstr ""
-"Si quieres mover un paso, haz clic en <i class=\"material-icons blue-text"
-"\">drag_handle</i> para seleccionar una tarjeta. Después, haz clic en otro "
-"<i class=\"material-icons blue-text\">drag_handle</i> para colocarlo encima "
-"de esa tarjeta."
+"Para mover un paso, haz clic en <i class=\"material-icons blue-text"
+"\">drag_handle</i> a fin de seleccionar una tarjeta. Luego, haz clic en otro "
+"ícono <i class=\"material-icons blue-text\">drag_handle</i> para colocar el "
+"paso encima de esa tarjeta."
 
 #: templates/recipe/recipe_edit.html:239
 msgid ""
 "To delete a step click <i class=\"material-icons blue-text\">delete</i> to "
 "mark a step for deletion. Then click save to commit the delete."
 msgstr ""
-"Si quieres eliminar un paso, haz clic en <i class=\"material-icons blue-text"
-"\">delete</i>. Después, haz clic en el botón de guardar para confirmar la "
-"acción."
+"Si ya no deseas incluir un paso, haz clic en <i class=\"material-icons blue-"
+"text\">delete</i> a fin de marcarlo para que se lo borre. Luego, haz clic en "
+"Guardar para confirmar la eliminación."
 
 #: templates/recipe/recipe_list.html:44
 msgid "Assemble recipes that run on a schedule or are triggered manually."
-msgstr "Combina recetas que se ejecutan automática o manualmente."
+msgstr ""
+"Organiza las recetas que se ejecutan según un programa o que se activan "
+"manualmente."
 
 #: templates/recipe/recipe_list.html:48
 msgid "Add Scheduled"
-msgstr "Añadir receta programada"
+msgstr "Agregar programada"
 
 #: templates/recipe/recipe_list.html:51
 msgid "Add Manual"
-msgstr "Añadir receta manual"
+msgstr "Agregar manual"
 
 #: templates/recipe/recipe_list.html:57 templates/recipe/tasks.html:35
 #: templates/website/solution.html:36 templates/website/solutions.html:78
 #: templates/website/solutions.html:98
 msgid "All"
-msgstr "Todo"
+msgstr "Todas"
 
 #: templates/recipe/recipe_list.html:60 templates/website/help.html:161
 msgid "Running"
-msgstr "En ejecución"
+msgstr "Activa"
 
 #: templates/recipe/recipe_list.html:63 templates/website/help.html:166
 msgid "Finished"
-msgstr "Finalizado"
+msgstr "Finalizada"
 
 #: templates/recipe/recipe_list.html:66
 msgid "Errors"
-msgstr "Errores"
+msgstr "Con errores"
 
 #: templates/recipe/recipe_list.html:69 templates/website/help.html:171
 msgid "Paused"
-msgstr "Pausado"
+msgstr "Detenida"
 
 #: templates/recipe/recipe_list.html:72
 msgid "Manual"
@@ -486,22 +485,22 @@ msgid ""
 "help@google.com?subject=Custom+StarThinker+Recipe\">starthinker-help@google."
 "com</a>."
 msgstr ""
-"Envía un correo electrónico a <a href=\"mailto:starthinker-help@google.com?"
-"subject=Custom+StarThinker+Recipe\">starthinker-help@google.com</a> para "
-"pedir al equipo gTech de Google que te escriba una."
+"Escribe a <a href=\"mailto:starthinker-help@google.com?subject=Custom"
+"+StarThinker+Recipe\">starthinker-help@google.com</a> para pedirle al equipo "
+"de Google gTech que escriba un flujo de trabajo para ti."
 
 #: templates/recipe/tasks.html:61
 msgid "Add A Script To Your Recipe Workflow"
-msgstr "Añadir una secuencia de comandos al flujo de trabajo de tu receta"
+msgstr "Agrega una secuencia de comandos al flujo de trabajo de tu receta"
 
 #: templates/recipe/tasks.html:63
 msgid ""
 "Use the filters on the left to find a script, then click the add icon to add "
 "it to the end of the workflow."
 msgstr ""
-"Usa los filtros de la izquierda para buscar una secuencia de comandos y, a "
-"continuación, haz clic en el icono para añadirla al final del flujo de "
-"trabajo."
+"Usa los filtros que están a la izquierda para buscar una secuencia de "
+"comandos. Luego, haz clic en el ícono de agregar para añadirla al final del "
+"flujo de trabajo."
 
 #: templates/recipe/tasks.html:64
 #, fuzzy
@@ -509,7 +508,8 @@ msgstr ""
 msgid ""
 "The lists on the left scroll <i class=\"small material-icons\">swap_vert</i>."
 msgstr ""
-"Las listas se desplazan <i class=\"small material-icons\">swap_vert</i>."
+"Las listas a la izquierda se desplazan de forma vertical <i class=\"small "
+"material-icons\">swap_vert</i>."
 
 #: templates/recipe/tasks.html:97
 msgid "Sample "
@@ -529,7 +529,7 @@ msgstr "GitHub"
 
 #: templates/recipe/tasks.html:118
 msgid "Data Pill Colab"
-msgstr "Data Pill Colab"
+msgstr "Data Pill en Colab"
 
 #: templates/website/help.html:37
 msgid "Setup"
@@ -541,7 +541,7 @@ msgstr "Receta"
 
 #: templates/website/help.html:45
 msgid "Sharing"
-msgstr "Compartir"
+msgstr "Se comparte"
 
 #: templates/website/help.html:49 templates/website/help.html:149
 msgid "Status"
@@ -549,7 +549,7 @@ msgstr "Estado"
 
 #: templates/website/help.html:53 templates/website/help.html:244
 msgid "Warnings"
-msgstr "Advertencias"
+msgstr "Con advertencias"
 
 #: templates/website/help.html:57 templates/website/help.html:308
 msgid "Debugging"
@@ -557,7 +557,7 @@ msgstr "Depuración"
 
 #: templates/website/help.html:63
 msgid "Setup Project"
-msgstr "Configurar proyecto"
+msgstr "Configurar un proyecto"
 
 #: templates/website/help.html:66
 msgid ""
@@ -565,10 +565,10 @@ msgid ""
 "\" target=\"_blank\">Google Cloud Project</a> to store data.  ALL DATA COSTS "
 "ARE BILLED TO THE GOOGLE CLOUD SERVICE CREDENTIALS SPECIFIED IN EACH RECIPE."
 msgstr ""
-"Casi todas las recetas de StarThinker usan <a href=\"http://cloud.google.com"
-"\" target=\"_blank\">proyectos de Google Cloud</a> para almacenar datos.  "
-"TODOS LOS COSTES DE DATOS SE FACTURAN A LAS CREDENCIALES DE SERVICIO DE "
-"GOOGLE CLOUD QUE SE ESPECIFICAN EN CADA RECETA."
+"Casi todas las recetas de StarThinker utilizan un <a href=\"http://cloud."
+"google.com\" target=\"_blank\">proyecto de Google Cloud</a> para almacenar "
+"datos.  TODOS LOS COSTOS RELACIONADOS CON LOS DATOS SE FACTURAN A LAS "
+"CREDENCIALES DE SERVICIO DE GOOGLE CLOUD ESPECIFICADAS EN CADA RECETA."
 
 #: templates/website/help.html:68
 msgid ""
@@ -578,10 +578,10 @@ msgid ""
 "<a href=\"https://raw.githubusercontent.com/google/starthinker/master/"
 "tutorials/images/ui_project.png\">StarThinker Project page</a>."
 msgstr ""
-"Si quieres añadir un proyecto de Google Cloud para gestionar la facturación "
-"y los permisos, crea <a href=\"https://console.cloud.google.com/iam-admin/"
-"serviceaccounts/create\" target=\"_blank\">credenciales de servicio</a>, "
-"descárgalas e introduce el JSON en la <a href=\"https://raw."
+"A fin de agregar un proyecto de Google Cloud para facturación y permisos, "
+"crea un archivo JSON con las <a href=\"https://console.cloud.google.com/iam-"
+"admin/serviceaccounts/create\" target=\"_blank\">credenciales de servicio</"
+"a>, descárgalo y, luego, ingrésalo en la <a href=\"https://raw."
 "githubusercontent.com/google/starthinker/master/tutorials/images/ui_project."
 "png\">página del proyecto de StarThinker</a>."
 
@@ -592,11 +592,11 @@ msgid ""
 "\"_blank\">Service Credentials</a>, download it, and enter the JSON into the "
 "<a href=\"/project/edit/\">StarThinker Project page</a>."
 msgstr ""
-"Si quieres añadir un proyecto de Google Cloud para gestionar la facturación "
-"y los permisos, crea <a href=\"https://console.cloud.google.com/iam-admin/"
-"serviceaccounts/create\" target=\"_blank\">credenciales de servicio</a>, "
-"descárgalas e introduce el JSON en la <a href=\"/project/edit/\">página del "
-"proyecto de StarThinker</a>."
+"A fin de agregar un proyecto de Google Cloud para facturación y permisos, "
+"crea un archivo JSON con las <a href=\"https://console.cloud.google.com/iam-"
+"admin/serviceaccounts/create\" target=\"_blank\">credenciales de servicio</"
+"a>, descárgalo y, luego, ingrésalo en la <a href=\"/project/edit/\">página "
+"del proyecto de StarThinker</a>."
 
 #: templates/website/help.html:76
 msgid ""
@@ -608,7 +608,7 @@ msgstr ""
 
 #: templates/website/help.html:76
 msgid "Cloud service setup diagram."
-msgstr "Diagrama de configuración del servicio de Cloud."
+msgstr "Diagrama de la configuración del servicio en la nube"
 
 #: templates/website/help.html:79
 msgid ""
@@ -620,27 +620,28 @@ msgstr ""
 
 #: templates/website/help.html:79
 msgid "Screenshot of StarThinker Edit Project page."
-msgstr "Captura de pantalla de la página Editar proyecto de StarThinker."
+msgstr "Captura de pantalla de la página Editar el proyecto de StarThinker"
 
 #: templates/website/help.html:82
 msgid "Getting Service Credentials"
-msgstr "Obtener credenciales de servicio"
+msgstr "Cómo obtener las credenciales de servicio"
 
 #: templates/website/help.html:83
 msgid ""
 "Each user should have their own Google Cloud Project to avoid accidental "
 "data sharing and allow easier auditing."
 msgstr ""
-"Cada usuario debe tener su propio proyecto de Google Cloud para evitar "
-"compartir datos por error y para facilitar las auditorías."
+"Cada usuario debería tener su propio proyecto de Google Cloud a fin de "
+"evitar compartir datos de forma accidental y facilitar las tareas de "
+"auditoría."
 
 #: templates/website/help.html:85
 msgid ""
 "Visit Google Cloud Project &gt; APIs & Services &gt; Credentials &gt; Create "
 "Credentials &gt; Service Account Key &gt; New Service Account"
 msgstr ""
-"Ve al proyecto de Google Cloud &gt; APIs y servicios &gt; Credenciales &gt; "
-"Crear credenciales &gt; Clave de cuenta de servicio &gt; Nueva cuenta de "
+"Ve a Proyecto de Google Cloud &gt; API y servicios &gt; Credenciales &gt; "
+"Crear credenciales &gt; Clave de cuenta de servicio &gt; Nueva cuenta de "
 "servicio"
 
 #: templates/website/help.html:86
@@ -656,8 +657,8 @@ msgid ""
 "The most robust role is Project Editor, review your role choice with your "
 "security team."
 msgstr ""
-"El rol más permisivo es Editor del proyecto. Revisa los roles que has "
-"elegido con tu equipo de seguridad."
+"La función más completa es la de Editor del proyecto. Consulta al equipo de "
+"seguridad para ver cuál es la función adecuada en tu caso."
 
 #: templates/website/help.html:89
 msgid "Click Continue."
@@ -681,17 +682,17 @@ msgid ""
 "com/google/starthinker/master/tutorials/images/ui_project.png\"> StarThinker "
 "Project page Service field</a>."
 msgstr ""
-"Copia el contenido y pégalo en el <a href=\"https://raw.githubusercontent."
+"Copia su contenido y pégalo en el <a href=\"https://raw.githubusercontent."
 "com/google/starthinker/master/tutorials/images/ui_project.png\">campo "
-"Servicio de la página del proyecto de StarThinker</a>."
+"Servicio de la página Proyecto de StarThinker</a>."
 
 #: templates/website/help.html:96
 msgid ""
 "Copy the contents and paste into the <a href=\"/project/edit/\"> StarThinker "
 "Project page Service field</a>."
 msgstr ""
-"Copia el contenido y pégalo en el <a href=\"/project/edit/\">campo Servicio "
-"de la página del proyecto de StarThinker</a>."
+"Copia su contenido y pégalo en el <a href=\"/project/edit/\">campo Servicio "
+"de la página Proyecto de StarThinker</a>."
 
 #: templates/website/help.html:98
 msgid "Click save."
@@ -703,17 +704,17 @@ msgid ""
 "githubusercontent.com/google/starthinker/master/tutorials/images/ui_recipe."
 "png\"> StarThinker Recipe pages</a>."
 msgstr ""
-"El proyecto nuevo se convertirá en una opción despegable de las <a href="
+"El nuevo proyecto se convertirá en una opción desplegable en las <a href="
 "\"https://raw.githubusercontent.com/google/starthinker/master/tutorials/"
-"images/ui_recipe.png\">páginas de recetas de StarThinker</a>."
+"images/ui_recipe.png\">páginas de Recetas de StarThinker</a>."
 
 #: templates/website/help.html:102
 msgid ""
 "The new project will become a dropdown option on <a href=\"/recipe/edit/\"> "
 "StarThinker Recipe pages</a>."
 msgstr ""
-"El proyecto nuevo se convertirá en una opción desplegable de las <a href=\"/"
-"recipe/edit/\">páginas de recetas de StarThinker</a>."
+"El nuevo proyecto se convertirá en una opción desplegable en las <a href=\"/"
+"recipe/edit/\">páginas de Recetas de StarThinker</a>."
 
 #: templates/website/help.html:105
 msgid "WARNING:"
@@ -727,15 +728,15 @@ msgid ""
 "iam-admin/iam\" target=\"_blank\"> all the permissions your service account "
 "has</a>, use extreme caution."
 msgstr ""
-"Si compartes tus credenciales de servicio, otros usuarios podrán usarlas en "
-"sus recetas, aunque no podrán descargarlas ni verlas. Al compartirlas, se "
-"otorgan <a href=\"https://console.cloud.google.com/iam-admin/iam\" target="
-"\"_blank\"> todos los permisos de tu cuenta de servicio</a> a otros "
-"usuarios, así que ten cuidado."
+"Si compartes tus credenciales de servicios, otros usuarios podrán "
+"utilizarlas en sus recetas, pero no podrán descargarlas ni verlas. Cuando "
+"compartes tus credenciales de servicio, les estás otorgando a otros usuarios "
+"<a href=\"https://console.cloud.google.com/iam-admin/iam\" target=\"_blank"
+"\">todos los permisos que tiene tu cuenta de servicio</a>; ten mucho cuidado."
 
 #: templates/website/help.html:111
 msgid "Run Recipe"
-msgstr "Ejecutar receta"
+msgstr "Ejecutar una receta"
 
 #: templates/website/help.html:112
 #, fuzzy
@@ -749,11 +750,11 @@ msgid ""
 "\">service account</a>. StarThinker DOES NOT grant any additional "
 "permissions or access to any products or endpoints used in the recipe."
 msgstr ""
-"Todas las recetas se ejecutan con la cuenta del usuario que haya iniciado "
-"sesión y usan la <a href=\"#help_setup\">cuenta de servicio</a> seleccionada "
-"para escribir en los puntos finales de Google Cloud. StarThinker NO concede "
-"permisos adicionales ni acceso a ningún producto o punto final usado en la "
-"receta."
+"Todas las recetas se ejecutan con el nombre del usuario que accedió a la <a "
+"href=\"#help_setup\">cuenta de servicio</a> y utilizan esa cuenta para "
+"escribir a los puntos de acceso de Google Cloud. StarThinker NO otorga "
+"ningún permiso ni acceso adicional a los productos o puntos de acceso "
+"utilizados en la receta."
 
 #: templates/website/help.html:115
 msgid ""
@@ -765,11 +766,11 @@ msgstr ""
 
 #: templates/website/help.html:115
 msgid "Screenshot of StarThinker Edit Recipe page."
-msgstr "Captura de pantalla de la página Editar receta de StarThinker."
+msgstr "Captura de pantalla de la página Edit Recipe de StarThinker"
 
 #: templates/website/help.html:118
 msgid "Creating A Recipe Workflow"
-msgstr "Crear el flujo de trabajo de una receta"
+msgstr "Cómo crear el flujo de trabajo de una receta"
 
 #: templates/website/help.html:119
 msgid ""
@@ -777,10 +778,9 @@ msgid ""
 "scheduled, running at set times on set days. Other than the schedule, all "
 "steps are the same."
 msgstr ""
-"Las recetas pueden ser manuales, es decir, las inicia el usuario y se "
-"ejecutan una sola vez, o programadas, en cuyo caso se ejecutan en los "
-"momentos y días establecidos. Menos la programación, el resto de los pasos "
-"son iguales en ambos tipos."
+"Las recetas pueden ser manuales (el usuario las inicia y las ejecuta solo "
+"una vez) o programadas (se ejecutan a horarios establecidos en los días "
+"indicados). Excepto la programación, todos los demás pasos son iguales."
 
 #: templates/website/help.html:122
 msgid ""
@@ -789,18 +789,18 @@ msgid ""
 "raw.githubusercontent.com/google/starthinker/master/tutorials/images/"
 "ui_manual.png\">manual</a> recipe page."
 msgstr ""
-"Visita la página de la receta <a href=\"https://raw.githubusercontent.com/"
-"google/starthinker/master/tutorials/images/ui_recipe.png\">programada</a> o "
+"Consulta la página de recetas <a href=\"https://raw.githubusercontent.com/"
+"google/starthinker/master/tutorials/images/ui_recipe.png\">programadas</a> o "
 "<a href=\"https://raw.githubusercontent.com/google/starthinker/master/"
-"tutorials/images/ui_manual.png\">manual</a>."
+"tutorials/images/ui_manual.png\">manuales</a>."
 
 #: templates/website/help.html:124
 msgid ""
 "Visit the <a href=\"/recipe/edit/\">scheduled</a> or <a href=\"/recipe/"
 "manual/\">manual</a> recipe page."
 msgstr ""
-"Visita la página de la receta <a href=\"/recipe/edit/\">programada</a> o <a "
-"href=\"/recipe/manual/\">manual</a>."
+"Consulta la página de recetas <a href=\"/recipe/edit/\">programadas</a> o <a "
+"href=\"/recipe/manual/\">manuales</a>."
 
 #: templates/website/help.html:126
 msgid ""
@@ -808,18 +808,18 @@ msgid ""
 "Dataset by some recipes, choose the name to reflect an account or client. If "
 "changed, already created assets may become disconnected."
 msgstr ""
-"Asigna un nombre a la receta que sea representativo de una cuenta o un "
-"cliente. El nombre suele servir para crear recursos, como hojas de cálculo y "
-"conjuntos de datos, a partir de algunas recetas. Si lo cambias, los recursos "
-"creados pueden desconectarse."
+"Elige un nombre para la receta que, en algunos casos, se utilizará para "
+"crear elementos tales como hojas de cálculo y conjuntos de datos. Selecciona "
+"un nombre que refleje una cuenta o cliente. Si se lo modifica, los elementos "
+"ya creados podrían desconectarse."
 
 #: templates/website/help.html:127
 msgid ""
 "If the recipe writes to Google Cloud, select the Google Cloud Project "
 "Service Account, <a href=\"#help_setup\">set up earlier</a>."
 msgstr ""
-"Si la receta escribe en Google Cloud, selecciona la cuenta de servicio del "
-"proyecto de Google Cloud que <a href=\"#help_setup\">has configurado antes</"
+"Si la receta escribe datos en Google Cloud, selecciona la cuenta de servicio "
+"del proyecto de Google Cloud que <a href=\"#help_setup\">configuraste antes</"
 "a>."
 
 #: templates/website/help.html:128
@@ -828,10 +828,10 @@ msgid ""
 "task in the recipe.  All task times and assets created by the recipe will "
 "use the timezone selected as a refrence."
 msgstr ""
-"En el caso de las recetas programadas, elige la zona horaria, los días y las "
-"horas en los que debe ejecutarse cada tarea de la receta.  Los días y las "
-"horas de las tareas y los recursos que cree la receta usarán la zona horaria "
-"que se haya seleccionado como referencia."
+"En el caso de las recetas programadas, selecciona la zona horaria, los días "
+"y las horas en que debe ejecutarse cada tarea de la receta.  Todos los "
+"horarios de las tareas y los elementos creados por la receta utilizarán la "
+"zona horaria seleccionada como referencia."
 
 #: templates/website/help.html:130 templates/website/help.html:133
 #: templates/website/help.html:135 templates/website/help.html:136
@@ -849,14 +849,15 @@ msgid ""
 "i> will appear with a count of this task in the recipe. Continue adding "
 "tasks, or close the task filter window."
 msgstr ""
-"Usa los filtros de la izquierda para buscar la tarea que quieres añadir a la "
-"receta. Puedes desplazarte hacia arriba y hacia abajo por los filtros. La "
-"mayoría de las tareas incluyen una descripción, ejemplos y enlaces a "
-"recursos en esta página. Haz clic en <i class=\"material-icons blue-text "
-"small\">add_circle</i> para añadir la tarea al final de la receta. Aparecerá "
-"el icono <i class=\"material-icons green-text small\">check_circle</i> con "
-"la posición que ocupa esta tarea en la receta. Sigue añadiendo tareas o "
-"cierra la ventana de filtros de tareas."
+"Emplea los filtros de la izquierda para buscar la tarea específica que debe "
+"agregarse a la receta. Los filtros se desplazan hacia arriba y abajo. La "
+"mayoría de las tareas proporcionan una descripción, ejemplos y vínculos a "
+"los elementos en esta página. Haz clic en <i class=\"material-icons blue-"
+"text small\">add_circle</i> para agregar la tarea al final de la receta. "
+"Aparecerá un círculo de verificación (<i class=\"material-icons green-text "
+"small\">check_circle</i>) con el número correspondiente a esta tarea en la "
+"receta. Puedes seguir agregando tareas o cerrar la ventana de filtros de "
+"tareas."
 
 #: templates/website/help.html:132
 msgid ""
@@ -865,28 +866,29 @@ msgid ""
 "derived from the API endpoints for that product."
 msgstr ""
 "Cada tarea tiene una tarjeta con sus propias instrucciones, entradas y "
-"campos.  Los campos pueden ser opcionales u obligatorios.  En algunos casos, "
-"tienen valores predeterminados. Todos los valores se extraen de los puntos "
-"finales de la API del producto correspondiente."
+"campos.  Los campos están marcados como opcionales u obligatorios.  Algunos "
+"tienen valores predeterminados. Todos los valores se derivan de los puntos "
+"de acceso de las API para ese producto."
 
 #: templates/website/help.html:133
 msgid ", the recipe is now ready to run, and will run on schedule."
-msgstr ". La receta está lista para ejecutarse según su programación."
+msgstr ""
+". Ahora la receta está lista para ejecutarse y lo hará según el programa."
 
 #: templates/website/help.html:135
 msgid ""
 "to execute the recipe immediately, if workers are busy there may be a delay. "
 "The <a href=\"#help_status\">Job Status</a> and log update every 10 seconds."
 msgstr ""
-"para ejecutar la receta de forma inmediata. Si los trabajadores están "
-"ocupados, puede retrasarse. El <a href=\"#help_status\">estado de la tarea</"
-"a> y el registro se actualizan cada 10 segundos."
+"para ejecutar la receta de inmediato. Si los trabajadores están ocupados, "
+"puede haber un retraso. El <a href=\"#help_status\">Estado del trabajo</a> y "
+"el registro se actualizan cada 10 segundos."
 
 #: templates/website/help.html:136
 msgid "to view recipe task events including errors and completes."
 msgstr ""
-"para ver eventos de tareas de la receta, incluidos los errores y los "
-"completados."
+"para ver los eventos de las tareas de las recetas, incluidos los errores y "
+"los procesos completados."
 
 #: templates/website/help.html:137
 msgid "to <a href=\"#help_share\">share the recipe</a> with a client."
@@ -899,11 +901,11 @@ msgid ""
 "multiple times a day.  Job status is updated automatically by workers as the "
 "job is processed.  The UI updates the log and status every 10 seconds."
 msgstr ""
-"Las tareas del flujo de trabajo de una receta se ejecutan una tras otra.  "
-"Algunas recetas tienen tareas que se ejecutan en diferentes momentos, y "
-"otras, tareas que se ejecutan varias veces al día.  Los trabajadores "
-"actualizan automáticamente el estado de las tareas mientras estas se "
-"procesan.  La UI actualiza el registro y el estado cada 10 segundos."
+"Cada tarea del flujo de trabajo de la receta se ejecuta en forma secuencial, "
+"de a una a la vez.  Algunas recetas incluyen tareas que se ejecutan en "
+"horarios diferentes y algunas que lo hacen varias veces en el día.  A medida "
+"que el trabajo se va procesando, los trabajadores actualizan su estado "
+"automáticamente.  La IU actualiza el registro y el estado cada 10 segundos."
 
 #: templates/website/help.html:150
 msgid "Definition"
@@ -920,40 +922,41 @@ msgstr "En cola"
 #: templates/website/help.html:157
 msgid "The recipe is waiting for workers to pick up the next task."
 msgstr ""
-"La receta está esperando a que los trabajadores inicien la siguiente tarea."
+"La receta está esperando que los trabajadores tomen la tarea siguiente."
 
 #: templates/website/help.html:158
 msgid ""
 "Wait for the next scheduled task to execute.  If workers are busy, the next "
 "taks may be executed after its scheduled time."
 msgstr ""
-"Espera a que se ejecute la siguiente tarea programada.  Si los trabajadores "
-"están ocupados, se ejecutará después de su hora programada."
+"Espera a que se ejecute la próxima tarea programada.  Si los trabajadores "
+"están ocupados, es posible que la tarea siguiente se ejecute después de su "
+"horario programado."
 
 #: templates/website/help.html:162
 msgid "A task in the recipe is currently executing."
-msgstr "Se está ejecutando una tarea de la receta."
+msgstr "Actualmente, se está ejecutando una tarea de la receta."
 
 #: templates/website/help.html:163
 msgid ""
 "Wait for the task to execute or cancel a running recipe. Check the logs to "
 "see which task is running and see real time task updates."
 msgstr ""
-"Espera a que la tarea se ejecute o cancela una receta que esté en curso. "
-"Consulta los registros para ver la tarea que se está ejecutando y sus "
-"actualizaciones en tiempo real."
+"Espera a que se realice la tarea o cancela la receta que está en ejecución. "
+"Consulta los registros para ver qué tarea se está ejecutando y obtener "
+"actualizaciones de la tarea en tiempo real."
 
 #: templates/website/help.html:167
 msgid "All tasks in the recipe completed without error."
-msgstr "Todas las tareas de la receta se han completado sin errores."
+msgstr "Todas las tareas de la receta se completaron sin errores."
 
 #: templates/website/help.html:168
 msgid ""
 "The task will resume again the next day as controlled by its timezone "
 "setting."
 msgstr ""
-"La tarea se reanudará el próximo día según la zona horaria que tenga "
-"asignada."
+"La tarea se reanudará nuevamente al día siguiente, según el control "
+"establecido por la configuración de la zona horaria correspondiente."
 
 #: templates/website/help.html:172
 msgid "No tasks in the recipe will be run."
@@ -961,16 +964,16 @@ msgstr "No se ejecutará ninguna tarea de la receta."
 
 #: templates/website/help.html:173
 msgid "Unpause the recipe to resume execution."
-msgstr "Reanuda la receta para que siga ejecutándose."
+msgstr "Reactiva la receta para reanudar la ejecución."
 
 #: templates/website/help.html:176
 msgid "Timeout"
-msgstr "Tiempo de espera"
+msgstr "Se agotó el tiempo de espera"
 
 #: templates/website/help.html:177
 msgid "The task exceeded its 8 hour limit for execution and was terminated."
 msgstr ""
-"La tarea ha superado su límite de 8 horas de ejecución y se ha cancelado."
+"La tarea se cerró porque superó el límite de 8 horas para su ejecución."
 
 #: templates/website/help.html:178
 msgid ""
@@ -979,10 +982,11 @@ msgid ""
 "typically these tasks are scheduled multiple times in a workflow and "
 "eventually work."
 msgstr ""
-"Comprueba los registros y edita la tarea para procesar menos datos y que se "
-"complete antes.  Algunos tiempos de espera se aceptan, por ejemplo, si un "
-"informe no está listo. Normalmente, estas tareas se programan varias veces y "
-"acaban funcionando."
+"Revisa los registros. Edita la tarea para que procese menos datos y pueda "
+"completarse en menos tiempo.  Algunos tiempos de espera pueden ser "
+"aceptables, por ejemplo, si un informe no estaba listo. Por lo general, "
+"estas tareas se programan varias veces dentro del flujo de trabajo y, en "
+"algún momento, se completan."
 
 #: templates/website/help.html:181
 msgid "Error"
@@ -993,8 +997,8 @@ msgid ""
 "The task failed to execute.  The error will be printed in the log, usually "
 "near the bottom  for that task."
 msgstr ""
-"La tarea no se ha podido ejecutar.  El error se mostrará en el registro, "
-"normalmente, en la parte inferior."
+"La tarea no se pudo ejecutar.  El error se imprimirá en el registro, por lo "
+"general, cerca de la parte inferior correspondiente a esa tarea."
 
 #: templates/website/help.html:183
 #, fuzzy
@@ -1008,15 +1012,14 @@ msgid ""
 "Alternatively some errors may be acceptable, for example, a task may run "
 "multiple times a day, return errors until eventually one execution works."
 msgstr ""
-"Corrige el error y haz clic en Ejecutar ahora para volver a ejecutar la "
-"receta.  Como alternativa, algunos errores pueden considerarse aceptables. "
-"Por ejemplo, puede extraerse información de un punto final propenso a "
-"errores varias veces en un día durante una tarea, y una de esas veces podría "
-"acabar funcionando."
+"Corrige el error y haz clic en Ejecutar ahora para que se vuelva a procesar "
+"la receta.  Cabe mencionar que algunos errores pueden ser aceptables. Por "
+"ejemplo, una tarea puede ejecutarse varias veces en un día y mostrar errores "
+"hasta que funciona una ejecución."
 
 #: templates/website/help.html:190
 msgid "Share Recipe"
-msgstr "Compartir receta"
+msgstr "Compartir la receta"
 
 #: templates/website/help.html:191
 msgid ""
@@ -1032,18 +1035,18 @@ msgid ""
 "github.com/google/starthinker/blob/master/tutorials/deploy_enterprise.md\" "
 "target=\"_blank\">UI</a>."
 msgstr ""
-"En lugar de compartir instrucciones, comparte un flujo de trabajo.  Todas "
-"las recetas personalizadas que se crean en la UI de StarThinker pueden "
-"compartirse con clientes.  Crea una receta y haz clic en Descargar. NO "
-"INCLUYAS CONTRASEÑAS NI INFORMACIÓN CONFIDENCIAL EN LAS RECETAS "
-"COMPARTIDAS.  Las recetas compartidas pueden ejecutarse a través de <a href="
-"\"https://colab.research.google.com/\" target=\"_blank\">Google "
-"Colaboratory</a>, <a href=\"https://github.com/google/starthinker/blob/"
-"master/tutorials/deploy_airflow.md\" target=\"_blank\">Airflow o Composer</"
-"a>, <a href=\"https://github.com/google/starthinker/blob/master/tutorials/"
-"deploy_package.md\" target=\"_blank\">Python</a> o <a href=\"https://github."
-"com/google/starthinker/blob/master/tutorials/deploy_enterprise.md\" target="
-"\"_blank\">la UI</a>."
+"¿Por qué compartir instrucciones si puedes compartir un flujo de trabajo que "
+"funciona?  Todas las recetas personalizadas creadas en la IU de StarThinker "
+"pueden compartirse con los clientes.  Crea una receta y, luego, haz clic en "
+"el botón Descargar. NO INCLUYAS CONTRASEÑAS NI INFORMACIÓN CONFIDENCIAL EN "
+"LAS RECETAS COMPARTIDAS.  Las recetas compartidas se pueden ejecutar "
+"mediante <a href=\"https://colab.research.google.com/\" target=\"_blank"
+"\">Google Colaboratory</a>, <a href=\"https://github.com/google/starthinker/"
+"blob/master/tutorials/deploy_airflow.md\" target=\"_blank\">Airflow/"
+"Composer</a>, <a href=\"https://github.com/google/starthinker/blob/master/"
+"tutorials/deploy_package.md\" target=\"_blank\">Python</a> o la <a href="
+"\"https://github.com/google/starthinker/blob/master/tutorials/"
+"deploy_enterprise.md\" target=\"_blank\">IU</a>."
 
 #: templates/website/help.html:194
 msgid ""
@@ -1055,61 +1058,58 @@ msgstr ""
 
 #: templates/website/help.html:194
 msgid "Screenshot of StarThinker Download Recipe page."
-msgstr ""
-"Captura de pantalla de la página para descargar la receta de StarThinker."
+msgstr "Captura de pantalla de la página Download Recipe de StarThinker"
 
 #: templates/website/help.html:201
 msgid "Google Collaboratory"
-msgstr "Google Collaboratory"
+msgstr "Google Colaboratory"
 
 #: templates/website/help.html:202
 msgid ""
 "Ideal for non-technical clients who want to execute the recipe on demand."
 msgstr ""
-"Ideal para clientes sin formación técnica que quieren ejecutar la receta "
-"bajo demanda."
+"Ideal para clientes no técnicos que desean ejecutar la receta a pedido."
 
 #: templates/website/help.html:204
 msgid "Use for demos and workshops."
-msgstr "Se usa en demostraciones y talleres."
+msgstr "Utiliza esta herramienta para demostraciones y talleres."
 
 #: templates/website/help.html:205 templates/website/help.html:215
 msgid "Allows customization."
-msgstr "Se puede personalizar."
+msgstr "Permite personalizar la receta."
 
 #: templates/website/help.html:206
 msgid "No coding necessary."
-msgstr "No hace falta escribir código."
+msgstr "No necesita programación."
 
 #: templates/website/help.html:207 templates/website/help.html:227
 msgid "Requires a free Google Cloud Project for credentials."
-msgstr ""
-"Requiere un proyecto gratuito de Google Cloud para obtener credenciales."
+msgstr "Requiere un proyecto gratuito de Google Cloud para tener credenciales."
 
 #: templates/website/help.html:211
 msgid "Airflow/Composer"
-msgstr "Airflow o Composer"
+msgstr "Airflow/Composer"
 
 #: templates/website/help.html:212
 msgid ""
 "Ideal for highly technical clients with engineering teams already using "
 "Airflow/Composer."
 msgstr ""
-"Ideal para clientes con muchos conocimientos técnicos y equipos de "
-"ingeniería que ya usan Airflow o Composer."
+"Ideal para clientes con mucho conocimiento técnico que tienen equipos de "
+"ingeniería que ya utilizan Airflow/Composer."
 
 #: templates/website/help.html:214
 msgid "Use for long running jobs using Airflow."
 msgstr ""
-"Se usa en tareas que se ejecutan con Airflow durante un tiempo prolongado."
+"Utiliza esta herramienta para trabajos de ejecución larga que usan Airflow."
 
 #: templates/website/help.html:216 templates/website/help.html:226
 msgid "Extensive coding required."
-msgstr "Hace falta escribir mucho código."
+msgstr "Requiere mucha programación."
 
 #: templates/website/help.html:217
 msgid "Requires a paid Google Cloud Composer instance."
-msgstr "Requiere una instancia de pago de Google Cloud Composer."
+msgstr "Se necesita una instancia paga de Google Cloud Composer."
 
 #: templates/website/help.html:221
 msgid "Python"
@@ -1119,26 +1119,28 @@ msgstr "Python"
 msgid ""
 "Ideal for highly technical clients who want a minimal deployment footprint."
 msgstr ""
-"Ideal para clientes con muchos conocimientos técnicos que necesitan que el "
-"impacto de los despliegues sea mínimo."
+"Ideal para clientes con mucho conocimiento técnico que desean una "
+"implementación mínima."
 
 #: templates/website/help.html:224
 msgid "Use for custom infrastructure integration."
-msgstr "Se usa en integraciones de infraestructuras personalizadas."
+msgstr ""
+"Utiliza esta herramienta para una integración de infraestructura "
+"personalizada."
 
 #: templates/website/help.html:225
 msgid "Allows minimal customization."
-msgstr "Se puede personalizar muy poco."
+msgstr "Permite una personalización mínima de la receta."
 
 #: templates/website/help.html:231
 msgid "UI"
-msgstr "UI"
+msgstr "IU"
 
 #: templates/website/help.html:232
 msgid ""
 "Ideal for teams wanting to build recipes at scale for multiple accounts."
 msgstr ""
-"Ideal para equipos que quieren compilar recetas a gran escala para varias "
+"Ideal para los equipos que desean compilar recetas a gran escala para varias "
 "cuentas."
 
 #: templates/website/help.html:234
@@ -1147,15 +1149,17 @@ msgstr ""
 
 #: templates/website/help.html:235
 msgid "Support no-coding UI recipe builder."
-msgstr "Permite compilar recetas sin código."
+msgstr ""
+"Es compatible con el compilador de recetas basado en la IU, sin necesidad de "
+"programación."
 
 #: templates/website/help.html:236
 msgid "Operations and support required."
-msgstr "Requiere un equipo de operaciones y otro de asistencia."
+msgstr "Requiere operaciones y asistencia."
 
 #: templates/website/help.html:237
 msgid "Requires a paid Google Cloud Project."
-msgstr "Requiere un proyecto de pago de Google Cloud."
+msgstr "Se debe contar con un proyecto pago de Google Cloud."
 
 #: templates/website/help.html:245
 msgid ""
@@ -1163,105 +1167,103 @@ msgid ""
 "it will do it, be careful about overwriting, creating, sharing, or deleting "
 "data. Double check everything before running tasks.  Undo is not a feature."
 msgstr ""
-"StarThinker hará lo que le pidas  y ejecutará todas las acciones para las "
-"que tengas permiso como lo harías tú. Ten cuidado a la hora de sobrescribir, "
-"crear, compartir o eliminar datos. Compruébalo todo antes de ejecutar "
-"tareas,  ya que no se pueden deshacer."
+"StarThinker hará lo que le indiques que haga.  SE EJECUTA COMO SI FUERAS TÚ: "
+"Si tienes acceso, StarThinker también lo tendrá. Ten cuidado al reemplazar, "
+"crear, compartir o borrar datos. Comprueba dos veces todo antes de ejecutar "
+"tareas.  Las acciones no se pueden deshacer."
 
 #: templates/website/help.html:249
 msgid "DATASETS ARE NOT DELETED when a recipe is deleted."
-msgstr "Los conjuntos de datos no se eliminan cuando se borra una receta."
+msgstr "Cuando se borra una receta, LOS CONJUNTOS DE DATOS NO SE BORRAN."
 
 #: templates/website/help.html:251
 msgid "You will have to manually delete the dataset."
-msgstr "Tendrás que eliminar el conjunto de datos manualmente."
+msgstr "Tienes que borrarlos manualmente."
 
 #: templates/website/help.html:252
 msgid "You will have to verify dataset contains what you want before sharing."
 msgstr ""
-"Tendrás que verificar que el conjunto de datos contiene lo que quieres antes "
+"Tienes que verificar que el conjunto de datos contiene lo que deseas antes "
 "de compartirlo."
 
 #: templates/website/help.html:258
 msgid "Changing DBM / DCM report definition requires delete of report."
 msgstr ""
-"Para cambiar la definición del informe de DBM a DCM, y viceversa, tienes que "
-"eliminarlo."
+"Para cambiar la definición de un informe de DBM/DCM, es necesario borrarlo."
 
 #: templates/website/help.html:260
 msgid "You will have to go into DBM / DCM and delete the report."
-msgstr "Tendrás que cambiar el informe a DBM o DCM y eliminarlo."
+msgstr "Tendrás que ingresar a DBM/DCM y borrar el informe."
 
 #: templates/website/help.html:261
 msgid "StarThinker will then create the new report definition."
-msgstr "Después, StarThinker creará la nueva definición del informe."
+msgstr "Entonces, StarThinker creará una definición de informe nuevo."
 
 #: templates/website/help.html:267
 msgid "BigQuery views are not modified by StarThinker if they exist."
-msgstr "StarThinker no modifica las vistas de BigQuery que ya haya."
+msgstr "Si existen vistas de BigQuery, StarThinker no las modifica."
 
 #: templates/website/help.html:269
 msgid "This is to protect any customizations you may have added."
-msgstr "De esta forma, se protegen las personalizaciones que hayas añadido."
+msgstr "Esto es así para proteger toda personalización que hayas agregado."
 
 #: templates/website/help.html:270
 msgid "You will have to delete the view for StarThinker to recreate it."
-msgstr "Tendrás que eliminar la vista de StarThinker para volver a crearla."
+msgstr "Tendrás que borrar la vista para que StarThinker vuelva a crearla."
 
 #: templates/website/help.html:276
 msgid "All tasks in a recipe are executed, even if ones prior fail."
 msgstr ""
-"Todas las tareas de una receta se ejecutan, incluso si alguna de las "
-"anteriores falla."
+"Todas las tareas de una receta se ejecutan, incluso si alguna anterior "
+"presenta errores."
 
 #: templates/website/help.html:278
 msgid "This allows retries of the same task later in the day."
-msgstr "De esta forma, se reintenta la misma tarea más tarde."
+msgstr "Esto permite que la misma tarea se reintente más tarde en el día."
 
 #: templates/website/help.html:279
 msgid "For mission critical data flows, check your data before acting on it."
 msgstr ""
-"En los flujos de datos esenciales, comprueba los datos antes de hacer nada "
-"con ellos."
+"En el caso de los flujos de datos de servicio crítico, comprueba tus datos "
+"antes de realizar cualquier acción con ellos."
 
 #: templates/website/help.html:285
 msgid "All errors and fields come from the API documentation."
-msgstr "Todos los errores y campos proceden de la documentación de la API."
+msgstr "Todos los errores y campos provienen de la documentación de la API."
 
 #: templates/website/help.html:287
 msgid ""
 "When looking for field values or formats consult the approriate API "
 "documentation."
 msgstr ""
-"Consulta los valores y los formatos de los campos en la documentación de la "
-"API correspondiente."
+"Si buscas valores o formatos de campos, consulta la documentación de la API "
+"correspondiente."
 
 #: templates/website/help.html:288
 msgid ""
 "When errors are thrown, the log shows them, consult the API documents to "
 "resolve the error."
 msgstr ""
-"Cuando se producen errores, se incluyen en el registro. Consulta cómo "
-"resolverlos en la documentación de la API."
+"Si se arrojan errores, el registro los muestra. Consulta la documentación de "
+"la API para resolver el error."
 
 #: templates/website/help.html:294
 msgid "StarThinker does not gurantee exact task execution time."
-msgstr ""
-"StarThinker no garantiza la exactitud de la hora de ejecución de las tareas."
+msgstr "StarThinker no garantiza el momento exacto de ejecución de las tareas."
 
 #: templates/website/help.html:296
 msgid "All tasks are executed in sequence."
-msgstr "Las tareas se ejecutan una tras otra."
+msgstr "Todas las tareas se ejecutan en forma secuencial."
 
 #: templates/website/help.html:297
 msgid "Tasks run at or after the scheduled hour, depending on worker load."
 msgstr ""
-"Las tareas se ejecutan a la hora programada o después, dependiendo de la "
-"carga de los trabajadores."
+"Las tareas se ejecutan en el horario programado o después, según la carga de "
+"trabajo."
 
 #: templates/website/help.html:298
 msgid "If a task fails, remianing tasks are still executed."
-msgstr "Aunque una tarea falle, las restantes se ejecutan."
+msgstr "Si una tarea falla, las tareas restantes igualmente se ejecutan."
 
 #: templates/website/help.html:309
 msgid ""
@@ -1269,63 +1271,65 @@ msgid ""
 "the code.  To promptly resolve most issues please follow these debugging "
 "steps."
 msgstr ""
-"Los errores de StarThinker pueden ser, por ejemplo, que el valor de un campo "
-"sea incorrecto o que haya un problema en el código.  Para resolver la "
-"mayoría de los errores a tiempo, sigue estos pasos de depuración."
+"Los errores en StarThinker pueden ir desde un valor de campo mal configurado "
+"hasta un error en el código.  A fin de resolver rápidamente la mayoría de "
+"los problemas, sigue estos pasos para la depuración."
 
 #: templates/website/help.html:310
 msgid ""
 "When working with StarThinker administrators, please include the recipe "
 "number, found in the recipe edit URL, in all communications."
 msgstr ""
-"Cuando trabajes con administradores de StarThinker, incluye el número de la "
-"receta. Este número forma parte de la URL para editar la receta, incluida en "
-"todas las comunicaciones."
+"Cuando trabajes con los administradores de StarThinker, incluye el número de "
+"receta en todas las comunicaciones. Puedes encontrarlo en la URL de edición "
+"de la receta."
 
 #: templates/website/help.html:312
 msgid ""
 "Consult the log and reference the error in the API documentation relevant to "
 "the product used in the task."
 msgstr ""
-"Consulta el registro y busca el error en la documentación de la API del "
-"producto usado en la tarea."
+"Consulta el registro y la referencia del error en la documentación de la API "
+"correspondiente al producto utilizado en la tarea."
 
 #: templates/website/help.html:313
 msgid "Ensure the service account used in the recipe exists and is valid."
-msgstr "Comprueba que la cuenta de servicio de la receta exista y sea válida."
+msgstr ""
+"Asegúrate de que la cuenta de servicio utilizada en la receta exista y sea "
+"válida."
 
 #: templates/website/help.html:314
 msgid ""
 "Try logging out and logging back in to refresh user credentials and access "
 "to APIs."
 msgstr ""
-"Prueba a cerrar sesión y volver a iniciarla para actualizar las credenciales "
-"y el acceso de usuarios a las APIs."
+"Intenta salir de la cuenta y volver a acceder para actualizar las "
+"credenciales de usuario y el acceso a las API."
 
 #: templates/website/help.html:315
 msgid ""
 "Contact the administrator of the StarThinker UI where the recipe was "
 "deployed."
 msgstr ""
-"Ponte en contacto con el administrador de la UI de StarThinker donde se haya "
-"desplegado la receta."
+"Comunícate con el administrador de la IU de StarThinker en la que se "
+"implementó la receta."
 
 #: templates/website/help.html:316
 msgid ""
 "Contact the owner of the solution listed on the <a href=\"https://google."
 "github.io/starthinker/\" target=\"_blank\">Solution Gallery Page</a>."
 msgstr ""
-"Ponte en contacto con el propietario de la solución que aparezca en la <a "
-"href=\"https://google.github.io/starthinker/\" target=\"_blank\">página "
-"Galería de soluciones</a>."
+"Contacta al propietario de la solución que figura en la <a href=\"https://"
+"google.github.io/starthinker/\" target=\"_blank\">página Galería de "
+"soluciones</a>."
 
 #: templates/website/help.html:317
 msgid ""
 "Contact <a href=\"mailto:starthinker-help@google.com\">starthinker-"
 "help@google.com</a>."
 msgstr ""
-"Ponte en contacto a través de <a href=\"mailto:starthinker-help@google.com"
-"\">starthinker-help@google.com</a>."
+"Escribe a <a href=\"mailto:starthinker-help@google.com\">starthinker-"
+"help@google.com</a>."
 
 #: templates/website/solution.html:53
 msgid "Sample Screenshot"
@@ -1336,8 +1340,8 @@ msgid ""
 "These recipes are entire workflows that deploy end to end solutions for "
 "clients."
 msgstr ""
-"Estas recetas son flujos de trabajo completos que despliegan soluciones "
-"integrales para clientes."
+"Estas recetas son flujos de trabajo completos que implementan soluciones "
+"integrales para los clientes."
 
 #: templates/website/solutions.html:80 templates/website/solutions.html:83
 #: templates/website/solutions.html:86
@@ -1346,25 +1350,24 @@ msgstr "días"
 
 #: templates/website/solutions.html:89
 msgid "older"
-msgstr "de antigüedad"
+msgstr "anterior"
 
 #: templates/website/solutions.html:154
 msgid "Run These Workflows In Minutes On Google Cloud"
-msgstr ""
-"Ejecuta estos flujos de trabajo en cuestión de minutos desde Google Cloud"
+msgstr "Ejecuta estos flujos de trabajo en minutos en Google Cloud"
 
 #: templates/website/solutions.html:155
 msgid ""
 "Everything from a quick Google Cloud UI to reference developer code for your "
 "team in one GitHub repository."
 msgstr ""
-"Un único repositorio de GitHub que alberga toda la información que "
-"necesitas, como una guía rápida de la UI de Google Cloud o la referencia del "
-"código de desarrollo para que los consulte tu equipo."
+"Todo desde una IU rápida de Google Cloud hasta código de referencia para los "
+"desarrolladores que tu equipo puede encontrar en un mismo repositorio de "
+"GitHub."
 
 #: templates/website/solutions.html:158
 msgid "Deployment Steps"
-msgstr "Pasos del despliegue"
+msgstr "Pasos para la implementación"
 
 #: templates/website/solutions.html:161
 msgid "Developer Guide"
@@ -1372,7 +1375,7 @@ msgstr "Guía para desarrolladores"
 
 #: templates/website/solutions.html:164
 msgid "UI How To"
-msgstr "Guía de la UI"
+msgstr "Instructivo sobre la IU"
 
 #: ui/framework.py:108
 msgid "English"
@@ -1412,17 +1415,16 @@ msgstr ""
 
 #, python-format
 #~ msgid "DOMAIN: %s | CAUTION: Be sure you trust this project."
-#~ msgstr ""
-#~ "DOMINIO: %s | ADVERTENCIA: Asegúrate de que confías en este proyecto."
+#~ msgstr "DOMINIO: %s | PRECAUCIÓN: Asegúrate de confiar en este proyecto."
 
 #, python-format
 #~ msgid "GLOBAL: %s | CAUTION: Be sure you trust this project."
-#~ msgstr ""
-#~ "GLOBAL: %s | ADVERTENCIA: Asegúrate de que confías en este proyecto."
+#~ msgstr "GLOBAL: %s | PRECAUCIÓN: Asegúrate de confiar en este proyecto."
 
 #, python-format
 #~ msgid "USER: %s | SAFE: Only you are using this service account."
-#~ msgstr "USUARIO: %s | SEGURIDAD: Solo tú usas esta cuenta de servicio."
+#~ msgstr ""
+#~ "USUARIO: %s | SEGURIDAD: Solo tú estás usando esta cuenta de servicio."
 
 #~ msgid "Use for entire teams ( same UI as this one )."
-#~ msgstr "Se usa en equipos enteros (misma UI que esta)."
+#~ msgstr "Permite utilizar la misma IU para todo el equipo."

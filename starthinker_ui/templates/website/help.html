@@ -109,7 +109,7 @@
 
     <div id="help_recipe" class="col s12 m9 l10 left-align">
       <h1><i class="material-icons large">view_list</i> {% trans "Run Recipe" %}</h1>
-      <p class="flow-text">{% trans 'All recipes run as the logged in user and leverage the selected <a href="#help_setup">Service Account</a> to write to Google Cloud endpoints. StarThinker DOES NOT grant any additional permissions or access to any products or endpoints used in the recipe.' %}</p>
+      <p class="flow-text">{% trans 'All recipes run as the logged in user or selected <a href="#help_setup">service account</a>. StarThinker DOES NOT grant any additional permissions or access to any products or endpoints used in the recipe.' %}</p>
       <div class="row">
         <div class="col s12 m6 l6 right-align">
           <img src="{% trans 'https://github.com/google/starthinker/raw/master/tutorials/images/ui_recipe.png' %}" style="width:100%;" alt="{% trans 'Screenshot of StarThinker Edit Recipe page.' %}"/>
@@ -180,7 +180,7 @@
           <tr>
             <th>{% trans "Error" %}</th>
             <td>{% trans "The task failed to execute.  The error will be printed in the log, usually near the bottom  for that task." %}</td>
-            <td>{% trans "Correct the error, and click Run Now to re-execute the recipe.  Alternatively some errors may be acceptable, for example an error prone endpoint may be pulled from multiple times a day in a task, eventually one works." %}</td>
+            <td>{% trans "Correct the error, and click Run Now to re-execute the recipe.  Alternatively some errors may be acceptable, for example, a task may run multiple times a day, return errors until eventually one execution works." %}</td>
           </tr>
         </tbody>
       </table>
@@ -231,7 +231,7 @@
           <h5><a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_enterprise.md" target="_blank">{% trans "UI" %}</a></h5>
           <p>{% trans "Ideal for teams wanting to build recipes at scale for multiple accounts." %}</p>
           <ol>
-            <li>{% trans "Use for entire teams ( same UI as this one )." %}</li>
+            <li>{% trans "Use one UI for entire team." %}</li>
             <li>{% trans "Support no-coding UI recipe builder." %}</li>
             <li>{% trans "Operations and support required." %}</li>
             <li>{% trans "Requires a paid Google Cloud Project." %}</li>

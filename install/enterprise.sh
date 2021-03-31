@@ -222,6 +222,8 @@ setup_appengine() {
   setup_credentials_ui;
   save_config;
 
+  generate_translations;
+
   configure_yaml $deploy_Type;
 
   deploy_appengine;
@@ -348,7 +350,7 @@ setup_enterprise() {
   echo ""
 
   enterprise_done=0
-  enterprise_options=("Deploy UI & Workers" "Change Domain" "Change Database" "Migrate Database" "Install Datbase Proxy")
+  enterprise_options=("Deploy UI & Workers" "Change Domain" "Change Database" "Migrate Database" "Start Datbase Proxy")
 
   while (( !enterprise_done ))
   do

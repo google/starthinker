@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-05 11:41-0800\n"
+"POT-Creation-Date: 2021-03-29 14:25-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,19 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: project/models.py:36
-#, python-format
-msgid "DOMAIN: %s | CAUTION: Be sure you trust this project."
+#: project/models.py:45
+msgid " / API Key"
 msgstr ""
 
-#: project/models.py:38
+#: project/models.py:48
 #, python-format
-msgid "GLOBAL: %s | CAUTION: Be sure you trust this project."
+msgid "%s / Domain Visible"
 msgstr ""
 
-#: project/models.py:40
+#: project/models.py:50
 #, python-format
-msgid "USER: %s | SAFE: Only you are using this service account."
+msgid "%s / Global Visible"
+msgstr ""
+
+#: project/models.py:52
+#, python-format
+msgid "%s / User Visible"
 msgstr ""
 
 #: recipe/forms.py:28
@@ -156,8 +160,8 @@ msgstr ""
 msgid "API Key"
 msgstr ""
 
-#: templates/project/project_edit.html:55 templates/recipe/recipe_edit.html:180
-#: templates/website/help.html:133
+#: templates/project/project_edit.html:55 templates/recipe/recipe_edit.html:186
+#: templates/recipe/recipe_edit.html:190 templates/website/help.html:133
 msgid "Save"
 msgstr ""
 
@@ -191,11 +195,11 @@ msgstr ""
 
 #: templates/project/project_edit.html:74
 msgid ""
-"Copy and paste the JSON service credentials here.  You will be able to "
+"Copy and paste the Service JSON credentials here.  You will be able to "
 "select this project for each recipe that requires Google Cloud resources."
 msgstr ""
 
-#: templates/project/project_edit.html:83 templates/recipe/recipe_edit.html:214
+#: templates/project/project_edit.html:83 templates/recipe/recipe_edit.html:225
 msgid "Delete"
 msgstr ""
 
@@ -203,7 +207,7 @@ msgstr ""
 msgid "Create a project and use it to deploy recipes."
 msgstr ""
 
-#: templates/project/project_list.html:44
+#: templates/project/project_list.html:50
 msgid "LEVEL SHARE"
 msgstr ""
 
@@ -226,7 +230,7 @@ msgid "Raw Script"
 msgstr ""
 
 #: templates/recipe/download.html:44 templates/recipe/download.html:61
-#: templates/recipe/download.html:78 templates/recipe/recipe_edit.html:209
+#: templates/recipe/download.html:78 templates/recipe/recipe_edit.html:220
 #: templates/website/help.html:137
 msgid "Download"
 msgstr ""
@@ -288,9 +292,9 @@ msgstr ""
 
 #: templates/recipe/download.html:80
 msgid ""
-"For exection as a DAG using Apache Airflow and Google Cloud Composer. Follow "
-"StarThinker <a href=\"https://github.com/google/starthinker/blob/master/"
-"tutorials/deploy_airflow.md\" target=\"_blank\">airflow deploy</a> "
+"For execution as a DAG using Apache Airflow and Google Cloud Composer. "
+"Follow StarThinker <a href=\"https://github.com/google/starthinker/blob/"
+"master/tutorials/deploy_airflow.md\" target=\"_blank\">airflow deploy</a> "
 "instructions."
 msgstr ""
 
@@ -336,42 +340,43 @@ msgstr ""
 msgid "Hours:"
 msgstr ""
 
-#: templates/recipe/recipe_edit.html:177 templates/website/help.html:130
+#: templates/recipe/recipe_edit.html:183 templates/website/help.html:130
 msgid "Add"
 msgstr ""
 
-#: templates/recipe/recipe_edit.html:187 templates/website/help.html:135
+#: templates/recipe/recipe_edit.html:190 templates/recipe/recipe_edit.html:198
+#: templates/website/help.html:135
 msgid "Run"
 msgstr ""
 
-#: templates/recipe/recipe_edit.html:193
+#: templates/recipe/recipe_edit.html:204
 msgid "Cancel"
 msgstr ""
 
-#: templates/recipe/recipe_edit.html:198 templates/website/help.html:136
+#: templates/recipe/recipe_edit.html:209 templates/website/help.html:136
 msgid "Log"
 msgstr ""
 
-#: templates/recipe/recipe_edit.html:222
+#: templates/recipe/recipe_edit.html:233
 msgid ""
 "Click <a href=\"/recipe/edit/\"><i class=\"material-icons blue-text"
 "\">access_time</i></a> for scheduled recipes."
 msgstr ""
 
-#: templates/recipe/recipe_edit.html:224
+#: templates/recipe/recipe_edit.html:235
 msgid ""
 "Click <a href=\"/recipe/manual/\"><i class=\"material-icons blue-text"
 "\">build</i></a> for manual recipes."
 msgstr ""
 
-#: templates/recipe/recipe_edit.html:227
+#: templates/recipe/recipe_edit.html:238
 msgid ""
 "To move a step click <i class=\"material-icons blue-text\">drag_handle</i> "
 "to select a card. Then click another <i class=\"material-icons blue-text"
 "\">drag_handle</i> to place it above that card."
 msgstr ""
 
-#: templates/recipe/recipe_edit.html:228
+#: templates/recipe/recipe_edit.html:239
 msgid ""
 "To delete a step click <i class=\"material-icons blue-text\">delete</i> to "
 "mark a step for deletion. Then click save to commit the delete."
@@ -437,7 +442,8 @@ msgid ""
 msgstr ""
 
 #: templates/recipe/tasks.html:64
-msgid "This filters scroll <i class=\"small material-icons\">swap_vert</i>."
+msgid ""
+"The lists on the left scroll <i class=\"small material-icons\">swap_vert</i>."
 msgstr ""
 
 #: templates/recipe/tasks.html:97
@@ -627,10 +633,9 @@ msgstr ""
 
 #: templates/website/help.html:112
 msgid ""
-"All recipes run as the logged in user and leverage the selected <a href="
-"\"#help_setup\">Service Account</a> to write to Google Cloud endpoints. "
-"StarThinker DOES NOT grant any additional permissions or access to any "
-"products or endpoints used in the recipe."
+"All recipes run as the logged in user or selected <a href=\"#help_setup"
+"\">service account</a>. StarThinker DOES NOT grant any additional "
+"permissions or access to any products or endpoints used in the recipe."
 msgstr ""
 
 #: templates/website/help.html:115
@@ -817,9 +822,8 @@ msgstr ""
 #: templates/website/help.html:183
 msgid ""
 "Correct the error, and click Run Now to re-execute the recipe.  "
-"Alternatively some errors may be acceptable, for example an error prone "
-"endpoint may be pulled from multiple times a day in a task, eventually one "
-"works."
+"Alternatively some errors may be acceptable, for example, a task may run "
+"multiple times a day, return errors until eventually one execution works."
 msgstr ""
 
 #: templates/website/help.html:190
@@ -925,7 +929,7 @@ msgid ""
 msgstr ""
 
 #: templates/website/help.html:234
-msgid "Use for entire teams ( same UI as this one )."
+msgid "Use one UI for entire team."
 msgstr ""
 
 #: templates/website/help.html:235
@@ -1121,4 +1125,28 @@ msgstr ""
 
 #: ui/framework.py:109
 msgid "Spanish"
+msgstr ""
+
+#: ui/framework.py:110
+msgid "Spanish - LATAM"
+msgstr ""
+
+#: ui/framework.py:111
+msgid "French"
+msgstr ""
+
+#: ui/framework.py:112
+msgid "French Candian"
+msgstr ""
+
+#: ui/framework.py:113
+msgid "Hinid"
+msgstr ""
+
+#: ui/framework.py:114
+msgid "Polish"
+msgstr ""
+
+#: ui/framework.py:115
+msgid "Portuguese - Brazil"
 msgstr ""

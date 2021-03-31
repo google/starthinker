@@ -107,6 +107,12 @@ LOCALE_PATHS = [
 LANGUAGES = [
   ('en', _('English')),
   ('es', _('Spanish')),
+  ('es-419', _('Spanish - LATAM')),
+  ('fr', _('French')),
+  ('fr-CA', _('French Candian')),
+  ('hi', _('Hinid')),
+  ('pl', _('Polish')),
+  ('pr-BR', _('Portuguese - Brazil')),
 ]
 
 USE_I18N = True

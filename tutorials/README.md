@@ -25,6 +25,7 @@ a StarThinker instance.
 - [Running A Recipe](running.md) - How to execute a recipe or solution from the command line.
 - [Creating A Task](task.md) - How to code up a task that can be used by scripts.
 - [Creating A Recipe](recipe.md) - How to create JSON task parameters and add them to the UI.
+- [Internationalization / Localization / Accessability](i18n_l10n_a11y.md) - How to test the UI and worker.
 - [Command Line Helpers](helpers.md) - Utilities that speed up development at the command line.
 - [Testing](testing.md) - How to test the UI, worker, and various recipes.
 - [Contributing](../CONTRIBUTING.md) - How to set up a forked repository, pull, and/or contribute changes.
