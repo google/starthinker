@@ -494,12 +494,12 @@ setup_credentials_commandline() {
     echo "Using Existing Client Credentials"
   fi
 
-  if [ -s "${STARTHINKER_ROOT}/starthinker_assets/client_installed.json" ]; then
+  if ! [ -s "${STARTHINKER_ROOT}/starthinker_assets/client_installed.json" ]; then
     rm "${STARTHINKER_ROOT}/starthinker_assets/client_installed.json"
     echo "Failed To Create Client Desktop Credentials, Fix Then Run This Script Again"
     echo " 1. Check permissions of gcloud user."
     echo " 2. Check if service accounts are enabled for the project."
-    echo " 3. Manually paste service JSON credentials into: /starthinker_assets/service.json"
+    echo " 3. Manually paste service JSON credentials into: starthinker_assets/service.json"
     exit 1;
   fi
 
@@ -566,12 +566,12 @@ setup_credentials_ui() {
     echo "Using Existing Client Credentials"
   fi
 
-  if [ -s "${STARTHINKER_ROOT}/starthinker_assets/client_web.json" ]; then
+  if ! [ -s "${STARTHINKER_ROOT}/starthinker_assets/client_web.json" ]; then
      rm "${STARTHINKER_ROOT}/starthinker_assets/client_web.json"
      echo "Failed To Create Client Web Credentials, Fix Then Run This Script Again"
      echo " 1. Check permissions of gcloud user."
      echo " 2. Check if service accounts are enabled for the project."
-     echo " 3. Manually paste service JSON credentials into: /starthinker_assets/service.json"
+     echo " 3. Manually paste service JSON credentials into: starthinker_assets/service.json"
      exit 1;
   fi
 
@@ -631,12 +631,12 @@ setup_credentials_service() {
     echo "Using Existing Service Credentials"
   fi
 
-  if [ -s "${STARTHINKER_ROOT}/starthinker_assets/service.json" ]; then
+  if ! [ -s "${STARTHINKER_ROOT}/starthinker_assets/service.json" ]; then
      rm "${STARTHINKER_ROOT}/starthinker_assets/service.json"
      echo "Failed To Create Service Credentials, Fix Then Run This Script Again"
      echo " 1. Check permissions of gcloud user."
      echo " 2. Check if service accounts are enabled for the project."
-     echo " 3. Manually paste service JSON credentials into: /starthinker_assets/service.json"
+     echo " 3. Manually paste service JSON credentials into: starthinker_assets/service.json"
      exit 1;
   fi
 
