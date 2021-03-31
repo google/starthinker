@@ -850,32 +850,25 @@ def conversions_upload(auth,
               (row_count, row_count + len(row_buffer)))
 
       body = {
-          'conversions': [{
-              'floodlightActivityId':
-                  floodlight_activity_id,
-              'floodlightConfigurationId':
-                  response['floodlightConfigurationId'],
-              'ordinal':
-                  row[0],
-              'timestampMicros':
-                  row[1],
-              'quantity':
-                  1,
-              'value':
-                  0.0,
-              conversion_type:
-                  row[2],
-          } for row in row_buffer]
+        'conversions': [{
+          'floodlightActivityId': floodlight_activity_id,
+          'floodlightConfigurationId': response['floodlightConfigurationId'],
+          'ordinal': row[0],
+          'timestampMicros': row[1],
+          conversion_type: row[2],
+          'quantity': row[3],
+          'value': row[4],
+        } for row in row_buffer]
       }
 
       if encryption_entity:
         body['encryptionInfo'] = encryption_entity
 
       kwargs = {
-          'profileId': profile_id,
-          'accountId': account_id
+        'profileId': profile_id,
+        'accountId': account_id
       } if is_superuser else {
-          'profileId': profile_id
+        'profileId': profile_id
       }
       kwargs['body'] = body
 

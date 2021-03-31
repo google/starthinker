@@ -11,42 +11,46 @@
     "instructions":[
       "Specify a CM Account ID, Floodligh Activity ID and Conversion Type.",
       "Include Sheets url, tab, and range, omit headers in range.",
-      "Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId",
+      "Columns: Ordinal, timestampMicros, encryptedUserId | encryptedUserIdCandidates | gclid | mobileDeviceId | matchId | dclid",
       "Include encryption information if using encryptedUserId or encryptedUserIdCandidates."
     ],
     "authors":["kenjora@google.com"]
   },
   "tasks":[
     { "conversion_upload":{
-      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for CM." }},
       "account_id":{"field":{ "name":"dcm_account", "kind":"string", "order":0, "default":"" }},
       "activity_id":{"field":{ "name":"floodlight_activity_id", "kind":"integer", "order":1, "default":"" }},
       "conversion_type":{"field":{ "name":"floodlight_conversion_type", "kind":"choice", "order":2, "choices":[
         "encryptedUserId",
         "encryptedUserIdCandidates",
+        "dclid",
         "gclid",
+        "matchId",
         "mobileDeviceId"
-      ], "default":"encryptedUserId" }},
+      ], "default":"encryptedUserId", "description":"Must match the values specifed in the last column." }},
       "encryptionInfo":{
-        "encryptionEntityId":{"field":{ "name":"encryption_entity_id", "kind":"integer", "order":3, "default":"" }},
+        "encryptionEntityId":{"field":{ "name":"encryption_entity_id", "kind":"integer", "order":3, "default":"", "description":"Typically the same as the account id."}},
         "encryptionEntityType":{"field":{ "name":"encryption_entity_type", "kind":"choice", "order":4, "choices":[
           "ADWORDS_CUSTOMER",
           "DBM_ADVERTISER",
           "DBM_PARTNER",
           "DCM_ACCOUNT",
           "DCM_ADVERTISER",
-          "ENCRYPTION_ENTITY_TYPE_UNKNOWN"
+          "DFP_NETWORK_CODE"
         ], "default":"DCM_ACCOUNT" }},
         "encryptionSource":{"field":{ "name":"encryption_entity_source", "kind":"choice", "order":5, "choices":[
           "AD_SERVING",
-          "DATA_TRANSFER",
-          "ENCRYPTION_SCOPE_UNKNOWN"
-        ], "default":"DATA_TRANSFER" }}
+          "DATA_TRANSFER"
+        ], "default":"DATA_TRANSFER", "description":"" }}
       },
-      "sheets":{
-        "url":{"field":{ "name":"sheet_url", "kind":"string", "order":9, "default":"" }},
-        "tab":{"field":{ "name":"sheet_tab", "kind":"string", "order":10, "default":"" }},
-        "range":{"field":{ "name":"sheet_range", "kind":"string", "order":11, "default":"" }}
+      "from":{
+        "sheets":{
+          "auth":{"field":{ "name":"auth_sheets", "kind":"authentication", "order":1, "default":"user", "description":"Credentials to read sheet." }},
+          "sheet":{"field":{ "name":"sheet", "kind":"string", "order":9, "default":"Name or URL of sheet." }},
+          "tab":{"field":{ "name":"tab", "kind":"string", "order":10, "default":"Conversions", "description":"Name of tab within sheet." }},
+          "range":{"field":{ "name":"range", "kind":"string", "order":11, "default":"A1:E", "description":"A1 Notation, for example A1:E" }}
+        }
       }
     }}
   ]

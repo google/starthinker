@@ -16,76 +16,50 @@
 #
 ###########################################################################
 
-import io
+""" Recipe handler for "conversion_upload" task.
+
+Reads a source and performs a conversion upload into CM360.
+Leverages get_rows and put_rows JSON pattern for IO. See docs.
+For sample use see scripts/cm360_conversion_upload_from_*.json.
+"""
+
 
 from starthinker.util.project import project
 from starthinker.util.dcm import conversions_upload
-from starthinker.util.bigquery import query_to_rows
-from starthinker.util.sheets import sheets_read
-from starthinker.util.csv import csv_to_rows
-
-# Possible CSV headers to ignore
-CSV_HEADERS = ['user_id', 'encrypted_user_id']
-
-
-def conversions_download():
-  if project.verbose:
-    print('CONVERSION DOWNLOAD')
-
-  # pull from bigquery if specified
-  if 'bigquery' in project.task:
-    if project.verbose:
-      print('READING BIGQUERY')
-    rows = query_to_rows(
-        project.task['auth'],
-        project.id,
-        project.task['bigquery']['dataset'],
-        'SELECT * FROM %s' % project.task['bigquery']['table'],
-        legacy=project.task['bigquery'].get('legacy', True))
-    for row in rows:
-      yield row
-
-  # pull from sheets if specified
-  if 'sheets' in project.task:
-    if project.verbose:
-      print('READING SHEET')
-    rows = sheets_read(project.task['auth'], project.task['sheets']['url'],
-                       project.task['sheets']['tab'],
-                       project.task['sheets']['range'])
-    for row in rows:
-      yield row
-
-  # pull from csv if specified
-  if 'csv' in project.task:
-    if project.verbose:
-      print('READING CSV FILE')
-    with io.open(project.task['csv']['file']) as f:
-      for row in csv_to_rows(f):
-        if row[0] not in CSV_HEADERS:
-          yield row
+from starthinker.util.data import get_rows
 
 
 @project.from_parameters
 def conversion_upload():
+  """Entry point for conversion_upload task, which uploads conversins to CM360.
 
-  rows = conversions_download()
+  Prints sucess or failure to STDOUT.
+  Currently only does batchInsert, not batchUpdate.
+  """
+
+  rows = get_rows(
+    project.task['auth'],
+    project.task['from'],
+    as_object=False
+  )
 
   if project.verbose:
     print('CONVERSION UPLOAD')
 
-  statuses = conversions_upload(project.task['auth'],
-                                project.task['account_id'],
-                                project.task['activity_id'],
-                                project.task['conversion_type'], rows,
-                                project.task['encryptionInfo'])
+  statuses = conversions_upload(
+    project.task['auth'],
+    project.task['account_id'],
+    project.task['activity_id'],
+    project.task['conversion_type'], rows,
+    project.task['encryptionInfo']
+  )
 
   has_rows = False
   for status in statuses:
     has_rows = True
     if 'errors' in status:
       if project.verbose:
-        print('ERROR:', status['conversion']['ordinal'],
-              '\n'.join([e['message'] for e in status['errors']]))
+        print( 'ERROR:', status['conversion']['ordinal'], '\n'.join([e['message'] for e in status['errors']]))
     else:
       if project.verbose:
         print('OK:', status['conversion']['ordinal'])
