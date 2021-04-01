@@ -27,10 +27,6 @@ from starthinker.util.auth.wrapper import CredentialsUserWrapper
 from starthinker_ui.account.apps import USER_BUCKET
 
 
-def fix_picture(picture_url):
-  return picture_url.replace('/photo.jpg', '/s32-c/photo.jpg')
-
-
 def token_generate(model_class, model_field, length=8):
   token = None
   while not token:
@@ -62,7 +58,7 @@ class AccountManager(BaseUserManager):
         email=self.normalize_email(profile['email']),
         name=profile['given_name'],
         domain=profile.get('hd', ''),
-        picture=fix_picture(profile['picture']),
+        picture=profile['picture'],
     )
     account.set_credentials(credentials)
     account.set_password(password)
@@ -76,8 +72,8 @@ class AccountManager(BaseUserManager):
       account = Account.objects.get(identifier=profile['id'])
       account.email = self.normalize_email(profile['email'])
       account.name = profile['given_name']
-      domain = profile.get('hd', ''),
-      account.picture = fix_picture(profile['picture'])
+      domain = profile.get('hd', '')
+      account.picture = profile['picture']
       account.set_credentials(credentials)
       account.set_password(password)
       account.save(using=self._db)
