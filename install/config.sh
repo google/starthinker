@@ -25,7 +25,7 @@
 #
 STARTHINKER_SCALE=1
 STARTHINKER_DEVELOPMENT=0
-STARTHINKER_GSUITE=0
+STARTHINKER_GSUITE=1
 
 STARTHINKER_WORKER_MAX=10
 STARTHINKER_WORKER_INSTANCE="e2-highmem-4"
@@ -664,7 +664,7 @@ setup_credentials_user() {
 update_apt() {
   echo ""
   echo "----------------------------------------"
-  echo "Update Debian Installer"
+  echo "Update Debian Installer ( Uses Sudo )"
   echo "----------------------------------------"
   echo ""
 
@@ -731,7 +731,7 @@ install_virtualenv() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Install Virtual Environment - ${STARTHINKER_ENV}"
+  echo "Install Virtual Environment ( Uses Sudo ) - ${STARTHINKER_ENV}"
   echo "----------------------------------------"
   echo ""
 
@@ -775,7 +775,7 @@ setup_swap() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Setup Swap"
+  echo "Setup Swap ( Uses Sudo )"
   echo "----------------------------------------"
   echo ""
 
@@ -887,17 +887,15 @@ generate_translations() {
 install_proxy() {
   echo ""
   echo "----------------------------------------"
-  echo "Install Cloud Proxy - ${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy"
+  echo "Install Cloud Proxy ( Uses Sudo ) - ${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy"
   echo "----------------------------------------"
   echo ""
 
-  if [ "$(command -v psql)" == "" ]; then
-    case "$(uname -s)" in
-      Darwin) echo "Skipping Postgres, not required for local development: https://www.postgresql.org/download/macosx/";;
-      Linux)  sudo apt-get install gcc python3-dev python3-pip libpq-dev postgresql-client python-psycopg2 wget -qq;;
-      *) echo "ERROR: Unknown Postgres install, visit http://postgresguide.com/setup/install.html" ;;
-    esac
-  fi
+  case "$(uname -s)" in
+    Darwin) echo "Skipping Postgres, not required for local development: https://www.postgresql.org/download/macosx/";;
+    Linux)  sudo apt-get install gcc python3-dev python3-pip libpq-dev postgresql-client python3-psycopg2 wget -qq;;
+    *) echo "ERROR: Unknown Postgres install, visit http://postgresguide.com/setup/install.html" ;;
+  esac
 
   if [ ! -f "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" ]; then
 

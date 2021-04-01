@@ -350,7 +350,7 @@ setup_enterprise() {
   echo ""
 
   enterprise_done=0
-  enterprise_options=("Deploy UI & Workers" "Change Domain" "Change Database" "Migrate Database" "Start Datbase Proxy")
+  enterprise_options=("Deploy UI & Workers" "Deploy UI" "Deploy Eorkers" "Change Domain" "Change Database" "Migrate Database" "Start Datbase Proxy")
 
   while (( !enterprise_done ))
   do
@@ -363,10 +363,12 @@ setup_enterprise() {
     select enterprise_option in "${enterprise_options[@]}"; do
       case $REPLY in
         1) setup_worker; setup_appengine; break ;;
-        2) setup_domain; save_config; break ;;
-        3) setup_database; save_config; break ;;
-        4) migrate_database_enterprise; break ;;
-        5) start_worker_proxy; break ;;
+        2) setup_appengine; break ;;
+        3) setup_worker; break ;;
+        4) setup_domain; save_config; break ;;
+        5) setup_database; save_config; break ;;
+        6) migrate_database_enterprise; break ;;
+        7) start_worker_proxy; break ;;
         q) enterprise_done=1; break;;
         *) echo "What's that?" ;;
       esac
