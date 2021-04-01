@@ -232,12 +232,15 @@ class PlacementDAO(BaseDAO):
     self._process_active_view_and_verification(item, feed_item)
     self._process_pricing_schedule(item, feed_item)
 
-    if feed_item.get(FieldMap.PLACEMENT_ADDITIONAL_KEY_VALUES, None):
+    key_values = feed_item.get(FieldMap.PLACEMENT_ADDITIONAL_KEY_VALUES, None)
+    if key_values == '':
+      if item.get('tagSetting', {}).get('additionalKeyValues'):
+        del item['tagSetting']['additionalKeyValues']
+    elif key_values != None:
       if not 'tagSetting' in item:
         item['tagSetting'] = {}
 
-      item['tagSetting']['additionalKeyValues'] = feed_item.get(
-          FieldMap.PLACEMENT_ADDITIONAL_KEY_VALUES, None)
+      item['tagSetting']['additionalKeyValues'] = key_values
 
   def _process_transcode(self, item, feed_item):
     """Updates / creates transcode configuration for the placement.

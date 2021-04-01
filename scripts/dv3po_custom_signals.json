@@ -26,7 +26,7 @@
       "csat improvement":90
     },
     "instructions": [
-      "Open the template sheet: <a target='_blank' href='https://docs.google.com/spreadsheets/d/1xl2bknsn9ptCKwg1sZqTBpmRFDdcG3ATdp2f4C2CQ2U/edit#gid=1579485492'>[DV-3PO] Custom Signals Configs</a>.",
+      "Open the template sheet: <a target='_blank' href='https://docs.google.com/spreadsheets/d/1JYtVL3teV_4Jr2Bi_tS8v0Uq-I44r78hFbmveloxd2I'>[DV-3PO] Custom Signals Configs</a>.",
       "Make a copy of the sheet through the menu File -> Make a copy, for clarity we suggest you rename the copy to a meaningful name describing the usage of this copy.",
       "In the Station IDs field below enter a comma separated list of NOAA weather station IDs. Most major airports are stations and their ID typically is K followed by the 3 letter airport code, e.g. KORD for Chicago O'Hare International Airport, KSFO for San Francisco international airport, etc. You can get a full list of stations <a target='_blank' href='https://www1.ncdc.noaa.gov/pub/data/noaa/isd-history.txt'>here</a>, the station ID to use is the 'CALL' column of this list.",
       "In the Sheet URL field below, enter the URL of the copy of the config sheet you've created.",
