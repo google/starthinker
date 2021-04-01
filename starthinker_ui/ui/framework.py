@@ -112,7 +112,7 @@ LANGUAGES = [
   ('fr-CA', _('French Candian')),
   ('hi', _('Hinid')),
   ('pl', _('Polish')),
-  ('pr-BR', _('Portuguese - Brazil')),
+  ('pt-BR', _('Portuguese - Brazil')),
 ]
 
 USE_I18N = True
