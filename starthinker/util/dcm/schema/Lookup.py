@@ -1020,7 +1020,7 @@ DCM_Field_Lookup = {
     'Has_Full_Screen_Impressions':
         'BOOLEAN',
     'Conversion_Id':
-        'INTEGER',
+        'NUMERIC',
     'Creative_Version':
         'STRING',
     'Active_View_Percent_In_Background':
