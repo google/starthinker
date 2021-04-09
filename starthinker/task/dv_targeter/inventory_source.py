@@ -58,6 +58,7 @@ def inventory_source_load():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Partners',
+        'header':False,
         'range': 'A2:A'
       }}
     )
@@ -75,6 +76,7 @@ def inventory_source_load():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Advertisers',
+        'header':False,
         'range': 'A2:A'
       }}
     )
@@ -112,6 +114,7 @@ def inventory_source_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Inventory Sources',
+      'header':False,
       'range': 'A2'
     }},
     get_rows(

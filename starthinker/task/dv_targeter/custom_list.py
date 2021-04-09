@@ -50,6 +50,7 @@ def custom_list_load():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Advertisers',
+        'header':False,
         'range': 'A2:A'
       }}
     )
@@ -87,6 +88,7 @@ def custom_list_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      'header':False,
       'range': 'P2:P'
     }},
     get_rows(

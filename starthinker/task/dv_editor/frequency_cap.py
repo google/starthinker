@@ -122,6 +122,7 @@ def frequency_cap_load():
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Frequency Caps",
+              "header":False,
               "range": "A2"
           }
       }, rows)
@@ -133,6 +134,7 @@ def frequency_cap_audit():
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Frequency Caps",
+              "header":False,
               "range": "A2:M"
           }
       })

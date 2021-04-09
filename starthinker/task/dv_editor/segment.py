@@ -46,6 +46,7 @@ def segment_load():
     { "sheets": {
       "sheet": project.task["sheet"],
       "tab": "Segments",
+      "header":False,
       "range": "A2"
     }},
     get_rows(
@@ -111,6 +112,7 @@ def segment_audit():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Segments",
+        "header":False,
         "range": "A2:M"
       }}
     )

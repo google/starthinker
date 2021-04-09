@@ -119,6 +119,7 @@ def bid_strategy_load():
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Bid Strategy",
+              "header":False,
               "range": "A2:U"
           }
       }, rows)
@@ -130,6 +131,7 @@ def bid_strategy_audit():
           "sheets": {
               "sheet": project.task["sheet"],
               "tab": "Bid Strategy",
+              "header":False,
               "range": "A2:U"
           }
       })

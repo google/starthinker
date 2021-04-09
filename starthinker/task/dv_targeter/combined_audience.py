@@ -50,6 +50,7 @@ def combined_audience_load():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Advertisers',
+        'header':False,
         'range': 'A2:A'
       }}
     )
@@ -87,6 +88,7 @@ def combined_audience_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      'header':False,
       'range': 'O2:O'
     }},
     get_rows(

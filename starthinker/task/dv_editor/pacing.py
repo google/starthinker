@@ -99,6 +99,7 @@ def pacing_load():
       "sheets": {
           "sheet": project.task["sheet"],
           "tab": "Pacing",
+          "header":False,
           "range": "A2"
       }
   }, rows)
@@ -109,6 +110,7 @@ def pacing_audit():
       "sheets": {
           "sheet": project.task["sheet"],
           "tab": "Pacing",
+          "header":False,
           "range": "A2:M"
       }
   })

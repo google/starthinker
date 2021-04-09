@@ -58,6 +58,7 @@ def line_item_load():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Advertisers",
+        "header":False,
         "range": "A2:A"
       }}
     ):
@@ -95,6 +96,7 @@ def line_item_load():
     { "sheets": {
       "sheet": project.task["sheet"],
       "tab": "Line Items",
+      "header":False,
       "range": "B2"
     }},
     get_rows(

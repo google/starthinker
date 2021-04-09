@@ -49,6 +49,7 @@ def location_list_load():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Advertisers',
+        'header':False,
         'range': 'A2:A'
       }}
     )
@@ -86,6 +87,7 @@ def location_list_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      'header':False,
       'range': 'K2:K'
     }},
     get_rows(
@@ -110,6 +112,7 @@ def location_list_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      'header':False,
       'range': 'L2:L'
     }},
     get_rows(

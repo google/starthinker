@@ -50,6 +50,7 @@ def inventory_group_load():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Partners',
+        'header':False,
         'range': 'A2:A'
       }}
     )
@@ -67,6 +68,7 @@ def inventory_group_load():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Advertisers',
+        'header':False,
         'range': 'A2:A'
       }}
     )
@@ -104,6 +106,7 @@ def inventory_group_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      'header':False,
       'range': 'M2'
     }},
     get_rows(

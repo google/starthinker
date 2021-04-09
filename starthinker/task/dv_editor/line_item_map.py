@@ -44,6 +44,7 @@ def line_item_map_audit():
           'sheets': {
               'sheet': project.task['sheet'],
               'tab': 'Line Items Map',
+              'header':False,
               'range': 'A2:Z'
           }
       })
@@ -146,6 +147,7 @@ def line_item_map_patch(commit=False):
           'sheets': {
               'sheet': project.task['sheet'],
               'tab': 'Line Items Map',
+              'header':False,
               'range': 'A2:Z'
           }
       })

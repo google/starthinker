@@ -58,6 +58,7 @@ def audit_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Audit',
+      'header':False,
       'range': 'A2'
     }},
     get_rows(

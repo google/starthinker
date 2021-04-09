@@ -101,6 +101,7 @@ def dv_targeter():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Partners',
+        'header':False,
         'range': 'A2:A'
       }}
     )):
@@ -112,6 +113,7 @@ def dv_targeter():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Advertisers',
+        'header':False,
         'range': 'A2:A'
       }}
     )):

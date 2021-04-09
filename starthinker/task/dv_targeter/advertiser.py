@@ -58,6 +58,7 @@ def advertiser_load():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Partners',
+        'header':False,
         'range': 'A2:A'
       }}
     ):

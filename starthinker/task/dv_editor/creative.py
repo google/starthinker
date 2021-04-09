@@ -50,6 +50,7 @@ def creative_load():
         "sheets": {
           "sheet": project.task["sheet"],
           "tab": "Advertisers",
+          "header":False,
           "range": "A2:A"
         }
     })
@@ -116,6 +117,7 @@ def creative_load():
       "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Creatives",
+        "header":False,
         "range": "B2"
       }
     },

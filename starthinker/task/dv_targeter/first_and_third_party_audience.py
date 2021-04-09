@@ -49,6 +49,7 @@ def first_and_third_party_audience_load():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Advertisers',
+        'header':False,
         'range': 'A2:A'
       }}
     )
@@ -86,6 +87,7 @@ def first_and_third_party_audience_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      'header':False,
       'range': 'Q2:Q'
     }},
     get_rows(

@@ -48,6 +48,7 @@ def partner_cost_load():
     { "sheets": {
       "sheet": project.task["sheet"],
       "tab": "Partner Costs",
+      "header":False,
       "range": "A2"
     }},
     get_rows(
@@ -145,6 +146,7 @@ def partner_cost_audit():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Partner Costs",
+        "header":False,
         "range": "A2:P"
       }}
     )

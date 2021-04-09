@@ -143,6 +143,7 @@ def targeting_load():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Advertisers',
+        "header":False,
         'range': 'A2:A'
       }}
     )
@@ -182,6 +183,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      "header":False,
       'range': 'A2:A'
     }},
     get_rows(
@@ -204,6 +206,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      "header":False,
       'range': 'B2:B'
     }},
     get_rows(
@@ -226,6 +229,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      "header":False,
       'range': 'C2:C'
     }},
     get_rows(
@@ -248,6 +252,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      "header":False,
       'range': 'D2:D'
     }},
     get_rows(
@@ -270,6 +275,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      "header":False,
       'range': 'E2:E'
     }},
     get_rows(
@@ -292,6 +298,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      "header":False,
       'range': 'F2:F'
     }},
     get_rows(
@@ -314,6 +321,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      "header":False,
       'range': 'G2:G'
     }},
     get_rows(
@@ -336,6 +344,7 @@ def targeting_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Targeting Options',
+      "header":False,
       'range': 'H2:H'
     }},
     get_rows(
@@ -389,6 +398,7 @@ def targeting_combine():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Destination Targeting",
+        "header":False,
         "range": "A2:Z"
       }}
     )
@@ -420,6 +430,7 @@ def targeting_combine():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Brand Safety Targeting",
+        "header":False,
         "range": "A2:Z"
       }}
     )
@@ -450,6 +461,7 @@ def targeting_combine():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Demographic Targeting",
+        "header":False,
         "range": "A2:Z"
       }}
     )
@@ -483,6 +495,7 @@ def targeting_combine():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Audience Targeting",
+        "header":False,
         "range": "A2:Z"
       }}
     )
@@ -517,6 +530,7 @@ def targeting_combine():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Device Targeting",
+        "header":False,
         "range": "A2:Z"
       }}
     )
@@ -552,6 +566,7 @@ def targeting_combine():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Geography Targeting",
+        "header":False,
         "range": "A2:Z"
       }}
     )
@@ -581,6 +596,7 @@ def targeting_combine():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Viewability Targeting",
+        "header":False,
         "range": "A2:Z"
       }}
     )
@@ -656,308 +672,390 @@ def targeting_edit(commit=False):
 
   targeting_combine()
 
-  rows = get_rows(
+  for row in get_rows(
     project.task["auth_bigquery"],
     { "bigquery": {
       "dataset": project.task["dataset"],
       "table":"SHEET_Combined_Targeting",
     }},
     as_object=True
-  )
+  ):
 
-  for row in rows:
-    for layer in ['Partner', 'Advertiser', 'LineItem']:
+    # check if settings are applied at this layer
+    if not row['Action']: continue
 
-      targeting = None
-      partner = None
-      advertiser = None
-      lineitem = None
+    # create new batch of candidates
+    candidates = []
 
-      if row[layer]:
+    # check partner ID from sheet
+    if row['Partner']:
 
-        if layer == 'Partner':
-          partner = lookup_id(row['Partner'])
-          advertiser = row['Advertiser_Lookup']
-        if layer == 'Advertiser':
-          advertiser = lookup_id(row['Advertiser'])
-        if layer == 'LineItem':
-          advertiser = row['Advertiser_Lookup']
-          lineitem = lookup_id(row['LineItem'])
+      # if action is at Advertiser layer, translate partner into list of advertisers
+      if 'ADVERTISERS' in row['Action'].upper():
+        for advertiserId in get_rows(
+          project.task['auth_bigquery'],
+          { 'bigquery': {
+            'dataset': project.task['dataset'],
+            'query': "SELECT advertiserId FROM `{dataset}.DV_Advertisers` WHERE partnerId={partnerId};".format(
+              dataset=project.task['dataset'],
+              partnerId=lookup_id(row['Partner'])
+            ),
+            'legacy': False
+          }},
+          unnest=True
+        ):
+          candidates.append(
+            targetings.setdefault(
+              ('Advertiser', 'Partner {0} : {1}'.format(row['Partner'], advertiserId)),
+              Assigned_Targeting(
+                project.task["auth_dv"],
+                None,
+                advertiserId,
+                None
+              )
+            )
+          )
 
-        targeting = targetings.setdefault(
-          (layer, row[layer]),
-          Assigned_Targeting(
-            project.task["auth_dv"],
-            partner,
-            advertiser,
-            lineitem
+      # if action is at LineItem layer, translate partner into list of lineitems
+      elif 'LINEITEMS' in row['Action'].upper():
+        print("NOT IMPLEMENTED UNTIL FURTHER EVALUATION")
+
+      # if action is directly on Partner, only add it to the list
+      else:
+        candidates.append(
+          targetings.setdefault(
+            ('Partner', row['Partner']),
+            Assigned_Targeting(
+              project.task["auth_dv"],
+              lookup_id(row['Partner']),
+              row['Advertiser_Lookup'], # required by API for lookup of values ( not for targeting )
+              None
+            )
           )
         )
 
-      if targeting and row['Action']:
-        if row['Authorized_Seller']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_authorized_seller(row['Authorized_Seller'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_authorized_seller(row['Authorized_Seller'])
+    # check advertiser ID from sheet
+    if row['Advertiser']:
 
-        if row['User_Rewarded_Content']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_user_rewarded_content(row['User_Rewarded_Content'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_user_rewarded_content(row['User_Rewarded_Content'])
+      # if action is at LineItem layer, translate advertiser into list of lineitems
+      if 'LINEITEMS' in row['Action'].upper():
+        for lineItemId in get_rows(
+          project.task['auth_bigquery'],
+          { 'bigquery': {
+            'dataset': project.task['dataset'],
+            'query': "SELECT lineItemId FROM `{dataset}.DV_LineItems` WHERE advertiserId={advertiserId};".format(
+              dataset=project.task['dataset'],
+              advertiserId=lookup_id(row['Advertiser'])
+            ),
+            'legacy': False
+          }},
+          unnest=True
+        ):
+          candidates.append(
+            targetings.setdefault(
+              ('LineItem', 'Advertiser {0} : {1}'.format(row['Advertiser'], lineItemId)),
+              Assigned_Targeting(
+                project.task["auth_dv"],
+                None,
+                lookup_id(row['Advertiser']),
+                lineItemId
+              )
+            )
+          )
 
-        if row['Exchange']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_exchange(row['Exchange'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_exchange(row['Exchange'])
+      # if action is directly on Advertiser, only add it to the list
+      else:
+        candidates.append(
+          targetings.setdefault(
+            ('Advertiser', row['Advertiser']),
+            Assigned_Targeting(
+              project.task["auth_dv"],
+              None,
+              lookup_id(row['Advertiser']),
+              None
+            )
+          )
+        )
 
-        if row['Sub_Exchange']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_sub_exchange(row['Sub_Exchange'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_sub_exchange(row['Sub_Exchange'])
+    # check lineitem ID from sheet
+    if row['LineItem']:
+      candidates.append(
+        targetings.setdefault(
+          ('LineItem', row['LineItem']),
+          Assigned_Targeting(
+            project.task["auth_dv"],
+            None,
+            row['Advertiser_Lookup'],
+            lookup_id(row['LineItem'])
+          )
+        )
+      )
 
-        if row['Channel']:
-          identifier = lookup_id(row['Channel'])
-          if row['Action'].upper() == 'ADD':
-            targeting.add_channel(identifier, row['Channel_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_channel(identifier)
+    # attempt targeting changes for each candidate
+    for targeting in candidates:
+      if row['Authorized_Seller']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_authorized_seller(row['Authorized_Seller'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_authorized_seller(row['Authorized_Seller'])
 
-        if row['Inventory_Source']:
-          identifier = lookup_id(row['Inventory_Source'])
-          if row['Action'].upper() == 'ADD':
-            targeting.add_inventory_source(identifier)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_inventory_source(identifier)
+      if row['User_Rewarded_Content']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_user_rewarded_content(row['User_Rewarded_Content'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_user_rewarded_content(row['User_Rewarded_Content'])
 
-        if row['Inventory_Group']:
-          identifier = lookup_id(row['Inventory_Group'])
-          if row['Action'].upper() == 'ADD':
-            targeting.add_inventory_source_group(identifier)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_inventory_source_group(identifier)
+      if row['Exchange']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_exchange(row['Exchange'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_exchange(row['Exchange'])
 
-        if row['URL']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_url(row['URL'], row['URL_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_url(row['URL'])
+      if row['Sub_Exchange']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_sub_exchange(row['Sub_Exchange'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_sub_exchange(row['Sub_Exchange'])
 
-        if row['App']:
-          identifier = lookup_id(row['App'])
-          if row['Action'].upper() == 'ADD':
-            targeting.add_app(identifier, row['App_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_app(identifier)
+      if row['Channel']:
+        identifier = lookup_id(row['Channel'])
+        if 'ADD' in row['Action'].upper():
+          targeting.add_channel(identifier, row['Channel_Negative'] or False)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_channel(identifier)
 
-        if row['App_Category']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_app_category(row['App_Category'], row['App_Category_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_app_category(row['App_Category'])
+      if row['Inventory_Source']:
+        identifier = lookup_id(row['Inventory_Source'])
+        if 'ADD' in row['Action'].upper():
+          targeting.add_inventory_source(identifier)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_inventory_source(identifier)
 
-        if row['Content_Label']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_content_label(row['Content_Label'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_content_label(row['Content_Label'])
+      if row['Inventory_Group']:
+        identifier = lookup_id(row['Inventory_Group'])
+        if 'ADD' in row['Action'].upper():
+          targeting.add_inventory_source_group(identifier)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_inventory_source_group(identifier)
 
-        if row['Sensitive_Category']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_sensitive_category(row['Sensitive_Category'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_sensitive_category(row['Sensitive_Category'])
+      if row['URL']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_url(row['URL'], row['URL_Negative'] or False)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_url(row['URL'])
 
-        if row['Negative_Keyword_List']:
-          identifier = lookup_id(row['Negative_Keyword_List'])
-          if row['Action'].upper() == 'ADD':
-            targeting.add_negative_keyword_list(identifier)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_negative_keyword_list(identifier)
+      if row['App']:
+        identifier = lookup_id(row['App'])
+        if 'ADD' in row['Action'].upper():
+          targeting.add_app(identifier, row['App_Negative'] or False)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_app(identifier)
 
-        if row['Keyword']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_keyword(row['Keyword'], row['Keyword_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_keyword(row['Keyword'])
+      if row['App_Category']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_app_category(row['App_Category'], row['App_Category_Negative'] or False)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_app_category(row['App_Category'])
 
-        if row['Category']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_category(row['Category'], row['Category_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_category(row['Category'])
+      if row['Content_Label']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_content_label(row['Content_Label'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_content_label(row['Content_Label'])
 
-        if row['Age_Range']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_age_range(row['Age_Range'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_age_range(row['Age_Range'])
+      if row['Sensitive_Category']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_sensitive_category(row['Sensitive_Category'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_sensitive_category(row['Sensitive_Category'])
 
-        if row['Gender']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_gender(row['Gender'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_gender(row['Gender'])
+      if row['Negative_Keyword_List']:
+        identifier = lookup_id(row['Negative_Keyword_List'])
+        if 'ADD' in row['Action'].upper():
+          targeting.add_negative_keyword_list(identifier)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_negative_keyword_list(identifier)
 
-        if row['Parental_Status']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_parental_status(row['Parental_Status'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_parental_status(row['Parental_Status'])
+      if row['Keyword']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_keyword(row['Keyword'], row['Keyword_Negative'] or False)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_keyword(row['Keyword'])
 
-        if row['Geo_Region']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_geo_region(row['Geo_Region'], row['Geo_Region_Type'], row['Geo_Region_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_geo_region(row['Geo_Region'])
+      if row['Category']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_category(row['Category'], row['Category_Negative'] or False)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_category(row['Category'])
 
-        if row['Proximity_Location_List']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_proximity_location_list(row['Proximity_Location_List'], row['Proximity_Location_List_Radius_Range'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_proximity_location_list(row['Proximity_Location_List'])
+      if row['Age_Range']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_age_range(row['Age_Range'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_age_range(row['Age_Range'])
 
-        if row['Regional_Location_List']:
-          identifier = lookup_id(row['Regional_Location_List'])
-          if row['Action'].upper() == 'ADD':
-            targeting.add_regional_location_list(identifier, row['Regional_Location_List_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_regional_location_list(identifier)
+      if row['Gender']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_gender(row['Gender'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_gender(row['Gender'])
 
-        if row['Household_Income']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_household_income(row['Household_Income'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_household_income(row['Household_Income'])
+      if row['Parental_Status']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_parental_status(row['Parental_Status'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_parental_status(row['Parental_Status'])
 
-        if row['Language']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_language(row['Language'], row['Language_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_language(row['Language'])
+      if row['Geo_Region']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_geo_region(row['Geo_Region'], row['Geo_Region_Type'], row['Geo_Region_Negative'] or False)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_geo_region(row['Geo_Region'])
 
-        if row['Included_1P_And_3P']:
-          identifier = lookup_id(row['Included_1P_And_3P'])
-          if row['Action'].upper() == 'ADD':
-            targeting.add_included_1p_and_3p_audience(identifier, row['Included_1P_And_3P_Recency'], row['Included_1P_And_3P_Group'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_included_1p_and_3p_audience(identifier, row['Included_1P_And_3P_Recency'], row['Included_1P_And_3P_Group'])
+      if row['Proximity_Location_List']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_proximity_location_list(row['Proximity_Location_List'], row['Proximity_Location_List_Radius_Range'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_proximity_location_list(row['Proximity_Location_List'])
 
-        if row['Excluded_1P_And_3P']:
-          identifier = lookup_id(row['Excluded_1P_And_3P'])
-          if row['Action'].upper() == 'ADD':
-            targeting.add_excluded_1p_and_3p_audience(identifier, row['Excluded_1P_And_3P_Recency'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_excluded_1p_and_3p_audience(identifier, row['Excluded_1P_And_3P_Recency'])
+      if row['Regional_Location_List']:
+        identifier = lookup_id(row['Regional_Location_List'])
+        if 'ADD' in row['Action'].upper():
+          targeting.add_regional_location_list(identifier, row['Regional_Location_List_Negative'] or False)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_regional_location_list(identifier)
 
-        if row['Included_Google']:
-          identifier = lookup_id(row['Included_Google'])
-          if row['Action'].upper() == 'ADD':
-            targeting.add_included_google_audience(identifier)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_included_google_audience(identifier)
+      if row['Household_Income']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_household_income(row['Household_Income'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_household_income(row['Household_Income'])
 
-        if row['Excluded_Google']:
-          identifier = lookup_id(row['Excluded_Google'])
-          if row['Action'].upper() == 'ADD':
-            targeting.add_excluded_google_audience(identifier)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_excluded_google_audience(identifier)
+      if row['Language']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_language(row['Language'], row['Language_Negative'] or False)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_language(row['Language'])
 
-        if row['Included_Custom']:
-          identifier = lookup_id(row['Included_Custom'])
-          if row['Action'].upper() == 'ADD':
-            targeting.add_included_custom_audience(identifier)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_included_custom_audience(identifier)
+      if row['Included_1P_And_3P']:
+        identifier = lookup_id(row['Included_1P_And_3P'])
+        if 'ADD' in row['Action'].upper():
+          targeting.add_included_1p_and_3p_audience(identifier, row['Included_1P_And_3P_Recency'], row['Included_1P_And_3P_Group'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_included_1p_and_3p_audience(identifier, row['Included_1P_And_3P_Recency'], row['Included_1P_And_3P_Group'])
 
-        if row['Included_Combined']:
-          identifier = lookup_id(row['Included_Combined'])
-          if row['Action'].upper() == 'ADD':
-            targeting.add_included_combined_audience(identifier)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_included_combined_audience(identifier)
+      if row['Excluded_1P_And_3P']:
+        identifier = lookup_id(row['Excluded_1P_And_3P'])
+        if 'ADD' in row['Action'].upper():
+          targeting.add_excluded_1p_and_3p_audience(identifier, row['Excluded_1P_And_3P_Recency'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_excluded_1p_and_3p_audience(identifier, row['Excluded_1P_And_3P_Recency'])
 
-        if row['Device_Type']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_device_type(row['Device_Type'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_device_type(row['Device_Type'])
+      if row['Included_Google']:
+        identifier = lookup_id(row['Included_Google'])
+        if 'ADD' in row['Action'].upper():
+          targeting.add_included_google_audience(identifier)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_included_google_audience(identifier)
 
-        if row['Make_Model']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_make_model(row['Make_Model'], row['Make_Model_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_make_model(row['Make_Model'])
+      if row['Excluded_Google']:
+        identifier = lookup_id(row['Excluded_Google'])
+        if 'ADD' in row['Action'].upper():
+          targeting.add_excluded_google_audience(identifier)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_excluded_google_audience(identifier)
 
-        if row['Operating_System']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_operating_system(row['Operating_System'], row['Operating_System_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_operating_system(row['Operating_System'])
+      if row['Included_Custom']:
+        identifier = lookup_id(row['Included_Custom'])
+        if 'ADD' in row['Action'].upper():
+          targeting.add_included_custom_audience(identifier)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_included_custom_audience(identifier)
 
-        if row['Browser']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_browser(row['Browser'], row['Browser_Negative'] or False)
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_browser(row['Browser'])
+      if row['Included_Combined']:
+        identifier = lookup_id(row['Included_Combined'])
+        if 'ADD' in row['Action'].upper():
+          targeting.add_included_combined_audience(identifier)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_included_combined_audience(identifier)
 
-        if row['Environment']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_environment(row['Environment'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_environment(row['Environment'])
+      if row['Device_Type']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_device_type(row['Device_Type'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_device_type(row['Device_Type'])
 
-        if row['Carrier_And_ISP']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_carrier_and_isp(row['Carrier_And_ISP'], row['Carrier_And_ISP_Negative'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_carrier_and_isp(row['Carrier_And_ISP'])
+      if row['Make_Model']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_make_model(row['Make_Model'], row['Make_Model_Negative'] or False)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_make_model(row['Make_Model'])
 
-        if row['Day_Of_Week']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_day_and_time(row['Day_Of_Week'], row['Hour_Start'], row['Hour_End'], row['Timezone'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_day_and_time(row['Day_Of_Week'], row['Hour_Start'], row['Hour_End'], row['Timezone'])
+      if row['Operating_System']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_operating_system(row['Operating_System'], row['Operating_System_Negative'] or False)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_operating_system(row['Operating_System'])
 
-        if row['Video_Player_Size']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_video_player_size(row['Video_Player_Size'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_video_player_size()
+      if row['Browser']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_browser(row['Browser'], row['Browser_Negative'] or False)
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_browser(row['Browser'])
 
-        if row['In_Stream_Position']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_instream_position(row['In_Stream_Position'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_instream_position()
+      if row['Environment']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_environment(row['Environment'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_environment(row['Environment'])
 
-        if row['Out_Stream_Position']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_outstream_position(row['Out_Stream_Position'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_outstream_position()
+      if row['Carrier_And_ISP']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_carrier_and_isp(row['Carrier_And_ISP'], row['Carrier_And_ISP_Negative'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_carrier_and_isp(row['Carrier_And_ISP'])
 
-        if row['On_Screen_Position']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_on_screen_position(row['On_Screen_Position'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_on_screen_position()
+      if row['Day_Of_Week']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_day_and_time(row['Day_Of_Week'], row['Hour_Start'], row['Hour_End'], row['Timezone'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_day_and_time(row['Day_Of_Week'], row['Hour_Start'], row['Hour_End'], row['Timezone'])
 
-        if row['Viewability']:
-          if row['Action'].upper() == 'ADD':
-            targeting.add_viewability(row['Viewability'])
-          elif row['Action'].upper() == 'DELETE':
-            targeting.delete_viewability()
+      if row['Video_Player_Size']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_video_player_size(row['Video_Player_Size'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_video_player_size(row['Video_Player_Size'])
+
+      if row['In_Stream_Position']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_instream_position(row['In_Stream_Position'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_instream_position(row['In_Stream_Position'])
+
+      if row['Out_Stream_Position']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_outstream_position(row['Out_Stream_Position'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_outstream_position()
+
+      if row['On_Screen_Position']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_on_screen_position(row['On_Screen_Position'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_on_screen_position(row['On_Screen_Position'])
+
+      if row['Viewability']:
+        if 'ADD' in row['Action'].upper():
+          targeting.add_viewability(row['Viewability'])
+        elif 'DELETE' in row['Action'].upper():
+          targeting.delete_viewability(row['Viewability'])
 
 
   for layer_and_name, targeting in targetings.items():
     layer, name = layer_and_name
     body = targeting.get_body()
-    errors = targeting.get_errors()
+    warnings = targeting.get_warnings()
 
     if body:
       parameters = {'body':body}
@@ -978,13 +1076,13 @@ def targeting_edit(commit=False):
         "parameters": parameters
       })
 
-    if errors:
+    if warnings:
       edit_log({
         "layer": layer,
         "partner": name if layer == 'Partner' else '',
         "advertiser": name if layer == 'Advertiser' else '',
         "line_item": name if layer == 'LineItem' else '',
-        "error": "\n".join(errors)
+        "warning": "\n".join(warnings)
      })
 
   edit_preview(edits)

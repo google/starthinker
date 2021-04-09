@@ -44,6 +44,7 @@ SCHEMA_LOG = [
 
 BUFFER_ERROR = []
 BUFFER_SUCCESS = []
+BUFFER_WARNING = []
 BUFFER_LENGTH = 10
 
 
@@ -72,6 +73,12 @@ def edit_clear():
 
   sheets_clear(project.task['auth_sheets'],
     project.task['sheet'],
+    'Warning',
+    'A2:Z'
+  )
+
+  sheets_clear(project.task['auth_sheets'],
+    project.task['sheet'],
     'Error',
     'A2:Z'
   )
@@ -86,6 +93,7 @@ def edit_clear():
 def edit_log(edit=None):
   global BUFFER_SUCCESS
   global BUFFER_ERROR
+  global BUFFER_WARNING
 
   def _edit_write(rows, kind):
     if not rows:
@@ -118,6 +126,7 @@ def edit_log(edit=None):
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': kind.title(),
+        'header':False,
         'range': 'A2',
         'append': True
       }},
@@ -127,6 +136,9 @@ def edit_log(edit=None):
   if edit and 'success' in edit:
     BUFFER_SUCCESS.append(edit)
     print('SUCCESS:', edit['success'])
+  elif edit and 'warning' in edit:
+    BUFFER_WARNING.append(edit)
+    print('WARNING:', edit['warning'])
   elif edit and 'error' in edit:
     BUFFER_ERROR.append(edit)
     print('ERROR:', edit['error'])
@@ -134,6 +146,10 @@ def edit_log(edit=None):
   if len(BUFFER_SUCCESS) > BUFFER_LENGTH or edit is None:
     _edit_write(BUFFER_SUCCESS, 'SUCCESS')
     BUFFER_SUCCESS = []
+
+  if len(BUFFER_WARNING) > BUFFER_LENGTH or edit is None:
+    _edit_write(BUFFER_WARNING, 'WARNING')
+    BUFFER_WARNING = []
 
   if len(BUFFER_ERROR) > BUFFER_LENGTH or edit is None:
     _edit_write(BUFFER_ERROR, 'ERROR')
@@ -168,6 +184,7 @@ def edit_preview(edits):
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Preview',
+        'header':False,
         'range': 'A2',
       }},
       rows
