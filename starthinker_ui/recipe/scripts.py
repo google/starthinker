@@ -163,6 +163,10 @@ class Script:
     script_buffer = self.script.get('script', {})
     return script_buffer.get(get_language(), script_buffer).get('pitches', [])
 
+  def get_status(self):
+    script_buffer = self.script.get('script', {})
+    return script_buffer.get(get_language(), script_buffer).get('status', None)
+
   def get_authors(self):
     return set(self.script.get('script', {}).get('authors', []))
 
@@ -183,6 +187,9 @@ class Script:
 
   def get_to(self):
     return self.script.get('script', {}).get('to', [])
+
+  def get_products(self):
+    return list(set(self.get_from()) | set(self.get_to()))
 
   def get_impacts(self):
     return self.script.get('script', {}).get('impacts', {})
