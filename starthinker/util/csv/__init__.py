@@ -18,7 +18,7 @@
 
 import re
 import csv
-import sys
+import ctypes
 from io import StringIO
 
 from starthinker.util.project import project
@@ -92,7 +92,8 @@ def excel_to_rows(excel_file, sheet=None):
 
 def csv_to_rows(csv_string):
   if csv_string:
-    csv.field_size_limit(sys.maxsize)
+    # patch for windows 32 bits, otherwise just use csv.field_size_limit(sys.maxsize)
+    csv.field_size_limit(int(ctypes.c_ulong(-1).value // 2))
     if isinstance(csv_string, str):
       csv_string = StringIO(csv_string)
     for row in csv.reader(
