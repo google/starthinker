@@ -83,7 +83,7 @@
               { "kind": "dfareporting#sortedDimension", "name": "dfa:campaign" },
               { "kind": "dfareporting#sortedDimension", "name": "dfa:placementId" },
               { "kind": "dfareporting#sortedDimension", "name": "dfa:placement" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:postalCode" }
+              { "kind": "dfareporting#sortedDimension", "name": "dfa:zipCode" }
             ],
             "metricNames": [
               "dfa:impressions",
