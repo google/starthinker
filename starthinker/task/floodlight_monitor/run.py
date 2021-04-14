@@ -16,8 +16,17 @@
 #
 ###########################################################################
 
-import pandas
+"""Pulls floodlights from a sheet, checks if impressions have changed significantly and sends an alert email.
+
+For example ( modify floodlight_monitor/test.json to include your account and sheet ):
+
+python floodlight_monitor/run.py floodlight_monitor/test.json -u [user credentials path]
+
+"""
+
+from statistics import quantiles
 from datetime import date, timedelta
+from typing import Generator
 
 from starthinker.util.project import project
 from starthinker.util.dcm import report_build, report_file, report_to_rows, report_clean, parse_account
@@ -25,98 +34,111 @@ from starthinker.util.sheets import sheets_tab_copy, sheets_read, sheets_url
 from starthinker.util.csv import rows_to_type, rows_header_trim
 from starthinker.util.email.template import EmailTemplate
 from starthinker.util.email import send_email
-"""Pulls floodlights from a sheet, checks if impressions have changed significantly and sends an alert email.
-
-For example ( modify floodlight_monitor/test.json to include your account and
-sheet ):
-
-python floodlight_monitor/run.py floodlight_monitor/test.json -u [user
-credentials path]
-
-"""
 
 
-def floodlight_report(floodlight_id):
+FLOODLIGHT_DATE = 0
+FLOODLIGHT_CONFIG_ID = 1
+FLOODLIGHT_GROUP_ID = 2
+FLOODLIGHT_ACTIVITY_GROUP = 3
+FLOODLIGHT_ACTIVITY_ID = 4
+FLOODLIGHT_ACTIVITY = 5
+FLOODLIGHT_IMPRESSIONS = 6
+FLOODLIGHT_STATUS = 7  # added by the script ( LOW, NORMAL, HIGH )
 
-  account_id, subaccount_id = parse_account(project.task['auth'],
-                                            project.task['account'])
+TRIGGER_ID = 0  # from source
+TRIGGER_EMAIL = 1  # from source
+TRIGGER_REPORT = 2  # added by this script
 
-  name = 'Floodlight Monitor %s %s ( StarThinker )' % (account_id,
-                                                       floodlight_id)
+
+def floodlight_report(floodlight_id: int) -> int:
+  """ Create a report for a specific floodlight if it does not exist.
+
+  Args:
+    floodlight_id - the floodlight being monitored
+
+  Returns:
+    The id of the created report.
+  """
+
+  account_id, subaccount_id = parse_account(
+    project.task['auth'],
+    project.task['account']
+  )
+
+  name = 'Floodlight Monitor %s %s ( StarThinker )' % (
+    account_id,
+    floodlight_id
+  )
 
   if project.verbose:
     print('FLOODLIGHT MONITOR REPORT: ', name)
 
   # create report if it does not exists
   report = report_build(
-      project.task['auth'], project.task['account'], {
-          'kind':
-              'dfareporting#report',
-          'type':
-              'FLOODLIGHT',
-          'accountId':
-              account_id,
-          'name':
-              name,
-          'fileName':
-              name.replace('( ', '').replace(' )', '').replace(' ', '_'),
-          'format':
-              'CSV',
-          'delivery': {
-              'emailOwner': False
-          },
-          'floodlightCriteria': {
-              'dateRange': {
-                  'kind': 'dfareporting#dateRange',
-                  'relativeDateRange': 'LAST_7_DAYS'
-              },
-              'dimensions': [{
-                  'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:date'
-              }, {
-                  'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:floodlightConfigId'
-              }, {
-                  'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:activityGroupId'
-              }, {
-                  'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:activityGroup'
-              }, {
-                  'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:activityId'
-              }, {
-                  'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:activity'
-              }],
-              'floodlightConfigId': {
-                  'dimensionName': 'dfa:floodlightConfigId',
-                  'kind': 'dfareporting#dimensionValue',
-                  'matchType': 'EXACT',
-                  'value': floodlight_id
-              },
-              'metricNames': ['dfa:floodlightImpressions'],
-              'reportProperties': {
-                  'includeUnattributedCookieConversions': False,
-                  'includeUnattributedIPConversions': False
-              }
-          },
-          'schedule': {
-              'active': True,
-              'every': 1,
-              'repeats': 'DAILY',
-              'startDate': str(date.today()),
-              'expirationDate': str((date.today() + timedelta(days=365))),
-          },
-      })
+    project.task['auth'],
+    project.task['account'],
+    { 'kind': 'dfareporting#report',
+      'type': 'FLOODLIGHT',
+      'accountId': account_id,
+      'name': name,
+      'fileName': name.replace('( ', '').replace(' )', '').replace(' ', '_'),
+      'format': 'CSV',
+      'delivery': { 'emailOwner': False },
+      'floodlightCriteria': {
+        'dateRange': {
+          'kind': 'dfareporting#dateRange',
+          'relativeDateRange': 'LAST_7_DAYS'
+        },
+        'dimensions': [
+          {'kind': 'dfareporting#sortedDimension','name': 'dfa:date' },
+          { 'kind': 'dfareporting#sortedDimension', 'name': 'dfa:floodlightConfigId' },
+          { 'kind': 'dfareporting#sortedDimension', 'name': 'dfa:activityGroupId' },
+          { 'kind': 'dfareporting#sortedDimension', 'name': 'dfa:activityGroup' },
+          { 'kind': 'dfareporting#sortedDimension', 'name': 'dfa:activityId' },
+          { 'kind': 'dfareporting#sortedDimension', 'name': 'dfa:activity' }
+        ],
+        'floodlightConfigId': {
+          'dimensionName': 'dfa:floodlightConfigId',
+          'kind': 'dfareporting#dimensionValue',
+          'matchType': 'EXACT',
+          'value': floodlight_id
+        },
+        'metricNames': ['dfa:floodlightImpressions'],
+        'reportProperties': {
+          'includeUnattributedCookieConversions': False,
+          'includeUnattributedIPConversions': False
+        }
+    },
+    'schedule': {
+        'active': True,
+        'every': 1,
+        'repeats': 'DAILY',
+        'startDate': str(date.today()),
+        'expirationDate': str((date.today() + timedelta(days=365))),
+    },
+  })
+
   return report['id']
 
 
-def floodlight_rows(report_id):
+def floodlight_rows(report_id:int) -> Generator[list[str, str, str, str, str, str, int], None, None]:
+  """ Monitor a report for completion and return rows
+
+  Args:
+    report_id - the report created earlier for a specific floodlight id.
+
+  Returns:
+    A stream of rows, see FLOODLIGHT_* constants for definitions.
+  """
 
   # fetch report file if it exists
-  filename, report = report_file(project.task['auth'], project.task['account'],
-                                 report_id, None, 10)
+  filename, report = report_file(
+    project.task['auth'],
+    project.task['account'],
+    report_id,
+    None, # no name
+    10 # wait up to 10 minutes for report to complete
+  )
 
   # clean up rows
   rows = report_to_rows(report)
@@ -127,46 +149,69 @@ def floodlight_rows(report_id):
   return rows
 
 
-def floodlight_outliers(df_in, col_name):
-  q1 = df_in[col_name].quantile(0.25)
-  q3 = df_in[col_name].quantile(0.75)
-  iqr = q3 - q1
-  fence_low = q1 - 1.5 * iqr
-  fence_high = q3 + 1.5 * iqr
+def floodlight_analysis(rows:Generator[list[str, str, str, str, str, str, int], None, None]) -> list[str, list[str, str, str, str, str, str, int, str]]:
+  """ Perform outlier analysis and return last row by date with satatus indicator.
 
-  df_in['status'] = 'NORMAL'
-  df_in.loc[df_in[col_name] < fence_low, 'status'] = 'LOW'
-  df_in.loc[df_in[col_name] > fence_high, 'status'] = 'HIGH'
+  Groups all floodlight data by activity, checking for ourliers using.
+  See: http://www.mathwords.com/o/outlier.htm
 
-  return df_in
+  Args:
+    rows - A stream of rows, see FLOODLIGHT_* constants for definitions.
 
+  Returns:
+    A date string for the last date as well as the last row for each activity with status appended (LOW, HIGH, NORMAL).
+    Possibly None, None if no rows.
+  """
 
-def floodlight_analysis(rows):
+  outliers_today = []
+  activities = {}
 
-  df = pandas.DataFrame.from_records(
-      rows,
-      columns=[
-          'date', 'floodlightConfigId', 'activityGroupId', 'activityGroup',
-          'activityId', 'activity', 'impressions'
-      ])
+  for row in rows:
+    activities.setdefault(row[FLOODLIGHT_ACTIVITY_ID], []).append(row)
 
-  try:
-    # return only lowest quartile outliers for the last day ( don't flag outliers from past days )
-    last_day = pandas.to_datetime(df['date']).max().strftime('%Y-%m-%d')
-    outliers = floodlight_outliers(
-        df[[
-            'date', 'floodlightConfigId', 'activityId', 'activity',
-            'impressions'
-        ]], 'impressions').values.tolist()
-    outliers_today = [o for o in outliers if o[0] == last_day]
-  except ValueError:
-    print('No data available.')
+  for activity in activities.values():
+    data = sorted(activity, key=lambda k: k[FLOODLIGHT_IMPRESSIONS])
+
+    quartile_1, quartile_median, quartile_3 = quantiles(map(lambda d:d[FLOODLIGHT_IMPRESSIONS], data), n=4)
+    quartile_range = quartile_3 - quartile_1
+    outlier_top = quartile_3 + (1.5 * quartile_range)
+    outlier_bottom = quartile_1 - (1.5 * quartile_range)
+    last_day = max(data, key=lambda k:k[FLOODLIGHT_DATE])
+
+    if last_day[FLOODLIGHT_IMPRESSIONS] == 0 or last_day[FLOODLIGHT_IMPRESSIONS] < outlier_bottom:
+      last_day.append('LOW')
+    elif last_day[FLOODLIGHT_IMPRESSIONS] > outlier_top:
+      last_day.append('HIGH')
+    else:
+      last_day.append('NORMAL')
+
+    outliers_today.append((
+      last_day[FLOODLIGHT_DATE],
+      last_day[FLOODLIGHT_CONFIG_ID],
+      last_day[FLOODLIGHT_ACTIVITY_ID],
+      last_day[FLOODLIGHT_ACTIVITY],
+      last_day[FLOODLIGHT_IMPRESSIONS],
+      last_day[FLOODLIGHT_STATUS],
+    ))
+
+  if len(outliers_today) > 0:
+    return outliers_today[0][FLOODLIGHT_DATE], outliers_today
+  else:
     return None, None
 
-  return last_day, outliers_today
 
+def floodlight_email(day:str, alerts:dict[str, list[str, str, str, str, int, str]]) -> None:
+  """ Send an email to each alert group with status of all activities.
 
-def floodlight_email(day, alerts):
+  The email template will contain all activities for each email address specified in the input sheet.
+
+  Args:
+    day - the latest day that was present in all combined reports, used for title of email.
+    alerts - Each email in the sheet with a list of activities and statuses.
+
+  Returns:
+    Nothing.
+  """
 
   for email, table in alerts.items():
 
@@ -184,76 +229,72 @@ def floodlight_email(day, alerts):
       subject = 'All Floodlights Normal For %s' % day
 
     t.header(subject)
-    t.paragraph(
-        'The following floodlights are being monitored.  A status of LOW or HIGH inidcates impressions have changed significantly for the day.  A status of NORMAL means impressions are close to the average for the past 7 days.'
-    )
+    t.paragraph('The following floodlights are being monitored.  A status of LOW or HIGH inidcates impressions have changed significantly for the day.  A status of NORMAL means impressions are close to the average for the past 7 days.')
     t.table([
-        {
-            'name': 'Date',
-            'type': 'STRING'
-        },
-        {
-            'name': 'Floodlight',
-            'type': 'STRING'
-        },
-        {
-            'name': 'Activity Id',
-            'type': 'STRING'
-        },
-        {
-            'name': 'Activity',
-            'type': 'STRING'
-        },
-        {
-            'name': 'Impressions',
-            'type': 'INTEGER'
-        },
-        {
-            'name': 'Status',
-            'type': 'STRING'
-        },
+      { 'name': 'Date', 'type': 'STRING' },
+      { 'name': 'Floodlight', 'type': 'STRING' },
+      { 'name': 'Activity Id', 'type': 'STRING' },
+      { 'name': 'Activity', 'type': 'STRING' },
+      { 'name': 'Impressions', 'type': 'INTEGER' },
+      { 'name': 'Status', 'type': 'STRING' },
     ], table)
 
-    t.paragraph(
-        'Your monitored floodlights and recipients are listed in the sheet below.'
-    )
+    t.paragraph('Your monitored floodlights and recipients are listed in the sheet below.')
 
     # either way link to the configuration sheet
     t.button(
-        'Floodlight Monitoring Sheet',
-        sheets_url(project.task['auth'], project.task['sheet']['sheet']),
-        big=True)
+      'Floodlight Monitoring Sheet',
+      sheets_url(project.task['auth'], project.task['sheet']['sheet']),
+      big=True
+    )
     t.section(False)
 
     if project.verbose:
       print('FLOODLIGHT MONITOR EMAIL ALERTS', email, len(table))
 
     # send email template
-    send_email(project.task['auth'], email, None, None, subject, t.get_text(),
-               t.get_html())
+    send_email(
+      project.task['auth'],
+      email,
+      None,
+      None,
+      subject,
+      t.get_text(),
+      t.get_html()
+    )
 
 
 @project.from_parameters
-def floodlight_monitor():
+def floodlight_monitor() -> None:
+  """ The task handler.  See module description.
+
+  Args:
+    Everuthing is passed using project.task.
+
+  Returns:
+    Nothing.
+  """
+
   if project.verbose:
     print('FLOODLIGHT MONITOR')
 
   # make sure tab exists in sheet ( deprecated, use sheet task instead )
   if 'template' in project.task['sheet']:
-    sheets_tab_copy(project.task['auth'],
-                    project.task['sheet']['template']['sheet'],
-                    project.task['sheet']['template']['tab'],
-                    project.task['sheet']['sheet'],
-                    project.task['sheet']['tab'])
+    sheets_tab_copy(
+      project.task['auth'],
+      project.task['sheet']['template']['sheet'],
+      project.task['sheet']['template']['tab'],
+      project.task['sheet']['sheet'],
+      project.task['sheet']['tab']
+  )
 
   # read peers from sheet
-  triggers = sheets_read(project.task['auth'], project.task['sheet']['sheet'],
-                         project.task['sheet']['tab'],
-                         project.task['sheet']['range'])
-  # 0 - Floodlight Id
-  # 1 - email
-  # 2 - dcm report id ( added by this script )
-  # 3 - status, added by the script ( LOW, NORMAL, HIGH )
+  triggers = sheets_read(
+    project.task['auth'],
+    project.task['sheet']['sheet'],
+    project.task['sheet']['tab'],
+    project.task['sheet']['range']
+  )
 
   if project.verbose and len(triggers) == 0:
     print('FLOODLIGHT MONITOR: No floodlight ids specified in sheet.')
@@ -263,13 +304,13 @@ def floodlight_monitor():
 
   # create reports first in parallel
   for trigger in triggers:
-    trigger.append(floodlight_report(trigger[0]))
+    trigger.append(floodlight_report(trigger[TRIGGER_ID]))
 
   # download data from all reports
   for trigger in triggers:
 
     # get report rows for each floodlight
-    rows = floodlight_rows(trigger[2])
+    rows = floodlight_rows(trigger[TRIGGER_REPORT])
 
     # calculate outliers
     last_day, rows = floodlight_analysis(rows)
@@ -279,8 +320,8 @@ def floodlight_monitor():
       day = last_day if day is None else max(day, last_day)
 
       # group alerts by email
-      alerts.setdefault(trigger[1], [])
-      alerts[trigger[1]].extend(rows)
+      alerts.setdefault(trigger[TRIGGER_EMAIL], [])
+      alerts[trigger[TRIGGER_EMAIL]].extend(rows)
 
   if alerts:
     floodlight_email(day, alerts)
