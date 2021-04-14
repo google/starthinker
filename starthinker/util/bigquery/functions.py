@@ -17,6 +17,34 @@
 ###########################################################################
 
 
+def rgb_to_hsv():
+  return """
+  CREATE FUNCTION IF NOT EXISTS rgb_to_hsv(r FLOAT64, g FLOAT64, b FLOAT64)
+    RETURNS STRUCT<h int64, s int64, v int64>
+    LANGUAGE js AS r\'\'\'
+      var h = 0;
+      var s = 0;
+      var v = 0;
+      r /= 255.0;
+      g /= 255.0;
+      b /= 255.0;
+      var mx = Math.max(r, g, b);
+      var mn = Math.min(r, g, b);
+      var df = mx-mn;
+
+      if (mx == mn) { h = 0; }
+      else if (mx == r) { h = (60 * ((g-b)/df) + 360) % 360; }
+      else if (mx == g) { h = (60 * ((b-r)/df) + 120) % 360; }
+      else if (mx == b) { h = (60 * ((r-g)/df) + 240) % 360; }
+
+      if (mx > 0) { s = (df/mx)*100; }
+
+      v = mx*100;
+
+      return {'h':h, 's':s, 'v':v};
+    \'\'\'
+  """
+
 def pearson_significance_test():
   return """
   CREATE FUNCTION IF NOT EXISTS pearson_significance_test(correlation FLOAT64, population INT64, percent FLOAT64, threshold FLOAT64)

@@ -3,7 +3,7 @@
 #  Copyright 2020 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
+#  yoy may not use this file except in compliance with the License.
 #  You may obtain a copy of the License at
 #
 #      https://www.apache.org/licenses/LICENSE-2.0
@@ -74,6 +74,14 @@ def bigquery_function():
       us_geography.US_GEOGRAPHY_SCHEMA
     )
 
+  elif project.Project.task['function'] == 'RGB To HSV':
+    bq.run_query(
+      project.Project.task['auth'],
+      project.Project.id,
+      functions.rgb_to_hsv(),
+      False,
+      project.Project.task['to']['dataset']
+    )
 
 def bigquery_run():
   """Execute a query without expected return results.
