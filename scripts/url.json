@@ -9,23 +9,27 @@
     "title":"URL",
     "description":"Pull URL information.",
     "instructions":[
-      "Specify a list of URLs.",
+      "Specify a table with columns and URL, URI ( can be null).",
       "Check bigquery destination for list of information."
     ],
     "authors":["kenjora@google.com"]
   },
   "tasks":[
     { "url":{
-      "auth":{"field":{ "name":"auth", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+      "auth":{"field":{ "name":"auth", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for rading and writing data." }},
       "status":{"field":{ "name":"status", "kind":"boolean", "order":2, "default":true, "description":"Pull status of HTTP request." }},
       "read":{"field":{ "name":"read", "kind":"boolean", "order":3, "default":false, "description":"Pull data from HTTP request." }},
       "urls":{
-        "values":{"field":{ "name":"urls", "kind":"string_list", "order":1, "default":"service", "description":"Credentials used for writing data." }}
+       "bigquery":{
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to write." }},
+          "query":{"field":{ "name":"table", "kind":"text", "order":5, "default":"", "description":"Query to run to pull URLs." }},
+          "legacy":false
+        }
       },
       "to":{
         "bigquery":{
-          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Name of Google BigQuery dataset to write." }},
-          "table":{"field":{ "name":"table", "kind":"string", "order":1, "default":"", "description":"Name of Google BigQuery dataset to write." }}
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":6, "default":"", "description":"Name of Google BigQuery dataset to write." }},
+          "table":{"field":{ "name":"table", "kind":"string", "order":7, "default":"", "description":"Name of Google BigQuery dataset to write." }}
         }
       }
     }}

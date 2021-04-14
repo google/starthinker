@@ -19,6 +19,7 @@
 import re
 import sys
 import codecs
+import base64
 import csv
 import uuid
 import json
@@ -42,6 +43,41 @@ BIGQUERY_BUFFERSIZE = min(BIGQUERY_CHUNKSIZE * 4,
 
 RE_TABLE_NAME = re.compile(r'[^\w]+')
 RE_INDENT = re.compile(r' {5,}')
+
+BIGQUERY_DATE_FORMAT = "%Y-%m-%d"
+BIGQUERY_TIME_FORMAT = "%H:%M:%S"
+
+
+class JSON_To_BigQuery(json.JSONEncoder):
+  """Translate complex Python objects into BigQuery formats where json does not have defaults.
+
+  Usage: json.dumps(..., cls=JSON_To_BigQuery)
+
+  Currently translates:
+    bytes -> base64
+    detetime - > str
+    dete - > str
+    time - > str
+
+  Args:
+    obj -  any json dumps parameter without a default handler
+
+  Returns:
+    Always a string version of the object passed in.
+
+  """
+
+  def default(self, obj:any) -> str:
+    if isinstance(obj, bytes):
+      return base64.standard_b64encode(obj).decode("ascii")
+    elif isinstance(obj, datetime.datetime):
+      return obj.strftime("%s %s" % ( self.BIGQUERY_DATE_FORMAT, self.BIGQUERY_TIME_FORMAT))
+    elif isinstance(obj, datetime.date):
+      return obj.strftime(self.BIGQUERY_DATE_FORMAT)
+    elif isinstance(obj, datetime.time):
+      return obj.strftime(self.BIGQUERY_TIME_FORMAT)
+    else:
+      return super(JSON_To_BigQuery, self).default(obj)
 
 
 def row_to_json(row, schema, as_object=False):
@@ -396,8 +432,9 @@ def json_to_table(auth,
   for is_last, record in flag_last(json_data):
 
     # check if json is already string encoded, and write to buffer
-    buffer_data.write((record if isinstance(record, str) else
-                       json.dumps(record)).encode('utf-8'))
+    buffer_data.write(
+      (record if isinstance(record, str) else json.dumps(record, cls=JSON_To_BigQuery)
+    ).encode('utf-8'))
 
     # write the buffer in chunks
     if is_last or buffer_data.tell() + 1 > BIGQUERY_BUFFERSIZE:

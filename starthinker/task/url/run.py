@@ -24,9 +24,12 @@ For sample use see scripts/url.json. Allows flagging status and or content in re
 
 """
 
+import base64
+
 from typing import Iterator
 from urllib import request
 from urllib.error import HTTPError
+from http.client import InvalidURL
 
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
@@ -34,9 +37,10 @@ from starthinker.util.project import project
 
 
 URL_SCHEMA = [
+  { 'name': 'URI', 'type': 'STRING', 'mode': 'NULLABLE' },
   { 'name': 'URL', 'type': 'STRING', 'mode': 'REQUIRED' },
   { 'name': 'Status', 'type': 'INTEGER', 'mode': 'NULLABLE' },
-  { 'name': 'Read', 'type': 'BYTES', 'mode': 'NULLABLE' }
+  { 'name': 'Read', 'type': 'BYTES', 'mode': 'NULLABLE' },
 ]
 
 
@@ -51,13 +55,14 @@ def url_fetch() -> Iterator[dict]:
 
   """
 
-  for url in get_rows(project.task['auth'], project.task['urls'], unnest=True):
+  for url, uri in get_rows(project.task['auth'], project.task['urls']):
 
     if project.verbose:
-      print('URL', url)
+      print('URL/URI', url, uri)
 
     record = {
-      'url':url
+      'URL':url,
+      'URI':None if uri is None else str(uri)
     }
 
     url_request = request.Request(url, data=project.task.get('data'))
@@ -65,15 +70,22 @@ def url_fetch() -> Iterator[dict]:
       url_response = request.urlopen(url_request)
 
       if project.task.get('status', False):
-        record['status'] = url_response.status
+        record['Status'] = url_response.status
 
       if project.task.get('read', False):
-        record['read'] = url_response.read()
+        record['Read'] = url_response.read()
+
+    except InvalidURL as error:
+      if project.task.get('status', False):
+        record['Status'] = 400
 
     except HTTPError as error:
-
       if project.task.get('status', False):
-        record['status'] = error.status
+        record['Status'] = error.status
+
+    except Exception as error:
+      if project.task.get('status', False):
+        record['Status'] = 500
 
     yield record
 
