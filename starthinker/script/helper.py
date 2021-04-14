@@ -37,6 +37,7 @@ def main():
       - python helper.py scripts/say_hello.json
       - python helper.py scripts/dv360_targeting_audit.json -target 'DV_Targeting_Audit.' -value '{dataset}.'
       - python helper.py scripts/dv360_targeting_audit.json -target '"service"' -field "auth_bigquery" -order 3 -description "BigQuery read/ write credentials." -default "service" -kind "authentication"
+      - python helper.py scripts/dv360_targeting_audit.json -target '"Some_Dataset"' -field "recipe_slug" -order 5 -description "name of dataset in BigQuery." -default "" -kind "string"
   """))
 
   parser.add_argument('file', help='A JSON file.')
