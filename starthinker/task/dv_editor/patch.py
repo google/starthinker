@@ -243,6 +243,7 @@ def patch_log(patch=None):
             'sheets': {
                 'sheet': project.task['sheet'],
                 'tab': kind.title(),
+                'header':False,
                 'range': 'A2',
                 'append': True
             }
@@ -286,6 +287,7 @@ def patch_preview(patches):
             'sheets': {
                 'sheet': project.task['sheet'],
                 'tab': 'Preview',
+                'header':False,
                 'range': 'A2',
             }
         }, rows)

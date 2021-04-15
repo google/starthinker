@@ -266,10 +266,9 @@ def frequency_cap_patch(commit=False):
       patches.append(patch)
 
   patch_masks(patches)
+  patch_preview(patches)
 
   if commit:
     insertion_order_commit(patches)
     line_item_commit(patches)
     campaign_commit(patches)
-  else:
-    patch_preview(patches)

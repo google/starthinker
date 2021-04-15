@@ -62,6 +62,7 @@ def line_item_load():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Campaigns",
+        "header":False,
         "range": "A2:A"
       }}
     )])
@@ -71,6 +72,7 @@ def line_item_load():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Advertisers",
+        "header":False,
         "range": "A2:A"
       }}
     )
@@ -111,6 +113,7 @@ def line_item_load():
     { "sheets": {
       "sheet": project.task["sheet"],
       "tab": "Line Items",
+      "header":False,
       "range": "A2"
     }},
     get_rows(
@@ -228,6 +231,7 @@ def line_item_audit():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Line Items",
+        "header":False,
         "range": "A2:AI"
       }}
     )

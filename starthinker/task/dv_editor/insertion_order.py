@@ -60,6 +60,7 @@ def insertion_order_load():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Campaigns",
+        "header":False,
         "range": "A2:A"
       }}
     )])
@@ -69,6 +70,7 @@ def insertion_order_load():
       { "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Advertisers",
+        "header":False,
         "range": "A2:A"
       }}
     )
@@ -106,6 +108,7 @@ def insertion_order_load():
     { "sheets": {
       "sheet": project.task["sheet"],
       "tab": "Insertion Orders",
+      "header":False,
       "range": "A2"
     }},
     get_rows(
@@ -157,6 +160,7 @@ def insertion_order_audit():
       "sheets": {
         "sheet": project.task["sheet"],
         "tab": "Insertion Orders",
+        "header":False,
         "range": "A2:U"
       }
     }
@@ -486,10 +490,10 @@ def insertion_order_insert(commit=False):
       }
     })
 
+  patch_preview(inserts)
+
   if commit:
     insertion_order_commit(inserts)
-  else:
-    patch_preview(inserts)
 
 
 def insertion_order_commit(patches):

@@ -305,10 +305,10 @@ class Assigned_Targeting:
       )
 
 
-  def get_assigned_audience(self):
+  def get_assigned_audience(self, audience_type):
     if self.audience_cache is None:
-      self.audience_cache = self.get_assigned_list('TARGETING_TYPE_AUDIENCE_GROUP')[0]
-    return self.audience_cache
+      self.audience_cache = (self.get_assigned_list('TARGETING_TYPE_AUDIENCE_GROUP') or [{}])[0]
+    return self.audience_cache.get(audience_type, {})
 
 
   @_check_settable
@@ -631,7 +631,7 @@ class Assigned_Targeting:
 
   @_check_settable
   def add_included_1p_and_3p_audience(self, firstAndThirdPartyAudienceId, recency, group):
-    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences = self.get_assigned_audience('audienceGroupDetails')
     audiences.setdefault('includedFirstAndThirdPartyAudienceGroups', [])
 
     audience = { "firstAndThirdPartyAudienceId": firstAndThirdPartyAudienceId, "recency": recency }
@@ -647,7 +647,7 @@ class Assigned_Targeting:
 
   @_check_settable
   def delete_included_1p_and_3p_audience(self, firstAndThirdPartyAudienceId, recency, group):
-    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences = self.get_assigned_audience('audienceGroupDetails')
     audiences.setdefault('includedFirstAndThirdPartyAudienceGroups', [])
 
     audience = { "firstAndThirdPartyAudienceId": firstAndThirdPartyAudienceId, "recency": recency }
@@ -664,7 +664,7 @@ class Assigned_Targeting:
 
   @_check_settable
   def add_excluded_1p_and_3p_audience(self, firstAndThirdPartyAudienceId, recency):
-    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences = self.get_assigned_audience('audienceGroupDetails')
     audiences.setdefault('excludedFirstAndThirdPartyAudienceGroup', { 'settings':[] })
 
     audience = { "firstAndThirdPartyAudienceId": firstAndThirdPartyAudienceId, "recency": recency }
@@ -676,7 +676,7 @@ class Assigned_Targeting:
 
   @_check_settable
   def delete_excluded_1p_and_3p_audience(self, firstAndThirdPartyAudienceId, recency):
-    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences = self.get_assigned_audience('audienceGroupDetails')
     audiences.setdefault('excludedFirstAndThirdPartyAudienceGroup', { 'settings':[] })
 
     audience = { "firstAndThirdPartyAudienceId": firstAndThirdPartyAudienceId, "recency": recency }
@@ -688,7 +688,7 @@ class Assigned_Targeting:
 
   @_check_settable
   def add_included_google_audience(self, googleAudienceId):
-    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences = self.get_assigned_audience('audienceGroupDetails')
     audiences.setdefault('includedGoogleAudienceGroup', { 'settings':[] })
 
     audience = { 'googleAudienceId':googleAudienceId }
@@ -700,7 +700,7 @@ class Assigned_Targeting:
 
   @_check_settable
   def delete_included_google_audience(self, googleAudienceId):
-    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences = self.get_assigned_audience('audienceGroupDetails')
     audiences.setdefault('includedGoogleAudienceGroup', { 'settings':[] })
 
     audience = { 'googleAudienceId':googleAudienceId }
@@ -712,7 +712,7 @@ class Assigned_Targeting:
 
   @_check_settable
   def add_excluded_google_audience(self, googleAudienceId):
-    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences = self.get_assigned_audience('audienceGroupDetails')
     audiences.setdefault('excludedGoogleAudienceGroup', { 'settings':[] })
 
     audience = { 'googleAudienceId':googleAudienceId }
@@ -724,7 +724,7 @@ class Assigned_Targeting:
 
   @_check_settable
   def delete_excluded_google_audience(self, googleAudienceId):
-    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences = self.get_assigned_audience('audienceGroupDetails')
     audiences.setdefault('excludedGoogleAudienceGroup', { 'settings':[] })
 
     audience = { 'googleAudienceId':googleAudienceId }
@@ -736,7 +736,7 @@ class Assigned_Targeting:
 
   @_check_settable
   def add_included_custom_list(self, customListId):
-    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences = self.get_assigned_audience('audienceGroupDetails')
     audiences.setdefault('includedCustomListGroup', { 'settings':[] })
 
     audience = { 'customListId':customListId }
@@ -748,7 +748,7 @@ class Assigned_Targeting:
 
   @_check_settable
   def delete_included_custom_list(self, customListId):
-    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences = self.get_assigned_audience('audienceGroupDetails')
     audiences.setdefault('includedCustomListGroup', { 'settings':[] })
 
     audience = { 'customListId':customListId }
@@ -760,7 +760,7 @@ class Assigned_Targeting:
 
   @_check_settable
   def add_included_combined_audience(self, combinedAudienceId):
-    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences = self.get_assigned_audience('audienceGroupDetails')
     audiences.setdefault('includedCombinedAudienceGroup', { 'settings':[] })
 
     audience = { 'combinedAudienceId':combinedAudienceId }
@@ -772,7 +772,7 @@ class Assigned_Targeting:
 
   @_check_settable
   def delete_included_combined_audience(self, combinedAudienceId):
-    audiences = self.get_assigned_audience()['audienceGroupDetails']
+    audiences = self.get_assigned_audience('audienceGroupDetails')
     audiences.setdefault('includedCombinedAudienceGroup', { 'settings':[] })
 
     audience = { 'combinedAudienceId':combinedAudienceId }

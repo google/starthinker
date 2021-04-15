@@ -59,6 +59,7 @@ def campaign_load():
       { 'sheets': {
         'sheet': project.task['sheet'],
         'tab': 'Advertisers',
+        'header':False,
         'range': 'A2:A'
       }
     })
@@ -95,6 +96,7 @@ def campaign_load():
     { 'sheets': {
       'sheet': project.task['sheet'],
       'tab': 'Campaigns',
+      'header':False,
       'range': 'B2'
     }},
     get_rows(

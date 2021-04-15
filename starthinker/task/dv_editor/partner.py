@@ -78,7 +78,8 @@ def partner_load():
       'sheets': {
           'sheet': project.task['sheet'],
           'tab': 'Partners',
-          'range': 'B2'
+          'range': 'B2',
+          'header':False
       }
   }, rows)
 
