@@ -72,11 +72,7 @@ version deployed to enable Bulkdozer to fully work.
 
 
 #### Add a new recipe to the StarThinker platform:
-1. Navigate to [https://bulkdozer-starthinker.appspot.com](https://bulkdozer-starthinker.appspot.com ) and login
-using your Google account.
-
->In case the StarThinker platform is hosted under a different local
-domain, browse to the equivalent relative path.
+1. Navigate to the StarThinker web UI, and login using your Google account.
 
 2. Click on the *‘plus’* sign button to the right of the *'Recipes'* title.
 
