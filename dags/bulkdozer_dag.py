@@ -66,7 +66,7 @@ CM360 Bulkdozer Editor
 
 Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.
 
-  - Open the <a href='https://docs.google.com/spreadsheets/d/10YewffRUP1gCxTY0ZLTkVEfzmOQ1gPXPxp7qev3w8xk/edit?usp=sharing' target='_blank'>Bulkdozer 0.27</a> feed.
+  - Open the <a href='https://docs.google.com/spreadsheets/d/1EjprWTDLWOvkV7znA0P4uciz0_E5_TNn3N3f8J4jTwA' target='_blank'>Bulkdozer 0.27</a> feed.
   - Make your own copy of the feed by clicking the File -> Make a copy... menu in the feed.
   - Give it a meaninful name including the version, your name, and team to help you identify it and ensure you are using the correct version.
   - Under the Account ID field below, enter the your Campaign Manager Network ID.
@@ -90,8 +90,8 @@ from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'recipe_timezone': 'America/Chicago',  # Timezone for report dates.
-  'account_id': '',  # Campaign Manager Network ID (optional if profile id provided)
-  'dcm_profile_id': '',  # Campaign Manager Profile ID (optional if account id provided)
+  'account_id': None,  # Campaign Manager Network ID (optional if profile id provided)
+  'dcm_profile_id': None,  # Campaign Manager Profile ID (optional if account id provided)
   'sheet_url': '',  # Feed Sheet URL
 }
 
@@ -113,7 +113,7 @@ RECIPE = {
             'kind': 'string',
             'order': 1,
             'description': 'Campaign Manager Network ID (optional if profile id provided)',
-            'default': ''
+            'default': None
           }
         },
         'dcm_profile_id': {
@@ -122,7 +122,7 @@ RECIPE = {
             'kind': 'string',
             'order': 1,
             'description': 'Campaign Manager Profile ID (optional if account id provided)',
-            'default': ''
+            'default': None
           }
         },
         'auth': 'user',

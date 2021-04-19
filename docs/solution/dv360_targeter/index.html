@@ -20,8 +20,8 @@
     <style>
       html { color: rgba(68,68,68,1); font-family: Roboto, sans-serif; }
       .material-icons { line-height: normal; vertical-align: middle; }
-      #message { justify-content: center; font-size: 2em;}
-      #message i { font-size: 2em; margin: 10px; }
+      #message { justify-content: center; font-size: 2em; padding: 0px 20px; }
+      #message i { font-size: 1.5em; margin: 10px; }
       #message ul, #message li { display: inline; margin-left: 10px; }
       #page { width: 100%; max-width: 1280px; min-height: 500px; margin: 0px auto; padding-bottom: 50px; }
       div.nav-wrapper { padding-left: 10%; padding-right: 10%; }
@@ -184,46 +184,40 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
           <table class="bordered">
             <tbody>
               <tr>
-                <td>A Sheet called <b>DV Targeter </b> will be created.</td>
+                <td>Select <b>Load</b>, click <b>Save + Run</b>, a sheet called <b> DV Targeter</b> will be created.</td>
               </tr>
               <tr>
-                <td>Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.</td>
+                <td>In the <b>Partners</b> sheet tab, fill in <i>Filter</i> column then select <b>Load</b>, click <b>Save + Run</b>.</td>
               </tr>
               <tr>
-                <td>In the 'Partners' sheet tab, fill in <i>Filter</i> column.</td>
+                <td>In the <b>Advertisers</b> sheet tab, fill in <i>Filter</i> column. then select <b>Load</b>, click <b>Save + Run</b>.</td>
               </tr>
               <tr>
-                <td>Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.</td>
+                <td>Check the First And Third Party option to load audiences, which may be slow.  If not loaded, user will enter audience ids into the sheet manually.</td>
               </tr>
               <tr>
-                <td>In the 'Advertisers' sheet tab, fill in <i>Filter</i> column.</td>
+                <td>On the <b>Line Items</b> sheet tab, the <i>Filter</i> is used only to limit drop down choices in the rest of the tool.</td>
               </tr>
               <tr>
-                <td>Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.</td>
+                <td>Optionally edit or filter the <i>Targeting Options</i> or <i>Inventory Sources</i> sheets to limit choices.</td>
               </tr>
               <tr>
-                <td>In the 'Line Items' sheet tab, fill in <i>Filter</i> column.</td>
+                <td>Make targeting updates, fill in changes on all tabs with colored fields (RED FIELDS ARE NOT IMPLEMENTED, IGNORE).</td>
               </tr>
               <tr>
-                <td>Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.</td>
+                <td>Select <i>Preview</i>, click <b>Save + Run</b> then check the <b>Preview</b> tabs.</td>
               </tr>
               <tr>
-                <td>Make updates, fill in changes on all tabs with colored fields (RED FIELDS ARE NOT IMPLEMENTED, IGNORE).</td>
-              </tr>
-              <tr>
-                <td>Select <i>Preview</i>, <b>Save</b> , then <b>Run<b>.</td>
-              </tr>
-              <tr>
-                <td>Check the <b>Preview</b> tabs.</td>
-              </tr>
-              <tr>
-                <td>Select <b>Update</b> as the command, click <b>Save</b>, then <b>Run<b>.</td>
-              </tr>
-              <tr>
-                <td>Check the <b>Success</b> and <b>Error</b> tabs.</td>
+                <td>Select <b>Update</b>, click <b>Save + Run</b> then check the <b>Success</b> and <b>Error</b> tabs.</td>
               </tr>
               <tr>
                 <td>Load and Update can be run multiple times.</td>
+              </tr>
+              <tr>
+                <td>If an update fails, all parts of the update failed, break it up into multiple updates.</td>
+              </tr>
+              <tr>
+                <td>To refresh the Partner, Advertiser, or Line Item list, remove the filters and run load.</td>
               </tr>
             </tbody>
           </table>
@@ -236,11 +230,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </tr>
             <tr>
               <td>Age</td>
-              <td>Jan. 12, 2021 (1 month)</td>
+              <td>Jan. 12, 2021 (3 months, 1 week)</td>
             </tr>
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+DV360+Bulk+Targeting+Editor+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+DV360+Bulk+Targeting+Editor+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fdv360_targeter%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+DV360+Bulk+Targeting+Editor+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+DV360+Bulk+Targeting+Editor+solution.%0A%0AStarThinker+Link%3A+https%3A%2F%2Fb2607f8b048001000002472f4c0a8140e1f40000000000000000001.proxy.googlers.com%2Fsolution%2Fdv360_targeter%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
                 <tr>
@@ -268,7 +262,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "dataset": {
                 "field": {
                     "name": "recipe_slug",
-                    "prefix": "DV_Targeter_",
                     "kind": "string",
                     "order": 2,
                     "default": "",
@@ -294,7 +287,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "destination": {
                     "field": {
                         "name": "recipe_name",
-                        "prefix": "DV Targeter ",
+                        "suffix": " DV Targeter",
                         "kind": "string",
                         "order": 3,
                         "default": "",
@@ -337,7 +330,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "sheet": {
                 "field": {
                     "name": "recipe_name",
-                    "prefix": "DV Targeter ",
+                    "suffix": " DV Targeter",
                     "kind": "string",
                     "order": 4,
                     "default": "",
@@ -347,7 +340,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "dataset": {
                 "field": {
                     "name": "recipe_slug",
-                    "prefix": "DV_Targeter_",
                     "kind": "string",
                     "order": 5,
                     "default": "",
@@ -367,6 +359,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "order": 6,
                     "default": "Load",
                     "description": "Action to take."
+                }
+            },
+            "first_and_third": {
+                "field": {
+                    "name": "first_and_third",
+                    "kind": "boolean",
+                    "order": 6,
+                    "default": false,
+                    "description": "Load first and third party data (may be slow). If not selected, enter audience identifiers into sheet manually."
                 }
             }
         }

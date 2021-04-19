@@ -66,19 +66,21 @@ DV360 Bulk Editor
 
 Allows bulk editing DV360 through Sheets and BigQuery.
 
-  - Select <b>Load Partners</b>, <b>save</b> the recipe, then run. A Sheet called DV_Editor_ will be created.
-  - In the 'Partners' sheet tab, fill in <i>Partners</i> tab filter.
-  - Select <b>Load Advertisers</b>, <b>save</b> the recipe, then run.
-  - In the 'Advertisers' sheet tab, fill in <i>Advertisers</i> tab filter.
-  - Select <b>Load Campaigns</b>, <b>save</b> the recipe, then run. Filtering by campaigns is optional.
-  - Now, select <b>Load Insertion Orders and Line Items</b>, <b>save</b> the recipe, then run.
-  - To patch, fill in changes on all tabs with colored fields.
-  - Select <i>Preview</i>, <b>save</b> the recipe, then run the recipe.
-  - Check the <b>Audit</b> and <b>Preview</b> tabs.
-  - To Patch, select <i>Patch</i>, <b>save</b> the recipe, then run.
+  - Select <b>Load Partners</b>, then click <b>Save + Run</b>, then a sheet called DV Editor  will be created.
+  - In the <b>Partners</b> sheet tab, fill in <i>Filter</i> column then select <b>Load Advertisers</b>, click <b>Save + Run</b>.
+  - In the <b>Advertisers</b> sheet tab, fill in <i>Filter</i> column then select <b>Load Campaigns</b>, click <b>Save + Run</b>.
+  - In the <b>Campaigns</b> sheet tab, fill in <i>Filter</i> column, optional.
+  - Then select <b>Load Insertion Orders And Line Items</b>, click <b>Save + Run</b>.
+  - To update values, make changes on all <i>Edit</i> columns.
+  - Select <i>Preview</i>, then <b>Save + Run</b>.
+  - Check the <b>Audit</b> and <b>Preview</b> tabs to verify commit.
+  - To commit changes, select <i>Update</i>, then <b>Save + Run</b>.
   - Check the <b>Success</b> and <b>Error</b> tabs.
-  - Patch can be run multiple times.
-  - Patch ONLY changes edited fields.
+  - Update can be run multiple times.
+  - Update ONLY changes fields that do not match their original value.
+  - Insert operates only on Edit columns, ignores orignal value columns.
+  - Carefull when using drag to copy rows, values are incremented automatically.
+  - Modify audit logic by visting BigQuery and changing the views.
 
 --------------------------------------------------------------
 
@@ -218,13 +220,13 @@ RECIPE = {
               'Clear Campaigns',
               'Clear Insertion Orders and Line Items',
               'Clear Preview',
-              'Clear Patch',
+              'Clear Update',
               'Load Partners',
               'Load Advertisers',
               'Load Campaigns',
               'Load Insertion Orders and Line Items',
               'Preview',
-              'Patch'
+              'Update'
             ],
             'order': 6,
             'default': 'Load Partners',

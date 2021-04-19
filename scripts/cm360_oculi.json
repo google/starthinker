@@ -5,14 +5,13 @@
     "copyright":"Copyright 2021 Google LLC",
     "icon":"donut_large",
     "title":"CM360 Oculi",
-    "description":"CM360 Creative Analysis using vision API to create insights.",
+    "description":"Export CM360 Creatives into BigQuery, process them with the Vision API, and generate a breakdown of each creative asset mapped back to its parent. Also generate a series of views to flatten the data.",
     "from":["cm360", "vision_api"],
     "to":["bigquery"],
     "pitches":[
       "Break down creative properities for analysis.",
       "Determine which factors are most valuable to performance.",
-      "Discover missed marketing opportunities.",
-      "Run continously to measure impact of creative changes."
+      "Discover missed marketing opportunities."
     ],
     "impacts":{
       "spend optimization":100,
@@ -23,6 +22,7 @@
     },
     "instructions":[
       "Wait for <b>BigQuery->{field:recipe_project}->{field:recipe_slug}->Oculi_...</b> to be created.",
+      "Then use the data for analysis.",
       "Or give these intructions to the client."
     ],
     "authors":["kenjora@google.com"]

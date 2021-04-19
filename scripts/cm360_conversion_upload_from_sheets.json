@@ -42,7 +42,7 @@
         "encryptionSource":{"field":{ "name":"encryption_entity_source", "kind":"choice", "order":5, "choices":[
           "AD_SERVING",
           "DATA_TRANSFER"
-        ], "default":"DATA_TRANSFER", "description":"" }}
+        ], "default":"DATA_TRANSFER", "description":"Where the ids are originating from." }}
       },
       "from":{
         "sheets":{

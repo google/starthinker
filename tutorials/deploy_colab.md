@@ -20,10 +20,14 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [BigQuery Query To View](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_view.ipynb) - Create a BigQuery view.
 * [Storage Bucket](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bucket.ipynb) - Create and permission a bucket in Storage.
 * [CM360 Bulkdozer Editor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bulkdozer.ipynb) - Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.
+* [CM360 Conversion Upload From BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_conversion_upload_from_bigquery.ipynb) - Move from BigQuery to CM.
+* [CM360 Conversion Upload From Sheets](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_conversion_upload_from_sheets.ipynb) - Move form Sheets to CM.
+* [CM360 Data Warehouse](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_data_warehouse.ipynb) - Deploy a BigQuery dataset mirroring CM360 account structure. Foundation for solutions on top.
+* [CM360 Oculi](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_oculi.ipynb) - Export CM360 Creatives into BigQuery, process them with the Vision API, and generate a breakdown of each creative asset mapped back to its parent. Also generate a series of views to flatten the data.
+* [CM360 Segmentology](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_segmentology.ipynb) - CM360 funnel analysis using Census data.
+* [CM360 To DV360 Bulk Creator](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_to_dv360.ipynb) - Allows bulk creating DV360 Insertion Orders and Line Items from CM360.
 * [CM360 Campaign Auditor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm_campaign_audit.ipynb) - A tool for rapidly bulk checking Campaign Manager campaigns
 * [CM360 Bulk User Editor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm_user_editor.ipynb) - A tool for rapidly bulk editing Campaign Manager profiles, roles, and sub accounts.
-* [CM360 Conversion Upload From BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/conversion_upload_from_biguery.ipynb) - Move from BigQuery to CM.
-* [CM360 Conversion Upload From Sheets](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/conversion_upload_from_sheets.ipynb) - Move form Sheets to CM.
 * [cTV Inventory Availability Dashboard](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/ctv_audience_affinity.ipynb) - The cTV Audience Affinity dashboard is designed to give clients insights into which cTV apps their audiences have a high affinity for using.  The goal of this dashboard is to provide some assistance with the lack of audience targeting for cTV within DV360.
 * [BigQuery Dataset](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dataset.ipynb) - Create and permission a dataset in BigQuery.
 * [DV360 Report](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dbm.ipynb) - Create a DV360 report.
@@ -41,7 +45,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Drive Copy](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/drive_copy.ipynb) - Copy a drive document.
 * [CM360 Data Transfer To Bigquery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dt.ipynb) - Move data from a DT bucket into a BigQuery table.
 * [DV360 Bulk Editor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv360_editor.ipynb) - Allows bulk editing DV360 through Sheets and BigQuery.
-* [DV360 Feature Adoption Dashboard](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv360_feature_adoption.ipynb) - Tracks revenue spent on various DV360 features and compares to performance metrics.
+* [DV360 Segmentology](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv360_segmentology.ipynb) - DV360 funnel analysis using Census data.
 * [DV360 Bulk Targeting Editor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv360_targeter.ipynb) - Allows bulk targeting DV360 through Sheets and BigQuery.
 * [DV360 Targeting Audit](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv360_targeting_audit.ipynb) - Continously audit all targeting settings for a DV360 Partner in one dashboard. Use filters to locate errant targeting and quickly correct issues.
 * [DV-3PO Custom Signals](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv3po_custom_signals.ipynb) - DV-3PO Custom Signals allows automated changes to be made to DV360 campaigns based on external signals from weather and social media trends. In the future it will also support news, disaster alerts, stocks, sports, custom APIs, etc.
@@ -53,15 +57,13 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [CM360 Floodlight Monitor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/floodlight_monitor.ipynb) - Monitor floodlight impressions specified in sheet and send email alerts.
 * [Federal Reserve Regional Data](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/fred_regional_to_bigquery.ipynb) - Download federal reserve region.
 * [Federal Reserve Series Data](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/fred_series_to_bigquery.ipynb) - Download federal reserve series.
+* [GA360 Segmentology](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/ga360_segmentology.ipynb) - GA360 funnel analysis using Census data.
 * [GoogleAds Segmentology](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/google_ads_segmentology.ipynb) - GoogleAds funnel analysis using Census data.
 * [Google API To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/google_api_to_bigquery.ipynb) - Execute any Google API function and store results to BigQuery.
 * [Say Hello](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/hello.ipynb) - Recipe template for say hello.
 * [Project IAM](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/iam.ipynb) - Sets project permissions for an email.
 * [DV360 ITP Audit](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/itp_audit.ipynb) - Dashboard that shows performance metrics across browser to see the impact of ITP.
 * [Tag Key Value Uploader](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/kv_uploader.ipynb) - A tool for bulk editing key value pairs for CM placements.
-* [Line Item To BigQuery Via Query](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/lineitem_read_to_bigquery_via_query.ipynb) - Move using an Id query.
-* [Line Item To BigQuery Via Values](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/lineitem_read_to_bigquery_via_value.ipynb) - Move using hard coded Id values.
-* [Line Item From BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/lineitem_write_from_bigquery.ipynb) - Upload Line Items From BigQuery To DV360.
 * [Test Script](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/manual.ipynb) - Used by tests.
 * [Column Mapping](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/mapping.ipynb) - Use sheet to define keyword to column mappings.
 * [DV360 Monthly Budget Mover](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/monthly_budget_mover.ipynb) - Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.
@@ -69,7 +71,6 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [SA360 Web Query Report](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sa360_web_query.ipynb) - Download SA360 reports into a Google Sheet.
 * [Salesforce To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/salesforce_to_bigquery.ipynb) - Move query results into a BigQuery table.
 * [DV360 SDF To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sdf_to_bigquery.ipynb) - Download SDF reports into a BigQuery table.
-* [DV360 Segmentology](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/segmentology_dv360.ipynb) - DV360 funnel analysis using Census data.
 * [Sheet Clear](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_clear.ipynb) - Clear data from a sheet.
 * [Sheet Copy](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_copy.ipynb) - Copy tab from a sheet to a sheet.
 * [Sheet To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_to_bigquery.ipynb) - Import data from a sheet and move it to a BigQuery table.
@@ -82,6 +83,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Trends Places To Sheets Via Query](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/trends_places_to_sheets_via_query.ipynb) - Move using a WOEID query.
 * [Trends Places To Sheets Via Values](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/trends_places_to_sheets_via_value.ipynb) - Move using hard coded WOEID values.
 * [Twitter Targeting](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/twitter.ipynb) - Adjusts line item settings based on Twitter hashtags and locations specified in a sheet.
+* [URL](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/url.ipynb) - Pull URL information.
 * [Video Overlay](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/video.ipynb) - Add images, text, and audio to videos.
 ---
 &copy; 2019 Google LLC - Apache License, Version 2.0

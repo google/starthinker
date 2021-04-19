@@ -449,6 +449,7 @@ RECIPE = {
     },
     {
       'lineitem': {
+        '__comment__': 'DEPRECATED: Future update will use DV360 adcertiser.lineitems.patch endpoint',
         'description': 'Write lineitem settings to DV360 after transformation.',
         'auth': {
           'field': {

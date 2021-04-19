@@ -91,6 +91,7 @@ INPUTS = {
   'version': 'v1',  # Must be supported version.
   'function': 'advertisers.list',  # Full function dot notation path.
   'kwargs': {'partnerId': 234340},  # Dictionray object of name value pairs.
+  'kwargs_remote': {},  # Fetch arguments from remote source.
   'api_key': '',  # Associated with a Google Cloud Project.
   'developer_token': '',  # Associated with your organization.
   'login_customer_id': '',  # Associated with your Adwords account.
@@ -149,11 +150,21 @@ RECIPE = {
             'description': 'Dictionray object of name value pairs.'
           }
         },
+        'kwargs_remote': {
+          'field': {
+            'name': 'kwargs_remote',
+            'kind': 'json',
+            'order': 5,
+            'default': {
+            },
+            'description': 'Fetch arguments from remote source.'
+          }
+        },
         'key': {
           'field': {
             'name': 'api_key',
             'kind': 'string',
-            'order': 4,
+            'order': 6,
             'default': '',
             'description': 'Associated with a Google Cloud Project.'
           }
@@ -163,7 +174,7 @@ RECIPE = {
             'field': {
               'name': 'developer_token',
               'kind': 'string',
-              'order': 5,
+              'order': 7,
               'default': '',
               'description': 'Associated with your organization.'
             }
@@ -172,7 +183,7 @@ RECIPE = {
             'field': {
               'name': 'login_customer_id',
               'kind': 'string',
-              'order': 6,
+              'order': 8,
               'default': '',
               'description': 'Associated with your Adwords account.'
             }
@@ -184,7 +195,7 @@ RECIPE = {
               'field': {
                 'name': 'dataset',
                 'kind': 'string',
-                'order': 7,
+                'order': 9,
                 'default': '',
                 'description': 'Existing dataset in BigQuery.'
               }
@@ -193,7 +204,7 @@ RECIPE = {
               'field': {
                 'name': 'table',
                 'kind': 'string',
-                'order': 8,
+                'order': 10,
                 'default': '',
                 'description': 'Table to write API call results to.'
               }

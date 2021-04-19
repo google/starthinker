@@ -66,20 +66,18 @@ DV360 Bulk Targeting Editor
 
 Allows bulk targeting DV360 through Sheets and BigQuery.
 
-  - A Sheet called <b>DV Targeter </b> will be created.
-  - Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.
-  - In the 'Partners' sheet tab, fill in <i>Filter</i> column.
-  - Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.
-  - In the 'Advertisers' sheet tab, fill in <i>Filter</i> column.
-  - Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.
-  - In the 'Line Items' sheet tab, fill in <i>Filter</i> column.
-  - Select <b>Load</b> as the command, click <b>Save</b>, then <b>Run<b>.
-  - Make updates, fill in changes on all tabs with colored fields (RED FIELDS ARE NOT IMPLEMENTED, IGNORE).
-  - Select <i>Preview</i>, <b>Save</b> , then <b>Run<b>.
-  - Check the <b>Preview</b> tabs.
-  - Select <b>Update</b> as the command, click <b>Save</b>, then <b>Run<b>.
-  - Check the <b>Success</b> and <b>Error</b> tabs.
+  - Select <b>Load</b>, click <b>Save + Run</b>, a sheet called <b> DV Targeter</b> will be created.
+  - In the <b>Partners</b> sheet tab, fill in <i>Filter</i> column then select <b>Load</b>, click <b>Save + Run</b>.
+  - In the <b>Advertisers</b> sheet tab, fill in <i>Filter</i> column. then select <b>Load</b>, click <b>Save + Run</b>.
+  - Check the First And Third Party option to load audiences, which may be slow.  If not loaded, user will enter audience ids into the sheet manually.
+  - On the <b>Line Items</b> sheet tab, the <i>Filter</i> is used only to limit drop down choices in the rest of the tool.
+  - Optionally edit or filter the <i>Targeting Options</i> or <i>Inventory Sources</i> sheets to limit choices.
+  - Make targeting updates, fill in changes on all tabs with colored fields (RED FIELDS ARE NOT IMPLEMENTED, IGNORE).
+  - Select <i>Preview</i>, click <b>Save + Run</b> then check the <b>Preview</b> tabs.
+  - Select <b>Update</b>, click <b>Save + Run</b> then check the <b>Success</b> and <b>Error</b> tabs.
   - Load and Update can be run multiple times.
+  - If an update fails, all parts of the update failed, break it up into multiple updates.
+  - To refresh the Partner, Advertiser, or Line Item list, remove the filters and run load.
 
 --------------------------------------------------------------
 
@@ -98,6 +96,7 @@ INPUTS = {
   'recipe_name': '',  # Name of Google Sheet to create.
   'recipe_slug': '',  # Name of Google BigQuery dataset to create.
   'command': 'Load',  # Action to take.
+  'first_and_third': False,  # Load first and third party data (may be slow). If not selected, enter audience identifiers into sheet manually.
 }
 
 RECIPE = {
@@ -123,7 +122,6 @@ RECIPE = {
         'dataset': {
           'field': {
             'name': 'recipe_slug',
-            'prefix': 'DV_Targeter_',
             'kind': 'string',
             'order': 2,
             'default': '',
@@ -149,7 +147,7 @@ RECIPE = {
           'destination': {
             'field': {
               'name': 'recipe_name',
-              'prefix': 'DV Targeter ',
+              'suffix': ' DV Targeter',
               'kind': 'string',
               'order': 3,
               'default': '',
@@ -192,7 +190,7 @@ RECIPE = {
         'sheet': {
           'field': {
             'name': 'recipe_name',
-            'prefix': 'DV Targeter ',
+            'suffix': ' DV Targeter',
             'kind': 'string',
             'order': 4,
             'default': '',
@@ -202,7 +200,6 @@ RECIPE = {
         'dataset': {
           'field': {
             'name': 'recipe_slug',
-            'prefix': 'DV_Targeter_',
             'kind': 'string',
             'order': 5,
             'default': '',
@@ -222,6 +219,15 @@ RECIPE = {
             'order': 6,
             'default': 'Load',
             'description': 'Action to take.'
+          }
+        },
+        'first_and_third': {
+          'field': {
+            'name': 'first_and_third',
+            'kind': 'boolean',
+            'order': 6,
+            'default': False,
+            'description': 'Load first and third party data (may be slow). If not selected, enter audience identifiers into sheet manually.'
           }
         }
       }
