@@ -33,6 +33,7 @@ import base64
 import json
 import traceback
 import httplib2
+from datetime import date
 from time import sleep
 from googleapiclient.errors import HttpError
 from googleapiclient.discovery import Resource
@@ -329,7 +330,8 @@ class API():
     """Helper to recursively clean up JSON data for API call.
 
     Converts bytes -> base64.
-    TODO: Add Converts dates -> string.
+    Converts date -> str (yyyy-mm-dd).
+    TODO: Add Converts datetime, time -> string.
 
     Args:
       struct: The kwargs being cleaned up.
@@ -343,12 +345,16 @@ class API():
       for key, value in struct.items():
         if isinstance(value, bytes):
           struct[key] = base64.standard_b64encode(value).decode("ascii")
+        elif isinstance(value, date):
+          struct[key] = str(value)
         else:
           API.__clean__(value)
     elif isinstance(struct, list):
       for index, value in enumerate(struct):
         if isinstance(value, bytes):
           struct[index] = base64.standard_b64encode(value).decode("ascii")
+        elif isinstance(value, date):
+          struct[index] = str(value)
         else:
           API.__clean__(value)
     return struct
