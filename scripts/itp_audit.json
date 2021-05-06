@@ -1,7 +1,7 @@
 {
   "script":{
     "released":"2019-11-19",
-    "license":"Apache License, Version 2.0",
+    "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2019 Google LLC",
     "icon":"donut_small",
     "product":"Cross Product",
