@@ -129,21 +129,25 @@ def get_service(api='gmail',
             uri_file,
             credentials=credentials,
             developerKey=key,
-            requestBuilder=HttpRequestCustom)
+            requestBuilder=HttpRequestCustom
+       )
       else:
         with open(uri_file, 'r') as cache_file:
           DISCOVERY_CACHE[cache_key] = discovery.build_from_document(
               cache_file.read(),
               credentials=credentials,
               developerKey=key,
-              requestBuilder=HttpRequestCustom)
+              requestBuilder=HttpRequestCustom
+          )
     else:
       DISCOVERY_CACHE[cache_key] = discovery.build(
           api,
           version,
           credentials=credentials,
           developerKey=key,
-          requestBuilder=HttpRequestCustom)
+          requestBuilder=HttpRequestCustom,
+          static_discovery=False
+        )
 
   return DISCOVERY_CACHE[cache_key]
 
