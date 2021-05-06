@@ -1,7 +1,9 @@
 {
   "setup": {
     "hour": [ 3 ],
-    "day": [ "Mon" ]
+    "day": [ "Mon" ],
+    "license":"Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
   },
   "tasks": [
     { "dataset":{
@@ -12,7 +14,9 @@
     { "include":{
       "script":"scripts/itp_audit.json",
       "parameters":{
-        "date_range":"LAST_365_DAYS",
+        "date_range":"LAST_7_DAYS",
+        "recipe_name": "test_itp_audit",
+        "recipe_slug": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_ITP_Audit_", "default": "Manual"}},
         "cm_account_id":{"field":{ "name":"cm_account_id", "kind":"string", "description":"Campaign Manager Account Id." }},
         "floodlight_configuration_ids":{"field":{ "name":"floodlight_configuration_ids", "kind":"integer_list", "description":"Floodlight Configuration Id for the Campaign Manager floodlight report." }},
         "cm_advertiser_ids":{"field":{ "name":"cm_advertiser_ids", "kind":"integer_list", "description":"Optional: Comma delimited list of DCM advertiser ids." }},

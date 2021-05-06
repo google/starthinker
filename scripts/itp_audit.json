@@ -1,7 +1,7 @@
 {
   "script":{
     "released":"2019-11-19",
-    "license_off":"Apache License, Version 2.0",
+    "license":"Apache License, Version 2.0",
     "copyright":"Copyright 2019 Google LLC",
     "icon":"donut_small",
     "product":"Cross Product",
@@ -45,7 +45,7 @@
     }},
     { "dataset":{
       "auth":"service",
-      "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
+      "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
     }},
     { "dbm":{
       "auth":"user",
@@ -110,7 +110,7 @@
       "out":{
         "bigquery":{
           "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Authorization used for writing data." }},
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default":"ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default":"ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table": "z_Dv360_Browser_Report_Dirty",
           "header": true,
           "schema":[
@@ -230,7 +230,7 @@
       "out":{
         "bigquery":{
           "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Authorization used for writing data." }},
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_CM_Browser_Report_Dirty",
           "header": true,
           "is_incremental_load":false
@@ -248,7 +248,7 @@
           "filter_ids":{
             "single_cell": true,
             "bigquery":{
-              "dataset":{"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+              "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
               "query":"select distinct Advertiser_Id from `[PARAMETER].[PARAMETER].z_Dv360_Browser_Report_Dirty`",
               "parameters":[
                 {"field":{ "name":"recipe_project", "kind":"string","description":"Project where BigQuery dataset will be created." }},
@@ -260,7 +260,7 @@
         },
         "time_partitioned_table":false,
         "create_single_day_table":false,
-        "dataset":{"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
       }},
     { "bigquery": {
       "auth":"user",
@@ -272,7 +272,7 @@
         ]
       },
       "to":{
-        "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+        "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "table":"z_Environment"
       },
       "schema":[
@@ -311,7 +311,7 @@
         ]
       },
       "to":{
-        "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+        "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "table":"z_Browser"
       },
       "schema":[
@@ -355,7 +355,7 @@
         ]
       },
       "to":{
-        "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+        "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "table":"z_Browser_SDF_lookup"
       },
       "schema":[
@@ -373,7 +373,7 @@
       "out":{
         "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
         "bigquery":{
-          "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+          "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_dv360_scoring_matrix",
           "schema": [
             { "name":"Whole_Attribution_Score", "type":"INTEGER" },
@@ -415,7 +415,7 @@
         ]
       },
       "to":{
-        "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+        "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "table":"z_CM_Browser_lookup"
       },
       "schema":[
@@ -435,7 +435,7 @@
         ]
       },
       "to":{
-        "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+        "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "table":"z_Device_Type"
       },
       "schema":[
@@ -454,7 +454,7 @@
         ]
       },
       "to":{
-        "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+        "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "table":"z_Floodlight_Attribution"
       },
       "schema":[
@@ -466,14 +466,14 @@
       "itp_audit": {
         "auth": "service",
         "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":1, "default":"", "description":"Campaign Manager Account Id." }},
-        "dataset": {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+        "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":7, "description":"Name of document to deploy to.", "default":"" }},
         "timeout": 60,
         "read": {
           "advertiser_ids":{
             "single_cell": true,
             "bigquery":{
-              "dataset":{"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
+              "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
               "query":"select distinct Advertiser_Id from `[PARAMETER].[PARAMETER].z_CM_Browser_Report_Dirty`",
               "parameters":[
                 {"field":{ "name":"recipe_project", "kind":"string", "description":"Project where BigQuery dataset will be created." }},
