@@ -887,7 +887,7 @@ def get_roles(accounts):
                 role['name'],
                 role['defaultUserRole'],
                 permission['name'],
-                permission['availability'],
+                permission.get('availability'),
             ]
         else:
           yield [
