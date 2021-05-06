@@ -33,7 +33,7 @@ Buffers are controlled in config.py.
 """
 
 from starthinker.util.project import project
-from starthinker.util.data import put_rows, get_rows
+from starthinker.util.data import put_rows
 from starthinker.util.dbm import report_delete, report_filter, report_build, report_file, report_to_rows, report_clean
 
 
