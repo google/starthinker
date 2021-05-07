@@ -5,8 +5,8 @@
     "copyright":"Copyright 2019 Google LLC",
     "icon":"donut_small",
     "product":"Cross Product",
-    "title":"ITP Audit Dashboard ( 2020 )",
-    "description":"Dashboard that shows performance metrics across browser to see the impact of ITP.",
+    "title":"DV360 / CM360 Privacy Audit",
+    "description":"Dashboard that shows performance metrics across browser to see the impact of privacy changes.",
     "document":"https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/",
     "categories":["itp", "reporting"],
     "requirements":[ "cm", "dv360", "datastudio", "bigquery" ],
@@ -40,7 +40,7 @@
         "hour":[],
         "copy":{
           "source":"https://docs.google.com/spreadsheets/d/1rH_PGXOYW2mVdmAYnKbv6kcaB6lQihAyMsGtFfinnqg/",
-          "destination":{"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }}
+          "destination":{"field":{ "name":"recipe_name", "prefix":"Privacy Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }}
         }
     }},
     { "dataset":{
@@ -366,7 +366,7 @@
     }},
     { "sheets":{
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
-      "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
+      "sheet": {"field":{ "name":"recipe_name", "prefix":"Privacy Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
       "tab":"SdfScoring",
       "range":"A2:M",
       "header": false,
@@ -467,7 +467,7 @@
         "auth": "service",
         "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":1, "default":"", "description":"Campaign Manager Account Id." }},
         "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
-        "sheet": {"field":{ "name":"recipe_name", "prefix":"ITP Audit ", "kind":"string", "order":7, "description":"Name of document to deploy to.", "default":"" }},
+        "sheet": {"field":{ "name":"recipe_name", "prefix":"Privacy Audit ", "kind":"string", "order":7, "description":"Name of document to deploy to.", "default":"" }},
         "timeout": 60,
         "read": {
           "advertiser_ids":{
