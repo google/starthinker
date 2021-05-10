@@ -140,13 +140,24 @@ def get_service(api='gmail',
               requestBuilder=HttpRequestCustom
           )
     else:
-      DISCOVERY_CACHE[cache_key] = discovery.build(
+      try:
+        DISCOVERY_CACHE[cache_key] = discovery.build(
           api,
           version,
           credentials=credentials,
           developerKey=key,
           requestBuilder=HttpRequestCustom,
           static_discovery=False
+        )
+      # PATCH: static_discovery not present in google-api-python-client < 2, default version in colab
+      # ALTERNATE WORKAROUND: pip install update google-api-python-client==2.3 --no-deps --force-reinstall
+      except TypeError:
+        DISCOVERY_CACHE[cache_key] = discovery.build(
+          api,
+          version,
+          credentials=credentials,
+          developerKey=key,
+          requestBuilder=HttpRequestCustom
         )
 
   return DISCOVERY_CACHE[cache_key]
