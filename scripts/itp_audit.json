@@ -4,13 +4,13 @@
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2019 Google LLC",
     "icon":"donut_small",
-    "product":"Cross Product",
     "title":"DV360 / CM360 Privacy Audit",
     "description":"Dashboard that shows performance metrics across browser to see the impact of privacy changes.",
+    "sample":"https://datastudio.google.com/reporting/b4a044cc-bdf8-4043-9522-1bd42eed7a45",
     "document":"https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/",
-    "categories":["itp", "reporting"],
-    "requirements":[ "cm", "dv360", "datastudio", "bigquery" ],
-    "catalysts":["insights", "experience"],
+    "image":"https://github.com/google/starthinker/raw/master/tutorials/images/itp.png",
+    "from":["cm", "dv360"],
+    "to":["datastudio", "bigquery" ],
     "pitches":[
       "See drilled down metrics of your accounts performance as ITP changes"
     ],
@@ -249,11 +249,10 @@
             "single_cell": true,
             "bigquery":{
               "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
-              "query":"select distinct Advertiser_Id from `[PARAMETER].[PARAMETER].z_Dv360_Browser_Report_Dirty`",
-              "parameters":[
-                {"field":{ "name":"recipe_project", "kind":"string","description":"Project where BigQuery dataset will be created." }},
-                {"field":{ "name":"recipe_name", "kind":"string", "order":7, "description":"BigQuery dataset for store dashboard tables." }}
-              ],
+              "query":"select distinct Advertiser_Id from `{dataset}.z_Dv360_Browser_Report_Dirty`",
+              "parameters":{
+                "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":7, "description":"BigQuery dataset for store dashboard tables." }}
+              },
               "legacy": false
             }
           }
@@ -474,11 +473,10 @@
             "single_cell": true,
             "bigquery":{
               "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
-              "query":"select distinct Advertiser_Id from `[PARAMETER].[PARAMETER].z_CM_Browser_Report_Dirty`",
-              "parameters":[
-                {"field":{ "name":"recipe_project", "kind":"string", "description":"Project where BigQuery dataset will be created." }},
-                {"field":{ "name":"recipe_name", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
-              ],
+              "query":"select distinct Advertiser_Id from `{dataset}.z_CM_Browser_Report_Dirty`",
+              "parameters":{
+                "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
+              },
               "legacy": false
             }
           }
