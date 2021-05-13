@@ -36,7 +36,7 @@ from starthinker.util.project import project
 from starthinker.util.storage import parse_path, makedirs_safe, object_put, bucket_create
 from starthinker.util.bigquery import query_to_rows, table_to_rows, rows_to_table, json_to_table, incremental_rows_to_table, query_parameters
 from starthinker.util.sheets import sheets_read, sheets_write, sheets_clear
-from starthinker.util.csv import rows_to_csv
+from starthinker.util.csv import rows_to_csv, rows_to_type
 
 
 def get_rows(auth, source, as_object=False, unnest=False):
@@ -300,19 +300,19 @@ def put_rows(auth, destination, rows, schema=None, variant=''):
   if 'sheets' in destination:
     if destination['sheets'].get('delete', False):
       sheets_clear(
-          destination['sheets'].get('auth', auth),
-          destination['sheets']['sheet'],
-          destination['sheets']['tab'] + variant,
-          destination['sheets']['range'],
-      )
-
-    sheets_write(
         destination['sheets'].get('auth', auth),
         destination['sheets']['sheet'],
         destination['sheets']['tab'] + variant,
         destination['sheets']['range'],
-        rows,
-        destination['sheets'].get('append', False),
+      )
+
+    sheets_write(
+      destination['sheets'].get('auth', auth),
+      destination['sheets']['sheet'],
+      destination['sheets']['tab'] + variant,
+      destination['sheets']['range'],
+      rows_to_type(rows),
+      destination['sheets'].get('append', False),
     )
 
   if 'file' in destination:
