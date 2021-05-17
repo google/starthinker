@@ -350,7 +350,7 @@ setup_enterprise() {
   echo ""
 
   enterprise_done=0
-  enterprise_options=("Deploy UI & Workers" "Deploy UI" "Deploy Eorkers" "Change Domain" "Change Database" "Migrate Database" "Start Datbase Proxy")
+  enterprise_options=("Deploy UI & Workers" "Deploy UI" "Deploy Workers" "Change Domain" "Change Database" "Migrate Database" "Start Datbase Proxy")
 
   while (( !enterprise_done ))
   do
