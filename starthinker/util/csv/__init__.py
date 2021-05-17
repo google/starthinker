@@ -243,6 +243,8 @@ def rows_re_to_value(rows, regexp, value):
 
 def rows_to_type(rows, column=None):
   for row in rows:
+    if isinstance(row, tuple):
+      row = list(row)
     for index, value in enumerate(row):
       if column is None or column == index:
         # empty values are NULL ( avoid converting zero to null )
