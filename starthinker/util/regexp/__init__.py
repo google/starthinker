@@ -21,7 +21,11 @@ import pytz
 from datetime import date, datetime
 
 
+RE_ALPHA_NUMERIC = re.compile('([^\s\w]|_)+')
 RE_LOOKUP = re.compile(r' - (\d+)$')
+RE_URL = re.compile(r'https?://[^\s\'">]+')
+
+
 def lookup_id(lookup):
   if lookup:
     result = RE_LOOKUP.search(lookup)
@@ -29,18 +33,12 @@ def lookup_id(lookup):
   else:
     return None
 
+
 def date_to_str(value):
   if value is None:
     return None
   else:
     return value.strftime('%Y-%m-%d')
-
-
-def str_to_date(value):
-  if value is None:
-    return None
-  else:
-    return datetime.strptime(value, '%Y-%m-%d').date()
 
 
 # multiplier is used for milliseconds ( 1000 ) etc...
@@ -59,41 +57,9 @@ def epoch_to_datetime(epoch_seconds, multiplier=1):
     return datetime.fromtimestamp(int(epoch_seconds) / multiplier, pytz.utc)
 
 
-RE_YYYYMMDD = re.compile(r'\d{4}[-/_]\d{2}[-/_]\d{2}')
-
-
-def parse_yyyymmdd(text):
-  value = (RE_YYYYMMDD.findall(text) or [None])[0]
-  return value
-
-
-RE__YYYYMMDD = re.compile(r'_?\d{4}[-/]\d{2}[-/]\d{2}')
-
-
-def strip_yyymmdd(text):
-  return RE__YYYYMMDD.sub('', text)
-
-
-RE_URL = re.compile(r'https?://[^\s\'">]+')
-
-
 def parse_url(text):
   return RE_URL.findall(text)
 
 
-RE_DBM_REPORT = re.compile(r'\d{13}_report/')
-
-
-def parse_dbm_report_id(download_url):
-  return (RE_DBM_REPORT.findall(download_url) or
-          [''])[0].replace('_report/', '')
-
-
-RE_ALPHA_NUMERIC = re.compile('([^\s\w]|_)+')
-
-
 def parse_filename(text):
   return RE_ALPHA_NUMERIC.sub('', text).lower().replace(' ', '_')
-
-
-#RE_TABLE = re.compile(r'[\[`]([-\w]+)[:\.]([-\w]+)\.([-\w]+)[\]`]')
