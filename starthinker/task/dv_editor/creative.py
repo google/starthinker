@@ -25,6 +25,7 @@ from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
+CREATIVE_COUNT_LIMIT=1000
 
 def creative_clear():
   table_create(
@@ -58,8 +59,10 @@ def creative_load():
     for row in rows:
       yield from API_DV360(
         project.task["auth_dv"], iterate=True).advertisers().creatives().list(
-          advertiserId=lookup_id(row[0])
-        ).execute()
+          advertiserId=lookup_id(row[0]),
+          filter='entityStatus="ENTITY_STATUS_ACTIVE"',
+          fields='creatives.displayName,creatives.creativeId,creatives.entityStatus,creatives.creativeType,creatives.dimensions,creatives.reviewStatus,nextPageToken'
+        ).execute(limit=CREATIVE_COUNT_LIMIT)
 
   # write creatives to database and sheet
   put_rows(

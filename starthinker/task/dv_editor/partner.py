@@ -43,7 +43,12 @@ def partner_clear():
 
 def partner_load():
   # write partners to BQ
-  rows = API_DV360(project.task['auth_dv'], iterate=True).partners().list().execute()
+  rows = API_DV360(
+    project.task['auth_dv'],
+    iterate=True
+  ).partners().list(
+    filter='entityStatus="ENTITY_STATUS_ACTIVE"'
+  ).execute()
 
   put_rows(
       project.task['auth_bigquery'], {

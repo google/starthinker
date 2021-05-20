@@ -69,7 +69,9 @@ def partner_load():
     API_DV360(
       project.task['auth_dv'],
       iterate=True
-    ).partners().list().execute()
+    ).partners().list(
+      filter='entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
+    ).execute()
   )
 
   # write partners to sheet

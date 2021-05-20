@@ -59,7 +59,9 @@ def campaign_load():
           project.task['auth_dv'],
           iterate=True
         ).advertisers().campaigns().list(
-          advertiserId=lookup_id(row[0])
+          advertiserId=lookup_id(row[0]),
+          filter='entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"',
+          fields='campaigns.displayName,campaigns.campaignId,campaigns.advertiserId,nextPageToken'
         ).execute()
 
   campaign_clear()

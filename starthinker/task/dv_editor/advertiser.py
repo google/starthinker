@@ -69,7 +69,8 @@ def advertiser_load():
         project.task['auth_dv'],
         iterate=True
       ).advertisers().list(
-        partnerId=lookup_id(row[0])
+        partnerId=lookup_id(row[0]),
+        filter='entityStatus="ENTITY_STATUS_ACTIVE"'
       ).execute()
 
   # write advertisers to database and sheet
