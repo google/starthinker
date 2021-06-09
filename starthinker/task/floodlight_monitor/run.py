@@ -28,7 +28,7 @@ from statistics import quantiles
 from datetime import date, timedelta
 from typing import Generator
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.dcm import report_build, report_file, report_to_rows, report_clean, parse_account
 from starthinker.util.sheets import sheets_tab_copy, sheets_read, sheets_url
 from starthinker.util.csv import rows_to_type, rows_header_trim
@@ -50,7 +50,7 @@ TRIGGER_EMAIL = 1  # from source
 TRIGGER_REPORT = 2  # added by this script
 
 
-def floodlight_report(floodlight_id: int) -> int:
+def floodlight_report(project:dict, task:dict, floodlight_id: int) -> int:
   """ Create a report for a specific floodlight if it does not exist.
 
   Args:
@@ -61,8 +61,8 @@ def floodlight_report(floodlight_id: int) -> int:
   """
 
   account_id, subaccount_id = parse_account(
-    project.task['auth'],
-    project.task['account']
+    task['auth'],
+    task['account']
   )
 
   name = 'Floodlight Monitor %s %s ( StarThinker )' % (
@@ -75,8 +75,8 @@ def floodlight_report(floodlight_id: int) -> int:
 
   # create report if it does not exists
   report = report_build(
-    project.task['auth'],
-    project.task['account'],
+    task['auth'],
+    task['account'],
     { 'kind': 'dfareporting#report',
       'type': 'FLOODLIGHT',
       'accountId': account_id,
@@ -121,7 +121,7 @@ def floodlight_report(floodlight_id: int) -> int:
   return report['id']
 
 
-def floodlight_rows(report_id:int) -> Generator[list[str, str, str, str, str, str, int], None, None]:
+def floodlight_rows(project:dict, task:dict, report_id:int) -> Generator[list[str, str, str, str, str, str, int], None, None]:
   """ Monitor a report for completion and return rows
 
   Args:
@@ -133,8 +133,8 @@ def floodlight_rows(report_id:int) -> Generator[list[str, str, str, str, str, st
 
   # fetch report file if it exists
   filename, report = report_file(
-    project.task['auth'],
-    project.task['account'],
+    task['auth'],
+    task['account'],
     report_id,
     None, # no name
     10 # wait up to 10 minutes for report to complete
@@ -149,7 +149,7 @@ def floodlight_rows(report_id:int) -> Generator[list[str, str, str, str, str, st
   return rows
 
 
-def floodlight_analysis(rows:Generator[list[str, str, str, str, str, str, int], None, None]) -> list[str, list[str, str, str, str, str, str, int, str]]:
+def floodlight_analysis(project:dict, task:dict, rows:Generator[list[str, str, str, str, str, str, int], None, None]) -> list[str, list[str, str, str, str, str, str, int, str]]:
   """ Perform outlier analysis and return last row by date with satatus indicator.
 
   Groups all floodlight data by activity, checking for ourliers using.
@@ -200,7 +200,7 @@ def floodlight_analysis(rows:Generator[list[str, str, str, str, str, str, int], 
     return None, None
 
 
-def floodlight_email(day:str, alerts:dict[str, list[str, str, str, str, int, str]]) -> None:
+def floodlight_email(project:dict, task:dict, day:str, alerts:dict[str, list[str, str, str, str, int, str]]) -> None:
   """ Send an email to each alert group with status of all activities.
 
   The email template will contain all activities for each email address specified in the input sheet.
@@ -244,7 +244,7 @@ def floodlight_email(day:str, alerts:dict[str, list[str, str, str, str, int, str
     # either way link to the configuration sheet
     t.button(
       'Floodlight Monitoring Sheet',
-      sheets_url(project.task['auth'], project.task['sheet']['sheet']),
+      sheets_url(task['auth'], task['sheet']['sheet']),
       big=True
     )
     t.section(False)
@@ -254,7 +254,7 @@ def floodlight_email(day:str, alerts:dict[str, list[str, str, str, str, int, str
 
     # send email template
     send_email(
-      project.task['auth'],
+      task['auth'],
       email,
       None,
       None,
@@ -264,12 +264,12 @@ def floodlight_email(day:str, alerts:dict[str, list[str, str, str, str, int, str
     )
 
 
-@project.from_parameters
-def floodlight_monitor() -> None:
+@from_parameters
+def floodlight_monitor(project:dict, task:dict) -> None:
   """ The task handler.  See module description.
 
   Args:
-    Everuthing is passed using project.task.
+    Everuthing is passed using task.
 
   Returns:
     Nothing.
@@ -279,21 +279,21 @@ def floodlight_monitor() -> None:
     print('FLOODLIGHT MONITOR')
 
   # make sure tab exists in sheet ( deprecated, use sheet task instead )
-  if 'template' in project.task['sheet']:
+  if 'template' in task['sheet']:
     sheets_tab_copy(
-      project.task['auth'],
-      project.task['sheet']['template']['sheet'],
-      project.task['sheet']['template']['tab'],
-      project.task['sheet']['sheet'],
-      project.task['sheet']['tab']
+      task['auth'],
+      task['sheet']['template']['sheet'],
+      task['sheet']['template']['tab'],
+      task['sheet']['sheet'],
+      task['sheet']['tab']
   )
 
   # read peers from sheet
   triggers = sheets_read(
-    project.task['auth'],
-    project.task['sheet']['sheet'],
-    project.task['sheet']['tab'],
-    project.task['sheet']['range']
+    task['auth'],
+    task['sheet']['sheet'],
+    task['sheet']['tab'],
+    task['sheet']['range']
   )
 
   if project.verbose and len(triggers) == 0:
@@ -304,16 +304,16 @@ def floodlight_monitor() -> None:
 
   # create reports first in parallel
   for trigger in triggers:
-    trigger.append(floodlight_report(trigger[TRIGGER_ID]))
+    trigger.append(floodlight_report(project, task, trigger[TRIGGER_ID]))
 
   # download data from all reports
   for trigger in triggers:
 
     # get report rows for each floodlight
-    rows = floodlight_rows(trigger[TRIGGER_REPORT])
+    rows = floodlight_rows(project, task, trigger[TRIGGER_REPORT])
 
     # calculate outliers
-    last_day, rows = floodlight_analysis(rows)
+    last_day, rows = floodlight_analysis(project, task, rows)
 
     if last_day:
       # find last day report ran
@@ -324,7 +324,7 @@ def floodlight_monitor() -> None:
       alerts[trigger[TRIGGER_EMAIL]].extend(rows)
 
   if alerts:
-    floodlight_email(day, alerts)
+    floodlight_email(project, task, day, alerts)
 
 
 if __name__ == '__main__':

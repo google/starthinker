@@ -69,7 +69,7 @@ copy after job.
 """
 
 from starthinker.config import BUFFER_SCALE
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.storage import object_get_chunks
 from starthinker.util.bigquery import json_to_table
 from starthinker.util.data import get_rows
@@ -80,12 +80,12 @@ PUBLIC_FILES = ('SupportedExchange', 'DataPartner', 'UniversalSite',
                 'GeoLocation', 'Language', 'DeviceCriteria', 'Browser', 'Isp')
 
 
-def get_entity(path):
+def get_entity(project, task, path):
   delimiter = ',\r\r'
   first = True
   view = ''
 
-  for chunk in object_get_chunks(project.task['auth'], path, CHUNK_SIZE):
+  for chunk in object_get_chunks(task['auth'], path, CHUNK_SIZE):
     # read the next chunk, remove all newlines, leaving only '\r\r' between records ( clever use of non display characters for parsing )
     view += chunk.decode().replace('\n', '')
 
@@ -104,20 +104,20 @@ def get_entity(path):
   yield view.strip('\r\r]')
 
 
-def move_entity(project, path, table, schema, disposition):
-  if 'prefix' in project.task:
-    table = '%s_%s' % (project.task['prefix'], table)
+def move_entity(project, task, path, table, schema, disposition):
+  if 'prefix' in task:
+    table = '%s_%s' % (task['prefix'], table)
 
-  if 'out' in project.task:
-    auth = project.task['out']['bigquery'].get('auth', project.task['auth'])
-    dataset = project.task['out']['bigquery']['dataset']
+  if 'out' in task:
+    auth = task['out']['bigquery'].get('auth', task['auth'])
+    dataset = task['out']['bigquery']['dataset']
   # deprecated, need out to allow auth mix on in and out
   else:
-    auth = project.task['auth']
-    dataset = project.task['dataset']
+    auth = task['auth']
+    dataset = task['dataset']
 
   # read the entity file in parts
-  records = get_entity(path)
+  records = get_entity(project, task, path)
 
   # write each part
   json_to_table(
@@ -132,17 +132,17 @@ def move_entity(project, path, table, schema, disposition):
   #disposition = 'WRITE_APPEND'
 
 
-@project.from_parameters
-def entity():
+@from_parameters
+def entity(project, task):
   if project.verbose:
     print('ENTITY')
 
   # legacy translations ( changed partners, advertisers to accounts with "partner_id:advertiser_id" )
-  if 'partner_id' in project.task:
-    project.task['accounts'] = [project.task['partner_id']]
+  if 'partner_id' in task:
+    task['accounts'] = [task['partner_id']]
 
   # create entities
-  for entity in project.task['entities']:
+  for entity in task['entities']:
     if project.verbose:
       print('ENTITY:', entity)
 
@@ -151,14 +151,14 @@ def entity():
       path = 'gdbm-public:entity/%s.0.%s.json' % (
           project.date.strftime('%Y%m%d'), entity)
       schema = Entity_Schema_Lookup[entity]
-      move_entity(project, path, entity, schema, 'WRITE_TRUNCATE')
+      move_entity(project, task, path, entity, schema, 'WRITE_TRUNCATE')
 
     # supports multiple partners, first one resets table, others append
     else:
       disposition = 'WRITE_TRUNCATE'
-      for account in get_rows('user', project.task['partners']):
+      for account in get_rows('user', task['partners']):
 
-        #for account in project.task['accounts']:
+        #for account in task['accounts']:
         # if advertiser given do not run it ( SAFETY )
         if ':' in str(account):
           print('WARNING: Skipping advertiser: ', account)
@@ -168,7 +168,7 @@ def entity():
         path = 'gdbm-%s:entity/%s.0.%s.json' % (
             account, project.date.strftime('%Y%m%d'), entity)
         schema = Entity_Schema_Lookup[entity]
-        move_entity(project, path, entity, schema, disposition)
+        move_entity(project, task, path, entity, schema, disposition)
         disposition = 'WRITE_APPEND'
 
 

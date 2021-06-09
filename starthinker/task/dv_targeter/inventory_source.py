@@ -21,17 +21,16 @@ from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 
-def inventory_source_clear():
+def inventory_source_clear(project, task):
 
   table_create(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     'DV_Inventory_Sources',
     Discovery_To_BigQuery(
       'displayvideo',
@@ -42,21 +41,21 @@ def inventory_source_clear():
   )
 
   sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
+    task['auth_sheets'],
+    task['sheet'],
     'Inventory Sources',
     'A2:Z'
   )
 
 
-def inventory_source_load():
+def inventory_source_load(project, task):
 
   # load multiple from user defined sheet
   def load_multiple():
     partners = get_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Partners',
         'header':False,
         'range': 'A2:A'
@@ -65,16 +64,16 @@ def inventory_source_load():
 
     for partner in partners:
       yield from API_DV360(
-        project.task['auth_dv'],
+        task['auth_dv'],
         iterate=True
       ).inventorySources().list(
         partnerId=lookup_id(partner[0])
       ).execute()
 
     advertisers = get_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Advertisers',
         'header':False,
         'range': 'A2:A'
@@ -83,19 +82,19 @@ def inventory_source_load():
 
     for advertiser in advertisers:
       yield from API_DV360(
-        project.task['auth_dv'],
+        task['auth_dv'],
         iterate=True
       ).inventorySources().list(
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
-  inventory_source_clear()
+  inventory_source_clear(project, task)
 
   # write to database
   put_rows(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     { 'bigquery': {
-      'dataset': project.task['dataset'],
+      'dataset': task['dataset'],
       'table': 'DV_Inventory_Sources',
       'schema': Discovery_To_BigQuery(
         'displayvideo',
@@ -110,17 +109,17 @@ def inventory_source_load():
 
   # write to sheet
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Inventory Sources',
       'header':False,
       'range': 'A2'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            CONCAT(I.displayName, ' - ', I.inventorySourceId),
            inventorySourceType,
@@ -133,7 +132,7 @@ def inventory_source_load():
            FROM `{dataset}.DV_Inventory_Sources` AS I
            GROUP BY 1,2,3,4,5,6,7,8
            ORDER BY 1
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )

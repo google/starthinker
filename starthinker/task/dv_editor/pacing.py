@@ -19,7 +19,6 @@
 from starthinker.util.bigquery import query_to_view
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
@@ -29,18 +28,18 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def pacing_clear():
-  sheets_clear(project.task["auth_sheets"], project.task["sheet"], "Pacing", "A2:Z")
+def pacing_clear(project, task):
+  sheets_clear(task["auth_sheets"], task["sheet"], "Pacing", "A2:Z")
 
 
-def pacing_load():
+def pacing_load(project, task):
 
   # write pacings to sheet
   rows = get_rows(
-      project.task["auth_bigquery"], {
+      task["auth_bigquery"], {
           "bigquery": {
               "dataset":
-                  project.task["dataset"],
+                  task["dataset"],
               "query":
                   """SELECT * FROM (
                   SELECT
@@ -89,15 +88,15 @@ def pacing_load():
        LEFT JOIN `{dataset}.DV_Partners` AS P
        ON A.partnerId=P.partnerId )
        ORDER BY IO_Display
-       """.format(**project.task),
+       """.format(**task),
               "legacy":
                   False
           }
       })
 
-  put_rows(project.task["auth_sheets"], {
+  put_rows(task["auth_sheets"], {
       "sheets": {
-          "sheet": project.task["sheet"],
+          "sheet": task["sheet"],
           "tab": "Pacing",
           "header":False,
           "range": "A2"
@@ -105,10 +104,10 @@ def pacing_load():
   }, rows)
 
 
-def pacing_audit():
-  rows = get_rows(project.task["auth_sheets"], {
+def pacing_audit(project, task):
+  rows = get_rows(task["auth_sheets"], {
       "sheets": {
-          "sheet": project.task["sheet"],
+          "sheet": task["sheet"],
           "tab": "Pacing",
           "header":False,
           "range": "A2:M"
@@ -116,9 +115,9 @@ def pacing_audit():
   })
 
   put_rows(
-      project.task["auth_bigquery"], {
+      task["auth_bigquery"], {
           "bigquery": {
-              "dataset": project.task["dataset"],
+              "dataset": task["dataset"],
               "table": "SHEET_Pacing",
               "schema": [
                   { "name": "Partner", "type": "STRING" },
@@ -140,9 +139,9 @@ def pacing_audit():
       }, rows)
 
   query_to_view(
-      project.task["auth_bigquery"],
+      task["auth_bigquery"],
       project.id,
-      project.task["dataset"],
+      task["dataset"],
       "AUDIT_Pacing",
       """WITH
       /* Check if sheet values are set */
@@ -169,13 +168,13 @@ def pacing_audit():
 
       SELECT * FROM INPUT_ERRORS
       ;
-    """.format(**project.task),
+    """.format(**task),
       legacy=False)
 
   query_to_view(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     project.id,
-    project.task["dataset"],
+    task["dataset"],
     "PATCH_Pacing",
     """SELECT *
       FROM `{dataset}.SHEET_Pacing`
@@ -185,19 +184,19 @@ def pacing_audit():
       )
       AND Line_Item NOT IN (SELECT Id FROM `{dataset}.AUDIT_Pacing` WHERE Severity='ERROR')
       AND Insertion_Order NOT IN (SELECT Id FROM `{dataset}.AUDIT_Pacing` WHERE Severity='ERROR')
-    """.format(**project.task),
+    """.format(**task),
     legacy=False
   )
 
 
-def pacing_patch(commit=False):
+def pacing_patch(project, task, commit=False):
 
   patches = []
 
   rows = get_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table":"PATCH_Pacing",
     }},
     as_object=True
@@ -246,8 +245,8 @@ def pacing_patch(commit=False):
       patches.append(patch)
 
   patch_masks(patches)
-  patch_preview(patches)
+  patch_preview(project, task, patches)
 
   if commit:
-    insertion_order_commit(patches)
-    line_item_commit(patches)
+    insertion_order_commit(project, task, patches)
+    line_item_commit(project, task, patches)

@@ -21,7 +21,6 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
@@ -31,30 +30,30 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def partner_cost_clear():
+def partner_cost_clear(project, task):
   sheets_clear(
-    project.task["auth_sheets"],
-    project.task["sheet"],
+    task["auth_sheets"],
+    task["sheet"],
     "Partner Costs",
     "A2:Z"
   )
 
 
-def partner_cost_load():
+def partner_cost_load(project, task):
 
   # write partner_costs to sheet
   put_rows(
-    project.task["auth_sheets"],
+    task["auth_sheets"],
     { "sheets": {
-      "sheet": project.task["sheet"],
+      "sheet": task["sheet"],
       "tab": "Partner Costs",
       "header":False,
       "range": "A2"
     }},
     get_rows(
-      project.task["auth_bigquery"],
+      task["auth_bigquery"],
       { "bigquery": {
-        "dataset": project.task["dataset"],
+        "dataset": task["dataset"],
         "query": """SELECT * FROM (
            SELECT
            CONCAT(P.displayName, ' - ', P.partnerId),
@@ -108,18 +107,18 @@ def partner_cost_load():
          LEFT JOIN `{dataset}.DV_Partners` AS P
          ON A.partnerId=P.partnerId )
          ORDER BY IO_Display
-        """.format(**project.task),
+        """.format(**task),
         "legacy":False
       }}
     )
   )
 
 
-def partner_cost_audit():
+def partner_cost_audit(project, task):
   put_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table": "SHEET_PartnerCosts",
       "schema": [
         { "name": "Partner", "type": "STRING" },
@@ -142,9 +141,9 @@ def partner_cost_audit():
       "format": "CSV"
     }},
     get_rows(
-      project.task["auth_sheets"],
+      task["auth_sheets"],
       { "sheets": {
-        "sheet": project.task["sheet"],
+        "sheet": task["sheet"],
         "tab": "Partner Costs",
         "header":False,
         "range": "A2:P"
@@ -153,9 +152,9 @@ def partner_cost_audit():
   )
 
   query_to_view(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     project.id,
-    project.task["dataset"],
+    task["dataset"],
     "AUDIT_PartnerCosts",
     """WITH
       /* Check if sheet values are set */ INPUT_ERRORS AS (
@@ -189,14 +188,14 @@ def partner_cost_audit():
       *
     FROM
       INPUT_ERRORS ;
-    """.format(**project.task),
+    """.format(**task),
     legacy=False
   )
 
   query_to_view(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     project.id,
-    project.task["dataset"],
+    task["dataset"],
     "PATCH_PartnerCosts",
     """SELECT *
       FROM `{dataset}.SHEET_PartnerCosts`
@@ -207,19 +206,19 @@ def partner_cost_audit():
       AND Line_Item NOT IN (SELECT Id FROM `{dataset}.AUDIT_PartnerCosts` WHERE Severity='ERROR')
       AND Insertion_Order NOT IN (SELECT Id FROM `{dataset}.AUDIT_PartnerCosts` WHERE Severity='ERROR')
       ORDER BY Insertion_Order, Line_Item, Label
-    """.format(**project.task),
+    """.format(**task),
     legacy=False
   )
 
 
-def partner_cost_patch(commit=False):
+def partner_cost_patch(project, task, commit=False):
   patches = {}
   changed = set()
 
   rows = get_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table":"PATCH_PartnerCosts",
     }},
     as_object=True
@@ -274,8 +273,8 @@ def partner_cost_patch(commit=False):
   patches = list(patches.values())
 
   patch_masks(patches)
-  patch_preview(patches)
+  patch_preview(project, task, patches)
 
   if commit:
-    insertion_order_commit(patches)
-    line_item_commit(patches)
+    insertion_order_commit(project, task, patches)
+    line_item_commit(project, task, patches)

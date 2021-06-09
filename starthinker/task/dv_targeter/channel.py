@@ -21,16 +21,15 @@ from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 
 
-def channel_clear():
+def channel_clear(project, task):
 
   table_create(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     'DV_Channels',
     Discovery_To_BigQuery(
       'displayvideo',
@@ -41,14 +40,14 @@ def channel_clear():
   )
 
 
-def channel_load():
+def channel_load(project, task):
 
   # load multiple from user defined sheet
   def load_multiple():
     partners = get_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Partners',
         'header':False,
         'range': 'A2:A'
@@ -57,16 +56,16 @@ def channel_load():
 
     for partner in partners:
       yield from API_DV360(
-        project.task['auth_dv'],
+        task['auth_dv'],
         iterate=True
       ).partners().channels().list(
         partnerId=lookup_id(partner[0])
       ).execute()
 
     advertisers = get_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Advertisers',
         'header':False,
         'range': 'A2:A'
@@ -75,19 +74,19 @@ def channel_load():
 
     for advertiser in advertisers:
       yield from API_DV360(
-        project.task['auth_dv'],
+        task['auth_dv'],
         iterate=True
       ).advertisers().channels().list(
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
-  channel_clear()
+  channel_clear(project, task)
 
   # write to database
   put_rows(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     { 'bigquery': {
-      'dataset': project.task['dataset'],
+      'dataset': task['dataset'],
       'table': 'DV_Channels',
       'schema': Discovery_To_BigQuery(
         'displayvideo',
@@ -102,17 +101,17 @@ def channel_load():
 
   # write to sheet
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Targeting Options',
       'header':False,
       'range': 'I2:I'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            CASE
              WHEN C.partnerId IS NOT NULL THEN CONCAT('PARTNER: ', P.displayName, ' - ', P.partnerId, ' > ', C.displayName, ' - ', C.channelId)
@@ -124,7 +123,7 @@ def channel_load():
            LEFT JOIN `{dataset}.DV_Advertisers` AS A
            ON C.advertiserId=A.advertiserId
            ORDER BY 1
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )

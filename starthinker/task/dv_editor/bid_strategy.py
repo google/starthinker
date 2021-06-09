@@ -31,19 +31,19 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def bid_strategy_clear():
-  sheets_clear(project.task["auth_sheets"], project.task["sheet"], "Bid Strategy",
+def bid_strategy_clear(project, task):
+  sheets_clear(task["auth_sheets"], task["sheet"], "Bid Strategy",
                "A2:Z")
 
 
-def bid_strategy_load():
+def bid_strategy_load(project, task):
 
   # write bid_strategy to sheet
   rows = get_rows(
-      project.task["auth_bigquery"], {
+      task["auth_bigquery"], {
           "bigquery": {
               "dataset":
-                  project.task["dataset"],
+                  task["dataset"],
               "query":
                   """SELECT * FROM (
           SELECT
@@ -108,16 +108,16 @@ def bid_strategy_load():
        LEFT JOIN `{dataset}.DV_Partners` AS P
        ON A.partnerId=P.partnerId )
        ORDER BY IO_Display
-       """.format(**project.task),
+       """.format(**task),
               "legacy":
                   False
           }
       })
 
   put_rows(
-      project.task["auth_sheets"], {
+      task["auth_sheets"], {
           "sheets": {
-              "sheet": project.task["sheet"],
+              "sheet": task["sheet"],
               "tab": "Bid Strategy",
               "header":False,
               "range": "A2:U"
@@ -125,11 +125,11 @@ def bid_strategy_load():
       }, rows)
 
 
-def bid_strategy_audit():
+def bid_strategy_audit(project, task):
   rows = get_rows(
-      project.task["auth_sheets"], {
+      task["auth_sheets"], {
           "sheets": {
-              "sheet": project.task["sheet"],
+              "sheet": task["sheet"],
               "tab": "Bid Strategy",
               "header":False,
               "range": "A2:U"
@@ -137,9 +137,9 @@ def bid_strategy_audit():
       })
 
   put_rows(
-      project.task["auth_bigquery"], {
+      task["auth_bigquery"], {
           "bigquery": {
-              "dataset": project.task["dataset"],
+              "dataset": task["dataset"],
               "table": "SHEET_BidStrategy",
               "schema": [
                   { "name": "Partner", "type": "STRING" },
@@ -169,9 +169,9 @@ def bid_strategy_audit():
       }, rows)
 
   query_to_view(
-      project.task["auth_bigquery"],
+      task["auth_bigquery"],
       project.id,
-      project.task["dataset"],
+      task["dataset"],
       "AUDIT_BidStrategy",
       """WITH
         /* Check if sheet values are set */ INPUT_ERRORS AS (
@@ -205,13 +205,13 @@ def bid_strategy_audit():
         *
       FROM
         INPUT_ERRORS ;
-    """.format(**project.task),
+    """.format(**task),
       legacy=False)
 
   query_to_view(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     project.id,
-    project.task["dataset"],
+    task["dataset"],
     "PATCH_BidStrategy",
     """SELECT *
       FROM `{dataset}.SHEET_BidStrategy`
@@ -221,18 +221,18 @@ def bid_strategy_audit():
       )
       AND Line_Item NOT IN (SELECT Id FROM `{dataset}.AUDIT_BidStrategy` WHERE Severity='ERROR')
       AND Insertion_Order NOT IN (SELECT Id FROM `{dataset}.AUDIT_BidStrategy` WHERE Severity='ERROR')
-    """.format(**project.task),
+    """.format(**task),
     legacy=False
   )
 
 
-def bid_strategy_patch(commit=False):
+def bid_strategy_patch(project, task, commit=False):
   patches = []
 
   rows = get_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table":"PATCH_BidStrategy",
     }},
     as_object=True
@@ -323,8 +323,8 @@ def bid_strategy_patch(commit=False):
       patches.append(patch)
 
   patch_masks(patches)
-  patch_preview(patches)
+  patch_preview(project, task, patches)
 
   if commit:
-    insertion_order_commit(patches)
-    line_item_commit(patches)
+    insertion_order_commit(project, task, patches)
+    line_item_commit(project, task, patches)

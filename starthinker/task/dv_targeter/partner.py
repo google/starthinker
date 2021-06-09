@@ -22,16 +22,15 @@ from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 
-def partner_clear():
+def partner_clear(project, task):
   table_create(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     'DV_Partners',
     Discovery_To_BigQuery(
       'displayvideo',
@@ -42,22 +41,22 @@ def partner_clear():
   )
 
   sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
+    task['auth_sheets'],
+    task['sheet'],
     'Partners',
     'B2:D'
   )
 
 
-def partner_load():
+def partner_load(project, task):
 
-  partner_clear()
+  partner_clear(project, task)
 
   # write partners to BQ
   put_rows(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     { 'bigquery': {
-      'dataset': project.task['dataset'],
+      'dataset': task['dataset'],
       'table': 'DV_Partners',
       'schema': Discovery_To_BigQuery(
         'displayvideo',
@@ -67,7 +66,7 @@ def partner_load():
       'JSON'
     }},
     API_DV360(
-      project.task['auth_dv'],
+      task['auth_dv'],
       iterate=True
     ).partners().list(
       filter='entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
@@ -75,18 +74,18 @@ def partner_load():
   )
 
   # write partners to sheet
-  put_rows(project.task['auth_sheets'],
+  put_rows(task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Partners',
       'header':False,
       'range': 'B2'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
-        'query': "SELECT CONCAT(displayName, ' - ', partnerId), entityStatus  FROM `%s.DV_Partners`" % project.task['dataset'],
+        'dataset': task['dataset'],
+        'query': "SELECT CONCAT(displayName, ' - ', partnerId), entityStatus  FROM `%s.DV_Partners`" % task['dataset'],
         'legacy': False
       }}
     )

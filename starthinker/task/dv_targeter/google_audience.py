@@ -21,16 +21,15 @@ from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 
 
-def google_audience_clear():
+def google_audience_clear(project, task):
 
   table_create(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     'DV_Google_Audiences',
     Discovery_To_BigQuery(
       'displayvideo',
@@ -41,14 +40,14 @@ def google_audience_clear():
   )
 
 
-def google_audience_load():
+def google_audience_load(project, task):
 
   # load multiple from user defined sheet
   def load_multiple():
     partners = get_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Partners',
         'header':False,
         'range': 'A2:A'
@@ -57,16 +56,16 @@ def google_audience_load():
 
     for partner in partners:
       yield from API_DV360(
-        project.task['auth_dv'],
+        task['auth_dv'],
         iterate=True
       ).googleAudiences().list(
         partnerId=lookup_id(partner[0])
       ).execute()
 
     advertisers = get_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Advertisers',
         'header':False,
         'range': 'A2:A'
@@ -75,19 +74,19 @@ def google_audience_load():
 
     for advertiser in advertisers:
       yield from API_DV360(
-        project.task['auth_dv'],
+        task['auth_dv'],
         iterate=True
       ).googleAudiences().list(
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
-  google_audience_clear()
+  google_audience_clear(project, task)
 
   # write to database
   put_rows(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     { 'bigquery': {
-      'dataset': project.task['dataset'],
+      'dataset': task['dataset'],
       'table': 'DV_Google_Audiences',
       'schema': Discovery_To_BigQuery(
         'displayvideo',
@@ -102,22 +101,22 @@ def google_audience_load():
 
   # write to sheet
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Targeting Options',
       'header':False,
       'range': 'N2:N'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            CONCAT(SUBSTR(I.googleAudienceType, 22), ': ', I.displayName, ' - ', I.googleAudienceId)
            FROM `{dataset}.DV_Google_Audiences` AS I
            ORDER BY 1
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )

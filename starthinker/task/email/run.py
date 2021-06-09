@@ -18,7 +18,7 @@
 
 import gzip
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.data import put_rows, get_rows
 from starthinker.util.csv import excel_to_rows, csv_to_rows, rows_trim, rows_header_sanitize, column_header_sanitize
 from starthinker.util.email import get_email_messages, get_email_links, get_email_attachments, get_subject, send_email
@@ -26,14 +26,14 @@ from starthinker.util.dbm import report_to_rows as dv360_report_to_rows, report_
 from starthinker.util.dcm import report_to_rows as cm_report_to_rows, report_clean as cm_report_clean, report_schema as cm_report_schema
 
 
-def email_read():
+def email_read(project, task):
 
   # process only most recent message
   try:
     message = next(
-        get_email_messages(project.task['auth'], project.task['read']['from'],
-                           project.task['read']['to'],
-                           project.task['read'].get('subject', None)))
+        get_email_messages(task['auth'], task['read']['from'],
+                           task['read']['to'],
+                           task['read'].get('subject', None)))
   except StopIteration as e:
     if project.verbose:
       print('NO EMAILS FOUND')
@@ -44,17 +44,17 @@ def email_read():
 
   files = []
 
-  if project.task['read'].get('attachment'):
+  if task['read'].get('attachment'):
     files.extend(
-        get_email_attachments(project.task['auth'], message,
-                              project.task['read']['attachment']))
+        get_email_attachments(task['auth'], message,
+                              task['read']['attachment']))
 
-  if project.task['read'].get('link'):
+  if task['read'].get('link'):
     files.extend(
         get_email_links(
-            project.task['auth'],
+            task['auth'],
             message,
-            project.task['read']['link'],
+            task['read']['link'],
             download=True))
 
   for filename, data in files:
@@ -73,66 +73,66 @@ def email_read():
       for sheet, rows in excel_to_rows(data):
         rows = rows_trim(rows)
         rows = rows_header_sanitize(rows)
-        put_rows(project.task['read']['out'].get('auth', project.task['auth']),
-                 project.task['read']['out'], rows, sheet)
+        put_rows(task['read']['out'].get('auth', task['auth']),
+                 task['read']['out'], rows, sheet)
 
     # if CM report
-    elif project.task['read']['from'] == 'noreply-cm@google.com':
+    elif task['read']['from'] == 'noreply-cm@google.com':
       rows = cm_report_to_rows(data.read().decode())
       rows = cm_report_clean(rows)
 
       # if bigquery, remove header and determine schema
       schema = None
-      if 'bigquery' in project.task['read']['out']:
+      if 'bigquery' in task['read']['out']:
         schema = cm_report_schema(next(rows))
-        project.task['read']['out']['bigquery']['schema'] = schema
-        project.task['read']['out']['bigquery']['skip_rows'] = 1
+        task['read']['out']['bigquery']['schema'] = schema
+        task['read']['out']['bigquery']['skip_rows'] = 1
 
-      put_rows(project.task['read']['out'].get('auth', project.task['auth']),
-               project.task['read']['out'], rows)
+      put_rows(task['read']['out'].get('auth', task['auth']),
+               task['read']['out'], rows)
 
     # if dv360 report
-    elif project.task['read']['from'] == 'noreply-dv360@google.com':
+    elif task['read']['from'] == 'noreply-dv360@google.com':
       rows = dv360_report_to_rows(data.getvalue().decode())
       rows = dv360_report_clean(rows)
-      put_rows(project.task['read']['out'].get('auth', project.task['auth']),
-               project.task['read']['out'], rows)
+      put_rows(task['read']['out'].get('auth', task['auth']),
+               task['read']['out'], rows)
 
     # if csv
     elif filename.endswith('.csv'):
       rows = csv_to_rows(data.read().decode())
       rows = rows_header_sanitize(rows)
-      put_rows(project.task['read']['out'].get('auth', project.task['auth']),
-               project.task['read']['out'], rows)
+      put_rows(task['read']['out'].get('auth', task['auth']),
+               task['read']['out'], rows)
 
     else:
       if project.verbose:
         print('UNSUPPORTED FILE:', filename)
 
 
-def email_send():
+def email_send(project, task):
   if project.verbose:
     print('EMAIL SEND')
 
   send_email(
       'user',
-      project.task['send']['from'],
-      project.task['send']['to'],
-      project.task['send'].get('cc', ''),
-      project.task['send']['subject'],
-      project.task['send']['text'],
-      project.task['send']['html'],
-      project.task['send']['attachment']['filename'],
-      get_rows('user', project.task['send']['attachment']),
+      task['send']['from'],
+      task['send']['to'],
+      task['send'].get('cc', ''),
+      task['send']['subject'],
+      task['send']['text'],
+      task['send']['html'],
+      task['send']['attachment']['filename'],
+      get_rows('user', task['send']['attachment']),
   )
 
 
-@project.from_parameters
-def email():
-  if 'read' in project.task:
-    email_read()
-  elif 'send' in project.task:
-    email_send()
+@from_parameters
+def email(project, task):
+  if 'read' in task:
+    email_read(project, task)
+  elif 'send' in task:
+    email_send(project, task)
 
 
 if __name__ == '__main__':

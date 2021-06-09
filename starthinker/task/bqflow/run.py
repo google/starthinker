@@ -21,7 +21,7 @@ from googleapiclient.errors import HttpError
 from starthinker.util.bigquery import table_list
 from starthinker.util.data import get_rows
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 
 from starthinker.task.google_api.run import google_api_build_errors
 from starthinker.task.google_api.run import google_api_build_results
@@ -60,15 +60,15 @@ def build_errors(auth, api_call, endpoint):
       })
 
 
-@project.from_parameters
-def bqflow():
+@from_parameters
+def bqflow(project, task):
 
   if project.verbose: print('BQFLOW')
 
   endpoints = []
 
   # load dataset / table list
-  for dataset, table, kind in table_list(project.task['auth'], project.id):
+  for dataset, table, kind in table_list(task['auth'], project.id):
     if table.startswith('BQFlow__') and not table.startswith('BQFlow__RESULTS__') and not table.startswith('BQFlow__ERRORS__'):
       print(table, kind)
       endpoints.append({'dataset': dataset, kind.lower(): table})
@@ -85,16 +85,16 @@ def bqflow():
               api,
           'version':
               Discovery_To_BigQuery.preferred_version(api,
-                                                      project.task.get('key')),
+                                                      task.get('key')),
           'function':
               function,
       }
 
       kwargs_list = get_rows(
-          project.task['auth'], build_request(endpoint), as_object=True)
+          task['auth'], build_request(endpoint), as_object=True)
 
-      results = build_results(project.task['auth'], api_call, endpoint)
-      errors = build_errors(project.task['auth'], api_call, endpoint)
+      results = build_results(task['auth'], api_call, endpoint)
+      errors = build_errors(task['auth'], api_call, endpoint)
 
       for kwargs in kwargs_list:
         api_call['kwargs'] = kwargs
@@ -102,7 +102,7 @@ def bqflow():
         if project.verbose: print('BQFLOW API CALL:', api_call)
 
         google_api_initilaize(api_call)
-        google_api_execute(project.task['auth'], api_call, results, errors)
+        google_api_execute(task['auth'], api_call, results, errors)
 
 
 if __name__ == '__main__':

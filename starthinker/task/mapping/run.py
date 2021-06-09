@@ -17,7 +17,7 @@
 ###########################################################################
 import re
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.sheets import sheets_read, sheets_tab_copy
 from starthinker.util.bigquery import get_schema, query_to_view
 from starthinker.util.csv import rows_to_type, rows_to_csv
@@ -27,20 +27,20 @@ TEMPLATE_TAB = 'Mapping'
 RE_SQLINJECT = re.compile(r'[^a-z0-9_\-, ]+', re.UNICODE | re.IGNORECASE)
 
 
-@project.from_parameters
-def mapping():
+@from_parameters
+def mapping(project, task):
   if project.verbose:
     print('MAPPING')
 
   # create the sheet from template if it does not exist
-  sheets_tab_copy(project.task['auth'], TEMPLATE_SHEET, TEMPLATE_TAB,
-                  project.task['sheet'], project.task['tab'])
+  sheets_tab_copy(task['auth'], TEMPLATE_SHEET, TEMPLATE_TAB,
+                  task['sheet'], task['tab'])
 
   # move if specified
   dimensions = {}
   defaults = {}
-  rows = sheets_read(project.task['auth'], project.task['sheet'],
-                     project.task['tab'], 'A1:D')
+  rows = sheets_read(task['auth'], task['sheet'],
+                     task['tab'], 'A1:D')
 
   # if rows don't exist, query is still created without mapping ( allows blank maps )
   if rows:
@@ -76,18 +76,18 @@ def mapping():
       query += 'THEN "%s"\n' % tag
     query += '    ELSE "%s"\n  END AS %s,\n' % (defaults.get(dimension,
                                                              ''), dimension)
-  query += 'FROM [%s.%s]' % (project.task['in']['dataset'],
-                             project.task['in']['table'])
+  query += 'FROM [%s.%s]' % (task['in']['dataset'],
+                             task['in']['table'])
 
   if project.verbose:
     print('QUERY: ', query)
 
   # write to view
   query_to_view(
-      project.task['out']['auth'],
+      task['out']['auth'],
       project.id,
-      project.task['out']['dataset'],
-      project.task['out']['view'],
+      task['out']['dataset'],
+      task['out']['view'],
       query,
       replace=True)
 

@@ -18,7 +18,7 @@
 
 import re
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.bigquery import table_create
 from starthinker.util.google_api import API_DCM
 from starthinker.util.data import put_rows, get_rows
@@ -611,12 +611,12 @@ REPORT_DELIVERIES_SCHEMA = [
 ]
 
 
-def get_accounts(accounts):
+def get_accounts(project, task, accounts):
   if project.verbose:
     print('DCM Accounts')
 
   for account_id in accounts:
-    is_superuser, profile_id = get_profile_for_api(project.task['auth'],
+    is_superuser, profile_id = get_profile_for_api(task['auth'],
                                                    account_id)
     kwargs = {'profileId': profile_id, 'id': account_id}
     account = API_DCM('user').accounts().get(**kwargs).execute()
@@ -635,12 +635,12 @@ def get_accounts(accounts):
     ]
 
 
-def get_profiles(accounts):
+def get_profiles(project, task, accounts):
   if project.verbose:
     print('DCM Profiles')
 
   for account_id in accounts:
-    is_superuser, profile_id = get_profile_for_api(project.task['auth'],
+    is_superuser, profile_id = get_profile_for_api(task['auth'],
                                                    account_id)
     kwargs = {
         'profileId': profile_id,
@@ -701,13 +701,13 @@ def get_profiles(accounts):
         ]
 
 
-def get_subaccounts(accounts):
+def get_subaccounts(project, task, accounts):
 
   if project.verbose:
     print('DCM SubAccounts')
 
   for account_id in accounts:
-    is_superuser, profile_id = get_profile_for_api(project.task['auth'],
+    is_superuser, profile_id = get_profile_for_api(task['auth'],
                                                    account_id)
     kwargs = {
         'profileId': profile_id,
@@ -726,13 +726,13 @@ def get_subaccounts(accounts):
         ]
 
 
-def get_advertisers(accounts):
+def get_advertisers(project, task, accounts):
 
   if project.verbose:
     print('DCM Advertisers')
 
   for account_id in accounts:
-    is_superuser, profile_id = get_profile_for_api(project.task['auth'],
+    is_superuser, profile_id = get_profile_for_api(task['auth'],
                                                    account_id)
     kwargs = {
         'profileId': profile_id,
@@ -760,13 +760,13 @@ def get_advertisers(accounts):
         ]
 
 
-def get_campaigns(accounts):
+def get_campaigns(project, task, accounts):
 
   if project.verbose:
     print('DCM Campaigns')
 
   for account_id in accounts:
-    is_superuser, profile_id = get_profile_for_api(project.task['auth'],
+    is_superuser, profile_id = get_profile_for_api(task['auth'],
                                                    account_id)
     kwargs = {
         'profileId': profile_id,
@@ -802,13 +802,13 @@ def get_campaigns(accounts):
         ]
 
 
-def get_sites(accounts):
+def get_sites(project, task, accounts):
 
   if project.verbose:
     print('DCM Sites')
 
   for account_id in accounts:
-    is_superuser, profile_id = get_profile_for_api(project.task['auth'],
+    is_superuser, profile_id = get_profile_for_api(task['auth'],
                                                    account_id)
     kwargs = {
         'profileId': profile_id,
@@ -861,12 +861,12 @@ def get_sites(accounts):
         ]
 
 
-def get_roles(accounts):
+def get_roles(project, task, accounts):
   if project.verbose:
     print('DCM Roles')
 
   for account_id in accounts:
-    is_superuser, profile_id = get_profile_for_api(project.task['auth'],
+    is_superuser, profile_id = get_profile_for_api(task['auth'],
                                                    account_id)
     kwargs = {
         'profileId': profile_id,
@@ -901,13 +901,13 @@ def get_roles(accounts):
           ]
 
 
-def get_reports(accounts):
+def get_reports(project, task, accounts):
 
   if project.verbose:
     print('DCM Reports')
 
   for account_id in accounts:
-    is_superuser, profile_id = get_profile_for_api(project.task['auth'],
+    is_superuser, profile_id = get_profile_for_api(task['auth'],
                                                    account_id)
     kwargs = {
         'profileId': profile_id,
@@ -957,11 +957,11 @@ def get_reports(accounts):
         ]
 
 
-def put_json(kind, schema):
+def put_json(project, task, kind, schema):
 
   return {
       'bigquery': {
-          'dataset': project.task['out']['dataset'],
+          'dataset': task['out']['dataset'],
           'table': kind,
           'schema': schema,
           'skip_rows': 0,
@@ -970,98 +970,98 @@ def put_json(kind, schema):
   }
 
 
-@project.from_parameters
-def barnacle():
+@from_parameters
+def barnacle(project, task):
   if project.verbose:
     print('BARNACLE')
 
-  accounts = set(get_rows('user', project.task['accounts']))
+  accounts = set(get_rows('user', task['accounts']))
 
   # Accounts
-  rows = get_accounts(accounts)
-  put_rows(project.task['out']['auth'], put_json('CM_Accounts',
+  rows = get_accounts(project, task, accounts)
+  put_rows(task['out']['auth'], put_json(project, task, 'CM_Accounts',
                                                  ACCOUNTS_SCHEMA), rows)
 
   # Profiles
-  rows = get_profiles(accounts)
-  put_rows(project.task['out']['auth'], put_json('CM_Profiles',
+  rows = get_profiles(project, task, accounts)
+  put_rows(task['out']['auth'], put_json(project, task, 'CM_Profiles',
                                                  PROFILES_SCHEMA), rows)
 
   # Profiles Campaigns
   if project.verbose:
     print('DCM Profile Campaigns')
-  put_rows(project.task['out']['auth'],
-           put_json('CM_Profile_Campaigns', PROFILE_CAMPAIGNS_SCHEMA),
+  put_rows(task['out']['auth'],
+           put_json(project, task, 'CM_Profile_Campaigns', PROFILE_CAMPAIGNS_SCHEMA),
            PROFILE_CAMPAIGNS)
 
   # Profiles Sites
   if project.verbose:
     print('DCM Profile Sites')
-  put_rows(project.task['out']['auth'],
-           put_json('CM_Profile_Sites', PROFILE_SITES_SCHEMA), PROFILE_SITES)
+  put_rows(task['out']['auth'],
+           put_json(project, task, 'CM_Profile_Sites', PROFILE_SITES_SCHEMA), PROFILE_SITES)
 
   # Profiles Roles
   if project.verbose:
     print('DCM Profile Roles')
-  put_rows(project.task['out']['auth'],
-           put_json('CM_Profile_Roles', PROFILE_ROLES_SCHEMA), PROFILE_ROLES)
+  put_rows(task['out']['auth'],
+           put_json(project, task, 'CM_Profile_Roles', PROFILE_ROLES_SCHEMA), PROFILE_ROLES)
 
   # Profiles Advertisers
   if project.verbose:
     print('DCM Profile Advertisers')
-  put_rows(project.task['out']['auth'],
-           put_json('CM_Profile_Advertisers', PROFILE_ADVERTISERS_SCHEMA),
+  put_rows(task['out']['auth'],
+           put_json(project, task, 'CM_Profile_Advertisers', PROFILE_ADVERTISERS_SCHEMA),
            PROFILE_ADVERTISERS)
 
   # Subaccounts
-  rows = get_subaccounts(accounts)
-  put_rows(project.task['out']['auth'],
-           put_json('CM_SubAccounts', SUBACCOUNTS_SCHEMA), rows)
+  rows = get_subaccounts(project, task, accounts)
+  put_rows(task['out']['auth'],
+           put_json(project, task, 'CM_SubAccounts', SUBACCOUNTS_SCHEMA), rows)
 
   # Advertisers
-  rows = get_advertisers(accounts)
-  put_rows(project.task['out']['auth'],
-           put_json('CM_Advertisers', ADVERTISERS_SCHEMA), rows)
+  rows = get_advertisers(project, task, accounts)
+  put_rows(task['out']['auth'],
+           put_json(project, task, 'CM_Advertisers', ADVERTISERS_SCHEMA), rows)
 
   # Campaigns
-  rows = get_campaigns(accounts)
-  put_rows(project.task['out']['auth'],
-           put_json('CM_Campaigns', CAMPAIGNS_SCHEMA), rows)
+  rows = get_campaigns(project, task, accounts)
+  put_rows(task['out']['auth'],
+           put_json(project, task, 'CM_Campaigns', CAMPAIGNS_SCHEMA), rows)
 
   # Sites
-  rows = get_sites(accounts)
-  put_rows(project.task['out']['auth'], put_json('CM_Sites', SITES_SCHEMA),
+  rows = get_sites(project, task, accounts)
+  put_rows(task['out']['auth'], put_json(project, task, 'CM_Sites', SITES_SCHEMA),
            rows)
 
   # Sites Contacts
   if project.verbose:
     print('DCM Site Contacts')
-  put_rows(project.task['out']['auth'],
-           put_json('CM_Site_Contacts', SITE_CONTACTS_SCHEMA), SITE_CONTACTS)
+  put_rows(task['out']['auth'],
+           put_json(project, task, 'CM_Site_Contacts', SITE_CONTACTS_SCHEMA), SITE_CONTACTS)
 
   # Roles
-  rows = get_roles(accounts)
-  put_rows(project.task['out']['auth'], put_json('CM_Roles', ROLES_SCHEMA),
+  rows = get_roles(project, task, accounts)
+  put_rows(task['out']['auth'], put_json(project, task, 'CM_Roles', ROLES_SCHEMA),
            rows)
 
   # Reports
   if project.verbose:
     print('DCM Reports')
 
-  if project.task.get('reports', False):
-    rows = get_reports(accounts)
+  if task.get('reports', False):
+    rows = get_reports(project, task, accounts)
   else:
     rows = []
 
   put_rows(
-    project.task['out']['auth'],
-    put_json('CM_Reports', REPORTS_SCHEMA),
+    task['out']['auth'],
+    put_json(project, task, 'CM_Reports', REPORTS_SCHEMA),
     rows
   )
 
   put_rows(
-    project.task['out']['auth'],
-    put_json('CM_Report_Deliveries', REPORT_DELIVERIES_SCHEMA),
+    task['out']['auth'],
+    put_json(project, task, 'CM_Report_Deliveries', REPORT_DELIVERIES_SCHEMA),
     REPORT_DELIVERIES
   )
 

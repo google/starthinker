@@ -20,7 +20,6 @@ import json
 
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import put_rows
-from starthinker.util.project import project
 from starthinker.util.sheets import sheets_clear
 
 SCHEMA_PREVIEW = [
@@ -48,49 +47,49 @@ BUFFER_WARNING = []
 BUFFER_LENGTH = 10
 
 
-def edit_clear():
+def edit_clear(project, task):
 
   table_create(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     'EDIT_Preview',
     SCHEMA_PREVIEW
   )
 
-  table_create(project.task['auth_bigquery'],
+  table_create(task['auth_bigquery'],
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     'EDIT_Log',
     SCHEMA_LOG
   )
 
-  sheets_clear(project.task['auth_sheets'],
-    project.task['sheet'],
+  sheets_clear(task['auth_sheets'],
+    task['sheet'],
     'Preview',
     'A2:Z'
   )
 
-  sheets_clear(project.task['auth_sheets'],
-    project.task['sheet'],
+  sheets_clear(task['auth_sheets'],
+    task['sheet'],
     'Warning',
     'A2:Z'
   )
 
-  sheets_clear(project.task['auth_sheets'],
-    project.task['sheet'],
+  sheets_clear(task['auth_sheets'],
+    task['sheet'],
     'Error',
     'A2:Z'
   )
 
-  sheets_clear(project.task['auth_sheets'],
-    project.task['sheet'],
+  sheets_clear(task['auth_sheets'],
+    task['sheet'],
     'Success',
     'A2:Z'
   )
 
 
-def edit_log(edit=None):
+def edit_log(project, task, edit=None):
   global BUFFER_SUCCESS
   global BUFFER_ERROR
   global BUFFER_WARNING
@@ -110,9 +109,9 @@ def edit_log(edit=None):
     ]) for p in rows]
 
     put_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'table': 'EDIT_Log',
         'schema': SCHEMA_LOG,
         'disposition': 'WRITE_APPEND',
@@ -122,9 +121,9 @@ def edit_log(edit=None):
     )
 
     put_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': kind.title(),
         'header':False,
         'range': 'A2',
@@ -156,7 +155,7 @@ def edit_log(edit=None):
     BUFFER_ERROR = []
 
 
-def edit_preview(edits):
+def edit_preview(project, task, edits):
   if edits:
     rows = [(
       p['layer'],
@@ -167,9 +166,9 @@ def edit_preview(edits):
     ) for p in edits]
 
     put_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'table': 'EDIT_Preview',
         'schema': SCHEMA_PREVIEW,
         'disposition': 'WRITE_APPEND',
@@ -180,9 +179,9 @@ def edit_preview(edits):
     )
 
     put_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Preview',
         'header':False,
         'range': 'A2',

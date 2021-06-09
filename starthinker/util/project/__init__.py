@@ -451,32 +451,6 @@ class project:
           if t == function and c <= i
       ])
 
-  @staticmethod
-  def from_parameters(func):
-    """Initializes a project singleton for execution by a task.
-
-    Either loads parameters (recipe, instance) passed to task programatically,
-    or if no parameters passed attmepts to load them from the command line.
-    Uses decorator pattern, task name is inferred from function ebing decorated.
-
-    Args:
-      - recipe: (dict) JSON object representing the project ( setup plus at
-        least one task )
-      - instance: (integer) numeric offset of task to run if multiple calls to
-        thsi task exist
-    """
-
-    def from_parameters_wrapper(recipe=None, instance=1):
-      if recipe:
-        project.initialize(
-            _recipe=recipe, _task=func.__name__, _instance=instance)
-      else:
-        project.from_commandline(func.__name__)
-      func()
-
-    return from_parameters_wrapper
-
-
   @classmethod
   def initialize(cls,
                  _recipe={},
@@ -658,3 +632,28 @@ class project:
         )
 
     return returncode
+
+
+def from_parameters(func):
+  """Initializes a project singleton for execution by a task.
+
+  Either loads parameters (recipe, instance) passed to task programatically,
+  or if no parameters passed attmepts to load them from the command line.
+  Uses decorator pattern, task name is inferred from function ebing decorated.
+
+  Args:
+    - recipe: (dict) JSON object representing the project ( setup plus at
+      least one task )
+    - instance: (integer) numeric offset of task to run if multiple calls to
+      thsi task exist
+  """
+
+  def from_parameters_wrapper(recipe=None, instance=1):
+    if recipe:
+      project.initialize(
+          _recipe=recipe, _task=func.__name__, _instance=instance)
+    else:
+      project.from_commandline(func.__name__)
+    func(project, project.task)
+
+  return from_parameters_wrapper

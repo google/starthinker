@@ -21,15 +21,14 @@ from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 
 
-def first_and_third_party_audience_clear():
+def first_and_third_party_audience_clear(project, task):
   table_create(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     'DV_First_And_Third_Party_Audiences',
     Discovery_To_BigQuery(
       'displayvideo',
@@ -40,14 +39,14 @@ def first_and_third_party_audience_clear():
   )
 
 
-def first_and_third_party_audience_load():
+def first_and_third_party_audience_load(project, task):
 
   # load multiple from user defined sheet
   def load_multiple():
     advertisers = get_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Advertisers',
         'header':False,
         'range': 'A2:A'
@@ -56,19 +55,19 @@ def first_and_third_party_audience_load():
 
     for advertiser in advertisers:
       yield from API_DV360(
-        project.task['auth_dv'],
+        task['auth_dv'],
         iterate=True
       ).firstAndThirdPartyAudiences().list(
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
-  first_and_third_party_audience_clear()
+  first_and_third_party_audience_clear(project, task)
 
   # write to database
   put_rows(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     { 'bigquery': {
-      'dataset': project.task['dataset'],
+      'dataset': task['dataset'],
       'table': 'DV_First_And_Third_Party_Audiences',
       'schema': Discovery_To_BigQuery(
         'displayvideo',
@@ -83,17 +82,17 @@ def first_and_third_party_audience_load():
 
   # write to sheet
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Targeting Options',
       'header':False,
       'range': 'Q2:Q'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            CONCAT(
              SUBSTR(A.firstAndThirdPartyAudienceType, 37), ' > ',
@@ -103,7 +102,7 @@ def first_and_third_party_audience_load():
            ),
            FROM `{dataset}.DV_First_And_Third_Party_Audiences` AS A
            ORDER BY 1
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )

@@ -18,7 +18,6 @@
 
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.project import project
 from starthinker.util.sheets import sheets_clear
 
 from starthinker.task.dv_editor.bid_strategy import bid_strategy_audit
@@ -32,39 +31,39 @@ from starthinker.task.dv_editor.partner_cost import partner_cost_audit
 from starthinker.task.dv_editor.segment import segment_audit
 
 
-def audit_clear():
+def audit_clear(project, task):
   sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
+    task['auth_sheets'],
+    task['sheet'],
     'Audit',
     'A2:Z'
   )
 
 
-def audit_load():
-  bid_strategy_audit()
-  integration_detail_audit()
-  frequency_cap_audit()
-  line_item_map_audit()
-  pacing_audit()
-  partner_cost_audit()
-  segment_audit()
-  insertion_order_audit()
-  line_item_audit()
+def audit_load(project, task):
+  bid_strategy_audit(project, task)
+  integration_detail_audit(project, task)
+  frequency_cap_audit(project, task)
+  line_item_map_audit(project, task)
+  pacing_audit(project, task)
+  partner_cost_audit(project, task)
+  segment_audit(project, task)
+  insertion_order_audit(project, task)
+  line_item_audit(project, task)
 
   # write audits to sheet
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Audit',
       'header':False,
       'range': 'A2'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT Operation, Severity, Id, Error
             FROM `{dataset}.AUDIT_InsertionOrders`
           UNION ALL
@@ -91,7 +90,7 @@ def audit_load():
           UNION ALL
             SELECT Operation, Severity, Id, Error
             FROM `{dataset}.AUDIT_IntegrationDetails`
-        """.format(**project.task),
+        """.format(**task),
         "legacy": False
       }}
     )

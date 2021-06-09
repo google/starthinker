@@ -21,16 +21,15 @@ from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 
 
-def negative_keyword_list_clear():
+def negative_keyword_list_clear(project, task):
 
   table_create(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     'DV_Negative_Keywod_Lists',
     Discovery_To_BigQuery(
       'displayvideo',
@@ -41,14 +40,14 @@ def negative_keyword_list_clear():
   )
 
 
-def negative_keyword_list_load():
+def negative_keyword_list_load(project, task):
 
   # load multiple from user defined sheet
   def load_multiple():
     advertisers = get_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Advertisers',
         'header':False,
         'range': 'A2:A'
@@ -57,19 +56,19 @@ def negative_keyword_list_load():
 
     for advertiser in advertisers:
       yield from API_DV360(
-        project.task['auth_dv'],
+        task['auth_dv'],
         iterate=True
       ).advertisers().negativeKeywordLists().list(
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
-  negative_keyword_list_clear()
+  negative_keyword_list_clear(project, task)
 
   # write to database
   put_rows(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     { 'bigquery': {
-      'dataset': project.task['dataset'],
+      'dataset': task['dataset'],
       'table': 'DV_Negative_Keywod_Lists',
       'schema': Discovery_To_BigQuery(
         'displayvideo',
@@ -84,23 +83,23 @@ def negative_keyword_list_load():
 
   # write to sheet
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Targeting Options',
       'header':False,
       'range': 'J2:J'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            CONCAT(A.displayName, ' - ', A.advertiserId, ' > ', L.displayName, ' - ', L.negativeKeywordListId),
            FROM `{dataset}.DV_Negative_Keywod_Lists` AS L
            LEFT JOIN `{dataset}.DV_Advertisers` AS A
            ON L.advertiserId=A.advertiserId
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )

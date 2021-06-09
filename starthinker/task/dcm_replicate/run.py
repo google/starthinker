@@ -16,7 +16,7 @@
 #
 ###########################################################################
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.data import put_rows
 from starthinker.util.sheets import sheets_read
 from starthinker.util.csv import pivot_column_to_row
@@ -24,32 +24,32 @@ from starthinker.util.bigquery import table_name_sanitize, query_to_table
 from starthinker.util.dcm import report_get, report_delete, report_filter, report_build, report_file, report_to_rows, report_clean, get_account_name, report_schema
 
 
-def dcm_replicate_accounts():
+def dcm_replicate_accounts(project, task):
   if project.verbose:
     print('DCM REPLICATE ACCOUNTS')
 
   accounts = {}
 
   # read inputs
-  if 'sheet' in project.task['in']:
+  if 'sheet' in task['in']:
     rows = sheets_read(
-        project.task['auth'],
-        project.task['in']['sheet'],
-        project.task['in']['tab'],
+        task['auth'],
+        task['in']['sheet'],
+        task['in']['tab'],
     )
     # rotate rows so account, advertiser tuple is returned
     return pivot_column_to_row([row[1:] for row in rows])
 
 
-def dcm_replicate_template():
+def dcm_replicate_template(project, task):
   if project.verbose:
     print('DCM REPLICATE TEMPLATE')
 
   report = report_get(
-      project.task['auth'],
-      project.task['report']['account'],
-      project.task['report'].get('id'),
-      project.task['report'].get('name'),
+      task['auth'],
+      task['report']['account'],
+      task['report'].get('id'),
+      task['report'].get('name'),
   )
 
   report['criteria']['dimensionFilters'] = []
@@ -62,15 +62,15 @@ def dcm_replicate_template():
   return report
 
 
-def dcm_replicate_create(account, advertisers, name, template):
+def dcm_replicate_create(project, task, account, advertisers, name, template):
   print('DCM REPLICATE CREATE', name)
 
   # check if report is to be deleted
-  if project.task['report'].get('delete', False):
-    report_delete(project.task['auth'], account, None, name)
+  if task['report'].get('delete', False):
+    report_delete(task['auth'], account, None, name)
 
   # add account and advertiser filters ( return new disctionary)
-  body = report_filter(project.task['auth'], template, {
+  body = report_filter(task['auth'], template, {
       'accountId': {
           'values': account
       },
@@ -83,12 +83,12 @@ def dcm_replicate_create(account, advertisers, name, template):
   #print('BODY', body)
 
   # create and run the report if it does not exist
-  report = report_build(project.task['auth'], account, body)
+  report = report_build(task['auth'], account, body)
 
 
-def dcm_replicate_download(account, name):
+def dcm_replicate_download(project, task, account, name):
 
-  filename, report = report_file(project.task['auth'], account, None, name)
+  filename, report = report_file(task['auth'], account, None, name)
 
   if report:
     if project.verbose:
@@ -100,45 +100,45 @@ def dcm_replicate_download(account, name):
 
     # if bigquery, remove header and determine schema
     schema = None
-    if 'bigquery' in project.task['out']:
-      project.task['out']['bigquery']['table'] = table_name_sanitize(name)
-      project.task['out']['bigquery']['schema'] = report_schema(next(rows))
-      project.task['out']['bigquery']['skip_rows'] = 0
+    if 'bigquery' in task['out']:
+      task['out']['bigquery']['table'] = table_name_sanitize(name)
+      task['out']['bigquery']['schema'] = report_schema(next(rows))
+      task['out']['bigquery']['skip_rows'] = 0
 
     # write rows using standard out block in json ( allows customization across all scripts )
     if rows:
-      put_rows(project.task['auth'], project.task['out'], rows)
+      put_rows(task['auth'], task['out'], rows)
 
 
-@project.from_parameters
-def dcm_replicate():
+@from_parameters
+def dcm_replicate(project, task):
   if project.verbose:
     print('DCM REPLICATE')
 
-  template = dcm_replicate_template()
-  rows = dcm_replicate_accounts()
+  template = dcm_replicate_template(project, task)
+  rows = dcm_replicate_accounts(project, task)
 
   # create or update reports
   for row in rows:
     account = row[0]
     advertisers = row[1:]
     name = '%s - Account %s' % (template['name'], account)
-    dcm_replicate_create(account, advertisers, name, template)
+    dcm_replicate_create(project, task, account, advertisers, name, template)
 
   # download reports
   for row in rows:
     account = row[0]
     name = '%s - Account %s' % (template['name'], account)
-    dcm_replicate_download(account, name)
+    dcm_replicate_download(project, task, account, name)
 
   # summary table ( combine all data into one table for fast load )
   query_to_table(
-      project.task['auth'],
+      task['auth'],
       project.id,
-      project.task['out']['bigquery']['dataset'],
+      task['out']['bigquery']['dataset'],
       table_name_sanitize('%s - All' % template['name']),
       "SELECT CAST(REPLACE(_TABLE_SUFFIX, '_', '') AS INT64) AS Account_Id, * FROM `%s.%s.%s*`"
-      % (project.id, project.task['out']['bigquery']['dataset'],
+      % (project.id, task['out']['bigquery']['dataset'],
          table_name_sanitize('%s - Account ' % template['name'])),
       disposition='WRITE_TRUNCATE',
       legacy=False)

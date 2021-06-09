@@ -29,20 +29,20 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def line_item_map_clear():
-  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Line Items Map',
+def line_item_map_clear(project, task):
+  sheets_clear(task['auth_sheets'], task['sheet'], 'Line Items Map',
                'A2:Z')
 
 
-def line_item_map_load():
+def line_item_map_load(project, task):
   pass
 
 
-def line_item_map_audit():
+def line_item_map_audit(project, task):
   rows = get_rows(
-      project.task['auth_sheets'], {
+      task['auth_sheets'], {
           'sheets': {
-              'sheet': project.task['sheet'],
+              'sheet': task['sheet'],
               'tab': 'Line Items Map',
               'header':False,
               'range': 'A2:Z'
@@ -50,9 +50,9 @@ def line_item_map_audit():
       })
 
   put_rows(
-      project.task['auth_bigquery'], {
+      task['auth_bigquery'], {
           'bigquery': {
-              'dataset': project.task['dataset'],
+              'dataset': task['dataset'],
               'table': 'SHEET_LineItemMaps',
               'schema': [{
                   'name': 'Action',
@@ -69,9 +69,9 @@ def line_item_map_audit():
       }, rows)
 
   query_to_view(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       project.id,
-      project.task['dataset'],
+      task['dataset'],
       'AUDIT_LineItemMaps',
       """WITH
       LINEITEM_ERRORS AS (
@@ -106,22 +106,22 @@ def line_item_map_audit():
       UNION ALL
       SELECT * FROM CREATIVE_ERRORS
       ;
-    """.format(**project.task),
+    """.format(**task),
       legacy=False)
 
 
-def line_item_map_patch(commit=False):
+def line_item_map_patch(project, task, commit=False):
   patches = {}
   changed = set()
 
   rows = get_rows(
-      project.task['auth_bigquery'], {
+      task['auth_bigquery'], {
           'bigquery': {
               'dataset':
-                  project.task['dataset'],
+                  task['dataset'],
               'query':
                   """SELECT advertiserId, lineItemId, creativeIds FROM `{dataset}.DV_LineItems`
-      """.format(**project.task),
+      """.format(**task),
               'as_object':
                   True,
               'legacy':
@@ -143,9 +143,9 @@ def line_item_map_patch(commit=False):
     }
 
   rows = get_rows(
-      project.task['auth_sheets'], {
+      task['auth_sheets'], {
           'sheets': {
-              'sheet': project.task['sheet'],
+              'sheet': task['sheet'],
               'tab': 'Line Items Map',
               'header':False,
               'range': 'A2:Z'
@@ -178,7 +178,7 @@ def line_item_map_patch(commit=False):
   patches = list(patches.values())
 
   patch_masks(patches)
-  patch_preview(patches)
+  patch_preview(project, task, patches)
 
   if commit:
-    line_item_commit(patches)
+    line_item_commit(project, task, patches)

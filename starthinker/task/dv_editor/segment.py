@@ -20,7 +20,6 @@ from starthinker.util.bigquery import query_to_view
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
@@ -29,30 +28,30 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def segment_clear():
+def segment_clear(project, task):
   sheets_clear(
-    project.task["auth_sheets"],
-    project.task["sheet"],
+    task["auth_sheets"],
+    task["sheet"],
     "Segments",
     "A2:Z"
   )
 
 
-def segment_load():
+def segment_load(project, task):
 
   # write segments to sheet
   put_rows(
-    project.task["auth_sheets"],
+    task["auth_sheets"],
     { "sheets": {
-      "sheet": project.task["sheet"],
+      "sheet": task["sheet"],
       "tab": "Segments",
       "header":False,
       "range": "A2"
     }},
     get_rows(
-      project.task["auth_bigquery"],
+      task["auth_bigquery"],
       { "bigquery": {
-        "dataset": project.task["dataset"],
+        "dataset": task["dataset"],
         "query": """SELECT
           CONCAT(P.displayName, ' - ', P.partnerId),
           CONCAT(A.displayName, ' - ', A.advertiserId),
@@ -75,20 +74,20 @@ def segment_load():
           LEFT JOIN `{dataset}.DV_Partners` AS P
           ON A.partnerId=P.partnerId
           ORDER BY I.displayName
-        """.format(**project.task),
+        """.format(**task),
         "legacy":False
       }}
     )
   )
 
 
-def segment_audit():
+def segment_audit(project, task):
 
   # Move Segments To BigQuery
   put_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table": "SHEET_Segments",
       "schema": [
         { "name": "Partner", "type": "STRING" },
@@ -108,9 +107,9 @@ def segment_audit():
       "format": "CSV"
     }},
     get_rows(
-      project.task["auth_sheets"],
+      task["auth_sheets"],
       { "sheets": {
-        "sheet": project.task["sheet"],
+        "sheet": task["sheet"],
         "tab": "Segments",
         "header":False,
         "range": "A2:M"
@@ -120,9 +119,9 @@ def segment_audit():
 
   # Create Audit View And Write To Sheets
   query_to_view(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     project.id,
-    project.task["dataset"],
+    task["dataset"],
     "AUDIT_Segments",
     """WITH
       /* Check if sheet values are set */
@@ -193,24 +192,24 @@ def segment_audit():
       UNION ALL
       SELECT * FROM SEGMENT_ERRORS
       ;
-    """.format(**project.task),
+    """.format(**task),
     legacy=False
   )
 
   query_to_view(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     project.id,
-    project.task["dataset"],
+    task["dataset"],
     "PATCH_Segments",
     """SELECT *
       FROM `{dataset}.SHEET_Segments`
       WHERE Insertion_Order NOT IN (SELECT Id FROM `{dataset}.AUDIT_Segments` WHERE Severity='ERROR')
-    """.format(**project.task),
+    """.format(**task),
     legacy=False
   )
 
 
-def segment_patch(commit=False):
+def segment_patch(project, task, commit=False):
 
   def date_edited(value):
     y, m, d = value.split("-")
@@ -220,9 +219,9 @@ def segment_patch(commit=False):
   changed = set()
 
   rows = get_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table":"PATCH_Segments",
     }},
     as_object=True
@@ -278,7 +277,7 @@ def segment_patch(commit=False):
   patches = list(patches.values())
 
   patch_masks(patches)
-  patch_preview(patches)
+  patch_preview(project, task, patches)
 
   if commit:
-    insertion_order_commit(patches)
+    insertion_order_commit(project, task, patches)

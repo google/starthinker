@@ -20,7 +20,7 @@
 import traceback
 
 from starthinker.util.dcm import get_profile_for_api
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.sheets import sheets_get
 
 from starthinker.task.traffic.feed import Feed
@@ -72,11 +72,11 @@ def process_feed(feed_name, dao, print_field, msg='Processing'):
       Uploading Asset for assets.
   """
   feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       feed_name,
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
 
   execute_feed(feed, dao, print_field, msg)
 
@@ -117,28 +117,28 @@ def execute_feed(feed, dao, print_field, msg='Processing'):
     feed.update()
 
 
-def setup():
+def setup(project, task):
   """Sets up Bulkdozer configuration and required object to execute the job."""
 
-  if not 'dcm_profile_id' in project.task and 'account_id' in project.task:
-    project.task['is_admin'], project.task[
-        'dcm_profile_id'] = get_profile_for_api(project.task['auth'],
-                                                project.task['account_id'])
+  if 'dcm_profile_id' not in task and 'account_id' in task:
+    task['is_admin'], task[
+        'dcm_profile_id'] = get_profile_for_api(task['auth'],
+                                                task['account_id'])
 
-  if not 'is_admin' in project.task:
-    project.task['is_admin'] = False
+  if 'is_admin' not in task:
+    task['is_admin'] = False
 
-  if 'sheet_url' in project.task and not 'sheet_id' in project.task:
-    project.task['sheet_id'] = project.task['sheet_url']
+  if 'sheet_url' in task and 'sheet_id' not in task:
+    task['sheet_id'] = task['sheet_url']
 
   # Setting up required objects and parsing parameters
-  logger.auth = project.task['auth']
-  logger.trix_id = project.task.get('logger', {}).get('sheet_id',
-                                                      project.task['sheet_id'])
+  logger.auth = task['auth']
+  logger.trix_id = task.get('logger', {}).get('sheet_id',
+                                                      task['sheet_id'])
   logger.buffered = True
 
 
-def init_daos():
+def init_daos(project, task):
   global video_format_dao
   global landing_page_dao
   global placement_group_dao
@@ -152,44 +152,44 @@ def init_daos():
   global dynamic_targeting_key_dao
   global spreadsheet
 
-  spreadsheet = sheets_get(project.task['auth'], project.task['sheet_id'])
+  spreadsheet = sheets_get(task['auth'], task['sheet_id'])
 
-  #store.auth = project.task['auth']
-  #store.trix_id = project.task.get('store', {}).get('sheet_id', project.task['sheet_id'])
+  #store.auth = task['auth']
+  #store.trix_id = task.get('store', {}).get('sheet_id', task['sheet_id'])
   #store.load_id_map()
 
-  video_format_dao = VideoFormatDAO(project.task['auth'],
-                                    project.task['dcm_profile_id'],
-                                    project.task['is_admin'])
-  landing_page_dao = LandingPageDAO(project.task['auth'],
-                                    project.task['dcm_profile_id'],
-                                    project.task['is_admin'])
-  placement_group_dao = PlacementGroupDAO(project.task['auth'],
-                                          project.task['dcm_profile_id'],
-                                          project.task['is_admin'])
-  campaign_dao = CampaignDAO(project.task['auth'],
-                             project.task['dcm_profile_id'],
-                             project.task['is_admin'])
+  video_format_dao = VideoFormatDAO(task['auth'],
+                                    task['dcm_profile_id'],
+                                    task['is_admin'])
+  landing_page_dao = LandingPageDAO(task['auth'],
+                                    task['dcm_profile_id'],
+                                    task['is_admin'])
+  placement_group_dao = PlacementGroupDAO(task['auth'],
+                                          task['dcm_profile_id'],
+                                          task['is_admin'])
+  campaign_dao = CampaignDAO(task['auth'],
+                             task['dcm_profile_id'],
+                             task['is_admin'])
   creative_association_dao = CreativeAssociationDAO(
-      project.task['auth'], project.task['dcm_profile_id'],
-      project.task['is_admin'])
-  creative_dao = CreativeDAO(project.task['auth'],
-                             project.task['dcm_profile_id'],
-                             project.task['is_admin'])
-  placement_dao = PlacementDAO(project.task['auth'],
-                               project.task['dcm_profile_id'],
-                               project.task['is_admin'])
-  creative_asset_dao = CreativeAssetDAO(project.task['auth'],
-                                        project.task['dcm_profile_id'],
-                                        project.task['is_admin'], project.id)
-  ad_dao = AdDAO(project.task['auth'], project.task['dcm_profile_id'],
-                 project.task['is_admin'])
-  event_tag_dao = EventTagDAO(project.task['auth'],
-                              project.task['dcm_profile_id'],
-                              project.task['is_admin'])
+      task['auth'], task['dcm_profile_id'],
+      task['is_admin'])
+  creative_dao = CreativeDAO(task['auth'],
+                             task['dcm_profile_id'],
+                             task['is_admin'])
+  placement_dao = PlacementDAO(task['auth'],
+                               task['dcm_profile_id'],
+                               task['is_admin'])
+  creative_asset_dao = CreativeAssetDAO(task['auth'],
+                                        task['dcm_profile_id'],
+                                        task['is_admin'], project.id)
+  ad_dao = AdDAO(task['auth'], task['dcm_profile_id'],
+                 task['is_admin'])
+  event_tag_dao = EventTagDAO(task['auth'],
+                              task['dcm_profile_id'],
+                              task['is_admin'])
   dynamic_targeting_key_dao = DynamicTargetingKeyDAO(
-      project.task['auth'], project.task['dcm_profile_id'],
-      project.task['is_admin'])
+      task['auth'], task['dcm_profile_id'],
+      task['is_admin'])
 
 
 def assets():
@@ -225,25 +225,25 @@ def event_tags():
 def placements():
   """Processes placements."""
   placement_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'placement_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
 
   pricing_schedule_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'placement_pricing_schedule_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
 
   transcode_configs_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'transcode_configs_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
 
   placement_dao.map_placement_transcode_configs(placement_feed.feed,
                                                 transcode_configs_feed.feed,
@@ -258,39 +258,39 @@ def placements():
 def creatives():
   """Processes creatives."""
   creative_asset_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'creative_asset_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
 
   creative_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'creative_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
 
   third_party_url_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'third_party_url_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
 
   creative_association_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'creative_asset_association_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
 
   click_tag_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'click_tag_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
 
   creative_dao.map_creative_third_party_url_feeds(creative_feed.feed,
                                                   third_party_url_feed.feed)
@@ -319,42 +319,42 @@ def creatives():
 def ads():
   """Processes ads."""
   placement_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'placement_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
   event_tag_profile_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'event_tag_profile_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
   ad_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'ad_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
   ad_creative_assignment_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'ad_creative_assignment_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
 
   ad_placement_assignment_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'ad_placement_assignment_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
   ad_event_tag_assignment_feed = Feed(
-      project.task['auth'],
-      project.task['sheet_id'],
+      task['auth'],
+      task['sheet_id'],
       'event_tag_ad_assignment_feed',
       spreadsheet=spreadsheet,
-      timezone=project.task.get('timezone', None))
+      timezone=task.get('timezone', None))
 
   ad_dao.map_feeds(ad_feed.feed, ad_creative_assignment_feed.feed,
                    ad_placement_assignment_feed.feed,
@@ -375,21 +375,21 @@ def dynamic_targeting_keys():
                'Processing dynamic targeting key')
 
 
-@project.from_parameters
-def traffic():
+@from_parameters
+def traffic(project, task):
   """Main function of Bulkdozer, performs the Bulkdozer job"""
   global clean_run
   if project.verbose:
     print('traffic')
 
   try:
-    setup()
+    setup(project, task)
 
     logger.clear()
     logger.log('Bulkdozer traffic job starting')
     logger.flush()
 
-    init_daos()
+    init_daos(project, task)
     assets()
     landing_pages()
     campaigns()
@@ -421,11 +421,11 @@ def traffic():
         'Done: Errors happened with some of the assets, check your sheet log.')
 
 
-@project.from_parameters
-def _traffic():
+@from_parameters
+def _traffic(project, task):
   """For development purposes when debugging a specific entity, this function is handy to run just that entity."""
-  setup()
-  init_daos()
+  setup(project, task)
+  init_daos(project, task)
   dynamic_targeting_keys()
 
 

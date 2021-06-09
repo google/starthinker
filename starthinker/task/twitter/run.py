@@ -22,7 +22,7 @@
 from time import sleep
 from TwitterAPI import TwitterAPI
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.data import get_rows, put_rows
 
 # FOR WOEID SEE
@@ -34,11 +34,11 @@ from starthinker.util.data import get_rows, put_rows
 TWITTER_API = None
 
 
-def get_twitter_api():
+def get_twitter_api(project, task):
   global TWITTER_API
   if TWITTER_API is None:
     TWITTER_API = TwitterAPI(
-        project.task['key'], project.task['secret'], auth_type='oAuth2')
+        task['key'], task['secret'], auth_type='oAuth2')
   return TWITTER_API
 
 
@@ -71,16 +71,16 @@ TWITTER_TRENDS_PLACE_SCHEMA = [
 ]
 
 
-def twitter_trends_places():
+def twitter_trends_places(project, task):
   if project.verbose:
     print('TWITTER TRENDS PLACE')
   print('PL',
-        list(get_rows(project.task['auth'], project.task['trends']['places'])))
+        list(get_rows(task['auth'], task['trends']['places'])))
 
-  for place in get_rows(project.task['auth'], project.task['trends']['places']):
+  for place in get_rows(task['auth'], task['trends']['places']):
     if project.verbose:
       print('PLACE', place)
-    results = get_twitter_api().request('trends/place', {'id': int(place)})
+    results = get_twitter_api(project, task).request('trends/place', {'id': int(place)})
     for r in results:
       if project.verbose:
         print('RESULT', r['name'])
@@ -137,10 +137,10 @@ TWITTER_TRENDS_CLOSEST_SCHEMA = [
 ]
 
 
-def twitter_trends_closest():
+def twitter_trends_closest(project, task):
   if project.verbose:
     print('TWITTER TRENDS CLOSEST')
-  for row in get_rows(project.task['auth'], project.task['trends']['closest']):
+  for row in get_rows(task['auth'], task['trends']['closest']):
     lat, lon = row[0], row[1]
     results = api.request('trends/closest', {'lat': lat, 'long': lon})
     for r in results:
@@ -153,7 +153,7 @@ def twitter_trends_closest():
 TWITTER_TRENDS_AVAILABLE_SCHEMA = TWITTER_TRENDS_CLOSEST_SCHEMA
 
 
-def twitter_trends_available():
+def twitter_trends_available(project, task):
   if project.verbose:
     print('TWITTER TRENDS AVAILABLE')
   results = api.request('trends/available', {})
@@ -164,30 +164,30 @@ def twitter_trends_available():
     ]
 
 
-@project.from_parameters
-def twitter():
+@from_parameters
+def twitter(project, task):
   if project.verbose:
     print('TWITTER')
 
   rows = None
 
-  if 'trends' in project.task:
-    if 'places' in project.task['trends']:
-      rows = twitter_trends_places()
-      project.task['out']['bigquery']['schema'] = TWITTER_TRENDS_PLACE_SCHEMA
-      project.task['out']['bigquery']['skip_rows'] = 0
-    elif 'closest' in project.task['trends']:
-      rows = twitter_trends_closest()
-      project.task['out']['bigquery']['schema'] = TWITTER_TRENDS_CLOSEST_SCHEMA
-      project.task['out']['bigquery']['skip_rows'] = 0
+  if 'trends' in task:
+    if 'places' in task['trends']:
+      rows = twitter_trends_places(project, task)
+      task['out']['bigquery']['schema'] = TWITTER_TRENDS_PLACE_SCHEMA
+      task['out']['bigquery']['skip_rows'] = 0
+    elif 'closest' in task['trends']:
+      rows = twitter_trends_closest(project, task)
+      task['out']['bigquery']['schema'] = TWITTER_TRENDS_CLOSEST_SCHEMA
+      task['out']['bigquery']['skip_rows'] = 0
     else:
-      rows = twitter_trends_available()
-      project.task['out']['bigquery'][
+      rows = twitter_trends_available(project, task)
+      task['out']['bigquery'][
           'schema'] = TWITTER_TRENDS_AVAILABLE_SCHEMA
-      project.task['out']['bigquery']['skip_rows'] = 0
+      task['out']['bigquery']['skip_rows'] = 0
 
   if rows:
-    put_rows(project.task['auth'], project.task['out'], rows)
+    put_rows(task['auth'], task['out'], rows)
 
 
 if __name__ == '__main__':

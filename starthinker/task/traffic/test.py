@@ -18,19 +18,18 @@
 
 from starthinker.util.google_api import API_DCM
 from starthinker.util.dcm import get_profile_for_api
-from starthinker.util.project import project, get_project
 
 
-def bulkdozer_test():
+def bulkdozer_test(project, task):
   print('testing bulkdozer')
 
-  if 'verify' in project.task['traffic']:
+  if 'verify' in task['traffic']:
     is_admin, profile_id = get_profile_for_api(
-        project.task['auth'], project.task['traffic']['account_id'])
+        task['auth'], task['traffic']['account_id'])
 
-    for entity in project.task['traffic']['verify']:
+    for entity in task['traffic']['verify']:
       service = getattr(
-          API_DCM(project.task['auth'], internal=is_admin), entity['type'])
+          API_DCM(task['auth'], internal=is_admin), entity['type'])
       cm_entity = service().get(profileId=profile_id, id=entity['id']).execute()
 
       values = entity['values']

@@ -27,7 +27,7 @@ import moviepy.editor as mp
 from PIL import Image, ImageDraw, ImageFont
 from googleapiclient.http import MediaFileUpload
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.sheets import sheets_read
 from starthinker.util.bigquery import query_to_rows
 from starthinker.util.storage import object_put
@@ -158,7 +158,7 @@ def edit_video(video):
   return video
 
 
-def save_video(out, clip):
+def save_video(project, task, out, clip):
   # write to user defined local file
   if out.get('file'):
     clip.write_videofile(
@@ -173,7 +173,7 @@ def save_video(out, clip):
         logger=None)  # logger needed or fmmpeg writes to stderr
     with open(temporary_file_name, 'rb') as temporary_file:
       object_put(
-          project.task['auth'],
+          task['auth'],
           '%s:%s' % (out['storage']['bucket'], out['storage']['file']),
           temporary_file,
           mimetype=mimetypes.guess_type(out['storage']['file'],
@@ -202,7 +202,7 @@ def save_video(out, clip):
         }
     }
     try:
-      API_YouTube(project.task['auth']).videos().insert(
+      API_YouTube(task['auth']).videos().insert(
           part=','.join(body.keys()),
           body=body,
           media_body=MediaFileUpload(
@@ -263,38 +263,38 @@ def rows_to_videos(rows):
   return videos.values()
 
 
-def videos_from_sheets(sheets):
-  rows = sheets_read(project.task['auth'], sheets['sheet'], sheets['tab'],
+def videos_from_sheets(project, task):
+  rows = sheets_read(task['auth'], task['sheets']['sheet'], task['sheets']['tab'],
                      'A3:Y')
   return rows_to_videos(rows)
 
 
-def videos_from_bigquery(bigquery):
-  rows = query_to_rows(project.task['auth'],
-                       bigquery.get('project', project.id), bigquery['dataset'],
-                       'SELECT * FROM %s;' % bigquery['table'])
+def videos_from_bigquery(project, task):
+  rows = query_to_rows(task['auth'],
+                       task['bigquery'].get('project', project.id), task['bigquery']['dataset'],
+                       'SELECT * FROM %s;' % task['bigquery']['table'])
   return rows_to_videos(rows)
 
 
-@project.from_parameters
-def video():
+@from_parameters
+def video(project, task):
   if project.verbose:
     print('Video')
 
   videos = []
 
-  if project.task.get('sheets', {}).get('tab'):
-    videos.extend(videos_from_sheets(project.task['sheets']))
+  if task.get('sheets', {}).get('tab'):
+    videos.extend(videos_from_sheets(project, task))
 
-  if project.task.get('bigquery', {}).get('table'):
-    videos.extend(videos_from_bigquery(project.task['bigquery']))
+  if task.get('bigquery', {}).get('table'):
+    videos.extend(videos_from_bigquery(project, task))
 
-  if project.task.get('file_or_url'):
-    videos.append(project.task)
+  if task.get('file_or_url'):
+    videos.append(task)
 
   for video in videos:
     clip = edit_video(video)
-    save_video(video['out'], clip)
+    save_video(project, task, video['out'], clip)
 
 
 if __name__ == '__main__':

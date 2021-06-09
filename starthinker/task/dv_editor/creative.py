@@ -21,17 +21,16 @@ from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 CREATIVE_COUNT_LIMIT=1000
 
-def creative_clear():
+def creative_clear(project, task):
   table_create(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     project.id,
-    project.task["dataset"],
+    task["dataset"],
     "DV_Creatives",
     Discovery_To_BigQuery(
       "displayvideo",
@@ -39,17 +38,17 @@ def creative_clear():
     ).method_schema("advertisers.creatives.list"),
   )
 
-  sheets_clear(project.task["auth_sheets"], project.task["sheet"], "Creatives", "B2:Z")
+  sheets_clear(task["auth_sheets"], task["sheet"], "Creatives", "B2:Z")
 
 
-def creative_load():
+def creative_load(project, task):
 
   # load multiple partners from user defined sheet
   def creative_load_multiple():
     rows = get_rows(
-      project.task["auth_sheets"], {
+      task["auth_sheets"], {
         "sheets": {
-          "sheet": project.task["sheet"],
+          "sheet": task["sheet"],
           "tab": "Advertisers",
           "header":False,
           "range": "A2:A"
@@ -58,7 +57,7 @@ def creative_load():
 
     for row in rows:
       yield from API_DV360(
-        project.task["auth_dv"], iterate=True).advertisers().creatives().list(
+        task["auth_dv"], iterate=True).advertisers().creatives().list(
           advertiserId=lookup_id(row[0]),
           filter='entityStatus="ENTITY_STATUS_ACTIVE"',
           fields='creatives.displayName,creatives.creativeId,creatives.entityStatus,creatives.creativeType,creatives.dimensions,creatives.reviewStatus,nextPageToken'
@@ -66,9 +65,9 @@ def creative_load():
 
   # write creatives to database and sheet
   put_rows(
-    project.task["auth_bigquery"], {
+    task["auth_bigquery"], {
       "bigquery": {
-        "dataset":project.task["dataset"],
+        "dataset":task["dataset"],
         "table":"DV_Creatives",
         "schema":Discovery_To_BigQuery(
           "displayvideo",
@@ -81,9 +80,9 @@ def creative_load():
 
   # write creatives to sheet
   rows = get_rows(
-    project.task["auth_bigquery"], {
+    task["auth_bigquery"], {
       "bigquery": {
-        "dataset":project.task["dataset"],
+        "dataset":task["dataset"],
         "query":"""SELECT
           CONCAT(P.displayName, ' - ', P.partnerId),
           CONCAT(A.displayName, ' - ', A.advertiserId),
@@ -108,17 +107,17 @@ def creative_load():
           ON C.advertiserId=A.advertiserId
           LEFT JOIN `{dataset}.DV_Partners` AS P
           ON A.partnerId=P.partnerId
-        """.format(**project.task),
+        """.format(**task),
         "legacy":False
       }
     }
   )
 
   put_rows(
-    project.task["auth_sheets"],
+    task["auth_sheets"],
     {
       "sheets": {
-        "sheet": project.task["sheet"],
+        "sheet": task["sheet"],
         "tab": "Creatives",
         "header":False,
         "range": "B2"

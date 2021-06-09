@@ -24,13 +24,13 @@ For sample use see scripts/cm360_conversion_upload_from_*.json.
 """
 
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.dcm import conversions_upload
 from starthinker.util.data import get_rows
 
 
-@project.from_parameters
-def conversion_upload():
+@from_parameters
+def conversion_upload(project, task):
   """Entry point for conversion_upload task, which uploads conversins to CM360.
 
   Prints sucess or failure to STDOUT.
@@ -38,8 +38,8 @@ def conversion_upload():
   """
 
   rows = get_rows(
-    project.task['auth'],
-    project.task['from'],
+    task['auth'],
+    task['from'],
     as_object=False
   )
 
@@ -47,11 +47,11 @@ def conversion_upload():
     print('CONVERSION UPLOAD')
 
   statuses = conversions_upload(
-    project.task['auth'],
-    project.task['account_id'],
-    project.task['activity_id'],
-    project.task['conversion_type'], rows,
-    project.task['encryptionInfo']
+    task['auth'],
+    task['account_id'],
+    task['activity_id'],
+    task['conversion_type'], rows,
+    task['encryptionInfo']
   )
 
   has_rows = False

@@ -22,7 +22,6 @@ from starthinker.util.bigquery import query_to_view
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.project import project
 from starthinker.util.sheets import sheets_clear
 
 SCHEMA_PREVIEW = [
@@ -126,19 +125,19 @@ BUFFER_SUCCESS = []
 BUFFER_LENGTH = 10
 
 
-def patch_clear():
+def patch_clear(project, task):
 
-  table_create(project.task['auth_bigquery'], project.id,
-               project.task['dataset'], 'PATCH_Preview', SCHEMA_PREVIEW)
+  table_create(task['auth_bigquery'], project.id,
+               task['dataset'], 'PATCH_Preview', SCHEMA_PREVIEW)
 
-  table_create(project.task['auth_bigquery'], project.id,
-               project.task['dataset'], 'PATCH_Log', SCHEMA_LOG)
+  table_create(task['auth_bigquery'], project.id,
+               task['dataset'], 'PATCH_Log', SCHEMA_LOG)
 
-  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Preview', 'A2:Z')
+  sheets_clear(task['auth_sheets'], task['sheet'], 'Preview', 'A2:Z')
 
-  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Error', 'A2:Z')
+  sheets_clear(task['auth_sheets'], task['sheet'], 'Error', 'A2:Z')
 
-  sheets_clear(project.task['auth_sheets'], project.task['sheet'], 'Success', 'A2:Z')
+  sheets_clear(task['auth_sheets'], task['sheet'], 'Success', 'A2:Z')
 
 
 def patch_mask(patch:dict) -> dict:
@@ -214,7 +213,7 @@ def patch_masks(patches:dict) -> None:
     patch_mask(patch)
 
 
-def patch_log(patch=None):
+def patch_log(project, task, patch=None):
   global BUFFER_SUCCESS
   global BUFFER_ERROR
 
@@ -228,9 +227,9 @@ def patch_log(patch=None):
                         indent=2), kind, p[kind.lower()]) for p in rows]
 
     put_rows(
-        project.task['auth_bigquery'], {
+        task['auth_bigquery'], {
             'bigquery': {
-                'dataset': project.task['dataset'],
+                'dataset': task['dataset'],
                 'table': 'PATCH_Log',
                 'schema': SCHEMA_LOG,
                 'disposition': 'WRITE_APPEND',
@@ -239,9 +238,9 @@ def patch_log(patch=None):
         }, rows)
 
     put_rows(
-        project.task['auth_sheets'], {
+        task['auth_sheets'], {
             'sheets': {
-                'sheet': project.task['sheet'],
+                'sheet': task['sheet'],
                 'tab': kind.title(),
                 'header':False,
                 'range': 'A2',
@@ -265,16 +264,16 @@ def patch_log(patch=None):
     BUFFER_ERROR = []
 
 
-def patch_preview(patches):
+def patch_preview(project, task, patches):
   if patches:
     rows = [(p['operation'], p['action'], p.get('partner'), p.get('advertiser'),
              p.get('campaign'), p.get('insertion_order'), p.get('line_item'),
              json.dumps(p.get('parameters', {}), indent=2)) for p in patches]
 
     put_rows(
-        project.task['auth_bigquery'], {
+        task['auth_bigquery'], {
             'bigquery': {
-                'dataset': project.task['dataset'],
+                'dataset': task['dataset'],
                 'table': 'PATCH_Preview',
                 'schema': SCHEMA_PREVIEW,
                 'disposition': 'WRITE_APPEND',
@@ -283,9 +282,9 @@ def patch_preview(patches):
         }, rows)
 
     put_rows(
-        project.task['auth_sheets'], {
+        task['auth_sheets'], {
             'sheets': {
-                'sheet': project.task['sheet'],
+                'sheet': task['sheet'],
                 'tab': 'Preview',
                 'header':False,
                 'range': 'A2',

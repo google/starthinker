@@ -22,15 +22,14 @@ from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 
 
-def campaign_clear():
+def campaign_clear(project, task):
   table_create(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     'DV_Campaigns',
     Discovery_To_BigQuery(
       'displayvideo',
@@ -41,14 +40,14 @@ def campaign_clear():
   )
 
 
-def campaign_load():
+def campaign_load(project, task):
 
   # load multiple partners from user defined sheet
   def campaign_load_multiple():
     for row in get_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Advertisers',
         'header':False,
         'range': 'A2:A'
@@ -56,7 +55,7 @@ def campaign_load():
     ):
       if row:
         yield from API_DV360(
-          project.task['auth_dv'],
+          task['auth_dv'],
           iterate=True
         ).advertisers().campaigns().list(
           advertiserId=lookup_id(row[0]),
@@ -64,13 +63,13 @@ def campaign_load():
           fields='campaigns.displayName,campaigns.campaignId,campaigns.advertiserId,nextPageToken'
         ).execute()
 
-  campaign_clear()
+  campaign_clear(project, task)
 
   # write to database
   put_rows(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     { 'bigquery': {
-      'dataset': project.task['dataset'],
+      'dataset': task['dataset'],
       'table': 'DV_Campaigns',
       'schema': Discovery_To_BigQuery(
         'displayvideo',

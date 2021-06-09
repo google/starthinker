@@ -27,7 +27,7 @@ import json
 
 from smartsheet import Smartsheet
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.data import put_rows
 from starthinker.util.csv import column_header_sanitize
 
@@ -108,32 +108,23 @@ def get_rows(sheet=None, report=None, header=True, link=True, key='id'):
 
 
 def get_sheet_schema(token, sheet, link=True):
-  if project.verbose:
-    print('SMARTSHEET SHEET SCHEMA', sheet)
   sheet_json = smartsheet_api(token).Sheets.get_sheet(
       sheet, include=('rowPermalink' if link else ''), page_size=0)
   return get_schema(sheet_json)
 
 
 def get_report_schema(token, report, link=True):
-  if project.verbose:
-    print('SMARTSHEET SHEET SCHEMA', report)
   report_json = smartsheet_api(token).Reports.get_report(report, page_size=0)
   return get_schema(report_json)
 
 
 def get_sheet_rows(token, sheet, link=True):
-  if project.verbose:
-    print('SMARTSHEET SHEET ROWS', sheet)
   sheet_json = smartsheet_api(token).Sheets.get_sheet(
       sheet, include=('rowPermalink' if link else ''))
   return get_rows(sheet=sheet_json, header=False, link=link)
 
 
 def get_report_rows(token, report):
-  if project.verbose:
-    print('SMARTSHEET REPORT ROWS', report)
-
   count = 0
   total = 1
   page = 1
@@ -149,39 +140,39 @@ def get_report_rows(token, report):
     page += 1
 
 
-@project.from_parameters
-def smartsheet():
+@from_parameters
+def smartsheet(project, task):
   if project.verbose:
     print('SMARTSHEET')
 
-  if 'sheet' in project.task:
-    link = project.task.get('link', True)
-    rows = get_sheet_rows(project.task['token'], project.task['sheet'], link)
-    schema = get_sheet_schema(project.task['token'], project.task['sheet'],
+  if 'sheet' in task:
+    link = task.get('link', True)
+    rows = get_sheet_rows(task['token'], task['sheet'], link)
+    schema = get_sheet_schema(task['token'], task['sheet'],
                               link)
 
-  elif 'report' in project.task:
+  elif 'report' in task:
     link = False
-    rows = get_report_rows(project.task['token'], project.task['report'])
-    schema = get_report_schema(project.task['token'], project.task['report'])
+    rows = get_report_rows(task['token'], task['report'])
+    schema = get_report_schema(task['token'], task['report'])
 
   else:
     raise NameError('Either report or sheet must be in the recipe json.')
 
-  if 'bigquery' in project.task['out']:
-    project.task['out']['bigquery'].setdefault('schema', schema)
+  if 'bigquery' in task['out']:
+    task['out']['bigquery'].setdefault('schema', schema)
     print('SCHEMA = %s' %
-          json.dumps(project.task['out']['bigquery']['schema'], indent=2))
+          json.dumps(task['out']['bigquery']['schema'], indent=2))
 
-    if link and 'schema' in project.task['out']['bigquery']:
-      project.task['out']['bigquery']['schema'].insert(0, {
+    if link and 'schema' in task['out']['bigquery']:
+      task['out']['bigquery']['schema'].insert(0, {
           'name': 'rowPermalink',
           'type': 'STRING',
           'mode': 'NULLABLE'
       })
 
   if rows:
-    put_rows(project.task['auth'], project.task['out'], rows)
+    put_rows(task['auth'], task['out'], rows)
 
 
 if __name__ == '__main__':

@@ -22,24 +22,24 @@ reporting.
 
 """
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.data import put_rows
 from starthinker.util.salesforce import authenticate, query
 
 
-@project.from_parameters
-def salesforce():
+@from_parameters
+def salesforce(project, task):
   if project.verbose:
     print('Salesforce')
 
-  sf = authenticate(project.task['domain'], project.task['client'],
-                    project.task['secret'], project.task['username'],
-                    project.task['password'])
+  sf = authenticate(task['domain'], task['client'],
+                    task['secret'], task['username'],
+                    task['password'])
 
-  if 'query' in project.task:
-    rows = query(sf, project.task['query'])
+  if 'query' in task:
+    rows = query(sf, task['query'])
     if rows:
-      put_rows(project.task['auth'], project.task['out'], rows)
+      put_rows(task['auth'], task['out'], rows)
 
 
 if __name__ == '__main__':

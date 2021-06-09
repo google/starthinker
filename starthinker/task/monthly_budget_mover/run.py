@@ -18,7 +18,7 @@
 
 from datetime import datetime
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.dbm import report_file, report_get, report_clean, report_to_rows, DBM_CHUNKSIZE, report_to_list
 from starthinker.util.bigquery import rows_to_table, make_schema
 from starthinker.util.sdf import get_single_sdf_rows
@@ -29,27 +29,27 @@ IO_ID = 'Io Id'
 CHANGES_SCHEMA = ['Io Id', 'Category', 'Old Value', 'Delta', 'New Value']
 
 
-@project.from_parameters
-def monthly_budget_mover():
+@from_parameters
+def monthly_budget_mover(project, task):
   if project.verbose:
     print('MONTHLY BUDGET MOVER')
 
   # Get Spend report
-  r = report_get(project.task['auth'], name=project.task['report_name'])
+  r = report_get(task['auth'], name=task['report_name'])
 
   report_id = report_get(
-      project.task['auth'], name=project.task['report_name'])['queryId']
-  #	report = report_to_list(project.task['auth'], report_id)
+      task['auth'], name=task['report_name'])['queryId']
+  #report = report_to_list(task['auth'], report_id)
 
   # Get Insertion Order SDF
   # sdf = list(get_single_sdf_rows(
-  #     project.task['auth'],
-  #     project.task['sdf']['version'],
-  #     project.task['sdf']['partner_id'],
-  #     project.task['sdf']['file_types'],
-  #     project.task['sdf']['filter_type'],
-  #     project.task['sdf']['read']['filter_ids'],
-  #    	'InsertionOrders'))
+  #     task['auth'],
+  #     task['sdf']['version'],
+  #     task['sdf']['partner_id'],
+  #     task['sdf']['file_types'],
+  #     task['sdf']['filter_type'],
+  #     task['sdf']['read']['filter_ids'],
+  #    'InsertionOrders'))
 
   # print('sdf============================================================')
   # print(sdf)
@@ -174,33 +174,33 @@ def monthly_budget_mover():
   print('report============================================================')
 
   # Prep out blocks depending on where the outputs should be stored
-  if project.task['is_colab']:
-    project.task['out_old_sdf'].pop('bigquery')
-    project.task['out_new_sdf'].pop('bigquery')
-    project.task['out_changes'].pop('bigquery')
+  if task['is_colab']:
+    task['out_old_sdf'].pop('bigquery')
+    task['out_new_sdf'].pop('bigquery')
+    task['out_changes'].pop('bigquery')
 
   else:
-    project.task['out_old_sdf'].pop('file')
-    project.task['out_new_sdf'].pop('file')
-    project.task['out_changes'].pop('file')
+    task['out_old_sdf'].pop('file')
+    task['out_new_sdf'].pop('file')
+    task['out_changes'].pop('file')
 
     # Build Schemas
     schema = make_schema(sdf[0])
     schema_changes = make_schema(CHANGES_SCHEMA)
-    project.task['out_old_sdf']['bigquery']['schema'] = schema
-    project.task['out_new_sdf']['bigquery']['schema'] = schema
-    project.task['out_changes']['bigquery']['schema'] = schema_changes
+    task['out_old_sdf']['bigquery']['schema'] = schema
+    task['out_new_sdf']['bigquery']['schema'] = schema
+    task['out_changes']['bigquery']['schema'] = schema_changes
 
   # Write old sdf to table
-  put_rows(project.task['auth'], project.task['out_old_sdf'], (n for n in sdf))
+  put_rows(task['auth'], task['out_old_sdf'], (n for n in sdf))
 
   # Categorize the IOs to be aggregated together
-  if (project.task['budget_categories'] != {} and
-      project.task['budget_categories'] != '' and
-      project.task['budget_categories'] != None):
+  if (task['budget_categories'] != {} and
+      task['budget_categories'] != '' and
+      task['budget_categories'] != None):
 
     categories = remove_excluded_ios_from_categories(
-        project.task['budget_categories'], project.task['excluded_ios'])
+        task['budget_categories'], task['excluded_ios'])
 
     categories_spend = aggregate_io_spend_to_categories(report, categories)
 
@@ -217,17 +217,17 @@ def monthly_budget_mover():
   else:
     report_dict = convert_report_to_dict(report)
     new_sdf, changes = calc_new_sdf_no_categories(sdf, report_dict,
-                                                  project.task['excluded_ios'])
+                                                  task['excluded_ios'])
 
-  if project.task['is_colab']:
+  if task['is_colab']:
     changes.insert(0, CHANGES_SCHEMA)
 
   # Write new sdf to table
-  put_rows(project.task['auth'], project.task['out_new_sdf'],
+  put_rows(task['auth'], task['out_new_sdf'],
            (n for n in new_sdf))
 
   # Write log file to table
-  put_rows(project.task['auth'], project.task['out_changes'],
+  put_rows(task['auth'], task['out_changes'],
            (n for n in changes))
 
 

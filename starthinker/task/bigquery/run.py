@@ -35,75 +35,69 @@ Includes:
 from starthinker.util import bigquery as bq
 from starthinker.util import csv
 from starthinker.util import data
-from starthinker.util import project
 from starthinker.util import sheets
+from starthinker.util.project import from_parameters
 from starthinker.util.bigquery import functions
 from starthinker.util.bigquery import us_geography
 
-
-# TODO: Remove class rename monkeypatch after project refactor
-if not hasattr(project, 'Project'):
-  project.Project = project.project
-
-
-def bigquery_function():
+def bigquery_function(project, task):
   """Generate custom tables or functions.
 
   See: scripts/bigquery_function.json
   """
 
-  if project.Project.verbose:
-    print('FUNCTION', project.Project.task['function'])
+  if project.verbose:
+    print('FUNCTION', task['function'])
 
-  if project.Project.task['function'] == 'Pearson Significance Test':
+  if task['function'] == 'Pearson Significance Test':
     bq.run_query(
-      project.Project.task['auth'],
-      project.Project.id,
+      task['auth'],
+      project.id,
       functions.pearson_significance_test(),
       False,
-      project.Project.task['to']['dataset']
+      task['to']['dataset']
     )
 
-  elif project.Project.task['function'] == 'US Geography':
+  elif task['function'] == 'US Geography':
     bq.json_to_table(
-      project.Project.task['auth'],
-      project.Project.id,
-      project.Project.task['to']['dataset'],
+      task['auth'],
+      project.id,
+      task['to']['dataset'],
       'US_Geography',
       us_geography.US_GEOGRAPHY_DATA,
       us_geography.US_GEOGRAPHY_SCHEMA
     )
 
-  elif project.Project.task['function'] == 'RGB To HSV':
+  elif task['function'] == 'RGB To HSV':
     bq.run_query(
-      project.Project.task['auth'],
-      project.Project.id,
+      task['auth'],
+      project.id,
       functions.rgb_to_hsv(),
       False,
-      project.Project.task['to']['dataset']
+      task['to']['dataset']
     )
 
-def bigquery_run():
+def bigquery_run(project, task):
   """Execute a query without expected return results.
 
   See: scripts/bigquery_run_query.json
   """
 
-  if project.Project.verbose:
-    print('RUN QUERY', project.Project.task['run']['query'])
+  if project.verbose:
+    print('RUN QUERY', task['run']['query'])
 
   bq.run_query(
-    project.Project.task['auth'],
-    project.Project.id,
+    task['auth'],
+    project.id,
     bq.query_parameters(
-      project.Project.task['run']['query'],
-      project.Project.task['run'].get('parameters')
+      task['run']['query'],
+      task['run'].get('parameters')
     ),
-    project.Project.task['run'].get('legacy', True)
+    task['run'].get('legacy', True)
   )
 
 
-def bigquery_values():
+def bigquery_values(project, task):
   """Write explicit values to a table.
 
   TODO: Replace with get_rows.
@@ -111,22 +105,22 @@ def bigquery_values():
   See: scripts/bigquery_run_query.json
   """
 
-  if project.Project.verbose:
-    print('VALUES', project.Project.task['from']['values'])
+  if project.verbose:
+    print('VALUES', task['from']['values'])
 
-  rows = data.get_rows(project.Project.task['auth'], project.Project.task['from'])
+  rows = data.get_rows(task['auth'], task['from'])
   bq.rows_to_table(
-    project.Project.task['to'].get('auth', project.Project.task['auth']),
-    project.Project.id,
-    project.Project.task['to']['dataset'],
-    project.Project.task['to']['table'],
+    task['to'].get('auth', task['auth']),
+    project.id,
+    task['to']['dataset'],
+    task['to']['table'],
     rows,
-    project.Project.task.get('schema', []),
+    task.get('schema', []),
     0
   )
 
 
-def bigquery_query():
+def bigquery_query(project, task):
   """Execute a query and write results to table.
 
   TODO: Replace with get_rows and put_rows combination.
@@ -137,132 +131,132 @@ def bigquery_query():
        scripts/bigquery_view.json
   """
 
-  if 'table' in project.Project.task['to']:
-    if project.Project.verbose:
-      print('QUERY TO TABLE', project.Project.task['to']['table'])
+  if 'table' in task['to']:
+    if project.verbose:
+      print('QUERY TO TABLE', task['to']['table'])
 
     bq.query_to_table(
-      project.Project.task['auth'],
-      project.Project.id,
-      project.Project.task['to']['dataset'],
-      project.Project.task['to']['table'],
+      task['auth'],
+      project.id,
+      task['to']['dataset'],
+      task['to']['table'],
       bq.query_parameters(
-        project.Project.task['from']['query'],
-        project.Project.task['from'].get('parameters')
+        task['from']['query'],
+        task['from'].get('parameters')
       ),
-      disposition=project.Project.task['write_disposition']
-        if 'write_disposition' in project.Project.task
+      disposition=task['write_disposition']
+        if 'write_disposition' in task
         else 'WRITE_TRUNCATE',
-      legacy=project.Project.task['from'].get(
+      legacy=task['from'].get(
         'legacy',
-        project.Project.task['from'].get('useLegacySql', True)
+        task['from'].get('useLegacySql', True)
       ),  # DEPRECATED: useLegacySql,
-      target_project_id=project.Project.task['to'].get('project_id', project.Project.id)
+      target_project_id=task['to'].get('project_id', project.id)
     )
 
-  elif 'sheet' in project.Project.task['to']:
-    if project.Project.verbose:
-      print('QUERY TO SHEET', project.Project.task['to']['sheet'])
+  elif 'sheet' in task['to']:
+    if project.verbose:
+      print('QUERY TO SHEET', task['to']['sheet'])
 
     rows = bq.query_to_rows(
-      project.Project.task['auth'],
-      project.Project.id,
-      project.Project.task['from']['dataset'],
+      task['auth'],
+      project.id,
+      task['from']['dataset'],
       bq.query_parameters(
-        project.Project.task['from']['query'],
-        project.Project.task['from'].get('parameters')
+        task['from']['query'],
+        task['from'].get('parameters')
       ),
-      legacy=project.Project.task['from'].get('legacy', True)
+      legacy=task['from'].get('legacy', True)
     )
 
     # makes sure types are correct in sheet
     rows = csv.rows_to_type(rows)
 
     sheets.sheets_clear(
-      project.Project.task['to'].get('auth', project.Project.task['auth']),
-      project.Project.task['to']['sheet'],
-      project.Project.task['to']['tab'],
-      project.Project.task['to'].get('range', 'A2')
+      task['to'].get('auth', task['auth']),
+      task['to']['sheet'],
+      task['to']['tab'],
+      task['to'].get('range', 'A2')
     )
     sheets.sheets_write(
-      project.Project.task['to'].get('auth', project.Project.task['auth']),
-      project.Project.task['to']['sheet'],
-      project.Project.task['to']['tab'],
-      project.Project.task['to'].get('range', 'A2'),
+      task['to'].get('auth', task['auth']),
+      task['to']['sheet'],
+      task['to']['tab'],
+      task['to'].get('range', 'A2'),
       rows
     )
 
-  elif 'sftp' in project.Project.task['to']:
-    if project.Project.verbose:
+  elif 'sftp' in task['to']:
+    if project.verbose:
       print('QUERY TO SFTP')
 
     rows = bq.query_to_rows(
-      project.Project.task['auth'],
-      project.Project.id,
-      project.Project.task['from']['dataset'],
+      task['auth'],
+      project.id,
+      task['from']['dataset'],
       bq.query_parameters(
-        project.Project.task['from']['query'],
-        project.Project.task['from'].get('parameters')
+        task['from']['query'],
+        task['from'].get('parameters')
       ),
-      legacy=project.Project.task['from'].get('use_legacy_sql', True)
+      legacy=task['from'].get('use_legacy_sql', True)
     )
 
     if rows:
-      data.put_rows(project.Project.task['auth'], project.Project.task['to'], rows)
+      data.put_rows(task['auth'], task['to'], rows)
 
   else:
-    if project.Project.verbose:
-      print('QUERY TO VIEW', project.Project.task['to']['view'])
+    if project.verbose:
+      print('QUERY TO VIEW', task['to']['view'])
 
     bq.query_to_view(
-      project.Project.task['auth'],
-      project.Project.id,
-      project.Project.task['to']['dataset'],
-      project.Project.task['to']['view'],
+      task['auth'],
+      project.id,
+      task['to']['dataset'],
+      task['to']['view'],
       bq.query_parameters(
-        project.Project.task['from']['query'],
-        project.Project.task['from'].get('parameters')
+        task['from']['query'],
+        task['from'].get('parameters')
       ),
-      project.Project.task['from'].get(
+      task['from'].get(
         'legacy',
-        project.Project.task['from'].get('useLegacySql', True)
+        task['from'].get('useLegacySql', True)
       ),  # DEPRECATED: useLegacySql
-      project.Project.task['to'].get('replace', False)
+      task['to'].get('replace', False)
     )
 
 
-def bigquery_storage():
+def bigquery_storage(project, task):
   """Read from storage into a table.
 
   See: scripts/bigquery_storage.json
   """
 
-  if project.Project.verbose:
-    print('STORAGE TO TABLE', project.Project.task['to']['table'])
+  if project.verbose:
+    print('STORAGE TO TABLE', task['to']['table'])
 
   bq.storage_to_table(
-    project.Project.task['auth'], project.Project.id, project.Project.task['to']['dataset'],
-    project.Project.task['to']['table'],
-    project.Project.task['from']['bucket'] + ':' + project.Project.task['from']['path'],
-    project.Project.task.get('schema', []), project.Project.task.get('skip_rows', 1),
-    project.Project.task.get('structure', 'CSV'),
-    project.Project.task.get('disposition', 'WRITE_TRUNCATE')
+    task['auth'], project.id, task['to']['dataset'],
+    task['to']['table'],
+    task['from']['bucket'] + ':' + task['from']['path'],
+    task.get('schema', []), task.get('skip_rows', 1),
+    task.get('structure', 'CSV'),
+    task.get('disposition', 'WRITE_TRUNCATE')
   )
 
 
-@project.Project.from_parameters
-def bigquery():
+@from_parameters
+def bigquery(project, task):
 
-  if 'function' in project.Project.task:
-    bigquery_function()
-  elif 'run' in project.Project.task and 'query' in project.Project.task.get('run', {}):
-    bigquery_run()
-  elif 'values' in project.Project.task['from']:
-    bigquery_values()
-  elif 'query' in project.Project.task['from']:
-    bigquery_query()
-  elif 'bucket' in project.Project.task['from']:
-    bigquery_query()
+  if 'function' in task:
+    bigquery_function(project, task)
+  elif 'run' in task and 'query' in task.get('run', {}):
+    bigquery_run(project, task)
+  elif 'values' in task['from']:
+    bigquery_values(project, task)
+  elif 'query' in task['from']:
+    bigquery_query(project, task)
+  elif 'bucket' in task['from']:
+    bigquery_query(project, task)
   else:
     raise NotImplementedError('The bigquery task has no such handler.')
 

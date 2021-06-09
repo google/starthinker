@@ -21,7 +21,7 @@ import json
 from difflib import Differ
 from time import sleep
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.bigquery import table_to_rows
 from starthinker.util.bigquery import table_to_schema
 from starthinker.util.bigquery import query_parameters
@@ -129,15 +129,15 @@ def object_compare(actual, expected):
 #    }}
 
 
-def sheets():
+def sheets(project, task):
   print('TEST: sheets')
 
-  rows = sheets_read(project.task['auth'], project.task['sheets']['sheet'],
-                     project.task['sheets']['tab'],
-                     project.task['sheets']['range'])
+  rows = sheets_read(task['auth'], task['sheets']['sheet'],
+                     task['sheets']['tab'],
+                     task['sheets']['range'])
 
   rows = rows_to_type(rows)
-  object_compare(list(rows), project.task['sheets']['values'])
+  object_compare(list(rows), task['sheets']['values'])
 
 
 # check if bigquery table has given values or has data
@@ -162,15 +162,15 @@ def sheets():
 #    }}
 
 
-def bigquery():
+def bigquery(project, task):
   print('TEST: bigquery')
 
   # check schema if given ( check independent of values )
-  if 'schema' in project.task['bigquery']:
-    schema = table_to_schema(project.task['auth'], project.id,
-                             project.task['bigquery']['dataset'],
-                             project.task['bigquery']['table'])
-    deltas = schema_compare(project.task['bigquery']['schema'], schema, path='')
+  if 'schema' in task['bigquery']:
+    schema = table_to_schema(task['auth'], project.id,
+                             task['bigquery']['dataset'],
+                             task['bigquery']['table'])
+    deltas = schema_compare(task['bigquery']['schema'], schema, path='')
 
     if deltas:
       print('\nFAILED *******************************************************\n')
@@ -183,75 +183,75 @@ def bigquery():
 
 
   # if query given check it
-  if 'query' in project.task['bigquery']:
+  if 'query' in task['bigquery']:
     rows = query_to_rows(
-        project.task['auth'],
+        task['auth'],
         project.id,
-        project.task['bigquery']['dataset'],
-        query_parameters(project.task['bigquery']['query'],
-                         project.task['bigquery'].get('parameters')),
-        legacy=project.task['bigquery'].get('legacy', True)
+        task['bigquery']['dataset'],
+        query_parameters(task['bigquery']['query'],
+                         task['bigquery'].get('parameters')),
+        legacy=task['bigquery'].get('legacy', True)
     )
 
-    object_compare(sorted(rows), sorted(project.task['bigquery']['values']))
+    object_compare(sorted(rows), sorted(task['bigquery']['values']))
 
   # simple table check ( unless query given )
-  elif 'values' in project.task['bigquery']:
-    rows = table_to_rows(project.task['auth'], project.id,
-                         project.task['bigquery']['dataset'],
-                         project.task['bigquery']['table'])
+  elif 'values' in task['bigquery']:
+    rows = table_to_rows(task['auth'], project.id,
+                         task['bigquery']['dataset'],
+                         task['bigquery']['table'])
 
-    object_compare(sorted(rows), sorted(project.task['bigquery']['values']))
+    object_compare(sorted(rows), sorted(task['bigquery']['values']))
 
 
-def asserts():
+def asserts(project, task):
   print('TEST: asserts')
-  print(project.task['assert'])
+  print(task['assert'])
   test_passed()
 
 
-def path_exists():
+def path_exists(project, task):
   print('TEST: path_exists')
-  if os.path.exists(project.task['path']):
-    if project.task.get('delete', False):
-      os.remove(project.task['path'])
+  if os.path.exists(task['path']):
+    if task.get('delete', False):
+      os.remove(task['path'])
     test_passed()
   else:
     test_failed()
 
 
-def storage_exists():
+def storage_exists(project, task):
   print('TEST: storage_exists')
   if object_exists(
-      project.task['auth'], '%s:%s' %
-      (project.task['storage']['bucket'], project.task['storage']['file'])):
-    if project.task.get('delete', False):
+      task['auth'], '%s:%s' %
+      (task['storage']['bucket'], task['storage']['file'])):
+    if task.get('delete', False):
       object_delete(
-          project.task['auth'], '%s:%s' %
-          (project.task['storage']['bucket'], project.task['storage']['file']))
+          task['auth'], '%s:%s' %
+          (task['storage']['bucket'], task['storage']['file']))
     test_passed()
   else:
     test_failed()
 
 
-def drive_exists():
+def drive_exists(project, task):
   print('TEST: drive')
-  if 'file' in project.task['drive']:
-    if file_exists(project.task['auth'], project.task['drive']['file']):
+  if 'file' in task['drive']:
+    if file_exists(task['auth'], task['drive']['file']):
       test_passed()
-  elif 'not_file' in project.task['drive']:
-    if not file_exists(project.task['auth'], project.task['drive']['not_file']):
+  elif 'not_file' in task['drive']:
+    if not file_exists(task['auth'], task['drive']['not_file']):
       test_passed()
   else:
     test_failed()
 
 
-def test_sleep():
-  print('TEST: sleep ', project.task['sleep'])
-  sleep(project.task['sleep'])
+def test_sleep(project, task):
+  print('TEST: sleep ', task['sleep'])
+  sleep(task['sleep'])
 
 
-def weather_gov():
+def weather_gov(project, task):
   print('TEST: weather_gov')
   try:
     weather_gov_test()
@@ -261,7 +261,7 @@ def weather_gov():
     test_failed()
 
 
-def traffic():
+def traffic(project, task):
   print('TEST: Bulkdozer')
   try:
     bulkdozer_test()
@@ -272,28 +272,28 @@ def traffic():
 
 
 # decide which test to run
-@project.from_parameters
-def test():
-  if 'assert' in project.task:
-    return asserts()
-  elif 'path' in project.task:
-    return path_exists()
-  elif 'storage' in project.task:
-    storage_exists()
-  elif 'sheets' in project.task:
-    return sheets()
-  elif 'bigquery' in project.task:
-    return bigquery()
-  elif 'drive' in project.task:
-    return drive_exists()
-  elif 'sleep' in project.task:
-    return test_sleep()
-  elif 'template' in project.task:
-    return template()
-  elif 'traffic' in project.task:
-    return traffic()
-  elif 'weather_gov' in project.task:
-    return weather_gov()
+@from_parameters
+def test(project, task):
+  if 'assert' in task:
+    return asserts(project, task)
+  elif 'path' in task:
+    return path_exists(project, task)
+  elif 'storage' in task:
+    storage_exists(project, task)
+  elif 'sheets' in task:
+    return sheets(project, task)
+  elif 'bigquery' in task:
+    return bigquery(project, task)
+  elif 'drive' in task:
+    return drive_exists(project, task)
+  elif 'sleep' in task:
+    return test_sleep(project, task)
+  elif 'template' in task:
+    return template(project, task)
+  elif 'traffic' in task:
+    return traffic(project, task)
+  elif 'weather_gov' in task:
+    return weather_gov(project, task)
 
 
 # test should be run like any other task

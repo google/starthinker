@@ -21,7 +21,6 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
@@ -32,19 +31,19 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def frequency_cap_clear():
-  sheets_clear(project.task["auth_sheets"], project.task["sheet"], "Frequency Caps",
+def frequency_cap_clear(project, task):
+  sheets_clear(task["auth_sheets"], task["sheet"], "Frequency Caps",
                "A2:Z")
 
 
-def frequency_cap_load():
+def frequency_cap_load(project, task):
 
   # write frequency_caps to sheet
   rows = get_rows(
-      project.task["auth_bigquery"], {
+      task["auth_bigquery"], {
           "bigquery": {
               "dataset":
-                  project.task["dataset"],
+                  task["dataset"],
               "query":
                   """SELECT
          CONCAT(P.displayName, ' - ', P.partnerId),
@@ -111,16 +110,16 @@ def frequency_cap_load():
        ON L.advertiserId=A.advertiserId
        LEFT JOIN `{dataset}.DV_Partners` AS P
        ON A.partnerId=P.partnerId
-       """.format(**project.task),
+       """.format(**task),
               "legacy":
                   False
           }
       })
 
   put_rows(
-      project.task["auth_sheets"], {
+      task["auth_sheets"], {
           "sheets": {
-              "sheet": project.task["sheet"],
+              "sheet": task["sheet"],
               "tab": "Frequency Caps",
               "header":False,
               "range": "A2"
@@ -128,11 +127,11 @@ def frequency_cap_load():
       }, rows)
 
 
-def frequency_cap_audit():
+def frequency_cap_audit(project, task):
   rows = get_rows(
-      project.task["auth_sheets"], {
+      task["auth_sheets"], {
           "sheets": {
-              "sheet": project.task["sheet"],
+              "sheet": task["sheet"],
               "tab": "Frequency Caps",
               "header":False,
               "range": "A2:M"
@@ -140,9 +139,9 @@ def frequency_cap_audit():
       })
 
   put_rows(
-      project.task["auth_bigquery"], {
+      task["auth_bigquery"], {
           "bigquery": {
-              "dataset": project.task["dataset"],
+              "dataset": task["dataset"],
               "table": "SHEET_FrequencyCaps",
               "schema": [
                   { "name": "Partner", "type": "STRING" },
@@ -164,9 +163,9 @@ def frequency_cap_audit():
       }, rows)
 
   query_to_view(
-      project.task["auth_bigquery"],
+      task["auth_bigquery"],
       project.id,
-      project.task["dataset"],
+      task["dataset"],
       "AUDIT_FrequencyCaps",
       """WITH
       /* Check if sheet values are set */
@@ -194,31 +193,31 @@ def frequency_cap_audit():
 
       SELECT * FROM INPUT_ERRORS
       ;
-    """.format(**project.task),
+    """.format(**task),
       legacy=False)
 
   query_to_view(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     project.id,
-    project.task["dataset"],
+    task["dataset"],
     "PATCH_FrequencyCaps",
     """SELECT *
       FROM `{dataset}.SHEET_FrequencyCaps`
       WHERE Line_Item NOT IN (SELECT Id FROM `{dataset}.AUDIT_FrequencyCaps` WHERE Severity='ERROR')
       AND Insertion_Order NOT IN (SELECT Id FROM `{dataset}.AUDIT_FrequencyCaps` WHERE Severity='ERROR')
       AND Campaign NOT IN (SELECT Id FROM `{dataset}.AUDIT_FrequencyCaps` WHERE Severity='ERROR')
-    """.format(**project.task),
+    """.format(**task),
     legacy=False
   )
 
 
-def frequency_cap_patch(commit=False):
+def frequency_cap_patch(project, task, commit=False):
   patches = []
 
   rows = get_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table":"PATCH_FrequencyCaps",
     }},
     as_object=True
@@ -266,9 +265,9 @@ def frequency_cap_patch(commit=False):
       patches.append(patch)
 
   patch_masks(patches)
-  patch_preview(patches)
+  patch_preview(project, task, patches)
 
   if commit:
-    insertion_order_commit(patches)
-    line_item_commit(patches)
-    campaign_commit(patches)
+    insertion_order_commit(project, task, patches)
+    line_item_commit(project, task, patches)
+    campaign_commit(project, task, patches)

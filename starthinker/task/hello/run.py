@@ -36,11 +36,11 @@ Call from code using:
 import json
 import time
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 
 
-@project.from_parameters
-def hello():
+@from_parameters
+def hello(project, task):
 
   if project.verbose:
     print('HELLO')
@@ -50,7 +50,7 @@ def hello():
   print('Tasks are just python, you can do whatever.')
   print('This is a task being executed.')
   print('')
-  print('SAY:', project.task['say'])
+  print('SAY:', task['say'])
   print('')
   print('')
 
@@ -107,19 +107,19 @@ def hello():
   print('Each task can execute as a service or a user independently.')
   print('Access structure data within a task as...')
   print('')
-  print('PROJECT TASK:', project.task)
-  print('PROJECT TASK AUTH:', project.task['auth'])
-  print('PROJECT TASK SAY:', project.task['say'])
+  print('PROJECT TASK:', task)
+  print('PROJECT TASK AUTH:', task['auth'])
+  print('PROJECT TASK SAY:', task['say'])
   print('')
   print('')
 
-  if project.task.get('sleep'):
-    print('PROJECT TASK SLEEP:', project.task['sleep'])
-    time.sleep(project.task['sleep'])
+  if task.get('sleep'):
+    print('PROJECT TASK SLEEP:', task['sleep'])
+    time.sleep(task['sleep'])
 
-  if project.task.get('error'):
+  if task.get('error'):
     print('PROJECT TASK ERROR TRIGGERED:')
-    raise Exception(project.task['error'])
+    raise Exception(task['error'])
 
   print('-' * 80)
   print("Take a look inside 'task/hello/run.py'.")

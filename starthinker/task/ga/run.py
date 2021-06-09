@@ -22,31 +22,31 @@ Connects the Google Analytics Reporting API to recipe JSON.  This task
 is required because the reporting response needs additional processing.
 """
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.data import put_rows
 from starthinker.util.ga import GA_Report
 
 
-@project.from_parameters
-def ga():
+@from_parameters
+def ga(project, task):
   if project.verbose:
     print('GA')
 
   report = GA_Report(
-    project.task['auth'],
-    **project.task['kwargs']
+    task['auth'],
+    **task['kwargs']
   )
 
   # be sure to call before get_schema
   rows = report.get_rows()
 
-  if 'bigquery' in project.task.get('out', {}):
-    project.task['out']['bigquery']['schema'] = report.get_schema()
-    project.task['out']['bigquery']['format'] = 'JSON'
+  if 'bigquery' in task.get('out', {}):
+    task['out']['bigquery']['schema'] = report.get_schema()
+    task['out']['bigquery']['format'] = 'JSON'
 
   put_rows(
-    project.task['auth'],
-    project.task['out'],
+    task['auth'],
+    task['out'],
     rows
   )
 

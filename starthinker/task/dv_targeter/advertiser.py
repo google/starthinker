@@ -22,16 +22,15 @@ from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 
-def advertiser_clear():
+def advertiser_clear(project, task):
   table_create(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     'DV_Advertisers',
     Discovery_To_BigQuery(
       'displayvideo',
@@ -42,21 +41,21 @@ def advertiser_clear():
   )
 
   sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
+    task['auth_sheets'],
+    task['sheet'],
     'Advertisers',
     'B2:D'
   )
 
 
-def advertiser_load():
+def advertiser_load(project, task):
 
   # load multiple partners from user defined sheet
   def load_multiple():
     for row in get_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Partners',
         'header':False,
         'range': 'A2:A'
@@ -64,18 +63,18 @@ def advertiser_load():
     ):
       if row:
         yield from API_DV360(
-          project.task['auth_dv'],
+          task['auth_dv'],
           iterate=True).advertisers().list(
           partnerId=lookup_id(row[0])
         ).execute()
 
-  advertiser_clear()
+  advertiser_clear(project, task)
 
   # write advertisers to database
   put_rows(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     { 'bigquery': {
-      'dataset': project.task['dataset'],
+      'dataset': task['dataset'],
       'table': 'DV_Advertisers',
       'schema': Discovery_To_BigQuery(
         'displayvideo',
@@ -91,16 +90,16 @@ def advertiser_load():
 
   # write advertisers to sheet
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Advertisers',
       'range': 'B2'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            CONCAT(P.displayName, ' - ', P.partnerId),
            CONCAT(A.displayName, ' - ', A.advertiserId),
@@ -108,7 +107,7 @@ def advertiser_load():
            FROM `{dataset}.DV_Advertisers` AS A
            LEFT JOIN `{dataset}.DV_Partners` AS P
            ON A.partnerId=P.partnerId
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )

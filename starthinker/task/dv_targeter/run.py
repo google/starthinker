@@ -18,7 +18,7 @@
 
 from starthinker.util import has_values
 from starthinker.util.data import get_rows
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 
 from starthinker.task.dv_targeter.advertiser import advertiser_clear
 from starthinker.task.dv_targeter.advertiser import advertiser_load
@@ -70,80 +70,80 @@ from starthinker.task.dv_targeter.targeting import targeting_load
 from starthinker.task.dv_targeter.targeting import targeting_edit
 
 
-@project.from_parameters
-def dv_targeter():
-  print('COMMAND:', project.task['command'])
+@from_parameters
+def dv_targeter(project, task):
+  print('COMMAND:', task['command'])
 
-  if project.task['command'] == 'Clear':
-    edit_clear()
-    targeting_clear()
-    targeting_clear_changes()
-    channel_clear()
-    custom_list_clear()
-    combined_audience_clear()
-    google_audience_clear()
-    location_list_clear()
-    first_and_third_party_audience_clear()
-    negative_keyword_list_clear()
-    inventory_source_clear()
-    inventory_group_clear()
-    line_item_clear()
-    insertion_order_clear()
-    campaign_clear()
-    advertiser_clear()
-    partner_clear()
+  if task['command'] == 'Clear':
+    edit_clear(project, task)
+    targeting_clear(project, task)
+    targeting_clear_changes(project, task)
+    channel_clear(project, task)
+    custom_list_clear(project, task)
+    combined_audience_clear(project, task)
+    google_audience_clear(project, task)
+    location_list_clear(project, task)
+    first_and_third_party_audience_clear(project, task)
+    negative_keyword_list_clear(project, task)
+    inventory_source_clear(project, task)
+    inventory_group_clear(project, task)
+    line_item_clear(project, task)
+    insertion_order_clear(project, task)
+    campaign_clear(project, task)
+    advertiser_clear(project, task)
+    partner_clear(project, task)
 
-  if project.task['command'] == 'Load':
+  if task['command'] == 'Load':
 
     # load if partner filters are missing
-    if not has_values(get_rows(
-      project.task['auth_sheets'],
+    if not has_values(project, task, get_rows(
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Partners',
         'header':False,
         'range': 'A2:A'
       }}
     )):
-      partner_load()
+      partner_load(project, task)
 
     # load if advertiser filters are missing
     if not has_values(get_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Advertisers',
         'header':False,
         'range': 'A2:A'
       }}
     )):
-      advertiser_load()
+      advertiser_load(project, task)
 
     # load if advertiser filters are present
     else:
-      campaign_load()
-      insertion_order_load()
-      line_item_load()
+      campaign_load(project, task)
+      insertion_order_load(project, task)
+      line_item_load(project, task)
 
       # all write to the same sheet ( targeting_load must be first as it clears the sheet )
-      targeting_load()
-      inventory_source_load()
-      inventory_group_load()
-      location_list_load()
-      negative_keyword_list_load()
-      channel_load()
-      google_audience_load()
-      custom_list_load()
-      combined_audience_load()
+      targeting_load(project, task)
+      inventory_source_load(project, task)
+      inventory_group_load(project, task)
+      location_list_load(project, task)
+      negative_keyword_list_load(project, task)
+      channel_load(project, task)
+      google_audience_load(project, task)
+      custom_list_load(project, task)
+      combined_audience_load(project, task)
 
       # clear to create empty table, load only if selected by user (very slow for some accounts)
-      first_and_third_party_audience_clear()
-      if project.task.get('first_and_third'):
-        first_and_third_party_audience_load()
+      first_and_third_party_audience_clear(project, task)
+      if task.get('first_and_third'):
+        first_and_third_party_audience_load(project, task)
 
-  if project.task['command'] in ('Preview', 'Update'):
-    edit_clear()
-    targeting_edit(commit=project.task['command'] == 'Update')
+  if task['command'] in ('Preview', 'Update'):
+    edit_clear(project, task)
+    targeting_edit(project, task, commit=task['command'] == 'Update')
 
 
 if __name__ == '__main__':

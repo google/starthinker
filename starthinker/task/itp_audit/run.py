@@ -18,7 +18,7 @@
 import os
 from datetime import date
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.bigquery import datasets_create,query_to_table, query_to_rows, run_query, table_to_rows, get_schema, rows_to_table, table_create
 from starthinker.util.csv import rows_to_type
 from starthinker.util.data import get_rows, put_rows
@@ -70,77 +70,77 @@ PLACEMENTS_SCHEMA = [
   {'name':'dynamicCreativeAds', 'type':'INT64', 'mode':'REQUIRED'}
 ]
 
-@project.from_parameters
-def itp_audit():
+@from_parameters
+def itp_audit(task):
   if project.verbose:
     print('ITP Audit Run Queries')
 
   # Run floodlight config reports
-  run_floodlight_reports(project)
+  run_floodlight_reports(project, task)
 
   # Run DV360 related queries
-  run_dv_360_queries(project)
+  run_dv_360_queries(project, task)
 
   # Create CM Site Segmentation Table and Sheet
-  create_cm_site_segmentation(project)
+  create_cm_site_segmentation(project, task)
 
   # CM Segmentation Query
   if project.verbose:
     print('RUN CM Segmentation Query')
-  run_query_from_file(Queries.cm_segmentation.replace('{{dataset}}', project.task['dataset']), CM_BROWSER_REPORT_CLEAN_TABLE)
+  run_query_from_file(project, task, Queries.cm_segmentation.replace('{{dataset}}', task['dataset']), CM_BROWSER_REPORT_CLEAN_TABLE)
 
-  run_cm_queries(project)
+  run_cm_queries(project, task)
 
   # Run SDF queries
-  run_sdf_queries(project)
+  run_sdf_queries(project, task)
 
   # CM Account Audit
-  itp_audit_cm()
+  itp_audit_cm(project, task)
 
-def run_sdf_queries(project):
+def run_sdf_queries(project, task):
   if project.verbose:
     print('RUN SDF Query')
-  run_query_from_file(Queries.sdf_feature_flags.replace('{{dataset}}', project.task['dataset']), SDF_FEATURE_FLAGS_TABLE)
-  run_query_from_file(Queries.sdf_scoring.replace('{{dataset}}', project.task['dataset']), SDF_SCORING_TABLE)
-  run_query_from_file(Queries.sdf_li_scores.replace('{{dataset}}', project.task['dataset']), SDF_LI_SCORES_TABLE)
+  run_query_from_file(project, task, Queries.sdf_feature_flags.replace('{{dataset}}', task['dataset']), SDF_FEATURE_FLAGS_TABLE)
+  run_query_from_file(project, task, Queries.sdf_scoring.replace('{{dataset}}', task['dataset']), SDF_SCORING_TABLE)
+  run_query_from_file(project, task, Queries.sdf_li_scores.replace('{{dataset}}', task['dataset']), SDF_LI_SCORES_TABLE)
 
-def run_cm_queries(project):
+def run_cm_queries(project, task):
   # CM Floodlight Lookup Table
-  run_query_from_file(Queries.cm_floodlight_join.replace('{{dataset}}', project.task['dataset']), CM_FLOODLIGHT_TABLE)
+  run_query_from_file(project, task, Queries.cm_floodlight_join.replace('{{dataset}}', task['dataset']), CM_FLOODLIGHT_TABLE)
 
   # Floodlight Multichart
   if project.verbose:
     print('RUN CM Floodlight Multichart')
-  run_query_from_file(Queries.cm_floodlight_multichart.replace('{{dataset}}', project.task['dataset']), CM_FLOODLIGHT_MULTICHART_TABLE)
+  run_query_from_file(project, task, Queries.cm_floodlight_multichart.replace('{{dataset}}', task['dataset']), CM_FLOODLIGHT_MULTICHART_TABLE)
 
 
-def run_dv_360_queries(project):
+def run_dv_360_queries(project, task):
   # Create empty DV360 Custom Segments table for join until sheet is created
-  table_create('service', project.id, project.task['dataset'], DV360_CUSTOM_SEGMENTS_TABLE)
+  table_create('service', project.id, task['dataset'], DV360_CUSTOM_SEGMENTS_TABLE)
 
   # Create DV360 Segments Table
-  create_dv360_segments(project)
+  create_dv360_segments(project, task)
 
   # Clean DV360 Browser Report
-  run_query_from_file(Queries.clean_browser_report.replace('{{dataset}}', project.task['dataset']), CLEAN_BROWSER_REPORT_TABLE)
+  run_query_from_file(project, task, Queries.clean_browser_report.replace('{{dataset}}', task['dataset']), CLEAN_BROWSER_REPORT_TABLE)
 
   # Browser Performance 2 years
   if project.verbose:
     print('RUN Browser Performance 2 years Query')
-  run_query_from_file(Queries.browser_2_year.replace('{{dataset}}', project.task['dataset']), BROWSER_PERFORMANCE_2YEARS_TABLE)
+  run_query_from_file(project, task, Queries.browser_2_year.replace('{{dataset}}', task['dataset']), BROWSER_PERFORMANCE_2YEARS_TABLE)
 
   #Safari Distribution 90 days
   if project.verbose:
     print('RUN Safari Distribution 90 days Query')
-  run_query_from_file(Queries.safari_distribution_90days.replace('{{dataset}}', project.task['dataset']), SAFARI_DISTRIBUTION_90DAYS_TABLE)
+  run_query_from_file(project, task, Queries.safari_distribution_90days.replace('{{dataset}}', task['dataset']), SAFARI_DISTRIBUTION_90DAYS_TABLE)
 
   # Browser Shares Multichart
   if project.verbose:
     print('RUN Dv360 Browser Share Multichart')
-  run_query_from_file(Queries.browser_share_multichart.replace('{{dataset}}', project.task['dataset']), DV360_BROWSER_SHARES_MULTICHART_TABLE)
+  run_query_from_file(project, task, Queries.browser_share_multichart.replace('{{dataset}}', task['dataset']), DV360_BROWSER_SHARES_MULTICHART_TABLE)
 
 
-def create_dv360_segments(project):
+def create_dv360_segments(project, task):
   a1_notation = 'A:N'
   schema = [
       { "type": "STRING", "name": "Advertiser", "mode": "NULLABLE" },
@@ -159,7 +159,7 @@ def create_dv360_segments(project):
       { "type": "STRING", "name": "Segment3", "mode": "NULLABLE" }
     ]
 
-  sheet_rows = sheets_read('user', project.task['sheet'], 'DV3 Segments', a1_notation, retries=10)
+  sheet_rows = sheets_read('user', task['sheet'], 'DV3 Segments', a1_notation, retries=10)
 
   if not sheet_rows:
     sheet_rows = []
@@ -169,7 +169,7 @@ def create_dv360_segments(project):
   rows_to_table(
     auth='service',
     project_id=project.id,
-    dataset_id=project.task['dataset'],
+    dataset_id=task['dataset'],
     table_id=DV360_CUSTOM_SEGMENTS_SHEET_TABLE,
     rows=sheet_rows,
     schema=schema,
@@ -180,25 +180,25 @@ def create_dv360_segments(project):
   # Run Query
   if project.verbose:
     print('RUN DV360 Custom Segments Query')
-  run_query_from_file(Queries.dv360_custom_segments.replace('{{dataset}}', project.task['dataset']), DV360_CUSTOM_SEGMENTS_TABLE)
+  run_query_from_file(project, task, Queries.dv360_custom_segments.replace('{{dataset}}', task['dataset']), DV360_CUSTOM_SEGMENTS_TABLE)
 
   # Move Table back to sheets
-  query = 'SELECT * from `' + project.id + '.' + project.task['dataset'] + '.' + DV360_CUSTOM_SEGMENTS_TABLE + '`'
-  rows = query_to_rows('service', project.id, project.task['dataset'], query, legacy=False)
+  query = 'SELECT * from `' + project.id + '.' + task['dataset'] + '.' + DV360_CUSTOM_SEGMENTS_TABLE + '`'
+  rows = query_to_rows('service', project.id, task['dataset'], query, legacy=False)
 
   # makes sure types are correct in sheet
   a1_notation = a1_notation[:1] + '2' + a1_notation[1:]
   rows = rows_to_type(rows)
-  sheets_clear('user', project.task['sheet'], 'DV3 Segments', a1_notation)
-  sheets_write('user', project.task['sheet'], 'DV3 Segments', a1_notation, rows)
+  sheets_clear('user', task['sheet'], 'DV3 Segments', a1_notation)
+  sheets_write('user', task['sheet'], 'DV3 Segments', a1_notation, rows)
 
 
 '''
 This method will update the BQ table and update the Google sheet
 '''
-def create_cm_site_segmentation(project):
+def create_cm_site_segmentation(project, task):
   # Read sheet to bq table
-  sheet_rows = sheets_read('user', project.task['sheet'], 'CM_Site_Segments', 'A:C', retries=10)
+  sheet_rows = sheets_read('user', task['sheet'], 'CM_Site_Segments', 'A:C', retries=10)
   if not sheet_rows:
     sheet_rows = []
 
@@ -211,7 +211,7 @@ def create_cm_site_segmentation(project):
   rows_to_table(
     auth='service',
     project_id=project.id,
-    dataset_id=project.task['dataset'],
+    dataset_id=task['dataset'],
     table_id=CM_SITE_SEGMENTATION_SHEET_TABLE,
     rows=sheet_rows,
     schema=schema,
@@ -220,19 +220,19 @@ def create_cm_site_segmentation(project):
   )
 
   # Get Site_Type from the sheet
-  run_query_from_file(Queries.cm_site_segmentation.replace('{{dataset}}', project.task['dataset']), CM_SITE_SEGMENTATION_TABLE)
+  run_query_from_file(project, task, Queries.cm_site_segmentation.replace('{{dataset}}', task['dataset']), CM_SITE_SEGMENTATION_TABLE)
 
   # Move Table back to sheets
-  query = 'SELECT * from `' + project.id + '.' + project.task['dataset'] + '.' + CM_SITE_SEGMENTATION_TABLE + '`'
-  rows = query_to_rows('service', project.id, project.task['dataset'], query, legacy=False)
+  query = 'SELECT * from `' + project.id + '.' + task['dataset'] + '.' + CM_SITE_SEGMENTATION_TABLE + '`'
+  rows = query_to_rows('service', project.id, task['dataset'], query, legacy=False)
 
   # makes sure types are correct in sheet
   rows = rows_to_type(rows)
-  sheets_clear('user', project.task['sheet'], 'CM_Site_Segments', 'A2:C')
-  sheets_write('user', project.task['sheet'], 'CM_Site_Segments', 'A2:C', rows)
+  sheets_clear('user', task['sheet'], 'CM_Site_Segments', 'A2:C')
+  sheets_write('user', task['sheet'], 'CM_Site_Segments', 'A2:C', rows)
 
 
-def run_floodlight_reports(project):
+def run_floodlight_reports(project, task):
   if project.verbose:
     print('Creating Floodlight reports')
 
@@ -312,14 +312,14 @@ def run_floodlight_reports(project):
   }
 
   reports = []
-  floodlightConfigs = project.task.get('floodlightConfigIds', None)
+  floodlightConfigs = task.get('floodlightConfigIds', None)
 
   for configId in floodlightConfigs:
-    body['name'] = project.task.get('reportPrefix', '') + "_" + str(configId)
+    body['name'] = task.get('reportPrefix', '') + "_" + str(configId)
     body['floodlightCriteria']['floodlightConfigId']['value'] = configId
     report = report_build(
       'user',
-      project.task['account'],
+      task['account'],
       body
     )
     reports.append(report['id'])
@@ -332,10 +332,10 @@ def run_floodlight_reports(project):
   for createdReportId in reports:
     filename, report = report_file(
       'user',
-      project.task['account'],
+      task['account'],
       createdReportId,
       None,
-      project.task.get('timeout', 10),
+      task.get('timeout', 10),
     )
 
     if report:
@@ -353,7 +353,7 @@ def run_floodlight_reports(project):
       out_block['bigquery'] = {}
 
 
-      out_block['bigquery']['dataset'] = project.task['dataset']
+      out_block['bigquery']['dataset'] = task['dataset']
       out_block['bigquery']['schema'] = schema
       out_block['bigquery']['skip_rows'] = 0
       out_block['bigquery']['table'] = 'z_Floodlight_CM_Report_' + str(createdReportId)
@@ -369,7 +369,7 @@ def run_floodlight_reports(project):
   query_to_table(
     'service',
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     CM_FLOODLIGHT_OUTPUT_TABLE,
     finalQuery,
     legacy=False
@@ -378,24 +378,24 @@ def run_floodlight_reports(project):
   if project.verbose:
     print('Finished with Floodlight Config reports')
 
-def run_query_from_file(query, table_name):
+def run_query_from_file(project, task, query, table_name):
   query_to_table(
     'service',
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     table_name,
-    query.format(**project.task),
+    query.format(**task),
     legacy=False
   )
 
 
-def itp_audit_cm():
-  account_id = project.task['account']
+def itp_audit_cm(project, task):
+  account_id = task['account']
   # Read Advertiser Ids
-  advertiser_ids = list(get_rows('service', project.task['read']['advertiser_ids']))
+  advertiser_ids = list(get_rows('service', task['read']['advertiser_ids']))
   is_superuser, profile_id = get_profile_for_api('user', account_id)
 
-  datasets_create('user', project.id, project.task['dataset'])
+  datasets_create('user', project.id, task['dataset'])
 
   placements = {}
   campaignNames = {}
@@ -497,7 +497,7 @@ def itp_audit_cm():
 
   placements_out = {}
   placements_out["bigquery"] = {
-    "dataset": project.task['dataset'],
+    "dataset": task['dataset'],
     "table": CM_PLACEMENT_AUDIT_TABLE,
     "is_incremental_load": False,
     "datastudio": True,

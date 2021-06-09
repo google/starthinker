@@ -18,7 +18,7 @@
 
 from datetime import timedelta, datetime
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.google_api import API_DCM
 from starthinker.util.bigquery import table_exists, rows_to_table, query_to_rows
 from starthinker.util.dcm import get_profile_for_api
@@ -77,14 +77,14 @@ CHANGELOGS_SCHEMA = [
 ]
 
 
-def get_changelogs(accounts, start):
+def get_changelogs(project, task, accounts, start):
 
   if project.verbose:
     print('CM CHANGE LOGS', accounts)
 
   for account_id in accounts:
 
-    is_superuser, profile_id = get_profile_for_api(project.task['auth'],
+    is_superuser, profile_id = get_profile_for_api(task['auth'],
                                                    account_id)
     kwargs = {'profileId': profile_id, 'minChangeTime': start}
     if is_superuser:
@@ -109,34 +109,34 @@ def get_changelogs(accounts, start):
       ]
 
 
-@project.from_parameters
-def dcm_log():
+@from_parameters
+def dcm_log(project, task):
   if project.verbose:
     print('DCM LOG')
 
-  accounts = list(get_rows('user', project.task['accounts']))
+  accounts = list(get_rows('user', task['accounts']))
 
   # determine start log date
-  if table_exists(project.task['out']['auth'], project.task['out']['project'],
-                  project.task['out']['dataset'], CHANGELOGS_TABLE):
+  if table_exists(task['out']['auth'], task['out']['project'],
+                  task['out']['dataset'], CHANGELOGS_TABLE):
     start = next(
         query_to_rows(
-            project.task['out']['auth'], project.task['out']['project'],
-            project.task['out']['dataset'],
+            task['out']['auth'], task['out']['project'],
+            task['out']['dataset'],
             'SELECT FORMAT_TIMESTAMP("%%Y-%%m-%%dT%%H:%%M:%%S-00:00", MAX(changeTime), "UTC") FROM `%s`'
             % CHANGELOGS_TABLE, 1, False))[0]
     disposition = 'WRITE_APPEND'
 
   else:
-    start = (datetime.utcnow() - timedelta(days=int(project.task['days']))
+    start = (datetime.utcnow() - timedelta(days=int(task['days']))
             ).strftime('%Y-%m-%dT%H:%M:%S-00:00')
     disposition = 'WRITE_TRUNCATE'
 
   # load new logs
-  rows = get_changelogs(accounts, start)
+  rows = get_changelogs(project, task, accounts, start)
   if rows:
-    rows_to_table(project.task['out']['auth'], project.task['out']['project'],
-                  project.task['out']['dataset'], CHANGELOGS_TABLE, rows,
+    rows_to_table(task['out']['auth'], task['out']['project'],
+                  task['out']['dataset'], CHANGELOGS_TABLE, rows,
                   CHANGELOGS_SCHEMA, 0, disposition)
 
 

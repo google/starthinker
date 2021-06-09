@@ -19,7 +19,6 @@
 
 import datetime
 
-from starthinker.util.project import project
 from starthinker.util.sheets import sheets_write, sheets_clear
 
 

@@ -30,7 +30,7 @@ from starthinker.util.bigquery import rows_to_table
 from starthinker.util.bigquery import table_to_rows
 from starthinker.util.bigquery import table_to_schema
 from starthinker.util.google_api import API_BigQuery
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 
 RE_EMAIL = re.compile(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')
 INTEGER_MULTIPLY = random.randint(2, 9)
@@ -116,70 +116,70 @@ def anonymize_rows(rows, columns=[]):
     yield anonymize_json(row, columns)
 
 
-def anonymize_query():
+def anonymize_query(project, task):
   if project.verbose:
-    print('ANONYMIZE QUERY', project.task['bigquery']['from']['query'])
+    print('ANONYMIZE QUERY', task['bigquery']['from']['query'])
 
   schema = query_to_schema(
-    project.task['auth'],
-    project.task['bigquery']['from']['project'],
-    project.task['bigquery']['from']['dataset'],
-    project.task['bigquery']['from']['query'],
-    legacy=project.task['bigquery']['from'].get('legacy', False),
+    task['auth'],
+    task['bigquery']['from']['project'],
+    task['bigquery']['from']['dataset'],
+    task['bigquery']['from']['query'],
+    legacy=task['bigquery']['from'].get('legacy', False),
   )
 
   rows = query_to_rows(
-    project.task['auth'],
-    project.task['bigquery']['from']['project'],
-    project.task['bigquery']['from']['dataset'],
-    project.task['bigquery']['from']['query'],
-    legacy=project.task['bigquery']['from'].get('legacy', False),
+    task['auth'],
+    task['bigquery']['from']['project'],
+    task['bigquery']['from']['dataset'],
+    task['bigquery']['from']['query'],
+    legacy=task['bigquery']['from'].get('legacy', False),
     as_object=True
   )
 
-  rows = anonymize_rows(rows, project.task['bigquery']['to'].get('columns', []))
+  rows = anonymize_rows(rows, task['bigquery']['to'].get('columns', []))
 
   json_to_table(
-    project.task['auth'],
-    project.task['bigquery']['to']['project'],
-    project.task['bigquery']['to']['dataset'],
-    project.task['bigquery']['to']['table'],
+    task['auth'],
+    task['bigquery']['to']['project'],
+    task['bigquery']['to']['dataset'],
+    task['bigquery']['to']['table'],
     rows,
     schema,
     disposition='WRITE_TRUNCATE'
   )
 
 
-def anonymize_table(table_id):
+def anonymize_table(project, task, table_id):
 
   if project.verbose:
     print(
       'ANONYMIZE TABLE',
-      project.task['bigquery']['to']['dataset'],
+      task['bigquery']['to']['dataset'],
       table_id
     )
 
   schema = table_to_schema(
-    project.task['auth'],
-    project.task['bigquery']['from']['project'],
-    project.task['bigquery']['from']['dataset'],
+    task['auth'],
+    task['bigquery']['from']['project'],
+    task['bigquery']['from']['dataset'],
     table_id
   )
 
   rows = table_to_rows(
-    project.task['auth'],
-    project.task['bigquery']['from']['project'],
-    project.task['bigquery']['from']['dataset'],
+    task['auth'],
+    task['bigquery']['from']['project'],
+    task['bigquery']['from']['dataset'],
     table_id,
     as_object=True
   )
 
-  rows = anonymize_rows(rows, project.task['bigquery']['to'].get('columns', []))
+  rows = anonymize_rows(rows, task['bigquery']['to'].get('columns', []))
 
   json_to_table(
-    project.task['auth'],
-    project.task['bigquery']['to']['project'],
-    project.task['bigquery']['to']['dataset'],
+    task['auth'],
+    task['bigquery']['to']['project'],
+    task['bigquery']['to']['dataset'],
     table_id,
     rows,
     schema,
@@ -187,13 +187,13 @@ def anonymize_table(table_id):
   )
 
 
-def copy_view(view_id):
+def copy_view(project, task, view_id):
   if project.verbose:
-    print('ANONYMIZE VIEW', project.task['bigquery']['to']['dataset'], view_id)
+    print('ANONYMIZE VIEW', task['bigquery']['to']['dataset'], view_id)
 
-  view = API_BigQuery(project.task['auth']).tables().get(
-    projectId=project.task['bigquery']['from']['project'],
-    datasetId=project.task['bigquery']['from']['dataset'],
+  view = API_BigQuery(task['auth']).tables().get(
+    projectId=task['bigquery']['from']['project'],
+    datasetId=task['bigquery']['from']['dataset'],
     tableId=view_id
   ).execute()['view']
 
@@ -201,19 +201,19 @@ def copy_view(view_id):
 
   query = view['query'].replace(
     project_dataset_template % (
-      project.task['bigquery']['from']['project'],
-      project.task['bigquery']['from']['dataset']
+      task['bigquery']['from']['project'],
+      task['bigquery']['from']['dataset']
     ),
     project_dataset_template % (
-      project.task['bigquery']['to']['project'],
-      project.task['bigquery']['to']['dataset']
+      task['bigquery']['to']['project'],
+      task['bigquery']['to']['dataset']
     )
   )
 
   query_to_view(
-    project.task['auth'],
-    project.task['bigquery']['to']['project'],
-    project.task['bigquery']['to']['dataset'],
+    task['auth'],
+    task['bigquery']['to']['project'],
+    task['bigquery']['to']['dataset'],
     view_id,
     query,
     legacy=view['useLegacySql'],
@@ -221,23 +221,23 @@ def copy_view(view_id):
   )
 
 
-@project.from_parameters
-def anonymize():
+@from_parameters
+def anonymize(project, task):
 
-  if project.task['bigquery']['from'].get('query'):
-    anonymize_query()
+  if task['bigquery']['from'].get('query'):
+    anonymize_query(project, task)
 
   else:
     views = []
 
-    for table in API_BigQuery(project.task['auth'], iterate=True).tables().list(
-      projectId=project.task['bigquery']['from']['project'],
-      datasetId=project.task['bigquery']['from']['dataset']
+    for table in API_BigQuery(task['auth'], iterate=True).tables().list(
+      projectId=task['bigquery']['from']['project'],
+      datasetId=task['bigquery']['from']['dataset']
     ).execute():
       if table['type'] == 'VIEW':
         views.append(table['tableReference']['tableId'])
       else:
-        anonymize_table(table['tableReference']['tableId'])
+        anonymize_table(project, task, table['tableReference']['tableId'])
 
     # views have dependencies, loop through all and create until no more errors or no change in view list
     last_copy = True
@@ -247,7 +247,7 @@ def anonymize():
       while views:
         view = views.pop()
         try:
-          copy_view(view)
+          copy_view(project, task, view)
           last_copy = True
         except HttpError as e:
           if e.resp.status == 404:

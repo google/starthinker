@@ -21,7 +21,6 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
@@ -32,19 +31,19 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def integration_detail_clear():
-  sheets_clear(project.task["auth_sheets"], project.task["sheet"],
+def integration_detail_clear(project, task):
+  sheets_clear(task["auth_sheets"], task["sheet"],
                "Integration Details", "A2:Z")
 
 
-def integration_detail_load():
+def integration_detail_load(project, task):
 
   # write integration_details to sheet
   rows = get_rows(
-      project.task["auth_bigquery"], {
+      task["auth_bigquery"], {
           "bigquery": {
               "dataset":
-                  project.task["dataset"],
+                  task["dataset"],
               "query":
                   """SELECT
          CONCAT(P.displayName, ' - ', P.partnerId),
@@ -97,36 +96,36 @@ def integration_detail_load():
        ON L.advertiserId=A.advertiserId
        LEFT JOIN `{dataset}.DV_Partners` AS P
        ON A.partnerId=P.partnerId
-       """.format(**project.task),
+       """.format(**task),
               "legacy":
                   False
           }
       })
 
   put_rows(
-      project.task["auth_sheets"], {
+      task["auth_sheets"], {
           "sheets": {
-              "sheet": project.task["sheet"],
+              "sheet": task["sheet"],
               "tab": "Integration Details",
               "range": "A2"
           }
       }, rows)
 
 
-def integration_detail_audit():
+def integration_detail_audit(project, task):
   rows = get_rows(
-      project.task["auth_sheets"], {
+      task["auth_sheets"], {
           "sheets": {
-              "sheet": project.task["sheet"],
+              "sheet": task["sheet"],
               "tab": "Integration Details",
               "range": "A2:I"
           }
       })
 
   put_rows(
-      project.task["auth_bigquery"], {
+      task["auth_bigquery"], {
           "bigquery": {
-              "dataset": project.task["dataset"],
+              "dataset": task["dataset"],
               "table": "SHEET_IntegrationDetails",
               "schema": [
                   { "name": "Partner", "type": "STRING" },
@@ -144,9 +143,9 @@ def integration_detail_audit():
       }, rows)
 
   query_to_view(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     project.id,
-    project.task["dataset"],
+    task["dataset"],
     "AUDIT_IntegrationDetails",
     """WITH
       /* Check if advertiser values are set */
@@ -162,32 +161,32 @@ def integration_detail_audit():
       )
 
       SELECT * FROM INPUT_ERRORS
-    """.format(**project.task),
+    """.format(**task),
     legacy=False
   )
 
   query_to_view(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     project.id,
-    project.task["dataset"],
+    task["dataset"],
     "PATCH_IntegrationDetails",
     """SELECT *
       FROM `{dataset}.SHEET_IntegrationDetails`
       WHERE Line_Item NOT IN (SELECT Id FROM `{dataset}.AUDIT_IntegrationDetails` WHERE Severity='ERROR')
       AND Insertion_Order NOT IN (SELECT Id FROM `{dataset}.AUDIT_IntegrationDetails` WHERE Severity='ERROR')
       AND Campaign NOT IN (SELECT Id FROM `{dataset}.AUDIT_IntegrationDetails` WHERE Severity='ERROR')
-    """.format(**project.task),
+    """.format(**task),
     legacy=False
   )
 
 
-def integration_detail_patch(commit=False):
+def integration_detail_patch(project, task, commit=False):
   patches = []
 
   rows = get_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table":"PATCH_IntegrationDetails",
     }},
     as_object=True
@@ -230,9 +229,9 @@ def integration_detail_patch(commit=False):
       patches.append(patch)
 
   patch_masks(patches)
-  patch_preview(patches)
+  patch_preview(project, task, patches)
 
   if commit:
-    insertion_order_commit(patches)
-    line_item_commit(patches)
-    advertiser_commit(patches)
+    insertion_order_commit(project, task, patches)
+    line_item_commit(project, task, patches)
+    advertiser_commit(project, task, patches)

@@ -101,7 +101,7 @@ from starthinker.util.data import put_rows
 from starthinker.util.dcm import get_profile_for_api
 from starthinker.util.google_api import API
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 
 
 ERROR_SCHEMA = [
@@ -153,7 +153,7 @@ def google_api_initilaize(api_call, alias=None):
         del api_call['kwargs']['accountId']
 
 
-def google_api_build_results(auth, api_call, results):
+def google_api_build_results(project, auth, api_call, results):
   """Builds the BigQuery table to house the Google API call results.
 
   Optional piece of the recipe, will create a BigQuery table for results.
@@ -200,7 +200,7 @@ def google_api_build_results(auth, api_call, results):
   return results
 
 
-def google_api_build_errors(auth, api_call, errors):
+def google_api_build_errors(project, auth, api_call, errors):
   """Builds the BigQuery table to house the Google API call errors.
 
   Optional piece of the recipe, will create a BigQuery table for errors.
@@ -295,8 +295,8 @@ def google_api_execute(auth, api_call, results, errors, limit=None):
       raise e
 
 
-@project.from_parameters
-def google_api():
+@from_parameters
+def google_api(project, task):
   """Task handler for recipe, delegates all JSON parameters to functions.
 
   Executes the following steps:
@@ -312,7 +312,7 @@ def google_api():
     kwargs_remote - values loaded from a source such as BigQuery.
 
   Args:
-    None, all parameters are exposed via project.task.
+    None, all parameters are exposed via task.
 
   Returns:
     None, all data is read and written as a side effect.
@@ -324,45 +324,47 @@ def google_api():
   if project.verbose:
     print(
       'GOOGLE_API',
-      project.task['api'],
-      project.task['version'],
-      project.task['function']
+      task['api'],
+      task['version'],
+      task['function']
     )
 
   api_call = {
-    'auth': project.task['auth'],
-    'api': project.task['api'],
-    'version': project.task['version'],
-    'function': project.task['function'],
-    'iterate': project.task.get('iterate', False),
-    'limit': project.task.get('limit', None),
+    'auth': task['auth'],
+    'api': task['api'],
+    'version': task['version'],
+    'function': task['function'],
+    'iterate': task.get('iterate', False),
+    'limit': task.get('limit', None),
     'key': project.key,
-    'headers': project.task.get('headers'),
+    'headers': task.get('headers'),
   }
 
   results = google_api_build_results(
-    project.task['auth'],
+    project,
+    task['auth'],
     api_call,
-    project.task.get('results', {})
+    task.get('results', {})
   )
 
   errors = google_api_build_errors(
-    project.task['auth'],
+    project,
+    task['auth'],
     api_call,
-    project.task.get('errors', {})
+    task.get('errors', {})
   )
 
   # get parameters from JSON
-  if 'kwargs' in project.task:
-    kwargs_list = project.task['kwargs'] if isinstance(
-      project.task['kwargs'], (list, tuple)
-    ) else [project.task['kwargs']]
+  if 'kwargs' in task:
+    kwargs_list = task['kwargs'] if isinstance(
+      task['kwargs'], (list, tuple)
+    ) else [task['kwargs']]
 
   # get parameters from remote location ( such as BigQuery )
-  elif 'kwargs_remote' in project.task:
+  elif 'kwargs_remote' in task:
     kwargs_list = get_rows(
-      project.task['auth'],
-      project.task['kwargs_remote'],
+      task['auth'],
+      task['kwargs_remote'],
       as_object=True
     )
 
@@ -373,8 +375,8 @@ def google_api():
   # loop through paramters and make possibly multiple API calls
   for kwargs in kwargs_list:
     api_call['kwargs'] = kwargs
-    google_api_initilaize(api_call, project.task.get('alias'))
-    google_api_execute(project.task['auth'], api_call, results, errors, project.task.get('limit'))
+    google_api_initilaize(api_call, task.get('alias'))
+    google_api_execute(task['auth'], api_call, results, errors, task.get('limit'))
 
 
 if __name__ == '__main__':

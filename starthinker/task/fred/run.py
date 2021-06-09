@@ -20,7 +20,7 @@ import json
 from urllib.request import urlopen
 from urllib.parse import urlencode
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.data import put_rows
 
 
@@ -39,12 +39,12 @@ def fred_series(api_key, frequency, **kwargs):
     ]
 
 
-def fred_regional(api_key, frequency, region, **kwargs):
+def fred_regional(api_key, frequency, region, start_date, **kwargs):
   kwargs['api_key'] = api_key
   kwargs['frequency'] = frequency
   kwargs['region_type'] = region_type
   kwargs['file_type'] = 'json'
-  kwargs['start_date'] = str(project.date)
+  kwargs['start_date'] = str(start_date)
 
   url = 'https://api.stlouisfed.org/geofred/regional/data?' + urlencode(kwargs)
   for observation in json.loads(
@@ -55,19 +55,19 @@ def fred_regional(api_key, frequency, region, **kwargs):
     ]
 
 
-@project.from_parameters
-def fred():
+@from_parameters
+def fred(project, task):
 
-  if 'series' in project.task:
+  if 'series' in task:
 
-    for parameters in project.task['series']:
+    for parameters in task['series']:
 
       name = 'FRED_SERIES_%s' % parameters['series_id']
-      rows = fred_series(project.task['api_key'], project.task['frequency'],
+      rows = fred_series(task['api_key'], task['frequency'],
                          **parameters)
 
-      if 'bigquery' in project.task['out']:
-        project.task['out']['bigquery']['schema'] = [{
+      if 'bigquery' in task['out']:
+        task['out']['bigquery']['schema'] = [{
             'name': 'realtime_start',
             'type': 'DATE',
             'mode': 'REQUIRED'
@@ -85,15 +85,15 @@ def fred():
             'mode': 'REQUIRED'
         }]
 
-  elif 'regions' in project.task:
-    for parameters in project.task['regions']:
+  elif 'regions' in task:
+    for parameters in task['regions']:
 
       name = 'FRED_SERIES_%s' % parameters['series_group']
-      rows = fred_regional(project.task['api_key'], project.task['frequency'],
-                           project.task['region_type'], **parameters)
+      rows = fred_regional(task['api_key'], task['frequency'],
+                           task['region_type'], project.date, **parameters)
 
-      if 'bigquery' in project.task['out']:
-        project.task['out']['bigquery']['schema'] = [{
+      if 'bigquery' in task['out']:
+        task['out']['bigquery']['schema'] = [{
             'name': 'region',
             'type': 'STRING',
             'mode': 'REQUIRED'
@@ -115,7 +115,7 @@ def fred():
     raise Excpetion(
         'MISSING CONFIGURATION: Specify either series_id or series_group.')
 
-  put_rows(project.task['auth'], name, rows)
+  put_rows(task['auth'], name, rows)
 
 
 if __name__ == '__main__':

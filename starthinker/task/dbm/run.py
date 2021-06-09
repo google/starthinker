@@ -32,50 +32,50 @@ Buffers are controlled in config.py.
 
 """
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.data import put_rows
 from starthinker.util.dbm import report_delete, report_filter, report_build, report_file, report_to_rows, report_clean
 
 
-@project.from_parameters
-def dbm():
+@from_parameters
+def dbm(project, task):
   if project.verbose:
     print('DBM')
 
   # name is redundant if title is given, allow skipping use of name for creating reports
-  if 'body' in project.task['report'] and 'name' not in project.task['report']:
-    project.task['report']['name'] = project.task['report']['body']['metadata'][
+  if 'body' in task['report'] and 'name' not in task['report']:
+    task['report']['name'] = task['report']['body']['metadata'][
         'title']
 
   # check if report is to be deleted
-  if project.task.get('delete', False):
+  if task.get('delete', False):
     if project.verbose:
       print('DBM DELETE')
-    report_delete(project.task['auth'],
-                  project.task['report'].get('report_id', None),
-                  project.task['report'].get('name', None))
+    report_delete(task['auth'],
+                  task['report'].get('report_id', None),
+                  task['report'].get('name', None))
 
   # check if report is to be created
-  if 'body' in project.task['report']:
+  if 'body' in task['report']:
     if project.verbose:
-      print('DBM BUILD', project.task['report']['body']['metadata']['title'])
+      print('DBM BUILD', task['report']['body']['metadata']['title'])
 
     # ceck if filters given ( returns new body )
-    if 'filters' in project.task['report']:
-      project.task['report']['body'] = report_filter(
-          project.task['auth'], project.task['report']['body'],
-          project.task['report']['filters'])
+    if 'filters' in task['report']:
+      task['report']['body'] = report_filter(
+          task['auth'], task['report']['body'],
+          task['report']['filters'])
 
     # create the report
-    report = report_build(project.task['auth'], project.task['report']['body'])
+    report = report_build(task['auth'], task['report']['body'])
 
   # moving a report
-  if 'out' in project.task:
+  if 'out' in task:
 
     filename, report = report_file(
-        project.task['auth'], project.task['report'].get('report_id', None),
-        project.task['report'].get('name', None),
-        project.task['report'].get('timeout', 10))
+        task['auth'], task['report'].get('report_id', None),
+        task['report'].get('name', None),
+        task['report'].get('timeout', 10))
 
     # if a report exists
     if report:
@@ -88,7 +88,7 @@ def dbm():
 
       # write rows using standard out block in json ( allows customization across all scripts )
       if rows:
-        put_rows(project.task['auth'], project.task['out'], rows)
+        put_rows(task['auth'], task['out'], rows)
 
 
 if __name__ == '__main__':

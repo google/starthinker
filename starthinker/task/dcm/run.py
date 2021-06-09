@@ -36,13 +36,13 @@ proto files.
 
 """
 
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 from starthinker.util.data import get_rows, put_rows
 from starthinker.util.dcm import report_delete, report_filter, report_build, report_file, report_to_rows, report_clean, report_schema, report_run
 
 
-@project.from_parameters
-def dcm():
+@from_parameters
+def dcm(project, task):
   if project.verbose:
     print('DCM')
 
@@ -50,56 +50,56 @@ def dcm():
   report = None
 
   # check if report is to be deleted
-  if project.task.get('delete', False):
+  if task.get('delete', False):
     if project.verbose:
       print(
-          'DCM DELETE', project.task['report'].get('name', None) or
-          project.task['report'].get('body', {}).get('name', None) or
-          project.task['report'].get('report_id', None))
+          'DCM DELETE', task['report'].get('name', None) or
+          task['report'].get('body', {}).get('name', None) or
+          task['report'].get('report_id', None))
     report_delete(
-        project.task['auth'],
-        project.task['report']['account'],
-        project.task['report'].get('report_id', None),
-        project.task['report'].get('name', None) or
-        project.task['report'].get('body', {}).get('name', None),
+        task['auth'],
+        task['report']['account'],
+        task['report'].get('report_id', None),
+        task['report'].get('name', None) or
+        task['report'].get('body', {}).get('name', None),
     )
 
   # check if report is to be run
-  if project.task.get('report_run_only', False):
+  if task.get('report_run_only', False):
     if project.verbose:
       print(
-          'DCM REPORT RUN', project.task['report'].get('name', None) or
-          project.task['report'].get('report_id', None))
+          'DCM REPORT RUN', task['report'].get('name', None) or
+          task['report'].get('report_id', None))
     report_run(
-        project.task['auth'],
-        project.task['report']['account'],
-        project.task['report'].get('report_id', None),
-        project.task['report'].get('name', None),
+        task['auth'],
+        task['report']['account'],
+        task['report'].get('report_id', None),
+        task['report'].get('name', None),
     )
 
   # check if report is to be created
-  if 'body' in project.task['report']:
+  if 'body' in task['report']:
     if project.verbose:
-      print('DCM BUILD', project.task['report']['body']['name'])
+      print('DCM BUILD', task['report']['body']['name'])
 
-    if 'filters' in project.task['report']:
-      project.task['report']['body'] = report_filter(
-          project.task['auth'], project.task['report']['body'],
-          project.task['report']['filters'])
+    if 'filters' in task['report']:
+      task['report']['body'] = report_filter(
+          task['auth'], task['report']['body'],
+          task['report']['filters'])
 
     report = report_build(
-        project.task['auth'], project.task['report']['body'].get('accountId') or
-        project.task['report']['account'], project.task['report']['body'])
+        task['auth'], task['report']['body'].get('accountId') or
+        task['report']['account'], task['report']['body'])
 
   # moving a report
-  if 'out' in project.task:
+  if 'out' in task:
     filename, report = report_file(
-        project.task['auth'],
-        project.task['report']['account'],
-        project.task['report'].get('report_id', None),
-        project.task['report'].get('name', None) or
-        project.task['report'].get('body', {}).get('name', None),
-        project.task['report'].get('timeout', 10),
+        task['auth'],
+        task['report']['account'],
+        task['report'].get('report_id', None),
+        task['report'].get('name', None) or
+        task['report'].get('body', {}).get('name', None),
+        task['report'].get('timeout', 10),
     )
 
     if report:
@@ -112,14 +112,14 @@ def dcm():
 
       # if bigquery, remove header and determine schema
       schema = None
-      if 'bigquery' in project.task['out']:
+      if 'bigquery' in task['out']:
         schema = report_schema(next(rows))
-        project.task['out']['bigquery']['schema'] = schema
-        project.task['out']['bigquery']['skip_rows'] = 0
+        task['out']['bigquery']['schema'] = schema
+        task['out']['bigquery']['skip_rows'] = 0
 
       # write rows using standard out block in json ( allows customization across all scripts )
       if rows:
-        put_rows(project.task['auth'], project.task['out'], rows)
+        put_rows(task['auth'], task['out'], rows)
 
 
 if __name__ == '__main__':

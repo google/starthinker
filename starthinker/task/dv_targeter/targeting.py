@@ -16,15 +16,12 @@
 #
 ###########################################################################
 
-from starthinker.util.project import project
-
 from starthinker.util.bigquery import query_to_view
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
 from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
@@ -48,11 +45,11 @@ TARGETING_TYPES = [
 ]
 
 
-def targeting_clear():
+def targeting_clear(project, task):
   table_create(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     'DV_Targeting_Options',
     Discovery_To_BigQuery(
       'displayvideo',
@@ -63,16 +60,16 @@ def targeting_clear():
   )
 
   sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
+    task['auth_sheets'],
+    task['sheet'],
     'Targeting Options',
     'A2:Q'
   )
 
   table_create(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     project.id,
-    project.task['dataset'],
+    task['dataset'],
     'DV_Targeting_Assigned',
     Discovery_To_BigQuery(
       'displayvideo',
@@ -83,65 +80,65 @@ def targeting_clear():
   )
 
 
-def targeting_clear_changes():
+def targeting_clear_changes(project, task):
   sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
+    task['auth_sheets'],
+    task['sheet'],
     'Destination Targeting',
     'A2:Z'
   )
 
   sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
+    task['auth_sheets'],
+    task['sheet'],
     'Brand Safety Targeting',
     'A2:Z'
   )
 
   sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
+    task['auth_sheets'],
+    task['sheet'],
     'Demographic Targeting',
     'A2:Z'
   )
 
   sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
+    task['auth_sheets'],
+    task['sheet'],
     'Audience Targeting',
     'A2:Z'
   )
 
   sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
+    task['auth_sheets'],
+    task['sheet'],
     'Device Targeting',
     'A2:Z'
   )
 
   sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
+    task['auth_sheets'],
+    task['sheet'],
     'Geography Targeting',
     'A2:Z'
   )
 
   sheets_clear(
-    project.task['auth_sheets'],
-    project.task['sheet'],
+    task['auth_sheets'],
+    task['sheet'],
     'Viewability Targeting',
     'A2:Z'
   )
 
 
-def targeting_load():
+def targeting_load(project, task):
 
   # load multiple from user defined sheet
   def load_multiple():
     advertisers = get_rows(
-      project.task['auth_sheets'],
+      task['auth_sheets'],
       { 'sheets': {
-        'sheet': project.task['sheet'],
+        'sheet': task['sheet'],
         'tab': 'Advertisers',
         "header":False,
         'range': 'A2:A'
@@ -151,20 +148,20 @@ def targeting_load():
     for advertiser in advertisers:
       for targeting_type in TARGETING_TYPES:
         yield from API_DV360(
-          project.task['auth_dv'],
+          task['auth_dv'],
           iterate=True
         ).targetingTypes().targetingOptions().list(
           advertiserId=str(lookup_id(advertiser[0])),
           targetingType=targeting_type
         ).execute()
 
-  targeting_clear()
+  targeting_clear(project, task)
 
   # write to database
   put_rows(
-    project.task['auth_bigquery'],
+    task['auth_bigquery'],
     { 'bigquery': {
-      'dataset': project.task['dataset'],
+      'dataset': task['dataset'],
       'table': 'DV_Targeting_Options',
       'schema': Discovery_To_BigQuery(
         'displayvideo',
@@ -179,22 +176,22 @@ def targeting_load():
 
   # write app category
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Targeting Options',
       "header":False,
       'range': 'A2:A'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            DISTINCT(appCategoryDetails.displayName)
            FROM `{dataset}.DV_Targeting_Options`
            ORDER BY 1
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )
@@ -202,22 +199,22 @@ def targeting_load():
 
   # write exchange
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Targeting Options',
       "header":False,
       'range': 'B2:B'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            DISTINCT(subExchangeDetails.displayName)
            FROM `{dataset}.DV_Targeting_Options`
            ORDER BY 1
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )
@@ -225,22 +222,22 @@ def targeting_load():
 
   # write browser
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Targeting Options',
       "header":False,
       'range': 'C2:C'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            DISTINCT(browserDetails.displayName)
            FROM `{dataset}.DV_Targeting_Options`
            ORDER BY 1
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )
@@ -248,22 +245,22 @@ def targeting_load():
 
   # write make / model
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Targeting Options',
       "header":False,
       'range': 'D2:D'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            DISTINCT(deviceMakeModelDetails.displayName)
            FROM `{dataset}.DV_Targeting_Options`
            ORDER BY 1
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )
@@ -271,22 +268,22 @@ def targeting_load():
 
   # write category
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Targeting Options',
       "header":False,
       'range': 'E2:E'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            DISTINCT(categoryDetails.displayName)
            FROM `{dataset}.DV_Targeting_Options`
            ORDER BY 1
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )
@@ -294,22 +291,22 @@ def targeting_load():
 
   # write language
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Targeting Options',
       "header":False,
       'range': 'F2:F'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            DISTINCT(languageDetails.displayName)
            FROM `{dataset}.DV_Targeting_Options`
            ORDER BY 1
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )
@@ -317,22 +314,22 @@ def targeting_load():
 
   # write operating system
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Targeting Options',
       "header":False,
       'range': 'G2:G'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            DISTINCT(operatingSystemDetails.displayName)
            FROM `{dataset}.DV_Targeting_Options`
            ORDER BY 1
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )
@@ -340,36 +337,36 @@ def targeting_load():
 
   # write carrier and isp
   put_rows(
-    project.task['auth_sheets'],
+    task['auth_sheets'],
     { 'sheets': {
-      'sheet': project.task['sheet'],
+      'sheet': task['sheet'],
       'tab': 'Targeting Options',
       "header":False,
       'range': 'H2:H'
     }},
     get_rows(
-      project.task['auth_bigquery'],
+      task['auth_bigquery'],
       { 'bigquery': {
-        'dataset': project.task['dataset'],
+        'dataset': task['dataset'],
         'query': """SELECT
            CONCAT(carrierAndIspDetails.displayName, ' - ', SUBSTR(carrierAndIspDetails.type, 22))
            FROM `{dataset}.DV_Targeting_Options`
            GROUP BY 1
            ORDER BY 1
-        """.format(**project.task),
+        """.format(**task),
         'legacy': False
       }}
     )
   )
 
 
-def targeting_combine():
+def targeting_combine(project, task):
 
   # read destination targeting
   put_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table": "SHEET_Destination_Targeting",
       "schema": [
         { "name": "Action", "type": "STRING" },
@@ -394,9 +391,9 @@ def targeting_combine():
       "format": "CSV"
     }},
     get_rows(
-      project.task["auth_sheets"],
+      task["auth_sheets"],
       { "sheets": {
-        "sheet": project.task["sheet"],
+        "sheet": task["sheet"],
         "tab": "Destination Targeting",
         "header":False,
         "range": "A2:Z"
@@ -406,9 +403,9 @@ def targeting_combine():
 
   # read brand safety targeting
   put_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table": "SHEET_Brand_Safety_Targeting",
       "schema": [
         { "name": "Action", "type": "STRING" },
@@ -426,9 +423,9 @@ def targeting_combine():
       "format": "CSV"
     }},
     get_rows(
-      project.task["auth_sheets"],
+      task["auth_sheets"],
       { "sheets": {
-        "sheet": project.task["sheet"],
+        "sheet": task["sheet"],
         "tab": "Brand Safety Targeting",
         "header":False,
         "range": "A2:Z"
@@ -438,9 +435,9 @@ def targeting_combine():
 
   # read demographic targeting
   put_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table": "SHEET_Demographic_Targeting",
       "schema": [
         { "name": "Action", "type": "STRING" },
@@ -457,9 +454,9 @@ def targeting_combine():
       "format": "CSV"
     }},
     get_rows(
-      project.task["auth_sheets"],
+      task["auth_sheets"],
       { "sheets": {
-        "sheet": project.task["sheet"],
+        "sheet": task["sheet"],
         "tab": "Demographic Targeting",
         "header":False,
         "range": "A2:Z"
@@ -469,9 +466,9 @@ def targeting_combine():
 
   # read audience targeting
   put_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table": "SHEET_Audience_Targeting",
       "schema": [
         { "name": "Action", "type": "STRING" },
@@ -491,9 +488,9 @@ def targeting_combine():
       "format": "CSV"
     }},
     get_rows(
-      project.task["auth_sheets"],
+      task["auth_sheets"],
       { "sheets": {
-        "sheet": project.task["sheet"],
+        "sheet": task["sheet"],
         "tab": "Audience Targeting",
         "header":False,
         "range": "A2:Z"
@@ -503,9 +500,9 @@ def targeting_combine():
 
   # read device targeting
   put_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table": "SHEET_Device_Targeting",
       "schema": [
         { "name": "Action", "type": "STRING" },
@@ -526,9 +523,9 @@ def targeting_combine():
       "format": "CSV"
     }},
     get_rows(
-      project.task["auth_sheets"],
+      task["auth_sheets"],
       { "sheets": {
-        "sheet": project.task["sheet"],
+        "sheet": task["sheet"],
         "tab": "Device Targeting",
         "header":False,
         "range": "A2:Z"
@@ -538,9 +535,9 @@ def targeting_combine():
 
   # read geography targeting
   put_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table": "SHEET_Geography_Targeting",
       "schema": [
         { "name": "Action", "type": "STRING" },
@@ -562,9 +559,9 @@ def targeting_combine():
       "format": "CSV"
     }},
     get_rows(
-      project.task["auth_sheets"],
+      task["auth_sheets"],
       { "sheets": {
-        "sheet": project.task["sheet"],
+        "sheet": task["sheet"],
         "tab": "Geography Targeting",
         "header":False,
         "range": "A2:Z"
@@ -574,9 +571,9 @@ def targeting_combine():
 
   # read viewability targeting
   put_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table": "SHEET_Viewability_Targeting",
       "schema": [
         { "name": "Action", "type": "STRING" },
@@ -592,9 +589,9 @@ def targeting_combine():
       "format": "CSV"
     }},
     get_rows(
-      project.task["auth_sheets"],
+      task["auth_sheets"],
       { "sheets": {
-        "sheet": project.task["sheet"],
+        "sheet": task["sheet"],
         "tab": "Viewability Targeting",
         "header":False,
         "range": "A2:Z"
@@ -603,9 +600,9 @@ def targeting_combine():
   )
 
   query_to_view(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     project.id,
-    project.task["dataset"],
+    task["dataset"],
     "SHEET_Combined_Targeting",
     """SELECT
         COALESCE(
@@ -661,21 +658,21 @@ def targeting_combine():
         GROUP BY 1,2
       ) AS A
       ON CAST(REGEXP_EXTRACT(T.Partner, r' - (\d+)$') AS INT64)=A.partnerId
-    """.format(**project.task),
+    """.format(**task),
     legacy=False
   )
 
 
-def targeting_edit(commit=False):
+def targeting_edit(project, task, commit=False):
   edits = []
   targetings = {}
 
-  targeting_combine()
+  targeting_combine(project, task)
 
   for row in get_rows(
-    project.task["auth_bigquery"],
+    task["auth_bigquery"],
     { "bigquery": {
-      "dataset": project.task["dataset"],
+      "dataset": task["dataset"],
       "table":"SHEET_Combined_Targeting",
     }},
     as_object=True
@@ -693,11 +690,11 @@ def targeting_edit(commit=False):
       # if action is at Advertiser layer, translate partner into list of advertisers
       if 'ADVERTISERS' in row['Action'].upper():
         for advertiserId in get_rows(
-          project.task['auth_bigquery'],
+          task['auth_bigquery'],
           { 'bigquery': {
-            'dataset': project.task['dataset'],
+            'dataset': task['dataset'],
             'query': "SELECT advertiserId FROM `{dataset}.DV_Advertisers` WHERE partnerId={partnerId};".format(
-              dataset=project.task['dataset'],
+              dataset=task['dataset'],
               partnerId=lookup_id(row['Partner'])
             ),
             'legacy': False
@@ -708,7 +705,7 @@ def targeting_edit(commit=False):
             targetings.setdefault(
               ('Advertiser', 'Partner {0} : {1}'.format(row['Partner'], advertiserId)),
               Assigned_Targeting(
-                project.task["auth_dv"],
+                task["auth_dv"],
                 None,
                 advertiserId,
                 None
@@ -726,7 +723,7 @@ def targeting_edit(commit=False):
           targetings.setdefault(
             ('Partner', row['Partner']),
             Assigned_Targeting(
-              project.task["auth_dv"],
+              task["auth_dv"],
               lookup_id(row['Partner']),
               row['Advertiser_Lookup'], # required by API for lookup of values ( not for targeting )
               None
@@ -740,11 +737,11 @@ def targeting_edit(commit=False):
       # if action is at LineItem layer, translate advertiser into list of lineitems
       if 'LINEITEMS' in row['Action'].upper():
         for lineItemId in get_rows(
-          project.task['auth_bigquery'],
+          task['auth_bigquery'],
           { 'bigquery': {
-            'dataset': project.task['dataset'],
+            'dataset': task['dataset'],
             'query': "SELECT lineItemId FROM `{dataset}.DV_LineItems` WHERE advertiserId={advertiserId};".format(
-              dataset=project.task['dataset'],
+              dataset=task['dataset'],
               advertiserId=lookup_id(row['Advertiser'])
             ),
             'legacy': False
@@ -755,7 +752,7 @@ def targeting_edit(commit=False):
             targetings.setdefault(
               ('LineItem', 'Advertiser {0} : {1}'.format(row['Advertiser'], lineItemId)),
               Assigned_Targeting(
-                project.task["auth_dv"],
+                task["auth_dv"],
                 None,
                 lookup_id(row['Advertiser']),
                 lineItemId
@@ -769,7 +766,7 @@ def targeting_edit(commit=False):
           targetings.setdefault(
             ('Advertiser', row['Advertiser']),
             Assigned_Targeting(
-              project.task["auth_dv"],
+              task["auth_dv"],
               None,
               lookup_id(row['Advertiser']),
               None
@@ -783,7 +780,7 @@ def targeting_edit(commit=False):
         targetings.setdefault(
           ('LineItem', row['LineItem']),
           Assigned_Targeting(
-            project.task["auth_dv"],
+            task["auth_dv"],
             None,
             row['Advertiser_Lookup'],
             lookup_id(row['LineItem'])
@@ -1077,7 +1074,7 @@ def targeting_edit(commit=False):
       })
 
     if warnings:
-      edit_log({
+      edit_log(project, task, {
         "layer": layer,
         "partner": name if layer == 'Partner' else '',
         "advertiser": name if layer == 'Advertiser' else '',
@@ -1085,19 +1082,19 @@ def targeting_edit(commit=False):
         "warning": "\n".join(warnings)
      })
 
-  edit_preview(edits)
+  edit_preview(project, task, edits)
 
   if commit:
-    targeting_commit(edits)
+    targeting_commit(project, task, edits)
 
 
-def targeting_commit(edits):
+def targeting_commit(project, task, edits):
   for edit in edits:
     try:
       if edit.get("line_item"):
         print("API LINE ITEM:", edit["line_item"])
         response = API_DV360(
-          project.task["auth_dv"]
+          task["auth_dv"]
         ).advertisers().lineItems().bulkEditLineItemAssignedTargetingOptions(
           **edit["parameters"]
         ).execute()
@@ -1105,7 +1102,7 @@ def targeting_commit(edits):
       elif edit.get("advertiser"):
         print("API ADVERTISER:", edit["advertiser"])
         response = API_DV360(
-          project.task["auth_dv"]
+          task["auth_dv"]
         ).advertisers().bulkEditAdvertiserAssignedTargetingOptions(
           **edit["parameters"]
         ).execute()
@@ -1113,7 +1110,7 @@ def targeting_commit(edits):
       elif edit.get("partner"):
         print("API PARTNER:", edit["partner"])
         response = API_DV360(
-          project.task["auth_dv"]
+          task["auth_dv"]
         ).partners().bulkEditPartnerAssignedTargetingOptions(
           **edit["parameters"]
         ).execute()
@@ -1121,5 +1118,5 @@ def targeting_commit(edits):
     except Exception as e:
       edit["error"] = str(e)
     finally:
-      edit_log(edit)
-  edit_log()
+      edit_log(project, task, edit)
+  edit_log(project, task)

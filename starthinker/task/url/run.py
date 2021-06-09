@@ -24,8 +24,6 @@ For sample use see scripts/url.json. Allows flagging status and or content in re
 
 """
 
-import base64
-
 from typing import Iterator
 from urllib import request
 from urllib.error import HTTPError
@@ -33,7 +31,7 @@ from http.client import InvalidURL
 
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.project import project
+from starthinker.util.project import from_parameters
 
 
 URL_SCHEMA = [
@@ -44,7 +42,7 @@ URL_SCHEMA = [
 ]
 
 
-def url_fetch() -> Iterator[dict]:
+def url_fetch(project, task) -> Iterator[dict]:
   """Fetch URL list and return both status code and/or contents.
 
   Takes no parameters, it operates on recipe JSON directly. Core
@@ -55,7 +53,7 @@ def url_fetch() -> Iterator[dict]:
 
   """
 
-  for url, uri in get_rows(project.task['auth'], project.task['urls']):
+  for url, uri in get_rows(task['auth'], task['urls']):
 
     if project.verbose:
       print('URL/URI', url, uri)
@@ -65,33 +63,33 @@ def url_fetch() -> Iterator[dict]:
       'URI':None if uri is None else str(uri)
     }
 
-    url_request = request.Request(url, data=project.task.get('data'))
+    url_request = request.Request(url, data=task.get('data'))
     try:
       url_response = request.urlopen(url_request)
 
-      if project.task.get('status', False):
+      if task.get('status', False):
         record['Status'] = url_response.status
 
-      if project.task.get('read', False):
+      if task.get('read', False):
         record['Read'] = url_response.read()
 
     except InvalidURL as error:
-      if project.task.get('status', False):
+      if task.get('status', False):
         record['Status'] = 400
 
     except HTTPError as error:
-      if project.task.get('status', False):
+      if task.get('status', False):
         record['Status'] = error.status
 
     except Exception as error:
-      if project.task.get('status', False):
+      if task.get('status', False):
         record['Status'] = 500
 
     yield record
 
 
-@project.from_parameters
-def url() -> None:
+@from_parameters
+def url(project:dict, task:dict) -> None:
   """Entry point for URL task, which pulls URL information from web.
 
   Designed solely to fetch status and/or content from a list of URLs.
@@ -100,13 +98,13 @@ def url() -> None:
   """
 
   # Eventually add format detection or parameters to put_rows
-  if 'bigquery' in project.task['to']:
-    project.task['to']['bigquery']['format'] = 'JSON'
+  if 'bigquery' in task['to']:
+    task['to']['bigquery']['format'] = 'JSON'
 
   put_rows(
-    project.task['auth'],
-    project.task['to'],
-    url_fetch(),
+    task['auth'],
+    task['to'],
+    url_fetch(project, task),
     URL_SCHEMA
   )
 
