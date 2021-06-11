@@ -69,7 +69,7 @@ def partner_load(project, task):
       task['auth_dv'],
       iterate=True
     ).partners().list(
-      filter='entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
+      filter='entityStatus="ENTITY_STATUS_ACTIVE"'
     ).execute()
   )
 

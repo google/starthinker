@@ -254,7 +254,7 @@ def test_sleep(project, task):
 def weather_gov(project, task):
   print('TEST: weather_gov')
   try:
-    weather_gov_test()
+    weather_gov_test(project, task)
     test_passed()
   except Exception as e:
     print(str(e))
@@ -264,7 +264,7 @@ def weather_gov(project, task):
 def traffic(project, task):
   print('TEST: Bulkdozer')
   try:
-    bulkdozer_test()
+    bulkdozer_test(project, task)
     test_passed()
   except Exception as e:
     print(str(e))

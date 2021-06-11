@@ -55,7 +55,7 @@ spreadsheet = None
 clean_run = True
 
 
-def process_feed(feed_name, dao, print_field, msg='Processing'):
+def process_feed(project, task, feed_name, dao, print_field, msg='Processing'):
   """Processes a feed that represents a specific entity in the Bulkdozer feed.
 
   Args:
@@ -192,37 +192,37 @@ def init_daos(project, task):
       task['is_admin'])
 
 
-def assets():
+def assets(project, task):
   """Processes assets."""
-  process_feed('creative_asset_feed', creative_asset_dao,
+  process_feed(project, task, 'creative_asset_feed', creative_asset_dao,
                FieldMap.CREATIVE_ASSET_FILE_NAME, 'Uploading creative asset')
 
 
-def landing_pages():
+def landing_pages(project, task):
   """Processes landing pages."""
-  process_feed('landing_page_feed', landing_page_dao,
+  process_feed(project, task, 'landing_page_feed', landing_page_dao,
                FieldMap.CAMPAIGN_LANDING_PAGE_NAME, 'Processing landing page')
 
 
-def placement_groups():
+def placement_groups(project, task):
   """Processes placement group."""
-  process_feed('placement_group_feed', placement_group_dao,
+  process_feed(project, task, 'placement_group_feed', placement_group_dao,
                FieldMap.PLACEMENT_GROUP_NAME, 'Processing placement group')
 
 
-def campaigns():
+def campaigns(project, task):
   """Processes campaigns."""
-  process_feed('campaign_feed', campaign_dao, FieldMap.CAMPAIGN_NAME,
+  process_feed(project, task, 'campaign_feed', campaign_dao, FieldMap.CAMPAIGN_NAME,
                'Processing campaign')
 
 
-def event_tags():
+def event_tags(project, task):
   """Processes event tags."""
-  process_feed('event_tag_feed', event_tag_dao, FieldMap.EVENT_TAG_NAME,
+  process_feed(project, task, 'event_tag_feed', event_tag_dao, FieldMap.EVENT_TAG_NAME,
                'Processing event tag')
 
 
-def placements():
+def placements(project, task):
   """Processes placements."""
   placement_feed = Feed(
       task['auth'],
@@ -255,7 +255,7 @@ def placements():
   pricing_schedule_feed.update()
 
 
-def creatives():
+def creatives(project, task):
   """Processes creatives."""
   creative_asset_feed = Feed(
       task['auth'],
@@ -316,7 +316,7 @@ def creatives():
   click_tag_feed.update()
 
 
-def ads():
+def ads(project, task):
   """Processes ads."""
   placement_feed = Feed(
       task['auth'],
@@ -368,9 +368,9 @@ def ads():
   event_tag_profile_feed.update()
 
 
-def dynamic_targeting_keys():
+def dynamic_targeting_keys(project, task):
   """Processes dynamic targeting keys."""
-  process_feed('dynamic_targeting_key_feed', dynamic_targeting_key_dao,
+  process_feed(project, task, 'dynamic_targeting_key_feed', dynamic_targeting_key_dao,
                FieldMap.DYNAMIC_TARGETING_KEY_NAME,
                'Processing dynamic targeting key')
 
@@ -390,15 +390,15 @@ def traffic(project, task):
     logger.flush()
 
     init_daos(project, task)
-    assets()
-    landing_pages()
-    campaigns()
-    event_tags()
-    placement_groups()
-    placements()
-    creatives()
-    ads()
-    dynamic_targeting_keys()
+    assets(project, task)
+    landing_pages(project, task)
+    campaigns(project, task)
+    event_tags(project, task)
+    placement_groups(project, task)
+    placements(project, task)
+    creatives(project, task)
+    ads(project, task)
+    dynamic_targeting_keys(project, task)
 
     #if clean_run:
     #  store.clear()
@@ -426,7 +426,7 @@ def _traffic(project, task):
   """For development purposes when debugging a specific entity, this function is handy to run just that entity."""
   setup(project, task)
   init_daos(project, task)
-  dynamic_targeting_keys()
+  dynamic_targeting_keys(project, task)
 
 
 if __name__ == '__main__':
