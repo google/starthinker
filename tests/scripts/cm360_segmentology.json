@@ -38,9 +38,9 @@
           { "name": "Correlation", "type": "RECORD", "mode": "REPEATED", "fields": [
             { "name": "Dimension", "type": "STRING", "mode": "NULLABLE" },
             { "name": "Segment", "type": "STRING", "mode": "NULLABLE" },
-            { "name": "Impression_Percent", "type": "INTEGER", "mode": "NULLABLE" },
-            { "name": "Click_Percent", "type": "INTEGER", "mode": "NULLABLE" },
-            { "name": "Conversion_Percent", "type": "INTEGER", "mode": "NULLABLE" }
+            { "name": "Impression", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Click", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Conversion", "type": "INTEGER", "mode": "NULLABLE" }
           ]}
         ]
       }

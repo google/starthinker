@@ -124,9 +124,9 @@
            Campaign_Id,
            Campaign,
            Zip,
-           SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression_Percent,
-           SAFE_DIVIDE(Clicks, Impressions) AS Click_Percent,
-           SAFE_DIVIDE(Conversions, Impressions) AS Conversion_Percent,
+           SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression,
+           SAFE_DIVIDE(Clicks, Impressions) AS Click,
+           SAFE_DIVIDE(Conversions, Impressions) AS Conversion,
            Impressions AS Impressions
          FROM
            `{project}.{dataset}.DV360_KPI`;
@@ -160,7 +160,7 @@
         "join": "Zip",
         "pass": ["Partner_Id", "Partner", "Advertiser_Id", "Advertiser", "Campaign_Id", "Campaign"],
         "sum": ["Impressions"],
-        "correlate": ["Impression_Percent", "Click_Percent", "Conversion_Percent"],
+        "correlate": ["Impression", "Click", "Conversion"],
         "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
         "table": "DV360_KPI_Normalized",
         "significance": 80
