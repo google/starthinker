@@ -206,26 +206,27 @@ class StatusTest(TestCase):
     self.assertEqual(len(status['tasks']), 1 + 1 + 1 + 3 + 3 + 1)
 
     # order two is hidden unless forced ( so it is skipped ) hour = [] excludes it from list
+    # each task runs multiple hours, hence repeats
     self.assertEqual(status['tasks'][0]['hour'], 1)
-    self.assertEqual(status['tasks'][0]['order'], 0)
+    self.assertEqual(status['tasks'][0]['instance'], 1)
     self.assertEqual(status['tasks'][1]['hour'], 1)
-    self.assertEqual(status['tasks'][1]['order'], 4)
+    self.assertEqual(status['tasks'][1]['instance'], 5)
     self.assertEqual(status['tasks'][2]['hour'], 1)
-    self.assertEqual(status['tasks'][2]['order'], 5)
+    self.assertEqual(status['tasks'][2]['instance'], 6)
     self.assertEqual(status['tasks'][3]['hour'], 3)
-    self.assertEqual(status['tasks'][3]['order'], 1)
+    self.assertEqual(status['tasks'][3]['instance'], 2)
     self.assertEqual(status['tasks'][4]['hour'], 3)
-    self.assertEqual(status['tasks'][4]['order'], 4)
+    self.assertEqual(status['tasks'][4]['instance'], 5)
     self.assertEqual(status['tasks'][5]['hour'], 3)
-    self.assertEqual(status['tasks'][5]['order'], 5)
+    self.assertEqual(status['tasks'][5]['instance'], 6)
     self.assertEqual(status['tasks'][6]['hour'], 3)
-    self.assertEqual(status['tasks'][6]['order'], 6)
+    self.assertEqual(status['tasks'][6]['instance'], 7)
     self.assertEqual(status['tasks'][7]['hour'], 23)
-    self.assertEqual(status['tasks'][7]['order'], 3)
+    self.assertEqual(status['tasks'][7]['instance'], 4)
     self.assertEqual(status['tasks'][8]['hour'], 23)
-    self.assertEqual(status['tasks'][8]['order'], 4)
+    self.assertEqual(status['tasks'][8]['instance'], 5)
     self.assertEqual(status['tasks'][9]['hour'], 23)
-    self.assertEqual(status['tasks'][9]['order'], 5)
+    self.assertEqual(status['tasks'][9]['instance'], 6)
 
   def test_all_hours(self):
 
@@ -252,13 +253,13 @@ class StatusTest(TestCase):
     self.assertEqual(len(status['tasks']), len(self.recipe.get_json()['tasks']))
 
     # includes all tasks in sequence including hours=[], normally #2 is skipped
-    self.assertEqual(status['tasks'][0]['order'], 0)
-    self.assertEqual(status['tasks'][1]['order'], 1)
-    self.assertEqual(status['tasks'][2]['order'], 2)
-    self.assertEqual(status['tasks'][3]['order'], 3)
-    self.assertEqual(status['tasks'][4]['order'], 4)
-    self.assertEqual(status['tasks'][5]['order'], 5)
-    self.assertEqual(status['tasks'][6]['order'], 6)
+    self.assertEqual(status['tasks'][0]['instance'], 1)
+    self.assertEqual(status['tasks'][1]['instance'], 2)
+    self.assertEqual(status['tasks'][2]['instance'], 3)
+    self.assertEqual(status['tasks'][3]['instance'], 4)
+    self.assertEqual(status['tasks'][4]['instance'], 5)
+    self.assertEqual(status['tasks'][5]['instance'], 6)
+    self.assertEqual(status['tasks'][6]['instance'], 7)
 
   def test_canceled(self):
     self.recipe.force()
@@ -423,7 +424,6 @@ class ManualTest(TestCase):
                 str(now_tz.date()),
             'tasks': [{
                 'instance': 1,
-                'order': 0,
                 'event': 'JOB_END',
                 'utc': str(datetime.utcnow()),
                 'script': 'manual',
@@ -628,7 +628,6 @@ class JobTest(TransactionTestCase):
         'tasks': [
             {
                 'instance': 1,
-                'order': 0,
                 'event': 'JOB_PENDING',
                 'utc': str(datetime.utcnow()),
                 'script': 'hello',
@@ -639,7 +638,6 @@ class JobTest(TransactionTestCase):
             },
             {
                 'instance': 2,
-                'order': 2,
                 'event': 'JOB_PENDING',
                 'utc': str(datetime.utcnow()),
                 'script': 'hello',
@@ -938,7 +936,6 @@ class JobErrorTest(TransactionTestCase):
             'tasks': [
                 {
                     'instance': 1,
-                    'order': 0,
                     'event': 'JOB_PENDING',
                     'utc': str(datetime.utcnow()),
                     'script': 'hello',
@@ -949,7 +946,6 @@ class JobErrorTest(TransactionTestCase):
                 },
                 {
                     'instance': 2,
-                    'order': 2,
                     'event': 'JOB_PENDING',
                     'utc': str(datetime.utcnow()),
                     'script': 'hello',
@@ -1056,7 +1052,6 @@ class JobTimeoutTest(TransactionTestCase):
             'tasks': [
                 {
                     'instance': 1,
-                    'order': 0,
                     'event': 'JOB_PENDING',
                     'utc': str(datetime.utcnow()),
                     'script': 'hello',
@@ -1067,7 +1062,6 @@ class JobTimeoutTest(TransactionTestCase):
                 },
                 {
                     'instance': 2,
-                    'order': 2,
                     'event': 'JOB_PENDING',
                     'utc': str(datetime.utcnow()),
                     'script': 'hello',
@@ -1164,7 +1158,6 @@ class JobDayTest(TransactionTestCase):
                 str(now_tz.date()),
             'tasks': [{
                 'instance': 1,
-                'order': 0,
                 'event': 'JOB_PENDING',
                 'utc': str(datetime.utcnow()),
                 'script': 'hello',
@@ -1174,7 +1167,6 @@ class JobDayTest(TransactionTestCase):
                 'done': False
             }, {
                 'instance': 2,
-                'order': 0,
                 'event': 'JOB_PENDING',
                 'utc': str(datetime.utcnow()),
                 'script': 'hello',
@@ -1208,7 +1200,6 @@ class JobDayTest(TransactionTestCase):
                 str(now_tz.date() - timedelta(days=1)),
             'tasks': [{
                 'instance': 1,
-                'order': 0,
                 'event': 'JOB_END',
                 'utc': str(datetime.utcnow() - timedelta(days=1)),
                 'script': 'hello',
@@ -1218,7 +1209,6 @@ class JobDayTest(TransactionTestCase):
                 'done': True
             }, {
                 'instance': 2,
-                'order': 0,
                 'event': 'JOB_END',
                 'utc': str(datetime.utcnow() - timedelta(days=1)),
                 'script': 'hello',
@@ -1284,7 +1274,6 @@ class JobCancelTest(TransactionTestCase):
                 str(now_tz.date()),
             'tasks': [{
                 'instance': 1,
-                'order': 0,
                 'event': 'JOB_END',
                 'utc': str(datetime.utcnow() - timedelta(days=1)),
                 'script': 'hello',
@@ -1294,7 +1283,6 @@ class JobCancelTest(TransactionTestCase):
                 'done': False
             }, {
                 'instance': 2,
-                'order': 0,
                 'event': 'JOB_END',
                 'utc': str(datetime.utcnow() - timedelta(days=1)),
                 'script': 'hello',
@@ -1383,7 +1371,6 @@ class WorkerTest(TransactionTestCase):
                 str(now_tz.date()),
             'tasks': [{
                 'instance': 1,
-                'order': 0,
                 'event': 'JOB_END',
                 'utc': str(datetime.utcnow()),
                 'script': 'hello',
@@ -1393,7 +1380,6 @@ class WorkerTest(TransactionTestCase):
                 'done': True
             }, {
                 'instance': 2,
-                'order': 0,
                 'event': 'JOB_END',
                 'utc': str(datetime.utcnow()),
                 'script': 'hello',

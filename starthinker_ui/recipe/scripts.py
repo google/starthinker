@@ -27,8 +27,9 @@ from django.conf import settings
 from django.utils.translation import get_language
 
 from starthinker.config import UI_ROOT
-from starthinker.script.parse import json_set_fields, text_set_fields
-from starthinker.util.project import get_project
+from starthinker.util.recipe import get_recipe
+from starthinker.util.recipe import json_set_fields
+from starthinker.util.recipe import text_set_fields
 
 # cache scripts in memory
 SCRIPTS = {}
@@ -41,7 +42,7 @@ def load_scripts():
       for filename in sorted(files):
         if filename.endswith('.json'):
           try:
-            script = get_project(root + filename)
+            script = get_recipe(root + filename)
             if not 'script' in script:
               continue
             script['path'] = root + filename

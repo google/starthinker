@@ -25,7 +25,7 @@ from random import sample
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
-from starthinker.util.project import project
+from starthinker.util.configuration import Configuration
 from starthinker.util.email import send_email
 from starthinker.util.email.template import EmailTemplate
 from starthinker_ui.account.models import Account
@@ -240,7 +240,6 @@ class Command(BaseCommand):
           else:
             print('EMAILING: ', account.email)
             # send message via email
-            project.initialize()
-            send_email('user', account.email, EMAIL_FROM, EMAIL_CC,
+            send_email(Configuration(user=account.get_credentials_path()), 'user', account.email, EMAIL_FROM, EMAIL_CC,
                        EMAIL_SUBJECT, email.get_text(), email.get_html())
             sleep(3)

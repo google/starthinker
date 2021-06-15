@@ -22,7 +22,7 @@ import urllib.request, urllib.error, urllib.parse
 import json
 
 from starthinker.config import UI_PROJECT, UI_SERVICE
-from starthinker.util.project import project
+from starthinker.util.configuration import Configuration
 from starthinker.util.google_api import API_StackDriver
 
 LOG_VERSION = '2'  # must be string
@@ -161,9 +161,14 @@ def log_put(event, severity, job=None, text=None, payload=None):
       del job_buffer['recipe']['setup']['auth']
     body['entries'][0]['jsonPayload'] = job_buffer
 
-  project.initialize(_service=UI_SERVICE, _project=UI_PROJECT)
   try:
-    API_StackDriver('service').entries().write(body=body).execute()
+    API_StackDriver(
+      Configuration(
+        service=UI_SERVICE,
+        project=UI_PROJECT
+      ),
+      'service'
+    ).entries().write(body=body).execute()
   except:
     print('LOG EVENT ERROR')
 
@@ -207,9 +212,14 @@ def log_get(recipe_id=[], timezone='America/Los_Angeles', days=1):
     body['filter'] += ' AND ( %s )' % ' OR '.join(
         'operation.id="%s"' % r for r in recipe_id)
 
-  project.initialize(_service=UI_SERVICE, _project=UI_PROJECT)
   for entry in API_StackDriver(
-      'service', iterate=True).entries().list(body=body).execute():
+      Configuration(
+        service=UI_SERVICE,
+        project=UI_PROJECT
+      ),
+      'service',
+      iterate=True
+    ).entries().list(body=body).execute():
     yield entry
 
 

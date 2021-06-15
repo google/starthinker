@@ -205,11 +205,12 @@ class Workers():
         '-u',
         '-W',
         'ignore',
-        '%s/starthinker/task/%s/run.py' % (settings.UI_ROOT, job['script']),
+        '%s/starthinker/tool/recipe.py' % settings.UI_ROOT,
         filename,
-        '-i',
-        str(job['instance']),
-        '--verbose',
+        '--instance', str(job['instance']),
+        '--no_input',
+        '--force', # some tasks run after alloted time due to run overs by prior tasks
+        '--verbose'
     ]
 
     if self.trace:
@@ -220,7 +221,8 @@ class Workers():
         shell=False,
         cwd=settings.UI_ROOT,
         stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE)
+        stderr=subprocess.PIPE
+    )
 
     make_non_blocking(job['job']['process'].stdout)
     make_non_blocking(job['job']['process'].stderr)

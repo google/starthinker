@@ -23,7 +23,7 @@ from time import sleep
 from datetime import datetime, timedelta
 from django.test import TestCase
 
-from starthinker.util.project import project
+from starthinker.util.configuration import Configuration
 from starthinker.util.auth import clear_credentials_cache, get_credentials, get_service
 from starthinker.config import UI_CLIENT, UI_SERVICE
 from starthinker_ui.account.models import Account
@@ -37,8 +37,8 @@ def account_create():
   if len(accounts) > 0:
     account = accounts[0]
   else:
-    project.initialize(_client=UI_CLIENT, _service=UI_SERVICE, _user=UI_USER)
-    credentials = get_credentials('user')
+    config = Configuration(client=UI_CLIENT, user=UI_USER)
+    credentials = get_credentials(config, 'user')
     account = Account.objects.get_or_create_user(credentials, 'password')
 
   return account
@@ -49,6 +49,7 @@ class CredentialsTest(TestCase):
   def setUp(self):
     self.user_file = '/tmp/test_user.json'
     self.service_file = '/tmp/test_service.json'
+    self.config = Configuration(service=self.service_file, user=self.user_file)
     shutil.copyfile(UI_USER, self.user_file)
     shutil.copyfile(UI_SERVICE, self.service_file)
 
@@ -57,7 +58,7 @@ class CredentialsTest(TestCase):
     os.remove(self.service_file)
 
   def helper_refresh(self):
-    credentials = get_credentials('user')
+    credentials = get_credentials(self.config, 'user')
     token = credentials.token
     expiry = credentials.expiry
 
@@ -89,27 +90,25 @@ class CredentialsTest(TestCase):
     self.assertNotEqual(expiry, credentials.expiry)
 
   def test_file_credentials_user(self):
-    project.initialize(_user=self.user_file)
-
-    service = get_service('oauth2', 'v2', 'user')
+    config = Configuration(user=self.user_file)
+    service = get_service(config, 'oauth2', 'v2', 'user')
     response = service.userinfo().get().execute()
 
     self.assertIn('email', response)
     self.helper_refresh()
 
   def test_file_credentials_service(self):
-    project.initialize(_service=self.service_file)
-
-    service = get_service('cloudresourcemanager', 'v1', 'service')
+    config = Configuration(service=self.service_file)
+    service = get_service(config, 'cloudresourcemanager', 'v1', 'service')
     response = service.projects().list().execute()
 
     self.assertIn('projects', response)
 
   def test_string_credentials_user(self):
     with open(self.user_file, 'r') as json_file:
-      project.initialize(_user=json_file.read())
+      config = Configuration(user=json_file.read())
 
-    service = get_service('oauth2', 'v2', 'user')
+    service = get_service(config, 'oauth2', 'v2', 'user')
     response = service.userinfo().get().execute()
 
     self.assertIn('email', response)
@@ -117,18 +116,18 @@ class CredentialsTest(TestCase):
 
   def test_string_credentials_service(self):
     with open(self.service_file, 'r') as json_file:
-      project.initialize(_service=json_file.read())
+      config = Configuration(service=json_file.read())
 
-    service = get_service('cloudresourcemanager', 'v1', 'service')
+    service = get_service(config, 'cloudresourcemanager', 'v1', 'service')
     response = service.projects().list().execute()
 
     self.assertIn('projects', response)
 
   def test_dictionary_credentials_user(self):
     with open(self.user_file, 'r') as json_file:
-      project.initialize(_user=json.load(json_file))
+      config = Configuration(user=json.load(json_file))
 
-    service = get_service('oauth2', 'v2', 'user')
+    service = get_service(config, 'oauth2', 'v2', 'user')
     response = service.userinfo().get().execute()
 
     self.assertIn('email', response)
@@ -136,25 +135,24 @@ class CredentialsTest(TestCase):
 
   def test_dictionary_credentials_service(self):
     with open(self.service_file, 'r') as json_file:
-      project.initialize(_service=json.load(json_file))
+      config = Configuration(service=json.load(json_file))
 
-    service = get_service('cloudresourcemanager', 'v1', 'service')
+    service = get_service(config, 'cloudresourcemanager', 'v1', 'service')
     response = service.projects().list().execute()
 
     self.assertIn('projects', response)
 
   def test_remote_credentials_user(self):
-    project.initialize(_user=self.user_file)
-    credentials = get_credentials('user')
+    config = Configuration(user=self.user_file)
+    credentials = get_credentials(config, 'user')
     account = Account.objects.get_or_create_user(credentials, 'password')
 
     clear_credentials_cache()
 
-    project.initialize(_user=account.get_credentials_path())
-    self.assertEqual(project.recipe['setup']['auth']['user'],
-                     account.get_credentials_path())
+    config = Configuration(user=account.get_credentials_path())
+    self.assertEqual(config.recipe['setup']['auth']['user'], account.get_credentials_path())
 
-    service = get_service('oauth2', 'v2', 'user')
+    service = get_service(config, 'oauth2', 'v2', 'user')
     response = service.userinfo().get().execute()
 
     self.assertIn('email', response)

@@ -23,7 +23,7 @@ from django.contrib import messages
 from django.contrib.auth import login as django_login, logout as django_logout
 from django.http import HttpResponseRedirect
 
-from starthinker.util.auth.wrapper import CredentialsFlowWrapper
+from starthinker.util.auth_wrapper import CredentialsFlowWrapper
 from starthinker_ui.account.models import Account
 
 

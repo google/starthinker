@@ -26,7 +26,6 @@ from datetime import date, datetime, timedelta
 from django.db import models
 from django.conf import settings
 
-from starthinker.util.project import project
 from starthinker_ui.account.models import Account, token_generate
 from starthinker_ui.project.models import Project
 from starthinker_ui.recipe.scripts import Script
@@ -349,40 +348,35 @@ class Recipe(models.Model):
       }
 
       # create task list based on recipe json
-      instances = {}
-      for order, (script, task) in enumerate(self.get_tasks()):
+      for instance, (script, task) in enumerate(self.get_tasks()):
 
         # if force use current hour, if schedule use task and recipe hours
         hours = [now_tz.hour] if force else task.get('hour', self.get_hours())
 
         # tasks with hours = [] will be skipped unless force=True
         if hours:
-          instances.setdefault(script, 0)
-          instances[script] += 1
           for hour in hours:
             status['tasks'].append({
-                'order': order,
                 'script': script,
-                'instance': instances[script],
+                'instance': instance + 1,
                 'hour': hour,
                 'utc': str(datetime.utcnow()),
                 'event': 'JOB_NEW' if update else 'JOB_PENDING',
                 'stdout': '',
                 'stderr': '',
-                'done':
-                    update  # if saved by user, write as done for that day, user must force run first time
+                'done': update  # if saved by user, write as done for that day, user must force run first time
             })
 
-      # sort new order by first by hour and second by order
+      # sort new order by first by hour and second by instance
       def queue_compare(left, right):
         if left['hour'] < right['hour']:
           return -1
         elif left['hour'] > right['hour']:
           return 1
         else:
-          if left['order'] < right['order']:
+          if left['instance'] < right['instance']:
             return -1
-          elif left['order'] > right['order']:
+          elif left['instance'] > right['instance']:
             return 1
           else:
             return 0

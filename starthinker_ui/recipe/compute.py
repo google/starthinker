@@ -19,38 +19,55 @@
 #https://cloud.google.com/compute/docs/reference/rest/v1/instanceGroupManagers
 
 from django.conf import settings
-from starthinker.util.project import project
+from starthinker.util.configuration import Configuration
 from starthinker.util.google_api import API_Compute
 
 
 def group_instances_resize(count):
-  project.initialize(_service=settings.UI_SERVICE, _project=settings.UI_PROJECT)
-  return API_Compute('service').instanceGroupManagers().resize(
-      project=settings.UI_PROJECT,
-      zone=settings.UI_ZONE,
-      instanceGroupManager='starthinker-worker-group',
-      size=count).execute()
+  return API_Compute(
+    Configuration(
+      service=settings.UI_SERVICE,
+      project=settings.UI_PROJECT
+    ),
+    auth='service'
+  ).instanceGroupManagers().resize(
+    project=settings.UI_PROJECT,
+    zone=settings.UI_ZONE,
+    instanceGroupManager='starthinker-worker-group',
+    size=count
+  ).execute()
 
 
 def group_instances_delete(name):
-  project.initialize(_service=settings.UI_SERVICE, _project=settings.UI_PROJECT)
-  return API_Compute('service').instanceGroupManagers().deleteInstances(
-      project=settings.UI_PROJECT,
-      zone=settings.UI_ZONE,
-      instanceGroupManager='starthinker-worker-group',
-      body={
-          'instances': ['zones/%s/instances/%s' % (settings.UI_ZONE, name)],
-          'type': 'PROACTIVE'
-      }).execute()
+  return API_Compute(
+    Configuration(
+      service=settings.UI_SERVICE,
+      project=settings.UI_PROJECT
+    ),
+    auth='service'
+  ).instanceGroupManagers().deleteInstances(
+    project=settings.UI_PROJECT,
+    zone=settings.UI_ZONE,
+    instanceGroupManager='starthinker-worker-group',
+    body={
+      'instances': ['zones/%s/instances/%s' % (settings.UI_ZONE, name)],
+      'type': 'PROACTIVE'
+    }
+  ).execute()
 
 
 def group_instances_list(statuses=[]):
-  project.initialize(_service=settings.UI_SERVICE, _project=settings.UI_PROJECT)
   return API_Compute(
-      'service', iterate=True).instanceGroupManagers().listManagedInstances(
-          project=settings.UI_PROJECT,
-          zone=settings.UI_ZONE,
-          instanceGroupManager='starthinker-worker-group',
-          filter=' OR '.join(
-              ['(instanceStatus = "%s")' % status for status in statuses]),
-          orderBy='creationTimestamp desc').execute()
+    Configuration(
+      service=settings.UI_SERVICE,
+      project=settings.UI_PROJECT
+    ),
+    auth='service',
+    iterate=True
+  ).instanceGroupManagers().listManagedInstances(
+    project=settings.UI_PROJECT,
+    zone=settings.UI_ZONE,
+    instanceGroupManager='starthinker-worker-group',
+    filter=' OR '.join(['(instanceStatus = "%s")' % status for status in statuses]),
+    orderBy='creationTimestamp desc'
+  ).execute()

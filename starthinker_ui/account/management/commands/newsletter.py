@@ -21,7 +21,7 @@ from time import sleep
 
 from django.core.management.base import BaseCommand, CommandError
 
-from starthinker.util.project import project
+from starthinker.util.configuration import Configuration
 from starthinker.util.email import send_email
 from starthinker.util.email.template import EmailTemplate
 from starthinker_ui.account.models import Account
@@ -84,9 +84,6 @@ class Command(BaseCommand):
     if user:
       print('SEND USER FOUND')
 
-      # initialize project
-      project.initialize(_user=user)
-
       # load template
       with open(kwargs['template'], 'r') as json_file:
         email = EmailTemplate(json.load(json_file))
@@ -105,7 +102,7 @@ class Command(BaseCommand):
               print(email.get_html())
             else:
               # send message via email
-              send_email('user', account.email, kwargs['email_from'], None,
+              send_email(Configuration(user=user), 'user', account.email, kwargs['email_from'], None,
                          email.get_subject(), email.get_text(),
                          email.get_html())
               sleep(1)

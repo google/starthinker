@@ -22,7 +22,7 @@ from functools import wraps
 from django.conf import settings
 from django.http import HttpResponseRedirect
 
-from starthinker.util.auth.wrapper import CredentialsFlowWrapper
+from starthinker.util.auth_wrapper import CredentialsFlowWrapper
 
 
 def permission_admin():

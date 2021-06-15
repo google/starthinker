@@ -19,7 +19,7 @@
 from django.apps import AppConfig
 from django.conf import settings
 
-from starthinker.util.project import project
+from starthinker.util.configuration import Configuration
 from starthinker.util.storage import bucket_create
 
 USER_BUCKET = '%s-starthinker-credentials' % settings.UI_PROJECT.split(
@@ -33,6 +33,13 @@ class AccountConfig(AppConfig):
 
   def ready(self):
     print('CHECKING IF USER BUCKET EXISTS:', USER_BUCKET, USER_LOCATION)
-    project.initialize(
-        _project=settings.UI_PROJECT, _service=settings.UI_SERVICE)
-    bucket_create('service', settings.UI_PROJECT, USER_BUCKET, USER_LOCATION)
+    bucket_create(
+      Configuration(
+        service=settings.UI_SERVICE,
+        project=settings.UI_PROJECT
+      ),
+      'service',
+      settings.UI_PROJECT,
+      USER_BUCKET,
+      USER_LOCATION
+    )
