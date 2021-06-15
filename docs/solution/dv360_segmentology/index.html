@@ -196,7 +196,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 <td>Wait for <b>BigQuery->->->Census_Join</b> to be created.</td>
               </tr>
               <tr>
-                <td>Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets</td>
+                <td>Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets</td>
               </tr>
               <tr>
                 <td>Copy <a href='https://datastudio.google.com/c/u/0/reporting/3673497b-f36f-4448-8fb9-3e05ea51842f/' target='_blank'>DV360 Segmentology Sample</a>. Leave the Data Source as is, you will change it in the next step.</td>
@@ -218,7 +218,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </tr>
             <tr>
               <td>Age</td>
-              <td>Aug. 13, 2020 (8 months, 1 week)</td>
+              <td>Aug. 13, 2020 (10 months)</td>
             </tr>
             <tr>
               <td>Authors</td>
@@ -344,7 +344,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                                 "description": "Name of report, not needed if ID used."
                             }
                         },
-                        "dataRange": "LAST_30_DAYS",
+                        "dataRange": "LAST_365_DAYS",
                         "format": "CSV"
                     },
                     "params": {
@@ -484,7 +484,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 }
             },
             "from": {
-                "query": "SELECT            Partner_Id,            Partner,            Advertiser_Id,            Advertiser,            Campaign_Id,            Campaign,            Zip,            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression_Percent,            SAFE_DIVIDE(Clicks, Impressions) AS Click_Percent,            SAFE_DIVIDE(Conversions, Impressions) AS Conversion_Percent,            Impressions AS Impressions          FROM            `{project}.{dataset}.DV360_KPI`;        ",
+                "query": "SELECT            Partner_Id,            Partner,            Advertiser_Id,            Advertiser,            Campaign_Id,            Campaign,            Zip,            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression,            SAFE_DIVIDE(Clicks, Impressions) AS Click,            SAFE_DIVIDE(Conversions, Impressions) AS Conversion,            Impressions AS Impressions          FROM            `{project}.{dataset}.DV360_KPI`;        ",
                 "parameters": {
                     "project": {
                         "field": {
@@ -570,9 +570,9 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "Impressions"
                 ],
                 "correlate": [
-                    "Impression_Percent",
-                    "Click_Percent",
-                    "Conversion_Percent"
+                    "Impression",
+                    "Click",
+                    "Conversion"
                 ],
                 "dataset": {
                     "field": {
