@@ -58,8 +58,8 @@ If your recipe requires [User Credentials](#Optional-Setup-User-Credentials) or 
 All parameters are optional:
 
 ```
-python st_run -h
-python st_run [RECIPE JSON FILE] -u [SERVICE JSON PATH] -s [SERVICE JSON PATH] -p [GCP PROJECT ID]
+python st_recipe -h
+python st_recipe [RECIPE JSON FILE] -u [SERVICE JSON PATH] -s [SERVICE JSON PATH] -p [GCP PROJECT ID]
 ```
 
 You should see each step of your your recipe executing on the command line.

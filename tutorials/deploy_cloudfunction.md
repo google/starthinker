@@ -24,13 +24,14 @@ bash install/deploy.sh
 [![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_clouf_function.md)
 
 ## Recipe Quick Start
- - A sample cloud scheduler job is ready: https://console.cloud.google.com/cloudscheduler
- - It will run a simple hello world task: https://github.com/google/starthinker/tree/master/starthinker/task/hello
- - Extend the sample with scripts from: https://github.com/google/starthinker/tree/master/scripts
- - Convert a script to a recipe, replaces {"field":{...}} with values: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#run-a-script
- - If you need service cerdentials see: https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md
- - If you need user cerdentials see: https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials
- - To make the cron scheduler easier to use: https://crontab.guru/
+ - A [sample job is](https://github.com/google/starthinker/blob/master/install/enterprise.sh#L313) is created on [cloud scheduler](https://console.cloud.google.com/cloudscheduler).
+ - It will run a [hello world task](https://github.com/google/starthinker/tree/master/starthinker/task/hello).
+ - Extend the sample with [other recipe tasks](https://github.com/google/starthinker/tree/master/scripts).
+ - When extending recipes, each **{"field":{...}}** entry in a recipe must be replaced with actual values.
+ - [Service cerdentials](https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md) are only used if a task **auth** is set to **service**.
+ - [User credentials](https://github.com/google/starthinker/blob/master/tutorials/deploy_commandline.md#optional-setup-user-credentials) are only used if a task **auth** is set to **user**.
+ - [Client credentials](https://github.com/google/starthinker/blob/master/tutorials/cloud_client_installed.md) are only used if a task **auth** is set to **user**, and user credentials are empty.
+ - [Online utility](https://crontab.guru/) to make scheduler easier to use.
 
 Next, review list of available tasks in the [Recipe Gallery](https://google.github.io/starthinker/), view [Scripts](../scripts/), or check [Command Line Helpers](helpers.md).
 

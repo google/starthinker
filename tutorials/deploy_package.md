@@ -33,58 +33,61 @@ st_auth -h
 ```
 
 ## Use A Function
-If all you need is one of the [utilities](../starthinker/util/) to build your own data pipe this is the smallest footprint.
-This example creates a Google Sheet by name and lists all the DV360 reports under a user account. Simply PIP install it and run recipes...
+The functions in [util](../starthinker/util/) or [task](../starthinker/task/) are directly usable.
+This example creates a Google Sheet by name and lists all the DV360 reports under a user account.
+Simply PIP install it and run recipes...
 
 ```
 import json
 
 # import StarThinker functions
-from starthinker.util.project import project
+from starthinker.util.configuration import Configuration
 from starthinker.util.sheets import sheets_create
 from starthinker.util.google_api import API_DBM
 
 # initialize credentials
-project.initialize(_user='[USER CREDENTIALS JSON STRING OR PATH]')
+config = Configuration(user='[USER CREDENTIALS JSON STRING OR PATH]')
 
 # create a sheet
-sheets_create('user', 'Test Sheet', 'Test Tab')
+sheets_create(config, 'user', 'Test Sheet', 'Test Tab')
 
 # list all your reports in DV360
-for report in API_DBM('user', iterate=True).queries().listqueries().execute():
+for report in API_DBM(config, 'user', iterate=True).queries().listqueries().execute():
   print(json.dumps(report, indent=2, sort_keys=True))
 ```
+
+For more stand alone examples see [tools directory](../starthinker/tool/).
 
 ## Run A Recipe
 You can use the StarThinker module directly in any python project to run a recipe. The following
 example will execute two tasks in sequence in a single process.
 
 ```
-from starthinker.util.project import project
+from starthinker.util.onfiguration import execute, Configuration
 
 if __name__ == "__main__":
-  var_service = '[SERVICE CREDENTIALS JSON STRING OR PATH]'
-  var_user = '[USER CREDENTIALS JSON STRING OR PATH]'
-  var_cloud_id = '[GOOGLE CLOUD PROJECT ID]'
+  TASKS = [
+    { "hello":{
+      "auth":"user",
+      "say":"Hello World"
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":"Test_Dataset"
+    }}
+  ]
 
-  var_recipe = {
-    "setup":{
-      "id":var_cloud_id
-    },
-    "tasks":[
-      { "hello":{
-        "auth":"user",
-        "say":"Hello World"
-      }},
-      { "dataset":{
-        "auth":"service",
-        "dataset":"Test_Dataset"
-      }}
-    ]
-  }
-
-  project.initialize(_recipe=var_recipe, _user=var_user, _service=var_service, _verbose=True)
-  project.execute()
+  execute(
+    config=Configuration(
+      client='[CLIENT CREDENTIALS JSON STRING OR PATH]',
+      user='[USER CREDENTIALS JSON STRING OR PATH]',
+      service='[SERVICE CREDENTIALS JSON STRING OR PATH]',
+      project='[GOOGLE CLOUD PROJECT ID]',
+      verbose=True
+    ),
+    tasks=TASKS,
+    force=True
+  )
 ```
 
 ## Additional Resources

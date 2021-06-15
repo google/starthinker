@@ -64,7 +64,7 @@ CAUTION: UI Machine is set to use low memory buffers, recipes will take a long t
 cd /home/starthinker
 source starthinker_assets/development.sh
 python starthinker_ui/manage.py recipe_to_json --recipe 116
-python starthinker/all/run.py /home/starthinker/starthinker_cron/recipe_116.json
+python starthinker/tool/recipe.py /home/starthinker/starthinker_cron/recipe_116.json
 ```
 
 ### Force Run A Recipe On Workers
