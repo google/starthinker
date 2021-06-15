@@ -10,7 +10,7 @@
     "sample":"https://docs.google.com/spreadsheets/d/1EjprWTDLWOvkV7znA0P4uciz0_E5_TNn3N3f8J4jTwA",
     "documentation":"https://github.com/google/starthinker/blob/master/tutorials/Bulkdozer/Installation_and_User_guides.md",
     "from":["sheets", "apps script"],
-    "to":["cm"],
+    "to":["cm360"],
     "pitches":[
       "Reduce time to market of campaigns and provide the agility to respond quickly to changes.",
       "Quality of campaigns increases as fewer manual steps lead to fewer errors, and the visualization that Bulkdozer provides is invaluable to validate and audit campaigns.",

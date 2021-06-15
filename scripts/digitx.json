@@ -6,7 +6,7 @@
     "description":"Combines DV360 and CM reports into a single audience reach report.",
     "image":"https://storage.googleapis.com/starthinker-ui/deal_finder.png",
     "sample":"https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO",
-    "from":["dv360", "cm"],
+    "from":["dv360", "cm360"],
     "to":["bigquery", "datastudio"],
     "pitches":[
       "Provide audience reach report.",

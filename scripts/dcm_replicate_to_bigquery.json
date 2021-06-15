@@ -4,7 +4,7 @@
     "license":"Licensed under the Apache License, Version 2.0",
     "copyright":"Copyright 2020 Google LLC",
     "icon":"donut_small",
-    "from":["cm", "sheets"],
+    "from":["cm360", "sheets"],
     "to":["bigquery"],
     "title":"CM360 Report Replicate",
     "description":"Replicate a report across multiple networks and advertisers.",

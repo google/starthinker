@@ -6,7 +6,7 @@
     "icon":"monetization_on",
     "title":"Dynamic Costs Reporting",
     "description":"Calculate DV360 cost at the dynamic creative combination level.",
-    "from":["cm", "sheets"],
+    "from":["cm360", "sheets"],
     "to":["bigquery"],
     "status":"NEEDS FIX - test not passing.",
     "instructions":[

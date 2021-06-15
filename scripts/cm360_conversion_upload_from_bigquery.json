@@ -7,7 +7,7 @@
     "title":"CM360 Conversion Upload From BigQuery",
     "description":"Move from BigQuery to CM.",
     "from":["bigquery"],
-    "to":["cm"],
+    "to":["cm360"],
     "instructions":[
       "Specify a CM Account ID, Floodligh Activity ID and Conversion Type.",
       "Include BigQuery dataset and table.",

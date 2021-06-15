@@ -10,7 +10,7 @@
     "sample":"https://docs.google.com/spreadsheets/d/19Sxy4BDtK9ocq_INKTiZ-rZHgqhfpiiokXOTsYzmah0/edit?usp=sharing",
     "documentation":"https://github.com/google/starthinker/blob/master/tutorials/appscript_troubleshooting.md",
     "from":["apps script", "sheets"],
-    "to":["cm"],
+    "to":["cm360"],
     "pitches":[
       "Update CM Placement key value pairs in bulk.",
       "Speed up tag editing.",

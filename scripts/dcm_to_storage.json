@@ -6,7 +6,7 @@
     "icon":"donut_small",
     "title":"CM360 Report To Storage",
     "description":"Move existing CM report into a Storage bucket.",
-    "from":["cm"],
+    "from":["cm360"],
     "to":["storage"],
     "instructions":[
       "Specify an account id.",
