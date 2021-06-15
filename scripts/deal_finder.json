@@ -26,7 +26,7 @@
     },
     "instructions":[
       "Wait for <b>BigQuery->StarThinker Data->(field:recipe_slug}->Deal_Finder_Dashboard</b> to be created.",
-      "Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets",
+      "Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets",
       "Copy <a href='https://datastudio.google.com/open/1QrWNTurvQT6nx20vnzdDveSzSmRjqHxQ' target='_blank'>Deal Finder Sample Data</a>.",
       "Click Edit Connection, and change to <b>BigQuery->StarThinker Data->{field:recipe_slug}->Deal_Finder_Dashboard</b>.",
       "Copy <a href='https://datastudio.google.com/open/1fjRI5AIKTYTA4fWs-pYkJbIMgCumlMyO' target='_blank'>Deal Finder Sample Report</a>.",
