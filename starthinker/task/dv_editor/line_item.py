@@ -21,7 +21,7 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
@@ -30,10 +30,11 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def line_item_clear(project, task):
+def line_item_clear(config, task):
   table_create(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "DV_LineItems",
     Discovery_To_BigQuery(
@@ -45,6 +46,7 @@ def line_item_clear(project, task):
   )
 
   sheets_clear(
+    config,
     task["auth_sheets"],
     task["sheet"],
     "Line Items",
@@ -52,11 +54,12 @@ def line_item_clear(project, task):
   )
 
 
-def line_item_load(project, task):
+def line_item_load(config, task):
 
   # load multiple advertisers from user defined sheet
   def line_item_load_multiple():
     campaigns = set([lookup_id(row[0]) for row in get_rows(
+      config,
       task["auth_sheets"],
       { "sheets": {
         "sheet": task["sheet"],
@@ -67,6 +70,7 @@ def line_item_load(project, task):
     )])
 
     rows = get_rows(
+      config,
       task["auth_sheets"],
       { "sheets": {
         "sheet": task["sheet"],
@@ -79,6 +83,7 @@ def line_item_load(project, task):
     # String for filtering which entityStatus enums we want to see in the sheet
     for row in rows:
       for record in API_DV360(
+        config,
         task["auth_dv"],
         iterate=True
       ).advertisers().lineItems().list(
@@ -90,6 +95,7 @@ def line_item_load(project, task):
 
   # write line_items to database
   put_rows(
+    config,
     task["auth_bigquery"],
     {
       "bigquery": {
@@ -108,6 +114,7 @@ def line_item_load(project, task):
 
   # write line_items to sheet
   put_rows(
+    config,
     task["auth_sheets"],
     { "sheets": {
       "sheet": task["sheet"],
@@ -116,6 +123,7 @@ def line_item_load(project, task):
       "range": "A2"
     }},
     get_rows(
+      config,
       task["auth_bigquery"],
       { "bigquery": {
         "dataset": task["dataset"],
@@ -179,9 +187,10 @@ def line_item_load(project, task):
   )
 
 
-def line_item_audit(project, task):
+def line_item_audit(config, task):
 
   put_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],
@@ -226,6 +235,7 @@ def line_item_audit(project, task):
       "format": "CSV"
     }},
     get_rows(
+      config,
       task["auth_sheets"],
       { "sheets": {
         "sheet": task["sheet"],
@@ -238,8 +248,9 @@ def line_item_audit(project, task):
 
   # Create Insert View
   query_to_view(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "INSERT_LineItems",
     """SELECT
@@ -346,8 +357,9 @@ def line_item_audit(project, task):
 
   # Create Audit View
   query_to_view(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "AUDIT_LineItems",
     """WITH
@@ -393,8 +405,9 @@ def line_item_audit(project, task):
   )
 
   query_to_view(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "PATCH_LineItems",
     """SELECT *
@@ -405,7 +418,7 @@ def line_item_audit(project, task):
   )
 
 
-def line_item_patch(project, task, commit=False):
+def line_item_patch(config, task, commit=False):
 
   def date_edited(value):
     y, m, d = value.split("-")
@@ -414,6 +427,7 @@ def line_item_patch(project, task, commit=False):
   patches = []
 
   rows = get_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],
@@ -519,16 +533,17 @@ def line_item_patch(project, task, commit=False):
         })
 
   patch_masks(patches)
-  patch_preview(project, task, patches)
+  patch_preview(config, task, patches)
 
   if commit:
-    line_item_commit(project, task, patches)
+    line_item_commit(config, task, patches)
 
 
-def line_item_insert(project, task, commit=False):
+def line_item_insert(config, task, commit=False):
   inserts = []
 
   rows = get_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],
@@ -551,13 +566,13 @@ def line_item_insert(project, task, commit=False):
       }
     })
 
-  patch_preview(project, task, inserts)
+  patch_preview(config, task, inserts)
 
   if commit:
-    line_item_commit(project, task, inserts)
+    line_item_commit(config, task, inserts)
 
 
-def line_item_commit(project, task, patches):
+def line_item_commit(config, task, patches):
   for patch in patches:
     if not patch.get("line_item"):
       continue
@@ -565,6 +580,7 @@ def line_item_commit(project, task, patches):
     try:
       if patch["action"] == "DELETE":
         response = API_DV360(
+          config,
           task["auth_dv"]
         ).advertisers().lineItems().delete(
           **patch["parameters"]
@@ -572,6 +588,7 @@ def line_item_commit(project, task, patches):
         patch["success"] = response
       elif patch["action"] == "PATCH":
         response = API_DV360(
+          config,
           task["auth_dv"]
         ).advertisers().lineItems().patch(
           **patch["parameters"]
@@ -579,6 +596,7 @@ def line_item_commit(project, task, patches):
         patch["success"] = response["lineItemId"]
       elif patch["action"] == "INSERT":
         response = API_DV360(
+          config,
           task["auth_dv"]
         ).advertisers().lineItems().create(
           **patch["parameters"]
@@ -586,6 +604,7 @@ def line_item_commit(project, task, patches):
         patch["success"] = response["lineItemId"]
       elif patch["action"] == "TARGETING":
         response = API_DV360(
+          config,
           task["auth_dv"]
         ).advertisers().lineItems().bulkEditAdvertiserAssignedTargetingOptions(
           **patch["parameters"]
@@ -594,5 +613,5 @@ def line_item_commit(project, task, patches):
     except Exception as e:
       patch["error"] = str(e)
     finally:
-      patch_log(project, task, patch)
-  patch_log(project, task)
+      patch_log(config, task, patch)
+  patch_log(config, task)

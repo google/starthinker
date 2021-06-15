@@ -16,24 +16,24 @@
 #
 ###########################################################################
 
-from starthinker.util.project import from_parameters
 from starthinker.util.storage import bucket_create, bucket_access
 
-
-@from_parameters
-def bucket(project, task):
-  if project.verbose:
+def bucket(config, task):
+  if config.verbose:
     print('BUCKET', task['bucket'])
 
-  # create bucket
-  bucket_create(task['auth'], project.id, task['bucket'])
+  bucket_create(
+    config,
+    task['auth'],
+    config.project,
+    task['bucket']
+  )
+
   bucket_access(
-      task['auth'],
-      project.id,
-      task['bucket'],
-      emails=task.get('emails', []),
-      groups=task.get('groups', []))
-
-
-if __name__ == '__main__':
-  bucket()
+    config,
+    task['auth'],
+    config.project,
+    task['bucket'],
+    emails=task.get('emails', []),
+    groups=task.get('groups', [])
+  )

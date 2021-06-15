@@ -16,28 +16,22 @@
 #
 ###########################################################################
 
-from starthinker.util.project import from_parameters
 from starthinker.util.sdf import sdf_download, sdf_to_bigquery
 
 
-@from_parameters
-def sdf(project, task):
-  if project.verbose:
+def sdf(config, task):
+  if config.verbose:
     print('SDF')
 
   # Download sdf files
-  sdf_zip_file = sdf_download(task['auth'], task['version'],
+  sdf_zip_file = sdf_download(config, task['auth'], task['version'],
                               task['partner_id'],
                               task['file_types'],
                               task['filter_type'],
                               task['read']['filter_ids'])
 
   # Load data into BigQuery
-  sdf_to_bigquery(sdf_zip_file, project.id, task['dataset'],
+  sdf_to_bigquery(config, sdf_zip_file, config.project, task['dataset'],
                   task['time_partitioned_table'],
                   task['create_single_day_table'],
                   task.get('table_suffix', ''))
-
-
-if __name__ == '__main__':
-  sdf()

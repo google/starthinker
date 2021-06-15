@@ -18,18 +18,17 @@
 
 import json
 
-from starthinker.util.project import from_parameters
 from starthinker.util.bigquery import rows_to_table, query_to_view
-from starthinker.util.dcm import report_build, report_file, report_to_rows, report_clean, report_schema, DCM_CHUNK_SIZE
+from starthinker.util.cm import report_build, report_file, report_to_rows, report_clean, report_schema, DCM_CHUNK_SIZE
 
 
-def write_report(project, task, report, dataset, table):
+def write_report(config, task, report, dataset, table):
   # turn report file into rows
   rows = report_to_rows(report)
   rows = report_clean(rows)
 
   if rows:
-    if project.verbose:
+    if config.verbose:
       print('DYNAMIC COSTS WRITTEN:', table)
 
     # pull DCM schema automatically
@@ -39,17 +38,17 @@ def write_report(project, task, report, dataset, table):
       raise ValueError('REPORT DID NOT RUN')
 
     # write report to bigquery
-    rows_to_table(task['out']['auth'], project.id,
+    rows_to_table(config, task['out']['auth'], config.project,
                   task['out']['dataset'], table, rows, schema, 0)
 
   else:
-    if project.verbose:
+    if config.verbose:
       print('DYNAMIC COSTS REPORT NOT READY:', table)
 
 
-def report_combos(project, task, name, dateRange, schedule, advertiser, campaign,
+def report_combos(config, task, name, dateRange, schedule, advertiser, campaign,
                   dynamicProfile):
-  if project.verbose:
+  if config.verbose:
     print('DYNAMIC COSTS COMBOS:', name)
 
   # basic report schema, with no dynamic elements
@@ -107,22 +106,22 @@ def report_combos(project, task, name, dateRange, schedule, advertiser, campaign
   print(json.dumps(schema, indent=2))
 
   # create the report if it does not exist
-  report = report_build(task['auth'], task['account'], schema)
+  report = report_build(config, task['auth'], task['account'], schema)
 
   # fetch report file if it exists ( timeout = 0 means grab most reent ready )
-  filename, filedata = report_file(task['auth'],
+  filename, filedata = report_file(config, task['auth'],
                                    task['account'], report['id'], None,
                                    60, DCM_CHUNK_SIZE)
 
   # write report to a table ( avoid collisions as best as possible )
   table_name = 'Dynamic_Costs_%s_Dynamic_Combos' % name
-  write_report(project, task, filedata, task['out']['dataset'], table_name)
+  write_report(config, task, filedata, task['out']['dataset'], table_name)
 
   return table_name
 
 
-def report_main(project, task, name, dateRange, schedule, advertiser, campaign, shadow=True):
-  if project.verbose:
+def report_main(config, task, name, dateRange, schedule, advertiser, campaign, shadow=True):
+  if config.verbose:
     print('DYNAMIC COSTS MAIN:', name)
 
   # base report schema
@@ -160,26 +159,27 @@ def report_main(project, task, name, dateRange, schedule, advertiser, campaign, 
     schema['criteria']['metricNames'].append('dfa:dbmCost')
 
   # create the report if it does not exist
-  report = report_build(task['auth'], task['account'], schema)
+  report = report_build(config, task['auth'], task['account'], schema)
 
   # fetch report file if it exists ( timeout = 0 means grab most reent ready )
-  filename, filedata = report_file(task['auth'],
+  filename, filedata = report_file(config, task['auth'],
                                    task['account'], report['id'], None,
                                    60, DCM_CHUNK_SIZE)
 
   # write report to a table ( avoid collisions as best as possible )
   table_name = 'Dynamic_Costs_%s_Main_Advertiser' % name
-  write_report(project, task, filedata, task['out']['dataset'], table_name)
+  write_report(config, task, filedata, task['out']['dataset'], table_name)
 
   return table_name
 
 
-def report_shadow(project, task, name, dateRange, schedule, advertiser, campaign):
-  if project.verbose:
+def report_shadow(config, task, name, dateRange, schedule, advertiser, campaign):
+  if config.verbose:
     print('DYNAMIC COSTS SHADOW:', name)
 
   # create the report if it does not exist
   report = report_build(
+      config,
       task['auth'], task['account'], {
           'kind': 'dfareporting#report',
           'type': 'STANDARD',
@@ -210,18 +210,18 @@ def report_shadow(project, task, name, dateRange, schedule, advertiser, campaign
       })
 
   # fetch report file if it exists ( timeout = 0 means grab most reent ready )
-  filename, filedata = report_file(task['auth'],
+  filename, filedata = report_file(config, task['auth'],
                                    task['account'], report['id'])
 
   # write report to a table ( avoid collisions as best as possible )
   table_name = 'Dynamic_Costs_%s_Shadow_Advertiser' % name
-  write_report(project, task, filedata, task['out']['dataset'], table_name)
+  write_report(config, task, filedata, task['out']['dataset'], table_name)
 
   return table_name
 
 
-def view_combine(project, task, name, combos_table, main_table, shadow_table):
-  if project.verbose:
+def view_combine(config, task, name, combos_table, main_table, shadow_table):
+  if config.verbose:
     print('DYNAMIC COSTS VIEW:', name)
 
   if shadow_table:
@@ -235,7 +235,7 @@ def view_combine(project, task, name, combos_table, main_table, shadow_table):
       JOIN `%(project)s.%(dataset)s.%(shadow_table)s` shadow
       ON STARTS_WITH(shadow.Placement, combos.Placement)
       """ % {
-          'project': project.id,
+          'project': config.project,
           'dataset': task['out']['dataset'],
           'combos_table': combos_table,
           'main_table': main_table,
@@ -250,21 +250,20 @@ def view_combine(project, task, name, combos_table, main_table, shadow_table):
       JOIN `%(project)s.%(dataset)s.%(main_table)s` main
       ON combos.Placement_Id = main.Placement_Id
       """ % {
-          'project': project.id,
+          'project': config.project,
           'dataset': task['out']['dataset'],
           'combos_table': combos_table,
           'main_table': main_table
       }
 
-  query_to_view(task['out']['auth'], project.id,
+  query_to_view(config, task['out']['auth'], config.project,
                 task['out']['dataset'],
                 'Dynamic_Costs_%s_Analysis' % name, query, False)
 
 
-@from_parameters
-def dynamic_costs(project, task):
+def dynamic_costs(config, task):
 
-  if project.verbose:
+  if config.verbose:
     print('DYNAMIC COSTS PARAMETERS', task)
 
   # allows each advertiser to run multiple reports ( somewhat collision avoidance )
@@ -289,18 +288,18 @@ def dynamic_costs(project, task):
     }
     schedule = {'active': True, 'repeats': 'DAILY', 'every': 1}
 
-  combos_table = report_combos(project, task, unique_name, date_range, schedule,
+  combos_table = report_combos(config, task, unique_name, date_range, schedule,
                                task['main_advertiser_id'],
                                task['main_campaign_id'],
                                task['dynamic_profile_id'])
 
-  main_table = report_main(project, task, unique_name, date_range, schedule,
+  main_table = report_main(config, task, unique_name, date_range, schedule,
                            task['main_advertiser_id'],
                            task['main_campaign_id'], shadow)
 
   if shadow:
     shadow_table = report_shadow(
-        project,
+        config,
         task,
         unique_name,
         date_range,
@@ -310,8 +309,4 @@ def dynamic_costs(project, task):
   else:
     shadow_table = None
 
-  view_combine(project, task, unique_name, combos_table, main_table, shadow_table)
-
-
-if __name__ == '__main__':
-  dynamic_costs()
+  view_combine(config, task, unique_name, combos_table, main_table, shadow_table)

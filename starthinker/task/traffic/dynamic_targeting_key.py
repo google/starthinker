@@ -31,10 +31,10 @@ class DynamicTargetingKeyDAO(BaseDAO):
   updating dynamic targeting key.
   """
 
-  def __init__(self, auth, profile_id, is_admin):
+  def __init__(self, config, auth, profile_id, is_admin):
     """Initializes DynamicTargetingKeyDAO with profile id and authentication scheme."""
 
-    super(DynamicTargetingKeyDAO, self).__init__(auth, profile_id, is_admin)
+    super(DynamicTargetingKeyDAO, self).__init__(config, auth, profile_id, is_admin)
 
     self._id_field = None
     self._search_field = None

@@ -23,7 +23,6 @@
 
 import json, datetime
 from urllib.request import urlopen
-from starthinker.util.project import from_parameters
 from starthinker.util.data import put_rows
 
 # Used to turn wind direction in degrees to compass directions
@@ -167,8 +166,7 @@ def m_to_inches(value):
   return value / 39.37
 
 
-@from_parameters
-def weather_gov(project, task):
+def weather_gov(config, task):
   """Main StarThinker entrypoint for weather_gov task.
 
   "weather_gov": {
@@ -195,7 +193,7 @@ def weather_gov(project, task):
   sheets output as an example.
 
   """
-  if project.verbose:
+  if config.verbose:
     print('weather_gov')
 
   rows = []
@@ -218,8 +216,4 @@ def weather_gov(project, task):
         'NOAA'
     ]]
 
-  put_rows(task['auth'], task['out'], rows)
-
-
-if __name__ == '__main__':
-  weather_gov()
+  put_rows(config, task['auth'], task['out'], rows)

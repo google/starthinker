@@ -20,14 +20,15 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 
 
-def location_list_clear(project, task):
+def location_list_clear(config, task):
   table_create(
+    config,
     task['auth_bigquery'],
-    project.id,
+    config.project,
     task['dataset'],
     'DV_Location_Lists',
     Discovery_To_BigQuery(
@@ -39,11 +40,12 @@ def location_list_clear(project, task):
   )
 
 
-def location_list_load(project, task):
+def location_list_load(config, task):
 
   # load multiple from user defined sheet
   def load_multiple():
     advertisers = get_rows(
+      config,
       task['auth_sheets'],
       { 'sheets': {
         'sheet': task['sheet'],
@@ -55,16 +57,18 @@ def location_list_load(project, task):
 
     for advertiser in advertisers:
       yield from API_DV360(
+        config,
         task['auth_dv'],
         iterate=True
       ).advertisers().locationLists().list(
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
-  location_list_clear(project, task)
+  location_list_clear(config, task)
 
   # write to database
   put_rows(
+    config,
     task['auth_bigquery'],
     { 'bigquery': {
       'dataset': task['dataset'],
@@ -82,6 +86,7 @@ def location_list_load(project, task):
 
   # write to sheet
   put_rows(
+    config,
     task['auth_sheets'],
     { 'sheets': {
       'sheet': task['sheet'],
@@ -90,6 +95,7 @@ def location_list_load(project, task):
       'range': 'K2:K'
     }},
     get_rows(
+      config,
       task['auth_bigquery'],
       { 'bigquery': {
         'dataset': task['dataset'],
@@ -107,6 +113,7 @@ def location_list_load(project, task):
   )
 
   put_rows(
+    config,
     task['auth_sheets'],
     { 'sheets': {
       'sheet': task['sheet'],
@@ -115,6 +122,7 @@ def location_list_load(project, task):
       'range': 'L2:L'
     }},
     get_rows(
+      config,
       task['auth_bigquery'],
       { 'bigquery': {
         'dataset': task['dataset'],

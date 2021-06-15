@@ -32,14 +32,12 @@ Buffers are controlled in config.py.
 
 """
 
-from starthinker.util.project import from_parameters
 from starthinker.util.data import put_rows
-from starthinker.util.dbm import report_delete, report_filter, report_build, report_file, report_to_rows, report_clean
+from starthinker.util.dv import report_delete, report_filter, report_build, report_file, report_to_rows, report_clean
 
 
-@from_parameters
-def dbm(project, task):
-  if project.verbose:
+def dbm(config, task):
+  if config.verbose:
     print('DBM')
 
   # name is redundant if title is given, allow skipping use of name for creating reports
@@ -49,37 +47,37 @@ def dbm(project, task):
 
   # check if report is to be deleted
   if task.get('delete', False):
-    if project.verbose:
+    if config.verbose:
       print('DBM DELETE')
-    report_delete(task['auth'],
+    report_delete(config, task['auth'],
                   task['report'].get('report_id', None),
                   task['report'].get('name', None))
 
   # check if report is to be created
   if 'body' in task['report']:
-    if project.verbose:
+    if config.verbose:
       print('DBM BUILD', task['report']['body']['metadata']['title'])
 
     # ceck if filters given ( returns new body )
     if 'filters' in task['report']:
       task['report']['body'] = report_filter(
-          task['auth'], task['report']['body'],
+          config, task['auth'], task['report']['body'],
           task['report']['filters'])
 
     # create the report
-    report = report_build(task['auth'], task['report']['body'])
+    report = report_build(config, task['auth'], task['report']['body'])
 
   # moving a report
   if 'out' in task:
 
     filename, report = report_file(
-        task['auth'], task['report'].get('report_id', None),
+        config, task['auth'], task['report'].get('report_id', None),
         task['report'].get('name', None),
         task['report'].get('timeout', 10))
 
     # if a report exists
     if report:
-      if project.verbose:
+      if config.verbose:
         print('DBM FILE', filename)
 
       # clean up the report
@@ -88,8 +86,4 @@ def dbm(project, task):
 
       # write rows using standard out block in json ( allows customization across all scripts )
       if rows:
-        put_rows(task['auth'], task['out'], rows)
-
-
-if __name__ == '__main__':
-  dbm()
+        put_rows(config, task['auth'], task['out'], rows)

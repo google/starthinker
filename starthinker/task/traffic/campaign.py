@@ -31,11 +31,11 @@ class CampaignDAO(BaseDAO):
   updating campaigns.
   """
 
-  def __init__(self, auth, profile_id, is_admin):
+  def __init__(self, config, auth, profile_id, is_admin):
     """Initializes CampaignDAO with profile id and authentication scheme."""
-    super(CampaignDAO, self).__init__(auth, profile_id, is_admin)
+    super(CampaignDAO, self).__init__(config, auth, profile_id, is_admin)
 
-    self.landing_page_dao = LandingPageDAO(auth, profile_id, is_admin)
+    self.landing_page_dao = LandingPageDAO(config, auth, profile_id, is_admin)
     self._id_field = FieldMap.CAMPAIGN_ID
     self._search_field = FieldMap.CAMPAIGN_NAME
     self._list_name = 'campaigns'

@@ -20,7 +20,7 @@ from starthinker.util.bigquery import query_to_view
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
@@ -31,15 +31,16 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def frequency_cap_clear(project, task):
-  sheets_clear(task["auth_sheets"], task["sheet"], "Frequency Caps",
+def frequency_cap_clear(config, task):
+  sheets_clear(config, task["auth_sheets"], task["sheet"], "Frequency Caps",
                "A2:Z")
 
 
-def frequency_cap_load(project, task):
+def frequency_cap_load(config, task):
 
   # write frequency_caps to sheet
   rows = get_rows(
+      config,
       task["auth_bigquery"], {
           "bigquery": {
               "dataset":
@@ -117,6 +118,7 @@ def frequency_cap_load(project, task):
       })
 
   put_rows(
+      config,
       task["auth_sheets"], {
           "sheets": {
               "sheet": task["sheet"],
@@ -127,8 +129,9 @@ def frequency_cap_load(project, task):
       }, rows)
 
 
-def frequency_cap_audit(project, task):
+def frequency_cap_audit(config, task):
   rows = get_rows(
+      config,
       task["auth_sheets"], {
           "sheets": {
               "sheet": task["sheet"],
@@ -139,6 +142,7 @@ def frequency_cap_audit(project, task):
       })
 
   put_rows(
+      config,
       task["auth_bigquery"], {
           "bigquery": {
               "dataset": task["dataset"],
@@ -163,8 +167,9 @@ def frequency_cap_audit(project, task):
       }, rows)
 
   query_to_view(
+      config,
       task["auth_bigquery"],
-      project.id,
+      config.project,
       task["dataset"],
       "AUDIT_FrequencyCaps",
       """WITH
@@ -197,8 +202,9 @@ def frequency_cap_audit(project, task):
       legacy=False)
 
   query_to_view(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "PATCH_FrequencyCaps",
     """SELECT *
@@ -211,10 +217,11 @@ def frequency_cap_audit(project, task):
   )
 
 
-def frequency_cap_patch(project, task, commit=False):
+def frequency_cap_patch(config, task, commit=False):
   patches = []
 
   rows = get_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],
@@ -265,9 +272,9 @@ def frequency_cap_patch(project, task, commit=False):
       patches.append(patch)
 
   patch_masks(patches)
-  patch_preview(project, task, patches)
+  patch_preview(config, task, patches)
 
   if commit:
-    insertion_order_commit(project, task, patches)
-    line_item_commit(project, task, patches)
-    campaign_commit(project, task, patches)
+    insertion_order_commit(config, task, patches)
+    line_item_commit(config, task, patches)
+    campaign_commit(config, task, patches)

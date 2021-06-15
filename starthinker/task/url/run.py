@@ -31,7 +31,6 @@ from http.client import InvalidURL
 
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.project import from_parameters
 
 
 URL_SCHEMA = [
@@ -42,7 +41,7 @@ URL_SCHEMA = [
 ]
 
 
-def url_fetch(project, task) -> Iterator[dict]:
+def url_fetch(config, task) -> Iterator[dict]:
   """Fetch URL list and return both status code and/or contents.
 
   Takes no parameters, it operates on recipe JSON directly. Core
@@ -53,9 +52,9 @@ def url_fetch(project, task) -> Iterator[dict]:
 
   """
 
-  for url, uri in get_rows(task['auth'], task['urls']):
+  for url, uri in get_rows(config, task['auth'], task['urls']):
 
-    if project.verbose:
+    if config.verbose:
       print('URL/URI', url, uri)
 
     record = {
@@ -88,8 +87,7 @@ def url_fetch(project, task) -> Iterator[dict]:
     yield record
 
 
-@from_parameters
-def url(project:dict, task:dict) -> None:
+def url(config, task:dict) -> None:
   """Entry point for URL task, which pulls URL information from web.
 
   Designed solely to fetch status and/or content from a list of URLs.
@@ -102,11 +100,9 @@ def url(project:dict, task:dict) -> None:
     task['to']['bigquery']['format'] = 'JSON'
 
   put_rows(
+    config,
     task['auth'],
     task['to'],
-    url_fetch(project, task),
+    url_fetch(config, task),
     URL_SCHEMA
   )
-
-if __name__ == '__main__':
-  url()

@@ -216,6 +216,7 @@ class Feed:
   }
 
   def __init__(self,
+               config,
                auth,
                trix_id,
                feed_name,
@@ -236,6 +237,7 @@ class Feed:
         to determine which tabs exist in the feed so the correct one can be
         selected for the entity this Feed object represents.
     """
+    self.config = config
     self.auth = auth
     self.trix_id = trix_id
     self.trix_range = 'A1:AZ'
@@ -248,7 +250,7 @@ class Feed:
     if spreadsheet:
       self.spreadsheet = spreadsheet
     else:
-      self.spreadsheet = sheets_get(self.auth, self.trix_id)
+      self.spreadsheet = sheets_get(self.config, self.auth, self.trix_id)
 
     self.raw_feed = self._get_feed()
     self.feed = self._feed_to_dict(parse=self._parse)
@@ -258,7 +260,7 @@ class Feed:
     new_feed = self._dict_to_feed(parse=self._parse)
 
     if len(new_feed) > 1:
-      sheets_write(self.auth, self.trix_id, self.tab_name, self.trix_range,
+      sheets_write(self.config, self.auth, self.trix_id, self.tab_name, self.trix_range,
                    new_feed)
 
   def _get_feed(self):
@@ -274,7 +276,7 @@ class Feed:
         for sheet in self.spreadsheet['sheets']:
           if sheet['properties']['title'] == tab_name:
             self.tab_name = tab_name
-            return sheets_read(self.auth, self.trix_id, tab_name,
+            return sheets_read(self.config, self.auth, self.trix_id, tab_name,
                                self.trix_range)
 
     return [[]]

@@ -37,19 +37,19 @@ class AdDAO(BaseDAO):
   updating ads.
   """
 
-  def __init__(self, auth, profile_id, is_admin):
+  def __init__(self, config, auth, profile_id, is_admin):
     """Initializes AdDAO with profile id and authentication scheme."""
-    super(AdDAO, self).__init__(auth, profile_id, is_admin)
+    super(AdDAO, self).__init__(config, auth, profile_id, is_admin)
 
     self._id_field = FieldMap.AD_ID
     self._search_field = FieldMap.AD_NAME
     self._list_name = 'ads'
 
-    self._creative_dao = CreativeDAO(auth, profile_id, is_admin)
-    self._placement_dao = PlacementDAO(auth, profile_id, is_admin)
-    self._campaign_dao = CampaignDAO(auth, profile_id, is_admin)
-    self._event_tag_dao = EventTagDAO(auth, profile_id, is_admin)
-    self._landing_page_dao = LandingPageDAO(auth, profile_id, is_admin)
+    self._creative_dao = CreativeDAO(config, auth, profile_id, is_admin)
+    self._placement_dao = PlacementDAO(config, auth, profile_id, is_admin)
+    self._campaign_dao = CampaignDAO(config, auth, profile_id, is_admin)
+    self._event_tag_dao = EventTagDAO(config, auth, profile_id, is_admin)
+    self._landing_page_dao = LandingPageDAO(config, auth, profile_id, is_admin)
 
     self._parent_filter_name = 'campaignIds'
     self._parent_dao = self._campaign_dao

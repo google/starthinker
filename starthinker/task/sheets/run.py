@@ -16,32 +16,31 @@
 #
 ###########################################################################
 
-from starthinker.util.project import from_parameters
 from starthinker.util.sheets import sheets_create, sheets_tab_create, sheets_read, sheets_write, sheets_clear, sheets_tab_copy, sheets_tab_delete
 from starthinker.util.bigquery import get_schema, rows_to_table
 from starthinker.util.csv import rows_to_type
 from starthinker.util.data import get_rows
 
 
-@from_parameters
-def sheets(project, task):
-  if project.verbose:
+def sheets(config, task):
+  if config.verbose:
     print('SHEETS')
 
   # if sheet or tab is missing, don't do anything
   if not task.get('sheet') or not task.get('tab'):
-    if project.verbose:
+    if config.verbose:
       print('Missing Sheet and/or Tab, skipping task.')
     return
 
   # delete if specified, will delete sheet if no more tabs remain
   if task.get('delete', False):
-    sheets_tab_delete(task['auth'], task['sheet'],
+    sheets_tab_delete(config, task['auth'], task['sheet'],
                       task['tab'])
 
   # create a sheet and tab if specified, if template
   if 'template' in task:
     sheets_create(
+        config,
         task['auth'],
         task['sheet'],
         task['tab'],
@@ -52,6 +51,7 @@ def sheets(project, task):
   # copy template if specified ( clear in this context means overwrite )
   #if task.get('template', {}).get('sheet'):
   #  sheets_tab_copy(
+  #    config,
   #    task['auth'],
   #    task['template']['sheet'],
   #    task['template']['tab'],
@@ -63,6 +63,7 @@ def sheets(project, task):
   # if no template at least create tab
   #else:
   #  sheets_tab_create(
+  #    config,
   #    task['auth'],
   #    task['sheet'],
   #    task['tab']
@@ -70,13 +71,14 @@ def sheets(project, task):
 
   # clear if specified
   if task.get('clear', False):
-    sheets_clear(task['auth'], task['sheet'],
+    sheets_clear(config, task['auth'], task['sheet'],
                  task['tab'], task.get('range', 'A1'))
 
   # write data if specified
   if 'write' in task:
-    rows = get_rows(task['auth'], task['write'])
+    rows = get_rows(config, task['auth'], task['write'])
     sheets_write(
+        config,
         task['auth'],
         task['sheet'],
         task['tab'],
@@ -86,8 +88,9 @@ def sheets(project, task):
 
   # append data if specified
   if 'append' in task:
-    rows = get_rows(task['auth'], task['append'])
+    rows = get_rows(config, task['auth'], task['append'])
     sheets_write(
+        config,
         task['auth'],
         task['sheet'],
         task['tab'],
@@ -98,7 +101,7 @@ def sheets(project, task):
   # move data if specified
   # move data if specified
   if 'out' in task:
-    rows = sheets_read(task['auth'], task['sheet'],
+    rows = sheets_read(config, task['auth'], task['sheet'],
                        task['tab'], task.get('range', 'A1'))
 
     if rows:
@@ -106,13 +109,13 @@ def sheets(project, task):
 
       # RECOMMENDED: define schema in json
       if task['out']['bigquery'].get('schema'):
-        if project.verbose:
+        if config.verbose:
           print('SHEETS SCHEMA DEFINED')
         schema = task['out']['bigquery']['schema']
 
       # NOT RECOMMENDED: determine schema if missing
       else:
-        if project.verbose:
+        if config.verbose:
           print(
               'SHEETS SCHEMA DETECT ( Note Recommended - Define Schema In JSON )'
           )
@@ -125,8 +128,9 @@ def sheets(project, task):
 
       # write to table ( not using put because no use cases for other destinations )
       rows_to_table(
+          config,
           auth=task['out'].get('auth', task['auth']),
-          project_id=project.id,
+          project_id=config.project,
           dataset_id=task['out']['bigquery']['dataset'],
           table_id=task['out']['bigquery']['table'],
           rows=rows,
@@ -137,7 +141,3 @@ def sheets(project, task):
 
     else:
       print('SHEET EMPTY')
-
-
-if __name__ == '__main__':
-  sheets()

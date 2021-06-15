@@ -20,7 +20,7 @@ from starthinker.util.bigquery import query_to_view
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
@@ -30,8 +30,9 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def partner_cost_clear(project, task):
+def partner_cost_clear(config, task):
   sheets_clear(
+    config,
     task["auth_sheets"],
     task["sheet"],
     "Partner Costs",
@@ -39,10 +40,11 @@ def partner_cost_clear(project, task):
   )
 
 
-def partner_cost_load(project, task):
+def partner_cost_load(config, task):
 
   # write partner_costs to sheet
   put_rows(
+    config,
     task["auth_sheets"],
     { "sheets": {
       "sheet": task["sheet"],
@@ -51,6 +53,7 @@ def partner_cost_load(project, task):
       "range": "A2"
     }},
     get_rows(
+      config,
       task["auth_bigquery"],
       { "bigquery": {
         "dataset": task["dataset"],
@@ -114,8 +117,9 @@ def partner_cost_load(project, task):
   )
 
 
-def partner_cost_audit(project, task):
+def partner_cost_audit(config, task):
   put_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],
@@ -141,6 +145,7 @@ def partner_cost_audit(project, task):
       "format": "CSV"
     }},
     get_rows(
+      config,
       task["auth_sheets"],
       { "sheets": {
         "sheet": task["sheet"],
@@ -152,8 +157,9 @@ def partner_cost_audit(project, task):
   )
 
   query_to_view(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "AUDIT_PartnerCosts",
     """WITH
@@ -193,8 +199,9 @@ def partner_cost_audit(project, task):
   )
 
   query_to_view(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "PATCH_PartnerCosts",
     """SELECT *
@@ -211,11 +218,12 @@ def partner_cost_audit(project, task):
   )
 
 
-def partner_cost_patch(project, task, commit=False):
+def partner_cost_patch(config, task, commit=False):
   patches = {}
   changed = set()
 
   rows = get_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],
@@ -273,8 +281,8 @@ def partner_cost_patch(project, task, commit=False):
   patches = list(patches.values())
 
   patch_masks(patches)
-  patch_preview(project, task, patches)
+  patch_preview(config, task, patches)
 
   if commit:
-    insertion_order_commit(project, task, patches)
-    line_item_commit(project, task, patches)
+    insertion_order_commit(config, task, patches)
+    line_item_commit(config, task, patches)

@@ -16,7 +16,6 @@
 #
 ###########################################################################
 
-from starthinker.util.project import from_parameters
 from starthinker.util.bigquery import query_to_table, query_to_view
 from starthinker.task.census.fields import CENSUS_FIELDS
 
@@ -150,15 +149,16 @@ def census_join(column_join, column_pass, column_sum, column_correlate,
   return query
 
 
-def census_write(project, task, query, table):
+def census_write(config, task, query, table):
 
-  if project.verbose:
+  if config.verbose:
     print('%s: %s' % (table, query))
 
   if task['to']['type'] == 'table':
     query_to_table(
+        config,
         task['auth'],
-        project.id,
+        config.project,
         task['to']['dataset'],
         table,
         query,
@@ -166,27 +166,27 @@ def census_write(project, task, query, table):
 
   elif task['to']['type'] == 'view':
     query_to_view(
+        config,
         task['auth'],
-        project.id,
+        config.project,
         task['to']['dataset'],
         table,
         query,
         legacy=False)
 
 
-@from_parameters
-def census(project, task):
+def census(config, task):
   if 'normalize' in task:
     query = census_normalize(
         task['normalize']['census_geography'],
         task['normalize']['census_year'],
         task['normalize']['census_span'],
     )
-    census_write(project, task, query, 'Census_Normalized')
+    census_write(config, task, query, 'Census_Normalized')
 
   if task.get('pivot'):
     query = census_pivot(task['to']['dataset'], 'Census_Normalized')
-    census_write(project, task, query, 'Census_Pivoted')
+    census_write(config, task, query, 'Census_Pivoted')
 
   if 'correlate' in task:
     query = census_correlate(
@@ -197,7 +197,7 @@ def census(project, task):
         task['correlate']['dataset'],
         task['correlate']['table'],
     )
-    census_write(project, task, query, 'Census_Correlated')
+    census_write(config, task, query, 'Census_Correlated')
 
     query = census_significance(
         task['correlate']['join'],
@@ -207,25 +207,11 @@ def census(project, task):
         task['correlate']['dataset'],
         task['correlate']['significance'],
     )
-    census_write(project, task, query, 'Census_Significant')
+    census_write(config, task, query, 'Census_Significant')
 
     query = census_join(task['correlate']['join'],
                          task['correlate']['pass'],
                          task['correlate']['sum'],
                          task['correlate']['correlate'],
                          task['correlate']['dataset'])
-    census_write(project, task, query, 'Census_Join')
-
-
-#WITH data AS (
-#  SELECT ST_GEOGPOINT(-122.4194, 37.7749) point
-#  UNION ALL
-#  SELECT ST_GEOGPOINT(-74.0060, 40.7128) point
-#)
-#SELECT zip_code, city, county
-#FROM `bigquery-public-data.geo_us_boundaries.zip_codes`
-#JOIN data
-#ON ST_WITHIN(point, zip_code_geom)
-
-if __name__ == '__main__':
-  census()
+    census_write(config, task, query, 'Census_Join')

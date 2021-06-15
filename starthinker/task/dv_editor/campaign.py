@@ -20,17 +20,18 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 from starthinker.task.dv_editor.patch import patch_log
 
 
-def campaign_clear(project, task):
+def campaign_clear(config, task):
   table_create(
+    config,
     task['auth_bigquery'],
-    project.id,
+    config.project,
     task['dataset'],
     'DV_Campaigns',
     Discovery_To_BigQuery(
@@ -42,6 +43,7 @@ def campaign_clear(project, task):
   )
 
   sheets_clear(
+    config,
     task['auth_sheets'],
     task['sheet'],
     'Campaigns',
@@ -49,11 +51,12 @@ def campaign_clear(project, task):
   )
 
 
-def campaign_load(project, task):
+def campaign_load(config, task):
 
   # load multiple partners from user defined sheet
   def campaign_load_multiple():
     rows = get_rows(
+      config,
       task['auth_sheets'],
       { 'sheets': {
         'sheet': task['sheet'],
@@ -65,8 +68,9 @@ def campaign_load(project, task):
 
     for row in rows:
       yield from API_DV360(
-       task['auth_dv'],
-       iterate=True
+        config,
+        task['auth_dv'],
+        iterate=True
       ).advertisers().campaigns().list(
         advertiserId=lookup_id(row[0]),
         filter='entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"',
@@ -75,6 +79,7 @@ def campaign_load(project, task):
 
   # write campaigns to database and sheet
   put_rows(
+    config,
     task['auth_bigquery'],
     { 'bigquery': {
       'dataset': task['dataset'],
@@ -93,6 +98,7 @@ def campaign_load(project, task):
 
   # write campaigns to sheet
   put_rows(
+    config,
     task['auth_sheets'],
     { 'sheets': {
       'sheet': task['sheet'],
@@ -101,6 +107,7 @@ def campaign_load(project, task):
       'range': 'B2'
     }},
     get_rows(
+      config,
       task['auth_bigquery'],
       { 'bigquery': {
         'dataset':task['dataset'],
@@ -122,7 +129,7 @@ def campaign_load(project, task):
   )
 
 
-def campaign_commit(project, task, patches):
+def campaign_commit(config, task, patches):
   for patch in patches:
     if not patch.get('campaign'):
       continue
@@ -130,15 +137,18 @@ def campaign_commit(project, task, patches):
     try:
       if patch['action'] == 'DELETE':
         response = API_DV360(
-            task['auth_dv']).advertisers().campaigns().delete(
-                **patch['parameters']).execute()
+          config,
+          task['auth_dv']
+        ).advertisers().campaigns().delete(**patch['parameters']).execute()
         patch['success'] = response
       elif patch['action'] == 'PATCH':
-        response = API_DV360(task['auth_dv']).advertisers().campaigns().patch(
-            **patch['parameters']).execute()
+        response = API_DV360(
+          config,
+          task['auth_dv']
+        ).advertisers().campaigns().patch(**patch['parameters']).execute()
         patch['success'] = response['campaignId']
     except Exception as e:
       patch['error'] = str(e)
     finally:
-      patch_log(patch)
-  patch_log(project, task)
+      patch_log(config, patch)
+  patch_log(config, task)

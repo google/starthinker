@@ -20,17 +20,18 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 from starthinker.task.dv_editor.patch import patch_log
 
 
-def advertiser_clear(project, task):
+def advertiser_clear(config, task):
   table_create(
+    config,
     task['auth_bigquery'],
-    project.id,
+    config.project,
     task['dataset'],
     'DV_Advertisers',
     Discovery_To_BigQuery(
@@ -42,6 +43,7 @@ def advertiser_clear(project, task):
   )
 
   sheets_clear(
+    config,
     task['auth_sheets'],
     task['sheet'],
     'Advertisers',
@@ -49,11 +51,12 @@ def advertiser_clear(project, task):
   )
 
 
-def advertiser_load(project, task):
+def advertiser_load(config, task):
 
   # load multiple partners from user defined sheet
   def advertiser_load_multiple():
     rows = get_rows(
+      config,
       task['auth_sheets'],
       { 'sheets': {
         'sheet': task['sheet'],
@@ -65,6 +68,7 @@ def advertiser_load(project, task):
 
     for row in rows:
       yield from API_DV360(
+        config,
         task['auth_dv'],
         iterate=True
       ).advertisers().list(
@@ -74,6 +78,7 @@ def advertiser_load(project, task):
 
   # write advertisers to database and sheet
   put_rows(
+    config,
     task['auth_bigquery'],
     { 'bigquery': {
       'dataset': task['dataset'],
@@ -91,6 +96,7 @@ def advertiser_load(project, task):
 
   # write advertisers to sheet
   put_rows(
+    config,
     task['auth_sheets'],
     { 'sheets': {
       'sheet': task['sheet'],
@@ -99,6 +105,7 @@ def advertiser_load(project, task):
       'range': 'B2'
     }},
     rows = get_rows(
+      config,
       task['auth_bigquery'],
       { 'bigquery': {
         'dataset': task['dataset'],
@@ -116,22 +123,23 @@ def advertiser_load(project, task):
   )
 
 
-def advertiser_commit(project, task, patches):
+def advertiser_commit(config, task, patches):
   for patch in patches:
     if not patch.get('advertiser'):
       continue
     print('API ADVERTISER:', patch['action'], patch['advertiser'])
     try:
       if patch['action'] == 'DELETE':
-        response = API_DV360(task['auth_dv']).advertisers().delete(
+        response = API_DV360(config, task['auth_dv']).advertisers().delete(
             **patch['parameters']).execute()
         patch['success'] = response
       elif patch['action'] == 'PATCH':
-        response = API_DV360(task['auth_dv']).advertisers().patch(
+        response = API_DV360(config, task['auth_dv']).advertisers().patch(
             **patch['parameters']).execute()
         patch['success'] = response['advertiserId']
       elif patch["action"] == "TARGETING":
         response = API_DV360(
+          config,
           task["auth_dv"]
         ).advertisers().bulkEditAdvertiserAssignedTargetingOptions(
           **patch["parameters"]
@@ -140,5 +148,5 @@ def advertiser_commit(project, task, patches):
     except Exception as e:
       patch['error'] = str(e)
     finally:
-      patch_log(patch)
-  patch_log(project, task)
+      patch_log(config, task, patch)
+  patch_log(config, task)

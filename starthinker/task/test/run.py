@@ -21,7 +21,6 @@ import json
 from difflib import Differ
 from time import sleep
 
-from starthinker.util.project import from_parameters
 from starthinker.util.bigquery import table_to_rows
 from starthinker.util.bigquery import table_to_schema
 from starthinker.util.bigquery import query_parameters
@@ -129,10 +128,10 @@ def object_compare(actual, expected):
 #    }}
 
 
-def sheets(project, task):
+def sheets(config, task):
   print('TEST: sheets')
 
-  rows = sheets_read(task['auth'], task['sheets']['sheet'],
+  rows = sheets_read(config, task['auth'], task['sheets']['sheet'],
                      task['sheets']['tab'],
                      task['sheets']['range'])
 
@@ -162,12 +161,12 @@ def sheets(project, task):
 #    }}
 
 
-def bigquery(project, task):
+def bigquery(config, task):
   print('TEST: bigquery')
 
   # check schema if given ( check independent of values )
   if 'schema' in task['bigquery']:
-    schema = table_to_schema(task['auth'], project.id,
+    schema = table_to_schema(config, task['auth'], config.project,
                              task['bigquery']['dataset'],
                              task['bigquery']['table'])
     deltas = schema_compare(task['bigquery']['schema'], schema, path='')
@@ -185,8 +184,8 @@ def bigquery(project, task):
   # if query given check it
   if 'query' in task['bigquery']:
     rows = query_to_rows(
-        task['auth'],
-        project.id,
+        config, task['auth'],
+        config.project,
         task['bigquery']['dataset'],
         query_parameters(task['bigquery']['query'],
                          task['bigquery'].get('parameters')),
@@ -197,20 +196,20 @@ def bigquery(project, task):
 
   # simple table check ( unless query given )
   elif 'values' in task['bigquery']:
-    rows = table_to_rows(task['auth'], project.id,
+    rows = table_to_rows(config, task['auth'], config.project,
                          task['bigquery']['dataset'],
                          task['bigquery']['table'])
 
     object_compare(sorted(rows), sorted(task['bigquery']['values']))
 
 
-def asserts(project, task):
+def asserts(config, task):
   print('TEST: asserts')
   print(task['assert'])
   test_passed()
 
 
-def path_exists(project, task):
+def path_exists(config, task):
   print('TEST: path_exists')
   if os.path.exists(task['path']):
     if task.get('delete', False):
@@ -220,51 +219,51 @@ def path_exists(project, task):
     test_failed()
 
 
-def storage_exists(project, task):
+def storage_exists(config, task):
   print('TEST: storage_exists')
   if object_exists(
-      task['auth'], '%s:%s' %
+      config, task['auth'], '%s:%s' %
       (task['storage']['bucket'], task['storage']['file'])):
     if task.get('delete', False):
       object_delete(
-          task['auth'], '%s:%s' %
+          config, task['auth'], '%s:%s' %
           (task['storage']['bucket'], task['storage']['file']))
     test_passed()
   else:
     test_failed()
 
 
-def drive_exists(project, task):
+def drive_exists(config, task):
   print('TEST: drive')
   if 'file' in task['drive']:
-    if file_exists(task['auth'], task['drive']['file']):
+    if file_exists(config, task['auth'], task['drive']['file']):
       test_passed()
   elif 'not_file' in task['drive']:
-    if not file_exists(task['auth'], task['drive']['not_file']):
+    if not file_exists(config, task['auth'], task['drive']['not_file']):
       test_passed()
   else:
     test_failed()
 
 
-def test_sleep(project, task):
+def test_sleep(config, task):
   print('TEST: sleep ', task['sleep'])
   sleep(task['sleep'])
 
 
-def weather_gov(project, task):
+def weather_gov(config, task):
   print('TEST: weather_gov')
   try:
-    weather_gov_test(project, task)
+    weather_gov_test(config, task)
     test_passed()
   except Exception as e:
     print(str(e))
     test_failed()
 
 
-def traffic(project, task):
+def traffic(config, task):
   print('TEST: Bulkdozer')
   try:
-    bulkdozer_test(project, task)
+    bulkdozer_test(config, task)
     test_passed()
   except Exception as e:
     print(str(e))
@@ -272,33 +271,24 @@ def traffic(project, task):
 
 
 # decide which test to run
-@from_parameters
-def test(project, task):
+def test(config, task):
   if 'assert' in task:
-    return asserts(project, task)
+    return asserts(config, task)
   elif 'path' in task:
-    return path_exists(project, task)
+    return path_exists(config, task)
   elif 'storage' in task:
-    storage_exists(project, task)
+    storage_exists(config, task)
   elif 'sheets' in task:
-    return sheets(project, task)
+    return sheets(config, task)
   elif 'bigquery' in task:
-    return bigquery(project, task)
+    return bigquery(config, task)
   elif 'drive' in task:
-    return drive_exists(project, task)
+    return drive_exists(config, task)
   elif 'sleep' in task:
-    return test_sleep(project, task)
+    return test_sleep(config, task)
   elif 'template' in task:
-    return template(project, task)
+    return template(config, task)
   elif 'traffic' in task:
-    return traffic(project, task)
+    return traffic(config, task)
   elif 'weather_gov' in task:
-    return weather_gov(project, task)
-
-
-# test should be run like any other task
-# one test per task ( otherwise it gets confusing )
-# calling script already indicates which test is being run
-# print only PASS or FAIL
-if __name__ == '__main__':
-  test()
+    return weather_gov(config, task)

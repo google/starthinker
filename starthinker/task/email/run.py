@@ -18,40 +18,40 @@
 
 import gzip
 
-from starthinker.util.project import from_parameters
-from starthinker.util.data import put_rows, get_rows
 from starthinker.util.csv import excel_to_rows, csv_to_rows, rows_trim, rows_header_sanitize, column_header_sanitize
+from starthinker.util.cm import report_to_rows as cm_report_to_rows, report_clean as cm_report_clean, report_schema as cm_report_schema
+from starthinker.util.data import put_rows, get_rows
+from starthinker.util.dv import report_to_rows as dv360_report_to_rows, report_clean as dv360_report_clean
 from starthinker.util.email import get_email_messages, get_email_links, get_email_attachments, get_subject, send_email
-from starthinker.util.dbm import report_to_rows as dv360_report_to_rows, report_clean as dv360_report_clean
-from starthinker.util.dcm import report_to_rows as cm_report_to_rows, report_clean as cm_report_clean, report_schema as cm_report_schema
 
 
-def email_read(project, task):
+def email_read(config, task):
 
   # process only most recent message
   try:
     message = next(
-        get_email_messages(task['auth'], task['read']['from'],
+        get_email_messages(config, task['auth'], task['read']['from'],
                            task['read']['to'],
                            task['read'].get('subject', None)))
   except StopIteration as e:
-    if project.verbose:
+    if config.verbose:
       print('NO EMAILS FOUND')
     exit()
 
-  if project.verbose:
+  if config.verbose:
     print('EMAIL:', get_subject(message))
 
   files = []
 
   if task['read'].get('attachment'):
     files.extend(
-        get_email_attachments(task['auth'], message,
+        get_email_attachments(config, task['auth'], message,
                               task['read']['attachment']))
 
   if task['read'].get('link'):
     files.extend(
         get_email_links(
+            config,
             task['auth'],
             message,
             task['read']['link'],
@@ -59,7 +59,7 @@ def email_read(project, task):
 
   for filename, data in files:
 
-    if project.verbose:
+    if config.verbose:
       print('EMAIL FILENAME:', filename)
 
     # decompress if necessary
@@ -73,7 +73,7 @@ def email_read(project, task):
       for sheet, rows in excel_to_rows(data):
         rows = rows_trim(rows)
         rows = rows_header_sanitize(rows)
-        put_rows(task['read']['out'].get('auth', task['auth']),
+        put_rows(config, task['read']['out'].get('auth', task['auth']),
                  task['read']['out'], rows, sheet)
 
     # if CM report
@@ -88,33 +88,34 @@ def email_read(project, task):
         task['read']['out']['bigquery']['schema'] = schema
         task['read']['out']['bigquery']['skip_rows'] = 1
 
-      put_rows(task['read']['out'].get('auth', task['auth']),
+      put_rows(config, task['read']['out'].get('auth', task['auth']),
                task['read']['out'], rows)
 
     # if dv360 report
     elif task['read']['from'] == 'noreply-dv360@google.com':
       rows = dv360_report_to_rows(data.getvalue().decode())
       rows = dv360_report_clean(rows)
-      put_rows(task['read']['out'].get('auth', task['auth']),
+      put_rows(config, task['read']['out'].get('auth', task['auth']),
                task['read']['out'], rows)
 
     # if csv
     elif filename.endswith('.csv'):
       rows = csv_to_rows(data.read().decode())
       rows = rows_header_sanitize(rows)
-      put_rows(task['read']['out'].get('auth', task['auth']),
+      put_rows(config, task['read']['out'].get('auth', task['auth']),
                task['read']['out'], rows)
 
     else:
-      if project.verbose:
+      if config.verbose:
         print('UNSUPPORTED FILE:', filename)
 
 
-def email_send(project, task):
-  if project.verbose:
+def email_send(config, task):
+  if config.verbose:
     print('EMAIL SEND')
 
   send_email(
+      config,
       'user',
       task['send']['from'],
       task['send']['to'],
@@ -123,17 +124,12 @@ def email_send(project, task):
       task['send']['text'],
       task['send']['html'],
       task['send']['attachment']['filename'],
-      get_rows('user', task['send']['attachment']),
+      get_rows(config, 'user', task['send']['attachment']),
   )
 
 
-@from_parameters
-def email(project, task):
+def email(config, task):
   if 'read' in task:
-    email_read(project, task)
+    email_read(config, task)
   elif 'send' in task:
-    email_send(project, task)
-
-
-if __name__ == '__main__':
-  email()
+    email_send(config, task)

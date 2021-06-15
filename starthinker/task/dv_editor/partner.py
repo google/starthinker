@@ -20,36 +20,39 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 from starthinker.task.dv_editor.patch import patch_log
 
 
-def partner_clear(project, task):
+def partner_clear(config, task):
   table_create(
+      config,
       task['auth_bigquery'],
-      project.id,
+      config.project,
       task['dataset'],
       'DV_Partners',
       Discovery_To_BigQuery('displayvideo',
                             'v1').method_schema('partners.list'),
   )
 
-  sheets_clear(task['auth_sheets'], task['sheet'], 'Partners', 'B2:Z')
+  sheets_clear(config, task['auth_sheets'], task['sheet'], 'Partners', 'B2:Z')
 
 
-def partner_load(project, task):
+def partner_load(config, task):
   # write partners to BQ
   rows = API_DV360(
-    project.task['auth_dv'],
+    config,
+    task['auth_dv'],
     iterate=True
   ).partners().list(
     filter='entityStatus="ENTITY_STATUS_ACTIVE"'
   ).execute()
 
   put_rows(
+      config,
       task['auth_bigquery'], {
           'bigquery': {
               'dataset':
@@ -66,6 +69,7 @@ def partner_load(project, task):
 
   # write partners to sheet
   rows = get_rows(
+      config,
       task['auth_bigquery'], {
           'bigquery': {
               'dataset':
@@ -78,7 +82,9 @@ def partner_load(project, task):
           }
       })
 
-  put_rows(task['auth_sheets'], {
+  put_rows(
+    config,
+    task['auth_sheets'], {
       'sheets': {
           'sheet': task['sheet'],
           'tab': 'Partners',
@@ -88,22 +94,23 @@ def partner_load(project, task):
   }, rows)
 
 
-def partner_commit(project, task, patches):
+def partner_commit(config, task, patches):
   for patch in patches:
     if not patch.get('partner'):
       continue
     print('API ADVERTISER:', patch['action'], patch['partner'])
     try:
       if patch['action'] == 'DELETE':
-        response = API_DV360(task['auth_dv']).partners().delete(
+        response = API_DV360(config, task['auth_dv']).partners().delete(
             **patch['parameters']).execute()
         patch['success'] = response
       elif patch['action'] == 'PATCH':
-        response = API_DV360(task['auth_dv']).partners().patch(
+        response = API_DV360(config, task['auth_dv']).partners().patch(
             **patch['parameters']).execute()
         patch['success'] = response['partnerId']
       elif patch["action"] == "TARGETING":
         response = API_DV360(
+          config,
           task["auth_dv"]
         ).partners().bulkEditAdvertiserAssignedTargetingOptions(
           **patch["parameters"]
@@ -112,5 +119,5 @@ def partner_commit(project, task, patches):
     except Exception as e:
       patch['error'] = str(e)
     finally:
-      patch_log(project, task, patch)
-  patch_log(project, task)
+      patch_log(config, task, patch)
+  patch_log(config, task)

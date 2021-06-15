@@ -31,9 +31,9 @@ class VideoFormatDAO(BaseDAO):
   updating video format.
   """
 
-  def __init__(self, auth, profile_id, is_admin):
+  def __init__(self, config, auth, profile_id, is_admin):
     """Initializes VideoFormatDAO with profile id and authentication scheme."""
-    super(VideoFormatDAO, self).__init__(auth, profile_id)
+    super(VideoFormatDAO, self).__init__(config, auth, profile_id)
 
     self.profile_id = profile_id
 

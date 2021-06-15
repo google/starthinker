@@ -17,11 +17,8 @@
 ###########################################################################
 
 from starthinker.util.bigquery import query_to_view
-from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
@@ -31,15 +28,16 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def bid_strategy_clear(project, task):
-  sheets_clear(task["auth_sheets"], task["sheet"], "Bid Strategy",
+def bid_strategy_clear(config, task):
+  sheets_clear(config, task["auth_sheets"], task["sheet"], "Bid Strategy",
                "A2:Z")
 
 
-def bid_strategy_load(project, task):
+def bid_strategy_load(config, task):
 
   # write bid_strategy to sheet
   rows = get_rows(
+      config,
       task["auth_bigquery"], {
           "bigquery": {
               "dataset":
@@ -115,6 +113,7 @@ def bid_strategy_load(project, task):
       })
 
   put_rows(
+      config,
       task["auth_sheets"], {
           "sheets": {
               "sheet": task["sheet"],
@@ -125,8 +124,9 @@ def bid_strategy_load(project, task):
       }, rows)
 
 
-def bid_strategy_audit(project, task):
+def bid_strategy_audit(config, task):
   rows = get_rows(
+      config,
       task["auth_sheets"], {
           "sheets": {
               "sheet": task["sheet"],
@@ -137,6 +137,7 @@ def bid_strategy_audit(project, task):
       })
 
   put_rows(
+      config,
       task["auth_bigquery"], {
           "bigquery": {
               "dataset": task["dataset"],
@@ -169,8 +170,9 @@ def bid_strategy_audit(project, task):
       }, rows)
 
   query_to_view(
+      config,
       task["auth_bigquery"],
-      project.id,
+      config.project,
       task["dataset"],
       "AUDIT_BidStrategy",
       """WITH
@@ -209,8 +211,9 @@ def bid_strategy_audit(project, task):
       legacy=False)
 
   query_to_view(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "PATCH_BidStrategy",
     """SELECT *
@@ -226,10 +229,11 @@ def bid_strategy_audit(project, task):
   )
 
 
-def bid_strategy_patch(project, task, commit=False):
+def bid_strategy_patch(config, task, commit=False):
   patches = []
 
   rows = get_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],
@@ -246,14 +250,14 @@ def bid_strategy_patch(project, task, commit=False):
     if row['Fixed_Bid_Edit'] is None and row['Fixed_Bid'] is not None:
       # If we switched from fixed to goal
       if row['Auto_Bid_Goal'] != row['Auto_Bid_Goal_Edit']:
-        if project.verbose:
+        if config.verbose:
           print("Switching from Fixed Bid to Auto Bid Goal.")
         bid_strategy.setdefault("bidStrategy", {"maximizeSpendAutoBid": {}})
         bid_strategy["bidStrategy"]["maximizeSpendAutoBid"][
           "performanceGoalType"] = row['Auto_Bid_Goal_Edit']
       # If we switched from fixed to algorithm
       elif row['Auto_Bid_Algorithm'] != row['Auto_Bid_Algorithm_Edit']:
-        if project.verbose:
+        if config.verbose:
           print("Switching from Fixed Bid to Bid Algorithm.")
         bid_strategy.setdefault("bidStrategy", {"maximizeSpendAutoBid": {}})
         bid_strategy["bidStrategy"]["maximizeSpendAutoBid"][
@@ -323,8 +327,8 @@ def bid_strategy_patch(project, task, commit=False):
       patches.append(patch)
 
   patch_masks(patches)
-  patch_preview(project, task, patches)
+  patch_preview(config, task, patches)
 
   if commit:
-    insertion_order_commit(project, task, patches)
-    line_item_commit(project, task, patches)
+    insertion_order_commit(config, task, patches)
+    line_item_commit(config, task, patches)

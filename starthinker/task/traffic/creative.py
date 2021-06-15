@@ -32,9 +32,9 @@ class CreativeDAO(BaseDAO):
   updating creatives.
   """
 
-  def __init__(self, auth, profile_id, is_admin):
+  def __init__(self, config, auth, profile_id, is_admin):
     """Initializes CreativeDAO with profile id and authentication scheme."""
-    super(CreativeDAO, self).__init__(auth, profile_id, is_admin)
+    super(CreativeDAO, self).__init__(config, auth, profile_id, is_admin)
 
     self._entity = 'CREATIVE'
 
@@ -46,8 +46,8 @@ class CreativeDAO(BaseDAO):
     self._list_name = 'creatives'
     self._parent_dao = None
 
-    self.creative_asset_dao = CreativeAssetDAO(auth, profile_id, is_admin, None)
-    self.landing_page_dao = LandingPageDAO(auth, profile_id, is_admin)
+    self.creative_asset_dao = CreativeAssetDAO(config, auth, profile_id, is_admin, None)
+    self.landing_page_dao = LandingPageDAO(config, auth, profile_id, is_admin)
 
   def _api(self, iterate=False):
     """Returns an DCM API instance for this DAO."""

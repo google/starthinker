@@ -20,15 +20,16 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 
 
-def combined_audience_clear(project, task):
+def combined_audience_clear(config, task):
 
   table_create(
+    config,
     task['auth_bigquery'],
-    project.id,
+    config.project,
     task['dataset'],
     'DV_Combined_Audiences',
     Discovery_To_BigQuery(
@@ -40,11 +41,12 @@ def combined_audience_clear(project, task):
   )
 
 
-def combined_audience_load(project, task):
+def combined_audience_load(config, task):
 
   # load multiple from user defined sheet
   def load_multiple():
     advertisers = get_rows(
+      config,
       task['auth_sheets'],
       { 'sheets': {
         'sheet': task['sheet'],
@@ -56,16 +58,18 @@ def combined_audience_load(project, task):
 
     for advertiser in advertisers:
       yield from API_DV360(
+        config,
         task['auth_dv'],
         iterate=True
       ).combinedAudiences().list(
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
-  combined_audience_clear(project, task)
+  combined_audience_clear(config, task)
 
   # write to database
   put_rows(
+    config,
     task['auth_bigquery'],
     { 'bigquery': {
       'dataset': task['dataset'],
@@ -83,6 +87,7 @@ def combined_audience_load(project, task):
 
   # write to sheet
   put_rows(
+    config,
     task['auth_sheets'],
     { 'sheets': {
       'sheet': task['sheet'],
@@ -91,6 +96,7 @@ def combined_audience_load(project, task):
       'range': 'O2:O'
     }},
     get_rows(
+      config,
       task['auth_bigquery'],
       { 'bigquery': {
         'dataset': task['dataset'],

@@ -31,12 +31,12 @@ class PlacementGroupDAO(BaseDAO):
   updating placement group.
   """
 
-  def __init__(self, auth, profile_id, is_admin):
+  def __init__(self, config, auth, profile_id, is_admin):
     """Initializes PlacementGroupDAO with profile id and authentication scheme."""
 
-    super(PlacementGroupDAO, self).__init__(auth, profile_id, is_admin)
+    super(PlacementGroupDAO, self).__init__(config, auth, profile_id, is_admin)
 
-    self.campaign_dao = CampaignDAO(auth, profile_id, is_admin)
+    self.campaign_dao = CampaignDAO(config, auth, profile_id, is_admin)
 
     self._id_field = FieldMap.PLACEMENT_GROUP_ID
     self._search_field = FieldMap.PLACEMENT_GROUP_NAME

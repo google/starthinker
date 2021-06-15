@@ -26,11 +26,9 @@ from starthinker.util.bigquery import json_to_table
 from starthinker.util.bigquery import query_to_schema
 from starthinker.util.bigquery import query_to_rows
 from starthinker.util.bigquery import query_to_view
-from starthinker.util.bigquery import rows_to_table
 from starthinker.util.bigquery import table_to_rows
 from starthinker.util.bigquery import table_to_schema
 from starthinker.util.google_api import API_BigQuery
-from starthinker.util.project import from_parameters
 
 RE_EMAIL = re.compile(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')
 INTEGER_MULTIPLY = random.randint(2, 9)
@@ -116,11 +114,12 @@ def anonymize_rows(rows, columns=[]):
     yield anonymize_json(row, columns)
 
 
-def anonymize_query(project, task):
-  if project.verbose:
+def anonymize_query(config, task):
+  if config.verbose:
     print('ANONYMIZE QUERY', task['bigquery']['from']['query'])
 
   schema = query_to_schema(
+    config,
     task['auth'],
     task['bigquery']['from']['project'],
     task['bigquery']['from']['dataset'],
@@ -129,6 +128,7 @@ def anonymize_query(project, task):
   )
 
   rows = query_to_rows(
+    config,
     task['auth'],
     task['bigquery']['from']['project'],
     task['bigquery']['from']['dataset'],
@@ -140,6 +140,7 @@ def anonymize_query(project, task):
   rows = anonymize_rows(rows, task['bigquery']['to'].get('columns', []))
 
   json_to_table(
+    config,
     task['auth'],
     task['bigquery']['to']['project'],
     task['bigquery']['to']['dataset'],
@@ -150,9 +151,9 @@ def anonymize_query(project, task):
   )
 
 
-def anonymize_table(project, task, table_id):
+def anonymize_table(config, task, table_id):
 
-  if project.verbose:
+  if config.verbose:
     print(
       'ANONYMIZE TABLE',
       task['bigquery']['to']['dataset'],
@@ -160,6 +161,7 @@ def anonymize_table(project, task, table_id):
     )
 
   schema = table_to_schema(
+    config,
     task['auth'],
     task['bigquery']['from']['project'],
     task['bigquery']['from']['dataset'],
@@ -167,6 +169,7 @@ def anonymize_table(project, task, table_id):
   )
 
   rows = table_to_rows(
+    config,
     task['auth'],
     task['bigquery']['from']['project'],
     task['bigquery']['from']['dataset'],
@@ -177,6 +180,7 @@ def anonymize_table(project, task, table_id):
   rows = anonymize_rows(rows, task['bigquery']['to'].get('columns', []))
 
   json_to_table(
+    config,
     task['auth'],
     task['bigquery']['to']['project'],
     task['bigquery']['to']['dataset'],
@@ -187,11 +191,11 @@ def anonymize_table(project, task, table_id):
   )
 
 
-def copy_view(project, task, view_id):
-  if project.verbose:
+def copy_view(config, task, view_id):
+  if config.verbose:
     print('ANONYMIZE VIEW', task['bigquery']['to']['dataset'], view_id)
 
-  view = API_BigQuery(task['auth']).tables().get(
+  view = API_BigQuery(config, task['auth']).tables().get(
     projectId=task['bigquery']['from']['project'],
     datasetId=task['bigquery']['from']['dataset'],
     tableId=view_id
@@ -211,6 +215,7 @@ def copy_view(project, task, view_id):
   )
 
   query_to_view(
+    config,
     task['auth'],
     task['bigquery']['to']['project'],
     task['bigquery']['to']['dataset'],
@@ -221,23 +226,22 @@ def copy_view(project, task, view_id):
   )
 
 
-@from_parameters
-def anonymize(project, task):
+def anonymize(config, task):
 
   if task['bigquery']['from'].get('query'):
-    anonymize_query(project, task)
+    anonymize_query(config, task)
 
   else:
     views = []
 
-    for table in API_BigQuery(task['auth'], iterate=True).tables().list(
+    for table in API_BigQuery(config, task['auth'], iterate=True).tables().list(
       projectId=task['bigquery']['from']['project'],
       datasetId=task['bigquery']['from']['dataset']
     ).execute():
       if table['type'] == 'VIEW':
         views.append(table['tableReference']['tableId'])
       else:
-        anonymize_table(project, task, table['tableReference']['tableId'])
+        anonymize_table(config, task, table['tableReference']['tableId'])
 
     # views have dependencies, loop through all and create until no more errors or no change in view list
     last_copy = True
@@ -247,7 +251,7 @@ def anonymize(project, task):
       while views:
         view = views.pop()
         try:
-          copy_view(project, task, view)
+          copy_view(config, task, view)
           last_copy = True
         except HttpError as e:
           if e.resp.status == 404:
@@ -255,7 +259,3 @@ def anonymize(project, task):
           else:
             raise e
       views = retry_views
-
-
-if __name__ == '__main__':
-  anonymize()

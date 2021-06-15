@@ -18,10 +18,9 @@
 
 from datetime import timedelta, datetime
 
-from starthinker.util.project import from_parameters
 from starthinker.util.google_api import API_DCM
 from starthinker.util.bigquery import table_exists, rows_to_table, query_to_rows
-from starthinker.util.dcm import get_profile_for_api
+from starthinker.util.cm import get_profile_for_api
 from starthinker.util.data import get_rows
 
 CHANGELOGS_TABLE = 'CM_Change_Logs'
@@ -77,21 +76,21 @@ CHANGELOGS_SCHEMA = [
 ]
 
 
-def get_changelogs(project, task, accounts, start):
+def get_changelogs(config, task, accounts, start):
 
-  if project.verbose:
+  if config.verbose:
     print('CM CHANGE LOGS', accounts)
 
   for account_id in accounts:
 
-    is_superuser, profile_id = get_profile_for_api(task['auth'],
+    is_superuser, profile_id = get_profile_for_api(config, task['auth'],
                                                    account_id)
     kwargs = {'profileId': profile_id, 'minChangeTime': start}
     if is_superuser:
       kwargs['accountId'] = account_id
 
     for changelog in API_DCM(
-        'user', iterate=True,
+        config, 'user', iterate=True,
         internal=is_superuser).changeLogs().list(**kwargs).execute():
       yield [
           changelog.get('userProfileId'),
@@ -109,19 +108,18 @@ def get_changelogs(project, task, accounts, start):
       ]
 
 
-@from_parameters
-def dcm_log(project, task):
-  if project.verbose:
+def dcm_log(config, task):
+  if config.verbose:
     print('DCM LOG')
 
-  accounts = list(get_rows('user', task['accounts']))
+  accounts = list(get_rows(config, 'user', task['accounts']))
 
   # determine start log date
-  if table_exists(task['out']['auth'], task['out']['project'],
+  if table_exists(config, task['out']['auth'], task['out']['project'],
                   task['out']['dataset'], CHANGELOGS_TABLE):
     start = next(
         query_to_rows(
-            task['out']['auth'], task['out']['project'],
+            config, task['out']['auth'], task['out']['project'],
             task['out']['dataset'],
             'SELECT FORMAT_TIMESTAMP("%%Y-%%m-%%dT%%H:%%M:%%S-00:00", MAX(changeTime), "UTC") FROM `%s`'
             % CHANGELOGS_TABLE, 1, False))[0]
@@ -133,12 +131,8 @@ def dcm_log(project, task):
     disposition = 'WRITE_TRUNCATE'
 
   # load new logs
-  rows = get_changelogs(project, task, accounts, start)
+  rows = get_changelogs(config, task, accounts, start)
   if rows:
-    rows_to_table(task['out']['auth'], task['out']['project'],
+    rows_to_table(config, task['out']['auth'], task['out']['project'],
                   task['out']['dataset'], CHANGELOGS_TABLE, rows,
                   CHANGELOGS_SCHEMA, 0, disposition)
-
-
-if __name__ == '__main__':
-  dcm_log()

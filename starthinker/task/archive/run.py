@@ -18,37 +18,40 @@
 
 from datetime import datetime, date, timedelta
 
-from starthinker.util.project import from_parameters
-from starthinker.util.storage import object_list, object_move, object_delete
+from starthinker.util.storage import object_delete
+from starthinker.util.storage import object_list
+from starthinker.util.storage import object_move
 
 
-@from_parameters
-def archive(project, task):
-  if project.verbose:
+def archive(config, task):
+  if config.verbose:
     print('ARCHIVE')
 
-  day = project.date - timedelta(days=abs(task['days']))
+  day = config.date - timedelta(days=abs(task['days']))
 
   for object in object_list(
-      task['auth'],
-      task['storage']['bucket'] + ':' + task['storage']['path'],
-      files_only=True,
-      raw=True):
-    object_day = datetime.strptime(object['updated'],
-                                   '%Y-%m-%dT%H:%M:%S.%fZ').date()
+    config,
+    task['auth'],
+    task['storage']['bucket'] + ':' + task['storage']['path'],
+    files_only=True,
+    raw=True
+  ):
+    object_day = datetime.strptime(object['updated'], '%Y-%m-%dT%H:%M:%S.%fZ').date()
     if object_day <= day:
       if task.get('delete', False) == False:
-        if project.verbose:
+        if config.verbose:
           print('ARCHIVING FILE:', object['name'])
-        object_move(task['auth'],
-                    '%s:%s' % (object['bucket'], object['name']),
-                    '%s:archive/%s' % (object['bucket'], object['name']))
+        object_move(
+          config,
+          task['auth'],
+          '%s:%s' % (object['bucket'], object['name']),
+          '%s:archive/%s' % (object['bucket'], object['name'])
+        )
       else:
-        if project.verbose:
+        if config.verbose:
           print('DELETING FILE:',)
-        object_delete(task['auth'],
-                      '%s:%s' % (object['bucket'], object['name']))
-
-
-if __name__ == '__main__':
-  archive()
+        object_delete(
+          config,
+          task['auth'],
+          '%s:%s' % (object['bucket'], object['name'])
+        )

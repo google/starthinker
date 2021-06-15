@@ -20,61 +20,60 @@
 from starthinker.util.bigquery import datasets_access
 from starthinker.util.bigquery import datasets_create
 from starthinker.util.bigquery import datasets_delete
-from starthinker.util.project import from_parameters
 
 
-@from_parameters
-def dataset(project, task):
-  if project.verbose:
-    print('DATASET', project.id, task['dataset'])
+def dataset(config, task):
+  if config.verbose:
+    print('DATASET', config.project, task['dataset'])
 
   if task.get('delete', False):
-    if project.verbose:
+    if config.verbose:
       print('DATASET DELETE')
     # In order to fully delete a dataset, it needs to first have all tables
     # deleted, which is done with the delete_contents=True, and then the actual
     # dataset can be deleted, which is done with delete_contents=false.
     datasets_delete(
+        config,
         task['auth'],
-        project.id,
+        config.project,
         task['dataset'],
         delete_contents=True
     )
     datasets_delete(
+        config,
         task['auth'],
-        project.id,
+        config.project,
         task['dataset'],
         delete_contents=False
     )
   else:
     if task.get('clear', False):
-      if project.verbose:
+      if config.project:
         print('DATASET CLEAR')
       datasets_delete(
+          config,
           task['auth'],
-          project.id,
+          config.project,
           task['dataset'],
           delete_contents=True
       )
 
-    if project.verbose:
+    if config.verbose:
       print('DATASET CREATE')
     datasets_create(
+        config,
         task['auth'],
-        project.id,
+        config.project,
         task['dataset']
     )
 
-    if project.verbose:
+    if config.verbose:
       print('DATASET ACCESS')
     datasets_access(
+        config,
         task['auth'],
-        project.id,
+        config.project,
         task['dataset'],
         emails=task.get('emails', []),
         groups=task.get('groups', [])
     )
-
-
-if __name__ == '__main__':
-  dataset()

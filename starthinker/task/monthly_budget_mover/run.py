@@ -18,8 +18,7 @@
 
 from datetime import datetime
 
-from starthinker.util.project import from_parameters
-from starthinker.util.dbm import report_file, report_get, report_clean, report_to_rows, DBM_CHUNKSIZE, report_to_list
+from starthinker.util.dv import report_file, report_get, report_clean, report_to_rows, DBM_CHUNKSIZE, report_to_list
 from starthinker.util.bigquery import rows_to_table, make_schema
 from starthinker.util.sdf import get_single_sdf_rows
 from starthinker.util.data import put_rows
@@ -29,16 +28,15 @@ IO_ID = 'Io Id'
 CHANGES_SCHEMA = ['Io Id', 'Category', 'Old Value', 'Delta', 'New Value']
 
 
-@from_parameters
-def monthly_budget_mover(project, task):
-  if project.verbose:
+def monthly_budget_mover(config, task):
+  if config.verbose:
     print('MONTHLY BUDGET MOVER')
 
   # Get Spend report
-  r = report_get(task['auth'], name=task['report_name'])
+  r = report_get(config, task['auth'], name=task['report_name'])
 
   report_id = report_get(
-      task['auth'], name=task['report_name'])['queryId']
+      config, task['auth'], name=task['report_name'])['queryId']
   #report = report_to_list(task['auth'], report_id)
 
   # Get Insertion Order SDF
@@ -192,7 +190,7 @@ def monthly_budget_mover(project, task):
     task['out_changes']['bigquery']['schema'] = schema_changes
 
   # Write old sdf to table
-  put_rows(task['auth'], task['out_old_sdf'], (n for n in sdf))
+  put_rows(config, task['auth'], task['out_old_sdf'], (n for n in sdf))
 
   # Categorize the IOs to be aggregated together
   if (task['budget_categories'] != {} and
@@ -223,11 +221,11 @@ def monthly_budget_mover(project, task):
     changes.insert(0, CHANGES_SCHEMA)
 
   # Write new sdf to table
-  put_rows(task['auth'], task['out_new_sdf'],
+  put_rows(config, task['auth'], task['out_new_sdf'],
            (n for n in new_sdf))
 
   # Write log file to table
-  put_rows(task['auth'], task['out_changes'],
+  put_rows(config, task['auth'], task['out_changes'],
            (n for n in changes))
 
 
@@ -676,7 +674,3 @@ def validate_all_ios_processed(categories, processed_ios, source):
 
     raise Exception('The following ios were not found in the ' + source +
                     ':  ' + not_processed_str)
-
-
-if __name__ == '__main__':
-  monthly_budget_mover()

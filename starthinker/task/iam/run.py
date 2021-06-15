@@ -53,15 +53,14 @@ down individuals.  We highly recommend using roles.
 
 """
 
-from starthinker.util.project import from_parameters
 from starthinker.util.auth import set_iam
 
 
-@from_parameters
-def iam(project, task):
-  set_iam(task['auth'], project.id, task['role'],
-          task['email'])
-
-
-if __name__ == '__main__':
-  iam()
+def iam(config, task):
+  set_iam(
+    config,
+    task['auth'],
+    config.project,
+    task['role'],
+    task['email']
+  )

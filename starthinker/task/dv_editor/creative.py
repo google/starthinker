@@ -20,16 +20,17 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 CREATIVE_COUNT_LIMIT=1000
 
-def creative_clear(project, task):
+def creative_clear(config, task):
   table_create(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "DV_Creatives",
     Discovery_To_BigQuery(
@@ -38,14 +39,15 @@ def creative_clear(project, task):
     ).method_schema("advertisers.creatives.list"),
   )
 
-  sheets_clear(task["auth_sheets"], task["sheet"], "Creatives", "B2:Z")
+  sheets_clear(config, task["auth_sheets"], task["sheet"], "Creatives", "B2:Z")
 
 
-def creative_load(project, task):
+def creative_load(config, task):
 
   # load multiple partners from user defined sheet
   def creative_load_multiple():
     rows = get_rows(
+      config,
       task["auth_sheets"], {
         "sheets": {
           "sheet": task["sheet"],
@@ -57,7 +59,7 @@ def creative_load(project, task):
 
     for row in rows:
       yield from API_DV360(
-        task["auth_dv"], iterate=True).advertisers().creatives().list(
+        config, task["auth_dv"], iterate=True).advertisers().creatives().list(
           advertiserId=lookup_id(row[0]),
           filter='entityStatus="ENTITY_STATUS_ACTIVE"',
           fields='creatives.displayName,creatives.creativeId,creatives.entityStatus,creatives.creativeType,creatives.dimensions,creatives.reviewStatus,nextPageToken'
@@ -65,6 +67,7 @@ def creative_load(project, task):
 
   # write creatives to database and sheet
   put_rows(
+    config,
     task["auth_bigquery"], {
       "bigquery": {
         "dataset":task["dataset"],
@@ -80,6 +83,7 @@ def creative_load(project, task):
 
   # write creatives to sheet
   rows = get_rows(
+    config,
     task["auth_bigquery"], {
       "bigquery": {
         "dataset":task["dataset"],
@@ -114,6 +118,7 @@ def creative_load(project, task):
   )
 
   put_rows(
+    config,
     task["auth_sheets"],
     {
       "sheets": {

@@ -20,7 +20,6 @@ import json
 from urllib.request import urlopen
 from urllib.parse import urlencode
 
-from starthinker.util.project import from_parameters
 from starthinker.util.data import put_rows
 
 
@@ -55,8 +54,7 @@ def fred_regional(api_key, frequency, region, start_date, **kwargs):
     ]
 
 
-@from_parameters
-def fred(project, task):
+def fred(config, task):
 
   if 'series' in task:
 
@@ -90,7 +88,7 @@ def fred(project, task):
 
       name = 'FRED_SERIES_%s' % parameters['series_group']
       rows = fred_regional(task['api_key'], task['frequency'],
-                           task['region_type'], project.date, **parameters)
+                           task['region_type'], config.date, **parameters)
 
       if 'bigquery' in task['out']:
         task['out']['bigquery']['schema'] = [{
@@ -115,8 +113,4 @@ def fred(project, task):
     raise Excpetion(
         'MISSING CONFIGURATION: Specify either series_id or series_group.')
 
-  put_rows(task['auth'], name, rows)
-
-
-if __name__ == '__main__':
-  fred()
+  put_rows(config, task['auth'], name, rows)

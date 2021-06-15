@@ -27,7 +27,6 @@ import json
 
 from smartsheet import Smartsheet
 
-from starthinker.util.project import from_parameters
 from starthinker.util.data import put_rows
 from starthinker.util.csv import column_header_sanitize
 
@@ -140,9 +139,8 @@ def get_report_rows(token, report):
     page += 1
 
 
-@from_parameters
-def smartsheet(project, task):
-  if project.verbose:
+def smartsheet(config, task):
+  if config.verbose:
     print('SMARTSHEET')
 
   if 'sheet' in task:
@@ -172,8 +170,4 @@ def smartsheet(project, task):
       })
 
   if rows:
-    put_rows(task['auth'], task['out'], rows)
-
-
-if __name__ == '__main__':
-  smartsheet()
+    put_rows(config, task['auth'], task['out'], rows)

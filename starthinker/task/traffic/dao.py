@@ -28,8 +28,9 @@ class BaseDAO(object):
   entities.
   """
 
-  def __init__(self, auth, profile_id, is_admin=False):
+  def __init__(self, config, auth, profile_id, is_admin=False):
     """Initializes the object with a specific CM profile ID and an authorization scheme."""
+    self.config = config
     self.auth = auth
     self.is_admin = is_admin
     self.profile_id = profile_id
@@ -42,7 +43,7 @@ class BaseDAO(object):
     Must be overloaded by one of the derived classes and extended for
     specific endpoint.
     """
-    return API_DCM(self.auth, iterate, self.is_admin)
+    return API_DCM(self.config, self.auth, iterate, self.is_admin)
 
   def _clean(self, item):
     """Removes null keys from the item.

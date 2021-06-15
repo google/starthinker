@@ -20,16 +20,17 @@
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.google_api import API_DV360
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 
-def line_item_clear(project, task):
+def line_item_clear(config, task):
   table_create(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "DV_LineItems",
     Discovery_To_BigQuery(
@@ -41,6 +42,7 @@ def line_item_clear(project, task):
   )
 
   sheets_clear(
+    config,
     task["auth_sheets"],
     task["sheet"],
     "Line Items",
@@ -48,11 +50,12 @@ def line_item_clear(project, task):
   )
 
 
-def line_item_load(project, task):
+def line_item_load(config, task):
 
   # load multiple partners from user defined sheet
   def load_multiple():
     for row in get_rows(
+      config,
       task["auth_sheets"],
       { "sheets": {
         "sheet": task["sheet"],
@@ -63,6 +66,7 @@ def line_item_load(project, task):
     ):
       if row:
         yield from API_DV360(
+          config,
           task["auth_dv"],
           iterate=True
         ).advertisers().lineItems().list(
@@ -70,10 +74,11 @@ def line_item_load(project, task):
           filter='entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
         ).execute()
 
-  line_item_clear(project, task)
+  line_item_clear(config, task)
 
   # write to database
   put_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],
@@ -91,6 +96,7 @@ def line_item_load(project, task):
 
   # write to sheet
   put_rows(
+    config,
     task["auth_sheets"],
     { "sheets": {
       "sheet": task["sheet"],
@@ -99,6 +105,7 @@ def line_item_load(project, task):
       "range": "B2"
     }},
     get_rows(
+      config,
       task["auth_bigquery"],
       { "bigquery": {
         "dataset": task["dataset"],

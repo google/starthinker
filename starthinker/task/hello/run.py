@@ -36,13 +36,9 @@ Call from code using:
 import json
 import time
 
-from starthinker.util.project import from_parameters
+def hello(config, task):
 
-
-@from_parameters
-def hello(project, task):
-
-  if project.verbose:
+  if config.verbose:
     print('HELLO')
 
   print('')
@@ -58,14 +54,14 @@ def hello(project, task):
   print('Every task automatically gets a date parameter.')
   print('The parameter can be passed in, or defaults to today.')
   print('')
-  print('PROJECT DATE:', project.date)
+  print('PROJECT DATE:', config.date)
   print('')
   print('')
 
   print('-' * 80)
   print('Most tasks operate on top of Google Cloud infrastructure.')
   print("Every task specifies an 'auth' parameter as 'user' or 'service'.")
-  print('Every project has its own credentails paths.')
+  print('Every config has its own credentails paths.')
   print(
       "If you provide 'client' credentials, the 'user' credentials will be populated as necessary."
   )
@@ -74,27 +70,27 @@ def hello(project, task):
   )
   print("If you use the 'service' credentials, you must add them manually.")
   print('')
-  print('PROJECT ID:', project.id)
+  print('PROJECT ID:', config.project)
   print(
       'PROJECT CLIENT CREDENTIALS:',
-      project.recipe.get('setup', {}).get('auth', {}).get('client', 'MISSING'))
+      config.recipe.get('setup', {}).get('auth', {}).get('client', 'MISSING'))
   print('PROJECT USER CREDENTIALS:',
-        project.recipe.get('setup', {}).get('auth', {}).get('user', 'MISSING'))
+        config.recipe.get('setup', {}).get('auth', {}).get('user', 'MISSING'))
   print(
       'PROJECT SERVICE CREDENTIALS:',
-      project.recipe.get('setup', {}).get('auth', {}).get('service', 'MISSING'))
+      config.recipe.get('setup', {}).get('auth', {}).get('service', 'MISSING'))
   print('')
   print('')
 
   print('-' * 80)
-  print('Your entire project definition is accessible as a dictionary.')
+  print('Your entire recipe definition is accessible as a dictionary.')
   print('The task name must match a directory with a run.py inside it.')
   print(
       "For example, 'hello' is a task which will executed by 'task/hello/run.py'."
   )
   print('')
   print('PROJECT JSON:')
-  print(json.dumps(project.recipe, indent=2, default=str))
+  print(json.dumps(config.recipe, indent=2, default=str))
 
   print('')
   print('')
@@ -123,7 +119,7 @@ def hello(project, task):
 
   print('-' * 80)
   print("Take a look inside 'task/hello/run.py'.")
-  print('Its a great skeleton for your first project.')
+  print('Its a great skeleton for your first recipe.')
   print('')
   print('')
 

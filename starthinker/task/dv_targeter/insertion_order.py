@@ -21,14 +21,15 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 
 
-def insertion_order_clear(project, task):
+def insertion_order_clear(config, task):
   table_create(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "DV_InsertionOrders",
     Discovery_To_BigQuery(
@@ -40,11 +41,12 @@ def insertion_order_clear(project, task):
   )
 
 
-def insertion_order_load(project, task):
+def insertion_order_load(config, task):
 
   # load multiple from user defined sheet
   def insertion_order_load_multiple():
     for row in get_rows(
+      config,
       task["auth_sheets"],
       { "sheets": {
         "sheet": task["sheet"],
@@ -55,6 +57,7 @@ def insertion_order_load(project, task):
     ):
       if row:
         yield from API_DV360(
+          config,
           task["auth_dv"],
           iterate=True
         ).advertisers().insertionOrders().list(
@@ -62,10 +65,11 @@ def insertion_order_load(project, task):
           filter='entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
         ).execute()
 
-  insertion_order_clear(project, task)
+  insertion_order_clear(config, task)
 
   # write to database
   put_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],

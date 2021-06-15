@@ -66,6 +66,7 @@ class Logger(object):
     trix_id and auth fields need to be updated.
     """
     self.trix_id = None
+    self.config = None
     self.auth = None
     self._row = 1
     self._buffer = []
@@ -74,7 +75,7 @@ class Logger(object):
 
   def clear(self):
     """Clears the log tab in the Bulkdozer feed, useful when a new execution is starting."""
-    sheets_clear(self.auth, self.trix_id, 'Log', 'A1:B')
+    sheets_clear(self.config, self.auth, self.trix_id, 'Log', 'A1:B')
     self._row = 1
 
   def log(self, message):
@@ -95,7 +96,7 @@ class Logger(object):
     """Flushes the message buffer writing buffered messages to the sheet."""
     if self._buffer:
       sheets_write(
-          self.auth, self.trix_id, 'Log', 'A1', self._buffer, append=True)
+          self.config, self.auth, self.trix_id, 'Log', 'A1', self._buffer, append=True)
 
       self._row += len(self._buffer)
 

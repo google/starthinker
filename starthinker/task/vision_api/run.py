@@ -34,24 +34,23 @@ from urllib.error import HTTPError
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_Vision
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import from_parameters
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 
 
-def vision_annotate(project, task):
+def vision_annotate(config, task):
 
   body = {
     "requests":[],
-    "parent": 'projects/' + project.id
+    "parent": 'projects/' + config.project
   }
 
   uri_buffer = []
 
-  for request_index, request in enumerate(get_rows(task['auth'], task['requests'], as_object=True)):
+  for request_index, request in enumerate(get_rows(config, task['auth'], task['requests'], as_object=True)):
 
    # submit 16 requests at a time
    if request_index > 0 and request_index % 16 == 0:
-     for response_index, response in enumerate(API_Vision(task['auth'], iterate=True).images().annotate(body=body).execute()):
+     for response_index, response in enumerate(API_Vision(config, task['auth'], iterate=True).images().annotate(body=body).execute()):
        response['imageUri'] = uri_buffer[response_index]
        yield response
 
@@ -63,7 +62,7 @@ def vision_annotate(project, task):
      uri = request['image'].get('source', {}).get('imageUri', 'image %s' % request_index)
      uri_buffer.append(uri)
 
-     if project.verbose:
+     if config.verbose:
        print('URI', uri)
 
      if 'content' in request['image'] and 'source' in request['image']:
@@ -73,13 +72,12 @@ def vision_annotate(project, task):
 
    # clean up last requests
    if body['requests']:
-     for response_index, response in enumerate(API_Vision(task['auth'], iterate=True).images().annotate(body=body).execute()):
+     for response_index, response in enumerate(API_Vision(config, task['auth'], iterate=True).images().annotate(body=body).execute()):
        response['imageUri'] = uri_buffer[response_index]
        yield response
 
 
-@from_parameters
-def vision_api(project, task):
+def vision_api(config, task):
 
   # Eventually add format detection or parameters to put_rows
   if 'bigquery' in task['responses']:
@@ -96,11 +94,9 @@ def vision_api(project, task):
   schema.insert(0, {'description': 'Mapping back to request.', 'name': 'imageUri', 'type': 'STRING', 'mode': 'REQUIRED'})
 
   put_rows(
+    config,
     task['auth'],
     task['responses'],
-    vision_annotate(project, task),
+    vision_annotate(config, task),
     schema
   )
-
-if __name__ == '__main__':
-  vision_api()

@@ -19,8 +19,7 @@
 
 import traceback
 
-from starthinker.util.dcm import get_profile_for_api
-from starthinker.util.project import from_parameters
+from starthinker.util.cm import get_profile_for_api
 from starthinker.util.sheets import sheets_get
 
 from starthinker.task.traffic.feed import Feed
@@ -55,7 +54,7 @@ spreadsheet = None
 clean_run = True
 
 
-def process_feed(project, task, feed_name, dao, print_field, msg='Processing'):
+def process_feed(config, task, feed_name, dao, print_field, msg='Processing'):
   """Processes a feed that represents a specific entity in the Bulkdozer feed.
 
   Args:
@@ -72,7 +71,7 @@ def process_feed(project, task, feed_name, dao, print_field, msg='Processing'):
       Uploading Asset for assets.
   """
   feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       feed_name,
       spreadsheet=spreadsheet,
@@ -117,12 +116,12 @@ def execute_feed(feed, dao, print_field, msg='Processing'):
     feed.update()
 
 
-def setup(project, task):
+def setup(config, task):
   """Sets up Bulkdozer configuration and required object to execute the job."""
 
   if 'dcm_profile_id' not in task and 'account_id' in task:
     task['is_admin'], task[
-        'dcm_profile_id'] = get_profile_for_api(task['auth'],
+        'dcm_profile_id'] = get_profile_for_api(config, task['auth'],
                                                 task['account_id'])
 
   if 'is_admin' not in task:
@@ -132,13 +131,14 @@ def setup(project, task):
     task['sheet_id'] = task['sheet_url']
 
   # Setting up required objects and parsing parameters
+  logger.config = config
   logger.auth = task['auth']
   logger.trix_id = task.get('logger', {}).get('sheet_id',
                                                       task['sheet_id'])
   logger.buffered = True
 
 
-def init_daos(project, task):
+def init_daos(config, task):
   global video_format_dao
   global landing_page_dao
   global placement_group_dao
@@ -152,94 +152,94 @@ def init_daos(project, task):
   global dynamic_targeting_key_dao
   global spreadsheet
 
-  spreadsheet = sheets_get(task['auth'], task['sheet_id'])
+  spreadsheet = sheets_get(config, task['auth'], task['sheet_id'])
 
   #store.auth = task['auth']
   #store.trix_id = task.get('store', {}).get('sheet_id', task['sheet_id'])
   #store.load_id_map()
 
-  video_format_dao = VideoFormatDAO(task['auth'],
+  video_format_dao = VideoFormatDAO(config, task['auth'],
                                     task['dcm_profile_id'],
                                     task['is_admin'])
-  landing_page_dao = LandingPageDAO(task['auth'],
+  landing_page_dao = LandingPageDAO(config, task['auth'],
                                     task['dcm_profile_id'],
                                     task['is_admin'])
-  placement_group_dao = PlacementGroupDAO(task['auth'],
+  placement_group_dao = PlacementGroupDAO(config, task['auth'],
                                           task['dcm_profile_id'],
                                           task['is_admin'])
-  campaign_dao = CampaignDAO(task['auth'],
+  campaign_dao = CampaignDAO(config, task['auth'],
                              task['dcm_profile_id'],
                              task['is_admin'])
   creative_association_dao = CreativeAssociationDAO(
-      task['auth'], task['dcm_profile_id'],
+      config, task['auth'], task['dcm_profile_id'],
       task['is_admin'])
-  creative_dao = CreativeDAO(task['auth'],
+  creative_dao = CreativeDAO(config, task['auth'],
                              task['dcm_profile_id'],
                              task['is_admin'])
-  placement_dao = PlacementDAO(task['auth'],
+  placement_dao = PlacementDAO(config, task['auth'],
                                task['dcm_profile_id'],
                                task['is_admin'])
-  creative_asset_dao = CreativeAssetDAO(task['auth'],
+  creative_asset_dao = CreativeAssetDAO(config, task['auth'],
                                         task['dcm_profile_id'],
-                                        task['is_admin'], project.id)
-  ad_dao = AdDAO(task['auth'], task['dcm_profile_id'],
+                                        task['is_admin'], config.project)
+  ad_dao = AdDAO(config, task['auth'], task['dcm_profile_id'],
                  task['is_admin'])
-  event_tag_dao = EventTagDAO(task['auth'],
+  event_tag_dao = EventTagDAO(config, task['auth'],
                               task['dcm_profile_id'],
                               task['is_admin'])
   dynamic_targeting_key_dao = DynamicTargetingKeyDAO(
-      task['auth'], task['dcm_profile_id'],
+      config, task['auth'], task['dcm_profile_id'],
       task['is_admin'])
 
 
-def assets(project, task):
+def assets(config, task):
   """Processes assets."""
-  process_feed(project, task, 'creative_asset_feed', creative_asset_dao,
+  process_feed(config, task, 'creative_asset_feed', creative_asset_dao,
                FieldMap.CREATIVE_ASSET_FILE_NAME, 'Uploading creative asset')
 
 
-def landing_pages(project, task):
+def landing_pages(config, task):
   """Processes landing pages."""
-  process_feed(project, task, 'landing_page_feed', landing_page_dao,
+  process_feed(config, task, 'landing_page_feed', landing_page_dao,
                FieldMap.CAMPAIGN_LANDING_PAGE_NAME, 'Processing landing page')
 
 
-def placement_groups(project, task):
+def placement_groups(config, task):
   """Processes placement group."""
-  process_feed(project, task, 'placement_group_feed', placement_group_dao,
+  process_feed(config, task, 'placement_group_feed', placement_group_dao,
                FieldMap.PLACEMENT_GROUP_NAME, 'Processing placement group')
 
 
-def campaigns(project, task):
+def campaigns(config, task):
   """Processes campaigns."""
-  process_feed(project, task, 'campaign_feed', campaign_dao, FieldMap.CAMPAIGN_NAME,
+  process_feed(config, task, 'campaign_feed', campaign_dao, FieldMap.CAMPAIGN_NAME,
                'Processing campaign')
 
 
-def event_tags(project, task):
+def event_tags(config, task):
   """Processes event tags."""
-  process_feed(project, task, 'event_tag_feed', event_tag_dao, FieldMap.EVENT_TAG_NAME,
+  process_feed(config, task, 'event_tag_feed', event_tag_dao, FieldMap.EVENT_TAG_NAME,
                'Processing event tag')
 
 
-def placements(project, task):
+def placements(config, task):
   """Processes placements."""
   placement_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'placement_feed',
       spreadsheet=spreadsheet,
       timezone=task.get('timezone', None))
 
   pricing_schedule_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'placement_pricing_schedule_feed',
       spreadsheet=spreadsheet,
       timezone=task.get('timezone', None))
 
   transcode_configs_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'transcode_configs_feed',
       spreadsheet=spreadsheet,
@@ -255,38 +255,38 @@ def placements(project, task):
   pricing_schedule_feed.update()
 
 
-def creatives(project, task):
+def creatives(config, task):
   """Processes creatives."""
   creative_asset_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'creative_asset_feed',
       spreadsheet=spreadsheet,
       timezone=task.get('timezone', None))
 
   creative_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'creative_feed',
       spreadsheet=spreadsheet,
       timezone=task.get('timezone', None))
 
   third_party_url_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'third_party_url_feed',
       spreadsheet=spreadsheet,
       timezone=task.get('timezone', None))
 
   creative_association_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'creative_asset_association_feed',
       spreadsheet=spreadsheet,
       timezone=task.get('timezone', None))
 
   click_tag_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'click_tag_feed',
       spreadsheet=spreadsheet,
@@ -316,41 +316,41 @@ def creatives(project, task):
   click_tag_feed.update()
 
 
-def ads(project, task):
+def ads(config, task):
   """Processes ads."""
   placement_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'placement_feed',
       spreadsheet=spreadsheet,
       timezone=task.get('timezone', None))
   event_tag_profile_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'event_tag_profile_feed',
       spreadsheet=spreadsheet,
       timezone=task.get('timezone', None))
   ad_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'ad_feed',
       spreadsheet=spreadsheet,
       timezone=task.get('timezone', None))
   ad_creative_assignment_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'ad_creative_assignment_feed',
       spreadsheet=spreadsheet,
       timezone=task.get('timezone', None))
 
   ad_placement_assignment_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'ad_placement_assignment_feed',
       spreadsheet=spreadsheet,
       timezone=task.get('timezone', None))
   ad_event_tag_assignment_feed = Feed(
-      task['auth'],
+      config, task['auth'],
       task['sheet_id'],
       'event_tag_ad_assignment_feed',
       spreadsheet=spreadsheet,
@@ -368,37 +368,36 @@ def ads(project, task):
   event_tag_profile_feed.update()
 
 
-def dynamic_targeting_keys(project, task):
+def dynamic_targeting_keys(config, task):
   """Processes dynamic targeting keys."""
-  process_feed(project, task, 'dynamic_targeting_key_feed', dynamic_targeting_key_dao,
+  process_feed(config, task, 'dynamic_targeting_key_feed', dynamic_targeting_key_dao,
                FieldMap.DYNAMIC_TARGETING_KEY_NAME,
                'Processing dynamic targeting key')
 
 
-@from_parameters
-def traffic(project, task):
+def traffic(config, task):
   """Main function of Bulkdozer, performs the Bulkdozer job"""
   global clean_run
-  if project.verbose:
+  if config.verbose:
     print('traffic')
 
   try:
-    setup(project, task)
+    setup(config, task)
 
     logger.clear()
     logger.log('Bulkdozer traffic job starting')
     logger.flush()
 
-    init_daos(project, task)
-    assets(project, task)
-    landing_pages(project, task)
-    campaigns(project, task)
-    event_tags(project, task)
-    placement_groups(project, task)
-    placements(project, task)
-    creatives(project, task)
-    ads(project, task)
-    dynamic_targeting_keys(project, task)
+    init_daos(config, task)
+    assets(config, task)
+    landing_pages(config, task)
+    campaigns(config, task)
+    event_tags(config, task)
+    placement_groups(config, task)
+    placements(config, task)
+    creatives(config, task)
+    ads(config, task)
+    dynamic_targeting_keys(config, task)
 
     #if clean_run:
     #  store.clear()
@@ -421,14 +420,8 @@ def traffic(project, task):
         'Done: Errors happened with some of the assets, check your sheet log.')
 
 
-@from_parameters
-def _traffic(project, task):
+def _traffic(config, task):
   """For development purposes when debugging a specific entity, this function is handy to run just that entity."""
-  setup(project, task)
-  init_daos(project, task)
-  dynamic_targeting_keys(project, task)
-
-
-if __name__ == '__main__':
-  """Main entry point of Bulkdozer."""
-  traffic()
+  setup(config, task)
+  init_daos(config, task)
+  dynamic_targeting_keys(config, task)

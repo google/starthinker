@@ -17,7 +17,6 @@
 ###########################################################################
 import re
 
-from starthinker.util.project import from_parameters
 from starthinker.util.sheets import sheets_read, sheets_tab_copy
 from starthinker.util.bigquery import get_schema, query_to_view
 from starthinker.util.csv import rows_to_type, rows_to_csv
@@ -27,19 +26,18 @@ TEMPLATE_TAB = 'Mapping'
 RE_SQLINJECT = re.compile(r'[^a-z0-9_\-, ]+', re.UNICODE | re.IGNORECASE)
 
 
-@from_parameters
-def mapping(project, task):
-  if project.verbose:
+def mapping(config, task):
+  if config.verbose:
     print('MAPPING')
 
   # create the sheet from template if it does not exist
-  sheets_tab_copy(task['auth'], TEMPLATE_SHEET, TEMPLATE_TAB,
+  sheets_tab_copy(config, task['auth'], TEMPLATE_SHEET, TEMPLATE_TAB,
                   task['sheet'], task['tab'])
 
   # move if specified
   dimensions = {}
   defaults = {}
-  rows = sheets_read(task['auth'], task['sheet'],
+  rows = sheets_read(config, task['auth'], task['sheet'],
                      task['tab'], 'A1:D')
 
   # if rows don't exist, query is still created without mapping ( allows blank maps )
@@ -47,7 +45,7 @@ def mapping(project, task):
     # sanitize mapping
     # 0 = Dimension, 1 = Tag, 2 = Column, 3 = Keyword
     for row in rows[1:]:
-      if project.verbose:
+      if config.verbose:
         print('ROW: ', row)
       # sanitize row
       #row = map(lambda c: RE_SQLINJECT.sub('', c.strip()), row)
@@ -79,18 +77,15 @@ def mapping(project, task):
   query += 'FROM [%s.%s]' % (task['in']['dataset'],
                              task['in']['table'])
 
-  if project.verbose:
+  if config.verbose:
     print('QUERY: ', query)
 
   # write to view
   query_to_view(
+      config,
       task['out']['auth'],
-      project.id,
+      config.project,
       task['out']['dataset'],
       task['out']['view'],
       query,
       replace=True)
-
-
-if __name__ == '__main__':
-  mapping()

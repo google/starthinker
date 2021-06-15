@@ -98,10 +98,9 @@ from googleapiclient.errors import HttpError
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.dcm import get_profile_for_api
+from starthinker.util.cm import get_profile_for_api
 from starthinker.util.google_api import API
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import from_parameters
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 
 
 ERROR_SCHEMA = [
@@ -113,7 +112,7 @@ ERROR_SCHEMA = [
 ]
 
 
-def google_api_initilaize(api_call, alias=None):
+def google_api_initilaize(config, api_call, alias=None):
   """Some Google API calls require a lookup or pre-call, add it here.
 
   Modifies the API call before actual execution with any data
@@ -141,19 +140,19 @@ def google_api_initilaize(api_call, alias=None):
     if not api_call['function'].startswith('userProfiles'):
 
       is_superuser, profile_id = get_profile_for_api(
-        api_call['auth'], api_call['kwargs']['id'] if api_call['function'] == 'accounts.get' else api_call['kwargs']['accountId']
+        config, api_call['auth'], api_call['kwargs']['id'] if api_call['function'] == 'accounts.get' else api_call['kwargs']['accountId']
       )
       api_call['kwargs']['profileId'] = profile_id
 
       if is_superuser:
-        from starthinker.util.dcm.internalv33_uri import URI as DCM_URI
+        from starthinker.util.cm_internalv33_uri import URI as DCM_URI
         api_call['version'] = 'internalv3.3'
         api_call['uri'] = DCM_URI
       elif 'accountId' in api_call['kwargs']:
         del api_call['kwargs']['accountId']
 
 
-def google_api_build_results(project, auth, api_call, results):
+def google_api_build_results(config, auth, api_call, results):
   """Builds the BigQuery table to house the Google API call results.
 
   Optional piece of the recipe, will create a BigQuery table for results.
@@ -189,8 +188,9 @@ def google_api_build_results(project, auth, api_call, results):
     results['bigquery']['skip_rows'] = 0
 
     table_create(
+      config,
       results['bigquery'].get('auth', auth),
-      project.id,
+      config.project,
       results['bigquery']['dataset'],
       results['bigquery']['table'],
       results['bigquery']['schema'],
@@ -200,7 +200,7 @@ def google_api_build_results(project, auth, api_call, results):
   return results
 
 
-def google_api_build_errors(project, auth, api_call, errors):
+def google_api_build_errors(config, auth, api_call, errors):
   """Builds the BigQuery table to house the Google API call errors.
 
   Optional piece of the recipe, will create a BigQuery table for errors.
@@ -225,8 +225,9 @@ def google_api_build_errors(project, auth, api_call, errors):
     errors['bigquery']['disposition'] = 'WRITE_TRUNCATE'
 
     table_create(
+      config,
       errors['bigquery'].get('auth', auth),
-      project.id,
+      config.project,
       errors['bigquery']['dataset'],
       errors['bigquery']['table'],
       errors['bigquery']['schema'],
@@ -236,7 +237,7 @@ def google_api_build_errors(project, auth, api_call, errors):
   return errors
 
 
-def google_api_execute(auth, api_call, results, errors, limit=None):
+def google_api_execute(config, auth, api_call, results, errors, limit=None):
   """Execute the actual API call and write to the end points defined.
 
   The API call is completely defined at this point.
@@ -258,7 +259,7 @@ def google_api_execute(auth, api_call, results, errors, limit=None):
 
 
   try:
-    rows = API(api_call).execute()
+    rows = API(config, api_call).execute()
 
     if results:
       # check if single object needs conversion to rows
@@ -270,7 +271,7 @@ def google_api_execute(auth, api_call, results, errors, limit=None):
         rows = [[r] for r in rows]
 
       rows = map(lambda r: Discovery_To_BigQuery.clean(r), rows)
-      put_rows(auth, results, rows)
+      put_rows(config, auth, results, rows)
 
       if 'bigquery' in results:
         results['bigquery']['disposition'] = 'WRITE_APPEND'
@@ -286,7 +287,7 @@ def google_api_execute(auth, api_call, results, errors, limit=None):
               'Value': str(v)
           } for k, v in api_call['kwargs'].items()]
       }]
-      put_rows(auth, errors, rows)
+      put_rows(config, auth, errors, rows)
 
       if 'bigquery' in errors:
         errors['bigquery']['disposition'] = 'WRITE_APPEND'
@@ -295,8 +296,7 @@ def google_api_execute(auth, api_call, results, errors, limit=None):
       raise e
 
 
-@from_parameters
-def google_api(project, task):
+def google_api(config, task):
   """Task handler for recipe, delegates all JSON parameters to functions.
 
   Executes the following steps:
@@ -321,7 +321,7 @@ def google_api(project, task):
     ValueError: If a required key in the recipe is missing.
   """
 
-  if project.verbose:
+  if config.verbose:
     print(
       'GOOGLE_API',
       task['api'],
@@ -336,19 +336,19 @@ def google_api(project, task):
     'function': task['function'],
     'iterate': task.get('iterate', False),
     'limit': task.get('limit', None),
-    'key': project.key,
+    'key': config.key,
     'headers': task.get('headers'),
   }
 
   results = google_api_build_results(
-    project,
+    config,
     task['auth'],
     api_call,
     task.get('results', {})
   )
 
   errors = google_api_build_errors(
-    project,
+    config,
     task['auth'],
     api_call,
     task.get('errors', {})
@@ -363,6 +363,7 @@ def google_api(project, task):
   # get parameters from remote location ( such as BigQuery )
   elif 'kwargs_remote' in task:
     kwargs_list = get_rows(
+      config,
       task['auth'],
       task['kwargs_remote'],
       as_object=True
@@ -375,9 +376,5 @@ def google_api(project, task):
   # loop through paramters and make possibly multiple API calls
   for kwargs in kwargs_list:
     api_call['kwargs'] = kwargs
-    google_api_initilaize(api_call, task.get('alias'))
-    google_api_execute(task['auth'], api_call, results, errors, task.get('limit'))
-
-
-if __name__ == '__main__':
-  google_api()
+    google_api_initilaize(config, api_call, task.get('alias'))
+    google_api_execute(config, task['auth'], api_call, results, errors, task.get('limit'))

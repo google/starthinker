@@ -17,19 +17,19 @@
 ###########################################################################
 
 from starthinker.util.google_api import API_DCM
-from starthinker.util.dcm import get_profile_for_api
+from starthinker.util.cm import get_profile_for_api
 
 
-def bulkdozer_test(project, task):
+def bulkdozer_test(config, task):
   print('testing bulkdozer')
 
   if 'verify' in task['traffic']:
     is_admin, profile_id = get_profile_for_api(
-        task['auth'], task['traffic']['account_id'])
+        config, task['auth'], task['traffic']['account_id'])
 
     for entity in task['traffic']['verify']:
       service = getattr(
-          API_DCM(task['auth'], internal=is_admin), entity['type'])
+          API_DCM(config, task['auth'], internal=is_admin), entity['type'])
       cm_entity = service().get(profileId=profile_id, id=entity['id']).execute()
 
       values = entity['values']

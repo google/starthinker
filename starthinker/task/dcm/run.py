@@ -36,14 +36,12 @@ proto files.
 
 """
 
-from starthinker.util.project import from_parameters
 from starthinker.util.data import get_rows, put_rows
-from starthinker.util.dcm import report_delete, report_filter, report_build, report_file, report_to_rows, report_clean, report_schema, report_run
+from starthinker.util.cm import report_delete, report_filter, report_build, report_file, report_to_rows, report_clean, report_schema, report_run
 
 
-@from_parameters
-def dcm(project, task):
-  if project.verbose:
+def dcm(config, task):
+  if config.verbose:
     print('DCM')
 
   # stores existing report json
@@ -51,12 +49,13 @@ def dcm(project, task):
 
   # check if report is to be deleted
   if task.get('delete', False):
-    if project.verbose:
+    if config.verbose:
       print(
           'DCM DELETE', task['report'].get('name', None) or
           task['report'].get('body', {}).get('name', None) or
           task['report'].get('report_id', None))
     report_delete(
+        config,
         task['auth'],
         task['report']['account'],
         task['report'].get('report_id', None),
@@ -66,11 +65,12 @@ def dcm(project, task):
 
   # check if report is to be run
   if task.get('report_run_only', False):
-    if project.verbose:
+    if config.verbose:
       print(
           'DCM REPORT RUN', task['report'].get('name', None) or
           task['report'].get('report_id', None))
     report_run(
+        config,
         task['auth'],
         task['report']['account'],
         task['report'].get('report_id', None),
@@ -79,21 +79,24 @@ def dcm(project, task):
 
   # check if report is to be created
   if 'body' in task['report']:
-    if project.verbose:
+    if config.verbose:
       print('DCM BUILD', task['report']['body']['name'])
 
     if 'filters' in task['report']:
       task['report']['body'] = report_filter(
+          config,
           task['auth'], task['report']['body'],
           task['report']['filters'])
 
     report = report_build(
+        config,
         task['auth'], task['report']['body'].get('accountId') or
         task['report']['account'], task['report']['body'])
 
   # moving a report
   if 'out' in task:
     filename, report = report_file(
+        config,
         task['auth'],
         task['report']['account'],
         task['report'].get('report_id', None),
@@ -103,7 +106,7 @@ def dcm(project, task):
     )
 
     if report:
-      if project.verbose:
+      if config.verbose:
         print('DCM FILE', filename)
 
       # clean up the report
@@ -119,8 +122,4 @@ def dcm(project, task):
 
       # write rows using standard out block in json ( allows customization across all scripts )
       if rows:
-        put_rows(task['auth'], task['out'], rows)
-
-
-if __name__ == '__main__':
-  dcm()
+        put_rows(config, task['auth'], task['out'], rows)

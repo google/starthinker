@@ -20,7 +20,6 @@ from starthinker.util.bigquery import query_to_view
 from starthinker.util.csv import rows_pad
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.project import project
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
@@ -29,17 +28,18 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def line_item_map_clear(project, task):
-  sheets_clear(task['auth_sheets'], task['sheet'], 'Line Items Map',
+def line_item_map_clear(config, task):
+  sheets_clear(config, task['auth_sheets'], task['sheet'], 'Line Items Map',
                'A2:Z')
 
 
-def line_item_map_load(project, task):
+def line_item_map_load(config, task):
   pass
 
 
-def line_item_map_audit(project, task):
+def line_item_map_audit(config, task):
   rows = get_rows(
+      config,
       task['auth_sheets'], {
           'sheets': {
               'sheet': task['sheet'],
@@ -50,6 +50,7 @@ def line_item_map_audit(project, task):
       })
 
   put_rows(
+      config,
       task['auth_bigquery'], {
           'bigquery': {
               'dataset': task['dataset'],
@@ -69,8 +70,9 @@ def line_item_map_audit(project, task):
       }, rows)
 
   query_to_view(
+      config,
       task['auth_bigquery'],
-      project.id,
+      config.project,
       task['dataset'],
       'AUDIT_LineItemMaps',
       """WITH
@@ -110,11 +112,12 @@ def line_item_map_audit(project, task):
       legacy=False)
 
 
-def line_item_map_patch(project, task, commit=False):
+def line_item_map_patch(config, task, commit=False):
   patches = {}
   changed = set()
 
   rows = get_rows(
+      config,
       task['auth_bigquery'], {
           'bigquery': {
               'dataset':
@@ -143,6 +146,7 @@ def line_item_map_patch(project, task, commit=False):
     }
 
   rows = get_rows(
+      config,
       task['auth_sheets'], {
           'sheets': {
               'sheet': task['sheet'],
@@ -178,7 +182,7 @@ def line_item_map_patch(project, task, commit=False):
   patches = list(patches.values())
 
   patch_masks(patches)
-  patch_preview(project, task, patches)
+  patch_preview(config, task, patches)
 
   if commit:
-    line_item_commit(project, task, patches)
+    line_item_commit(config, task, patches)

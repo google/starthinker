@@ -47,49 +47,60 @@ BUFFER_WARNING = []
 BUFFER_LENGTH = 10
 
 
-def edit_clear(project, task):
+def edit_clear(config, task):
 
   table_create(
+    config,
     task['auth_bigquery'],
-    project.id,
+    config.project,
     task['dataset'],
     'EDIT_Preview',
     SCHEMA_PREVIEW
   )
 
-  table_create(task['auth_bigquery'],
-    project.id,
+  table_create(
+    config,
+    task['auth_bigquery'],
+    config.project,
     task['dataset'],
     'EDIT_Log',
     SCHEMA_LOG
   )
 
-  sheets_clear(task['auth_sheets'],
+  sheets_clear(
+    config,
+    task['auth_sheets'],
     task['sheet'],
     'Preview',
     'A2:Z'
   )
 
-  sheets_clear(task['auth_sheets'],
+  sheets_clear(
+    config,
+    task['auth_sheets'],
     task['sheet'],
     'Warning',
     'A2:Z'
   )
 
-  sheets_clear(task['auth_sheets'],
+  sheets_clear(
+    config,
+    task['auth_sheets'],
     task['sheet'],
     'Error',
     'A2:Z'
   )
 
-  sheets_clear(task['auth_sheets'],
+  sheets_clear(
+    config,
+    task['auth_sheets'],
     task['sheet'],
     'Success',
     'A2:Z'
   )
 
 
-def edit_log(project, task, edit=None):
+def edit_log(config, task, edit=None):
   global BUFFER_SUCCESS
   global BUFFER_ERROR
   global BUFFER_WARNING
@@ -109,6 +120,7 @@ def edit_log(project, task, edit=None):
     ]) for p in rows]
 
     put_rows(
+      config,
       task['auth_bigquery'],
       { 'bigquery': {
         'dataset': task['dataset'],
@@ -121,6 +133,7 @@ def edit_log(project, task, edit=None):
     )
 
     put_rows(
+      config,
       task['auth_sheets'],
       { 'sheets': {
         'sheet': task['sheet'],
@@ -155,7 +168,7 @@ def edit_log(project, task, edit=None):
     BUFFER_ERROR = []
 
 
-def edit_preview(project, task, edits):
+def edit_preview(config, task, edits):
   if edits:
     rows = [(
       p['layer'],
@@ -166,6 +179,7 @@ def edit_preview(project, task, edits):
     ) for p in edits]
 
     put_rows(
+      config,
       task['auth_bigquery'],
       { 'bigquery': {
         'dataset': task['dataset'],
@@ -179,6 +193,7 @@ def edit_preview(project, task, edits):
     )
 
     put_rows(
+      config,
       task['auth_sheets'],
       { 'sheets': {
         'sheet': task['sheet'],

@@ -20,27 +20,21 @@
 This script perfroms various drive operations like copy and create.
 """
 
-from starthinker.util.project import from_parameters
 from starthinker.util.drive import file_copy, file_create, file_delete
 
 
-@from_parameters
-def drive(project, task):
-  if project.verbose:
+def drive(config, task):
+  if config.verbose:
     print('Drive')
 
   if 'delete' in task:
-    if project.verbose:
+    if config.verbose:
       print('Drive Delete', task['delete'])
-    file_delete(task['auth'], task['delete'])
+    file_delete(config, task['auth'], task['delete'])
 
   if 'copy' in task:
-    if project.verbose:
+    if config.verbose:
       print('Drive Copy', task['copy']['source'],
             task['copy']['destination'])
-    file_copy(task['auth'], task['copy']['source'],
+    file_copy(config, task['auth'], task['copy']['source'],
               task['copy']['destination'])
-
-
-if __name__ == '__main__':
-  drive()

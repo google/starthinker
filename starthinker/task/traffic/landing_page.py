@@ -29,10 +29,10 @@ class LandingPageDAO(BaseDAO):
   updating landing pages.
   """
 
-  def __init__(self, auth, profile_id, is_admin):
+  def __init__(self, config, auth, profile_id, is_admin):
     """Initializes LandingPageDAO with profile id and authentication scheme."""
 
-    super(LandingPageDAO, self).__init__(auth, profile_id, is_admin)
+    super(LandingPageDAO, self).__init__(config, auth, profile_id, is_admin)
 
     self._id_field = FieldMap.CAMPAIGN_LANDING_PAGE_ID
     self._search_field = FieldMap.CAMPAIGN_LANDING_PAGE_NAME

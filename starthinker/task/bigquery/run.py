@@ -36,59 +36,62 @@ from starthinker.util import bigquery as bq
 from starthinker.util import csv
 from starthinker.util import data
 from starthinker.util import sheets
-from starthinker.util.project import from_parameters
-from starthinker.util.bigquery import functions
-from starthinker.util.bigquery import us_geography
+from starthinker.util.bigquery_functions import pearson_significance_test, rgb_to_hsv
+from starthinker.util.bigquery_us_geography import US_GEOGRAPHY_DATA, US_GEOGRAPHY_SCHEMA
 
-def bigquery_function(project, task):
+def bigquery_function(config, task):
   """Generate custom tables or functions.
 
   See: scripts/bigquery_function.json
   """
 
-  if project.verbose:
+  if config.verbose:
     print('FUNCTION', task['function'])
 
   if task['function'] == 'Pearson Significance Test':
     bq.run_query(
+      config,
       task['auth'],
-      project.id,
-      functions.pearson_significance_test(),
+      config.project,
+      pearson_significance_test(),
       False,
       task['to']['dataset']
     )
 
   elif task['function'] == 'US Geography':
     bq.json_to_table(
+      config,
       task['auth'],
-      project.id,
+      config.project,
       task['to']['dataset'],
       'US_Geography',
-      us_geography.US_GEOGRAPHY_DATA,
-      us_geography.US_GEOGRAPHY_SCHEMA
+      US_GEOGRAPHY_DATA,
+      US_GEOGRAPHY_SCHEMA
     )
 
   elif task['function'] == 'RGB To HSV':
     bq.run_query(
+      config,
       task['auth'],
-      project.id,
-      functions.rgb_to_hsv(),
+      config.project,
+      rgb_to_hsv(),
       False,
       task['to']['dataset']
     )
 
-def bigquery_run(project, task):
+def bigquery_run(config, task):
   """Execute a query without expected return results.
 
   See: scripts/bigquery_run_query.json
   """
 
-  if project.verbose:
+  if config.verbose:
     print('RUN QUERY', task['run']['query'])
 
   bq.run_query(
+    config,
     task['auth'],
-    project.id,
+    config.project,
     bq.query_parameters(
       task['run']['query'],
       task['run'].get('parameters')
@@ -97,7 +100,7 @@ def bigquery_run(project, task):
   )
 
 
-def bigquery_values(project, task):
+def bigquery_values(config, task):
   """Write explicit values to a table.
 
   TODO: Replace with get_rows.
@@ -105,13 +108,14 @@ def bigquery_values(project, task):
   See: scripts/bigquery_run_query.json
   """
 
-  if project.verbose:
+  if config.verbose:
     print('VALUES', task['from']['values'])
 
-  rows = data.get_rows(task['auth'], task['from'])
+  rows = data.get_rows(config, task['auth'], task['from'])
   bq.rows_to_table(
+    config,
     task['to'].get('auth', task['auth']),
-    project.id,
+    config.project,
     task['to']['dataset'],
     task['to']['table'],
     rows,
@@ -120,7 +124,7 @@ def bigquery_values(project, task):
   )
 
 
-def bigquery_query(project, task):
+def bigquery_query(config, task):
   """Execute a query and write results to table.
 
   TODO: Replace with get_rows and put_rows combination.
@@ -132,12 +136,13 @@ def bigquery_query(project, task):
   """
 
   if 'table' in task['to']:
-    if project.verbose:
+    if config.verbose:
       print('QUERY TO TABLE', task['to']['table'])
 
     bq.query_to_table(
+      config,
       task['auth'],
-      project.id,
+      config.project,
       task['to']['dataset'],
       task['to']['table'],
       bq.query_parameters(
@@ -151,16 +156,17 @@ def bigquery_query(project, task):
         'legacy',
         task['from'].get('useLegacySql', True)
       ),  # DEPRECATED: useLegacySql,
-      target_project_id=task['to'].get('project_id', project.id)
+      target_project_id=task['to'].get('project_id', config.project)
     )
 
   elif 'sheet' in task['to']:
-    if project.verbose:
+    if config.verbose:
       print('QUERY TO SHEET', task['to']['sheet'])
 
     rows = bq.query_to_rows(
+      config,
       task['auth'],
-      project.id,
+      config.project,
       task['from']['dataset'],
       bq.query_parameters(
         task['from']['query'],
@@ -173,12 +179,14 @@ def bigquery_query(project, task):
     rows = csv.rows_to_type(rows)
 
     sheets.sheets_clear(
+      config,
       task['to'].get('auth', task['auth']),
       task['to']['sheet'],
       task['to']['tab'],
       task['to'].get('range', 'A2')
     )
     sheets.sheets_write(
+      config,
       task['to'].get('auth', task['auth']),
       task['to']['sheet'],
       task['to']['tab'],
@@ -187,12 +195,13 @@ def bigquery_query(project, task):
     )
 
   elif 'sftp' in task['to']:
-    if project.verbose:
+    if config.verbose:
       print('QUERY TO SFTP')
 
     rows = bq.query_to_rows(
+      config,
       task['auth'],
-      project.id,
+      config.project,
       task['from']['dataset'],
       bq.query_parameters(
         task['from']['query'],
@@ -202,15 +211,16 @@ def bigquery_query(project, task):
     )
 
     if rows:
-      data.put_rows(task['auth'], task['to'], rows)
+      data.put_rows(config, task['auth'], task['to'], rows)
 
   else:
-    if project.verbose:
+    if config.verbose:
       print('QUERY TO VIEW', task['to']['view'])
 
     bq.query_to_view(
+      config,
       task['auth'],
-      project.id,
+      config.project,
       task['to']['dataset'],
       task['to']['view'],
       bq.query_parameters(
@@ -225,17 +235,18 @@ def bigquery_query(project, task):
     )
 
 
-def bigquery_storage(project, task):
+def bigquery_storage(config, task):
   """Read from storage into a table.
 
   See: scripts/bigquery_storage.json
   """
 
-  if project.verbose:
+  if config.verbose:
     print('STORAGE TO TABLE', task['to']['table'])
 
   bq.storage_to_table(
-    task['auth'], project.id, task['to']['dataset'],
+    config,
+    task['auth'], config.project, task['to']['dataset'],
     task['to']['table'],
     task['from']['bucket'] + ':' + task['from']['path'],
     task.get('schema', []), task.get('skip_rows', 1),
@@ -244,21 +255,17 @@ def bigquery_storage(project, task):
   )
 
 
-@from_parameters
-def bigquery(project, task):
+def bigquery(config, task):
 
   if 'function' in task:
-    bigquery_function(project, task)
+    bigquery_function(config, task)
   elif 'run' in task and 'query' in task.get('run', {}):
-    bigquery_run(project, task)
+    bigquery_run(config, task)
   elif 'values' in task['from']:
-    bigquery_values(project, task)
+    bigquery_values(config, task)
   elif 'query' in task['from']:
-    bigquery_query(project, task)
+    bigquery_query(config, task)
   elif 'bucket' in task['from']:
-    bigquery_query(project, task)
+    bigquery_query(config, task)
   else:
     raise NotImplementedError('The bigquery task has no such handler.')
-
-if __name__ == '__main__':
-  bigquery()

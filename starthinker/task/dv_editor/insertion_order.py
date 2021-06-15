@@ -21,7 +21,7 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
@@ -30,10 +30,11 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def insertion_order_clear(project, task):
+def insertion_order_clear(config, task):
   table_create(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "DV_InsertionOrders",
     Discovery_To_BigQuery(
@@ -43,6 +44,7 @@ def insertion_order_clear(project, task):
   )
 
   sheets_clear(
+    config,
     task["auth_sheets"],
     task["sheet"],
     "Insertion Orders",
@@ -50,11 +52,12 @@ def insertion_order_clear(project, task):
   )
 
 
-def insertion_order_load(project, task):
+def insertion_order_load(config, task):
 
   # load multiple partners from user defined sheet
   def insertion_order_load_multiple():
     campaigns = set([lookup_id(row[0]) for row in get_rows(
+      config,
       task["auth_sheets"],
       { "sheets": {
         "sheet": task["sheet"],
@@ -65,6 +68,7 @@ def insertion_order_load(project, task):
     )])
 
     rows = get_rows(
+      config,
       task["auth_sheets"],
       { "sheets": {
         "sheet": task["sheet"],
@@ -77,6 +81,7 @@ def insertion_order_load(project, task):
     # String for filtering which entityStatus enums we want to see in the sheet
     for row in rows:
       for record in API_DV360(
+        config,
         task["auth_dv"],
         iterate=True
       ).advertisers().insertionOrders().list(
@@ -88,6 +93,7 @@ def insertion_order_load(project, task):
 
   # write insertion orders to database and sheet
   put_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],
@@ -103,6 +109,7 @@ def insertion_order_load(project, task):
 
   # write insertion orders to sheet
   put_rows(
+    config,
     task["auth_sheets"],
     { "sheets": {
       "sheet": task["sheet"],
@@ -111,6 +118,7 @@ def insertion_order_load(project, task):
       "range": "A2"
     }},
     get_rows(
+      config,
       task["auth_bigquery"],
       { "bigquery": {
         "dataset": task["dataset"],
@@ -151,10 +159,11 @@ def insertion_order_load(project, task):
   )
 
 
-def insertion_order_audit(project, task):
+def insertion_order_audit(config, task):
 
   # Move Insertion Order To BigQuery
   rows = get_rows(
+    config,
     task["auth_sheets"], {
       "sheets": {
         "sheet": task["sheet"],
@@ -166,6 +175,7 @@ def insertion_order_audit(project, task):
   )
 
   put_rows(
+    config,
     task["auth_bigquery"], {
       "bigquery": {
         "dataset": task["dataset"],
@@ -201,8 +211,9 @@ def insertion_order_audit(project, task):
 
   # Create Insert View
   query_to_view(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "INSERT_InsertionOrders",
     """SELECT
@@ -306,8 +317,9 @@ def insertion_order_audit(project, task):
 
   # Create Audit View And Write To Sheets
   query_to_view(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "AUDIT_InsertionOrders",
     """WITH
@@ -364,8 +376,9 @@ def insertion_order_audit(project, task):
   )
 
   query_to_view(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "PATCH_InsertionOrders",
     """SELECT *
@@ -376,11 +389,12 @@ def insertion_order_audit(project, task):
   )
 
 
-def insertion_order_patch(project, task, commit=False):
+def insertion_order_patch(config, task, commit=False):
 
   patches = []
 
   rows = get_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],
@@ -457,16 +471,17 @@ def insertion_order_patch(project, task, commit=False):
         })
 
   patch_masks(patches)
-  patch_preview(project, task, patches)
+  patch_preview(config, task, patches)
 
   if commit:
-    insertion_order_commit(project, task, patches)
+    insertion_order_commit(config, task, patches)
 
 
-def insertion_order_insert(project, task, commit=False):
+def insertion_order_insert(config, task, commit=False):
   inserts = []
 
   rows = get_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],
@@ -489,13 +504,13 @@ def insertion_order_insert(project, task, commit=False):
       }
     })
 
-  patch_preview(project, task, inserts)
+  patch_preview(config, task, inserts)
 
   if commit:
-    insertion_order_commit(project, task, inserts)
+    insertion_order_commit(config, task, inserts)
 
 
-def insertion_order_commit(project, task, patches):
+def insertion_order_commit(config, task, patches):
   for patch in patches:
     if not patch.get("insertion_order"):
       continue
@@ -503,6 +518,7 @@ def insertion_order_commit(project, task, patches):
     try:
       if patch["action"] == "DELETE":
         response = API_DV360(
+          config,
           task["auth_dv"]
         ).advertisers().insertionOrders().delete(
           **patch["parameters"]
@@ -510,6 +526,7 @@ def insertion_order_commit(project, task, patches):
         patch["success"] = response
       elif patch["action"] == "PATCH":
         response = API_DV360(
+          config,
           task["auth_dv"]
         ).advertisers().insertionOrders().patch(
           **patch["parameters"]
@@ -517,6 +534,7 @@ def insertion_order_commit(project, task, patches):
         patch["success"] = response["insertionOrderId"]
       elif patch["action"] == "INSERT":
         response = API_DV360(
+          config,
           task["auth_dv"]
         ).advertisers().insertionOrders().create(
           **patch["parameters"]
@@ -525,5 +543,5 @@ def insertion_order_commit(project, task, patches):
     except Exception as e:
       patch["error"] = str(e)
     finally:
-      patch_log(project, task, patch)
-  patch_log(project, task)
+      patch_log(config, task, patch)
+  patch_log(config, task)

@@ -28,14 +28,15 @@ from starthinker.task.dv_editor.patch import patch_masks
 from starthinker.task.dv_editor.patch import patch_preview
 
 
-def pacing_clear(project, task):
-  sheets_clear(task["auth_sheets"], task["sheet"], "Pacing", "A2:Z")
+def pacing_clear(config, task):
+  sheets_clear(config, task["auth_sheets"], task["sheet"], "Pacing", "A2:Z")
 
 
-def pacing_load(project, task):
+def pacing_load(config, task):
 
   # write pacings to sheet
   rows = get_rows(
+      config,
       task["auth_bigquery"], {
           "bigquery": {
               "dataset":
@@ -94,7 +95,9 @@ def pacing_load(project, task):
           }
       })
 
-  put_rows(task["auth_sheets"], {
+  put_rows(
+      config,
+      task["auth_sheets"], {
       "sheets": {
           "sheet": task["sheet"],
           "tab": "Pacing",
@@ -104,8 +107,10 @@ def pacing_load(project, task):
   }, rows)
 
 
-def pacing_audit(project, task):
-  rows = get_rows(task["auth_sheets"], {
+def pacing_audit(config, task):
+  rows = get_rows(
+      config,
+      task["auth_sheets"], {
       "sheets": {
           "sheet": task["sheet"],
           "tab": "Pacing",
@@ -115,6 +120,7 @@ def pacing_audit(project, task):
   })
 
   put_rows(
+      config,
       task["auth_bigquery"], {
           "bigquery": {
               "dataset": task["dataset"],
@@ -139,8 +145,9 @@ def pacing_audit(project, task):
       }, rows)
 
   query_to_view(
+      config,
       task["auth_bigquery"],
-      project.id,
+      config.project,
       task["dataset"],
       "AUDIT_Pacing",
       """WITH
@@ -172,8 +179,9 @@ def pacing_audit(project, task):
       legacy=False)
 
   query_to_view(
+    config,
     task["auth_bigquery"],
-    project.id,
+    config.project,
     task["dataset"],
     "PATCH_Pacing",
     """SELECT *
@@ -189,11 +197,12 @@ def pacing_audit(project, task):
   )
 
 
-def pacing_patch(project, task, commit=False):
+def pacing_patch(config, task, commit=False):
 
   patches = []
 
   rows = get_rows(
+    config,
     task["auth_bigquery"],
     { "bigquery": {
       "dataset": task["dataset"],
@@ -245,8 +254,8 @@ def pacing_patch(project, task, commit=False):
       patches.append(patch)
 
   patch_masks(patches)
-  patch_preview(project, task, patches)
+  patch_preview(config, task, patches)
 
   if commit:
-    insertion_order_commit(project, task, patches)
-    line_item_commit(project, task, patches)
+    insertion_order_commit(config, task, patches)
+    line_item_commit(config, task, patches)

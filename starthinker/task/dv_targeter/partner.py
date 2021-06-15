@@ -21,15 +21,16 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 
-def partner_clear(project, task):
+def partner_clear(config, task):
   table_create(
+    config,
     task['auth_bigquery'],
-    project.id,
+    config.project,
     task['dataset'],
     'DV_Partners',
     Discovery_To_BigQuery(
@@ -41,6 +42,7 @@ def partner_clear(project, task):
   )
 
   sheets_clear(
+    config,
     task['auth_sheets'],
     task['sheet'],
     'Partners',
@@ -48,12 +50,13 @@ def partner_clear(project, task):
   )
 
 
-def partner_load(project, task):
+def partner_load(config, task):
 
-  partner_clear(project, task)
+  partner_clear(config, task)
 
   # write partners to BQ
   put_rows(
+    config,
     task['auth_bigquery'],
     { 'bigquery': {
       'dataset': task['dataset'],
@@ -66,6 +69,7 @@ def partner_load(project, task):
       'JSON'
     }},
     API_DV360(
+      config,
       task['auth_dv'],
       iterate=True
     ).partners().list(
@@ -74,7 +78,9 @@ def partner_load(project, task):
   )
 
   # write partners to sheet
-  put_rows(task['auth_sheets'],
+  put_rows(
+    config,
+    task['auth_sheets'],
     { 'sheets': {
       'sheet': task['sheet'],
       'tab': 'Partners',
@@ -82,6 +88,7 @@ def partner_load(project, task):
       'range': 'B2'
     }},
     get_rows(
+      config,
       task['auth_bigquery'],
       { 'bigquery': {
         'dataset': task['dataset'],

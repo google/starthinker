@@ -20,15 +20,16 @@ from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
 from starthinker.util.google_api import API_DV360
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 
 
-def inventory_group_clear(project, task):
+def inventory_group_clear(config, task):
 
   table_create(
+    config,
     task['auth_bigquery'],
-    project.id,
+    config.project,
     task['dataset'],
     'DV_Inventory_Groups',
     Discovery_To_BigQuery(
@@ -40,11 +41,12 @@ def inventory_group_clear(project, task):
   )
 
 
-def inventory_group_load(project, task):
+def inventory_group_load(config, task):
 
   # load multiple from user defined sheet
   def load_multiple():
     partners = get_rows(
+      config,
       task['auth_sheets'],
       { 'sheets': {
         'sheet': task['sheet'],
@@ -56,6 +58,7 @@ def inventory_group_load(project, task):
 
     for partner in partners:
       yield from API_DV360(
+        config,
         task['auth_dv'],
         iterate=True
       ).inventorySourceGroups().list(
@@ -63,6 +66,7 @@ def inventory_group_load(project, task):
       ).execute()
 
     advertisers = get_rows(
+      config,
       task['auth_sheets'],
       { 'sheets': {
         'sheet': task['sheet'],
@@ -74,16 +78,18 @@ def inventory_group_load(project, task):
 
     for advertiser in advertisers:
       yield from API_DV360(
+        config,
         task['auth_dv'],
         iterate=True
       ).inventorySourceGroups().list(
         advertiserId=lookup_id(advertiser[0])
       ).execute()
 
-  inventory_group_clear(project, task)
+  inventory_group_clear(config, task)
 
   # write inventorys to database
   put_rows(
+    config,
     task['auth_bigquery'],
     { 'bigquery': {
       'dataset': task['dataset'],
@@ -101,6 +107,7 @@ def inventory_group_load(project, task):
 
   # write inventorys to sheet
   put_rows(
+    config,
     task['auth_sheets'],
     { 'sheets': {
       'sheet': task['sheet'],
@@ -109,6 +116,7 @@ def inventory_group_load(project, task):
       'range': 'M2'
     }},
     get_rows(
+      config,
       task['auth_bigquery'],
       { 'bigquery': {
         'dataset': task['dataset'],

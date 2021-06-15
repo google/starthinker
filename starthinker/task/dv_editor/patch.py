@@ -125,19 +125,19 @@ BUFFER_SUCCESS = []
 BUFFER_LENGTH = 10
 
 
-def patch_clear(project, task):
+def patch_clear(config, task):
 
-  table_create(task['auth_bigquery'], project.id,
+  table_create(config, task['auth_bigquery'], config.project,
                task['dataset'], 'PATCH_Preview', SCHEMA_PREVIEW)
 
-  table_create(task['auth_bigquery'], project.id,
+  table_create(config, task['auth_bigquery'], config.project,
                task['dataset'], 'PATCH_Log', SCHEMA_LOG)
 
-  sheets_clear(task['auth_sheets'], task['sheet'], 'Preview', 'A2:Z')
+  sheets_clear(config, task['auth_sheets'], task['sheet'], 'Preview', 'A2:Z')
 
-  sheets_clear(task['auth_sheets'], task['sheet'], 'Error', 'A2:Z')
+  sheets_clear(config, task['auth_sheets'], task['sheet'], 'Error', 'A2:Z')
 
-  sheets_clear(task['auth_sheets'], task['sheet'], 'Success', 'A2:Z')
+  sheets_clear(config, task['auth_sheets'], task['sheet'], 'Success', 'A2:Z')
 
 
 def patch_mask(patch:dict) -> dict:
@@ -174,7 +174,7 @@ def patch_mask(patch:dict) -> dict:
       body: Any REST API call dictionary, defined by API endpoint.
 
     Returns:
-      A list of sctrings representing full path to each leaf key.
+      A list of strings representing full path to each leaf key.
 
     """
 
@@ -213,7 +213,7 @@ def patch_masks(patches:dict) -> None:
     patch_mask(patch)
 
 
-def patch_log(project, task, patch=None):
+def patch_log(config, task, patch=None):
   global BUFFER_SUCCESS
   global BUFFER_ERROR
 
@@ -227,6 +227,7 @@ def patch_log(project, task, patch=None):
                         indent=2), kind, p[kind.lower()]) for p in rows]
 
     put_rows(
+        config,
         task['auth_bigquery'], {
             'bigquery': {
                 'dataset': task['dataset'],
@@ -238,6 +239,7 @@ def patch_log(project, task, patch=None):
         }, rows)
 
     put_rows(
+        config,
         task['auth_sheets'], {
             'sheets': {
                 'sheet': task['sheet'],
@@ -264,13 +266,14 @@ def patch_log(project, task, patch=None):
     BUFFER_ERROR = []
 
 
-def patch_preview(project, task, patches):
+def patch_preview(config, task, patches):
   if patches:
     rows = [(p['operation'], p['action'], p.get('partner'), p.get('advertiser'),
              p.get('campaign'), p.get('insertion_order'), p.get('line_item'),
              json.dumps(p.get('parameters', {}), indent=2)) for p in patches]
 
     put_rows(
+        config,
         task['auth_bigquery'], {
             'bigquery': {
                 'dataset': task['dataset'],
@@ -282,6 +285,7 @@ def patch_preview(project, task, patches):
         }, rows)
 
     put_rows(
+        config,
         task['auth_sheets'], {
             'sheets': {
                 'sheet': task['sheet'],

@@ -33,14 +33,15 @@ class CreativeAssociationDAO(BaseDAO):
   updating creative association.
   """
 
-  def __init__(self, auth, profile_id, is_admin):
+  def __init__(self, config, auth, profile_id, is_admin):
     """Initializes CreativeAssociationDAO with profile id and authentication scheme."""
     super(CreativeAssociationDAO, self).__init__(auth, profile_id, is_admin)
 
+    self.config = config
     self._id_field = FieldMap.CAMPAIGN_CREATIVE_ASSOCIATION_ID
 
-    self.campaign_dao = CampaignDAO(auth, profile_id, is_admin)
-    self.creative_dao = CreativeDAO(auth, profile_id, is_admin)
+    self.campaign_dao = CampaignDAO(config, auth, profile_id, is_admin)
+    self.creative_dao = CreativeDAO(config, auth, profile_id, is_admin)
 
     self._parent_filter_name = None
     self._parent_filter_field_name = None

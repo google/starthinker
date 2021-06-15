@@ -39,15 +39,16 @@ class CreativeAssetDAO(BaseDAO):
   updating ads.
   """
 
-  def __init__(self, auth, profile_id, is_admin, gc_project):
+  def __init__(self, config, auth, profile_id, is_admin, gc_project):
     """Initializes CreativeAssetDAO with profile id and authentication scheme."""
-    super(CreativeAssetDAO, self).__init__(auth, profile_id, is_admin)
+    super(CreativeAssetDAO, self).__init__(config, auth, profile_id, is_admin)
 
     self._entity = 'CREATIVE_ASSET'
     self.gc_project = gc_project
     self._list_name = ''
     self._id_field = FieldMap.CREATIVE_ASSET_ID
     self._search_field = None
+    self.config = config
     self.auth = auth
 
     self._parent_filter_name = None
