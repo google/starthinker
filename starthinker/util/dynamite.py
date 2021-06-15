@@ -16,17 +16,27 @@
 #
 ###########################################################################
 
-from starthinker.util.data import get_rows
+import json
+from urllib.request import Request, urlopen
 
 
-def weather_gov_test(config, task):
-  print('testing weather_gov connector')
-
-  if 'verify' in task['weather_gov']:
-    rows = get_rows(config, task['auth'],
-                    task['weather_gov']['verify']['read'])
-    station_ids = task['weather_gov']['verify']['station_ids']
-
-    for idx, row in enumerate(rows):
-      if row[1] != station_ids[idx]:
-        raise 'Station weather data not loaded correctly'
+def dynamite_write(room, key, token, text):
+  url = 'https://chat.googleapis.com/v1/spaces/%s/messages?key=%s&token=%s' % (
+      room, key, token)
+  data = json.dumps({
+      'sender': {
+          'displayName':
+              'StarThinker',
+          'avatarUrl':
+              'https://www.gstatic.com/images/icons/material/system/2x/chat_googblue_48dp.png'
+      },
+      'text': text
+  })
+  f = urlopen(
+      urllib.request.Request(url, data, {
+          'Content-Type': 'application/json',
+          'Content-Length': len(data)
+      }))
+  response = f.read()
+  f.close()
+  return response
