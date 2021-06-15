@@ -16,10 +16,10 @@
 #
 ###########################################################################
 
-from starthinker.script.parse import dict_to_string
-from starthinker.script.parse import fields_to_string
-from starthinker.script.parse import json_get_fields
-from starthinker.script.parse import json_set_auths
+from starthinker.util.recipe import dict_to_string
+from starthinker.util.recipe import fields_to_string
+from starthinker.util.recipe import json_get_fields
+from starthinker.util.recipe import json_set_auths
 from starthinker.util.colab import Colab
 
 
@@ -64,8 +64,9 @@ def script_to_colab(name, description, instructions, tasks, parameters={}):
       'This does NOT need to be modified unless you are changing the recipe, click play.'
   )
 
-  colab.code('from starthinker.util.project import project')
-  colab.code('from starthinker.script.parse import json_set_fields')
+  colab.code('from starthinker.util.configuration import Configuration')
+  colab.code('from starthinker.util.configuration import execute')
+  colab.code('from starthinker.util.recipe import json_set_fields')
   colab.code('')
   colab.code("USER_CREDENTIALS = '/content/user.json'")
   colab.code('')
@@ -77,9 +78,6 @@ def script_to_colab(name, description, instructions, tasks, parameters={}):
     colab.code('json_set_fields(TASKS, FIELDS)')
   colab.code('')
 
-  colab.code(
-      "project.initialize(_recipe={ 'tasks':TASKS }, _project=CLOUD_PROJECT, _user=USER_CREDENTIALS, _client=CLIENT_CREDENTIALS, _verbose=True, _force=True)"
-  )
-  colab.code('project.execute(_force=True)')
+  colab.code('execute(Configuration(project=CLOUD_PROJECT, client=CLIENT_CREDENTIALS, user=USER_CREDENTIALS, verbose=True), TASKS, force=True)')
 
   return colab.render()

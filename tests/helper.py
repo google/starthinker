@@ -57,9 +57,9 @@ except ImportError:
 from starthinker.config import UI_PROJECT
 from starthinker.config import UI_ROOT
 from starthinker.config import UI_SERVICE
-from starthinker.script.parse import json_get_fields
-from starthinker.script.parse import json_set_fields
-from starthinker.util.project import get_project
+from starthinker.util.recipe import json_get_fields
+from starthinker.util.recipe import json_set_fields
+from starthinker.util.recipe import get_recipe
 
 CONFIG_FILE = UI_ROOT + '/starthinker_assets/tests.json'
 TEST_DIRECTORY = UI_ROOT + '/tests/scripts/'
@@ -84,7 +84,7 @@ def json_expand_includes(script):
     function, parameters = next(iter(task.items()))
 
     if function == 'include':
-      tasks = get_project(UI_ROOT + '/' + parameters['script'])['tasks']
+      tasks = get_recipe(UI_ROOT + '/' + parameters['script'])['tasks']
       json_set_fields(tasks, parameters['parameters'])
       for t in tasks:
         function, parameters = next(iter(t.items()))
@@ -103,7 +103,7 @@ def load_tests():
     for filename in files:
       if filename.endswith('.json'):
         print('LOADING', filename)
-        yield filename, get_project(TEST_DIRECTORY + filename)
+        yield filename, get_recipe(TEST_DIRECTORY + filename)
 
 
 def configure_tests(tests, runs, skips, test_run_id):
@@ -188,12 +188,17 @@ def configure_tests(tests, runs, skips, test_run_id):
     json_set_fields(script, fields.get(name, {}))
 
     # Expand all includes to full recipe
-    json_expand_includes(script)
+    try:
+      json_expand_includes(script)
 
-    with open(RECIPE_DIRECTORY + filename, 'w') as f:
-      f.write(json.dumps(script, sort_keys=True, indent=2))
+      with open(RECIPE_DIRECTORY + filename, 'w') as f:
+        f.write(json.dumps(script, sort_keys=True, indent=2))
 
-    recipes.append(filename)
+      recipes.append(filename)
+    except FileNotFoundError as e:
+      print('MISSING INLCLUDE')
+      print(' - TEST: tests/scripts/%s' % filename)
+      print(' - INCLUDE: ', str(e))
 
   # Create log directory and clear old logs
 
@@ -257,10 +262,8 @@ def run_tests(tests, recipes, runs, skips):
     if recipe.split('.')[0] in skips: continue
 
     command = [
-        'python',
-        '-W',
-        'ignore',
-        '%s/starthinker/all/run.py' % UI_ROOT,
+        "python",
+        "%s/starthinker/tool/recipe.py" % UI_ROOT,
         RECIPE_DIRECTORY + recipe,
         '-u $STARTHINKER_USER',
         '-s $STARTHINKER_SERVICE',
@@ -281,8 +284,8 @@ def run_tests(tests, recipes, runs, skips):
             '',
         'process':
             subprocess.Popen(
-                command,
-                shell=False,
+                ' '.join(command), #use join if shell=True
+                shell=True,
                 cwd=UI_ROOT,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE)
@@ -340,7 +343,7 @@ def run_tests(tests, recipes, runs, skips):
 
 
 def generate_include(script_file):
-  script = get_project(script_file)
+  script = get_recipe(script_file)
 
   # parse fields and constants into parameters
   print('    { "include":{')

@@ -17,7 +17,7 @@
 ###########################################################################
 
 from starthinker_ui.recipe.scripts import Script
-from starthinker.script.parse import json_get_fields, dict_to_string, fields_to_string
+from starthinker.util.recipe import json_get_fields, dict_to_string, fields_to_string
 
 AIRFLOW_TEMPLATE = """###########################################################################
 #

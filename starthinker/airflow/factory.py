@@ -37,7 +37,9 @@ from airflow.hooks.base_hook import BaseHook
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.bash_operator import BashOperator
 
-from starthinker.script.parse import json_set_fields
+from starthinker.util.configuration import Configuration
+from starthinker.util.configuration import execute
+from starthinker.util.recipe import json_set_fields
 
 CONNECTION_SERVICE = "starthinker_service"
 CONNECTION_USER = "starthinker_user"
@@ -112,30 +114,30 @@ class DAG_Factory():
         pass
 
     # If project id given in recipe, skip load from connection
-    if self.recipe['setup'].get('id'):
+    if self.recipe['setup'].get('project'):
       print('Loaded Project ID From: RECIPE JSON')
     # If not given in recipe, try project id fetch from connections
     else:
       # check user
       try:
         user_connection_extra = BaseHook.get_connection(CONNECTION_USER).extra_dejson
-        self.recipe['setup']['id'] = user_connection_extra.get('extra__google_cloud_platform__project')
+        self.recipe['setup']['project'] = user_connection_extra.get('extra__google_cloud_platform__project')
       except: pass
 
-      if self.recipe['setup'].get('id'):
+      if self.recipe['setup'].get('project'):
         print('Loaded Project ID From: %s, Project Id' % CONNECTION_USER)
       else:
         # check service
         try:
 
           service_connection_extra = BaseHook.get_connection(CONNECTION_SERVICE).extra_dejson
-          self.recipe['setup']['id'] = service_connection_extra.get('extra__google_cloud_platform__project')
+          self.recipe['setup']['project'] = service_connection_extra.get('extra__google_cloud_platform__project')
 
           # check service json
-          if self.recipe['setup'].get('id'):
+          if self.recipe['setup'].get('project'):
             print('Loaded Project ID From: %s, Project Id' % CONNECTION_SERVICE)
           else:
-            self.recipe['setup']['id'] = json.loads(
+            self.recipe['setup']['project'] = json.loads(
               service_connection_extra['extra__google_cloud_platform__keyfile_dict']
             )['project_id']
             print('Loaded Project ID From: %s, Keyfile JSON' % CONNECTION_SERVICE)
@@ -151,8 +153,8 @@ class DAG_Factory():
         python_callable=getattr(
             import_module('starthinker.task.%s.run' % function), function),
         op_kwargs={
-            'recipe': self.recipe,
-            'instance': instance
+            'config': Configuration(recipe=self.recipe),
+            'tasks': self.recipe['tasks'][instance - 1]
         },
         dag=self.dag)
 
@@ -211,25 +213,20 @@ class DAG_Factory():
         schedule_interval=self.airflow_schedule(),
         catchup=False)
 
-    instances = {}
-    for task in self.recipe['tasks']:
+    for instance, task in enumerate(self.recipe['tasks'], 1):
       function = next(iter(task.keys()))
-
-      # count instance per task
-      instances.setdefault(function, 0)
-      instances[function] += 1
 
       # if airflow function ( product )
       if function == 'airflow':
-        self.airflow_task(function, instances[function], task[function])
+        self.airflow_task(function, instance, task[function])
 
       # if airflow function ( local )
       elif function == 'starthinker.airflow':
-        self.airflow_task(function, instances[function], task[function])
+        self.airflow_task(function, instance, task[function])
 
       # if native python operator
       else:
-        self.python_task(function, instances[function])
+        self.python_task(function, instance)
 
     return self.dag
 
@@ -240,14 +237,8 @@ class DAG_Factory():
     print('STARTHINKER COMMANDLINE: %s' % self.dag_name)
     print('')
 
-    instances = {}
-    for task in self.recipe['tasks']:
+    for instance, task in enumerate(self.recipe['tasks'], 1):
       function = next(iter(task.keys()))
-
-      # count instance per task
-      instances.setdefault(function, 0)
-      instances[function] += 1
-
-      print('airflow test "%s" %s_%d %s' %
-            (self.dag_name, function, instances[function], str(date.today())))
+      print('airflow tasks test "%s" %s_%d %s' %
+            (self.dag_name, function, instance, str(date.today())))
     print('')
