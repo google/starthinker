@@ -20,13 +20,13 @@
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.google_api import API_DV360
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 
-def advertiser_clear(config, task):
+def dv_advertiser_clear(config, task):
   table_create(
     config,
     task['auth_bigquery'],
@@ -45,12 +45,12 @@ def advertiser_clear(config, task):
     config,
     task['auth_sheets'],
     task['sheet'],
-    'Advertisers',
+    'DV Advertisers',
     'B2:D'
   )
 
 
-def advertiser_load(config, task):
+def dv_advertiser_load(config, task):
 
   # load multiple partners from user defined sheet
   def load_multiple():
@@ -59,7 +59,7 @@ def advertiser_load(config, task):
       task['auth_sheets'],
       { 'sheets': {
         'sheet': task['sheet'],
-        'tab': 'Partners',
+        'tab': 'DV Partners',
         'header':False,
         'range': 'A2:A'
       }}
@@ -73,7 +73,7 @@ def advertiser_load(config, task):
           filter='entityStatus="ENTITY_STATUS_ACTIVE"'
         ).execute()
 
-  advertiser_clear(config, task)
+  dv_advertiser_clear(config, task)
 
   # write advertisers to database
   put_rows(
@@ -88,8 +88,7 @@ def advertiser_load(config, task):
       ).method_schema(
         'advertisers.list'
       ),
-      'format':
-      'JSON'
+      'format': 'JSON'
     }},
     load_multiple()
   )
@@ -100,8 +99,7 @@ def advertiser_load(config, task):
     task['auth_sheets'],
     { 'sheets': {
       'sheet': task['sheet'],
-      'tab': 'Advertisers',
-      'header':False,
+      'tab': 'DV Advertisers',
       'range': 'B2'
     }},
     get_rows(

@@ -20,24 +20,24 @@
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.google_api import API_DV360
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 
-def advertiser_clear(config, task):
+def dv_partner_clear(config, task):
   table_create(
     config,
     task['auth_bigquery'],
     config.project,
     task['dataset'],
-    'DV_Advertisers',
+    'DV_Partners',
     Discovery_To_BigQuery(
       'displayvideo',
       'v1'
     ).method_schema(
-      'advertisers.list'
+      'partners.list'
     )
   )
 
@@ -45,62 +45,45 @@ def advertiser_clear(config, task):
     config,
     task['auth_sheets'],
     task['sheet'],
-    'Advertisers',
+    'DV Partners',
     'B2:D'
   )
 
 
-def advertiser_load(config, task):
+def dv_partner_load(config, task):
 
-  # load multiple partners from user defined sheet
-  def load_multiple():
-    for row in get_rows(
-      config,
-      task['auth_sheets'],
-      { 'sheets': {
-        'sheet': task['sheet'],
-        'tab': 'Partners',
-        'header':False,
-        'range': 'A2:A'
-      }}
-    ):
-      if row:
-        yield from API_DV360(
-          config,
-          task['auth_dv'],
-          iterate=True).advertisers().list(
-          partnerId=lookup_id(row[0]),
-          filter='entityStatus="ENTITY_STATUS_ACTIVE"'
-        ).execute()
+  dv_partner_clear(config, task)
 
-  advertiser_clear(config, task)
-
-  # write advertisers to database
+  # write partners to BQ
   put_rows(
     config,
     task['auth_bigquery'],
     { 'bigquery': {
       'dataset': task['dataset'],
-      'table': 'DV_Advertisers',
+      'table': 'DV_Partners',
       'schema': Discovery_To_BigQuery(
         'displayvideo',
         'v1'
-      ).method_schema(
-        'advertisers.list'
-      ),
+      ).method_schema('partners.list'),
       'format':
       'JSON'
     }},
-    load_multiple()
+    API_DV360(
+      config,
+      task['auth_dv'],
+      iterate=True
+    ).partners().list(
+      filter='entityStatus="ENTITY_STATUS_ACTIVE"'
+    ).execute()
   )
 
-  # write advertisers to sheet
+  # write partners to sheet
   put_rows(
     config,
     task['auth_sheets'],
     { 'sheets': {
       'sheet': task['sheet'],
-      'tab': 'Advertisers',
+      'tab': 'DV Partners',
       'header':False,
       'range': 'B2'
     }},
@@ -109,14 +92,7 @@ def advertiser_load(config, task):
       task['auth_bigquery'],
       { 'bigquery': {
         'dataset': task['dataset'],
-        'query': """SELECT
-           CONCAT(P.displayName, ' - ', P.partnerId),
-           CONCAT(A.displayName, ' - ', A.advertiserId),
-           A.entityStatus
-           FROM `{dataset}.DV_Advertisers` AS A
-           LEFT JOIN `{dataset}.DV_Partners` AS P
-           ON A.partnerId=P.partnerId
-        """.format(**task),
+        'query': "SELECT CONCAT(displayName, ' - ', partnerId), entityStatus  FROM `%s.DV_Partners`" % task['dataset'],
         'legacy': False
       }}
     )

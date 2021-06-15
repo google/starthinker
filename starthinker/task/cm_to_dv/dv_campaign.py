@@ -20,24 +20,24 @@
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.google_api import API_DV360
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 
-def advertiser_clear(config, task):
+def dv_campaign_clear(config, task):
   table_create(
     config,
     task['auth_bigquery'],
     config.project,
     task['dataset'],
-    'DV_Advertisers',
+    'DV_Campaigns',
     Discovery_To_BigQuery(
       'displayvideo',
       'v1'
     ).method_schema(
-      'advertisers.list'
+      'advertisers.campaigns.list'
     )
   )
 
@@ -45,21 +45,21 @@ def advertiser_clear(config, task):
     config,
     task['auth_sheets'],
     task['sheet'],
-    'Advertisers',
-    'B2:D'
+    'DV Campaigns',
+    'B2:Z'
   )
 
 
-def advertiser_load(config, task):
+def dv_campaign_load(config, task):
 
   # load multiple partners from user defined sheet
-  def load_multiple():
+  def dv_campaign_load_multiple():
     for row in get_rows(
       config,
       task['auth_sheets'],
       { 'sheets': {
         'sheet': task['sheet'],
-        'tab': 'Partners',
+        'tab': 'DV Advertisers',
         'header':False,
         'range': 'A2:A'
       }}
@@ -68,39 +68,39 @@ def advertiser_load(config, task):
         yield from API_DV360(
           config,
           task['auth_dv'],
-          iterate=True).advertisers().list(
-          partnerId=lookup_id(row[0]),
-          filter='entityStatus="ENTITY_STATUS_ACTIVE"'
+          iterate=True
+        ).advertisers().campaigns().list(
+          advertiserId=lookup_id(row[0]),
+          filter='entityStatus="ENTITY_STATUS_PAUSED" OR entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_DRAFT"'
         ).execute()
 
-  advertiser_clear(config, task)
+  dv_campaign_clear(config, task)
 
-  # write advertisers to database
+  # write to database
   put_rows(
     config,
     task['auth_bigquery'],
     { 'bigquery': {
       'dataset': task['dataset'],
-      'table': 'DV_Advertisers',
+      'table': 'DV_Campaigns',
       'schema': Discovery_To_BigQuery(
         'displayvideo',
         'v1'
       ).method_schema(
-        'advertisers.list'
+        'advertisers.campaigns.list'
       ),
-      'format':
-      'JSON'
+      'format': 'JSON'
     }},
-    load_multiple()
+    dv_campaign_load_multiple()
   )
 
-  # write advertisers to sheet
+  # write campaign to sheet
   put_rows(
     config,
     task['auth_sheets'],
     { 'sheets': {
       'sheet': task['sheet'],
-      'tab': 'Advertisers',
+      'tab': 'DV Campaigns',
       'header':False,
       'range': 'B2'
     }},
@@ -112,8 +112,11 @@ def advertiser_load(config, task):
         'query': """SELECT
            CONCAT(P.displayName, ' - ', P.partnerId),
            CONCAT(A.displayName, ' - ', A.advertiserId),
-           A.entityStatus
-           FROM `{dataset}.DV_Advertisers` AS A
+           CONCAT(C.displayName, ' - ', C.campaignId),
+           C.entityStatus
+           FROM `{dataset}.DV_Campaigns` AS C
+           LEFT JOIN `{dataset}.DV_Advertisers` AS A
+           ON C.advertiserId=A.advertiserId
            LEFT JOIN `{dataset}.DV_Partners` AS P
            ON A.partnerId=P.partnerId
         """.format(**task),

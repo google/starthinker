@@ -20,24 +20,26 @@
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
+from starthinker.util.google_api import API_DCM
+from starthinker.util.cm import get_profile_for_api
 from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.google_api import API_DV360
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 
-def advertiser_clear(config, task):
+def cm_advertiser_clear(config, task):
   table_create(
     config,
     task['auth_bigquery'],
     config.project,
     task['dataset'],
-    'DV_Advertisers',
+    'CM_Advertisers',
     Discovery_To_BigQuery(
-      'displayvideo',
-      'v1'
+      'dfareporting',
+      'v3.4'
     ).method_schema(
-      'advertisers.list'
+      'advertisers.list',
+      iterate=True
     )
   )
 
@@ -45,12 +47,12 @@ def advertiser_clear(config, task):
     config,
     task['auth_sheets'],
     task['sheet'],
-    'Advertisers',
+    'CM Advertisers',
     'B2:D'
   )
 
 
-def advertiser_load(config, task):
+def cm_advertiser_load(config, task):
 
   # load multiple partners from user defined sheet
   def load_multiple():
@@ -59,21 +61,23 @@ def advertiser_load(config, task):
       task['auth_sheets'],
       { 'sheets': {
         'sheet': task['sheet'],
-        'tab': 'Partners',
+        'tab': 'CM Accounts',
         'header':False,
         'range': 'A2:A'
       }}
     ):
       if row:
-        yield from API_DV360(
+        account_id = lookup_id(row[0])
+        is_superuser, profile_id = get_profile_for_api(config, task['auth_cm'], account_id)
+        kwargs = { 'profileId': profile_id, 'accountId': account_id } if is_superuser else { 'profileId': profile_id }
+        yield from API_DCM(
           config,
-          task['auth_dv'],
-          iterate=True).advertisers().list(
-          partnerId=lookup_id(row[0]),
-          filter='entityStatus="ENTITY_STATUS_ACTIVE"'
-        ).execute()
+          task['auth_cm'],
+          iterate=True,
+          internal=is_superuser
+        ).advertisers().list( **kwargs).execute()
 
-  advertiser_clear(config, task)
+  cm_advertiser_clear(config, task)
 
   # write advertisers to database
   put_rows(
@@ -81,15 +85,15 @@ def advertiser_load(config, task):
     task['auth_bigquery'],
     { 'bigquery': {
       'dataset': task['dataset'],
-      'table': 'DV_Advertisers',
+      'table': 'CM_Advertisers',
       'schema': Discovery_To_BigQuery(
-        'displayvideo',
-        'v1'
+        'dfareporting',
+        'v3.4'
       ).method_schema(
-        'advertisers.list'
+        'advertisers.list',
+        iterate=True
       ),
-      'format':
-      'JSON'
+      'format':'JSON'
     }},
     load_multiple()
   )
@@ -100,7 +104,7 @@ def advertiser_load(config, task):
     task['auth_sheets'],
     { 'sheets': {
       'sheet': task['sheet'],
-      'tab': 'Advertisers',
+      'tab': 'CM Advertisers',
       'header':False,
       'range': 'B2'
     }},
@@ -109,14 +113,14 @@ def advertiser_load(config, task):
       task['auth_bigquery'],
       { 'bigquery': {
         'dataset': task['dataset'],
-        'query': """SELECT
-           CONCAT(P.displayName, ' - ', P.partnerId),
-           CONCAT(A.displayName, ' - ', A.advertiserId),
-           A.entityStatus
-           FROM `{dataset}.DV_Advertisers` AS A
-           LEFT JOIN `{dataset}.DV_Partners` AS P
-           ON A.partnerId=P.partnerId
-        """.format(**task),
+        'query': '''SELECT
+          CONCAT(AC.name, ' - ', AC.id),
+          CONCAT(AD.name, ' - ', AD.id),
+          AD.status
+          FROM `{dataset}.CM_Advertisers` AS AD
+          LEFT JOIN `{dataset}.CM_Accounts` AS AC
+          ON AD.accountId=AC.id
+        '''.format(**task),
         'legacy': False
       }}
     )

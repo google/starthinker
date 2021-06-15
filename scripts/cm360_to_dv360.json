@@ -1,0 +1,84 @@
+{
+  "script":{
+    "released":"2020-11-15",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"cleaning_services",
+    "title":"CM360 To DV360 Bulk Creator",
+    "description":"Allows bulk creating DV360 Insertion Orders and Line Items from CM360.",
+    "image":"https://github.com/google/starthinker/raw/master/tutorials/images/bulk_dv360.png",
+    "sample":"https://docs.google.com/spreadsheets/d/1XjEHq-nEFMW8RVmCNJ-TVGvVcVBEADzjbvhmAvF04iQ/edit#gid=594912061",
+    "from":["cm360", "sheets"],
+    "to":["dv360", "bigquery" ],
+    "pitches":[
+      "Speed up bulk creating.",
+      "Add custom validation rules using BQ."
+    ],
+    "impacts":{
+      "spend optimization":20,
+      "spend growth":0,
+      "time savings":90,
+      "account health":100,
+      "csat improvement":90
+    },
+    "instructions":[
+      "Select <b>Load Partners</b>, then click <b>Save + Run</b>, then a sheet called DV Editor {recipe_name} will be created.",
+      "In the <b>Partners</b> sheet tab, fill in <i>Filter</i> column then select <b>Load Advertisers</b>, click <b>Save + Run</b>.",
+      "In the <b>Advertisers</b> sheet tab, fill in <i>Filter</i> column then select <b>Load Campaigns</b>, click <b>Save + Run</b>.",
+      "In the <b>Campaigns</b> sheet tab, fill in <i>Filter</i> column, optional.",
+      "Then select <b>Load Insertion Orders And Line Items</b>, click <b>Save + Run</b>.",
+      "To update values, make changes on all <i>Edit</i> columns.",
+      "Select <i>Preview</i>, then <b>Save + Run</b>.",
+      "Check the <b>Audit</b> and <b>Preview</b> tabs to verify commit.",
+      "To commit changes, select <i>Update</i>, then <b>Save + Run</b>.",
+      "Check the <b>Success</b> and <b>Error</b> tabs.",
+      "Update can be run multiple times.",
+      "Update ONLY changes fields that do not match their original value.",
+      "Insert operates only on Edit columns, ignores orignal value columns.",
+      "Carefull when using drag to copy rows, values are incremented automatically.",
+      "Modify audit logic by visting BigQuery and changing the views."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+   "setup":{
+    "day":[],
+    "hour":[]
+  },
+  "tasks":[
+    { "dataset":{
+      "__comment__":"Ensure dataset exists.",
+      "auth":{"field":{ "name":"auth_bigquery", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+      "dataset":{"field":{ "name":"recipe_slug", "prefix":"CM_To_DV_", "kind":"string", "order":2, "default":"", "description":"Name of Google BigQuery dataset to create." }}
+    }},
+    { "drive":{
+      "__comment__":"Copy the default template to sheet with the recipe name",
+      "auth":{"field":{ "name":"auth_sheet", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "copy":{
+        "source":"https://docs.google.com/spreadsheets/d/1XjEHq-nEFMW8RVmCNJ-TVGvVcVBEADzjbvhmAvF04iQ/edit#gid=594912061",
+        "destination":{"field":{ "name":"recipe_name", "prefix":"CM To DV ", "kind":"string", "order":3, "default":"", "description":"Name of Google Sheet to create." }}
+      }
+    }},
+    { "cm_to_dv": {
+      "__comment":"Depending on users choice, execute a different part of the solution.",
+      "auth_dv": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for dv." }},
+      "auth_cm": {"field":{ "name":"auth_cm", "kind":"authentication", "order":2, "default":"user", "description":"Credentials used for dv." }},
+      "auth_sheets": {"field":{ "name":"auth_sheet", "kind":"authentication", "order":3, "default":"user", "description":"Credentials used for sheet." }},
+      "auth_bigquery": {"field":{ "name":"auth_bigquery", "kind":"authentication", "order":4, "default":"service", "description":"Credentials used for bigquery." }},
+      "sheet":{"field":{ "name":"recipe_name", "prefix":"CM To DV ", "kind":"string", "order":5, "default":"", "description":"Name of Google Sheet to create." }},
+      "dataset":{"field":{ "name":"recipe_slug", "prefix":"CM_To_DV_", "kind":"string", "order":6, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+      "command":{"field":{
+        "name":"command",
+        "kind":"choice",
+        "choices":[
+          "Clear",
+          "Load",
+          "Preview",
+          "Insert"
+        ],
+        "order":6,
+        "default":"Load",
+        "description":"Action to take."
+      }}
+    }}
+  ]
+}

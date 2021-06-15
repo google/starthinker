@@ -20,24 +20,24 @@
 from starthinker.util.bigquery import table_create
 from starthinker.util.data import get_rows
 from starthinker.util.data import put_rows
-from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.google_api import API_DV360
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.regexp import lookup_id
 from starthinker.util.sheets import sheets_clear
 
 
-def advertiser_clear(config, task):
+def dv_algorithm_clear(config, task):
   table_create(
     config,
     task['auth_bigquery'],
     config.project,
     task['dataset'],
-    'DV_Advertisers',
+    'DV_Algorithms',
     Discovery_To_BigQuery(
       'displayvideo',
       'v1'
     ).method_schema(
-      'advertisers.list'
+      'customBiddingAlgorithms.list'
     )
   )
 
@@ -45,12 +45,12 @@ def advertiser_clear(config, task):
     config,
     task['auth_sheets'],
     task['sheet'],
-    'Advertisers',
+    'DV Algorithms',
     'B2:D'
   )
 
 
-def advertiser_load(config, task):
+def dv_algorithm_load(config, task):
 
   # load multiple partners from user defined sheet
   def load_multiple():
@@ -59,7 +59,7 @@ def advertiser_load(config, task):
       task['auth_sheets'],
       { 'sheets': {
         'sheet': task['sheet'],
-        'tab': 'Partners',
+        'tab': 'DV Partners',
         'header':False,
         'range': 'A2:A'
       }}
@@ -68,40 +68,37 @@ def advertiser_load(config, task):
         yield from API_DV360(
           config,
           task['auth_dv'],
-          iterate=True).advertisers().list(
-          partnerId=lookup_id(row[0]),
-          filter='entityStatus="ENTITY_STATUS_ACTIVE"'
+          iterate=True).customBiddingAlgorithms().list(
+          partnerId=lookup_id(row[0])
         ).execute()
 
-  advertiser_clear(config, task)
+  dv_algorithm_clear(config, task)
 
-  # write advertisers to database
+  # write algorithms to database
   put_rows(
     config,
     task['auth_bigquery'],
     { 'bigquery': {
       'dataset': task['dataset'],
-      'table': 'DV_Advertisers',
+      'table': 'DV_Algorithms',
       'schema': Discovery_To_BigQuery(
         'displayvideo',
         'v1'
       ).method_schema(
-        'advertisers.list'
+        'customBiddingAlgorithms.list'
       ),
-      'format':
-      'JSON'
+      'format': 'JSON'
     }},
     load_multiple()
   )
 
-  # write advertisers to sheet
+  # write algorithms to sheet
   put_rows(
     config,
     task['auth_sheets'],
     { 'sheets': {
       'sheet': task['sheet'],
-      'tab': 'Advertisers',
-      'header':False,
+      'tab': 'DV Algorithms',
       'range': 'B2'
     }},
     get_rows(
@@ -112,10 +109,13 @@ def advertiser_load(config, task):
         'query': """SELECT
            CONCAT(P.displayName, ' - ', P.partnerId),
            CONCAT(A.displayName, ' - ', A.advertiserId),
-           A.entityStatus
-           FROM `{dataset}.DV_Advertisers` AS A
+           CONCAT(B.displayName, ' - ', B.customBiddingAlgorithmId),
+           B.entityStatus
+           FROM `{dataset}.DV_Algorithms` AS B
            LEFT JOIN `{dataset}.DV_Partners` AS P
-           ON A.partnerId=P.partnerId
+           ON B.partnerId=P.partnerId
+           LEFT JOIN `{dataset}.DV_Advertisers` AS A
+           ON B.advertiserId=A.advertiserId
         """.format(**task),
         'legacy': False
       }}
