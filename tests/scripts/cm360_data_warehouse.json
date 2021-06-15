@@ -15,7 +15,7 @@
         "auth_bigquery":"service",
         "auth_cm":"user",
         "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Warehouse_CM_", "default": "Manual"}},
-        "accounts":[5295]
+        "accounts":{"field":{ "name":"accounts", "kind":"integer_list", "description":"Comma separated DCM account ids." }}
       }
     }}
   ]
