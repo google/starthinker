@@ -20,10 +20,11 @@ import json
 import textwrap
 import argparse
 
-from starthinker.util.project import project
 from starthinker.util.bigquery import get_schema
 from starthinker.util.bigquery import rows_to_table
 from starthinker.util.bigquery import table_to_schema
+from starthinker.util.configuration import Configuration
+from starthinker.util.configuration import commandline_parser
 from starthinker.util.csv import csv_to_rows
 from starthinker.util.csv import excel_to_rows
 
@@ -77,18 +78,23 @@ def main():
   )
 
   # initialize project
-  project.from_commandline(
-    parser=parser,
-    arguments=('-u', '-c', '-s', '-v', '-p')
+  parser = commandline_parser(parser, arguments=('-u', '-c', '-s', '-v', '-p'))
+  args = parser.parse_args()
+  config = Configuration(
+    user=args.user,
+    client=args.client,
+    service=args.service,
+    verbose=args.verbose,
+    project=args.project
   )
 
-  auth = 'service' if project.args.service else 'user'
+  auth = 'service' if args.service else 'user'
 
-  schema = json.loads(project.args.schema) if project.args.schema else None
+  schema = json.loads(args.schema) if args.schema else None
 
-  if project.args.csv:
+  if args.csv:
 
-    with open(project.args.csv, 'r') as csv_file:
+    with open(args.csv, 'r') as csv_file:
       rows = csv_to_rows(csv_file.read())
 
       if not schema:
@@ -98,17 +104,18 @@ def main():
         exit()
 
       rows_to_table(
+        config,
         auth,
-        project.id,
-        project.args.dataset,
-        project.args.table,
+        config.project,
+        args.dataset,
+        args.table,
         rows,
         schema
       )
 
-  elif project.args.excel_workbook and project.args.excel_sheet:
-    with open(project.args.excel_workbook, 'r') as excel_file:
-      rows = excel_to_rows(excel_file, project.args.excel_sheet)
+  elif args.excel_workbook and args.excel_sheet:
+    with open(args.excel_workbook, 'r') as excel_file:
+      rows = excel_to_rows(excel_file, args.excel_sheet)
 
       if not schema:
         rows, schema = get_schema(rows)
@@ -117,10 +124,11 @@ def main():
         exit()
 
       rows_to_table(
+        config,
         auth,
-        project.id,
-        project.args.dataset,
-        project.args.table,
+        config.project,
+        args.dataset,
+        args.table,
         rows,
         schema
       )
@@ -129,10 +137,11 @@ def main():
     # print schema
     print(json.dumps(
       table_to_schema(
+        config,
         auth,
-        project.id,
-        project.args.dataset,
-        project.args.table
+        config.project,
+        args.dataset,
+        args.table
       ),
       indent=2
     ))

@@ -19,10 +19,10 @@
 import argparse
 import textwrap
 
-from starthinker.util.project import project
 from starthinker.util.csv import excel_to_sheets
 from starthinker.util.csv import excel_to_rows
 from starthinker.util.csv import rows_to_csv
+from starthinker.util.configuration import commandline_parser, Configuration
 
 
 def main():
@@ -45,15 +45,19 @@ def main():
   parser.add_argument('--sheet', help='Sheet to pull the rows.', default=None)
   parser.add_argument('--list', help='List reports.', action='store_true')
 
-  # initialize project ( not really used but consistent with all helpers )
-  project.from_commandline(parser=parser, arguments=('-v',))
+  # initialize project
+  parser = commandline_parser(parser, arguments=('-v'))
+  args = parser.parse_args()
+  config = Configuration(
+    verbose=args.verbose
+  )
 
-  with open(project.args.workbook, 'rb') as excel_file:
-    if project.args.list:
+  with open(args.workbook, 'rb') as excel_file:
+    if args.list:
       for sheet in excel_to_sheets(excel_file):
         print(sheet)
-    elif project.args.sheet:
-      for sheet, row in excel_to_rows(excel_file, project.args.sheet):
+    elif args.sheet:
+      for sheet, row in excel_to_rows(excel_file, args.sheet):
         print(rows_to_csv(row).read())
 
 

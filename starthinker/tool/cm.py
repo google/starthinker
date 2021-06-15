@@ -20,10 +20,10 @@ import json
 import argparse
 import textwrap
 
-from starthinker.util.project import project
-from starthinker.util.google_api import API_DCM
-from starthinker.util.dcm import get_profile_for_api, report_to_rows, report_clean, report_file, report_schema
+from starthinker.util.cm import get_profile_for_api, report_to_rows, report_clean, report_file, report_schema
+from starthinker.util.configuration import commandline_parser, Configuration
 from starthinker.util.csv import rows_to_type, rows_print
+from starthinker.util.google_api import API_DCM
 
 
 def main():
@@ -33,12 +33,12 @@ def main():
       description=textwrap.dedent("""\
       Command line to help debug CM reports and build reporting tools.
 
-      Examples: 
-        To get list of reports: python helper.py --account [id] --list -u [user credentials path]
-        To get report: python helper.py --account [id] --report [id] -u [user credentials path]
-        To get report files: python helper.py --account [id] --files [id] -u [user credentials path]
-        To get report sample: python helper.py --account [id] --sample [id] -u [user credentials path]
-        To get report schema: python helper.py --account [id] --schema [id] -u [user credentials path]
+      Examples:
+        To get list of reports: python cm.py --account [id] --list -u [user credentials path]
+        To get report: python cm.py --account [id] --report [id] -u [user credentials path]
+        To get report files: python cm.py --account [id] --files [id] -u [user credentials path]
+        To get report sample: python cm.py --account [id] --sample [id] -u [user credentials path]
+        To get report schema: python cm.py --account [id] --schema [id] -u [user credentials path]
 
   """))
 
@@ -55,43 +55,51 @@ def main():
   parser.add_argument('--list', help='List reports.', action='store_true')
 
   # initialize project
-  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v'))
-  auth = 'service' if project.args.service else 'user'
+  parser = commandline_parser(parser, arguments=('-u', '-c', '-s', '-v'))
+  args = parser.parse_args()
+  config = Configuration(
+    user=args.user,
+    client=args.client,
+    service=args.service,
+    verbose=args.verbose
+  )
 
-  is_superuser, profile = get_profile_for_api(auth, project.args.account)
+  auth = 'service' if args.service else 'user'
+
+  is_superuser, profile = get_profile_for_api(config, auth, args.account)
   kwargs = {
       'profileId': profile,
-      'accountId': project.args.account
+      'accountId': args.account
   } if is_superuser else {
       'profileId': profile
   }
 
   # get report list
-  if project.args.report:
-    kwargs['reportId'] = project.args.report
+  if args.report:
+    kwargs['reportId'] = args.report
     report = API_DCM(
-        auth, internal=is_superuser).reports().get(**kwargs).execute()
+        config, auth, internal=is_superuser).reports().get(**kwargs).execute()
     print(json.dumps(report, indent=2, sort_keys=True))
 
   # get report files
-  elif project.args.files:
-    kwargs['reportId'] = project.args.files
+  elif args.files:
+    kwargs['reportId'] = args.files
     for rf in API_DCM(
-        auth, internal=is_superuser).reports().files().list(**kwargs).execute():
+       config,  auth, internal=is_superuser, iterate=True).reports().files().list(**kwargs).execute():
       print(json.dumps(rf, indent=2, sort_keys=True))
 
   # get schema
-  elif project.args.schema:
-    filename, report = report_file(auth, project.args.account,
-                                   project.args.schema, None, 10)
+  elif args.schema:
+    filename, report = report_file(config, auth, args.account,
+                                   args.schema, None, 10)
     rows = report_to_rows(report)
     rows = report_clean(rows)
     print(json.dumps(report_schema(next(rows)), indent=2, sort_keys=True))
 
   # get sample
-  elif project.args.sample:
-    filename, report = report_file(auth, project.args.account,
-                                   project.args.sample, None, 10)
+  elif args.sample:
+    filename, report = report_file(config, auth, args.account,
+                                   args.sample, None, 10)
     rows = report_to_rows(report)
     rows = report_clean(rows)
     rows = rows_to_type(rows)
@@ -101,7 +109,7 @@ def main():
   # get list
   else:
     for report in API_DCM(
-        auth, internal=is_superuser).reports().list(**kwargs).execute():
+        config, auth, internal=is_superuser, iterate=True).reports().list(**kwargs).execute():
       print(json.dumps(report, indent=2, sort_keys=True))
 
 

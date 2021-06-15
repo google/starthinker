@@ -20,11 +20,11 @@ import json
 import argparse
 import textwrap
 
-from starthinker.util.project import project
 from starthinker.util.google_api import API_DBM
-from starthinker.util.dbm import report_file, report_to_rows, report_clean
+from starthinker.util.dv import report_file, report_to_rows, report_clean
 from starthinker.util.bigquery import get_schema
 from starthinker.util.csv import rows_to_type, rows_print
+from starthinker.util.configuration import commandline_parser, Configuration
 
 
 def main():
@@ -35,10 +35,10 @@ def main():
       Command line to help debug DV360 reports and build reporting tools.
 
       Examples:
-        To get list of reports: python helper.py --list -u [user credentials path]
-        To get report json: python helper.py --report [id] -u [user credentials path]
-        To get report schema: python helper.py --schema [id] -u [user credentials path]
-        To get report sample: python helper.py --sample [id] -u [user credentials path]
+        To get list of reports: python dv.py --list -u [user credentials path]
+        To get report json: python dv.py --report [id] -u [user credentials path]
+        To get report schema: python dv.py --schema [id] -u [user credentials path]
+        To get report sample: python dv.py --sample [id] -u [user credentials path]
 
   """))
 
@@ -52,26 +52,34 @@ def main():
   parser.add_argument('--list', help='list reports', action='store_true')
 
   # initialize project
-  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-v'))
-  auth = 'service' if project.args.service else 'user'
+  parser = commandline_parser(parser, arguments=('-u', '-c', '-s', '-v'))
+  args = parser.parse_args()
+  config = Configuration(
+    user=args.user,
+    client=args.client,
+    service=args.service,
+    verbose=args.verbose
+  )
+
+  auth = 'service' if args.service else 'user'
 
   # get report
-  if project.args.report:
-    report = API_DBM(auth).queries().getquery(
-        queryId=project.args.report).execute()
+  if args.report:
+    report = API_DBM(config, auth).queries().getquery(
+        queryId=args.report).execute()
     print(json.dumps(report, indent=2, sort_keys=True))
 
   # get schema
-  elif project.args.schema:
-    filename, report = report_file(auth, project.args.schema, None, 10)
+  elif args.schema:
+    filename, report = report_file(config, auth, args.schema, None, 10)
     rows = report_to_rows(report)
     rows = report_clean(rows)
     rows = rows_to_type(rows)
     print(json.dumps(get_schema(rows)[1], indent=2, sort_keys=True))
 
   # get sample
-  elif project.args.sample:
-    filename, report = report_file(auth, project.args.sample, None, 10)
+  elif args.sample:
+    filename, report = report_file(config, auth, args.sample, None, 10)
     rows = report_to_rows(report)
     rows = report_clean(rows)
     rows = rows_to_type(rows)
@@ -80,7 +88,7 @@ def main():
 
   # get list
   else:
-    for report in API_DBM(auth, iterate=True).queries().listqueries().execute():
+    for report in API_DBM(config, auth, iterate=True).queries().listqueries().execute():
       print(json.dumps(report, indent=2, sort_keys=True))
 
 

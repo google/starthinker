@@ -20,8 +20,8 @@ import json
 import argparse
 import textwrap
 
-from starthinker.util.project import project
 from starthinker.util.auth import get_profile
+from starthinker.util.configuration import commandline_parser, Configuration
 
 
 def main():
@@ -61,11 +61,16 @@ def main():
         Example: python helper.py -u [CLIENT file path] -c [USER file path]
 """))
 
-  # initialize project, enable only some default arguments
-  project.from_commandline(parser=parser, arguments=('-c', '-u'))
+  # initialize project
+  parser = commandline_parser(parser, arguments=('-c', '-u'))
+  args = parser.parse_args()
+  config = Configuration(
+    user=args.user,
+    client=args.client
+  )
 
   # get profile to verify everything worked
-  print('Profile:', json.dumps(get_profile(), indent=2, sort_keys=True))
+  print('Profile:', json.dumps(get_profile(config), indent=2, sort_keys=True))
 
 
 if __name__ == '__main__':

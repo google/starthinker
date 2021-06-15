@@ -21,9 +21,9 @@ import json
 import pprint
 import textwrap
 
+from starthinker.util.configuration import commandline_parser, Configuration
+from starthinker.util.discovery_to_bigquery import Discovery_To_BigQuery
 from starthinker.util.google_api import API
-from starthinker.util.google_api.discovery_to_bigquery import Discovery_To_BigQuery
-from starthinker.util.project import project
 
 
 def main():
@@ -37,17 +37,17 @@ def main():
       Examples:
         - Pull a DBM report via API.
           - https://developers.google.com/bid-manager/v1/queries/getquery
-          - python google_api/helper.py -api doubleclickbidmanager -version v1 -function queries.getquery -kwargs '{ "queryId": 132865172 }' -u [credentials path]
+          - python google_api.py -api doubleclickbidmanager -version v1 -function queries.getquery -kwargs '{ "queryId": 132865172 }' -u [credentials path]
 
         - Pull a list of placements:
           - https://developers.google.com/doubleclick-advertisers/v3.3/placements/list
-          - python task/google_api/helper.py -api dfareporting -version v3.3 -function placements.list -kwargs '{ "profileId":2782211 }' -u [credentials path]
+          - python google_api.py -api dfareporting -version v3.3 -function placements.list -kwargs '{ "profileId":2782211 }' -u [credentials path]
 
         - Show schema for Campaign Manager advertiser list endpoint.
         - https://developers.google.com/doubleclick-advertisers/v3.4/advertisers/list
-        - python starthinker/task/google_api/helper.py -api dfareporting -version v3.4 -function advertisers.list --schema
-        - python starthinker/task/google_api/helper.py -api dfareporting -version v3.4 -function Advertiser --object
-        - python starthinker/task/google_api/helper.py -api dfareporting -version v3.4 -function Advertiser --struct
+        - python google_api.py -api dfareporting -version v3.4 -function advertisers.list --schema
+        - python google_api.py -api dfareporting -version v3.4 -function Advertiser --object
+        - python google_api.py -api dfareporting -version v3.4 -function Advertiser --struct
 
   """))
 
@@ -84,50 +84,56 @@ def main():
     action='store_true'
   )
 
-
-
-  # initialize project ( used to load standard credentials parameters )
-  project.from_commandline(parser=parser, arguments=('-u', '-c', '-s', '-k', '-v'))
+  # initialize project
+  parser = commandline_parser(parser, arguments=('-u', '-c', '-s', '-k', '-v'))
+  args = parser.parse_args()
+  config = Configuration(
+    user=args.user,
+    client=args.client,
+    service=args.service,
+    key=args.key,
+    verbose=args.verbose
+  )
 
   # show schema
-  if project.args.object:
-    print(json.dumps(Discovery_To_BigQuery(project.args.api, project.args.version).resource_json(project.args.function), indent=2, default=str))
+  if args.object:
+    print(json.dumps(Discovery_To_BigQuery(args.api, args.version).resource_json(args.function), indent=2, default=str))
 
-  elif project.args.struct:
-    print(Discovery_To_BigQuery(project.args.api, project.args.version).resource_struct(project.args.function))
+  elif args.struct:
+    print(Discovery_To_BigQuery(args.api, args.version).resource_struct(args.function))
 
   # show schema
-  elif project.args.schema:
-    print(json.dumps(Discovery_To_BigQuery(project.args.api, project.args.version).method_schema(project.args.function), indent=2, default=str))
+  elif args.schema:
+    print(json.dumps(Discovery_To_BigQuery(args.api, args.version).method_schema(args.function), indent=2, default=str))
 
   # or fetch results
   else:
 
     # the api wrapper takes parameters as JSON
     job = {
-      'auth': 'service' if project.args.service else 'user',
-      'api': project.args.api,
-      'version': project.args.version,
-      'function': project.args.function,
-      'key': project.args.key,
-      'uri': project.args.uri,
-      'kwargs': json.loads(project.args.kwargs),
+      'auth': 'service' if args.service else 'user',
+      'api': args.api,
+      'version': args.version,
+      'function': args.function,
+      'key': args.key,
+      'uri': args.uri,
+      'kwargs': json.loads(args.kwargs),
       'headers': {},
-      'iterate': project.args.iterate,
-      'limit': project.args.limit,
+      'iterate': args.iterate,
+      'limit': args.limit,
     }
 
-    if project.args.developer_token:
-      job['headers']['developer-token'] = project.args.developer_token
+    if args.developer_token:
+      job['headers']['developer-token'] = args.developer_token
 
-    if project.args.login_customer_id:
-      job['headers']['login-customer-id'] = project.args.login_customer_id
+    if args.login_customer_id:
+      job['headers']['login-customer-id'] = args.login_customer_id
 
     # run the API call
     results = API(job).execute()
 
     # display results
-    if project.args.iterate:
+    if args.iterate:
       for result in results:
         pprint.PrettyPrinter().pprint(result)
     else:

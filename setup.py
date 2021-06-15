@@ -44,7 +44,7 @@ REQUIREMENTS = [
 
 setup(
     name='starthinker',
-    version='1.0.11',
+    version='2.0.1',
     description='StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components.',
     long_description='StarThinker is a Google gTech built python framework for creating and sharing re-usable workflow components. To make it easier for partners and clients to work with some of our advertsing solutions, the gTech team has open sourced this framework as a reference implementation.  Our goal is to make managing data workflows using Google Cloud as fast and re-usable as possible, allowing teams to focus on building advertising solutions.',
     author='Paul Kenjora',
@@ -56,17 +56,14 @@ setup(
     install_requires=REQUIREMENTS,
     entry_points={
         'console_scripts': [
-            'st_auth = starthinker.auth.helper:main',
-            'st_json = starthinker.script.helper:main',
-            'st_script = starthinker.script.run:main',
-            'st_run = starthinker.all.helper:main',
-            'st_cm = starthinker.task.dcm.helper:main',
-            'st_dv360 = starthinker.task.dbm.helper:main',
-            'st_dv360_lineitem = starthinker.task.dv360_beta.helper:main',
-            'st_dv360_lineitem_legacy = starthinker.task.lineitem.helper:main',
-            'st_bigquery = starthinker.task.bigquery.helper:main',
-            'st_google_api = starthinker.task.google_api.helper:main',
-            'st_newsletter = starthinker.task.newsletter.helper:main'
+            'st_auth = starthinker.tool.auth:main',
+            'st_validate = starthinker.tool.validate:main',
+            'st_recipe = starthinker.tool.recipe:main',
+            'st_cm = starthinker.tool.cm:main',
+            'st_dv = starthinker.tool.dv:main',
+            'st_bigquery = starthinker.tool.bigquery:main',
+            'st_google_api = starthinker.tool.google_api:main',
+            'st_newsletter = starthinker.tool.newsletter:main'
         ]
     },
     license='Apache License, Version 2.0',
