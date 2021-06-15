@@ -66,9 +66,7 @@ CM360 Campaign Auditor
 
 A tool for rapidly bulk checking Campaign Manager campaigns
 
-  - Add this card to a recipe and save it.
-  - Then click <strong>Run Now</strong> to deploy.
-  - Follow the <a href="https://docs.google.com/spreadsheets/d/1tt597dMsAaxYXaJdifwKYNVzJrIl6E9Pe8GysfVrWOs/">instructions</a> for setup.
+  - All Bulkdozer Lite related tools and instructions on how to use them can be found at: <a href="https://github.com/google/bulkdozer-lite#installation">Bulkdozer Lite</a>
 
 --------------------------------------------------------------
 

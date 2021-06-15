@@ -329,7 +329,7 @@ RECIPE = {
           }
         },
         'from': {
-          'query': 'SELECT            Id AS Partner_Id,            Name AS Partner,            Advertiser_Id,            Advertiser,            Campaign_Id,            Campaign,            Zip_Postal_Code AS Zip,            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression_Percent,            SAFE_DIVIDE(Clicks, Impressions) AS Click_Percent,            SAFE_DIVIDE(Total_Conversions, Impressions) AS Conversion_Percent,            Impressions AS Impressions          FROM `{dataset}.CM360_KPI`          CROSS JOIN `{dataset}.CM360_Account`        ',
+          'query': 'SELECT            Id AS Partner_Id,            Name AS Partner,            Advertiser_Id,            Advertiser,            Campaign_Id,            Campaign,            Zip_Postal_Code AS Zip,            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression,            SAFE_DIVIDE(Clicks, Impressions) AS Click,            SAFE_DIVIDE(Total_Conversions, Impressions) AS Conversion,            Impressions AS Impressions          FROM `{dataset}.CM360_KPI`          CROSS JOIN `{dataset}.CM360_Account`        ',
           'parameters': {
             'dataset': {
               'field': {
@@ -408,9 +408,9 @@ RECIPE = {
             'Impressions'
           ],
           'correlate': [
-            'Impression_Percent',
-            'Click_Percent',
-            'Conversion_Percent'
+            'Impression',
+            'Click',
+            'Conversion'
           ],
           'dataset': {
             'field': {

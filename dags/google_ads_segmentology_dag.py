@@ -224,7 +224,7 @@ RECIPE = {
           }
         },
         'from': {
-          'query': 'SELECT            campaign.name AS Campaign,            adGRoup.name AS Ad_Group,            segments.geoTargetPostalCode AS Postal_Code,            SAFE_DIVIDE(metrics.impressions, SUM(metrics.impressions) OVER()) AS Impression_Percent,            SAFE_DIVIDE(metrics.clicks, metrics.impressions) AS Click_Percent,            SAFE_DIVIDE(metrics.conversions, metrics.impressions) AS Conversion_Percent,            SAFE_DIVIDE(metrics.interactions, metrics.impressions) AS Interaction_Percent,            metrics.impressions AS Impressions          FROM            `{project}.{dataset}.GoogleAds_KPI`;        ',
+          'query': 'SELECT            campaign.name AS Campaign,            adGRoup.name AS Ad_Group,            segments.geoTargetPostalCode AS Postal_Code,            SAFE_DIVIDE(metrics.impressions, SUM(metrics.impressions) OVER()) AS Impression,            SAFE_DIVIDE(metrics.clicks, metrics.impressions) AS Click,            SAFE_DIVIDE(metrics.conversions, metrics.impressions) AS Conversion,            SAFE_DIVIDE(metrics.interactions, metrics.impressions) AS Interaction,            metrics.impressions AS Impressions          FROM            `{project}.{dataset}.GoogleAds_KPI`;        ',
           'parameters': {
             'project': {
               'field': {
@@ -306,10 +306,10 @@ RECIPE = {
             'Impressions'
           ],
           'correlate': [
-            'Impression_Percent',
-            'Click_Percent',
-            'Conversion_Percent',
-            'Interaction_Percent'
+            'Impression',
+            'Click',
+            'Conversion',
+            'Interaction'
           ],
           'dataset': {
             'field': {

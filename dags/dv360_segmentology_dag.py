@@ -342,7 +342,7 @@ RECIPE = {
           }
         },
         'from': {
-          'query': 'SELECT            Partner_Id,            Partner,            Advertiser_Id,            Advertiser,            Campaign_Id,            Campaign,            Zip,            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression_Percent,            SAFE_DIVIDE(Clicks, Impressions) AS Click_Percent,            SAFE_DIVIDE(Conversions, Impressions) AS Conversion_Percent,            Impressions AS Impressions          FROM            `{project}.{dataset}.DV360_KPI`;        ',
+          'query': 'SELECT            Partner_Id,            Partner,            Advertiser_Id,            Advertiser,            Campaign_Id,            Campaign,            Zip,            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression,            SAFE_DIVIDE(Clicks, Impressions) AS Click,            SAFE_DIVIDE(Conversions, Impressions) AS Conversion,            Impressions AS Impressions          FROM            `{project}.{dataset}.DV360_KPI`;        ',
           'parameters': {
             'project': {
               'field': {
@@ -428,9 +428,9 @@ RECIPE = {
             'Impressions'
           ],
           'correlate': [
-            'Impression_Percent',
-            'Click_Percent',
-            'Conversion_Percent'
+            'Impression',
+            'Click',
+            'Conversion'
           ],
           'dataset': {
             'field': {

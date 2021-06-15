@@ -79,9 +79,7 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 
 from starthinker.airflow.factory import DAG_Factory
 
-INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-}
+INPUTS = {}
 
 RECIPE = {
   'setup': {
@@ -103,15 +101,7 @@ RECIPE = {
   'tasks': [
     {
       'hello': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
+        'auth': 'user',
         'hour': [
           1
         ],
@@ -121,15 +111,7 @@ RECIPE = {
     },
     {
       'hello': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
+        'auth': 'user',
         'hour': [
           3
         ],
@@ -139,15 +121,7 @@ RECIPE = {
     },
     {
       'hello': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
+        'auth': 'user',
         'hour': [
         ],
         'say': 'Hello Manual',
@@ -156,15 +130,7 @@ RECIPE = {
     },
     {
       'hello': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
+        'auth': 'user',
         'hour': [
           23
         ],
@@ -174,30 +140,14 @@ RECIPE = {
     },
     {
       'hello': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
+        'auth': 'user',
         'say': 'Hello At Anytime',
         'sleep': 0
       }
     },
     {
       'hello': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
+        'auth': 'user',
         'hour': [
           1,
           3,
@@ -209,15 +159,7 @@ RECIPE = {
     },
     {
       'hello': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
+        'auth': 'user',
         'hour': [
           3
         ],
