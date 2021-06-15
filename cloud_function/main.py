@@ -39,9 +39,10 @@
 
 """
 
-from starthinker.util.project import project
+from starthinker.util.configuration import Configuration
+from starthinker.util.configuration import execute
 
 def run(request):
-  project.initialize(_recipe=request.get_json(force=True), _verbose=True)
-  project.execute()
+  recipe = request.get_json(force=True)
+  execute(Configuration(recipe=recipe, verbose=True), recipe['tasks'], force=True)
   return 'DONE'

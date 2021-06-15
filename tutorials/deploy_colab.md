@@ -44,6 +44,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [DV360 Deal Finder](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/deal_finder.ipynb) - Compares open vs. deal CPM, CPC, and CPA so that clients can decide which sites, inventory, and deals work best.
 * [Drive Copy](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/drive_copy.ipynb) - Copy a drive document.
 * [CM360 Data Transfer To Bigquery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dt.ipynb) - Move data from a DT bucket into a BigQuery table.
+* [DV360 Data Warehouse](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv360_data_warehouse.ipynb) - Deploy a BigQuery dataset mirroring DV360 account structure. Foundation for solutions on top.
 * [DV360 Bulk Editor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv360_editor.ipynb) - Allows bulk editing DV360 through Sheets and BigQuery.
 * [DV360 Segmentology](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv360_segmentology.ipynb) - DV360 funnel analysis using Census data.
 * [DV360 Bulk Targeting Editor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dv360_targeter.ipynb) - Allows bulk targeting DV360 through Sheets and BigQuery.
@@ -62,7 +63,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Google API To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/google_api_to_bigquery.ipynb) - Execute any Google API function and store results to BigQuery.
 * [Say Hello](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/hello.ipynb) - Recipe template for say hello.
 * [Project IAM](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/iam.ipynb) - Sets project permissions for an email.
-* [DV360 ITP Audit](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/itp_audit.ipynb) - Dashboard that shows performance metrics across browser to see the impact of ITP.
+* [DV360 / CM360 Privacy Audit](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/itp_audit.ipynb) - Dashboard that shows performance metrics across browser to see the impact of privacy changes.
 * [Tag Key Value Uploader](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/kv_uploader.ipynb) - A tool for bulk editing key value pairs for CM placements.
 * [Test Script](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/manual.ipynb) - Used by tests.
 * [Column Mapping](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/mapping.ipynb) - Use sheet to define keyword to column mappings.

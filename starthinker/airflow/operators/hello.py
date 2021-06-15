@@ -19,12 +19,12 @@
 import time
 
 from airflow import models
-from airflow import utils as airflow_utils
+from airflow.utils.decorators import apply_defaults
 
 
 class Hello(models.BaseOperator):
 
-  @airflow_utils.apply_defaults
+  @apply_defaults
   def __init__(self, say='', sleep=0, **kwargs):
     self.say = say
     self.sleep = sleep
