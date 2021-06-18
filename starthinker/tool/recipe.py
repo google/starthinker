@@ -42,7 +42,7 @@ def prompt(fields):
       count + 1,
       len(fields),
       field['description'],
-      ','.join(field['choices']) if 'choices' in field else '',
+      ','.join(str(c) for c in field['choices']) if 'choices' in field else '',
       (' Default to "%s" if blank.' %
        field['default']) if 'default' in field else '',
     ))

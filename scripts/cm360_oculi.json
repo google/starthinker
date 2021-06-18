@@ -284,7 +284,7 @@
               FORMAT('%02X', CAST(C.color.green AS INT64)) as g,
               FORMAT('%02X', CAST(C.color.blue AS INT64)) as b
             ) as html,
-            {dataset}.rgb_to_hsv(C.color.red, C.color.green, C.color.blue) AS hsv,
+            `{dataset}`.rgb_to_hsv(C.color.red, C.color.green, C.color.blue) AS hsv,
             (0.2126*C.color.red + 0.7152*C.color.green + 0.0722*C.color.blue) / 255.0 AS percievedBrightness,
             C.score,
             C.pixelFraction AS areaFraction

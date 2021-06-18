@@ -102,7 +102,7 @@ def census_significance(column_join, column_pass, column_sum, column_correlate,
     if segment['category']:
       for column_a in segment['columns']:
         for column_b in column_correlate:
-          query += ('%s.pearson_significance_test(%s_%s_Correlation, Locations,'
+          query += ('`%s`.pearson_significance_test(%s_%s_Correlation, Locations,'
                     ' %s, 0.5) AS %s_%s_Correlation,\n') % (
               dataset,
               column_a.title(),
