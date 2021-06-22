@@ -21,7 +21,7 @@ google-api-python-client
 google-auth
 google-auth-oauthlib
 google-auth-httplib2
-google-cloud-bigquery
+google-cloud-bigquery==2.13
 google-cloud-vision
 pysftp
 pytz
@@ -39,6 +39,6 @@ smartsheet-python-sdk
 wheel
 gunicorn
 jsonpickle
-django==2.2.24
+django==2.2
 psycopg2-binary
 contextlib2
