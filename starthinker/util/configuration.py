@@ -98,16 +98,16 @@ class Configuration:
     """Used in StarThinker scripts as programmatic entry point.
 
     Args:
-      - recipe: (dict) JSON object representing the recipe
-      - project: (string) See module description.
-      - user: (string) See module description.
-      - service: (string) See module description.
-      - client: (string) See module description.
-      - key: (string) See module description.
-      - verbose: (boolean) See module description.
-      - trace_print: (boolean) True if writing execution trace to stdout.
-      - trace_file: (boolean) True if writing execution trace to file.
-      - args: (dict) dictionary of arguments (used with argParse).
+      * recipe: (dict) JSON object representing the recipe
+      * project: (string) See module description.
+      * user: (string) See module description.
+      * service: (string) See module description.
+      * client: (string) See module description.
+      * key: (string) See module description.
+      * verbose: (boolean) See module description.
+      * trace_print: (boolean) True if writing execution trace to stdout.
+      * trace_file: (boolean) True if writing execution trace to file.
+      * args: (dict) dictionary of arguments (used with argParse).
 
     Returns:
       Nothing.
@@ -185,8 +185,8 @@ def commandline_parser(parser=None, arguments=None):
   ```
 
   Args:
-    - parser: (ArgumentParser) optional custom argument parser
-    - arguments: (String) optional list of parameters to use when invoking, all set if None
+    * parser: (ArgumentParser) optional custom argument parser
+    * arguments: (String) optional list of parameters to use when invoking, all set if None
 
   Returns:
     ArgumentParser - parser with added parameters
@@ -331,9 +331,8 @@ def is_scheduled(configuration, task={}):
      machines.
 
     Args:
-      - recipe: (Recipe JSON) The JSON of a recipe.
-      - task: ( dictionary / JSON ) The specific task being considered for
-        execution.
+      * recipe: (Recipe JSON) The JSON of a recipe.
+      * task: ( dictionary / JSON ) The specific task being considered for execution.
 
     Returns:
       - True if task is scheduled to run current hour, else False.
@@ -355,45 +354,61 @@ def is_scheduled(configuration, task={}):
 
 def execute(configuration, tasks, force=False, instance=None):
   """Run all the tasks in a project in one sequence.
+
+  Imports and calls each task handler specified in the recpie.
+  Passes the Configuration and task JSON to each handler.
+  For a full list of tasks see: scripts/*.json
+
+  Example:
   ```
-  from starthinker.util.recipe import execute
-  if __name__ == "__main__":
-    var_user = '[USER CREDENTIALS JSON STRING OR PATH]'
-    var_service = '[SERVICE CREDENTIALS JSON STRING OR PATH]'
-    var_recipe = {
-      "tasks":[
+    from starthinker.util.onfiguration import execute, Configuration
+
+    if __name__ == "__main__":
+      TASKS = [
+        { "hello":{
+          "auth":"user",
+          "say":"Hello World"
+        }},
         { "dataset":{
           "auth":"service",
           "dataset":"Test_Dataset"
         }}
       ]
-    }
-    project.initialize(
-      _recipe=var_recipe,
-      _user=var_user,
-      _service=var_service,
-      _verbose=True
-    )
-    project.execute()
+
+      execute(
+        config=Configuration(
+          client='[CLIENT CREDENTIALS JSON STRING OR PATH]',
+          user='[USER CREDENTIALS JSON STRING OR PATH]',
+          service='[SERVICE CREDENTIALS JSON STRING OR PATH]',
+          project='[GOOGLE CLOUD PROJECT ID]',
+          verbose=True
+        ),
+        tasks=TASKS,
+        force=True
+      )
   ```
-  For a full list of tasks see: scripts/*.json
+
+  Args:
+    * configuration: (class) Crednetials wrapper.
+    * tasks: (dict) JSON definition of each handler and its parameters.
+    * force: (bool) Ignore any schedule settings if true, false by default.
+    * instance (int) Sequential index of task to execute (one based index).
 
   Returns:
     None
 
   Raises:
     All possible exceptions that may occur in a recipe.
-
   """
 
   for sequence, task in enumerate(tasks):
     script, task = next(iter(task.items()))
 
     if instance and instance != sequence + 1:
-      print('SKIPPING TASK #%d: %s' % (sequence + 1, script))
+      print('SKIPPING TASK #%d: %s - %s' % (sequence + 1, script, task.get('description', '')))
       continue
     else:
-      print('RUNNING TASK #%d: %s' % (sequence + 1, script))
+      print('RUNNING TASK #%d: %s - %s' % (sequence + 1, script, task.get('description', '')))
 
     if force or is_scheduled(configuration, task):
       python_callable = getattr(
@@ -403,5 +418,5 @@ def execute(configuration, tasks, force=False, instance=None):
       python_callable(configuration, task)
     else:
       print(
-        'Schedule Skipping: add --force to ignore schedule or run specific task handler'
+        'Schedule Skipping: add --force to ignore schedule'
       )
