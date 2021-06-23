@@ -27,10 +27,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.conf import settings
 
+from starthinker.tool.colab import recipe_to_colab
 from starthinker_ui.account.decorators import permission_admin
 from starthinker_ui.recipe.forms_script import ScriptForm
 from starthinker_ui.recipe.models import Recipe, utc_milliseconds
-from starthinker_ui.recipe.colab import script_to_colab
 from starthinker_ui.recipe.dag import script_to_dag
 from starthinker_ui.recipe.log import log_manager_scale
 from starthinker_ui.recipe.compute import group_instances_list, group_instances_resize
@@ -207,7 +207,7 @@ def recipe_json(request, pk):
 def recipe_colab(request, pk):
   try:
     recipe = request.user.recipe_set.get(pk=pk)
-    data = script_to_colab(recipe.slug(), '', [],
+    data = recipe_to_colab(recipe.slug(), '', [],
                            recipe.get_json(credentials=False)['tasks'])
     response = HttpResponse(data, content_type='application/vnd.jupyter')
     response[

@@ -19,8 +19,8 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
+from starthinker.tool.colab import recipe_to_colab
 from starthinker_ui.recipe.scripts import Script
-from starthinker_ui.recipe.colab import script_to_colab
 
 
 class Command(BaseCommand):
@@ -58,7 +58,7 @@ class Command(BaseCommand):
         with open('%s/colabs/%s.ipynb' % (settings.UI_ROOT, script.get_tag()),
                   'w') as colab_file:
           colab_file.write(
-              script_to_colab(
+              recipe_to_colab(
                   script.get_name(),
                   script.get_description(),
                   script.get_instructions(),
