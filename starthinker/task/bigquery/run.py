@@ -37,7 +37,6 @@ from starthinker.util import csv
 from starthinker.util import data
 from starthinker.util import sheets
 from starthinker.util.bigquery_functions import pearson_significance_test, rgb_to_hsv
-from starthinker.util.bigquery_us_geography import US_GEOGRAPHY_DATA, US_GEOGRAPHY_SCHEMA
 
 def bigquery_function(config, task):
   """Generate custom tables or functions.
@@ -56,17 +55,6 @@ def bigquery_function(config, task):
       pearson_significance_test(),
       False,
       task['to']['dataset']
-    )
-
-  elif task['function'] == 'US Geography':
-    bq.json_to_table(
-      config,
-      task['auth'],
-      config.project,
-      task['to']['dataset'],
-      'US_Geography',
-      US_GEOGRAPHY_DATA,
-      US_GEOGRAPHY_SCHEMA
     )
 
   elif task['function'] == 'RGB To HSV':

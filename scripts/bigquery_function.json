@@ -11,7 +11,7 @@
     "instructions":[
       "Specify the dataset, and the function or table will be added.",
       "Pearson Significance Test: Check if a correlation is significant.",
-      "US Geography: Add a table mapping Postal, FIPS, County, State, and DMA."
+      "RGB To HSV: Convert color values for analysis."
     ],
     "authors":["kenjora@google.com"]
   },
@@ -22,7 +22,7 @@
         "name":"function",
         "kind":"choice",
         "order":1,
-        "choices":["Pearson Significance Test", "US Geography"],
+        "choices":["Pearson Significance Test", "RGB To HSV"],
         "default":"Pearson Significance Test",
         "description":"Function or table to create."
       }},
