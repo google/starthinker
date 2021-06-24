@@ -67,7 +67,7 @@ DV360 Segmentology
 DV360 funnel analysis using Census data.
 
   - Wait for <b>BigQuery->->->Census_Join</b> to be created.
-  - Join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
+  - Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
   - Copy <a href='https://datastudio.google.com/c/u/0/reporting/3673497b-f36f-4448-8fb9-3e05ea51842f/' target='_blank'>DV360 Segmentology Sample</a>. Leave the Data Source as is, you will change it in the next step.
   - Click Edit Connection, and change to <b>BigQuery->->->Census_Join</b>.
   - Or give these intructions to the client.
@@ -202,7 +202,7 @@ RECIPE = {
                   'description': 'Name of report, not needed if ID used.'
                 }
               },
-              'dataRange': 'LAST_30_DAYS',
+              'dataRange': 'LAST_365_DAYS',
               'format': 'CSV'
             },
             'params': {

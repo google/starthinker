@@ -62,13 +62,13 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-BigQuery Function
+Airflow Composer Example
 
-Add a custom function or table to a dataset.
+Demonstration that uses Airflow/Composer native, Airflow/Composer local, and StarThinker tasks in the same generated DAG.
 
-  - Specify the dataset, and the function or table will be added.
-  - Pearson Significance Test: Check if a correlation is significant.
-  - RGB To HSV: Convert color values for analysis.
+  - Execute this using Airflow or Composer, the Colab and UI recipe is for refence only.
+  - This is an example DAG that will execute and print dates and text.
+  - Run it once to ensure everything works, then customize it.
 
 --------------------------------------------------------------
 
@@ -81,54 +81,91 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth': 'service',  # Credentials used for writing function.
-  'function': 'Pearson Significance Test',  # Function or table to create.
-  'dataset': '',  # Existing BigQuery dataset.
+  'auth_read': 'user',  # Credentials used for reading data.
 }
 
 RECIPE = {
+  'setup': {
+    'week': [
+      'Mon',
+      'Tue',
+      'Wed',
+      'Thu',
+      'Fri',
+      'Sat',
+      'Sun'
+    ],
+    'hour': [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ]
+  },
   'tasks': [
     {
-      'bigquery': {
-        'auth': {
-          'field': {
-            'name': 'auth',
-            'kind': 'authentication',
-            'order': 0,
-            'default': 'service',
-            'description': 'Credentials used for writing function.'
-          }
-        },
-        'function': {
-          'field': {
-            'name': 'function',
-            'kind': 'choice',
-            'order': 1,
-            'choices': [
-              'Pearson Significance Test',
-              'RGB To HSV'
-            ],
-            'default': 'Pearson Significance Test',
-            'description': 'Function or table to create.'
-          }
-        },
-        'to': {
-          'dataset': {
-            'field': {
-              'name': 'dataset',
-              'kind': 'string',
-              'order': 1,
-              'default': '',
-              'description': 'Existing BigQuery dataset.'
+      'airflow': {
+        '__comment__': 'Calls a native Airflow operator.',
+        'operators': {
+          'bash_operator': {
+            'BashOperator': {
+              'bash_command': 'date'
             }
           }
         }
+      }
+    },
+    {
+      'starthinker.airflow': {
+        '__comment__': 'Calls an custom operator, requires import of library.',
+        'operators': {
+          'hello': {
+            'Hello': {
+              'say': 'Hi, there!'
+            }
+          }
+        }
+      }
+    },
+    {
+      'hello': {
+        '__comment__': 'Calls a StarThinker task.',
+        'auth': {
+          'field': {
+            'name': 'auth_read',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for reading data.'
+          }
+        },
+        'say': 'Hello World'
       }
     }
   ]
 }
 
-dag_maker = DAG_Factory('bigquery_function', RECIPE, INPUTS)
+dag_maker = DAG_Factory('airflow', RECIPE, INPUTS)
 dag = dag_maker.generate()
 
 if __name__ == "__main__":

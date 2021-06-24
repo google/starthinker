@@ -199,7 +199,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </tr>
             <tr>
               <td>Age</td>
-              <td>Aug. 13, 2020 (10 months)</td>
+              <td>Aug. 13, 2020 (10 months, 2 weeks)</td>
             </tr>
             <tr>
               <td>Authors</td>
@@ -614,7 +614,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "description": "name of dataset in BigQuery."
                     }
                 },
-                "query": "WITH Vision_Colors AS (           SELECT             CAST(VC.imageUri AS INT64) AS creativeId,             STRUCT(               CAST(C.color.red AS INT64) AS r,               CAST(C.color.green AS INT64) AS g,               CAST(C.color.blue AS INT64) AS b             ) as rgb,             STRUCT(               FORMAT('%02X', CAST(C.color.red AS INT64)) as r,               FORMAT('%02X', CAST(C.color.green AS INT64)) as g,               FORMAT('%02X', CAST(C.color.blue AS INT64)) as b             ) as html,             {dataset}.rgb_to_hsv(C.color.red, C.color.green, C.color.blue) AS hsv,             (0.2126*C.color.red + 0.7152*C.color.green + 0.0722*C.color.blue) / 255.0 AS percievedBrightness,             C.score,             C.pixelFraction AS areaFraction           FROM             `{dataset}.Vision_Creatives` AS VC             JOIN UNNEST(imagePropertiesAnnotation.dominantColors.colors) AS C          )           SELECT            *,            CASE              WHEN hsv.h < 90 THEN (90 - hsv.h) / 90              WHEN hsv.h < 270 THEN 0              ELSE (hsv.h - 270) / 90            END AS warmness,            CASE              WHEN hsv.h < 90 THEN 0              WHEN hsv.h < 270 THEN ( 90 - ABS(180 - hsv.h)) / 90              ELSE 0            END AS coldness          FROM Vision_Colors;         ",
+                "query": "WITH Vision_Colors AS (           SELECT             CAST(VC.imageUri AS INT64) AS creativeId,             STRUCT(               CAST(C.color.red AS INT64) AS r,               CAST(C.color.green AS INT64) AS g,               CAST(C.color.blue AS INT64) AS b             ) as rgb,             STRUCT(               FORMAT('%02X', CAST(C.color.red AS INT64)) as r,               FORMAT('%02X', CAST(C.color.green AS INT64)) as g,               FORMAT('%02X', CAST(C.color.blue AS INT64)) as b             ) as html,             `{dataset}`.rgb_to_hsv(C.color.red, C.color.green, C.color.blue) AS hsv,             (0.2126*C.color.red + 0.7152*C.color.green + 0.0722*C.color.blue) / 255.0 AS percievedBrightness,             C.score,             C.pixelFraction AS areaFraction           FROM             `{dataset}.Vision_Creatives` AS VC             JOIN UNNEST(imagePropertiesAnnotation.dominantColors.colors) AS C          )           SELECT            *,            CASE              WHEN hsv.h < 90 THEN (90 - hsv.h) / 90              WHEN hsv.h < 270 THEN 0              ELSE (hsv.h - 270) / 90            END AS warmness,            CASE              WHEN hsv.h < 90 THEN 0              WHEN hsv.h < 270 THEN ( 90 - ABS(180 - hsv.h)) / 90              ELSE 0            END AS coldness          FROM Vision_Colors;         ",
                 "parameters": {
                     "dataset": {
                         "field": {

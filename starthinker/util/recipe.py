@@ -66,7 +66,7 @@ def fields_to_string(fields, values={}):
       ('  # %s' % field['description'] if 'description' in field else '')
       for field in fields
   ]
-  return '{\n  %s\n}' % ('\n  '.join(items))
+  return ('{\n  %s\n}' % ('\n  '.join(items))) if items else '{}'
 
 
 def dict_to_string(value, char_indent='  ', char_line='\n', skip=[], indent=0):

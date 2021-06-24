@@ -70,7 +70,7 @@ Reports the percentage of CM impressions that can be attributed to a specific do
   - Copy DataStudio <a href='https://datastudio.google.com/c/u/0/datasources/1Az6d9loAHo69GSIyKUfusrtyf_IDqTVs' target='_blank'>Transparency Combined KPI</a> and connect.
   - Copy DataStudio <a href='https://datastudio.google.com/c/u/0/reporting/1foircGRxgYCL_PR8gfdmYOleBacnPKwB/page/QCXj' target='_blank'>Transparency Breakdown</a>.
   - When prompted choose the new data source you just created.
-  - Or give these intructions to the client, they will have to join the <a hre='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a>.
+  - Or give these intructions to the client, they will have to join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a>.
 
 --------------------------------------------------------------
 
