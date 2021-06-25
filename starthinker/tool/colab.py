@@ -28,7 +28,7 @@ from starthinker.util.recipe import json_get_fields
 from starthinker.util.recipe import json_set_auths
 from starthinker.util.colab import Colab
 
-def script_to_colab(name, description, instructions, tasks, parameters={}, project=None, client_credentials=None, user_credentials=None, service_credentials=None):
+def recipe_to_colab(name, description, instructions, tasks, parameters={}, project=None, client_credentials=None, user_credentials=None, service_credentials=None):
   """ Converts a JSON recipe into a Jupyter Notebook for Colabs.
 
   Sets up multiple steps to execute recipe:
@@ -142,7 +142,7 @@ def main():
   recipe = get_recipe(args.json)
 
   # create Jupyter Notebook (Colab)
-  notebook = script_to_colab(
+  notebook = recipe_to_colab(
     name=(args.file_out or args.json).rsplit('/', 1)[-1].split('.')[0], # take filename without extension of destination or source
     description=recipe.get('description'),
     instructions=recipe.get('instructions'),
