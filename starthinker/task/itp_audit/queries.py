@@ -496,7 +496,7 @@ class Queries:
     SELECT
       CONCAT(CM.Advertiser," - ",CAST(CM.Advertiser_Id AS STRING)) AS Advertiser,
       CONCAT(CM.Campaign," - ",CAST(CM.Campaign_Id AS STRING)) AS Campaign,
-      CM.Site_Dcm,
+      CM.Site_Cm360 as Site_Dcm,
       CM.Browser_Platform AS Browser_Platform,
       CMBrowser.Browser_Platform_detail AS Browser_Platform_detail,
       CMBrowser.Browser_Platform_clean AS Browser_Platform_clean,
@@ -513,7 +513,7 @@ class Queries:
     LEFT JOIN
       `{{dataset}}.z_CM_Site_Segmentation` AS SiteSeg
     ON
-      CM.Site_Dcm = SiteSeg.Site_Dcm
+      CM.Site_Cm360 = SiteSeg.Site_Dcm
     LEFT JOIN
       `{{dataset}}.z_CM_Browser_lookup` AS CMBrowser
     ON
@@ -532,12 +532,12 @@ class Queries:
 
   cm_site_segmentation = """
     SELECT
-    r.Site_Dcm,
+    r.Site_Cm360 as Site_Dcm,
     Sum(r.Impressions) AS Impressions,
     s.Site_Type
     FROM `{{dataset}}.z_CM_Browser_Report_Dirty` as r
     left join `{{dataset}}.z_CM_Site_Segmentation_Sheet` as s
-    on r.Site_Dcm = s.Site_Dcm
+    on r.Site_Cm360 = s.Site_Dcm
     Group By
     Site_Dcm,
     Site_Type
