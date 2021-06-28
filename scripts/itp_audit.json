@@ -36,7 +36,7 @@
   },
   "tasks": [
     { "drive": {
-        "auth": "user",
+        "auth": {"field":{ "name":"auth_sheets", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for Sheets." }},
         "hour":[],
         "copy":{
           "source":"https://docs.google.com/spreadsheets/d/1rH_PGXOYW2mVdmAYnKbv6kcaB6lQihAyMsGtFfinnqg/",
@@ -44,11 +44,11 @@
         }
     }},
     { "dataset":{
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
       "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
     }},
     { "dbm":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for DV360." }},
       "report":{
         "name": {"field":{ "name":"recipe_name", "kind":"string", "prefix":"ITP_Audit_Browser_", "default":"ITP_Audit_Browser_", "order":1, "description":"Name of report in DV360, should be unique." }},
         "timeout": 90,
@@ -109,7 +109,7 @@
       "delete": false,
       "out":{
         "bigquery":{
-          "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Authorization used for writing data." }},
+          "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default":"ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table": "z_Dv360_Browser_Report_Dirty",
           "header": true,
@@ -149,7 +149,7 @@
       }
     }},
     { "dcm":{
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for CM." }},
       "timeout": 90,
       "report":{
         "timeout": 90,
@@ -229,7 +229,7 @@
       },
       "out":{
         "bigquery":{
-          "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Authorization used for writing data." }},
+          "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":1, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_CM_Browser_Report_Dirty",
           "header": true,
@@ -262,7 +262,7 @@
         "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }}
       }},
     { "bigquery": {
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
       "from":{
         "values":[
           ["App", "App"],
@@ -280,7 +280,7 @@
       ]
     }},
     { "bigquery": {
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
       "from":{
         "values":[
           ["Other", "TrueView", ""],
@@ -320,7 +320,7 @@
       ]
     }},
     { "bigquery": {
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
       "from":{
         "values":[
           ["Other", "Other", 0],
@@ -364,13 +364,13 @@
       ]
     }},
     { "sheets":{
-      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_sheets", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for Sheets." }},
       "sheet": {"field":{ "name":"recipe_name", "prefix":"Privacy Audit ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }},
       "tab":"SdfScoring",
       "range":"A2:M",
       "header": false,
       "out":{
-        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+        "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
         "bigquery":{
           "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
           "table":"z_dv360_scoring_matrix",
@@ -393,7 +393,7 @@
       }
     }},
     { "bigquery": {
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
       "from":{
         "values":[
           ["Firefox", "Firefox", "Firefox"],
@@ -424,7 +424,7 @@
       ]
     }},
     { "bigquery": {
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
       "from":{
         "values":[
           ["Desktop", "Desktop"],
@@ -443,7 +443,7 @@
       ]
     }},
     { "bigquery": {
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
       "from":{
         "values":[
           ["View-through", "Attributed"],
@@ -463,8 +463,11 @@
     }},
     {
       "itp_audit": {
-        "auth": "service",
-        "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":1, "default":"", "description":"Campaign Manager Account Id." }},
+        "auth_dv": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for DV360." }},
+        "auth_cm": {"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for CM." }},
+        "auth_sheets": {"field":{ "name":"auth_sheets", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for Sheets." }},
+        "auth_bq": {"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
+        "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default":"", "description":"Campaign Manager Account Id." }},
         "dataset": {"field":{ "name":"recipe_slug", "kind":"string", "order":7, "default": "ITP_Audit_Dashboard", "description":"BigQuery dataset for store dashboard tables." }},
         "sheet": {"field":{ "name":"recipe_name", "prefix":"Privacy Audit ", "kind":"string", "order":7, "description":"Name of document to deploy to.", "default":"" }},
         "timeout": 60,

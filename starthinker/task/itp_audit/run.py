@@ -114,7 +114,7 @@ def run_cm_queries(config, task):
 
 def run_dv_360_queries(config, task):
   # Create empty DV360 Custom Segments table for join until sheet is created
-  table_create(config, 'service', config.project, task['dataset'], DV360_CUSTOM_SEGMENTS_TABLE)
+  table_create(config, task['auth_bq'], config.project, task['dataset'], DV360_CUSTOM_SEGMENTS_TABLE)
 
   # Create DV360 Segments Table
   create_dv360_segments(config, task)
@@ -157,7 +157,7 @@ def create_dv360_segments(config, task):
       { "type": "STRING", "name": "Segment3", "mode": "NULLABLE" }
     ]
 
-  sheet_rows = sheets_read(config, 'user', task['sheet'], 'DV3 Segments', a1_notation, retries=10)
+  sheet_rows = sheets_read(config, task['auth_sheets'], task['sheet'], 'DV3 Segments', a1_notation, retries=10)
 
   if not sheet_rows:
     sheet_rows = []
@@ -166,7 +166,7 @@ def create_dv360_segments(config, task):
 
   rows_to_table(
     config,
-    auth='service',
+    auth=task['auth_bq'],
     project_id=config.project,
     dataset_id=task['dataset'],
     table_id=DV360_CUSTOM_SEGMENTS_SHEET_TABLE,
@@ -183,13 +183,13 @@ def create_dv360_segments(config, task):
 
   # Move Table back to sheets
   query = 'SELECT * from `' + config.project + '.' + task['dataset'] + '.' + DV360_CUSTOM_SEGMENTS_TABLE + '`'
-  rows = query_to_rows(config, 'service', config.project, task['dataset'], query, legacy=False)
+  rows = query_to_rows(config, task['auth_bq'], config.project, task['dataset'], query, legacy=False)
 
   # makes sure types are correct in sheet
   a1_notation = a1_notation[:1] + '2' + a1_notation[1:]
   rows = rows_to_type(rows)
-  sheets_clear(config, 'user', task['sheet'], 'DV3 Segments', a1_notation)
-  sheets_write(config, 'user', task['sheet'], 'DV3 Segments', a1_notation, rows)
+  sheets_clear(config, task['auth_sheets'], task['sheet'], 'DV3 Segments', a1_notation)
+  sheets_write(config, task['auth_sheets'], task['sheet'], 'DV3 Segments', a1_notation, rows)
 
 
 '''
@@ -197,7 +197,7 @@ This method will update the BQ table and update the Google sheet
 '''
 def create_cm_site_segmentation(config, task):
   # Read sheet to bq table
-  sheet_rows = sheets_read(config, 'user', task['sheet'], 'CM_Site_Segments', 'A:C', retries=10)
+  sheet_rows = sheets_read(config, task['auth_sheets'], task['sheet'], 'CM_Site_Segments', 'A:C', retries=10)
   if not sheet_rows:
     sheet_rows = []
 
@@ -209,7 +209,7 @@ def create_cm_site_segmentation(config, task):
 
   rows_to_table(
     config,
-    auth='service',
+    auth=task['auth_bq'],
     project_id=config.project,
     dataset_id=task['dataset'],
     table_id=CM_SITE_SEGMENTATION_SHEET_TABLE,
@@ -224,12 +224,12 @@ def create_cm_site_segmentation(config, task):
 
   # Move Table back to sheets
   query = 'SELECT * from `' + config.project + '.' + task['dataset'] + '.' + CM_SITE_SEGMENTATION_TABLE + '`'
-  rows = query_to_rows(config, 'service', config.project, task['dataset'], query, legacy=False)
+  rows = query_to_rows(config, task['auth_bq'], config.project, task['dataset'], query, legacy=False)
 
   # makes sure types are correct in sheet
   rows = rows_to_type(rows)
-  sheets_clear(config, 'user', task['sheet'], 'CM_Site_Segments', 'A2:C')
-  sheets_write(config, 'user', task['sheet'], 'CM_Site_Segments', 'A2:C', rows)
+  sheets_clear(config, task['auth_sheets'], task['sheet'], 'CM_Site_Segments', 'A2:C')
+  sheets_write(config, task['auth_sheets'], task['sheet'], 'CM_Site_Segments', 'A2:C', rows)
 
 
 def run_floodlight_reports(config, task):
@@ -318,7 +318,7 @@ def run_floodlight_reports(config, task):
     body['name'] = task.get('reportPrefix', '') + "_" + str(configId)
     body['floodlightCriteria']['floodlightConfigId']['value'] = configId
     report = report_build(
-      config, 'user',
+      config, task['auth_cm'],
       task['account'],
       body
     )
@@ -331,7 +331,7 @@ def run_floodlight_reports(config, task):
 
   for createdReportId in reports:
     filename, report = report_file(
-      config, 'user',
+      config, task['auth_cm'],
       task['account'],
       createdReportId,
       None,
@@ -359,7 +359,7 @@ def run_floodlight_reports(config, task):
       out_block['bigquery']['table'] = 'z_Floodlight_CM_Report_' + str(createdReportId)
 
       # write rows using standard out block in json ( allows customization across all scripts )
-      if rows: put_rows(config, 'service', out_block, rows)
+      if rows: put_rows(config, task['auth_bq'], out_block, rows)
       queries.append('SELECT * FROM `{0}.{1}.{2}`'.format(config.project, out_block['bigquery']['dataset'], out_block['bigquery']['table']))
 
   if config.verbose:
@@ -367,7 +367,7 @@ def run_floodlight_reports(config, task):
   finalQuery = ' UNION ALL '.join(queries)
 
   query_to_table(
-    config, 'service',
+    config, task['auth_bq'],
     config.project,
     task['dataset'],
     CM_FLOODLIGHT_OUTPUT_TABLE,
@@ -380,7 +380,7 @@ def run_floodlight_reports(config, task):
 
 def run_query_from_file(config, task, query, table_name):
   query_to_table(
-    config, 'service',
+    config, task['auth_bq'],
     config.project,
     task['dataset'],
     table_name,
@@ -392,17 +392,17 @@ def run_query_from_file(config, task, query, table_name):
 def itp_audit_cm(config, task):
   account_id = task['account']
   # Read Advertiser Ids
-  advertiser_ids = list(get_rows(config, 'service', task['read']['advertiser_ids']))
-  is_superuser, profile_id = get_profile_for_api(config, 'user', account_id)
+  advertiser_ids = list(get_rows(config, task['auth_bq'], task['read']['advertiser_ids']))
+  is_superuser, profile_id = get_profile_for_api(config, task['auth_cm'], account_id)
 
-  datasets_create(config, 'user', config.project, task['dataset'])
+  datasets_create(config, task['auth_bq'], config.project, task['dataset'])
 
   placements = {}
   campaignNames = {}
   siteNames = {}
   advertiserNames = {}
 
-  for c in API_DCM(config, 'user', iterate=True, internal=is_superuser).campaigns().list(archived=False, profileId=profile_id, accountId=account_id, advertiserIds=advertiser_ids if advertiser_ids else None).execute():
+  for c in API_DCM(config, task['auth_cm'], iterate=True, internal=is_superuser).campaigns().list(archived=False, profileId=profile_id, accountId=account_id, advertiserIds=advertiser_ids if advertiser_ids else None).execute():
     # only keep campaigns with end dates in the future or less than 90 days ago
     if ((date.fromisoformat(c['endDate']) - date.today()).days > -90):
       campaignNames[c['id']] = {
@@ -414,17 +414,17 @@ def itp_audit_cm(config, task):
 
   validCampaignIds = [int(i) for i in campaignNames.keys()]
 
-  for s in API_DCM(config, 'user', iterate=True, internal=is_superuser).sites().list(profileId=profile_id, accountId=account_id, campaignIds=validCampaignIds).execute():
+  for s in API_DCM(config, task['auth_cm'], iterate=True, internal=is_superuser).sites().list(profileId=profile_id, accountId=account_id, campaignIds=validCampaignIds).execute():
     siteNames[s['id']] = s['name']
 
-  for a in API_DCM(config, 'user', iterate=True, internal=is_superuser).advertisers().list(profileId=profile_id, accountId=account_id, ids=advertiser_ids[:500] if advertiser_ids else None).execute():
+  for a in API_DCM(config, task['auth_cm'], iterate=True, internal=is_superuser).advertisers().list(profileId=profile_id, accountId=account_id, ids=advertiser_ids[:500] if advertiser_ids else None).execute():
     advertiserNames[a['id']] = a['name']
 
   if len(advertiser_ids) > 500:
-      for a in API_DCM(config, 'user', iterate=True, internal=is_superuser).advertisers().list(profileId=profile_id, accountId=account_id, ids=advertiser_ids[500:] if advertiser_ids else None).execute():
+      for a in API_DCM(config, task['auth_cm'], iterate=True, internal=is_superuser).advertisers().list(profileId=profile_id, accountId=account_id, ids=advertiser_ids[500:] if advertiser_ids else None).execute():
         advertiserNames[a['id']] = a['name']
 
-  for p in API_DCM(config, 'user', iterate=True, internal=is_superuser).placements().list(archived=False, profileId=profile_id, accountId=account_id, advertiserIds=advertiser_ids if advertiser_ids else None, campaignIds=validCampaignIds).execute():
+  for p in API_DCM(config, task['auth_cm'], iterate=True, internal=is_superuser).placements().list(archived=False, profileId=profile_id, accountId=account_id, advertiserIds=advertiser_ids if advertiser_ids else None, campaignIds=validCampaignIds).execute():
     # exclude 1x1 tracking placements
     if not (p['size']['height'] == 1 and p['size']['width'] == 1):
       placements[p['id']] = {
@@ -445,7 +445,7 @@ def itp_audit_cm(config, task):
       'adsPlatformBrowserTargeting': 0
       }
 
-  for ad in API_DCM(config, 'user', iterate=True, internal=is_superuser).ads().list(type='AD_SERVING_STANDARD_AD', profileId=profile_id, accountId=account_id, campaignIds=validCampaignIds).execute():
+  for ad in API_DCM(config, task['auth_cm'], iterate=True, internal=is_superuser).ads().list(type='AD_SERVING_STANDARD_AD', profileId=profile_id, accountId=account_id, campaignIds=validCampaignIds).execute():
     # only analyze standard, non-default priority ads that have been assigned 1+ placements and creatives
     if ad['deliverySchedule']['priority'] != "AD_PRIORITY_16" and 'placementAssignments' in ad and 'creativeAssignments' in ad['creativeRotation']:
       hasDynamicCreative = False
@@ -505,4 +505,4 @@ def itp_audit_cm(config, task):
     "skip_rows": 0
   }
 
-  if placements: put_rows(config, 'service', placements_out, write_data)
+  if placements: put_rows(config, task['auth_bq'], placements_out, write_data)

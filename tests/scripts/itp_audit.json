@@ -7,7 +7,7 @@
   },
   "tasks": [
     { "dataset":{
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
       "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_ITP_Audit_", "default": "Manual"}},
       "clear":true
     }},
@@ -21,11 +21,15 @@
         "floodlight_configuration_ids":{"field":{ "name":"floodlight_configuration_ids", "kind":"integer_list", "description":"Floodlight Configuration Id for the Campaign Manager floodlight report." }},
         "cm_advertiser_ids":{"field":{ "name":"cm_advertiser_ids", "kind":"integer_list", "description":"Optional: Comma delimited list of DCM advertiser ids." }},
         "dv360_partner_id":{"field":{ "name":"dv360_partner_id", "kind":"integer", "description":"Comma delimited list of DV360 Partner ids." }},
-        "dv360_advertiser_ids":{"field":{ "name":"dv360_advertiser_ids", "kind":"integer_list", "description":"Optional: Comma delimited list of DV360 Advertiser ids." }}
+        "dv360_advertiser_ids":{"field":{ "name":"dv360_advertiser_ids", "kind":"integer_list", "description":"Optional: Comma delimited list of DV360 Advertiser ids." }},
+        "auth_dv": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for DV360." }},
+        "auth_cm": {"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for CM." }},
+        "auth_sheets": {"field":{ "name":"auth_sheets", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for Sheets." }},
+        "auth_bq": {"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }}
       }
     }},
     { "test": {
-      "auth":"user",
+      "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
       "bigquery":{
         "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_ITP_Audit_", "default": "Manual"}},
         "table":"CM_Floodlight_Multichart",
@@ -43,7 +47,7 @@
       }
     }},
     { "dataset":{
-      "auth":"service",
+      "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for BigQuery." }},
       "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_ITP_Audit_", "default": "Manual"}},
       "delete":false
     }}
