@@ -119,7 +119,7 @@ def get_service(config,
   if not key:
     key = config.recipe['setup'].get(key, '')
 
-  cache_key = api + version + auth + key + str(threading.current_thread().ident)
+  cache_key = api + version + auth + str(key) + str(threading.current_thread().ident)
 
   if cache_key not in DISCOVERY_CACHE:
     credentials = get_credentials(config, auth)

@@ -35,7 +35,7 @@ class CreativeAssociationDAO(BaseDAO):
 
   def __init__(self, config, auth, profile_id, is_admin):
     """Initializes CreativeAssociationDAO with profile id and authentication scheme."""
-    super(CreativeAssociationDAO, self).__init__(auth, profile_id, is_admin)
+    super(CreativeAssociationDAO, self).__init__(config, auth, profile_id, is_admin)
 
     self.config = config
     self._id_field = FieldMap.CAMPAIGN_CREATIVE_ASSOCIATION_ID
