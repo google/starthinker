@@ -7,7 +7,7 @@
     "title":"DV360 / CM360 Privacy Audit",
     "description":"Dashboard that shows performance metrics across browser to see the impact of privacy changes.",
     "sample":"https://datastudio.google.com/reporting/b4a044cc-bdf8-4043-9522-1bd42eed7a45",
-    "document":"https://docs.google.com/document/d/1HaRCMaBBEo0tSKwnofWNtaPjlW0ORcVHVwIRabct4fY/",
+    "document":"https://docs.google.com/document/d/1k2iwcGPLNskWi1wLjbgxVXHx4H4jzaFM9aAIGqp20Sc/",
     "image":"https://github.com/google/starthinker/raw/master/tutorials/images/itp.png",
     "from":["cm360", "dv360"],
     "to":["datastudio", "bigquery" ],
