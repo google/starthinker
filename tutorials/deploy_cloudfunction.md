@@ -21,7 +21,7 @@ bash install/deploy.sh
  1. Option 4) Deploy Cloud Function
  1. Note the trigger URL and start using the scheduler to run recipes.
 
-[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_clouf_function.md)
+[![Try It In Google Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2Fgoogle%2Fstarthinker&cloudshell_tutorial=tutorials/deploy_cloudfunction.md)
 
 ## Recipe Quick Start
  - A [sample job is](https://github.com/google/starthinker/blob/master/install/enterprise.sh#L313) is created on [cloud scheduler](https://console.cloud.google.com/cloudscheduler).
