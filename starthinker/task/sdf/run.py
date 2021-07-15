@@ -31,7 +31,7 @@ def sdf(config, task):
                               task['read']['filter_ids'])
 
   # Load data into BigQuery
-  sdf_to_bigquery(config, sdf_zip_file, config.project, task['dataset'],
+  sdf_to_bigquery(config, task['auth'], sdf_zip_file, config.project, task['dataset'],
                   task['time_partitioned_table'],
                   task['create_single_day_table'],
                   task.get('table_suffix', ''))

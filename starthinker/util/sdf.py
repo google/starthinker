@@ -97,7 +97,9 @@ def add_seekable_to_file(f):
     f.seekable = lambda: True
 
 
-def sdf_to_bigquery(config, sdf_zip_file,
+def sdf_to_bigquery(config,
+                    auth,
+                    sdf_zip_file,
                     project_id,
                     dataset,
                     time_partitioned_table,
@@ -122,10 +124,10 @@ def sdf_to_bigquery(config, sdf_zip_file,
           table_name_dated = table_name + date.today().strftime('%Y_%m_%d')
 
           # Create table and upload data
-          table_create('service', project_id, dataset, table_name_dated)
+          table_create(auth, project_id, dataset, table_name_dated)
           rows_to_table(
               config,
-              'service',
+              auth,
               project_id,
               dataset,
               table_name_dated,
@@ -135,10 +137,10 @@ def sdf_to_bigquery(config, sdf_zip_file,
               disposition='WRITE_TRUNCATE')
 
         # Create end result table if it doesn't already exist
-        if not table_exists(config, 'service', project_id, dataset, table_name):
+        if not table_exists(config, auth, project_id, dataset, table_name):
           table_create(
               config,
-              'service',
+              auth,
               project_id,
               dataset,
               table_name,
@@ -146,7 +148,7 @@ def sdf_to_bigquery(config, sdf_zip_file,
 
         rows_to_table(
              config,
-            'service',
+            auth,
             project_id,
             dataset,
             table_name,
