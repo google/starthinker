@@ -51,7 +51,7 @@
     { "google_api": {
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for reading data." }},
       "api": "googleads",
-      "version": "v5",
+      "version": "v8",
       "function": "customers.googleAds.search",
       "kwargs":{
         "customerId":{"field":{ "name":"customer_id", "kind":"string", "description":"Google Ads customer.", "default":"" }},
