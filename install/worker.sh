@@ -37,7 +37,7 @@ instance_create()
 
   values=$(gcloud compute instances list --filter="name=$create_INSTANCE" --format="value(name)" --verbosity=none)
   if [ -z "${values}" ]; then
-    gcloud compute instances create $create_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE --machine-type=$create_MACHINE --boot-disk-size=200GB --scopes https://www.googleapis.com/auth/cloud-platform
+    gcloud compute instances create $create_INSTANCE --project=$STARTHINKER_PROJECT --zone=$STARTHINKER_ZONE --machine-type=$create_MACHINE --boot-disk-size=200GB --image-project=debian-cloud --image-family=debian-10 --scopes https://www.googleapis.com/auth/cloud-platform
   else
     gcloud compute instances start $create_INSTANCE --zone=$STARTHINKER_ZONE
     echo "Instance already exists."
