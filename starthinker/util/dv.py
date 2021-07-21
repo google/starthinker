@@ -143,7 +143,7 @@ def report_build(config, auth, body):
 
     # build report
     #pprint.PrettyPrinter().pprint(body)
-    report = API_DBM(config, auth).queries().createquery(body=body).execute()
+    report = API_DBM(config, auth).queries().createquery(body=body, asynchronous=True).execute()
 
     # run report first time
     body = {
