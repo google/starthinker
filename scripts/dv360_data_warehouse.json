@@ -30,7 +30,6 @@
   "tasks":[
     { "dataset":{
       "description":"Create a dataset for bigquery tables.",
-      "hour":[4],
       "auth":{"field":{ "name":"auth_bigquery", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
     }},
@@ -60,7 +59,7 @@
       }
     }},
     { "google_api": {
-      "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
       "api": "displayvideo",
       "version": "v1",
       "function": "advertisers.list",
@@ -82,7 +81,7 @@
       }
     }},
     { "google_api": {
-      "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
       "api": "displayvideo",
       "version": "v1",
       "function": "advertisers.insertionOrders.list",
@@ -104,7 +103,7 @@
       }
     }},
     { "google_api": {
-      "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
       "api": "displayvideo",
       "version": "v1",
       "function": "advertisers.lineItems.list",
@@ -126,7 +125,7 @@
       }
     }},
     { "google_api": {
-      "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
       "api": "displayvideo",
       "version": "v1",
       "function": "advertisers.campaigns.list",
@@ -148,7 +147,7 @@
       }
     }},
     { "google_api": {
-      "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
       "api": "displayvideo",
       "version": "v1",
       "function": "advertisers.channels.list",
@@ -170,7 +169,7 @@
       }
     }},
     { "google_api": {
-      "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
       "api": "displayvideo",
       "version": "v1",
       "function": "advertisers.creatives.list",
@@ -192,7 +191,7 @@
       }
     }},
     { "google_api": {
-      "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
       "api": "displayvideo",
       "version": "v1",
       "function": "inventorySources.list",
@@ -214,7 +213,7 @@
       }
     }},
     { "google_api": {
-      "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
       "api": "displayvideo",
       "version": "v1",
       "function": "googleAudiences.list",
@@ -236,7 +235,7 @@
       }
     }},
     { "google_api": {
-      "auth":{"field":{ "name":"auth_cm", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
+      "auth":{"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for reading data." }},
       "api": "displayvideo",
       "version": "v1",
       "function": "combinedAudiences.list",
