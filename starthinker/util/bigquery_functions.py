@@ -102,13 +102,13 @@ def pearson_significance_test():
       var dt_low = 0;
       var dt_high = 0;
       var dt_sigma = 0;
-      if (percent == 80) { dt_sigma = 1; }
-      else if (percent == 90) { dt_sigma = 2; }
-      else if (percent == 95) { dt_sigma = 3; }
-      else if (percent == 98) { dt_sigma = 4; }
-      else if (percent == 99.5) { dt_sigma = 5; }
-      else if (percent == 99.95) { dt_sigma = 6; }
-      else { dt_sigma = 5; }
+      if (percent <= 80) { dt_sigma = 1; }
+      else if (percent <= 90) { dt_sigma = 2; }
+      else if (percent <= 95) { dt_sigma = 3; }
+      else if (percent <= 98) { dt_sigma = 4; }
+      else if (percent <= 99.5) { dt_sigma = 5; }
+      else if (percent <= 99.95) { dt_sigma = 6; }
+      else { dt_sigma = 6; }
       if (population >= 1000) { dt_low = 37; dt_high = 37; }
       else if (population >= 500) { dt_low = 36; dt_high = 37; }
       else if (population >= 300) { dt_low = 35; dt_high = 36; }
