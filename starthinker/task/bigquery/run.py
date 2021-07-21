@@ -66,6 +66,8 @@ def bigquery_function(config, task):
       False,
       task['to']['dataset']
     )
+  else:
+    raise LookupError('Function Not Defined: %s' % task['function'])
 
 def bigquery_run(config, task):
   """Execute a query without expected return results.
