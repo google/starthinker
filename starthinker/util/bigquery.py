@@ -23,6 +23,7 @@ import base64
 import csv
 import uuid
 import json
+import datetime
 from time import sleep
 from io import BytesIO
 from googleapiclient.errors import HttpError
@@ -75,6 +76,8 @@ class JSON_To_BigQuery(json.JSONEncoder):
       return obj.strftime(self.BIGQUERY_DATE_FORMAT)
     elif isinstance(obj, datetime.time):
       return obj.strftime(self.BIGQUERY_TIME_FORMAT)
+    elif isinstance(obj, map):
+      return list(obj)
     else:
       return super(JSON_To_BigQuery, self).default(obj)
 
@@ -439,6 +442,7 @@ def json_to_table(config, auth,
       if config.verbose:
         print('BigQuery Buffer Size', buffer_data.tell())
       buffer_data.seek(0)  # reset for read
+
       io_to_table(config, auth, project_id, dataset_id, table_id, buffer_data,
                   'NEWLINE_DELIMITED_JSON', schema, 0, disposition)
 
