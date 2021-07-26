@@ -145,7 +145,7 @@ class DAG_Factory():
         except: pass
 
 
-  def python_task(self, function, instance):
+  def python_task(self, function, instance, task):
     print('STARTHINKER TASK:', function, instance)
 
     PythonOperator(
@@ -154,7 +154,7 @@ class DAG_Factory():
             import_module('starthinker.task.%s.run' % function), function),
         op_kwargs={
             'config': Configuration(recipe=self.recipe),
-            'tasks': self.recipe['tasks'][instance - 1]
+            'task': task
         },
         dag=self.dag)
 
@@ -226,7 +226,7 @@ class DAG_Factory():
 
       # if native python operator
       else:
-        self.python_task(function, instance)
+        self.python_task(function, instance, task[function])
 
     return self.dag
 
