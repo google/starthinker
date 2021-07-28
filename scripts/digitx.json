@@ -216,15 +216,15 @@
             "single_cell":true,
             "values":[783065]
           },
-          "dfa:activity": {
+          "activity": {
             "single_cell":true,
             "values":[7829811, 7847234, 7274861, 7824484]
           },
-          "dfa:advertiser": {
+          "advertiser": {
             "single_cell":true,
             "values":[8293341]
           },
-          "dfa:campaign": {
+          "campaign": {
             "single_cell":true,
             "values":[8293341, 21467940, 21826008, 21309386, 21849046]
           }
@@ -239,7 +239,7 @@
               "kind": "dfareporting#activities",
               "filters": [],
               "metricNames": [
-                "dfa:totalConversions"
+                "totalConversions"
               ]
             },
             "dateRange": {
@@ -248,22 +248,22 @@
             },
             "dimensionFilters": [],
             "dimensions": [
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:advertiser" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:campaign" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:site" }
+              { "kind": "dfareporting#sortedDimension", "name": "advertiser" },
+              { "kind": "dfareporting#sortedDimension", "name": "campaign" },
+              { "kind": "dfareporting#sortedDimension", "name": "site" }
             ],
             "enableAllDimensionCombinations": false,
             "metricNames": [
-              "dfa:cookieReachTotalReach",
-              "dfa:cookieReachAverageImpressionFrequency",
-              "dfa:richMediaVideoCompletions",
-              "dfa:activeViewViewableImpressions",
-              "dfa:activeViewMeasurableImpressions",
-              "dfa:impressions",
-              "dfa:mediaCost",
-              "dfa:activeViewPercentImpressionsAudibleAndVisibleAtCompletion",
-              "dfa:clicks",
-              "dfa:clickRate"
+              "cookieReachTotalReach",
+              "cookieReachAverageImpressionFrequency",
+              "richMediaVideoCompletions",
+              "activeViewViewableImpressions",
+              "activeViewMeasurableImpressions",
+              "impressions",
+              "mediaCost",
+              "activeViewPercentImpressionsAudibleAndVisibleAtCompletion",
+              "clicks",
+              "clickRate"
             ]
           }
         }
@@ -297,15 +297,15 @@
             "single_cell":true,
             "values":[783065]
           },
-          "dfa:activity": {
+          "activity": {
             "single_cell":true,
             "values":[7829811, 7847234, 7274861, 7824484]
           },
-          "dfa:advertiser": {
+          "advertiser": {
             "single_cell":true,
             "values":[8293341]
           },
-          "dfa:campaign": {
+          "campaign": {
             "single_cell":true,
             "values":[8293341, 21467940, 21826008, 21309386, 21849046]
           }
@@ -320,7 +320,7 @@
               "kind": "dfareporting#activities",
               "filters": [],
               "metricNames": [
-                "dfa:totalConversions"
+                "totalConversions"
               ]
             },
             "dateRange": {
@@ -329,21 +329,21 @@
             },
             "dimensionFilters": [],
             "dimensions": [
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:advertiser" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:campaign" }
+              { "kind": "dfareporting#sortedDimension", "name": "advertiser" },
+              { "kind": "dfareporting#sortedDimension", "name": "campaign" }
             ],
             "enableAllDimensionCombinations": false,
             "metricNames": [
-              "dfa:cookieReachTotalReach",
-              "dfa:cookieReachAverageImpressionFrequency",
-              "dfa:richMediaVideoCompletions",
-              "dfa:activeViewViewableImpressions",
-              "dfa:activeViewMeasurableImpressions",
-              "dfa:impressions",
-              "dfa:mediaCost",
-              "dfa:activeViewPercentImpressionsAudibleAndVisibleAtCompletion",
-              "dfa:clickRate",
-              "dfa:clicks"
+              "cookieReachTotalReach",
+              "cookieReachAverageImpressionFrequency",
+              "richMediaVideoCompletions",
+              "activeViewViewableImpressions",
+              "activeViewMeasurableImpressions",
+              "impressions",
+              "mediaCost",
+              "activeViewPercentImpressionsAudibleAndVisibleAtCompletion",
+              "clickRate",
+              "clicks"
             ]
           }
         }
@@ -378,15 +378,15 @@
             "single_cell":true,
             "values":[783065]
           },
-          "dfa:activity": {
+          "activity": {
             "single_cell":true,
             "values":[7829811, 7847234, 7274861, 7824484]
           },
-          "dfa:advertiser": {
+          "advertiser": {
             "single_cell":true,
             "values":[8293341]
           },
-          "dfa:campaign": {
+          "campaign": {
             "single_cell":true,
             "values":[8293341, 21467940, 21826008, 21309386, 21849046]
           }
@@ -401,7 +401,7 @@
               "filters": [],
               "kind": "dfareporting#activities",
               "metricNames": [
-                "dfa:totalConversions"
+                "totalConversions"
               ]
             },
             "dateRange": {
@@ -410,23 +410,23 @@
             },
             "dimensionFilters": [],
             "dimensions": [
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:advertiser" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:campaign" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:site" }
+              { "kind": "dfareporting#sortedDimension", "name": "advertiser" },
+              { "kind": "dfareporting#sortedDimension", "name": "campaign" },
+              { "kind": "dfareporting#sortedDimension", "name": "site" }
             ],
             "enableAllDimensionCombinations": false,
             "metricNames": [
-              "dfa:cookieReachTotalReach",
-              "dfa:cookieReachAverageImpressionFrequency",
-              "dfa:richMediaVideoCompletions",
-              "dfa:activeViewViewableImpressions",
-              "dfa:activeViewMeasurableImpressions",
-              "dfa:impressions",
-              "dfa:mediaCost",
-              "dfa:activeViewPercentImpressionsAudibleAndVisibleAtCompletion"
+              "cookieReachTotalReach",
+              "cookieReachAverageImpressionFrequency",
+              "richMediaVideoCompletions",
+              "activeViewViewableImpressions",
+              "activeViewMeasurableImpressions",
+              "impressions",
+              "mediaCost",
+              "activeViewPercentImpressionsAudibleAndVisibleAtCompletion"
             ],
             "reachByFrequencyMetricNames": [
-              "dfa:cookieReachTotalReach"
+              "cookieReachTotalReach"
             ]
           }
         }
@@ -461,15 +461,15 @@
             "single_cell":true,
             "values":[783065]
           },
-          "dfa:activity": {
+          "activity": {
             "single_cell":true,
             "values":[7829811, 7847234, 7274861, 7824484]
           },
-          "dfa:advertiser": {
+          "advertiser": {
             "single_cell":true,
             "values":[8293341]
           },
-          "dfa:campaign": {
+          "campaign": {
             "single_cell":true,
             "values":[8293341, 21467940, 21826008, 21309386, 21849046]
           }
@@ -484,7 +484,7 @@
               "filters": [ ],
               "kind": "dfareporting#activities",
               "metricNames": [
-                "dfa:totalConversions"
+                "totalConversions"
               ]
             },
             "dateRange": {
@@ -493,22 +493,22 @@
             },
             "dimensionFilters": [ ],
             "dimensions": [
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:advertiser" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:campaign" }
+              { "kind": "dfareporting#sortedDimension", "name": "advertiser" },
+              { "kind": "dfareporting#sortedDimension", "name": "campaign" }
             ],
             "enableAllDimensionCombinations": false,
             "metricNames": [
-              "dfa:cookieReachTotalReach",
-              "dfa:cookieReachAverageImpressionFrequency",
-              "dfa:richMediaVideoCompletions",
-              "dfa:activeViewViewableImpressions",
-              "dfa:activeViewMeasurableImpressions",
-              "dfa:impressions",
-              "dfa:mediaCost",
-              "dfa:activeViewPercentImpressionsAudibleAndVisibleAtCompletion"
+              "cookieReachTotalReach",
+              "cookieReachAverageImpressionFrequency",
+              "richMediaVideoCompletions",
+              "activeViewViewableImpressions",
+              "activeViewMeasurableImpressions",
+              "impressions",
+              "mediaCost",
+              "activeViewPercentImpressionsAudibleAndVisibleAtCompletion"
             ],
             "reachByFrequencyMetricNames": [
-              "dfa:cookieReachTotalReach"
+              "cookieReachTotalReach"
             ]
           }
         }
@@ -543,11 +543,11 @@
             "single_cell":true,
             "values":[783065]
           },
-          "dfa:advertiser": {
+          "advertiser": {
             "single_cell":true,
             "values":[8293341]
           },
-          "dfa:campaign": {
+          "campaign": {
             "single_cell":true,
             "values":[8293341, 21467940, 21826008, 21309386, 21849046]
           }
@@ -566,8 +566,8 @@
             "dimensionFilters": [
             ],
             "overlapMetricNames": [
-              "dfa:cookieReachOverlapTotalReach",
-              "dfa:cookieReachOverlapTotalReachPercent"
+              "cookieReachOverlapTotalReach",
+              "cookieReachOverlapTotalReachPercent"
             ],
             "pivoted": false
           }

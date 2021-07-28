@@ -17,9 +17,9 @@
           "criteria": {
             "dateRange": {"kind": "dfareporting#dateRange", "relativeDateRange": "LAST_7_DAYS"},
             "dimensions": [
-              {"kind": "dfareporting#sortedDimension", "name": "dfa:date"},
-              {"kind": "dfareporting#sortedDimension", "name": "dfa:platformType"}],
-            "metricNames": ["dfa:impressions"]
+              {"kind": "dfareporting#sortedDimension", "name": "date"},
+              {"kind": "dfareporting#sortedDimension", "name": "platformType"}],
+            "metricNames": ["impressions"]
           },
           "type": "STANDARD",
           "delivery": {"emailOwner": false},

@@ -64,7 +64,6 @@
       "days":{"field":{ "name":"days", "kind":"integer", "order":3, "default":7, "description":"Number of days to backfill the log, works on first run only." }},
       "out":{
         "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
-        "project":{"field":{ "name":"recipe_project", "kind":"string", "order":4, "default":"", "description":"Google BigQuery project to create tables in." }},
         "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":5, "default":"", "description":"Google BigQuery dataset to create tables in." }}
       }
     }}

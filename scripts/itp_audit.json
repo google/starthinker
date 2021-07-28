@@ -155,7 +155,7 @@
         "timeout": 90,
         "account": {"field":{ "name":"cm_account_id", "kind":"string", "order":2, "default": "", "description":"Campaign Manager Account Id." }},
         "filters": {
-          "dfa:advertiser": {
+          "advertiser": {
             "values":{"field":{ "name":"cm_advertiser_ids", "kind":"integer_list", "order":3, "default":[], "description":"Optional: Comma delimited list of CM advertiser ids." }}
           }
         },
@@ -173,47 +173,47 @@
             "dimensions": [
              {
               "kind": "dfareporting#sortedDimension",
-              "name": "dfa:campaign"
+              "name": "campaign"
              },
              {
               "kind": "dfareporting#sortedDimension",
-              "name": "dfa:campaignId"
+              "name": "campaignId"
              },
              {
               "kind": "dfareporting#sortedDimension",
-              "name": "dfa:site"
+              "name": "site"
              },
              {
               "kind": "dfareporting#sortedDimension",
-              "name": "dfa:advertiser"
+              "name": "advertiser"
              },
              {
               "kind": "dfareporting#sortedDimension",
-              "name": "dfa:advertiserId"
+              "name": "advertiserId"
              },
              {
               "kind": "dfareporting#sortedDimension",
-              "name": "dfa:browserPlatform"
+              "name": "browserPlatform"
              },
              {
               "kind": "dfareporting#sortedDimension",
-              "name": "dfa:platformType"
+              "name": "platformType"
              },
              {
               "kind": "dfareporting#sortedDimension",
-              "name": "dfa:month"
+              "name": "month"
              },
              {
               "kind": "dfareporting#sortedDimension",
-              "name": "dfa:week"
+              "name": "week"
              }
             ],
             "metricNames": [
-             "dfa:impressions",
-             "dfa:clicks",
-             "dfa:totalConversions",
-             "dfa:activityViewThroughConversions",
-             "dfa:activityClickThroughConversions"
+             "impressions",
+             "clicks",
+             "totalConversions",
+             "activityViewThroughConversions",
+             "activityClickThroughConversions"
             ],
             "dimensionFilters": []
           },

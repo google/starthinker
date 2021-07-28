@@ -15,7 +15,6 @@
         "auth_read":"user",
         "auth_write":"service",
         "accounts":{"field":{ "name":"accounts", "kind":"integer_list", "description":"Comma separated DCM account ids." }},
-        "recipe_project":"kenjora-161023",
         "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Log_", "default": "Manual"}}
       }
     }},

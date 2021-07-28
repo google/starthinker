@@ -75,7 +75,7 @@ def dcm_replicate_create(config, task, account, advertisers, name, template):
       'accountId': {
           'values': account
       },
-      'dfa:advertiser': {
+      'advertiser': {
           'values': advertisers
       }
   })

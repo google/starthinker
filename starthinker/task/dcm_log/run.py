@@ -115,11 +115,11 @@ def dcm_log(config, task):
   accounts = list(get_rows(config, 'user', task['accounts']))
 
   # determine start log date
-  if table_exists(config, task['out']['auth'], task['out']['project'],
+  if table_exists(config, task['out']['auth'], config.project,
                   task['out']['dataset'], CHANGELOGS_TABLE):
     start = next(
         query_to_rows(
-            config, task['out']['auth'], task['out']['project'],
+            config, task['out']['auth'], config.project,
             task['out']['dataset'],
             'SELECT FORMAT_TIMESTAMP("%%Y-%%m-%%dT%%H:%%M:%%S-00:00", MAX(changeTime), "UTC") FROM `%s`'
             % CHANGELOGS_TABLE, 1, False))[0]
@@ -133,6 +133,6 @@ def dcm_log(config, task):
   # load new logs
   rows = get_changelogs(config, task, accounts, start)
   if rows:
-    rows_to_table(config, task['out']['auth'], task['out']['project'],
+    rows_to_table(config, task['out']['auth'], config.project,
                   task['out']['dataset'], CHANGELOGS_TABLE, rows,
                   CHANGELOGS_SCHEMA, 0, disposition)
