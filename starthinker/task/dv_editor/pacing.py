@@ -35,76 +35,73 @@ def pacing_clear(config, task):
 def pacing_load(config, task):
 
   # write pacings to sheet
-  rows = get_rows(
-      config,
-      task["auth_bigquery"], {
-          "bigquery": {
-              "dataset":
-                  task["dataset"],
-              "query":
-                  """SELECT * FROM (
-                  SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
-         CAST(NULL AS STRING),
-         I.pacing.pacingPeriod,
-         I.pacing.pacingPeriod,
-         I.pacing.pacingType,
-         I.pacing.pacingType,
-         CAST(I.pacing.dailyMaxMicros AS INT64) / 1000000,
-         CAST(I.pacing.dailyMaxMicros AS INT64) / 1000000,
-         I.pacing.dailyMaxImpressions,
-         I.pacing.dailyMaxImpressions
-       FROM `{dataset}.DV_InsertionOrders` AS I
-       LEFT JOIN `{dataset}.DV_Campaigns` AS C
-       ON I.campaignId=C.campaignId
-       LEFT JOIN `{dataset}.DV_Advertisers` AS A
-       ON I.advertiserId=A.advertiserId
-       LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
-       UNION ALL
-       SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
-         CONCAT(L.displayName, ' - ', L.lineItemId),
-         L.pacing.pacingPeriod,
-         L.pacing.pacingPeriod,
-         L.pacing.pacingType,
-         L.pacing.pacingType,
-         CAST(L.pacing.dailyMaxMicros AS INT64) / 1000000,
-         CAST(L.pacing.dailyMaxMicros AS INT64) / 1000000,
-         L.pacing.dailyMaxImpressions,
-         L.pacing.dailyMaxImpressions
-       FROM `{dataset}.DV_LineItems` AS L
-       LEFT JOIN `{dataset}.DV_Campaigns` AS C
-       ON L.campaignId=C.campaignId
-       LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
-       ON L.insertionOrderId=I.insertionOrderId
-       LEFT JOIN `{dataset}.DV_Advertisers` AS A
-       ON L.advertiserId=A.advertiserId
-       LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId )
-       ORDER BY IO_Display
-       """.format(**task),
-              "legacy":
-                  False
-          }
-      })
-
   put_rows(
-      config,
-      task["auth_sheets"], {
+    config,
+    task["auth_sheets"], {
       "sheets": {
-          "sheet": task["sheet"],
-          "tab": "Pacing",
-          "header":False,
-          "range": "A2"
+        "sheet": task["sheet"],
+        "tab": "Pacing",
+        "header":False,
+        "range": "A2"
       }
-  }, rows)
+    },
+    get_rows(
+      config,
+      task["auth_bigquery"],
+      { "bigquery": {
+          "dataset": task["dataset"],
+          "query": """SELECT * FROM (
+            SELECT
+            CONCAT(P.displayName, ' - ', P.partnerId) AS Partner,
+            CONCAT(A.displayName, ' - ', A.advertiserId) AS Advertiser,
+            CONCAT(C.displayName, ' - ', C.campaignId) AS Campaign,
+            CONCAT(I.displayName, ' - ', I.insertionOrderId) AS InsertionOrder,
+            CAST(NULL AS STRING) AS LineItem,
+            I.pacing.pacingPeriod AS pacingPeriod,
+            I.pacing.pacingPeriod AS pacingPeriod_Edit,
+            I.pacing.pacingType AS pacingType,
+            I.pacing.pacingType AS pacingType_Edit,
+            CAST(I.pacing.dailyMaxMicros AS INT64) / 1000000 AS dailyMaxMicros,
+            CAST(I.pacing.dailyMaxMicros AS INT64) / 1000000 AS dailyMaxMicros_Edit,
+            I.pacing.dailyMaxImpressions AS dailyMaxImpressions,
+            I.pacing.dailyMaxImpressions AS dailyMaxImpressions_Edit
+          FROM `{dataset}.DV_InsertionOrders` AS I
+          LEFT JOIN `{dataset}.DV_Campaigns` AS C
+          ON I.campaignId=C.campaignId
+          LEFT JOIN `{dataset}.DV_Advertisers` AS A
+          ON I.advertiserId=A.advertiserId
+          LEFT JOIN `{dataset}.DV_Partners` AS P
+          ON A.partnerId=P.partnerId
+          UNION ALL
+          SELECT
+            CONCAT(P.displayName, ' - ', P.partnerId) AS Partner,
+            CONCAT(A.displayName, ' - ', A.advertiserId) AS Advertiser,
+            CONCAT(C.displayName, ' - ', C.campaignId) AS Campaign,
+            CONCAT(I.displayName, ' - ', I.insertionOrderId) AS InsertionOrder,
+            CONCAT(L.displayName, ' - ', L.lineItemId) AS LineItem,
+            L.pacing.pacingPeriod AS pacingPeriod,
+            L.pacing.pacingPeriod AS pacingPeriod_Edit,
+            L.pacing.pacingType AS pacingType,
+            L.pacing.pacingType AS pacingType_Edit,
+            CAST(L.pacing.dailyMaxMicros AS INT64) / 1000000 AS dailyMaxMicros,
+            CAST(L.pacing.dailyMaxMicros AS INT64) / 1000000 AS dailyMaxMicros_Edit,
+            L.pacing.dailyMaxImpressions AS dailyMaxImpressions,
+            L.pacing.dailyMaxImpressions AS dailyMaxImpressions_Edit
+          FROM `{dataset}.DV_LineItems` AS L
+          LEFT JOIN `{dataset}.DV_Campaigns` AS C
+          ON L.campaignId=C.campaignId
+          LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
+          ON L.insertionOrderId=I.insertionOrderId
+          LEFT JOIN `{dataset}.DV_Advertisers` AS A
+          ON L.advertiserId=A.advertiserId
+          LEFT JOIN `{dataset}.DV_Partners` AS P
+          ON A.partnerId=P.partnerId )
+          ORDER BY InsertionOrder
+        """.format(**task),
+        "legacy":False
+      }}
+    )
+  )
 
 
 def pacing_audit(config, task):

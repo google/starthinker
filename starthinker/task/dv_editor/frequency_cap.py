@@ -39,94 +39,91 @@ def frequency_cap_clear(config, task):
 def frequency_cap_load(config, task):
 
   # write frequency_caps to sheet
-  rows = get_rows(
-      config,
-      task["auth_bigquery"], {
-          "bigquery": {
-              "dataset":
-                  task["dataset"],
-              "query":
-                  """SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(C.displayName, ' - ', C.campaignId),
-         CAST(NULL AS STRING),
-         CAST(NULL AS STRING),
-         IFNULL(C.frequencyCap.unlimited, FALSE),
-         IFNULL(C.frequencyCap.unlimited, FALSE),
-         C.frequencyCap.timeUnit,
-         C.frequencyCap.timeUnit,
-         C.frequencyCap.timeUnitCount,
-         C.frequencyCap.timeUnitCount,
-         C.frequencyCap.maxImpressions,
-         C.frequencyCap.maxImpressions
-       FROM `{dataset}.DV_Campaigns` AS C
-       LEFT JOIN `{dataset}.DV_Advertisers` AS A
-       ON C.advertiserId=A.advertiserId
-       LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
-       UNION ALL
-       SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId),
-         CAST(NULL AS STRING),
-         IFNULL(I.frequencyCap.unlimited, FALSE),
-         IFNULL(I.frequencyCap.unlimited, FALSE),
-         I.frequencyCap.timeUnit,
-         I.frequencyCap.timeUnit,
-         I.frequencyCap.timeUnitCount,
-         I.frequencyCap.timeUnitCount,
-         I.frequencyCap.maxImpressions,
-         I.frequencyCap.maxImpressions
-       FROM `{dataset}.DV_InsertionOrders` AS I
-       LEFT JOIN `{dataset}.DV_Campaigns` AS C
-       ON I.campaignId=C.campaignId
-       LEFT JOIN `{dataset}.DV_Advertisers` AS A
-       ON I.advertiserId=A.advertiserId
-       LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
-       UNION ALL
-       SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId),
-         CONCAT(L.displayName, ' - ', L.lineItemId),
-         IFNULL(L.frequencyCap.unlimited, FALSE),
-         IFNULL(L.frequencyCap.unlimited, FALSE),
-         L.frequencyCap.timeUnit,
-         L.frequencyCap.timeUnit,
-         L.frequencyCap.timeUnitCount,
-         L.frequencyCap.timeUnitCount,
-         L.frequencyCap.maxImpressions,
-         L.frequencyCap.maxImpressions
-       FROM `{dataset}.DV_LineItems` AS L
-       LEFT JOIN `{dataset}.DV_Campaigns` AS C
-       ON L.campaignId=C.campaignId
-       LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
-       ON L.insertionOrderId=I.insertionOrderId
-       LEFT JOIN `{dataset}.DV_Advertisers` AS A
-       ON L.advertiserId=A.advertiserId
-       LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
-       """.format(**task),
-              "legacy":
-                  False
-          }
-      })
-
   put_rows(
+    config,
+    task["auth_sheets"],
+    {
+      "sheets": {
+        "sheet": task["sheet"],
+        "tab": "Frequency Caps",
+        "header":False,
+        "range": "A2"
+      }
+    },
+    get_rows(
       config,
-      task["auth_sheets"], {
-          "sheets": {
-              "sheet": task["sheet"],
-              "tab": "Frequency Caps",
-              "header":False,
-              "range": "A2"
-          }
-      }, rows)
+      task["auth_bigquery"],
+      { "bigquery": {
+        "dataset":task["dataset"],
+        "query":"""SELECT
+          CONCAT(P.displayName, ' - ', P.partnerId) AS Partner,
+          CONCAT(A.displayName, ' - ', A.advertiserId) AS Advertiser,
+          CONCAT(C.displayName, ' - ', C.campaignId) AS Campaign,
+          CAST(NULL AS STRING) AS InsertionOrder,
+          CAST(NULL AS STRING) AS LineItem,
+          IFNULL(C.frequencyCap.unlimited, FALSE) AS unlimited,
+          IFNULL(C.frequencyCap.unlimited, FALSE) AS unlimited_Edit,
+          C.frequencyCap.timeUnit AS timeUnit,
+          C.frequencyCap.timeUnit AS timeUnit_Edit,
+          C.frequencyCap.timeUnitCount AS timeUnitCount,
+          C.frequencyCap.timeUnitCount AS timeUnitCount_Edit,
+          C.frequencyCap.maxImpressions AS maxImpressions,
+          C.frequencyCap.maxImpressions AS maxImpressions_Edit
+        FROM `{dataset}.DV_Campaigns` AS C
+        LEFT JOIN `{dataset}.DV_Advertisers` AS A
+        ON C.advertiserId=A.advertiserId
+        LEFT JOIN `{dataset}.DV_Partners` AS P
+        ON A.partnerId=P.partnerId
+        UNION ALL
+        SELECT
+          CONCAT(P.displayName, ' - ', P.partnerId) AS Partner,
+          CONCAT(A.displayName, ' - ', A.advertiserId) AS Advertiser,
+          CONCAT(C.displayName, ' - ', C.campaignId) AS Campaign,
+          CONCAT(I.displayName, ' - ', I.insertionOrderId) AS InsertionOrder,
+          CAST(NULL AS STRING) AS LineItem,
+          IFNULL(I.frequencyCap.unlimited, FALSE) AS unlimited,
+          IFNULL(I.frequencyCap.unlimited, FALSE) AS unlimited_Edit,
+          I.frequencyCap.timeUnit AS timeUnit,
+          I.frequencyCap.timeUnit AS timeUnit_Edit,
+          I.frequencyCap.timeUnitCount AS timeUnitCount,
+          I.frequencyCap.timeUnitCount AS timeUnitCount_Edit,
+          I.frequencyCap.maxImpressions AS maxImpressions,
+          I.frequencyCap.maxImpressions AS maxImpressions_Edit
+        FROM `{dataset}.DV_InsertionOrders` AS I
+        LEFT JOIN `{dataset}.DV_Campaigns` AS C
+        ON I.campaignId=C.campaignId
+      LEFT JOIN `{dataset}.DV_Advertisers` AS A
+        ON I.advertiserId=A.advertiserId
+        LEFT JOIN `{dataset}.DV_Partners` AS P
+        ON A.partnerId=P.partnerId
+        UNION ALL
+        SELECT
+          CONCAT(P.displayName, ' - ', P.partnerId) AS Partner,
+          CONCAT(A.displayName, ' - ', A.advertiserId) AS Advertiser,
+          CONCAT(C.displayName, ' - ', C.campaignId) AS Campaign,
+          CONCAT(I.displayName, ' - ', I.insertionOrderId) AS InsertionOrder,
+          CONCAT(L.displayName, ' - ', L.lineItemId) AS LineItem,
+          IFNULL(L.frequencyCap.unlimited, FALSE) AS unlimited,
+          IFNULL(L.frequencyCap.unlimited, FALSE) AS unlimited_Edit,
+          L.frequencyCap.timeUnit AS timeUnit,
+          L.frequencyCap.timeUnit AS timeUnit_Edit,
+          L.frequencyCap.timeUnitCount AS timeUnitCount,
+          L.frequencyCap.timeUnitCount AS timeUnitCount_Edit,
+          L.frequencyCap.maxImpressions AS maxImpressions,
+          L.frequencyCap.maxImpressions AS maxImpressions_Edit
+        FROM `{dataset}.DV_LineItems` AS L
+        LEFT JOIN `{dataset}.DV_Campaigns` AS C
+        ON L.campaignId=C.campaignId
+        LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
+        ON L.insertionOrderId=I.insertionOrderId
+        LEFT JOIN `{dataset}.DV_Advertisers` AS A
+        ON L.advertiserId=A.advertiserId
+        LEFT JOIN `{dataset}.DV_Partners` AS P
+        ON A.partnerId=P.partnerId
+      """.format(**task),
+      "legacy": False
+    }}
+  ))
 
 
 def frequency_cap_audit(config, task):

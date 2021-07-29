@@ -56,19 +56,19 @@ def segment_load(config, task):
       { "bigquery": {
         "dataset": task["dataset"],
         "query": """SELECT
-          CONCAT(P.displayName, ' - ', P.partnerId),
-          CONCAT(A.displayName, ' - ', A.advertiserId),
-          CONCAT(C.displayName, ' - ', C.campaignId),
-          CONCAT(I.displayName, ' - ', I.insertionOrderId),
-          'PATCH',
-          CONCAT(BS.dateRange.startDate.year, '-', BS.dateRange.startDate.month, '-', BS.dateRange.startDate.day),
-          CONCAT(BS.dateRange.startDate.year, '-', BS.dateRange.startDate.month, '-', BS.dateRange.startDate.day),
-          CONCAT(BS.dateRange.endDate.year, '-', BS.dateRange.endDate.month, '-', BS.dateRange.endDate.day),
-          CONCAT(BS.dateRange.endDate.year, '-', BS.dateRange.endDate.month, '-', BS.dateRange.endDate.day),
-          BS.budgetAmountMicros / 1000000,
-          BS.budgetAmountMicros / 1000000,
-          BS.description,
-          BS.description
+          CONCAT(P.displayName, ' - ', P.partnerId) AS Partner,
+          CONCAT(A.displayName, ' - ', A.advertiserId) AS Advertiser,
+          CONCAT(C.displayName, ' - ', C.campaignId) AS Camapign,
+          CONCAT(I.displayName, ' - ', I.insertionOrderId) AS InsertionOrder,
+          'PATCH' AS Action,
+          CONCAT(BS.dateRange.startDate.year, '-', BS.dateRange.startDate.month, '-', BS.dateRange.startDate.day) AS startDate,
+          CONCAT(BS.dateRange.startDate.year, '-', BS.dateRange.startDate.month, '-', BS.dateRange.startDate.day) AS startDate_Edit,
+          CONCAT(BS.dateRange.endDate.year, '-', BS.dateRange.endDate.month, '-', BS.dateRange.endDate.day) AS endDate,
+          CONCAT(BS.dateRange.endDate.year, '-', BS.dateRange.endDate.month, '-', BS.dateRange.endDate.day) AS endDate_Edit,
+          BS.budgetAmountMicros / 1000000 AS budgetAmountMicros,
+          BS.budgetAmountMicros / 1000000 AS budgetAmountMicros_Edit,
+          BS.description AS description,
+          BS.description AS description_Edit
           FROM `{dataset}.DV_InsertionOrders` AS I, UNNEST( budget.budgetSegments) AS BS
           LEFT JOIN `{dataset}.DV_Campaigns` AS C
           ON I.campaignId=C.campaignId

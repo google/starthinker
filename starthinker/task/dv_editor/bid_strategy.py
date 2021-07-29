@@ -36,92 +36,89 @@ def bid_strategy_clear(config, task):
 def bid_strategy_load(config, task):
 
   # write bid_strategy to sheet
-  rows = get_rows(
-      config,
-      task["auth_bigquery"], {
-          "bigquery": {
-              "dataset":
-                  task["dataset"],
-              "query":
-                  """SELECT * FROM (
-          SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
-         CAST(NULL AS STRING),
-         I.bidStrategy.fixedBid.bidAmountMicros / 1000000,
-         I.bidStrategy.fixedBid.bidAmountMicros / 1000000,
-         I.bidStrategy.maximizeSpendAutoBid.performanceGoalType,
-         I.bidStrategy.maximizeSpendAutoBid.performanceGoalType,
-         I.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 1000000,
-         I.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 1000000,
-         I.bidStrategy.maximizeSpendAutoBid.customBiddingAlgorithmId,
-         I.bidStrategy.maximizeSpendAutoBid.customBiddingAlgorithmId,
-         I.bidStrategy.performanceGoalAutoBid.performanceGoalType,
-         I.bidStrategy.performanceGoalAutoBid.performanceGoalType,
-         I.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 1000000,
-         I.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 1000000,
-         I.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 1000000,
-         I.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 1000000,
-         I.bidStrategy.performanceGoalAutoBid.customBiddingAlgorithmId,
-         I.bidStrategy.performanceGoalAutoBid.customBiddingAlgorithmId
-       FROM `{dataset}.DV_InsertionOrders` AS I
-       LEFT JOIN `{dataset}.DV_Campaigns` AS C
-       ON I.campaignId=C.campaignId
-       LEFT JOIN `{dataset}.DV_Advertisers` AS A
-       ON I.advertiserId=A.advertiserId
-       LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
-       UNION ALL
-       SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
-         CONCAT(L.displayName, ' - ', L.lineItemId),
-         L.bidStrategy.fixedBid.bidAmountMicros / 1000000,
-         L.bidStrategy.fixedBid.bidAmountMicros / 1000000,
-         L.bidStrategy.maximizeSpendAutoBid.performanceGoalType,
-         L.bidStrategy.maximizeSpendAutoBid.performanceGoalType,
-         L.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 1000000,
-         L.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 1000000,
-         L.bidStrategy.maximizeSpendAutoBid.customBiddingAlgorithmId,
-         L.bidStrategy.maximizeSpendAutoBid.customBiddingAlgorithmId,
-         L.bidStrategy.performanceGoalAutoBid.performanceGoalType,
-         L.bidStrategy.performanceGoalAutoBid.performanceGoalType,
-         L.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 1000000,
-         L.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 1000000,
-         L.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 1000000,
-         L.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 1000000,
-         L.bidStrategy.performanceGoalAutoBid.customBiddingAlgorithmId,
-         L.bidStrategy.performanceGoalAutoBid.customBiddingAlgorithmId
-       FROM `{dataset}.DV_LineItems` AS L
-       LEFT JOIN `{dataset}.DV_Campaigns` AS C
-       ON L.campaignId=C.campaignId
-       LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
-       ON L.insertionOrderId=I.insertionOrderId
-       LEFT JOIN `{dataset}.DV_Advertisers` AS A
-       ON L.advertiserId=A.advertiserId
-       LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId )
-       ORDER BY IO_Display
-       """.format(**task),
-              "legacy":
-                  False
-          }
-      })
-
   put_rows(
+    config,
+    task["auth_sheets"],
+    {
+      "sheets": {
+        "sheet": task["sheet"],
+        "tab": "Bid Strategy",
+        "header":False,
+        "range": "A2:U"
+      }
+    },
+    get_rows(
       config,
-      task["auth_sheets"], {
-          "sheets": {
-              "sheet": task["sheet"],
-              "tab": "Bid Strategy",
-              "header":False,
-              "range": "A2:U"
-          }
-      }, rows)
+      task["auth_bigquery"],
+      { "bigquery": {
+        "dataset": task["dataset"],
+        "query": """SELECT * FROM (
+          SELECT
+          CONCAT(P.displayName, ' - ', P.partnerId) AS Partner,
+          CONCAT(A.displayName, ' - ', A.advertiserId) AS Advertiser,
+          CONCAT(C.displayName, ' - ', C.campaignId) AS Campaign,
+          CONCAT(I.displayName, ' - ', I.insertionOrderId) AS InsertionOrder,
+          CAST(NULL AS STRING) AS LineItem,
+          I.bidStrategy.fixedBid.bidAmountMicros / 1000000 AS bidAmountMicros,
+          I.bidStrategy.fixedBid.bidAmountMicros / 1000000 AS bidAmountMicros_Edit,
+          I.bidStrategy.maximizeSpendAutoBid.performanceGoalType AS maximizeSpendAutoBid_performanceGoalType,
+          I.bidStrategy.maximizeSpendAutoBid.performanceGoalType AS maximizeSpendAutoBid_performanceGoalType_Edit,
+          I.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 1000000 AS maximizeSpendAutoBid_maxAverageCpmBidAmountMicros,
+          I.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 1000000 AS maximizeSpendAutoBid_maxAverageCpmBidAmountMicros_Edit,
+          I.bidStrategy.maximizeSpendAutoBid.customBiddingAlgorithmId AS maximizeSpendAutoBid_customBiddingAlgorithmId,
+          I.bidStrategy.maximizeSpendAutoBid.customBiddingAlgorithmId AS maximizeSpendAutoBid_customBiddingAlgorithmId_Edit,
+          I.bidStrategy.performanceGoalAutoBid.performanceGoalType AS performanceGoalAutoBid_performanceGoalType,
+          I.bidStrategy.performanceGoalAutoBid.performanceGoalType AS performanceGoalAutoBid_performanceGoalType_Edit,
+          I.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 1000000 AS performanceGoalAutoBid_performanceGoalAmountMicros,
+          I.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 1000000 AS performanceGoalAutoBid_performanceGoalAmountMicros_Edit,
+          I.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 1000000 AS performanceGoalAutoBid_maxAverageCpmBidAmountMicros,
+          I.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 1000000 AS performanceGoalAutoBid_maxAverageCpmBidAmountMicros_Edit,
+          I.bidStrategy.performanceGoalAutoBid.customBiddingAlgorithmId AS performanceGoalAutoBid_customBiddingAlgorithmId,
+          I.bidStrategy.performanceGoalAutoBid.customBiddingAlgorithmId AS performanceGoalAutoBid_customBiddingAlgorithmId_Edit
+        FROM `{dataset}.DV_InsertionOrders` AS I
+        LEFT JOIN `{dataset}.DV_Campaigns` AS C
+        ON I.campaignId=C.campaignId
+        LEFT JOIN `{dataset}.DV_Advertisers` AS A
+        ON I.advertiserId=A.advertiserId
+        LEFT JOIN `{dataset}.DV_Partners` AS P
+        ON A.partnerId=P.partnerId
+        UNION ALL
+        SELECT
+          CONCAT(P.displayName, ' - ', P.partnerId) AS Partner,
+          CONCAT(A.displayName, ' - ', A.advertiserId) AS Advertiser,
+          CONCAT(C.displayName, ' - ', C.campaignId) AS Campaign,
+          CONCAT(I.displayName, ' - ', I.insertionOrderId) AS InsertionOrder,
+          CONCAT(L.displayName, ' - ', L.lineItemId) AS LineItem,
+          L.bidStrategy.fixedBid.bidAmountMicros / 1000000 AS bidAmountMicros,
+          L.bidStrategy.fixedBid.bidAmountMicros / 1000000 AS bidAmountMicros_Edit,
+          L.bidStrategy.maximizeSpendAutoBid.performanceGoalType AS performanceGoalType,
+          L.bidStrategy.maximizeSpendAutoBid.performanceGoalType AS performanceGoalType_Edit,
+          L.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 1000000 AS maxAverageCpmBidAmountMicros,
+          L.bidStrategy.maximizeSpendAutoBid.maxAverageCpmBidAmountMicros / 1000000 AS maxAverageCpmBidAmountMicros_Edit,
+          L.bidStrategy.maximizeSpendAutoBid.customBiddingAlgorithmId AS customBiddingAlgorithmId,
+          L.bidStrategy.maximizeSpendAutoBid.customBiddingAlgorithmId AS customBiddingAlgorithmId_Edit,
+          L.bidStrategy.performanceGoalAutoBid.performanceGoalType AS performanceGoalType,
+          L.bidStrategy.performanceGoalAutoBid.performanceGoalType AS performanceGoalType_Edit,
+          L.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 1000000 AS performanceGoalAmountMicros,
+          L.bidStrategy.performanceGoalAutoBid.performanceGoalAmountMicros / 1000000 AS performanceGoalAmountMicros_Edit,
+          L.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 1000000 AS maxAverageCpmBidAmountMicros,
+          L.bidStrategy.performanceGoalAutoBid.maxAverageCpmBidAmountMicros / 1000000 AS maxAverageCpmBidAmountMicros_Edit,
+          L.bidStrategy.performanceGoalAutoBid.customBiddingAlgorithmId AS customBiddingAlgorithmId,
+          L.bidStrategy.performanceGoalAutoBid.customBiddingAlgorithmId AS customBiddingAlgorithmId_Edit
+        FROM `{dataset}.DV_LineItems` AS L
+        LEFT JOIN `{dataset}.DV_Campaigns` AS C
+        ON L.campaignId=C.campaignId
+        LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
+        ON L.insertionOrderId=I.insertionOrderId
+        LEFT JOIN `{dataset}.DV_Advertisers` AS A
+        ON L.advertiserId=A.advertiserId
+        LEFT JOIN `{dataset}.DV_Partners` AS P
+        ON A.partnerId=P.partnerId )
+        ORDER BY InsertionOrder
+      """.format(**task),
+      "legacy": False
+    }}
+  ))
 
 
 def bid_strategy_audit(config, task):

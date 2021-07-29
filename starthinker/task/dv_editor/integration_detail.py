@@ -39,79 +39,77 @@ def integration_detail_clear(config, task):
 def integration_detail_load(config, task):
 
   # write integration_details to sheet
-  rows = get_rows(
-      config,
-      task["auth_bigquery"], {
-          "bigquery": {
-              "dataset":
-                  task["dataset"],
-              "query":
-                  """SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CAST(NULL AS STRING),
-         CAST(NULL AS STRING),
-         CAST(NULL AS STRING),
-         A.integrationDetails.integrationCode,
-         A.integrationDetails.integrationCode,
-         A.integrationDetails.details,
-         A.integrationDetails.details
-       FROM `{dataset}.DV_Advertisers` AS A
-       LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
-       UNION ALL
-       SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId),
-         CAST(NULL AS STRING),
-         I.integrationDetails.integrationCode,
-         I.integrationDetails.integrationCode,
-         I.integrationDetails.details,
-         I.integrationDetails.details
-       FROM `{dataset}.DV_InsertionOrders` AS I
-       LEFT JOIN `{dataset}.DV_Campaigns` AS C
-       ON I.campaignId=C.campaignId
-       LEFT JOIN `{dataset}.DV_Advertisers` AS A
-       ON I.advertiserId=A.advertiserId
-       LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
-       UNION ALL
-       SELECT
-         CONCAT(P.displayName, ' - ', P.partnerId),
-         CONCAT(A.displayName, ' - ', A.advertiserId),
-         CONCAT(C.displayName, ' - ', C.campaignId),
-         CONCAT(I.displayName, ' - ', I.insertionOrderId),
-         CONCAT(L.displayName, ' - ', L.lineItemId),
-         L.integrationDetails.integrationCode,
-         L.integrationDetails.integrationCode,
-         L.integrationDetails.details,
-         L.integrationDetails.details
-       FROM `{dataset}.DV_LineItems` AS L
-       LEFT JOIN `{dataset}.DV_Campaigns` AS C
-       ON L.campaignId=C.campaignId
-       LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
-       ON L.insertionOrderId=I.insertionOrderId
-       LEFT JOIN `{dataset}.DV_Advertisers` AS A
-       ON L.advertiserId=A.advertiserId
-       LEFT JOIN `{dataset}.DV_Partners` AS P
-       ON A.partnerId=P.partnerId
-       """.format(**task),
-              "legacy":
-                  False
-          }
-      })
-
   put_rows(
+    config,
+    task["auth_sheets"],
+    {
+      "sheets": {
+        "sheet": task["sheet"],
+        "tab": "Integration Details",
+        "range": "A2"
+      }
+    },
+    get_rows(
       config,
-      task["auth_sheets"], {
-          "sheets": {
-              "sheet": task["sheet"],
-              "tab": "Integration Details",
-              "range": "A2"
-          }
-      }, rows)
+      task["auth_bigquery"],
+      { "bigquery": {
+        "dataset":task["dataset"],
+        "query":"""SELECT
+          CONCAT(P.displayName, ' - ', P.partnerId) Partner,
+          CONCAT(A.displayName, ' - ', A.advertiserId) Advertiser,
+          CAST(NULL AS STRING) Campaign,
+          CAST(NULL AS STRING) InsertionOrder,
+          CAST(NULL AS STRING) LineItem,
+          A.integrationDetails.integrationCode AS integrationCode,
+          A.integrationDetails.integrationCode AS integrationCode_Edit,
+          A.integrationDetails.details AS details,
+          A.integrationDetails.details AS details_Edit
+        FROM `{dataset}.DV_Advertisers` AS A
+        LEFT JOIN `{dataset}.DV_Partners` AS P
+        ON A.partnerId=P.partnerId
+        UNION ALL
+        SELECT
+          CONCAT(P.displayName, ' - ', P.partnerId) AS Partner,
+          CONCAT(A.displayName, ' - ', A.advertiserId) AS Advertiser,
+          CONCAT(C.displayName, ' - ', C.campaignId) AS Campaign,
+          CONCAT(I.displayName, ' - ', I.insertionOrderId) AS InsertionOrder,
+          CAST(NULL AS STRING) AS LineItem,
+          I.integrationDetails.integrationCode AS integrationCode,
+          I.integrationDetails.integrationCode AS integrationCode_Edit,
+          I.integrationDetails.details AS details,
+          I.integrationDetails.details AS details_Edit
+        FROM `{dataset}.DV_InsertionOrders` AS I
+        LEFT JOIN `{dataset}.DV_Campaigns` AS C
+        ON I.campaignId=C.campaignId
+        LEFT JOIN `{dataset}.DV_Advertisers` AS A
+        ON I.advertiserId=A.advertiserId
+        LEFT JOIN `{dataset}.DV_Partners` AS P
+        ON A.partnerId=P.partnerId
+        UNION ALL
+        SELECT
+          CONCAT(P.displayName, ' - ', P.partnerId) AS Partner ,
+          CONCAT(A.displayName, ' - ', A.advertiserId) AS Advertiser,
+          CONCAT(C.displayName, ' - ', C.campaignId) AS Campaign,
+          CONCAT(I.displayName, ' - ', I.insertionOrderId) AS InsertionOrder,
+          CONCAT(L.displayName, ' - ', L.lineItemId) AS LineItem,
+          L.integrationDetails.integrationCode AS integrationCode,
+          L.integrationDetails.integrationCode AS integrationCode_Edit,
+          L.integrationDetails.details AS details,
+          L.integrationDetails.details AS details_Edit
+        FROM `{dataset}.DV_LineItems` AS L
+        LEFT JOIN `{dataset}.DV_Campaigns` AS C
+        ON L.campaignId=C.campaignId
+        LEFT JOIN `{dataset}.DV_InsertionOrders` AS I
+        ON L.insertionOrderId=I.insertionOrderId
+        LEFT JOIN `{dataset}.DV_Advertisers` AS A
+        ON L.advertiserId=A.advertiserId
+        LEFT JOIN `{dataset}.DV_Partners` AS P
+        ON A.partnerId=P.partnerId
+        """.format(**task),
+        "legacy":False
+      }}
+    )
+  )
 
 
 def integration_detail_audit(config, task):

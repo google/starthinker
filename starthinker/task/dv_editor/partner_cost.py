@@ -59,22 +59,22 @@ def partner_cost_load(config, task):
         "dataset": task["dataset"],
         "query": """SELECT * FROM (
            SELECT
-           CONCAT(P.displayName, ' - ', P.partnerId),
-           CONCAT(A.displayName, ' - ', A.advertiserId),
-           CONCAT(C.displayName, ' - ', C.campaignId),
-           CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
-           CAST(NULL AS STRING),
-           CONCAT(REGEXP_REPLACE(PC.feeType, r'^PARTNER_COST_FEE_TYPE_(.*)_FEE', '\\\\1'),' ', ROW_NUMBER() OVER (PARTITION BY I.insertionOrderId, PC.feeType ORDER BY PO)),
-           PC.costType,
-           PC.costType,
-           PC.feeType,
-           PC.feeType,
-           PC.invoiceType,
-           PC.invoiceType,
-           PC.feeAmount / 1000000,
-           PC.feeAmount / 1000000,
-           PC.feePercentageMillis / 1000,
-           PC.feePercentageMillis / 1000
+           CONCAT(P.displayName, ' - ', P.partnerId) AS Partner,
+           CONCAT(A.displayName, ' - ', A.advertiserId) AS Advertiser,
+           CONCAT(C.displayName, ' - ', C.campaignId) AS Campaign,
+           CONCAT(I.displayName, ' - ', I.insertionOrderId) AS InsertionOrder,
+           CAST(NULL AS STRING) AS LineItem,
+           CONCAT(REGEXP_REPLACE(PC.feeType, r'^PARTNER_COST_FEE_TYPE_(.*)_FEE', '\\\\1'),' ', ROW_NUMBER() OVER (PARTITION BY I.insertionOrderId, PC.feeType ORDER BY PO)) AS Index,
+           PC.costType AS costType,
+           PC.costType AS costType_Edit,
+           PC.feeType AS feeType,
+           PC.feeType AS feeType_Edit,
+           PC.invoiceType AS invoiceType,
+           PC.invoiceType AS invoiceType_Edit,
+           PC.feeAmount / 1000000 AS feeAmount,
+           PC.feeAmount / 1000000 AS feeAmount_Edit,
+           PC.feePercentageMillis / 1000 AS feePercentageMillis,
+           PC.feePercentageMillis / 1000 AS feePercentageMillis_Edit
          FROM `{dataset}.DV_InsertionOrders` AS I, UNNEST(partnerCosts) AS PC WITH OFFSET AS PO
          LEFT JOIN `{dataset}.DV_Campaigns` AS C
          ON I.campaignId=C.campaignId
@@ -84,22 +84,22 @@ def partner_cost_load(config, task):
          ON A.partnerId=P.partnerId
          UNION ALL
          SELECT
-           CONCAT(P.displayName, ' - ', P.partnerId),
-           CONCAT(A.displayName, ' - ', A.advertiserId),
-           CONCAT(C.displayName, ' - ', C.campaignId),
-           CONCAT(I.displayName, ' - ', I.insertionOrderId) AS IO_Display,
-           CONCAT(L.displayName, ' - ', L.lineItemId),
-           CONCAT(REGEXP_REPLACE(PC.feeType, r'^PARTNER_COST_FEE_TYPE_(.*)_FEE', '\\\\1'),' ', ROW_NUMBER() OVER (PARTITION BY L.lineItemId, PC.feeType ORDER BY PO)),
-           PC.costType,
-           PC.costType,
-           PC.feeType,
-           PC.feeType,
-           PC.invoiceType,
-           PC.invoiceType,
-           PC.feeAmount / 1000000,
-           PC.feeAmount / 1000000,
-           PC.feePercentageMillis / 1000,
-           PC.feePercentageMillis / 1000
+           CONCAT(P.displayName, ' - ', P.partnerId) AS Partner,
+           CONCAT(A.displayName, ' - ', A.advertiserId) AS Adveriser,
+           CONCAT(C.displayName, ' - ', C.campaignId) AS Campaign,
+           CONCAT(I.displayName, ' - ', I.insertionOrderId) AS InsertionOrder,
+           CONCAT(L.displayName, ' - ', L.lineItemId) AS LineItem,
+           CONCAT(REGEXP_REPLACE(PC.feeType, r'^PARTNER_COST_FEE_TYPE_(.*)_FEE', '\\\\1'),' ', ROW_NUMBER() OVER (PARTITION BY L.lineItemId, PC.feeType ORDER BY PO)) AS Index,
+           PC.costType AS costType,
+           PC.costType AS costType_Edit,
+           PC.feeType AS feeType,
+           PC.feeType AS feeType_Edit,
+           PC.invoiceType AS invoiceType,
+           PC.invoiceType AS invoiceType_Edit,
+           PC.feeAmount / 1000000 AS feeAmount,
+           PC.feeAmount / 1000000 AS feeAmount_Edit,
+           PC.feePercentageMillis / 1000 AS feePercentageMillis,
+           PC.feePercentageMillis / 1000 AS feePercentageMillis_Edit
          FROM `{dataset}.DV_LineItems` AS L, UNNEST(partnerCosts) AS PC WITH OFFSET AS PO
          LEFT JOIN `{dataset}.DV_Campaigns` AS C
          ON L.campaignId=C.campaignId
@@ -109,7 +109,7 @@ def partner_cost_load(config, task):
          ON L.advertiserId=A.advertiserId
          LEFT JOIN `{dataset}.DV_Partners` AS P
          ON A.partnerId=P.partnerId )
-         ORDER BY IO_Display
+         ORDER BY InsertionOrder
         """.format(**task),
         "legacy":False
       }}
