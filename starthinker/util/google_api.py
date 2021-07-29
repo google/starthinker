@@ -494,8 +494,8 @@ def API_DCM(config, auth, iterate=False, internal=False):
   }
 
   if internal:
-    from starthinker.util.cm_internalv33_uri import URI as DCM_URI
-    api['version'] = 'internalv3.3'
+    from starthinker.util.cm_internalv34_uri import URI as DCM_URI
+    api['version'] = 'internalv3.4'
     api['uri'] = DCM_URI
 
   return API(config, api)

@@ -162,7 +162,6 @@
         "body":{
           "kind": "dfareporting#report",
           "name": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "prefix":"ITP_Audit_Browser_", "default": "ITP_Audit_Dashboard_Browser", "description":"Name of the Campaign Manager browser report." }},
-          "fileName": {"field":{ "name":"recipe_name", "kind":"string", "order":1, "prefix":"ITP_Audit_Browser_", "default": "ITP_Audit_Dashboard_Browser", "description":"Name of the Campaign Manager browser report." }},
           "format": "CSV",
           "type": "STANDARD",
           "criteria": {

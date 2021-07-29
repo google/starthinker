@@ -248,7 +248,7 @@ def run_floodlight_reports(config, task):
       },
       "floodlightConfigId": {
         "kind": "dfareporting#dimensionValue",
-        "dimensionName": "dfa:floodlightConfigId",
+        "dimensionName": "floodlightConfigId",
         "value": 0, # updated below and replaced with Floodlight Config ID
         "matchType": "EXACT"
       },
@@ -259,45 +259,45 @@ def run_floodlight_reports(config, task):
       "dimensions": [
       {
         "kind": "dfareporting#sortedDimension",
-        "name": "dfa:site"
+        "name": "site"
       },
       {
         "kind": "dfareporting#sortedDimension",
-        "name": "dfa:floodlightAttributionType"
+        "name": "floodlightAttributionType"
       },
       {
         "kind": "dfareporting#sortedDimension",
-        "name": "dfa:interactionType"
+        "name": "interactionType"
       },
       {
         "kind": "dfareporting#sortedDimension",
-        "name": "dfa:pathType"
+        "name": "pathType"
       },
       {
         "kind": "dfareporting#sortedDimension",
-        "name": "dfa:browserPlatform"
+        "name": "browserPlatform"
       },
       {
         "kind": "dfareporting#sortedDimension",
-        "name": "dfa:platformType"
+        "name": "platformType"
       },
       {
         "kind": "dfareporting#sortedDimension",
-        "name": "dfa:week"
+        "name": "week"
       },
       {
         "kind": "dfareporting#sortedDimension",
-        "name": "dfa:placementId"
+        "name": "placementId"
       },
       {
         "kind": "dfareporting#sortedDimension",
-        "name": "dfa:floodlightConfigId"
+        "name": "floodlightConfigId"
       }],
       "metricNames": [
-        "dfa:activityClickThroughConversions",
-        "dfa:activityViewThroughConversions",
-        "dfa:totalConversions",
-        "dfa:totalConversionsRevenue"
+        "activityClickThroughConversions",
+        "activityViewThroughConversions",
+        "totalConversions",
+        "totalConversionsRevenue"
       ]
     },
     "schedule": {

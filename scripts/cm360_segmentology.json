@@ -69,7 +69,7 @@
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for reading data." }},
       "report": {
         "filters": {
-           "dfa:advertiser": {
+           "advertiser": {
              "values": {"field":{ "name":"advertisers", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of CM360 advertiser ids." }}
            }
         },
@@ -79,18 +79,18 @@
           "criteria": {
             "dateRange": {"kind": "dfareporting#dateRange", "relativeDateRange": "LAST_24_MONTHS"},
             "dimensions": [
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:advertiserId" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:advertiser" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:campaignId" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:campaign" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:placementId" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:placement" },
-              { "kind": "dfareporting#sortedDimension", "name": "dfa:zipCode" }
+              { "kind": "dfareporting#sortedDimension", "name": "advertiserId" },
+              { "kind": "dfareporting#sortedDimension", "name": "advertiser" },
+              { "kind": "dfareporting#sortedDimension", "name": "campaignId" },
+              { "kind": "dfareporting#sortedDimension", "name": "campaign" },
+              { "kind": "dfareporting#sortedDimension", "name": "placementId" },
+              { "kind": "dfareporting#sortedDimension", "name": "placement" },
+              { "kind": "dfareporting#sortedDimension", "name": "zipCode" }
             ],
             "metricNames": [
-              "dfa:impressions",
-              "dfa:clicks",
-              "dfa:totalConversions"
+              "impressions",
+              "clicks",
+              "totalConversions"
             ]
           },
           "type": "STANDARD",

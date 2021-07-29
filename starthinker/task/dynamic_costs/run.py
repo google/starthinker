@@ -62,35 +62,35 @@ def report_combos(config, task, name, dateRange, schedule, advertiser, campaign,
               dateRange,
           'dimensionFilters': [{
               'kind': 'dfareporting#dimensionValue',
-              'dimensionName': 'dfa:dynamicProfile',
+              'dimensionName': 'dynamicProfile',
               'id': dynamicProfile,
               'matchType': 'EXACT'
           }, {
               'kind': 'dfareporting#dimensionValue',
-              'dimensionName': 'dfa:advertiser',
+              'dimensionName': 'advertiser',
               'id': advertiser,
               'matchType': 'EXACT'
           }, {
               'kind': 'dfareporting#dimensionValue',
-              'dimensionName': 'dfa:campaign',
+              'dimensionName': 'campaign',
               'id': campaign,
               'matchType': 'EXACT'
           }],
           'dimensions': [{
               'kind': 'dfareporting#sortedDimension',
-              'name': 'dfa:placement'
+              'name': 'placement'
           }, {
               'kind': 'dfareporting#sortedDimension',
-              'name': 'dfa:placementId'
+              'name': 'placementId'
           }, {
               'kind': 'dfareporting#sortedDimension',
-              'name': 'dfa:activity'
+              'name': 'activity'
           }, {
               'kind': 'dfareporting#sortedDimension',
-              'name': 'dfa:activityId'
+              'name': 'activityId'
           }],
           'metricNames': [
-              'dfa:impressions', 'dfa:clicks', 'dfa:totalConversions'
+              'impressions', 'clicks', 'totalConversions'
           ]
       }
   }
@@ -100,7 +100,7 @@ def report_combos(config, task, name, dateRange, schedule, advertiser, campaign,
     for j in range(1, 6 + 1):  # 6 fields per element
       schema['criteria']['dimensions'].append({
           'kind': 'dfareporting#sortedDimension',
-          'name': 'dfa:dynamicElement%iField%iValue' % (i, j)
+          'name': 'dynamicElement%iField%iValue' % (i, j)
       })
 
   print(json.dumps(schema, indent=2))
@@ -134,29 +134,29 @@ def report_main(config, task, name, dateRange, schedule, advertiser, campaign, s
           'dateRange': dateRange,
           'dimensionFilters': [{
               'kind': 'dfareporting#dimensionValue',
-              'dimensionName': 'dfa:advertiser',
+              'dimensionName': 'advertiser',
               'id': advertiser,
               'matchType': 'EXACT'
           }, {
               'kind': 'dfareporting#dimensionValue',
-              'dimensionName': 'dfa:campaign',
+              'dimensionName': 'campaign',
               'id': campaign,
               'matchType': 'EXACT'
           }],
           'dimensions': [{
               'kind': 'dfareporting#sortedDimension',
-              'name': 'dfa:placement'
+              'name': 'placement'
           }, {
               'kind': 'dfareporting#sortedDimension',
-              'name': 'dfa:placementId'
+              'name': 'placementId'
           }],
-          'metricNames': ['dfa:impressions', 'dfa:clicks']
+          'metricNames': ['impressions', 'clicks']
       }
   }
 
   # if not using shadow advertiser, pull DBM cost here
   if not shadow:
-    schema['criteria']['metricNames'].append('dfa:dbmCost')
+    schema['criteria']['metricNames'].append('dbmCost')
 
   # create the report if it does not exist
   report = report_build(config, task['auth'], task['account'], schema)
@@ -188,24 +188,24 @@ def report_shadow(config, task, name, dateRange, schedule, advertiser, campaign)
           'criteria': {
               'dateRange': dateRange,
               'dimensionFilters': [{
-                  'dimensionName': 'dfa:advertiser',
+                  'dimensionName': 'advertiser',
                   'id': advertiser,
                   'kind': 'dfareporting#dimensionValue',
                   'matchType': 'EXACT'
               }, {
-                  'dimensionName': 'dfa:campaign',
+                  'dimensionName': 'campaign',
                   'id': campaign,
                   'kind': 'dfareporting#dimensionValue',
                   'matchType': 'EXACT'
               }],
               'dimensions': [{
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:placement'
+                  'name': 'placement'
               }, {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:placementId'
+                  'name': 'placementId'
               }],
-              'metricNames': ['dfa:dbmCost']
+              'metricNames': ['dbmCost']
           }
       })
 

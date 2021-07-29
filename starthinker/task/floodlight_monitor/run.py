@@ -91,20 +91,20 @@ def floodlight_report(config, task:dict, floodlight_id: int) -> int:
           'relativeDateRange': 'LAST_7_DAYS'
         },
         'dimensions': [
-          {'kind': 'dfareporting#sortedDimension','name': 'dfa:date' },
-          { 'kind': 'dfareporting#sortedDimension', 'name': 'dfa:floodlightConfigId' },
-          { 'kind': 'dfareporting#sortedDimension', 'name': 'dfa:activityGroupId' },
-          { 'kind': 'dfareporting#sortedDimension', 'name': 'dfa:activityGroup' },
-          { 'kind': 'dfareporting#sortedDimension', 'name': 'dfa:activityId' },
-          { 'kind': 'dfareporting#sortedDimension', 'name': 'dfa:activity' }
+          {'kind': 'dfareporting#sortedDimension','name': 'date' },
+          { 'kind': 'dfareporting#sortedDimension', 'name': 'floodlightConfigId' },
+          { 'kind': 'dfareporting#sortedDimension', 'name': 'activityGroupId' },
+          { 'kind': 'dfareporting#sortedDimension', 'name': 'activityGroup' },
+          { 'kind': 'dfareporting#sortedDimension', 'name': 'activityId' },
+          { 'kind': 'dfareporting#sortedDimension', 'name': 'activity' }
         ],
         'floodlightConfigId': {
-          'dimensionName': 'dfa:floodlightConfigId',
+          'dimensionName': 'floodlightConfigId',
           'kind': 'dfareporting#dimensionValue',
           'matchType': 'EXACT',
           'value': floodlight_id
         },
-        'metricNames': ['dfa:floodlightImpressions'],
+        'metricNames': ['floodlightImpressions'],
         'reportProperties': {
           'includeUnattributedCookieConversions': False,
           'includeUnattributedIPConversions': False

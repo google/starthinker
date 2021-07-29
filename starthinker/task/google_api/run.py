@@ -145,7 +145,7 @@ def google_api_initilaize(config, api_call, alias=None):
       api_call['kwargs']['profileId'] = profile_id
 
       if is_superuser:
-        from starthinker.util.cm_internalv33_uri import URI as DCM_URI
+        from starthinker.util.cm_internalv34_uri import URI as DCM_URI
         api_call['version'] = 'internalv3.3'
         api_call['uri'] = DCM_URI
       elif 'accountId' in api_call['kwargs']:

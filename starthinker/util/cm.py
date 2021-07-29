@@ -258,7 +258,7 @@ def report_filter(config, auth, body, filters):
     "accountId": {
       "values": 789
     },
-    "dfa:advertiser": {
+    "advertiser": {
       "values":[1234, 5678, 91011]
     }
   }
@@ -283,7 +283,7 @@ def report_filter(config, auth, body, filters):
         new_body['accountId'] = v
 
       # activities are specified in a unique part of the report json
-      elif f == 'dfa:activity':
+      elif f == 'activity':
         new_body['reachCriteria']['activities'].setdefault(
             'filters', []).append({
                 'kind': 'dfareporting#dimensionValue',
@@ -341,7 +341,7 @@ def report_build(config, auth, account, body):
       body['criteria']['dimensionFilters'] = body.get('criteria', {}).get(
           'dimensionFilters', []) + [{
               'kind': 'dfareporting#dimensionValue',
-              'dimensionName': 'dfa:advertiser',
+              'dimensionName': 'advertiser',
               'id': advertiser_id,
               'matchType': 'EXACT'
           } for advertiser_id in advertiser_ids]
