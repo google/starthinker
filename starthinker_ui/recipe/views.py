@@ -110,13 +110,12 @@ def recipe_run(request, pk):
   try:
     recipe = request.user.recipe_set.get(pk=pk)
     if recipe.is_running():
-      messages.success(
-          request,
-          'Recipe dispatched, will run once in progress task completes.')
+      recipe.force()
+      messages.success(request, 'Recipe dispatched, will run once in progress task completes.')
     else:
-      messages.success(request,
-                       'Recipe dispatched, give it a few minutes to start.')
-    recipe.force()
+      recipe.force()
+      autoscale(request)
+      messages.success(request, 'Recipe dispatched, give it a few minutes to start.')
   except Recipe.DoesNotExist as e:
     messages.error(request, str(e))
   return HttpResponseRedirect('/recipe/edit/%s/' % pk)
