@@ -73,8 +73,8 @@ def email_read(config, task):
       for sheet, rows in excel_to_rows(data):
         rows = rows_trim(rows)
         rows = rows_header_sanitize(rows)
-        put_rows(config, task['read']['out'].get('auth', task['auth']),
-                 task['read']['out'], rows, sheet)
+        put_rows(config, task['write'].get('auth', task['auth']),
+                 task['write'], rows, sheet)
 
     # if CM report
     elif task['read']['from'] == 'noreply-cm@google.com':
@@ -83,27 +83,27 @@ def email_read(config, task):
 
       # if bigquery, remove header and determine schema
       schema = None
-      if 'bigquery' in task['read']['out']:
+      if 'bigquery' in task['write']:
         schema = cm_report_schema(next(rows))
-        task['read']['out']['bigquery']['schema'] = schema
-        task['read']['out']['bigquery']['skip_rows'] = 1
+        task['write']['bigquery']['schema'] = schema
+        task['write']['bigquery']['skip_rows'] = 1
 
-      put_rows(config, task['read']['out'].get('auth', task['auth']),
-               task['read']['out'], rows)
+      put_rows(config, task['write'].get('auth', task['auth']),
+               task['write'], rows)
 
     # if dv360 report
     elif task['read']['from'] == 'noreply-dv360@google.com':
       rows = dv360_report_to_rows(data.getvalue().decode())
       rows = dv360_report_clean(rows)
-      put_rows(config, task['read']['out'].get('auth', task['auth']),
-               task['read']['out'], rows)
+      put_rows(config, task['write'].get('auth', task['auth']),
+               task['write'], rows)
 
     # if csv
     elif filename.endswith('.csv'):
       rows = csv_to_rows(data.read().decode())
       rows = rows_header_sanitize(rows)
-      put_rows(config, task['read']['out'].get('auth', task['auth']),
-               task['read']['out'], rows)
+      put_rows(config, task['write'].get('auth', task['auth']),
+               task['write'], rows)
 
     else:
       if config.verbose:

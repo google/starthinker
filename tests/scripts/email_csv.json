@@ -31,26 +31,22 @@
         }
       }
     }},
-    { "email":{
-      "auth":"user",
-      "read":{
-        "from":{"field":{ "name":"from_email", "kind":"string", "description":"The email address to send from.","default":"" }},
-        "to":{"field":{ "name":"to_email", "kind":"string", "description":"The email address to send from.", "default":"" }},
+    { "include":{
+      "script":"scripts/email_to_bigquery.json",
+      "parameters":{
+        "auth_read":"user",
+        "email_from":{"field":{ "name":"from_email", "kind":"string", "description":"The email address to send from.","default":"" }},
+        "email_to":{"field":{ "name":"to_email", "kind":"string", "description":"The email address to send from.", "default":"" }},
         "subject":{"field":{ "name":"subject", "kind":"string", "description":"The email subject.", "default":"Test Email CSV" }},
         "attachment":"test_data.csv",
-        "out":{
-          "auth": "service",
-          "bigquery":{
-            "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV_", "default": "Manual"}},
-            "table":"Email_Attachment",
-            "skip_rows":1,
-            "schema":[
-              {"name": "Animal", "type": "STRING"},
-              {"name": "Age", "type": "INTEGER"},
-              {"name": "Weight_lbs", "type": "FLOAT"}
-            ]
-          }
-        }
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV_", "default": "Manual"}},
+        "table":"Email_Attachment",
+        "header":true,
+        "schema":[
+          {"name": "Animal", "type": "STRING"},
+          {"name": "Age", "type": "INTEGER"},
+          {"name": "Weight_lbs", "type": "FLOAT"}
+        ]
       }
     }},
     { "test": {
