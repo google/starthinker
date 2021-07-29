@@ -270,11 +270,10 @@ def google_api_execute(config, auth, api_call, results, errors, limit=None):
       elif results.get('bigquery', {}).get('format', 'JSON') == 'CSV':
         rows = [[r] for r in rows]
 
-      rows = map(lambda r: Discovery_To_BigQuery.clean(r), rows)
-      put_rows(config, auth, results, rows)
+      if config.verbose:
+        print('.', end='', flush=True)
 
-      if 'bigquery' in results:
-        results['bigquery']['disposition'] = 'WRITE_APPEND'
+      yield from map(lambda r: Discovery_To_BigQuery.clean(r), rows)
 
   except HttpError as e:
 
@@ -373,8 +372,16 @@ def google_api(config, task):
   else:
     kwargs_list = [{}]
 
-  # loop through paramters and make possibly multiple API calls
-  for kwargs in kwargs_list:
-    api_call['kwargs'] = kwargs
-    google_api_initilaize(config, api_call, task.get('alias'))
-    google_api_execute(config, task['auth'], api_call, results, errors, task.get('limit'))
+  def google_api_combine():
+    # loop through paramters and make possibly multiple API calls
+    for kwargs in kwargs_list:
+      api_call['kwargs'] = kwargs
+      google_api_initilaize(config, api_call, task.get('alias'))
+      yield from google_api_execute(config, task['auth'], api_call, results, errors, task.get('limit'))
+
+  put_rows(
+    config,
+    task['auth'],
+    results,
+    google_api_combine()
+  ) # FIX: check auth on nested BQ write
