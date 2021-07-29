@@ -15,7 +15,7 @@
       "script":"scripts/itp_audit.json",
       "parameters":{
         "date_range":"LAST_7_DAYS",
-        "recipe_name": "test_itp_audit",
+        "recipe_name": {"field":{ "name":"recipe_name", "kind":"string", "description":"The name of the recipe.", "prefix":"StarThinker Test ITP Audit ", "default": "Manual"}},
         "recipe_slug": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_ITP_Audit_", "default": "Manual"}},
         "cm_account_id":{"field":{ "name":"cm_account_id", "kind":"string", "description":"Campaign Manager Account Id." }},
         "floodlight_configuration_ids":{"field":{ "name":"floodlight_configuration_ids", "kind":"integer_list", "description":"Floodlight Configuration Id for the Campaign Manager floodlight report." }},
@@ -37,7 +37,7 @@
           { "name":"browser_platform", "type":"STRING", "mode":"NULLABLE" },
           { "name":"percent_attributed", "type":"FLOAT", "mode":"NULLABLE" },
           { "name":"percent_unattributed", "type":"FLOAT", "mode":"NULLABLE" },
-          { "name":"share_of_floodlight_conversions", "type":"FLOAT", "mode":"NULLABLE" },
+          { "name":"share_of_floodlight_impressions", "type":"FLOAT", "mode":"NULLABLE" },
           { "name":"attributed_conv", "type":"FLOAT", "mode":"NULLABLE" },
           { "name":"unattributed_conv", "type":"FLOAT", "mode":"NULLABLE" },
           { "name":"total_convs", "type":"FLOAT", "mode":"NULLABLE" },
