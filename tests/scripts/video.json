@@ -72,7 +72,7 @@
     { "test":{
       "auth":"service",
       "storage":{
-        "bucket":"kenjora-test",
+        "bucket":"kenjora-starthinker-test",
         "file":"test_ran.mp4",
         "delete":true
        }
@@ -132,7 +132,7 @@
     { "test":{
       "auth":"service",
       "storage":{
-        "bucket":"kenjora-test",
+        "bucket":"kenjora-starthinker-test",
         "file":"test_ran.mp4",
         "delete":true
       }
