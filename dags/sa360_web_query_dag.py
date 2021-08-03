@@ -15,6 +15,11 @@
 #  limitations under the License.
 #
 ###########################################################################
+#
+#  This code generated (see starthinker/scripts for possible source):
+#    - Command: "python starthinker_ui/manage.py airflow"
+#
+###########################################################################
 
 '''
 --------------------------------------------------------------
@@ -68,7 +73,7 @@ Download SA360 reports into a Google Sheet.
 
   - Add this card to a recipe and save it.
   - Then click <strong>Run Now</strong> to deploy.
-  - Follow the <a href="https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/">instructions</a> for setup.
+  - Follow the <a href='https://docs.google.com/spreadsheets/d/1S9os1VO3dBW_EUFvAq4SxlxddZYAdUkvr5H9iTPQT_s/edit?resourcekey=0-jdR3mdYYWSVSAEmwuxMKbQ#gid=0'>instructions</a> for setup.
 
 --------------------------------------------------------------
 
@@ -98,7 +103,7 @@ RECIPE = {
         'hour': [
         ],
         'copy': {
-          'source': 'https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/',
+          'source': 'https://docs.google.com/spreadsheets/d/1S9os1VO3dBW_EUFvAq4SxlxddZYAdUkvr5H9iTPQT_s/edit?resourcekey=0-jdR3mdYYWSVSAEmwuxMKbQ#gid=0',
           'destination': {
             'field': {
               'name': 'recipe_name',

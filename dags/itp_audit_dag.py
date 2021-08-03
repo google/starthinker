@@ -15,6 +15,11 @@
 #  limitations under the License.
 #
 ###########################################################################
+#
+#  This code generated (see starthinker/scripts for possible source):
+#    - Command: "python starthinker_ui/manage.py airflow"
+#
+###########################################################################
 
 '''
 --------------------------------------------------------------
@@ -80,9 +85,11 @@ from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
   'recipe_timezone': 'America/Los_Angeles',  # Timezone for report dates.
-  'auth_write': 'service',  # Credentials used for writing data.
+  'auth_sheets': 'user',  # Credentials used for Sheets.
+  'auth_bq': 'service',  # Credentials used for BigQuery.
+  'auth_dv': 'user',  # Credentials used for DV360.
+  'auth_cm': 'user',  # Credentials used for CM.
   'cm_account_id': '',  # Campaign Manager Account Id.
-  'auth_read': 'user',  # Credentials used for reading data.
   'floodlight_configuration_ids': [],  # Comma delimited list of floodlight configuration ids for the Campaign Manager floodlight report.
   'date_range': 'LAST_365_DAYS',  # Timeframe to run the ITP report for.
   'cm_advertiser_ids': [],  # Optional: Comma delimited list of CM advertiser ids.
@@ -104,7 +111,15 @@ RECIPE = {
   'tasks': [
     {
       'drive': {
-        'auth': 'user',
+        'auth': {
+          'field': {
+            'name': 'auth_sheets',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for Sheets.'
+          }
+        },
         'hour': [
         ],
         'copy': {
@@ -124,7 +139,15 @@ RECIPE = {
     },
     {
       'dataset': {
-        'auth': 'service',
+        'auth': {
+          'field': {
+            'name': 'auth_bq',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for BigQuery.'
+          }
+        },
         'dataset': {
           'field': {
             'name': 'recipe_slug',
@@ -138,7 +161,15 @@ RECIPE = {
     },
     {
       'dbm': {
-        'auth': 'user',
+        'auth': {
+          'field': {
+            'name': 'auth_dv',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for DV360.'
+          }
+        },
         'report': {
           'name': {
             'field': {
@@ -268,11 +299,11 @@ RECIPE = {
           'bigquery': {
             'auth': {
               'field': {
-                'name': 'auth_write',
+                'name': 'auth_bq',
                 'kind': 'authentication',
                 'order': 1,
                 'default': 'service',
-                'description': 'Authorization used for writing data.'
+                'description': 'Credentials used for BigQuery.'
               }
             },
             'dataset': {
@@ -444,7 +475,15 @@ RECIPE = {
     },
     {
       'dcm': {
-        'auth': 'user',
+        'auth': {
+          'field': {
+            'name': 'auth_cm',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for CM.'
+          }
+        },
         'timeout': 90,
         'report': {
           'timeout': 90,
@@ -458,7 +497,7 @@ RECIPE = {
             }
           },
           'filters': {
-            'dfa:advertiser': {
+            'advertiser': {
               'values': {
                 'field': {
                   'name': 'cm_advertiser_ids',
@@ -474,16 +513,6 @@ RECIPE = {
           'body': {
             'kind': 'dfareporting#report',
             'name': {
-              'field': {
-                'name': 'recipe_name',
-                'kind': 'string',
-                'order': 1,
-                'prefix': 'ITP_Audit_Browser_',
-                'default': 'ITP_Audit_Dashboard_Browser',
-                'description': 'Name of the Campaign Manager browser report.'
-              }
-            },
-            'fileName': {
               'field': {
                 'name': 'recipe_name',
                 'kind': 'string',
@@ -528,47 +557,47 @@ RECIPE = {
               'dimensions': [
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:campaign'
+                  'name': 'campaign'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:campaignId'
+                  'name': 'campaignId'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:site'
+                  'name': 'site'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:advertiser'
+                  'name': 'advertiser'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:advertiserId'
+                  'name': 'advertiserId'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:browserPlatform'
+                  'name': 'browserPlatform'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:platformType'
+                  'name': 'platformType'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:month'
+                  'name': 'month'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:week'
+                  'name': 'week'
                 }
               ],
               'metricNames': [
-                'dfa:impressions',
-                'dfa:clicks',
-                'dfa:totalConversions',
-                'dfa:activityViewThroughConversions',
-                'dfa:activityClickThroughConversions'
+                'impressions',
+                'clicks',
+                'totalConversions',
+                'activityViewThroughConversions',
+                'activityClickThroughConversions'
               ],
               'dimensionFilters': [
               ]
@@ -590,11 +619,11 @@ RECIPE = {
           'bigquery': {
             'auth': {
               'field': {
-                'name': 'auth_write',
+                'name': 'auth_bq',
                 'kind': 'authentication',
                 'order': 1,
                 'default': 'service',
-                'description': 'Authorization used for writing data.'
+                'description': 'Credentials used for BigQuery.'
               }
             },
             'dataset': {
@@ -616,7 +645,15 @@ RECIPE = {
     },
     {
       'sdf': {
-        'auth': 'user',
+        'auth': {
+          'field': {
+            'name': 'auth_dv',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for DV360.'
+          }
+        },
         'version': 'SDF_VERSION_5_3',
         'partner_id': {
           'field': {
@@ -676,7 +713,15 @@ RECIPE = {
     },
     {
       'bigquery': {
-        'auth': 'user',
+        'auth': {
+          'field': {
+            'name': 'auth_bq',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for BigQuery.'
+          }
+        },
         'from': {
           'values': [
             [
@@ -719,7 +764,15 @@ RECIPE = {
     },
     {
       'bigquery': {
-        'auth': 'user',
+        'auth': {
+          'field': {
+            'name': 'auth_bq',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for BigQuery.'
+          }
+        },
         'from': {
           'values': [
             [
@@ -875,7 +928,15 @@ RECIPE = {
     },
     {
       'bigquery': {
-        'auth': 'user',
+        'auth': {
+          'field': {
+            'name': 'auth_bq',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for BigQuery.'
+          }
+        },
         'from': {
           'values': [
             [
@@ -1052,11 +1113,11 @@ RECIPE = {
       'sheets': {
         'auth': {
           'field': {
-            'name': 'auth_read',
+            'name': 'auth_sheets',
             'kind': 'authentication',
             'order': 1,
             'default': 'user',
-            'description': 'Credentials used for reading data.'
+            'description': 'Credentials used for Sheets.'
           }
         },
         'sheet': {
@@ -1075,11 +1136,11 @@ RECIPE = {
         'out': {
           'auth': {
             'field': {
-              'name': 'auth_write',
+              'name': 'auth_bq',
               'kind': 'authentication',
               'order': 1,
               'default': 'service',
-              'description': 'Credentials used for writing data.'
+              'description': 'Credentials used for BigQuery.'
             }
           },
           'bigquery': {
@@ -1153,7 +1214,15 @@ RECIPE = {
     },
     {
       'bigquery': {
-        'auth': 'user',
+        'auth': {
+          'field': {
+            'name': 'auth_bq',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for BigQuery.'
+          }
+        },
         'from': {
           'values': [
             [
@@ -1263,7 +1332,15 @@ RECIPE = {
     },
     {
       'bigquery': {
-        'auth': 'user',
+        'auth': {
+          'field': {
+            'name': 'auth_bq',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for BigQuery.'
+          }
+        },
         'from': {
           'values': [
             [
@@ -1310,7 +1387,15 @@ RECIPE = {
     },
     {
       'bigquery': {
-        'auth': 'user',
+        'auth': {
+          'field': {
+            'name': 'auth_bq',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for BigQuery.'
+          }
+        },
         'from': {
           'values': [
             [
@@ -1357,12 +1442,47 @@ RECIPE = {
     },
     {
       'itp_audit': {
-        'auth': 'service',
+        'auth_dv': {
+          'field': {
+            'name': 'auth_dv',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for DV360.'
+          }
+        },
+        'auth_cm': {
+          'field': {
+            'name': 'auth_cm',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for CM.'
+          }
+        },
+        'auth_sheets': {
+          'field': {
+            'name': 'auth_sheets',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'user',
+            'description': 'Credentials used for Sheets.'
+          }
+        },
+        'auth_bq': {
+          'field': {
+            'name': 'auth_bq',
+            'kind': 'authentication',
+            'order': 1,
+            'default': 'service',
+            'description': 'Credentials used for BigQuery.'
+          }
+        },
         'account': {
           'field': {
             'name': 'cm_account_id',
             'kind': 'string',
-            'order': 1,
+            'order': 2,
             'default': '',
             'description': 'Campaign Manager Account Id.'
           }

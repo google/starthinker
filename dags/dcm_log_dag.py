@@ -15,6 +15,11 @@
 #  limitations under the License.
 #
 ###########################################################################
+#
+#  This code generated (see starthinker/scripts for possible source):
+#    - Command: "python starthinker_ui/manage.py airflow"
+#
+###########################################################################
 
 '''
 --------------------------------------------------------------
@@ -97,7 +102,6 @@ INPUTS = {
   'auth_write': 'service',  # Credentials used for writing data.
   'accounts': [],  # Comma separated CM account ids.
   'days': 7,  # Number of days to backfill the log, works on first run only.
-  'recipe_project': '',  # Google BigQuery project to create tables in.
   'recipe_slug': '',  # Google BigQuery dataset to create tables in.
 }
 
@@ -189,15 +193,6 @@ RECIPE = {
               'order': 1,
               'default': 'service',
               'description': 'Credentials used for writing data.'
-            }
-          },
-          'project': {
-            'field': {
-              'name': 'recipe_project',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Google BigQuery project to create tables in.'
             }
           },
           'dataset': {

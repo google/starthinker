@@ -15,6 +15,11 @@
 #  limitations under the License.
 #
 ###########################################################################
+#
+#  This code generated (see starthinker/scripts for possible source):
+#    - Command: "python starthinker_ui/manage.py airflow"
+#
+###########################################################################
 
 '''
 --------------------------------------------------------------

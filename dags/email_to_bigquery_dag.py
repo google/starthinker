@@ -15,6 +15,11 @@
 #  limitations under the License.
 #
 ###########################################################################
+#
+#  This code generated (see starthinker/scripts for possible source):
+#    - Command: "python starthinker_ui/manage.py airflow"
+#
+###########################################################################
 
 '''
 --------------------------------------------------------------
@@ -89,7 +94,8 @@ INPUTS = {
   'attachment': '',  # Regular expression to match atttachment.
   'dataset': '',  # Existing dataset in BigQuery.
   'table': '',  # Name of table to be written to.
-  'dbm_schema': '[]',  # Schema provided in JSON list format or empty list.
+  'schema': '[]',  # Schema provided in JSON list format or empty list.
+  'header': False,  # Does the csv contain a header row.
   'is_incremental_load': False,  # Append report data to table based on date column, de-duplicates.
 }
 
@@ -153,7 +159,7 @@ RECIPE = {
             }
           }
         },
-        'out': {
+        'write': {
           'bigquery': {
             'dataset': {
               'field': {
@@ -175,18 +181,27 @@ RECIPE = {
             },
             'schema': {
               'field': {
-                'name': 'dbm_schema',
+                'name': 'schema',
                 'kind': 'json',
                 'order': 8,
                 'default': '[]',
                 'description': 'Schema provided in JSON list format or empty list.'
               }
             },
+            'header': {
+              'field': {
+                'name': 'header',
+                'kind': 'boolean',
+                'order': 9,
+                'default': False,
+                'description': 'Does the csv contain a header row.'
+              }
+            },
             'is_incremental_load': {
               'field': {
                 'name': 'is_incremental_load',
                 'kind': 'boolean',
-                'order': 9,
+                'order': 10,
                 'default': False,
                 'description': 'Append report data to table based on date column, de-duplicates.'
               }

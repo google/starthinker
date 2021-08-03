@@ -15,6 +15,11 @@
 #  limitations under the License.
 #
 ###########################################################################
+#
+#  This code generated (see starthinker/scripts for possible source):
+#    - Command: "python starthinker_ui/manage.py airflow"
+#
+###########################################################################
 
 '''
 --------------------------------------------------------------
@@ -82,7 +87,6 @@ from starthinker.airflow.factory import DAG_Factory
 INPUTS = {
   'auth_bigquery': 'service',  # Credentials used for writing data.
   'auth_dv': 'service',  # Credentials used for reading data.
-  'auth_cm': 'service',  # Credentials used for reading data.
   'recipe_slug': '',  # Name of Google BigQuery dataset to create.
   'partners': [],  # List of account ids to pull.
 }
@@ -92,9 +96,6 @@ RECIPE = {
     {
       'dataset': {
         'description': 'Create a dataset for bigquery tables.',
-        'hour': [
-          4
-        ],
         'auth': {
           'field': {
             'name': 'auth_bigquery',
@@ -191,7 +192,7 @@ RECIPE = {
       'google_api': {
         'auth': {
           'field': {
-            'name': 'auth_cm',
+            'name': 'auth_dv',
             'kind': 'authentication',
             'order': 1,
             'default': 'service',
@@ -255,7 +256,7 @@ RECIPE = {
       'google_api': {
         'auth': {
           'field': {
-            'name': 'auth_cm',
+            'name': 'auth_dv',
             'kind': 'authentication',
             'order': 1,
             'default': 'service',
@@ -319,7 +320,7 @@ RECIPE = {
       'google_api': {
         'auth': {
           'field': {
-            'name': 'auth_cm',
+            'name': 'auth_dv',
             'kind': 'authentication',
             'order': 1,
             'default': 'service',
@@ -383,7 +384,7 @@ RECIPE = {
       'google_api': {
         'auth': {
           'field': {
-            'name': 'auth_cm',
+            'name': 'auth_dv',
             'kind': 'authentication',
             'order': 1,
             'default': 'service',
@@ -447,7 +448,7 @@ RECIPE = {
       'google_api': {
         'auth': {
           'field': {
-            'name': 'auth_cm',
+            'name': 'auth_dv',
             'kind': 'authentication',
             'order': 1,
             'default': 'service',
@@ -511,7 +512,7 @@ RECIPE = {
       'google_api': {
         'auth': {
           'field': {
-            'name': 'auth_cm',
+            'name': 'auth_dv',
             'kind': 'authentication',
             'order': 1,
             'default': 'service',
@@ -575,7 +576,7 @@ RECIPE = {
       'google_api': {
         'auth': {
           'field': {
-            'name': 'auth_cm',
+            'name': 'auth_dv',
             'kind': 'authentication',
             'order': 1,
             'default': 'service',
@@ -639,7 +640,7 @@ RECIPE = {
       'google_api': {
         'auth': {
           'field': {
-            'name': 'auth_cm',
+            'name': 'auth_dv',
             'kind': 'authentication',
             'order': 1,
             'default': 'service',
@@ -703,7 +704,7 @@ RECIPE = {
       'google_api': {
         'auth': {
           'field': {
-            'name': 'auth_cm',
+            'name': 'auth_dv',
             'kind': 'authentication',
             'order': 1,
             'default': 'service',

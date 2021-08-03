@@ -15,6 +15,11 @@
 #  limitations under the License.
 #
 ###########################################################################
+#
+#  This code generated (see starthinker/scripts for possible source):
+#    - Command: "python starthinker_ui/manage.py airflow"
+#
+###########################################################################
 
 '''
 --------------------------------------------------------------
@@ -126,36 +131,36 @@ RECIPE = {
               'description': 'Regular expression to match subject. Double escape backslashes.'
             }
           },
-          'attachment': '.*',
-          'out': {
-            'bigquery': {
-              'dataset': {
-                'field': {
-                  'name': 'dataset',
-                  'kind': 'string',
-                  'order': 3,
-                  'default': '',
-                  'description': 'Existing dataset in BigQuery.'
-                }
-              },
-              'table': {
-                'field': {
-                  'name': 'table',
-                  'kind': 'string',
-                  'order': 4,
-                  'default': '',
-                  'description': 'Name of table to be written to.'
-                }
-              },
-              'header': True,
-              'is_incremental_load': {
-                'field': {
-                  'name': 'is_incremental_load',
-                  'kind': 'boolean',
-                  'order': 6,
-                  'default': False,
-                  'description': 'Append report data to table based on date column, de-duplicates.'
-                }
+          'attachment': '.*'
+        },
+        'write': {
+          'bigquery': {
+            'dataset': {
+              'field': {
+                'name': 'dataset',
+                'kind': 'string',
+                'order': 3,
+                'default': '',
+                'description': 'Existing dataset in BigQuery.'
+              }
+            },
+            'table': {
+              'field': {
+                'name': 'table',
+                'kind': 'string',
+                'order': 4,
+                'default': '',
+                'description': 'Name of table to be written to.'
+              }
+            },
+            'header': True,
+            'is_incremental_load': {
+              'field': {
+                'name': 'is_incremental_load',
+                'kind': 'boolean',
+                'order': 6,
+                'default': False,
+                'description': 'Append report data to table based on date column, de-duplicates.'
               }
             }
           }

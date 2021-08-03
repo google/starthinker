@@ -15,6 +15,11 @@
 #  limitations under the License.
 #
 ###########################################################################
+#
+#  This code generated (see starthinker/scripts for possible source):
+#    - Command: "python starthinker_ui/manage.py airflow"
+#
+###########################################################################
 
 '''
 --------------------------------------------------------------
@@ -179,7 +184,7 @@ RECIPE = {
         },
         'report': {
           'filters': {
-            'dfa:advertiser': {
+            'advertiser': {
               'values': {
                 'field': {
                   'name': 'advertisers',
@@ -219,37 +224,37 @@ RECIPE = {
               'dimensions': [
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:advertiserId'
+                  'name': 'advertiserId'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:advertiser'
+                  'name': 'advertiser'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:campaignId'
+                  'name': 'campaignId'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:campaign'
+                  'name': 'campaign'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:placementId'
+                  'name': 'placementId'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:placement'
+                  'name': 'placement'
                 },
                 {
                   'kind': 'dfareporting#sortedDimension',
-                  'name': 'dfa:zipCode'
+                  'name': 'zipCode'
                 }
               ],
               'metricNames': [
-                'dfa:impressions',
-                'dfa:clicks',
-                'dfa:totalConversions'
+                'impressions',
+                'clicks',
+                'totalConversions'
               ]
             },
             'type': 'STANDARD',

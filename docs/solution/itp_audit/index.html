@@ -2,6 +2,30 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!--
+      ###########################################################################
+      #
+      #  Copyright 2020 Google LLC
+      #
+      #  Licensed under the Apache License, Version 2.0 (the "License");
+      #  you may not use this file except in compliance with the License.
+      #  You may obtain a copy of the License at
+      #
+      #      https://www.apache.org/licenses/LICENSE-2.0
+      #
+      #  Unless required by applicable law or agreed to in writing, software
+      #  distributed under the License is distributed on an "AS IS" BASIS,
+      #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      #  See the License for the specific language governing permissions and
+      #  limitations under the License.
+      #
+      ###########################################################################
+      #
+      # This code generated (see starthinker/scripts for possible source):
+      #   - Command: "python starthinker_ui/manage.py github"
+      #
+      ###########################################################################
+    -->
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167283455-3"></script>
     <script>
@@ -197,11 +221,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </tr>
             <tr>
               <td>Age</td>
-              <td>Nov. 19, 2019 (1 year, 7 months)</td>
+              <td>Nov. 19, 2019 (1 year, 8 months)</td>
             </tr>
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:aallamang@google.com,cmorgeson@google.com,terwilleger@google.com?subject=Request+For+A+DV360+%2F+CM360+Privacy+Audit+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+DV360+%2F+CM360+Privacy+Audit+solution.%0A%0AStarThinker+Link%3A+https%3A%2F%2Fb2607f8b048001000002472f4c0a8140e1f40000000000000000001.proxy.googlers.com%2Fsolution%2Fitp_audit%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">aallamang@google.com<br/>cmorgeson@google.com<br/>terwilleger@google.com</a>
+              <td><a href="mailto:terwilleger@google.com,cmorgeson@google.com,aallaman@google.com?subject=Request+For+A+DV360+%2F+CM360+Privacy+Audit+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+DV360+%2F+CM360+Privacy+Audit+solution.%0A%0AStarThinker+Link%3A+https%3A%2F%2Fb2607f8b048001000002472f4c0a8140e1f40000000000000000001.proxy.googlers.com%2Fsolution%2Fitp_audit%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">terwilleger@google.com<br/>cmorgeson@google.com<br/>aallaman@google.com</a>
               </td>
             </tr>
                 <tr>
@@ -220,7 +244,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
       <pre id="code-workflow" class="card left-align"><code class="language-json">[
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/drive/run.py" target="_blank">drive</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_sheets",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for Sheets."
+                }
+            },
             "hour": [],
             "copy": {
                 "source": "https://docs.google.com/spreadsheets/d/1rH_PGXOYW2mVdmAYnKbv6kcaB6lQihAyMsGtFfinnqg/",
@@ -239,7 +271,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
-            "auth": "service",
+            "auth": {
+                "field": {
+                    "name": "auth_bq",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for BigQuery."
+                }
+            },
             "dataset": {
                 "field": {
                     "name": "recipe_slug",
@@ -253,7 +293,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_dv",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for DV360."
+                }
+            },
             "report": {
                 "name": {
                     "field": {
@@ -382,11 +430,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "bigquery": {
                     "auth": {
                         "field": {
-                            "name": "auth_write",
+                            "name": "auth_bq",
                             "kind": "authentication",
                             "order": 1,
                             "default": "service",
-                            "description": "Authorization used for writing data."
+                            "description": "Credentials used for BigQuery."
                         }
                     },
                     "dataset": {
@@ -558,7 +606,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dcm/run.py" target="_blank">dcm</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_cm",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for CM."
+                }
+            },
             "timeout": 90,
             "report": {
                 "timeout": 90,
@@ -572,7 +628,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     }
                 },
                 "filters": {
-                    "dfa:advertiser": {
+                    "advertiser": {
                         "values": {
                             "field": {
                                 "name": "cm_advertiser_ids",
@@ -587,16 +643,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "body": {
                     "kind": "dfareporting#report",
                     "name": {
-                        "field": {
-                            "name": "recipe_name",
-                            "kind": "string",
-                            "order": 1,
-                            "prefix": "ITP_Audit_Browser_",
-                            "default": "ITP_Audit_Dashboard_Browser",
-                            "description": "Name of the Campaign Manager browser report."
-                        }
-                    },
-                    "fileName": {
                         "field": {
                             "name": "recipe_name",
                             "kind": "string",
@@ -641,47 +687,47 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "dimensions": [
                             {
                                 "kind": "dfareporting#sortedDimension",
-                                "name": "dfa:campaign"
+                                "name": "campaign"
                             },
                             {
                                 "kind": "dfareporting#sortedDimension",
-                                "name": "dfa:campaignId"
+                                "name": "campaignId"
                             },
                             {
                                 "kind": "dfareporting#sortedDimension",
-                                "name": "dfa:site"
+                                "name": "site"
                             },
                             {
                                 "kind": "dfareporting#sortedDimension",
-                                "name": "dfa:advertiser"
+                                "name": "advertiser"
                             },
                             {
                                 "kind": "dfareporting#sortedDimension",
-                                "name": "dfa:advertiserId"
+                                "name": "advertiserId"
                             },
                             {
                                 "kind": "dfareporting#sortedDimension",
-                                "name": "dfa:browserPlatform"
+                                "name": "browserPlatform"
                             },
                             {
                                 "kind": "dfareporting#sortedDimension",
-                                "name": "dfa:platformType"
+                                "name": "platformType"
                             },
                             {
                                 "kind": "dfareporting#sortedDimension",
-                                "name": "dfa:month"
+                                "name": "month"
                             },
                             {
                                 "kind": "dfareporting#sortedDimension",
-                                "name": "dfa:week"
+                                "name": "week"
                             }
                         ],
                         "metricNames": [
-                            "dfa:impressions",
-                            "dfa:clicks",
-                            "dfa:totalConversions",
-                            "dfa:activityViewThroughConversions",
-                            "dfa:activityClickThroughConversions"
+                            "impressions",
+                            "clicks",
+                            "totalConversions",
+                            "activityViewThroughConversions",
+                            "activityClickThroughConversions"
                         ],
                         "dimensionFilters": []
                     },
@@ -702,11 +748,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "bigquery": {
                     "auth": {
                         "field": {
-                            "name": "auth_write",
+                            "name": "auth_bq",
                             "kind": "authentication",
                             "order": 1,
                             "default": "service",
-                            "description": "Authorization used for writing data."
+                            "description": "Credentials used for BigQuery."
                         }
                     },
                     "dataset": {
@@ -728,7 +774,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sdf/run.py" target="_blank">sdf</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_dv",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for DV360."
+                }
+            },
             "version": "SDF_VERSION_5_3",
             "partner_id": {
                 "field": {
@@ -788,7 +842,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_bq",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for BigQuery."
+                }
+            },
             "from": {
                 "values": [
                     [
@@ -831,7 +893,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_bq",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for BigQuery."
+                }
+            },
             "from": {
                 "values": [
                     [
@@ -987,7 +1057,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_bq",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for BigQuery."
+                }
+            },
             "from": {
                 "values": [
                     [
@@ -1164,11 +1242,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/sheets/run.py" target="_blank">sheets</a>": {
             "auth": {
                 "field": {
-                    "name": "auth_read",
+                    "name": "auth_sheets",
                     "kind": "authentication",
                     "order": 1,
                     "default": "user",
-                    "description": "Credentials used for reading data."
+                    "description": "Credentials used for Sheets."
                 }
             },
             "sheet": {
@@ -1187,11 +1265,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             "out": {
                 "auth": {
                     "field": {
-                        "name": "auth_write",
+                        "name": "auth_bq",
                         "kind": "authentication",
                         "order": 1,
                         "default": "service",
-                        "description": "Credentials used for writing data."
+                        "description": "Credentials used for BigQuery."
                     }
                 },
                 "bigquery": {
@@ -1265,7 +1343,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_bq",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for BigQuery."
+                }
+            },
             "from": {
                 "values": [
                     [
@@ -1375,7 +1461,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_bq",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for BigQuery."
+                }
+            },
             "from": {
                 "values": [
                     [
@@ -1422,7 +1516,15 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/bigquery/run.py" target="_blank">bigquery</a>": {
-            "auth": "user",
+            "auth": {
+                "field": {
+                    "name": "auth_bq",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for BigQuery."
+                }
+            },
             "from": {
                 "values": [
                     [
@@ -1469,12 +1571,47 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     },
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/itp_audit/run.py" target="_blank">itp_audit</a>": {
-            "auth": "service",
+            "auth_dv": {
+                "field": {
+                    "name": "auth_dv",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for DV360."
+                }
+            },
+            "auth_cm": {
+                "field": {
+                    "name": "auth_cm",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for CM."
+                }
+            },
+            "auth_sheets": {
+                "field": {
+                    "name": "auth_sheets",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "user",
+                    "description": "Credentials used for Sheets."
+                }
+            },
+            "auth_bq": {
+                "field": {
+                    "name": "auth_bq",
+                    "kind": "authentication",
+                    "order": 1,
+                    "default": "service",
+                    "description": "Credentials used for BigQuery."
+                }
+            },
             "account": {
                 "field": {
                     "name": "cm_account_id",
                     "kind": "string",
-                    "order": 1,
+                    "order": 2,
                     "default": "",
                     "description": "Campaign Manager Account Id."
                 }

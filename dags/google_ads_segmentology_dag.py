@@ -15,6 +15,11 @@
 #  limitations under the License.
 #
 ###########################################################################
+#
+#  This code generated (see starthinker/scripts for possible source):
+#    - Command: "python starthinker_ui/manage.py airflow"
+#
+###########################################################################
 
 '''
 --------------------------------------------------------------
@@ -155,7 +160,7 @@ RECIPE = {
           }
         },
         'api': 'googleads',
-        'version': 'v5',
+        'version': 'v8',
         'function': 'customers.googleAds.search',
         'kwargs': {
           'customerId': {
