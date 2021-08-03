@@ -80,6 +80,7 @@ class Colab:
     self.code_lines.extend(['%s\n' % c for c in code.split('\n')])
 
   def header(self, text, level=1, indent=0):
+    self._markdown()
     self._code()
     self.markdown_lines.append('%s%s%s\n' % ('>' * indent, '#' * level, text))
 

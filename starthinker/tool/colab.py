@@ -55,6 +55,34 @@ def recipe_to_colab(name, description, instructions, tasks, parameters={}, proje
 
   colab = Colab(name)
 
+  colab.header(name)
+  colab.paragraph(description)
+
+  colab.header('License')
+  colab.paragraph(textwrap.dedent('''
+    Copyright 2020 Google LLC,
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  '''))
+
+  colab.header('Disclaimer')
+  colab.paragraph('This is not an officially supported Google product. It is a reference implementation. There is absolutely NO WARRANTY provided for using this code. The code is Apache Licensed and CAN BE fully modified, white labeled, and disassembled by your team.')
+  colab.paragraph(textwrap.dedent('''
+    This code generated (see starthinker/scripts for possible source):
+      - **Command**: "python starthinker_ui/manage.py colab"
+      - **Command**: "python starthinker/tools/colab.py [JSON RECIPE]"
+  '''))
+
   colab.header('1. Install Dependencies')
   colab.paragraph(
       'First install the libraries needed to execute recipes, this only needs to be done once, then click play.'
@@ -80,7 +108,6 @@ def recipe_to_colab(name, description, instructions, tasks, parameters={}, proje
   fields = json_get_fields(tasks)
   if fields:
     colab.header('4. Enter %s Parameters' % name)
-    colab.paragraph(description)
     colab.list(instructions)
     colab.paragraph(
         'Modify the values below for your use case, can be done multiple times, then click play.'
