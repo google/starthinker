@@ -6,7 +6,7 @@
     "icon":"security",
     "title":"SA360 Web Query Report",
     "description":"Download SA360 reports into a Google Sheet.",
-    "sample":"https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/",
+    "sample":"https://docs.google.com/spreadsheets/d/1S9os1VO3dBW_EUFvAq4SxlxddZYAdUkvr5H9iTPQT_s/edit?resourcekey=0-jdR3mdYYWSVSAEmwuxMKbQ#gid=0",
     "from":["cm360", "apps script"],
     "to":["sheets"],
     "pitches":[
@@ -24,7 +24,7 @@
     "instructions":[
       "Add this card to a recipe and save it.",
       "Then click <strong>Run Now</strong> to deploy.",
-      "Follow the <a href=\"https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/\">instructions</a> for setup."
+      "Follow the <a href='https://docs.google.com/spreadsheets/d/1S9os1VO3dBW_EUFvAq4SxlxddZYAdUkvr5H9iTPQT_s/edit?resourcekey=0-jdR3mdYYWSVSAEmwuxMKbQ#gid=0'>instructions</a> for setup."
     ],
     "authors":["syb@google.com"]
   },
@@ -37,7 +37,7 @@
         "auth": "user",
         "hour":[],
         "copy":{
-          "source":"https://docs.google.com/spreadsheets/d/1huQymeiabsQ1sTL5Ni3_CZdjZtkR84ueSPMXc-yachU/edit?ts=5ddf5c1f/",
+          "source":"https://docs.google.com/spreadsheets/d/1S9os1VO3dBW_EUFvAq4SxlxddZYAdUkvr5H9iTPQT_s/edit?resourcekey=0-jdR3mdYYWSVSAEmwuxMKbQ#gid=0",
           "destination":{"field":{ "name":"recipe_name", "prefix":"CM User Editor For ", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }}
         }
     }}
