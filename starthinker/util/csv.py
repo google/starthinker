@@ -28,7 +28,7 @@ INT_LIMIT = 9223372036854775807  # defined by BigQuery 64 bit mostly ( not syste
 
 
 def find_utf8_split(data, chunksize=None):
-""" UTF-8 characters can be 1-4 bytes long, this ensures a chunk is not mid character
+  """ UTF-8 characters can be 1-4 bytes long, this ensures a chunk is not mid character
 
   Character lengths include:
     1 Bytes: 0xxxxxxx
@@ -50,7 +50,8 @@ def find_utf8_split(data, chunksize=None):
 
   Returns:
     (int) - UTF-8 boundry save chunksize (assert <= chunksize parameter)
-"""
+
+  """
 
   if not isinstance(data, bytes):
     data = data.getbuffer()
@@ -76,17 +77,17 @@ def find_utf8_split(data, chunksize=None):
 
 
 def response_utf8_stream(response, chunksize):
-""" Re-aligns a streaming buffer with UTF-8 boundraries.
+  """ Re-aligns a streaming buffer with UTF-8 boundraries.
 
-Buffers incomplete utf-8 characters to next chunk. Chunks are always returned as <= chunksize.
-In the future may add bytes as input type in addition to io using type detect.
+  Buffers incomplete utf-8 characters to next chunk. Chunks are always returned as <= chunksize.
+  In the future may add bytes as input type in addition to io using type detect.
 
-Parameters:
-  reponse (io) - buffer containing bytes data.
+  Parameters:
+    reponse (io) - buffer containing bytes data.
 
-Returns:
-  (bytes generator) - the reponse buffer in chunksize aligned to utf-8 boundries.
-"""
+  Returns:
+    (bytes generator) - the reponse buffer in chunksize aligned to utf-8 boundries.
+  """
 
   leftovers = b''
 

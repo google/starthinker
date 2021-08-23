@@ -23,8 +23,8 @@ from starthinker.util.csv import find_utf8_split, response_utf8_stream
 
 
 class TestCSV(unittest.TestCase):
-"""Test the CSV module.  Currently only testing utf-8 function but WIP.
-"""
+  """Test the CSV module.  Currently only testing utf-8 function but WIP.
+  """
 
   def test_find_utf8_split(self):
     """  Tests: find_utf8_split, response_utf8_stream
@@ -33,6 +33,7 @@ class TestCSV(unittest.TestCase):
     Run boundary detection against 3 different UTF-8 encodings of different byte lengths.
     Pick 17 (prime) as a chunk size to ensure utf-8 byte boundary is hit.
     Run against multiple chunks to ensure test goes in and out of utf-8 alignement.
+
     """
 
     string_ascii = bytes('"#$%&()*+,-./0123456789:;<=>?@ABCDEF', 'utf-8')
