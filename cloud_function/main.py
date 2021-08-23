@@ -44,5 +44,5 @@ from starthinker.util.configuration import execute
 
 def run(request):
   recipe = request.get_json(force=True)
-  execute(Configuration(recipe=recipe, verbose=True), recipe['tasks'], force=True)
+  execute(Configuration(recipe=recipe, verbose=True), recipe.get('tasks', []), force=True)
   return 'DONE'
