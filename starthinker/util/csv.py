@@ -27,39 +27,78 @@ RE_HUMAN = re.compile('[^0-9a-zA-Z]+')
 INT_LIMIT = 9223372036854775807  # defined by BigQuery 64 bit mostly ( not system )
 
 
-def find_utf8_split(data, offset=None):
+def find_utf8_split(data, chunksize=None):
+""" UTF-8 characters can be 1-4 bytes long, this ensures a chunk is not mid character
+
+  Character lengths include:
+    1 Bytes: 0xxxxxxx
+    2 Bytes: 110xxxxx 10xxxxxx
+    3 Bytes: 1110xxxx 10xxxxxx 10xxxxxx
+    4 bytes: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+    Source: https://en.wikipedia.org/wiki/UTF-8#Encoding
+
+  Start at end of chunk moving backwards, find first UTF-8 start byte:
+    1 Bytes: 0xxxxxxx - 0x80 == 0x00
+    2 Bytes: 110xxxxx - 0xE0 == 0xC0
+    3 Bytes: 1110xxxx - 0xF0 == 0xE0
+    4 bytes: 11110xxx - 0xF8 == 0xF0
+  Then check if distance from end is >= required bytes for complete UTF-8.
+
+  Parameters:
+    data (bytes or io) - buffer to be evaluated for UTF-8 boundry
+    chunksize (optional int) - desired chunk size or size of data if omitted.
+
+  Returns:
+    (int) - UTF-8 boundry save chunksize (assert <= chunksize parameter)
+"""
 
   if not isinstance(data, bytes):
     data = data.getbuffer()
-  offset = offset or len(data)
 
-  while offset > 0 and data[offset - 1] & 0xC0 == 0x80:
-    offset -= 1
+  # adjust for zero based indexing
+  position = (chunksize or len(data)) - 1
 
-  if offset > 0:
-    if data[offset - 1] & 0xE0 == 0xC0:
-      offset -= 1
-    elif data[offset - 1] & 0xF0 == 0xE0:
-      offset -= 1
-    elif data[offset - 1] & 0xF8 == 0xF0:
-      offset -= 1
+  # find first valid utf-8 full length character
+  delta = 1
+  while position > 0:
+    if delta >= 1 and data[position] & 0x80 == 0x00:
+      return position + 1
+    elif delta >= 2 and data[position] & 0xE0 == 0xC0:
+      return position + 2
+    elif delta >= 3 and data[position] & 0xF0 == 0xE0:
+      return position + 3
+    elif delta >= 4 and data[position] & 0xF8 == 0xF0:
+      return position + 4
+    position -= 1
+    delta += 1
 
-  return offset
+  return 0
 
 
 def response_utf8_stream(response, chunksize):
+""" Re-aligns a streaming buffer with UTF-8 boundraries.
+
+Buffers incomplete utf-8 characters to next chunk. Chunks are always returned as <= chunksize.
+In the future may add bytes as input type in addition to io using type detect.
+
+Parameters:
+  reponse (io) - buffer containing bytes data.
+
+Returns:
+  (bytes generator) - the reponse buffer in chunksize aligned to utf-8 boundries.
+"""
+
   leftovers = b''
 
   while True:
-
     chunk = leftovers + response.read(chunksize)
-
     position = find_utf8_split(chunk)
+
     if position < len(chunk):
       leftovers = chunk[position:]
       chunk = chunk[:position]
     else:
-      leftftovers = b''
+      leftovers = b''
 
     if chunk:
       yield chunk.decode('UTF-8')
