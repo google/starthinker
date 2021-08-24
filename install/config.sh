@@ -579,6 +579,11 @@ setup_credentials_ui() {
   echo ""
 }
 
+
+get_service_email() {
+  echo $(sed -ne 's/\s*"client_email"\s*:\s*"\(.*\)",/\1/ p' ${STARTHINKER_SERVICE})
+}
+
 setup_credentials_service() {
   forced=$1
 
@@ -615,15 +620,12 @@ setup_credentials_service() {
         --key-file-type=json
 
       else
-
-        echo "Failed to create keys."
-        exit 1;
+        echo "WARNING: Failed to create starthinker_assets/service.json account keys.  You may not be able to deploy workers."
 
       fi
 
     else
-      echo "Failed to create file."
-      exit 1;
+      echo "WARNING: Failed to create starthinker_assets/service.json file.  You may not be able to deploy workers."
 
     fi
 

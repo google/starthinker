@@ -289,8 +289,11 @@ migrate_database_enterprise() {
 
 setup_cloud_function() {
 
+  gcloud services enable cloudbuild.googleapis.com
   gcloud services enable cloudfunctions.googleapis.com
   gcloud services enable cloudscheduler.googleapis.com
+  gcloud services enable appengine.googleapis.com
+
 
   echo ""
   echo "------------------------------------------------------------------------------"
@@ -302,15 +305,19 @@ setup_cloud_function() {
   echo "A single cloud function can run all StarThinker recipes, simply pass a different JSON in the request."
   echo "Setting up cloud function..."
 
-  gcloud alpha functions deploy starthinker --entry-point run --runtime python38 --trigger-http --security-level secure-always --memory 4096MB --source "$STARTHINKER_ROOT/cloud_function" --timeout 540s
+  service=$(get_service_email);
+
+  gcloud alpha functions deploy starthinker --entry-point run --runtime python38 --trigger-http --security-level secure-always --service-account "${service}" --memory 4096MB --source "$STARTHINKER_ROOT/cloud_function" --timeout 540s --quiet
+
+  # not required, saved here in case that changes
+  # gcloud alpha functions add-iam-policy-binding starthinker --region=us-central1 --member=allAuthenticatedUsers --role=roles/cloudfunctions.invoker
 
   echo ""
   echo "Deploying sample scheduled job..."
 
+  # 0 3 * * * = 3 AM Daily (can be adjusted by user from UI)
   trigger=$(gcloud functions describe starthinker --format 'value(httpsTrigger.url)')
-  service=$(echo "${STARTHINKER_PROJECT}"  | sed -r "s/(google.com):(.*)/\2.\1/g")
-
-  gcloud scheduler jobs create http starthinker_sample --schedule "0 3 * * *" --uri "${trigger}" --http-method POST --message-body='{ "setup":{ "id":"${STARTHINKER_PROJECT}", "auth":{ "service":{}, "user":{} } }, "tasks":[ { "hello":{ "auth":"user", "say":"Hello World" }} ] }' --oidc-token-audience "${trigger}" --oidc-service-account-email "starthinker@${service}.iam.gserviceaccount.com" --time-zone "Etc/UTC"
+  gcloud scheduler jobs create http starthinker_sample --schedule "0 3 * * *" --uri "${trigger}" --http-method POST --message-body='{ "setup":{ "id":"${STARTHINKER_PROJECT}", "auth":{ "service":{}, "user":{} } }, "tasks":[ { "hello":{ "auth":"user", "say":"Hello World" }} ] }' --oidc-token-audience "${trigger}" --oidc-service-account-email "${service}" --time-zone "Etc/UTC"
 
   echo ""
   echo "The trigger URL is: ${trigger}"
