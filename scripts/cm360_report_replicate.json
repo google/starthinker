@@ -38,7 +38,7 @@
       "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
       "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":2, "default":"", "description":"Name of Google BigQuery dataset to create." }}
     }},
-    { "dcm_replicate":{
+    { "cm_report_replicate":{
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "account":{"field":{ "name":"account", "kind":"integer", "order":3, "default":"", "description":"CM network id." }},
@@ -46,11 +46,14 @@
         "name":{"field":{ "name":"report_name", "kind":"string", "order":5, "default":"", "description":"CM template report name, empty if using id instead." }},
         "delete":{"field":{ "name":"delete", "kind":"boolean", "order":6, "default":false, "description":"Use only to reset the reports if setup changes." }}
       },
-      "in":{
-        "sheet":{"field":{ "name":"recipe_name", "kind":"string", "order":1, "default":"", "description":"Sheet to read ids from." }},
-        "tab":"Accounts"
+      "replicate":{
+        "sheets":{
+          "sheet":{"field":{ "name":"recipe_name", "kind":"string", "order":1, "default":"", "description":"Sheet to read ids from." }},
+          "tab":"Accounts",
+          "range":""
+        }
       },
-      "out":{
+      "write":{
         "bigquery":{
           "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"" }},
           "is_incremental_load":{"field":{ "name":"Aggregate", "kind":"boolean", "order":7, "default":false, "description":"Append report data to existing table, requires Date column." }}
