@@ -77,14 +77,14 @@ def dict_to_string(value, char_indent='  ', char_line='\n', skip=[], indent=0):
              dict_to_string(value[key], '' if is_skip else char_indent,
                             '' if is_skip else char_line, skip, indent + 1)
              for key in value]
-    return '{%s}' % (','.join(items) +
+    return '{%s}' % (', '.join(items) +
                      ('' if is_skip else char_line + char_indent * indent))
   elif type(value) is list:
     items = [
         nlch + dict_to_string(item, char_indent, char_line, skip, indent + 1)
         for item in value
     ]
-    return '[%s]' % (','.join(items) + char_line + char_indent * indent)
+    return '[%s]' % (', '.join(items) + char_line + char_indent * indent)
   elif type(value) is tuple:
     items = [
         nlch + dict_to_string(item, char_indent, char_line, skip, indent + 1)
@@ -93,6 +93,26 @@ def dict_to_string(value, char_indent='  ', char_line='\n', skip=[], indent=0):
     return '(%s)' % (','.join(items) + char_line + char_indent * indent)
   else:
     return repr(value)
+
+
+def json_to_string(value, char_indent='  ', char_line='\n', skip=[], indent=0):
+  nlch = char_line + char_indent * (indent + 1)
+  if type(value) is dict:
+    is_skip = any(k in value for k in skip)
+    items = [('' if is_skip else nlch) + json.dumps(key) + ':' +
+             json_to_string(value[key], '' if is_skip else char_indent,
+                            '' if is_skip else char_line, skip, indent + 1)
+             for key in value]
+    return '{%s}' % (', '.join(items) +
+                     ('' if is_skip else char_line + char_indent * indent))
+  elif type(value) in (list, tuple):
+    items = [
+        nlch + json_to_string(item, char_indent, char_line, skip, indent + 1)
+        for item in value
+    ]
+    return '[%s]' % (','.join(items) + char_line + char_indent * indent)
+  else:
+    return json.dumps(value)
 
 
 def json_set_auths(struct, auth):
