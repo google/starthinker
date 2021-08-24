@@ -119,20 +119,20 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
   <br/><br/>
   <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="/starthinker/solution/">All</a>
   <br/><br/>
-    <h1><i class="large material-icons">analytics</i>&nbsp;Census Data Normalized</h1>
-    <p class="flow-text">Convert given census table to percent of population, normalizing it.</p>
+    <h1><i class="large material-icons">donut_small</i>&nbsp;CM360 Report Replicate</h1>
+    <p class="flow-text">Replicate a report across multiple networks and advertisers.</p>
   <br/><br/>
   <div class="buttons">
     <a class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
       <i class="material-icons right">lock_open</i>Get Access
     </a>
-      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/bigquery_census_normalize.json" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/scripts/cm360_report_replicate.json" target="_blank">
         <i class="material-icons right">list</i>Git Hub
       </a>
-      <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_census_normalize.ipynb" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_report_replicate.ipynb" target="_blank">
         <i class="material-icons right">copyright</i>Data Pill Colab
       </a>
-      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/bigquery_census_normalize_dag.py" target="_blank">
+      <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/cm360_report_replicate_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
       </a>
   </div>
@@ -145,13 +145,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
           <table class="bordered">
             <tbody>
               <tr>
-                <td>Specify the geography, year, and span that make up the <a href='https://pantheon.corp.google.com/bigquery?redirect_from_classic=true&p=bigquery-public-data&d=census_bureau_acs&page=dataset' target='_blank'>census table names</a>.</td>
+                <td>Provide the name or ID of an existing report.</td>
               </tr>
               <tr>
-                <td>Not every combination of geography, year, and span exists or contains all the required fields.</td>
+                <td>Run the recipe once to generate the input sheet called .</td>
               </tr>
               <tr>
-                <td>Every time the query runs it will overwrite the table.</td>
+                <td>Enter network and advertiser ids to replicate the report.</td>
+              </tr>
+              <tr>
+                <td>Data will be written to BigQuery &gt;  &gt;  &gt; _All</td>
               </tr>
             </tbody>
           </table>
@@ -164,11 +167,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </tr>
             <tr>
               <td>Age</td>
-              <td>July 6, 2020 (1 year, 1 month)</td>
+              <td>March 3, 2020 (1 year, 5 months)</td>
             </tr>
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+Census+Data+Normalized+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+Census+Data+Normalized+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fbigquery_census_normalize%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+CM360+Report+Replicate+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+CM360+Report+Replicate+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fcm360_report_replicate%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
                 <tr>
@@ -186,97 +189,126 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     <div class="col s12 m6 l8">
       <pre id="code-workflow" class="card left-align"><code class="language-json">[
     {
-        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/census/run.py" target="_blank">census</a>": {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/drive/run.py" target="_blank">drive</a>": {
+            "auth": "user",
+            "copy": {
+                "source": "https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/",
+                "destination": {
+                    "field": {
+                        "name": "recipe_name",
+                        "kind": "string",
+                        "order": 1,
+                        "description": "Name of document to deploy to.",
+                        "default": ""
+                    }
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dataset/run.py" target="_blank">dataset</a>": {
             "auth": {
                 "field": {
-                    "name": "auth",
+                    "name": "auth_write",
                     "kind": "authentication",
-                    "order": 0,
+                    "order": 1,
                     "default": "service",
                     "description": "Credentials used for writing data."
                 }
             },
-            "normalize": {
-                "census_geography": {
+            "dataset": {
+                "field": {
+                    "name": "recipe_slug",
+                    "kind": "string",
+                    "order": 2,
+                    "default": "",
+                    "description": "Name of Google BigQuery dataset to create."
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/cm_report_replicate/run.py" target="_blank">cm_report_replicate</a>": {
+            "auth": {
+                "field": {
+                    "name": "auth_read",
+                    "kind": "authentication",
+                    "order": 0,
+                    "default": "user",
+                    "description": "Credentials used for reading data."
+                }
+            },
+            "report": {
+                "account": {
                     "field": {
-                        "name": "census_geography",
-                        "kind": "choice",
-                        "order": 1,
-                        "default": "zip_codes",
-                        "description": "Census table to get data from.",
-                        "choices": [
-                            "zip_codes",
-                            "state",
-                            "zcta5",
-                            "schooldistrictunified",
-                            "puma",
-                            "place",
-                            "county",
-                            "congressionaldistrict",
-                            "censustract",
-                            "cbsa"
-                        ]
-                    }
-                },
-                "census_year": {
-                    "field": {
-                        "name": "census_year",
-                        "kind": "choice",
-                        "order": 2,
-                        "default": "2018",
-                        "description": "Census table to get data from.",
-                        "choices": [
-                            2018,
-                            2017,
-                            2016,
-                            2015,
-                            2014,
-                            2013,
-                            2012,
-                            2011,
-                            2010,
-                            2009,
-                            2008,
-                            2007
-                        ]
-                    }
-                },
-                "census_span": {
-                    "field": {
-                        "name": "census_span",
-                        "kind": "choice",
+                        "name": "account",
+                        "kind": "integer",
                         "order": 3,
-                        "default": "5yr",
-                        "description": "Census table to get data from.",
-                        "choices": [
-                            "1yr",
-                            "3yr",
-                            "5yr"
-                        ]
+                        "default": "",
+                        "description": "CM network id."
+                    }
+                },
+                "id": {
+                    "field": {
+                        "name": "report_id",
+                        "kind": "integer",
+                        "order": 4,
+                        "default": "",
+                        "description": "CM template report id, for template"
+                    }
+                },
+                "name": {
+                    "field": {
+                        "name": "report_name",
+                        "kind": "string",
+                        "order": 5,
+                        "default": "",
+                        "description": "CM template report name, empty if using id instead."
+                    }
+                },
+                "delete": {
+                    "field": {
+                        "name": "delete",
+                        "kind": "boolean",
+                        "order": 6,
+                        "default": false,
+                        "description": "Use only to reset the reports if setup changes."
                     }
                 }
             },
-            "to": {
-                "dataset": {
-                    "field": {
-                        "name": "dataset",
-                        "kind": "string",
-                        "order": 4,
-                        "default": "",
-                        "description": "Existing BigQuery dataset."
-                    }
-                },
-                "type": {
-                    "field": {
-                        "name": "type",
-                        "kind": "choice",
-                        "order": 5,
-                        "default": "table",
-                        "description": "Write Census_Percent as table or view.",
-                        "choices": [
-                            "table",
-                            "view"
-                        ]
+            "replicate": {
+                "sheets": {
+                    "sheet": {
+                        "field": {
+                            "name": "recipe_name",
+                            "kind": "string",
+                            "order": 1,
+                            "default": "",
+                            "description": "Sheet to read ids from."
+                        }
+                    },
+                    "tab": "Accounts",
+                    "range": ""
+                }
+            },
+            "write": {
+                "bigquery": {
+                    "dataset": {
+                        "field": {
+                            "name": "recipe_slug",
+                            "kind": "string",
+                            "order": 4,
+                            "default": ""
+                        }
+                    },
+                    "is_incremental_load": {
+                        "field": {
+                            "name": "Aggregate",
+                            "kind": "boolean",
+                            "order": 7,
+                            "default": false,
+                            "description": "Append report data to existing table, requires Date column."
+                        }
                     }
                 }
             }

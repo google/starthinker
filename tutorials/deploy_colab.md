@@ -24,6 +24,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [CM360 Conversion Upload From Sheets](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_conversion_upload_from_sheets.ipynb) - Move form Sheets to CM.
 * [CM360 Data Warehouse](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_data_warehouse.ipynb) - Deploy a BigQuery dataset mirroring CM360 account structure. Foundation for solutions on top.
 * [CM360 Oculi](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_oculi.ipynb) - Export CM360 Creatives into BigQuery, process them with the Vision API, and generate a breakdown of each creative asset mapped back to its parent. Also generate a series of views to flatten the data.
+* [CM360 Report Replicate](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_report_replicate.ipynb) - Replicate a report across multiple networks and advertisers.
 * [CM360 Segmentology](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_segmentology.ipynb) - CM360 funnel analysis using Census data.
 * [CM360 To DV360 Bulk Creator](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_to_dv360.ipynb) - Allows bulk creating DV360 Insertion Orders and Line Items from CM360.
 * [CM360 Campaign Auditor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm_campaign_audit.ipynb) - A tool for rapidly bulk checking Campaign Manager campaigns
@@ -36,7 +37,6 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [DV360 Report To Storage](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dbm_to_storage.ipynb) - Move existing DV360 report into a Storage bucket.
 * [CM360 Report](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm.ipynb) - Create a CM report from a JSON definition.
 * [CM360 Log Audit](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_log.ipynb) - Downloads Campaign manager logs and allows audits.
-* [CM360 Report Replicate](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_replicate_to_bigquery.ipynb) - Replicate a report across multiple networks and advertisers.
 * [CM360 Report Run](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_run.ipynb) - Trigger a CM report run
 * [CM360 Report To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_to_bigquery.ipynb) - Move existing CM report into a BigQuery table.
 * [CM360 Report To Sheets](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/dcm_to_sheets.ipynb) - Move existing CM report into a Sheet tab.
@@ -54,7 +54,6 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [CM360 Report Emailed To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/email_cm_to_bigquery.ipynb) - Pulls a CM Report from a gMail powered email account into BigQuery.
 * [DV360 Report Emailed To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/email_dv360_to_bigquery.ipynb) - Pulls a DV360 Report from a gMail email into BigQuery.
 * [Email Fetch](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/email_to_bigquery.ipynb) - Import emailed CM report, Dv360 report, csv, or excel into a BigQuery table.
-* [DV360 Entity Read Files To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/entity.ipynb) - Import public and private <a href='https://developers.google.com/bid-manager/guides/entity-read/format-v2' target='_blank'>Entity Read Files</a> into a BigQuery dataset.<br/>CAUTION: PARTNER ONLY, ADVERTISER FILTER IS NOT APPLIED.
 * [CM360 Floodlight Monitor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/floodlight_monitor.ipynb) - Monitor floodlight impressions specified in sheet and send email alerts.
 * [Federal Reserve Regional Data](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/fred_regional_to_bigquery.ipynb) - Download federal reserve region.
 * [Federal Reserve Series Data](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/fred_series_to_bigquery.ipynb) - Download federal reserve series.

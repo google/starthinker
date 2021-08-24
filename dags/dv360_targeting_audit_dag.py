@@ -71,10 +71,10 @@ DV360 Targeting Audit
 
 Continously audit all targeting settings for a DV360 Partner in one dashboard. Use filters to locate errant targeting and quickly correct issues.
 
-  - Wait for <b>BigQuery->->->Targeting Audit to be created.
+  - Wait for <b>BigQuery->->->Targeting Audit</b> to be created.
   - Join the <a href='https://groups.google.com/d/forum/starthinker-assets' target='_blank'>StarThinker Assets Group</a> to access the following assets
   - Copy <a href='https://datastudio.google.com/c/u/0/reporting/2f140045-dd62-48ae-bc3b-8d01b79828b7' target='_blank'>Sample DV360 Targeting Audit</a>.
-  - Edit the data source to point at <b>BigQuery->->->Targeting_Audit.
+  - Edit the data source to point at <b>BigQuery->->->Targeting_Audit</b>.
   - Or give these intructions to the client.
 
 --------------------------------------------------------------
