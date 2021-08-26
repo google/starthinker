@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#  Copyright 2020 Google LLC
+#  Copyright 2021 Google LLC
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -15,29 +15,3 @@
 #  limitations under the License.
 #
 ###########################################################################
-
-# starthinker
-google-api-python-client
-google-auth
-google-auth-oauthlib
-google-auth-httplib2
-google-cloud-bigquery==2.13
-google-cloud-vision
-pysftp
-pytz
-tzlocal
-TwitterAPI
-python-dateutil
-psutil
-moviepy==1.0.0
-py-xlsx
-simple-salesforce
-smartsheet-python-sdk
-
-# starthinker_ui
-wheel
-gunicorn
-jsonpickle
-django==2.2
-psycopg2-binary
-contextlib2
