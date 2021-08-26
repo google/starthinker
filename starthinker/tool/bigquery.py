@@ -27,6 +27,34 @@ from starthinker.util.configuration import Configuration
 from starthinker.util.configuration import commandline_parser
 from starthinker.util.csv import csv_to_rows
 from starthinker.util.csv import excel_to_rows
+from starthinker.util.google_api import API_BigQuery
+from starthinker.util.recipe import json_to_string
+
+
+def task_template(table):
+  """ Helper for translating a view into a StarThinker task.
+
+  Removes project refrence and adds {dataset} parameters where possible.
+
+  """
+
+  task =  {
+    "bigquery":{
+      "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for reading data." }},
+      "from":{
+        "query":table['view']['query'].replace(table['tableReference']['projectId'] + '.', '').replace(table['tableReference']['datasetId'] + '.', '{dataset}.'),
+        "legacy":table['view']['useLegacySql'],
+        "parameters":{
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":3, "description":"Place where tables will be written in BigQuery." }}
+        }
+      },
+      "to":{
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":1, "default":"", "description":"Existing BigQuery dataset." }},
+        "view":{"field":{ "name":"view", "kind":"string", "order":2, "default":"", "description":"View to create from this query." }}
+      }
+    }
+  }
+  return task
 
 
 def main():
@@ -40,9 +68,10 @@ def main():
     most common BigQuery tasks when developing solutions.
 
     Examples:
-      Display table schema: `python helper.py --project [id] --dataset [name] --table [name] -s [credentials]`
-      Upload csv table: `python helper.py --project [id] --dataset [name] --table [name] --csv [file] --schema [file] -s [credentials]`
-      Upload excel sheet: `python helper.py --project [id] --dataset [name] --table [name] --excel_file [file] --excel_sheet [name] --schema [file] -s [credentials]`
+      Display table schema: `python bigquery.py --project [id] --dataset [name] --table [name] -s [credentials]`
+      Create view task: `python bigquery.py --project [id] --dataset [name] --view [name] -s [credentials]`
+      Upload csv table: `python bigquery.py --project [id] --dataset [name] --table [name] --csv [file] --schema [file] -s [credentials]`
+      Upload excel sheet: `python bigquery.py --project [id] --dataset [name] --table [name] --excel_file [file] --excel_sheet [name] --schema [file] -s [credentials]`
 
   """))
 
@@ -54,6 +83,11 @@ def main():
   parser.add_argument(
     '--table',
     help='name of BigQuery table',
+    default=None
+  )
+  parser.add_argument(
+    '--view',
+    help='name of view to turn into StarThinker task',
     default=None
   )
   parser.add_argument(
@@ -92,7 +126,14 @@ def main():
 
   schema = json.loads(args.schema) if args.schema else None
 
-  if args.csv:
+  if args.view:
+    print(json_to_string(
+      task_template(API_BigQuery(config, auth).tables().get(projectId=config.project, datasetId=args.dataset, tableId=args.view).execute()),
+      skip=('field',)
+    ).replace('\\n', '\n      ')
+  )
+
+  elif args.csv:
 
     with open(args.csv, 'r') as csv_file:
       rows = csv_to_rows(csv_file.read())
