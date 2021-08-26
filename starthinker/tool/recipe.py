@@ -41,7 +41,7 @@ def prompt(fields):
     print('(%d of %d) %s%s%s' % (
       count + 1,
       len(fields),
-      field['description'],
+      field.get('description', ''),
       ','.join(str(c) for c in field['choices']) if 'choices' in field else '',
       (' Default to "%s" if blank.' %
        field['default']) if 'default' in field else '',
