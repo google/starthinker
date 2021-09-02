@@ -260,7 +260,7 @@ class AdDAO(BaseDAO):
       item['deliverySchedule']['priority'] = feed_item.get(
           FieldMap.AD_PRIORITY, None)
 
-    if feed_item.get(FieldMap.AD_HARDCUTOFF, None) != None:
+    if feed_item.get(FieldMap.AD_HARDCUTOFF, "") != "":
       if not 'deliverySchedule' in item:
         item['deliverySchedule'] = {}
 
