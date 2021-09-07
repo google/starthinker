@@ -56,9 +56,9 @@ def main():
         ----------------------------------------"
           A. Run this command with parameters -c [CLIENT file path] and -u [USER file path].
           B. The USER file will be created and can be used to access Google APIs.
-          C. The user profile will be printed to the screen
+          C. The user profile will be printed to the screen.
 
-        Example: python helper.py -u [CLIENT file path] -c [USER file path]
+        Example: python helper.py -c [CLIENT file path] -u [USER file path]
 """))
 
   # initialize project

@@ -55,20 +55,33 @@ def prompt(fields):
   return args
 
 
-def validate(recipe, no_input):
-  # query for fields if they exist
-  fields = json_get_fields(recipe)
+def validate(recipe, parameters_in, no_input):
 
-  # parse fields and constants into parameters
-  if fields:
-    if no_input:
-      raise NameError(
-        'Edit the recipie and convert these fields into values:\n  - %s\n' % ' \n  - '.join('%s: %s' % (f['name'], f['description']) for f in fields)
-      )
-    else:
-      parameters = prompt(fields)
+  if parameters_in:
+    # use passed in parameters
+    with open(parameters_in, 'r') as f:
+      parameters = json.load(f)
       json_set_fields(recipe, parameters)
 
+  else:
+    # query for fields if they exist
+    fields = json_get_fields(recipe)
+
+    # parse fields and constants into parameters
+    if fields:
+      if no_input:
+        raise NameError(
+          'Edit the recipie and convert these fields into values:\n  - %s\n' % ' \n  - '.join('%s: %s' % (f['name'], f['description']) for f in fields)
+        )
+      else:
+        parameters = prompt(fields)
+        json_set_fields(recipe, parameters)
+
+        # return modified parameters
+        return parameters
+
+  # assert: parameters have not been modified
+  return None
 
 def main():
 
@@ -77,43 +90,76 @@ def main():
 
   parser.add_argument(
     '--recipe_out',
-    '-rc',
+    '-ro',
     help='Path to recipe file to be written if replacing fields.',
+    default=None
+  )
+
+  parser.add_argument(
+    '--includes',
+    '-i',
+    help='Path to recipes defined in include blocks.',
+    default=None
+  )
+
+  # only allow reading or writing parameters (both reading and writing is too confusing for now)
+  parser_parameters = parser.add_mutually_exclusive_group()
+
+  parser_parameters.add_argument(
+    '--parameters_in',
+    '-pi',
+    help='Path to parameter json file to be read.',
+    default=None
+  )
+
+  parser_parameters.add_argument(
+    '--parameters_out',
+    '-po',
+    help='Path to parameter json file to write if not.',
     default=None
   )
 
   args = parser.parse_args()
 
   # load json to get each task
-  recipe = get_recipe(args.json)
+  recipe = get_recipe(args.json, args.includes)
 
-  # check if all fields have been converted to values
-  validate(recipe, args.no_input)
+  # check if all fields have been converted to values (modifies recipe in place)
+  parameters = validate(recipe, args.parameters_in, args.no_input)
 
-  # check to write converted fields to stdout
+  # check to write parameters to file (add recipe path to parameters for usability)
+  if args.parameters_out:
+    parameters['__recipe__'] = args.json
+    print()
+    print('Writing to:', args.parameters_out)
+    f = open(args.parameters_out, 'w')
+    f.write(json.dumps(parameters, sort_keys=True, indent=2))
+    f.close()
+
+  # check to write filled in recipe to file
   if args.recipe_out:
     print()
     print('Writing to:', args.recipe_out)
     f = open(args.recipe_out, 'w')
     f.write(json.dumps(recipe, sort_keys=True, indent=2))
     f.close()
-    exit()
 
-  # initialize the project singleton with passed in parameters
-  configuration = Configuration(
-    recipe,
-    args.project,
-    args.user,
-    args.service,
-    args.client,
-    args.json,
-    args.key,
-    args.verbose,
-    args.trace_print,
-    args.trace_file
-  )
+  # if executing, initialize configuration and execute recipe
+  if not args.parameters_out and not args.recipe_out:
+    configuration = Configuration(
+      recipe,
+      args.project,
+      args.user,
+      args.service,
+      args.client,
+      args.json,
+      args.key,
+      args.verbose,
+      args.trace_print,
+      args.trace_file
+    )
 
-  execute(configuration, recipe['tasks'], args.force, args.instance)
+    execute(configuration, recipe['tasks'], args.force, args.task)
 
 
 if __name__ == '__main__':
