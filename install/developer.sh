@@ -89,11 +89,11 @@ test_tasks() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Run Task Tests - python ${STARTHINKER_ROOT}/tests/helper.py"
+  echo "Run Task Tests - python ${STARTHINKER_ROOT}/starthinker/tool/test.py"
   echo "----------------------------------------"
   echo ""
 
-  python "${STARTHINKER_ROOT}/tests/helper.py";
+  python "${STARTHINKER_ROOT}/starthinker/tool/test.py";
 
   deactivate
 
@@ -122,11 +122,10 @@ launch_developer_ui() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Configure Development Database - ${STARTHINKER_ROOT}/starthinker_database/database.sqlite"
+  echo "Configure Development Database - ${STARTHINKER_ROOT}/starthinker_assets/database.sqlite"
   echo "----------------------------------------"
   echo ""
 
-  mkdir -p "${STARTHINKER_ROOT}/starthinker_database/"
   python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" makemigrations;
   python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" migrate;
 
@@ -163,14 +162,14 @@ launch_developer_ui() {
   else
 
     echo "----------------------------------------"
-    echo "Launch Developer UI - python ${STARTHINKER_ROOT}/starthinker_ui/manage.py runserver localhost:8000"
+    echo "Launch Developer UI - python ${STARTHINKER_ROOT}/starthinker_ui/manage.py runserver 0.0.0.0:8000"
     echo "----------------------------------------"
     echo ""
 
 
   fi
 
-  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" runserver localhost:8000
+  python "${STARTHINKER_ROOT}/starthinker_ui/manage.py" runserver 0.0.0.0:8000
   deactivate
 
   echo ""
@@ -284,7 +283,7 @@ setup_developer() {
   echo ""
   echo "This script or you may create or modify:"
   echo "  - $STARTHINKER_ROOT/starthinker_assets/config.sh"
-  echo "  - $STARTHINKER_ROOT/starthinker_database/database.sqlite"
+  echo "  - $STARTHINKER_ROOT/starthinker_assets/database.sqlite"
   echo ""
   echo "After running this script once, activate StarThinker development settings from the command line:"
   echo " - source $STARTHINKER_ROOT/starthinker_assets/development.sh"
@@ -297,7 +296,7 @@ setup_developer() {
   echo ""
   echo "After activating StarThinker run the UI from the menu below or from the command line:"
   echo " - source $STARTHINKER_ROOT/starthinker_assets/developmnet.sh"
-  echo " - python starthinker_ui/manage.py runserver localhost:8000"
+  echo " - python starthinker_ui/manage.py runserver 0.0.0.0:8000"
   echo ""
   echo "Deactivate the virtual environment:"
   echo " - deactivate"

@@ -100,7 +100,7 @@ Restart=always
 RestartSec=5
 TimeoutSec=10
 WorkingDirectory=$STARTHINKER_ROOT/starthinker_assets
-ExecStart="${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE
+ExecStart="${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE
 StandardOutput=journal
 User=root
 EOL

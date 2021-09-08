@@ -91,7 +91,7 @@ derive_config() {
     STARTHINKER_UI_PRODUCTION_SECRET=$(openssl rand -base64 48)
   fi
 
-  STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME="${STARTHINKER_ROOT}/starthinker_database/database.sqlite";
+  STARTHINKER_UI_DEVELOPMENT_DATABASE_NAME="${STARTHINKER_ROOT}/starthinker_assets/database.sqlite";
 
 }
 
@@ -851,18 +851,18 @@ make_cron() {
 
 install_proxy_darwin() {
   if [ "$(uname -m)" == "x86_64" ]; then
-    curl -o "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.amd64
+    curl -o "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy" https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.amd64
   else
-    curl -o "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.386
+    curl -o "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy" https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.386
   fi
 }
 
 
 install_proxy_linux() {
   if [ "$(uname -m)" == "x86_64" ]; then
-    wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy"
+    wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy"
   else
-    wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.386 -O "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy"
+    wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.386 -O "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy"
   fi
 }
 
@@ -889,7 +889,7 @@ generate_translations() {
 install_proxy() {
   echo ""
   echo "----------------------------------------"
-  echo "Install Cloud Proxy ( Uses Sudo ) - ${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy"
+  echo "Install Cloud Proxy ( Uses Sudo ) - ${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy"
   echo "----------------------------------------"
   echo ""
 
@@ -899,9 +899,7 @@ install_proxy() {
     *) echo "ERROR: Unknown Postgres install, visit http://postgresguide.com/setup/install.html" ;;
   esac
 
-  if [ ! -f "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" ]; then
-
-    mkdir -p "${STARTHINKER_ROOT}/starthinker_database/"
+  if [ ! -f "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy" ]; then
 
     case "$(uname -s)" in
       Darwin) install_proxy_darwin;;
@@ -909,7 +907,7 @@ install_proxy() {
       *) echo "ERROR: Unknown OS, Visit https://cloud.google.com/sql/docs/postgres/sql-proxy" ;;
     esac
 
-    chmod +x "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy";
+    chmod +x "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy";
   fi
 
   echo ""

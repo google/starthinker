@@ -55,11 +55,11 @@ start_proxy() {
 
   echo ""
   echo "----------------------------------------"
-  echo "Start Cloud Proxy - ${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy"
+  echo "Start Cloud Proxy - ${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy"
   echo "----------------------------------------"
   echo ""
 
-  "${STARTHINKER_ROOT}/starthinker_database/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE &
+  "${STARTHINKER_ROOT}/starthinker_assets/cloud_sql_proxy" -instances="$STARTHINKER_PROJECT:$STARTHINKER_REGION:$STARTHINKER_UI_PRODUCTION_DATABASE_NAME"=tcp:5432 -credential_file $STARTHINKER_SERVICE &
 
   echo "Done"
   echo ""
