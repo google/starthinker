@@ -16,11 +16,11 @@
 #
 ###########################################################################
 
-# https://cs.corp.google.com/piper///depot/google3/apiserving/discoverydata/dfareporting/dfareporting.internalv3_3.rest.json?g=0
+# https://cs.corp.google.com/piper///depot/google3/apiserving/discoverydata/dfareporting/dfareporting.internalv3_4.rest.json?g=0
 
-URI = """{
+URI = r"""{
  "kind": "discovery#restDescription",
- "etag": "\\"J3WqvAcMk4eQjJXvfSI4Yr8VouA/dlVhm7l_mXhYjrVFBxpy1FrGfcE\\"",
+ "etag": "\"J3WqvAcMk4eQjJXvfSI4Yr8VouA/dlVhm7l_mXhYjrVFBxpy1FrGfcE\"",
  "discoveryVersion": "v1",
  "id": "dfareporting:internalv3.3",
  "name": "dfareporting",
@@ -174,7 +174,7 @@ URI = """{
     },
     "currencyId": {
      "type": "string",
-     "description": "ID of currency associated with this account. This is a required field.\\nAcceptable values are: \\n- \\"1\\" for USD \\n- \\"2\\" for GBP \\n- \\"3\\" for ESP \\n- \\"4\\" for SEK \\n- \\"5\\" for CAD \\n- \\"6\\" for JPY \\n- \\"7\\" for DEM \\n- \\"8\\" for AUD \\n- \\"9\\" for FRF \\n- \\"10\\" for ITL \\n- \\"11\\" for DKK \\n- \\"12\\" for NOK \\n- \\"13\\" for FIM \\n- \\"14\\" for ZAR \\n- \\"15\\" for IEP \\n- \\"16\\" for NLG \\n- \\"17\\" for EUR \\n- \\"18\\" for KRW \\n- \\"19\\" for TWD \\n- \\"20\\" for SGD \\n- \\"21\\" for CNY \\n- \\"22\\" for HKD \\n- \\"23\\" for NZD \\n- \\"24\\" for MYR \\n- \\"25\\" for BRL \\n- \\"26\\" for PTE \\n- \\"27\\" for MXP \\n- \\"28\\" for CLP \\n- \\"29\\" for TRY \\n- \\"30\\" for ARS \\n- \\"31\\" for PEN \\n- \\"32\\" for ILS \\n- \\"33\\" for CHF \\n- \\"34\\" for VEF \\n- \\"35\\" for COP \\n- \\"36\\" for GTQ \\n- \\"37\\" for PLN \\n- \\"39\\" for INR \\n- \\"40\\" for THB \\n- \\"41\\" for IDR \\n- \\"42\\" for CZK \\n- \\"43\\" for RON \\n- \\"44\\" for HUF \\n- \\"45\\" for RUB \\n- \\"46\\" for AED \\n- \\"47\\" for BGN \\n- \\"48\\" for HRK \\n- \\"49\\" for MXN \\n- \\"50\\" for NGN",
+     "description": "ID of currency associated with this account. This is a required field.\nAcceptable values are: \n- \"1\" for USD \n- \"2\" for GBP \n- \"3\" for ESP \n- \"4\" for SEK \n- \"5\" for CAD \n- \"6\" for JPY \n- \"7\" for DEM \n- \"8\" for AUD \n- \"9\" for FRF \n- \"10\" for ITL \n- \"11\" for DKK \n- \"12\" for NOK \n- \"13\" for FIM \n- \"14\" for ZAR \n- \"15\" for IEP \n- \"16\" for NLG \n- \"17\" for EUR \n- \"18\" for KRW \n- \"19\" for TWD \n- \"20\" for SGD \n- \"21\" for CNY \n- \"22\" for HKD \n- \"23\" for NZD \n- \"24\" for MYR \n- \"25\" for BRL \n- \"26\" for PTE \n- \"27\" for MXP \n- \"28\" for CLP \n- \"29\" for TRY \n- \"30\" for ARS \n- \"31\" for PEN \n- \"32\" for ILS \n- \"33\" for CHF \n- \"34\" for VEF \n- \"35\" for COP \n- \"36\" for GTQ \n- \"37\" for PLN \n- \"39\" for INR \n- \"40\" for THB \n- \"41\" for IDR \n- \"42\" for CZK \n- \"43\" for RON \n- \"44\" for HUF \n- \"45\" for RUB \n- \"46\" for AED \n- \"47\" for BGN \n- \"48\" for HRK \n- \"49\" for MXN \n- \"50\" for NGN",
      "format": "int64"
     },
     "defaultCreativeSizeId": {
@@ -193,12 +193,12 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#account\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#account\".",
      "default": "dfareporting#account"
     },
     "locale": {
      "type": "string",
-     "description": "Locale of this account.\\nAcceptable values are: \\n- \\"cs\\" (Czech) \\n- \\"de\\" (German) \\n- \\"en\\" (English) \\n- \\"en-GB\\" (English United Kingdom) \\n- \\"es\\" (Spanish) \\n- \\"fr\\" (French) \\n- \\"it\\" (Italian) \\n- \\"ja\\" (Japanese) \\n- \\"ko\\" (Korean) \\n- \\"pl\\" (Polish) \\n- \\"pt-BR\\" (Portuguese Brazil) \\n- \\"ru\\" (Russian) \\n- \\"sv\\" (Swedish) \\n- \\"tr\\" (Turkish) \\n- \\"zh-CN\\" (Chinese Simplified) \\n- \\"zh-TW\\" (Chinese Traditional)"
+     "description": "Locale of this account.\nAcceptable values are: \n- \"cs\" (Czech) \n- \"de\" (German) \n- \"en\" (English) \n- \"en-GB\" (English United Kingdom) \n- \"es\" (Spanish) \n- \"fr\" (French) \n- \"it\" (Italian) \n- \"ja\" (Japanese) \n- \"ko\" (Korean) \n- \"pl\" (Polish) \n- \"pt-BR\" (Portuguese Brazil) \n- \"ru\" (Russian) \n- \"sv\" (Swedish) \n- \"tr\" (Turkish) \n- \"zh-CN\" (Chinese Simplified) \n- \"zh-TW\" (Chinese Traditional)"
     },
     "maximumImageSize": {
      "type": "string",
@@ -274,7 +274,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#accountActiveAdSummary\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#accountActiveAdSummary\".",
      "default": "dfareporting#accountActiveAdSummary"
     }
    }
@@ -286,7 +286,7 @@ URI = """{
    "properties": {
     "accountProfiles": {
      "type": "array",
-     "description": "Account profiles associated with this account permission.\\n\\nPossible values are:\\n- \\"ACCOUNT_PROFILE_BASIC\\"\\n- \\"ACCOUNT_PROFILE_STANDARD\\"",
+     "description": "Account profiles associated with this account permission.\n\nPossible values are:\n- \"ACCOUNT_PROFILE_BASIC\"\n- \"ACCOUNT_PROFILE_STANDARD\"",
      "items": {
       "type": "string",
       "enum": [
@@ -306,7 +306,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#accountPermission\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#accountPermission\".",
      "default": "dfareporting#accountPermission"
     },
     "level": {
@@ -344,7 +344,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#accountPermissionGroup\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#accountPermissionGroup\".",
      "default": "dfareporting#accountPermissionGroup"
     },
     "name": {
@@ -367,7 +367,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#accountPermissionGroupsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#accountPermissionGroupsListResponse\".",
      "default": "dfareporting#accountPermissionGroupsListResponse"
     }
    }
@@ -386,7 +386,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#accountPermissionsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#accountPermissionsListResponse\".",
      "default": "dfareporting#accountPermissionsListResponse"
     }
    }
@@ -428,16 +428,16 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#accountUserProfile\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#accountUserProfile\".",
      "default": "dfareporting#accountUserProfile"
     },
     "locale": {
      "type": "string",
-     "description": "Locale of the user profile. This is a required field.\\nAcceptable values are:  \\n- \\"cs\\" (Czech) \\n- \\"de\\" (German) \\n- \\"en\\" (English) \\n- \\"en-GB\\" (English United Kingdom) \\n- \\"es\\" (Spanish) \\n- \\"fr\\" (French) \\n- \\"it\\" (Italian) \\n- \\"ja\\" (Japanese) \\n- \\"ko\\" (Korean) \\n- \\"pl\\" (Polish) \\n- \\"pt-BR\\" (Portuguese Brazil)\\n- \\"ru\\" (Russian) \\n- \\"sv\\" (Swedish) \\n- \\"tr\\" (Turkish) \\n- \\"zh-CN\\" (Chinese Simplified) \\n- \\"zh-TW\\" (Chinese Traditional)"
+     "description": "Locale of the user profile. This is a required field.\nAcceptable values are:  \n- \"cs\" (Czech) \n- \"de\" (German) \n- \"en\" (English) \n- \"en-GB\" (English United Kingdom) \n- \"es\" (Spanish) \n- \"fr\" (French) \n- \"it\" (Italian) \n- \"ja\" (Japanese) \n- \"ko\" (Korean) \n- \"pl\" (Polish) \n- \"pt-BR\" (Portuguese Brazil)\n- \"ru\" (Russian) \n- \"sv\" (Swedish) \n- \"tr\" (Turkish) \n- \"zh-CN\" (Chinese Simplified) \n- \"zh-TW\" (Chinese Traditional)"
     },
     "name": {
      "type": "string",
-     "description": "Name of the user profile. This is a required field. Must be less than 64 characters long, must be globally unique, and cannot contain whitespace or any of the following characters: \\"&;\\"#%,\\"."
+     "description": "Name of the user profile. This is a required field. Must be less than 64 characters long, must be globally unique, and cannot contain whitespace or any of the following characters: \"&;\"#%,\"."
     },
     "siteFilter": {
      "$ref": "ObjectFilter",
@@ -503,7 +503,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#accountUserProfilesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#accountUserProfilesListResponse\".",
      "default": "dfareporting#accountUserProfilesListResponse"
     },
     "nextPageToken": {
@@ -526,7 +526,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#accountsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#accountsListResponse\".",
      "default": "dfareporting#accountsListResponse"
     },
     "nextPageToken": {
@@ -542,7 +542,7 @@ URI = """{
    "properties": {
     "filters": {
      "type": "array",
-     "description": "List of activity filters. The dimension values need to be all either of type \\"dfa:activity\\" or \\"dfa:activityGroup\\".",
+     "description": "List of activity filters. The dimension values need to be all either of type \"dfa:activity\" or \"dfa:activityGroup\".",
      "items": {
       "$ref": "DimensionValue"
      }
@@ -696,7 +696,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#ad\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#ad\".",
      "default": "dfareporting#ad"
     },
     "languageTargeting": {
@@ -875,7 +875,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#adsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#adsListResponse\".",
      "default": "dfareporting#adsListResponse"
     },
     "nextPageToken": {
@@ -914,7 +914,7 @@ URI = """{
     },
     "floodlightConfigurationId": {
      "type": "string",
-     "description": "Floodlight configuration ID of this advertiser. The floodlight configuration ID will be created automatically, so on insert this field should be left blank. This field can be set to another advertiser's floodlight configuration ID in order to share that advertiser's floodlight configuration with this advertiser, so long as: \\n- This advertiser's original floodlight configuration is not already associated with floodlight activities or floodlight activity groups. \\n- This advertiser's original floodlight configuration is not already shared with another advertiser.",
+     "description": "Floodlight configuration ID of this advertiser. The floodlight configuration ID will be created automatically, so on insert this field should be left blank. This field can be set to another advertiser's floodlight configuration ID in order to share that advertiser's floodlight configuration with this advertiser, so long as: \n- This advertiser's original floodlight configuration is not already associated with floodlight activities or floodlight activity groups. \n- This advertiser's original floodlight configuration is not already shared with another advertiser.",
      "format": "int64"
     },
     "floodlightConfigurationIdDimensionValue": {
@@ -932,7 +932,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#advertiser\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#advertiser\".",
      "default": "dfareporting#advertiser"
     },
     "name": {
@@ -998,7 +998,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#advertiserGroup\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#advertiserGroup\".",
      "default": "dfareporting#advertiserGroup"
     },
     "name": {
@@ -1021,7 +1021,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#advertiserGroupsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#advertiserGroupsListResponse\".",
      "default": "dfareporting#advertiserGroupsListResponse"
     },
     "nextPageToken": {
@@ -1037,7 +1037,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#advertiserLandingPagesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#advertiserLandingPagesListResponse\".",
      "default": "dfareporting#advertiserLandingPagesListResponse"
     },
     "landingPages": {
@@ -1067,7 +1067,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#advertisersListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#advertisersListResponse\".",
      "default": "dfareporting#advertisersListResponse"
     },
     "nextPageToken": {
@@ -1137,7 +1137,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#browser\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#browser\".",
      "default": "dfareporting#browser"
     },
     "majorVersion": {
@@ -1168,7 +1168,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#browsersListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#browsersListResponse\".",
      "default": "dfareporting#browsersListResponse"
     }
    }
@@ -1283,7 +1283,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#campaign\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#campaign\".",
      "default": "dfareporting#campaign"
     },
     "lastModifiedInfo": {
@@ -1329,7 +1329,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#campaignCreativeAssociation\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#campaignCreativeAssociation\".",
      "default": "dfareporting#campaignCreativeAssociation"
     }
    }
@@ -1348,7 +1348,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#campaignCreativeAssociationsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#campaignCreativeAssociationsListResponse\".",
      "default": "dfareporting#campaignCreativeAssociationsListResponse"
     },
     "nextPageToken": {
@@ -1371,7 +1371,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#campaignsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#campaignsListResponse\".",
      "default": "dfareporting#campaignsListResponse"
     },
     "nextPageToken": {
@@ -1410,7 +1410,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#changeLog\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#changeLog\".",
      "default": "dfareporting#changeLog"
     },
     "newValue": {
@@ -1465,7 +1465,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#changeLogsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#changeLogsListResponse\".",
      "default": "dfareporting#changeLogsListResponse"
     },
     "nextPageToken": {
@@ -1488,7 +1488,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#citiesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#citiesListResponse\".",
      "default": "dfareporting#citiesListResponse"
     }
    }
@@ -1514,7 +1514,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#city\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#city\".",
      "default": "dfareporting#city"
     },
     "metroCode": {
@@ -1567,7 +1567,7 @@ URI = """{
    "properties": {
     "computedClickThroughUrl": {
      "type": "string",
-     "description": "Read-only convenience field representing the actual URL that will be used for this click-through. The URL is computed as follows: \\n- If defaultLandingPage is enabled then the campaign's default landing page URL is assigned to this field.\\n- If defaultLandingPage is not enabled and a landingPageId is specified then that landing page's URL is assigned to this field.\\n- If neither of the above cases apply, then the customClickThroughUrl is assigned to this field."
+     "description": "Read-only convenience field representing the actual URL that will be used for this click-through. The URL is computed as follows: \n- If defaultLandingPage is enabled then the campaign's default landing page URL is assigned to this field.\n- If defaultLandingPage is not enabled and a landingPageId is specified then that landing page's URL is assigned to this field.\n- If neither of the above cases apply, then the customClickThroughUrl is assigned to this field."
     },
     "customClickThroughUrl": {
      "type": "string",
@@ -1637,7 +1637,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#companionSetting\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#companionSetting\".",
      "default": "dfareporting#companionSetting"
     }
    }
@@ -1649,11 +1649,11 @@ URI = """{
    "properties": {
     "crossDimensionReachReportCompatibleFields": {
      "$ref": "CrossDimensionReachReportCompatibleFields",
-     "description": "Contains items that are compatible to be selected for a report of type \\"CROSS_DIMENSION_REACH\\"."
+     "description": "Contains items that are compatible to be selected for a report of type \"CROSS_DIMENSION_REACH\"."
     },
     "floodlightReportCompatibleFields": {
      "$ref": "FloodlightReportCompatibleFields",
-     "description": "Contains items that are compatible to be selected for a report of type \\"FLOODLIGHT\\"."
+     "description": "Contains items that are compatible to be selected for a report of type \"FLOODLIGHT\"."
     },
     "kind": {
      "type": "string",
@@ -1662,15 +1662,15 @@ URI = """{
     },
     "pathToConversionReportCompatibleFields": {
      "$ref": "PathToConversionReportCompatibleFields",
-     "description": "Contains items that are compatible to be selected for a report of type \\"PATH_TO_CONVERSION\\"."
+     "description": "Contains items that are compatible to be selected for a report of type \"PATH_TO_CONVERSION\"."
     },
     "reachReportCompatibleFields": {
      "$ref": "ReachReportCompatibleFields",
-     "description": "Contains items that are compatible to be selected for a report of type \\"REACH\\"."
+     "description": "Contains items that are compatible to be selected for a report of type \"REACH\"."
     },
     "reportCompatibleFields": {
      "$ref": "ReportCompatibleFields",
-     "description": "Contains items that are compatible to be selected for a report of type \\"STANDARD\\"."
+     "description": "Contains items that are compatible to be selected for a report of type \"STANDARD\"."
     }
    }
   },
@@ -1686,7 +1686,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#connectionType\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#connectionType\".",
      "default": "dfareporting#connectionType"
     },
     "name": {
@@ -1709,7 +1709,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#connectionTypesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#connectionTypesListResponse\".",
      "default": "dfareporting#connectionTypesListResponse"
     }
    }
@@ -1728,7 +1728,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#contentCategoriesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#contentCategoriesListResponse\".",
      "default": "dfareporting#contentCategoriesListResponse"
     },
     "nextPageToken": {
@@ -1754,7 +1754,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#contentCategory\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#contentCategory\".",
      "default": "dfareporting#contentCategory"
     },
     "name": {
@@ -1806,7 +1806,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#conversion\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#conversion\".",
      "default": "dfareporting#conversion"
     },
     "limitAdTracking": {
@@ -1869,7 +1869,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#conversionError\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#conversionError\".",
      "default": "dfareporting#conversionError"
     },
     "message": {
@@ -1896,7 +1896,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#conversionStatus\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#conversionStatus\".",
      "default": "dfareporting#conversionStatus"
     }
    }
@@ -1919,7 +1919,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#conversionsBatchInsertRequest\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#conversionsBatchInsertRequest\".",
      "default": "dfareporting#conversionsBatchInsertRequest"
     }
    }
@@ -1935,7 +1935,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#conversionsBatchInsertResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#conversionsBatchInsertResponse\".",
      "default": "dfareporting#conversionsBatchInsertResponse"
     },
     "status": {
@@ -1965,7 +1965,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#conversionsBatchUpdateRequest\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#conversionsBatchUpdateRequest\".",
      "default": "dfareporting#conversionsBatchUpdateRequest"
     }
    }
@@ -1981,7 +1981,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#conversionsBatchUpdateResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#conversionsBatchUpdateResponse\".",
      "default": "dfareporting#conversionsBatchUpdateResponse"
     },
     "status": {
@@ -2007,7 +2007,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#countriesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#countriesListResponse\".",
      "default": "dfareporting#countriesListResponse"
     }
    }
@@ -2028,7 +2028,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#country\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#country\".",
      "default": "dfareporting#country"
     },
     "name": {
@@ -2312,7 +2312,7 @@ URI = """{
     },
     "compatibility": {
      "type": "array",
-     "description": "Compatibilities associated with this creative. This is a read-only field. DISPLAY and DISPLAY_INTERSTITIAL refer to rendering either on desktop or on mobile devices or in mobile apps for regular or interstitial ads, respectively. APP and APP_INTERSTITIAL are for rendering in mobile apps. Only pre-existing creatives may have these compatibilities since new creatives will either be assigned DISPLAY or DISPLAY_INTERSTITIAL instead. IN_STREAM_VIDEO refers to rendering in in-stream video ads developed with the VAST standard. IN_STREAM_AUDIO refers to rendering in in-stream audio ads developed with the VAST standard. Applicable to all creative types.\\n\\nAcceptable values are:\\n- \\"APP\\"\\n- \\"APP_INTERSTITIAL\\"\\n- \\"IN_STREAM_VIDEO\\"\\n- \\"IN_STREAM_AUDIO\\"\\n- \\"DISPLAY\\"\\n- \\"DISPLAY_INTERSTITIAL\\"",
+     "description": "Compatibilities associated with this creative. This is a read-only field. DISPLAY and DISPLAY_INTERSTITIAL refer to rendering either on desktop or on mobile devices or in mobile apps for regular or interstitial ads, respectively. APP and APP_INTERSTITIAL are for rendering in mobile apps. Only pre-existing creatives may have these compatibilities since new creatives will either be assigned DISPLAY or DISPLAY_INTERSTITIAL instead. IN_STREAM_VIDEO refers to rendering in in-stream video ads developed with the VAST standard. IN_STREAM_AUDIO refers to rendering in in-stream audio ads developed with the VAST standard. Applicable to all creative types.\n\nAcceptable values are:\n- \"APP\"\n- \"APP_INTERSTITIAL\"\n- \"IN_STREAM_VIDEO\"\n- \"IN_STREAM_AUDIO\"\n- \"DISPLAY\"\n- \"DISPLAY_INTERSTITIAL\"",
      "items": {
       "type": "string",
       "enum": [
@@ -2403,7 +2403,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#creative\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#creative\".",
      "default": "dfareporting#creative"
     },
     "lastModifiedInfo": {
@@ -2527,7 +2527,7 @@ URI = """{
     },
     "type": {
      "type": "string",
-     "description": "Type of this creative. This is a required field. Applicable to all creative types.\\n\\nNote: FLASH_INPAGE, HTML5_BANNER, and IMAGE are only used for existing creatives. New creatives should use DISPLAY as a replacement for these types.",
+     "description": "Type of this creative. This is a required field. Applicable to all creative types.\n\nNote: FLASH_INPAGE, HTML5_BANNER, and IMAGE are only used for existing creatives. New creatives should use DISPLAY as a replacement for these types.",
      "enum": [
       "BRAND_SAFE_DEFAULT_INSTREAM_VIDEO",
       "CUSTOM_DISPLAY",
@@ -3014,7 +3014,7 @@ URI = """{
     },
     "role": {
      "type": "string",
-     "description": "Role of the asset in relation to creative. Applicable to all but the following creative types: all REDIRECT and TRACKING_TEXT. This is a required field.\\nPRIMARY applies to DISPLAY, FLASH_INPAGE, HTML5_BANNER, IMAGE, DISPLAY_IMAGE_GALLERY, all RICH_MEDIA (which may contain multiple primary assets), and all VPAID creatives.\\nBACKUP_IMAGE applies to FLASH_INPAGE, HTML5_BANNER, all RICH_MEDIA, and all VPAID creatives. Applicable to DISPLAY when the primary asset type is not HTML_IMAGE.\\nADDITIONAL_IMAGE and ADDITIONAL_FLASH apply to FLASH_INPAGE creatives.\\nOTHER refers to assets from sources other than Campaign Manager, such as Studio uploaded assets, applicable to all RICH_MEDIA and all VPAID creatives.\\nPARENT_VIDEO refers to videos uploaded by the user in Campaign Manager and is applicable to INSTREAM_VIDEO and VPAID_LINEAR_VIDEO creatives.\\nTRANSCODED_VIDEO refers to videos transcoded by Campaign Manager from PARENT_VIDEO assets and is applicable to INSTREAM_VIDEO and VPAID_LINEAR_VIDEO creatives.\\nALTERNATE_VIDEO refers to the Campaign Manager representation of child asset videos from Studio, and is applicable to VPAID_LINEAR_VIDEO creatives. These cannot be added or removed within Campaign Manager.\\nFor VPAID_LINEAR_VIDEO creatives, PARENT_VIDEO, TRANSCODED_VIDEO and ALTERNATE_VIDEO assets that are marked active serve as backup in case the VPAID creative cannot be served. Only PARENT_VIDEO assets can be added or removed for an INSTREAM_VIDEO or VPAID_LINEAR_VIDEO creative.\\nPARENT_AUDIO refers to audios uploaded by the user in Campaign Manager and is applicable to INSTREAM_AUDIO creatives.\\nTRANSCODED_AUDIO refers to audios transcoded by Campaign Manager from PARENT_AUDIO assets and is applicable to INSTREAM_AUDIO creatives.",
+     "description": "Role of the asset in relation to creative. Applicable to all but the following creative types: all REDIRECT and TRACKING_TEXT. This is a required field.\nPRIMARY applies to DISPLAY, FLASH_INPAGE, HTML5_BANNER, IMAGE, DISPLAY_IMAGE_GALLERY, all RICH_MEDIA (which may contain multiple primary assets), and all VPAID creatives.\nBACKUP_IMAGE applies to FLASH_INPAGE, HTML5_BANNER, all RICH_MEDIA, and all VPAID creatives. Applicable to DISPLAY when the primary asset type is not HTML_IMAGE.\nADDITIONAL_IMAGE and ADDITIONAL_FLASH apply to FLASH_INPAGE creatives.\nOTHER refers to assets from sources other than Campaign Manager, such as Studio uploaded assets, applicable to all RICH_MEDIA and all VPAID creatives.\nPARENT_VIDEO refers to videos uploaded by the user in Campaign Manager and is applicable to INSTREAM_VIDEO and VPAID_LINEAR_VIDEO creatives.\nTRANSCODED_VIDEO refers to videos transcoded by Campaign Manager from PARENT_VIDEO assets and is applicable to INSTREAM_VIDEO and VPAID_LINEAR_VIDEO creatives.\nALTERNATE_VIDEO refers to the Campaign Manager representation of child asset videos from Studio, and is applicable to VPAID_LINEAR_VIDEO creatives. These cannot be added or removed within Campaign Manager.\nFor VPAID_LINEAR_VIDEO creatives, PARENT_VIDEO, TRANSCODED_VIDEO and ALTERNATE_VIDEO assets that are marked active serve as backup in case the VPAID creative cannot be served. Only PARENT_VIDEO assets can be added or removed for an INSTREAM_VIDEO or VPAID_LINEAR_VIDEO creative.\nPARENT_AUDIO refers to audios uploaded by the user in Campaign Manager and is applicable to INSTREAM_AUDIO creatives.\nTRANSCODED_AUDIO refers to audios transcoded by Campaign Manager from PARENT_AUDIO assets and is applicable to INSTREAM_AUDIO creatives.",
      "enum": [
       "ADDITIONAL_FLASH",
       "ADDITIONAL_IMAGE",
@@ -3108,7 +3108,7 @@ URI = """{
    "properties": {
     "name": {
      "type": "string",
-     "description": "Name of the creative asset. This is a required field while inserting an asset. After insertion, this assetIdentifier is used to identify the uploaded asset. Characters in the name must be alphanumeric or one of the following: \\".-_ \\". Spaces are allowed."
+     "description": "Name of the creative asset. This is a required field while inserting an asset. After insertion, this assetIdentifier is used to identify the uploaded asset. Characters in the name must be alphanumeric or one of the following: \".-_ \". Spaces are allowed."
     },
     "type": {
      "type": "string",
@@ -3302,12 +3302,12 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#creativeAssetMetadata\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#creativeAssetMetadata\".",
      "default": "dfareporting#creativeAssetMetadata"
     },
     "warnedValidationRules": {
      "type": "array",
-     "description": "Rules validated during code generation that generated a warning. This is a read-only, auto-generated field.\\n\\nPossible values are:\\n- \\"ADMOB_REFERENCED\\"\\n- \\"ASSET_FORMAT_UNSUPPORTED_DCM\\"\\n- \\"ASSET_INVALID\\"\\n- \\"CLICK_TAG_HARD_CODED\\"\\n- \\"CLICK_TAG_INVALID\\"\\n- \\"CLICK_TAG_IN_GWD\\"\\n- \\"CLICK_TAG_MISSING\\"\\n- \\"CLICK_TAG_MORE_THAN_ONE\\"\\n- \\"CLICK_TAG_NON_TOP_LEVEL\\"\\n- \\"COMPONENT_UNSUPPORTED_DCM\\"\\n- \\"ENABLER_UNSUPPORTED_METHOD_DCM\\"\\n- \\"EXTERNAL_FILE_REFERENCED\\"\\n- \\"FILE_DETAIL_EMPTY\\"\\n- \\"FILE_TYPE_INVALID\\"\\n- \\"GWD_PROPERTIES_INVALID\\"\\n- \\"HTML5_FEATURE_UNSUPPORTED\\"\\n- \\"LINKED_FILE_NOT_FOUND\\"\\n- \\"MAX_FLASH_VERSION_11\\"\\n- \\"MRAID_REFERENCED\\"\\n- \\"NOT_SSL_COMPLIANT\\"\\n- \\"ORPHANED_ASSET\\"\\n- \\"PRIMARY_HTML_MISSING\\"\\n- \\"SVG_INVALID\\"\\n- \\"ZIP_INVALID\\"",
+     "description": "Rules validated during code generation that generated a warning. This is a read-only, auto-generated field.\n\nPossible values are:\n- \"ADMOB_REFERENCED\"\n- \"ASSET_FORMAT_UNSUPPORTED_DCM\"\n- \"ASSET_INVALID\"\n- \"CLICK_TAG_HARD_CODED\"\n- \"CLICK_TAG_INVALID\"\n- \"CLICK_TAG_IN_GWD\"\n- \"CLICK_TAG_MISSING\"\n- \"CLICK_TAG_MORE_THAN_ONE\"\n- \"CLICK_TAG_NON_TOP_LEVEL\"\n- \"COMPONENT_UNSUPPORTED_DCM\"\n- \"ENABLER_UNSUPPORTED_METHOD_DCM\"\n- \"EXTERNAL_FILE_REFERENCED\"\n- \"FILE_DETAIL_EMPTY\"\n- \"FILE_TYPE_INVALID\"\n- \"GWD_PROPERTIES_INVALID\"\n- \"HTML5_FEATURE_UNSUPPORTED\"\n- \"LINKED_FILE_NOT_FOUND\"\n- \"MAX_FLASH_VERSION_11\"\n- \"MRAID_REFERENCED\"\n- \"NOT_SSL_COMPLIANT\"\n- \"ORPHANED_ASSET\"\n- \"PRIMARY_HTML_MISSING\"\n- \"SVG_INVALID\"\n- \"ZIP_INVALID\"",
      "items": {
       "type": "string",
       "enum": [
@@ -3432,7 +3432,7 @@ URI = """{
     },
     "richMediaExitOverrides": {
      "type": "array",
-     "description": "Rich media exit overrides for this creative assignment.\\nApplicable when the creative type is any of the following: \\n- DISPLAY\\n- RICH_MEDIA_INPAGE\\n- RICH_MEDIA_INPAGE_FLOATING\\n- RICH_MEDIA_IM_EXPAND\\n- RICH_MEDIA_EXPANDING\\n- RICH_MEDIA_INTERSTITIAL_FLOAT\\n- RICH_MEDIA_MOBILE_IN_APP\\n- RICH_MEDIA_MULTI_FLOATING\\n- RICH_MEDIA_PEEL_DOWN\\n- VPAID_LINEAR\\n- VPAID_NON_LINEAR",
+     "description": "Rich media exit overrides for this creative assignment.\nApplicable when the creative type is any of the following: \n- DISPLAY\n- RICH_MEDIA_INPAGE\n- RICH_MEDIA_INPAGE_FLOATING\n- RICH_MEDIA_IM_EXPAND\n- RICH_MEDIA_EXPANDING\n- RICH_MEDIA_INTERSTITIAL_FLOAT\n- RICH_MEDIA_MOBILE_IN_APP\n- RICH_MEDIA_MULTI_FLOATING\n- RICH_MEDIA_PEEL_DOWN\n- VPAID_LINEAR\n- VPAID_NON_LINEAR",
      "items": {
       "$ref": "RichMediaExitOverride"
      }
@@ -3465,7 +3465,7 @@ URI = """{
    "properties": {
     "computedClickThroughUrl": {
      "type": "string",
-     "description": "Read-only convenience field representing the actual URL that will be used for this click-through. The URL is computed as follows: \\n- If landingPageId is specified then that landing page's URL is assigned to this field.\\n- Otherwise, the customClickThroughUrl is assigned to this field."
+     "description": "Read-only convenience field representing the actual URL that will be used for this click-through. The URL is computed as follows: \n- If landingPageId is specified then that landing page's URL is assigned to this field.\n- Otherwise, the customClickThroughUrl is assigned to this field."
     },
     "customClickThroughUrl": {
      "type": "string",
@@ -3589,7 +3589,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#creativeField\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#creativeField\".",
      "default": "dfareporting#creativeField"
     },
     "name": {
@@ -3632,7 +3632,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#creativeFieldValue\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#creativeFieldValue\".",
      "default": "dfareporting#creativeFieldValue"
     },
     "value": {
@@ -3655,7 +3655,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#creativeFieldValuesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#creativeFieldValuesListResponse\".",
      "default": "dfareporting#creativeFieldValuesListResponse"
     },
     "nextPageToken": {
@@ -3678,7 +3678,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#creativeFieldsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#creativeFieldsListResponse\".",
      "default": "dfareporting#creativeFieldsListResponse"
     },
     "nextPageToken": {
@@ -3718,7 +3718,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#creativeGroup\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#creativeGroup\".",
      "default": "dfareporting#creativeGroup"
     },
     "name": {
@@ -3770,7 +3770,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#creativeGroupsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#creativeGroupsListResponse\".",
      "default": "dfareporting#creativeGroupsListResponse"
     },
     "nextPageToken": {
@@ -3881,7 +3881,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#creativesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#creativesListResponse\".",
      "default": "dfareporting#creativesListResponse"
     },
     "nextPageToken": {
@@ -3893,18 +3893,18 @@ URI = """{
   "CrossDimensionReachReportCompatibleFields": {
    "id": "CrossDimensionReachReportCompatibleFields",
    "type": "object",
-   "description": "Represents fields that are compatible to be selected for a report of type \\"CROSS_DIMENSION_REACH\\".",
+   "description": "Represents fields that are compatible to be selected for a report of type \"CROSS_DIMENSION_REACH\".",
    "properties": {
     "breakdown": {
      "type": "array",
-     "description": "Dimensions which are compatible to be selected in the \\"breakdown\\" section of the report.",
+     "description": "Dimensions which are compatible to be selected in the \"breakdown\" section of the report.",
      "items": {
       "$ref": "Dimension"
      }
     },
     "dimensionFilters": {
      "type": "array",
-     "description": "Dimensions which are compatible to be selected in the \\"dimensionFilters\\" section of the report.",
+     "description": "Dimensions which are compatible to be selected in the \"dimensionFilters\" section of the report.",
      "items": {
       "$ref": "Dimension"
      }
@@ -3916,14 +3916,14 @@ URI = """{
     },
     "metrics": {
      "type": "array",
-     "description": "Metrics which are compatible to be selected in the \\"metricNames\\" section of the report.",
+     "description": "Metrics which are compatible to be selected in the \"metricNames\" section of the report.",
      "items": {
       "$ref": "Metric"
      }
     },
     "overlapMetrics": {
      "type": "array",
-     "description": "Metrics which are compatible to be selected in the \\"overlapMetricNames\\" section of the report.",
+     "description": "Metrics which are compatible to be selected in the \"overlapMetricNames\" section of the report.",
      "items": {
       "$ref": "Metric"
      }
@@ -3937,12 +3937,12 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#customFloodlightVariable\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#customFloodlightVariable\".",
      "default": "dfareporting#customFloodlightVariable"
     },
     "type": {
      "type": "string",
-     "description": "The type of custom floodlight variable to supply a value for. These map to the \\"u[1-20]=\\" in the tags.",
+     "description": "The type of custom floodlight variable to supply a value for. These map to the \"u[1-20]=\" in the tags.",
      "enum": [
       "U1",
       "U10",
@@ -4226,7 +4226,7 @@ URI = """{
    "properties": {
     "endDate": {
      "type": "string",
-     "description": "The end date of the date range, inclusive. A string of the format: \\"yyyy-MM-dd\\".",
+     "description": "The end date of the date range, inclusive. A string of the format: \"yyyy-MM-dd\".",
      "format": "date"
     },
     "kind": {
@@ -4278,7 +4278,7 @@ URI = """{
     },
     "startDate": {
      "type": "string",
-     "description": "The start date of the date range, inclusive. A string of the format: \\"yyyy-MM-dd\\".",
+     "description": "The start date of the date range, inclusive. A string of the format: \"yyyy-MM-dd\".",
      "format": "date"
     }
    }
@@ -4290,7 +4290,7 @@ URI = """{
    "properties": {
     "daysOfWeek": {
      "type": "array",
-     "description": "Days of the week when the ad will serve.\\n\\nAcceptable values are:\\n- \\"SUNDAY\\"\\n- \\"MONDAY\\"\\n- \\"TUESDAY\\"\\n- \\"WEDNESDAY\\"\\n- \\"THURSDAY\\"\\n- \\"FRIDAY\\"\\n- \\"SATURDAY\\"",
+     "description": "Days of the week when the ad will serve.\n\nAcceptable values are:\n- \"SUNDAY\"\n- \"MONDAY\"\n- \"TUESDAY\"\n- \"WEDNESDAY\"\n- \"THURSDAY\"\n- \"FRIDAY\"\n- \"SATURDAY\"",
      "items": {
       "type": "string",
       "enum": [
@@ -4342,7 +4342,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#deepLink\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#deepLink\".",
      "default": "dfareporting#deepLink"
     },
     "mobileApp": {
@@ -4565,7 +4565,7 @@ URI = """{
     },
     "nextPageToken": {
      "type": "string",
-     "description": "Continuation token used to page through dimension values. To retrieve the next page of results, set the next request's \\"pageToken\\" to the value of this field. The page token is only valid for a limited amount of time and should not be persisted."
+     "description": "Continuation token used to page through dimension values. To retrieve the next page of results, set the next request's \"pageToken\" to the value of this field. The page token is only valid for a limited amount of time and should not be persisted."
     }
    }
   },
@@ -4585,7 +4585,7 @@ URI = """{
     },
     "endDate": {
      "type": "string",
-     "description": "The end date of the date range for which to retrieve dimension values. A string of the format \\"yyyy-MM-dd\\".",
+     "description": "The end date of the date range for which to retrieve dimension values. A string of the format \"yyyy-MM-dd\".",
      "format": "date",
      "annotations": {
       "required": [
@@ -4607,7 +4607,7 @@ URI = """{
     },
     "startDate": {
      "type": "string",
-     "description": "The start date of the date range for which to retrieve dimension values. A string of the format \\"yyyy-MM-dd\\".",
+     "description": "The start date of the date range for which to retrieve dimension values. A string of the format \"yyyy-MM-dd\".",
      "format": "date",
      "annotations": {
       "required": [
@@ -4637,7 +4637,7 @@ URI = """{
     },
     "inpageTagFormats": {
      "type": "array",
-     "description": "Tag types for regular placements.\\n\\nAcceptable values are:\\n- \\"STANDARD\\"\\n- \\"IFRAME_JAVASCRIPT_INPAGE\\"\\n- \\"INTERNAL_REDIRECT_INPAGE\\"\\n- \\"JAVASCRIPT_INPAGE\\"",
+     "description": "Tag types for regular placements.\n\nAcceptable values are:\n- \"STANDARD\"\n- \"IFRAME_JAVASCRIPT_INPAGE\"\n- \"INTERNAL_REDIRECT_INPAGE\"\n- \"JAVASCRIPT_INPAGE\"",
      "items": {
       "type": "string",
       "enum": [
@@ -4656,7 +4656,7 @@ URI = """{
     },
     "interstitialTagFormats": {
      "type": "array",
-     "description": "Tag types for interstitial placements.\\n\\nAcceptable values are:\\n- \\"IFRAME_JAVASCRIPT_INTERSTITIAL\\"\\n- \\"INTERNAL_REDIRECT_INTERSTITIAL\\"\\n- \\"JAVASCRIPT_INTERSTITIAL\\"",
+     "description": "Tag types for interstitial placements.\n\nAcceptable values are:\n- \"IFRAME_JAVASCRIPT_INTERSTITIAL\"\n- \"INTERNAL_REDIRECT_INTERSTITIAL\"\n- \"JAVASCRIPT_INTERSTITIAL\"",
      "items": {
       "type": "string",
       "enum": [
@@ -4673,7 +4673,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#directorySite\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#directorySite\".",
      "default": "dfareporting#directorySite"
     },
     "name": {
@@ -4731,7 +4731,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#directorySitesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#directorySitesListResponse\".",
      "default": "dfareporting#directorySitesListResponse"
     },
     "nextPageToken": {
@@ -4747,7 +4747,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#dynamicTargetingKey\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#dynamicTargetingKey\".",
      "default": "dfareporting#dynamicTargetingKey"
     },
     "name": {
@@ -4791,7 +4791,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#dynamicTargetingKeysListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#dynamicTargetingKeysListResponse\".",
      "default": "dfareporting#dynamicTargetingKeysListResponse"
     }
    }
@@ -4844,7 +4844,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#encryptionInfo\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#encryptionInfo\".",
      "default": "dfareporting#encryptionInfo"
     }
    }
@@ -4892,7 +4892,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#eventTag\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#eventTag\".",
      "default": "dfareporting#eventTag"
     },
     "name": {
@@ -4995,7 +4995,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#eventTagsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#eventTagsListResponse\".",
      "default": "dfareporting#eventTagsListResponse"
     }
    }
@@ -5003,7 +5003,7 @@ URI = """{
   "File": {
    "id": "File",
    "type": "object",
-   "description": "Represents a File resource. A file contains the metadata for a report run. It shows the status of the run and holds the URLs to the generated report data if the run is finished and the status is \\"REPORT_AVAILABLE\\".",
+   "description": "Represents a File resource. A file contains the metadata for a report run. It shows the status of the run and holds the URLs to the generated report data if the run is finished and the status is \"REPORT_AVAILABLE\".",
    "properties": {
     "dateRange": {
      "$ref": "DateRange",
@@ -5104,7 +5104,7 @@ URI = """{
     },
     "nextPageToken": {
      "type": "string",
-     "description": "Continuation token used to page through files. To retrieve the next page of results, set the next request's \\"pageToken\\" to the value of this field. The page token is only valid for a limited amount of time and should not be persisted."
+     "description": "Continuation token used to page through files. To retrieve the next page of results, set the next request's \"pageToken\" to the value of this field. The page token is only valid for a limited amount of time and should not be persisted."
     }
    }
   },
@@ -5150,7 +5150,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#floodlightActivitiesGenerateTagResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#floodlightActivitiesGenerateTagResponse\".",
      "default": "dfareporting#floodlightActivitiesGenerateTagResponse"
     }
    }
@@ -5169,7 +5169,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#floodlightActivitiesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#floodlightActivitiesListResponse\".",
      "default": "dfareporting#floodlightActivitiesListResponse"
     },
     "nextPageToken": {
@@ -5307,7 +5307,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#floodlightActivity\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#floodlightActivity\".",
      "default": "dfareporting#floodlightActivity"
     },
     "name": {
@@ -5360,7 +5360,7 @@ URI = """{
     },
     "userDefinedVariableTypes": {
      "type": "array",
-     "description": "List of the user-defined variables used by this conversion tag. These map to the \\"u[1-100]=\\" in the tags. Each of these can have a user defined type.\\nAcceptable values are U1 to U100, inclusive.",
+     "description": "List of the user-defined variables used by this conversion tag. These map to the \"u[1-100]=\" in the tags. Each of these can have a user defined type.\nAcceptable values are U1 to U100, inclusive.",
      "items": {
       "type": "string",
       "enum": [
@@ -5630,7 +5630,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#floodlightActivityGroup\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#floodlightActivityGroup\".",
      "default": "dfareporting#floodlightActivityGroup"
     },
     "name": {
@@ -5674,7 +5674,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#floodlightActivityGroupsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#floodlightActivityGroupsListResponse\".",
      "default": "dfareporting#floodlightActivityGroupsListResponse"
     },
     "nextPageToken": {
@@ -5774,7 +5774,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#floodlightConfiguration\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#floodlightConfiguration\".",
      "default": "dfareporting#floodlightConfiguration"
     },
     "lookbackConfiguration": {
@@ -5838,7 +5838,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#floodlightConfigurationsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#floodlightConfigurationsListResponse\".",
      "default": "dfareporting#floodlightConfigurationsListResponse"
     }
    }
@@ -5846,18 +5846,18 @@ URI = """{
   "FloodlightReportCompatibleFields": {
    "id": "FloodlightReportCompatibleFields",
    "type": "object",
-   "description": "Represents fields that are compatible to be selected for a report of type \\"FlOODLIGHT\\".",
+   "description": "Represents fields that are compatible to be selected for a report of type \"FlOODLIGHT\".",
    "properties": {
     "dimensionFilters": {
      "type": "array",
-     "description": "Dimensions which are compatible to be selected in the \\"dimensionFilters\\" section of the report.",
+     "description": "Dimensions which are compatible to be selected in the \"dimensionFilters\" section of the report.",
      "items": {
       "$ref": "Dimension"
      }
     },
     "dimensions": {
      "type": "array",
-     "description": "Dimensions which are compatible to be selected in the \\"dimensions\\" section of the report.",
+     "description": "Dimensions which are compatible to be selected in the \"dimensions\" section of the report.",
      "items": {
       "$ref": "Dimension"
      }
@@ -5869,7 +5869,7 @@ URI = """{
     },
     "metrics": {
      "type": "array",
-     "description": "Metrics which are compatible to be selected in the \\"metricNames\\" section of the report.",
+     "description": "Metrics which are compatible to be selected in the \"metricNames\" section of the report.",
      "items": {
       "$ref": "Metric"
      }
@@ -6026,7 +6026,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#inventoryItem\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#inventoryItem\".",
      "default": "dfareporting#inventoryItem"
     },
     "lastModifiedInfo": {
@@ -6104,7 +6104,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#inventoryItemsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#inventoryItemsListResponse\".",
      "default": "dfareporting#inventoryItemsListResponse"
     },
     "nextPageToken": {
@@ -6152,7 +6152,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#landingPage\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#landingPage\".",
      "default": "dfareporting#landingPage"
     },
     "name": {
@@ -6177,12 +6177,12 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#language\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#language\".",
      "default": "dfareporting#language"
     },
     "languageCode": {
      "type": "string",
-     "description": "Format of language code is an ISO 639 two-letter language code optionally followed by an underscore followed by an ISO 3166 code. Examples are \\"en\\" for English or \\"zh_CN\\" for Simplified Chinese."
+     "description": "Format of language code is an ISO 639 two-letter language code optionally followed by an underscore followed by an ISO 3166 code. Examples are \"en\" for English or \"zh_CN\" for Simplified Chinese."
     },
     "name": {
      "type": "string",
@@ -6211,7 +6211,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#languagesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#languagesListResponse\".",
      "default": "dfareporting#languagesListResponse"
     },
     "languages": {
@@ -6410,7 +6410,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#metro\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#metro\".",
      "default": "dfareporting#metro"
     },
     "metroCode": {
@@ -6430,7 +6430,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#metrosListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#metrosListResponse\".",
      "default": "dfareporting#metrosListResponse"
     },
     "metros": {
@@ -6467,7 +6467,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#mobileApp\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#mobileApp\".",
      "default": "dfareporting#mobileApp"
     },
     "publisherName": {
@@ -6487,7 +6487,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#mobileAppsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#mobileAppsListResponse\".",
      "default": "dfareporting#mobileAppsListResponse"
     },
     "mobileApps": {
@@ -6524,7 +6524,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#mobileCarrier\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#mobileCarrier\".",
      "default": "dfareporting#mobileCarrier"
     },
     "name": {
@@ -6540,7 +6540,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#mobileCarriersListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#mobileCarriersListResponse\".",
      "default": "dfareporting#mobileCarriersListResponse"
     },
     "mobileCarriers": {
@@ -6559,7 +6559,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#objectFilter\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#objectFilter\".",
      "default": "dfareporting#objectFilter"
     },
     "objectIds": {
@@ -6614,7 +6614,7 @@ URI = """{
     },
     "omnitureIntegrationEnabled": {
      "type": "boolean",
-     "description": "Whether Omniture integration is enabled. This property can be enabled only when the \\"Advanced Ad Serving\\" account setting is enabled."
+     "description": "Whether Omniture integration is enabled. This property can be enabled only when the \"Advanced Ad Serving\" account setting is enabled."
     }
    }
   },
@@ -6634,7 +6634,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#operatingSystem\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#operatingSystem\".",
      "default": "dfareporting#operatingSystem"
     },
     "mobile": {
@@ -6659,7 +6659,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#operatingSystemVersion\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#operatingSystemVersion\".",
      "default": "dfareporting#operatingSystemVersion"
     },
     "majorVersion": {
@@ -6687,7 +6687,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#operatingSystemVersionsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#operatingSystemVersionsListResponse\".",
      "default": "dfareporting#operatingSystemVersionsListResponse"
     },
     "operatingSystemVersions": {
@@ -6706,7 +6706,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#operatingSystemsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#operatingSystemsListResponse\".",
      "default": "dfareporting#operatingSystemsListResponse"
     },
     "operatingSystems": {
@@ -6788,7 +6788,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#order\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#order\".",
      "default": "dfareporting#order"
     },
     "lastModifiedInfo": {
@@ -6933,7 +6933,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#orderDocument\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#orderDocument\".",
      "default": "dfareporting#orderDocument"
     },
     "lastSentRecipients": {
@@ -6992,7 +6992,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#orderDocumentsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#orderDocumentsListResponse\".",
      "default": "dfareporting#orderDocumentsListResponse"
     },
     "nextPageToken": {
@@ -7015,7 +7015,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#ordersListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#ordersListResponse\".",
      "default": "dfareporting#ordersListResponse"
     },
     "nextPageToken": {
@@ -7034,18 +7034,18 @@ URI = """{
   "PathToConversionReportCompatibleFields": {
    "id": "PathToConversionReportCompatibleFields",
    "type": "object",
-   "description": "Represents fields that are compatible to be selected for a report of type \\"PATH_TO_CONVERSION\\".",
+   "description": "Represents fields that are compatible to be selected for a report of type \"PATH_TO_CONVERSION\".",
    "properties": {
     "conversionDimensions": {
      "type": "array",
-     "description": "Conversion dimensions which are compatible to be selected in the \\"conversionDimensions\\" section of the report.",
+     "description": "Conversion dimensions which are compatible to be selected in the \"conversionDimensions\" section of the report.",
      "items": {
       "$ref": "Dimension"
      }
     },
     "customFloodlightVariables": {
      "type": "array",
-     "description": "Custom floodlight variables which are compatible to be selected in the \\"customFloodlightVariables\\" section of the report.",
+     "description": "Custom floodlight variables which are compatible to be selected in the \"customFloodlightVariables\" section of the report.",
      "items": {
       "$ref": "Dimension"
      }
@@ -7057,14 +7057,14 @@ URI = """{
     },
     "metrics": {
      "type": "array",
-     "description": "Metrics which are compatible to be selected in the \\"metricNames\\" section of the report.",
+     "description": "Metrics which are compatible to be selected in the \"metricNames\" section of the report.",
      "items": {
       "$ref": "Metric"
      }
     },
     "perInteractionDimensions": {
      "type": "array",
-     "description": "Per-interaction dimensions which are compatible to be selected in the \\"perInteractionDimensions\\" section of the report.",
+     "description": "Per-interaction dimensions which are compatible to be selected in the \"perInteractionDimensions\" section of the report.",
      "items": {
       "$ref": "Dimension"
      }
@@ -7175,7 +7175,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#placement\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#placement\".",
      "default": "dfareporting#placement"
     },
     "lastModifiedInfo": {
@@ -7276,7 +7276,7 @@ URI = """{
     },
     "tagFormats": {
      "type": "array",
-     "description": "Tag formats to generate for this placement. This field is required on insertion.\\nAcceptable values are:\\n- \\"PLACEMENT_TAG_STANDARD\\"\\n- \\"PLACEMENT_TAG_IFRAME_JAVASCRIPT\\"\\n- \\"PLACEMENT_TAG_IFRAME_ILAYER\\"\\n- \\"PLACEMENT_TAG_INTERNAL_REDIRECT\\"\\n- \\"PLACEMENT_TAG_JAVASCRIPT\\"\\n- \\"PLACEMENT_TAG_INTERSTITIAL_IFRAME_JAVASCRIPT\\"\\n- \\"PLACEMENT_TAG_INTERSTITIAL_INTERNAL_REDIRECT\\"\\n- \\"PLACEMENT_TAG_INTERSTITIAL_JAVASCRIPT\\"\\n- \\"PLACEMENT_TAG_CLICK_COMMANDS\\"\\n- \\"PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH\\"\\n- \\"PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH_VAST_3\\"\\n- \\"PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH_VAST_4\\"\\n- \\"PLACEMENT_TAG_TRACKING\\"\\n- \\"PLACEMENT_TAG_TRACKING_IFRAME\\"\\n- \\"PLACEMENT_TAG_TRACKING_JAVASCRIPT\\"",
+     "description": "Tag formats to generate for this placement. This field is required on insertion.\nAcceptable values are:\n- \"PLACEMENT_TAG_STANDARD\"\n- \"PLACEMENT_TAG_IFRAME_JAVASCRIPT\"\n- \"PLACEMENT_TAG_IFRAME_ILAYER\"\n- \"PLACEMENT_TAG_INTERNAL_REDIRECT\"\n- \"PLACEMENT_TAG_JAVASCRIPT\"\n- \"PLACEMENT_TAG_INTERSTITIAL_IFRAME_JAVASCRIPT\"\n- \"PLACEMENT_TAG_INTERSTITIAL_INTERNAL_REDIRECT\"\n- \"PLACEMENT_TAG_INTERSTITIAL_JAVASCRIPT\"\n- \"PLACEMENT_TAG_CLICK_COMMANDS\"\n- \"PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH\"\n- \"PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH_VAST_3\"\n- \"PLACEMENT_TAG_INSTREAM_VIDEO_PREFETCH_VAST_4\"\n- \"PLACEMENT_TAG_TRACKING\"\n- \"PLACEMENT_TAG_TRACKING_IFRAME\"\n- \"PLACEMENT_TAG_TRACKING_JAVASCRIPT\"",
      "items": {
       "type": "string",
       "enum": [
@@ -7337,7 +7337,7 @@ URI = """{
     },
     "vpaidAdapterChoice": {
      "type": "string",
-     "description": "VPAID adapter setting for this placement. Controls which VPAID format the measurement adapter will use for in-stream video creatives assigned to this placement.\\n\\nNote: Flash is no longer supported. This field now defaults to HTML5 when the following values are provided: FLASH, BOTH.",
+     "description": "VPAID adapter setting for this placement. Controls which VPAID format the measurement adapter will use for in-stream video creatives assigned to this placement.\n\nNote: Flash is no longer supported. This field now defaults to HTML5 when the following values are provided: FLASH, BOTH.",
      "enum": [
       "BOTH",
       "DEFAULT",
@@ -7454,7 +7454,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#placementGroup\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#placementGroup\".",
      "default": "dfareporting#placementGroup"
     },
     "lastModifiedInfo": {
@@ -7518,7 +7518,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#placementGroupsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#placementGroupsListResponse\".",
      "default": "dfareporting#placementGroupsListResponse"
     },
     "nextPageToken": {
@@ -7541,7 +7541,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#placementStrategiesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#placementStrategiesListResponse\".",
      "default": "dfareporting#placementStrategiesListResponse"
     },
     "nextPageToken": {
@@ -7574,7 +7574,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#placementStrategy\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#placementStrategy\".",
      "default": "dfareporting#placementStrategy"
     },
     "name": {
@@ -7609,7 +7609,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#placementsGenerateTagsResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#placementsGenerateTagsResponse\".",
      "default": "dfareporting#placementsGenerateTagsResponse"
     },
     "placementTags": {
@@ -7628,7 +7628,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#placementsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#placementsListResponse\".",
      "default": "dfareporting#placementsListResponse"
     },
     "nextPageToken": {
@@ -7656,7 +7656,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#platformType\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#platformType\".",
      "default": "dfareporting#platformType"
     },
     "name": {
@@ -7672,7 +7672,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#platformTypesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#platformTypesListResponse\".",
      "default": "dfareporting#platformTypesListResponse"
     },
     "platformTypes": {
@@ -7759,7 +7759,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#postalCode\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#postalCode\".",
      "default": "dfareporting#postalCode"
     }
    }
@@ -7771,7 +7771,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#postalCodesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#postalCodesListResponse\".",
      "default": "dfareporting#postalCodesListResponse"
     },
     "postalCodes": {
@@ -8038,7 +8038,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#project\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#project\".",
      "default": "dfareporting#project"
     },
     "lastModifiedInfo": {
@@ -8107,7 +8107,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#projectsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#projectsListResponse\".",
      "default": "dfareporting#projectsListResponse"
     },
     "nextPageToken": {
@@ -8126,18 +8126,18 @@ URI = """{
   "ReachReportCompatibleFields": {
    "id": "ReachReportCompatibleFields",
    "type": "object",
-   "description": "Represents fields that are compatible to be selected for a report of type \\"REACH\\".",
+   "description": "Represents fields that are compatible to be selected for a report of type \"REACH\".",
    "properties": {
     "dimensionFilters": {
      "type": "array",
-     "description": "Dimensions which are compatible to be selected in the \\"dimensionFilters\\" section of the report.",
+     "description": "Dimensions which are compatible to be selected in the \"dimensionFilters\" section of the report.",
      "items": {
       "$ref": "Dimension"
      }
     },
     "dimensions": {
      "type": "array",
-     "description": "Dimensions which are compatible to be selected in the \\"dimensions\\" section of the report.",
+     "description": "Dimensions which are compatible to be selected in the \"dimensions\" section of the report.",
      "items": {
       "$ref": "Dimension"
      }
@@ -8149,21 +8149,21 @@ URI = """{
     },
     "metrics": {
      "type": "array",
-     "description": "Metrics which are compatible to be selected in the \\"metricNames\\" section of the report.",
+     "description": "Metrics which are compatible to be selected in the \"metricNames\" section of the report.",
      "items": {
       "$ref": "Metric"
      }
     },
     "pivotedActivityMetrics": {
      "type": "array",
-     "description": "Metrics which are compatible to be selected as activity metrics to pivot on in the \\"activities\\" section of the report.",
+     "description": "Metrics which are compatible to be selected as activity metrics to pivot on in the \"activities\" section of the report.",
      "items": {
       "$ref": "Metric"
      }
     },
     "reachByFrequencyMetrics": {
      "type": "array",
-     "description": "Metrics which are compatible to be selected in the \\"reachByFrequencyMetricNames\\" section of the report.",
+     "description": "Metrics which are compatible to be selected in the \"reachByFrequencyMetricNames\" section of the report.",
      "items": {
       "$ref": "Metric"
      }
@@ -8231,7 +8231,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#region\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#region\".",
      "default": "dfareporting#region"
     },
     "name": {
@@ -8251,7 +8251,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#regionsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#regionsListResponse\".",
      "default": "dfareporting#regionsListResponse"
     },
     "regions": {
@@ -8297,7 +8297,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#remarketingList\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#remarketingList\".",
      "default": "dfareporting#remarketingList"
     },
     "lifeSpan": {
@@ -8362,7 +8362,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#remarketingListShare\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#remarketingListShare\".",
      "default": "dfareporting#remarketingListShare"
     },
     "remarketingListId": {
@@ -8395,7 +8395,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#remarketingListsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#remarketingListsListResponse\".",
      "default": "dfareporting#remarketingListsListResponse"
     },
     "nextPageToken": {
@@ -8428,7 +8428,7 @@ URI = """{
     },
     "criteria": {
      "type": "object",
-     "description": "The report criteria for a report of type \\"STANDARD\\".",
+     "description": "The report criteria for a report of type \"STANDARD\".",
      "properties": {
       "activities": {
        "$ref": "Activities",
@@ -8444,7 +8444,7 @@ URI = """{
       },
       "dimensionFilters": {
        "type": "array",
-       "description": "The list of filters on which dimensions are filtered.\\nFilters for different dimensions are ANDed, filters for the same dimension are grouped together and ORed.",
+       "description": "The list of filters on which dimensions are filtered.\nFilters for different dimensions are ANDed, filters for the same dimension are grouped together and ORed.",
        "items": {
         "$ref": "DimensionValue"
        }
@@ -8467,7 +8467,7 @@ URI = """{
     },
     "crossDimensionReachCriteria": {
      "type": "object",
-     "description": "The report criteria for a report of type \\"CROSS_DIMENSION_REACH\\".",
+     "description": "The report criteria for a report of type \"CROSS_DIMENSION_REACH\".",
      "properties": {
       "breakdown": {
        "type": "array",
@@ -8566,7 +8566,7 @@ URI = """{
     },
     "floodlightCriteria": {
      "type": "object",
-     "description": "The report criteria for a report of type \\"FLOODLIGHT\\".",
+     "description": "The report criteria for a report of type \"FLOODLIGHT\".",
      "properties": {
       "customRichMediaEvents": {
        "type": "array",
@@ -8581,7 +8581,7 @@ URI = """{
       },
       "dimensionFilters": {
        "type": "array",
-       "description": "The list of filters on which dimensions are filtered.\\nFilters for different dimensions are ANDed, filters for the same dimension are grouped together and ORed.",
+       "description": "The list of filters on which dimensions are filtered.\nFilters for different dimensions are ANDed, filters for the same dimension are grouped together and ORed.",
        "items": {
         "$ref": "DimensionValue"
        }
@@ -8626,7 +8626,7 @@ URI = """{
     },
     "format": {
      "type": "string",
-     "description": "The output format of the report. If not specified, default format is \\"CSV\\". Note that the actual format in the completed report file might differ if for instance the report's size exceeds the format's capabilities. \\"CSV\\" will then be the fallback format.",
+     "description": "The output format of the report. If not specified, default format is \"CSV\". Note that the actual format in the completed report file might differ if for instance the report's size exceeds the format's capabilities. \"CSV\" will then be the fallback format.",
      "enum": [
       "CSV",
       "EXCEL"
@@ -8683,7 +8683,7 @@ URI = """{
     },
     "pathToConversionCriteria": {
      "type": "object",
-     "description": "The report criteria for a report of type \\"PATH_TO_CONVERSION\\".",
+     "description": "The report criteria for a report of type \"PATH_TO_CONVERSION\".",
      "properties": {
       "activityFilters": {
        "type": "array",
@@ -8786,7 +8786,7 @@ URI = """{
     },
     "reachCriteria": {
      "type": "object",
-     "description": "The report criteria for a report of type \\"REACH\\".",
+     "description": "The report criteria for a report of type \"REACH\".",
      "properties": {
       "activities": {
        "$ref": "Activities",
@@ -8802,7 +8802,7 @@ URI = """{
       },
       "dimensionFilters": {
        "type": "array",
-       "description": "The list of filters on which dimensions are filtered.\\nFilters for different dimensions are ANDed, filters for the same dimension are grouped together and ORed.",
+       "description": "The list of filters on which dimensions are filtered.\nFilters for different dimensions are ANDed, filters for the same dimension are grouped together and ORed.",
        "items": {
         "$ref": "DimensionValue"
        }
@@ -8836,7 +8836,7 @@ URI = """{
     },
     "schedule": {
      "type": "object",
-     "description": "The report's schedule. Can only be set if the report's 'dateRange' is a relative date range and the relative date range is not \\"TODAY\\".",
+     "description": "The report's schedule. Can only be set if the report's 'dateRange' is a relative date range and the relative date range is not \"TODAY\".",
      "properties": {
       "active": {
        "type": "boolean",
@@ -8850,7 +8850,7 @@ URI = """{
       },
       "every": {
        "type": "integer",
-       "description": "Defines every how many days, weeks or months the report should be run. Needs to be set when \\"repeats\\" is either \\"DAILY\\", \\"WEEKLY\\" or \\"MONTHLY\\".",
+       "description": "Defines every how many days, weeks or months the report should be run. Needs to be set when \"repeats\" is either \"DAILY\", \"WEEKLY\" or \"MONTHLY\".",
        "format": "int32"
       },
       "expirationDate": {
@@ -8866,7 +8866,7 @@ URI = """{
       },
       "repeats": {
        "type": "string",
-       "description": "The interval for which the report is repeated. Note:  \\n- \\"DAILY\\" also requires field \\"every\\" to be set. \\n- \\"WEEKLY\\" also requires fields \\"every\\" and \\"repeatsOnWeekDays\\" to be set. \\n- \\"MONTHLY\\" also requires fields \\"every\\" and \\"runsOnDayOfMonth\\" to be set.",
+       "description": "The interval for which the report is repeated. Note:  \n- \"DAILY\" also requires field \"every\" to be set. \n- \"WEEKLY\" also requires fields \"every\" and \"repeatsOnWeekDays\" to be set. \n- \"MONTHLY\" also requires fields \"every\" and \"runsOnDayOfMonth\" to be set.",
        "annotations": {
         "required": [
          "dfareporting.reports.insert",
@@ -8876,7 +8876,7 @@ URI = """{
       },
       "repeatsOnWeekDays": {
        "type": "array",
-       "description": "List of week days \\"WEEKLY\\" on which scheduled reports should run.",
+       "description": "List of week days \"WEEKLY\" on which scheduled reports should run.",
        "items": {
         "type": "string",
         "enum": [
@@ -8901,7 +8901,7 @@ URI = """{
       },
       "runsOnDayOfMonth": {
        "type": "string",
-       "description": "Enum to define for \\"MONTHLY\\" scheduled reports whether reports should be repeated on the same day of the month as \\"startDate\\" or the same day of the week of the month.\\nExample: If 'startDate' is Monday, April 2nd 2012 (2012-04-02), \\"DAY_OF_MONTH\\" would run subsequent reports on the 2nd of every Month, and \\"WEEK_OF_MONTH\\" would run subsequent reports on the first Monday of the month.",
+       "description": "Enum to define for \"MONTHLY\" scheduled reports whether reports should be repeated on the same day of the month as \"startDate\" or the same day of the week of the month.\nExample: If 'startDate' is Monday, April 2nd 2012 (2012-04-02), \"DAY_OF_MONTH\" would run subsequent reports on the 2nd of every Month, and \"WEEK_OF_MONTH\" would run subsequent reports on the first Monday of the month.",
        "enum": [
         "DAY_OF_MONTH",
         "WEEK_OF_MONTH"
@@ -8958,18 +8958,18 @@ URI = """{
   "ReportCompatibleFields": {
    "id": "ReportCompatibleFields",
    "type": "object",
-   "description": "Represents fields that are compatible to be selected for a report of type \\"STANDARD\\".",
+   "description": "Represents fields that are compatible to be selected for a report of type \"STANDARD\".",
    "properties": {
     "dimensionFilters": {
      "type": "array",
-     "description": "Dimensions which are compatible to be selected in the \\"dimensionFilters\\" section of the report.",
+     "description": "Dimensions which are compatible to be selected in the \"dimensionFilters\" section of the report.",
      "items": {
       "$ref": "Dimension"
      }
     },
     "dimensions": {
      "type": "array",
-     "description": "Dimensions which are compatible to be selected in the \\"dimensions\\" section of the report.",
+     "description": "Dimensions which are compatible to be selected in the \"dimensions\" section of the report.",
      "items": {
       "$ref": "Dimension"
      }
@@ -8981,14 +8981,14 @@ URI = """{
     },
     "metrics": {
      "type": "array",
-     "description": "Metrics which are compatible to be selected in the \\"metricNames\\" section of the report.",
+     "description": "Metrics which are compatible to be selected in the \"metricNames\" section of the report.",
      "items": {
       "$ref": "Metric"
      }
     },
     "pivotedActivityMetrics": {
      "type": "array",
-     "description": "Metrics which are compatible to be selected as activity metrics to pivot on in the \\"activities\\" section of the report.",
+     "description": "Metrics which are compatible to be selected as activity metrics to pivot on in the \"activities\" section of the report.",
      "items": {
       "$ref": "Metric"
      }
@@ -9018,7 +9018,7 @@ URI = """{
     },
     "nextPageToken": {
      "type": "string",
-     "description": "Continuation token used to page through reports. To retrieve the next page of results, set the next request's \\"pageToken\\" to the value of this field. The page token is only valid for a limited amount of time and should not be persisted."
+     "description": "Continuation token used to page through reports. To retrieve the next page of results, set the next request's \"pageToken\" to the value of this field. The page token is only valid for a limited amount of time and should not be persisted."
     }
    }
   },
@@ -9037,7 +9037,7 @@ URI = """{
     },
     "reportGenerationTimeZoneId": {
      "type": "string",
-     "description": "Report generation time zone ID of this account. This is a required field that can only be changed by a superuser.\\nAcceptable values are:\\n\\n- \\"1\\" for \\"America/New_York\\" \\n- \\"2\\" for \\"Europe/London\\" \\n- \\"3\\" for \\"Europe/Paris\\" \\n- \\"4\\" for \\"Africa/Johannesburg\\" \\n- \\"5\\" for \\"Asia/Jerusalem\\" \\n- \\"6\\" for \\"Asia/Shanghai\\" \\n- \\"7\\" for \\"Asia/Hong_Kong\\" \\n- \\"8\\" for \\"Asia/Tokyo\\" \\n- \\"9\\" for \\"Australia/Sydney\\" \\n- \\"10\\" for \\"Asia/Dubai\\" \\n- \\"11\\" for \\"America/Los_Angeles\\" \\n- \\"12\\" for \\"Pacific/Auckland\\" \\n- \\"13\\" for \\"America/Sao_Paulo\\"",
+     "description": "Report generation time zone ID of this account. This is a required field that can only be changed by a superuser.\nAcceptable values are:\n\n- \"1\" for \"America/New_York\" \n- \"2\" for \"Europe/London\" \n- \"3\" for \"Europe/Paris\" \n- \"4\" for \"Africa/Johannesburg\" \n- \"5\" for \"Asia/Jerusalem\" \n- \"6\" for \"Asia/Shanghai\" \n- \"7\" for \"Asia/Hong_Kong\" \n- \"8\" for \"Asia/Tokyo\" \n- \"9\" for \"Australia/Sydney\" \n- \"10\" for \"Asia/Dubai\" \n- \"11\" for \"America/Los_Angeles\" \n- \"12\" for \"Pacific/Auckland\" \n- \"13\" for \"America/Sao_Paulo\"",
      "format": "int64"
     }
    }
@@ -9121,7 +9121,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#site\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#site\".",
      "default": "dfareporting#site"
     },
     "name": {
@@ -9172,7 +9172,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#siteCompanionSetting\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#siteCompanionSetting\".",
      "default": "dfareporting#siteCompanionSetting"
     }
    }
@@ -9252,7 +9252,7 @@ URI = """{
     },
     "vpaidAdapterChoiceTemplate": {
      "type": "string",
-     "description": "Default VPAID adapter setting for new placements created under this site. This value will be used to populate the placements.vpaidAdapterChoice field, when no value is specified for the new placement. Controls which VPAID format the measurement adapter will use for in-stream video creatives assigned to the placement. The publisher's specifications will typically determine this setting. For VPAID creatives, the adapter format will match the VPAID format (HTML5 VPAID creatives use the HTML5 adapter).\\n\\nNote: Flash is no longer supported. This field now defaults to HTML5 when the following values are provided: FLASH, BOTH.",
+     "description": "Default VPAID adapter setting for new placements created under this site. This value will be used to populate the placements.vpaidAdapterChoice field, when no value is specified for the new placement. Controls which VPAID format the measurement adapter will use for in-stream video creatives assigned to the placement. The publisher's specifications will typically determine this setting. For VPAID creatives, the adapter format will match the VPAID format (HTML5 VPAID creatives use the HTML5 adapter).\n\nNote: Flash is no longer supported. This field now defaults to HTML5 when the following values are provided: FLASH, BOTH.",
      "enum": [
       "BOTH",
       "DEFAULT",
@@ -9275,7 +9275,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#siteSkippableSetting\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#siteSkippableSetting\".",
      "default": "dfareporting#siteSkippableSetting"
     },
     "progressOffset": {
@@ -9307,7 +9307,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#siteTranscodeSetting\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#siteTranscodeSetting\".",
      "default": "dfareporting#siteTranscodeSetting"
     }
    }
@@ -9323,7 +9323,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#siteVideoSettings\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#siteVideoSettings\".",
      "default": "dfareporting#siteVideoSettings"
     },
     "orientation": {
@@ -9357,7 +9357,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#sitesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#sitesListResponse\".",
      "default": "dfareporting#sitesListResponse"
     },
     "nextPageToken": {
@@ -9394,7 +9394,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#size\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#size\".",
      "default": "dfareporting#size"
     },
     "width": {
@@ -9411,7 +9411,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#sizesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#sizesListResponse\".",
      "default": "dfareporting#sizesListResponse"
     },
     "sizes": {
@@ -9430,7 +9430,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#skippableSetting\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#skippableSetting\".",
      "default": "dfareporting#skippableSetting"
     },
     "progressOffset": {
@@ -9500,7 +9500,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#subaccount\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#subaccount\".",
      "default": "dfareporting#subaccount"
     },
     "name": {
@@ -9516,7 +9516,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#subaccountsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#subaccountsListResponse\".",
      "default": "dfareporting#subaccountsListResponse"
     },
     "nextPageToken": {
@@ -9710,7 +9710,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#targetableRemarketingList\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#targetableRemarketingList\".",
      "default": "dfareporting#targetableRemarketingList"
     },
     "lifeSpan": {
@@ -9771,7 +9771,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#targetableRemarketingListsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#targetableRemarketingListsListResponse\".",
      "default": "dfareporting#targetableRemarketingListsListResponse"
     },
     "nextPageToken": {
@@ -9825,7 +9825,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#targetingTemplate\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#targetingTemplate\".",
      "default": "dfareporting#targetingTemplate"
     },
     "languageTargeting": {
@@ -9858,7 +9858,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#targetingTemplatesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#targetingTemplatesListResponse\".",
      "default": "dfareporting#targetingTemplatesListResponse"
     },
     "nextPageToken": {
@@ -10010,7 +10010,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#transcodeSetting\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#transcodeSetting\".",
      "default": "dfareporting#transcodeSetting"
     }
    }
@@ -10038,7 +10038,7 @@ URI = """{
     },
     "value": {
      "type": "string",
-     "description": "ID value for this creative. Only alphanumeric characters and the following symbols are valid: \\"_/\\\\-\\". Maximum length is 64 characters. Read only when registry is DCM."
+     "description": "ID value for this creative. Only alphanumeric characters and the following symbols are valid: \"_/\\-\". Maximum length is 64 characters. Read only when registry is DCM."
     }
    }
   },
@@ -10061,7 +10061,7 @@ URI = """{
     },
     "reportName": {
      "type": "string",
-     "description": "User-friendly name for the variable which will appear in reports. This is a required field, must be less than 64 characters long, and cannot contain the following characters: \\"\\"\\u003c\\u003e\\"."
+     "description": "User-friendly name for the variable which will appear in reports. This is a required field, must be less than 64 characters long, and cannot contain the following characters: \"\"\u003c\u003e\"."
     },
     "variableType": {
      "type": "string",
@@ -10360,7 +10360,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#userRole\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#userRole\".",
      "default": "dfareporting#userRole"
     },
     "name": {
@@ -10416,7 +10416,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#userRolePermission\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#userRolePermission\".",
      "default": "dfareporting#userRolePermission"
     },
     "name": {
@@ -10442,7 +10442,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#userRolePermissionGroup\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#userRolePermissionGroup\".",
      "default": "dfareporting#userRolePermissionGroup"
     },
     "name": {
@@ -10458,7 +10458,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#userRolePermissionGroupsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#userRolePermissionGroupsListResponse\".",
      "default": "dfareporting#userRolePermissionGroupsListResponse"
     },
     "userRolePermissionGroups": {
@@ -10477,7 +10477,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#userRolePermissionsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#userRolePermissionsListResponse\".",
      "default": "dfareporting#userRolePermissionsListResponse"
     },
     "userRolePermissions": {
@@ -10496,7 +10496,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#userRolesListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#userRolesListResponse\".",
      "default": "dfareporting#userRolesListResponse"
     },
     "nextPageToken": {
@@ -10542,7 +10542,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#videoFormat\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#videoFormat\".",
      "default": "dfareporting#videoFormat"
     },
     "resolution": {
@@ -10563,7 +10563,7 @@ URI = """{
    "properties": {
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#videoFormatsListResponse\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#videoFormatsListResponse\".",
      "default": "dfareporting#videoFormatsListResponse"
     },
     "videoFormats": {
@@ -10603,7 +10603,7 @@ URI = """{
     },
     "kind": {
      "type": "string",
-     "description": "Identifies what kind of resource this is. Value: the fixed string \\"dfareporting#videoSettings\\".",
+     "description": "Identifies what kind of resource this is. Value: the fixed string \"dfareporting#videoSettings\".",
      "default": "dfareporting#videoSettings"
     },
     "orientation": {
@@ -10938,7 +10938,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name, ID or email. Wildcards (*) are allowed. For example, \\"user profile*2015\\" will return objects with names like \\"user profile June 2015\\", \\"user profile April 2015\\", or simply \\"user profile 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"user profile\\" will match objects with name \\"my user profile\\", \\"user profile 2015\\", or simply \\"user profile\\".",
+       "description": "Allows searching for objects by name, ID or email. Wildcards (*) are allowed. For example, \"user profile*2015\" will return objects with names like \"user profile June 2015\", \"user profile April 2015\", or simply \"user profile 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"user profile\" will match objects with name \"my user profile\", \"user profile 2015\", or simply \"user profile\".",
        "location": "query"
       },
       "sortField": {
@@ -11155,7 +11155,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"account*2015\\" will return objects with names like \\"account June 2015\\", \\"account April 2015\\", or simply \\"account 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"account\\" will match objects with name \\"my account\\", \\"account 2015\\", or simply \\"account\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"account*2015\" will return objects with names like \"account June 2015\", \"account April 2015\", or simply \"account 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"account\" will match objects with name \"my account\", \"account 2015\", or simply \"account\".",
        "location": "query"
       },
       "sortField": {
@@ -11485,7 +11485,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"ad*2015\\" will return objects with names like \\"ad June 2015\\", \\"ad April 2015\\", or simply \\"ad 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"ad\\" will match objects with name \\"my ad\\", \\"ad 2015\\", or simply \\"ad\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"ad*2015\" will return objects with names like \"ad June 2015\", \"ad April 2015\", or simply \"ad 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"ad\" will match objects with name \"my ad\", \"ad 2015\", or simply \"ad\".",
        "location": "query"
       },
       "sizeIds": {
@@ -11788,7 +11788,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"advertiser*2015\\" will return objects with names like \\"advertiser group June 2015\\", \\"advertiser group April 2015\\", or simply \\"advertiser group 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"advertisergroup\\" will match objects with name \\"my advertisergroup\\", \\"advertisergroup 2015\\", or simply \\"advertisergroup\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"advertiser*2015\" will return objects with names like \"advertiser group June 2015\", \"advertiser group April 2015\", or simply \"advertiser group 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"advertisergroup\" will match objects with name \"my advertisergroup\", \"advertisergroup 2015\", or simply \"advertisergroup\".",
        "location": "query"
       },
       "sortField": {
@@ -12040,7 +12040,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for landing pages by name or ID. Wildcards (*) are allowed. For example, \\"landingpage*2017\\" will return landing pages with names like \\"landingpage July 2017\\", \\"landingpage March 2017\\", or simply \\"landingpage 2017\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"landingpage\\" will match campaigns with name \\"my landingpage\\", \\"landingpage 2015\\", or simply \\"landingpage\\".",
+       "description": "Allows searching for landing pages by name or ID. Wildcards (*) are allowed. For example, \"landingpage*2017\" will return landing pages with names like \"landingpage July 2017\", \"landingpage March 2017\", or simply \"landingpage 2017\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"landingpage\" will match campaigns with name \"my landingpage\", \"landingpage 2015\", or simply \"landingpage\".",
        "location": "query"
       },
       "sortField": {
@@ -12303,7 +12303,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"advertiser*2015\\" will return objects with names like \\"advertiser June 2015\\", \\"advertiser April 2015\\", or simply \\"advertiser 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"advertiser\\" will match objects with name \\"my advertiser\\", \\"advertiser 2015\\", or simply \\"advertiser\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"advertiser*2015\" will return objects with names like \"advertiser June 2015\", \"advertiser April 2015\", or simply \"advertiser 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"advertiser\" will match objects with name \"my advertiser\", \"advertiser 2015\", or simply \"advertiser\".",
        "location": "query"
       },
       "sortField": {
@@ -12737,7 +12737,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for campaigns by name or ID. Wildcards (*) are allowed. For example, \\"campaign*2015\\" will return campaigns with names like \\"campaign June 2015\\", \\"campaign April 2015\\", or simply \\"campaign 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"campaign\\" will match campaigns with name \\"my campaign\\", \\"campaign 2015\\", or simply \\"campaign\\".",
+       "description": "Allows searching for campaigns by name or ID. Wildcards (*) are allowed. For example, \"campaign*2015\" will return campaigns with names like \"campaign June 2015\", \"campaign April 2015\", or simply \"campaign 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"campaign\" will match campaigns with name \"my campaign\", \"campaign 2015\", or simply \"campaign\".",
        "location": "query"
       },
       "sortField": {
@@ -12965,7 +12965,7 @@ URI = """{
       },
       "maxChangeTime": {
        "type": "string",
-       "description": "Select only change logs whose change time is before the specified maxChangeTime.The time should be formatted as an RFC3339 date/time string. For example, for 10:54 PM on July 18th, 2015, in the America/New York time zone, the format is \\"2015-07-18T22:54:00-04:00\\". In other words, the year, month, day, the letter T, the hour (24-hour clock system), minute, second, and then the time zone offset.",
+       "description": "Select only change logs whose change time is before the specified maxChangeTime.The time should be formatted as an RFC3339 date/time string. For example, for 10:54 PM on July 18th, 2015, in the America/New York time zone, the format is \"2015-07-18T22:54:00-04:00\". In other words, the year, month, day, the letter T, the hour (24-hour clock system), minute, second, and then the time zone offset.",
        "location": "query"
       },
       "maxResults": {
@@ -12979,7 +12979,7 @@ URI = """{
       },
       "minChangeTime": {
        "type": "string",
-       "description": "Select only change logs whose change time is before the specified minChangeTime.The time should be formatted as an RFC3339 date/time string. For example, for 10:54 PM on July 18th, 2015, in the America/New York time zone, the format is \\"2015-07-18T22:54:00-04:00\\". In other words, the year, month, day, the letter T, the hour (24-hour clock system), minute, second, and then the time zone offset.",
+       "description": "Select only change logs whose change time is before the specified minChangeTime.The time should be formatted as an RFC3339 date/time string. For example, for 10:54 PM on July 18th, 2015, in the America/New York time zone, the format is \"2015-07-18T22:54:00-04:00\". In other words, the year, month, day, the letter T, the hour (24-hour clock system), minute, second, and then the time zone offset.",
        "location": "query"
       },
       "objectIds": {
@@ -13395,7 +13395,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"contentcategory*2015\\" will return objects with names like \\"contentcategory June 2015\\", \\"contentcategory April 2015\\", or simply \\"contentcategory 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"contentcategory\\" will match objects with name \\"my contentcategory\\", \\"contentcategory 2015\\", or simply \\"contentcategory\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"contentcategory*2015\" will return objects with names like \"contentcategory June 2015\", \"contentcategory April 2015\", or simply \"contentcategory 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"contentcategory\" will match objects with name \"my contentcategory\", \"contentcategory 2015\", or simply \"contentcategory\".",
        "location": "query"
       },
       "sortField": {
@@ -14190,7 +14190,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for creative fields by name or ID. Wildcards (*) are allowed. For example, \\"creativefield*2015\\" will return creative fields with names like \\"creativefield June 2015\\", \\"creativefield April 2015\\", or simply \\"creativefield 2015\\". Most of the searches also add wild-cards implicitly at the start and the end of the search string. For example, a search string of \\"creativefield\\" will match creative fields with the name \\"my creativefield\\", \\"creativefield 2015\\", or simply \\"creativefield\\".",
+       "description": "Allows searching for creative fields by name or ID. Wildcards (*) are allowed. For example, \"creativefield*2015\" will return creative fields with names like \"creativefield June 2015\", \"creativefield April 2015\", or simply \"creativefield 2015\". Most of the searches also add wild-cards implicitly at the start and the end of the search string. For example, a search string of \"creativefield\" will match creative fields with the name \"my creativefield\", \"creativefield 2015\", or simply \"creativefield\".",
        "location": "query"
       },
       "sortField": {
@@ -14438,7 +14438,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for creative groups by name or ID. Wildcards (*) are allowed. For example, \\"creativegroup*2015\\" will return creative groups with names like \\"creativegroup June 2015\\", \\"creativegroup April 2015\\", or simply \\"creativegroup 2015\\". Most of the searches also add wild-cards implicitly at the start and the end of the search string. For example, a search string of \\"creativegroup\\" will match creative groups with the name \\"my creativegroup\\", \\"creativegroup 2015\\", or simply \\"creativegroup\\".",
+       "description": "Allows searching for creative groups by name or ID. Wildcards (*) are allowed. For example, \"creativegroup*2015\" will return creative groups with names like \"creativegroup June 2015\", \"creativegroup April 2015\", or simply \"creativegroup 2015\". Most of the searches also add wild-cards implicitly at the start and the end of the search string. For example, a search string of \"creativegroup\" will match creative groups with the name \"my creativegroup\", \"creativegroup 2015\", or simply \"creativegroup\".",
        "location": "query"
       },
       "sortField": {
@@ -14714,7 +14714,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"creative*2015\\" will return objects with names like \\"creative June 2015\\", \\"creative April 2015\\", or simply \\"creative 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"creative\\" will match objects with name \\"my creative\\", \\"creative 2015\\", or simply \\"creative\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"creative*2015\" will return objects with names like \"creative June 2015\", \"creative April 2015\", or simply \"creative 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"creative\" will match objects with name \"my creative\", \"creative 2015\", or simply \"creative\".",
        "location": "query"
       },
       "sizeIds": {
@@ -15095,7 +15095,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name, ID or URL. Wildcards (*) are allowed. For example, \\"directory site*2015\\" will return objects with names like \\"directory site June 2015\\", \\"directory site April 2015\\", or simply \\"directory site 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"directory site\\" will match objects with name \\"my directory site\\", \\"directory site 2015\\" or simply, \\"directory site\\".",
+       "description": "Allows searching for objects by name, ID or URL. Wildcards (*) are allowed. For example, \"directory site*2015\" will return objects with names like \"directory site June 2015\", \"directory site April 2015\", or simply \"directory site 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"directory site\" will match objects with name \"my directory site\", \"directory site 2015\" or simply, \"directory site\".",
        "location": "query"
       },
       "sortField": {
@@ -15556,7 +15556,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"eventtag*2015\\" will return objects with names like \\"eventtag June 2015\\", \\"eventtag April 2015\\", or simply \\"eventtag 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"eventtag\\" will match objects with name \\"my eventtag\\", \\"eventtag 2015\\", or simply \\"eventtag\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"eventtag*2015\" will return objects with names like \"eventtag June 2015\", \"eventtag April 2015\", or simply \"eventtag 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"eventtag\" will match objects with name \"my eventtag\", \"eventtag 2015\", or simply \"eventtag\".",
        "location": "query"
       },
       "sortField": {
@@ -16026,7 +16026,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"floodlightactivity*2015\\" will return objects with names like \\"floodlightactivity June 2015\\", \\"floodlightactivity April 2015\\", or simply \\"floodlightactivity 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"floodlightactivity\\" will match objects with name \\"my floodlightactivity activity\\", \\"floodlightactivity 2015\\", or simply \\"floodlightactivity\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"floodlightactivity*2015\" will return objects with names like \"floodlightactivity June 2015\", \"floodlightactivity April 2015\", or simply \"floodlightactivity 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"floodlightactivity\" will match objects with name \"my floodlightactivity activity\", \"floodlightactivity 2015\", or simply \"floodlightactivity\".",
        "location": "query"
       },
       "sortField": {
@@ -16311,7 +16311,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"floodlightactivitygroup*2015\\" will return objects with names like \\"floodlightactivitygroup June 2015\\", \\"floodlightactivitygroup April 2015\\", or simply \\"floodlightactivitygroup 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"floodlightactivitygroup\\" will match objects with name \\"my floodlightactivitygroup activity\\", \\"floodlightactivitygroup 2015\\", or simply \\"floodlightactivitygroup\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"floodlightactivitygroup*2015\" will return objects with names like \"floodlightactivitygroup June 2015\", \"floodlightactivitygroup April 2015\", or simply \"floodlightactivitygroup 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"floodlightactivitygroup\" will match objects with name \"my floodlightactivitygroup activity\", \"floodlightactivitygroup 2015\", or simply \"floodlightactivitygroup\".",
        "location": "query"
       },
       "sortField": {
@@ -16928,7 +16928,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"app*2015\\" will return objects with names like \\"app Jan 2018\\", \\"app Jan 2018\\", or simply \\"app 2018\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"app\\" will match objects with name \\"my app\\", \\"app 2018\\", or simply \\"app\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"app*2015\" will return objects with names like \"app Jan 2018\", \"app Jan 2018\", or simply \"app 2018\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"app\" will match objects with name \"my app\", \"app 2018\", or simply \"app\".",
        "location": "query"
       }
      },
@@ -17269,7 +17269,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for order documents by name or ID. Wildcards (*) are allowed. For example, \\"orderdocument*2015\\" will return order documents with names like \\"orderdocument June 2015\\", \\"orderdocument April 2015\\", or simply \\"orderdocument 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"orderdocument\\" will match order documents with name \\"my orderdocument\\", \\"orderdocument 2015\\", or simply \\"orderdocument\\".",
+       "description": "Allows searching for order documents by name or ID. Wildcards (*) are allowed. For example, \"orderdocument*2015\" will return order documents with names like \"orderdocument June 2015\", \"orderdocument April 2015\", or simply \"orderdocument 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"orderdocument\" will match order documents with name \"my orderdocument\", \"orderdocument 2015\", or simply \"orderdocument\".",
        "location": "query"
       },
       "siteId": {
@@ -17418,7 +17418,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for orders by name or ID. Wildcards (*) are allowed. For example, \\"order*2015\\" will return orders with names like \\"order June 2015\\", \\"order April 2015\\", or simply \\"order 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"order\\" will match orders with name \\"my order\\", \\"order 2015\\", or simply \\"order\\".",
+       "description": "Allows searching for orders by name or ID. Wildcards (*) are allowed. For example, \"order*2015\" will return orders with names like \"order June 2015\", \"order April 2015\", or simply \"order 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"order\" will match orders with name \"my order\", \"order 2015\", or simply \"order\".",
        "location": "query"
       },
       "siteId": {
@@ -17597,7 +17597,7 @@ URI = """{
       },
       "maxEndDate": {
        "type": "string",
-       "description": "Select only placements or placement groups whose end date is on or before the specified maxEndDate. The date should be formatted as \\"yyyy-MM-dd\\".",
+       "description": "Select only placements or placement groups whose end date is on or before the specified maxEndDate. The date should be formatted as \"yyyy-MM-dd\".",
        "location": "query"
       },
       "maxResults": {
@@ -17611,17 +17611,17 @@ URI = """{
       },
       "maxStartDate": {
        "type": "string",
-       "description": "Select only placements or placement groups whose start date is on or before the specified maxStartDate. The date should be formatted as \\"yyyy-MM-dd\\".",
+       "description": "Select only placements or placement groups whose start date is on or before the specified maxStartDate. The date should be formatted as \"yyyy-MM-dd\".",
        "location": "query"
       },
       "minEndDate": {
        "type": "string",
-       "description": "Select only placements or placement groups whose end date is on or after the specified minEndDate. The date should be formatted as \\"yyyy-MM-dd\\".",
+       "description": "Select only placements or placement groups whose end date is on or after the specified minEndDate. The date should be formatted as \"yyyy-MM-dd\".",
        "location": "query"
       },
       "minStartDate": {
        "type": "string",
-       "description": "Select only placements or placement groups whose start date is on or after the specified minStartDate. The date should be formatted as \\"yyyy-MM-dd\\".",
+       "description": "Select only placements or placement groups whose start date is on or after the specified minStartDate. The date should be formatted as \"yyyy-MM-dd\".",
        "location": "query"
       },
       "pageToken": {
@@ -17680,7 +17680,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for placement groups by name or ID. Wildcards (*) are allowed. For example, \\"placement*2015\\" will return placement groups with names like \\"placement group June 2015\\", \\"placement group May 2015\\", or simply \\"placements 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"placementgroup\\" will match placement groups with name \\"my placementgroup\\", \\"placementgroup 2015\\", or simply \\"placementgroup\\".",
+       "description": "Allows searching for placement groups by name or ID. Wildcards (*) are allowed. For example, \"placement*2015\" will return placement groups with names like \"placement group June 2015\", \"placement group May 2015\", or simply \"placements 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"placementgroup\" will match placement groups with name \"my placementgroup\", \"placementgroup 2015\", or simply \"placementgroup\".",
        "location": "query"
       },
       "siteIds": {
@@ -17955,7 +17955,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"placementstrategy*2015\\" will return objects with names like \\"placementstrategy June 2015\\", \\"placementstrategy April 2015\\", or simply \\"placementstrategy 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"placementstrategy\\" will match objects with name \\"my placementstrategy\\", \\"placementstrategy 2015\\", or simply \\"placementstrategy\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"placementstrategy*2015\" will return objects with names like \"placementstrategy June 2015\", \"placementstrategy April 2015\", or simply \"placementstrategy 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"placementstrategy\" will match objects with name \"my placementstrategy\", \"placementstrategy 2015\", or simply \"placementstrategy\".",
        "location": "query"
       },
       "sortField": {
@@ -18109,7 +18109,7 @@ URI = """{
       },
       "tagFormats": {
        "type": "string",
-       "description": "Tag formats to generate for these placements.\\n\\nNote: PLACEMENT_TAG_STANDARD can only be generated for 1x1 placements.",
+       "description": "Tag formats to generate for these placements.\n\nNote: PLACEMENT_TAG_STANDARD can only be generated for 1x1 placements.",
        "enum": [
         "PLACEMENT_TAG_CLICK_COMMANDS",
         "PLACEMENT_TAG_IFRAME_ILAYER",
@@ -18320,7 +18320,7 @@ URI = """{
       },
       "maxEndDate": {
        "type": "string",
-       "description": "Select only placements or placement groups whose end date is on or before the specified maxEndDate. The date should be formatted as \\"yyyy-MM-dd\\".",
+       "description": "Select only placements or placement groups whose end date is on or before the specified maxEndDate. The date should be formatted as \"yyyy-MM-dd\".",
        "location": "query"
       },
       "maxResults": {
@@ -18334,17 +18334,17 @@ URI = """{
       },
       "maxStartDate": {
        "type": "string",
-       "description": "Select only placements or placement groups whose start date is on or before the specified maxStartDate. The date should be formatted as \\"yyyy-MM-dd\\".",
+       "description": "Select only placements or placement groups whose start date is on or before the specified maxStartDate. The date should be formatted as \"yyyy-MM-dd\".",
        "location": "query"
       },
       "minEndDate": {
        "type": "string",
-       "description": "Select only placements or placement groups whose end date is on or after the specified minEndDate. The date should be formatted as \\"yyyy-MM-dd\\".",
+       "description": "Select only placements or placement groups whose end date is on or after the specified minEndDate. The date should be formatted as \"yyyy-MM-dd\".",
        "location": "query"
       },
       "minStartDate": {
        "type": "string",
-       "description": "Select only placements or placement groups whose start date is on or after the specified minStartDate. The date should be formatted as \\"yyyy-MM-dd\\".",
+       "description": "Select only placements or placement groups whose start date is on or after the specified minStartDate. The date should be formatted as \"yyyy-MM-dd\".",
        "location": "query"
       },
       "pageToken": {
@@ -18403,7 +18403,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for placements by name or ID. Wildcards (*) are allowed. For example, \\"placement*2015\\" will return placements with names like \\"placement June 2015\\", \\"placement May 2015\\", or simply \\"placements 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"placement\\" will match placements with name \\"my placement\\", \\"placement 2015\\", or simply \\"placement\\".",
+       "description": "Allows searching for placements by name or ID. Wildcards (*) are allowed. For example, \"placement*2015\" will return placements with names like \"placement June 2015\", \"placement May 2015\", or simply \"placements 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"placement\" will match placements with name \"my placement\", \"placement 2015\", or simply \"placement\".",
        "location": "query"
       },
       "siteIds": {
@@ -18767,7 +18767,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for projects by name or ID. Wildcards (*) are allowed. For example, \\"project*2015\\" will return projects with names like \\"project June 2015\\", \\"project April 2015\\", or simply \\"project 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"project\\" will match projects with name \\"my project\\", \\"project 2015\\", or simply \\"project\\".",
+       "description": "Allows searching for projects by name or ID. Wildcards (*) are allowed. For example, \"project*2015\" will return projects with names like \"project June 2015\", \"project April 2015\", or simply \"project 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"project\" will match projects with name \"my project\", \"project 2015\", or simply \"project\".",
        "location": "query"
       },
       "sortField": {
@@ -19075,7 +19075,7 @@ URI = """{
       },
       "name": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"remarketing list*2015\\" will return objects with names like \\"remarketing list June 2015\\", \\"remarketing list April 2015\\", or simply \\"remarketing list 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"remarketing list\\" will match objects with name \\"my remarketing list\\", \\"remarketing list 2015\\", or simply \\"remarketing list\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"remarketing list*2015\" will return objects with names like \"remarketing list June 2015\", \"remarketing list April 2015\", or simply \"remarketing list 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"remarketing list\" will match objects with name \"my remarketing list\", \"remarketing list 2015\", or simply \"remarketing list\".",
        "location": "query"
       },
       "pageToken": {
@@ -19851,7 +19851,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name, ID or keyName. Wildcards (*) are allowed. For example, \\"site*2015\\" will return objects with names like \\"site June 2015\\", \\"site April 2015\\", or simply \\"site 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"site\\" will match objects with name \\"my site\\", \\"site 2015\\", or simply \\"site\\".",
+       "description": "Allows searching for objects by name, ID or keyName. Wildcards (*) are allowed. For example, \"site*2015\" will return objects with names like \"site June 2015\", \"site April 2015\", or simply \"site 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"site\" will match objects with name \"my site\", \"site 2015\", or simply \"site\".",
        "location": "query"
       },
       "sortField": {
@@ -20228,7 +20228,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"subaccount*2015\\" will return objects with names like \\"subaccount June 2015\\", \\"subaccount April 2015\\", or simply \\"subaccount 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"subaccount\\" will match objects with name \\"my subaccount\\", \\"subaccount 2015\\", or simply \\"subaccount\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"subaccount*2015\" will return objects with names like \"subaccount June 2015\", \"subaccount April 2015\", or simply \"subaccount 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"subaccount\" will match objects with name \"my subaccount\", \"subaccount 2015\", or simply \"subaccount\".",
        "location": "query"
       },
       "sortField": {
@@ -20421,7 +20421,7 @@ URI = """{
       },
       "name": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"remarketing list*2015\\" will return objects with names like \\"remarketing list June 2015\\", \\"remarketing list April 2015\\", or simply \\"remarketing list 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"remarketing list\\" will match objects with name \\"my remarketing list\\", \\"remarketing list 2015\\", or simply \\"remarketing list\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"remarketing list*2015\" will return objects with names like \"remarketing list June 2015\", \"remarketing list April 2015\", or simply \"remarketing list 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"remarketing list\" will match objects with name \"my remarketing list\", \"remarketing list 2015\", or simply \"remarketing list\".",
        "location": "query"
       },
       "pageToken": {
@@ -20599,7 +20599,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"template*2015\\" will return objects with names like \\"template June 2015\\", \\"template April 2015\\", or simply \\"template 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"template\\" will match objects with name \\"my template\\", \\"template 2015\\", or simply \\"template\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"template*2015\" will return objects with names like \"template June 2015\", \"template April 2015\", or simply \"template 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"template\" will match objects with name \"my template\", \"template 2015\", or simply \"template\".",
        "location": "query"
       },
       "sortField": {
@@ -21065,7 +21065,7 @@ URI = """{
       },
       "searchString": {
        "type": "string",
-       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \\"userrole*2015\\" will return objects with names like \\"userrole June 2015\\", \\"userrole April 2015\\", or simply \\"userrole 2015\\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \\"userrole\\" will match objects with name \\"my userrole\\", \\"userrole 2015\\", or simply \\"userrole\\".",
+       "description": "Allows searching for objects by name or ID. Wildcards (*) are allowed. For example, \"userrole*2015\" will return objects with names like \"userrole June 2015\", \"userrole April 2015\", or simply \"userrole 2015\". Most of the searches also add wildcards implicitly at the start and the end of the search string. For example, a search string of \"userrole\" will match objects with name \"my userrole\", \"userrole 2015\", or simply \"userrole\".",
        "location": "query"
       },
       "sortField": {

@@ -158,9 +158,9 @@ def API_Iterator(function, kwargs, results=None, limit=None):
 
       For example if calling the DCM list placement API:
 
-        https://developers.google.com/doubleclick-advertisers/v3.3/placements/list
+        https://developers.google.com/doubleclick-advertisers/v3.4/placements/list
 
-        function = get_service(config, 'dfareporting', 'v3.3', 'user').placements().list
+        function = get_service(config, 'dfareporting', 'v3.4', 'user').placements().list
         kwargs = { 'profile_id':1234, 'archived':False }
         for placement in API_Iterator(function, kwargs):
           print(placement)
