@@ -39,13 +39,13 @@
       "description":"Create a dataset for bigquery tables.",
       "hour":[4],
       "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
-      "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
+      "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "description":"Place where tables will be created in BigQuery." }}
     }},
     { "bigquery":{
       "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing function." }},
       "function":"Pearson Significance Test",
       "to":{
-        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }}
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }}
       }
     }},
     { "google_api": {
@@ -59,8 +59,8 @@
       },
       "results": {
         "bigquery": {
-          "auth":"service",
-          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+          "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing function." }},
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
           "table": "CM360_Account"
         }
       }
@@ -75,16 +75,15 @@
         },
         "account":{"field":{ "name":"account", "kind":"string", "order":5, "default":"", "description":"Campaign Manager Account ID" }},
         "body":{
-          "name": {"field":{ "name":"recipe_name", "kind":"string",  "prefix":"Segmentology ", "description":"The report name.", "default":"" }},
+          "name": {"field":{ "name":"recipe_name", "kind":"string", "suffix":" Segmentology", "description":"The report name.", "default":"" }},
           "criteria": {
-            "dateRange": {"kind": "dfareporting#dateRange", "relativeDateRange": "LAST_24_MONTHS"},
+            "dateRange": {
+              "kind": "dfareporting#dateRange",
+              "relativeDateRange": {"field":{ "name":"date_range", "kind":"choice", "order":3, "default":"LAST_365_DAYS", "choices":["LAST_7_DAYS","LAST_14_DAYS","LAST_30_DAYS","LAST_365_DAYS","LAST_60_DAYS","LAST_7_DAYS","LAST_90_DAYS","LAST_24_MONTHS","MONTH_TO_DATE","PREVIOUS_MONTH","PREVIOUS_QUARTER","PREVIOUS_WEEK","PREVIOUS_YEAR","QUARTER_TO_DATE","WEEK_TO_DATE","YEAR_TO_DATE"], "description":"Timeframe to run report for." }}
+            },
             "dimensions": [
               { "kind": "dfareporting#sortedDimension", "name": "advertiserId" },
               { "kind": "dfareporting#sortedDimension", "name": "advertiser" },
-              { "kind": "dfareporting#sortedDimension", "name": "campaignId" },
-              { "kind": "dfareporting#sortedDimension", "name": "campaign" },
-              { "kind": "dfareporting#sortedDimension", "name": "placementId" },
-              { "kind": "dfareporting#sortedDimension", "name": "placement" },
               { "kind": "dfareporting#sortedDimension", "name": "zipCode" }
             ],
             "metricNames": [
@@ -103,12 +102,12 @@
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
         "account":{"field":{ "name":"account", "kind":"string", "default":"" }},
-        "name":{"field":{ "name":"recipe_name", "kind":"string", "order":3, "prefix":"Segmentology ", "default":"", "description":"Name of report, not needed if ID used." }}
+        "name":{"field":{ "name":"recipe_name", "kind":"string", "order":3, "suffix":" Segmentology", "default":"", "description":"Name of report, not needed if ID used." }}
       },
       "out":{
         "bigquery":{
           "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Authorization used for writing data." }},
-          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
           "table":"CM360_KPI",
           "header":true
         }
@@ -122,8 +121,6 @@
            Name AS Partner,
            Advertiser_Id,
            Advertiser,
-           Campaign_Id,
-           Campaign,
            Zip_Postal_Code AS Zip,
            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression,
            SAFE_DIVIDE(Clicks, Impressions) AS Click,
@@ -133,12 +130,12 @@
          CROSS JOIN `{dataset}.CM360_Account`
        ",
        "parameters":{
-         "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
+         "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "description":"Place where tables will be created in BigQuery." }}
        },
        "legacy":false
      },
      "to":{
-        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be written in BigQuery." }},
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "description":"Place where tables will be written in BigQuery." }},
         "view":"CM360_KPI_Normalized"
       }
     }},
@@ -150,7 +147,7 @@
         "census_span": "5yr"
       },
       "to": {
-        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
         "type": "view"
       }
     }},
@@ -158,15 +155,15 @@
       "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Authorization used for writing data." }},
       "correlate": {
         "join": "Zip",
-        "pass": ["Partner_Id", "Partner", "Advertiser_Id", "Advertiser", "Campaign_Id", "Campaign"],
+        "pass": ["Partner_Id", "Partner", "Advertiser_Id", "Advertiser"],
         "sum": ["Impressions"],
         "correlate": ["Impression", "Click", "Conversion"],
-        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
         "table": "CM360_KPI_Normalized",
         "significance": 80
       },
       "to": {
-        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
         "type": "view"
       }
     }}

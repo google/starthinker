@@ -39,13 +39,13 @@
       "description":"Create a dataset for bigquery tables.",
       "hour":[4],
       "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
-      "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
+      "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "description":"Place where tables will be created in BigQuery." }}
     }},
     { "bigquery":{
       "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing function." }},
       "function":"Pearson Significance Test",
       "to":{
-        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }}
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }}
       }
     }},
     { "dbm":{
@@ -62,8 +62,8 @@
         "body": {
           "timezoneCode":{"field":{ "name":"recipe_timezone", "kind":"timezone", "description":"Timezone for report dates.", "default":"America/Los_Angeles" }},
           "metadata":{
-            "title":{"field":{ "name":"recipe_name", "kind":"string", "order":3, "prefix":"Segmentology ", "default":"", "description":"Name of report, not needed if ID used." }},
-            "dataRange":"LAST_365_DAYS",
+            "title":{"field":{ "name":"recipe_name", "kind":"string", "order":3, "suffix":" Segmentology", "default":"", "description":"Name of report, not needed if ID used." }},
+            "dataRange": {"field":{ "name":"date_range", "kind":"choice", "order":3, "default":"LAST_365_DAYS", "choices":["LAST_7_DAYS","LAST_14_DAYS","LAST_30_DAYS","LAST_365_DAYS","LAST_60_DAYS","LAST_7_DAYS","LAST_90_DAYS","MONTH_TO_DATE","PREVIOUS_MONTH","PREVIOUS_QUARTER","PREVIOUS_WEEK","PREVIOUS_YEAR","QUARTER_TO_DATE","WEEK_TO_DATE","YEAR_TO_DATE"], "description":"Timeframe to run the report for." }},
             "format": "CSV"
           },
           "params": {
@@ -92,12 +92,12 @@
     { "dbm":{
       "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for reading data." }},
       "report":{
-        "name":{"field":{ "name":"recipe_name", "kind":"string", "order":3, "prefix":"Segmentology ", "default":"", "description":"Name of report, not needed if ID used." }}
+        "name":{"field":{ "name":"recipe_name", "kind":"string", "order":3, "suffix":" Segmentology", "default":"", "description":"Name of report, not needed if ID used." }}
       },
       "out":{
         "bigquery":{
           "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Authorization used for writing data." }},
-          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
           "table":"DV360_KPI",
           "header":true,
           "schema":[
@@ -131,16 +131,15 @@
            SAFE_DIVIDE(Conversions, Impressions) AS Conversion,
            Impressions AS Impressions
          FROM
-           `{project}.{dataset}.DV360_KPI`;
+           `{dataset}.DV360_KPI`;
        ",
        "parameters":{
-         "project":{"field":{ "name":"recipe_project", "kind":"string", "description":"Project ID hosting dataset." }},
-         "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }}
+         "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "description":"Place where tables will be created in BigQuery." }}
        },
        "legacy":false
      },
      "to":{
-        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be written in BigQuery." }},
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "description":"Place where tables will be written in BigQuery." }},
         "view":"DV360_KPI_Normalized"
       }
     }},
@@ -152,7 +151,7 @@
         "census_span": "5yr"
       },
       "to": {
-        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
         "type": "view"
       }
     }},
@@ -163,12 +162,12 @@
         "pass": ["Partner_Id", "Partner", "Advertiser_Id", "Advertiser", "Campaign_Id", "Campaign"],
         "sum": ["Impressions"],
         "correlate": ["Impression", "Click", "Conversion"],
-        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
         "table": "DV360_KPI_Normalized",
         "significance": 80
       },
       "to": {
-        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
+        "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "suffix":"_Segmentology", "order":4, "default":"", "description":"Name of Google BigQuery dataset to create." }},
         "type": "view"
       }
     }}

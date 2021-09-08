@@ -152,7 +152,7 @@ def census_join(column_join, column_pass, column_sum, column_correlate,
 def census_write(config, task, query, table):
 
   if config.verbose:
-    print('%s: %s' % (table, query))
+    print('CENSUS: %s' % table)
 
   if task['to']['type'] == 'table':
     query_to_table(
