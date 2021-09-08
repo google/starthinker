@@ -73,9 +73,6 @@ class Command(BaseCommand):
             'text': 'Internal UI',
             'link': 'http://go/starthinker'
         }, {
-            'text': 'Esteemed Solution Gallery',
-            'link': 'http://go/esteemed/#/search/StarThinker'
-        }, {
             'text': 'GitHub Solution Gallery',
             'link': 'https://google.github.io/starthinker/'
         }, {
