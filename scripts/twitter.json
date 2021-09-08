@@ -51,7 +51,7 @@
       },
       "sheet":{"field":{ "name":"recipe_name", "kind":"string", "prefix":"Twitter Targeting For ", "order":2, "description":"Name of sheet where Line Item settings will be read from.", "default":"" }},
       "tab":"Twitter Triggers",
-      "range":"A8:E",
+      "range":"A7:E",
       "out":{
         "bigquery":{
           "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "description":"Place where tables will be created in BigQuery." }},
