@@ -1,0 +1,31 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2021 Google LLC"
+  },
+  "tasks": [
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Oculi_CM_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "include":{
+      "script":"scripts/cm360_oculi.json",
+      "parameters":{
+        "auth_cm":"user",
+        "auth_bigquery":"service",
+        "limit":500,
+        "account":{"field":{ "name":"account", "kind":"integer", "description":"CM360 Account Identifier" }},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Oculi_CM_", "default": "Manual"}}
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Oculi_CM_", "default": "Manual"}},
+      "delete":true
+    }},
+    { "test": {
+      "assert":"Completed all tasks."
+    }}
+  ]
+}

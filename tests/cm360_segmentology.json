@@ -1,0 +1,52 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks": [
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Segmentology_CM_", "suffix":"_Segmentology", "default": "Manual"}},
+      "clear":true
+    }},
+    { "include":{
+      "script":"scripts/cm360_segmentology.json",
+      "parameters":{
+        "auth_read":"user",
+        "auth_write":"service",
+        "recipe_timezone":"America/Los_Angeles",
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The name to use for the test.", "prefix":"StarThinker Test Segmentology CM ", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The name to use for the test.", "prefix":"StarThinker_Test_Segmentology_CM_", "default": "Manual"}},
+        "recipe_project":{"field":{ "name":"recipe_project", "kind":"string", "description":"Project ID hosting dataset." }},
+        "account":{"field":{ "name":"account", "kind":"integer", "default":"", "description":"CM360 account id." }}
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Segmentology_CM_", "suffix":"_Segmentology", "default": "Manual"}},
+        "table":"Census_Join",
+        "schema":[
+          { "name": "Partner_Id", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "Partner", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Advertiser_Id", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "Advertiser", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Impressions", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "Locations", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "Correlation", "type": "RECORD", "mode": "REPEATED", "fields": [
+            { "name": "Dimension", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Segment", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Impression", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Click", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Conversion", "type": "INTEGER", "mode": "NULLABLE" }
+          ]}
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Segmentology_CM_", "suffix":"_Segmentology", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}

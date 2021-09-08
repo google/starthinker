@@ -1,0 +1,18 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "include":{
+      "script":"scripts/twitter.json",
+      "parameters":{
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Twitter ", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Twitter_", "default": "Manual"}},
+        "recipe_project":{"field":{ "name":"recipe_project", "kind":"string", "description":"Google Cloud project id." }},
+        "twitter_secret":{"field":{ "name":"twitter_secret", "kind":"string", "description":"Twitter API secret token." }},
+        "twitter_key":{"field":{ "name":"twitter_key", "kind":"string", "description":"Twitter API key token." }}
+      }
+    }}
+  ]
+}

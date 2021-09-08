@@ -1,0 +1,48 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "google_api":{
+      "auth":"user",
+      "api":"gmail",
+      "version":"v1",
+      "function":"users.getProfile",
+      "kwargs":{
+        "userId":"me"
+      },
+      "iterate":false,
+      "results": {
+        "bigquery":{
+          "auth": "service",
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
+          "table":"User_Profile"
+        }
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
+        "table":"User_Profile",
+        "schema": [
+          {"mode": "NULLABLE", "name": "emailAddress", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "messagesTotal", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "threadsTotal", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "historyId", "type": "INTEGER"}
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}

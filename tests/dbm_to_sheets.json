@@ -1,0 +1,88 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "sheets":{
+      "__comment__":"Create a blank sheet for this test. The tab is deleted if exists and re-created.",
+      "auth":"user",
+      "sheet":"StarThinker DBM Test",
+      "tab":"Report",
+      "range":"A1",
+      "delete":true,
+      "template":{}
+    }},
+    { "dbm":{
+      "__comment__":"Create a basic report to run.",
+      "auth":"user",
+      "report":{
+        "filters": {
+           "FILTER_PARTNER": {
+             "values": {"field":{ "name":"partner_ids", "kind":"integer_list", "order":5, "default":[], "description":"DBM partner id." }}
+           },
+           "FILTER_ADVERTISER": {
+             "values": {"field":{ "name":"advertiser_ids", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DBM advertiser ids." }}
+           }
+        },
+        "body": {
+          "timezoneCode":"America/Los_Angeles",
+          "metadata":{
+            "title":"Test Report ( StarThinker )",
+            "dataRange":"LAST_7_DAYS",
+            "format": "CSV"
+          },
+          "params": {
+            "type":"TYPE_CROSS_PARTNER",
+            "groupBys":[
+              "FILTER_DATE",
+              "FILTER_ADVERTISER",
+              "FILTER_INSERTION_ORDER",
+              "FILTER_CREATIVE_ID",
+              "FILTER_ADVERTISER_CURRENCY"
+            ],
+            "metrics":[
+              "METRIC_REVENUE_ADVERTISER",
+              "METRIC_IMPRESSIONS"
+            ]
+          }
+        }
+      },
+      "delete":true
+    }},
+    { "dbm":{
+      "__comment__":"Move the report to sheets.  Wait indefinately as we expect the report to run quickly.",
+      "auth":"user",
+      "report":{
+        "name":"Test Report ( StarThinker )",
+        "timeout":5
+      },
+      "out":{
+       "sheets":{
+          "sheet":"Starthinker DBM Test",
+          "tab":"Report",
+          "range":"A1"
+        }
+      }
+    }},
+    { "test": {
+      "__comment__":"Check if sheet headers are valid. Rest of rows are random.",
+      "auth":"user",
+      "sheets": {
+        "sheet":"Starthinker DBM Test",
+        "tab":"Report",
+        "range":"A1:R1",
+        "values":[
+          [ "Report_Day",
+            "Advertiser_Id",
+            "Insertion_Order_Id",
+            "Creative_Id",
+            "Advertiser_Currency",
+            "Revenue_Adv_Currency",
+            "Impressions"
+          ]
+        ]
+      }
+    }}
+  ]
+}

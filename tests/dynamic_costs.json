@@ -1,0 +1,71 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2021 Google LLC"
+  },
+  "tasks":[
+    { "dynamic_costs":{
+      "description":"Calculate dynamic costs and place into BigQuery.",
+      "auth":"user",
+      "account":{"field":{ "name":"account_id", "kind":"integer", "default":"" }},
+      "date_start":{"field":{ "name":"date_start", "kind":"string", "default":"2019-01-01", "decription":"yyyy-mm-dd" }},
+      "date_end":{"field":{ "name":"date_end", "kind":"string", "default":"2019-01-01", "decription":"yyyy-mm-dd" }},
+      "shadow_advertiser_id":{"field":{ "name":"shadow_advertiser_id", "kind":"integer", "default":"" }},
+      "main_advertiser_id":{"field":{ "name":"main_advertiser_id", "kind":"integer", "default":"" }},
+      "shadow_campaign_id":{"field":{ "name":"shadow_campaign_id", "kind":"integer", "default":"" }},
+      "main_campaign_id":{"field":{ "name":"main_campaign_id", "kind":"integer", "default":"" }},
+      "dynamic_profile_id":{"field":{ "name":"dynamic_profile_id", "kind":"integer", "default":"" }},
+      "out":{
+        "auth":"service",
+        "dataset":"Test"
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":"Test",
+        "table":"Dynamic_Costs_Analysis",
+        "schema":[
+          { "name":"Placement", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Placement_Id", "type":"INTEGER", "mode":"NULLABLE" },
+          { "name":"Activity", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Activity_Id", "type":"INTEGER", "mode":"NULLABLE" },
+          { "name":"Feed_1_Reporting_Dimension_1_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_1_Reporting_Dimension_2_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_1_Reporting_Dimension_3_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_1_Reporting_Dimension_4_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_1_Reporting_Dimension_5_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_1_Reporting_Dimension_6_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_2_Reporting_Dimension_1_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_2_Reporting_Dimension_2_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_2_Reporting_Dimension_3_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_2_Reporting_Dimension_4_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_2_Reporting_Dimension_5_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_2_Reporting_Dimension_6_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_3_Reporting_Dimension_1_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_3_Reporting_Dimension_2_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_3_Reporting_Dimension_3_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_3_Reporting_Dimension_4_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_3_Reporting_Dimension_5_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_3_Reporting_Dimension_6_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_4_Reporting_Dimension_1_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_4_Reporting_Dimension_2_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_4_Reporting_Dimension_3_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_4_Reporting_Dimension_4_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_4_Reporting_Dimension_5_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_4_Reporting_Dimension_6_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_5_Reporting_Dimension_1_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_5_Reporting_Dimension_2_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_5_Reporting_Dimension_3_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_5_Reporting_Dimension_4_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_5_Reporting_Dimension_5_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Feed_5_Reporting_Dimension_6_Value", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Impressions", "type":"INTEGER", "mode":"NULLABLE" },
+          { "name":"Clicks", "type":"INTEGER", "mode":"NULLABLE" },
+          { "name":"Total_Conversions", "type":"FLOAT", "mode":"NULLABLE" },
+          { "name":"Scaled_Dbm_Cost_Account_Currency", "type":"FLOAT", "mode":"NULLABLE" }
+        ]
+      }
+    }}
+  ]
+}

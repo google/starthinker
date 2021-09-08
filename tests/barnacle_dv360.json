@@ -1,0 +1,66 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_DV_", "default": "Manual"}},
+      "delete":true
+    }},
+    { "include":{
+      "script":"scripts/barnacle_dv360.json",
+      "parameters":{
+        "auth_read":"user",
+        "auth_write":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_DV_", "default": "Manual"}},
+        "partner":{"field":{ "name":"partner", "kind":"integer", "description":"The partner ID to run this for.", "default": ""}}
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_DV_", "default": "Manual"}},
+        "table":"Barnacle_Reports",
+        "schema":[
+          { "name": "queryId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "partnerId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "advertiserId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "frequency", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "metrics", "type": "STRING", "mode": "REPEATED" },
+          { "name": "type", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "dataRange", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "sendNotification", "type": "BOOLEAN", "mode": "NULLABLE" },
+          { "name": "latestReportRunTime", "type": "DATE", "mode": "NULLABLE" },
+          { "name": "partnerName", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "advertiserName", "type": "STRING", "mode": "NULLABLE" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_DV_", "default": "Manual"}},
+        "table":"Barnacle_User_Roles",
+        "schema":[
+          { "name": "userId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "name", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "email", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "displayName", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Domain", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Authentication", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Scope", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "assignedUserRoles", "type": "RECORD", "mode": "NULLABLE", "fields": [
+            { "name": "partnerId", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "partnerName", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "userRole", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "advertiserId", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "advertiserName", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "assignedUserRoleId", "type": "STRING", "mode": "NULLABLE" }
+          ]}
+        ]
+      }
+    }}
+  ]
+}

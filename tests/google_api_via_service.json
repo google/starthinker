@@ -1,0 +1,50 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "google_api":{
+      "auth":"service",
+      "api":"dfareporting",
+      "version":"v3.5",
+      "function":"browsers.list",
+      "kwargs":{
+        "accountId":{"field":{ "name":"account_id", "kind":"string", "default":"" }}
+      },
+      "iterate":true,
+      "results": {
+        "bigquery":{
+          "auth": "service",
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
+          "table":"Browsers"
+        }
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
+        "table":"Browsers",
+        "schema": [
+          {"mode": "NULLABLE", "name": "browserVersionId", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "dartId", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "name", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "majorVersion", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "minorVersion", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "kind", "type": "STRING"}
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Google_API_", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}

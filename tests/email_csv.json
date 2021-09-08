@@ -1,0 +1,77 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "email":{
+      "auth":"user",
+      "send":{
+        "from":{"field":{ "name":"from_email", "kind":"string", "description":"The email address to send from.","default":"" }},
+        "to":{"field":{ "name":"to_email", "kind":"string", "description":"The email address to send from.", "default":"" }},
+        "subject":{"field":{ "name":"subject", "kind":"string", "description":"The email subject.", "default":"Test Email CSV" }},
+        "text":"Attached is a CSV with test data in it...",
+        "html":"Attached is a CSV with test data in it...",
+        "attachment":{
+          "filename":"test_data.csv",
+          "single_cell":true,
+          "values":[
+            ["Animal", "Age", "Weight_lbs"],
+            ["dog", 7, 67.0],
+            ["cat", 5, 1.5],
+            ["bird", 12, 0.44],
+            ["lizard", 22, 1.0],
+            ["dinosaur", 1600, 273.97]
+          ]
+        }
+      }
+    }},
+    { "include":{
+      "script":"scripts/email_to_bigquery.json",
+      "parameters":{
+        "auth_read":"user",
+        "email_from":{"field":{ "name":"from_email", "kind":"string", "description":"The email address to send from.","default":"" }},
+        "email_to":{"field":{ "name":"to_email", "kind":"string", "description":"The email address to send from.", "default":"" }},
+        "subject":{"field":{ "name":"subject", "kind":"string", "description":"The email subject.", "default":"Test Email CSV" }},
+        "attachment":"test_data.csv",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV_", "default": "Manual"}},
+        "table":"Email_Attachment",
+        "header":true,
+        "schema":[
+          {"name": "Animal", "type": "STRING"},
+          {"name": "Age", "type": "INTEGER"},
+          {"name": "Weight_lbs", "type": "FLOAT"}
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV_", "default": "Manual"}},
+        "table":"Email_Attachment",
+        "schema":[
+          {"name": "Animal", "type": "STRING"},
+          {"name": "Age", "type": "INTEGER"},
+          {"name": "Weight_lbs", "type": "FLOAT"}
+        ],
+        "values":[
+          ["dog", 7, 67.0],
+          ["cat", 5, 1.5],
+          ["bird", 12, 0.44],
+          ["lizard", 22, 1.0],
+          ["dinosaur", 1600, 273.97]
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"Test_Email_CSV_", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}

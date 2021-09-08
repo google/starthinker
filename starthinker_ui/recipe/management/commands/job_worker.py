@@ -207,7 +207,7 @@ class Workers():
         'ignore',
         '%s/starthinker/tool/recipe.py' % settings.UI_ROOT,
         filename,
-        '--instance', str(job['instance']),
+        '--task', str(job['instance']),
         '--no_input',
         '--force', # some tasks run after alloted time due to run overs by prior tasks
         '--verbose'

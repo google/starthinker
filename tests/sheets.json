@@ -1,0 +1,264 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "test": {
+      "__comment__":"Check if template accessible, in case version changes. Access by membership: starthinker-assets@googlegroups.com",
+      "auth":"user",
+      "sheets": {
+        "sheet":"https://docs.google.com/spreadsheets/d/1DhOoCOC7hf3lUckXWG4ELfZhH28Rsxr74sfhc713T3A/",
+        "tab":"Sheet_Template",
+        "range":"A1:C",
+        "values":[
+          ["Animal", "Age", "Weight ( lbs )"],
+          ["dog", 7, 67],
+          ["cat", 5, 1.5],
+          ["bird", 12, 0.44],
+          ["lizard", 22, 1],
+          ["dinosaur", 1600, 273.97]
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Copy the template sheet to the users test sheet. The tab is deleted if exists and re-created.",
+      "auth":"user",
+      "template":{
+        "sheet":"https://docs.google.com/spreadsheets/d/1DhOoCOC7hf3lUckXWG4ELfZhH28Rsxr74sfhc713T3A/",
+        "tab":"Sheet_Template"
+      },
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+      "tab":"Sheet_Test",
+      "range":"A1:C",
+      "delete":true
+    }},
+    { "test": {
+      "__comment__":"Verify that the copy worked by checking values in the users sheet.",
+      "auth":"user",
+      "sheets": {
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+        "tab":"Sheet_Test",
+        "range":"A1:C",
+        "values":[
+          ["Animal", "Age", "Weight ( lbs )"],
+          ["dog", 7, 67],
+          ["cat", 5, 1.5],
+          ["bird", 12, 0.44],
+          ["lizard", 22, 1],
+          ["dinosaur", 1600, 273.97]
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Clear a section of the users sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+      "tab":"Sheet_Test",
+      "range":"A2:B",
+      "clear":true
+    }},
+    { "test": {
+      "__comment__":"Verify users sheet was cleared.",
+      "auth":"user",
+      "sheets": {
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+        "tab":"Sheet_Test",
+        "range":"A1:C",
+        "values":[
+          ["Animal", "Age", "Weight ( lbs )"],
+          [null, null, 67],
+          [null, null, 1.5],
+          [null, null, 0.44],
+          [null, null, 1],
+          [null, null, 273.97]
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write new values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+      "tab":"Sheet_Test",
+      "range":"A2:B",
+      "write": {
+        "values": [
+          ["whale", 1],
+          ["zebra", 2],
+          ["fish", 3],
+          ["crab", 4],
+          ["lion", 5]
+        ]
+      }
+    }},
+    { "test": {
+      "__comment__":"Verify that the write worked by checking values in the users sheet.",
+      "auth":"user",
+      "sheets": {
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+        "tab":"Sheet_Test",
+        "range":"A1:C",
+        "values":[
+          ["Animal", "Age", "Weight ( lbs )"],
+          ["whale", 1, 67],
+          ["zebra", 2, 1.5],
+          ["fish", 3, 0.44],
+          ["crab", 4, 1],
+          ["lion", 5, 273.97]
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write over values in the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+      "tab":"Sheet_Test",
+      "range":"A2:C",
+      "write": {
+        "values": [
+          ["horse", 6, 22],
+          ["monkey", 7, 55.5]
+        ]
+      }
+    }},
+    { "test": {
+      "__comment__":"Verify that the write worked by checking values in the users sheet.",
+      "auth":"user",
+      "sheets": {
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+        "tab":"Sheet_Test",
+        "range":"A1:C",
+        "values":[
+          ["Animal", "Age", "Weight ( lbs )"],
+          ["horse", 6, 22],
+          ["monkey", 7, 55.5],
+          ["fish", 3, 0.44],
+          ["crab", 4, 1],
+          ["lion", 5, 273.97]
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Append values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+      "tab":"Sheet_Test",
+      "range":"A2:C",
+      "append": {
+        "values": [
+          ["mouse", 1, 1],
+          ["bat", 2, 2.5]
+        ]
+      }
+    }},
+    { "test": {
+      "__comment__":"Verify that the append worked by checking values in the users sheet.",
+      "auth":"user",
+      "sheets": {
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+        "tab":"Sheet_Test",
+        "range":"A1:C",
+        "values":[
+          ["Animal", "Age", "Weight ( lbs )"],
+          ["horse", 6, 22],
+          ["monkey", 7, 55.5],
+          ["fish", 3, 0.44],
+          ["crab", 4, 1],
+          ["lion", 5, 273.97],
+          ["mouse", 1, 1],
+          ["bat", 2, 2.5]
+        ]
+      }
+    }},
+    { "dataset":{
+      "__comment__":"Create a dataset for testing.",
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Sheets_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "sheets":{
+      "__comment__":"Move sheet data to bigquery table.",
+      "auth":"user",
+      "sheet":"https://docs.google.com/spreadsheets/d/1DhOoCOC7hf3lUckXWG4ELfZhH28Rsxr74sfhc713T3A/",
+      "tab":"Sheet_Template",
+      "range":"A1:C",
+      "header":true,
+      "out":{
+        "auth": "service",
+        "bigquery":{
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Sheets_", "default": "Manual"}},
+          "table":"Sheet_To_BigQuery",
+          "schema":[
+            { "name":"Animal", "type":"STRING" },
+            { "name":"Age", "type":"INTEGER" },
+            { "name":"Weight_lbs", "type":"FLOAT" }
+          ]
+        }
+      }
+    }},
+    { "test": {
+      "__comment__":"Verify that the data was moved with the proper schema and values.",
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Sheets_", "default": "Manual"}},
+        "table":"Sheet_To_BigQuery",
+        "schema":[
+          {"name": "Animal", "type": "STRING"},
+          {"name": "Age", "type": "INTEGER"},
+          {"name": "Weight_lbs", "type": "FLOAT"}
+        ],
+        "values":[
+          ["dog", 7, 67.0],
+          ["cat", 5, 1.5],
+          ["bird", 12, 0.44],
+          ["lizard", 22, 1.0],
+          ["dinosaur", 1600, 273.97]
+        ]
+      }
+    }},
+    { "sheets":{
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+      "tab":"BigQuery_Test",
+      "delete":true,
+      "template":{}
+    }},
+    { "bigquery": {
+      "auth":"service",
+      "from":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Sheets_", "default": "Manual"}},
+        "query":"SELECT * FROM {test_dataset}.Sheet_To_BigQuery WHERE Animal IN ('dog', 'cat') ORDER BY Animal;",
+        "parameters": {
+          "test_dataset": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Sheets_", "default": "Manual"}}
+        }
+      },
+      "to":{
+        "auth": "user",
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+        "tab":"BigQuery_Test",
+        "range":"A1:C"
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "sheets": {
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}},
+        "tab":"BigQuery_Test",
+        "range":"A1:C",
+        "values":[
+          ["cat", 5, 1.5],
+          ["dog", 7, 67]
+        ]
+      }
+    }},
+    { "drive":{
+      "auth":"user",
+      "delete":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Test Sheets ", "default": "Manual"}}
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Sheets_", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}

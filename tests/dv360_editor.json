@@ -1,0 +1,206 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"DV_Editor_StarThinker_Test_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "include":{
+      "script":"scripts/dv360_editor.json",
+      "parameters":{
+        "auth_dv":"user",
+        "auth_sheet":"user",
+        "auth_bigquery":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "command":"Load Partners"
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write partner values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Editor StarThinker Test ", "default": "Manual"}},
+      "tab":"Partners",
+      "range":"A2:A",
+      "write": {
+        "values": [
+          ["StarThinker Test Partner - 2730635"]
+        ]
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_editor.json",
+      "parameters":{
+        "auth_dv":"user",
+        "auth_sheet":"user",
+        "auth_bigquery":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "command":"Load Advertisers"
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write advertiser values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"DV Editor StarThinker Test ", "default": "Manual"}},
+      "tab":"Advertisers",
+      "range":"A2:A",
+      "write": {
+        "values": [
+          ["StarThinker Test Advertiser - 2730638"]
+        ]
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_editor.json",
+      "parameters":{
+        "auth_dv":"user",
+        "auth_sheet":"user",
+        "auth_bigquery":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "command":"Load Campaigns"
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_editor.json",
+      "parameters":{
+        "auth_dv":"user",
+        "auth_sheet":"user",
+        "auth_bigquery":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "command":"Load Insertion Orders and Line Items"
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_editor.json",
+      "parameters":{
+        "auth_dv":"user",
+        "auth_sheet":"user",
+        "auth_bigquery":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "command":"Preview"
+      }
+    }},
+    { "bigquery": {
+      "auth":"service",
+      "from":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"DV_Editor_StarThinker_Test_", "default": "Manual"}},
+        "query":"SELECT
+          CONCAT(P.displayName, ' - ', P.partnerId) AS Partner,
+          CONCAT(A.displayName, ' - ', A.advertiserId) AS Advertiser,
+          CONCAT(C.displayName, ' - ', C.campaignId) AS Camapign,
+          CONCAT(I.displayName, ' - ', I.insertionOrderId) AS InsertionOrder,
+          'PATCH' AS Action,
+          CONCAT(BS.dateRange.startDate.year, '-', BS.dateRange.startDate.month, '-', BS.dateRange.startDate.day) AS startDate,
+          CONCAT(BS.dateRange.startDate.year, '-', BS.dateRange.startDate.month, '-', BS.dateRange.startDate.day) AS startDate_Edit,
+          CONCAT(BS.dateRange.endDate.year, '-', BS.dateRange.endDate.month, '-', BS.dateRange.endDate.day) AS endDate,
+          CONCAT(BS.dateRange.endDate.year, '-', BS.dateRange.endDate.month, '-', BS.dateRange.endDate.day) AS endDate_Edit,
+          BS.budgetAmountMicros / 100000 AS budgetAmountMicros,
+          if (BS.budgetAmountMicros / 100000 > 1, 0.9, 1.1) AS budgetAmountMicros_Edit,
+          BS.description AS description,
+          BS.description AS description_Edit
+          FROM `{dataset}.DV_InsertionOrders` AS I, UNNEST( budget.budgetSegments) AS BS
+          LEFT JOIN `{dataset}.DV_Campaigns` AS C
+          ON I.campaignId=C.campaignId
+          LEFT JOIN `{dataset}.DV_Advertisers` AS A
+          ON I.advertiserId=A.advertiserId
+          LEFT JOIN `{dataset}.DV_Partners` AS P
+          ON A.partnerId=P.partnerId
+          ORDER BY I.displayName
+        ",
+        "parameters": {
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"DV_Editor_StarThinker_Test_", "default": "Manual"}}
+        },
+        "legacy":false
+      },
+      "to":{
+        "auth":"user",
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"DV Editor StarThinker Test ", "default": "Manual"}},
+        "tab":"Segments",
+        "range":"A1"
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_editor.json",
+      "parameters":{
+        "auth_dv":"user",
+        "auth_sheet":"user",
+        "auth_bigquery":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "command":"Update"
+      }
+    }},
+    { "google_api": {
+      "auth": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials to use for DV360 reads." }},
+      "api": "displayvideo",
+      "version": "v1",
+      "function": "advertisers.insertionOrders.list",
+      "kwargs_remote":{
+        "bigquery":{
+          "auth": "service",
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"DV_Editor_StarThinker_Test_", "default": "Manual"}},
+          "query":"SELECT DISTINCT(REGEXP_EXTRACT(Advertiser, r' - (\\d+)$')) AS advertiserId FROM `SHEET_InsertionOrders`",
+          "legacy":false
+        }
+      },
+      "iterate":true,
+      "results": {
+        "bigquery": {
+          "auth": "service",
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"DV_Editor_StarThinker_Test_", "default": "Manual"}},
+          "table": "Test_InsertionOrders"
+        }
+      }
+    }},
+    { "google_api": {
+      "auth": {"field":{ "name":"auth_dv", "kind":"authentication", "order":1, "default":"user", "description":"Credentials to use for DV360 reads." }},
+      "api": "displayvideo",
+      "version": "v1",
+      "function": "advertisers.lineItems.list",
+      "kwargs_remote":{
+        "bigquery":{
+          "auth": "service",
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"DV_Editor_StarThinker_Test_", "default": "Manual"}},
+          "query":"SELECT DISTINCT(REGEXP_EXTRACT(Advertiser, r' - (\\d+)$')) AS advertiserId FROM `SHEET_LineItems`",
+          "legacy":false
+        }
+      },
+      "iterate":true,
+      "results": {
+        "bigquery": {
+          "auth": "service",
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"DV_Editor_StarThinker_Test_", "default": "Manual"}},
+          "table": "Test_LineItems"
+        }
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "legacy":false,
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"DV_Editor_StarThinker_Test_", "default": "Manual"}},
+        "query":"WITH
+          Test AS (SELECT insertionOrderId AS id, C AS index, B.budgetAmountMicros AS amount
+          FROM `Test_InsertionOrders`, UNNEST (budget.budgetSegments) AS B WITH OFFSET AS C
+          ),
+          Sheet AS ( SELECT insertionOrderId AS id, B.budgetAmountMicros AS amount, C AS index
+          FROM `Test_InsertionOrders`, UNNEST (budget.budgetSegments) AS B WITH OFFSET AS C
+          )
+          SELECT COUNT(*)
+          FROM Test AS A
+          LEFT JOIN Sheet AS B
+          USING(id, index)
+          WHERE A.amount != B.amount",
+        "values":[[0]]
+      }
+    }}
+  ]
+}

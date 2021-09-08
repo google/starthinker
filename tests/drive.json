@@ -1,0 +1,62 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "drive":{
+      "comment":"Copy a drive file by URL.  Contents are not important for this test.",
+      "auth":"user",
+      "copy":{
+        "source":"https://docs.google.com/spreadsheets/d/1DhOoCOC7hf3lUckXWG4ELfZhH28Rsxr74sfhc713T3A/",
+        "destination":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Template: Sheets Test ", "default": "Manual"}}
+      }
+    }},
+    { "test":{
+      "comment":"Check if by URL copy exists.",
+      "auth":"user",
+      "drive":{
+        "file":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Template: Sheets Test ", "default": "Manual"}}
+       }
+    }},
+    { "drive":{
+      "auth":"user",
+      "comment":"Copy a drive file by name. Contents are not important for this test.",
+      "copy":{
+        "source":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Template: Sheets Test ", "default": "Manual"}},
+        "destination":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Test Drive ", "default": "Manual"}}
+      }
+    }},
+    { "test":{
+      "comment":"Check if by name copy exists.",
+      "auth":"user",
+      "drive":{
+        "file":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Test Drive ", "default": "Manual"}}
+       }
+    }},
+    { "drive":{
+      "comment":"Delete drive file artifact from URL test by name.",
+      "auth":"user",
+      "delete":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Template: Sheets Test ", "default": "Manual"}}
+    }},
+    { "test":{
+      "comment":"Check if file was deleted.",
+      "auth":"user",
+      "drive":{
+        "not_file":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Template: Sheets Test ", "default": "Manual"}}
+       }
+    }},
+    { "drive":{
+      "comment":"Delete drive file artifact from name test by name.",
+      "auth":"user",
+      "delete":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Test Drive ", "default": "Manual"}}
+    }},
+    { "test":{
+      "comment":"Check if file was deleted.",
+      "auth":"user",
+      "drive":{
+        "not_file":{"field":{ "name":"test_run_id", "kind":"string", "description":"The filename to use for the test.", "prefix":"StarThinker Test Drive ", "default": "Manual"}}
+       }
+    }}
+  ]
+}

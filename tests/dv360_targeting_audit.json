@@ -1,0 +1,352 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DV360_Targeting_Audit_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "include":{
+      "script":"scripts/dv360_targeting_audit.json",
+      "parameters":{
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV360_Targeting_Audit_", "default": "Manual"}},
+        "auth_dv":"user",
+        "auth_bigquery":"service",
+        "partner":{"field":{ "name":"partner", "kind":"integer", "description":"The partner ID to run this for.", "default": ""}}
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DV360_Targeting_Audit_", "default": "Manual"}},
+        "table":"Targeting_Audit",
+        "schema":[
+          { "name": "Channel", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Regional_Location_List", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Proximity_Location_List", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Inventory_Source", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Inventory_Source_Group", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Negative_Keyword_List", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Exchange", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "SubExchange", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Included_Google_Audience", "type": "STRING", "mode": "REPEATED" },
+          { "name": "Excluded_Google_Audience", "type": "STRING", "mode": "REPEATED" },
+          { "name": "Included_Custom_List", "type": "STRING", "mode": "REPEATED" },
+          { "name": "Included_Combined_Audience", "type": "STRING", "mode": "REPEATED" },
+          { "name": "Included_First_And_Third_Party_Audience", "type": "STRING", "mode": "REPEATED" },
+          { "name": "Excluded_First_And_Third_Party_Audience", "type": "STRING", "mode": "REPEATED" },
+          { "name": "Partner", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Advertiser", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "LineItem", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "lineItemType", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "pacingType", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "performanceGoalType", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "targetingExpansionLevel", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "excludeFirstPartyAudience", "type": "BOOLEAN", "mode": "NULLABLE" },
+          { "name": "partnerId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "advertiserId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "lineItemId", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "operatingSystemDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "name": "displayName", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "audienceGroupDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "includedCombinedAudienceGroup", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "name": "settings", "type": "RECORD", "mode": "REPEATED", "fields": [
+                      { "name": "combinedAudienceId", "type": "INTEGER", "mode": "NULLABLE" }
+                    ]
+                  }
+                ]
+              },
+              { "name": "includedGoogleAudienceGroup", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "name": "settings", "type": "RECORD", "mode": "REPEATED", "fields": [
+                      { "name": "googleAudienceId", "type": "INTEGER", "mode": "NULLABLE" }
+                    ]
+                  }
+                ]
+              },
+              { "name": "excludedGoogleAudienceGroup", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "name": "settings", "type": "RECORD", "mode": "REPEATED", "fields": [
+                      { "name": "googleAudienceId", "type": "INTEGER", "mode": "NULLABLE" }
+                    ]
+                  }
+                ]
+              },
+              { "name": "includedFirstAndThirdPartyAudienceGroups", "type": "RECORD", "mode": "REPEATED", "fields": [
+                  { "name": "settings", "type": "RECORD", "mode": "REPEATED", "fields": [
+                      { "name": "recency", "type": "STRING", "mode": "NULLABLE" },
+                      { "name": "firstAndThirdPartyAudienceId", "type": "INTEGER", "mode": "NULLABLE" }
+                    ]
+                  }
+                ]
+              },
+              { "name": "includedCustomListGroup", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "name": "settings", "type": "RECORD", "mode": "REPEATED", "fields": [
+                      { "name": "customListId", "type": "INTEGER", "mode": "NULLABLE" }
+                    ]
+                  }
+                ]
+              },
+              { "name": "excludedFirstAndThirdPartyAudienceGroup", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "name": "settings", "type": "RECORD", "mode": "REPEATED", "fields": [
+                      { "name": "recency", "type": "STRING", "mode": "NULLABLE" },
+                      { "name": "firstAndThirdPartyAudienceId", "type": "INTEGER", "mode": "NULLABLE" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          { "name": "deviceMakeModelDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "name": "displayName", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "parentalStatusDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "parentalStatus", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "channelDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "name": "channelId", "type": "INTEGER", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "browserDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "name": "displayName", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "inventorySourceDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "inventorySourceId", "type": "INTEGER", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "urlDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "name": "url", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "targetingType", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "genderDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "gender", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "languageDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "displayName", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "householdIncomeDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "householdIncome", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "regionalLocationListDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "regionalLocationListId", "type": "INTEGER", "mode": "NULLABLE" },
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "videoPlayerSizeDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "videoPlayerSize", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "contentOutstreamPositionDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "contentOutstreamPosition", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "inheritance", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "subExchangeDetails", "type": "RECORD", "mode": "NULLABLE",
+            "fields": [
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "negativeKeywordListDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "negativeKeywordListId", "type": "INTEGER", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "digitalContentLabelExclusionDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "excludedTargetingOptionId", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "contentRatingTier", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "ageRangeDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "ageRange", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "thirdPartyVerifierDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "adloox", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "name": "excludedAdlooxCategories", "type": "STRING", "mode": "REPEATED" }
+                ]
+              },
+              { "name": "doubleVerify", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                  { "name": "displayViewability", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                      { "name": "iab", "type": "STRING", "mode": "NULLABLE" },
+                      { "name": "viewableDuring", "type": "STRING", "mode": "NULLABLE" }
+                    ]
+                  },
+                  { "name": "fraudInvalidTraffic", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                      { "name": "avoidInsufficientOption", "type": "BOOLEAN", "mode": "NULLABLE" },
+                      { "name": "avoidedFraudOption", "type": "STRING", "mode": "NULLABLE" }
+                    ]
+                  },
+                  { "name": "appStarRating", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                      { "name": "avoidInsufficientStarRating", "type": "BOOLEAN", "mode": "NULLABLE" },
+                      { "name": "avoidedStarRating", "type": "STRING", "mode": "NULLABLE" }
+                    ]
+                  },
+                  { "name": "customSegmentId", "type": "INTEGER", "mode": "NULLABLE" },
+                  { "name": "brandSafetyCategories", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                      { "name": "avoidedMediumSeverityCategories", "type": "STRING", "mode": "REPEATED" },
+                      { "name": "avoidedHighSeverityCategories", "type": "STRING", "mode": "REPEATED" },
+                      { "name": "avoidUnknownBrandSafetyCategory", "type": "BOOLEAN", "mode": "NULLABLE" }
+                    ]
+                  },
+                  { "name": "avoidedAgeRatings", "type": "STRING", "mode": "REPEATED" },
+                  { "name": "videoViewability", "type": "RECORD", "mode": "NULLABLE", "fields": [
+                      { "name": "playerImpressionRate", "type": "STRING", "mode": "NULLABLE" },
+                      { "name": "videoIab", "type": "STRING", "mode": "NULLABLE" },
+                      { "name": "videoViewableRate", "type": "STRING", "mode": "NULLABLE" }
+                    ]
+                  }
+                ]
+              },
+              { "name": "integralAdScience", "type": "RECORD", "mode": "NULLABLE",
+                "fields": [
+                  { "name": "traqScoreOption", "type": "STRING", "mode": "NULLABLE" },
+                  { "name": "excludedHateSpeechRisk", "type": "STRING", "mode": "NULLABLE" },
+                  { "name": "excludedIllegalDownloadsRisk", "type": "STRING", "mode": "NULLABLE" },
+                  { "name": "excludedAdultRisk", "type": "STRING", "mode": "NULLABLE" },
+                  { "name": "excludedGamblingRisk", "type": "STRING", "mode": "NULLABLE" },
+                  { "name": "excludedAlcoholRisk", "type": "STRING", "mode": "NULLABLE" },
+                  { "name": "displayViewability", "type": "STRING", "mode": "NULLABLE" },
+                  { "name": "customSegmentId", "type": "INTEGER", "mode": "REPEATED" },
+                  { "name": "excludeUnrateable", "type": "BOOLEAN", "mode": "NULLABLE" },
+                  { "name": "excludedDrugsRisk", "type": "STRING", "mode": "NULLABLE" },
+                  { "name": "excludedViolenceRisk", "type": "STRING", "mode": "NULLABLE" },
+                  { "name": "videoViewability", "type": "STRING", "mode": "NULLABLE" },
+                  { "name": "excludedOffensiveLanguageRisk", "type": "STRING", "mode": "NULLABLE" },
+                  { "name": "excludedAdFraudRisk", "type": "STRING", "mode": "NULLABLE" }
+                ]
+              }
+            ]
+          },
+          { "name": "environmentDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "environment", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "keywordDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "keyword", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "onScreenPositionDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "onScreenPosition", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "exchangeDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "authorizedSellerStatusDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "authorizedSellerStatus", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "userRewardedContentDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "userRewardedContent", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "name", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "contentInstreamPositionDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "contentInstreamPosition", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "dayAndTimeDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "dayOfWeek", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "endHour", "type": "INTEGER", "mode": "NULLABLE" },
+              { "name": "startHour", "type": "INTEGER", "mode": "NULLABLE" },
+              { "name": "timeZoneResolution", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "proximityLocationListDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "proximityRadiusRange", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "proximityLocationListId", "type": "INTEGER", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "appDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "name": "appId", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "displayName", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "inventorySourceGroupDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "inventorySourceGroupId", "type": "INTEGER", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "deviceTypeDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "deviceType", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "assignedTargetingOptionId", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "sensitiveCategoryExclusionDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "excludedTargetingOptionId", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "sensitiveCategory", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "viewabilityDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "viewability", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "geoRegionDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "displayName", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "geoRegionType", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "appCategoryDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "displayName", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "carrierAndIspDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "displayName", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          },
+          { "name": "categoryDetails", "type": "RECORD", "mode": "NULLABLE", "fields": [
+              { "name": "displayName", "type": "STRING", "mode": "NULLABLE" },
+              { "name": "negative", "type": "BOOLEAN", "mode": "NULLABLE" },
+              { "name": "targetingOptionId", "type": "STRING", "mode": "NULLABLE" }
+            ]
+          }
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DV360_Targeting_Audit_", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}

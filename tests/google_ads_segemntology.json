@@ -1,0 +1,51 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks": [
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Segmentology_GoogleAds_", "suffix":"_Segmentology", "default": "Manual"}},
+      "clear":true
+    }},
+    { "include":{
+      "script":"scripts/google_ads_segmentology.json",
+      "parameters":{
+        "auth_read":"user",
+        "auth_write":"service",
+        "recipe_project":{"field":{ "name":"recipe_project", "kind":"string", "description":"Project ID hosting dataset." }},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Segmentology_GoogleAds_", "default": "Manual"}},
+        "customer_id":{"field":{ "name":"customer_id", "kind":"string", "description":"Google Ads customer." }},
+        "login_id":{"field":{ "name":"login_id", "kind":"string", "description":"Google Ads login." }},
+        "developer_token":{"field":{ "name":"developer_token", "kind":"string", "description":"Google Ads developer token." }}
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Segmentology_GoogleAds_", "suffix":"_Segmentology", "default": "Manual"}},
+        "table":"Census_Join",
+        "schema":[
+          { "name": "Campaign", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Ad_Group", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Impressions", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "Locations", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "Correlation", "type": "RECORD", "mode": "REPEATED", "fields": [
+            { "name": "Dimension", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Segment", "type": "STRING", "mode": "NULLABLE" },
+            { "name": "Impression", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Click", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Conversion", "type": "INTEGER", "mode": "NULLABLE" },
+            { "name": "Interaction", "type": "INTEGER", "mode": "NULLABLE" }
+          ]}
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Segmentology_GoogleAds_", "suffix":"_Segmentology", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}

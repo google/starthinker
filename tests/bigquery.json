@@ -1,0 +1,73 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "bigquery": {
+      "auth":"service",
+      "from":{
+        "values":[
+          ["2018-02-27", "dog", 7, 67],
+          ["2018-03-01", "cat", 5, 1.5],
+          ["2018-03-02", "bird", 12, 0.44],
+          ["2018-03-03", "lizard", 22, 1],
+          ["2018-03-04", "dinosaur", 1600, 273.97]
+        ]
+      },
+      "to":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
+        "table":"BQ_Values"
+      },
+      "schema":[
+        { "name":"Date_Column", "type":"DATE" },
+        { "name":"String_Column", "type":"STRING" },
+        { "name":"Integer_Column", "type":"INTEGER" },
+        { "name":"Float_Column", "type":"FLOAT" }
+      ]
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
+        "table":"BQ_Values",
+        "schema":[
+          { "name":"Date_Column", "type":"DATE" },
+          { "name":"String_Column", "type":"STRING" },
+          { "name":"Integer_Column", "type":"INTEGER" },
+          { "name":"Float_Column", "type":"FLOAT" }
+        ],
+        "values":[
+          ["2018-02-27", "dog", 7, 67.0],
+          ["2018-03-01", "cat", 5, 1.5],
+          ["2018-03-02", "bird", 12, 0.44],
+          ["2018-03-03", "lizard", 22, 1.0],
+          ["2018-03-04", "dinosaur", 1600, 273.97]
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
+        "query":"SELECT * FROM {test_dataset}.BQ_Values WHERE String_Column='dog';",
+        "parameters": {
+          "test_dataset": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}}
+        },
+        "values":[
+          ["2018-02-27", "dog", 7, 67.0]
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}

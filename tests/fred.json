@@ -1,0 +1,35 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "include":{
+      "script":"scripts/fred_series_to_bigquery.json",
+      "parameters":{
+        "auth":"service",
+        "fred_api_key":{"field":{ "name":"fred_api_key", "kind":"string", "description":"Fred API key." }},
+        "fred_series_id":"DAUPSA",
+        "fred_units":"lin",
+        "fred_frequency":"",
+        "fred_aggregation_method":"sum",
+        "project":"kenjora-161023",
+        "dataset":"Test"
+      }
+    }},
+    { "include":{
+      "script":"scripts/fred_regional_to_bigquery.json",
+      "parameters":{
+        "auth":"service",
+        "fred_api_key":{"field":{ "name":"fred_api_key", "kind":"string", "description":"Fred API key." }},
+        "fred_series_group":"882",
+        "fred_region_type":"county",
+        "fred_units":"lin",
+        "fred_frequency":"",
+        "fred_aggregation_method":"sum",
+        "project":"kenjora-161023",
+        "dataset":"Test"
+      }
+    }}
+  ]
+}

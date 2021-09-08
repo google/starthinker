@@ -1,0 +1,58 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2021 Google LLC"
+  },
+  "tasks": [
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_URL_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "url":{
+      "auth":{"field":{ "name":"auth_bigquery", "kind":"authentication", "order":3, "default":"service", "description":"BigQuery read/ write credentials." }},
+      "status":true,
+      "read":true,
+      "urls":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":5, "default":"", "description":"name of dataset in BigQuery." }},
+          "query":"
+            SELECT 'https://www.gstatic.com/webp/gallery3/1_webp_a.webp' AS URL, 'rose' AS URI
+            UNION ALL
+            SELECT 'https://www.gstatic.com/webp/gallery3/2_webp_a.webp' AS URL, 'penguin' AS URI
+            UNION ALL
+            SELECT 'https://www.gstatic.com/webp/gallery3/3_webp_a.webp' AS URL, 'dice' AS URI
+          ",
+          "legacy":false
+        }
+      },
+      "to":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_URL_", "default": "Manual"}},
+          "table":"URL_Data"
+        }
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_URL_", "default": "Manual"}},
+        "table":"URL_Data",
+        "schema":[
+          { "name": "URI", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "URL", "type": "STRING", "mode": "REQUIRED" },
+          { "name": "Status", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "Read", "type": "BYTES", "mode": "NULLABLE" }
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_URL_", "default": "Manual"}},
+      "delete":true
+    }},
+    { "test": {
+      "assert":"Completed all tasks."
+    }}
+  ]
+}

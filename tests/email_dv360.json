@@ -1,0 +1,113 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+   { "dbm":{
+      "auth":"user",
+      "report":{
+        "filters": {
+           "FILTER_PARTNER": {
+             "values": {"field":{ "name":"partner_ids", "kind":"integer_list", "order":2, "default":[], "description":"DBM partner id." }}
+           },
+           "FILTER_ADVERTISER": {
+             "values": {"field":{ "name":"advertiser_ids", "kind":"integer_list", "order":3, "default":[], "description":"Comma delimited list of DBM advertiser ids." }}
+           }
+        },
+        "body": {
+          "timezoneCode":"America/Los_Angeles",
+          "metadata":{
+            "title":"Test Email Report ( StarThinker )",
+            "dataRange":"LAST_7_DAYS",
+            "format": "CSV",
+            "sendNotification":true
+          },
+          "schedule": {
+            "frequency": "ONE_TIME"
+          },
+          "params": {
+            "type":"TYPE_CROSS_PARTNER",
+            "groupBys":[
+              "FILTER_DATE",
+              "FILTER_ADVERTISER",
+              "FILTER_INSERTION_ORDER",
+              "FILTER_CREATIVE_ID",
+              "FILTER_ADVERTISER_CURRENCY"
+            ],
+            "metrics":[
+              "METRIC_REVENUE_ADVERTISER",
+              "METRIC_IMPRESSIONS"
+            ]
+          }
+        }
+      },
+      "delete":true
+    }},
+    { "dbm":{
+      "__comment__":"Do nothing wait for the report to finish.",
+      "auth":"user",
+      "report":{
+        "name":"Test Email Report ( StarThinker )",
+        "timeout":5
+      },
+      "out":{}
+    }},
+    { "include":{
+      "script":"scripts/email_dv360_to_bigquery.json",
+      "parameters":{
+        "email":{"field":{ "name":"email", "kind":"string", "description":"Email address to send and read report." }},
+        "subject":".*Test Email Report \\( StarThinker \\).*",
+        "dataset":"Test",
+        "table":"Email_Attachment",
+        "dbm_schema":[
+          { "name":"Report_Day", "type":"DATE" },
+          { "name":"Advertiser", "type":"STRING" },
+          { "name":"Advertiser_Id", "type":"INTEGER" },
+          { "name":"Advertiser_Status", "type":"STRING" },
+          { "name":"Advertiser_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Insertion_Order", "type":"STRING" },
+          { "name":"Insertion_Order_Id", "type":"INTEGER" },
+          { "name":"Insertion_Order_Status", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Insertion_Order_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Creative", "type":"STRING" },
+          { "name":"Creative_Id", "type":"INTEGER" },
+          { "name":"Dcm_Placement_Id", "type":"INTEGER" },
+          { "name":"Creative_Status", "type":"STRING" },
+          { "name":"Creative_Source", "type":"STRING" },
+          { "name":"Creative_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Advertiser_Currency", "type":"STRING" },
+          { "name":"Revenue",  "type":"FLOAT" },
+          { "name":"Impressions", "type":"INTEGER" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":"Test",
+        "table": "Email_Attachment",
+        "schema":[
+          { "name":"Report_Day", "type":"DATE" },
+          { "name":"Advertiser", "type":"STRING" },
+          { "name":"Advertiser_Id", "type":"INTEGER" },
+          { "name":"Advertiser_Status", "type":"STRING" },
+          { "name":"Advertiser_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Insertion_Order", "type":"STRING" },
+          { "name":"Insertion_Order_Id", "type":"INTEGER" },
+          { "name":"Insertion_Order_Status", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Insertion_Order_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Creative", "type":"STRING" },
+          { "name":"Creative_Id", "type":"INTEGER" },
+          { "name":"Dcm_Placement_Id", "type":"INTEGER" },
+          { "name":"Creative_Status", "type":"STRING" },
+          { "name":"Creative_Source", "type":"STRING" },
+          { "name":"Creative_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Advertiser_Currency", "type":"STRING" },
+          { "name":"Revenue",  "type":"FLOAT" },
+          { "name":"Impressions", "type":"INTEGER" }
+        ]
+      }
+    }}
+  ]
+}

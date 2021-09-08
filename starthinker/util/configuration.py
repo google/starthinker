@@ -272,9 +272,9 @@ def commandline_parser(parser=None, arguments=None):
 
   if arguments is None or '-i' in arguments:
     parser.add_argument(
-      '--instance',
-      '-i',
-      help='Instance number of the task to run starting at 1.',
+      '--task',
+      '-t',
+      help='Task number of the task to run starting at 1.',
       default=None,
       type=int
     )

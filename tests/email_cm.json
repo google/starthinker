@@ -1,0 +1,78 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Email_CM_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "dcm":{
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
+        "body":{
+          "criteria": {
+            "dateRange": {"kind": "dfareporting#dateRange", "relativeDateRange": "LAST_7_DAYS"},
+            "dimensions": [
+              {"kind": "dfareporting#sortedDimension", "name": "date"},
+              {"kind": "dfareporting#sortedDimension", "name": "platformType"}],
+            "metricNames": ["impressions"]
+          },
+          "delivery": {
+            "emailOwner": true,
+            "emailOwnerDeliveryType": "ATTACHMENT"
+          },
+          "schedule": {
+            "active": false,
+            "repeats": "DAILY",
+            "every": 1
+          },
+          "type": "STANDARD",
+          "format": "CSV",
+          "kind": "dfareporting#report",
+          "name": "Test Email Report ( StarThinker )"
+        }
+      },
+      "delete":true
+    }},
+    { "dcm":{
+      "__comment__":"Do nothing wait for the report to finish.",
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
+        "name":"Test Email Report ( StarThinker )",
+        "timeout":5
+      },
+      "out":{}
+    }},
+    { "include":{
+      "script":"scripts/email_cm_to_bigquery.json",
+      "parameters":{
+        "email":{"field":{ "name":"email", "kind":"string", "description":"Email address to send and read report." }},
+        "subject":".*Test Email Report \\( StarThinker \\).*",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Email_CM_", "default": "Manual"}},
+        "table":"Email_Attachment"
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Email_CM_", "default": "Manual"}},
+        "table":"Email_Attachment",
+        "schema":[
+          { "name":"Report_Day", "type":"DATE", "mode":"NULLABLE" },
+          { "name":"Platform_Type", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Impressions", "type":"INTEGER", "mode":"NULLABLE" }
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Email_CM_", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}

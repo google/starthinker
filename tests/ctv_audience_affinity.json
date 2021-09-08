@@ -1,0 +1,41 @@
+{
+  "setup": {
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "hour": [ 3 ],
+    "day": [ "Mon" ]
+  },
+  "tasks": [
+    { "include":{
+      "script":"scripts/ctv_audience_affinity.json",
+      "parameters":{
+        "recipe_name":"ctv_test",
+        "partner_id":234340,
+        "dataset":"ctv_test",
+        "audience_ids":[547327893,728185126,614644370,616756026,484169638]
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":"ctv_test",
+        "table":"final_table",
+        "schema": [
+          {"mode": "NULLABLE", "name": "app_url", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "ctv_app_name", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "app_or_domain", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "audience_list", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "audience_app_impressions", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "audience_app_uniques", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "audience_baseline_impressions", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "audience_baseline_uniques", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "country_app_impressions", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "country_app_uniques", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "country_baseline_impressions", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "country_baseline_uniques", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "affinity_index", "type": "FLOAT"}
+        ]
+      }
+    }}
+  ]
+}

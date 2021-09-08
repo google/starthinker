@@ -1,0 +1,42 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"user",
+      "dataset":"Test"
+    }},
+    { "include":{
+      "script":"scripts/salesforce_to_bigquery.json",
+      "parameters":{
+        "domain":{"field":{ "name":"domain", "kind":"string", "description":"Retrieve from a Salesforce Domain." }},
+        "client":{"field":{ "name":"client", "kind":"string", "description":"Retrieve from a Salesforce App." }},
+        "secret":{"field":{ "name":"secret", "kind":"string", "description":"Retrieve from a Salesforce App." }},
+        "username":{"field":{ "name":"username", "kind":"email", "description":"Your Salesforce user email." }},
+        "password":{"field":{ "name":"password", "kind":"password", "description":"Your Salesforce login password." }},
+        "query":"SELECT Id, Name, Email FROM Contact",
+        "dataset":"Test",
+        "table":"Salesforce_Contact",
+        "schema":[
+          { "name":"ID", "type":"STRING", "mode": "REQUIRED" },
+          { "name":"Name", "type":"STRING", "mode": "NULLABLE" },
+          { "name":"Email", "type":"STRING", "mode": "NULLABLE" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":"Test",
+        "table":"Salesforce_Contact",
+        "schema":[
+          { "name":"ID", "type":"STRING", "mode": "REQUIRED" },
+          { "name":"Name", "type":"STRING", "mode": "NULLABLE" },
+          { "name":"Email", "type":"STRING", "mode": "NULLABLE" }
+        ]
+      }
+    }}
+  ]
+}

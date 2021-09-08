@@ -1,0 +1,141 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "video":{
+      "__comment__":"Add image using transparency to video. Video is 640 x 360. Image is 400 x 400.",
+      "auth":"user",
+      "file_or_url":"https://storage.googleapis.com/starthinker-test/video_sample.mp4",
+      "effects":[
+        {
+          "duration":{
+            "start":1,
+            "end":5
+          },
+          "fade":{
+            "in":1,
+            "out":1
+          },
+          "opacity":1,
+          "position":{
+            "height":0,
+            "width":120,
+            "angle":0
+          },
+          "image":{
+            "file_or_url":"https://storage.googleapis.com/starthinker-test/video_sample.png"
+          }
+        },
+        {
+          "duration":{
+            "start":4.5,
+            "end":7
+          },
+          "fade":{
+            "in":0,
+            "out":0
+          },
+          "opacity":0.8,
+          "position":{
+            "height":30,
+            "width":200,
+            "angle":0
+          },
+          "text":{
+            "color":"#ffffff",
+            "font":"Arial",
+            "size":24,
+            "align":"center",
+            "kerning":1,
+            "message":"Video Text.\nAnd A Second Line"
+          }
+        }
+      ],
+      "out":{
+        "file":"test_ran.mp4"
+      }
+    }},
+    { "test":{
+      "path":"test_ran.mp4",
+      "delete":true
+    }},
+    { "video":{
+      "__comment__":"Read video effects from sheet and write to storage.",
+      "auth":"user",
+      "sheets":{
+        "sheet":"https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit?usp=sharing",
+        "tab":"Video"
+      }
+    }},
+    { "test":{
+      "auth":"service",
+      "storage":{
+        "bucket":"kenjora-starthinker-test",
+        "file":"test_ran.mp4",
+        "delete":true
+       }
+    }},
+    { "dataset":{
+      "auth":"user",
+      "dataset":"Test"
+    }},
+    { "sheets":{
+      "__comment__":"Move sheet data to bigquery table.",
+      "auth":"user",
+      "sheet":"https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit?usp=sharing",
+      "tab":"Video",
+      "range":"A3:Y",
+      "header":false,
+      "out":{
+        "bigquery":{
+          "dataset":"Test",
+          "table":"Video",
+          "schema":[
+            { "name":"Video_URL", "type":"STRING" },
+            { "name":"Duration_Start", "type":"FLOAT" },
+            { "name":"Duration_End", "type":"FLOAT" },
+            { "name":"Fade_In", "type":"FLOAT" },
+            { "name":"Fade_Out", "type":"FLOAT" },
+            { "name":"Opacity", "type":"FLOAT" },
+            { "name":"Position_Height", "type":"INTEGER" },
+            { "name":"Position_Width", "type":"INTEGER" },
+            { "name":"Position_Angle", "type":"INTEGER" },
+            { "name":"Image_URL", "type":"STRING" },
+            { "name":"Text_Color", "type":"STRING" },
+            { "name":"Text_Font", "type":"STRING" },
+            { "name":"Text_Size", "type":"INTEGER" },
+            { "name":"Text_Align", "type":"STRING" },
+            { "name":"Text_Kerning", "type":"INTEGER" },
+            { "name":"Text_Message", "type":"STRING" },
+            { "name":"Audio_URL", "type":"STRING" },
+            { "name":"Out_YouTube_Title", "type":"STRING" },
+            { "name":"Out_YouTube_Description", "type":"STRING" },
+            { "name":"Out_YouTube_Category", "type":"INTEGER" },
+            { "name":"Out_YouTube_Keywords", "type":"STRING" },
+            { "name":"Out_YouTube_Private", "type":"STRING" },
+            { "name":"Out_DCM", "type":"STRING" },
+            { "name":"Out_Storage_Bucket", "type":"STRING" },
+            { "name":"Out_Storage_File", "type":"STRING" }
+          ]
+        }
+      }
+    }},
+    { "video":{
+        "auth":"service",
+        "bigquery":{
+          "dataset":"Test",
+          "table":"Video"
+        }
+    }},
+    { "test":{
+      "auth":"service",
+      "storage":{
+        "bucket":"kenjora-starthinker-test",
+        "file":"test_ran.mp4",
+        "delete":true
+      }
+    }}
+  ]
+}

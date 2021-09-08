@@ -1,0 +1,131 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks": [
+    { "sheets":{
+      "__comment__":"Clear the log sheet.",
+      "auth":"user",
+      "sheet":"https://docs.google.com/spreadsheets/d/1a6Ip1IE7Dqs-PbpUBGU0iuZlrnz3_UNNKL6uPNZC7jw/edit#gid=808334295",
+      "tab":"Log",
+      "range":"A1:B",
+      "clear": true
+    }},
+    { "sheets":{
+      "__comment__":"Create a campaign.",
+      "auth":"user",
+      "sheet":"https://docs.google.com/spreadsheets/d/1a6Ip1IE7Dqs-PbpUBGU0iuZlrnz3_UNNKL6uPNZC7jw/edit#gid=808334295",
+      "tab":"Campaign",
+      "range":"A2:Z",
+      "write": {
+        "values": [
+          ["5184001", "22854575", "Bulkdozer StarThinker Automated Test", "24790631", "", "2022-12-01", "2022-12-31"]
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Create a landing page ( required for campaign ).",
+      "auth":"user",
+      "sheet":"https://docs.google.com/spreadsheets/d/1a6Ip1IE7Dqs-PbpUBGU0iuZlrnz3_UNNKL6uPNZC7jw/edit#gid=808334295",
+      "tab":"Landing Page",
+      "range":"A2:Z",
+      "write": {
+        "values": [
+          ["5184001", "24790631", "Bulkdozer StarThinker Automated Test", "https://www.google.com"]
+        ]
+      }
+    }},
+    { "include":{
+      "script":"scripts/bulkdozer.json",
+      "parameters":{
+        "account_id":2515,
+        "sheet_url":"https://docs.google.com/spreadsheets/d/1a6Ip1IE7Dqs-PbpUBGU0iuZlrnz3_UNNKL6uPNZC7jw/edit#gid=1936197373"
+      }
+    }},
+    { "test": {
+      "__comment__":"Check that the campaign and landing page exist.",
+      "auth": "user",
+      "traffic": {
+        "account_id": 2515,
+        "verify":[
+          {
+            "type": "campaigns",
+            "id": 22854575,
+            "values": {
+              "name": "Bulkdozer StarThinker Automated Test"
+            }
+          },{
+            "type": "advertiserLandingPages",
+            "id": 24790631,
+            "values": {
+              "name": "Bulkdozer StarThinker Automated Test",
+              "url": "https://www.google.com"
+            }
+          }
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Clear the log.",
+      "auth":"user",
+      "sheet":"https://docs.google.com/spreadsheets/d/1a6Ip1IE7Dqs-PbpUBGU0iuZlrnz3_UNNKL6uPNZC7jw/edit#gid=808334295",
+      "tab":"Log",
+      "range":"A1:B",
+      "clear": true
+    }},
+    { "sheets":{
+      "__comment__":"",
+      "auth":"user",
+      "sheet":"https://docs.google.com/spreadsheets/d/1a6Ip1IE7Dqs-PbpUBGU0iuZlrnz3_UNNKL6uPNZC7jw/edit#gid=808334295",
+      "tab":"Campaign",
+      "range":"A2:Z",
+      "write": {
+        "values": [
+          ["5184001", "22854575", "Bulkdozer StarThinker Automated Test Changed", "24790631", "", "2022-12-01", "2022-12-31"]
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Update the landing page in the sheet.",
+      "auth":"user",
+      "sheet":"https://docs.google.com/spreadsheets/d/1a6Ip1IE7Dqs-PbpUBGU0iuZlrnz3_UNNKL6uPNZC7jw/edit#gid=808334295",
+      "tab":"Landing Page",
+      "range":"A2:Z",
+      "write": {
+        "values": [
+          ["5184001", "24790631", "Bulkdozer StarThinker Automated Test Changed", "https://www.google.com"]
+        ]
+      }
+    }},
+    { "include":{
+      "script":"scripts/bulkdozer.json",
+      "parameters":{
+        "account_id":2515,
+        "sheet_url":"https://docs.google.com/spreadsheets/d/1a6Ip1IE7Dqs-PbpUBGU0iuZlrnz3_UNNKL6uPNZC7jw/edit#gid=1936197373"
+      }
+    }},
+    { "test": {
+      "__comment__":"Check that the landing page has been updated.",
+      "auth": "user",
+      "traffic": {
+        "account_id": 2515,
+        "verify":[
+          { "type": "campaigns",
+            "id": 22854575,
+            "values": {
+              "name": "Bulkdozer StarThinker Automated Test Changed"
+            }
+          },
+          { "type": "advertiserLandingPages",
+            "id": 24790631,
+            "values": {
+              "name": "Bulkdozer StarThinker Automated Test Changed",
+              "url": "https://www.google.com"
+            }
+          }
+        ]
+      }
+    }}
+  ]
+}

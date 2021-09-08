@@ -1,0 +1,17 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "include":{
+      "script":"scripts/archive.json",
+      "parameters":{
+        "archive_days":365,
+        "archive_bucket":{"field":{ "name":"archive_bucket", "kind":"string", "description":"" }},
+        "archive_path":{"field":{ "name":"archive_path", "kind":"string", "description":"No leading slash and no asterix needed." }},
+        "archive_delete":false
+      }
+    }}
+  ]
+}

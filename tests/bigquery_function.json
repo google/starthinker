@@ -1,0 +1,81 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_Function_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "include":{
+      "script":"scripts/bigquery_function.json",
+      "parameters":{
+        "auth":"service",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_Function_", "default": "Manual"}},
+        "function":"Pearson Significance Test"
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_Function_", "default": "Manual"}},
+        "legacy":false,
+        "query":"SELECT
+          {dataset}.pearson_significance_test(0.666, 10, 80, 0.5) AS OK_80,
+          {dataset}.pearson_significance_test(0.666, 10, 90, 0.5) AS OK_90,
+          {dataset}.pearson_significance_test(0.666, 10, 98, 0.5) AS OK_98,
+          {dataset}.pearson_significance_test(0.666, 10, 99, 0.5) AS NOPE_99,
+          {dataset}.pearson_significance_test(0.666, 10, 99.5, 0.5) AS NOPE_995,
+          {dataset}.pearson_significance_test(0.666, 10, 99.95, 0.5) AS NOPE_9995
+        ",
+        "parameters":{
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_Function_", "default": "Manual"}}
+        },
+        "values":[
+          [1, 1, 1, 0, 0, 0]
+        ]
+      }
+    }},
+    { "include":{
+      "script":"scripts/bigquery_function.json",
+      "parameters":{
+        "auth":"service",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_Function_", "default": "Manual"}},
+        "function":"RGB To HSV"
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_Function_", "default": "Manual"}},
+        "legacy":false,
+        "query":"SELECT
+          {dataset}.rgb_to_hsv(0, 0, 0) AS BLACK,
+          {dataset}.rgb_to_hsv(255, 0, 0) AS RED,
+          {dataset}.rgb_to_hsv(0, 255, 0) AS GREEN,
+          {dataset}.rgb_to_hsv(0, 0, 255) AS BLUE,
+          {dataset}.rgb_to_hsv(63, 128, 173) AS COLOR
+        ",
+        "parameters":{
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_Function_", "default": "Manual"}}
+        },
+        "values":[
+          [
+            { "h": 0, "s": 0, "v": 0 },
+            { "h": 0, "s": 100, "v": 100 },
+            { "h": 120, "s": 100, "v": 100 },
+            { "h": 240, "s": 100, "v": 100 },
+            { "h": 205, "s": 64, "v": 68 }
+          ]
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_BigQuery_Function_", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}

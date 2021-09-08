@@ -1,0 +1,31 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "sheets":{
+      "__comment__":"Copy the tamplate sheet to the users test sheet.",
+      "auth":"user",
+      "template":{
+        "sheet":"https://docs.google.com/spreadsheets/d/1fQnxfrBCieIifx9-NOX-4jeAqzHTBEvPIdOyaT3f9nw/",
+        "tab":"Floodlight Monitor"
+      },
+      "sheet":"StarThinker Test Floodlight Monitor",
+      "tab":"Floodlight Monitor",
+      "range":"A1:D"
+    }},
+    { "include":{
+      "script":"scripts/floodlight_monitor.json",
+      "parameters":{
+        "dcm_account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
+        "sheet":"StarThinker Test Floodlight Monitor"
+      }
+    }},
+    {
+      "test" : {
+        "assert":"Floodlight Monitor ran."
+      }
+    }
+  ]
+}

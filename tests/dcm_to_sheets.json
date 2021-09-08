@@ -1,0 +1,67 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "sheets":{
+      "__comment__":"Create a blank sheet for this test. The tab is deleted if exists and re-created.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test CM Report ", "default": "Manual"}},
+      "tab":"Report",
+      "range":"A1",
+      "delete":true,
+      "template":{}
+    }},
+    { "dcm":{
+      "__comment__":"Create a basic report to run.",
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
+        "body":{
+          "criteria": {
+            "dateRange": {"kind": "dfareporting#dateRange", "relativeDateRange": "LAST_7_DAYS"},
+            "dimensions": [
+              {"kind": "dfareporting#sortedDimension", "name": "date"},
+              {"kind": "dfareporting#sortedDimension", "name": "platformType"}],
+            "metricNames": ["impressions"]
+          },
+          "type": "STANDARD",
+          "delivery": {"emailOwner": false},
+          "format": "CSV",
+          "kind": "dfareporting#report",
+          "name": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test Sheet Report ", "default": "Manual"}}
+        }
+      },
+      "delete":true
+    }},
+    { "dcm":{
+      "__comment__":"Move the report to sheets.  Wait indefinately as we expect the report to run quickly.",
+      "auth":"user",
+      "report":{
+        "account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
+        "name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test Sheet Report ", "default": "Manual"}},
+        "timeout":5
+      },
+      "out":{
+       "sheets":{
+          "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test CM Report ", "default": "Manual"}},
+          "tab":"Report",
+          "range":"A1"
+        }
+      }
+    }},
+    { "test": {
+      "__comment__":"Check if sheet headers are valid. Rest of rows are random.",
+      "auth":"user",
+      "sheets": {
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test CM Report ", "default": "Manual"}},
+        "tab":"Report",
+        "range":"A1:C1",
+        "values":[
+          ["Report_Day", "Platform_Type", "Impressions"]
+        ]
+      }
+    }}
+  ]
+}

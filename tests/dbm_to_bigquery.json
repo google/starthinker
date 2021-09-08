@@ -1,0 +1,107 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "include":{
+      "script":"scripts/dbm.json",
+      "parameters":{
+        "report":{
+          "filters": {
+             "FILTER_PARTNER": {
+               "values": {"field":{ "name":"partner_ids", "kind":"integer_list", "order":5, "default":[], "description":"DBM partner id." }}
+             },
+             "FILTER_ADVERTISER": {
+               "values": {"field":{ "name":"advertiser_ids", "kind":"integer_list", "order":6, "default":[], "description":"Comma delimited list of DBM advertiser ids." }}
+             }
+          },
+          "body": {
+            "timezoneCode":"America/Los_Angeles",
+            "metadata":{
+              "title":"Test Report ( StarThinker )",
+              "dataRange":"LAST_7_DAYS",
+              "format": "CSV"
+            },
+            "params": {
+              "type":"TYPE_CROSS_PARTNER",
+              "groupBys":[
+                "FILTER_DATE",
+                "FILTER_ADVERTISER",
+                "FILTER_INSERTION_ORDER",
+                "FILTER_CREATIVE_ID",
+                "FILTER_ADVERTISER_CURRENCY"
+              ],
+              "metrics":[
+                "METRIC_REVENUE_ADVERTISER",
+                "METRIC_IMPRESSIONS"
+              ]
+            }
+          }
+        },
+        "delete":true
+      }
+    }},
+    { "dbm":{
+      "auth":"user",
+      "report":{
+        "name":"Test Report ( StarThinker )",
+        "timeout":5
+      },
+      "out":{
+        "bigquery":{
+          "dataset":"Test",
+          "table":"DBM_Report",
+          "header":true,
+          "schema":[
+            { "name":"Report_Day", "type":"DATE" },
+            { "name":"Advertiser", "type":"STRING" },
+            { "name":"Advertiser_Id", "type":"INTEGER" },
+            { "name":"Advertiser_Status", "type":"STRING" },
+            { "name":"Advertiser_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+            { "name":"Insertion_Order", "type":"STRING" },
+            { "name":"Insertion_Order_Id", "type":"INTEGER" },
+            { "name":"Insertion_Order_Status", "type":"STRING", "mode":"NULLABLE" },
+            { "name":"Insertion_Order_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+            { "name":"Creative", "type":"STRING" },
+            { "name":"Creative_Id", "type":"INTEGER" },
+            { "name":"Dcm_Placement_Id", "type":"INTEGER" },
+            { "name":"Creative_Status", "type":"STRING" },
+            { "name":"Creative_Source", "type":"STRING" },
+            { "name":"Creative_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+            { "name":"Advertiser_Currency", "type":"STRING" },
+            { "name":"Revenue",  "type":"FLOAT" },
+            { "name":"Impressions", "type":"INTEGER" }
+          ]
+        }
+      }
+    }},
+    { "test": {
+      "auth":"user",
+      "bigquery":{
+        "dataset":"Test",
+        "table": "DBM_Report",
+        "schema":[
+          { "name":"Report_Day", "type":"DATE" },
+          { "name":"Advertiser", "type":"STRING" },
+          { "name":"Advertiser_Id", "type":"INTEGER" },
+          { "name":"Advertiser_Status", "type":"STRING" },
+          { "name":"Advertiser_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Insertion_Order", "type":"STRING" },
+          { "name":"Insertion_Order_Id", "type":"INTEGER" },
+          { "name":"Insertion_Order_Status", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Insertion_Order_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Creative", "type":"STRING" },
+          { "name":"Creative_Id", "type":"INTEGER" },
+          { "name":"Dcm_Placement_Id", "type":"INTEGER" },
+          { "name":"Creative_Status", "type":"STRING" },
+          { "name":"Creative_Source", "type":"STRING" },
+          { "name":"Creative_Integration_Code", "type":"STRING", "mode":"NULLABLE" },
+          { "name":"Advertiser_Currency", "type":"STRING" },
+          { "name":"Revenue",  "type":"FLOAT" },
+          { "name":"Impressions", "type":"INTEGER" }
+        ]
+      }
+    }}
+  ]
+}

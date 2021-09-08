@@ -67,7 +67,7 @@ class JSON_To_BigQuery(json.JSONEncoder):
 
   """
 
-  def default(self, obj:any) -> str:
+  def default(self, obj):
     if isinstance(obj, bytes):
       return base64.standard_b64encode(obj).decode("ascii")
     elif isinstance(obj, datetime.datetime):

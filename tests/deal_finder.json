@@ -1,0 +1,55 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks": [
+    { "include": {
+      "script": "scripts/deal_finder.json",
+      "parameters":{
+        "recipe_name": "Test",
+        "recipe_slug": "Test",
+        "partners": {"field":{ "name":"partners", "kind":"integer_list", "order":1, "default":[], "description":"DBM partner id." }},
+        "advertisers": {"field":{ "name":"advertisers", "kind":"integer_list", "order":2, "default":[], "description":"DBM advertiser id." }}
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":"Test",
+        "table":"Deal_Finder_Dashboard",
+        "schema":[
+          {"mode": "NULLABLE", "name": "Partner", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Partner_ID", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Advertiser", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Advertiser_ID", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Site", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Site_ID", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Inventory", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Inventory_Type", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Creative_Type", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Creative_Size", "type": "STRING"},
+          {"mode": "NULLABLE", "name": "Always_On", "type": "BOOLEAN"},
+          {"mode": "NULLABLE", "name": "Deal_Impressions", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Open_Impressions", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Rank_Impressions", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Deal_Clicks", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Open_Clicks", "type": "INTEGER"},
+          {"mode": "REQUIRED", "name": "Rank_Clicks", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Deal_Conversions", "type": "FLOAT"},
+          {"mode": "NULLABLE", "name": "Open_Conversions", "type": "FLOAT"},
+          {"mode": "NULLABLE", "name": "Rank_Conversions", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Deal_Impressions_Viewable", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Open_Impressions_Viewable", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Rank_Impressions_Viewable", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Deal_Impressions_Measurable", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Open_Impressions_Measurable", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Rank_Impressions_Measurable", "type": "INTEGER"},
+          {"mode": "NULLABLE", "name": "Deal_Cost", "type": "FLOAT"},
+          {"mode": "NULLABLE", "name": "Open_Cost", "type": "FLOAT"},
+          {"mode": "NULLABLE", "name": "Rank_Cost", "type": "INTEGER"}
+        ]
+      }
+    }}
+  ]
+}

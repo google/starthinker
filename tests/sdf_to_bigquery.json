@@ -1,0 +1,563 @@
+{
+  "setup": {
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks": [
+    { "include":{
+      "script":"scripts/sdf_to_bigquery.json",
+      "parameters":{
+        "partner_id":{"field":{ "name":"partner_id", "kind":"integer", "description":"The sdf file types." }},
+        "filter_ids":{"field":{ "name":"filter_ids", "kind":"integer_list", "description":"Comma separated list of filter ids for the request." }},
+        "filter_type":"FILTER_TYPE_ADVERTISER_ID",
+        "file_types":"FILE_TYPE_LINE_ITEM",
+        "dataset":"Test",
+        "version":"SDF_VERSION_5",
+        "table_suffix":"",
+        "time_partitioned_table":false,
+        "create_single_day_table":false
+      }
+    }},
+    {
+      "test": {
+        "auth": "user",
+        "bigquery": {
+        "dataset":"Test",
+          "table": "SDF_LineItems",
+          "schema": [
+            {
+              "mode": "NULLABLE",
+              "name": "Line_Item_Id",
+              "type": "INTEGER"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Io_Id",
+              "type": "INTEGER"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Type",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Subtype",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Name",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Timestamp",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Status",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Start_Date",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "End_Date",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Budget_Type",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Budget_Amount",
+              "type": "FLOAT"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Pacing",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Pacing_Rate",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Pacing_Amount",
+              "type": "FLOAT"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Frequency_Enabled",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Frequency_Exposures",
+              "type": "INTEGER"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Frequency_Period",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Frequency_Amount",
+              "type": "INTEGER"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_View_Frequency_Enabled",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_View_Frequency_Exposures",
+              "type": "INTEGER"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_View_Frequency_Period",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Partner_Revenue_Model",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Partner_Revenue_Amount",
+              "type": "FLOAT"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Conversion_Counting_Type",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Conversion_Counting_Pct",
+              "type": "FLOAT"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Conversion_Floodlight_Activity_Ids",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Fees",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Integration_Code",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Details",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Bid_Strategy_Type",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Bid_Strategy_Value",
+              "type": "FLOAT"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Bid_Strategy_Unit",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Bid_Strategy_Do_Not_Exceed",
+              "type": "FLOAT"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Apply_Floor_Price_For_Deals",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Creative_Assignments",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Geography_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Geography_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Geography_Regional_Location_List_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Geography_Regional_Location_List_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Language_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Language_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Device_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Device_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Browser_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Browser_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Digital_Content_Labels_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Brand_Safety_Sensitivity_Setting",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Brand_Safety_Custom_Settings",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Third_Party_Verification_Services",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Third_Party_Verification_Labels",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Channel_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Channel_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Site_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Site_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "App_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "App_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "App_Collection_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "App_Collection_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Category_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Category_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Keyword_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Keyword_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Keyword_List_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Audience_Targeting_Similar_Audiences",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Audience_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Audience_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Affinity_In_Market_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Affinity_In_Market_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Custom_List_Targeting",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Inventory_Source_Targeting_Authorized_Seller_Options",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Inventory_Source_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Inventory_Source_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Inventory_Source_Targeting_Target_New_Exchanges",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Daypart_Targeting",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Daypart_Targeting_Time_Zone",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Environment_Targeting",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Viewability_Targeting_Active_View",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Position_Targeting_On_Screen",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Position_Targeting_Display_Position_In_Content",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Position_Targeting_Video_Position_In_Content",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Position_Targeting_Audio_Position_In_Content",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Video_Player_Size_Targeting",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Demographic_Targeting_Gender",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Demographic_Targeting_Age",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Demographic_Targeting_Household_Income",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Demographic_Targeting_Parental_Status",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Connection_Speed_Targeting",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Carrier_Targeting_Include",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Carrier_Targeting_Exclude",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Bid_Multipliers",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Video_Ad_Formats",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Bid_Strategy_Type",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Bid_Strategy_Value",
+              "type": "FLOAT"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Mobile_Bid_Adjustment_Option",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Mobile_Bid_Adjustment_Percentage",
+              "type": "INTEGER"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Desktop_Bid_Adjustment_Option",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Desktop_Bid_Adjustment_Percentage",
+              "type": "INTEGER"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Tablet_Bid_Adjustment_Option",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Tablet_Bid_Adjustment_Percentage",
+              "type": "INTEGER"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Connected_Tv_Bid_Adjustment_Option",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Connected_Tv_Bid_Adjustment_Percentage",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Category_Exclusions_Targeting",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Content_Filter",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Inventory_Source_Targeting",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Third_Party_Viewability_Vendor",
+              "type": "STRING"
+            },
+            {
+              "mode": "NULLABLE",
+              "name": "Trueview_Third_Party_Brand_Safety_Vendor",
+              "type": "STRING"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

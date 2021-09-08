@@ -1,0 +1,271 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "include":{
+      "script":"scripts/barnacle.json",
+      "parameters":{
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "recipe_project":{"field":{ "name":"recipe_project", "kind":"string", "description":"Project where BigQuery dataset will be created." }},
+        "accounts":{"field":{ "name":"accounts", "kind":"integer_list", "description":"Comma separated DCM account ids." }},
+        "reports":false
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_Accounts",
+        "schema":[
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"name", "type":"STRING" },
+          { "name":"active", "type":"BOOLEAN" },
+          { "name":"description", "type":"STRING" },
+          { "name":"timezone", "type":"STRING" },
+          { "name":"currencyId", "type":"INTEGER" },
+          { "name":"countryId", "type":"INTEGER" },
+          { "name":"locale", "type":"STRING" },
+          { "name":"nielsenOcrEnabled", "type":"BOOLEAN" },
+          { "name":"shareReportsWithTwitter", "type":"BOOLEAN" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_Profiles",
+        "schema":[
+          { "name":"profileId", "type":"INTEGER" },
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"subaccountId", "type":"INTEGER" },
+          { "name":"name", "type":"STRING" },
+          { "name":"email", "type":"STRING" },
+          { "name":"locale", "type":"STRING" },
+          { "name":"userRoleId", "type":"INTEGER" },
+          { "name":"userAccessType", "type":"STRING" },
+          { "name":"active", "type":"BOOLEAN" },
+          { "name":"comments", "type":"STRING" },
+          { "name":"traffickerType", "type":"STRING" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_Profile_Campaigns",
+        "schema":[
+          { "name":"profileId", "type":"INTEGER" },
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"subaccountId", "type":"INTEGER" },
+          { "name":"campaignId", "type":"INTEGER" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_Profile_Sites",
+        "schema":[
+          { "name":"profileId", "type":"INTEGER" },
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"subaccountId", "type":"INTEGER" },
+          { "name":"siteId", "type":"INTEGER" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_Profile_Roles",
+        "schema":[
+          { "name":"profileId", "type":"INTEGER" },
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"subaccountId", "type":"INTEGER" },
+          { "name":"roleId", "type":"INTEGER" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_Profile_Advertisers",
+        "schema":[
+          { "name":"profileId", "type":"INTEGER" },
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"subaccountId", "type":"INTEGER" },
+          { "name":"advertiserId", "type":"INTEGER" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_SubAccounts",
+        "schema":[
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"subaccountId", "type":"INTEGER" },
+          { "name":"name", "type":"STRING" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_Advertisers",
+        "schema":[
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"subaccountId", "type":"INTEGER" },
+          { "name":"advertiserId", "type":"INTEGER" },
+          { "name":"advertiserGroupId", "type":"INTEGER" },
+          { "name":"name", "type":"STRING" },
+          { "name":"status", "type":"STRING" },
+          { "name":"defaultEmail", "type":"STRING" },
+          { "name":"clickThroughUrlSuffix", "type":"STRING" },
+          { "name":"defaultClickThroughEventTagId", "type":"INTEGER" },
+          { "name":"suspended", "type":"BOOLEAN" },
+          { "name":"floodlightConfigurationId", "type":"INTEGER" },
+          { "name":"originalFloodlightConfigurationId", "type":"INTEGER" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_Campaigns",
+        "schema":[
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"subaccountId", "type":"INTEGER" },
+          { "name":"advertiserId", "type":"INTEGER" },
+          { "name":"advertiserGroupId", "type":"INTEGER" },
+          { "name":"campaignId", "type":"INTEGER" },
+          { "name":"name", "type":"STRING" },
+          { "name":"archived", "type":"BOOLEAN" },
+          { "name":"startDate", "type":"DATE" },
+          { "name":"endDate", "type":"DATE" },
+          { "name":"comment", "type":"STRING" },
+          { "name":"createInfo_time", "type":"STRING" },
+          { "name":"lastModifiedInfo_time", "type":"TIMESTAMP" },
+          { "name":"externalId", "type":"STRING" },
+          { "name":"defaultLandingPageId", "type":"STRING" },
+          { "name":"adBlockingConfiguration_enabled", "type":"BOOLEAN" },
+          { "name":"adBlockingConfiguration_overrideClickThroughUrl", "type":"STRING" },
+          { "name":"adBlockingConfiguration_clickThroughUrl", "type":"STRING" },
+          { "name":"adBlockingConfiguration_creativeBundleId", "type":"STRING" },
+          { "name":"nielsenOcrEnabled", "type":"BOOLEAN" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_Sites",
+        "schema":[
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"subaccountId", "type":"INTEGER" },
+          { "name":"directorySiteId", "type":"INTEGER" },
+          { "name":"siteId", "type":"INTEGER" },
+          { "name":"name", "type":"STRING" },
+          { "name":"keyName", "type":"STRING" },
+          { "name":"approved", "type":"BOOLEAN" },
+          { "name":"orientation", "type":"STRING" },
+          { "name":"siteSettings_disableNewCookie", "type":"BOOLEAN" },
+          { "name":"siteSettings_activeViewOptOut", "type":"BOOLEAN" },
+          { "name":"siteSettings_adBlockingOptOut", "type":"BOOLEAN" },
+          { "name":"siteSettings_videoActiveViewOptOutTemplate", "type":"BOOLEAN" },
+          { "name":"siteSettings_vpaidAdapterChoiceTemplate", "type":"STRING" },
+          { "name":"siteSettings_tagSetting_additionalKeyValues", "type":"STRING" },
+          { "name":"siteSettings_tagSetting_includeClickTracking", "type":"BOOLEAN" },
+          { "name":"siteSettings_tagSetting_includeClickThroughUrls", "type":"BOOLEAN" },
+          { "name":"siteSettings_tagSetting_keywordOption", "type":"STRING" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_Site_Contacts",
+        "schema":[
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"subaccountId", "type":"INTEGER" },
+          { "name":"directorySiteId", "type":"INTEGER" },
+          { "name":"siteId", "type":"INTEGER" },
+          { "name":"contactId", "type":"INTEGER" },
+          { "name":"email", "type":"STRING" },
+          { "name":"firstName", "type":"STRING" },
+          { "name":"lastName", "type":"STRING" },
+          { "name":"title", "type":"STRING" },
+          { "name":"address", "type":"STRING" },
+          { "name":"phone", "type":"STRING" },
+          { "name":"contactType", "type":"STRING" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_Reports",
+        "schema":[
+          { "name":"profileId", "type":"INTEGER" },
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"subaccountId", "type":"INTEGER" },
+          { "name":"reportId", "type":"INTEGER" },
+          { "name":"name", "type":"STRING" },
+          { "name":"type", "type":"STRING" },
+          { "name":"format", "type":"STRING" },
+          { "name":"lastModifiedTime", "type":"TIMESTAMP" },
+          { "name":"criteria_startDate", "type":"DATE" },
+          { "name":"criteria_endDate", "type":"DATE" },
+          { "name":"criteria_relativeDateRange", "type":"STRING" },
+          { "name":"schedule_active", "type":"BOOLEAN" },
+          { "name":"schedule_startDate", "type":"DATE" },
+          { "name":"schedule_expirationDate", "type":"DATE" },
+          { "name":"schedule_runsOnDayOfMonth", "type":"STRING" },
+          { "name":"schedule_repeats", "type":"STRING" },
+          { "name":"schedule_every", "type":"STRING" },
+          { "name":"schedule_repeatsOnWeekDays", "type":"STRING" }
+        ]
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+        "table":"CM_Report_Deliveries",
+        "schema":[
+          { "name":"profileId", "type":"INTEGER" },
+          { "name":"accountId", "type":"INTEGER" },
+          { "name":"subaccountId", "type":"INTEGER" },
+          { "name":"reportId", "type":"INTEGER" },
+          { "name":"emailOwner", "type":"STRING" },
+          { "name":"emailOwnerDeliveryType", "type":"STRING" },
+          { "name":"message", "type":"STRING" },
+          { "name":"email", "type":"STRING" },
+          { "name":"deliveryType", "type":"STRING" }
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Barnacle_", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}

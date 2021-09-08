@@ -1,0 +1,201 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "drive":{
+      "comment":"Delete drive file artifact from URL test by name.",
+      "auth":"user",
+      "delete":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test ", "suffix":" DV Targeter", "default": "Manual"}}
+    }},
+    { "include":{
+      "script":"scripts/dv360_targeter.json",
+      "parameters":{
+        "auth_dv":"user",
+        "auth_sheet":"user",
+        "auth_bigquery":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "command":"Clear"
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write partner values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test ", "suffix":" DV Targeter", "default": "Manual"}},
+      "tab":"Partners",
+      "range":"A2:A",
+      "write": {
+        "values": [
+          ["StarThinker Test Partner - 2730635"]
+        ]
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_targeter.json",
+      "parameters":{
+        "auth_dv":"user",
+        "auth_sheet":"user",
+        "auth_bigquery":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "command":"Load"
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write advertiser values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test ", "suffix":" DV Targeter", "default": "Manual"}},
+      "tab":"Advertisers",
+      "range":"A2:A",
+      "write": {
+        "values": [
+          ["StarThinker Test Advertiser - 2730638"]
+        ]
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_targeter.json",
+      "parameters":{
+        "auth_dv":"user",
+        "auth_sheet":"user",
+        "auth_bigquery":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "command":"Load"
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write line item values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test ", "suffix":" DV Targeter", "default": "Manual"}},
+      "tab":"Line Items",
+      "range":"A2:A",
+      "write": {
+        "values": [
+          ["Test LineItem - 44141780"],
+          ["Test New LI - 45075303"]
+        ]
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_targeter.json",
+      "parameters":{
+        "auth_dv":"user",
+        "auth_sheet":"user",
+        "auth_bigquery":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "command":"Load"
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write destination targeting values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test ", "suffix":" DV Targeter", "default": "Manual"}},
+      "tab":"Destination Targeting",
+      "range":"A2",
+      "write": {
+        "values": [
+          ["DELETE", "StarThinker Test Partner - 2730635", "", "", "", "", "", "", "PARTNER: StarThinker Test Partner - 2730635 > GitHub - 7132573768", "TRUE", "", "", "", "", "", "", "", ""],
+          ["ADD", "", "StarThinker Test Advertiser - 2730638", "", "", "", "", "", "ADVERTISER: StarThinker Test Advertiser - 2730638 > BlackList - 1755717459", "TRUE", "", "", "", "", "", "", "", ""],
+          ["ADD", "", "", "Test LineItem - 44141780", "", "", "", "LinkedIn", "", "", "DV360 Audio - Auction Package -  AdWave DE - 9583125", "", "notanymore.com", "TRUE", "", "", "/All Apps/Apple App Store/Food & Drink", "TRUE"],
+          ["ADD", "", "", "Test LineItem - 44141780", "", "", "", "", "", "", "", "", "", "", "", "", "/All Apps/Apple App Store/Games/Casino", "TRUE"]
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write destination targeting values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test ", "suffix":" DV Targeter", "default": "Manual"}},
+      "tab":"Brand Safety Targeting",
+      "range":"A2",
+      "write": {
+        "values": [
+          ["ADD", "", "StarThinker Test Advertiser - 2730638", "", "CONTENT_RATING_TIER_TEENS", "SENSITIVE_CATEGORY_WEAPONS", "", "", "", "", ""],
+          ["ADD", "", "", "Test LineItem - 44141780", "CONTENT_RATING_TIER_MATURE", "SENSITIVE_CATEGORY_POLITICS", "StarThinker Test Advertiser - 2730638 > Test Keywords - 7164930356", "/Arts & Entertainment/Humor/Spoofs & Satire", "TRUE", "skydiving", "TRUE"],
+          ["ADD", "", "", "Test LineItem - 44141780", "", "", "", "", "", "bowling", "TRUE"]
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write destination targeting values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test ", "suffix":" DV Targeter", "default": "Manual"}},
+      "tab":"Demographic Targeting",
+      "range":"A2",
+      "write": {
+        "values": [
+          ["ADD", "", "", "Test LineItem - 44141780", "AGE_RANGE_18_24", "GENDER_MALE", "", "HOUSEHOLD_INCOME_LOWER_50_PERCENT", "English", "FALSE"],
+          ["ADD", "", "", "Test LineItem - 44141780", "AGE_RANGE_25_34", "GENDER_FEMALE", "PARENTAL_STATUS_PARENT", "HOUSEHOLD_INCOME_TOP_41_TO_50_PERCENT", "Spanish", "FALSE"]
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write destination targeting values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test ", "suffix":" DV Targeter", "default": "Manual"}},
+      "tab":"Audience Targeting",
+      "range":"A2",
+      "write": {
+        "values": [
+          ["ADD", "", "", "Test LineItem - 44141780", "1", "FIRST_PARTY > TAG_BASED > UNSPECIFIED > APAC Demo - 517958541", "RECENCY_1_HOUR", "FIRST_PARTY > TAG_BASED > UNSPECIFIED > POEM_16 - 185539729", "RECENCY_28_DAYS", "", "AFFINITY: Basketball Fans - 90202", "", "Test AUDIENCE - 782592"],
+          ["ADD", "", "", "Test LineItem - 44141780", "2", "FIRST_PARTY > TAG_BASED > UNSPECIFIED > test audience - 804732788", "RECENCY_NO_LIMIT", "", "", "AFFINITY: Audiophiles - 92925", "", "", ""]
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write destination targeting values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test ", "suffix":" DV Targeter", "default": "Manual"}},
+      "tab":"Device Targeting",
+      "range":"A2",
+      "write": {
+        "values": [
+          ["ADD", "", "", "Test LineItem - 44141780", "DEVICE_TYPE_TABLET", "Apple TV", "TRUE", "Windows XP", "TRUE", "Other", "TRUE", "ENVIRONMENT_APP", "AT&T - ISP", "TRUE"]
+        ]
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Write destination targeting values to the sheet.",
+      "auth":"user",
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test ", "suffix":" DV Targeter", "default": "Manual"}},
+      "tab":"Geography Targeting",
+      "range":"A2",
+      "write": {
+        "values": [
+          ["ADD", "", "", "Test LineItem - 44141780", "", "", "", "", "", "", "", "", "", "StarThinker Test Advertiser - 2730638 > Test - 7164326403", "FALSE"],
+          ["ADD", "", "", "Test LineItem - 44141780", "WEDNESDAY", "8", "17", "TIME_ZONE_RESOLUTION_END_USER", "", "", "", "", "", "", ""]
+        ]
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_targeter.json",
+      "parameters":{
+        "auth_dv":"user",
+        "auth_sheet":"user",
+        "auth_bigquery":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "command":"Preview"
+      }
+    }},
+    { "include":{
+      "script":"scripts/dv360_targeter.json",
+      "parameters":{
+        "auth_dv":"user",
+        "auth_sheet":"user",
+        "auth_bigquery":"service",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker_Test_DV_Targeter_", "default": "Manual"}},
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test ", "default": "Manual"}},
+        "command":"Update"
+      }
+    }}
+  ]
+}

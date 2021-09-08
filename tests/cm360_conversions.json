@@ -1,0 +1,120 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks":[
+    { "dataset":{
+      "__comment__":"Create test dataset.",
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Conversions_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "dt": {
+      "__comment__":"Download DT file for USER.",
+      "auth": "user",
+      "bucket":{"field":{ "name":"bucket", "kind":"string", "order":1, "default":"", "description":"Name of bucket where DT files are stored."}},
+      "paths":{"field":{ "name":"paths", "kind":"string_list", "order":2, "default":[], "description":"List of prefixes to pull specific DT files."}},
+      "days":7,
+      "hours":0,
+      "to": {
+        "auth": "service",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Conversions_", "default": "Manual"}}
+      }
+    }},
+    { "bigquery":{
+      "__comment__":"Create Conversion Upload table, set conversion 1 hour after floodlight fired.",
+      "auth":"service",
+      "from":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Conversions_", "default": "Manual"}},
+        "query":"SELECT
+          CAST(FARM_FINGERPRINT(User_ID) AS STRING) AS Ordinal,
+          Event_Time + 3600000000 AS timestampMicros, /* Add 1 hour for test */
+          User_ID AS encryptedUserId,
+          1 AS quantity,
+          0.0 AS value,
+          FROM `{dataset}.dcm_account{account}_activity_2*`
+          WHERE NULLIF(User_ID, '0') IS NOT NULL
+          LIMIT 1333
+        ",
+        "parameters":{
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Conversions_", "default": "Manual"}},
+          "account":{"field":{ "name":"account", "kind":"string", "order":0, "default":"" }}
+        },
+        "legacy":false
+      },
+      "to":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Conversions_", "default": "Manual"}},
+        "view":"Conversion_View"
+      }
+    }},
+    { "include":{
+      "__comment__":"Run conversion upload from table.",
+      "script":"scripts/cm360_conversion_upload_from_bigquery.json",
+      "parameters":{
+        "auth_read":"user",
+        "account":{"field":{ "name":"account", "kind":"string", "description":"" }},
+        "floodlight_activity_id":{"field":{ "name":"floodlight_activity_id", "kind":"integer", "order":1, "default":"" }},
+        "floodlight_conversion_type":"encryptedUserId",
+        "encryption_entity_id":{"field":{ "name":"account", "kind":"integer", "order":3, "default":"" }},
+        "encryption_entity_type":"DCM_ACCOUNT",
+        "encryption_entity_source":"DATA_TRANSFER",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Conversions_", "default": "Manual"}},
+        "table":"Conversion_View",
+        "legacy":false
+      }
+    }},
+    { "sheets":{
+      "__comment__":"Copy the template sheet to the users test sheet. The tab is deleted if exists and re-created.",
+      "auth":"user",
+      "template":{
+        "sheet":"https://docs.google.com/spreadsheets/d/1ZZgtT1Ui_aA_RCLUahNgxqjCsaEH1omKax3ApEGa4RM/",
+        "tab":"Conversions"
+      },
+      "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The sheet to use for the test.", "prefix":"StarThinker Test Conversions ", "default": "Manual"}},
+      "tab":"Conversions",
+      "range":"A2:E",
+      "delete":true
+    }},
+    { "bigquery": {
+      "__comment__":"Populate sheet with data.",
+      "auth":"service",
+      "from":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Conversions_", "default": "Manual"}},
+        "query":"SELECT * FROM `Conversion_View`",
+        "legacy":false
+      },
+      "to":{
+        "auth":"user",
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test Conversions ", "default": "Manual"}},
+        "tab":"Conversions",
+        "range":"A2"
+      }
+    }},
+    { "include":{
+      "__comment__":"Run conversion upload from sheet.",
+      "script":"scripts/cm360_conversion_upload_from_sheets.json",
+      "parameters":{
+        "dcm_account":{"field":{ "name":"account", "kind":"string", "description":"" }},
+        "auth_read":"user",
+        "floodlight_activity_id":{"field":{ "name":"floodlight_activity_id", "kind":"integer", "order":1, "default":"" }},
+        "floodlight_conversion_type":"encryptedUserId",
+        "encryption_entity_id":{"field":{ "name":"account", "kind":"integer", "order":3, "default":"" }},
+        "encryption_entity_type":"DCM_ACCOUNT",
+        "encryption_entity_source":"DATA_TRANSFER",
+        "sheet":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset.", "prefix":"StarThinker Test Conversions ", "default": "Manual"}},
+        "tab":"Conversions",
+        "range":"A2:E"
+      }
+    }},
+    { "dataset":{
+      "__comment__":"Clean up test dataset.",
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Conversions_", "default": "Manual"}},
+      "delete":true
+    }},
+    { "test": {
+      "assert":"Completed all tasks."
+    }}
+  ]
+}

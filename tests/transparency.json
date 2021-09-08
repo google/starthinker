@@ -1,0 +1,48 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC"
+  },
+  "tasks": [
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The report name to use for the test.", "prefix":"StarThinker_Test_Transparency_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "include":{
+      "script":"scripts/transparency.json",
+      "parameters":{
+        "recipe_name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test Transparency ", "default": "Manual"}},
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The report name to use for the test.", "prefix":"StarThinker_Test_Transparency_", "default": "Manual"}},
+        "dcm_account":{"field":{ "name":"dcm_account", "kind":"integer", "description":"DCM account id of client." }}
+      }
+    }},
+    { "test": {
+      "auth":"service",
+      "bigquery":{
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The report name to use for the test.", "prefix":"StarThinker_Test_Transparency_", "default": "Manual"}},
+        "table":"Transparency_Combined_KPI",
+        "schema":[
+          { "name": "Advertiser", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Campaign", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Site", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Domain_Or_App", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Ad_Type", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Category", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "Domain_Impressions", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "Domain_Visible_Impressions", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "Domain_Null_Impressions", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "App_Impressions", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "App_Visible_Impressions", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "App_Null_Impressions", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "Impressions", "type": "INTEGER", "mode": "NULLABLE" }
+        ]
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The report name to use for the test.", "prefix":"StarThinker_Test_Transparency_", "default": "Manual"}},
+      "delete":true
+    }}
+  ]
+}
