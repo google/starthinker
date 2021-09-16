@@ -130,7 +130,7 @@ def main():
       job['headers']['login-customer-id'] = args.login_customer_id
 
     # run the API call
-    results = API(job).execute()
+    results = API(config, job).execute()
 
     # display results
     if args.iterate:
