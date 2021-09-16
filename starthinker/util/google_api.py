@@ -72,8 +72,8 @@ def API_Retry(job, key=None, retries=3, wait=31):
   * Errors raised: ALL OTHERS
 
   Args:
-    * job: (object) Everything before the execute() statement.
-    * key: (string) key of value from data to return.
+    * job: (object) API call path, everything before the execute() statement to retry.
+    * key: (string) Optional key from json reponse to return.
     * retries: (int) Number of times to try the job.
     * wait: (seconds) Time to wait in seconds between retries.
 
@@ -546,6 +546,21 @@ def API_PubSub(config, auth, iterate=False):
   return API(config, api)
 
 
+def API_SearchAds(config, auth, iterate=False):
+  """Search Ads helper configuration Google API.
+
+  Defines agreed upon version.
+  """
+
+  api = {
+      'api': 'doubleclicksearch',
+      'version': 'v2',
+      'auth': auth,
+      'iterate': iterate
+  }
+  return API(config, api)
+
+
 def API_Analytics(config, auth, iterate=False):
   """Analytics helper configuration Google API.
 
@@ -559,6 +574,7 @@ def API_Analytics(config, auth, iterate=False):
       'iterate': iterate
   }
   return API(config, api)
+
 
 def API_AnalyticsReporting(config, auth, iterate=False):
   """AnalyticsReporting helper configuration Google API.

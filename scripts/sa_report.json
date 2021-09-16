@@ -1,0 +1,45 @@
+{
+  "script":{
+    "released":"2021-09-14",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2021 Google LLC",
+    "icon":"donut_large",
+    "title":"SA360 Report",
+    "description":"Move SA360 report to BigQuery.",
+    "from":["sa360"],
+    "to":["bigquery"],
+    "pitches":[
+      "Move report data to BigQuery quickly.",
+      "Assemble with other tasks to create a workflow."
+    ],
+    "impacts":{
+      "spend optimization":0,
+      "spend growth":0,
+      "time savings":80,
+      "account health":90,
+      "csat improvement":100
+    },
+    "instructions":[
+      "Fill in the report definition and destination table.",
+      "Wait for <b>BigQuery->{field:recipe_project}->{field:dataset}->{field:table}</b> to be created.",
+      "Or give these intructions to the client."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "sa":{
+      "description":"Create a dataset for bigquery tables.",
+      "auth":{"field":{ "name":"auth_sa", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+      "body":{"field":{ "name":"report", "kind":"json", "order":4, "default":{}, "description":"Body part of report request API call." }},
+      "out":{
+        "bigquery":{
+          "auth":{"field":{ "name":"auth_bq", "kind":"authentication", "order":1, "default":"service", "description":"Authorization used for writing data." }},
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":2, "default":"", "description":"Existing BigQuery dataset." }},
+          "table":{"field":{ "name":"table", "kind":"string", "order":3, "default":"", "description":"Table to create from this report." }},
+          "is_incremental_load":{"field":{ "name":"is_incremental_load", "kind":"boolean", "order":4, "default":false, "description":"Clear data in destination table during this report's time period, then append report data to destination table." }},
+          "header":true
+        }
+      }
+    }}
+  ]
+}

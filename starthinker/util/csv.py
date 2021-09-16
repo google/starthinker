@@ -133,8 +133,12 @@ def csv_to_rows(csv_string):
   if csv_string:
     # patch for windows 32 bits, otherwise just use csv.field_size_limit(sys.maxsize)
     csv.field_size_limit(int(ctypes.c_ulong(-1).value // 2))
-    if isinstance(csv_string, str):
+
+    if isinstance(csv_string, bytes):
+      csv_string = StringIO(csv_string.decode('UTF-8'))
+    elif isinstance(csv_string, str):
       csv_string = StringIO(csv_string)
+
     for row in csv.reader(
         csv_string,
         delimiter=',',

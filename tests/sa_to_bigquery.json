@@ -1,0 +1,49 @@
+{
+  "setup":{
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2021 Google LLC"
+  },
+  "tasks": [
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_SA_Report_", "default": "Manual"}},
+      "clear":true
+    }},
+    { "include":{
+      "script":"scripts/sa_report.json",
+      "parameters":{
+        "auth_sa":"user",
+        "auth_bq":"user",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_SA_Report_", "default": "Manual"}},
+        "table":"SA_Report",
+        "report":{
+          "reportScope": {
+            "agencyId": {"field":{ "name":"agencyId", "kind":"string", "description":"SA360 Agency Identifier."}},
+            "advertiserId": {"field":{ "name":"advertiserId", "kind":"string", "description":"SA360 Agency Identifier."}},
+            "engineAccountId": {"field":{ "name":"engineAccountId", "kind":"string", "description":"SA360 Agency Identifier."}}
+            },
+          "reportType": "keyword",
+          "columns": [
+            { "columnName": "campaignId" },
+            { "columnName": "keywordText" },
+            { "columnName": "keywordLandingPage" },
+            { "columnName": "dfaRevenue" },
+            { "columnName": "visits" }
+          ],
+          "relativeTimeRange" : "LAST_90_DAYS",
+          "downloadFormat": "csv",
+          "maxRowsPerFile": 6000000,
+          "statisticsCurrency": "agency",
+          "verifySingleTimeZone": "false",
+          "includeRemovedEntities": "false"
+        },
+        "is_incremental_load":false
+      }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_SA_Report_", "default": "Manual"}},
+      "delete":false
+    }}
+  ]
+}
