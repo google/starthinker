@@ -635,11 +635,11 @@ setup_credentials_service() {
 
   if ! [ -s "${STARTHINKER_ROOT}/starthinker_assets/service.json" ]; then
      rm "${STARTHINKER_ROOT}/starthinker_assets/service.json"
-     echo "Failed To Create Service Credentials, Fix Then Run This Script Again"
+     echo "Failed To Create Service Credentials, You will not be able to use service accounts, use user accounts instead."
      echo " 1. Check permissions of gcloud user."
      echo " 2. Check if service accounts are enabled for the project."
      echo " 3. Manually paste service JSON credentials into: starthinker_assets/service.json"
-     exit 1;
+     echo " 4. StarThinker is still usable for operations that that require ONLY user credentials."
   fi
 
   echo "Done"
