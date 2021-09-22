@@ -284,7 +284,7 @@
         "values":[
           ["Other", "TrueView", ""],
           ["Opera", "Other", ""],
-          ["Chrome", "Chrome/Android", ""],
+          ["Google Chrome", "Chrome/Android", ""],
           ["Android Webkit", "Chrome/Android", ""],
           ["Safari", "Safari/iOS", ""],
           ["Safari 10", "Safari/iOS", ""],
