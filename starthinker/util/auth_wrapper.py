@@ -39,7 +39,9 @@ def CredentialsFlowWrapper(client, credentials_only=False, **kwargs):
   os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
   # parse credentials from file or json
-  if RE_CREDENTIALS_JSON.match(client):
+  if isinstance(client, dict):
+    client_json = client
+  elif RE_CREDENTIALS_JSON.match(client):
     client_json = json.loads(client)
   else:
     with open(client, 'r') as json_file:
