@@ -4,11 +4,16 @@
     "copyright":"Copyright 2020 Google LLC"
   },
   "tasks": [
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Audience_Analysis_", "suffix":"_Campaign_Comparison", "default": "Manual"}},
+      "clear":true
+    }},
     { "include": {
       "script": "scripts/audience_analysis.json",
       "parameters":{
         "recipe_name": "Test",
-        "recipe_slug": "Test",
+        "recipe_slug":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Audience_Analysis_", "suffix":"_Campaign_Comparison", "default": "Manual"}},
         "recipe_project": {"field":{ "name":"recipe_project", "kind":"string", "order":1, "default":"", "description":"Google Cloud Project Id" }},
         "partners": {"field":{ "name":"partners", "kind":"integer_list", "order":1, "default":[], "description":"DBM partner id." }},
         "advertisers": {"field":{ "name":"advertisers", "kind":"integer_list", "order":2, "default":[], "description":"DBM advertiser id." }}
@@ -17,40 +22,29 @@
     { "test": {
       "auth":"service",
       "bigquery":{
-        "dataset":"Test",
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Audience_Analysis_", "suffix":"_Campaign_Comparison", "default": "Manual"}},
         "table":"DV360_Audience_Analysis",
         "schema":[
-          {"mode": "NULLABLE", "name": "Partner", "type": "STRING"},
-          {"mode": "NULLABLE", "name": "Partner_ID", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Advertiser", "type": "STRING"},
-          {"mode": "NULLABLE", "name": "Advertiser_ID", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Site", "type": "STRING"},
-          {"mode": "NULLABLE", "name": "Site_ID", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Inventory", "type": "STRING"},
-          {"mode": "NULLABLE", "name": "Inventory_Type", "type": "STRING"},
-          {"mode": "NULLABLE", "name": "Creative_Type", "type": "STRING"},
-          {"mode": "NULLABLE", "name": "Creative_Size", "type": "STRING"},
-          {"mode": "NULLABLE", "name": "Always_On", "type": "BOOLEAN"},
-          {"mode": "NULLABLE", "name": "Deal_Impressions", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Open_Impressions", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Rank_Impressions", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Deal_Clicks", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Open_Clicks", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Rank_Clicks", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Deal_Conversions", "type": "FLOAT"},
-          {"mode": "NULLABLE", "name": "Open_Conversions", "type": "FLOAT"},
-          {"mode": "NULLABLE", "name": "Rank_Conversions", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Deal_Impressions_Viewable", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Open_Impressions_Viewable", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Rank_Impressions_Viewable", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Deal_Impressions_Measurable", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Open_Impressions_Measurable", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Rank_Impressions_Measurable", "type": "INTEGER"},
-          {"mode": "NULLABLE", "name": "Deal_Cost", "type": "FLOAT"},
-          {"mode": "NULLABLE", "name": "Open_Cost", "type": "FLOAT"},
-          {"mode": "NULLABLE", "name": "Rank_Cost", "type": "INTEGER"}
+          { "name": "advertiser_id", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "advertiser", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "audience_list_id", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "audience_list_type", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "audience_list_category", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "audience_list", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "audience_list_cost", "type": "FLOAT", "mode": "NULLABLE" },
+          { "name": "total_media_cost", "type": "FLOAT", "mode": "NULLABLE" },
+          { "name": "impressions", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "clicks", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "total_conversions", "type": "FLOAT", "mode": "NULLABLE" },
+          { "name": "potential_impressions", "type": "INTEGER", "mode": "NULLABLE" },
+          { "name": "potential_reach", "type": "INTEGER", "mode": "NULLABLE" }
         ]
       }
+    }},
+    { "dataset":{
+      "auth":"service",
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_Audience_Analysis_", "suffix":"_Campaign_Comparison", "default": "Manual"}},
+      "delete":true
     }}
   ]
 }
