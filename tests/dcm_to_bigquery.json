@@ -6,7 +6,7 @@
   "tasks":[
     { "dataset":{
       "auth":"service",
-      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Report", "default": "Manual"}},
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Report_", "default": "Manual"}},
       "clear":true
     }},
     { "dcm":{
@@ -25,7 +25,7 @@
           "delivery": {"emailOwner": false},
           "format": "CSV",
           "kind": "dfareporting#report",
-          "name": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test BQ Report", "default": "Manual"}}
+          "name": {"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test CM Report ", "default": "Manual"}}
         }
       },
       "delete":true
@@ -34,13 +34,13 @@
       "auth":"user",
       "report":{
         "account":{"field":{ "name":"account_id", "kind":"string", "default":"" }},
-        "name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test BQ Report", "default": "Manual"}},
+        "name":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker Test CM Report ", "default": "Manual"}},
         "timeout":5
       },
       "out":{
         "bigquery":{
           "auth":"service",
-          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Report", "default": "Manual"}},
+          "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Report_", "default": "Manual"}},
           "table":"DCM_Report"
         }
       }
@@ -48,7 +48,7 @@
     { "test": {
       "auth":"service",
       "bigquery":{
-        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Report", "default": "Manual"}},
+        "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Report_", "default": "Manual"}},
         "table":"DCM_Report",
         "schema":[
           { "name":"Report_Day", "type":"DATE", "mode":"NULLABLE" },
@@ -59,7 +59,7 @@
     }},
     { "dataset":{
       "auth":"service",
-      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Report", "default": "Manual"}},
+      "dataset":{"field":{ "name":"test_run_id", "kind":"string", "description":"The dataset to use for the test.", "prefix":"StarThinker_Test_CM_Report_", "default": "Manual"}},
       "delete":true
     }}
   ]
