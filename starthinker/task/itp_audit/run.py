@@ -157,7 +157,7 @@ def create_dv360_segments(config, task):
       { "type": "STRING", "name": "Segment3", "mode": "NULLABLE" }
     ]
 
-  sheet_rows = sheets_read(config, task['auth_sheets'], task['sheet'], 'DV3 Segments', a1_notation, retries=10)
+  sheet_rows = sheets_read(config, task['auth_sheets'], task['sheet'], 'DV3 Segments', a1_notation)
 
   if not sheet_rows:
     sheet_rows = []
@@ -197,7 +197,7 @@ This method will update the BQ table and update the Google sheet
 '''
 def create_cm_site_segmentation(config, task):
   # Read sheet to bq table
-  sheet_rows = sheets_read(config, task['auth_sheets'], task['sheet'], 'CM_Site_Segments', 'A:C', retries=10)
+  sheet_rows = sheets_read(config, task['auth_sheets'], task['sheet'], 'CM_Site_Segments', 'A:C')
   if not sheet_rows:
     sheet_rows = []
 

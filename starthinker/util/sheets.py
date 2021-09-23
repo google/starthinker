@@ -28,6 +28,17 @@ from starthinker.util.drive import file_find
 
 
 def sheets_id(config, auth, url_or_name):
+  '''Pull sheet id from URL, name, or id itself
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    url_or_name - one of: URL, document title, or id
+
+  Returns:
+    String containing document id used by API calls.
+  '''
+
   # check if URL given, convert to ID "https://docs.google.com/spreadsheets/d/1uN9tnb-DZ9zZflZsoW4_34sf34tw3ff/edit#gid=4715"
   if url_or_name.startswith('https://docs.google.com/spreadsheets/d/'):
     m = re.search(
@@ -55,11 +66,32 @@ def sheets_id(config, auth, url_or_name):
 
 
 def sheets_url(config, auth, url_or_name):
+  '''Normalizes a full sheet URL from some key.
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    url_or_name - one of: URL, document title, or id
+
+  Returns:
+    URL of sheet.
+  '''
+
   sheet_id = sheets_id(config, auth, url_or_name)
   return 'https://docs.google.com/spreadsheets/d/%s/' % sheet_id
 
 
 def sheets_tab_range(sheet_tab, sheet_range):
+  '''Helper for creating range format.
+
+  Args:
+    sheet_tab - name of tab in sheet
+    sheet_range - A1 notation
+
+  Returns:
+    String containing full sheet range specification.
+  '''
+
   if sheet_range:
     return '%s!%s' % (sheet_tab, sheet_range)
   else:
@@ -67,6 +99,17 @@ def sheets_tab_range(sheet_tab, sheet_range):
 
 
 def sheets_get(config, auth, sheet_url_or_name):
+  '''Get sheets definition.
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    sheet_url_or_name - one of: URL, document title, or id
+
+  Returns:
+    Dictionary with all sheets information from Rest API.
+  '''
+
   sheet_id = sheets_id(config, auth, sheet_url_or_name)
   if sheet_id:
     return API_Sheets(config, auth).spreadsheets().get(spreadsheetId=sheet_id).execute()
@@ -75,6 +118,18 @@ def sheets_get(config, auth, sheet_url_or_name):
 
 
 def sheets_tab_id(config, auth, sheet_url_or_name, sheet_tab):
+  '''Pull sheet tab id from URL, name, or id itself.
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    url_or_name - one of: URL, document title, or id
+    sheet_tab - name of tab to get id for
+
+  Returns:
+    Pair of sheet id and tab id.
+  '''
+
   sheet_id = None
   tab_id = None
   spreadsheet = sheets_get(config, auth, sheet_url_or_name)
@@ -87,7 +142,18 @@ def sheets_tab_id(config, auth, sheet_url_or_name, sheet_tab):
   return sheet_id, tab_id
 
 
-def sheets_read(config, auth, sheet_url_or_name, sheet_tab, sheet_range='', retries=10):
+def sheets_read(config, auth, sheet_url_or_name, sheet_tab, sheet_range=''):
+  '''Pull sheet id from URL, name, or id itself
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    sheet_url_or_name - one of: URL, document title, or id
+    sheet_tab - name of tab to get id for
+    sheet_range - A1 notation or blank if whole sheet
+
+  No Return
+  '''
   if config.verbose:
     print('SHEETS READ', sheet_url_or_name, sheet_tab, sheet_range)
   sheet_id = sheets_id(config, auth, sheet_url_or_name)
@@ -108,6 +174,21 @@ def sheets_write(config, auth,
                  data,
                  append=False,
                  valueInputOption='RAW'):
+  '''Write to sheets for specified range.
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    sheet_url_or_name - one of: URL, document title, or id
+    sheet_tab - name of tab to get id for
+    sheet_range - A1 notation or blank if whole sheet
+    data - list of lists representing rows.
+    append - if true, data will be added after last row with data.
+    valueInputOption - see APi docs.
+
+  No Return
+  '''
+
   if config.verbose:
     print('SHEETS WRITE', sheet_url_or_name, sheet_tab, sheet_range)
   sheet_id = sheets_id(config, auth, sheet_url_or_name)
@@ -132,6 +213,18 @@ def sheets_write(config, auth,
 
 
 def sheets_clear(config, auth, sheet_url_or_name, sheet_tab, sheet_range):
+  '''Clear a sheet in the specified range.
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    url_or_name - one of: URL, document title, or id
+    sheet_tab - name of tab to get id for
+    sheet_range - A1 notation or blank if whole sheet
+
+  No Return
+  '''
+
   if config.verbose:
     print('SHEETS CLEAR', sheet_url_or_name, sheet_tab, sheet_range)
   sheet_id = sheets_id(config, auth, sheet_url_or_name)
@@ -151,6 +244,20 @@ def sheets_tab_copy(config, auth,
                     to_sheet_url_or_name,
                     to_sheet_tab,
                     overwrite=False):
+  '''Copy a tab to a specific name, without the 'Copy Of...'.
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    from_url_or_name - one of: URL, document title, or id
+    from_sheet_tab - name of tab to get id for
+    to_url_or_name - one of: URL, document title, or id
+    to_sheet_tab - name of tab to get id for
+    overwrite - if false will not perform operation if destination exists.
+
+  No Return
+  '''
+
   if config.verbose:
     print('SHEETS COPY', from_sheet_url_or_name, from_sheet_tab,
           to_sheet_url_or_name, to_sheet_tab)
@@ -197,6 +304,17 @@ def sheets_tab_copy(config, auth,
 
 
 def sheets_batch_update(config, auth, sheet_url_or_name, data):
+  '''Helper for performing batch operations.
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    sheet_url_or_name - one of: URL, document title, or id
+    data - JSON data for sending to batch request
+
+  No Return
+  '''
+
   sheet_id = sheets_id(config, auth, sheet_url_or_name)
   API_Sheets(config, auth).spreadsheets().batchUpdate(
     spreadsheetId=sheet_id,
@@ -205,6 +323,17 @@ def sheets_batch_update(config, auth, sheet_url_or_name, data):
 
 
 def sheets_values_batch_update(config, auth, sheet_url_or_name, data):
+  '''Helper for performing batch value operations.
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    sheet_url_or_name - one of: URL, document title, or id
+    data - JSON data for sending to batch request
+
+  No Return
+  '''
+
   sheet_id = sheets_id(config, auth, sheet_url_or_name)
   API_Sheets(config, auth).spreadsheets().values().batchUpdate(
     spreadsheetId=sheet_id,
@@ -213,10 +342,23 @@ def sheets_values_batch_update(config, auth, sheet_url_or_name, data):
 
 
 def sheets_tab_create(config, auth, sheet_url_or_name, sheet_tab):
+  '''Create a tab in a sheet.
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    url_or_name - one of: URL, document title, or id
+    sheet_tab - name of tab to get id for
+
+  No Return
+  '''
+
   sheet_id, tab_id = sheets_tab_id(config, auth, sheet_url_or_name, sheet_tab)
   if tab_id is None:
     sheets_batch_update(
-        auth, sheet_url_or_name,
+        config,
+        auth,
+        sheet_url_or_name,
         {'requests': [{
             'addSheet': {
                 'properties': {
@@ -227,6 +369,17 @@ def sheets_tab_create(config, auth, sheet_url_or_name, sheet_tab):
 
 
 def sheets_tab_delete(config, auth, sheet_url_or_name, sheet_tab):
+  '''Delete a tab in a sheet.
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    url_or_name - one of: URL, document title, or id
+    sheet_tab - name of tab to get id for
+
+  No Return
+  '''
+
   if config.verbose:
     print('SHEETS DELETE', sheet_url_or_name, sheet_tab)
 
@@ -241,7 +394,9 @@ def sheets_tab_delete(config, auth, sheet_url_or_name, sheet_tab):
       # add check to see if only tab, then delete whole sheet
       if tab_id is not None:
         sheets_batch_update(
-            auth, sheet_url_or_name,
+            config,
+            auth,
+            sheet_url_or_name,
             {'requests': [{
                 'deleteSheet': {
                     'sheetId': tab_id,
@@ -250,11 +405,25 @@ def sheets_tab_delete(config, auth, sheet_url_or_name, sheet_tab):
 
 
 def sheets_tab_rename(config, auth, sheet_url_or_name, old_sheet_tab, new_sheet_tab):
+  '''Rename a tab in a sheet.
+
+  Args:
+    config - see starthinker/util/configuration.py
+    auth - user or service
+    url_or_name - one of: URL, document title, or id
+    old_sheet_tab - name of tab to get id for
+    new_sheet_tab - name of tab to get id for
+
+  No Return
+  '''
+
   sheet_id, tab_id = sheets_tab_id(config, auth, sheet_url_or_name, old_sheet_tab)
   if tab_id is not None:
     sheets_batch_update(
-        auth, sheet_url_or_name, {
-            'requests': [{
+        config,
+        auth,
+        sheet_url_or_name,
+        { 'requests': [{
                 'updateSheetProperties': {
                     'properties': {
                         'sheetId': tab_id,
