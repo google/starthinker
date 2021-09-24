@@ -146,7 +146,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         <i class="material-icons right">list</i>Git Hub
       </a>
       <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_segmentology.ipynb" target="_blank">
-        <i class="material-icons right">copyright</i>Data Pill Colab
+        <i class="material-icons right">copyright</i>Colab Notebook
       </a>
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/cm360_segmentology_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
@@ -248,11 +248,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </tr>
             <tr>
               <td>Age</td>
-              <td>Aug. 13, 2020 (1 year)</td>
+              <td>Aug. 13, 2020 (1 year, 1 month)</td>
             </tr>
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+CM360+Segmentology+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+CM360+Segmentology+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fcm360_segmentology%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+CM360+Segmentology+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+CM360+Segmentology+solution.%0A%0AStarThinker+Link%3A+https%3A%2F%2Fstarthinker.googleplex.com%2Fsolution%2Fcm360_segmentology%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
                 <tr>
@@ -288,6 +288,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "field": {
                     "name": "recipe_slug",
                     "kind": "string",
+                    "suffix": "_Segmentology",
                     "description": "Place where tables will be created in BigQuery."
                 }
             }
@@ -310,6 +311,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_slug",
                         "kind": "string",
+                        "suffix": "_Segmentology",
                         "order": 4,
                         "default": "",
                         "description": "Name of Google BigQuery dataset to create."
@@ -338,11 +340,20 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             },
             "results": {
                 "bigquery": {
-                    "auth": "service",
+                    "auth": {
+                        "field": {
+                            "name": "auth_write",
+                            "kind": "authentication",
+                            "order": 1,
+                            "default": "service",
+                            "description": "Credentials used for writing function."
+                        }
+                    },
                     "dataset": {
                         "field": {
                             "name": "recipe_slug",
                             "kind": "string",
+                            "suffix": "_Segmentology",
                             "order": 4,
                             "default": "",
                             "description": "Name of Google BigQuery dataset to create."
@@ -392,7 +403,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "field": {
                             "name": "recipe_name",
                             "kind": "string",
-                            "prefix": "Segmentology ",
+                            "suffix": " Segmentology",
                             "description": "The report name.",
                             "default": ""
                         }
@@ -400,7 +411,33 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "criteria": {
                         "dateRange": {
                             "kind": "dfareporting#dateRange",
-                            "relativeDateRange": "LAST_24_MONTHS"
+                            "relativeDateRange": {
+                                "field": {
+                                    "name": "date_range",
+                                    "kind": "choice",
+                                    "order": 3,
+                                    "default": "LAST_365_DAYS",
+                                    "choices": [
+                                        "LAST_7_DAYS",
+                                        "LAST_14_DAYS",
+                                        "LAST_30_DAYS",
+                                        "LAST_365_DAYS",
+                                        "LAST_60_DAYS",
+                                        "LAST_7_DAYS",
+                                        "LAST_90_DAYS",
+                                        "LAST_24_MONTHS",
+                                        "MONTH_TO_DATE",
+                                        "PREVIOUS_MONTH",
+                                        "PREVIOUS_QUARTER",
+                                        "PREVIOUS_WEEK",
+                                        "PREVIOUS_YEAR",
+                                        "QUARTER_TO_DATE",
+                                        "WEEK_TO_DATE",
+                                        "YEAR_TO_DATE"
+                                    ],
+                                    "description": "Timeframe to run report for."
+                                }
+                            }
                         },
                         "dimensions": [
                             {
@@ -410,22 +447,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             {
                                 "kind": "dfareporting#sortedDimension",
                                 "name": "advertiser"
-                            },
-                            {
-                                "kind": "dfareporting#sortedDimension",
-                                "name": "campaignId"
-                            },
-                            {
-                                "kind": "dfareporting#sortedDimension",
-                                "name": "campaign"
-                            },
-                            {
-                                "kind": "dfareporting#sortedDimension",
-                                "name": "placementId"
-                            },
-                            {
-                                "kind": "dfareporting#sortedDimension",
-                                "name": "placement"
                             },
                             {
                                 "kind": "dfareporting#sortedDimension",
@@ -471,7 +492,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "name": "recipe_name",
                         "kind": "string",
                         "order": 3,
-                        "prefix": "Segmentology ",
+                        "suffix": " Segmentology",
                         "default": "",
                         "description": "Name of report, not needed if ID used."
                     }
@@ -492,6 +513,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "field": {
                             "name": "recipe_slug",
                             "kind": "string",
+                            "suffix": "_Segmentology",
                             "order": 4,
                             "default": "",
                             "description": "Name of Google BigQuery dataset to create."
@@ -515,12 +537,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 }
             },
             "from": {
-                "query": "SELECT            Id AS Partner_Id,            Name AS Partner,            Advertiser_Id,            Advertiser,            Campaign_Id,            Campaign,            Zip_Postal_Code AS Zip,            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression,            SAFE_DIVIDE(Clicks, Impressions) AS Click,            SAFE_DIVIDE(Total_Conversions, Impressions) AS Conversion,            Impressions AS Impressions          FROM `{dataset}.CM360_KPI`          CROSS JOIN `{dataset}.CM360_Account`        ",
+                "query": "SELECT            Id AS Partner_Id,            Name AS Partner,            Advertiser_Id,            Advertiser,            Zip_Postal_Code AS Zip,            SAFE_DIVIDE(Impressions, SUM(Impressions) OVER(PARTITION BY Advertiser_Id)) AS Impression,            SAFE_DIVIDE(Clicks, Impressions) AS Click,            SAFE_DIVIDE(Total_Conversions, Impressions) AS Conversion,            Impressions AS Impressions          FROM `{dataset}.CM360_KPI`          CROSS JOIN `{dataset}.CM360_Account`        ",
                 "parameters": {
                     "dataset": {
                         "field": {
                             "name": "recipe_slug",
                             "kind": "string",
+                            "suffix": "_Segmentology",
                             "description": "Place where tables will be created in BigQuery."
                         }
                     }
@@ -532,6 +555,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_slug",
                         "kind": "string",
+                        "suffix": "_Segmentology",
                         "description": "Place where tables will be written in BigQuery."
                     }
                 },
@@ -560,6 +584,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_slug",
                         "kind": "string",
+                        "suffix": "_Segmentology",
                         "order": 4,
                         "default": "",
                         "description": "Name of Google BigQuery dataset to create."
@@ -586,9 +611,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "Partner_Id",
                     "Partner",
                     "Advertiser_Id",
-                    "Advertiser",
-                    "Campaign_Id",
-                    "Campaign"
+                    "Advertiser"
                 ],
                 "sum": [
                     "Impressions"
@@ -602,6 +625,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_slug",
                         "kind": "string",
+                        "suffix": "_Segmentology",
                         "order": 4,
                         "default": "",
                         "description": "Name of Google BigQuery dataset to create."
@@ -615,6 +639,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_slug",
                         "kind": "string",
+                        "suffix": "_Segmentology",
                         "order": 4,
                         "default": "",
                         "description": "Name of Google BigQuery dataset to create."

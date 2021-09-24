@@ -140,7 +140,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         <i class="material-icons right">list</i>Git Hub
       </a>
       <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/audience_analysis.ipynb" target="_blank">
-        <i class="material-icons right">copyright</i>Data Pill Colab
+        <i class="material-icons right">copyright</i>Colab Notebook
       </a>
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/audience_analysis_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
@@ -245,11 +245,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </tr>
             <tr>
               <td>Age</td>
-              <td>Feb. 18, 2020 (1 year, 6 months)</td>
+              <td>Feb. 18, 2020 (1 year, 7 months)</td>
             </tr>
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+DV360+Audience+Analysis+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+DV360+Audience+Analysis+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Faudience_analysis%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+DV360+Audience+Analysis+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+DV360+Audience+Analysis+solution.%0A%0AStarThinker+Link%3A+https%3A%2F%2Fstarthinker.googleplex.com%2Fsolution%2Faudience_analysis%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
                 <tr>
@@ -361,6 +361,219 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
             "hour": [
+                2
+            ],
+            "auth": "user",
+            "report": {
+                "filters": {
+                    "FILTER_PARTNER": {
+                        "values": {
+                            "field": {
+                                "name": "partners",
+                                "kind": "integer_list",
+                                "order": 5,
+                                "default": [],
+                                "description": "DV360 partner id."
+                            }
+                        }
+                    },
+                    "FILTER_ADVERTISER": {
+                        "values": {
+                            "field": {
+                                "name": "advertisers",
+                                "kind": "integer_list",
+                                "order": 6,
+                                "default": [],
+                                "description": "Comma delimited list of DV360 advertiser ids."
+                            }
+                        }
+                    }
+                },
+                "body": {
+                    "timezoneCode": {
+                        "field": {
+                            "name": "recipe_timezone",
+                            "kind": "timezone",
+                            "description": "Timezone for report dates.",
+                            "default": "America/Los_Angeles"
+                        }
+                    },
+                    "metadata": {
+                        "dataRange": "LAST_7_DAYS",
+                        "format": "CSV",
+                        "title": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "prefix": "Audience Analysis First Party",
+                                "description": "Name of report in DV360, should be unique."
+                            }
+                        }
+                    },
+                    "params": {
+                        "type": "TYPE_INVENTORY_AVAILABILITY",
+                        "groupBys": [
+                            "FILTER_ADVERTISER_NAME",
+                            "FILTER_ADVERTISER",
+                            "FILTER_USER_LIST_FIRST_PARTY_NAME",
+                            "FILTER_USER_LIST_FIRST_PARTY",
+                            "FILTER_FIRST_PARTY_AUDIENCE_LIST_TYPE",
+                            "FILTER_FIRST_PARTY_AUDIENCE_LIST_COST"
+                        ],
+                        "metrics": [
+                            "METRIC_BID_REQUESTS",
+                            "METRIC_UNIQUE_VISITORS_COOKIES"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "hour": [
+                2
+            ],
+            "auth": "user",
+            "report": {
+                "filters": {
+                    "FILTER_PARTNER": {
+                        "values": {
+                            "field": {
+                                "name": "partners",
+                                "kind": "integer_list",
+                                "order": 5,
+                                "default": [],
+                                "description": "DV360 partner id."
+                            }
+                        }
+                    },
+                    "FILTER_ADVERTISER": {
+                        "values": {
+                            "field": {
+                                "name": "advertisers",
+                                "kind": "integer_list",
+                                "order": 6,
+                                "default": [],
+                                "description": "Comma delimited list of DV360 advertiser ids."
+                            }
+                        }
+                    }
+                },
+                "body": {
+                    "timezoneCode": {
+                        "field": {
+                            "name": "recipe_timezone",
+                            "kind": "timezone",
+                            "description": "Timezone for report dates.",
+                            "default": "America/Los_Angeles"
+                        }
+                    },
+                    "metadata": {
+                        "dataRange": "LAST_7_DAYS",
+                        "format": "CSV",
+                        "title": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "prefix": "Audience Analysis Google",
+                                "description": "Name of report in DV360, should be unique."
+                            }
+                        }
+                    },
+                    "params": {
+                        "type": "TYPE_INVENTORY_AVAILABILITY",
+                        "groupBys": [
+                            "FILTER_ADVERTISER_NAME",
+                            "FILTER_ADVERTISER",
+                            "FILTER_AUDIENCE_LIST",
+                            "FILTER_USER_LIST",
+                            "FILTER_AUDIENCE_LIST_TYPE",
+                            "FILTER_AUDIENCE_LIST_COST"
+                        ],
+                        "metrics": [
+                            "METRIC_BID_REQUESTS",
+                            "METRIC_UNIQUE_VISITORS_COOKIES"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "hour": [
+                2
+            ],
+            "auth": "user",
+            "report": {
+                "filters": {
+                    "FILTER_PARTNER": {
+                        "values": {
+                            "field": {
+                                "name": "partners",
+                                "kind": "integer_list",
+                                "order": 5,
+                                "default": [],
+                                "description": "DV360 partner id."
+                            }
+                        }
+                    },
+                    "FILTER_ADVERTISER": {
+                        "values": {
+                            "field": {
+                                "name": "advertisers",
+                                "kind": "integer_list",
+                                "order": 6,
+                                "default": [],
+                                "description": "Comma delimited list of DV360 advertiser ids."
+                            }
+                        }
+                    }
+                },
+                "body": {
+                    "timezoneCode": {
+                        "field": {
+                            "name": "recipe_timezone",
+                            "kind": "timezone",
+                            "description": "Timezone for report dates.",
+                            "default": "America/Los_Angeles"
+                        }
+                    },
+                    "metadata": {
+                        "dataRange": "LAST_7_DAYS",
+                        "format": "CSV",
+                        "title": {
+                            "field": {
+                                "name": "recipe_name",
+                                "kind": "string",
+                                "prefix": "Audience Analysis Third Party",
+                                "description": "Name of report in DV360, should be unique."
+                            }
+                        }
+                    },
+                    "params": {
+                        "type": "TYPE_INVENTORY_AVAILABILITY",
+                        "groupBys": [
+                            "FILTER_ADVERTISER_NAME",
+                            "FILTER_ADVERTISER",
+                            "FILTER_USER_LIST_THIRD_PARTY_NAME",
+                            "FILTER_USER_LIST_THIRD_PARTY",
+                            "FILTER_THIRD_PARTY_AUDIENCE_LIST_TYPE",
+                            "FILTER_THIRD_PARTY_AUDIENCE_LIST_COST"
+                        ],
+                        "metrics": [
+                            "METRIC_BID_REQUESTS",
+                            "METRIC_UNIQUE_VISITORS_COOKIES"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    {
+        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
+            "hour": [
                 6
             ],
             "auth": "user",
@@ -459,77 +672,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
             "hour": [
-                2
-            ],
-            "auth": "user",
-            "report": {
-                "filters": {
-                    "FILTER_PARTNER": {
-                        "values": {
-                            "field": {
-                                "name": "partners",
-                                "kind": "integer_list",
-                                "order": 5,
-                                "default": [],
-                                "description": "DV360 partner id."
-                            }
-                        }
-                    },
-                    "FILTER_ADVERTISER": {
-                        "values": {
-                            "field": {
-                                "name": "advertisers",
-                                "kind": "integer_list",
-                                "order": 6,
-                                "default": [],
-                                "description": "Comma delimited list of DV360 advertiser ids."
-                            }
-                        }
-                    }
-                },
-                "body": {
-                    "timezoneCode": {
-                        "field": {
-                            "name": "recipe_timezone",
-                            "kind": "timezone",
-                            "description": "Timezone for report dates.",
-                            "default": "America/Los_Angeles"
-                        }
-                    },
-                    "metadata": {
-                        "dataRange": "LAST_7_DAYS",
-                        "format": "CSV",
-                        "title": {
-                            "field": {
-                                "name": "recipe_name",
-                                "kind": "string",
-                                "prefix": "Audience Analysis First Party",
-                                "description": "Name of report in DV360, should be unique."
-                            }
-                        }
-                    },
-                    "params": {
-                        "type": "TYPE_INVENTORY_AVAILABILITY",
-                        "groupBys": [
-                            "FILTER_ADVERTISER_NAME",
-                            "FILTER_ADVERTISER",
-                            "FILTER_USER_LIST_FIRST_PARTY_NAME",
-                            "FILTER_USER_LIST_FIRST_PARTY",
-                            "FILTER_FIRST_PARTY_AUDIENCE_LIST_TYPE",
-                            "FILTER_FIRST_PARTY_AUDIENCE_LIST_COST"
-                        ],
-                        "metrics": [
-                            "METRIC_BID_REQUESTS",
-                            "METRIC_UNIQUE_VISITORS_COOKIES"
-                        ]
-                    }
-                }
-            }
-        }
-    },
-    {
-        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
-            "hour": [
                 6
             ],
             "auth": "user",
@@ -603,77 +745,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
     {
         "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
             "hour": [
-                2
-            ],
-            "auth": "user",
-            "report": {
-                "filters": {
-                    "FILTER_PARTNER": {
-                        "values": {
-                            "field": {
-                                "name": "partners",
-                                "kind": "integer_list",
-                                "order": 5,
-                                "default": [],
-                                "description": "DV360 partner id."
-                            }
-                        }
-                    },
-                    "FILTER_ADVERTISER": {
-                        "values": {
-                            "field": {
-                                "name": "advertisers",
-                                "kind": "integer_list",
-                                "order": 6,
-                                "default": [],
-                                "description": "Comma delimited list of DV360 advertiser ids."
-                            }
-                        }
-                    }
-                },
-                "body": {
-                    "timezoneCode": {
-                        "field": {
-                            "name": "recipe_timezone",
-                            "kind": "timezone",
-                            "description": "Timezone for report dates.",
-                            "default": "America/Los_Angeles"
-                        }
-                    },
-                    "metadata": {
-                        "dataRange": "LAST_7_DAYS",
-                        "format": "CSV",
-                        "title": {
-                            "field": {
-                                "name": "recipe_name",
-                                "kind": "string",
-                                "prefix": "Audience Analysis Google",
-                                "description": "Name of report in DV360, should be unique."
-                            }
-                        }
-                    },
-                    "params": {
-                        "type": "TYPE_INVENTORY_AVAILABILITY",
-                        "groupBys": [
-                            "FILTER_ADVERTISER_NAME",
-                            "FILTER_ADVERTISER",
-                            "FILTER_AUDIENCE_LIST",
-                            "FILTER_USER_LIST",
-                            "FILTER_AUDIENCE_LIST_TYPE",
-                            "FILTER_AUDIENCE_LIST_COST"
-                        ],
-                        "metrics": [
-                            "METRIC_BID_REQUESTS",
-                            "METRIC_UNIQUE_VISITORS_COOKIES"
-                        ]
-                    }
-                }
-            }
-        }
-    },
-    {
-        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
-            "hour": [
                 6
             ],
             "auth": "user",
@@ -740,77 +811,6 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                             "type": "INT64"
                         }
                     ]
-                }
-            }
-        }
-    },
-    {
-        "<a href="https://github.com/google/starthinker/tree/master/starthinker/task/dbm/run.py" target="_blank">dbm</a>": {
-            "hour": [
-                2
-            ],
-            "auth": "user",
-            "report": {
-                "filters": {
-                    "FILTER_PARTNER": {
-                        "values": {
-                            "field": {
-                                "name": "partners",
-                                "kind": "integer_list",
-                                "order": 5,
-                                "default": [],
-                                "description": "DV360 partner id."
-                            }
-                        }
-                    },
-                    "FILTER_ADVERTISER": {
-                        "values": {
-                            "field": {
-                                "name": "advertisers",
-                                "kind": "integer_list",
-                                "order": 6,
-                                "default": [],
-                                "description": "Comma delimited list of DV360 advertiser ids."
-                            }
-                        }
-                    }
-                },
-                "body": {
-                    "timezoneCode": {
-                        "field": {
-                            "name": "recipe_timezone",
-                            "kind": "timezone",
-                            "description": "Timezone for report dates.",
-                            "default": "America/Los_Angeles"
-                        }
-                    },
-                    "metadata": {
-                        "dataRange": "LAST_7_DAYS",
-                        "format": "CSV",
-                        "title": {
-                            "field": {
-                                "name": "recipe_name",
-                                "kind": "string",
-                                "prefix": "Audience Analysis Third Party",
-                                "description": "Name of report in DV360, should be unique."
-                            }
-                        }
-                    },
-                    "params": {
-                        "type": "TYPE_INVENTORY_AVAILABILITY",
-                        "groupBys": [
-                            "FILTER_ADVERTISER_NAME",
-                            "FILTER_ADVERTISER",
-                            "FILTER_USER_LIST_THIRD_PARTY_NAME",
-                            "FILTER_USER_LIST_THIRD_PARTY",
-                            "FILTER_THIRD_PARTY_AUDIENCE_LIST_TYPE",
-                            "FILTER_THIRD_PARTY_AUDIENCE_LIST_COST"
-                        ],
-                        "metrics": [
-                            "METRIC_BID_REQUESTS",
-                            "METRIC_UNIQUE_VISITORS_COOKIES"
-                        ]
-                    }
                 }
             }
         }
@@ -895,73 +895,16 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             ],
             "auth": "service",
             "from": {
-                "query": " SELECT   p.advertiser_id,   p.advertiser,   p.audience_list_id,   IF (p.audience_list_type = 'Bid Manager Audiences', 'Google', p.audience_list_type) AS audience_list_type,   CASE     WHEN REGEXP_CONTAINS(p.audience_list, 'Affinity') THEN 'Affinity'     WHEN REGEXP_CONTAINS(p.audience_list, 'Demographics') THEN 'Demographics'     WHEN REGEXP_CONTAINS(p.audience_list, 'In-Market') THEN 'In-Market'     WHEN REGEXP_CONTAINS(p.audience_list, 'Similar') THEN 'Similar'     ELSE 'Custom'   END AS audience_list_category,   p.audience_list,   IF(p.audience_list_cost_usd = 'Unknown', 0.0, CAST(p.audience_list_cost_usd AS FLOAT64)) AS audience_list_cost,   p.total_media_cost_partner_currency AS total_media_cost,   p.impressions,   p.clicks,   p.total_conversions,   COALESCE(ggl.potential_impressions, fst.potential_impressions, trd.potential_impressions) AS potential_impressions,   COALESCE(ggl.unique_cookies_with_impressions, fst.unique_cookies_with_impressions, trd.unique_cookies_with_impressions) AS potential_reach FROM   `[PARAMETER].[PARAMETER].DV360_Audience_Performance` p LEFT JOIN   `[PARAMETER].[PARAMETER].DV360_Google_Audience` ggl   USING (advertiser_id, audience_list_id) LEFT JOIN   `[PARAMETER].[PARAMETER].DV360_First_Party_Audience` fst   USING (advertiser_id, audience_list_id) LEFT JOIN   `[PARAMETER].[PARAMETER].DV360_Third_Party_Audience` trd   USING (advertiser_id, audience_list_id) ",
-                "parameters": [
-                    {
-                        "field": {
-                            "name": "recipe_project",
-                            "kind": "string",
-                            "order": 6,
-                            "default": "",
-                            "description": "Google Cloud Project Id."
-                        }
-                    },
-                    {
-                        "field": {
-                            "name": "recipe_slug",
-                            "kind": "string",
-                            "description": "Place where tables will be created in BigQuery."
-                        }
-                    },
-                    {
-                        "field": {
-                            "name": "recipe_project",
-                            "kind": "string",
-                            "order": 6,
-                            "default": "",
-                            "description": "Google Cloud Project Id."
-                        }
-                    },
-                    {
-                        "field": {
-                            "name": "recipe_slug",
-                            "kind": "string",
-                            "description": "Place where tables will be created in BigQuery."
-                        }
-                    },
-                    {
-                        "field": {
-                            "name": "recipe_project",
-                            "kind": "string",
-                            "order": 6,
-                            "default": "",
-                            "description": "Google Cloud Project Id."
-                        }
-                    },
-                    {
-                        "field": {
-                            "name": "recipe_slug",
-                            "kind": "string",
-                            "description": "Place where tables will be created in BigQuery."
-                        }
-                    },
-                    {
-                        "field": {
-                            "name": "recipe_project",
-                            "kind": "string",
-                            "order": 6,
-                            "default": "",
-                            "description": "Google Cloud Project Id."
-                        }
-                    },
-                    {
+                "query": "           SELECT             p.advertiser_id,             p.advertiser,             p.audience_list_id,             IF (p.audience_list_type = 'Bid Manager Audiences', 'Google', p.audience_list_type) AS audience_list_type,             CASE               WHEN REGEXP_CONTAINS(p.audience_list, 'Affinity') THEN 'Affinity'               WHEN REGEXP_CONTAINS(p.audience_list, 'Demographics') THEN 'Demographics'               WHEN REGEXP_CONTAINS(p.audience_list, 'In-Market') THEN 'In-Market'               WHEN REGEXP_CONTAINS(p.audience_list, 'Similar') THEN 'Similar'               ELSE 'Custom'             END AS audience_list_category,             p.audience_list,             IF(p.audience_list_cost_usd = 'Unknown', 0.0, CAST(p.audience_list_cost_usd AS FLOAT64)) AS audience_list_cost,             p.total_media_cost_partner_currency AS total_media_cost,             p.impressions,             p.clicks,             p.total_conversions,             COALESCE(ggl.potential_impressions, fst.potential_impressions, trd.potential_impressions) AS potential_impressions,             COALESCE(ggl.unique_cookies_with_impressions, fst.unique_cookies_with_impressions, trd.unique_cookies_with_impressions) AS potential_reach           FROM             `{dataset}.DV360_Audience_Performance` p           LEFT JOIN             `{dataset}.DV360_Google_Audience` ggl             USING (advertiser_id, audience_list_id)           LEFT JOIN             `{dataset}.DV360_First_Party_Audience` fst             USING (advertiser_id, audience_list_id)           LEFT JOIN             `{dataset}.DV360_Third_Party_Audience` trd             USING (advertiser_id, audience_list_id)           ",
+                "parameters": {
+                    "dataset": {
                         "field": {
                             "name": "recipe_slug",
                             "kind": "string",
                             "description": "Place where tables will be created in BigQuery."
                         }
                     }
-                ],
+                },
                 "legacy": false
             },
             "to": {

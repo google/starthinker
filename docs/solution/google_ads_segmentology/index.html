@@ -146,7 +146,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
         <i class="material-icons right">list</i>Git Hub
       </a>
       <a class="btn-large blue waves-effect waves-light" href="https://colab.research.google.com/github/google/starthinker/blob/master/colabs/google_ads_segmentology.ipynb" target="_blank">
-        <i class="material-icons right">copyright</i>Data Pill Colab
+        <i class="material-icons right">copyright</i>Colab Notebook
       </a>
       <a class="btn-large blue waves-effect waves-light" href="https://github.com/google/starthinker/blob/master/dags/google_ads_segmentology_dag.py" target="_blank">
         <i class="material-icons right">copyright</i>Airflow DAG
@@ -248,11 +248,11 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
             </tr>
             <tr>
               <td>Age</td>
-              <td>Aug. 13, 2020 (1 year)</td>
+              <td>Aug. 13, 2020 (1 year, 1 month)</td>
             </tr>
             <tr>
               <td>Authors</td>
-              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+GoogleAds+Segmentology+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+GoogleAds+Segmentology+solution.%0A%0AStarThinker+Link%3A+http%3A%2F%2Flocalhost%3A8000%2Fsolution%2Fgoogle_ads_segmentology%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
+              <td><a href="mailto:kenjora@google.com?subject=Request+For+A+GoogleAds+Segmentology+StarThinker+Solution&body=Hi%2C%0A%0AI%27d+like+to+learn+more+about+the+GoogleAds+Segmentology+solution.%0A%0AStarThinker+Link%3A+https%3A%2F%2Fstarthinker.googleplex.com%2Fsolution%2Fgoogle_ads_segmentology%2F%0A%0ACan+we+set+up+some+time+to+over+it%3F%0A%0AThanks" target="_blank">kenjora@google.com</a>
               </td>
             </tr>
                 <tr>
@@ -288,6 +288,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 "field": {
                     "name": "recipe_slug",
                     "kind": "string",
+                    "suffix": "_Segmentology",
                     "description": "Place where tables will be created in BigQuery."
                 }
             }
@@ -310,6 +311,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_slug",
                         "kind": "string",
+                        "suffix": "_Segmentology",
                         "order": 4,
                         "default": "",
                         "description": "Name of Google BigQuery dataset to create."
@@ -370,6 +372,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                         "field": {
                             "name": "recipe_slug",
                             "kind": "string",
+                            "suffix": "_Segmentology",
                             "order": 4,
                             "default": "",
                             "description": "Name of Google BigQuery dataset to create."
@@ -479,19 +482,13 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                 }
             },
             "from": {
-                "query": "SELECT            campaign.name AS Campaign,            adGRoup.name AS Ad_Group,            segments.geoTargetPostalCode AS Postal_Code,            SAFE_DIVIDE(metrics.impressions, SUM(metrics.impressions) OVER()) AS Impression,            SAFE_DIVIDE(metrics.clicks, metrics.impressions) AS Click,            SAFE_DIVIDE(metrics.conversions, metrics.impressions) AS Conversion,            SAFE_DIVIDE(metrics.interactions, metrics.impressions) AS Interaction,            metrics.impressions AS Impressions          FROM            `{project}.{dataset}.GoogleAds_KPI`;        ",
+                "query": "SELECT            campaign.name AS Campaign,            adGRoup.name AS Ad_Group,            segments.geoTargetPostalCode AS Postal_Code,            SAFE_DIVIDE(metrics.impressions, SUM(metrics.impressions) OVER()) AS Impression,            SAFE_DIVIDE(metrics.clicks, metrics.impressions) AS Click,            SAFE_DIVIDE(metrics.conversions, metrics.impressions) AS Conversion,            SAFE_DIVIDE(metrics.interactions, metrics.impressions) AS Interaction,            metrics.impressions AS Impressions          FROM            `{dataset}.GoogleAds_KPI`;        ",
                 "parameters": {
-                    "project": {
-                        "field": {
-                            "name": "recipe_project",
-                            "kind": "string",
-                            "description": "Project ID hosting dataset."
-                        }
-                    },
                     "dataset": {
                         "field": {
                             "name": "recipe_slug",
                             "kind": "string",
+                            "suffix": "_Segmentology",
                             "description": "Place where tables will be created in BigQuery."
                         }
                     }
@@ -503,6 +500,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_slug",
                         "kind": "string",
+                        "suffix": "_Segmentology",
                         "description": "Place where tables will be written in BigQuery."
                     }
                 },
@@ -531,6 +529,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_slug",
                         "kind": "string",
+                        "suffix": "_Segmentology",
                         "order": 4,
                         "default": "",
                         "description": "Name of Google BigQuery dataset to create."
@@ -570,6 +569,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_slug",
                         "kind": "string",
+                        "suffix": "_Segmentology",
                         "order": 4,
                         "default": "",
                         "description": "Name of Google BigQuery dataset to create."
@@ -583,6 +583,7 @@ document.write('<img src="https://ad.doubleclick.net/ddm/activity/src=8657867;ty
                     "field": {
                         "name": "recipe_slug",
                         "kind": "string",
+                        "suffix": "_Segmentology",
                         "order": 4,
                         "default": "",
                         "description": "Name of Google BigQuery dataset to create."

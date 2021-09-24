@@ -20,6 +20,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [BigQuery Query To View](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bigquery_view.ipynb) - Create a BigQuery view.
 * [Storage Bucket](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bucket.ipynb) - Create and permission a bucket in Storage.
 * [CM360 Bulkdozer Editor](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/bulkdozer.ipynb) - Bulkdozer is a tool that can reduce trafficking time in Campaign Manager by up to 80%% by providing automated bulk editing capabilities.
+* [CM360 Campaign Comparison](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_campaign_comparison.ipynb) - Group KPIs into cohorts and compare performance across time and geography. Quickly discover where national and local campaigns need to be targeted, funded, or optimized.
 * [CM360 Conversion Upload From BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_conversion_upload_from_bigquery.ipynb) - Move from BigQuery to CM.
 * [CM360 Conversion Upload From Sheets](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_conversion_upload_from_sheets.ipynb) - Move form Sheets to CM.
 * [CM360 Data Warehouse](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/cm360_data_warehouse.ipynb) - Deploy a BigQuery dataset mirroring CM360 account structure. Foundation for solutions on top.
@@ -65,10 +66,10 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [DV360 / CM360 Privacy Audit](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/itp_audit.ipynb) - Dashboard that shows performance metrics across browser to see the impact of privacy changes.
 * [Tag Key Value Uploader](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/kv_uploader.ipynb) - A tool for bulk editing key value pairs for CM placements.
 * [Test Script](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/manual.ipynb) - Used by tests.
-* [Column Mapping](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/mapping.ipynb) - Use sheet to define keyword to column mappings.
 * [DV360 Monthly Budget Mover](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/monthly_budget_mover.ipynb) - Apply the previous month's budget/spend delta to the current month.  Aggregate up the budget and spend from the previous month of each category declared then apply the delta of the spend and budget equally to each Line Item under that Category.
 * [PoliceBot](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/policebot.ipynb) - A tool that helps enforce CM object name conventions by checking names against a set of client-defined patterns, and emailing violations to appropriate agency teams on a daily basis.
 * [SA360 Web Query Report](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sa360_web_query.ipynb) - Download SA360 reports into a Google Sheet.
+* [SA360 Report](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sa_report.ipynb) - Move SA360 report to BigQuery.
 * [Salesforce To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/salesforce_to_bigquery.ipynb) - Move query results into a BigQuery table.
 * [DV360 SDF To BigQuery](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sdf_to_bigquery.ipynb) - Download SDF reports into a BigQuery table.
 * [Sheet Clear](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/sheets_clear.ipynb) - Clear data from a sheet.
