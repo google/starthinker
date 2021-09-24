@@ -86,43 +86,19 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'source': '',  # Name or URL of document to copy from.
-  'destination': '',  # Name document to copy to.
+  'auth_read':'user',  # Credentials used for reading data.
+  'source':'',  # Name or URL of document to copy from.
+  'destination':'',  # Name document to copy to.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'drive': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
-        'copy': {
-          'source': {
-            'field': {
-              'name': 'source',
-              'kind': 'string',
-              'order': 1,
-              'default': '',
-              'description': 'Name or URL of document to copy from.'
-            }
-          },
-          'destination': {
-            'field': {
-              'name': 'destination',
-              'kind': 'string',
-              'order': 2,
-              'default': '',
-              'description': 'Name document to copy to.'
-            }
-          }
+      'drive':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'copy':{
+          'source':{'field':{'name':'source','kind':'string','order':1,'default':'','description':'Name or URL of document to copy from.'}},
+          'destination':{'field':{'name':'destination','kind':'string','order':2,'default':'','description':'Name document to copy to.'}}
         }
       }
     }

@@ -90,79 +90,31 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'email': '',  # Email address report was sent to.
-  'subject': '.*',  # Regular expression to match subject. Double escape backslashes.
-  'dataset': '',  # Existing dataset in BigQuery.
-  'table': '',  # Name of table to be written to.
-  'is_incremental_load': False,  # Append report data to table based on date column, de-duplicates.
+  'auth_read':'user',  # Credentials used for reading data.
+  'email':'',  # Email address report was sent to.
+  'subject':'.*',  # Regular expression to match subject. Double escape backslashes.
+  'dataset':'',  # Existing dataset in BigQuery.
+  'table':'',  # Name of table to be written to.
+  'is_incremental_load':False,  # Append report data to table based on date column, de-duplicates.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'email': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
+      'email':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'read':{
+          'from':'noreply-cm@google.com',
+          'to':{'field':{'name':'email','kind':'string','order':1,'default':'','description':'Email address report was sent to.'}},
+          'subject':{'field':{'name':'subject','kind':'string','order':2,'default':'.*','description':'Regular expression to match subject. Double escape backslashes.'}},
+          'attachment':'.*'
         },
-        'read': {
-          'from': 'noreply-cm@google.com',
-          'to': {
-            'field': {
-              'name': 'email',
-              'kind': 'string',
-              'order': 1,
-              'default': '',
-              'description': 'Email address report was sent to.'
-            }
-          },
-          'subject': {
-            'field': {
-              'name': 'subject',
-              'kind': 'string',
-              'order': 2,
-              'default': '.*',
-              'description': 'Regular expression to match subject. Double escape backslashes.'
-            }
-          },
-          'attachment': '.*'
-        },
-        'write': {
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'name': 'dataset',
-                'kind': 'string',
-                'order': 3,
-                'default': '',
-                'description': 'Existing dataset in BigQuery.'
-              }
-            },
-            'table': {
-              'field': {
-                'name': 'table',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of table to be written to.'
-              }
-            },
-            'header': True,
-            'is_incremental_load': {
-              'field': {
-                'name': 'is_incremental_load',
-                'kind': 'boolean',
-                'order': 6,
-                'default': False,
-                'description': 'Append report data to table based on date column, de-duplicates.'
-              }
-            }
+        'write':{
+          'bigquery':{
+            'dataset':{'field':{'name':'dataset','kind':'string','order':3,'default':'','description':'Existing dataset in BigQuery.'}},
+            'table':{'field':{'name':'table','kind':'string','order':4,'default':'','description':'Name of table to be written to.'}},
+            'header':True,
+            'is_incremental_load':{'field':{'name':'is_incremental_load','kind':'boolean','order':6,'default':False,'description':'Append report data to table based on date column, de-duplicates.'}}
           }
         }
       }

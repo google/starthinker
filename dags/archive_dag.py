@@ -85,60 +85,24 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
-  'archive_days': 7,
-  'archive_bucket': '',
-  'archive_path': '',
-  'archive_delete': False,
+  'auth_write':'service',  # Credentials used for writing data.
+  'archive_days':7,
+  'archive_bucket':'',
+  'archive_path':'',
+  'archive_delete':False,
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'archive': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
+      'archive':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'days':{'field':{'name':'archive_days','kind':'integer','order':1,'default':7}},
+        'storage':{
+          'bucket':{'field':{'name':'archive_bucket','kind':'string','order':2,'default':''}},
+          'path':{'field':{'name':'archive_path','kind':'string','order':3,'default':''}}
         },
-        'days': {
-          'field': {
-            'name': 'archive_days',
-            'kind': 'integer',
-            'order': 1,
-            'default': 7
-          }
-        },
-        'storage': {
-          'bucket': {
-            'field': {
-              'name': 'archive_bucket',
-              'kind': 'string',
-              'order': 2,
-              'default': ''
-            }
-          },
-          'path': {
-            'field': {
-              'name': 'archive_path',
-              'kind': 'string',
-              'order': 3,
-              'default': ''
-            }
-          }
-        },
-        'delete': {
-          'field': {
-            'name': 'archive_delete',
-            'kind': 'boolean',
-            'order': 4,
-            'default': False
-          }
-        }
+        'delete':{'field':{'name':'archive_delete','kind':'boolean','order':4,'default':False}}
       }
     }
   ]

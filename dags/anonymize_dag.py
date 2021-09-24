@@ -86,69 +86,32 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'service',  # Credentials used.
-  'from_project': '',  # Original project to read from.
-  'from_dataset': '',  # Original dataset to read from.
-  'to_project': None,  # Anonymous data will be writen to.
-  'to_dataset': '',  # Anonymous data will be writen to.
+  'auth_read':'service',  # Credentials used.
+  'from_project':'',  # Original project to read from.
+  'from_dataset':'',  # Original dataset to read from.
+  'to_project':None,  # Anonymous data will be writen to.
+  'to_dataset':'',  # Anonymous data will be writen to.
 }
 
 RECIPE = {
-  'setup': {
-    'day': [
+  'setup':{
+    'day':[
     ],
-    'hour': [
+    'hour':[
     ]
   },
-  'tasks': [
+  'tasks':[
     {
-      'anonymize': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 0,
-            'default': 'service',
-            'description': 'Credentials used.'
-          }
-        },
-        'bigquery': {
-          'from': {
-            'project': {
-              'field': {
-                'name': 'from_project',
-                'kind': 'string',
-                'order': 1,
-                'description': 'Original project to read from.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'from_dataset',
-                'kind': 'string',
-                'order': 2,
-                'description': 'Original dataset to read from.'
-              }
-            }
+      'anonymize':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':0,'default':'service','description':'Credentials used.'}},
+        'bigquery':{
+          'from':{
+            'project':{'field':{'name':'from_project','kind':'string','order':1,'description':'Original project to read from.'}},
+            'dataset':{'field':{'name':'from_dataset','kind':'string','order':2,'description':'Original dataset to read from.'}}
           },
-          'to': {
-            'project': {
-              'field': {
-                'name': 'to_project',
-                'kind': 'string',
-                'order': 3,
-                'default': None,
-                'description': 'Anonymous data will be writen to.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'to_dataset',
-                'kind': 'string',
-                'order': 4,
-                'description': 'Anonymous data will be writen to.'
-              }
-            }
+          'to':{
+            'project':{'field':{'name':'to_project','kind':'string','order':3,'default':None,'description':'Anonymous data will be writen to.'}},
+            'dataset':{'field':{'name':'to_dataset','kind':'string','order':4,'description':'Anonymous data will be writen to.'}}
           }
         }
       }

@@ -85,76 +85,28 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'dbm_report_id': '',  # DV360 report ID given in UI, not needed if name used.
-  'auth_write': 'service',  # Credentials used for writing data.
-  'dbm_report_name': '',  # Name of report, not needed if ID used.
-  'dbm_bucket': '',  # Google cloud bucket.
-  'dbm_path': '',  # Path and filename to write to.
+  'auth_read':'user',  # Credentials used for reading data.
+  'dbm_report_id':'',  # DV360 report ID given in UI, not needed if name used.
+  'auth_write':'service',  # Credentials used for writing data.
+  'dbm_report_name':'',  # Name of report, not needed if ID used.
+  'dbm_bucket':'',  # Google cloud bucket.
+  'dbm_path':'',  # Path and filename to write to.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'dbm': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
+      'dbm':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'report':{
+          'report_id':{'field':{'name':'dbm_report_id','kind':'integer','order':1,'default':'','description':'DV360 report ID given in UI, not needed if name used.'}},
+          'name':{'field':{'name':'dbm_report_name','kind':'string','order':2,'default':'','description':'Name of report, not needed if ID used.'}}
         },
-        'report': {
-          'report_id': {
-            'field': {
-              'name': 'dbm_report_id',
-              'kind': 'integer',
-              'order': 1,
-              'default': '',
-              'description': 'DV360 report ID given in UI, not needed if name used.'
-            }
-          },
-          'name': {
-            'field': {
-              'name': 'dbm_report_name',
-              'kind': 'string',
-              'order': 2,
-              'default': '',
-              'description': 'Name of report, not needed if ID used.'
-            }
-          }
-        },
-        'out': {
-          'storage': {
-            'auth': {
-              'field': {
-                'name': 'auth_write',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'bucket': {
-              'field': {
-                'name': 'dbm_bucket',
-                'kind': 'string',
-                'order': 3,
-                'default': '',
-                'description': 'Google cloud bucket.'
-              }
-            },
-            'path': {
-              'field': {
-                'name': 'dbm_path',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Path and filename to write to.'
-              }
-            }
+        'out':{
+          'storage':{
+            'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'bucket':{'field':{'name':'dbm_bucket','kind':'string','order':3,'default':'','description':'Google cloud bucket.'}},
+            'path':{'field':{'name':'dbm_path','kind':'string','order':4,'default':'','description':'Path and filename to write to.'}}
           }
         }
       }

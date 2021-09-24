@@ -88,259 +88,145 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_write': 'service',  # Authorization used for writing data.
-  'auth_read': 'service',  # Authorization for reading GA360.
-  'view': 'service',  # View Id
-  'recipe_slug': '',  # Name of Google BigQuery dataset to create.
+  'auth_write':'service',  # Authorization used for writing data.
+  'auth_read':'service',  # Authorization for reading GA360.
+  'view':'service',  # View Id
+  'recipe_slug':'',  # Name of Google BigQuery dataset to create.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'dataset': {
-        'description': 'Create a dataset for bigquery tables.',
-        'hour': [
+      'dataset':{
+        'description':'Create a dataset for bigquery tables.',
+        'hour':[
           4
         ],
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
-        'dataset': {
-          'field': {
-            'name': 'recipe_slug',
-            'kind': 'string',
-            'description': 'Place where tables will be created in BigQuery.'
-          }
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'dataset':{'field':{'name':'recipe_slug','kind':'string','description':'Place where tables will be created in BigQuery.'}}
+      }
+    },
+    {
+      'bigquery':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing function.'}},
+        'function':'Pearson Significance Test',
+        'to':{
+          'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}}
         }
       }
     },
     {
-      'bigquery': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing function.'
-          }
-        },
-        'function': 'Pearson Significance Test',
-        'to': {
-          'dataset': {
-            'field': {
-              'name': 'recipe_slug',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Name of Google BigQuery dataset to create.'
-            }
-          }
-        }
-      }
-    },
-    {
-      'ga': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Authorization for reading GA360.'
-          }
-        },
-        'kwargs': {
-          'reportRequests': [
+      'ga':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'service','description':'Authorization for reading GA360.'}},
+        'kwargs':{
+          'reportRequests':[
             {
-              'viewId': {
-                'field': {
-                  'name': 'view',
-                  'kind': 'string',
-                  'order': 2,
-                  'default': 'service',
-                  'description': 'View Id'
-                }
-              },
-              'dateRanges': [
+              'viewId':{'field':{'name':'view','kind':'string','order':2,'default':'service','description':'View Id'}},
+              'dateRanges':[
                 {
-                  'startDate': '90daysAgo',
-                  'endDate': 'today'
+                  'startDate':'90daysAgo',
+                  'endDate':'today'
                 }
               ],
-              'dimensions': [
+              'dimensions':[
                 {
-                  'name': 'ga:userType'
+                  'name':'ga:userType'
                 },
                 {
-                  'name': 'ga:userDefinedValue'
+                  'name':'ga:userDefinedValue'
                 },
                 {
-                  'name': 'ga:latitude'
+                  'name':'ga:latitude'
                 },
                 {
-                  'name': 'ga:longitude'
+                  'name':'ga:longitude'
                 }
               ],
-              'metrics': [
+              'metrics':[
                 {
-                  'expression': 'ga:users'
+                  'expression':'ga:users'
                 },
                 {
-                  'expression': 'ga:sessionsPerUser'
+                  'expression':'ga:sessionsPerUser'
                 },
                 {
-                  'expression': 'ga:bounces'
+                  'expression':'ga:bounces'
                 },
                 {
-                  'expression': 'ga:timeOnPage'
+                  'expression':'ga:timeOnPage'
                 },
                 {
-                  'expression': 'ga:pageviews'
+                  'expression':'ga:pageviews'
                 }
               ]
             }
           ],
-          'useResourceQuotas': False
+          'useResourceQuotas':False
         },
-        'out': {
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'GA360_KPI'
+        'out':{
+          'bigquery':{
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'GA360_KPI'
           }
         }
       }
     },
     {
-      'bigquery': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Authorization used for writing data.'
-          }
-        },
-        'from': {
-          'query': 'WITH GA360_SUM AS (           SELECT              A.Dimensions.userType AS User_Type,             A.Dimensions.userDefinedValue AS User_Value,             B.zip_code AS Zip,             SUM(Metrics.users) AS Users,             SUM(Metrics.sessionsPerUser) AS Sessions,             SUM(Metrics.timeOnPage) AS Time_On_Site,             SUM(Metrics.bounces) AS Bounces,             SUM(Metrics.pageviews) AS Page_Views           FROM `{dataset}.GA360_KPI` AS A            JOIN `bigquery-public-data.geo_us_boundaries.zip_codes` AS B           ON ST_WITHIN(ST_GEOGPOINT(A.Dimensions.longitude, A.Dimensions.latitude), B.zip_code_geom)           GROUP BY 1,2,3           )           SELECT             User_Type,             User_Value,             Zip,             Users,             SAFE_DIVIDE(Users, SUM(Users) OVER()) AS User_Percent,             SAFE_DIVIDE(Sessions, SUM(Sessions) OVER()) AS Impression_Percent,             SAFE_DIVIDE(Time_On_Site, SUM(Time_On_Site) OVER()) AS Time_On_Site_Percent,             SAFE_DIVIDE(Bounces, SUM(Bounces) OVER()) AS Bounce_Percent,             SAFE_DIVIDE(Page_Views, SUM(Page_Views) OVER()) AS Page_View_Percent           FROM GA360_SUM        ',
-          'parameters': {
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'description': 'Place where tables will be created in BigQuery.'
-              }
-            }
+      'bigquery':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Authorization used for writing data.'}},
+        'from':{
+          'query':'WITH GA360_SUM AS (           SELECT              A.Dimensions.userType AS User_Type,             A.Dimensions.userDefinedValue AS User_Value,             B.zip_code AS Zip,             SUM(Metrics.users) AS Users,             SUM(Metrics.sessionsPerUser) AS Sessions,             SUM(Metrics.timeOnPage) AS Time_On_Site,             SUM(Metrics.bounces) AS Bounces,             SUM(Metrics.pageviews) AS Page_Views           FROM `{dataset}.GA360_KPI` AS A            JOIN `bigquery-public-data.geo_us_boundaries.zip_codes` AS B           ON ST_WITHIN(ST_GEOGPOINT(A.Dimensions.longitude, A.Dimensions.latitude), B.zip_code_geom)           GROUP BY 1,2,3           )           SELECT             User_Type,             User_Value,             Zip,             Users,             SAFE_DIVIDE(Users, SUM(Users) OVER()) AS User_Percent,             SAFE_DIVIDE(Sessions, SUM(Sessions) OVER()) AS Impression_Percent,             SAFE_DIVIDE(Time_On_Site, SUM(Time_On_Site) OVER()) AS Time_On_Site_Percent,             SAFE_DIVIDE(Bounces, SUM(Bounces) OVER()) AS Bounce_Percent,             SAFE_DIVIDE(Page_Views, SUM(Page_Views) OVER()) AS Page_View_Percent           FROM GA360_SUM        ',
+          'parameters':{
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','description':'Place where tables will be created in BigQuery.'}}
           },
-          'legacy': False
+          'legacy':False
         },
-        'to': {
-          'dataset': {
-            'field': {
-              'name': 'recipe_slug',
-              'kind': 'string',
-              'description': 'Place where tables will be written in BigQuery.'
-            }
-          },
-          'view': 'GA360_KPI_Normalized'
+        'to':{
+          'dataset':{'field':{'name':'recipe_slug','kind':'string','description':'Place where tables will be written in BigQuery.'}},
+          'view':'GA360_KPI_Normalized'
         }
       }
     },
     {
-      'census': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Authorization used for writing data.'
-          }
+      'census':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Authorization used for writing data.'}},
+        'normalize':{
+          'census_geography':'zip_codes',
+          'census_year':'2018',
+          'census_span':'5yr'
         },
-        'normalize': {
-          'census_geography': 'zip_codes',
-          'census_year': '2018',
-          'census_span': '5yr'
-        },
-        'to': {
-          'dataset': {
-            'field': {
-              'name': 'recipe_slug',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Name of Google BigQuery dataset to create.'
-            }
-          },
-          'type': 'view'
+        'to':{
+          'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+          'type':'view'
         }
       }
     },
     {
-      'census': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Authorization used for writing data.'
-          }
-        },
-        'correlate': {
-          'join': 'Zip',
-          'pass': [
+      'census':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Authorization used for writing data.'}},
+        'correlate':{
+          'join':'Zip',
+          'pass':[
             'User_Type',
             'User_Value'
           ],
-          'sum': [
+          'sum':[
             'Users'
           ],
-          'correlate': [
+          'correlate':[
             'User_Percent',
             'Impression_Percent',
             'Time_On_Site_Percent',
             'Bounce_Percent',
             'Page_View_Percent'
           ],
-          'dataset': {
-            'field': {
-              'name': 'recipe_slug',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Name of Google BigQuery dataset to create.'
-            }
-          },
-          'table': 'GA360_KPI_Normalized',
-          'significance': 80
+          'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+          'table':'GA360_KPI_Normalized',
+          'significance':80
         },
-        'to': {
-          'dataset': {
-            'field': {
-              'name': 'recipe_slug',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Name of Google BigQuery dataset to create.'
-            }
-          },
-          'type': 'view'
+        'to':{
+          'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+          'type':'view'
         }
       }
     }

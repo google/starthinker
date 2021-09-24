@@ -88,54 +88,20 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
-  'dataset_dataset': '',  # Name of Google BigQuery dataset to create.
-  'dataset_emails': [],  # Comma separated emails.
-  'dataset_groups': [],  # Comma separated groups.
+  'auth_write':'service',  # Credentials used for writing data.
+  'dataset_dataset':'',  # Name of Google BigQuery dataset to create.
+  'dataset_emails':[],  # Comma separated emails.
+  'dataset_groups':[],  # Comma separated groups.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'dataset': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
-        'dataset': {
-          'field': {
-            'name': 'dataset_dataset',
-            'kind': 'string',
-            'order': 1,
-            'default': '',
-            'description': 'Name of Google BigQuery dataset to create.'
-          }
-        },
-        'emails': {
-          'field': {
-            'name': 'dataset_emails',
-            'kind': 'string_list',
-            'order': 2,
-            'default': [
-            ],
-            'description': 'Comma separated emails.'
-          }
-        },
-        'groups': {
-          'field': {
-            'name': 'dataset_groups',
-            'kind': 'string_list',
-            'order': 3,
-            'default': [
-            ],
-            'description': 'Comma separated groups.'
-          }
-        }
+      'dataset':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'dataset':{'field':{'name':'dataset_dataset','kind':'string','order':1,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+        'emails':{'field':{'name':'dataset_emails','kind':'string_list','order':2,'default':[],'description':'Comma separated emails.'}},
+        'groups':{'field':{'name':'dataset_groups','kind':'string_list','order':3,'default':[],'description':'Comma separated groups.'}}
       }
     }
   ]

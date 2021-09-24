@@ -86,60 +86,24 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'from_sheet': '',
-  'from_tab': '',
-  'to_sheet': '',
-  'to_tab': '',
+  'auth_read':'user',  # Credentials used for reading data.
+  'from_sheet':'',
+  'from_tab':'',
+  'to_sheet':'',
+  'to_tab':'',
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'sheets': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
+      'sheets':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'template':{
+          'sheet':{'field':{'name':'from_sheet','kind':'string','order':1,'default':''}},
+          'tab':{'field':{'name':'from_tab','kind':'string','order':2,'default':''}}
         },
-        'template': {
-          'sheet': {
-            'field': {
-              'name': 'from_sheet',
-              'kind': 'string',
-              'order': 1,
-              'default': ''
-            }
-          },
-          'tab': {
-            'field': {
-              'name': 'from_tab',
-              'kind': 'string',
-              'order': 2,
-              'default': ''
-            }
-          }
-        },
-        'sheet': {
-          'field': {
-            'name': 'to_sheet',
-            'kind': 'string',
-            'order': 3,
-            'default': ''
-          }
-        },
-        'tab': {
-          'field': {
-            'name': 'to_tab',
-            'kind': 'string',
-            'order': 4,
-            'default': ''
-          }
-        }
+        'sheet':{'field':{'name':'to_sheet','kind':'string','order':3,'default':''}},
+        'tab':{'field':{'name':'to_tab','kind':'string','order':4,'default':''}}
       }
     }
   ]

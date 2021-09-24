@@ -86,47 +86,19 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth': 'service',  # Credentials used for writing function.
-  'function': 'Pearson Significance Test',  # Function or table to create.
-  'dataset': '',  # Existing BigQuery dataset.
+  'auth':'service',  # Credentials used for writing function.
+  'function':'Pearson Significance Test',  # Function or table to create.
+  'dataset':'',  # Existing BigQuery dataset.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'bigquery': {
-        'auth': {
-          'field': {
-            'name': 'auth',
-            'kind': 'authentication',
-            'order': 0,
-            'default': 'service',
-            'description': 'Credentials used for writing function.'
-          }
-        },
-        'function': {
-          'field': {
-            'name': 'function',
-            'kind': 'choice',
-            'order': 1,
-            'choices': [
-              'Pearson Significance Test',
-              'RGB To HSV'
-            ],
-            'default': 'Pearson Significance Test',
-            'description': 'Function or table to create.'
-          }
-        },
-        'to': {
-          'dataset': {
-            'field': {
-              'name': 'dataset',
-              'kind': 'string',
-              'order': 1,
-              'default': '',
-              'description': 'Existing BigQuery dataset.'
-            }
-          }
+      'bigquery':{
+        'auth':{'field':{'name':'auth','kind':'authentication','order':0,'default':'service','description':'Credentials used for writing function.'}},
+        'function':{'field':{'name':'function','kind':'choice','order':1,'choices':['Pearson Significance Test','RGB To HSV'],'default':'Pearson Significance Test','description':'Function or table to create.'}},
+        'to':{
+          'dataset':{'field':{'name':'dataset','kind':'string','order':1,'default':'','description':'Existing BigQuery dataset.'}}
         }
       }
     }

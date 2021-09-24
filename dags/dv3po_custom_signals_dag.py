@@ -92,14 +92,14 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'station_ids': '',  # NOAA Weather Station ID
-  'auth_read': 'user',  # Credentials used for reading data.
-  'sheet_url': '',  # Feed Sheet URL
+  'station_ids':'',  # NOAA Weather Station ID
+  'auth_read':'user',  # Credentials used for reading data.
+  'sheet_url':'',  # Feed Sheet URL
 }
 
 RECIPE = {
-  'setup': {
-    'day': [
+  'setup':{
+    'day':[
       'Mon',
       'Tue',
       'Wed',
@@ -108,7 +108,7 @@ RECIPE = {
       'Sat',
       'Sun'
     ],
-    'hour': [
+    'hour':[
       0,
       1,
       2,
@@ -135,64 +135,32 @@ RECIPE = {
       23
     ]
   },
-  'tasks': [
+  'tasks':[
     {
-      'weather_gov': {
-        'auth': 'user',
-        'stations': {
-          'field': {
-            'name': 'station_ids',
-            'kind': 'string_list',
-            'order': 1,
-            'description': 'NOAA Weather Station ID',
-            'default': ''
-          }
-        },
-        'out': {
-          'sheets': {
-            'sheet': {
-              'field': {
-                'name': 'sheet_url',
-                'kind': 'string',
-                'order': 2,
-                'description': 'Feed Sheet URL',
-                'default': ''
-              }
-            },
-            'tab': 'Weather',
-            'range': 'A2:K',
-            'delete': True
+      'weather_gov':{
+        'auth':'user',
+        'stations':{'field':{'name':'station_ids','kind':'string_list','order':1,'description':'NOAA Weather Station ID','default':''}},
+        'out':{
+          'sheets':{
+            'sheet':{'field':{'name':'sheet_url','kind':'string','order':2,'description':'Feed Sheet URL','default':''}},
+            'tab':'Weather',
+            'range':'A2:K',
+            'delete':True
           }
         }
       }
     },
     {
-      'lineitem_beta': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
+      'lineitem_beta':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'read':{
+          'sheet':{
+            'sheet':{'field':{'name':'sheet_url','kind':'string','order':2,'description':'Feed Sheet URL','default':''}},
+            'tab':'Rules',
+            'range':'A1:D'
           }
         },
-        'read': {
-          'sheet': {
-            'sheet': {
-              'field': {
-                'name': 'sheet_url',
-                'kind': 'string',
-                'order': 2,
-                'description': 'Feed Sheet URL',
-                'default': ''
-              }
-            },
-            'tab': 'Rules',
-            'range': 'A1:D'
-          }
-        },
-        'patch': {
+        'patch':{
         }
       }
     }

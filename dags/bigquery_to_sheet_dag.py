@@ -87,86 +87,30 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'sheet': '',  # Either sheet url or sheet name.
-  'tab': '',  # Name of the tab where to put the data.
-  'range': '',  # Range in the sheet to place the data, leave blank for whole sheet.
-  'dataset': '',  # Existing BigQuery dataset.
-  'query': '',  # Query to pull data from the table.
-  'legacy': True,  # Use Legacy SQL
+  'auth_read':'user',  # Credentials used for reading data.
+  'sheet':'',  # Either sheet url or sheet name.
+  'tab':'',  # Name of the tab where to put the data.
+  'range':'',  # Range in the sheet to place the data, leave blank for whole sheet.
+  'dataset':'',  # Existing BigQuery dataset.
+  'query':'',  # Query to pull data from the table.
+  'legacy':True,  # Use Legacy SQL
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'bigquery': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
+      'bigquery':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'from':{
+          'auth':'service',
+          'dataset':{'field':{'name':'dataset','kind':'string','order':4,'default':'','description':'Existing BigQuery dataset.'}},
+          'query':{'field':{'name':'query','kind':'text','order':5,'default':'','description':'Query to pull data from the table.'}},
+          'legacy':{'field':{'name':'legacy','kind':'boolean','order':6,'default':True,'description':'Use Legacy SQL'}}
         },
-        'from': {
-          'auth': 'service',
-          'dataset': {
-            'field': {
-              'name': 'dataset',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Existing BigQuery dataset.'
-            }
-          },
-          'query': {
-            'field': {
-              'name': 'query',
-              'kind': 'text',
-              'order': 5,
-              'default': '',
-              'description': 'Query to pull data from the table.'
-            }
-          },
-          'legacy': {
-            'field': {
-              'name': 'legacy',
-              'kind': 'boolean',
-              'order': 6,
-              'default': True,
-              'description': 'Use Legacy SQL'
-            }
-          }
-        },
-        'to': {
-          'sheet': {
-            'field': {
-              'name': 'sheet',
-              'kind': 'string',
-              'order': 1,
-              'default': '',
-              'description': 'Either sheet url or sheet name.'
-            }
-          },
-          'tab': {
-            'field': {
-              'name': 'tab',
-              'kind': 'string',
-              'order': 2,
-              'default': '',
-              'description': 'Name of the tab where to put the data.'
-            }
-          },
-          'range': {
-            'field': {
-              'name': 'range',
-              'kind': 'string',
-              'order': 3,
-              'default': '',
-              'description': 'Range in the sheet to place the data, leave blank for whole sheet.'
-            }
-          }
+        'to':{
+          'sheet':{'field':{'name':'sheet','kind':'string','order':1,'default':'','description':'Either sheet url or sheet name.'}},
+          'tab':{'field':{'name':'tab','kind':'string','order':2,'default':'','description':'Name of the tab where to put the data.'}},
+          'range':{'field':{'name':'range','kind':'string','order':3,'default':'','description':'Range in the sheet to place the data, leave blank for whole sheet.'}}
         }
       }
     }

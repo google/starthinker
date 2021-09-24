@@ -86,51 +86,22 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'account': '',
-  'body': '{}',
-  'delete': False,
+  'auth_read':'user',  # Credentials used for reading data.
+  'account':'',
+  'body':'{}',
+  'delete':False,
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'dcm': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
+      'dcm':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'report':{
+          'account':{'field':{'name':'account','kind':'string','order':1,'default':''}},
+          'body':{'field':{'name':'body','kind':'json','order':2,'default':'{}'}}
         },
-        'report': {
-          'account': {
-            'field': {
-              'name': 'account',
-              'kind': 'string',
-              'order': 1,
-              'default': ''
-            }
-          },
-          'body': {
-            'field': {
-              'name': 'body',
-              'kind': 'json',
-              'order': 2,
-              'default': '{}'
-            }
-          }
-        },
-        'delete': {
-          'field': {
-            'name': 'delete',
-            'kind': 'boolean',
-            'order': 3,
-            'default': False
-          }
-        }
+        'delete':{'field':{'name':'delete','kind':'boolean','order':3,'default':False}}
       }
     }
   ]

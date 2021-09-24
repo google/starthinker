@@ -86,12 +86,12 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
+  'auth_read':'user',  # Credentials used for reading data.
 }
 
 RECIPE = {
-  'setup': {
-    'week': [
+  'setup':{
+    'week':[
       'Mon',
       'Tue',
       'Wed',
@@ -100,7 +100,7 @@ RECIPE = {
       'Sat',
       'Sun'
     ],
-    'hour': [
+    'hour':[
       0,
       1,
       2,
@@ -127,44 +127,36 @@ RECIPE = {
       23
     ]
   },
-  'tasks': [
+  'tasks':[
     {
-      'airflow': {
-        '__comment__': 'Calls a native Airflow operator.',
-        'operators': {
-          'bash_operator': {
-            'BashOperator': {
-              'bash_command': 'date'
+      'airflow':{
+        '__comment__':'Calls a native Airflow operator.',
+        'operators':{
+          'bash_operator':{
+            'BashOperator':{
+              'bash_command':'date'
             }
           }
         }
       }
     },
     {
-      'starthinker.airflow': {
-        '__comment__': 'Calls an custom operator, requires import of library.',
-        'operators': {
-          'hello': {
-            'Hello': {
-              'say': 'Hi, there!'
+      'starthinker.airflow':{
+        '__comment__':'Calls an custom operator, requires import of library.',
+        'operators':{
+          'hello':{
+            'Hello':{
+              'say':'Hi, there!'
             }
           }
         }
       }
     },
     {
-      'hello': {
-        '__comment__': 'Calls a StarThinker task.',
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
-        'say': 'Hello World'
+      'hello':{
+        '__comment__':'Calls a StarThinker task.',
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'say':'Hello World'
       }
     }
   ]

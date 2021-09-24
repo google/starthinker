@@ -67,14 +67,13 @@ Before running this Airflow module...
 
 --------------------------------------------------------------
 
-CM360 Data Transfer To Bigquery
+SA360 Report
 
-Move data from a DT bucket into a BigQuery table.
+Move SA360 report to BigQuery.
 
-  - Ensure your user has <a href='https://developers.google.com/doubleclick-advertisers/dtv2/getting-started' target='_blank'>access to the bucket</a>.
-  - Provide the DT bucket name to read from.
-  - Provide the path of the files to read.
-  - Each file is synchronized to a unique table.  Use a view or aggregate select.
+  - Fill in the report definition and destination table.
+  - Wait for <b>BigQuery->->-></b> to be created.
+  - Or give these intructions to the client.
 
 --------------------------------------------------------------
 
@@ -87,39 +86,36 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read':'user',  # Credentials used for reading data.
-  'auth_write':'service',  # Credentials used for writing data.
-  'bucket':'',  # Name of bucket where DT files are stored.
-  'paths':[],  # List of prefixes to pull specific DT files.
-  'days':2,  # Number of days back to synchronize.
-  'hours':0,  # Number of hours back to synchronize.
-  'dataset':'',  # Existing dataset in BigQuery.
+  'auth_sa':'service',  # Credentials used for writing data.
+  'auth_bq':'service',  # Authorization used for writing data.
+  'dataset':'',  # Existing BigQuery dataset.
+  'table':'',  # Table to create from this report.
+  'report':{},  # Body part of report request API call.
+  'is_incremental_load':False,  # Clear data in destination table during this report's time period, then append report data to destination table.
 }
 
 RECIPE = {
-  'setup':{
-    'timeout_seconds':'30000'
-  },
   'tasks':[
     {
-      'dt':{
-        'auth':{'field':{'name':'auth_read','kind':'authentication','order':0,'default':'user','description':'Credentials used for reading data.'}},
-        'from':{
-          'bucket':{'field':{'name':'bucket','kind':'string','order':2,'default':'','description':'Name of bucket where DT files are stored.'}},
-          'paths':{'field':{'name':'paths','kind':'string_list','order':3,'default':[],'description':'List of prefixes to pull specific DT files.'}},
-          'days':{'field':{'name':'days','kind':'integer','order':4,'default':2,'description':'Number of days back to synchronize.'}},
-          'hours':{'field':{'name':'hours','kind':'integer','order':5,'default':0,'description':'Number of hours back to synchronize.'}}
-        },
-        'to':{
-          'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
-          'dataset':{'field':{'name':'dataset','kind':'string','order':6,'default':'','description':'Existing dataset in BigQuery.'}}
+      'sa':{
+        'description':'Create a dataset for bigquery tables.',
+        'auth':{'field':{'name':'auth_sa','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'body':{'field':{'name':'report','kind':'json','order':4,'default':{},'description':'Body part of report request API call.'}},
+        'out':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bq','kind':'authentication','order':1,'default':'service','description':'Authorization used for writing data.'}},
+            'dataset':{'field':{'name':'dataset','kind':'string','order':2,'default':'','description':'Existing BigQuery dataset.'}},
+            'table':{'field':{'name':'table','kind':'string','order':3,'default':'','description':'Table to create from this report.'}},
+            'is_incremental_load':{'field':{'name':'is_incremental_load','kind':'boolean','order':4,'default':False,'description':"Clear data in destination table during this report's time period, then append report data to destination table."}},
+            'header':True
+          }
         }
       }
     }
   ]
 }
 
-dag_maker = DAG_Factory('dt', RECIPE, INPUTS)
+dag_maker = DAG_Factory('sa_report', RECIPE, INPUTS)
 dag = dag_maker.generate()
 
 if __name__ == "__main__":

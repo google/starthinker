@@ -84,16 +84,16 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'say_first': 'Hello Once',  # Type in a greeting.
-  'say_second': 'Hello Twice',  # Type in a greeting.
-  'error': '',  # Optional error for testing.
-  'sleep': 0,  # Seconds to sleep.
+  'auth_read':'user',  # Credentials used for reading data.
+  'say_first':'Hello Once',  # Type in a greeting.
+  'say_second':'Hello Twice',  # Type in a greeting.
+  'error':'',  # Optional error for testing.
+  'sleep':0,  # Seconds to sleep.
 }
 
 RECIPE = {
-  'setup': {
-    'day': [
+  'setup':{
+    'day':[
       'Mon',
       'Tue',
       'Wed',
@@ -103,76 +103,20 @@ RECIPE = {
       'Sun'
     ]
   },
-  'tasks': [
+  'tasks':[
     {
-      'hello': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
-        'say': {
-          'field': {
-            'name': 'say_first',
-            'kind': 'string',
-            'order': 1,
-            'default': 'Hello Once',
-            'description': 'Type in a greeting.'
-          }
-        },
-        'error': {
-          'field': {
-            'name': 'error',
-            'kind': 'string',
-            'order': 3,
-            'default': '',
-            'description': 'Optional error for testing.'
-          }
-        },
-        'sleep': {
-          'field': {
-            'name': 'sleep',
-            'kind': 'integer',
-            'order': 4,
-            'default': 0,
-            'description': 'Seconds to sleep.'
-          }
-        }
+      'hello':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'say':{'field':{'name':'say_first','kind':'string','order':1,'default':'Hello Once','description':'Type in a greeting.'}},
+        'error':{'field':{'name':'error','kind':'string','order':3,'default':'','description':'Optional error for testing.'}},
+        'sleep':{'field':{'name':'sleep','kind':'integer','order':4,'default':0,'description':'Seconds to sleep.'}}
       }
     },
     {
-      'hello': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
-        'say': {
-          'field': {
-            'name': 'say_second',
-            'kind': 'string',
-            'order': 1,
-            'default': 'Hello Twice',
-            'description': 'Type in a greeting.'
-          }
-        },
-        'sleep': {
-          'field': {
-            'name': 'sleep',
-            'kind': 'integer',
-            'order': 4,
-            'default': 0,
-            'description': 'Seconds to sleep.'
-          }
-        }
+      'hello':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'say':{'field':{'name':'say_second','kind':'string','order':1,'default':'Hello Twice','description':'Type in a greeting.'}},
+        'sleep':{'field':{'name':'sleep','kind':'integer','order':4,'default':0,'description':'Seconds to sleep.'}}
       }
     }
   ]

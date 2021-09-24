@@ -91,129 +91,38 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'api': 'displayvideo',  # See developer guide.
-  'version': 'v1',  # Must be supported version.
-  'function': 'advertisers.list',  # Full function dot notation path.
-  'kwargs': {'partnerId': 234340},  # Dictionray object of name value pairs.
-  'kwargs_remote': {},  # Fetch arguments from remote source.
-  'api_key': '',  # Associated with a Google Cloud Project.
-  'developer_token': '',  # Associated with your organization.
-  'login_customer_id': '',  # Associated with your Adwords account.
-  'dataset': '',  # Existing dataset in BigQuery.
-  'table': '',  # Table to write API call results to.
+  'auth_read':'user',  # Credentials used for reading data.
+  'api':'displayvideo',  # See developer guide.
+  'version':'v1',  # Must be supported version.
+  'function':'advertisers.list',  # Full function dot notation path.
+  'kwargs':{'partnerId': 234340},  # Dictionray object of name value pairs.
+  'kwargs_remote':{},  # Fetch arguments from remote source.
+  'api_key':'',  # Associated with a Google Cloud Project.
+  'developer_token':'',  # Associated with your organization.
+  'login_customer_id':'',  # Associated with your Adwords account.
+  'dataset':'',  # Existing dataset in BigQuery.
+  'table':'',  # Table to write API call results to.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
+      'google_api':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'api':{'field':{'name':'api','kind':'string','order':1,'default':'displayvideo','description':'See developer guide.'}},
+        'version':{'field':{'name':'version','kind':'string','order':2,'default':'v1','description':'Must be supported version.'}},
+        'function':{'field':{'name':'function','kind':'string','order':3,'default':'advertisers.list','description':'Full function dot notation path.'}},
+        'kwargs':{'field':{'name':'kwargs','kind':'json','order':4,'default':{'partnerId':234340},'description':'Dictionray object of name value pairs.'}},
+        'kwargs_remote':{'field':{'name':'kwargs_remote','kind':'json','order':5,'default':{},'description':'Fetch arguments from remote source.'}},
+        'key':{'field':{'name':'api_key','kind':'string','order':6,'default':'','description':'Associated with a Google Cloud Project.'}},
+        'headers':{
+          'developer-token':{'field':{'name':'developer_token','kind':'string','order':7,'default':'','description':'Associated with your organization.'}},
+          'login-customer-id':{'field':{'name':'login_customer_id','kind':'string','order':8,'default':'','description':'Associated with your Adwords account.'}}
         },
-        'api': {
-          'field': {
-            'name': 'api',
-            'kind': 'string',
-            'order': 1,
-            'default': 'displayvideo',
-            'description': 'See developer guide.'
-          }
-        },
-        'version': {
-          'field': {
-            'name': 'version',
-            'kind': 'string',
-            'order': 2,
-            'default': 'v1',
-            'description': 'Must be supported version.'
-          }
-        },
-        'function': {
-          'field': {
-            'name': 'function',
-            'kind': 'string',
-            'order': 3,
-            'default': 'advertisers.list',
-            'description': 'Full function dot notation path.'
-          }
-        },
-        'kwargs': {
-          'field': {
-            'name': 'kwargs',
-            'kind': 'json',
-            'order': 4,
-            'default': {
-              'partnerId': 234340
-            },
-            'description': 'Dictionray object of name value pairs.'
-          }
-        },
-        'kwargs_remote': {
-          'field': {
-            'name': 'kwargs_remote',
-            'kind': 'json',
-            'order': 5,
-            'default': {
-            },
-            'description': 'Fetch arguments from remote source.'
-          }
-        },
-        'key': {
-          'field': {
-            'name': 'api_key',
-            'kind': 'string',
-            'order': 6,
-            'default': '',
-            'description': 'Associated with a Google Cloud Project.'
-          }
-        },
-        'headers': {
-          'developer-token': {
-            'field': {
-              'name': 'developer_token',
-              'kind': 'string',
-              'order': 7,
-              'default': '',
-              'description': 'Associated with your organization.'
-            }
-          },
-          'login-customer-id': {
-            'field': {
-              'name': 'login_customer_id',
-              'kind': 'string',
-              'order': 8,
-              'default': '',
-              'description': 'Associated with your Adwords account.'
-            }
-          }
-        },
-        'results': {
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'name': 'dataset',
-                'kind': 'string',
-                'order': 9,
-                'default': '',
-                'description': 'Existing dataset in BigQuery.'
-              }
-            },
-            'table': {
-              'field': {
-                'name': 'table',
-                'kind': 'string',
-                'order': 10,
-                'default': '',
-                'description': 'Table to write API call results to.'
-              }
-            }
+        'results':{
+          'bigquery':{
+            'dataset':{'field':{'name':'dataset','kind':'string','order':9,'default':'','description':'Existing dataset in BigQuery.'}},
+            'table':{'field':{'name':'table','kind':'string','order':10,'default':'','description':'Table to write API call results to.'}}
           }
         }
       }

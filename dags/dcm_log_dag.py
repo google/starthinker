@@ -98,16 +98,16 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'auth_write': 'service',  # Credentials used for writing data.
-  'accounts': [],  # Comma separated CM account ids.
-  'days': 7,  # Number of days to backfill the log, works on first run only.
-  'recipe_slug': '',  # Google BigQuery dataset to create tables in.
+  'auth_read':'user',  # Credentials used for reading data.
+  'auth_write':'service',  # Credentials used for writing data.
+  'accounts':[],  # Comma separated CM account ids.
+  'days':7,  # Number of days to backfill the log, works on first run only.
+  'recipe_slug':'',  # Google BigQuery dataset to create tables in.
 }
 
 RECIPE = {
-  'setup': {
-    'day': [
+  'setup':{
+    'day':[
       'Mon',
       'Tue',
       'Wed',
@@ -116,94 +116,37 @@ RECIPE = {
       'Sat',
       'Sun'
     ],
-    'hour': [
+    'hour':[
       1,
       2
     ]
   },
-  'tasks': [
+  'tasks':[
     {
-      'dataset': {
-        'description': 'The dataset will hold log table, Create it exists.',
-        'hour': [
+      'dataset':{
+        'description':'The dataset will hold log table, Create it exists.',
+        'hour':[
           1
         ],
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
-        'dataset': {
-          'field': {
-            'name': 'recipe_slug',
-            'kind': 'string',
-            'order': 4,
-            'default': '',
-            'description': 'Name of Google BigQuery dataset to create.'
-          }
-        }
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}}
       }
     },
     {
-      'dcm_log': {
-        'description': 'Will create tables with format CM_* to hold each endpoint via a call to the API list function. Exclude reports for its own task.',
-        'hour': [
+      'dcm_log':{
+        'description':'Will create tables with format CM_* to hold each endpoint via a call to the API list function. Exclude reports for its own task.',
+        'hour':[
           2
         ],
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 0,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':0,'default':'user','description':'Credentials used for reading data.'}},
+        'accounts':{
+          'single_cell':True,
+          'values':{'field':{'name':'accounts','kind':'integer_list','order':2,'default':[],'description':'Comma separated CM account ids.'}}
         },
-        'accounts': {
-          'single_cell': True,
-          'values': {
-            'field': {
-              'name': 'accounts',
-              'kind': 'integer_list',
-              'order': 2,
-              'default': [
-              ],
-              'description': 'Comma separated CM account ids.'
-            }
-          }
-        },
-        'days': {
-          'field': {
-            'name': 'days',
-            'kind': 'integer',
-            'order': 3,
-            'default': 7,
-            'description': 'Number of days to backfill the log, works on first run only.'
-          }
-        },
-        'out': {
-          'auth': {
-            'field': {
-              'name': 'auth_write',
-              'kind': 'authentication',
-              'order': 1,
-              'default': 'service',
-              'description': 'Credentials used for writing data.'
-            }
-          },
-          'dataset': {
-            'field': {
-              'name': 'recipe_slug',
-              'kind': 'string',
-              'order': 5,
-              'default': '',
-              'description': 'Google BigQuery dataset to create tables in.'
-            }
-          }
+        'days':{'field':{'name':'days','kind':'integer','order':3,'default':7,'description':'Number of days to backfill the log, works on first run only.'}},
+        'out':{
+          'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+          'dataset':{'field':{'name':'recipe_slug','kind':'string','order':5,'default':'','description':'Google BigQuery dataset to create tables in.'}}
         }
       }
     }

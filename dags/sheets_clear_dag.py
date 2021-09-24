@@ -84,50 +84,21 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'sheets_sheet': '',
-  'sheets_tab': '',
-  'sheets_range': '',
+  'auth_read':'user',  # Credentials used for reading data.
+  'sheets_sheet':'',
+  'sheets_tab':'',
+  'sheets_range':'',
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'sheets': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
-        'sheet': {
-          'field': {
-            'name': 'sheets_sheet',
-            'kind': 'string',
-            'order': 1,
-            'default': ''
-          }
-        },
-        'tab': {
-          'field': {
-            'name': 'sheets_tab',
-            'kind': 'string',
-            'order': 2,
-            'default': ''
-          }
-        },
-        'range': {
-          'field': {
-            'name': 'sheets_range',
-            'kind': 'string',
-            'order': 3,
-            'default': ''
-          }
-        },
-        'clear': True
+      'sheets':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'sheet':{'field':{'name':'sheets_sheet','kind':'string','order':1,'default':''}},
+        'tab':{'field':{'name':'sheets_tab','kind':'string','order':2,'default':''}},
+        'range':{'field':{'name':'sheets_range','kind':'string','order':3,'default':''}},
+        'clear':True
       }
     }
   ]

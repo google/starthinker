@@ -88,94 +88,37 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
-  'secret': '',
-  'key': '',
-  'places_dataset': '',
-  'places_query': '',
-  'places_legacy': False,
-  'destination_dataset': '',
-  'destination_table': '',
+  'auth_write':'service',  # Credentials used for writing data.
+  'secret':'',
+  'key':'',
+  'places_dataset':'',
+  'places_query':'',
+  'places_legacy':False,
+  'destination_dataset':'',
+  'destination_table':'',
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'twitter': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
-        'secret': {
-          'field': {
-            'name': 'secret',
-            'kind': 'string',
-            'order': 1,
-            'default': ''
-          }
-        },
-        'key': {
-          'field': {
-            'name': 'key',
-            'kind': 'string',
-            'order': 2,
-            'default': ''
-          }
-        },
-        'trends': {
-          'places': {
-            'single_cell': True,
-            'bigquery': {
-              'dataset': {
-                'field': {
-                  'name': 'places_dataset',
-                  'kind': 'string',
-                  'order': 3,
-                  'default': ''
-                }
-              },
-              'query': {
-                'field': {
-                  'name': 'places_query',
-                  'kind': 'string',
-                  'order': 4,
-                  'default': ''
-                }
-              },
-              'legacy': {
-                'field': {
-                  'name': 'places_legacy',
-                  'kind': 'boolean',
-                  'order': 5,
-                  'default': False
-                }
-              }
+      'twitter':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'secret':{'field':{'name':'secret','kind':'string','order':1,'default':''}},
+        'key':{'field':{'name':'key','kind':'string','order':2,'default':''}},
+        'trends':{
+          'places':{
+            'single_cell':True,
+            'bigquery':{
+              'dataset':{'field':{'name':'places_dataset','kind':'string','order':3,'default':''}},
+              'query':{'field':{'name':'places_query','kind':'string','order':4,'default':''}},
+              'legacy':{'field':{'name':'places_legacy','kind':'boolean','order':5,'default':False}}
             }
           }
         },
-        'out': {
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'name': 'destination_dataset',
-                'kind': 'string',
-                'order': 6,
-                'default': ''
-              }
-            },
-            'table': {
-              'field': {
-                'name': 'destination_table',
-                'kind': 'string',
-                'order': 7,
-                'default': ''
-              }
-            }
+        'out':{
+          'bigquery':{
+            'dataset':{'field':{'name':'destination_dataset','kind':'string','order':6,'default':''}},
+            'table':{'field':{'name':'destination_table','kind':'string','order':7,'default':''}}
           }
         }
       }

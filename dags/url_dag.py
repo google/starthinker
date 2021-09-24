@@ -85,87 +85,31 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth': 'service',  # Credentials used for rading and writing data.
-  'status': True,  # Pull status of HTTP request.
-  'read': False,  # Pull data from HTTP request.
-  'dataset': '',  # Name of Google BigQuery dataset to write.
-  'table': '',  # Name of Google BigQuery dataset to write.
+  'auth':'service',  # Credentials used for rading and writing data.
+  'status':True,  # Pull status of HTTP request.
+  'read':False,  # Pull data from HTTP request.
+  'dataset':'',  # Name of Google BigQuery dataset to write.
+  'table':'',  # Name of Google BigQuery dataset to write.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'url': {
-        'auth': {
-          'field': {
-            'name': 'auth',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for rading and writing data.'
+      'url':{
+        'auth':{'field':{'name':'auth','kind':'authentication','order':1,'default':'service','description':'Credentials used for rading and writing data.'}},
+        'status':{'field':{'name':'status','kind':'boolean','order':2,'default':True,'description':'Pull status of HTTP request.'}},
+        'read':{'field':{'name':'read','kind':'boolean','order':3,'default':False,'description':'Pull data from HTTP request.'}},
+        'urls':{
+          'bigquery':{
+            'dataset':{'field':{'name':'dataset','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to write.'}},
+            'query':{'field':{'name':'table','kind':'text','order':5,'default':'','description':'Query to run to pull URLs.'}},
+            'legacy':False
           }
         },
-        'status': {
-          'field': {
-            'name': 'status',
-            'kind': 'boolean',
-            'order': 2,
-            'default': True,
-            'description': 'Pull status of HTTP request.'
-          }
-        },
-        'read': {
-          'field': {
-            'name': 'read',
-            'kind': 'boolean',
-            'order': 3,
-            'default': False,
-            'description': 'Pull data from HTTP request.'
-          }
-        },
-        'urls': {
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'name': 'dataset',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to write.'
-              }
-            },
-            'query': {
-              'field': {
-                'name': 'table',
-                'kind': 'text',
-                'order': 5,
-                'default': '',
-                'description': 'Query to run to pull URLs.'
-              }
-            },
-            'legacy': False
-          }
-        },
-        'to': {
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'name': 'dataset',
-                'kind': 'string',
-                'order': 6,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to write.'
-              }
-            },
-            'table': {
-              'field': {
-                'name': 'table',
-                'kind': 'string',
-                'order': 7,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to write.'
-              }
-            }
+        'to':{
+          'bigquery':{
+            'dataset':{'field':{'name':'dataset','kind':'string','order':6,'default':'','description':'Name of Google BigQuery dataset to write.'}},
+            'table':{'field':{'name':'table','kind':'string','order':7,'default':'','description':'Name of Google BigQuery dataset to write.'}}
           }
         }
       }

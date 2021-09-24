@@ -90,15 +90,15 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for writing data.
-  'auth_write': 'service',  # Credentials used for writing data.
-  'partner': '',  # Partner ID to run user audit on.
-  'recipe_slug': '',  # Name of Google BigQuery dataset to create.
+  'auth_read':'user',  # Credentials used for writing data.
+  'auth_write':'service',  # Credentials used for writing data.
+  'partner':'',  # Partner ID to run user audit on.
+  'recipe_slug':'',  # Name of Google BigQuery dataset to create.
 }
 
 RECIPE = {
-  'setup': {
-    'day': [
+  'setup':{
+    'day':[
       'Mon',
       'Tue',
       'Wed',
@@ -107,264 +107,117 @@ RECIPE = {
       'Sat',
       'Sun'
     ],
-    'hour': [
+    'hour':[
       3,
       15
     ]
   },
-  'tasks': [
+  'tasks':[
     {
-      'dataset': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
-        'dataset': {
-          'field': {
-            'name': 'recipe_slug',
-            'kind': 'string',
-            'order': 4,
-            'default': '',
-            'description': 'Name of Google BigQuery dataset to create.'
+      'dataset':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}}
+      }
+    },
+    {
+      'google_api':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':0,'default':'user','description':'Credentials used for writing data.'}},
+        'api':'doubleclickbidmanager',
+        'version':'v1.1',
+        'function':'queries.listqueries',
+        'alias':'list',
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV_Reports'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 0,
-            'default': 'user',
-            'description': 'Credentials used for writing data.'
-          }
+      'google_api':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':0,'default':'user','description':'Credentials used for writing data.'}},
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'partners.list',
+        'kwargs':{
+          'fields':'partners.displayName,partners.partnerId,nextPageToken'
         },
-        'api': 'doubleclickbidmanager',
-        'version': 'v1.1',
-        'function': 'queries.listqueries',
-        'alias': 'list',
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_write',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV_Reports'
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV_Partners'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 0,
-            'default': 'user',
-            'description': 'Credentials used for writing data.'
-          }
+      'google_api':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':0,'default':'user','description':'Credentials used for writing data.'}},
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'advertisers.list',
+        'kwargs':{
+          'partnerId':{'field':{'name':'partner','kind':'integer','order':2,'default':'','description':'Partner ID to run user audit on.'}},
+          'fields':'advertisers.displayName,advertisers.advertiserId,nextPageToken'
         },
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'partners.list',
-        'kwargs': {'fields': 'partners.displayName,partners.partnerId,nextPageToken'},
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_write',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV_Partners'
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV_Advertisers'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 0,
-            'default': 'user',
-            'description': 'Credentials used for writing data.'
-          }
+      'google_api':{
+        'auth':'service',
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'users.list',
+        'kwargs':{
         },
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'advertisers.list',
-        'kwargs': {'partnerId': {'field': {'name': 'partner','kind': 'integer','order': 2,'default': '','description': 'Partner ID to run user audit on.'}},'fields': 'advertisers.displayName,advertisers.advertiserId,nextPageToken'},
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_write',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV_Advertisers'
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV_Users'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': 'service',
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'users.list',
-        'kwargs': {
-        },
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_write',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV_Users'
-          }
-        }
-      }
-    },
-    {
-      'bigquery': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
-        'from': {
-          'query': "SELECT           U.userId,           U.name,           U.email,           U.displayName,           REGEXP_EXTRACT(U.email, r'@(.+)') AS Domain,           IF (ENDS_WITH(U.email, '.gserviceaccount.com'), 'Service', 'User') AS Authentication,           IF((Select COUNT(advertiserId) from UNNEST(U.assignedUserRoles)) = 0, 'Partner', 'Advertiser') AS Scope,           STRUCT(             AUR.partnerId,             P.displayName AS partnerName,             AUR.userRole,             AUR.advertiserId,             A.displayName AS advertiserName,             AUR.assignedUserRoleId           ) AS assignedUserRoles,           FROM `{dataset}.DV_Users` AS U,           UNNEST(assignedUserRoles) AS AUR           LEFT JOIN `{dataset}.DV_Partners` AS P           ON AUR.partnerId=P.partnerId           LEFT JOIN `{dataset}.DV_Advertisers` AS A           ON AUR.advertiserId=A.advertiserId         ",
-          'parameters': {
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            }
+      'bigquery':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'from':{
+          'query':"SELECT           U.userId,           U.name,           U.email,           U.displayName,           REGEXP_EXTRACT(U.email, r'@(.+)') AS Domain,           IF (ENDS_WITH(U.email, '.gserviceaccount.com'), 'Service', 'User') AS Authentication,           IF((Select COUNT(advertiserId) from UNNEST(U.assignedUserRoles)) = 0, 'Partner', 'Advertiser') AS Scope,           STRUCT(             AUR.partnerId,             P.displayName AS partnerName,             AUR.userRole,             AUR.advertiserId,             A.displayName AS advertiserName,             AUR.assignedUserRoleId           ) AS assignedUserRoles,           FROM `{dataset}.DV_Users` AS U,           UNNEST(assignedUserRoles) AS AUR           LEFT JOIN `{dataset}.DV_Partners` AS P           ON AUR.partnerId=P.partnerId           LEFT JOIN `{dataset}.DV_Advertisers` AS A           ON AUR.advertiserId=A.advertiserId         ",
+          'parameters':{
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}}
           },
-          'legacy': False
+          'legacy':False
         },
-        'to': {
-          'dataset': {
-            'field': {
-              'name': 'recipe_slug',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Name of Google BigQuery dataset to create.'
-            }
-          },
-          'view': 'Barnacle_User_Roles'
+        'to':{
+          'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+          'view':'Barnacle_User_Roles'
         }
       }
     },
     {
-      'bigquery': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
-        'from': {
-          'query': "SELECT           R.*,           P.displayName AS partnerName,           A.displayName AS advertiserName,           FROM (           SELECT             queryId,             (SELECT CAST(value AS INT64) FROM UNNEST(R.params.filters) WHERE type = 'FILTER_PARTNER' LIMIT 1) AS partnerId,             (SELECT CAST(value AS INT64) FROM UNNEST(R.params.filters) WHERE type = 'FILTER_ADVERTISER' LIMIT 1) AS advertiserId,             R.schedule.frequency,             R.params.metrics,             R.params.type,             R.metadata.dataRange,             R.metadata.sendNotification,             DATE(TIMESTAMP_MILLIS(R.metadata.latestReportRunTimeMS)) AS latestReportRunTime,           FROM `{dataset}.DV_Reports` AS R) AS R           LEFT JOIN `{dataset}.DV_Partners` AS P           ON R.partnerId=P.partnerId           LEFT JOIN `{dataset}.DV_Advertisers` AS A           ON R.advertiserId=A.advertiserId         ",
-          'parameters': {
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            }
+      'bigquery':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'from':{
+          'query':"SELECT           R.*,           P.displayName AS partnerName,           A.displayName AS advertiserName,           FROM (           SELECT             queryId,             (SELECT CAST(value AS INT64) FROM UNNEST(R.params.filters) WHERE type = 'FILTER_PARTNER' LIMIT 1) AS partnerId,             (SELECT CAST(value AS INT64) FROM UNNEST(R.params.filters) WHERE type = 'FILTER_ADVERTISER' LIMIT 1) AS advertiserId,             R.schedule.frequency,             R.params.metrics,             R.params.type,             R.metadata.dataRange,             R.metadata.sendNotification,             DATE(TIMESTAMP_MILLIS(R.metadata.latestReportRunTimeMS)) AS latestReportRunTime,           FROM `{dataset}.DV_Reports` AS R) AS R           LEFT JOIN `{dataset}.DV_Partners` AS P           ON R.partnerId=P.partnerId           LEFT JOIN `{dataset}.DV_Advertisers` AS A           ON R.advertiserId=A.advertiserId         ",
+          'parameters':{
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}}
           },
-          'legacy': False
+          'legacy':False
         },
-        'to': {
-          'dataset': {
-            'field': {
-              'name': 'recipe_slug',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Name of Google BigQuery dataset to create.'
-            }
-          },
-          'view': 'Barnacle_Reports'
+        'to':{
+          'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+          'view':'Barnacle_Reports'
         }
       }
     }

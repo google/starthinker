@@ -86,43 +86,19 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
-  'query': '',  # SQL with newlines and all.
-  'legacy': True,  # Query type must match table and query format.
+  'auth_write':'service',  # Credentials used for writing data.
+  'query':'',  # SQL with newlines and all.
+  'legacy':True,  # Query type must match table and query format.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'bigquery': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
-        'run': {
-          'query': {
-            'field': {
-              'name': 'query',
-              'kind': 'text',
-              'order': 1,
-              'default': '',
-              'description': 'SQL with newlines and all.'
-            }
-          },
-          'legacy': {
-            'field': {
-              'name': 'legacy',
-              'kind': 'boolean',
-              'order': 2,
-              'default': True,
-              'description': 'Query type must match table and query format.'
-            }
-          }
+      'bigquery':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'run':{
+          'query':{'field':{'name':'query','kind':'text','order':1,'default':'','description':'SQL with newlines and all.'}},
+          'legacy':{'field':{'name':'legacy','kind':'boolean','order':2,'default':True,'description':'Query type must match table and query format.'}}
         }
       }
     }

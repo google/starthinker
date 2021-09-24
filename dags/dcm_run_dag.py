@@ -85,54 +85,22 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'account': '',  # CM network id.
-  'report_id': '',  # CM report id, empty if using name.
-  'report_name': '',  # CM report name, empty if using id instead.
+  'auth_read':'user',  # Credentials used for reading data.
+  'account':'',  # CM network id.
+  'report_id':'',  # CM report id, empty if using name.
+  'report_name':'',  # CM report name, empty if using id instead.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'dcm': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
-        'report_run_only': True,
-        'report': {
-          'account': {
-            'field': {
-              'name': 'account',
-              'kind': 'integer',
-              'order': 1,
-              'default': '',
-              'description': 'CM network id.'
-            }
-          },
-          'report_id': {
-            'field': {
-              'name': 'report_id',
-              'kind': 'integer',
-              'order': 2,
-              'default': '',
-              'description': 'CM report id, empty if using name.'
-            }
-          },
-          'name': {
-            'field': {
-              'name': 'report_name',
-              'kind': 'string',
-              'order': 3,
-              'default': '',
-              'description': 'CM report name, empty if using id instead.'
-            }
-          }
+      'dcm':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'report_run_only':True,
+        'report':{
+          'account':{'field':{'name':'account','kind':'integer','order':1,'default':'','description':'CM network id.'}},
+          'report_id':{'field':{'name':'report_id','kind':'integer','order':2,'default':'','description':'CM report id, empty if using name.'}},
+          'name':{'field':{'name':'report_name','kind':'string','order':3,'default':'','description':'CM report name, empty if using id instead.'}}
         }
       }
     }

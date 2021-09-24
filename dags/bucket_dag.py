@@ -87,52 +87,20 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
-  'bucket_bucket': '',  # Name of Google Cloud Bucket to create.
-  'bucket_emails': '',  # Comma separated emails.
-  'bucket_groups': '',  # Comma separated groups.
+  'auth_write':'service',  # Credentials used for writing data.
+  'bucket_bucket':'',  # Name of Google Cloud Bucket to create.
+  'bucket_emails':'',  # Comma separated emails.
+  'bucket_groups':'',  # Comma separated groups.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'bucket': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
-        'bucket': {
-          'field': {
-            'name': 'bucket_bucket',
-            'kind': 'string',
-            'order': 2,
-            'default': '',
-            'description': 'Name of Google Cloud Bucket to create.'
-          }
-        },
-        'emails': {
-          'field': {
-            'name': 'bucket_emails',
-            'kind': 'string_list',
-            'order': 3,
-            'default': '',
-            'description': 'Comma separated emails.'
-          }
-        },
-        'groups': {
-          'field': {
-            'name': 'bucket_groups',
-            'kind': 'string_list',
-            'order': 4,
-            'default': '',
-            'description': 'Comma separated groups.'
-          }
-        }
+      'bucket':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'bucket':{'field':{'name':'bucket_bucket','kind':'string','order':2,'default':'','description':'Name of Google Cloud Bucket to create.'}},
+        'emails':{'field':{'name':'bucket_emails','kind':'string_list','order':3,'default':'','description':'Comma separated emails.'}},
+        'groups':{'field':{'name':'bucket_groups','kind':'string_list','order':4,'default':'','description':'Comma separated groups.'}}
       }
     }
   ]

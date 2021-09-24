@@ -86,65 +86,25 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'query': '',  # SQL with newlines and all.
-  'dataset': '',  # Existing BigQuery dataset.
-  'view': '',  # View to create from this query.
-  'legacy': True,  # Query type must match source tables.
+  'auth_read':'user',  # Credentials used for reading data.
+  'query':'',  # SQL with newlines and all.
+  'dataset':'',  # Existing BigQuery dataset.
+  'view':'',  # View to create from this query.
+  'legacy':True,  # Query type must match source tables.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'bigquery': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
+      'bigquery':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'from':{
+          'query':{'field':{'name':'query','kind':'text','order':1,'default':'','description':'SQL with newlines and all.'}},
+          'legacy':{'field':{'name':'legacy','kind':'boolean','order':4,'default':True,'description':'Query type must match source tables.'}}
         },
-        'from': {
-          'query': {
-            'field': {
-              'name': 'query',
-              'kind': 'text',
-              'order': 1,
-              'default': '',
-              'description': 'SQL with newlines and all.'
-            }
-          },
-          'legacy': {
-            'field': {
-              'name': 'legacy',
-              'kind': 'boolean',
-              'order': 4,
-              'default': True,
-              'description': 'Query type must match source tables.'
-            }
-          }
-        },
-        'to': {
-          'dataset': {
-            'field': {
-              'name': 'dataset',
-              'kind': 'string',
-              'order': 2,
-              'default': '',
-              'description': 'Existing BigQuery dataset.'
-            }
-          },
-          'view': {
-            'field': {
-              'name': 'view',
-              'kind': 'string',
-              'order': 3,
-              'default': '',
-              'description': 'View to create from this query.'
-            }
-          }
+        'to':{
+          'dataset':{'field':{'name':'dataset','kind':'string','order':2,'default':'','description':'Existing BigQuery dataset.'}},
+          'view':{'field':{'name':'view','kind':'string','order':3,'default':'','description':'View to create from this query.'}}
         }
       }
     }

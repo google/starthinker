@@ -95,69 +95,32 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'dcm_account': '',
-  'auth_read': 'user',  # Credentials used for reading data.
-  'configuration_sheet_url': '',
-  'auth_write': 'service',  # Credentials used for writing data.
-  'bigquery_dataset': 'dynamic_costs',
+  'dcm_account':'',
+  'auth_read':'user',  # Credentials used for reading data.
+  'configuration_sheet_url':'',
+  'auth_write':'service',  # Credentials used for writing data.
+  'bigquery_dataset':'dynamic_costs',
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'dynamic_costs': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
-        'account': {
-          'field': {
-            'name': 'dcm_account',
-            'kind': 'string',
-            'order': 0,
-            'default': ''
-          }
-        },
-        'sheet': {
-          'template': {
-            'url': 'https://docs.google.com/spreadsheets/d/19J-Hjln2wd1E0aeG3JDgKQN9TVGRLWxIEUQSmmQetJc/edit?usp=sharing',
-            'tab': 'Dynamic Costs',
-            'range': 'A1'
+      'dynamic_costs':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'account':{'field':{'name':'dcm_account','kind':'string','order':0,'default':''}},
+        'sheet':{
+          'template':{
+            'url':'https://docs.google.com/spreadsheets/d/19J-Hjln2wd1E0aeG3JDgKQN9TVGRLWxIEUQSmmQetJc/edit?usp=sharing',
+            'tab':'Dynamic Costs',
+            'range':'A1'
           },
-          'url': {
-            'field': {
-              'name': 'configuration_sheet_url',
-              'kind': 'string',
-              'order': 1,
-              'default': ''
-            }
-          },
-          'tab': 'Dynamic Costs',
-          'range': 'A2:B'
+          'url':{'field':{'name':'configuration_sheet_url','kind':'string','order':1,'default':''}},
+          'tab':'Dynamic Costs',
+          'range':'A2:B'
         },
-        'out': {
-          'auth': {
-            'field': {
-              'name': 'auth_write',
-              'kind': 'authentication',
-              'order': 1,
-              'default': 'service',
-              'description': 'Credentials used for writing data.'
-            }
-          },
-          'dataset': {
-            'field': {
-              'name': 'bigquery_dataset',
-              'kind': 'string',
-              'order': 2,
-              'default': 'dynamic_costs'
-            }
-          }
+        'out':{
+          'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+          'dataset':{'field':{'name':'bigquery_dataset','kind':'string','order':2,'default':'dynamic_costs'}}
         }
       }
     }

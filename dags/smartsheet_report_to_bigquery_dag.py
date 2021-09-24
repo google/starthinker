@@ -87,82 +87,28 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'auth_write': 'service',  # Credentials used for writing data.
-  'token': '',  # Retrieve from SmartSheet account settings.
-  'report': '',  # Retrieve from report properties.
-  'dataset': '',  # Existing BigQuery dataset.
-  'table': '',  # Table to create from this report.
-  'schema': '',  # Schema provided in JSON list format or leave empty to auto detect.
+  'auth_read':'user',  # Credentials used for reading data.
+  'auth_write':'service',  # Credentials used for writing data.
+  'token':'',  # Retrieve from SmartSheet account settings.
+  'report':'',  # Retrieve from report properties.
+  'dataset':'',  # Existing BigQuery dataset.
+  'table':'',  # Table to create from this report.
+  'schema':'',  # Schema provided in JSON list format or leave empty to auto detect.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'smartsheet': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 0,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
-        },
-        'token': {
-          'field': {
-            'name': 'token',
-            'kind': 'string',
-            'order': 2,
-            'default': '',
-            'description': 'Retrieve from SmartSheet account settings.'
-          }
-        },
-        'report': {
-          'field': {
-            'name': 'report',
-            'kind': 'string',
-            'order': 3,
-            'description': 'Retrieve from report properties.'
-          }
-        },
-        'out': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_write',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'dataset',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Existing BigQuery dataset.'
-              }
-            },
-            'table': {
-              'field': {
-                'name': 'table',
-                'kind': 'string',
-                'order': 5,
-                'default': '',
-                'description': 'Table to create from this report.'
-              }
-            },
-            'schema': {
-              'field': {
-                'name': 'schema',
-                'kind': 'json',
-                'order': 6,
-                'description': 'Schema provided in JSON list format or leave empty to auto detect.'
-              }
-            }
+      'smartsheet':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':0,'default':'user','description':'Credentials used for reading data.'}},
+        'token':{'field':{'name':'token','kind':'string','order':2,'default':'','description':'Retrieve from SmartSheet account settings.'}},
+        'report':{'field':{'name':'report','kind':'string','order':3,'description':'Retrieve from report properties.'}},
+        'out':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'dataset','kind':'string','order':4,'default':'','description':'Existing BigQuery dataset.'}},
+            'table':{'field':{'name':'table','kind':'string','order':5,'default':'','description':'Table to create from this report.'}},
+            'schema':{'field':{'name':'schema','kind':'json','order':6,'description':'Schema provided in JSON list format or leave empty to auto detect.'}}
           }
         }
       }

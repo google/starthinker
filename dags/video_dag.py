@@ -85,118 +85,46 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'sheet': '',  # Name or URL of sheet.
-  'tab': '',  # Name of sheet tab.
-  'project': '',  # Google Cloud Project Identifier.
-  'dataset': '',  # Name of dataset.
-  'table': '',  # Name of table.
+  'auth_read':'user',  # Credentials used for reading data.
+  'sheet':'',  # Name or URL of sheet.
+  'tab':'',  # Name of sheet tab.
+  'project':'',  # Google Cloud Project Identifier.
+  'dataset':'',  # Name of dataset.
+  'table':'',  # Name of table.
 }
 
 RECIPE = {
-  'setup': {
-    'day': [
+  'setup':{
+    'day':[
     ],
-    'hour': [
+    'hour':[
     ]
   },
-  'tasks': [
+  'tasks':[
     {
-      'sheets': {
-        '__comment__': 'Copy the tamplate sheet to the users sheet.  If it already exists, nothing happens.',
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
+      'sheets':{
+        '__comment__':'Copy the tamplate sheet to the users sheet.  If it already exists, nothing happens.',
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'template':{
+          'sheet':'https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit#gid=0',
+          'tab':'Video'
         },
-        'template': {
-          'sheet': 'https://docs.google.com/spreadsheets/d/1BXRHWz-1P3gNS92WZy-3sPZslU8aalXa8heOgygWEFs/edit#gid=0',
-          'tab': 'Video'
-        },
-        'sheet': {
-          'field': {
-            'name': 'sheet',
-            'kind': 'string',
-            'order': 1,
-            'default': '',
-            'description': 'Name or URL of sheet.'
-          }
-        },
-        'tab': {
-          'field': {
-            'name': 'tab',
-            'kind': 'string',
-            'order': 2,
-            'default': '',
-            'description': 'Name of sheet tab.'
-          }
-        }
+        'sheet':{'field':{'name':'sheet','kind':'string','order':1,'default':'','description':'Name or URL of sheet.'}},
+        'tab':{'field':{'name':'tab','kind':'string','order':2,'default':'','description':'Name of sheet tab.'}}
       }
     },
     {
-      'video': {
-        '__comment__': 'Read video effects and values from sheet and/or bigquery.',
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
+      'video':{
+        '__comment__':'Read video effects and values from sheet and/or bigquery.',
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'sheets':{
+          'sheet':{'field':{'name':'sheet','kind':'string','order':1,'default':'','description':'Name or URL of sheet.'}},
+          'tab':{'field':{'name':'tab','kind':'string','order':2,'default':'','description':'Name of sheet tab.'}}
         },
-        'sheets': {
-          'sheet': {
-            'field': {
-              'name': 'sheet',
-              'kind': 'string',
-              'order': 1,
-              'default': '',
-              'description': 'Name or URL of sheet.'
-            }
-          },
-          'tab': {
-            'field': {
-              'name': 'tab',
-              'kind': 'string',
-              'order': 2,
-              'default': '',
-              'description': 'Name of sheet tab.'
-            }
-          }
-        },
-        'bigquery': {
-          'project': {
-            'field': {
-              'name': 'project',
-              'kind': 'string',
-              'order': 3,
-              'default': '',
-              'description': 'Google Cloud Project Identifier.'
-            }
-          },
-          'dataset': {
-            'field': {
-              'name': 'dataset',
-              'kind': 'string',
-              'order': 4,
-              'default': '',
-              'description': 'Name of dataset.'
-            }
-          },
-          'table': {
-            'field': {
-              'name': 'table',
-              'kind': 'string',
-              'order': 5,
-              'default': '',
-              'description': 'Name of table.'
-            }
-          }
+        'bigquery':{
+          'project':{'field':{'name':'project','kind':'string','order':3,'default':'','description':'Google Cloud Project Identifier.'}},
+          'dataset':{'field':{'name':'dataset','kind':'string','order':4,'default':'','description':'Name of dataset.'}},
+          'table':{'field':{'name':'table','kind':'string','order':5,'default':'','description':'Name of table.'}}
         }
       }
     }

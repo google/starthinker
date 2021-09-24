@@ -87,72 +87,29 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'account': '',
-  'report_id': '',
-  'report_name': '',
-  'sheet': '',
-  'tab': '',
+  'auth_read':'user',  # Credentials used for reading data.
+  'account':'',
+  'report_id':'',
+  'report_name':'',
+  'sheet':'',
+  'tab':'',
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'dcm': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
+      'dcm':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'report':{
+          'account':{'field':{'name':'account','kind':'integer','order':2,'default':''}},
+          'report_id':{'field':{'name':'report_id','kind':'integer','order':3,'default':''}},
+          'name':{'field':{'name':'report_name','kind':'string','order':4,'default':''}}
         },
-        'report': {
-          'account': {
-            'field': {
-              'name': 'account',
-              'kind': 'integer',
-              'order': 2,
-              'default': ''
-            }
-          },
-          'report_id': {
-            'field': {
-              'name': 'report_id',
-              'kind': 'integer',
-              'order': 3,
-              'default': ''
-            }
-          },
-          'name': {
-            'field': {
-              'name': 'report_name',
-              'kind': 'string',
-              'order': 4,
-              'default': ''
-            }
-          }
-        },
-        'out': {
-          'sheets': {
-            'sheet': {
-              'field': {
-                'name': 'sheet',
-                'kind': 'string',
-                'order': 5,
-                'default': ''
-              }
-            },
-            'tab': {
-              'field': {
-                'name': 'tab',
-                'kind': 'string',
-                'order': 6,
-                'default': ''
-              }
-            },
-            'range': 'A1'
+        'out':{
+          'sheets':{
+            'sheet':{'field':{'name':'sheet','kind':'string','order':5,'default':''}},
+            'tab':{'field':{'name':'tab','kind':'string','order':6,'default':''}},
+            'range':'A1'
           }
         }
       }

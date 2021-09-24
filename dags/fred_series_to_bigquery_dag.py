@@ -85,133 +85,34 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth': 'service',  # Credentials used for writing data.
-  'fred_api_key': '',  # 32 character alpha-numeric lowercase string.
-  'fred_series_id': '',  # Series ID to pull data from.
-  'fred_units': 'lin',  # A key that indicates a data value transformation.
-  'fred_frequency': '',  # An optional parameter that indicates a lower frequency to aggregate values to.
-  'fred_aggregation_method': 'avg',  # A key that indicates the aggregation method used for frequency aggregation.
-  'project': '',  # Existing BigQuery project.
-  'dataset': '',  # Existing BigQuery dataset.
+  'auth':'service',  # Credentials used for writing data.
+  'fred_api_key':'',  # 32 character alpha-numeric lowercase string.
+  'fred_series_id':'',  # Series ID to pull data from.
+  'fred_units':'lin',  # A key that indicates a data value transformation.
+  'fred_frequency':'',  # An optional parameter that indicates a lower frequency to aggregate values to.
+  'fred_aggregation_method':'avg',  # A key that indicates the aggregation method used for frequency aggregation.
+  'project':'',  # Existing BigQuery project.
+  'dataset':'',  # Existing BigQuery dataset.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'fred': {
-        'auth': {
-          'field': {
-            'name': 'auth',
-            'kind': 'authentication',
-            'order': 0,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
-        'api_key': {
-          'field': {
-            'name': 'fred_api_key',
-            'kind': 'string',
-            'order': 1,
-            'default': '',
-            'description': '32 character alpha-numeric lowercase string.'
-          }
-        },
-        'frequency': {
-          'field': {
-            'name': 'fred_frequency',
-            'kind': 'choice',
-            'order': 4,
-            'default': '',
-            'description': 'An optional parameter that indicates a lower frequency to aggregate values to.',
-            'choices': [
-              '',
-              'd',
-              'w',
-              'bw',
-              'm',
-              'q',
-              'sa',
-              'a',
-              'wef',
-              'weth',
-              'wew',
-              'wetu',
-              'wem',
-              'wesu',
-              'wesa',
-              'bwew',
-              'bwem'
-            ]
-          }
-        },
-        'series': [
+      'fred':{
+        'auth':{'field':{'name':'auth','kind':'authentication','order':0,'default':'service','description':'Credentials used for writing data.'}},
+        'api_key':{'field':{'name':'fred_api_key','kind':'string','order':1,'default':'','description':'32 character alpha-numeric lowercase string.'}},
+        'frequency':{'field':{'name':'fred_frequency','kind':'choice','order':4,'default':'','description':'An optional parameter that indicates a lower frequency to aggregate values to.','choices':['','d','w','bw','m','q','sa','a','wef','weth','wew','wetu','wem','wesu','wesa','bwew','bwem']}},
+        'series':[
           {
-            'series_id': {
-              'field': {
-                'name': 'fred_series_id',
-                'kind': 'string',
-                'order': 2,
-                'default': '',
-                'description': 'Series ID to pull data from.'
-              }
-            },
-            'units': {
-              'field': {
-                'name': 'fred_units',
-                'kind': 'choice',
-                'order': 3,
-                'default': 'lin',
-                'description': 'A key that indicates a data value transformation.',
-                'choices': [
-                  'lin',
-                  'chg',
-                  'ch1',
-                  'pch',
-                  'pc1',
-                  'pca',
-                  'cch',
-                  'cca',
-                  'log'
-                ]
-              }
-            },
-            'aggregation_method': {
-              'field': {
-                'name': 'fred_aggregation_method',
-                'kind': 'choice',
-                'order': 5,
-                'default': 'avg',
-                'description': 'A key that indicates the aggregation method used for frequency aggregation.',
-                'choices': [
-                  'avg',
-                  'sum',
-                  'eop'
-                ]
-              }
-            }
+            'series_id':{'field':{'name':'fred_series_id','kind':'string','order':2,'default':'','description':'Series ID to pull data from.'}},
+            'units':{'field':{'name':'fred_units','kind':'choice','order':3,'default':'lin','description':'A key that indicates a data value transformation.','choices':['lin','chg','ch1','pch','pc1','pca','cch','cca','log']}},
+            'aggregation_method':{'field':{'name':'fred_aggregation_method','kind':'choice','order':5,'default':'avg','description':'A key that indicates the aggregation method used for frequency aggregation.','choices':['avg','sum','eop']}}
           }
         ],
-        'out': {
-          'bigquery': {
-            'project': {
-              'field': {
-                'name': 'project',
-                'kind': 'string',
-                'order': 10,
-                'default': '',
-                'description': 'Existing BigQuery project.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'dataset',
-                'kind': 'string',
-                'order': 11,
-                'default': '',
-                'description': 'Existing BigQuery dataset.'
-              }
-            }
+        'out':{
+          'bigquery':{
+            'project':{'field':{'name':'project','kind':'string','order':10,'default':'','description':'Existing BigQuery project.'}},
+            'dataset':{'field':{'name':'dataset','kind':'string','order':11,'default':'','description':'Existing BigQuery dataset.'}}
           }
         }
       }

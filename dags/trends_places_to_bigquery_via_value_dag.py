@@ -88,75 +88,31 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_write': 'service',  # Credentials used for writing data.
-  'secret': '',
-  'key': '',
-  'woeids': [],
-  'destination_dataset': '',
-  'destination_table': '',
+  'auth_write':'service',  # Credentials used for writing data.
+  'secret':'',
+  'key':'',
+  'woeids':[],
+  'destination_dataset':'',
+  'destination_table':'',
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'twitter': {
-        'auth': {
-          'field': {
-            'name': 'auth_write',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
+      'twitter':{
+        'auth':{'field':{'name':'auth_write','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'secret':{'field':{'name':'secret','kind':'string','order':1,'default':''}},
+        'key':{'field':{'name':'key','kind':'string','order':2,'default':''}},
+        'trends':{
+          'places':{
+            'single_cell':True,
+            'values':{'field':{'name':'woeids','kind':'integer_list','order':3,'default':[]}}
           }
         },
-        'secret': {
-          'field': {
-            'name': 'secret',
-            'kind': 'string',
-            'order': 1,
-            'default': ''
-          }
-        },
-        'key': {
-          'field': {
-            'name': 'key',
-            'kind': 'string',
-            'order': 2,
-            'default': ''
-          }
-        },
-        'trends': {
-          'places': {
-            'single_cell': True,
-            'values': {
-              'field': {
-                'name': 'woeids',
-                'kind': 'integer_list',
-                'order': 3,
-                'default': [
-                ]
-              }
-            }
-          }
-        },
-        'out': {
-          'bigquery': {
-            'dataset': {
-              'field': {
-                'name': 'destination_dataset',
-                'kind': 'string',
-                'order': 6,
-                'default': ''
-              }
-            },
-            'table': {
-              'field': {
-                'name': 'destination_table',
-                'kind': 'string',
-                'order': 7,
-                'default': ''
-              }
-            }
+        'out':{
+          'bigquery':{
+            'dataset':{'field':{'name':'destination_dataset','kind':'string','order':6,'default':''}},
+            'table':{'field':{'name':'destination_table','kind':'string','order':7,'default':''}}
           }
         }
       }

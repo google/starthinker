@@ -87,140 +87,38 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'account': '',
-  'auth_cm': 'user',  # Credentials used for CM.
-  'floodlight_activity_id': '',
-  'auth_bigquery': 'user',  # Credentials for BigQuery.
-  'floodlight_conversion_type': 'encryptedUserId',  # Must match the values specifed in the last column.
-  'encryption_entity_id': '',  # Typically the same as the account id.
-  'encryption_entity_type': 'DCM_ACCOUNT',
-  'encryption_entity_source': 'DATA_TRANSFER',
-  'dataset': 'Source containing the conversion data.',
-  'table': 'Source containing the conversion data.',
-  'legacy': False,  # Matters if source is a view.
+  'account':'',
+  'auth_cm':'user',  # Credentials used for CM.
+  'floodlight_activity_id':'',
+  'auth_bigquery':'user',  # Credentials for BigQuery.
+  'floodlight_conversion_type':'encryptedUserId',  # Must match the values specifed in the last column.
+  'encryption_entity_id':'',  # Typically the same as the account id.
+  'encryption_entity_type':'DCM_ACCOUNT',
+  'encryption_entity_source':'DATA_TRANSFER',
+  'dataset':'Source containing the conversion data.',
+  'table':'Source containing the conversion data.',
+  'legacy':False,  # Matters if source is a view.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'conversion_upload': {
-        'auth': {
-          'field': {
-            'name': 'auth_cm',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for CM.'
-          }
+      'conversion_upload':{
+        'auth':{'field':{'name':'auth_cm','kind':'authentication','order':1,'default':'user','description':'Credentials used for CM.'}},
+        'account_id':{'field':{'name':'account','kind':'string','order':0,'default':''}},
+        'activity_id':{'field':{'name':'floodlight_activity_id','kind':'integer','order':1,'default':''}},
+        'conversion_type':{'field':{'name':'floodlight_conversion_type','kind':'choice','order':2,'choices':['encryptedUserId','encryptedUserIdCandidates','dclid','gclid','matchId','mobileDeviceId'],'default':'encryptedUserId','description':'Must match the values specifed in the last column.'}},
+        'encryptionInfo':{
+          'encryptionEntityId':{'field':{'name':'encryption_entity_id','kind':'integer','order':3,'default':'','description':'Typically the same as the account id.'}},
+          'encryptionEntityType':{'field':{'name':'encryption_entity_type','kind':'choice','order':4,'choices':['ADWORDS_CUSTOMER','DBM_ADVERTISER','DBM_PARTNER','DCM_ACCOUNT','DCM_ADVERTISER','DFP_NETWORK_CODE'],'default':'DCM_ACCOUNT'}},
+          'encryptionSource':{'field':{'name':'encryption_entity_source','kind':'choice','order':5,'choices':['AD_SERVING','DATA_TRANSFER'],'default':'DATA_TRANSFER'}}
         },
-        'account_id': {
-          'field': {
-            'name': 'account',
-            'kind': 'string',
-            'order': 0,
-            'default': ''
-          }
-        },
-        'activity_id': {
-          'field': {
-            'name': 'floodlight_activity_id',
-            'kind': 'integer',
-            'order': 1,
-            'default': ''
-          }
-        },
-        'conversion_type': {
-          'field': {
-            'name': 'floodlight_conversion_type',
-            'kind': 'choice',
-            'order': 2,
-            'choices': [
-              'encryptedUserId',
-              'encryptedUserIdCandidates',
-              'dclid',
-              'gclid',
-              'matchId',
-              'mobileDeviceId'
-            ],
-            'default': 'encryptedUserId',
-            'description': 'Must match the values specifed in the last column.'
-          }
-        },
-        'encryptionInfo': {
-          'encryptionEntityId': {
-            'field': {
-              'name': 'encryption_entity_id',
-              'kind': 'integer',
-              'order': 3,
-              'default': '',
-              'description': 'Typically the same as the account id.'
-            }
-          },
-          'encryptionEntityType': {
-            'field': {
-              'name': 'encryption_entity_type',
-              'kind': 'choice',
-              'order': 4,
-              'choices': [
-                'ADWORDS_CUSTOMER',
-                'DBM_ADVERTISER',
-                'DBM_PARTNER',
-                'DCM_ACCOUNT',
-                'DCM_ADVERTISER',
-                'DFP_NETWORK_CODE'
-              ],
-              'default': 'DCM_ACCOUNT'
-            }
-          },
-          'encryptionSource': {
-            'field': {
-              'name': 'encryption_entity_source',
-              'kind': 'choice',
-              'order': 5,
-              'choices': [
-                'AD_SERVING',
-                'DATA_TRANSFER'
-              ],
-              'default': 'DATA_TRANSFER'
-            }
-          }
-        },
-        'from': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'user',
-                'description': 'Credentials for BigQuery.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'dataset',
-                'kind': 'string',
-                'order': 6,
-                'default': 'Source containing the conversion data.'
-              }
-            },
-            'table': {
-              'field': {
-                'name': 'table',
-                'kind': 'string',
-                'order': 7,
-                'default': 'Source containing the conversion data.'
-              }
-            },
-            'legacy': {
-              'field': {
-                'name': 'legacy',
-                'kind': 'boolean',
-                'order': 8,
-                'default': False,
-                'description': 'Matters if source is a view.'
-              }
-            }
+        'from':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'user','description':'Credentials for BigQuery.'}},
+            'dataset':{'field':{'name':'dataset','kind':'string','order':6,'default':'Source containing the conversion data.'}},
+            'table':{'field':{'name':'table','kind':'string','order':7,'default':'Source containing the conversion data.'}},
+            'legacy':{'field':{'name':'legacy','kind':'boolean','order':8,'default':False,'description':'Matters if source is a view.'}}
           }
         }
       }

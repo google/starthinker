@@ -85,681 +85,260 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_bigquery': 'service',  # Credentials used for writing data.
-  'auth_dv': 'service',  # Credentials used for reading data.
-  'recipe_slug': '',  # Name of Google BigQuery dataset to create.
-  'partners': [],  # List of account ids to pull.
+  'auth_bigquery':'service',  # Credentials used for writing data.
+  'auth_dv':'service',  # Credentials used for reading data.
+  'recipe_slug':'',  # Name of Google BigQuery dataset to create.
+  'partners':[],  # List of account ids to pull.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'dataset': {
-        'description': 'Create a dataset for bigquery tables.',
-        'auth': {
-          'field': {
-            'name': 'auth_bigquery',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for writing data.'
-          }
-        },
-        'dataset': {
-          'field': {
-            'name': 'recipe_slug',
-            'kind': 'string',
-            'description': 'Place where tables will be created in BigQuery.'
-          }
-        }
+      'dataset':{
+        'description':'Create a dataset for bigquery tables.',
+        'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+        'dataset':{'field':{'name':'recipe_slug','kind':'string','description':'Place where tables will be created in BigQuery.'}}
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_dv',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for reading data.'
-          }
-        },
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'partners.get',
-        'kwargs_remote': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'description': 'Place where tables will be created in BigQuery.'
-              }
-            },
-            'legacy': False,
-            'query': 'SELECT CAST(partnerId AS STRING) partnerId FROM (SELECT DISTINCT * FROM UNNEST({partners}) AS partnerId)',
-            'parameters': {
-              'partners': {
-                'field': {
-                  'name': 'partners',
-                  'kind': 'integer_list',
-                  'order': 4,
-                  'default': [
-                  ],
-                  'description': 'List of account ids to pull.'
-                }
-              }
+      'google_api':{
+        'auth':{'field':{'name':'auth_dv','kind':'authentication','order':1,'default':'service','description':'Credentials used for reading data.'}},
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'partners.get',
+        'kwargs_remote':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','description':'Place where tables will be created in BigQuery.'}},
+            'legacy':False,
+            'query':'SELECT CAST(partnerId AS STRING) partnerId FROM (SELECT DISTINCT * FROM UNNEST({partners}) AS partnerId)',
+            'parameters':{
+              'partners':{'field':{'name':'partners','kind':'integer_list','order':4,'default':[],'description':'List of account ids to pull.'}}
             }
           }
         },
-        'iterate': False,
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV360_Partners'
+        'iterate':False,
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV360_Partners'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_dv',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for reading data.'
+      'google_api':{
+        'auth':{'field':{'name':'auth_dv','kind':'authentication','order':1,'default':'service','description':'Credentials used for reading data.'}},
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'advertisers.list',
+        'kwargs_remote':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':3,'default':'service','description':'Credentials to use for BigQuery reads and writes.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':0,'default':'','description':'Google BigQuery dataset to create tables in.'}},
+            'query':'SELECT DISTINCT CAST(partnerId  AS STRING) partnerId FROM `DV360_Partners`',
+            'legacy':False
           }
         },
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'advertisers.list',
-        'kwargs_remote': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 3,
-                'default': 'service',
-                'description': 'Credentials to use for BigQuery reads and writes.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 0,
-                'default': '',
-                'description': 'Google BigQuery dataset to create tables in.'
-              }
-            },
-            'query': 'SELECT DISTINCT CAST(partnerId  AS STRING) partnerId FROM `DV360_Partners`',
-            'legacy': False
-          }
-        },
-        'iterate': True,
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV360_Advertisers'
+        'iterate':True,
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV360_Advertisers'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_dv',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for reading data.'
+      'google_api':{
+        'auth':{'field':{'name':'auth_dv','kind':'authentication','order':1,'default':'service','description':'Credentials used for reading data.'}},
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'advertisers.insertionOrders.list',
+        'kwargs_remote':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':3,'default':'service','description':'Credentials to use for BigQuery reads and writes.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':0,'default':'','description':'Google BigQuery dataset to create tables in.'}},
+            'query':'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
+            'legacy':False
           }
         },
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'advertisers.insertionOrders.list',
-        'kwargs_remote': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 3,
-                'default': 'service',
-                'description': 'Credentials to use for BigQuery reads and writes.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 0,
-                'default': '',
-                'description': 'Google BigQuery dataset to create tables in.'
-              }
-            },
-            'query': 'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
-            'legacy': False
-          }
-        },
-        'iterate': True,
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV360_InsertionOrders'
+        'iterate':True,
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV360_InsertionOrders'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_dv',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for reading data.'
+      'google_api':{
+        'auth':{'field':{'name':'auth_dv','kind':'authentication','order':1,'default':'service','description':'Credentials used for reading data.'}},
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'advertisers.lineItems.list',
+        'kwargs_remote':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':3,'default':'service','description':'Credentials to use for BigQuery reads and writes.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':0,'default':'','description':'Google BigQuery dataset to create tables in.'}},
+            'query':'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
+            'legacy':False
           }
         },
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'advertisers.lineItems.list',
-        'kwargs_remote': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 3,
-                'default': 'service',
-                'description': 'Credentials to use for BigQuery reads and writes.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 0,
-                'default': '',
-                'description': 'Google BigQuery dataset to create tables in.'
-              }
-            },
-            'query': 'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
-            'legacy': False
-          }
-        },
-        'iterate': True,
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV360_LineItems'
+        'iterate':True,
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV360_LineItems'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_dv',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for reading data.'
+      'google_api':{
+        'auth':{'field':{'name':'auth_dv','kind':'authentication','order':1,'default':'service','description':'Credentials used for reading data.'}},
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'advertisers.campaigns.list',
+        'kwargs_remote':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':3,'default':'service','description':'Credentials to use for BigQuery reads and writes.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':0,'default':'','description':'Google BigQuery dataset to create tables in.'}},
+            'query':'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
+            'legacy':False
           }
         },
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'advertisers.campaigns.list',
-        'kwargs_remote': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 3,
-                'default': 'service',
-                'description': 'Credentials to use for BigQuery reads and writes.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 0,
-                'default': '',
-                'description': 'Google BigQuery dataset to create tables in.'
-              }
-            },
-            'query': 'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
-            'legacy': False
-          }
-        },
-        'iterate': True,
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV360_Campaigns'
+        'iterate':True,
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV360_Campaigns'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_dv',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for reading data.'
+      'google_api':{
+        'auth':{'field':{'name':'auth_dv','kind':'authentication','order':1,'default':'service','description':'Credentials used for reading data.'}},
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'advertisers.channels.list',
+        'kwargs_remote':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':3,'default':'service','description':'Credentials to use for BigQuery reads and writes.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':0,'default':'','description':'Google BigQuery dataset to create tables in.'}},
+            'query':'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
+            'legacy':False
           }
         },
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'advertisers.channels.list',
-        'kwargs_remote': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 3,
-                'default': 'service',
-                'description': 'Credentials to use for BigQuery reads and writes.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 0,
-                'default': '',
-                'description': 'Google BigQuery dataset to create tables in.'
-              }
-            },
-            'query': 'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
-            'legacy': False
-          }
-        },
-        'iterate': True,
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV360_Channels'
+        'iterate':True,
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV360_Channels'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_dv',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for reading data.'
+      'google_api':{
+        'auth':{'field':{'name':'auth_dv','kind':'authentication','order':1,'default':'service','description':'Credentials used for reading data.'}},
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'advertisers.creatives.list',
+        'kwargs_remote':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':3,'default':'service','description':'Credentials to use for BigQuery reads and writes.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':0,'default':'','description':'Google BigQuery dataset to create tables in.'}},
+            'query':'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
+            'legacy':False
           }
         },
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'advertisers.creatives.list',
-        'kwargs_remote': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 3,
-                'default': 'service',
-                'description': 'Credentials to use for BigQuery reads and writes.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 0,
-                'default': '',
-                'description': 'Google BigQuery dataset to create tables in.'
-              }
-            },
-            'query': 'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
-            'legacy': False
-          }
-        },
-        'iterate': True,
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV360_Creatives'
+        'iterate':True,
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV360_Creatives'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_dv',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for reading data.'
+      'google_api':{
+        'auth':{'field':{'name':'auth_dv','kind':'authentication','order':1,'default':'service','description':'Credentials used for reading data.'}},
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'inventorySources.list',
+        'kwargs_remote':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':3,'default':'service','description':'Credentials to use for BigQuery reads and writes.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':0,'default':'','description':'Google BigQuery dataset to create tables in.'}},
+            'query':'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
+            'legacy':False
           }
         },
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'inventorySources.list',
-        'kwargs_remote': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 3,
-                'default': 'service',
-                'description': 'Credentials to use for BigQuery reads and writes.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 0,
-                'default': '',
-                'description': 'Google BigQuery dataset to create tables in.'
-              }
-            },
-            'query': 'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
-            'legacy': False
-          }
-        },
-        'iterate': True,
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV360_Inventory_Sources'
+        'iterate':True,
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV360_Inventory_Sources'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_dv',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for reading data.'
+      'google_api':{
+        'auth':{'field':{'name':'auth_dv','kind':'authentication','order':1,'default':'service','description':'Credentials used for reading data.'}},
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'googleAudiences.list',
+        'kwargs_remote':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':3,'default':'service','description':'Credentials to use for BigQuery reads and writes.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':0,'default':'','description':'Google BigQuery dataset to create tables in.'}},
+            'query':'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
+            'legacy':False
           }
         },
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'googleAudiences.list',
-        'kwargs_remote': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 3,
-                'default': 'service',
-                'description': 'Credentials to use for BigQuery reads and writes.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 0,
-                'default': '',
-                'description': 'Google BigQuery dataset to create tables in.'
-              }
-            },
-            'query': 'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
-            'legacy': False
-          }
-        },
-        'iterate': True,
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV360_Google_Audiences'
+        'iterate':True,
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV360_Google_Audiences'
           }
         }
       }
     },
     {
-      'google_api': {
-        'auth': {
-          'field': {
-            'name': 'auth_dv',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'service',
-            'description': 'Credentials used for reading data.'
+      'google_api':{
+        'auth':{'field':{'name':'auth_dv','kind':'authentication','order':1,'default':'service','description':'Credentials used for reading data.'}},
+        'api':'displayvideo',
+        'version':'v1',
+        'function':'combinedAudiences.list',
+        'kwargs_remote':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':3,'default':'service','description':'Credentials to use for BigQuery reads and writes.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':0,'default':'','description':'Google BigQuery dataset to create tables in.'}},
+            'query':'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
+            'legacy':False
           }
         },
-        'api': 'displayvideo',
-        'version': 'v1',
-        'function': 'combinedAudiences.list',
-        'kwargs_remote': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 3,
-                'default': 'service',
-                'description': 'Credentials to use for BigQuery reads and writes.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 0,
-                'default': '',
-                'description': 'Google BigQuery dataset to create tables in.'
-              }
-            },
-            'query': 'SELECT DISTINCT CAST(advertiserId AS STRING) AS advertiserId FROM `DV360_Advertisers`',
-            'legacy': False
-          }
-        },
-        'iterate': True,
-        'results': {
-          'bigquery': {
-            'auth': {
-              'field': {
-                'name': 'auth_bigquery',
-                'kind': 'authentication',
-                'order': 1,
-                'default': 'service',
-                'description': 'Credentials used for writing data.'
-              }
-            },
-            'dataset': {
-              'field': {
-                'name': 'recipe_slug',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Name of Google BigQuery dataset to create.'
-              }
-            },
-            'table': 'DV360_Combined_Audiences'
+        'iterate':True,
+        'results':{
+          'bigquery':{
+            'auth':{'field':{'name':'auth_bigquery','kind':'authentication','order':1,'default':'service','description':'Credentials used for writing data.'}},
+            'dataset':{'field':{'name':'recipe_slug','kind':'string','order':4,'default':'','description':'Name of Google BigQuery dataset to create.'}},
+            'table':'DV360_Combined_Audiences'
           }
         }
       }

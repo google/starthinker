@@ -85,67 +85,27 @@ This StarThinker DAG can be extended with any additional tasks from the followin
 from starthinker.airflow.factory import DAG_Factory
 
 INPUTS = {
-  'auth_read': 'user',  # Credentials used for reading data.
-  'report_id': '',  # DV360 report ID given in UI, not needed if name used.
-  'report_name': '',  # Name of report, not needed if ID used.
-  'sheet': '',  # Full URL to sheet being written to.
-  'tab': '',  # Existing tab in sheet to write to.
+  'auth_read':'user',  # Credentials used for reading data.
+  'report_id':'',  # DV360 report ID given in UI, not needed if name used.
+  'report_name':'',  # Name of report, not needed if ID used.
+  'sheet':'',  # Full URL to sheet being written to.
+  'tab':'',  # Existing tab in sheet to write to.
 }
 
 RECIPE = {
-  'tasks': [
+  'tasks':[
     {
-      'dbm': {
-        'auth': {
-          'field': {
-            'name': 'auth_read',
-            'kind': 'authentication',
-            'order': 1,
-            'default': 'user',
-            'description': 'Credentials used for reading data.'
-          }
+      'dbm':{
+        'auth':{'field':{'name':'auth_read','kind':'authentication','order':1,'default':'user','description':'Credentials used for reading data.'}},
+        'report':{
+          'report_id':{'field':{'name':'report_id','kind':'integer','order':1,'default':'','description':'DV360 report ID given in UI, not needed if name used.'}},
+          'name':{'field':{'name':'report_name','kind':'string','order':2,'default':'','description':'Name of report, not needed if ID used.'}}
         },
-        'report': {
-          'report_id': {
-            'field': {
-              'name': 'report_id',
-              'kind': 'integer',
-              'order': 1,
-              'default': '',
-              'description': 'DV360 report ID given in UI, not needed if name used.'
-            }
-          },
-          'name': {
-            'field': {
-              'name': 'report_name',
-              'kind': 'string',
-              'order': 2,
-              'default': '',
-              'description': 'Name of report, not needed if ID used.'
-            }
-          }
-        },
-        'out': {
-          'sheets': {
-            'sheet': {
-              'field': {
-                'name': 'sheet',
-                'kind': 'string',
-                'order': 3,
-                'default': '',
-                'description': 'Full URL to sheet being written to.'
-              }
-            },
-            'tab': {
-              'field': {
-                'name': 'tab',
-                'kind': 'string',
-                'order': 4,
-                'default': '',
-                'description': 'Existing tab in sheet to write to.'
-              }
-            },
-            'range': 'A1'
+        'out':{
+          'sheets':{
+            'sheet':{'field':{'name':'sheet','kind':'string','order':3,'default':'','description':'Full URL to sheet being written to.'}},
+            'tab':{'field':{'name':'tab','kind':'string','order':4,'default':'','description':'Existing tab in sheet to write to.'}},
+            'range':'A1'
           }
         }
       }
