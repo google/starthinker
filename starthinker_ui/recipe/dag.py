@@ -131,7 +131,7 @@ def script_to_dag(dag_name,
     ),
     'recipe':dict_to_string(
       script,
-      skip=('fields',)
+      skip=('field',)
     ),
     'dag':dag_name
   })

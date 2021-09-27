@@ -16,6 +16,12 @@
 #
 ###########################################################################
 
+"""StarThinker generator for Colab Notebooks.
+
+Includes both the command line and librarires used by UI.
+See main for usage description.
+"""
+
 import json
 import argparse
 import textwrap
@@ -27,6 +33,7 @@ from starthinker.util.recipe import get_recipe
 from starthinker.util.recipe import json_get_fields
 from starthinker.util.recipe import json_set_auths
 from starthinker.util.colab import Colab
+
 
 def recipe_to_colab(name, description, instructions, tasks, parameters={}, project=None, client_credentials=None, user_credentials=None, service_credentials=None):
   """ Converts a JSON recipe into a Jupyter Notebook for Colabs.
@@ -96,15 +103,12 @@ def recipe_to_colab(name, description, instructions, tasks, parameters={}, proje
 
     1. If the recipe has **auth** set to **user**:
       - If you have user credentials:
-        - Set the configuration **user** value with your user credentials JSON.
-        - Set the configuration **client** value to None.
+        - Set the configuration **user** value to your user credentials JSON.
       - If you DO NOT have user credentials:
         - Set the configuration **client** value to [downloaded client credentials](https://github.com/google/starthinker/blob/master/tutorials/cloud_client_installed.md).
 
     1. If the recipe has **auth** set to **service**:
       - Set the configuration **service** value to [downloaded service credentials](https://github.com/google/starthinker/blob/master/tutorials/cloud_service.md).
-
-    1. Otherwise leave all values as they are or set to None.
   '''))
 
   #colab.image('Client Project ID', 'https://github.com/google/starthinker/raw/master/tutorials/images/cloud_project.png')
@@ -114,9 +118,9 @@ def recipe_to_colab(name, description, instructions, tasks, parameters={}, proje
   colab.code('')
   colab.code(textwrap.dedent('''
     CONFIG = Configuration(
-      project="PASTE PROJECT ID HERE",
-      client="IF USING AUTH user IN RECIPE, PASTE CLIENT CREDENTIALS JSON OR PATH HERE",
-      service="IF USING AUTH service IN RECIPE, PASTE SERVICE CREDENTIALS HERE",
+      project="",
+      client={},
+      service={},
       user="/content/user.json",
       verbose=True
     )
@@ -153,7 +157,7 @@ def main():
   parser = argparse.ArgumentParser(
     formatter_class=argparse.RawDescriptionHelpFormatter,
     description=textwrap.dedent("""\
-    Command line to turn recipe into Jupyter Notebook.
+    Command line to turn StarThinker Recipe into Colab Notebook.
 
     Example:
       python colab.py [path to existing recipe.json] --fo [path to new jupyter file.ipynb]
