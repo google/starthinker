@@ -1,0 +1,91 @@
+###########################################################################
+#
+#  Copyright 2021 Google LLC
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+#
+#  This code generated (see scripts folder for possible source):
+#    - Command: "python starthinker_ui/manage.py example"
+#
+###########################################################################
+
+import argparse
+import textwrap
+
+from starthinker.util.configuration import Configuration
+from starthinker.task.hello.run import hello
+
+
+def recipe_hello(config, auth_read, say_first, say_second, error, sleep):
+  """Recipe template for say hello.
+
+     Args:
+       auth_read (authentication) - Credentials used for reading data.
+       say_first (string) - Type in a greeting.
+       say_second (string) - Type in a greeting.
+       error (string) - Optional error for testing.
+       sleep (integer) - Seconds to sleep.
+  """
+
+  hello(config, {
+    'auth':auth_read,
+    'say':say_first,
+    'error':error,
+    'sleep':sleep
+  })
+
+  hello(config, {
+    'auth':auth_read,
+    'say':say_second,
+    'sleep':sleep
+  })
+
+
+
+if __name__ == "__main__":
+  parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent("""
+      Recipe template for say hello.
+
+        1. This should be called for testing only.
+  """))
+
+  parser.add_argument("-project", help="Cloud ID of Google Cloud Project.", default=None)
+  parser.add_argument("-key", help="API Key of Google Cloud Project.", default=None)
+  parser.add_argument("-client", help="Path to CLIENT credentials json file.", default=None)
+  parser.add_argument("-user", help="Path to USER credentials json file.", default=None)
+  parser.add_argument("-service", help="Path to SERVICE credentials json file.", default=None)
+  parser.add_argument("-verbose", help="Print all the steps as they happen.", action="store_true")
+
+  parser.add_argument("-auth_read", help="Credentials used for reading data.", default='user')
+  parser.add_argument("-say_first", help="Type in a greeting.", default='Hello Once')
+  parser.add_argument("-say_second", help="Type in a greeting.", default='Hello Twice')
+  parser.add_argument("-error", help="Optional error for testing.", default='')
+  parser.add_argument("-sleep", help="Seconds to sleep.", default=0)
+
+
+  args = parser.parse_args()
+
+  config = Configuration(
+    project=args.project,
+    user=args.user,
+    service=args.service,
+    client=args.client,
+    key=args.key,
+    verbose=args.verbose
+  )
+
+  recipe_hello(config, args.auth_read, args.say_first, args.say_second, args.error, args.sleep)
