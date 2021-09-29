@@ -270,7 +270,7 @@ def commandline_parser(parser=None, arguments=None):
       default=None
     )
 
-  if arguments is None or '-i' in arguments:
+  if arguments is None or '-t' in arguments:
     parser.add_argument(
       '--task',
       '-t',
