@@ -166,6 +166,45 @@ def dict_to_string(value, char_indent='  ', char_line='\n', skip=[], indent=0):
     return repr(value)
 
 
+def dict_to_python(value, char_indent='  ', char_line='\n', indent=0):
+  nlch = char_line + char_indent * (indent + 1)
+
+  if type(value) is dict:
+    if 'field' in value: return value['field']['name']
+    else:
+      items = [
+        nlch +
+        repr(key) + ':' +
+        dict_to_python(value[key], char_indent, char_line, indent + 1)
+      for key in value]
+
+      return '{%s}' % (','.join(items) + (char_line + char_indent * indent))
+
+  elif type(value) is list:
+    items = [
+      nlch +
+      dict_to_python(item, char_indent, char_line, indent + 1)
+    for item in value]
+
+    return '[%s]' % (','.join(items) + char_line + char_indent * indent)
+
+  elif type(value) is tuple:
+    items = [
+      nlch +
+      dict_to_python(item, char_indent, char_line, indent + 1)
+    for item in value]
+
+    return '(%s)' % (','.join(items) + char_line + char_indent * indent)
+
+  elif type(value) is str:
+    if '\n' in value:
+      return "'''%s'''" % value
+    else:
+      return "'%s'" % value
+  else:
+    return repr(value)
+
+
 def json_to_string(value, char_indent='  ', char_line='\n', skip=[], indent=0):
   nlch = char_line + char_indent * (indent + 1)
   if type(value) is dict:
@@ -300,6 +339,19 @@ def json_set_fields(recipe, variables):
 
 
 def json_merge_field(field_to, field_from):
+  """When a field value is replaced by another field via include.
+
+  Replaces the included field with the new field value.
+  The value can be another field or an actual value.
+
+  Args:
+    field_to - a { 'field':{...}} dictionary.
+    field_from - a { 'field':{...}} dictionary.
+
+  Returns:
+    A field or value containg the new data.
+
+  """
 
   # if field - field
   if isinstance(field_from, dict) and 'field' in field_from:
@@ -430,3 +482,36 @@ def json_set_description(recipe, variables):
             recipe['script']['description'], variables)
       except KeyError:
         pass
+
+
+def json_expand_queries(recipe, nodes=['query']):
+  """Attempts to expand newlines in fields containing queries.
+
+  Works only on fields, not lists.
+  Uses first whitespace > 1 as indent indicator.
+  Appends newlines to start of each indent indicator.
+
+  Args:
+    recipe - dictionary or list containing a recipe.
+    nodes - the list of fields which contain queries.
+
+  Returns:
+    Dictionary modified in place with newlines for each query field.
+
+  """
+
+  if isinstance(recipe, dict):
+    for key, value in recipe.items():
+      if isinstance(value, str) and key in nodes:
+        spaces = re.search('  +', value)
+        if spaces:
+          offset = spaces.end() - spaces.start()
+          if offset > 1:
+            recipe[key] = re.sub(r'\s{%d}' % offset, '\n' + (' ' * (offset - 2)), value)
+      else:
+        json_expand_queries(value, nodes)
+  elif type(recipe) in (list, tuple):
+    for value in recipe:
+      json_expand_queries(value, nodes)
+
+  return recipe

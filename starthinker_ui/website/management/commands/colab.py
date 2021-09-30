@@ -42,6 +42,7 @@ class Command(BaseCommand):
       readme_file.write('## List Of Notebooks\n')
 
       for script in Script.get_scripts():
+        if script.get_tag() in ['airflow']: continue
         if script.get_open_source():
           readme_file.write('* [%s](%s) - %s\n' %
                             (script.get_name(), script.get_link_colab(),
@@ -52,6 +53,7 @@ class Command(BaseCommand):
           '&copy; 2019 Google LLC - Apache License, Version 2.0\n')
 
     for script in Script.get_scripts():
+      if script.get_tag() in ['airflow']: continue
       if script.get_open_source():
         print('Writing: %s/colabs/%s.ipynb' %
               (settings.UI_ROOT, script.get_tag()))
