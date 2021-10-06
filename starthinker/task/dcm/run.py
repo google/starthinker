@@ -44,65 +44,65 @@ def dcm(config, task):
   if config.verbose:
     print('DCM')
 
-  # stores existing report json
-  report = None
+  # report name can exist in 2 places
+  report_name =  task['report'].get('name') or task['report'].get('body', {}).get('name')
 
   # check if report is to be deleted
   if task.get('delete', False):
     if config.verbose:
-      print(
-          'DCM DELETE', task['report'].get('name', None) or
-          task['report'].get('body', {}).get('name', None) or
-          task['report'].get('report_id', None))
+      print('DCM DELETE', report_name or task['report'].get('report_id'))
+
     report_delete(
-        config,
-        task['auth'],
-        task['report']['account'],
-        task['report'].get('report_id', None),
-        task['report'].get('name', None) or
-        task['report'].get('body', {}).get('name', None),
-    )
+      config,
+      task['auth'],
+      task['report']['account'],
+      task['report'].get('report_id'),
+      report_name
+   )
 
   # check if report is to be run
   if task.get('report_run_only', False):
     if config.verbose:
-      print(
-          'DCM REPORT RUN', task['report'].get('name', None) or
-          task['report'].get('report_id', None))
+      print('DCM REPORT RUN', report_name or  task['report'].get('report_id'))
+
     report_run(
-        config,
-        task['auth'],
-        task['report']['account'],
-        task['report'].get('report_id', None),
-        task['report'].get('name', None),
+      config,
+      task['auth'],
+      task['report']['account'],
+      task['report'].get('report_id'),
+      report_name
     )
 
   # check if report is to be created
   if 'body' in task['report']:
     if config.verbose:
-      print('DCM BUILD', task['report']['body']['name'])
+      print('DCM BUILD', report_name)
 
     if 'filters' in task['report']:
       task['report']['body'] = report_filter(
-          config,
-          task['auth'], task['report']['body'],
-          task['report']['filters'])
-
-    report = report_build(
         config,
-        task['auth'], task['report']['body'].get('accountId') or
-        task['report']['account'], task['report']['body'])
+        task['auth'], task['report']['body'],
+        task['report']['filters']
+      )
+
+    # set name in case it was passed in report instead of body
+    task['report']['body']['name'] = report_name
+    report = report_build(
+      config,
+      task['auth'],
+      task['report']['body'].get('accountId') or task['report']['account'],
+      task['report']['body']
+   )
 
   # moving a report
   if 'out' in task:
     filename, report = report_file(
-        config,
-        task['auth'],
-        task['report']['account'],
-        task['report'].get('report_id', None),
-        task['report'].get('name', None) or
-        task['report'].get('body', {}).get('name', None),
-        task['report'].get('timeout', 10),
+      config,
+      task['auth'],
+      task['report']['account'],
+      task['report'].get('report_id', None),
+      report_name,
+      task['report'].get('timeout', 10),
     )
 
     if report:
@@ -122,4 +122,4 @@ def dcm(config, task):
 
       # write rows using standard out block in json ( allows customization across all scripts )
       if rows:
-        put_rows(config, task['auth'], task['out'], rows)
+        return put_rows(config, task['auth'], task['out'], rows)
