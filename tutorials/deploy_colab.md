@@ -3,7 +3,6 @@
 All StarThinker recipes and solutions can be run from [Google Collaboratory](https://colab.research.google.com/github/google/starthinker/blob/master). Also visit the [Solution Gallery](google.github.io/starthinker/) or click a link below to deploy a notebook.
 
 ## List Of Notebooks
-* [Airflow Composer Example](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/airflow.ipynb) - Demonstration that uses Airflow/Composer native, Airflow/Composer local, and StarThinker tasks in the same generated DAG.
 * [BigQuery Anonymize Dataset](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/anonymize.ipynb) - Copies tables and view from one dataset to another and anynonamizes all rows.  Used to create sample datasets for dashboards.
 * [BigQuery Anonymize Query](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/anonymize_query.ipynb) - Runs a query and anynonamizes all rows.  Used to create sample table for dashboards.
 * [Storage Archive](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/archive.ipynb) - Wipe old information from a Storage bucket based on last update time.
@@ -84,7 +83,7 @@ All StarThinker recipes and solutions can be run from [Google Collaboratory](htt
 * [Trends Places To Sheets Via Query](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/trends_places_to_sheets_via_query.ipynb) - Move using a WOEID query.
 * [Trends Places To Sheets Via Values](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/trends_places_to_sheets_via_value.ipynb) - Move using hard coded WOEID values.
 * [Twitter Targeting](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/twitter.ipynb) - Adjusts line item settings based on Twitter hashtags and locations specified in a sheet.
-* [URL](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/url.ipynb) - Pull URL information.
+* [URL](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/url.ipynb) - Pull URL list from a table, fetch them, and write the results to another table.
 * [Video Overlay](https://colab.research.google.com/github/google/starthinker/blob/master/colabs/video.ipynb) - Add images, text, and audio to videos.
 ---
 &copy; 2019 Google LLC - Apache License, Version 2.0

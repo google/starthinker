@@ -150,7 +150,7 @@ def recipe_cm360_campaign_comparison(config, auth_bq, auth_cm, recipe_slug, acco
     'function':'advertisers.list',
     'iterate':True,
     'kwargs':{
-      'fields':'advertisers.id,advertisers.name',
+      'fields':'advertisers.id,advertisers.name,nextPageToken',
       'accountId':account
     },
     'results':{
@@ -165,11 +165,11 @@ def recipe_cm360_campaign_comparison(config, auth_bq, auth_cm, recipe_slug, acco
   google_api(config, {
     'auth':auth_cm,
     'api':'dfareporting',
-    'version':'v3.5',
+    'version':'v3.4',
     'function':'campaigns.list',
     'iterate':True,
     'kwargs':{
-      'fields':'campaigns.id,campaigns.name',
+      'fields':'campaigns.id,campaigns.name,nextPageToken',
       'accountId':account
     },
     'results':{
@@ -184,11 +184,11 @@ def recipe_cm360_campaign_comparison(config, auth_bq, auth_cm, recipe_slug, acco
   google_api(config, {
     'auth':auth_cm,
     'api':'dfareporting',
-    'version':'v3.5',
+    'version':'v3.4',
     'function':'ads.list',
     'iterate':True,
     'kwargs':{
-      'fields':'ads.id,ads.name,ads.type',
+      'fields':'ads.id,ads.name,ads.type,nextPageToken',
       'accountId':account
     },
     'results':{
@@ -203,7 +203,7 @@ def recipe_cm360_campaign_comparison(config, auth_bq, auth_cm, recipe_slug, acco
   google_api(config, {
     'auth':auth_cm,
     'api':'dfareporting',
-    'version':'v3.5',
+    'version':'v3.4',
     'function':'placements.list',
     'iterate':True,
     'kwargs':{

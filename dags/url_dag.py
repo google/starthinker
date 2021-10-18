@@ -69,10 +69,10 @@ Before running this Airflow module...
 
 URL
 
-Pull URL information.
+Pull URL list from a table, fetch them, and write the results to another table.
 
-  - Specify a table with columns and URL, URI ( can be null).
-  - Check bigquery destination for list of information.
+  - Specify a table with only two columns URL, URI (can be null).
+  - Check bigquery destination for results of fetching each URL.
 
 --------------------------------------------------------------
 
@@ -89,7 +89,7 @@ INPUTS = {
   'status':True,  # Pull status of HTTP request.
   'read':False,  # Pull data from HTTP request.
   'dataset':'',  # Name of Google BigQuery dataset to write.
-  'table':'',  # Name of Google BigQuery dataset to write.
+  'table':'',  # Name of Google BigQuery table to write.
 }
 
 RECIPE = {
@@ -109,7 +109,7 @@ RECIPE = {
         'to':{
           'bigquery':{
             'dataset':{'field':{'name':'dataset','kind':'string','order':6,'default':'','description':'Name of Google BigQuery dataset to write.'}},
-            'table':{'field':{'name':'table','kind':'string','order':7,'default':'','description':'Name of Google BigQuery dataset to write.'}}
+            'table':{'field':{'name':'table','kind':'string','order':7,'default':'','description':'Name of Google BigQuery table to write.'}}
           }
         }
       }
