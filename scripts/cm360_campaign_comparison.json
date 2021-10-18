@@ -117,7 +117,7 @@
       "function": "advertisers.list",
       "iterate": true,
       "kwargs": {
-        "fields":"advertisers.id,advertisers.name",
+        "fields":"advertisers.id,advertisers.name,nextPageToken",
         "accountId":{"field":{"name":"account", "kind":"integer", "order":1, "default":12345, "description":"Campaign Manager Account ID"}}
        },
       "results": {
@@ -135,7 +135,7 @@
       "function": "campaigns.list",
       "iterate": true,
       "kwargs": {
-        "fields":"campaigns.id,campaigns.name",
+        "fields":"campaigns.id,campaigns.name,nextPageToken",
         "accountId":{"field":{"name":"account", "kind":"integer", "order":1, "default":12345, "description":"Campaign Manager Account ID"}}
       },
       "results": {
@@ -153,7 +153,7 @@
       "function": "ads.list",
       "iterate": true,
       "kwargs": {
-        "fields":"ads.id,ads.name,ads.type",
+        "fields":"ads.id,ads.name,ads.type,nextPageToken",
         "accountId":{"field":{"name":"account", "kind":"integer", "order":1, "default":12345, "description":"Campaign Manager Account ID"}}
       },
       "results": {
