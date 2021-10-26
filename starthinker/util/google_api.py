@@ -294,9 +294,7 @@ class API():
     self.auth = api['auth']
     self.uri = api.get('uri', None)
     self.key = api.get('key', None)
-    self.function_stack = list(
-        filter(None,
-               api.get('function', '').split('.')))
+    self.function_stack = list(filter(None, api.get('function', '').split('.')))
     self.function_kwargs = API.__clean__(api.get('kwargs', {}))
     self.iterate = api.get('iterate', False)
     self.limit = api.get('limit', None)
