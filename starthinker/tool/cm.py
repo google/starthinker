@@ -56,16 +56,24 @@ def task_template(report):
         "values": {"field":{ "name":df['dimensionName'], "kind":"integer_list", "order":3, "default":[], "description":"Comma delimited list of ids." }}
       }
 
-  del tasks['dcm']['report']['body']['criteria']['dimensionFilters']
-  del tasks['dcm']['report']['body']['lastModifiedTime']
-  del tasks['dcm']['report']['body']['ownerProfileId']
-  del tasks['dcm']['report']['body']['accountId']
-  del tasks['dcm']['report']['body']['fileName']
-  del tasks['dcm']['report']['body']['name']
-  del tasks['dcm']['report']['body']['etag']
-  del tasks['dcm']['report']['body']['id']
+  try: del task['dcm']['report']['body']['criteria']['dimensionFilters']
+  except KeyError: pass
+  try: del task['dcm']['report']['body']['lastModifiedTime']
+  except KeyError: pass
+  try: del task['dcm']['report']['body']['ownerProfileId']
+  except KeyError: pass
+  try: del task['dcm']['report']['body']['accountId']
+  except KeyError: pass
+  try: del task['dcm']['report']['body']['fileName']
+  except KeyError: pass
+  try: del task['dcm']['report']['body']['name']
+  except KeyError: pass
+  try: del task['dcm']['report']['body']['etag']
+  except KeyError: pass
+  try: del task['dcm']['report']['body']['id']
+  except KeyError: pass
 
-  return tasks
+  return task
 
 
 def main():
