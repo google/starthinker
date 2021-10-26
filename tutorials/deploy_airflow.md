@@ -32,24 +32,34 @@ These three tasks represent the three possible ways to use ST with Airflow.
 1. Using any StarThinker task in a recipe.
 
 ```
-cp dags/airflow.py ~/airflow/dags/say_hello.py
-python ~/airflow/dags/say_hello.py
+cp dags/sample_dag.py ~/airflow/dags/sample_dag.py
+python ~/airflow/dags/sample_dag.py
 ```
 
 1. Run a native Airflow Operator as a task from the recipe:
 ```
-airflow test "airflow" airflow_1 2020-09-14
+airflow tasks test "sample" airflow_1 2020-09-14
 ```
 
 1. Run a custom Airflow Operator as a task from the recipe:
 ```
-airflow test "airflow" starthinker_airflow_1 2020-09-14
+airflow tasks test "sample" starthinker_airflow_1 2020-09-14
 ```
 
 1. Run a StarThinker native python function as a task from the recipe:
 ```
-airflow test "airflow" hello_1 2020-09-14
+airflow tasks test "sample" hello_1 2020-09-14
 ```
+
+## Using User Credentials In Airflow
+
+Storing user credentials inside a connector variable will work for single jobs because the refresh token
+is refreshed when loaded.  However, for multiple jobs the refresh token must be shared across jobs.
+StarThinker solves this by allowing a GCP Storage path for user credentials.
+
+
+
+
 
 ## Cloud Resources
 

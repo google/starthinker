@@ -9,19 +9,14 @@ starthinker/task/hello/\_\_init\_\_.py
 ```
 ```
 starthinker/task/hello/run.py
+
 ```
-from starthinker.util.project import project
-
-@project.from_parameters
-def hello():
-  print project.task
-
-if __name__ == "__main__":
-  hello()
+def hello(config, task):
+  print(task)
 ```
 
 ### 2. Thats it, the python code is integrated, now create a script to pass parameters to  your task:
-hello.json
+scripts/hello.json
 ```
 {
   "tasks":[
@@ -33,12 +28,41 @@ hello.json
   ]
 }
 ```
+### 3. Add authentication.
+
+```
+{
+  "setup":{
+    "project":"",
+    "auth":{
+      "client":{}
+      "service":{}
+      "user":{}
+    }
+  },
+  "tasks":[
+    { "hello":{
+        "auth":"user",
+        "say":"Hello World"
+      }
+    }
+  ]
+}
+```
+
 ### 4. Execute your new task.
 ```
 source starthinker_assets/development.sh
 ```
+
+If autherntication supplied in recipe:
 ```
-python starthinker/all/run.py hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT --verbose
+python starthinker/tool/recipe.py hello.json --verbose
+```
+
+If authentication supplied on command line:
+```
+python starthinker/tool/recipe.py hello.json -u $STARTHINKER_USER -s $STARTHINKER_SERVICE -p $STARTHINKER_PROJECT --verbose
 ```
 
 ### 5. Continue to the [recipe  tutorial](recipe.md)...
