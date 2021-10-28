@@ -73,7 +73,7 @@ def dv_editor(config, task):
     campaign_clear(config, task)
     campaign_load(config, task)
 
-  elif task['command'] == 'Load Insertion Orders and Line Items':
+  elif task['command'] == 'Load Insertion Orders And Line Items':
     creative_clear(config, task)
     creative_load(config, task)
     insertion_order_clear(config, task)
@@ -121,7 +121,7 @@ def dv_editor(config, task):
   elif task['command'] == 'Clear Campaigns':
     campaign_clear(config, task)
 
-  elif task['command'] == 'Clear Insertion Orders and Line Items':
+  elif task['command'] == 'Clear Insertion Orders And Line Items':
     creative_clear(config, task)
 
     segment_clear(config, task)
