@@ -259,9 +259,11 @@ function deploy_pypi() {
   fi
 
   python3 -m pip install --upgrade setuptools wheel
+  rm -rf "${STARTHINKER_ROOT}/dist"
+  rm -rf "${STARTHINKER_ROOT}/build"
   python3 setup.py sdist bdist_wheel
   python3 -m pip install --upgrade twine
-  python3 -m twine upload --verbose --skip-existing --repository ${repository} dist/*
+  python3 -m twine upload --verbose --repository ${repository} dist/*
 
   echo ""
   echo "Done"
