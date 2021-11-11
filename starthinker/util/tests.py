@@ -178,14 +178,14 @@ class TestRecipe(unittest.TestCase):
             "a":{"field":{"name":"field_merge", "kind":"string", "description":"Gone.", "prefix":"Before ", "suffix":" After"}},
             "b":{"field":{"name":"field_merge", "kind":"string", "description":"Gone.", "prefix":"Before ", "suffix":" After"}},
             "c":{"field":{"name":"string_a", "kind":"string", "description":"Gone.", "prefix":"Before ", "suffix":" After"}},
-            "d":{"field":{"name":"int_1", "kind":"integer", "description":"Gone.", "prefix":"Before ", "suffix":" After"}},
-            "e":{"field":{"name":"bool_true", "kind":"boolean", "description":"Gone.", "prefix":"Before ", "suffix":" After"}},
+            "d":{"field":{"name":"int_1", "kind":"integer", "description":"Gone." }},
+            "e":{"field":{"name":"bool_true", "kind":"boolean", "description":"Gone." }},
             "f":'done'
           },
           "array":[
             {"field":{"name":"field_merge", "kind":"string", "description":"Gone.", "prefix":"Before ", "suffix":" After"}},
             {"field":{"name":"string_a", "kind":"string", "description":"Gone.", "prefix":"Before ", "suffix":" After"}},
-            {"field":{"name":"int_1", "kind":"integer", "description":"Gone.", "prefix":"Before ", "suffix":" After"}},
+            {"field":{"name":"int_1", "kind":"integer", "description":"Gone." }},
             "done"
           ]
         }}
@@ -210,14 +210,14 @@ class TestRecipe(unittest.TestCase):
          "nested": {
            "a": {"field": {"name": "final_value", "kind": "string", "description": "Another for testing.", "prefix": "Before Pre ", "suffix": " Post After", "default": "No"}},
            "b": {"field": {"name": "final_value", "kind": "string", "description": "Another for testing.", "prefix": "Before Pre ", "suffix": " Post After", "default": "No"}},
-           "c": "Word",
+           "c": "Before Word After",
            "d": 47,
            "e": True,
            "f": "done"
          },
          "array": [
            {"field": {"name": "final_value", "kind": "string", "description": "Another for testing.", "prefix": "Before Pre ", "suffix": " Post After", "default": "No"}},
-           "Word",
+           "Before Word After",
            47,
            "done"
          ]
