@@ -42,7 +42,10 @@ TIME_ZONE = 'America/Los_Angeles'
 ADMINS = [('User Name', 'email@domain.com')]
 
 # Store your logo and front end website graphics here.
-STATIC_URL = 'https://storage.googleapis.com/starthinker-ui/'
+#STATIC_URL = 'https://storage.googleapis.com/starthinker-ui/'
+
+STATIC_ROOT = UI_ROOT + '/starthinker_ui/static/'
+STATIC_URL = '/static/'
 
 
 def domain_to_host(domain):

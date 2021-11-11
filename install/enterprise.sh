@@ -182,6 +182,14 @@ env_variables:
   STARTHINKER_UI_DATABASE_NAME: '$STARTHINKER_UI_PRODUCTION_DATABASE_NAME'
   STARTHINKER_UI_DATABASE_USER: '$STARTHINKER_UI_PRODUCTION_DATABASE_USER'
   STARTHINKER_UI_DATABASE_PASSWORD: '$STARTHINKER_UI_PRODUCTION_DATABASE_PASSWORD'
+
+handlers:
+  - url: /static
+    static_dir: starthinker_ui/static
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
 EOL
 
   echo "Done"

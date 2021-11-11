@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    #'django.contrib.staticfiles',
     'starthinker_ui.account.apps.AccountConfig',
     'starthinker_ui.recipe',
     'starthinker_ui.project',

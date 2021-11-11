@@ -16,11 +16,13 @@
 #
 ###########################################################################
 
+from django.conf import settings
 from django.conf.urls import url, include
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'', include('starthinker_ui.account.urls')),
     url(r'', include('starthinker_ui.recipe.urls')),
     url(r'', include('starthinker_ui.project.urls')),
     url(r'', include('starthinker_ui.website.urls')),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
