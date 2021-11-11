@@ -120,6 +120,7 @@ USE_L10N = True
 USE_TZ = False
 
 DEFAULT_CHARSET = 'utf-8'
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 # User
 AUTH_USER_MODEL = 'account.Account'
