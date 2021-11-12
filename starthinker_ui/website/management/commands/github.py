@@ -47,6 +47,7 @@ class Command(BaseCommand):
   def handle(self, *args, **kwargs):
 
     settings.GOOGLE_ANALYTICS = kwargs['analytics']
+    settings.CONST_URL = 'https://google.github.io/starthinker'
     settings.STATIC_URL = 'https://google.github.io/starthinker/static/'
 
     directory = '%s/docs' % settings.UI_ROOT

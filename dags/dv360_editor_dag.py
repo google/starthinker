@@ -139,7 +139,7 @@ RECIPE = {
         'auth_bigquery':{'field':{'name':'auth_bigquery','kind':'authentication','order':3,'default':'service','description':'Credentials used for bigquery.'}},
         'sheet':{'field':{'name':'recipe_name','prefix':'DV Editor ','kind':'string','order':4,'default':'','description':'Name of Google Sheet to create.'}},
         'dataset':{'field':{'name':'recipe_slug','prefix':'DV_Editor_','kind':'string','order':5,'default':'','description':'Name of Google BigQuery dataset to create.'}},
-        'command':{'field':{'name':'command','kind':'choice','choices':['Clear Partners','Clear Advertisers','Clear Campaigns','Clear Insertion Orders and Line Items','Clear Preview','Clear Update','Load Partners','Load Advertisers','Load Campaigns','Load Insertion Orders and Line Items','Preview','Update'],'order':6,'default':'Load Partners','description':'Action to take.'}}
+        'command':{'field':{'name':'command','kind':'choice','choices':['Clear Partners','Clear Advertisers','Clear Campaigns','Clear Insertion Orders And Line Items','Clear Preview','Clear Update','Load Partners','Load Advertisers','Load Campaigns','Load Insertion Orders And Line Items','Preview','Update'],'order':6,'default':'Load Partners','description':'Action to take.'}}
       }
     }
   ]

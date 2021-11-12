@@ -72,7 +72,7 @@ DV360 Report
 Create a DV360 report.
 
   - Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DV360 API</a> to build a report.
-  - Copy and paste the JSON definition of a report, <a href='https://github.com/google/starthinker/blob/master/tests/scripts/dbm_to_bigquery.json#L9-L40' target='_blank'>sample for reference</a>.
+  - Copy and paste the JSON definition of a report, <a href='https://github.com/google/starthinker/blob/master/tests/dbm_to_bigquery.json' target='_blank'>sample for reference</a>.
   - The report is only created, a seperate script is required to move the data.
   - To reset a report, delete it from DV360 reporting.
 

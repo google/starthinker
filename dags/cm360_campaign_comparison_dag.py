@@ -238,7 +238,7 @@ RECIPE = {
       'google_api':{
         'auth':{'field':{'name':'auth_cm','kind':'authentication','order':0,'default':'user','description':'Credentials used for reading data.'}},
         'api':'dfareporting',
-        'version':'v3.4',
+        'version':'v3.5',
         'function':'campaigns.list',
         'iterate':True,
         'kwargs':{
@@ -258,7 +258,7 @@ RECIPE = {
       'google_api':{
         'auth':{'field':{'name':'auth_cm','kind':'authentication','order':0,'default':'user','description':'Credentials used for reading data.'}},
         'api':'dfareporting',
-        'version':'v3.4',
+        'version':'v3.5',
         'function':'ads.list',
         'iterate':True,
         'kwargs':{
@@ -278,7 +278,7 @@ RECIPE = {
       'google_api':{
         'auth':{'field':{'name':'auth_cm','kind':'authentication','order':0,'default':'user','description':'Credentials used for reading data.'}},
         'api':'dfareporting',
-        'version':'v3.4',
+        'version':'v3.5',
         'function':'placements.list',
         'iterate':True,
         'kwargs':{

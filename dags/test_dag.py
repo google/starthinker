@@ -87,8 +87,8 @@ from starthinker.airflow.factory import DAG_Factory
 INPUTS = {}
 
 RECIPE = {
-  'setup': {
-    'day': [
+  'setup':{
+    'day':[
       'Mon',
       'Tue',
       'Wed',
@@ -97,79 +97,79 @@ RECIPE = {
       'Sat',
       'Sun'
     ],
-    'hour': [
+    'hour':[
       1,
       3,
       23
     ]
   },
-  'tasks': [
+  'tasks':[
     {
-      'hello': {
-        'auth': 'user',
-        'hour': [
+      'hello':{
+        'auth':'user',
+        'hour':[
           1
         ],
-        'say': 'Hello At 1',
-        'sleep': 0
+        'say':'Hello At 1',
+        'sleep':0
       }
     },
     {
-      'hello': {
-        'auth': 'user',
-        'hour': [
+      'hello':{
+        'auth':'user',
+        'hour':[
           3
         ],
-        'say': 'Hello At 3',
-        'sleep': 0
+        'say':'Hello At 3',
+        'sleep':0
       }
     },
     {
-      'hello': {
-        'auth': 'user',
-        'hour': [
+      'hello':{
+        'auth':'user',
+        'hour':[
         ],
-        'say': 'Hello Manual',
-        'sleep': 0
+        'say':'Hello Manual',
+        'sleep':0
       }
     },
     {
-      'hello': {
-        'auth': 'user',
-        'hour': [
+      'hello':{
+        'auth':'user',
+        'hour':[
           23
         ],
-        'say': 'Hello At 23 Sleep',
-        'sleep': 30
+        'say':'Hello At 23 Sleep',
+        'sleep':30
       }
     },
     {
-      'hello': {
-        'auth': 'user',
-        'say': 'Hello At Anytime',
-        'sleep': 0
+      'hello':{
+        'auth':'user',
+        'say':'Hello At Anytime',
+        'sleep':0
       }
     },
     {
-      'hello': {
-        'auth': 'user',
-        'hour': [
+      'hello':{
+        'auth':'user',
+        'hour':[
           1,
           3,
           23
         ],
-        'say': 'Hello At 1, 3, 23',
-        'sleep': 0
+        'say':'Hello At 1, 3, 23',
+        'sleep':0
       }
     },
     {
-      'hello': {
-        'auth': 'user',
-        'hour': [
+      'hello':{
+        'auth':'user',
+        'hour':[
           3
         ],
-        'say': 'Hello At 3 Reordered',
-        'sleep': 0
+        'say':'Hello At 3 Reordered',
+        'sleep':0
       }
     }
   ]

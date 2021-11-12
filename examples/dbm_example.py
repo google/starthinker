@@ -52,7 +52,7 @@ if __name__ == "__main__":
       Create a DV360 report.
 
         1. Reference field values from the <a href='https://developers.google.com/bid-manager/v1/reports'>DV360 API</a> to build a report.
-        2. Copy and paste the JSON definition of a report, <a href='https://github.com/google/starthinker/blob/master/tests/scripts/dbm_to_bigquery.json#L9-L40' target='_blank'>sample for reference</a>.
+        2. Copy and paste the JSON definition of a report, <a href='https://github.com/google/starthinker/blob/master/tests/dbm_to_bigquery.json' target='_blank'>sample for reference</a>.
         3. The report is only created, a seperate script is required to move the data.
         4. To reset a report, delete it from DV360 reporting.
   """))

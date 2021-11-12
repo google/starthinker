@@ -165,7 +165,7 @@ def recipe_cm360_campaign_comparison(config, auth_bq, auth_cm, recipe_slug, acco
   google_api(config, {
     'auth':auth_cm,
     'api':'dfareporting',
-    'version':'v3.4',
+    'version':'v3.5',
     'function':'campaigns.list',
     'iterate':True,
     'kwargs':{
@@ -184,7 +184,7 @@ def recipe_cm360_campaign_comparison(config, auth_bq, auth_cm, recipe_slug, acco
   google_api(config, {
     'auth':auth_cm,
     'api':'dfareporting',
-    'version':'v3.4',
+    'version':'v3.5',
     'function':'ads.list',
     'iterate':True,
     'kwargs':{
@@ -203,7 +203,7 @@ def recipe_cm360_campaign_comparison(config, auth_bq, auth_cm, recipe_slug, acco
   google_api(config, {
     'auth':auth_cm,
     'api':'dfareporting',
-    'version':'v3.4',
+    'version':'v3.5',
     'function':'placements.list',
     'iterate':True,
     'kwargs':{
